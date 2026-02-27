@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Encode on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/encode/</link><description>Recent content in Encode on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Mon, 06 Jun 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/encode/index.xml" rel="self" type="application/rss+xml"/><item><title>How can I url/percent decode a string?</title><link>https://docs.velociraptor.app/knowledge_base/tips/urldecode/</link><pubDate>Mon, 06 Jun 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/urldecode/</guid><description>&lt;h1 id="how-can-i-urlpercent-decode-a-string">How can I url/percent decode a string?&lt;/h1>
+&lt;p>During investigation you may find logs or other data with percent-encoded strings.
+Since 0.6.5 we have included a lambda function in regex_replace() that enables decode and managing errors to enable analysis.&lt;/p>
+&lt;pre>&lt;code class="language-vql">LET Line = '''http://target/login.asp?userid=bob%27%3b%20update%20logintable%20set%20passwd%3d%270wn3d%27%3b--%00'''
+
+SELECT regex_replace(source=Line, replace_lambda=&amp;quot;x=&amp;gt;unhex(string=x[1:]) || x&amp;quot;, re=&amp;quot;%..&amp;quot;) as Decoded FROM scope() 
+
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="aa37781dd65ae86c26e8f0a7a277e0b6">
+ &lt;div data-featherlight="#aa37781dd65ae86c26e8f0a7a277e0b6" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/urldecode/https://user-images.githubusercontent.com/13081800/172098424-d78c73f9-e7d2-405b-99ca-129eba4350c0.png" alt="Url Decode: results" />
+ &lt;/div>
+ &lt;figcaption>
+ Url Decode: results
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Similarly, to URL encode we can run a similar function:&lt;/p>
+&lt;pre>&lt;code class="language-vql">LET Line = '''http://target/login.asp?userid=bob'; update logintable set passwd='0wn3d';--'''
+
+SELECT
+ url(path=Line).String[1:] as URLFunction,
+ regex_replace(source=Line,replace_lambda=&amp;quot;x=&amp;gt;format(format='%%%02x',args=x)&amp;quot;, re=&amp;quot;[^a-z0-9\\-_.~:/?]&amp;quot;) as ManualMethod
+FROM scope()
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="600d14b14b1231b510b009def8c13544">
+ &lt;div data-featherlight="#600d14b14b1231b510b009def8c13544" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/urldecode/https://user-images.githubusercontent.com/13081800/187116187-9347d6be-5566-49b0-98d6-65ce0d2ff0cc.png" alt="Url Encode: results" />
+ &lt;/div>
+ &lt;figcaption>
+ Url Encode: results
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p></description></item></channel></rss>

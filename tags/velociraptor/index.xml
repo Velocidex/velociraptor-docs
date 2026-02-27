@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Velociraptor on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/velociraptor/</link><description>Recent content in Velociraptor on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Thu, 29 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/velociraptor/index.xml" rel="self" type="application/rss+xml"/><item><title>Scaling Velociraptor</title><link>https://docs.velociraptor.app/blog/2021/2021-04-29-scaling-velociraptor-57acc4df76ed/</link><pubDate>Thu, 29 Apr 2021 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2021/2021-04-29-scaling-velociraptor-57acc4df76ed/</guid><description>&lt;h2 id="hunting-at-scale">Hunting at scale&lt;/h2>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="516f13ee471e908fa03a7d684da6a378">
+ &lt;div data-featherlight="#516f13ee471e908fa03a7d684da6a378" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-04-29-scaling-velociraptor-57acc4df76ed/../../img/0Y8UjXi9oQPXRRSsz.jpeg" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Velociraptor is an endpoint visibility tool designed to query a large number of endpoints quickly and efficiently. In previous releases, Velociraptor was restricted to a single server performing all functions, such as serving the GUI, the gRPC API as well as connections to the clients (endpoint agents). While this architecture is regularly used to serve up to 10k-15k endpoints, at high number of endpoints, we are starting to hit limitations with the single server model.&lt;/p>
+&lt;p>This post introduces the new experimental multi-server architecture that is released in the 0.5.9 release.&lt;/p>
+&lt;h3 id="what-are-the-bottlenecks-of-scale">What are the bottlenecks of scale?&lt;/h3>
+&lt;p>If you have ever used Velociraptor on a small network of endpoints (say between 2k-5k endpoints), you would be accustomed to a snappy GUI, with the ability to query any of the currently connected endpoints instantly. Velociraptor clients typically do not poll, but are constantly connected to the server— this means that when tasking a new collection on an endpoint, we expect it to respond instantly.&lt;/p>
+&lt;p>As the number of endpoints increase this performance degrades. When forwarding a large number of events from the end points, or performing hunt that transfer a lot of data, one might experience sluggish performance.&lt;/p>
+&lt;p>However, Velociraptor is designed to operate reliably even under loaded conditions. Velociraptor maintains server stability under load by employing a number of limits:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Concurrency — This setting controls how many clients will be served at the same time. Typically clients upload their responses (JSON blobs or bulk file data) in HTTP POST up to 5mb in size. Since it takes a certain amount of memory to serve each client at the same time, without concurrency control it is difficult to control total server memory usage.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Load shedding — The server accepts client connections up to a certain rate (QPS limit). Above this rate, the server will refuse to connect, causing clients to back off and retry the connection later. This approach maintains server stability by spreading client uploads over time and capping the total client connections the server is seeing at each point in time.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Hunt client recruitment limits — Velociraptor limits the rate at which endpoints are assigned to a hunt (By default 100 per second). This therefore limits the rate at which responses come back and has the effect of spreading load over time.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>These limits are designed to keep the server responsive and stable, but at high load they result in undesirable degradation of performance — in particular GUI performance suffers. Due to Golang’s fair scheduling algorithm, GUI requests are scheduled at the same priority as client requests — so as client number increases, the GUI become less responsive.&lt;/p>
+&lt;h3 id="can-we-add-more-frontend-servers">Can we add more frontend servers?&lt;/h3>
+&lt;p>The natural solution to the scale problem is to add more frontend servers, so that each frontend server handles a fraction of the clients. To understand what is required for a multi frontend design, let’s consider the main tasks of the frontend:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>TLS encryption — Frontends need to encrypt and decrypt client communication using TLS. This is a CPU intensive operation (This cost can be limited to some extent by using TLS offloading), which will benefit from multiple servers.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Distribute new work for clients — Since clients are constantly connected we need a way to notify a given frontend that new work is available for a client. A client may be connected to any frontend server, so we need a good way to notify all servers there is new work.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Receive query results from clients — Each frontend needs to receive the results and store that in the backend storage solution. The results of a query may be a row-set (i.e. JSONL files) or bulk upload data. We need a good distributed storage solution that can be accessed by multiple servers.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Receive events from the client and potentially act on them — Clients can run monitoring queries, forwarding real time information about the endpoint. These events may trigger further processing on the server (e.g. upload to Elastic). We need a good way to replicate these events between servers.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="the-datastore">The datastore&lt;/h3>
+&lt;p>Currently Velociraptor’s data store consists of flat files stored on the local disk. Since Velociraptor is primarily a collection tool, flat files work well. However, having files on the local disk means that it is impossible to share the datastore between multiple frontends running on different machines.&lt;/p>
+&lt;p>Previously, Velociraptor featured an experimental MySQL backend to store data. This solved the problem of distributing the data between frontends, by having all frontends connect to a central MySQL server. However, in practice the additional overheads introduced by the MySQL abstraction resulted in major performance degradation, and this data store was deprecated.&lt;/p>
+&lt;p>A more direct way to share files between multiple machines is via NFS or on AWS, &lt;a href="https://docs.aws.amazon.com/efs/latest/ug/how-it-works.html" target="_blank" >EFS&lt;/a>
+ (Google has a similar product called &lt;a href="https://cloud.google.com/filestore" target="_blank" >Filestore&lt;/a>
+). This works very well and is a great fit for the Velociraptor data access pattern:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>Frontends always append to files, generally file data is not modified after writing (Think of a VQL Query results set — these are simple JSONL files that are written in chunks but never modified once written)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The same file is never written by multiple frontends at the same time — each file exists within the client’s path and therefore is only accessed by one client at the time. Since a client is only connected to a single frontend, there is no need for complicated locking schemes.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>The result is that Velociraptor’s data store is truly lock free, and therefore we do not need to worry about NFS file locking (which is often complicated or not implemented).&lt;/p>
+&lt;p>Additionally, cloud providers offer highly scalable NFS services with essentially unlimited storage and very high IO bandwidth. This makes it operationally easier to manage storage requirements (We often run out of disk space when using a fixed disk attached to a virtual machine). Additionally, EFS is changed per usage so it is easier to budget for it.&lt;/p>
+&lt;h3 id="message-passing">Message passing&lt;/h3>
+&lt;p>So if we simply run multiple frontends on different machines, load balance our clients to these frontends, and have all separate frontends simply write to the same shared NFS directory, this should work?&lt;/p>
+&lt;p>Not quite! Consider the following simple scenario, where multiple frontends are all sharing the same data store:&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="105f33c0d27528f945c91e0c6fc2c140">
+ &lt;div data-featherlight="#105f33c0d27528f945c91e0c6fc2c140" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-04-29-scaling-velociraptor-57acc4df76ed/../../img/0gm3Boo6wDiHX4bDP" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The admin browser (on the left) is connected to the GUI on one frontend, and is tasking a new collection from a client which happened to be connected to another frontend (on the right). There is no way to tell that client there is new work for it. Remember that Velociraptor does not rely on polling, all clients are always connected and can be tasked immediately! So we really need a low latency mechanism to inform the client that new work is available.&lt;/p>
+&lt;p>In order to facilitate this there has to be a way for frontends to communicate with each other and pass messages with very low latency (i.e. we need a message passing architecture). The GUI needs to simply message all frontends that a new collection is scheduled for a particular client, and the one frontend which presently has that client connected will immediately task it.&lt;/p>
+&lt;h3 id="multi-frontend-architecture">Multi frontend architecture&lt;/h3>
+&lt;p>The latest release (0.5.9) features a multi frontend architecture. To simplify the message passing design, we designate one frontend as the &lt;strong>Master&lt;/strong> and the other servers as the &lt;strong>Minions.&lt;/strong> Velociraptor implements a simple steaming gRPC based &lt;strong>replication service&lt;/strong> — replicating messages from each minion server to the master and from the master to all minion servers.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="7c40f78a830d3edea1d4a9d90d61e8ba">
+ &lt;div data-featherlight="#7c40f78a830d3edea1d4a9d90d61e8ba" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-04-29-scaling-velociraptor-57acc4df76ed/../../img/0cb6CiHW_m4COLHtf" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Minions receive events from the Master and generate events to send to the master, while the Master brokers all messages between minions. The Master node also runs the GUI and some other services, but the bulk of the client communication and collection is handled by the Minions.&lt;/p>
+&lt;p>Note that in this architecture, the GUI is running on a single frontend, and the number of clients handled by it can be reduced, keeping the GUI particularly responsive.&lt;/p>
+&lt;h3 id="load-balancing">Load balancing&lt;/h3>
+&lt;p>In order to spread the load evenly between the multiple frontends, it is possible to use a load balancer in front of all the frontends.&lt;/p>
+&lt;p>As an alternative, it is possible to allow the Velociraptor clients themselves to load balance by providing multiple frontend URLs within the clients’ configuration. Clients will pick a frontend in random and rotate through the frontends randomly. This should result in relatively even distribution of clients between all the frontends.&lt;/p>
+&lt;h3 id="current-implementation">Current implementation&lt;/h3>
+&lt;p>The upcoming 0.5.9 release uses command line arguments to control the type of frontend. By default a frontend will be started as a master, starting all services including the GUI in process. This is exactly the same behavior as the previous single frontend architecture so it should not affect existing users.&lt;/p>
+&lt;p>In order to allow minion frontends to connect one must:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Mount the EFS or NFS directory on both master and all minion servers adjusting the &lt;strong>Datastore.location&lt;/strong> path in the configuration file if needed.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Add a new frontend using the &lt;strong>velociraptor config frontend&lt;/strong> command&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>In order to start a minion frontend, one must specify the minion flag and the name of the node (the name consists of the dns name of the frontend followed by the port). The process is illustrated below.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="6d3b50ba893701a5316ee1585837dd92">
+ &lt;div data-featherlight="#6d3b50ba893701a5316ee1585837dd92" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-04-29-scaling-velociraptor-57acc4df76ed/../../img/1_rSIMZokO0O4i2SGfuep3w.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="conclusions">Conclusions&lt;/h3>
+&lt;p>The new architecture is still experimental but shows great promise to be able to scale Velociraptor to the next level. We need contributions from the community with polishing the new architecture and making it easier to deploy in wide deployment scenarios (for example Terraform templates, or docker files).&lt;/p>
+&lt;p>If you would like to contribute to this effort, take&lt;a href="https://github.com/Velocidex/velociraptor" target="_blank" > Velociraptor for a spin&lt;/a>
+! It is a available on GitHub under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list &lt;a href="mailto:velociraptor-discuss@googlegroups.com" >velociraptor-discuss@googlegroups.com&lt;/a>
+ . You can also chat with us directly on discord &lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+&lt;/p></description></item></channel></rss>

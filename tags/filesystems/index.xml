@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Filesystems on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/filesystems/</link><description>Recent content in Filesystems on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sat, 13 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/filesystems/index.xml" rel="self" type="application/rss+xml"/><item><title>Digging for files with Velociraptor</title><link>https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/</link><pubDate>Sat, 13 Feb 2021 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/</guid><description>&lt;p>One of the most common questions in digital forensics is:&lt;/p>
+&lt;pre>&lt;code class="language-text">Is a file with a specific filename currently present on this system or was it in the past?
+&lt;/code>&lt;/pre>
+&lt;p>There are many scenarios that lead to this question, from theft of IP by rogue employees, to drive by downloads from malicious websites or even victims of phishing emails. Often we need to scope this question to the entire network (Which machines had this file?) or potentially 10s of thousands endpoints.&lt;/p>
+&lt;p>This post recounts some of the techniques we can use within Velociraptor to answer this question. Most of these techniques should be very familiar to DFIR practitioners, but we will discuss how they are implemented in Velociraptor specifically.&lt;/p>
+&lt;p>For this post I will create a text file with a unique name Abagnale.txt and I will attempt to find it on my test system.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="6c949c7d7155d8ce1bf47a0a08670ac1">
+ &lt;div data-featherlight="#6c949c7d7155d8ce1bf47a0a08670ac1" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1u0_dhIcf9zdcRdO0x1rAdw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="searching-for-files-using-windowssearchfilefinder">Searching for files using Windows.Search.FileFinder&lt;/h3>
+&lt;p>The first artifact we can use to search for files is the aptly named FileFinder artifact (There are variants for Linux/MacOS and Windows). I will simply add a new collection, search for the file finder and select the &lt;code>Windows.Search.FileFinder&lt;/code>.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="73ec8a0489f91a020fd780117a1aa9c5">
+ &lt;div data-featherlight="#73ec8a0489f91a020fd780117a1aa9c5" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1YD4Zee8PdP8nw3b-mcFDeQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Next I will configure the artifact parameters.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="25ad36bd7bd518ecd66bf0d0a9a54257">
+ &lt;div data-featherlight="#25ad36bd7bd518ecd66bf0d0a9a54257" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/13ebC-8_xkdROGTsmuCoreg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The FileFinder artifact uses a glob expression to find files through the filesystem. A glob expression uses simple wildcards to match files by filename. In Velociraptor a &lt;code>**&lt;/code> glob expression means recursively descend into subdirectories, so in our case the glob expression &lt;code>C:\**\Abagnale*&lt;/code> will enumerate all files in the C: drive to locate the file of interest.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="e8e0ee36dd3495a83236632bc14af835">
+ &lt;div data-featherlight="#e8e0ee36dd3495a83236632bc14af835" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1xW9fQn8L_pKG5SgTvencrA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Globbing through all files took 109 seconds on my test VM and returned two hits (my original text file and a lnk file created by notepad itself):&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="8231c1d3f71572b6910e4b88c69e7235">
+ &lt;div data-featherlight="#8231c1d3f71572b6910e4b88c69e7235" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1Udz5uUX3NEzT4mY-757ajw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="scanning-the-master-file-table">Scanning the Master File Table&lt;/h3>
+&lt;p>On Windows, the NTFS filesystem is almost ubiquitous. NTFS uses a special hidden file called the $MFT to store all metadata on all files (such as their filenames, size, dates etc). Metadata is stored in the $MFT within MFT entries — fixed size data structures stored back to back in the $MFT file.&lt;/p>
+&lt;p>Therefore, by scanning the $MFT file and parsing all MFT entries, we are able to enumerate all files’ metadata on the disk.&lt;/p>
+&lt;p>Velociraptor offers an artifact called &lt;code>Windows.NTFS.MFT&lt;/code> that will enumerate all entries within the $MFT filtering out only the relevant ones.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="d47aa1473cf0061f0109b56b4dd31f0c">
+ &lt;div data-featherlight="#d47aa1473cf0061f0109b56b4dd31f0c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1l-xgDXReDeWyKK_A7wAm9w.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>I will again proceed to configure the artifact parameters. This time I am able to filter the filename by a regular expression. I will just search for all files with filenames containing the word &lt;strong>Abagnale&lt;/strong> .&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="d3244ca09e5b7a2d2cedae996dafe0db">
+ &lt;div data-featherlight="#d3244ca09e5b7a2d2cedae996dafe0db" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1zoTSgpXbFFktbI-b14k9fg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Again this artifact found the same 2 files as the previous one&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="21ec62e841a40367b2b2ebed1c84fdc8">
+ &lt;div data-featherlight="#21ec62e841a40367b2b2ebed1c84fdc8" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1EB6S8u1baKQ2h7Qv4bTpww.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>So how is the MFT search method different from the Glob method?&lt;/p>
+&lt;p>Parsing the MFT tends to be faster than using the APIs in a glob when searching over the entire disk (87 sec vs 109 sec), although if you know that the files can only be in a more confined part of the disk (e.g. inside the C:\Users directory) then the glob method is faster since it is looking at fewer files.&lt;/p>
+&lt;p>However, the MFT search may be able to detect deleted files. When a file is deleted in NTFS the MFT entry is marked as unallocated and can be reused at any time, but until it does, the old data structures are still present and will be parsed by the MFT parser.&lt;/p>
+&lt;p>Additionally the MFT parser has access to the &lt;strong>$FILENAME&lt;/strong> stream’s timestamps and so can report those as well. Timestamps in the &lt;strong>$FILENAME&lt;/strong> streams (Shown in the above results as Created0x30, LastModified0x30 etc) can not be altered by timestomping tools and so are more reliable indicators of when the file was created or modified.&lt;/p>
+&lt;h3 id="searching-the-usn-journal">Searching the USN journal&lt;/h3>
+&lt;p>While the previous two methods were great for detecting files that are currently present on the endpoint, what if the file was since deleted? I mentioned that the MFT parser may still find evidence of a deleted file in unallocated MFT entries, but this will only happen if the entry is not reused by the system for something else.&lt;/p>
+&lt;p>Luckily, Windows keeps another record of file operations in the NTFS USN journal. I wrote in details previously about &lt;a href="https://medium.com/velociraptor-ir/the-windows-usn-journal-f0c55c9010e" target="_blank" >the USN journal&lt;/a>
+ but for our purposes it is sufficient to know that file operations are continuously written by the system into a journal file internal to the NTFS filesystem (so it is not generally altered by adversaries).&lt;/p>
+&lt;p>Velociraptor contains a built-in parser for the USN journal which is made available via the &lt;code>Windows.Forensics.Usn&lt;/code> artifact. I will select this artifact for collection as before&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="254a274f4ea3c0620a49fe953543da29">
+ &lt;div data-featherlight="#254a274f4ea3c0620a49fe953543da29" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1-hox0Mi6qUTpbkIsrGjKMQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>I now select “Configure Parameters” where I can specify a path regular expression.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="b6c11d1dcc5c0d98a176eb2d7cabb924">
+ &lt;div data-featherlight="#b6c11d1dcc5c0d98a176eb2d7cabb924" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1E4JaMVWTzWPB7ghefsKOZQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>This time the artifact returns 7 rows in 29 seconds&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="8b8658c7875c7f45f5646f95cb75b124">
+ &lt;div data-featherlight="#8b8658c7875c7f45f5646f95cb75b124" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1nvuwmAxUDjDOC1V2Abwopg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Let’s take a look at the rows returned from this query&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="cf1655297272308e8fa213afd1780c1d">
+ &lt;div data-featherlight="#cf1655297272308e8fa213afd1780c1d" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1qkHHGevfBzluJPeTcHBlSw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Since the USN journal stores metadata about file operations, we see each time the file was interacted with by a program. This is not exactly the same as the previous results which just show the final state of the file.&lt;/p>
+&lt;p>For example, if the file was edited at one point in time and then edited again at a later time, the USN journal will show 2 separate interactions with the file, but the previous artifacts will only show the last modified time. This can be significant for some investigations, in particular if the file is deleted.&lt;/p>
+&lt;p>Typically we find the USN journal is kept for around 2–3 weeks by the system, providing excellent visibility of past activities.&lt;/p>
+&lt;h3 id="hunting-the-entire-network">Hunting the entire network&lt;/h3>
+&lt;p>Previously we collected the artifacts on a single host. However, in some investigations we need to determine if any machine in our network contains the file in question.&lt;/p>
+&lt;p>Velociraptor hunts are specifically designed to coordinate collections of the same artifact across the entire fleet. I will create a new hunt and give it a description, then proceed to select the &lt;code>Windows.Forensics.Usn&lt;/code> artifact configuring its parameters as before.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="0482e35a6fe436df1706827946c827b6">
+ &lt;div data-featherlight="#0482e35a6fe436df1706827946c827b6" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1pV6gUITH1IO1rCM2ok28ug.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Running the hunt over a small network returns results within minutes&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="f5b88b153893250365cfd0432f4135bd">
+ &lt;div data-featherlight="#f5b88b153893250365cfd0432f4135bd" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/../../img/1ivnEtqt-UnZG2kUldMdScA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>While it may seem that a USN journal scan of an entire network is an expensive operation, in reality it places very little load on the server.&lt;/p>
+&lt;p>The server simply collects the result sets from running the VQL query across each endpoint in the deployment. Since these artifacts are highly targeted in returning only positive hits for the files in question the total number of rows returned is pretty small. In this hunt, most of the heavy lifting is done by the endpoints themselves — this is the secret for Velociraptor’s scalability!&lt;/p>
+&lt;h3 id="conclusions">Conclusions&lt;/h3>
+&lt;p>In this post we looked at some of the common ways to determine if a file was present on a system. Each method has advantages and disadvantages and this article explored when you should use one method over another. You can of course, just use all methods at the same time, and interpret their results accordingly.&lt;/p>
+&lt;p>All the described methods are very quick ranging from under 30 seconds for a USN journal scan, to a couple of minutes for a large glob operation. Using Velociraptor we can perform an exhaustive search of a large 10–20k endpoint deployment in minutes. This unprecedented agility and scalability is rather unique in an open source DFIR tool.&lt;/p>
+&lt;p>To play with these artifacts yourself, take&lt;a href="https://github.com/Velocidex/velociraptor" target="_blank" > Velociraptor for a spin&lt;/a>
+! It is a available on GitHub under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list &lt;a href="mailto:velociraptor-discuss@googlegroups.com" >velociraptor-discuss@googlegroups.com&lt;/a>
+ . You can also chat with us directly on discord &lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+&lt;/p>
+&lt;p>If you want to know more about Velociraptor, VQL and how to use it effectively to hunt across the enterprise, consider enrolling for the next available training course at &lt;a href="https://www.velocidex.com/training/" target="_blank" >https://www.velocidex.com/training/&lt;/a>
+.&lt;/p></description></item></channel></rss>

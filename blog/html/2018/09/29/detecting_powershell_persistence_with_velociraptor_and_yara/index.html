@@ -1,0 +1,480 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.139.4"><meta name=description content='I was watching the SANS DFIR Summit 2018 videos on YouTube and came
+across Mari DeGrazia&#39;s talk titled "Finding and Decoding Malicious
+Powershell Scripts"
+'><link rel=icon href=/images/favicon.png type=image/png><title>Detecting powershell persistence with Velociraptor and Yara :: Velociraptor - Digging deeper!</title>
+<link href=/css/nucleus.css?1772163119 rel=stylesheet><link href=/css/font-awesome-all.min.css?1772163119 rel=stylesheet><link href=/css/featherlight.min.css?1772163119 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1772163119 rel=stylesheet><link href=/css/auto-complete.css?1772163119 rel=stylesheet><link href=/css/theme.css?1772163119 rel=stylesheet><link href=/css/tabs.css?1772163119 rel=stylesheet><link href=/css/hugo-theme.css?1772163119 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1772163119 rel=stylesheet><link href=/css/dark.css?1772163119 rel=stylesheet><link href=/css/syntax.css?1772163119 rel=stylesheet><link href=/css/light.css?1772163119 rel=stylesheet><link href=/css/hljs.css?1772163119 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1772163119 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1772163119></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/blog/html/2018/09/29/detecting_powershell_persistence_with_velociraptor_and_yara/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><div class=highlightable><ul class=topics><li data-nav-id=https://docs.velociraptor.app/announcements/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/><i class="fas fa-bullhorn"></i>Announcements</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/><i class="fas fa-exclamation-triangle"></i>Security Advisories</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2025-14728/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2025-14728/>CVE-2025-14728</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2025-6264/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2025-6264/>CVE-2025-6264</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2025-0914/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2025-0914/>CVE-2025-0914</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2024-10526/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2024-10526/>CVE-2024-10526</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-5950/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2023-5950/>CVE-2023-5950</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-2226/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2023-2226/>CVE-2023-2226</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0242/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2023-0242/>CVE-2023-0242</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0290/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2023-0290/>CVE-2023-0290</a></div></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/><i class="fas fa-book-reader"></i>Documentation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/overview/>Velociraptor Overview</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/history/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/overview/history/>History</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/overview/support/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/overview/support/>Support Policy</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/overview/security/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/overview/security/>Security</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/>Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/quickstart/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/quickstart/>Quickstart</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/>Server Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/key_concepts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/key_concepts/>Key Concepts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/key_decisions/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/key_decisions/>Key Decisions</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/deployment_example/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/deployment_example/>Deployment Example</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/multifrontend/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/multifrontend/>Multi-Frontend</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/upgrades/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/upgrades/>Upgrades</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/orgs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/orgs/>Organizations</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/clients/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/clients/>Deploying Clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/>Offline Collections</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/building/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/building/>Building</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/running/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/running/>Running</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/collection_data/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/collection_data/>Collection Data</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/updating/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/updating/>Updating</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/troubleshooting/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/troubleshooting/>Troubleshooting</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/security/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/security/>Security</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/resources/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/resources/>Performance</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/references/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/references/><i class="fas fa-book"></i>Config Reference</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/>The Admin GUI</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/gui/artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/artifacts/>Managing Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/keyboard_shortcuts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/keyboard_shortcuts/>Keyboard Shortcuts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/user_preferences/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/user_preferences/>User Preferences</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/customizing/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/customizing/>Customization</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/>Managing Clients</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/clients/searching/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/searching/>Searching for clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/interrogation/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/interrogation/>Interrogation</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/artifacts/>Collecting Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/labels/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/labels/>Labels</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/metadata/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/metadata/>Metadata</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/quarantine/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/quarantine/>Quarantine</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/vfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/vfs/>Virtual File System</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/shell/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/shell/>Shell Commands</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/monitoring/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/monitoring/>Monitoring</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/>VQL</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/vql/fundamentals/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/fundamentals/>VQL Fundamentals</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/events/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/events/>Event Queries</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/join/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/join/>JOIN in VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/artifacts/>Artifacts</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/calling/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/artifacts/calling/>Calling Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/managing/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/artifacts/managing/>Managing Artifacts</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/extending_vql/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/extending_vql/>Extending VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/vql_reference/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/vql_reference/><i class="fas fa-book"></i>VQL Reference</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/>Artifacts</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/managing/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/managing/>Managing Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/basic_fields/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/basic_fields/>Basic Fields</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/advanced_fields/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/advanced_fields/>Advanced Fields</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/parameters/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/parameters/>Parameters</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/sources/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/sources/>Sources</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/preconditions/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/preconditions/>Preconditions</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/export_imports/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/export_imports/>Export & Imports</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/calling_artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/calling_artifacts/>Calling Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/event_queues/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/event_queues/>Event Queues</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/tools/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/tools/>Tools</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/resources/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/resources/>Resource Limits</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/security/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/security/>Security</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/use_cases/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/use_cases/>Other Use Cases</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/tips/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/tips/>Artifact Writing Tips</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/artifact_reference/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/artifact_reference/><i class="fas fa-book"></i>Artifact Reference</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/exchange_reference/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/exchange_reference/><i class="fas fa-code"></i>Artifact Exchange</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/notebooks/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/notebooks/>Notebooks</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/hunting/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/hunting/>Hunting</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/>Forensic Analysis</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/filesystem/>Searching Filesystems</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/paths/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/filesystem/paths/>Velociraptor Paths</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/remapping/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/filesystem/remapping/>Remapping Accessors</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/ntfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/filesystem/ntfs/>NTFS Analysis</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/searching/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/searching/>Searching Content</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/deaddisk/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/deaddisk/>Dead Disk Analysis</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/deaddisk/creating_running/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/deaddisk/creating_running/>Creating & Running</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/binary/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/binary/>Binary parsing</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/evidence_of_execution/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/evidence_of_execution/>Evidence Of Execution</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/event_logs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/event_logs/>Event Logs</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/volatile/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/volatile/>Volatile State</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/file_collection/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/file_collection/>File Acquisition</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/file_collection/bulk/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/file_collection/bulk/>Bulk File Acquisition</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/file_collection/vfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/file_collection/vfs/>VFS Uploads</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/file_collection/exporting/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/file_collection/exporting/>Bulk File Exports</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/server_automation/>Server Automation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_api/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/server_automation/server_api/>Server API</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_monitoring/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/server_automation/server_monitoring/>Server Monitoring</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/>CLI</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/cli/acl/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/acl/>acl</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/artifacts/>artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/collector/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/collector/>collector</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/config/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/config/>config</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/deaddisk/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/deaddisk/>deaddisk</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/fs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/fs/>fs (filesystem)</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/fuse/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/fuse/>fuse</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/query/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/query/>query</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/server_service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/server_service/>server_service</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/service/>service</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/tools/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/tools/>tools</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/user/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/user/>user</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/misc/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/misc/>Miscellaneous</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/flags/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/flags/>CLI flags</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/>Troubleshooting</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/deployment/>Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/server/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/deployment/server/>Server</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/client/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/deployment/client/>Client</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/offline_collector/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/deployment/offline_collector/>Offline Collector</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/operations/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/operations/>Operations</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/operations/server_ops/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/operations/server_ops/>Server Ops</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/operations/remote_clients/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/operations/remote_clients/>Remote Clients</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/vql/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/vql/>VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/>Debugging</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/internal/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/internal/>Internal</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/internal/metrics/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/internal/metrics/>Metrics</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/internal/go_profiles/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/internal/go_profiles/>Golang</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/client/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/client/>Client</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/client/client_monitoring/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/client/client_monitoring/>Monitoring</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/client/client_flows/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/client/client_flows/>Flows</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/>Global</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/datastore/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/datastore/>Datastore</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/datastore/replication/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/datastore/replication/>Replication</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/>Services</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/export/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/export/>ExportContainers</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/throttler/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/throttler/>Throttler</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/user_manager/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/user_manager/>User Manager</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/open_close/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/open_close/>Open-close</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/tempfiles/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/tempfiles/>tempfiles</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/worker/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/worker/>worker</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/>VQL</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/queries/>Queries</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/active_queries/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/queries/active_queries/>Active Queries</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/plugin_monitor/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/queries/plugin_monitor/>Plugin Monitor</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/recent_queries/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/queries/recent_queries/>Recent Queries</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/>Plugins</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/etw/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/etw/>ETW</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/glob/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/glob/>Glob</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/ntfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/ntfs/>NTFS Cache</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/sigma/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/sigma/>Sigma Tracker</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/windows_event/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/windows_event/>Windows Event Log Watcher</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/zip/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/zip/>Zip</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/process/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/process/>Process Tracker</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/sqlite/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/sqlite/>Sqlite</a></div></li></ul></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/>Org</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/>Services</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/broadcast_service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/broadcast_service/>Broadcast</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/queue_manager/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/queue_manager/>QueueManager</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/vfs_service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/vfs_service/>VFS</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/notifier/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/notifier/>Notifier</a></div></li></ul></li></ul></li></ul></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/downloads/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/downloads/><i class="fas fa-download"></i>Downloads</a></div></li><hr><li data-nav-id=https://docs.velociraptor.app/vql_reference/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/><i class="fas fa-book"></i>VQL Reference</a></div><ul><li data-nav-id=https://docs.velociraptor.app/vql_reference/popular/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/popular/>Frequently Used ✨</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/windows/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/windows/>Windows-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/linux/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/linux/>Linux-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/server/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/server/>Server-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/parsers/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/parsers/>Parsers</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/encode/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/encode/>Encode/Decode</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/event/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/event/>Event Plugins</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/experimental/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/experimental/>Experimental</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/developer/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/developer/>Developer</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/other/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/other/>Other</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/accessors/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/accessors/>Accessors</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/training/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/training/><i class="fas fa-graduation-cap"></i>Training</a></div><ul><li data-nav-id=https://docs.velociraptor.app/training/playbooks/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/training/playbooks/><i class="fas fa-play"></i>Playbooks</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/blog/ class="dd-item parent haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/blog/><i class="fas fa-newspaper"></i>Blog</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/><i class="fas fa-chalkboard-teacher"></i>Presentations</a></div><ul><li data-nav-id=https://docs.velociraptor.app/presentations/2022_linuxconf_au/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_linuxconf_au/>Linux Conf Au 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_auscert/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_auscert/>Auscert 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_sans_summit/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_sans_summit/>SANS Summit 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_velocon/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_velocon/>Velocon 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_dfrws_apac/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_dfrws_apac/>DFRWS APAC 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_everything_open/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2023_everything_open/>EverythingOpen 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_velocon/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2023_velocon/>VeloCON 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2024_auscert/>Auscert 2024</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert-detection-engineering/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2024_auscert-detection-engineering/>Auscert 2024 Talk</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2025_auscert-detection-engineering/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2025_auscert-detection-engineering/>Auscert 2025 Workshop</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/exchange/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/exchange/><i class="fas fa-code"></i>Artifact Exchange</a></div></li><li data-nav-id=https://docs.velociraptor.app/artifact_references/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/artifact_references/><i class="fas fa-book"></i>Artifact Reference</a></div></li><li data-nav-id=https://docs.velociraptor.app/knowledge_base/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/knowledge_base/><i class="fas fa-brain"></i>Knowledge Base</a></div></li><li data-nav-id=https://docs.velociraptor.app/search/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/search/><i class='fas fa-search'></i>Search</a></div></li></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>$("#sidebar i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()})</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/html/2018/09/29/detecting_powershell_persistence_with_velociraptor_and_yara/_index.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Detecting powershell persistence with Velociraptor and Yara</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents><ul><li><a href=#how-does-hkey_users-hive-work>How does <code>HKEY_USERS</code> hive work?</a></li><li><a href=#how-to-fix-this>How to fix this?</a></li><li><a href=#conclusions>Conclusions</a></li></ul></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Detecting powershell persistence with Velociraptor and Yara</h1><div class="mynotices warning"><div heading=warning><p>This page is written about a very old version of Velociraptor and is
+retained for historical purposes.</p></div></div><p>I was watching the SANS DFIR Summit 2018 videos on YouTube and came
+across Mari DeGrazia's talk titled <a href="https://www.youtube.com/watch?v=JWC7fzhvAY8" target=_blank>"Finding and Decoding Malicious
+Powershell Scripts"</a>
+. This
+is an excellent talk and it really contains a wealth of information. It
+seems that Powershell is really popular these days, allowing attacker to
+"live off the land" by installing fully functional reverse shells and
+backdoors, in a few lines of obfuscated scripts.</p><p>Mari went through a number of examples and also expanded on some in her
+blog post <a href=http://az4n6.blogspot.com/2018/06/malicious-powershell-in-registry.html target=_blank>Malicious PowerShell in the Registry:
+Persistence</a>
+,
+where she documents persistence through an autorun key launching
+powershell to execute a payload within another registry key.</p><p>A similar persistence mechanism is documented by David Kennedy from
+Binary defence in his post <a href=https://blog.binarydefense.com/powershell-injection-diskless-persistence-bypass-techniques target=_blank>PowerShell Injection with Fileless Payload
+Persistence and Bypass
+Techniques</a>
+.
+In that case an msha.exe link was stored in the user's Run key which
+executed a payload from another registry key.</p><p>I was eager to write a Velociraptor artifact to attempt to detect such
+keys using a YARA signature. Of course signature based detection is not
+as robust as behavioural analysis but it is quick and usually quite
+effective.</p><p>I thought it was still quite instructive to document how one can develop
+the VQL queries for a simple Velociraptor artifact. We will be
+developing the artifact interactively on a Windows system.</p><h1 id=preparation>Preparation</h1><p>Our artifact will attempt to detect the persistence mechanism detailed
+in the above posts. We start by adding a value to our test user account
+under the key</p><pre><code class=language-{.sourceCode>Key: &quot;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run&quot;
+Value: &quot;C:\Windows\system32\mshta.exe&quot;
+Data:
+  about:&lt;script&gt;c1hop=&quot;X642N10&quot;;R3I=new%20ActiveXObject(&quot;WScript.Shell&quot;);
+  QR3iroUf=&quot;I7pL7&quot;;k9To7P=R3I.RegRead(&quot;HKCU\\software\\bkzlq\\zsdnhepyzs&quot;);
+  J7UuF1n=&quot;Q2LnLxas&quot;;eval(k9To7P);JUe5wz3O=&quot;zSfmLod&quot;;&lt;/script&gt;
+</code></pre><h1 id=defining-the-artifact>Defining the Artifact.</h1><p>We create a directory called "artifacts" then create a new file inside
+it called powershell_persistence.yaml. Velociraptor artifacts are just
+YAML files that can be loaded at runtime using the --definitions flag.</p><p>Every artifact has a name, by convention the name is separated into its
+major categories. We will call ours Windows.Persistence.Powershell:</p><pre><code class=language-{.sourceCode>name: Windows.Persistence.Powershell
+</code></pre><p>This is the minimum required for Velociraptor to identify it. We can see
+a listing of all artifacts Velociraptor knows about using the
+"artifacts list" command:</p><pre><code class=language-{.sourceCode>F:\&gt;velociraptor.exe --definitions artifacts artifacts list
+INFO:2018/09/28 07:59:40 Loaded 34 built in artifacts
+Linux.Applications.Chrome.Extensions
+Linux.Applications.Chrome.Extensions.Upload
+…
+Windows.Persistence.Powershell
+...
+Windows.Sys.Users
+</code></pre><p>We can collect the artifact simply by using the "artifacts collect"
+command:</p><pre><code class=language-{.sourceCode>F:\&gt;velociraptor.exe --definitions artifacts artifacts collect Windows.Persistence.Powershell
+INFO:2018/09/28 20:01:32 Loaded 34 built in artifacts
+</code></pre><p>Ok so Velociraptor can load and collect this new artifact, but as yet it
+does nothing! We need to think about what exactly we want to collect.</p><p>We know we want to search for all values in the Run/RunOnce hive of all
+the users. Let's first see if we can retrieve all the values using a
+glob:</p><pre><code class=language-{.sourceCode>name: Windows.Persistence.Powershell
+parameters:
+  - name: keyGlob
+    default: &quot;HKEY_USERS\\*\\Software\\Microsoft\\Windows\
+    \\CurrentVersion\\{Run,RunOnce}\\*&quot;
+sources:
+ - precondition:
+    SELECT OS from info() where OS = &quot;windows&quot;
+   queries:
+   - |
+    SELECT FullPath from glob(
+       globs=keyGlob,
+       accessor=&quot;reg&quot;
+    )
+</code></pre><p>This artifact demonstrates a few concepts:</p><ol><li>We can define parameters by name, and reference them from within the
+VQL query. This keeps the VQL query clean and more readable.</li><li>We can define a precondition on the artifact. If the precondition is
+not met, the VQL query will not be run.</li></ol><p>Lets run this artifact:</p><pre><code class=language-{.sourceCode>F:\&gt;velociraptor.exe --definitions artifacts artifacts collect Windows.Persistence.Powershell
+INFO:2018/09/28 20:51:47 Loaded 34 built in artifacts
++--------------------------------+
+|            FullPath            |
++--------------------------------+
+| HKEY_USERS\S-1-5-19\Software\M |
+| icrosoft\Windows\CurrentVersio |
+| n\Run\OneDriveSetup            |
+| HKEY_USERS\S-1-5-20\Software\M |
+| icrosoft\Windows\CurrentVersio |
+| n\Run\OneDriveSetup            |
+| HKEY_USERS\S-1-5-21-546003962- |
+| 2713609280-610790815-1001\Soft |
+| ware\Microsoft\Windows\Current |
+| Version\Run\&quot;C:\Windows\system |
+| 32\mshta.exe&quot;                  |
++--------------------------------+
+Artifact:
+Windows.Persistence.Powershell
+</code></pre><p>It returns a couple of results so there are two Run/RunOnce values
+defined. For this artifact, we only want to return those entries which
+match a specific yara signature. We can work later on improving the yara
+signature, but for now let's just detect uses of the eval() powershell
+command within 500 characters of an ActiveXObject instantiation. We will
+try to match each value returned from the Run keys with this object:</p><pre><code class=language-{.sourceCode>name: Windows.Persistence.Powershell
+parameters:
+  - name: keyGlob
+    default: &quot;HKEY_USERS\\*\\Software\\Microsoft\\Windows\
+             \\CurrentVersion\\{Run,RunOnce}\\*&quot;
+  - name: yaraRule
+    default: |
+      rule Powershell {
+        strings:
+        $ = /ActiveXObject.{,500}eval/ nocase
+        $ = /ActiveXObject.{,500}eval/ wide nocase
+        condition:
+        any of them
+      }
+sources:
+ - precondition:
+    SELECT OS from info() where OS = &quot;windows&quot;
+   queries:
+   - |
+     // This is a stored query
+     LET file = SELECT FullPath from glob(
+       globs=keyGlob,
+       accessor=&quot;reg&quot;
+     )
+   - |
+     SELECT * FROM yara(
+       rules=yaraRule,
+       files=file.FullPath,   // This will expand to a list of paths.
+       accessor=&quot;reg&quot;)
+</code></pre><p>This version recovers the FullPath of all the Run/RunOnce values and
+stores them in a stored query. We then issue another query that applies
+the yara rule on these values:</p><pre><code class=language-{.sourceCode>F:\&gt;velociraptor.exe --definitions artifacts artifacts collect Windows.Persistence.Powershell
+INFO:2018/09/28 21:29:10 Loaded 34 built in artifacts
++------------+------+------+--------------------------------+--------------------------------+
+|    Rule    | Meta | Tags |            Strings             |              File              |
++------------+------+------+--------------------------------+--------------------------------+
+| Powershell |      |      | {&quot;Name&quot;:&quot;$&quot;,&quot;Offset&quot;:40,&quot;HexDa | {&quot;FullPath&quot;:&quot;HKEY_USERS\\S-1-5 |
+|            |      |      | ta&quot;:[&quot;00000000  41 63 74 69 76 | -21-546003962-2713609280-61079 |
+|            |      |      |  65 58 4f  62 6a 65 63 74 28 2 | 0815-1001\\Software\\Microsoft |
+|            |      |      | 2 57  |ActiveXObject(\&quot;W|&quot;,&quot;00 | \\Windows\\CurrentVersion\\Run |
+|            |      |      | 000010  53 63 72 69 70 74 2e 5 | \\\&quot;C:\\Windows\\system32\\msh |
+|            |      |      | 3  68 65 6c 6c 22 29 3b 51  |S | ta.exe\&quot;&quot;,&quot;Type&quot;:&quot;SZ&quot;,&quot;Data&quot;:{ |
+|            |      |      | script.Shell\&quot;);Q|&quot;,&quot;00000020   | &quot;type&quot;:&quot;SZ&quot;,&quot;value&quot;:&quot;about:\u0 |
+|            |      |      | 52 33 69 72 6f 55 66 3d  22 49 | 03cscript\u003ec1hop=\&quot;X642N10 |
+|            |      |      |  37 70 4c 37 22 3b  |R3iroUf=\ | \&quot;;R3I=new%20ActiveXObject(\&quot;W |
+|            |      |      | &quot;I7pL7\&quot;;|&quot;,&quot;00000030  6b 39 5 | Script.Shell\&quot;);QR3iroUf=\&quot;I7p |
+|            |      |      | 4 6f 37 50 3d 52  33 49 2e 52  | L7\&quot;;k9To7P=R3I.RegRead(\&quot;HKCU |
+|            |      |      | 65 67 52 65  |k9To7P=R3I.RegRe | \\\\software\\\\bkzlq\\\\zsdnh |
+|            |      |      | |&quot;,&quot;00000040  61 64 28 22 48 4 | epyzs\&quot;);J7UuF1n=\&quot;Q2LnLxas\&quot;; |
+|            |      |      | b 43 55  5c 5c 73 6f 66 74 77  | eval(k9To7P);JUe5wz3O=\&quot;zSfmLo |
+|            |      |      | 61  |ad(\&quot;HKCU\\\\softwa|&quot;,&quot;00 | d\&quot;;\u003c/script\u003e&quot;},&quot;Mti |
+|            |      |      | 000050  72 65 5c 5c 62 6b 7a 6 | me&quot;:{&quot;sec&quot;:1538191253,&quot;usec&quot;:1 |
+|            |      |      | c  71 5c 5c 7a 73 64 6e 68  |r | 538191253231489700},&quot;Ctime&quot;:{&quot; |
+|            |      |      | e\\\\bkzlq\\\\zsdnh|&quot;,&quot;0000006 | sec&quot;:1538191253,&quot;usec&quot;:1538191 |
+|            |      |      | 0  65 70 79 7a 73 22 29 3b  4a | 253231489700},&quot;Atime&quot;:{&quot;sec&quot;:1 |
+|            |      |      |  37 55 75 46 31 6e 3d  |epyzs\ | 538191253,&quot;usec&quot;:1538191253231 |
+|            |      |      | &quot;);J7UuF1n=|&quot;,&quot;00000070  22 51 | 489700}}                       |
+</code></pre><p>We can see that the last query returns 5 columns, but each column
+actually contains objects with quite a lot of additional information.
+For example, the File column returns information about the file that
+matched the yara rule (its filename, timestamps etc). The output is a
+bit confusing so we just return the relevant columns. We can replace the
+* in the last query with a curated list of columns to return:</p><pre><code class=language-{.sourceCode>SELECT File.FullPath as ValueName, File.Data.value as Contents,
+  timestamp(epoch=File.Mtime.Sec) as ModTime
+FROM yara(rules=yaraRule,
+          files=file.FullPath,
+          accessor=&quot;reg&quot;)
+</code></pre><p>Which results in the quite readable:</p><pre><code class=language-{.sourceCode>F:\&gt;velociraptor.exe --definitions artifacts artifacts collect Windows.Persistence.Powershell
+INFO:2018/09/28 21:42:18 Loaded 34 built in artifacts
++--------------------------------+--------------------------------+---------------------------+
+|           ValueName            |            Contents            |          ModTime          |
++--------------------------------+--------------------------------+---------------------------+
+| HKEY_USERS\S-1-5-21-546003962- | about:&lt;script&gt;c1hop=&quot;X642N10&quot;; | 2018-09-28T20:20:53-07:00 |
+| 2713609280-610790815-1001\Soft | R3I=new%20ActiveXObject(&quot;WScri |                           |
+| ware\Microsoft\Windows\Current | pt.Shell&quot;);QR3iroUf=&quot;I7pL7&quot;;k9 |                           |
+| Version\Run\&quot;C:\Windows\system | To7P=R3I.RegRead(&quot;HKCU\\softwa |                           |
+| 32\mshta.exe&quot;                  | re\\bkzlq\\zsdnhepyzs&quot;);J7UuF1 |                           |
+|                                | n=&quot;Q2LnLxas&quot;;eval(k9To7P);JUe5 |                           |
+|                                | wz3O=&quot;zSfmLod&quot;;&lt;/script&gt;       |                           |
++--------------------------------+--------------------------------+---------------------------+
+Artifact: Windows.Persistence.Powershell
+</code></pre><p>Great! This works and only returns values that match the yara signature
+we developed.</p><h1 id=testing-the-artifact>Testing the artifact</h1><p>Let's test this artifact for real now. We restart the frontend with the
+--definition flag and this makes the new artifact available in the GUI
+under the Artifact Collector flow. The GUI also shows the entire
+artifact we defined so we can see what VQL will be run:</p><p><figure id=61b8c71fd19c265b36974a4abb6713bb><div data-featherlight=#61b8c71fd19c265b36974a4abb6713bb class=figure><img src=powershell1.png alt=image></div><figcaption><a class=image-link href=powershell1.png><i class="fa fa-download"></i></a>
+image</figcaption></figure></p><p>Launching the flow appears to work and shows exactly the same result as
+we collected on the command line:</p><p><figure id=dad9fcb66ec098c2b97843395c13030d><div data-featherlight=#dad9fcb66ec098c2b97843395c13030d class=figure><img src=powershell2.png alt=image></div><figcaption><a class=image-link href=powershell2.png><i class="fa fa-download"></i></a>
+image</figcaption></figure></p><h1 id=but-wait-there-is-a-problem>But wait! There is a problem!</h1><p>When we log out of the machine, and then rerun the artifact it returns
+no results!</p><p><figure id=c3ed74d7693ca6609fa592ea886733d6><div data-featherlight=#c3ed74d7693ca6609fa592ea886733d6 class=figure><img src=powershell3.png alt=image></div><figcaption><a class=image-link href=powershell3.png><i class="fa fa-download"></i></a>
+image</figcaption></figure></p><p>Why is that? Experienced incident responders would recognize that any
+artifact that works from the <code>HKEY_USERS</code> registry hive is inherently
+unreliable. This is because the <code>HKEY_USERS</code> hive is not a real hive -it
+is a place where Windows mounts the user's hive when the user logs in.</p><h2 id=how-does-hkey_users-hive-work>How does <code>HKEY_USERS</code> hive work?</h2><p>Windows implements the concept of user profiles. Each user has a
+personal registry hive that stores user specific settings. It is
+actually a file stored on their home directory called ntuser.dat. When a
+user logs into the workstation, the file may be synced from the domain
+controller and then it is mounted under the <code>HKEY_USERS\&lt;sid></code>
+registry hive.</p><p>This means that when the user logs out, their user registry hive is
+unmounted and does not appear in <code>HKEY_USERS</code> any longer. Any artifacts
+based around the <code>HKEY_USERS</code> hive will work only if the collection is
+run when a user is logged in.</p><p>This is obviously not what we want when we hunt for persistence! We want
+to make sure that none of the users on the system have this persistence
+mechanism installed. You can imagine a case where a system has been
+cleaned up but then a user logs into the machine, thereby reinfecting
+it!</p><h2 id=how-to-fix-this>How to fix this?</h2><p>Yara is a very powerful tool because it allows us to search for patterns
+in amorphous data (such as process memory and structured files) without
+having to fully understand the structure of the data we are searching
+for. Of course this has its limitations, but yara can raise a red flag
+if the signature matches the file, and we can analyse this file more
+carefully later.</p><p>In this case, we can not rely on globbing the <code>HKEY_USER</code> registry hive,
+so maybe we can just search the files that back these hives? We know
+that each user on the system has an NTUSER.DAT file in their home
+directory (usually C:\\Users\\&lt;username>), so let's write an
+artifact to find these files. We can reuse the artifact
+Windows.Sys.Users that reports all user accounts on a system (we display
+it as JSON to enhance readability):</p><pre><code class=language-{.sourceCode>F:\&gt;velociraptor.exe artifacts collect Windows.Sys.Users --format json
+INFO:2018/09/28 22:44:26 Loaded 34 built in artifacts
+{
+ &quot;Description&quot;: &quot;&quot;,
+ &quot;Directory&quot;: &quot;C:\\Users\\test&quot;,
+ &quot;Gid&quot;: 513,
+ &quot;Name&quot;: &quot;test&quot;,
+ &quot;Type&quot;: &quot;local&quot;,
+ &quot;UUID&quot;: &quot;S-1-5-21-546003962-2713609280-610790815-1001&quot;,
+ &quot;Uid&quot;: 1001
+},
+{
+ &quot;Description&quot;: &quot;&quot;,
+ &quot;Directory&quot;: &quot;C:\\Users\\user1&quot;,
+ &quot;Gid&quot;: 513,
+ &quot;Name&quot;: &quot;user1&quot;,
+ &quot;Type&quot;: &quot;local&quot;,
+ &quot;UUID&quot;: &quot;S-1-5-21-546003962-2713609280-610790815-1003&quot;,
+ &quot;Uid&quot;: 1003
+},
+</code></pre><p>So we just want to YARA scan the NTUSER.DAT file in each home directory:</p><pre><code class=language-{.sourceCode>SELECT * from foreach(
+row={
+   SELECT Name, Directory as HomeDir
+     FROM Artifact.Windows.Sys.Users()
+    WHERE Directory.value and Gid
+},
+query={
+  SELECT File.FullPath As FullPath,
+         Strings.Offset AS Off,
+         Strings.HexData As Hex,
+          upload(file=File.FullPath, accessor=&quot;ntfs&quot;) AS Upload
+      FROM yara(
+            files=&quot;\\\\.\\&quot; + HomeDir + &quot;\\ntuser.dat&quot;,
+            accessor=&quot;ntfs&quot;,
+            rules=yaraRule, context=10)
+      })
+</code></pre><p>This query:</p><ol><li>Selects all the usernames and their home directory from the
+Windows.Sys.Users artifact.</li><li>For each directory prepends \\\\.\\ and appends
+"ntuser.dat". For example c:\\Users\\test becomes
+\\\\.\\c:\\Users\\test\\NTUSER.dat</li><li>The file is accessed using the NTFS filesystem accessor. This is
+necessary because the registry hive is locked if the user is logged
+in. Therefore we must access it using raw NTFS parsing to bypass the
+OS locking.</li><li>For each file that matches the yara expression, we upload the file
+to the server for further analysis.</li></ol><p>Lets run this new artifact on the server:</p><p><figure id=df0c461eed6f70a018859429e2c64259><div data-featherlight=#df0c461eed6f70a018859429e2c64259 class=figure><img src=powershell5.png alt=image></div><figcaption><a class=image-link href=powershell5.png><i class="fa fa-download"></i></a>
+image</figcaption></figure></p><p>Unlike the previous artifact, this one simply returns the YARA hit, but
+because we do not have any context on which value contained the
+signature, or even if it had been deleted. Luckily we uploaded the raw
+registry hive for further analysis, and we can use a tool such as
+RegRipper to extract more information from the hive:</p><pre><code class=language-{.sourceCode>$ wine rip.exe -p user_run -r
+/tmp/velociraptor/clients/C.c916a7e445eb0868/uploads/F.078739d6/ntfs/
+%5C%5C.%5CC%3A%5CUsers%5Cuser1%5CNTUSER.DAT
+Launching user_run v.20140115
+user_run v.20140115
+(NTUSER.DAT) [Autostart] Get autostart key contents from NTUSER.DAT hive
+
+Software\Microsoft\Windows\CurrentVersion\Run
+LastWrite Time Thu Sep 27 01:19:08 2018 (UTC)
+ OneDrive: &quot;C:\Users\user1\AppData\Local\Microsoft\OneDrive\OneDrive.exe&quot;
+   /background
+ c:\windows\system32\mshta.exe: about:&lt;script&gt;c1hop=&quot;X642N10&quot;;
+   R3I=new%20ActiveXObject(&quot;WScript.Shell&quot;);
+   QR3iroUf=&quot;I7pL7&quot;;k9To7P=R3I.RegRead(&quot;HKCU\\software\\
+   bkzlq\\zsdnhepyzs&quot;);J7UuF1n=&quot;Q2LnLxas&quot;;eval(k9To7P);JUe5wz3O=&quot;zSfmLod&quot;;&lt;/script&gt;
+</code></pre><p>Note above how we can simply retrieve the uploaded file from
+Velociraptor's filestore. Velociraptor stores uploaded files on the
+filesystem within the flow's directory.</p><h2 id=conclusions>Conclusions</h2><p>In this blog post we saw how to utilize YARA to find suspicious
+powershell persistence mechanisms. YARA is a powerful tool and using
+Velociraptor's artifacts we can apply it to files, registry values, and
+raw NTFS files such as locked registry hives and the pagefile.</p><p>We also saw some of the inherent problems with relying on the
+<code>HKEY_USERS</code> registry hive for detection - the hive is only present when
+a user is logged in so when we hunt, we might miss those users who are
+currently logged out. We saw how YARA can be used to detect suspicious
+patterns in raw registry hive files and how artifacts may retrieve those
+files for further analysis.</p><footer class=footline></footer></div></div></section><div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1772163119></script><script src=/js/perfect-scrollbar.min.js?1772163119></script><script src=/js/perfect-scrollbar.jquery.min.js?1772163119></script><script src=/js/jquery.sticky.js?1772163119></script><script src=/js/featherlight.min.js?1772163119></script><script src=/js/highlight.min.js?1772163119></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1772163119></script><script src=/js/learn.js?1772163119></script><script src=/js/hugo-learn.js?1772163119></script></body></html>

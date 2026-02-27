@@ -1,0 +1,1858 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Server Event Artifact on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/server-event-artifact/</link><description>Recent content in Server Event Artifact on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><atom:link href="https://docs.velociraptor.app/tags/server-event-artifact/index.xml" rel="self" type="application/rss+xml"/><item><title>Elastic.Events.Clients</title><link>https://docs.velociraptor.app/artifact_references/pages/elastic.events.clients/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/elastic.events.clients/</guid><description>&lt;p>This server monitoring artifact will watch a selection of client or
+server monitoring artifacts for new events and push those to an
+elastic index.&lt;/p>
+&lt;p>NOTE: You must ensure you are collecting these artifacts from the
+clients by adding them to the &amp;ldquo;Client Events&amp;rdquo; GUI, or for server
+artifacts, the &amp;ldquo;Server Events&amp;rdquo; GUI.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Elastic.Events.Upload
+aliases:
+- Elastic.Events.Clients
+
+description: |
+ This server monitoring artifact will watch a selection of client or
+ server monitoring artifacts for new events and push those to an
+ elastic index.
+
+ NOTE: You must ensure you are collecting these artifacts from the
+ clients by adding them to the "Client Events" GUI, or for server
+ artifacts, the "Server Events" GUI.
+
+type: SERVER_EVENT
+
+parameters:
+ - name: ElasticAddresses
+ default: http://127.0.0.1:9200/
+ - name: Username
+ - name: Password
+ - name: APIKey
+ - name: ClientArtifactsToWatch
+ type: artifactset
+ artifact_type: CLIENT_EVENT
+ default: |
+ Artifact
+ Windows.Detection.PsexecService
+ Windows.Events.ProcessCreation
+ Windows.Events.ServiceCreation
+ - name: ServerArtifactsToWatch
+ type: artifactset
+ artifact_type: SERVER_EVENT
+ default: |
+ Artifact
+ Server.Audit.Logs
+ - name: DisableSSLSecurity
+ type: bool
+ description: Disable SSL certificate verification
+ - name: Threads
+ type: int
+ description: Number of threads to upload with
+ - name: ChunkSize
+ type: int
+ description: Batch this many rows for each upload.
+ - name: CloudID
+ description: The cloud id if needed
+ - name: RootCA
+ description: |
+ A root CA certificate in PEM for trusting TLS protected Elastic
+ servers.
+
+sources:
+ - query: |
+ LET artifacts_to_watch = SELECT * FROM chain(
+ a={SELECT Artifact FROM ClientArtifactsToWatch},
+ b={SELECT Artifact FROM ServerArtifactsToWatch})
+ WHERE NOT Artifact =~ "Elastic.Events.Upload"
+ AND log(message="Uploading artifact " + Artifact + " to Elastic")
+
+ LET s = scope()
+
+ LET events = SELECT * FROM foreach(
+ row=artifacts_to_watch,
+ async=TRUE, // Required for event queries in foreach()
+ query={
+ SELECT *, "Artifact_" + Artifact as _index,
+ Artifact,
+ client_info(client_id=s.ClientId || "server").os_info.hostname AS Hostname,
+ timestamp(epoch=now()) AS timestamp
+ FROM watch_monitoring(artifact=Artifact)
+ })
+
+ SELECT * FROM elastic_upload(
+ query=events,
+ threads=Threads,
+ chunk_size=ChunkSize,
+ addresses=split(string=ElasticAddresses, sep=","),
+ index="velociraptor",
+ password=Password,
+ username=Username,
+ cloud_id=CloudID,
+ api_key=APIKey,
+ root_ca=RootCA,
+ disable_ssl_security=DisableSSLSecurity,
+ type="ClientEvents")
+
+&lt;/code>&lt;/pre></description></item><item><title>Elastic.Events.Upload</title><link>https://docs.velociraptor.app/artifact_references/pages/elastic.events.upload/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/elastic.events.upload/</guid><description>&lt;p>This server monitoring artifact will watch a selection of client or
+server monitoring artifacts for new events and push those to an
+elastic index.&lt;/p>
+&lt;p>NOTE: You must ensure you are collecting these artifacts from the
+clients by adding them to the &amp;ldquo;Client Events&amp;rdquo; GUI, or for server
+artifacts, the &amp;ldquo;Server Events&amp;rdquo; GUI.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Elastic.Events.Upload
+aliases:
+- Elastic.Events.Clients
+
+description: |
+ This server monitoring artifact will watch a selection of client or
+ server monitoring artifacts for new events and push those to an
+ elastic index.
+
+ NOTE: You must ensure you are collecting these artifacts from the
+ clients by adding them to the "Client Events" GUI, or for server
+ artifacts, the "Server Events" GUI.
+
+type: SERVER_EVENT
+
+parameters:
+ - name: ElasticAddresses
+ default: http://127.0.0.1:9200/
+ - name: Username
+ - name: Password
+ - name: APIKey
+ - name: ClientArtifactsToWatch
+ type: artifactset
+ artifact_type: CLIENT_EVENT
+ default: |
+ Artifact
+ Windows.Detection.PsexecService
+ Windows.Events.ProcessCreation
+ Windows.Events.ServiceCreation
+ - name: ServerArtifactsToWatch
+ type: artifactset
+ artifact_type: SERVER_EVENT
+ default: |
+ Artifact
+ Server.Audit.Logs
+ - name: DisableSSLSecurity
+ type: bool
+ description: Disable SSL certificate verification
+ - name: Threads
+ type: int
+ description: Number of threads to upload with
+ - name: ChunkSize
+ type: int
+ description: Batch this many rows for each upload.
+ - name: CloudID
+ description: The cloud id if needed
+ - name: RootCA
+ description: |
+ A root CA certificate in PEM for trusting TLS protected Elastic
+ servers.
+
+sources:
+ - query: |
+ LET artifacts_to_watch = SELECT * FROM chain(
+ a={SELECT Artifact FROM ClientArtifactsToWatch},
+ b={SELECT Artifact FROM ServerArtifactsToWatch})
+ WHERE NOT Artifact =~ "Elastic.Events.Upload"
+ AND log(message="Uploading artifact " + Artifact + " to Elastic")
+
+ LET s = scope()
+
+ LET events = SELECT * FROM foreach(
+ row=artifacts_to_watch,
+ async=TRUE, // Required for event queries in foreach()
+ query={
+ SELECT *, "Artifact_" + Artifact as _index,
+ Artifact,
+ client_info(client_id=s.ClientId || "server").os_info.hostname AS Hostname,
+ timestamp(epoch=now()) AS timestamp
+ FROM watch_monitoring(artifact=Artifact)
+ })
+
+ SELECT * FROM elastic_upload(
+ query=events,
+ threads=Threads,
+ chunk_size=ChunkSize,
+ addresses=split(string=ElasticAddresses, sep=","),
+ index="velociraptor",
+ password=Password,
+ username=Username,
+ cloud_id=CloudID,
+ api_key=APIKey,
+ root_ca=RootCA,
+ disable_ssl_security=DisableSSLSecurity,
+ type="ClientEvents")
+
+&lt;/code>&lt;/pre></description></item><item><title>Elastic.Flows.Upload</title><link>https://docs.velociraptor.app/artifact_references/pages/elastic.flows.upload/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/elastic.flows.upload/</guid><description>&lt;p>This server side event monitoring artifact waits for new artifacts
+to be collected from endpoints and automatically uploads those to an
+elastic server.&lt;/p>
+&lt;p>We use the artifact name as the name of the index. This allows users
+to adjust the index size/lifetime according to the artifact it is
+holding.&lt;/p>
+&lt;p>NOTE: Elastic is a database and still must have a stable
+schema. This means that artifacts that produce inconsistent columns
+and types will &lt;strong>NOT&lt;/strong> work as expected. What will happen is that
+the first row that is inserted will create the Elastic database
+schema (In Elastic terminology &amp;ldquo;mapping&amp;rdquo;) and then any subsequent
+row with a different type for these fields will be rejected by
+Elastic.&lt;/p>
+&lt;p>In particular this does not work with event logs because event logs
+have a varied schema (The EventData field is a free form field
+depending on the event log itself). Therefore forwarding event log
+data to Elastic with this artifact will cause Elastic to drop many
+events!! This artifact is not suitable for forwarding Windows Event
+Logs!&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Elastic.Flows.Upload
+description: |
+ This server side event monitoring artifact waits for new artifacts
+ to be collected from endpoints and automatically uploads those to an
+ elastic server.
+
+ We use the artifact name as the name of the index. This allows users
+ to adjust the index size/lifetime according to the artifact it is
+ holding.
+
+ NOTE: Elastic is a database and still must have a stable
+ schema. This means that artifacts that produce inconsistent columns
+ and types will **NOT** work as expected. What will happen is that
+ the first row that is inserted will create the Elastic database
+ schema (In Elastic terminology "mapping") and then any subsequent
+ row with a different type for these fields will be rejected by
+ Elastic.
+
+ In particular this does not work with event logs because event logs
+ have a varied schema (The EventData field is a free form field
+ depending on the event log itself). Therefore forwarding event log
+ data to Elastic with this artifact will cause Elastic to drop many
+ events!! This artifact is not suitable for forwarding Windows Event
+ Logs!
+
+type: SERVER_EVENT
+
+parameters:
+ - name: ArtifactNameRegex
+ default: .
+ type: regex
+ description: Only upload these artifacts to elastic
+ - name: elasticAddresses
+ default: http://127.0.0.1:9200/
+ - name: Username
+ - name: Password
+ - name: APIKey
+ - name: DisableSSLSecurity
+ type: bool
+ description: Disable SSL certificate verification
+ - name: Threads
+ type: int
+ description: Number of threads to upload with
+ - name: ChunkSize
+ type: int
+ description: Batch this many rows for each upload.
+ - name: CloudID
+ description: The cloud id if needed
+ - name: RootCA
+ description: |
+ A root CA certificate in PEM for trusting TLS protected Elastic
+ servers.
+
+sources:
+ - query: |
+ LET completions = SELECT * FROM watch_monitoring(
+ artifact="System.Flow.Completion")
+ WHERE Flow.artifacts_with_results =~ ArtifactNameRegex
+ LET organization &amp;lt;= org().name
+
+ LET documents = SELECT * FROM foreach(row=completions,
+ query={
+ SELECT * FROM foreach(
+ row=Flow.artifacts_with_results,
+ query={
+ SELECT *, _value AS Artifact,
+ client_info(client_id=ClientId).os_info.hostname AS Hostname,
+ timestamp(epoch=now()) AS timestamp,
+ ClientId, Flow.session_id AS FlowId,
+ "artifact_" + regex_replace(source=_value,
+ re='[/.]', replace='_') as _index,
+ organization as Organization
+ FROM source(
+ client_id=ClientId,
+ flow_id=Flow.session_id,
+ artifact=_value)
+ })
+ })
+
+ SELECT * FROM elastic_upload(
+ query=documents,
+ threads=Threads,
+ chunk_size=ChunkSize,
+ addresses=split(string=elasticAddresses, sep=","),
+ index="velociraptor",
+ password=Password,
+ username=Username,
+ cloud_id=CloudID,
+ api_key=APIKey,
+ root_ca=RootCA,
+ disable_ssl_security=DisableSSLSecurity,
+ type="artifact")
+
+&lt;/code>&lt;/pre></description></item><item><title>Generic.Forensic.HashLookup</title><link>https://docs.velociraptor.app/artifact_references/pages/generic.forensic.hashlookup/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/generic.forensic.hashlookup/</guid><description>&lt;p>This artifact is a server event artifact that collects hashes from
+various sources into a central location. It is possible to follow
+this artifact (e.g. with an external program using the API) to
+lookup the hashes with an external service.&lt;/p>
+&lt;p>You can also send hashes to this artifact yourself by using the
+&lt;code>send_event()&lt;/code> VQL function. For example, the following will add
+hashes from the results of another artifact.&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT *, send_event(
+ artifact=&amp;quot;Generic.Forensic.HashLookup&amp;quot;,
+ row=dict(SHA256=Sha256, ClientId=ClientId))
+FROM source()
+&lt;/code>&lt;/pre>
+&lt;pre>&lt;code class="language-yaml">
+name: Generic.Forensic.HashLookup
+description: |
+ This artifact is a server event artifact that collects hashes from
+ various sources into a central location. It is possible to follow
+ this artifact (e.g. with an external program using the API) to
+ lookup the hashes with an external service.
+
+ You can also send hashes to this artifact yourself by using the
+ `send_event()` VQL function. For example, the following will add
+ hashes from the results of another artifact.
+
+ ```vql
+ SELECT *, send_event(
+ artifact="Generic.Forensic.HashLookup",
+ row=dict(SHA256=Sha256, ClientId=ClientId))
+ FROM source()
+ ```
+
+type: SERVER_EVENT
+
+sources:
+ - query: |
+ // You can add more queries to this chain to automatically
+ // collect more hashes.
+ SELECT ClientId, SHA256 FROM chain(
+ a={
+ SELECT * FROM foreach(
+ row={
+ SELECT ClientId, FlowId
+ FROM watch_monitoring(artifact="System.Flow.Completion")
+ WHERE Flow.artifacts_with_results =~ "System.VFS.DownloadFile"
+ }, query={
+ SELECT ClientId, Sha256 AS SHA256
+ FROM source(
+ artifact="System.VFS.DownloadFile",
+ client_id=ClientId, flow_id=FlowId)
+ })
+ }, async=TRUE)
+
+&lt;/code>&lt;/pre></description></item><item><title>LogScale.Events.Clients</title><link>https://docs.velociraptor.app/artifact_references/pages/logscale.events.clients/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/logscale.events.clients/</guid><description>&lt;p>This server side event monitoring artifact will watch a selection of client
+monitoring artifacts for new events and push those to a LogScale (formerly
+Humio) ingestion endpoint&lt;/p>
+&lt;p>NOTE: You must ensure you are collecting these artifacts from the
+clients by adding them to the &amp;ldquo;Client Events&amp;rdquo; GUI.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: LogScale.Events.Clients
+description: |
+ This server side event monitoring artifact will watch a selection of client
+ monitoring artifacts for new events and push those to a LogScale (formerly
+ Humio) ingestion endpoint
+
+ NOTE: You must ensure you are collecting these artifacts from the
+ clients by adding them to the "Client Events" GUI.
+
+type: SERVER_EVENT
+
+parameters:
+ - name: ingestApiBase
+ description: API Base Url for LogScale server
+ type: string
+ default: https://cloud.community.humio.com/api
+ - name: ingestToken
+ description: Ingest token for API
+ type: string
+ - name: tagFields
+ description: Comma-separated list of field names to use as tags in the message; Can be renamed with &amp;lt;oldname&amp;gt;=&amp;lt;newname&amp;gt;.
+ default:
+ type: string
+ - name: numThreads
+ description: Number of threads to start up to post events
+ type: int
+ default: 1
+ - name: httpTimeout
+ description: Timeout (in seconds) for http connection attempts
+ type: int
+ default: 10
+ - name: batchingTimeoutMs
+ description: Timeout (in ms) to batch events prior to sending
+ type: int
+ default: 30000
+ - name: eventBatchSize
+ description: Count of events to batch prior to sending
+ type: int
+ default: 2000
+ - name: statsInterval
+ description: Interval to post statistics to log (in seconds, 0 to disable)
+ type: int
+ default: 600
+ - name: debug
+ description: Enable verbose logging
+ type: bool
+ default: false
+ - name: Artifacts
+ type: artifactset
+ artifact_type: CLIENT_EVENT
+ description: Client artifacts to monitor
+
+sources:
+ - query: |
+ LET artifacts_to_watch = SELECT Artifact FROM Artifacts
+ WHERE log(message="Uploading artifact " + Artifact + " to LogScale")
+
+ LET events = SELECT * FROM foreach(
+ row=artifacts_to_watch,
+ async=TRUE, // Required for event queries in foreach()
+ query={
+ SELECT *, Artifact, timestamp(epoch=now()) AS timestamp
+ FROM watch_monitoring(artifact=Artifact)
+ })
+
+ SELECT * FROM logscale_upload(
+ query=events,
+ apibaseurl=ingestApiBase,
+ ingest_token=ingestToken,
+ threads=numThreads,
+ tag_fields=split(string=tagFields, sep=","),
+ batching_timeout_ms=batchingTimeoutMs,
+ event_batch_size=eventBatchSize,
+ http_timeout=httpTimeout,
+ debug=debug,
+ stats_interval=statsInterval)
+
+&lt;/code>&lt;/pre></description></item><item><title>LogScale.Flows.Upload</title><link>https://docs.velociraptor.app/artifact_references/pages/logscale.flows.upload/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/logscale.flows.upload/</guid><description>&lt;p>This server side event monitoring artifact waits for new artifacts
+to be collected from endpoints and automatically posts those to a
+LogScale (formerly Humio) ingestion endpoint.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: LogScale.Flows.Upload
+description: |
+ This server side event monitoring artifact waits for new artifacts
+ to be collected from endpoints and automatically posts those to a
+ LogScale (formerly Humio) ingestion endpoint.
+
+type: SERVER_EVENT
+
+parameters:
+ - name: ingestApiBase
+ description: API Base Url for LogScale server
+ type: string
+ default: https://cloud.community.humio.com/api
+ - name: ingestToken
+ description: Ingest token for API
+ type: string
+ - name: tagFields
+ description: Comma-separated list of field names to use as tags in the message; Can be renamed with &amp;lt;oldname&amp;gt;=&amp;lt;newname&amp;gt;.
+ default:
+ type: string
+ - name: numThreads
+ description: Number of threads to start up to post events
+ type: int
+ default: 1
+ - name: httpTimeout
+ description: Timeout (in seconds) for http connection attempts
+ type: int
+ default: 10
+ - name: batchingTimeoutMs
+ description: Timeout to batch events prior to sending
+ type: int
+ default: 30000
+ - name: eventBatchSize
+ description: Count of events to batch prior to sending
+ type: int
+ default: 2000
+ - name: statsInterval
+ description: Interval to post statistics to log (in seconds, 0 to disable)
+ type: int
+ default: 600
+ - name: debug
+ description: Enable verbose logging
+ type: bool
+ default: false
+ - name: ArtifactNameRegex
+ default: .
+ type: regex
+ description: Only upload these artifacts to elastic
+
+sources:
+ - query: |
+ LET completions = SELECT * FROM watch_monitoring(
+ artifact="System.Flow.Completion")
+ WHERE Flow.artifacts_with_results =~ ArtifactNameRegex
+
+ LET documents = SELECT * FROM foreach(row=completions,
+ query={
+ SELECT * FROM foreach(
+ row=Flow.artifacts_with_results,
+ query={
+ SELECT *, _value AS Artifact,
+ timestamp(epoch=now()) AS timestamp,
+ ClientId, Flow.session_id AS FlowId
+ FROM source(
+ client_id=ClientId,
+ flow_id=Flow.session_id,
+ artifact=_value)
+ })
+ })
+
+ SELECT * FROM logscale_upload(
+ query=documents,
+ apibaseurl=ingestApiBase,
+ ingest_token=ingestToken,
+ threads=numThreads,
+ tag_fields=split(string=tagFields, sep=","),
+ batching_timeout_ms=batchingTimeoutMs,
+ event_batch_size=eventBatchSize,
+ http_timeout=httpTimeout,
+ debug=debug,
+ stats_interval=statsInterval)
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Alerts.Notification</title><link>https://docs.velociraptor.app/artifact_references/pages/server.alerts.notification/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.alerts.notification/</guid><description>&lt;p>This artifact forwards alerts from Server.Internal.Alerts to a Slack/Teams/Discord via a Webhook.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Alerts.Notification
+description: |
+ This artifact forwards alerts from Server.Internal.Alerts to a Slack/Teams/Discord via a Webhook.
+
+author: Jos Clephas - @DfirJos
+
+type: SERVER_EVENT
+
+parameters:
+ - name: SlackToken
+ description: The token URL obtained from Slack/Teams/Discord (or basicly any communication-service that supports webhooks). Leave blank to use server metadata. e.g. https://hooks.slack.com/services/XXXX/YYYY/ZZZZ
+
+sources:
+ - query: |
+ LET token_url = if(
+ condition=SlackToken,
+ then=SlackToken,
+ else=server_metadata().SlackToken)
+
+ LET hits = SELECT * from watch_monitoring(artifact='Server.Internal.Alerts')
+
+ SELECT * FROM foreach(row=hits,
+ query={
+ SELECT * FROM http_client(
+ data=serialize(item=dict(
+ text=format(format="Alert: %v | Details: %v | Artifact: %v | ClientId: %v | Timestamp: %v)",
+ args=[name, event_data, artifact, client_id, timestamp])),
+ format="json"),
+ headers=dict(`Content-Type`="application/json"),
+ method="POST",
+ url=token_url)
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Alerts.ProcessCreation</title><link>https://docs.velociraptor.app/artifact_references/pages/server.alerts.processcreation/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.alerts.processcreation/</guid><description>&lt;p>This artifact alerts when a process was detected with the artifact &amp;lsquo;Windows.Detection.ProcessCreation&amp;rsquo; (which is a client_event artifact that needs to be enabled first).&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Alerts.ProcessCreation
+description: |
+ This artifact alerts when a process was detected with the artifact 'Windows.Detection.ProcessCreation' (which is a client_event artifact that needs to be enabled first).
+
+author: Jos Clephas - @DfirJos
+
+type: SERVER_EVENT
+
+parameters:
+ - name: SlackToken
+ description: The token URL obtained from Slack/Teams/Discord (or basicly any communication-service that supports webhooks). Leave blank to use server metadata. e.g. https://hooks.slack.com/services/XXXX/YYYY/ZZZZ
+
+sources:
+ - query: |
+ LET token_url = if(
+ condition=SlackToken,
+ then=SlackToken,
+ else=server_metadata().SlackToken)
+
+ LET hits = SELECT * from watch_monitoring(artifact='Windows.Detection.ProcessCreation')
+
+ SELECT * FROM foreach(row=hits,
+ query={
+ SELECT EventData.CommandLine, EventData, Hostname, ClientId, Url, Content, Response FROM http_client(
+ data=serialize(item=dict(
+ text=format(format="Alert - Command detected '%v' on system %v with client Id %v. Syslog timestamp: %v ",
+ args=[EventData.CommandLine, Hostname, ClientId, Timestamp])),
+ format="json"),
+ headers=dict(`Content-Type`="application/json"),
+ method="POST",
+ url=token_url)
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Alerts.PsExec</title><link>https://docs.velociraptor.app/artifact_references/pages/server.alerts.psexec/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.alerts.psexec/</guid><description>&lt;p>Send an email if execution of the PsExec service was detected on
+any client. This is a server side artifact.&lt;/p>
+&lt;p>Note this requires that the Windows.Event.ProcessCreation
+monitoring artifact be collected from clients.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Alerts.PsExec
+description: |
+ Send an email if execution of the PsExec service was detected on
+ any client. This is a server side artifact.
+
+ Note this requires that the Windows.Event.ProcessCreation
+ monitoring artifact be collected from clients.
+
+type: SERVER_EVENT
+
+parameters:
+ - name: EmailAddress
+ default: admin@example.com
+ - name: SkipVerify
+ type: bool
+ description: If set we skip TLS verification.
+ - name: MessageTemplate
+ default: |
+ PsExec execution detected at %v: %v for client %v
+
+sources:
+ - query: |
+ SELECT * FROM foreach(
+ row={
+ SELECT * from watch_monitoring(
+ artifact='Windows.Events.ProcessCreation')
+ WHERE Name =~ 'psexesvc'
+ },
+ query={
+ SELECT * FROM mail(
+ to=EmailAddress,
+ subject='PsExec launched on host',
+ period=60,
+ skip_verify=SkipVerify,
+ body=format(
+ format=MessageTemplate,
+ args=[Timestamp, CommandLine, ClientId])
+ )
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Alerts.TheHive.Alert</title><link>https://docs.velociraptor.app/artifact_references/pages/server.alerts.thehive.alert/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.alerts.thehive.alert/</guid><description>&lt;p>Creates a TheHive alert when monitored artifacts complete with results.&lt;/p>
+&lt;p>The artifact uses Server Metadata to store credentials, instead of storing
+these directly in the artifact.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Alerts.TheHive.Alert
+description: |
+ Creates a TheHive alert when monitored artifacts complete with results.
+
+ The artifact uses Server Metadata to store credentials, instead of storing
+ these directly in the artifact.
+
+type: SERVER_EVENT
+
+author: Wes Lambert - @therealwlambert
+
+reference:
+ - https://gist.github.com/scudette/3a32abd19350c8fe3368661c4278869d
+
+parameters:
+ - name: TheHiveURL
+ default: https://mythehive
+ - name: TheHiveKey
+ default: ''
+ - name: VeloServerURL
+ default: https://myvelo
+ - name: ArtifactsToAlertOn
+ default: .
+ - name: DisableSSLVerify
+ type: bool
+ default: True
+
+sources:
+ - query: |
+ LET thehive_key = if(
+ condition=TheHiveKey,
+ then=TheHiveKey,
+ else=server_metadata().TheHiveKey)
+ LET flow_info = SELECT timestamp(epoch=Timestamp) AS Timestamp,
+ client_info(client_id=ClientId).os_info.fqdn AS FQDN,
+ ClientId, FlowId, Flow.artifacts_with_results[0] AS FlowResults
+ FROM watch_monitoring(artifact="System.Flow.Completion")
+ WHERE Flow.artifacts_with_results =~ ArtifactsToAlertOn
+
+ LET hits = SELECT * FROM foreach(row=flow_info,
+ query={
+ SELECT *, Timestamp, FQDN, ClientId
+ FROM source(artifact=FlowResults,
+ client_id=ClientId, flow_id=FlowId)
+ })
+
+ SELECT * FROM foreach(row=flow_info,
+ query={
+ SELECT * FROM http_client(
+ data=serialize(item=dict(
+ title=format(format="Hit on %v for %v", args=[FlowResults, FQDN]), description=format(format="ClientId: %v\n\nFlowID: %v\n\nURL: %v//app/index.html?#/collected/%v/%v", args=[ClientId, FlowId, VeloServerURL, ClientId, FlowId]), type="artifact-alert", source="velociraptor", sourceRef=format(format="%v", args=[rand(range=1000000000)])), format="json"),
+ headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[thehive_key])),
+ disable_ssl_security=DisableSSLVerify,
+ method="POST",
+ url=format(format="%v/api/alert", args=[TheHiveURL]))
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Alerts.TheHive.Case</title><link>https://docs.velociraptor.app/artifact_references/pages/server.alerts.thehive.case/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.alerts.thehive.case/</guid><description>&lt;p>Creates a TheHive case when monitored artifacts complete with results.&lt;/p>
+&lt;p>Adds the ClientId, FlowId, and FQDN as tags to the case. Adds FQDN as an
+observable.&lt;/p>
+&lt;p>The artifact uses Server Metadata to store credentials, instead of storing
+these directly in the artifact.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Alerts.TheHive.Case
+description: |
+ Creates a TheHive case when monitored artifacts complete with results.
+
+ Adds the ClientId, FlowId, and FQDN as tags to the case. Adds FQDN as an
+ observable.
+
+ The artifact uses Server Metadata to store credentials, instead of storing
+ these directly in the artifact.
+
+type: SERVER_EVENT
+
+author: Wes Lambert - @therealwlambert
+
+reference:
+ - https://gist.github.com/scudette/3a32abd19350c8fe3368661c4278869d
+
+parameters:
+ - name: TheHiveURL
+ default: https://mythehive
+ - name: VeloServerURL
+ default: https://myvelo
+ - name: ArtifactsToAlertOn
+ default: .
+ type: regex
+ - name: DisableSSLVerify
+ type: bool
+ default: true
+
+sources:
+ - query: |
+ LET thehive_key = if(
+ condition=TheHiveKey,
+ then=TheHiveKey,
+ else=server_metadata().TheHiveKey)
+ LET flow_info = SELECT timestamp(epoch=Timestamp) AS Timestamp,
+ client_info(client_id=ClientId).os_info.fqdn AS FQDN,
+ ClientId, FlowId, Flow.artifacts_with_results[0] AS FlowResults
+ FROM watch_monitoring(artifact="System.Flow.Completion")
+ WHERE Flow.artifacts_with_results =~ ArtifactsToAlertOn
+
+ LET cases = SELECT * FROM foreach(row=flow_info,
+ query={
+ SELECT FQDN, parse_json(data=Content)._id AS CaseID FROM http_client(
+ data=serialize(item=dict(
+ title=format(format="Hit on %v for %v", args=[FlowResults, FQDN]), description=format(format="ClientId: %v\n\nFlowID: %v\n\nURL: %v//app/index.html?#/collected/%v/%v", args=[ClientId, FlowId, VeloServerURL, ClientId, FlowId,]), tags=[ClientId,FlowId, FQDN]), format="json"),
+ headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[thehive_key])),
+ disable_ssl_security=DisableSSLVerify,
+ method="POST",
+ url=format(format="%v/api/case", args=[TheHiveURL]))
+ })
+
+ SELECT * from foreach(row=cases,
+ query={
+ SELECT * FROM http_client(
+ data=serialize(item=dict(data=FQDN, dataType="fqdn", message=FQDN)),
+ headers=dict(`Content-Type`="application/json", `Authorization`=format(format="Bearer %v", args=[thehive_key])),
+ disable_ssl_security=DisableSSLVerify,
+ method="POST",
+ url=format(format="%v/api/case/%v/artifact", args=[TheHiveURL, CaseID]))
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Alerts.Trackaccount</title><link>https://docs.velociraptor.app/artifact_references/pages/server.alerts.trackaccount/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.alerts.trackaccount/</guid><description>&lt;p>This artifact alerts when account usage of a monitored account is detected. This is a server-side artifact, please note that it requires the client_event artifact &amp;lsquo;Windows.Events.Trackaccount&amp;rsquo; to be enabled.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Alerts.Trackaccount
+description: |
+ This artifact alerts when account usage of a monitored account is detected. This is a server-side artifact, please note that it requires the client_event artifact 'Windows.Events.Trackaccount' to be enabled.
+
+author: Jos Clephas - @DfirJos
+
+type: SERVER_EVENT
+
+parameters:
+ - name: SlackToken
+ description: The token URL obtained from Slack/Teams/Discord (or basicly any communication-service that supports webhooks). Leave blank to use server metadata. e.g. https://hooks.slack.com/services/XXXX/YYYY/ZZZZ
+
+sources:
+ - query: |
+ LET token_url = if(
+ condition=SlackToken,
+ then=SlackToken,
+ else=server_metadata().SlackToken)
+
+ LET hits = SELECT * from watch_monitoring(artifact='Windows.Events.Trackaccount')
+
+ SELECT * FROM foreach(row=hits,
+ query={
+ SELECT EventRecordID, EventID, TargetUserName, TargetWorkstationName, SourceComputer, LogonType, EventTime, ClientId, Url, Content, Response FROM http_client(
+ data=serialize(item=dict(
+ text=format(format="EventID: %v - Account '%v' authenticated from system '%v' to '%v' with LogonType %v at %v on client %v (EventRecordID: %v)",
+ args=[EventID, TargetUserName, TargetWorkstationName, SourceComputer, LogonType, EventTime, ClientId, EventRecordID])),
+ format="json"),
+ headers=dict(`Content-Type`="application/json"),
+ method="POST",
+ url=token_url)
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Alerts.WinPmem</title><link>https://docs.velociraptor.app/artifact_references/pages/server.alerts.winpmem/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.alerts.winpmem/</guid><description>&lt;p>Send an email if the pmem service has been installed on any of the
+endpoints.&lt;/p>
+&lt;p>Note this requires that the Windows.Event.ServiceCreation
+monitoring artifact be collected from clients.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Alerts.WinPmem
+description: |
+ Send an email if the pmem service has been installed on any of the
+ endpoints.
+
+ Note this requires that the Windows.Event.ServiceCreation
+ monitoring artifact be collected from clients.
+
+type: SERVER_EVENT
+
+parameters:
+ - name: EmailAddress
+ default: admin@example.com
+ - name: SkipVerify
+ type: bool
+ description: If set we skip TLS verification.
+
+sources:
+ - query: |
+ SELECT * FROM foreach(
+ row={
+ SELECT * from watch_monitoring(
+ artifact='Windows.Events.ServiceCreation')
+ WHERE ServiceName =~ 'pmem'
+ },
+ query={
+ SELECT * FROM mail(
+ to=EmailAddress,
+ subject='Pmem launched on host',
+ period=60,
+ skip_verify=SkipVerify,
+ body=format(
+ format="WinPmem execution detected at %s for client %v",
+ args=[Timestamp, ClientId]
+ )
+ )
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Audit.Logs</title><link>https://docs.velociraptor.app/artifact_references/pages/server.audit.logs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.audit.logs/</guid><description>&lt;p>This internal event artifact collects relevant audit events from the
+server. Audit events are significant auditable actions that a user
+takes, for example, starting a new collection, creating a new hunt,
+updating an artifact definition etc.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Audit.Logs
+description: |
+ This internal event artifact collects relevant audit events from the
+ server. Audit events are significant auditable actions that a user
+ takes, for example, starting a new collection, creating a new hunt,
+ updating an artifact definition etc.
+
+type: SERVER_EVENT
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Internal.Alerts</title><link>https://docs.velociraptor.app/artifact_references/pages/server.internal.alerts/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.alerts/</guid><description>&lt;p>An internal event queue for alerts. All alerts sent from clients are
+collected in this event queue.&lt;/p>
+&lt;p>Alerts are expected to be low frequency and high value and may be
+generated client or server side.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Internal.Alerts
+description: |
+ An internal event queue for alerts. All alerts sent from clients are
+ collected in this event queue.
+
+ Alerts are expected to be low frequency and high value and may be
+ generated client or server side.
+
+type: SERVER_EVENT
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Internal.ArtifactModification</title><link>https://docs.velociraptor.app/artifact_references/pages/server.internal.artifactmodification/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.artifactmodification/</guid><description>&lt;p>This event artifact is an internal event stream over which
+notifications of artifact modifications are sent. Interested parties
+can watch for new artifact modification events and rebuild caches
+etc.&lt;/p>
+&lt;p>Note: This is an automated system artifact. You do not need to start it.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Internal.ArtifactModification
+description: |
+ This event artifact is an internal event stream over which
+ notifications of artifact modifications are sent. Interested parties
+ can watch for new artifact modification events and rebuild caches
+ etc.
+
+ Note: This is an automated system artifact. You do not need to start it.
+
+type: SERVER_EVENT
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Internal.ClientDelete</title><link>https://docs.velociraptor.app/artifact_references/pages/server.internal.clientdelete/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.clientdelete/</guid><description>&lt;p>An internal queue that receives events when a client is deleted.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Internal.ClientDelete
+description: |
+ An internal queue that receives events when a client is deleted.
+
+type: SERVER_EVENT
+
+column_types:
+ - name: ClientId
+ description: The client that was deleted.
+ - name: Principal
+ description: The principal who initiated the deletion.
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Internal.Interrogate</title><link>https://docs.velociraptor.app/artifact_references/pages/server.internal.interrogate/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.interrogate/</guid><description>&lt;p>An internal artifact used track new client interrogations by the
+Interrogation service.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Internal.Interrogate
+description: |
+ An internal artifact used track new client interrogations by the
+ Interrogation service.
+
+type: SERVER_EVENT
+
+sources:
+ - query: |
+ SELECT * FROM foreach(
+ row={
+ SELECT ClientId, Flow, FlowId
+ FROM watch_monitoring(artifact='System.Flow.Completion')
+ WHERE Flow.artifacts_with_results =~ 'Generic.Client.Info'
+ },
+ query={
+ SELECT * FROM switch(
+ a={
+ SELECT ClientId,
+ FlowId,
+ Architecture,
+ BuildTime,
+ Fqdn,
+ Hostname,
+ KernelVersion,
+ Labels,
+ Name,
+ OS,
+ Platform,
+ PlatformVersion
+ FROM source(
+ client_id=ClientId,
+ flow_id=FlowId,
+ source="BasicInformation",
+ artifact="Custom.Generic.Client.Info")
+ },
+ b={
+ SELECT ClientId,
+ FlowId,
+ Architecture,
+ BuildTime,
+ Fqdn,
+ Hostname,
+ KernelVersion,
+ Labels,
+ Name,
+ OS,
+ Platform,
+ PlatformVersion
+ FROM source(
+ client_id=ClientId,
+ flow_id=FlowId,
+ source="BasicInformation",
+ artifact="Generic.Client.Info")
+ })
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Internal.MetadataModifications</title><link>https://docs.velociraptor.app/artifact_references/pages/server.internal.metadatamodifications/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.metadatamodifications/</guid><description>&lt;p>This event artifact is an internal event stream over which
+notifications of server metadata modifications are sent.&lt;/p>
+&lt;p>Note: This is an automated system artifact. You do not need to start it.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Internal.MetadataModifications
+description: |
+ This event artifact is an internal event stream over which
+ notifications of server metadata modifications are sent.
+
+ Note: This is an automated system artifact. You do not need to start it.
+
+type: SERVER_EVENT
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Internal.TimelineAdd</title><link>https://docs.velociraptor.app/artifact_references/pages/server.internal.timelineadd/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.timelineadd/</guid><description>&lt;p>This artifact will fire whenever a timeline is added to a super
+timeline. You can use this to monitor for users adding timelines and
+forward them to an external timeline system (e.g. TimeSketch)&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Internal.TimelineAdd
+type: SERVER_EVENT
+description: |
+ This artifact will fire whenever a timeline is added to a super
+ timeline. You can use this to monitor for users adding timelines and
+ forward them to an external timeline system (e.g. TimeSketch)
+
+column_types:
+ - name: NotebookId
+ - name: SuperTimelineName
+ - name: Timeline
+
+ # What type of event this is: can be Delete, AddTimeline
+ - name: Action
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Monitor.ClientConflict</title><link>https://docs.velociraptor.app/artifact_references/pages/server.monitor.clientconflict/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.monitor.clientconflict/</guid><description>&lt;p>Forces conflicting clients to rekey themselves.&lt;/p>
+&lt;p>Sometimes the Velociraptor client is installed into a VM template image with
+an existing writeback file. In this case each cloned instance will start the
+client with the same client id. When multiple clients attempt to
+simultaneously connect to the server with the same client id, the server will
+reject them with the HTTP &amp;ldquo;409 Rejected&amp;rdquo; response.&lt;/p>
+&lt;p>This artifact detects such conflicts and instructs the affected clients to
+generate a new client id (saving their new keys into their writeback files)
+and then reconnect with the server.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Monitor.ClientConflict
+type: SERVER_EVENT
+description: |
+ Forces conflicting clients to rekey themselves.
+
+ Sometimes the Velociraptor client is installed into a VM template image with
+ an existing writeback file. In this case each cloned instance will start the
+ client with the same client id. When multiple clients attempt to
+ simultaneously connect to the server with the same client id, the server will
+ reject them with the HTTP "409 Rejected" response.
+
+ This artifact detects such conflicts and instructs the affected clients to
+ generate a new client id (saving their new keys into their writeback files)
+ and then reconnect with the server.
+
+sources:
+ - query: |
+ SELECT
+ collect_client(client_id=ClientId,
+ artifacts="Generic.Client.Rekey", env=dict())
+ AS NewCollection
+ FROM watch_monitoring(artifact="Server.Internal.ClientConflict")
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Monitor.Health</title><link>https://docs.velociraptor.app/artifact_references/pages/server.monitor.health/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.monitor.health/</guid><description>&lt;p>This is the main server health dashboard. It is shown on the
+homescreen and enabled by default on all new installs.&lt;/p>
+&lt;p>You may edit this artifact to customize your server dashboard.&lt;/p>
+&lt;p>Alternatively, edit the Welcome screen at the
+&lt;code>Server.Internal.Welcome&lt;/code> artifact.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Monitor.Health
+description: |
+ This is the main server health dashboard. It is shown on the
+ homescreen and enabled by default on all new installs.
+
+ You may edit this artifact to customize your server dashboard.
+
+ Alternatively, edit the Welcome screen at the
+ `Server.Internal.Welcome` artifact.
+
+type: SERVER_EVENT
+
+sources:
+ - name: Prometheus
+ query: SELECT sleep(time=10000000) FROM scope()
+
+reports:
+ - type: SERVER_EVENT
+ # Only allow the report to run for 10 seconds - this is plenty for
+ # the GUI.
+ timeout: 10
+ parameters:
+ - name: Sample
+ default: "6"
+
+ template: |
+ {{ define "CPU" }}
+ LET SampledData &amp;lt;= SELECT * FROM sample(
+ n=atoi(string=Sample),
+ query={
+ SELECT _ts as Timestamp,
+ CPUPercent,
+ int(int=MemoryUse / 1048576) AS MemoryUse_Mb,
+ TotalFrontends
+ FROM source(source="Prometheus",
+ start_time=StartTime, end_time=EndTime,
+ artifact="Server.Monitor.Health")
+ })
+
+ LET Stats &amp;lt;= SELECT count() AS Count,
+ timestamp(epoch=min(item=Timestamp)) AS MinTime,
+ timestamp(epoch=max(item=Timestamp)) AS MaxTime,
+ timestamp(epoch=StartTime) AS StartTime
+ FROM SampledData
+ GROUP BY 1
+
+ // Include a log for verification. Last data should always be
+ // very recent and sample should be passed properly.
+ LET _ &amp;lt;= log(message="Graphs cover times from %v (%v). Actual data available from %v (%v) to %v (%v) with %v rows. Data is sampled every %v samples.", args=[
+ Stats[0].StartTime.String, humanize(time=Stats[0].StartTime),
+ Stats[0].MinTime.String, humanize(time=Stats[0].MinTime),
+ Stats[0].MaxTime.String, humanize(time=Stats[0].MaxTime),
+ Stats[0].Count, Sample])
+
+ SELECT * FROM SampledData
+ {{ end }}
+
+ {{ define "CurrentConnections" }}
+ SELECT * FROM sample(
+ n=atoi(string=Sample),
+ query={
+ SELECT _ts as Timestamp,
+ client_comms_current_connections
+ FROM source(source="Prometheus",
+ start_time=StartTime, end_time=EndTime,
+ artifact="Server.Monitor.Health")
+ })
+ {{ end }}
+
+ {{ $time_rows := Query "SELECT timestamp(epoch=now()) AS Now FROM scope()" | Expand }}
+ ## Server status @ {{ Render ( Get $time_rows "0.Now" ) }}
+
+ &amp;lt;p&amp;gt;The following are total across all frontends.&amp;lt;/p&amp;gt;
+ &amp;lt;span class="container"&amp;gt;
+ &amp;lt;span class="row"&amp;gt;
+ &amp;lt;span class="col-sm panel"&amp;gt;
+ CPU and Memory Utilization
+ {{- Query "CPU" | TimeChart "RSS.yaxis" 2 -}}
+ &amp;lt;/span&amp;gt;
+ &amp;lt;span class="col-sm panel"&amp;gt;
+ Currently Connected Clients
+ {{- Query "CurrentConnections" | TimeChart "RSS.yaxis" 2 -}}
+ &amp;lt;/span&amp;gt;
+ &amp;lt;/span&amp;gt;
+ &amp;lt;/span&amp;gt;
+
+ ## Current Orgs
+ {{ define "OrgsTable" }}
+ LET ColumnTypes &amp;lt;= dict(ClientConfig='url')
+ LET OrgsTable = SELECT Name, OrgId,
+ upload(accessor='data', file=_client_config,
+ name='client.'+OrgId+'.config.yaml') AS _Upload
+ FROM orgs()
+
+ SELECT Name, OrgId, link_to(upload=_Upload) AS ClientConfig
+ FROM OrgsTable
+ {{ end }}
+
+ {{ Query "OrgsTable" | Table }}
+
+ ## Disk Space
+
+ {{ Query "SELECT * FROM Artifact.Generic.Client.DiskSpace()" | Table }}
+
+ ## Users
+
+ {{ define "UserPermissions" }}
+ SELECT name, effective_policy AS _EffectivePolicy,
+ join(array=roles, sep=", ") AS Roles
+ FROM gui_users()
+ {{ end }}
+
+ {{ Query "UserPermissions" | Table }}
+
+ ## Server version
+
+ {{ Query "SELECT server_version FROM config" | Table }}
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Monitor.Shell</title><link>https://docs.velociraptor.app/artifact_references/pages/server.monitor.shell/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.monitor.shell/</guid><description>&lt;p>Velociraptor can get an interactive shell on the endpoint by using
+the shell command. To use it, the user must be directly
+logged on the server.&lt;/p>
+&lt;p>Obviously being able to run arbitrary commands on the end point is
+a powerful feature and should be used sparingly. There is an audit
+trail for shell commands executed and their output available by
+streaming all shell commands to the &amp;ldquo;Shell&amp;rdquo; client event monitoring
+artifact.&lt;/p>
+&lt;p>This server event artifact centralizes all shell access from all
+clients into the same log file.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Monitor.Shell
+description: |
+ Velociraptor can get an interactive shell on the endpoint by using
+ the shell command. To use it, the user must be directly
+ logged on the server.
+
+ Obviously being able to run arbitrary commands on the end point is
+ a powerful feature and should be used sparingly. There is an audit
+ trail for shell commands executed and their output available by
+ streaming all shell commands to the "Shell" client event monitoring
+ artifact.
+
+ This server event artifact centralizes all shell access from all
+ clients into the same log file.
+
+# Can be CLIENT, EVENT, SERVER, SERVER_EVENT
+type: SERVER_EVENT
+
+sources:
+ - query: |
+ -- Watch for shell flow completions.
+ LET collections = SELECT Flow
+ FROM watch_monitoring(artifact="System.Flow.Completion")
+ WHERE Flow.artifacts_with_results =~ "Windows.System.PowerShell|Windows.System.CmdShell"
+
+ -- Dump the command and the results.
+ SELECT * FROM foreach(row=collections,
+ query={
+ SELECT Flow.session_id AS FlowId,
+ Flow.client_id AS ClientId,
+ client_info(client_id=Flow.client_id).os_info.fqdn AS Hostname,
+ timestamp(epoch=Flow.create_time / 1000000) AS Created,
+ timestamp(epoch=Flow.active_time / 1000000) AS LastActive,
+ get_flow(flow_id=FlowId,
+ client_id=ClientId).request.parameters.env[0].value AS Command,
+ Stdout, Stderr FROM source(
+ client_id=Flow.client_id,
+ flow_id=Flow.session_id,
+ artifact=Flow.artifacts_with_results[0])
+ })
+
+
+# Reports can be MONITORING_DAILY, CLIENT
+reports:
+ - type: SERVER_EVENT
+ template: |
+ {{ .Description }}
+
+ {{ $rows := Query "SELECT ClientId, Hostname, \
+ timestamp(epoch=LastActive) AS Timestamp, Command, Stdout FROM source()" }}
+
+ {{ range $row := $rows }}
+
+ * On {{ Get $row "Timestamp" }} we ran {{ Get $row "Command" }} on {{ Get $row "Hostname" }}
+
+ ```text
+ {{ Get $row "Stdout" }}
+ ```
+
+ {{end}}
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Monitoring.ClientCount</title><link>https://docs.velociraptor.app/artifact_references/pages/server.monitoring.clientcount/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.monitoring.clientcount/</guid><description>&lt;p>An artifact that sends an email every hour of the current state of
+the deployment.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Monitoring.ClientCount
+
+description: |
+ An artifact that sends an email every hour of the current state of
+ the deployment.
+
+type: SERVER_EVENT
+
+parameters:
+ - name: EmailAddress
+ default: admin@example.com
+ - name: SkipVerify
+ type: bool
+ description: If set we skip TLS verification.
+ - name: CCAddress
+ default:
+ - name: Subject
+ default: "Deployment statistics for Velociraptor"
+ - name: Period
+ default: "3600"
+
+sources:
+ - query: |
+ LET metrics = SELECT * FROM Artifact.Server.Monitor.VeloMetrics()
+
+ SELECT * FROM foreach(
+ row={
+ SELECT * FROM clock(period=atoi(string=Period))
+ },
+ query={
+ SELECT * FROM mail(
+ to=EmailAddress,
+ cc=CCAddress,
+ subject=Subject,
+ period=60,
+ skip_verify=SkipVerify,
+ body=format(format='Total clients currently connected %v',
+ args=[metrics.client_comms_current_connections])
+ )
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Monitoring.ScheduleHunt</title><link>https://docs.velociraptor.app/artifact_references/pages/server.monitoring.schedulehunt/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.monitoring.schedulehunt/</guid><description>&lt;p>Run client interrogation periodically. This is a sample event
+artifact to schedule a hunt periodically. You can change it to
+launch other artifacts.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Monitoring.ScheduleHunt
+description: |
+ Run client interrogation periodically. This is a sample event
+ artifact to schedule a hunt periodically. You can change it to
+ launch other artifacts.
+
+type: SERVER_EVENT
+
+parameters:
+ - name: ScheduleDayRegex
+ default: Tuesday
+ type: regex
+ - name: ScheduleTimeRegex
+ default: "01:28"
+ type: regex
+ - name: HuntDescription
+ default: "Periodic info hunt"
+
+sources:
+ - query: |
+ LET schedule = SELECT
+ UTC.String AS Now,
+ Weekday.String AS Today
+ FROM clock(period=60)
+ WHERE Now =~ ScheduleTimeRegex + ":[0-9][0-9]"
+ AND Today =~ ScheduleDayRegex
+ AND log(message="Launching at time " + Now)
+
+ SELECT hunt(artifacts=["Generic.Client.Info"],
+ spec=dict(`Generic.Client.Info`=dict()),
+ description=HuntDescription)
+ FROM schedule
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Monitoring.TimesketchUpload</title><link>https://docs.velociraptor.app/artifact_references/pages/server.monitoring.timesketchupload/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.monitoring.timesketchupload/</guid><description>&lt;p>This artifact will automatically upload any Velociraptor timelines to Timesketch.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Monitoring.TimesketchUpload
+description: |
+ This artifact will automatically upload any Velociraptor timelines to Timesketch.
+
+
+type: SERVER_EVENT
+
+parameters:
+ - name: SketchRegex
+ description: |
+ Only upload Super timelines matching this regex to their
+ corresponding Sketches.
+ default: .
+
+ - name: TimelineRegex
+ default: .
+ description: |
+ Only upload Timelines with a name matching this regex to
+ Timesketch.
+
+ - name: TimesketchCLICommand
+ default: "timesketch"
+ description: |
+ The path to the Timesketch CLI binary. If you installed in a
+ virtual environment this will be inside that environment.
+
+required_permissions:
+ - EXECVE
+
+imports:
+ - Server.Utils.TimesketchUpload
+
+sources:
+ - query: |
+ SELECT * FROM foreach(row={
+ SELECT NotebookId, SuperTimelineName, Timeline
+ FROM watch_monitoring(artifact="Server.Internal.TimelineAdd")
+ WHERE Action = "AddTimeline"
+ AND SuperTimelineName =~ SketchRegex
+ AND Timeline =~ TimelineRegex
+ }, query={
+ SELECT * FROM ImportToTS(
+ SuperTimelineName=SuperTimelineName,
+ NotebookId=NotebookId,
+ TimelineName=Timeline,
+ SketchName=SuperTimelineName)
+ })
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Powershell.EncodedCommand</title><link>https://docs.velociraptor.app/artifact_references/pages/server.powershell.encodedcommand/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.powershell.encodedcommand/</guid><description>&lt;p>It is possible to pass PowerShell an encoded script. This artifact
+decodes such scripts.&lt;/p>
+&lt;p>NOTE: The client must be running the Windows.Events.ProcessCreation
+event artifact to retrieve process execution logs.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Powershell.EncodedCommand
+description: |
+ It is possible to pass PowerShell an encoded script. This artifact
+ decodes such scripts.
+
+ NOTE: The client must be running the Windows.Events.ProcessCreation
+ event artifact to retrieve process execution logs.
+
+type: SERVER_EVENT
+
+sources:
+ - query: |
+ SELECT ClientId, ParentInfo, CommandLine, Timestamp, utf16(
+ string=base64decode(
+ string=parse_string_with_regex(
+ string=CommandLine,
+ regex='-((?i)(en|enc|encode|encodedCommand)) (?P&amp;lt;Encoded&amp;gt;[^ ]+)'
+ ).Encoded)) AS Script
+ FROM watch_monitoring(artifact='Windows.Events.ProcessCreation')
+ WHERE CommandLine =~ '-(en|enc|encode|encodedCommand)'
+
+reports:
+ - type: SERVER_EVENT
+ template: |
+
+ Encoded Powershell
+ ==================
+
+ {{ .Description }}
+
+ ## Decoded Powershell commands.
+
+ {{ Query "SELECT ClientId, { SELECT os_info.fqdn from clients(client_id=ClientId) } AS FQDN, Script FROM source()" | Table }}
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Slack.Clients.Online</title><link>https://docs.velociraptor.app/artifact_references/pages/server.slack.clients.online/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.slack.clients.online/</guid><description>&lt;p>Send a message to slack when clients come online.&lt;/p>
+&lt;p>This artifact searches for all clients that carry the label &amp;ldquo;Slack&amp;rdquo;
+by default, and if they have appeared online in the last 5 minutes,
+sends a message to Slack and removed the label from the client.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Slack.Clients.Online
+description: |
+ Send a message to slack when clients come online.
+
+ This artifact searches for all clients that carry the label "Slack"
+ by default, and if they have appeared online in the last 5 minutes,
+ sends a message to Slack and removed the label from the client.
+
+type: SERVER_EVENT
+
+parameters:
+ - name: LabelGroup
+ default: Slack
+ - name: SlackToken
+ description: The token URL obtained from Slack. Leave blank to use server metadata. e.g. https://hooks.slack.com/services/XXXX/YYYY/ZZZZ
+
+sources:
+ - query: |
+ LET token_url = if(
+ condition=SlackToken,
+ then=SlackToken,
+ else=server_metadata().SlackToken)
+
+ LET hits = SELECT client_id,
+ os_info.fqdn as Hostname ,
+ now() - last_seen_at / 1000000 AS LastSeen,
+ label(client_id=client_id, labels=LabelGroup, op="remove")
+ FROM clients(search="label:" + LabelGroup)
+ WHERE LastSeen &amp;lt; 300
+
+ LET send_message = SELECT * FROM foreach(row=hits,
+ query={
+ SELECT client_id, Hostname, LastSeen, Content, Response
+ FROM http_client(
+ data=serialize(item=dict(
+ text=format(format="Client %v (%v) has appeared online %v seconds ago",
+ args=[Hostname, client_id, LastSeen])),
+ format="json"),
+ headers=dict(`Content-Type`="application/json"),
+ method="POST",
+ url=token_url)
+ })
+
+ // Check every minute
+ SELECT * FROM foreach(
+ row={SELECT * FROM clock(period=60)},
+ query=send_message)
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.BackupDirectory</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.backupdirectory/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.backupdirectory/</guid><description>&lt;p>This server monitoring artifact will automatically export and
+backup selected collected artifacts to a directory on the server.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.BackupDirectory
+description: |
+ This server monitoring artifact will automatically export and
+ backup selected collected artifacts to a directory on the server.
+
+type: SERVER_EVENT
+
+parameters:
+ - name: ArtifactNameRegex
+ default: "."
+ description: A regular expression to select which artifacts to upload
+ type: regex
+
+ - name: BackupDirectoryPath
+ description: A directory on the server to receive the uploaded files.
+
+ - name: RemoveDownloads
+ type: bool
+ description: If set, remove the flow export files after upload
+
+required_permissions:
+ - SERVER_ADMIN
+
+sources:
+ - query: |
+ LET completions = SELECT *,
+ client_info(client_id=ClientId).os_info.fqdn AS Fqdn,
+ create_flow_download(client_id=ClientId,
+ flow_id=FlowId, wait=TRUE) AS FlowDownload
+ FROM watch_monitoring(artifact="System.Flow.Completion")
+ WHERE Flow.artifacts_with_results =~ ArtifactNameRegex
+
+ SELECT upload_directory(
+ output=BackupDirectoryPath,
+ name=format(format="Host %v %v %v.zip",
+ args=[Fqdn, FlowId, timestamp(epoch=now())]),
+ accessor="fs",
+ file=FlowDownload) AS Upload
+ FROM completions
+ WHERE Upload OR
+ if(condition=RemoveDownloads,
+ then=rm(filename=file_store(path=FlowDownload)))
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.BackupGCS</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.backupgcs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.backupgcs/</guid><description>&lt;p>This server monitoring artifact will automatically zip and backup
+any collected artifacts to GCS.&lt;/p>
+&lt;p>You will need to provide credentials to upload to the bucket. The
+credentials can be given as parameters or they will be taken from
+the server metadata (as DefaultBucket, DefaultGCSProject,
+DefaultGCSKey)&lt;/p>
+&lt;p>Thanks to @shortxstack and @Recon_InfoSec&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.BackupGCS
+description: |
+ This server monitoring artifact will automatically zip and backup
+ any collected artifacts to GCS.
+
+ You will need to provide credentials to upload to the bucket. The
+ credentials can be given as parameters or they will be taken from
+ the server metadata (as DefaultBucket, DefaultGCSProject,
+ DefaultGCSKey)
+
+ Thanks to @shortxstack and @Recon_InfoSec
+
+type: SERVER_EVENT
+
+parameters:
+ - name: ArtifactNameRegex
+ default: "."
+ description: A regular expression to select which artifacts to upload
+ type: regex
+
+ - name: Bucket
+ description: The bucket to upload to (blank to use server metadata)
+ - name: Project
+ - name: GCSKey
+
+ - name: RemoveDownloads
+ type: bool
+ description: If set, remove the flow export files after upload
+
+sources:
+ - query: |
+ -- Allow these settings to be set by the artifact parameter or the server metadata.
+ LET bucket &amp;lt;= if(condition=Bucket, then=Bucket,
+ else=server_metadata().DefaultBucket)
+ LET project &amp;lt;= if(condition=Project, then=Project,
+ else=server_metadata().DefaultGCSProject)
+ LET gcskey &amp;lt;= if(condition=GCSKey, then=GCSKey,
+ else=server_metadata().DefaultGCSKey)
+
+ LET completions = SELECT *,
+ client_info(client_id=ClientId).os_info.fqdn AS Fqdn,
+ create_flow_download(client_id=ClientId,
+ flow_id=FlowId, wait=TRUE) AS FlowDownload
+ FROM watch_monitoring(artifact="System.Flow.Completion")
+ WHERE Flow.artifacts_with_results =~ ArtifactNameRegex
+
+ SELECT upload_gcs(
+ bucket=bucket,
+ project=project,
+ credentials=gcskey,
+ file=FlowDownload,
+ accessor="fs",
+ name=format(format="Host %v %v %v.zip",
+ args=[Fqdn, FlowId, timestamp(epoch=now())])) AS Upload
+ FROM completions
+ WHERE Upload OR
+ if(condition=RemoveDownloads,
+ then=rm(filename=file_store(path=FlowDownload)))
+
+&lt;/code>&lt;/pre></description></item><item><title>Server.Utils.BackupS3</title><link>https://docs.velociraptor.app/artifact_references/pages/server.utils.backups3/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/server.utils.backups3/</guid><description>&lt;p>This server monitoring artifact will automatically zip and backup
+any collected artifacts to s3.&lt;/p>
+&lt;p>You will need to provide credentials to upload to the bucket. The
+credentials can be given as parameters or they will be taken from
+the server metadata (as DefaultBucket, DefaultRegion,
+S3AccessKeyId, S3AccessSecret, S3AccessToken)&lt;/p>
+&lt;p>Thanks to @shortxstack and @Recon_InfoSec&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Server.Utils.BackupS3
+description: |
+ This server monitoring artifact will automatically zip and backup
+ any collected artifacts to s3.
+
+ You will need to provide credentials to upload to the bucket. The
+ credentials can be given as parameters or they will be taken from
+ the server metadata (as DefaultBucket, DefaultRegion,
+ S3AccessKeyId, S3AccessSecret, S3AccessToken)
+
+ Thanks to @shortxstack and @Recon_InfoSec
+
+type: SERVER_EVENT
+
+parameters:
+ - name: ArtifactNameRegex
+ default: "."
+ description: A regular expression to select which artifacts to upload
+ type: regex
+ 
+ - name: Bucket
+ description: The bucket to upload to (blank to use server metadata)
+
+ - name: Endpoint
+ 
+ - name: Region
+ 
+ - name: CredentialsKey
+ 
+ - name: CredentialsSecret
+ 
+ - name: CredentialsToken
+ 
+ - name: Secret
+ description: A Secret name to use for uploading.
+ 
+ - name: RemoveDownloads
+ type: bool
+ description: If set, remove the flow export files after upload
+
+sources:
+ - query: |
+ -- Allow these settings to be set by the artifact parameter or
+ -- the server metadata.
+ LET completions = SELECT *,
+ client_info(client_id=ClientId).os_info.fqdn AS Fqdn,
+ create_flow_download(client_id=ClientId,
+ flow_id=FlowId, wait=TRUE) AS FlowDownload
+ FROM watch_monitoring(artifact="System.Flow.Completion")
+ WHERE Flow.artifacts_with_results =~ ArtifactNameRegex
+
+ SELECT upload_s3(
+ bucket=Bucket,
+ credentials_key=CredentialsKey,
+ credentials_secret=CredentialsSecret,
+ endpoint=Endpoint,
+ credentials_token=CredentialsToken,
+ secret=Secret,
+ region=Region,
+ file=FlowDownload,
+ accessor="fs",
+ name=format(format="Host %v %v %v.zip",
+ args=[Fqdn, FlowId, timestamp(epoch=now())])) AS Upload
+ FROM completions
+ WHERE Upload OR
+ if(condition=RemoveDownloads,
+ then=rm(filename=file_store(path=FlowDownload)))
+
+&lt;/code>&lt;/pre></description></item><item><title>Splunk.Flows.Upload</title><link>https://docs.velociraptor.app/artifact_references/pages/splunk.flows.upload/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/splunk.flows.upload/</guid><description>&lt;p>This server side event monitoring artifact waits for new artifacts
+to be collected from endpoints and automatically uploads those to a
+Splunk server.
+To configure the event collector properly a couple steps need to be
+completed prior to setting up this event:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Configure an index to ingest the data.&lt;/p>
+&lt;ul>
+&lt;li>Go to Settings &amp;gt; Index.&lt;/li>
+&lt;li>New Index.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Configure the collector.&lt;/p>
+&lt;ul>
+&lt;li>Go to Settings &amp;gt; Data Inputs &amp;gt; HTTP Event Collector.&lt;/li>
+&lt;li>Add New.&lt;/li>
+&lt;li>Name does not matter, but ensure indexer acknowledgement is OFF.&lt;/li>
+&lt;li>Set &lt;code>Selected Indexes&lt;/code> to the index configured in step 1.&lt;/li>
+&lt;li>Save API key for this event.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Set Global settings.&lt;/p>
+&lt;ul>
+&lt;li>Go to Settings &amp;gt; Data Inputs &amp;gt; HTTP Event Collector &amp;gt; Global Settings&lt;/li>
+&lt;li>Ensure &lt;code>All Tokens&lt;/code> is set to ENABLED&lt;/li>
+&lt;li>Copy the HTTP Port Number for this event&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Configure your Splunk props.conf and tranforms.conf&lt;/p>
+&lt;ul>
+&lt;li>Add the following to props.conf
+[vql]
+INDEXED_EXTRACTIONS = json
+DATETIME_CONFIG = CURRENT
+TZ = GMT
+category = Custom
+pulldown_type = 1
+TRANSFORMS-vql-sourcetype = vql-sourcetype,vql-timestamp
+TRUNCATE = 512000&lt;/li>
+&lt;li>Add the following to transforms.conf
+[vql-sourcetype]
+INGEST_EVAL = sourcetype=lower(src_artifact)
+[vql-timestamp]
+INGEST_EVAL = _time=case( &lt;br>
+src_artifact=&amp;ldquo;artifact_Linux_Search_FileFinder&amp;rdquo;,strptime(CTime,&amp;quot;%Y-%m-%dT%H:%M:%SZ&amp;quot;), &lt;br>
+src_artifact=&amp;ldquo;artifact_System_VFS_ListDirectory&amp;rdquo;,strptime(ctime,&amp;quot;%Y-%m-%dT%H:%M:%S.%NZ&amp;quot;), &lt;br>
+src_artifact=&amp;ldquo;artifact_Windows_Timeline_MFT&amp;rdquo;,strptime(event_time,&amp;quot;%Y-%m-%dT%H:%M:%S.%NZ&amp;quot;), &lt;br>
+src_artifact=&amp;ldquo;artifact_Windows_NTFS_MFT&amp;rdquo;,strptime(Created0x10,&amp;quot;%Y-%m-%dT%H:%M:%S.%NZ&amp;quot;), &lt;br>
+src_artifact=&amp;ldquo;artifact_Windows_EventLogs_Evtx&amp;rdquo;,strptime(TimeCreated,&amp;quot;%Y-%m-%dT%H:%M:%SZ&amp;quot;), &lt;br>
+src_artifact=&amp;ldquo;artifact_Custom_Windows_EventLogs_System_7045&amp;rdquo;,strptime(TimeCreated,&amp;quot;%Y-%m-%dT%H:%M:%SZ&amp;quot;), &lt;br>
+src_artifact=&amp;ldquo;artifact_Windows_EventLogs_RDPAuth&amp;rdquo;,strptime(EventTime,&amp;quot;%Y-%m-%dT%H:%M:%SZ&amp;quot;), &lt;br>
+src_artifact=&amp;ldquo;artifact_Windows_Analysis_EvidenceOfExecution_UserAssist&amp;rdquo;,strptime(LastExecution,&amp;quot;%Y-%m-%dT%H:%M:%SZ&amp;quot;), &lt;br>
+src_artifact=&amp;ldquo;artifact_Windows_Analysis_EvidenceOfExecution_Amcache&amp;rdquo;,strptime(KeyMTime,&amp;quot;%Y-%m-%dT%H:%M:%SZ&amp;quot;), &lt;br>
+src_artifact=&amp;ldquo;artifact_Windows_System_Amcache_InventoryApplicationFile&amp;rdquo;,strptime(LastModified,&amp;quot;%Y-%m-%dT%H:%M:%SZ&amp;quot;), &lt;br>
+src_artifact=&amp;ldquo;artifact_Windows_Search_FileFinder&amp;rdquo;,strptime(CTime,&amp;quot;%Y-%m-%dT%H:%M:%S.%NZ&amp;quot;), &lt;br>
+src_artifact=&amp;ldquo;artifact_Windows_Applications_NirsoftBrowserViewer&amp;rdquo;,strptime(Visited,&amp;quot;%Y-%m-%dT%H:%M:%SZ&amp;quot;), &lt;br>
+src_artifact=&amp;ldquo;artifact_Windows_Registry_RecentDocs&amp;rdquo;,strptime(LastWriteTime,&amp;quot;%Y-%m-%dT%H:%M:%SZ&amp;quot;), &lt;br>
+src_artifact=&amp;ldquo;artifact_Windows_Forensics_UserAccessLogs_Clients&amp;rdquo;,strptime(InsertDate,&amp;quot;%Y-%m-%dT%H:%M:%SZ&amp;quot;), &lt;br>
+src_artifact=&amp;ldquo;artifact_Windows_Forensics_UserAccessLogs_DNS&amp;rdquo;,strptime(LastSeen,&amp;quot;%Y-%m-%dT%H:%M:%SZ&amp;quot;), &lt;br>
+src_artifact=&amp;ldquo;artifact_Windows_Forensics_UserAccessLogs_SystemIdentity&amp;rdquo;,strptime(CreationTime,&amp;quot;%Y-%m-%dT%H:%M:%SZ&amp;quot;), &lt;br>
+src_artifact=&amp;ldquo;artifact_Custom_Windows_Application_IIS_IISLogs&amp;rdquo;,strptime(event_time,&amp;quot;%Y-%m-%dT%H:%M:%SZ&amp;quot;), &lt;br>
+src_artifact=&amp;ldquo;artifact_MacOS_Applications_Chrome_History&amp;rdquo;,strptime(last_visit_time,&amp;quot;%Y-%m-%dT%H:%M:%SZ&amp;quot;), &lt;br>
+src_artifact=&amp;ldquo;artifact_Windows_Registry_UserAssist&amp;rdquo;,strptime(LastExecution,&amp;quot;%Y-%m-%dT%H:%M:%SZ&amp;quot;) &lt;br>
+)&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>Note: &lt;code>Enable SSL&lt;/code> only works if SSL is properly configured on your
+Splunk server &amp;ndash; meaning you have proper certificates and DNS. If you are
+accessing your Splunk instance by IP, &lt;code>Enable SSL&lt;/code> should be set to OFF.&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-yaml">
+name: Splunk.Flows.Upload
+
+description: |
+ This server side event monitoring artifact waits for new artifacts
+ to be collected from endpoints and automatically uploads those to a
+ Splunk server.
+ To configure the event collector properly a couple steps need to be
+ completed prior to setting up this event:
+ 1. Configure an index to ingest the data.
+ * Go to Settings &amp;gt; Index.
+ * New Index.
+ 2. Configure the collector.
+ * Go to Settings &amp;gt; Data Inputs &amp;gt; HTTP Event Collector.
+ * Add New.
+ * Name does not matter, but ensure indexer acknowledgement is OFF.
+ * Set `Selected Indexes` to the index configured in step 1.
+ * Save API key for this event.
+ 3. Set Global settings.
+ * Go to Settings &amp;gt; Data Inputs &amp;gt; HTTP Event Collector &amp;gt; Global Settings
+ * Ensure `All Tokens` is set to ENABLED
+ * Copy the HTTP Port Number for this event
+ 4. Configure your Splunk props.conf and tranforms.conf
+ * Add the following to props.conf
+ [vql]
+ INDEXED_EXTRACTIONS = json
+ DATETIME_CONFIG = CURRENT
+ TZ = GMT
+ category = Custom
+ pulldown_type = 1
+ TRANSFORMS-vql-sourcetype = vql-sourcetype,vql-timestamp
+ TRUNCATE = 512000
+ * Add the following to transforms.conf
+ [vql-sourcetype]
+ INGEST_EVAL = sourcetype=lower(src_artifact)
+ [vql-timestamp]
+ INGEST_EVAL = _time=case( \
+ src_artifact="artifact_Linux_Search_FileFinder",strptime(CTime,"%Y-%m-%dT%H:%M:%SZ"), \
+ src_artifact="artifact_System_VFS_ListDirectory",strptime(ctime,"%Y-%m-%dT%H:%M:%S.%NZ"), \
+ src_artifact="artifact_Windows_Timeline_MFT",strptime(event_time,"%Y-%m-%dT%H:%M:%S.%NZ"), \
+ src_artifact="artifact_Windows_NTFS_MFT",strptime(Created0x10,"%Y-%m-%dT%H:%M:%S.%NZ"), \
+ src_artifact="artifact_Windows_EventLogs_Evtx",strptime(TimeCreated,"%Y-%m-%dT%H:%M:%SZ"), \
+ src_artifact="artifact_Custom_Windows_EventLogs_System_7045",strptime(TimeCreated,"%Y-%m-%dT%H:%M:%SZ"), \
+ src_artifact="artifact_Windows_EventLogs_RDPAuth",strptime(EventTime,"%Y-%m-%dT%H:%M:%SZ"), \
+ src_artifact="artifact_Windows_Analysis_EvidenceOfExecution_UserAssist",strptime(LastExecution,"%Y-%m-%dT%H:%M:%SZ"), \
+ src_artifact="artifact_Windows_Analysis_EvidenceOfExecution_Amcache",strptime(KeyMTime,"%Y-%m-%dT%H:%M:%SZ"), \
+ src_artifact="artifact_Windows_System_Amcache_InventoryApplicationFile",strptime(LastModified,"%Y-%m-%dT%H:%M:%SZ"), \
+ src_artifact="artifact_Windows_Search_FileFinder",strptime(CTime,"%Y-%m-%dT%H:%M:%S.%NZ"), \
+ src_artifact="artifact_Windows_Applications_NirsoftBrowserViewer",strptime(Visited,"%Y-%m-%dT%H:%M:%SZ"), \
+ src_artifact="artifact_Windows_Registry_RecentDocs",strptime(LastWriteTime,"%Y-%m-%dT%H:%M:%SZ"), \
+ src_artifact="artifact_Windows_Forensics_UserAccessLogs_Clients",strptime(InsertDate,"%Y-%m-%dT%H:%M:%SZ"), \
+ src_artifact="artifact_Windows_Forensics_UserAccessLogs_DNS",strptime(LastSeen,"%Y-%m-%dT%H:%M:%SZ"), \
+ src_artifact="artifact_Windows_Forensics_UserAccessLogs_SystemIdentity",strptime(CreationTime,"%Y-%m-%dT%H:%M:%SZ"), \
+ src_artifact="artifact_Custom_Windows_Application_IIS_IISLogs",strptime(event_time,"%Y-%m-%dT%H:%M:%SZ"), \
+ src_artifact="artifact_MacOS_Applications_Chrome_History",strptime(last_visit_time,"%Y-%m-%dT%H:%M:%SZ"), \
+ src_artifact="artifact_Windows_Registry_UserAssist",strptime(LastExecution,"%Y-%m-%dT%H:%M:%SZ") \
+ )
+
+
+ &amp;gt; Note: `Enable SSL` only works if SSL is properly configured on your
+ Splunk server -- meaning you have proper certificates and DNS. If you are
+ accessing your Splunk instance by IP, `Enable SSL` should be set to OFF.
+type: SERVER_EVENT
+
+parameters:
+ - name: ArtifactNameRegex
+ default: "."
+ type: regex
+ description: Names of artifacts to upload to Splunk
+ - name: url
+ default: http://127.0.0.1:8088/services/collector
+ description: |
+ The Splunk collector url, this is typically the url of the Splunk
+ server followed by :8088/services/collector.
+ - name: token
+ description: |
+ API token given when the event collector is configured on Splunk.
+ - name: index
+ default: velociraptor
+ description: |
+ Index to ingest the data. This should be set up when configuring
+ the event collector.
+ - name: SkipVerify
+ default: false
+ type: bool
+ description: |
+ SSL configured with the event collector. This is false by default.
+ - name: RootCerts
+ description: |
+ As a better alternative to skip_verify, allows root ca certs to
+ be added here.
+
+ - name: HostnameField
+ description: Field to extract hostname from
+ default: ClientId
+
+ - name: TimestampField
+ description: Field to extract timestamp from
+ default: timestamp
+
+sources:
+ - query: |
+ LET completions = SELECT * FROM watch_monitoring(
+ artifact="System.Flow.Completion")
+ WHERE Flow.artifacts_with_results =~ ArtifactNameRegex
+ AND log(message=Flow.artifacts_with_results)
+
+ LET organization &amp;lt;= org().name
+
+ LET documents = SELECT * FROM foreach(row=completions,
+ query={
+ SELECT * FROM foreach(
+ row=Flow.artifacts_with_results,
+ query={
+ SELECT *, _value AS Artifact,
+ timestamp(epoch=now()) AS timestamp,
+ ClientId, Flow.session_id AS FlowId,
+ "artifact_" + regex_replace(source=_value,
+ re='[/.]', replace='_') as src_artifact,
+ organization as org_name
+ FROM source(
+ client_id=ClientId,
+ flow_id=Flow.session_id,
+ artifact=_value)
+ })
+ })
+
+ SELECT * FROM splunk_upload(
+ query = documents,
+ url = url,
+ token = token,
+ index = index,
+ skip_verify = SkipVerify,
+ root_ca = RootCerts,
+ hostname_field=HostnameField,
+ timestamp_field=TimestampField
+ )
+
+&lt;/code>&lt;/pre></description></item><item><title>System.Hunt.Creation</title><link>https://docs.velociraptor.app/artifact_references/pages/system.hunt.creation/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/system.hunt.creation/</guid><description>&lt;p>An event artifact that fires when a user schedules a new hunt.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: System.Hunt.Creation
+description: |
+ An event artifact that fires when a user schedules a new hunt.
+
+type: SERVER_EVENT
+
+&lt;/code>&lt;/pre></description></item></channel></rss>

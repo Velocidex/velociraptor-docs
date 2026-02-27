@@ -1,0 +1,646 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.139.4"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>VQL Fundamentals :: Velociraptor - Digging deeper!</title>
+<link href=/css/nucleus.css?1772163122 rel=stylesheet><link href=/css/font-awesome-all.min.css?1772163122 rel=stylesheet><link href=/css/featherlight.min.css?1772163122 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1772163122 rel=stylesheet><link href=/css/auto-complete.css?1772163122 rel=stylesheet><link href=/css/theme.css?1772163122 rel=stylesheet><link href=/css/tabs.css?1772163122 rel=stylesheet><link href=/css/hugo-theme.css?1772163122 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1772163122 rel=stylesheet><link href=/css/dark.css?1772163122 rel=stylesheet><link href=/css/syntax.css?1772163122 rel=stylesheet><link href=/css/light.css?1772163122 rel=stylesheet><link href=/css/hljs.css?1772163122 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1772163122 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1772163122></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/docs/vql/fundamentals/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><div class=highlightable><ul class=topics><li data-nav-id=https://docs.velociraptor.app/announcements/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/><i class="fas fa-bullhorn"></i>Announcements</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/><i class="fas fa-exclamation-triangle"></i>Security Advisories</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2025-14728/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2025-14728/>CVE-2025-14728</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2025-6264/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2025-6264/>CVE-2025-6264</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2025-0914/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2025-0914/>CVE-2025-0914</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2024-10526/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2024-10526/>CVE-2024-10526</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-5950/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2023-5950/>CVE-2023-5950</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-2226/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2023-2226/>CVE-2023-2226</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0242/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2023-0242/>CVE-2023-0242</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0290/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2023-0290/>CVE-2023-0290</a></div></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/ class="dd-item parent haschildren"><div><i class="fa fa-angle-down fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/><i class="fas fa-book-reader"></i>Documentation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/overview/>Velociraptor Overview</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/history/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/overview/history/>History</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/overview/support/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/overview/support/>Support Policy</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/overview/security/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/overview/security/>Security</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/>Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/quickstart/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/quickstart/>Quickstart</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/>Server Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/key_concepts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/key_concepts/>Key Concepts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/key_decisions/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/key_decisions/>Key Decisions</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/deployment_example/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/deployment_example/>Deployment Example</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/multifrontend/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/multifrontend/>Multi-Frontend</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/upgrades/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/upgrades/>Upgrades</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/orgs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/orgs/>Organizations</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/clients/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/clients/>Deploying Clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/>Offline Collections</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/building/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/building/>Building</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/running/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/running/>Running</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/collection_data/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/collection_data/>Collection Data</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/updating/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/updating/>Updating</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/troubleshooting/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/troubleshooting/>Troubleshooting</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/security/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/security/>Security</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/resources/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/resources/>Performance</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/references/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/references/><i class="fas fa-book"></i>Config Reference</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/>The Admin GUI</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/gui/artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/artifacts/>Managing Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/keyboard_shortcuts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/keyboard_shortcuts/>Keyboard Shortcuts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/user_preferences/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/user_preferences/>User Preferences</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/customizing/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/customizing/>Customization</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/>Managing Clients</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/clients/searching/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/searching/>Searching for clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/interrogation/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/interrogation/>Interrogation</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/artifacts/>Collecting Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/labels/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/labels/>Labels</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/metadata/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/metadata/>Metadata</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/quarantine/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/quarantine/>Quarantine</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/vfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/vfs/>Virtual File System</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/shell/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/shell/>Shell Commands</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/monitoring/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/monitoring/>Monitoring</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/ class="dd-item parent haschildren"><div><i class="fa fa-angle-down fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/>VQL</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/vql/fundamentals/ class="dd-item active"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/fundamentals/>VQL Fundamentals</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/events/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/events/>Event Queries</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/join/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/join/>JOIN in VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/artifacts/>Artifacts</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/calling/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/artifacts/calling/>Calling Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/managing/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/artifacts/managing/>Managing Artifacts</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/extending_vql/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/extending_vql/>Extending VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/vql_reference/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/vql_reference/><i class="fas fa-book"></i>VQL Reference</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/>Artifacts</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/managing/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/managing/>Managing Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/basic_fields/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/basic_fields/>Basic Fields</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/advanced_fields/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/advanced_fields/>Advanced Fields</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/parameters/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/parameters/>Parameters</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/sources/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/sources/>Sources</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/preconditions/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/preconditions/>Preconditions</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/export_imports/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/export_imports/>Export & Imports</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/calling_artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/calling_artifacts/>Calling Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/event_queues/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/event_queues/>Event Queues</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/tools/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/tools/>Tools</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/resources/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/resources/>Resource Limits</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/security/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/security/>Security</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/use_cases/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/use_cases/>Other Use Cases</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/tips/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/tips/>Artifact Writing Tips</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/artifact_reference/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/artifact_reference/><i class="fas fa-book"></i>Artifact Reference</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/exchange_reference/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/exchange_reference/><i class="fas fa-code"></i>Artifact Exchange</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/notebooks/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/notebooks/>Notebooks</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/hunting/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/hunting/>Hunting</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/>Forensic Analysis</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/filesystem/>Searching Filesystems</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/paths/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/filesystem/paths/>Velociraptor Paths</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/remapping/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/filesystem/remapping/>Remapping Accessors</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/ntfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/filesystem/ntfs/>NTFS Analysis</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/searching/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/searching/>Searching Content</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/deaddisk/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/deaddisk/>Dead Disk Analysis</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/deaddisk/creating_running/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/deaddisk/creating_running/>Creating & Running</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/binary/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/binary/>Binary parsing</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/evidence_of_execution/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/evidence_of_execution/>Evidence Of Execution</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/event_logs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/event_logs/>Event Logs</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/volatile/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/volatile/>Volatile State</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/file_collection/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/file_collection/>File Acquisition</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/file_collection/bulk/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/file_collection/bulk/>Bulk File Acquisition</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/file_collection/vfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/file_collection/vfs/>VFS Uploads</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/file_collection/exporting/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/file_collection/exporting/>Bulk File Exports</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/server_automation/>Server Automation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_api/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/server_automation/server_api/>Server API</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_monitoring/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/server_automation/server_monitoring/>Server Monitoring</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/>CLI</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/cli/acl/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/acl/>acl</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/artifacts/>artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/collector/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/collector/>collector</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/config/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/config/>config</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/deaddisk/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/deaddisk/>deaddisk</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/fs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/fs/>fs (filesystem)</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/fuse/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/fuse/>fuse</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/query/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/query/>query</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/server_service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/server_service/>server_service</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/service/>service</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/tools/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/tools/>tools</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/user/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/user/>user</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/misc/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/misc/>Miscellaneous</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/flags/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/flags/>CLI flags</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/>Troubleshooting</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/deployment/>Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/server/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/deployment/server/>Server</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/client/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/deployment/client/>Client</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/offline_collector/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/deployment/offline_collector/>Offline Collector</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/operations/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/operations/>Operations</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/operations/server_ops/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/operations/server_ops/>Server Ops</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/operations/remote_clients/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/operations/remote_clients/>Remote Clients</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/vql/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/vql/>VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/>Debugging</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/internal/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/internal/>Internal</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/internal/metrics/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/internal/metrics/>Metrics</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/internal/go_profiles/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/internal/go_profiles/>Golang</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/client/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/client/>Client</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/client/client_monitoring/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/client/client_monitoring/>Monitoring</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/client/client_flows/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/client/client_flows/>Flows</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/>Global</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/datastore/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/datastore/>Datastore</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/datastore/replication/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/datastore/replication/>Replication</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/>Services</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/export/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/export/>ExportContainers</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/throttler/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/throttler/>Throttler</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/user_manager/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/user_manager/>User Manager</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/open_close/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/open_close/>Open-close</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/tempfiles/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/tempfiles/>tempfiles</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/worker/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/worker/>worker</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/>VQL</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/queries/>Queries</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/active_queries/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/queries/active_queries/>Active Queries</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/plugin_monitor/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/queries/plugin_monitor/>Plugin Monitor</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/recent_queries/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/queries/recent_queries/>Recent Queries</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/>Plugins</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/etw/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/etw/>ETW</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/glob/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/glob/>Glob</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/ntfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/ntfs/>NTFS Cache</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/sigma/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/sigma/>Sigma Tracker</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/windows_event/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/windows_event/>Windows Event Log Watcher</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/zip/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/zip/>Zip</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/process/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/process/>Process Tracker</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/sqlite/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/sqlite/>Sqlite</a></div></li></ul></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/>Org</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/>Services</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/broadcast_service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/broadcast_service/>Broadcast</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/queue_manager/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/queue_manager/>QueueManager</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/vfs_service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/vfs_service/>VFS</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/notifier/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/notifier/>Notifier</a></div></li></ul></li></ul></li></ul></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/downloads/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/downloads/><i class="fas fa-download"></i>Downloads</a></div></li><hr><li data-nav-id=https://docs.velociraptor.app/vql_reference/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/><i class="fas fa-book"></i>VQL Reference</a></div><ul><li data-nav-id=https://docs.velociraptor.app/vql_reference/popular/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/popular/>Frequently Used ✨</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/windows/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/windows/>Windows-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/linux/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/linux/>Linux-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/server/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/server/>Server-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/parsers/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/parsers/>Parsers</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/encode/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/encode/>Encode/Decode</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/event/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/event/>Event Plugins</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/experimental/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/experimental/>Experimental</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/developer/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/developer/>Developer</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/other/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/other/>Other</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/accessors/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/accessors/>Accessors</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/training/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/training/><i class="fas fa-graduation-cap"></i>Training</a></div><ul><li data-nav-id=https://docs.velociraptor.app/training/playbooks/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/training/playbooks/><i class="fas fa-play"></i>Playbooks</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/blog/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/blog/><i class="fas fa-newspaper"></i>Blog</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/><i class="fas fa-chalkboard-teacher"></i>Presentations</a></div><ul><li data-nav-id=https://docs.velociraptor.app/presentations/2022_linuxconf_au/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_linuxconf_au/>Linux Conf Au 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_auscert/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_auscert/>Auscert 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_sans_summit/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_sans_summit/>SANS Summit 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_velocon/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_velocon/>Velocon 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_dfrws_apac/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_dfrws_apac/>DFRWS APAC 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_everything_open/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2023_everything_open/>EverythingOpen 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_velocon/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2023_velocon/>VeloCON 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2024_auscert/>Auscert 2024</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert-detection-engineering/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2024_auscert-detection-engineering/>Auscert 2024 Talk</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2025_auscert-detection-engineering/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2025_auscert-detection-engineering/>Auscert 2025 Workshop</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/exchange/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/exchange/><i class="fas fa-code"></i>Artifact Exchange</a></div></li><li data-nav-id=https://docs.velociraptor.app/artifact_references/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/artifact_references/><i class="fas fa-book"></i>Artifact Reference</a></div></li><li data-nav-id=https://docs.velociraptor.app/knowledge_base/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/knowledge_base/><i class="fas fa-brain"></i>Knowledge Base</a></div></li><li data-nav-id=https://docs.velociraptor.app/search/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/search/><i class='fas fa-search'></i>Search</a></div></li></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>$("#sidebar i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()})</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/vql/fundamentals/_index.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>VQL Fundamentals</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents><ul><li><a href=#basic-syntax>Basic Syntax</a><ul><li><a href=#whitespace>Whitespace</a></li><li><a href=#plugins>Plugins</a></li><li><a href=#life-of-a-query>Life of a query</a></li><li><a href=#lazy-evaluation>Lazy Evaluation</a></li><li><a href=#what-is-a-scope>What is a Scope?</a></li><li><a href=#string-constants>String constants</a></li><li><a href=#identifiers-with-spaces>Identifiers with spaces</a></li><li><a href=#subqueries>Subqueries</a></li><li><a href=#subqueries-as-columns>Subqueries as columns</a></li><li><a href=#arrays>Arrays</a></li><li><a href=#dictionaries>Dictionaries</a></li><li><a href=#the-scope-plugin>The scope() plugin</a></li></ul></li><li><a href=#the-foreach-plugin>The Foreach plugin</a><ul><li><a href=#foreach-on-steroids>Foreach on steroids</a></li><li><a href=#foreach-and-deconstructing-a-dict>Foreach and deconstructing a dict</a></li></ul></li><li><a href=#let-expressions>LET expressions</a><ul><li><a href=#let-expressions-are-lazy>LET expressions are lazy</a></li><li><a href=#materialized-let-expressions>Materialized LET expressions</a></li></ul></li><li><a href=#local-functions>Local functions</a></li><li><a href=#vql-operators>VQL Operators</a><ul><li><a href=#protocols>Protocols</a></li><li><a href=#example---regex-operator>Example - Regex operator</a></li><li><a href=#example---associative-operator-applied-on-a-stored-query>Example - Associative operator applied on a stored query</a></li></ul></li><li><a href=#vql-control-structures>VQL control structures</a><ul><li><a href=#looping-over-rows>Looping over rows</a></li><li><a href=#looping-over-arrays>Looping over arrays</a></li><li><a href=#conditional-if-plugin-and-function>Conditional: if plugin and function</a></li><li><a href=#conditional-switch-plugin>Conditional: switch plugin</a></li><li><a href=#conditional-chain-plugin>Conditional: chain plugin</a></li></ul></li><li><a href=#group-by-clause>Group by clause</a><ul><li><a href=#aggregate-functions>Aggregate functions</a></li><li><a href=#vql-lambda-functions>VQL Lambda functions</a></li><li><a href=#vql-error-handling>VQL Error handling</a></li></ul></li></ul></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>VQL Fundamentals</h1><div class="mynotices tip"><div heading=" Running VQL queries in Notebooks "><p>When learning VQL, we recommend practicing in an environment where you can
+easily debug, iterate, and interactively test each query.</p><p>You can read more about notebooks <a href=/docs/notebooks/>here</a>
+.
+For the purposes of this documentation, we will assume you&rsquo;ve created a notebook
+and are typing VQL into the cell.</p></div></div><h2 id=basic-syntax>Basic Syntax</h2><p>VQL&rsquo;s syntax is heavily inspired by SQL. It uses the same basic
+<code>SELECT .. FROM .. WHERE</code> sentence structure, but does not include the
+more complex SQL syntax, such as <code>JOIN</code> or <code>HAVING</code>. In VQL, similar
+functionality is provided through plugins, which keeps the syntax
+simple and concise.</p><h3 id=whitespace>Whitespace</h3><p>VQL does not place any restrictions on the use of whitespace in the
+query body. We generally prefer queries that are well indented because
+they are more readable and look better but this is not a
+requirement. Unlike SQL, VQL does not require or allow a semicolon <code>;</code>
+at the end of statements.</p><p>The following two queries are equivalent</p><pre><code class=language-vql>-- This query is all on the same line - not very readable but valid.
+LET X = SELECT * FROM info() SELECT * FROM X
+
+-- We prefer well indented queries but VQL does not mind.
+LET X= SELECT * FROM info()
+SELECT * FROM X
+</code></pre><p>Let&rsquo;s consider the basic syntax of a VQL query.</p><p><figure id=746124d62ba955caf921730b8055186a><div data-featherlight=#746124d62ba955caf921730b8055186a class=figure><img src=vql_structure.png alt="Basic syntax"></div><figcaption><a class=image-link href=vql_structure.png><i class="fa fa-download"></i></a>
+Basic syntax</figcaption></figure></p><p>The query starts with a SELECT keyword, followed by a list of <code>Column Selectors</code> then the <code>FROM</code> keyword and a <code>VQL Plugin</code> potentially
+taking arguments. Finally we have a <code>WHERE</code> keyword followed by a
+filter expression.</p><h3 id=plugins>Plugins</h3><p>While VQL syntax is similar to SQL, SQL was designed to work on static
+tables in a database. In VQL, the data sources are not actually static
+tables on disk - they are provided by code that runs to generate
+rows. <code>VQL Plugins</code> produce rows and are positioned after the
+<code>FROM</code> clause.</p><p>Like all code, VQL plugins use parameters to customize and control
+their operations. VQL Syntax requires all arguments to be provided by
+name (these are called keyword arguments). Depending on the specific
+plugins, some arguments are required while some are optional.</p><div class="mynotices tip"><div heading=" Using the GUI suggestions "><p>You can type <code>?</code> in the Notebook interface to view a
+list of possible completions for a keyword. Completions are context sensitive. For example, since plugins must follow the <code>FROM</code> keyword, any suggestions
+after the <code>FROM</code> keyword will be for VQL plugins. Typing <code>?</code> inside
+a plugin arguments list shows the possible arguments, their
+type, and if they are required or optional.</p><p><figure id=048256075072d8b1b4943f5538ca6c92><div data-featherlight=#048256075072d8b1b4943f5538ca6c92 class=figure><img src=completion.png alt="VQL Plugin Completions"></div><figcaption><a class=image-link href=completion.png><i class="fa fa-download"></i></a>
+VQL Plugin Completions</figcaption></figure></p><p><figure id=c2f7f1fed6866a10927dba55a11ddded><div data-featherlight=#c2f7f1fed6866a10927dba55a11ddded class=figure><img src=completion2.png alt="VQL Plugin arguments Completions"></div><figcaption><a class=image-link href=completion2.png><i class="fa fa-download"></i></a>
+VQL Plugin arguments Completions</figcaption></figure></p></div></div><h3 id=life-of-a-query>Life of a query</h3><p>In order to understand how VQL works, let&rsquo;s follow a single row through the query.</p><p><figure id=de287d0edc94121523e3628cf3bba872><div data-featherlight=#de287d0edc94121523e3628cf3bba872 class=figure><img src=life_of_a_query.png alt="Life of a query"></div><figcaption><a class=image-link href=life_of_a_query.png><i class="fa fa-download"></i></a>
+Life of a query</figcaption></figure></p><ol><li><p>Velociraptor&rsquo;s VQL engine will call the plugin and pass
+any relevant arguments to it. The plugin will then generate one or
+more rows and send a row at a time into the query for further
+processing.</p></li><li><p>The column expression in the query receives the
+row. However, instead of evaluating the column expression
+immediately, VQL wraps the column expression in a <code>Lazy Evaluator</code>. Lazy evaluators allow the actual evaluation of the
+column expression to be delayed until a later time.</p></li><li><p>Next, VQL takes the lazy evaluator and uses them to evaluate the
+filter condition, which will determine if the row is to be
+eliminated or passed on.</p></li><li><p>In this example, the filter condition (<code>X=1</code>) must evaluate the
+value of X and therefore will trigger the Lazy Evaluator.</p></li><li><p>Assuming X is indeed 1, the filter will return TRUE and the row
+will be emitted from the query.</p></li></ol><h3 id=lazy-evaluation>Lazy Evaluation</h3><p>In the previous example, the VQL engine goes through signficant effort to postpone the evaluation as much as
+possible. Delaying an evaluation is a recurring theme in VQL and it saves Velociraptor from performing unnecessary work, like evaluating a
+column value if the entire row will be filtered out.</p><p>Understanding lazy evaluation is critical to writing efficient VQL
+queries. Let&rsquo;s examine how this work using a series of
+experiments. For these experiments we will use the <code>log()</code> VQL
+function, which simply produces a log message when evaluated.</p><pre><code class=language-sql>-- Case 1: One row and one log message
+SELECT OS, log(message=&quot;I Ran!&quot;) AS Log
+FROM info()
+
+-- Case 2: No rows and no log messages
+SELECT OS, log(message=&quot;I Ran!&quot;) AS Log
+FROM info()
+WHERE OS = &quot;Unknown&quot;
+
+-- Case 3: Log message but no rows
+SELECT OS, log(message=&quot;I Ran!&quot;) AS Log
+FROM info()
+WHERE Log AND OS = &quot;Unknown&quot;
+
+-- Case 4: No rows and no log messages
+SELECT OS, log(message=&quot;I Ran!&quot;) AS Log
+FROM info()
+WHERE OS = &quot;Unknown&quot; AND Log
+</code></pre><p>In Case 1, a single row will be emitted by the query and the associated log function will be evaluated, producing a log message.</p><p>Case 2 adds a condition which should eliminate the row. <strong>Because the
+row is eliminated VQL can skip evaluation of the log()
+function.</strong> No log message will be produced.</p><p>Cases 3 and 4 illustrate VQL&rsquo;s evaluation order of <code>AND</code> terms - from
+left to right with an early exit.</p><p>We can use this property to control when expensive functions are
+evaluated e.g. <code>hash()</code> or <code>upload()</code>.</p><h3 id=what-is-a-scope>What is a Scope?</h3><p>Scope is a concept common in many languages, and it is also central in
+VQL. A scope is a bag of names that is used to resolve symbols,
+functions and plugins in the query.</p><p>For example, consider the query</p><pre><code class=language-sql>SELECT OS FROM info()
+</code></pre><p>VQL sees “info” as a plugin and looks in the scope to get the real
+implementation of the plugin.</p><p>Scopes can be nested, which means that in different parts of the query a
+new child scope is used to evaluate the query. The child scope is
+constructed by layering a new set of names over the top of the
+previous set. When VQL tries to resolve a name, it looks up the scope
+in reverse order going from layer to layer until the symbol is
+resolved.</p><p>Take the following query for example,</p><p><figure id=bf68781f48be7f9bed7cbabbf8072d1f><div data-featherlight=#bf68781f48be7f9bed7cbabbf8072d1f class=figure><img src=scope.png alt="Scope lookup"></div><figcaption><a class=image-link href=scope.png><i class="fa fa-download"></i></a>
+Scope lookup</figcaption></figure></p><p>VQL evaluates the <code>info()</code> plugin, which emits a single row. Then VQL
+creates a child scope, with the row at the bottom level. When VQL tries
+to resolve the symbol <code>OS</code> from the column expression, it examines the
+scope stack in reverse, checking if the symbol <code>OS</code> exists in the
+lower layer. If not, VQL checks the next layer, and so on.</p><div class="mynotices warning"><div heading=" Masking variables in the scope "><p>Columns produced by a plugin are added to the child scope and
+therefore <strong>mask</strong> the same symbol name from parent scopes. This can
+sometimes unintentionally hide variables of the same name which are
+defined at a parent scope. If you find this happens to your query you
+can rename earlier symbols using the <code>AS</code> keyword to avoid this
+problem. For example:</p><pre><code class=language-sql>SELECT Pid, Name, {
+   SELECT Name FROM pslist(pid=Ppid)
+} AS ParentName
+FROM pslist()
+</code></pre><p>In this query, the symbol <code>Name</code> in the outer query will be resolved
+from the rows emitted by <code>pslist()</code> but the second <code>Name</code> will be
+resolved from the row emitted by <code>pslist(pid=Ppid)</code> - or in other
+words, the parent&rsquo;s name.</p></div></div><h3 id=string-constants>String constants</h3><p>Strings denoted by <code>"</code> or <code>'</code> can escape special characters using the
+<code>\</code>. For example, <code>"\n"</code> means a new line. This is useful but it
+also means that backslashes need to be escaped. This is sometimes
+inconvenient, especially when dealing with Windows paths (that
+contains a lot of backslashes).</p><p>Therefore, Velociraptor also offers a multi-line raw string which is
+denoted by <code>'''</code> (three single quotes). Within this type of string no
+escaping is possible, and the all characters are treated literally -
+including new lines. You can use <code>'''</code> to denote multi line strings.</p><h3 id=identifiers-with-spaces>Identifiers with spaces</h3><p>In VQL an <code>Identifier</code> is the name of a column, member of a dict or a
+keyword name. Sometimes identifiers contain special characters such as
+space or <code>.</code> which make it difficult to specify them without having
+VQL get confused by these extra characters.</p><p>In this case it is possible to enclose the identifier name with back
+ticks (<code>`</code>).</p><p>In the following example, the query specifies keywords with spaces to
+the <code>dict()</code> plugin in order to create a dict with keys containing spaces.</p><p>The query then continues to extract the value from this key by
+enclosing the name of the key using backticks.</p><pre><code class=language-vql>LET X = SELECT dict(`A key with spaces`=&quot;String value&quot;) AS Dict
+FROM scope()
+
+SELECT Dict, Dict.`A key with spaces` FROM X
+</code></pre><h3 id=subqueries>Subqueries</h3><p>VQL Subqueries can be specified as a column expression or as an
+arguments. Subqueries are delimited by <code>{</code> and <code>}</code>. Subqueries are
+also lazily evaluated, and will only be evaluated when necessary.</p><p>The following example demonstrates subqueries inside plugin args. The
+<code>if()</code> plugin will evaluate the <code>then</code> or the <code>else</code> query depending
+on the <code>condition</code> value (in this example when X has the value 1).</p><pre><code class=language-vql>SELECT * FROM if(condition=X=1,
+then={
+  SELECT * FROM ...
+},
+else={
+  SELECT * FROM ...
+})
+</code></pre><h3 id=subqueries-as-columns>Subqueries as columns</h3><p>You can use a subquery as a column which will cause it to be evaluated
+for each row (in this way it is similar to the <code>foreach()</code> plugin).</p><p>Since subqueries are always an array of dictionaries, the output if
+often difficult to read when the subquery returns many rows or
+columns. As a special case, VQL will simplify subqueries:</p><ol><li>If the subquery returns one row and has several columns, VQL will
+put a single dictionary of data in the column.</li><li>If the subquery returns one row and a single column, the value is
+expanded into the cell.</li></ol><p>These heuristics are helpful when constructing subqueries to enrich
+columns. If you wish to preserve the array of dicts you can use a VQL
+function instead.</p><p>Here is an example to demonstrate:</p><pre><code class=language-vql>LET Foo =  SELECT &quot;Hello&quot; AS Greeting FROM scope()
+
+SELECT { SELECT &quot;Hello&quot; AS Greeting FROM scope() } AS X,
+       { SELECT &quot;Hello&quot; AS Greeting, &quot;Goodbye&quot; AS Farewell FROM scope() } AS Y,
+       Foo AS Z
+FROM scope()
+</code></pre><p>In the above query - X is a subquery with a single row and a single
+column, therefore VQL will simplify the column X to contain <code>"Hello"</code>
+The second query contains two columns so VQL will simplify it into a
+dict.</p><p>Finally to get the full unsimplified content, a VQL stored query can
+be used. This will result in an array of one dict, containing a single
+column <code>Greeting</code> with value of <code>Hello</code></p><h3 id=arrays>Arrays</h3><p>An array may be defined either by <code>(</code> and <code>)</code> or <code>[</code> and <code>]</code>. Since it
+can be confusing to tell regular parenthesis from an array with a
+single element, VQL also allows a trailing comma to indicate a single
+element array. For example <code>(1, )</code> means an array with one member,
+whereas <code>(1)</code> means a single value of 1.</p><h3 id=dictionaries>Dictionaries</h3><p>A dictionary (or in short a <code>dict</code>) is an associative data structure
+which associates keys with values. This is often called a <code>hash map</code>
+in other languages.</p><p>VQL&rsquo;s dict appears in many places and used heavily internally. You can
+recognize that a dict is involved using the <code>typeof()</code> VQL function.</p><p>Unlike some other languages, Velociraptor&rsquo;s dicts maintain their key
+order. You can iterate over the dict&rsquo;s key value pairs using the
+<code>items()</code> plugin:</p><pre><code class=language-vql>LET MyDict &lt;= dict(Foo=1, Bar=2, Baz=3)
+
+SELECT * FROM items(item=MyDict)
+</code></pre><p>The dict has a number of very useful attributes:</p><ul><li><code>MyDict.Items</code>: Returns a list of key value pairs</li><li><code>MyDict.Keys</code>: Returns a list of keys</li><li><code>MyDict.Values</code>: Returns a list of Values</li><li><code>MyDict.Len</code>: Returns the number of keys</li><li><code>MyDict.ToMap</code>: Converts to an unordered map.</li><li><code>MyDict.String</code>: Converts to a JSON representation of the dict.</li></ul><h3 id=the-scope-plugin>The scope() plugin</h3><p>VQL is strict about the syntax of a VQL statement. Each statement must
+have a plugin specified, however sometimes we dont really want to
+select from any plugin at all.</p><p>The default noop plugin is called <code>scope()</code> and simply returns the
+current scope as a single row. If you even need to write a query but
+do not want to actually run a plugin, use <code>scope()</code> as a noop
+plugin. For example</p><pre><code class=language-sql>-- Returns one row with Value=4
+SELECT 2 + 2 AS Value
+FROM scope()
+</code></pre><h2 id=the-foreach-plugin>The Foreach plugin</h2><p>VQL is modeled on basic SQL since SQL is a familiar language for new
+users to pick up. However, SQL quickly becomes more complex with very
+subtle syntax that only experienced SQL users use regularly. One of
+the more complex aspects of SQL is the <code>JOIN</code> operator which typically
+comes in multiple flavors with subtle differences (INNER JOIN, OUTER
+JOIN, CROSS JOIN etc).</p><p>While these make sense for SQL since they affect the way indexes are
+used in the query, VQL does not have table indexes, nor does it have
+any tables. Therefore the <code>JOIN</code> operator is meaningless for
+Velociraptor. To keep VQL simple and accessible, we specifically did
+not implement a <code>JOIN</code> operator. For a more detailed discussion of the
+<code>JOIN</code> operator see <a href=/docs/vql/join/>emulating join in VQL</a></p><p>Instead of a <code>JOIN</code> operator, VQL has the <code>foreach()</code> plugin, which is
+probably the most commonly used plugin in VQL queries. The <code>foreach()</code>
+plugin takes two arguments:</p><ol><li><p>The <code>row</code> parameter is a subquery that provides rows</p></li><li><p>The <code>query</code> parameter is a subquery that will be evaluated on a
+subscope containing each row that is emitted by the <code>row</code> argument.</p></li></ol><p>Consider the following query:</p><pre><code class=language-sql>SELECT * FROM foreach(
+    row={
+        SELECT Exe FROM pslist(pid=getpid())
+    },
+    query={
+        SELECT ModTime, Size, FullPath FROM stat(filename=Exe)
+    })
+</code></pre><p>Note how <code>Exe</code> is resolved from the produced row since the query is
+evaluated within the nested scope.</p><p>Foreach is useful when we want to run a query on the output of another
+query.</p><h3 id=foreach-on-steroids>Foreach on steroids</h3><p>Normally foreach iterates over each row one at a time. The
+<code>foreach()</code> plugin also takes the workers parameter. If this is larger
+than 1, <code>foreach()</code> will use multiple threads and evaluate the <code>query</code>
+query in each worker thread. This allows the query to evaluate values in parallel.</p><p>For example, the following query retrieves all the
+files in the System32 directory and calculates their hash.</p><pre><code class=language-sql>SELECT FullPath, hash(path=FullPath)
+FROM glob(globs=&quot;C:/Windows/system32/*&quot;)
+WHERE NOT IsDir
+</code></pre><p>As each row is emitted from the <code>glob()</code> plugin with a filename of a
+file, the <code>hash()</code> function is evaluated and the hash is
+calculated.</p><p>However this is linear, since each hash is calculated before the next
+hash is started - hence only one hash is calculated at once.</p><p>This example is very suitable for parallelization because globbing for
+all files is quite fast, but hashing the
+files can be slow. If we delegate the hashing to multiple threads, we
+can make more effective use of the CPU.</p><pre><code class=language-sql>SELECT * FROM foreach(
+row={
+   SELECT FullPath
+   FROM glob(globs=&quot;C:/Windows/system32/*&quot;)
+   WHERE NOT IsDir
+}, query={
+   SELECT FullPath, hash(path=FullPath)
+   FROM scope()
+}, worker=10)
+
+</code></pre><h3 id=foreach-and-deconstructing-a-dict>Foreach and deconstructing a dict</h3><p>Deconstructing a dict means to take that dict and create a column for
+each field of that dict. Consider the following query:</p><pre><code class=language-sql>LET Lines = '''Foo Bar
+Hello World
+Hi There
+'''
+
+LET all_lines = SELECT grok(grok=&quot;%{NOTSPACE:First} %{NOTSPACE:Second}&quot;, data=Line) AS Parsed
+FROM parse_lines(accessor=&quot;data&quot;, filename=Lines)
+
+SELECT * FROM foreach(row=all_lines, column=&quot;Parsed&quot;)
+</code></pre><p>This query reads some lines (for example log lines) and applies a grok
+expression to parse each line. The grok function will produce a dict
+after parsing the line with fields determined by the grok expression.</p><p>The <code>all_lines</code> query will have one column called &ldquo;Parsed&rdquo; containing
+a dict with two fields (First and Second). Using the <code>column</code>
+parameter to the foreach() plugin, foreach will use the value in that
+column as a row, deconstructing the dict into a table containing the
+<code>First</code> and <code>Second</code> column.</p><h2 id=let-expressions>LET expressions</h2><p>We know that subqueries can be used in various parts of
+the query, such as in a column specifier or as an argument to a
+plugin. While subqueries are convenient, they can become unwieldy when
+nested too deeply. VQL offers an alternative to subqueries called
+<code>Stored Queries</code>.</p><p>A stored query is a lazy evaluator of a query that we can store in
+the scope. Wherever the stored query is used it will be evaluated on
+demand. Consider the example below, where for each process, we
+evaluate the <code>stat()</code> plugin on the executable to check the
+modification time of the executable file.</p><pre><code class=language-sql>LET myprocess = SELECT Exe FROM pslist()
+
+LET mystat = SELECT ModTime, Size, FullPath
+        FROM stat(filename=Exe)
+
+SELECT * FROM foreach(row=myprocess, query=mystat)
+</code></pre><div class="mynotices note"><div heading=note><p>A Stored Query is simply a query that is stored into a variable. It is
+not actually evaluated at the point of definition. At the point where
+the query is referred, that is where evaluation occurs. The scope at
+which the query is evaluated is derived from the point of reference.</p><p>For example in the query above, <code>mystat</code> simply stores the query
+itself. Velociraptor will then re-evaluate the <code>mystat</code> query for each
+row given by <code>myprocess</code> as part of the <code>foreach()</code> plugin operation.</p></div></div><h3 id=let-expressions-are-lazy>LET expressions are lazy</h3><p>We have previously seen VQL goes out of its way to do as little work
+as possible.</p><p>Consider the following query</p><pre><code class=language-sql>LET myhashes = SELECT FullPath, hash(path=FullPath)
+FROM glob(globs=&quot;C:/Windows/system32/*&quot;)
+
+SELECT * FROM myhashes
+LIMIT 5
+</code></pre><p>The <code>myhashes</code> stored query hashes all files in System32 (many
+thousands of files). However, this query is used in a second query
+with a <code>LIMIT</code> clause.</p><p>When the query emits 5 rows in total, the entire query is cancelled
+(since we do not need any more data) which in turn aborts the
+<code>myhashes</code> query. Therefore, VQL is able to exit early from any query
+without having to wait for the query to complete.</p><p>This is possible because VQL queries are <strong>asynchronous</strong> - we do
+<strong>not</strong> calculate the entire result set of <code>myhashes</code> <strong>before</strong> using
+<code>myhashes</code> in another query, we simply pass the query itself and
+forward each row as needed.</p><h3 id=materialized-let-expressions>Materialized LET expressions</h3><p>A stored query does not in itself evaluate the
+query. Instead the query will be
+evaluated whenever it is referenced.</p><p>Sometimes this is not what we want to do. For example consider a query
+which takes a few seconds to run, but its output is not expected to
+change quickly. In that case, we actually want to cache the results of
+the query in memory and simply access it as an array.</p><p>Expanding a query into an array in memory is termed <code>Materializing</code>
+the query.</p><p>For example, consider the following query that lists all sockets on
+the machine, and attempts to resolve the process ID to a process name
+using the <code>pslist()</code> plugin.</p><pre><code class=language-sql>LET process_lookup = SELECT Pid AS ProcessPid, Name FROM pslist()
+
+SELECT Laddr, Status, Pid, {
+   SELECT Name FROM process_lookup
+   WHERE Pid = ProcessPid
+} AS ProcessName
+FROM netstat()
+</code></pre><p>This query will be very slow because the <code>process_lookup</code> stored query
+will be re-evaluated for each row returned from netstat (that is, for each
+socket).</p><p>The process listing will not likely change during the few seconds it takes the query to run.
+It would be more efficient to have the process listing cached in memory
+for the entire length of the query.</p><p>We recommend that you <code>Materialize</code> the query:</p><pre><code class=language-sql>LET process_lookup &lt;= SELECT Pid AS ProcessPid, Name FROM pslist()
+
+SELECT Laddr, Status, Pid, {
+   SELECT Name FROM process_lookup
+   WHERE Pid = ProcessPid
+} AS ProcessName
+FROM netstat()
+</code></pre><p>The difference between this query and the previous one is that
+the <code>LET</code> clause uses <code>&lt;=</code> instead of <code>=</code>. The <code>&lt;=</code> is the materialize
+operator. It tells VQL to expand the query in place into an array
+which is then assigned to the variable <code>process_lookup</code>.</p><p>Subsequent accesses to <code>process_lookup</code> simply access an in-memory
+array of pid and name for all processes and <strong>do not</strong> need to run
+<code>pslist()</code> again.</p><h2 id=local-functions>Local functions</h2><p><code>LET</code> expressions may store queries into a variable,
+and have the queries evaluated in a subscope at the point of use.</p><p>A <code>LET</code> expression can also declare explicit passing of
+variables.</p><p>Consider the following example which is identical to the example
+above:</p><pre><code class=language-sql>LET myprocess = SELECT Exe FROM pslist()
+
+LET mystat(Exe) = SELECT ModTime, Size, FullPath
+        FROM stat(filename=Exe)
+
+SELECT * FROM foreach(row=myprocess, query={
+  SELECT * FROM mystat(Exe=Exe)
+})
+</code></pre><p>This time <code>mystat</code> is declares as a <code>VQL Local Plugin</code> that
+takes arguments. Therefore we now pass it an parameter explicitly and
+it behaves as a plugin.</p><p>Similarly we can define a <code>VQL Local Function</code>.</p><pre><code class=language-sql>LET MyFunc(X) = X + 5
+
+-- Return 11
+SELECT MyFunc(X=6) FROM scope()
+</code></pre><div class="mynotices tip"><div heading=" Differences between a VQL plugin and VQL function "><p>Remember the difference between a VQL plugin and a VQL function is
+that a plugin returns multiple rows and therefore needs to appear
+between the FROM and WHERE clauses. A function simply takes several
+values and transforms them into a single value.</p></div></div><h2 id=vql-operators>VQL Operators</h2><p>In VQL an operator represents an operation to be taken on
+operands. Unlike SQL, VQL keeps the number of operators down,
+preferring to use VQL functions over introducing new operators.</p><p>The following operators are available. Most operators apply to two
+operands, one on the left and one on the right (so in the expression
+<code>1 + 2</code> we say that <code>1</code> is the Left Hand Side (<code>LHS</code>), <code>2</code> is the Right
+Hand Side (<code>RHS</code>) and <code>+</code> is the operator.</p><table><thead><tr><th>Operator</th><th>Meaning</th></tr></thead><tbody><tr><td><code>+ - * /</code></td><td>These are the usual arithmetic operators</td></tr><tr><td><code>=~</code></td><td>This is the regex operator, reads like &ldquo;matches&rdquo;. For example <code>X =~ "Windows"</code> will return <code>TRUE</code> if X matches the regex &ldquo;Windows&rdquo;</td></tr><tr><td><code>!= = &lt; &lt;= > >=</code></td><td>The usual comparison operators.</td></tr><tr><td><code>in</code></td><td>The membership operator. Returns TRUE if the LHS is present in the RHS. Note that <code>in</code> is an exact case sensitive match</td></tr><tr><td><code>.</code></td><td>The <code>.</code> operator is called the Associative operator. It dereferences a field from the LHS named by the RHS. For example <code>X.Y</code> extracts the field <code>Y</code> from the dict <code>X</code></td></tr></tbody></table><h3 id=protocols>Protocols</h3><p>When VQL encounters an operator it needs to decide how to actually
+evaluate the operator. This depends on what types the LHS and RHS
+operands actually are. The way in which operators interact with the
+types of operands is called a <code>protocol</code>.</p><p>Generally VQL does the expected thing but it is valuable to understand
+which protocol will be chosen in specific cases.</p><h3 id=example---regex-operator>Example - Regex operator</h3><p>For example consider the following query</p><pre><code class=language-vql>LET MyArray = (&quot;X&quot;, &quot;XY&quot;, &quot;Y&quot;)
+LET MyValue = &quot;X&quot;
+LET MyInteger = 5
+
+SELECT MyArray =~ &quot;X&quot;, MyValue =~ &quot;X&quot;, MyInteger =~ &quot;5&quot;
+FROM scope()
+</code></pre><p>In the first case the regex operator is applied to an array so the
+expression is true if <strong>any</strong> member of the array matches the regular
+expression.</p><p>The second case applied the regex to a string, so it is true if the
+string matches.</p><p>Finally in the last case, the regex is applied to an integer. It makes
+no sense to apply a regular expression to an integer and so VQL
+returns FALSE.</p><h3 id=example---associative-operator-applied-on-a-stored-query>Example - Associative operator applied on a stored query</h3><p>The Associative operator is denoted by <code>.</code> and accesses a field from
+an object or dict. One of the interesting protocols of the <code>.</code>
+operator is when it is applied to a query or a list.</p><p>In the following example, I define a stored query that calls the
+<code>Generic.Utils.FetchBinary</code> artifact (This artifact fetches the named
+binary):</p><pre><code class=language-vql>LET binary = SELECT FullPath
+  FROM Artifact.Generic.Utils.FetchBinary(ToolName=&quot;ToolName&quot;)
+</code></pre><p>Although a query defined via the <code>LET</code> keyword does not actually run
+the query immediately (it is a lazy operator), we can think of the
+variable <code>binary</code> as containing an array of dictionaries
+(e.g. <code>[{"FullPath": "C:\Windows\Temp\binary.exe"}]</code>).</p><p>If we now apply the associative operator <code>.</code> to the variable binary,
+the operator will convert the array into another array, where each
+member is extracted for example <code>binary.FullPath</code> is
+<code>["C:\Windows\Temp\binary.exe"]</code>. To access the name of the binary we
+can then index the first element from the array.</p><pre><code class=language-vql>SELECT * FROM execve(argv=[binary.FullPath[0], &quot;-flag&quot;])
+</code></pre><div class="mynotices warning"><div heading=" Expanding queries using the associative operator "><p>While using the <code>.</code> operator is useful to apply to a stored query, care
+must be taken that the query is not too large. In VQL stored queries
+are lazy and do not actually execute until needed because they can
+generate thousands of rows! The <code>.</code> operator expands the query into an
+array and may exhaust memory doing so.</p><p>The following query may be disastrous:</p><pre><code class=language-vql>LET MFT = SELECT * FROM Artifact.Windows.NTFS.MFT()
+
+SELECT MFT.FullPath FROM scope()
+</code></pre><p>The <code>Windows.NTFS.MFT</code> artifact typically generates millions of rows,
+and <code>MFT.FullPath</code> will expand them all into memory!</p></div></div><h2 id=vql-control-structures>VQL control structures</h2><p>Let&rsquo;s summarizes some of the more frequent VQL control structures.</p><p>We already met with the <code>foreach()</code> plugin before. The <code>row</code> parameter
+can also receive any iterable type (like an array).</p><h3 id=looping-over-rows>Looping over rows</h3><p>VQL does not have a JOIN operator - we use the foreach plugin to
+iterate over the results of one query and apply a second query on it.</p><pre><code class=language-sql>SELECT * FROM foreach(
+    row={ &lt;sub query goes here&gt; },
+    query={ &lt;sub query goes here &gt;})
+</code></pre><h3 id=looping-over-arrays>Looping over arrays</h3><p>Sometimes arrays are present in column data. We can iterate over these
+using the foreach plugin.</p><pre><code class=language-sql>SELECT * FROM foreach(
+    row=&lt;An iterable type&gt;,
+    query={ &lt;sub query goes here &gt;})
+</code></pre><p>If row is an array, the value will be assigned to <code>_value</code> as a special placeholder.</p><h3 id=conditional-if-plugin-and-function>Conditional: if plugin and function</h3><p>The <code>if()</code> plugin and function allows branching in VQL.</p><pre><code class=language-sql>SELECT * FROM if(
+    condition=&lt;sub query or value&gt;,
+    then={ &lt;sub query goes here &gt;},
+    else={ &lt;sub query goes here &gt;})
+</code></pre><p>If the condition is a query it is true if it returns any rows. Next, we&rsquo;ll
+evaluate the <code>then</code> subquery or the <code>else</code> subquery. Note that as usual,
+VQL is lazy and will not evaluate the unused query or expression.</p><h3 id=conditional-switch-plugin>Conditional: switch plugin</h3><p>The <code>switch()</code> plugin and function allows multiple branching in VQL.</p><pre><code class=language-sql>SELECT * FROM switch(
+    a={ &lt;sub query &gt;},
+    b={ &lt;sub query &gt;},
+    c={ &lt;sub query &gt;})
+</code></pre><p>Evaluate all subqueries in order and when any of them returns any rows
+we stop evaluation the rest of the queries.</p><p>As usual VQL is lazy - this means that branches that are not taken are
+essentially free!</p><h3 id=conditional-chain-plugin>Conditional: chain plugin</h3><p>The <code>chain()</code> plugin allows multiple queries to be combined.</p><pre><code class=language-sql>SELECT * FROM chain(
+    a={ &lt;sub query &gt;},
+    b={ &lt;sub query &gt;},
+    c={ &lt;sub query &gt;})
+</code></pre><p>Evaluate all subqueries in order and append all the rows together.</p><h2 id=group-by-clause>Group by clause</h2><p>A common need in VQL is to use the <code>GROUP BY</code> clause to stack all rows
+which have the same value, but what exactly does the <code>GROUP BY</code> clause
+do?</p><p>As the name suggests, <code>GROUP BY</code> splits all the rows into groups
+called bins where each bin has the same value of as the target
+expression.</p><p><figure id=7e4f737ed852a618196370a8e90f907c><div data-featherlight=#7e4f737ed852a618196370a8e90f907c class=figure><img src=groupby.png alt="Group By"></div><figcaption><a class=image-link href=groupby.png><i class="fa fa-download"></i></a>
+Group By</figcaption></figure></p><p>Consider the query in the example above, the <code>GROUP BY</code> clause
+specifies that rows will be grouped where each bin has the same value
+of the <code>X</code> column. Using the same table, we can see the first group
+having <code>X=1</code> contains 2 rows, while the second group having <code>X=2</code>
+contains only a single row.</p><p>The <code>GROUP BY</code> query will therefore return two rows (one for each
+bin). Each row will contain a single value for the <code>X</code> value and one
+of the <code>Y</code> values.</p><div class="mynotices warning"><div heading=" Selecting columns with GROUP BY "><p>As the above diagram illustrates, it only makes sense in general to
+select the same column as is being grouped. This is because other
+columns may contain any number of values, but only a single one of
+these values will be returned.</p><p>In the above example, selecting the <code>Y</code> column is not deterministic
+because the first bin contains several values for <code>Y</code>.</p><p>Be careful not to rely on the order of rows in each bin.</p></div></div><h3 id=aggregate-functions>Aggregate functions</h3><p>Aggregate VQL functions are designed to work with the <code>GROUP BY</code>
+clause to operate on all the rows in each bin separately.</p><p>Aggregate functions keep state between evaluations. For example
+consider the <code>count()</code> function. Each time count() is evaluated, it
+increments a number in its own state.</p><p>Aggregate function State is kept in an <code>Aggregate Context</code> - a
+separate context for each <code>GROUP BY</code> bin. Therefore, the following
+query will produce a count of all the rows in each bin (because each
+bin has a separate state).</p><pre><code class=language-sql>SELECT X, count() AS Count
+FROM …
+GROUP BY X
+</code></pre><p>Aggregate functions are used to calculate values that consider
+multiple rows.</p><p>Some aggregate functions:</p><ul><li><code>count()</code> counts the total number of rows in each bin.</li><li><code>sum()</code> adds up a value for an expression in each bin.</li><li><code>enumerate()</code> collect all the values in each bin into an in-memory array.</li><li><code>rate()</code> calculates a rate (first order derivative) between each
+invocation and its previous one.</li></ul><p>These can be seen in the query below.</p><p><figure id=87cec56f8779631970d78be8cda30e94><div data-featherlight=#87cec56f8779631970d78be8cda30e94 class=figure><img src=image70.png alt="Aggregate functions"></div><figcaption><a class=image-link href=image70.png><i class="fa fa-download"></i></a>
+Aggregate functions</figcaption></figure></p><h3 id=vql-lambda-functions>VQL Lambda functions</h3><p>In various places it is possible to specify a VQL lambda
+function. These functions a simple VQL expressions which can be used
+as filters, or simple callbacks in some plugins. The format is simple:</p><pre><code>x=&gt;x.Field + 2
+</code></pre><p>Represents a simple function with a single parameter <code>x</code>. When the
+lambda function is evaluated, the caller will pass the value as <code>x</code>
+and receive the result of the function.</p><p>Usually lambda functions are specified as strings, and will be
+interpreted at run time. For example the <code>eval()</code> function allows a
+lambda to be directly evaluated (with <code>x</code> being the current scope in
+that case).</p><pre><code class=language-vql>SELECT eval(func=&quot;x=&gt;1+1&quot;) AS Two FROM scope()
+</code></pre><p>The scope that is visited at the place where the lambda is evaluated
+will be passed to the lambda function - this allows the lambda to
+access previously defined helper functions.</p><pre><code class=language-vql>LET AddTwo(x) = x + 2
+
+SELECT eval(func=&quot;x=&gt;AddTwo(x=1)&quot;) AS Three FROM scope()
+</code></pre><h3 id=vql-error-handling>VQL Error handling</h3><p>VQL queries may encounter errors during their execution. For example,
+we might try to open a file, but fail due to insufficient permissions.</p><p>It is especially not desirable to have VQL stop execution completely
+and abort when an error occurs. Usually we want the query to continue
+and produce as much data as possible. However, we do want to
+know that some things potentially went wrong.</p><p>Therefore VQL functions typically return <code>NULL</code> in the case of an
+error, and log the error in the <code>Query Logs</code>. These logs are visible
+in a number of places:</p><ol><li>When collecting an artifact from a client, the query logs are
+visible in the <code>Logs</code> tab.</li><li>In a notebook cell the query logs are visible by clicking the
+<code>Logs</code> button at the bottom of the cell.</li><li>With the API the query logs are returned in a separate response
+field.</li></ol><p>When writing a VQL query, another aspect to think about is: what do we
+define as an error? For example if we write a VQL query to collect a
+bunch of files, but one of these files is unreadable - do we consider
+the query has failed? Should we just stop?</p><p>It really depends on a case by case basis.</p><p>Generally when collecting an artifact, a number of error conditions
+might occur and some query logs will be produced. But the collection
+is not automatically marked as an <code>Error</code> unless one of the following
+conditions is met:</p><ol><li>Any logs are emitted at the <code>ERROR</code> level (using the <code>log()</code>
+function with <code>level='ERROR'</code>).</li><li>Any log messages match the error patterns defined in
+<a href=https://docs.velociraptor.app/docs/deployment/references/#Frontend.collection_error_regex target=_blank>Frontend.collection_error_regex</a>
+. By
+default this includes <code>Symbol not found</code> which usually indicates a
+mistake or typo with the VQL query itself.</li><li>Errors produced by the client itself (e.g. the query canceled or timed out)</li></ol><p>When a collection indicates an error all it means is that something
+unexpected happened and a user needs to take a closer look. The
+collection may still contain useful data - it is a judgment call.</p><p>Therefore when writing your own VQL think if an error is actually
+something we need to alert the user about (i.e. there is no further
+value in the collection) or can we just log the error and move on.</p><p>Conversely as a Velociraptor user, when a collection is completed
+without an error it does not necessarily mean that everything worked
+perfectly - there may be some messages in the query logs that alert to
+some errors encountered. You should always take a quick look at the
+error logs to see if there is anything of concern.</p><div class="mynotices warning"><div heading=" Temporary or permanent errors "><p>Note that an error may be temporary (e.g. the artifact collection
+timed out), or permanent (e.g. an error within the VQL itself, file
+not found etc).</p><p>It is not a good idea to automatically retry a collection unless you
+are sure the error is temporary - if the error is more permanent the
+same thing will happen again. It is always worth checking the query
+logs to make sure there is any point in retrying the collection.</p></div></div><footer class=footline></footer></div></div></section><div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1772163122></script><script src=/js/perfect-scrollbar.min.js?1772163122></script><script src=/js/perfect-scrollbar.jquery.min.js?1772163122></script><script src=/js/jquery.sticky.js?1772163122></script><script src=/js/featherlight.min.js?1772163122></script><script src=/js/highlight.min.js?1772163122></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1772163122></script><script src=/js/learn.js?1772163122></script><script src=/js/hugo-learn.js?1772163122></script></body></html>

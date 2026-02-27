@@ -1,0 +1,919 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.139.4"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Windows.Carving.CobaltStrike :: Velociraptor - Digging deeper!</title>
+<link href=/css/nucleus.css?1772163116 rel=stylesheet><link href=/css/font-awesome-all.min.css?1772163116 rel=stylesheet><link href=/css/featherlight.min.css?1772163116 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1772163116 rel=stylesheet><link href=/css/auto-complete.css?1772163116 rel=stylesheet><link href=/css/theme.css?1772163116 rel=stylesheet><link href=/css/tabs.css?1772163116 rel=stylesheet><link href=/css/hugo-theme.css?1772163116 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1772163116 rel=stylesheet><link href=/css/dark.css?1772163116 rel=stylesheet><link href=/css/syntax.css?1772163116 rel=stylesheet><link href=/css/light.css?1772163116 rel=stylesheet><link href=/css/hljs.css?1772163116 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1772163116 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1772163116></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/artifact_references/pages/windows.carving.cobaltstrike/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><div class=highlightable><ul class=topics><li data-nav-id=https://docs.velociraptor.app/announcements/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/><i class="fas fa-bullhorn"></i>Announcements</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/><i class="fas fa-exclamation-triangle"></i>Security Advisories</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2025-14728/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2025-14728/>CVE-2025-14728</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2025-6264/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2025-6264/>CVE-2025-6264</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2025-0914/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2025-0914/>CVE-2025-0914</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2024-10526/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2024-10526/>CVE-2024-10526</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-5950/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2023-5950/>CVE-2023-5950</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-2226/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2023-2226/>CVE-2023-2226</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0242/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2023-0242/>CVE-2023-0242</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0290/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2023-0290/>CVE-2023-0290</a></div></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/><i class="fas fa-book-reader"></i>Documentation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/overview/>Velociraptor Overview</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/history/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/overview/history/>History</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/overview/support/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/overview/support/>Support Policy</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/overview/security/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/overview/security/>Security</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/>Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/quickstart/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/quickstart/>Quickstart</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/>Server Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/key_concepts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/key_concepts/>Key Concepts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/key_decisions/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/key_decisions/>Key Decisions</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/deployment_example/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/deployment_example/>Deployment Example</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/multifrontend/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/multifrontend/>Multi-Frontend</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/upgrades/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/upgrades/>Upgrades</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/orgs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/orgs/>Organizations</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/clients/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/clients/>Deploying Clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/>Offline Collections</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/building/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/building/>Building</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/running/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/running/>Running</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/collection_data/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/collection_data/>Collection Data</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/updating/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/updating/>Updating</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/troubleshooting/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/troubleshooting/>Troubleshooting</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/security/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/security/>Security</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/resources/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/resources/>Performance</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/references/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/references/><i class="fas fa-book"></i>Config Reference</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/>The Admin GUI</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/gui/artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/artifacts/>Managing Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/keyboard_shortcuts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/keyboard_shortcuts/>Keyboard Shortcuts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/user_preferences/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/user_preferences/>User Preferences</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/customizing/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/customizing/>Customization</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/>Managing Clients</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/clients/searching/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/searching/>Searching for clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/interrogation/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/interrogation/>Interrogation</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/artifacts/>Collecting Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/labels/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/labels/>Labels</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/metadata/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/metadata/>Metadata</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/quarantine/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/quarantine/>Quarantine</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/vfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/vfs/>Virtual File System</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/shell/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/shell/>Shell Commands</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/monitoring/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/monitoring/>Monitoring</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/>VQL</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/vql/fundamentals/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/fundamentals/>VQL Fundamentals</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/events/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/events/>Event Queries</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/join/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/join/>JOIN in VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/artifacts/>Artifacts</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/calling/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/artifacts/calling/>Calling Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/managing/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/artifacts/managing/>Managing Artifacts</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/extending_vql/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/extending_vql/>Extending VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/vql_reference/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/vql_reference/><i class="fas fa-book"></i>VQL Reference</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/>Artifacts</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/managing/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/managing/>Managing Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/basic_fields/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/basic_fields/>Basic Fields</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/advanced_fields/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/advanced_fields/>Advanced Fields</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/parameters/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/parameters/>Parameters</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/sources/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/sources/>Sources</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/preconditions/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/preconditions/>Preconditions</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/export_imports/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/export_imports/>Export & Imports</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/calling_artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/calling_artifacts/>Calling Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/event_queues/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/event_queues/>Event Queues</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/tools/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/tools/>Tools</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/resources/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/resources/>Resource Limits</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/security/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/security/>Security</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/use_cases/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/use_cases/>Other Use Cases</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/tips/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/tips/>Artifact Writing Tips</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/artifact_reference/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/artifact_reference/><i class="fas fa-book"></i>Artifact Reference</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/exchange_reference/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/exchange_reference/><i class="fas fa-code"></i>Artifact Exchange</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/notebooks/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/notebooks/>Notebooks</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/hunting/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/hunting/>Hunting</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/>Forensic Analysis</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/filesystem/>Searching Filesystems</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/paths/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/filesystem/paths/>Velociraptor Paths</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/remapping/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/filesystem/remapping/>Remapping Accessors</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/ntfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/filesystem/ntfs/>NTFS Analysis</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/searching/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/searching/>Searching Content</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/deaddisk/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/deaddisk/>Dead Disk Analysis</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/deaddisk/creating_running/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/deaddisk/creating_running/>Creating & Running</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/binary/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/binary/>Binary parsing</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/evidence_of_execution/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/evidence_of_execution/>Evidence Of Execution</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/event_logs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/event_logs/>Event Logs</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/volatile/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/volatile/>Volatile State</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/file_collection/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/file_collection/>File Acquisition</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/file_collection/bulk/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/file_collection/bulk/>Bulk File Acquisition</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/file_collection/vfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/file_collection/vfs/>VFS Uploads</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/file_collection/exporting/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/file_collection/exporting/>Bulk File Exports</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/server_automation/>Server Automation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_api/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/server_automation/server_api/>Server API</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_monitoring/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/server_automation/server_monitoring/>Server Monitoring</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/>CLI</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/cli/acl/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/acl/>acl</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/artifacts/>artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/collector/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/collector/>collector</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/config/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/config/>config</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/deaddisk/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/deaddisk/>deaddisk</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/fs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/fs/>fs (filesystem)</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/fuse/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/fuse/>fuse</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/query/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/query/>query</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/server_service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/server_service/>server_service</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/service/>service</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/tools/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/tools/>tools</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/user/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/user/>user</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/misc/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/misc/>Miscellaneous</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/flags/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/flags/>CLI flags</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/>Troubleshooting</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/deployment/>Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/server/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/deployment/server/>Server</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/client/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/deployment/client/>Client</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/offline_collector/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/deployment/offline_collector/>Offline Collector</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/operations/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/operations/>Operations</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/operations/server_ops/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/operations/server_ops/>Server Ops</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/operations/remote_clients/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/operations/remote_clients/>Remote Clients</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/vql/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/vql/>VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/>Debugging</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/internal/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/internal/>Internal</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/internal/metrics/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/internal/metrics/>Metrics</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/internal/go_profiles/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/internal/go_profiles/>Golang</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/client/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/client/>Client</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/client/client_monitoring/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/client/client_monitoring/>Monitoring</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/client/client_flows/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/client/client_flows/>Flows</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/>Global</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/datastore/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/datastore/>Datastore</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/datastore/replication/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/datastore/replication/>Replication</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/>Services</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/export/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/export/>ExportContainers</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/throttler/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/throttler/>Throttler</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/user_manager/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/user_manager/>User Manager</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/open_close/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/open_close/>Open-close</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/tempfiles/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/tempfiles/>tempfiles</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/worker/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/worker/>worker</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/>VQL</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/queries/>Queries</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/active_queries/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/queries/active_queries/>Active Queries</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/plugin_monitor/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/queries/plugin_monitor/>Plugin Monitor</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/recent_queries/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/queries/recent_queries/>Recent Queries</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/>Plugins</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/etw/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/etw/>ETW</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/glob/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/glob/>Glob</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/ntfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/ntfs/>NTFS Cache</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/sigma/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/sigma/>Sigma Tracker</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/windows_event/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/windows_event/>Windows Event Log Watcher</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/zip/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/zip/>Zip</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/process/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/process/>Process Tracker</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/sqlite/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/sqlite/>Sqlite</a></div></li></ul></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/>Org</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/>Services</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/broadcast_service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/broadcast_service/>Broadcast</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/queue_manager/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/queue_manager/>QueueManager</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/vfs_service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/vfs_service/>VFS</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/notifier/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/notifier/>Notifier</a></div></li></ul></li></ul></li></ul></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/downloads/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/downloads/><i class="fas fa-download"></i>Downloads</a></div></li><hr><li data-nav-id=https://docs.velociraptor.app/vql_reference/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/><i class="fas fa-book"></i>VQL Reference</a></div><ul><li data-nav-id=https://docs.velociraptor.app/vql_reference/popular/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/popular/>Frequently Used ✨</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/windows/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/windows/>Windows-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/linux/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/linux/>Linux-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/server/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/server/>Server-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/parsers/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/parsers/>Parsers</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/encode/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/encode/>Encode/Decode</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/event/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/event/>Event Plugins</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/experimental/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/experimental/>Experimental</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/developer/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/developer/>Developer</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/other/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/other/>Other</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/accessors/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/accessors/>Accessors</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/training/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/training/><i class="fas fa-graduation-cap"></i>Training</a></div><ul><li data-nav-id=https://docs.velociraptor.app/training/playbooks/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/training/playbooks/><i class="fas fa-play"></i>Playbooks</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/blog/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/blog/><i class="fas fa-newspaper"></i>Blog</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/><i class="fas fa-chalkboard-teacher"></i>Presentations</a></div><ul><li data-nav-id=https://docs.velociraptor.app/presentations/2022_linuxconf_au/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_linuxconf_au/>Linux Conf Au 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_auscert/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_auscert/>Auscert 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_sans_summit/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_sans_summit/>SANS Summit 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_velocon/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_velocon/>Velocon 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_dfrws_apac/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_dfrws_apac/>DFRWS APAC 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_everything_open/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2023_everything_open/>EverythingOpen 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_velocon/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2023_velocon/>VeloCON 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2024_auscert/>Auscert 2024</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert-detection-engineering/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2024_auscert-detection-engineering/>Auscert 2024 Talk</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2025_auscert-detection-engineering/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2025_auscert-detection-engineering/>Auscert 2025 Workshop</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/exchange/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/exchange/><i class="fas fa-code"></i>Artifact Exchange</a></div></li><li data-nav-id=https://docs.velociraptor.app/artifact_references/ class="dd-item parent haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/artifact_references/><i class="fas fa-book"></i>Artifact Reference</a></div></li><li data-nav-id=https://docs.velociraptor.app/knowledge_base/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/knowledge_base/><i class="fas fa-brain"></i>Knowledge Base</a></div></li><li data-nav-id=https://docs.velociraptor.app/search/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/search/><i class='fas fa-search'></i>Search</a></div></li></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>$("#sidebar i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()})</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/artifact_references/pages/windows.carving.cobaltstrike.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Windows.Carving.CobaltStrike</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents></nav></div></div></div></div><div id=head-tags><div class=tags><a class=tag-link href=/tags/client-artifact>Client Artifact</a></div></div><div id=body-inner><h1>Windows.Carving.CobaltStrike</h1><p>This artifact extracts Cobalt Strike configuration from a byte stream, process
+or file on disk such as a process dump. Best used as a triage step against a
+detection of a Cobalt Strike beacon via a YARA process scan.</p><p>The User can define bytes, file glob, process name or pid regex as a target. The
+content will search for a configuration pattern, extract a defined byte size,
+xor with discovered key, then attempt configuration extraction.</p><ul><li>Cobalt Strike beacon configuration is typically XORed with 0x69 or 0x2e
+(depending on version) but trivial to change.</li><li>Configuration is built in a typical index / type / length / value structure
+with either big endian values or zero terminated strings.</li><li>If no beacon is found, parser will fallback to Cobalt Strike Shellcode analysis.</li></ul><p>This content simply carves the configuration and does not unpack files on
+disk. That means pointing this artifact as a packed or obfuscated file may not
+obtain the expected results.</p><p>Unpacking later version.</p><pre><code class=language-yaml>
+name: Windows.Carving.CobaltStrike
+author: Matt Green - @mgreen27
+description: |
+  This artifact extracts Cobalt Strike configuration from a byte stream, process
+  or file on disk such as a process dump. Best used as a triage step against a
+  detection of a Cobalt Strike beacon via a YARA process scan.
+
+  The User can define bytes, file glob, process name or pid regex as a target. The
+  content will search for a configuration pattern, extract a defined byte size,
+  xor with discovered key, then attempt configuration extraction.
+
+  - Cobalt Strike beacon configuration is typically XORed with 0x69 or 0x2e
+  (depending on version) but trivial to change.
+  - Configuration is built in a typical index / type / length / value structure
+  with either big endian values or zero terminated strings.
+  - If no beacon is found, parser will fallback to Cobalt Strike Shellcode analysis.
+
+  This content simply carves the configuration and does not unpack files on
+  disk. That means pointing this artifact as a packed or obfuscated file may not
+  obtain the expected results.
+
+  Unpacking later version.
+
+reference:
+  - https://attack.mitre.org/software/S0154/
+  - https://blog.didierstevens.com/2020/11/07/1768-k/
+
+parameters:
+  - name: TargetBytes
+    default:
+  - name: TargetFileGlob
+    default:
+  - name: PidRegex
+    default: .
+    type: regex
+  - name: ProcessRegex
+    default: .
+    type: regex
+  - name: ExtractBytes
+    type: int
+    default: 10000
+  - name: BruteXor
+    type: bool
+    description: Select to attempt brute forcing Xor byte in config. Default is 0x2e or 0x69.
+  - name: IncludeDecodedData
+    type: bool
+    description: Select to include decoded data in output.
+  - name: FindConfigTemplate
+    type: hidden
+    default: |
+        rule cobalt_strike_beacon {
+            strings:
+                $REPLACEME
+
+            condition:
+                any of them
+        }
+  - name: FindShellcode
+    type: hidden
+    default: |
+        rule cobalt_strike_shellcode {
+            strings:
+                $header = { FC }
+                $s1 = "hwini"
+                $s2 = "hws2_"
+                $s3 = "wininet"
+
+            condition:
+                ( $header at 0 and filesize &lt; 4096 )
+                or any of ($s*) // we enact offset limits in VQL ( 0..4096 )
+        }
+  - name: FindSleepFunction
+    type: hidden
+    default: |
+        rule cobalt_strike_sleepfunction {
+            strings:
+                $x64 = { 4C 8B 53 08 45 8B 0A 45 8B 5A 04 4D 8D 52 08 45 85 C9 75 05 45 85 DB 74 33 45 3B CB 73 E6 49 8B F9 4C 8B 03 }
+                $x86 = { 8B 46 04 8B 08 8B 50 04 83 C0 08 89 55 08 89 45 0C 85 C9 75 04 85 D2 74 23 3B CA 73 E6 8B 06 8D 3C 08 33 D2 }
+
+            condition:
+                any of them
+        }
+
+export: |
+  LET PROFILE = '''[
+    [CobaltConfig, 0, [
+        # 0x0001:BeaconType, 0x0001:Type, 0x0002:Length
+        ["BeaconType", 6, "Enumeration", {
+            "type": "uint16b",
+            "choices": {
+                 "0": "windows-beacon_http-reverse_http",
+                 "1": "windows-beacon_dns-reverse_http",
+                 "2": "windows-beacon_smb-bind_pipe",
+                 "8": "windows-beacon_https-reverse_https",
+                 "16": "windows-beacon_tcp-bind_tcp"
+            }
+        }],
+
+        # 0x0002:Port, 0x0001:Type, 0x0002:Length
+        ["__port_prefix", 0, "String",{"term_hex": "000200010002", length: 10000, max_length: 10000}],
+        ["Port", "x=&gt;len(list=x.__port_prefix) + 6", "uint16b"],
+
+        # 0x0003:Sleeptime,0x0002:Type, 0x0004:Length
+        ["__sleeptime_prefix", 0, "String", {"term_hex": "000300020004", length: 10000, max_length: 10000}],
+        ["Sleeptime", "x=&gt;len(list=x.__sleeptime_prefix) + 6", "uint32b"],
+
+        # 0x0004:Maxgetsize, 0x0002:Type, 0x0004:Length
+        ["__maxgetsize_prefix", 0, "String",{"term_hex": "000400020004", length: 10000, max_length: 10000}],
+        ["Maxgetsize", "x=&gt;len(list=x.__maxgetsize_prefix) + 6", "uint32b"],
+
+        # 0x0005:Jitter, 0x0001:Type, 0x0002:Length
+        ["__jitter_prefix", 0, "String",{"term_hex": "000500010002", length: 10000, max_length: 10000}],
+        ["Jitter", "x=&gt;len(list=x.__jitter_prefix) + 6", "uint16b"],
+
+        # 0x0006:MaxDns, 0x0001:Type, 0x0002:Length
+        ["__maxdns_prefix", 0, "String",{"term_hex": "000600010002", length: 10000, max_length: 10000}],
+        ["MaxDns", "x=&gt;len(list=x.__maxdns_prefix) + 6", "uint16b"],
+
+        # 0x0007:Publickey,0x0003:Type,
+        ["__publickey_prefix", 0, "String",{"term_hex": "000700030100", length: 10000, max_length: 10000}],
+        ["__publickey_raw", "x=&gt;len(list=x.__publickey_prefix) + 6", "String",{"term_hex":"00000008"}],
+        ["PublicKey", "x=&gt;len(list=x.__publickey_prefix) + 6", "Value",{"value":"x=&gt;format(format='% x',args=x.__publickey_raw)"}],
+
+        # 0x0008:server/get-uri,0x0003:Type,
+        ["__c2server_prefix", 0, "String",{"term_hex": "00080003", length: 10000, max_length: 10000}],
+        ["C2Server", "x=&gt;len(list=x.__c2server_prefix) + 6", "String"],
+
+        # 0x0009:useragent,0x0003:Type,
+        ["__useragent_prefix", 0, "String",{"term_hex": "00090003", length: 10000, max_length: 10000}],
+        ["UserAgent", "x=&gt;len(list=x.__useragent_prefix) + 6", "String"],
+
+        # 0x000a:PostUri,0x0003:Type,
+        ["__PostUri_prefix", 0, "String", {"term_hex": "000a0003", length: 10000, max_length: 10000}],
+        ["PostURI", "x=&gt;len(list=x.__PostUri_prefix) + 6", "String"],
+
+        # 0x000b:Malleable_C2_Instructions,0x0003:Type, adding length check as not sure if we can rely on termination
+        ["__Malleable_C2_Instructions_prefix", 0, "String",{"term_hex": "000b0003", length: 10000, max_length: 10000}],
+        ["__Malleable_C2_Instructions_length","x=&gt;len(list=x.__Malleable_C2_Instructions_prefix) + 4","uint16b"],
+        ["__Malleable_C2_Instructions", "x=&gt;len(list=x.__Malleable_C2_Instructions_prefix) + 6", "String",{"term":"***NOTERM***", "length": "x=&gt; x.__Malleable_C2_Instructions_length"}],
+        ["MalleableC2Instructions",0,"Value",{ "value": "x=&gt;format(format='%s', args=[regex_replace(source=x.__Malleable_C2_Instructions, re='[^ -~\\r\\n]', replace='')])" }],
+        #["Malleable_C2_Instructions",0,"Value",{ "value": "x=&gt;'base64:' + base64encode(string=x.__Malleable_C2_Instructions)" }], #uncomment to return base64 encoded raw Malleable_C2_Instructions
+
+        # 0x000c:HttpGetHeader,0x0003:Type, adding length check as we can not rely on termination
+        ["__HttpGetHeader_prefix", 0, "String",{"term_hex": "000c0003", length: 10000, max_length: 10000}],
+        ["__HttpGetHeader_length","x=&gt;len(list=x.__HttpGetHeader_prefix) + 4","uint16b"],
+        ["__HttpGetHeader","x=&gt;len(list=x.__HttpGetHeader_prefix) + 6","String",{"term":"***NOTERM***", "length": "x=&gt; x.__HttpGetHeader_length"}],
+        ["HttpGetHeader",0,"Value",{ "value": "x=&gt;format(format='%s', args=[regex_replace(source=x.__HttpGetHeader, re='[^ -~\\r\\n]', replace='')])" }],
+        #["HttpGetHeader",0,"Value",{ "value": "x=&gt;'base64:' + base64encode(string=x.__HttpGetHeader)" }], #uncomment to return base64 encoded raw HttpGetHeader
+
+        # 0x000d:HttpPostHeader,0x0003:Type, adding length check as we can not rely on termination
+        ["__http_post_header_prefix", 0, "String",{"term_hex": "000d0003", length: 10000, max_length: 10000}],
+        ["__HttpPostHeader_length","x=&gt;len(list=x.__http_post_header_prefix) + 4","uint16b"],
+        ["__HttpPostHeader","x=&gt;len(list=x.__http_post_header_prefix) + 6","String",{"term":"***NOTERM***", "length": "x=&gt; x.__HttpPostHeader_length"}],
+        ["HttpPostHeader",0,"Value",{ "value": "x=&gt;format(format='%s', args=[regex_replace(source=x.__HttpPostHeader, re='[^ -~\\r\\n]', replace='')])" }],
+        #["HttpPostHeader",0,"Value",{ "value": "x=&gt;'base64:' + base64encode(string=x.__HttpPostHeader)" }], #uncomment to return base64 encoded raw HttpPostHeader
+
+        # 0x000e:SpawnTo,0x0003:Type # Adding length check as we can not rely on termination
+        ["__SpawnTo_header_prefix", 0, "String",{"term_hex": "000e0003", length: 10000, max_length: 10000}],
+        ["__SpawnTo_header_length","x=&gt;len(list=x.__SpawnTo_header_prefix) + 4","uint16b"],
+        ["__SpawnTo", "x=&gt;len(list=x.__SpawnTo_header_prefix) + 6", "String",{"term":"***NOTERM***", "length": "x=&gt; x.__SpawnTo_header_length"}],
+        ["SpawnTo",0,"Value",{ "value": "x=&gt;format(format='%s', args=[regex_replace(source=x.__SpawnTo, re='[^ -~\\r\\n]', replace='')])" }],
+        #["SpawnTo",0,"Value",{ "value": "x=&gt;'base64:' + base64encode(string=x.__SpawnTo)" }], #uncomment to return base64 encoded raw SpawnTo
+
+        # 0x000f:PipeName,0x0003:Type
+        ["__pipename_prefix", 0, "String",{"term_hex": "000f0003", length: 10000, max_length: 10000}],
+        ["Pipename", "x=&gt;len(list=x.__pipename_prefix) + 6", "String",{"term_hex":"0000"}],
+
+        # 0x0010:KillDateYear, 0x0001:Type, 0x0002:Length
+        ["__KillDateYear_prefix", 0, "String",{"term_hex": "001000010002", length: 10000, max_length: 10000}],
+        ["KillDateYear", "x=&gt;len(list=x.__KillDateYear_prefix) + 6", "uint16b"],
+
+        # 0x0011:KillDateMonth, 0x0001:Type, 0x0002:Length
+        ["__KillDateMonth_prefix", 0, "String",{"term_hex": "001200010002", length: 10000, max_length: 10000}],
+        ["KillDateMonth", "x=&gt;len(list=x.__KillDateMonth_prefix) + 6", "uint16b"],
+
+        # 0x0012:KillDateDay, 0x0001:Type, 0x0002:Length
+        ["__KillDateDay_prefix", 0, "String",{"term_hex": "001200010002", length: 10000, max_length: 10000}],
+        ["KillDateDay", "x=&gt;len(list=x.__KillDateDay_prefix) + 6", "uint16b"],
+
+        # 0x0013:DNSIdle, 0x0002:Type, 0x0004:Length
+        ["__DNSIdle_prefix", 0, "String",{"term_hex": "001300020004", length: 10000, max_length: 10000}],
+        ["__DNSIdle1", "x=&gt;len(list=x.__DNSIdle_prefix) + 6", "uint8"],
+        ["__DNSIdle2", "x=&gt;len(list=x.__DNSIdle_prefix) + 7", "uint8"],
+        ["__DNSIdle3", "x=&gt;len(list=x.__DNSIdle_prefix) + 8", "uint8"],
+        ["__DNSIdle4", "x=&gt;len(list=x.__DNSIdle_prefix) + 9", "uint8"],
+        ["DNSIdle", 0, "Value", {
+            "value": "x=&gt; str(str=x.__DNSIdle1) + '.' + str(str=x.__DNSIdle2) + '.' + str(str=x.__DNSIdle3) + '.' + str(str=x.__DNSIdle4)"
+        }],
+
+        # 0x0014:DNSSleep', 0x0002:Type, 0x0004:Length
+        ["__DNSSleep_prefix", 0, "String",{"term_hex": "001400020004", length: 10000, max_length: 10000}],
+        ["DNSSleep", "x=&gt;len(list=x.__DNSSleep_prefix) + 6", "uint32b"],
+
+        # 0x0015:SSH_1, to complete - didnt find any examples assuming zero terminated
+        ["__SSH_1_prefix", 0, "String",{"term_hex": "00150003", length: 10000, max_length: 10000}],
+        ["SSH_1", "x=&gt;len(list=x.__SSH_1_prefix) + 6", "String"],
+
+        # 0x0016:SSH_2, to complete - didnt find any examples assuming zero terminated
+        ["__SSH_2_prefix", 0, "String",{"term_hex": "00160003", length: 10000, max_length: 10000}],
+        ["SSH_2", "x=&gt;len(list=x.__SSH_2_prefix) + 6", "String"],
+
+        # 0x0017:SSH_3, to complete - didnt find any examples assuming zero terminated
+        ["__SSH_3_prefix", 0, "String",{"term_hex": "00170003", length: 10000, max_length: 10000}],
+        ["SSH_3", "x=&gt;len(list=x.__SSH_3_prefix) + 6", "String"],
+
+        # 0x0018:SSH_4, to complete - didnt find any examples assuming zero terminated
+        ["__SSH_4_prefix", 0, "String",{"term_hex": "00180003", length: 10000, max_length: 10000}],
+        ["SSH_4", "x=&gt;len(list=x.__SSH_4_prefix) + 6", "String"],
+
+        # 0x0019:SSH_5, to complete - didnt find any examples assuming zero terminated
+        ["__SSH_5_prefix", 0, "String",{"term_hex": "00190003", length: 10000, max_length: 10000}],
+        ["SSH_5", "x=&gt;len(list=x.__SSH_5_prefix) + 6", "String"],
+
+        # 0x001a:GetVerb,0x0003:Type
+        ["__GetVerb_prefix", 0, "String",{"term_hex": "001a0003"}],
+        ["GetVerb", "x=&gt;len(list=x.__GetVerb_prefix) + 6", "String",{"term_hex":"0000"}],
+
+        # 0x001b: PostVerb, 0x0003:Type
+        ["__PostVerb_prefix", 0, "String",{"term_hex": "001b0003"}],
+        ["PostVerb", "x=&gt;len(list=x.__PostVerb_prefix) + 6", "String",{"term_hex":"0000"}],
+
+        # 0x001c:HttpPostChunk,0x0002:Type, 0x0004:Length
+        ["__HttpPostChunk_prefix", 0, "String", {"term_hex": "001c00020004"}],
+        ["HttpPostChunk", "x=&gt;len(list=x.__HttpPostChunk_prefix) + 6", "uint32b"],
+
+        # 0x001d:spawnto_x86,0x0003:Type
+        ["__spawnx86_prefix", 0, "String",{"term_hex": "001d0003", length: 10000, max_length: 10000}],
+        ["SpawnTox86", "x=&gt;len(list=x.__spawnx86_prefix) + 6", "String",{"term_hex":"0000"}],
+
+        # 0x001e:spawn_to_x64,0x0003:Type
+        ["__spawnx64_prefix", 0, "String",{"term_hex": "001e0003", length: 10000, max_length: 10000}],
+        ["SpawnTox64", "x=&gt;len(list=x.__spawnx64_prefix) + 6", "String",{"term_hex":"0000"}],
+
+        # 0x001f:CryptoScheme, 0x0001:Type, 0x0002:Length
+        ["__CryptoScheme_prefix", 0, "String",{"term_hex": "001f00010002", length: 10000, max_length: 10000}],
+        ["CryptoScheme", "x=&gt;len(list=x.__CryptoScheme_prefix) + 6", "uint16b"],
+
+        # 0x0020:Proxy, 0x0003:Type
+        ["__Proxy_prefix", 0, "String",{"term_hex": "000e0003", length: 10000, max_length: 10000}],
+        #["__Proxy_length","x=&gt;len(list=x.__Proxy_prefix) + 4","uint16b"],
+        ["Proxy", "x=&gt;len(list=x.__Proxy_prefix) + 6", "String"],
+
+        # 0x0021:ProxyUsername, 0x0003:Type
+        ["__ProxyUsername_prefix", 0, "String",{"term_hex": "000e0003", length: 10000, max_length: 10000}],
+        ["__ProxyUsername_length","x=&gt;len(list=x.__ProxyUsername_prefix) + 4","uint16b"],
+        ["ProxyUsername", "x=&gt;len(list=x.__ProxyUsername_prefix) + 6", "String"],
+
+        # 0x0022:ProxyPassword, 0x0003:Type
+        ["__ProxyPassword_prefix", 0, "String",{"term_hex": "000e0003", length: 10000, max_length: 10000}],
+        ["__ProxyPassword_length","x=&gt;len(list=x.__ProxyPassword_prefix) + 4","uint16b"],
+        ["ProxyPassword", "x=&gt;len(list=x.__ProxyPassword_prefix) + 6", "String"],
+
+        # 0x0023:ProxyType, 0x0001:Type, 0x0002:Length
+        ["__ProxyType", 0, "String",{"term_hex": "002300010002", length: 10000, max_length: 10000}],
+        ["ProxyType", "x=&gt;len(list=x.__ProxyType) + 6", "Enumeration", {
+            "type": "uint16b",
+            "choices": {
+                 "1": "No proxy",
+                 "2": "IE settings",
+                 "4": "Hardcoded proxy"}
+        }],
+
+        # 0x0024:Deprecated, 0x0001:Type, 0x0002:Length
+        ["__Deprecated_prefix", 0, "String",{"term_hex": "002400010002", length: 10000, max_length: 10000}],
+        ["Deprecated", "x=&gt;len(list=x.__Deprecated_prefix) + 6", "uint16b"],
+
+        # 0x0025:LicenseId,0x0002:Type, 0x0004:Length
+        ["__LicenseId_prefix", 0, "String", {"term_hex": "002500020004", length: 10000, max_length: 10000}],
+        ["LicenseId", "x=&gt;len(list=x.__LicenseId_prefix) + 6", "uint32b"],
+
+        # 0x0026:bStageCleanup, 0x0001:Type, 0x0002:Length
+        ["__bStageCleanup_prefix", 0, "String",{"term_hex": "002600010002", length: 10000, max_length: 10000}],
+        ["bStageCleanup", "x=&gt;len(list=x.__bStageCleanup_prefix) + 6", "uint16b"],
+
+        # 0x0027:bCFGCaution, 0x0001:Type, 0x0002:Length
+        ["__bCFGCaution_prefix", 0, "String",{"term_hex": "002700010002", length: 10000, max_length: 10000}],
+        ["bCFGCaution", "x=&gt;len(list=x.__bCFGCaution_prefix) + 6", "uint16b"],
+
+        # 0x0028:KillDate,0x0002:Type, 0x0004:Length
+        ["__KillDate_prefix", 0, "String", {"term_hex": "002800020004", length: 10000, max_length: 10000}],
+        ["KillDate", "x=&gt;len(list=x.__KillDate_prefix) + 6", "uint32b"],
+
+        # 0x0029:TextSectionEnd,0x0002:Type, 0x0004:Length
+        ["__TextSectionEnd_prefix", 0, "String", {"term_hex": "002900020004", length: 10000, max_length: 10000}],
+        ["TextSectionEnd", "x=&gt;len(list=x.__TextSectionEnd_prefix) + 6", "uint32b"],
+
+        # 0x002a:ObfuscateSectionsInfo,0x0003:Type # Adding length check as we can not rely on termination
+        ["__ObfuscateSectionsInfo_prefix", 0, "String",{"term_hex": "002a0003", length: 10000, max_length: 10000}],
+        ["__ObfuscateSectionsInfo_length","x=&gt;len(list=x.__ObfuscateSectionsInfo_prefix) + 4","uint16b"],
+        ["__ObfuscateSectionsInfo", "x=&gt;len(list=x.__ObfuscateSectionsInfo_prefix) + 6", "String",{"term":"***NOTERM***", "length": "x=&gt; x.__ObfuscateSectionsInfo_length"}],
+        ["ObfuscateSectionsInfo",0,"Value",{ "value": "x=&gt;format(format='%s', args=[regex_replace(source=x.__ObfuscateSectionsInfo, re='[^ -~\\r\\n]', replace='')])" }],
+        #["ObfuscateSectionsInfo",0,"Value",{ "value": "x=&gt;'base64:' + base64encode(string=x.__ObfuscateSectionsInfo)" }], #uncomment to return base64 encoded raw ObfuscateSectionsInfo
+
+        #0x002b:ProcessInjectStartRWX, 0x0001:Type, 0x0002:Length
+        ["__ProcessInjectStartRWX", 0, "String",{"term_hex": "002b00010002", length: 10000, max_length: 10000}],
+        ["ProcessInjectStartRWX", "x=&gt;len(list=x.__ProcessInjectStartRWX) + 6", "Enumeration", {
+            "type": "uint16b",
+            "choices": {
+                 "0x1": "PAGE_NOACCESS",
+                 "0x2": "PAGE_READONLY",
+                 "0x4": "PAGE_READWRITE",
+                 "0x8": "PAGE_WRITECOPY",
+                "0x10": "PAGE_EXECUTE",
+                "0x20": "PAGE_EXECUTE_READ",
+                "0x40": "PAGE_EXECUTE_READWRITE",
+                "0x80": "PAGE_EXECUTE_WRITECOPY"}
+        }],
+
+        #0x002c:ProcessInjectUseRWX, 0x0001:Type, 0x0002:Length
+        ["__ProcessInjectUseRWX", 0, "String",{"term_hex": "002c00010002", length: 10000, max_length: 10000}],
+        ["ProcessInjectUseRWX", "x=&gt;len(list=x.__ProcessInjectUseRWX) + 6", "Enumeration", {
+            "type": "uint16b",
+            "choices": {
+                 "0x1": "PAGE_NOACCESS",
+                 "0x2": "PAGE_READONLY",
+                 "0x4": "PAGE_READWRITE",
+                 "0x8": "PAGE_WRITECOPY",
+                "0x10": "PAGE_EXECUTE",
+                "0x20": "PAGE_EXECUTE_READ",
+                "0x40": "PAGE_EXECUTE_READWRITE",
+                "0x80": "PAGE_EXECUTE_WRITECOPY"}
+        }],
+
+        # 0x002d:ProcessInjectMinAlloc,0x0002:Type, 0x0004:Length
+        ["__ProcessInjectMinAlloc_prefix", 0, "String", {"term_hex": "002d00020004", length: 10000, max_length: 10000}],
+        ["ProcessInjectMinAlloc", "x=&gt;len(list=x.__ProcessInjectMinAlloc_prefix) + 6", "uint32b"],
+
+        # 0x002e:ProcessInjectTransformx86, 0x0003:Type, # Adding length check as we can not rely on termination
+        ["__ProcessInjectTransformx86_prefix", 0, "String",{"term_hex": "002e0003", length: 10000, max_length: 10000}],
+        ["__ProcessInjectTransformx86_length","x=&gt;len(list=x.__ProcessInjectTransformx86_prefix) + 4","uint16b"],
+        ["__ProcessInjectTransformx86", "x=&gt;len(list=x.__ProcessInjectTransformx86_prefix) + 6", "String",{"term":"***NOTERM***", "length": "x=&gt; x.__ProcessInjectTransformx86_length"}],
+        ["ProcessInjectTransformx86",0,"Value",{ "value": "x=&gt;format(format='%s', args=[regex_replace(source=x.__ProcessInjectTransformx86, re='[^ -~\\r\\n]', replace='')])" }],
+        #["ProcessInjectTransformx86",0,"Value",{ "value": "x=&gt;'base64:' + base64encode(string=x.__ProcessInjectTransformx86)" }],#uncomment to return base64 encoded raw ProcessInjectTransformx86
+
+
+        # 0x002f:ProcessInjectTransformx64, 0x0003:Type, # Adding length check as we can not rely on termination
+        ["__ProcessInjectTransformx64_prefix", 0, "String",{"term_hex": "002f0003", length: 10000, max_length: 10000}],
+        ["__ProcessInjectTransformx64_length","x=&gt;len(list=x.__ProcessInjectTransformx64_prefix) + 4","uint16b"],
+        ["__ProcessInjectTransformx64", "x=&gt;len(list=x.__ProcessInjectTransformx64_prefix) + 6", "String",{"term":"***NOTERM***", "length": "x=&gt; x.__ProcessInjectTransformx64_length"}],
+        ["ProcessInjectTransformx64",0,"Value",{ "value": "x=&gt;format(format='%s', args=[regex_replace(source=x.__ProcessInjectTransformx64, re='[^ -~\\r\\n]', replace='')])" }],
+        #["ProcessInjectTransformx64",0,"Value",{ "value": "x=&gt;'base64:' + base64encode(string=x.__ProcessInjectTransformx64)" }],#uncomment to return base64 encoded raw ProcessInjectTransformx64
+
+        # 0x0032:UsesCookies, 0x0001:Type, 0x0002:Length
+        ["__UsesCookies_prefix", 0, "String",{"term_hex": "003200010002", length: 10000, max_length: 10000}],
+        ["UsesCookies", "x=&gt;len(list=x.__UsesCookies_prefix) + 6", "uint16b"],
+
+        # 0x0033:ProcessInjectExecute, 0x0003:Type # Adding length check as we can not rely on termination
+        ["__ProcessInjectExecute_prefix", 0, "String",{"term_hex": "00330003", length: 10000, max_length: 10000}],
+        ["__ProcessInjectExecute_length","x=&gt;len(list=x.__ProcessInjectExecute_prefix) + 4","uint16b"],
+        ["__ProcessInjectExecute", "x=&gt;len(list=x.__ProcessInjectExecute_prefix) + 6", "String",{"term":"***NOTERM***", "length": "x=&gt; x.__ProcessInjectExecute_length"}],
+        ["ProcessInjectExecute",0,"Value",{ "value": "x=&gt;format(format='%s', args=[regex_replace(source=x.__ProcessInjectExecute, re='[^ -~\\r\\n]', replace='')])" }],
+        #["ProcessInjectExecute",0,"Value",{ "value": "x=&gt;'base64:' + base64encode(string=x.__ProcessInjectExecute)" }], #uncomment to return base64 encoded raw ProcessInjectExecute
+
+        # 0x0034:ProcessInjectAllocationMethod, 0x0001:Type, 0x0002:Length
+        ["__ProcessInjectAllocationMethod_prefix", 0, "String",{"term_hex": "003400010002", length: 10000, max_length: 10000}],
+        ["ProcessInjectAllocationMethod", "x=&gt;len(list=x.__ProcessInjectAllocationMethod_prefix) + 6", "uint16b"],
+
+        # 0x0035:ProcessInjectStub, 0x0003:Type # Adding length check as we can not rely on termination
+        ["__ProcessInjectStub_prefix", 0, "String",{"term_hex": "00350003", length: 10000, max_length: 10000}],
+        ["__ProcessInjectStub_length","x=&gt;len(list=x.__ProcessInjectStub_prefix) + 4","uint16b"],
+        ["__ProcessInjectStub", "x=&gt;len(list=x.__ProcessInjectStub_prefix) + 6", "String",{"term_hex":"00000000", "length": "x=&gt; x.__ProcessInjectStub_length"}],
+        ["ProcessInjectStub",0,"Value",{ "value": "x=&gt;format(format='% x', args=x.__ProcessInjectStub)" }],
+
+        # 0x0036:HostHeader, 0x0003:Type # Adding length check as we can not rely on termination
+        ["__HostHeader_prefix", 0, "String",{"term_hex": "00360003", length: 10000, max_length: 10000}],
+        ["__HostHeader_length","x=&gt;len(list=x.__HostHeader_prefix) + 4","uint16b"],
+        ["HostHeader", "x=&gt;len(list=x.__HostHeader_prefix) + 6", "String",{"term_hex":"00000000", "length": "x=&gt; x.__HostHeader_length"}],
+
+    ]],
+    [Shellcode, 0, [
+        ["__Position", 0, "Value",{"value":"x=&gt;unhex(string=position(data=_Data))"}],
+        ["Server", 0, "Value",{"value":"x=&gt;regex_replace(source=regex_replace(source=x.__Position,re='\\x{00}.{4}[^$]*$',replace=''),re='\u0000',replace='')"}],
+        ["TargetUri", 0, "Value",{"value":"x=&gt;find_strings(data=_Data,length=5,filter='^/').Strings[0]"}],
+        ["__LicenseBytes", 0, "Value",{"value":"x=&gt;read_file(accessor='data',filename=x.__Position || '', offset=len(list=x.Server) + 1 ,length=4)"}],
+        ["License", 0, "Value",{"value":"x=&gt;parse_binary(accessor='data', filename=x.__LicenseBytes,struct='uint32b')"}],
+        ["Strings", 0, "Value",{"value":"x=&gt;find_strings(data=_Data,length=5,filter='.').Strings"}],
+    ]],
+
+    ["EmbeddedPE", 0, [
+        ["__PayloadType", 0, "uint32"],
+        ["PayloadType", 0, "Value",{"value":"x=&gt;format(format='0x%08x',args=x.__PayloadType)"}],
+        ["__PayloadSize", 4, "uint32"],
+        #["PayloadSize", 4, "Value",{"value":"x=&gt;format(format='0x%08x',args=x.__PayloadSize)"}],
+        ["__XorKey", 8, "uint32b"],
+        ["XorKey", 8, "Value",{"value":"x=&gt;format(format='0x%08x',args=x.__XorKey)"}],
+        ["__Id2", 12, "uint32"],
+        ["Id2", 12, "Value",{"value":"x=&gt;format(format='0x%08x',args=x.__Id2)"}],
+        ["__Payload", 16, "Value",{"value":"x=&gt;read_file(accessor='data',filename=embedded_section(path=TargetBytes || OSPath,
+                type=if(condition=TargetBytes,then='data',else='auto'))[0].Data || '', offset=16,length=x.__PayloadSize)"}],
+        #["__Payload", 16, "String",{"term_hex":"",length=x.__PayloadSize)"}],
+        ["DecodedPayload", 16, "Value",{"value":"x=&gt;xor(string=x.__Payload,key=unhex(string=x.XorKey))"}],
+        ["PayloadHash", 16, "Value",{"value":"x=&gt;hash(path=xor(string=x.__Payload,key=unhex(string=x.XorKey)),accessor='data')"}],
+        ["OriginalFileHash", 16, "Value",{"value":"x=&gt;hash(path=OSPath)"}],
+    ]]]'''
+
+
+sources:
+  - query: |
+      -- unique function to groupby value for enumerate
+      LET unique(values) = SELECT _value as value FROM foreach(row=values) GROUP BY _value
+
+      -- section to dynamically generate Xor configuration YARA hunt strings
+      LET a &lt;= unhex(string='01')
+      LET b &lt;= unhex(string='02')
+      LET c &lt;= unhex(string='03')
+
+      LET XorChars &lt;=
+        SELECT format(format="%#02x", args=_value) AS H,
+            unhex(string=format(format="%02x", args=_value)) as X
+        FROM range(start=0, end=256, step=1)
+        WHERE if(condition=BruteXor,
+                    then=True,
+                    else= H=~ '0x2e|0x69')
+
+      Let XorCharsStep2 =
+        SELECT H, X,
+            xor(string=a, key=X) as aXor,
+            xor(string=b, key=X) as bXor,
+            xor(string=c, key=X) as cXor,
+            len(list=X)
+        FROM XorChars
+
+      LET YaraStrings =
+        SELECT -- { 00 01 00 01 00 02 ?? ?? 00 02 00 01 00 02 ?? ?? 00 03 }
+            X,H,
+            H + ' = { ' + format(format='% x', args=X + aXor + X + aXor + X + bXor) +
+            ' ?? ?? ' + format(format='% x', args=X + bXor + X + aXor + X + bXor) +
+            ' ?? ?? ' + format(format='% x', args=X + cXor) + ' }'  as Line
+        FROM XorCharsStep2
+
+      LET FindConfig =
+            regex_replace(
+                source=FindConfigTemplate,
+                re='REPLACEME',
+                replace=join(array=YaraStrings.Line, sep=" $$"))
+
+
+      -- function to extract potential additional encoded PE in data section
+      LET embedded_section(path,type) = SELECT
+            path as OriginalFileName,
+            _value.Name as Name,
+            _value.Size as Size,
+            _value.FileOffset as FileOffset,
+            _value.VMA as VMA,
+            _value.RVA as RVA,
+            _value.Perm as Perm,
+            read_file(filename=path,
+                      accessor=type,
+                      offset=_value.FileOffset,
+                      length=_value.Size) as Data
+        FROM foreach(row= parse_pe(file=path,accessor=type).Sections)
+        WHERE Name = '.data' AND Size &gt; 15
+
+
+      -- scan DataBytes for Cobalt Strike config
+      LET ByteConfiguration = SELECT Rule,
+                len(list=TargetBytes) as Size,
+                hash(path=TargetBytes,accessor='data') as Hash,
+                format(format="%v_%v.bin", args=[Rule,String.Offset]) as _DecodedDataName,
+                Xor,_Data,
+                Rule  as _Group
+            FROM switch( -- switchcase will find beacon as priority, then search for shellcode
+                beacon = {
+                    SELECT *,
+                        substr(start=0, end=1, str=String.Data) as Xor,
+                        read_file(accessor='data',
+                                  filename=TargetBytes,
+                                  offset= String.Offset,
+                                  length=ExtractBytes) as _Data
+                    FROM yara(accessor='data',files=TargetBytes || "",
+                              rules=FindConfig, number=99)
+                },
+                shellcode = {
+                    SELECT *, '' as Xor,
+                        read_file(accessor='data',
+                                  filename=TargetBytes,
+                                  offset=String.Offset,length=4096) as _Data
+                    FROM yara(accessor='data',
+                              files=TargetBytes,
+                              rules=FindShellcode, number=99)
+                },
+                section_encoded_pe = {
+                    SELECT *,
+                        'Embedded data section: ' + Rule as Rule,
+                        substr(start=0,end=1,str=String.Data) as Xor,
+                        read_file(accessor='data',
+                                  filename=File.OSPath,
+                                  offset=String.Offset,
+                                  length=ExtractBytes) as _Data
+                    FROM yara(files=parse_binary(
+                                accessor='data',
+                                filename= embedded_section(
+                                     path=TargetBytes, type='data')[0].Data || "",
+                                profile=PROFILE,
+                                struct="EmbeddedPE").DecodedPayload,
+                              accessor='data', rules=FindConfig, number=99)
+                },
+                    section_encoded_stager = {
+                        SELECT *,
+                            '' as Xor,
+                            'Embedded data section: ' + Rule as Rule,
+                            read_file(accessor='data',
+                                      filename=File.OSPath) as _Data
+                        FROM yara(files=parse_binary(
+                                     accessor='data',
+                                     filename= embedded_section(
+                                          path=TargetBytes,type='data')[0].Data || "",
+                                     profile=PROFILE,
+                                     struct="EmbeddedPE").DecodedPayload,
+                                  accessor='data', rules=FindShellcode, number=99)
+                    },
+                sleepfunction = {
+                    SELECT *, '' as Xor,
+                    if(condition= String.Name= '$x86',
+                            then= 'Sleep mask 32-bit 4.2 deobfuscation routine found.',
+                            else= 'Sleep mask 64-bit 4.2 deobfuscation routine found.') as _Data
+                    FROM yara(accessor='data',files=TargetBytes, rules=FindSleepFunction, number=1)
+                })
+
+      -- find target files
+      LET TargetFiles = SELECT OSPath AS OSPath,Size
+        FROM glob(globs=TargetFileGlob) WHERE NOT IsDir
+
+
+      -- scan files in scope with our rule
+      LET FileConfiguration = SELECT * FROM foreach(row=TargetFiles,
+            query={
+                SELECT
+                    Rule,
+                    OSPath, Size,
+                    hash(path=OSPath) as Hash,
+                    Xor,_Data,
+                    Rule + '|' + OSPath.String as _Group,
+                    format(format="%v_%v_%v.bin", args=[Rule,OSPath,String.Offset]) as _DecodedDataName
+                FROM switch( -- switchcase will find beacon as priority, then search for shellcode
+                    beacon = {
+                        SELECT *,
+                            substr(start=0,end=1,str=String.Data) as Xor,
+                            read_file(
+                               filename=OSPath,
+                               offset= String.Offset,
+                               length=ExtractBytes) as _Data
+                        FROM yara(files=OSPath, rules=FindConfig, number=99)
+                    },
+
+                    shellcode = {
+                        SELECT *, '' as Xor,
+                            read_file(filename=OSPath,length=4096) as _Data
+                        FROM yara(files=OSPath, rules=FindShellcode, number=99)
+                    },
+
+                    section_encoded_pe = {
+                        SELECT *,
+                            'Embedded data section: ' + Rule as Rule,
+                            substr(start=0,end=1,str=String.Data) as Xor,
+                            read_file(accessor='data',filename=File.OSPath,
+                                      offset=String.Offset,length=ExtractBytes) as _Data
+                        FROM yara(files=parse_binary(
+                                      accessor='data',
+                                      filename= embedded_section(path=OSPath,type='auto')[0].Data || "",
+                                      profile=PROFILE,
+                                      struct="EmbeddedPE").DecodedPayload,
+                                  accessor='data', rules=FindConfig, number=99)
+                    },
+                    section_encoded_stager = {
+                        SELECT *,
+                            '' as Xor,
+                            'Embedded data section: ' + Rule as Rule,
+                            read_file(accessor='data',
+                                      filename=File.OSPath,
+                                      length=ExtractBytes) as _Data
+                        FROM yara(files=parse_binary(
+                                      accessor='data',
+                                      filename= embedded_section(path=OSPath,type='auto')[0].Data || "",
+                                      profile=PROFILE,
+                                      struct="EmbeddedPE").DecodedPayload,
+                                  accessor='data', rules=FindShellcode, number=99)
+                    },
+                    sleepfunction = {
+                        SELECT *, '' as Xor,
+                            if(condition= String.Name= '$x86',
+                                then= 'Sleep mask 32-bit 4.2 deobfuscation routine found.',
+                                else= 'Sleep mask 64-bit 4.2 deobfuscation routine found.') as _Data
+                        FROM yara(files=OSPath, rules=FindSleepFunction, number=1)
+                    })
+            })
+
+
+      -- find velociraptor process
+      LET me &lt;= SELECT * FROM if(condition= NOT ( TargetFileGlob OR TargetBytes ),
+                    then = { SELECT Pid FROM pslist(pid=getpid()) })
+
+
+      -- find all processes and add filters
+      LET processes = SELECT Name as ProcessName, CommandLine, Pid
+        FROM pslist()
+        WHERE
+            Name =~ ProcessRegex
+            AND format(format="%d", args=Pid) =~ PidRegex
+            AND NOT Pid in me.Pid
+
+      -- scan processes in scope with our rule
+      LET ProcessConfiguration = SELECT * FROM foreach(
+        row=processes,
+        query={
+            SELECT Rule,
+                Pid, ProcessName, CommandLine,
+                format(format="%v_%v_%v_%v.bin", args=[Rule,ProcessName,Pid,String.Offset]) as _DecodedDataName,
+                Xor,_Data,_Group
+            FROM switch( -- switchcase will find beacon as priority, then search for shellcode
+                beacon = {
+                    SELECT *,
+                        substr(start=0,end=1,str=String.Data) as Xor,
+                        read_file(accessor='process',
+                                  filename=str(str=Pid),
+                                  offset= String.Offset,
+                                  length=ExtractBytes) as _Data,
+                        Rule +'|'+ str(str=Pid) +'|'+ ProcessName +'|'+ CommandLine as _Group
+                    FROM yara(accessor='process',files=str(str=Pid), rules=FindConfig, number=99)
+                },
+                shellcode = {
+                    SELECT *, '' as Xor,
+                        read_file(accessor='process',
+                                  filename=str(str=Pid),
+                                  offset=String.Offset,length=4096) as _Data,
+                        Rule +'|'+ str(str=Pid) +'|'+ ProcessName +'|'+ CommandLine as _Group
+                    FROM yara(accessor='process',files=str(str=Pid), rules=FindShellcode, number=99)
+                },
+                sleepfunction = {
+                    SELECT *, '' as Xor,
+                        if(condition= String.Name= '$x86',
+                            then= 'Sleep mask 32-bit 4.2 deobfuscation routine found.',
+                            else= 'Sleep mask 64-bit 4.2 deobfuscation routine found.') as _Data,
+                        '' as _Group
+                    FROM yara(accessor='process',files=str(str=Pid), rules=FindSleepFunction, number=1)
+                })
+        })
+
+
+      -- Add dynamic functions for shellcode parsing
+      LET position(data) = if(condition= len(list=split(string=format(format='%x',args=data),sep='ffff')) &gt; 1,
+            then= split(string=format(format='%x',args=data),sep='ffff')[-1],
+            else= False )
+      LET find_strings(data,length,filter) = SELECT Strings
+        FROM parse_records_with_regex(file=data,accessor='data',regex='(?P&lt;Strings&gt;[ -~]+)')
+        WHERE len(list=Strings) &gt; length - 1
+            AND Strings =~ filter
+            AND NOT Strings =~ '^\\s+$'
+        LIMIT 150
+
+
+      -- generate results remove any FPs
+      LET results &lt;= SELECT *,
+            if(condition= Rule=~'cobalt_strike_beacon$',
+                then= format(format='0x%x',args=Xor),else='0x00') as Xor,
+            if(condition= Rule=~'cobalt_strike_beacon',
+                then= parse_binary(accessor='data',
+                    filename= xor(string=_Data || "" ,key=Xor),
+                    profile = PROFILE,struct  = "CobaltConfig"),
+                else= if(condition= Rule=~'cobalt_strike_shellcode',
+                    then= parse_binary(accessor='data',
+                        filename= _Data || "",
+                        profile = PROFILE,struct="Shellcode"),
+                    else= _Data )) AS DecodedConfig
+        FROM if(condition=TargetBytes,
+            then=ByteConfiguration,
+            else= if(condition=TargetFileGlob,
+                then= FileConfiguration,
+                else= ProcessConfiguration))
+        WHERE _Data
+            AND
+              (( DecodedConfig.C2Server =~ '^[ -~]+$' AND DecodedConfig.BeaconType )
+            OR ( DecodedConfig.Pipename =~ '^[ -~]+$' AND DecodedConfig.BeaconType )
+            OR DecodedConfig.Server =~ '^[ -~]+' -- AND DecodedConfig.TargetUri )
+            OR Rule='cobalt_strike_sleepfunction' )
+
+      -- add decoded data separate to keep pretty output
+      LET output_decoded_data = SELECT *,
+            upload(accessor = 'data',
+                file = if(condition = Rule='cobalt_strike_beacon',
+                            then = xor(string=_Data,key=unhex(string=Xor)),
+                            else = _Data),
+                name = _DecodedDataName) as DecodedData
+        FROM results
+
+      LET cleanup(config) = to_dict(item=
+            {
+                SELECT _key, _value
+                FROM items(item=config)
+                WHERE NOT _key =~ '^__'  AND ( _value  OR _key =~ '^license' )
+            })
+
+      -- output rows, standard config priority, exclude _Data
+      SELECT *,
+        if(condition= format(format='%T',args=DecodedConfig)='string',
+            then= DecodedConfig,
+            else= cleanup(config=DecodedConfig)) as DecodedConfig
+      FROM column_filter(
+        query={
+            SELECT * ,
+                 -- NOTE: some junk strings for shellcode _Group are removed in GROUP BY
+                if(condition= Rule='cobalt_strike_beacon',
+                    then= _Group +'|'+ str(str=DecodedConfig),
+                    else= _Group +'|'+ str(str=DecodedConfig.Server) +'|'+ str(str=DecodedConfig.TargetUri) +'|'+ str(str=DecodedConfig.Licence) ) as _Group
+            FROM if(condition=IncludeDecodedData,
+                then= output_decoded_data,
+                else= results)
+            GROUP BY _Group
+        }, exclude=["_Data","_Group"])
+
+column_types:
+  - name: DecodedData
+    type: preview_upload
+
+</code></pre><footer class=footline></footer></div></div></section><div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1772163116></script><script src=/js/perfect-scrollbar.min.js?1772163116></script><script src=/js/perfect-scrollbar.jquery.min.js?1772163116></script><script src=/js/jquery.sticky.js?1772163116></script><script src=/js/featherlight.min.js?1772163116></script><script src=/js/highlight.min.js?1772163116></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1772163116></script><script src=/js/learn.js?1772163116></script><script src=/js/hugo-learn.js?1772163116></script></body></html>

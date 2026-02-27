@@ -1,0 +1,955 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notebook on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/notebook/</link><description>Recent content in Notebook on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Wed, 03 Aug 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/notebook/index.xml" rel="self" type="application/rss+xml"/><item><title>Postprocessing Collections</title><link>https://docs.velociraptor.app/blog/2022/2022-08-04-post-processing/</link><pubDate>Wed, 03 Aug 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2022/2022-08-04-post-processing/</guid><description>&lt;p>Traditionally the digital forensic process consists of several distinct phases:&lt;/p>
+&lt;ol>
+&lt;li>The &lt;em>collection&lt;/em> or &lt;em>acquisition&lt;/em> phase consists of collecting as much
+evidence as possible from the endpoint.&lt;/li>
+&lt;li>Once data is collected, the data is &lt;em>parsed and analyzed&lt;/em> on a
+different system, to make inferences about the case.&lt;/li>
+&lt;/ol>
+&lt;p>Traditionally, the acquisition phases consists of a bit for bit copy
+of the disk and memory. However in modern DFIR investigations, this is
+just not practical due to the large volumes of data involved.&lt;/p>
+&lt;p>Modern DFIR investigations use a triaging approach, where selected
+high value files are collected from the endpoint (For example
+&lt;a href="https://www.kroll.com/en/insights/publications/cyber/kroll-artifact-parser-extractor-kape" target="_blank" >Kape&lt;/a>
+
+is a commonly used Triaging tool for collecting files).&lt;/p>
+&lt;p>Typically triage collections consist of collecting event log files,
+the $MFT, the USN Journal, registry hives etc.&lt;/p>
+&lt;p>Once files are collected, they are typically parsed using various
+parsers and single purpose tools. Traditionally using tools such as
+&lt;code>Plaso&lt;/code>, Eric Zimmerman&amp;rsquo;s tools and various specialized scripts.&lt;/p>
+
+&lt;div class="mynotices note">
+ &lt;div heading=" The KapeFiles project ">&lt;p>In the following discussion we refer to the
+&lt;code>Windows.KapeFiles.Targets&lt;/code> artifact. This artifact is not related to
+the commercial &lt;code>Kape&lt;/code> product. The artifact is generated from the open
+source &lt;a href="https://github.com/EricZimmerman/KapeFiles" target="_blank" >KapeFiles&lt;/a>
+ project
+on GitHub - an effort to document the path location of many bulk file
+evidence sources.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;h2 id="the-velociraptor-approach-to-triage">The Velociraptor approach to triage&lt;/h2>
+&lt;p>Velociraptor is a one stop shop for all DFIR needs. It already
+includes all the common parsers (e.g. NTFS artifacts, EVTX, LNK,
+prefetch parsers and many more) on the endpoint itself. All this
+capability is made available via &lt;code>VQL artifacts&lt;/code> - simple YAML files
+containing VQL queries that can be used to perform the parsing
+directly on the endpoint.&lt;/p>
+&lt;p>New Velociraptor users tend to bring the traditional DFIR approach to
+a distributed setting. Newer users prefer to use the
+&lt;code>Windows.KapeFiles.Targets&lt;/code> artifact to collect those same files that
+are traditionally collected for triage using Velociraptor. Files such
+as event logs, $MFT, prefetch etc are collected from the endpoint to
+the server (sometimes consisting of a few GB of data).&lt;/p>
+&lt;p>But now there is a common problem - how to post process these raw
+files to extract relevant information?&lt;/p>
+&lt;p>New users simply export the raw files from Velociraptor and then
+use the traditional single use tools on the raw files. However, can we
+use Velociraptor itself to parse these raw files on the server?&lt;/p>
+&lt;p>This blog post is about this use case: How can we apply Velociraptor&amp;rsquo;s
+powerful parsing and analysis capabilities to the collected bulk data
+from the &lt;code>Windows.KapeFiles.Targets&lt;/code> artifact?&lt;/p>
+&lt;h2 id="collecting-bulk-files-with-windowskapefilestargets">Collecting bulk files with Windows.KapeFiles.Targets&lt;/h2>
+&lt;p>In this example I will perform a &lt;code>KapeFiles&lt;/code> collection on my
+system. I have selected the &lt;code>BasicCollection&lt;/code> as a reasonable trade
+off between collecting too much data but providing important files
+such as event logs, registry hives and the $MFT.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="744273d6b47e9a5da6b8aecd9946baca">
+ &lt;div data-featherlight="#744273d6b47e9a5da6b8aecd9946baca" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-08-04-post-processing/kapefiles_collection.png" alt="Collecting KapeFiles targets">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="kapefiles_collection.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Collecting KapeFiles targets
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Once the collection is complete, the collection has transferred about
+600mb of data in a couple of minutes.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="1ce419088c688e72b98755371bd83d30">
+ &lt;div data-featherlight="#1ce419088c688e72b98755371bd83d30" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-08-04-post-processing/kapefiles_collection_overview.png" alt="Collecting KapeFiles results">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="kapefiles_collection_overview.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Collecting KapeFiles results
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>The &lt;code>Windows.KapeFiles.Targets&lt;/code> artifact is purely a collection
+artifact - it does not parse or analyze any files on the endpoint,
+instead it simply collects the bulk data to the server. All the files
+that were transferred are visible in the &lt;code>Uploaded Files&lt;/code> tab.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="f486b1d2d5b10c82f6891639d7eb817c">
+ &lt;div data-featherlight="#f486b1d2d5b10c82f6891639d7eb817c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-08-04-post-processing/kapefiles_collection_uploads.png" alt="Collecting KapeFiles Uploads">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="kapefiles_collection_uploads.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Collecting KapeFiles Uploads
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h3 id="postprocessing-downloaded-files">Postprocessing downloaded files&lt;/h3>
+&lt;p>Our first example is to parse the prefetch files with the
+&lt;code>Windows.Timeline.Prefetch&lt;/code> artifact.&lt;/p>
+&lt;p>Since Velociraptor&amp;rsquo;s data store is just a directory on disk it is easy
+to just read the files. We can simply provide the artifact with the
+relevant path on disk to search for prefetch files and parse them.&lt;/p>
+&lt;p>I will click on the &lt;code>Notebook&lt;/code> Tab to start a new notebook and enter
+the following VQL in a cell (My test system uses &lt;code>F:/tmp/3/&lt;/code> as the
+filestore).&lt;/p>
+&lt;pre>&lt;code class="language-vql">LET FilePath = &amp;quot;F:/tmp/3/orgs/OHBHG/clients/C.dc736eeefcc58a6c-OHBHG/collections/F.CBJH2GD2ULRAQ/uploads&amp;quot;
+
+SELECT * FROM Artifact.Windows.Timeline.Prefetch(prefetchGlobs=FilePath+&amp;quot;/**/*.pf&amp;quot;)
+&lt;/code>&lt;/pre>
+&lt;p>Here the path on disk where the collection results are stored contain
+the &lt;code>ClientID&lt;/code> and &lt;code>FlowID&lt;/code> (In this case there is also an Org
+ID). Generally this path pattern will work for all collections.&lt;/p>
+&lt;p>The VQL then simply calls the artifact &lt;code>Windows.Timeline.Prefetch&lt;/code>
+with the relevant glob allowing it to search for prefetch files on the
+server.&lt;/p>
+
+&lt;div class="mynotices note">
+ &lt;div heading=" Notebooks queries ">&lt;p>Notebooks contain cells which help the user to evaluate VQL queries
+&lt;strong>on the server&lt;/strong>. Remember that notebook queries always run on the
+server and not on the original client. This post-processing query will
+parse the prefetch files on the server itself.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="2d3c7f0f15f4bfe107a24989a40a1b81">
+ &lt;div data-featherlight="#2d3c7f0f15f4bfe107a24989a40a1b81" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-08-04-post-processing/simple_postprocessing.png" alt="Simple parsing of server collected files">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="simple_postprocessing.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Simple parsing of server collected files
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>There are a number of disadvantages with this approach:&lt;/p>
+&lt;ol>
+&lt;li>Since the files are parsed on the server, the results will contain
+the full path to the server files (including the client id, flow id
+and org id).&lt;/li>
+&lt;li>For this to work well we need to really understand how the artifact
+works - some artifacts accept a list of globs that allow them to
+find certain files in non standard locations. These parameters will
+be named differently in different artifacts and might not even
+provide that level of customization.&lt;/li>
+&lt;li>Some artifacts perform more complex operations, like enriching with
+WMI queries or other API calls. Because this query is running on
+the server it may mix server side information with the client side
+information causing confusing results.&lt;/li>
+&lt;/ol>
+&lt;p>The main difficulty is that artifacts are typically written with the
+expectation that they will be running on the endpoint. Some artifacts
+search for files in certain locations and may not provide the
+customization to be able to run on the server.&lt;/p>
+&lt;h3 id="remapping-accessors">Remapping accessors&lt;/h3>
+&lt;p>In recent versions of Velociraptor, a feature called &lt;code>remapping&lt;/code> was
+introduced. The original purpose of remapping was to allow
+Velociraptor to be used on a dead disk image, but the feature had
+proved to be more widely useful.&lt;/p>
+&lt;p>Velociraptor provides access to files using an &lt;code>accessor&lt;/code>. An accessor
+can be thought of as simply a driver that presents a filesystem to the
+various plugins within VQL. For example, the &lt;code>registry&lt;/code> accessor
+presents the registry as a filesystem, so we can apply &lt;code>glob()&lt;/code> to
+search the registry, &lt;code>yara()&lt;/code> to scan registry values etc.&lt;/p>
+&lt;p>Remapping is simply a mechanism where we can substitute one accessor
+for another. Let&amp;rsquo;s apply a remapping so we can run the
+&lt;code>Windows.Timeline.Prefetch&lt;/code> artifact with default parameters.&lt;/p>
+&lt;pre>&lt;code class="language-vql">LET _ &amp;lt;= remap(clear=TRUE, config=regex_transform(source='''
+ remappings:
+ - type: mount
+ from:
+ accessor: fs
+ prefix: &amp;quot;/clients/ClientId/collections/FlowId/uploads/auto/&amp;quot;
+ on:
+ accessor: auto
+ prefix: &amp;quot;&amp;quot;
+ path_type: windows
+''', map=dict(FlowId=FlowId, ClientId=ClientId)))
+
+SELECT * FROM Artifact.Windows.Timeline.Prefetch()
+&lt;/code>&lt;/pre>
+&lt;p>The above VQL builds a remapping configuration by substituting the
+&lt;code>ClientId&lt;/code> and &lt;code>FlowId&lt;/code> into a template (this relies on the fact that
+Flow Notebooks are pre-populated with &lt;code>ClientId&lt;/code> and &lt;code>FlowId&lt;/code>
+variables).&lt;/p>
+&lt;p>The remapping configuration performs a &lt;code>mount&lt;/code> operation from the file
+store accessor rooted at the collection&amp;rsquo;s upload directory onto the root
+of the &lt;code>auto&lt;/code> accessor. In other words, whenever subsequent VQL
+attempts to open a file using the &lt;code>auto&lt;/code> accessor, Velociraptor will
+remap that to the file store accessor rooted at the collection&amp;rsquo;s top
+level. Because the &lt;code>Windows.KapeFiles.Targets&lt;/code> artifact preserves the
+filesystem structure of collected files, the artifact should be able to
+find the files on the server in the same location they are found on
+the endpoint.&lt;/p>
+&lt;p>This allows us to just call the artifact directly without worrying
+about customizing it specifically. This approach is conceptually
+similar to building a virtual environment that emulates the endpoint
+but using files found on the server.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="4077af94c53b56e813f6f2339f357141">
+ &lt;div data-featherlight="#4077af94c53b56e813f6f2339f357141" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-08-04-post-processing/remapping_postprocessing.png" alt="Parsing of server collected files using a remapping">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="remapping_postprocessing.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Parsing of server collected files using a remapping
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h3 id="remapping-the-ntfs-accessor">Remapping the NTFS accessor&lt;/h3>
+&lt;p>Let&amp;rsquo;s now try to parse the $MFT with the &lt;code>Windows.NTFS.MFT&lt;/code> artifact.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="e810c998acb93cf194d9c09a22b2c2c1">
+ &lt;div data-featherlight="#e810c998acb93cf194d9c09a22b2c2c1" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-08-04-post-processing/remapping_postprocessing_ntfs.png" alt="Parsing of $MFT on the server">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="remapping_postprocessing_ntfs.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Parsing of $MFT on the server
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>This does not work because the server does not have the &lt;code>ntfs&lt;/code>
+accessor! The &lt;code>Windows.NTFS.MFT&lt;/code> artifact will try to open the $MFT
+from the default path &lt;code>C:\$MFT&lt;/code> using the &lt;code>ntfs&lt;/code> accessor because this
+is how we normally access the $MFT file on the endpoint. But on the
+server we want to open the collected &lt;code>$MFT&lt;/code> file using the
+filestore. We will have to add another mapping for that!&lt;/p>
+&lt;pre>&lt;code class="language-vql">LET _ &amp;lt;= remap(clear=TRUE, config=regex_transform(source='''
+ remappings:
+ - type: mount
+ from:
+ accessor: fs
+ prefix: &amp;quot;/clients/ClientId/collections/FlowId/uploads/ntfs/&amp;quot;
+ on:
+ accessor: ntfs
+ prefix: &amp;quot;&amp;quot;
+ path_type: ntfs
+
+''', map=dict(FlowId=FlowId, ClientId=ClientId)))
+
+SELECT * FROM Artifact.Windows.NTFS.MFT()
+&lt;/code>&lt;/pre>
+&lt;p>This maps the &lt;code>ntfs&lt;/code> branch of the collection upload to the &lt;code>ntfs&lt;/code>
+accessor. Now when the VQL opens files with the &lt;code>ntfs&lt;/code> accessor it
+will actually be fetched from the server&amp;rsquo;s filestore.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="d835f67154bbce9624523ad83745567e">
+ &lt;div data-featherlight="#d835f67154bbce9624523ad83745567e" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-08-04-post-processing/remapping_ntfs.png" alt="Parsing of $MFT on the server with filestore remapping">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="remapping_ntfs.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Parsing of $MFT on the server with filestore remapping
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h3 id="registry-mapping">Registry mapping&lt;/h3>
+&lt;p>For our last example, we wish to see the list of installed programs on
+the system by collecting the &lt;code>Windows.Sys.Programs&lt;/code> artifact. That
+artifact simply enumerates the keys under
+&lt;code>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall&lt;/code>. To
+make this work we need to mount a virtual SOFTWARE registry hive in
+such a way that when the artifact accesses that key, the internal raw
+registry parser will be used to retrieve those values.&lt;/p>
+&lt;pre>&lt;code class="language-vql">
+LET _ &amp;lt;= remap(clear=TRUE, config=regex_transform(source='''
+ remappings:
+ - type: mount
+ from:
+ accessor: raw_reg
+ prefix: |-
+ {
+ &amp;quot;Path&amp;quot;: &amp;quot;/&amp;quot;,
+ &amp;quot;DelegateAccessor&amp;quot;: &amp;quot;fs&amp;quot;,
+ &amp;quot;DelegatePath&amp;quot;: &amp;quot;/clients/ClientId/collections/FlowId/uploads/auto/C:/Windows/System32/config/SOFTWARE&amp;quot;
+ }
+ path_type: registry
+ &amp;quot;on&amp;quot;:
+ accessor: registry
+ prefix: HKEY_LOCAL_MACHINE\Software
+ path_type: registry
+''', map=dict(FlowId=FlowId, ClientId=ClientId)))
+
+SELECT * FROM Artifact.Windows.Sys.Programs()
+&lt;/code>&lt;/pre>
+&lt;p>The above directive instructs Velociraptor to use the &lt;code>raw_reg&lt;/code>
+accessor to parse the file on the server, and mounts it under the
+&lt;code>HKEY_LOCAL_MACHINE\Software&lt;/code> key in the registry accessor.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="5ec23077d1bc890c623a3c7554a3121c">
+ &lt;div data-featherlight="#5ec23077d1bc890c623a3c7554a3121c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-08-04-post-processing/remapping_registry.png" alt="Parsing of raw registry hives">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="remapping_registry.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Parsing of raw registry hives
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>A similar approach can be used to mount each user hive under
+&lt;code>/HKEY_USERS/&lt;/code>&lt;/p>
+&lt;h3 id="automating-the-remapping">Automating the remapping&lt;/h3>
+&lt;p>The technique shown above can be extended to support multiple
+artifacts but it is tedious to write by hand. Luckily there is an
+artifact on the &lt;code>Artifact Exchange&lt;/code> called
+&lt;code>Windows.KapeFiles.Remapping&lt;/code> to automate the remapping construction:&lt;/p>
+&lt;ol>
+&lt;li>Remap standard registry hives e.g. &lt;code>HKEY_LOCAL_MACHINE/Software&lt;/code>&lt;/li>
+&lt;li>Remap user hives on &lt;code>HKEY_USERS/&amp;lt;Username&amp;gt;&lt;/code>&lt;/li>
+&lt;li>Mount ntfs and auto accessors&lt;/li>
+&lt;li>Disable plugins which can not work on files (e.g. &lt;code>pslist&lt;/code>, &lt;code>wmi&lt;/code> etc)&lt;/li>
+&lt;/ol>
+&lt;p>The result is easy to use. In the below I unpack the Scheduled Tasks:&lt;/p>
+&lt;pre>&lt;code class="language-vql">LET _ &amp;lt;=
+ SELECT * FROM Artifact.Windows.KapeFiles.Remapping(ClientId=ClientId, FlowId=FlowId)
+
+ SELECT * FROM Artifact.Windows.System.TaskScheduler()
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="e160ad4f40deb8d49bc4f93d61e3829b">
+ &lt;div data-featherlight="#e160ad4f40deb8d49bc4f93d61e3829b" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-08-04-post-processing/automatic_remapping_1.png" alt="Automating the remapping steps">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="automatic_remapping_1.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Automating the remapping steps
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>I can seamlessly use the EVTX hunter artifact&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="af763f792806e9cb214eae875c287a75">
+ &lt;div data-featherlight="#af763f792806e9cb214eae875c287a75" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-08-04-post-processing/automatic_remapping_2.png" alt="Searching for event IDs from collected EVTX files">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="automatic_remapping_2.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Searching for event IDs from collected EVTX files
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h3 id="conclusions">Conclusions&lt;/h3>
+&lt;p>In the previous section we saw how it is possible to post process
+collected files on the server by reusing the standard Velociraptor
+artifacts (that were written assuming they are running on the
+endpoint).&lt;/p>
+&lt;p>Is that a good idea though?&lt;/p>
+&lt;p>Generally we do not recommend to use this methodology. Although it is
+commonly done in other tools, collecting bulk files from the endpoint
+and then parsing them offline is not an ideal method for a number of
+reasons:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>It does not scale - typically a &lt;code>Windows.KapeFiles.Targets&lt;/code> collects
+several Gigabytes of data. While this is acceptable for a small
+number of hosts, it is impractical to collect that much data from
+several thousand endpoints. Therefore effective hunting requires
+parsing the files directly on the endpoint.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Bulk files from the endpoint are a limited source of data - there is
+a lot more information that reflects the endpoint&amp;rsquo;s state. From WMI
+queries, process memory captures, ARP caches etc.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>It is always difficult to guess exactly which files will be
+required. In a &lt;code>Windows.KapeFiles.Targets&lt;/code> collection, we need to
+select the appropriate targets to collect. Collecting too much is
+impractical and collecting too little might miss some important
+information.&lt;/p>
+&lt;p>For example consider the following artifact &lt;code>Exchange.HashRunKeys&lt;/code> -
+an artifact that displays programs launched from &lt;code>Run&lt;/code> keys together
+with their hashes. Because it is impossible to know prior to
+collection which binaries are launched from the &lt;code>Run&lt;/code> keys, usually
+the triage capture does not acquires these binaries. When we parse
+the registry hives on the server, we are missing the actual hashes:&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="1d6e1445599a9434184ea93697e09599">
+ &lt;div data-featherlight="#1d6e1445599a9434184ea93697e09599" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-08-04-post-processing/hash_key.png" alt="Mapping to the triage bundle may miss crucial details">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="hash_key.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Mapping to the triage bundle may miss crucial details
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>However collecting the artifact on the endpoint works much better.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="8489c1c39d863bcd0fdec8a782e3c07c">
+ &lt;div data-featherlight="#8489c1c39d863bcd0fdec8a782e3c07c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2022/2022-08-04-post-processing/live_hashes.png" alt="Collecting directly on the endpoint works much better">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="live_hashes.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Collecting directly on the endpoint works much better
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;ul>
+&lt;li>Parsing certain artifacts on the server is impossible to do. For
+example, the above EVTX hunter enriches the SID in the event by
+calling the &lt;code>lookupSID()&lt;/code> VQL function (that calls the Windows
+API). Clearly this can not work on the server. Similarly &lt;a href="https://docs.velociraptor.app/blog/2019/2019-11-12_windows-event-logs-d8d8e615c9ca/" >resolving
+the event messages&lt;/a>
+ is also
+problematic when parsing the event logs offline.&lt;/li>
+&lt;/ul>
+&lt;p>Rather than collecting bulk data using &lt;code>Windows.KapeFiles.Targets&lt;/code>,
+Velociraptor users should collect other, more capable artifacts, that
+parse information directly on the endpoint (even if it is &lt;strong>in
+addition&lt;/strong> to &lt;code>Windows.KapeFiles.Targets&lt;/code>). As the investigation
+progresses, more artifacts can be collected as needed. We treat the
+endpoint as the ultimate source of truth and simply query it
+repeatedly.&lt;/p>
+&lt;p>The traditional collect, transfer, analyze workflow was born from an
+era when forensic tools were less capable and could not run directly
+on the endpoint. Investigators had a one shot window for acquiring as
+much data as possible, hoping they don&amp;rsquo;t need to go back and fetch
+more.&lt;/p>
+&lt;p>With the emergence of powerful, and always connected, DFIR tools like
+Velociraptor, we can bring the analysis capabilities directly to the
+endpoint. Because analysis is so fast now, one can quickly go back to
+the endpoint and get further information iteratively.&lt;/p>
+&lt;p>If you like the remapping feature, take &lt;a href="https://github.com/Velocidex/velociraptor" target="_blank" >Velociraptor for a
+spin&lt;/a>
+! It is a available
+on GitHub under an open source license. As always please file issues
+on the bug tracker or ask questions on our mailing list
+&lt;a href="mailto:velociraptor-discuss@googlegroups.com" >velociraptor-discuss@googlegroups.com&lt;/a>
+
+. You can also chat with us directly on discord
+&lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+
+.&lt;/p></description></item><item><title>Notebooks.Default</title><link>https://docs.velociraptor.app/artifact_references/pages/notebooks.default/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/notebooks.default/</guid><description>&lt;p>A default notebook.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Notebooks.Default
+description: |
+ A default notebook.
+
+type: NOTEBOOK
+
+sources:
+ - notebook:
+ - type: markdown
+ name: Welcome page
+ template: |
+ # Welcome to Velociraptor notebooks!
+
+ * Update this notebook with any VQL or markdown cells.
+ * You can copy cells into this notebook from other collection or hunt notebooks.
+
+ - type: vql_suggestion
+ name: A Cell Suggestion
+ template: |
+ /*
+ # This is a cell suggestion
+ */
+ SELECT * FROM info()
+
+&lt;/code>&lt;/pre></description></item><item><title>Notebooks.Demo</title><link>https://docs.velociraptor.app/artifact_references/pages/notebooks.demo/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/notebooks.demo/</guid><description>&lt;p>A notebook demonstrating features of notebooks&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Notebooks.Demo
+description: |
+ A notebook demonstrating features of notebooks
+
+type: NOTEBOOK
+
+# We can include tools in notebook templates, just like artifacts.
+tools:
+ - name: Autorun_amd64
+ url: https://live.sysinternals.com/tools/autorunsc64.exe
+
+parameters:
+ - name: StartDate
+ type: timestamp
+ - name: AnInteger
+ type: int
+ default: "5"
+
+sources:
+ - notebook:
+ - type: vql
+ name: Example Query with tool reference
+ template: |
+ SELECT StartDate, AnInteger, Tool_Autorun_amd64_URL
+ FROM scope()
+
+&lt;/code>&lt;/pre></description></item><item><title>Notebooks.Sigma.Studio</title><link>https://docs.velociraptor.app/artifact_references/pages/notebooks.sigma.studio/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/notebooks.sigma.studio/</guid><description>&lt;p>A notebook to help develop Sigma rules.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Notebooks.Sigma.Studio
+description: |
+ A notebook to help develop Sigma rules.
+
+type: NOTEBOOK
+
+tools:
+ - name: SigmaProfiles
+ url: https://sigma.velocidex.com/profiles.json
+ serve_locally: true
+
+parameters:
+ - name: BaseType
+ description: Write sigma rules to target these base artifacts
+ type: choices
+ default: Windows
+ choices:
+ - Windows
+ - WindowsEvents
+ - Linux
+ - LinuxEvents
+
+ - name: Debug
+ description: Enable this to match all rules (even if they did not match) to see what detections matched.
+ type: bool
+
+ - name: LogSource
+ description: The current log source to use.
+
+sources:
+ - notebook:
+ - type: markdown
+ name: Sigma Studio Description
+ template: |
+ # Sigma Studio
+
+ This notebook is designed to help you write and test Sigma
+ Rules for detection within Velociraptor!
+
+ ## What is Sigma?
+
+ Sigma is an open notation for writing detection rules - It
+ is supported natively in Velociraptor as described in [our
+ blog post](https://docs.velociraptor.app/blog/2024/2024-05-09-detection-engineering/)
+
+ Sigma relies on a set of `Log Sources` (defining possible
+ sources for log events) and `Field Mappings` (an agreed upon
+ set of field transformations that may be referred to in the
+ Sigma rule).
+
+ The Sigma standard does not define those, but they are
+ critical for successfully writing Sigma rules. Therefore,
+ Velociraptor uses [a standard set of Log Sources and Field
+ Mappings](https://sigma.velocidex.com/).
+
+ This is the purpose of this notebook! Making it easy and
+ simple to write rules **within the definitions of
+ Velociraptor's curated sets**. This means that portability
+ of rules to other systems is **not a goal** of this
+ notebook.
+
+ ## How to use this notebook?
+
+ 1. Before you start, collect the
+ `Server.Import.CuratedSigma` artifact to download the
+ latest `Sigma Profiles`. A `Sigma Profile` is a machine
+ readable definition of log sources and field mappings
+ that allows the GUI to guide rule authors.
+
+ 2. Collect event samples. Use the relevant `CaptureTestSet`
+ artifact (e.g. `Windows.Sigma.Base.CaptureTestSet`) collect
+ events from the relevant log source. You can post-process
+ the rows and filter in the notebook as usual.
+
+ 3. When you are ready to work with a test set, click `export
+ to JSON` in the GUI to receive a JSON file with the test
+ data.
+
+ 4. Upload this test set into this notebook.
+
+ 5. Open the `Sigma Editor` within this notebook.
+
+ 6. Select the relevant log source from the drop down (you
+ will only see supported log sources).
+
+ 7. Follow the instructions within the Sigma editor. You can
+ name any of the supported fields inside the rule.
+
+ 8. Saving the rule will automatically apply the ruleset on
+ the test set. This gives visual feedback of how effective
+ the rule is.
+
+ 9. When you are ready to deploy at scale download the
+ ruleset from the notebook and enter it to the base sigma
+ artifact (e.g. `Windows.Sigma.Base`).
+
+
+ After you are familiar with the `Sigma Studio` notebook you
+ can delete this instructional cell.
+
+ - type: markdown
+ name: Sigma Studio Interactive Cell
+ template: |
+ {{ define "Setup" }}
+ LET ProfileType &amp;lt;= dict(
+ Windows="Windows.Sigma.Base",
+ Linux="Linux.Sigma.Base",
+ WindowsEvents="Windows.Sigma.BaseEvents",
+ LinuxEvents="Linux.Sigma.BaseEvents")
+
+ // We need to store the profile in the datastore because it
+ // is too large to pass in a HTML tag.
+ LET Rows &amp;lt;= SELECT upload(
+ accessor='data', file=Content,
+ name='profile.json') AS Upload
+ FROM http_client(url=Tool_SigmaProfiles_URL)
+
+ // This is where it is.
+ LET ProfileComponents &amp;lt;= Rows[0].Upload.Components
+
+ LET ProfileName &amp;lt;= get(item=ProfileType,
+ field=BaseType || "Windows")
+ LET _ &amp;lt;= import(artifact= ProfileName)
+
+ // Build the Sigma rules into a downloadable rule set.
+ LET Rules = SELECT read_file(
+ accessor='fs',
+ filename=vfs_path) AS Data FROM uploads()
+ WHERE vfs_path =~ '.yaml'
+
+ LET TestSigmaRules &amp;lt;= join(array=Rules.Data, sep='\n---\n')
+
+ LET Upload &amp;lt;= upload(name='sigma_rules.yaml', accessor='data',
+ file=TestSigmaRules)
+ LET Link &amp;lt;= link_to(upload=Upload, text='sigma ruleset')
+
+ SELECT * FROM scope()
+ {{ end }}
+
+ {{ $rows := Query "Setup" | Expand }}
+
+ {{ SigmaEditor "upload" ( Scope "ProfileComponents" ) "selected_profile" ( Scope "ProfileName" ) }}
+
+ ### Download {{ Scope "Link" }}
+
+ # Sample Events For testing.
+
+ You can test the sigma rules on test events in JSONL
+ format. Upload samples into this notebook by using the
+ `Notebook Uploads` dialog.
+
+ {{ define "Testing" }}
+ // Feed all the json rows to the log sources.
+ LET AllRows = SELECT * FROM foreach(row={
+ SELECT vfs_path FROM uploads()
+ WHERE vfs_path =~ 'attach.+json$'
+ }, query={
+ SELECT * FROM parse_jsonl(accessor='fs', filename=vfs_path)
+ })
+
+ LET TestingLogSourceDict &amp;lt;= to_dict(item={
+ SELECT _key, AllRows AS _value
+ FROM items(item=LogSources)
+ })
+
+ // Build the log sources automatically.
+ LET TestingLogSources &amp;lt;= sigma_log_sources(`**`=TestingLogSourceDict)
+
+ // Apply the Sigma Rules on the samples.
+ SELECT _Rule.Title AS Rule ,
+ Details,
+ dict(System=System,
+ EventData=X.EventData || X.UserData,
+ Message=X.Message) AS Event,
+ _Match AS Match
+ FROM sigma(
+ rules=split(string=TestSigmaRules, sep_string="\n---\n"),
+ log_sources= TestingLogSources, debug=Debug,
+ default_details=DefaultDetailsLambda,
+ field_mapping= FieldMapping)
+
+ {{ end }}
+
+ ## Match rules on test set
+
+ {{ if ( Scope "Debug" ) }}
+ Debug mode is enabled, so all events will be shown. Inspect
+ the Match object to see which detections matched.
+ {{ else }}
+ Debug mode is disabled, so only matching events will be shown. Enable Debug mode by editing the notebook.
+ {{ end }}
+
+ {{ Query "Testing" | Table}}
+
+ ## View the test set
+
+ {{ Query "SELECT * FROM AllRows " | Table}}
+
+&lt;/code>&lt;/pre></description></item><item><title>Notebooks.Timelines</title><link>https://docs.velociraptor.app/artifact_references/pages/notebooks.timelines/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/notebooks.timelines/</guid><description>&lt;p>The notebook creates a default Super-Timeline.&lt;/p>
+&lt;p>Timelines are used to visualize time series data from other
+collections in the same place. This notebook template creates an
+initial timeline.&lt;/p>
+&lt;p>Once this timeline is created, you can add any time series table in
+other notebooks (e.g. Collection or Hunt notebooks) to this super
+timeline.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Notebooks.Timelines
+description: |
+ The notebook creates a default Super-Timeline.
+
+ Timelines are used to visualize time series data from other
+ collections in the same place. This notebook template creates an
+ initial timeline.
+
+ Once this timeline is created, you can add any time series table in
+ other notebooks (e.g. Collection or Hunt notebooks) to this super
+ timeline.
+
+type: NOTEBOOK
+
+parameters:
+ - name: TimelineName
+ description: The name of the super timeline to create.
+ default: Supertimeline
+
+sources:
+ - notebook:
+ - type: markdown
+ name: Timeline Description
+ template: |
+ # {{ Scope "TimelineName" }}
+
+ Add to this timeline any time-series data from any other
+ notebooks:
+
+ 1. Click the `Add Timeline` button at the top of any table.
+ 2. Switch to global notebook timelines and select this timeline.
+ 3. Select the timestamp and message columns to add a timeline.
+
+ {{ Scope "TimelineName" | Timeline }}
+
+ - type: vql
+ name: Timeline Interactive Cell
+ template: |
+ /*
+ # Timeline Annotations
+
+ Refresh this to list all timeline annotations as a table.
+ */
+ SELECT *
+ FROM timeline(notebook_id=NotebookId,
+ components="Annotation",
+ timeline=TimelineName)
+ ORDER BY Timestamp
+
+&lt;/code>&lt;/pre></description></item><item><title>Notebooks.VQLx2</title><link>https://docs.velociraptor.app/artifact_references/pages/notebooks.vqlx2/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/artifact_references/pages/notebooks.vqlx2/</guid><description>&lt;p>A notebook initialized with 2 VQL cells&lt;/p>
+&lt;pre>&lt;code class="language-yaml">
+name: Notebooks.VQLx2
+description: |
+ A notebook initialized with 2 VQL cells
+
+type: NOTEBOOK
+
+sources:
+ - notebook:
+ - type: vql
+ name: First Cell
+ output: |
+ &amp;lt;&amp;lt; 1st cell: Click here to edit &amp;gt;&amp;gt;
+ template: |
+ SELECT * FROM orgs()
+ - type: vql
+ name: Second Cell
+ output: |
+ &amp;lt;&amp;lt; 2nd cell: Click here to edit &amp;gt;&amp;gt;
+ template: |
+ SELECT * FROM gui_users() WHERE name = whoami()
+
+&lt;/code>&lt;/pre></description></item></channel></rss>

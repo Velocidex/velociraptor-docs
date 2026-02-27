@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>GUI on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/gui/</link><description>Recent content in GUI on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Mon, 18 Mar 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/gui/index.xml" rel="self" type="application/rss+xml"/><item><title>How do I enable password protected VFS downloads?</title><link>https://docs.velociraptor.app/knowledge_base/tips/download_password/</link><pubDate>Mon, 18 Mar 2024 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/download_password/</guid><description>&lt;h1 id="how-do-i-enable-password-protected-vfs-downloads">How do I enable password protected VFS downloads?&lt;/h1>
+&lt;p>You can just export them from the GUI!&lt;/p>
+&lt;p>Set the password in your user preferences you can enable password
+protected exports.&lt;/p>
+&lt;p>Highlight the directory you want to export.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="fe07eee1f0268775c646e844b05bff2d">
+ &lt;div data-featherlight="#fe07eee1f0268775c646e844b05bff2d" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/download_password/01.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="01.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Hit the export button - this will start a server collection to take a
+snapshot of the vfs - you can set any filtering globs (so for example
+don&amp;rsquo;t export all the files - maybe only &lt;code>*.exe&lt;/code>).&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="d9b6f4554ead74cebd62effb6a671a52">
+ &lt;div data-featherlight="#d9b6f4554ead74cebd62effb6a671a52" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/download_password/02.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="02.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>By default it just does &lt;code>**&lt;/code> which is everything under the directory.
+This makes a collection and adds a link to it.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="9a11768d2c2eea7c331011b06a7d4eb2">
+ &lt;div data-featherlight="#9a11768d2c2eea7c331011b06a7d4eb2" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/download_password/03.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="03.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Then click that and export like any other collection.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="9675c1ff34145d7b1a68d3ddb6c0e555">
+ &lt;div data-featherlight="#9675c1ff34145d7b1a68d3ddb6c0e555" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/download_password/04.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="04.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Password can be set in the user preferences (the top right tile
+with the username). This will enable the lock feature of the zip
+export - make sure to click close button to save the password (instead
+of just clicking outside the modal dialog).&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="79d59b191996ede84d98442fd4613cb0">
+ &lt;div data-featherlight="#79d59b191996ede84d98442fd4613cb0" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/download_password/05.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="05.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p></description></item><item><title>How can I save my favorite collections for the future?</title><link>https://docs.velociraptor.app/knowledge_base/tips/favorites/</link><pubDate>Tue, 26 Apr 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/favorites/</guid><description>&lt;h1 id="how-can-i-save-my-favorite-collections-for-the-future">How can I save my favorite collections for the future?&lt;/h1>
+&lt;p>Sometimes we tend to collect the same set of artifacts together,
+possibly with some specific parameters. It gets tedious to constantly
+reconfigure the &lt;code>New Collection&lt;/code> interface with the same set of
+artifacts.&lt;/p>
+&lt;p>This where the &lt;code>favorites&lt;/code> feature comes in. We can save existing
+collections including the artifacts collected and their
+parameters. Then in future we just need to restore our collections
+from our favorites.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="40df04caa5af69c051a81f33ff2e565a">
+ &lt;div data-featherlight="#40df04caa5af69c051a81f33ff2e565a" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/favorites/fav.png" alt="Saving a collection as a favorite">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="fav.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Saving a collection as a favorite
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>The favorite can be restored in future by simply adding a new
+collection, clicking the favorite button and searching for it.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="43befe2b5c6796c74b67fdaa3b5bbdf6">
+ &lt;div data-featherlight="#43befe2b5c6796c74b67fdaa3b5bbdf6" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/favorites/fav2.png" alt="Restoring a favorite collection">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="fav2.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Restoring a favorite collection
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h2 id="creating-favorites-programmatically">Creating favorites programmatically&lt;/h2>
+&lt;p>Favorites are stored into the user&amp;rsquo;s profile, since each user might
+have a different set of artifacts they normally use.&lt;/p>
+&lt;p>You can see your own favorites using the &lt;code>favorites_list()&lt;/code>
+plugin. The below query will produce serialized spec strings that may
+be fed directly into &lt;code>favorites_save()&lt;/code> below.&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT name, description, type, serialize(item=spec) AS Spec
+FROM favorites_list()
+&lt;/code>&lt;/pre>
+&lt;p>It is possible however to create favorites using VQL with the &lt;a href="https://docs.velociraptor.app/vql_reference/server/favorites_save/" >favorites_save()&lt;/a>
+ function:&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT favorites_save(type=&amp;quot;CLIENT&amp;quot;, name=&amp;quot;MyFavorite&amp;quot;,
+specs='''
+[{&amp;quot;artifact&amp;quot;:&amp;quot;Windows.Search.FileFinder&amp;quot;,
+ &amp;quot;parameters&amp;quot;: {
+ &amp;quot;env&amp;quot;: [{
+ &amp;quot;key&amp;quot;: &amp;quot;SearchFilesGlob&amp;quot;,
+ &amp;quot;value&amp;quot;: &amp;quot;HKEY_USERS/*/Software/Sysinternals/*/*&amp;quot;
+ }, {
+ &amp;quot;key&amp;quot;: &amp;quot;Accessor&amp;quot;,
+ &amp;quot;value&amp;quot;: &amp;quot;registry&amp;quot;
+ }]}}]''')
+FROM scope()
+&lt;/code>&lt;/pre>
+&lt;p>Note the &lt;code>spec&lt;/code> parameter is a JSON encoded blob of the various
+artifact parameters.&lt;/p>
+&lt;p>By including the VQL in a notebook, any user can collect it and
+install the favorites in their own profile.&lt;/p>
+&lt;h2 id="applying-favorites-to-other-users">Applying favorites to other users&lt;/h2>
+&lt;p>The above example showed how to programmatically set favorites in
+one&amp;rsquo;s own user profile, but sometimes we want to apply the favorites
+in other user&amp;rsquo;s profile as well. This helps to establish a common set
+of artifacts for the entire team.&lt;/p>
+&lt;p>To set other user&amp;rsquo;s favorites, you will need to be an administrator
+with the impersonation permission, and run the above query in the
+user&amp;rsquo;s context:&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT * FROM foreach(row={
+
+ -- Iterate over all users in the current org
+ -- (use all_org=TRUE to iterate over all users).
+ SELECT * FROM gui_users()
+
+}, query={
+
+ -- Run this query in its own scope.
+ -- Runas will switch to that user.
+
+ SELECT * FROM query(runas=name, query={
+
+ -- Here is the original query to be run in
+ -- the user's context - same as above.
+ SELECT favorites_save(type=&amp;quot;CLIENT&amp;quot;, name=&amp;quot;MyFavorite&amp;quot;,
+ specs='''
+ [{&amp;quot;artifact&amp;quot;:&amp;quot;Windows.Search.FileFinder&amp;quot;,
+ &amp;quot;parameters&amp;quot;: {
+ &amp;quot;env&amp;quot;: [{
+ &amp;quot;key&amp;quot;: &amp;quot;SearchFilesGlob&amp;quot;,
+ &amp;quot;value&amp;quot;: &amp;quot;HKEY_USERS/*/Software/Sysinternals/*/*&amp;quot;
+ }, {
+ &amp;quot;key&amp;quot;: &amp;quot;Accessor&amp;quot;,
+ &amp;quot;value&amp;quot;: &amp;quot;registry&amp;quot;
+ }]}}]''')
+ FROM scope()
+ })
+})
+&lt;/code>&lt;/pre></description></item></channel></rss>

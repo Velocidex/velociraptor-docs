@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Containment on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/containment/</link><description>Recent content in Containment on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sat, 04 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/containment/index.xml" rel="self" type="application/rss+xml"/><item><title>Custom quarantine exclusions</title><link>https://docs.velociraptor.app/knowledge_base/tips/quarantine/</link><pubDate>Sat, 04 Mar 2023 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/quarantine/</guid><description>&lt;h1 id="custom-quarantine-exclusions">Custom quarantine exclusions&lt;/h1>
+&lt;p>We may want to add custom exclusions to Velociraptor quarantine and allow communication to another IP&lt;/p>
+&lt;ol>
+&lt;li>Add machine in scope to a new label: e.g NewQuarantine&lt;/li>
+&lt;li>Remove standard quarantine&lt;/li>
+&lt;li>Run a hunt targeting your label above or a collection on the single machine&lt;/li>
+&lt;li>Select relevant quarantine content: Windows.Remediation.Quarantine&lt;/li>
+&lt;li>Add additional IP exclusions
+Action = Permit
+SrcAddr = me
+DstAddr = IP to exclude
+Mirrored = yes for bidirectional communication
+Description&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="8c9697ec17bdb2b45f90bbf198f8e9bb">
+ &lt;div data-featherlight="#8c9697ec17bdb2b45f90bbf198f8e9bb" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/quarantine/https://user-images.githubusercontent.com/13081800/222630435-4882554a-eefa-4a78-9ae2-fe41d3d60874.png" alt="image" />
+ &lt;/div>
+ &lt;figcaption>
+ image
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p></description></item></channel></rss>

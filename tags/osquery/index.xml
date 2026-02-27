@@ -1,0 +1,722 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>OSQuery on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/osquery/</link><description>Recent content in OSQuery on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Wed, 03 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/osquery/index.xml" rel="self" type="application/rss+xml"/><item><title>Migrating from OSQuery to Velociraptor</title><link>https://docs.velociraptor.app/blog/2021/2021-02-03-migrating-from-osquery-to-velociraptor-d4143799953f/</link><pubDate>Wed, 03 Feb 2021 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2021/2021-02-03-migrating-from-osquery-to-velociraptor-d4143799953f/</guid><description>&lt;h2 id="tips-for-the-journey">Tips for the journey&lt;/h2>
+&lt;p>&lt;a href="https://osquery.io/" target="_blank" >OSQuery&lt;/a>
+ has been around for a while now, and
+was actually the initial inspiration for Velociraptor. Back in the
+day, it became clear to me that the way to provide unprecedented
+flexibility for endpoint visibility was to have a flexible and
+powerful query language. OSQuery was historically a proof that a
+powerful query language was the way forward, and VQL was designed to
+improve on OSQuery and push the state of the art.&lt;/p>
+&lt;p>Many new Velociraptor users have existing OSQuery queries and
+installations and are migrating to Velociraptor for powerful and
+efficient endpoint visibility. I have written &lt;a href="https://medium.com/velociraptor-ir/velociraptor-and-osquery-2a4306dd23c" target="_blank" >previously about
+Velociraptor’s OSQuery
+integration&lt;/a>
+,
+allowing OSQuery queries to run directly inside Velociraptor.&lt;/p>
+&lt;p>This integration, however, is simply a stopgap measure during
+migration. It is much better to write VQL queries within Velociraptor,
+since VQL is much more powerful and also much faster.&lt;/p>
+&lt;p>This post aims to help this migration by comparing typical OSQuery
+queries with native VQL Velociraptor queries. This side by side
+comparison hopefully sheds some light on VQL and will encourage you to
+start writing new VQL artifacts.&lt;/p>
+&lt;p>This post does not compare the scalability, ease of deployment and
+management GUI of OSQuery‘s various fleet implementations with
+Velociraptor’s — we only look at the query language itself.&lt;/p>
+&lt;h3 id="the-file-table">The file table&lt;/h3>
+&lt;p>One of the most often used OSQuery table is the file table. For example we can see information about a file:&lt;/p>
+&lt;pre>&lt;code class="language-sql">SELECT * FROM file WHERE path = &amp;quot;C:\Windows\notepad.exe&amp;quot;;
+&lt;/code>&lt;/pre>
+&lt;p>Because OSQuery uses SQL as its underlying implementation, there is no
+way to tell the query that it is only interested in a single file (A
+naive implementation would scan all files on disk and compare the path
+by the condition eliminating all but one — a very expensive
+approach!).&lt;/p>
+&lt;p>To avoid a full scan of the filesystem, OSQuery peeks at the WHERE
+clause to figure out what it needs to do. It is therefore required
+that a WHERE clause is provided and the path or directory be
+restricted in some way.&lt;/p>
+&lt;p>Compare this to VQL. The main realization in VQL was that unlike in a
+relational database, tables are implemented by code, the code must be
+able to accept arguments. Therefore VQL’s syntax requires “tables” to
+take arguments (in VQL these are termed plugins):&lt;/p>
+&lt;pre>&lt;code class="language-sql">SELECT * FROM glob(globs=&amp;quot;C:\\Windows\\notepad.exe&amp;quot;)
+&lt;/code>&lt;/pre>
+&lt;p>The VQL equivalent to the file table is the glob() plugin, which
+accepts a glob expression (i.e. wildcards) to search the filesystem
+directly. (Note also that VQL does not use a semicolon &lt;code>;&lt;/code> as a
+statement separator — it is not needed, just string multiple
+statements together).&lt;/p>
+&lt;p>So far both queries simply return a single row for a specific
+file. OSQuery allows us to specify a wildcard for filenames as well,
+however it uses the SQL &lt;strong>like&lt;/strong> syntax. For example to return all
+dlls in the system32 directory:&lt;/p>
+&lt;pre>&lt;code class="language-sql">SELECT * FROM file WHERE path like &amp;quot;C:\Windows\system32\%.dll&amp;quot;;
+&lt;/code>&lt;/pre>
+&lt;p>The equivalent VQL is&lt;/p>
+&lt;pre>&lt;code class="language-sql">SELECT * FROM glob(globs=&amp;quot;C:\\Windows\\System32\\*.dll&amp;quot;)
+&lt;/code>&lt;/pre>
+&lt;p>You can test the VQL in the Velociraptor notebook right in the
+GUI. Simply select &lt;strong>Notebooks&lt;/strong> from the sidebar and add a new
+notebook. Click on the top cell and add a new VQL cell where you can
+write arbitrary queries.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="990e869ce3e7810815f6e7432afbd478">
+ &lt;div data-featherlight="#990e869ce3e7810815f6e7432afbd478" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-03-migrating-from-osquery-to-velociraptor-d4143799953f/../../img/1604zaUCaHumz_aHKaJY1Ig.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>You can also test OSQuery in the notebook cell by simply invoking the
+&lt;code>Windows.OSQuery.Generic()&lt;/code> artifact (In this case Velociraptor will
+shell out to OSQuery and collect the results).&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="79ee71bcd59116fb9ce2131fac4aecf4">
+ &lt;div data-featherlight="#79ee71bcd59116fb9ce2131fac4aecf4" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-03-migrating-from-osquery-to-velociraptor-d4143799953f/../../img/1A6SW9z2b5anC7GHHZ2-Aeg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>If you tried this you would immediately see a difference in
+performance — the VQL example took less than a second to return 3384
+rows while OSQuery took over 6 sec to return the same data. While 6
+seconds is not too bad, this gets worse when we try to fetch more dlls
+from the disk…&lt;/p>
+&lt;p>In VQL we can use &lt;code>**&lt;/code> to denote recursive glob wildcard. This time
+the query took 2 seconds and returned 4090 rows.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="b46513fa14bc3eabc0e51076655ad40f">
+ &lt;div data-featherlight="#b46513fa14bc3eabc0e51076655ad40f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-03-migrating-from-osquery-to-velociraptor-d4143799953f/../../img/1Z2JdROd6jSvmSvxEB9p0QA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>OSQuery uses &lt;code>%%&lt;/code> for the same purpose. However OSQuery only allows a
+recursive wildcard at the end of a LIKE string (see discussion
+&lt;a href="https://blog.kolide.com/the-file-table-in-osquery-is-amazing-99db0f52a066" target="_blank" >here&lt;/a>
+),
+so we need to break up the condition into a more complex query with
+two conditions.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="3b49380626a647d47fc73c660882c5a0">
+ &lt;div data-featherlight="#3b49380626a647d47fc73c660882c5a0" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-03-migrating-from-osquery-to-velociraptor-d4143799953f/../../img/1Jxcocb4GG8gnCEBugzMDjA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>This time OSQuery takes 52 seconds to return the same number of
+rows. If you keep an eye on the task manager you would also see an
+increasing memory footprint for OSQuery because it queues up all rows
+in memory before returning them, so the more rows it returns the more
+memory it uses. If we now increase the size of the glob, to return all
+dlls on the system the query times out without returning any data at
+all!&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="571fb2eb6551327fc0734dbbfde66ae2">
+ &lt;div data-featherlight="#571fb2eb6551327fc0734dbbfde66ae2" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-03-migrating-from-osquery-to-velociraptor-d4143799953f/../../img/1eAv9VFpn-r_C6D8sGUVhhg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The timeout is imposed by Velociraptor’s OSQuery integration. This is
+another interesting difference between OSQuery and VQL — VQL has
+active query cancellation, and a timeout after which the query is
+cancelled (In this case the VQL that shells out to OSQuery has timed
+out and actively killed the OSQuery process after 10 minutes).&lt;/p>
+&lt;p>This makes running larger queries much safer as it provides an upper
+bound on the amount of resources taken on the endpoint. Once this
+bound is exceeded, the query is terminated.&lt;/p>
+&lt;p>Running a similar query with Velociraptor is much faster returning 64k
+rows in 66 seconds.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="fac7a40a85d1fe2d002ec8dbc799279b">
+ &lt;div data-featherlight="#fac7a40a85d1fe2d002ec8dbc799279b" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-03-migrating-from-osquery-to-velociraptor-d4143799953f/../../img/1tQ3vq6-J7tVF_e0cloOWIg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Performance issues in the OSQuery file table have been discussed
+previously (see
+&lt;a href="https://blog.kolide.com/the-file-table-in-osquery-is-amazing-99db0f52a066" target="_blank" >https://blog.kolide.com/the-file-table-in-osquery-is-amazing-99db0f52a066&lt;/a>
+)
+and the advice is to just be more targeted in your queries, however if
+you need to know if a file exists anywhere on the disk then an
+exhaustive search is necessary.&lt;/p>
+&lt;p>Although being targeted is helpful, With VQL we can confidently run
+the exhaustive search because VQL has our back, in case our queries
+are more expensive than expected. VQL is designed to deal with many
+rows (e.g. the &lt;code>Windows.NTFS.MFT&lt;/code> Artifact can return the entire
+contents of the MFT which can be around 400–500k rows within a couple
+minutes). VQL queries stream their results as soon as possible, so
+Velociraptor can maintain a low memory footprint even for very large
+result sets (typical memory footprint is 50–100mb).&lt;/p>
+&lt;p>&lt;strong>NOTE&lt;/strong>: VQL does not use the &lt;code>like&lt;/code> keyword as in SQL. Instead VQL
+has the &lt;code>=~&lt;/code> operator which means a regular expression match. SQL’s
+&lt;code>like&lt;/code> syntax is archaic and much less powerful than a simple
+regular expression.&lt;/p>
+&lt;p>The following selects all user details for usernames matching “user” followed by a digit.&lt;/p>
+&lt;pre>&lt;code class="language-sql">SELECT * FROM Artifact.Windows.Sys.Users() WHERE Name =~ &amp;quot;user[0–9]&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;h3 id="queries-and-artifacts">Queries and Artifacts&lt;/h3>
+&lt;p>One major difference between OSQuery and Velociraptor is that
+Velociraptor does not usually directly run queries on
+endpoints. Instead, a VQL query is wrapped in an “Artifact” — a
+specially formatted YAML file which is stored within the Velociraptor
+server. Artifacts make queries discoverable and allow for queries to
+be shared with the community. Once an artifact is written, the user
+does not need to worry about remembering or entering a query.&lt;/p>
+&lt;p>Artifacts can also be directly used within another VQL query. This
+allows VQL to encapsulate a complex algorithm, but at the same time,
+users can easily build on top of this.&lt;/p>
+&lt;p>In contrast OSQuery uses hard coded internal tables to provide a lot
+of functionality requiring c++ coding to add a lot of simpler
+functionality to the tool.&lt;/p>
+&lt;p>Let’s consider the OSQuery &lt;strong>chrome_extensions&lt;/strong> table — this table
+allows us to list all the chrome extensions installed by all users on
+the system. The query simply extract all rows but the actual logic of
+extracting and decoding the chrome extension data is hard coded inside
+OSQuery.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="0d4d615c1fafe18c04a9051e04414c56">
+ &lt;div data-featherlight="#0d4d615c1fafe18c04a9051e04414c56" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-03-migrating-from-osquery-to-velociraptor-d4143799953f/../../img/1JV1XuRxZFwRJ0xNCS1k2UQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>On the other hand, Velociraptor’s
+&lt;code>Windows.Applications.Chrome.Extensions&lt;/code> artifact is written in pure
+VQL (see &lt;a href="https://github.com/Velocidex/velociraptor/blob/master/artifacts/definitions/Windows/Applications/Chrome/Extensions.yaml" target="_blank" >the source code
+here&lt;/a>
+). You
+can view the artifact in the GUI by selecting the “View Artifact”
+screen from the sidebar. Note that artifacts can take parameters — in
+this case the artifact allows the user to adjust where the chrome
+extensions folder can be found.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="eefd506ae96145560463ce6e0a59e35c">
+ &lt;div data-featherlight="#eefd506ae96145560463ce6e0a59e35c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-03-migrating-from-osquery-to-velociraptor-d4143799953f/../../img/1NZA_Vj1kwrNF4hGx5Mrtaw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>You can just call another artifact seamlessly from VQL as if it was
+just another plugin.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="4357b0b1228a359d8c49f9654d41e75d">
+ &lt;div data-featherlight="#4357b0b1228a359d8c49f9654d41e75d" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-03-migrating-from-osquery-to-velociraptor-d4143799953f/../../img/14s-7aPELM12TKcRO4iK7Pg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>This feature encourages users to develop reusable VQL Artifacts that
+can be put together like Lego bricks. Additionally, since artifacts
+are just VQL queries it is possible to add new capabilities to the
+tool with just a simple query — no need to write new tables in c++
+like in OSQuery.&lt;/p>
+&lt;p>VQL provides very flexible primitives that can be much lower level
+than OSQuery. For example, a binary parser is provided built into the
+language, thereby allowing users to parse arbitrary files in their
+queries. The additional flexibility means that even complex
+functionality can be implemented entirely in VQL.&lt;/p>
+&lt;p>As a VQL query writer, seek to utilize one of the hundreds of built in
+artifacts in your queries. There are many artifacts that are
+functionally equivalent to OSQuery’s tables, but are written in VQL
+(So you can just customize them as well). If you come up with
+interesting artifacts, please share them with the community either by
+sending us a pull request on GitHub or hosting the YAML yourself.&lt;/p>
+&lt;h3 id="joins-and-foreach">Joins and foreach()&lt;/h3>
+&lt;p>Many newcomers to VQL look for the familiar SQL constructs like
+JOIN. However, VQL does not use joins at all, keeping the language
+simpler. In my experience SQL joins are confusing and difficult for
+people to really understand (quiz: what is the difference between a
+left join, right join, cross join, inner join and outer join?).&lt;/p>
+&lt;p>Since VQL can provide parameters to plugins, we can create a plugin
+which takes another query as a parameter. This is the fundamental idea
+behind the foreach() plugin (I wrote about it&lt;a href="https://medium.com/velociraptor-ir/the-velociraptor-query-language-pt-2-fe92bb7aa150" target="_blank" >
+previously&lt;/a>
+). The
+foreach plugin accepts the “rows” parameter and the “query”
+parameter. It simply runs the “rows” query and for each row it
+produces, the plugin evaluates the “query” query and emits the
+results.&lt;/p>
+&lt;p>Let’s take a simple example: an OSQuery query designed to display
+information about specific chrome extensions.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="3c718b7e999f65e1ef39df5099b61a35">
+ &lt;div data-featherlight="#3c718b7e999f65e1ef39df5099b61a35" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-03-migrating-from-osquery-to-velociraptor-d4143799953f/../../img/12_aE3H4tGqcSQLw44l_iJQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>This OSQuery query joins the &lt;strong>users&lt;/strong> table and the
+&lt;strong>chrome_extension&lt;/strong> table to fill information about the user&lt;/p>
+&lt;p>The equivalent VQL simply runs two queries — for each row emitted by
+the &lt;strong>Windows.Applications.Chrome.Extensions&lt;/strong> artifact that matches
+the extension of interest, we iterate over all the users, and select
+the user record of the user matching the relevant record so we can
+display its UUID.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="34ac708725041d171e896943e9655bb9">
+ &lt;div data-featherlight="#34ac708725041d171e896943e9655bb9" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-03-migrating-from-osquery-to-velociraptor-d4143799953f/../../img/1uijQ0x2p97P13V66lkWFCQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The VQL syntax is a lot of more readable without using a join
+statement. VQL also supports stored queries (similar to stored
+procedures) which take parameters and encourage query reuse.&lt;/p>
+&lt;p>A more refined query might use variables to store subqueries and then
+simply call them:&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="aaaaa0ce34a07b4d764c7f8a81fb661e">
+ &lt;div data-featherlight="#aaaaa0ce34a07b4d764c7f8a81fb661e" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-02-03-migrating-from-osquery-to-velociraptor-d4143799953f/../../img/1e_elJMJje0it3Da-M4OamQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h3 id="conclusions">Conclusions&lt;/h3>
+&lt;p>This post described some of the more obvious differences between
+OSQuery and Velociraptor. To summarise&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>The OSQuery file table equivalent is the VQL glob() plugin. Glob
+takes a glob expression as a parameter. Glob expressions use * and
+** as wildcard instead of % or %%.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>VQL does not have a like operator, instead using the regular
+expression operator =~&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The Glob plugin is much faster than the OSQuery file table and
+there are no restrictions on where a recursive wildcard goes.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>VQL queries time out by default after 10 min so there is no danger
+of overrunning the endpoint. If you prefer low and slow approach it
+is possible to rate limit the VQL query as well as increase the
+timeout.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Artifacts are YAML files that encapsulate VQL queries. Velociraptor
+does not directly collect VQL queries on the endpoint — you need to
+create an artifact first.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>If you previously reached for an OSQuery table that provides the
+data you need, simply look at existing VQL Artifacts that do the
+same. If there are none available, you can add your own
+&lt;strong>Artifacts&lt;/strong> in a modular way in the GUI (without needing to
+rebuild clients or servers).&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>VQL does not use &lt;strong>join&lt;/strong>, instead the foreach plugin provides the
+same functionality in a clearer way. Foreach also takes the
+&lt;strong>workers&lt;/strong> parameter allowing it to run concurrently on multiple
+cores.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>Users who are currently migrating from OSQuery can still reuse the
+existing investment they have in OSQuery queries directly in
+Velociraptor, but I hope this article convinced you that it is well
+worth porting your existing queries to native Velociraptor VQL to take
+advantage of the flexibility and performance enhancements that
+Velociraptor offers.&lt;/p>
+&lt;p>The above example is just one of the exercises we do in our hands on
+Velociraptor courses. If you are interested in learning more about
+Velociraptor, check out our hands on training courses on
+&lt;a href="https://www.velocidex.com/training/" target="_blank" >https://www.velocidex.com/training/&lt;/a>
+
+or check out the code on
+&lt;a href="https://github.com/Velocidex/velociraptor" target="_blank" >GitHub&lt;/a>
+. To chat, please
+join us on discord
+&lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+.&lt;/p></description></item><item><title>Velociraptor and OSQuery</title><link>https://docs.velociraptor.app/blog/2020/2020-12-13-velociraptor-and-osquery-2a4306dd23c/</link><pubDate>Sun, 13 Dec 2020 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2020/2020-12-13-velociraptor-and-osquery-2a4306dd23c/</guid><description>&lt;p>
+
+
+
+
+
+
+&lt;figure id="1650bed088c9289c2c2e235856c81167">
+ &lt;div data-featherlight="#1650bed088c9289c2c2e235856c81167" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-13-velociraptor-and-osquery-2a4306dd23c/../../img/19ovPD0uFOFPmMydH9lHTlA.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>One of our favorite tools for endpoint visibility is &lt;a href="https://github.com/osquery/osquery" target="_blank" >OSQuery&lt;/a>
+. OSQuery has really transformed the state of endpoint visibility and DFIR by allowing analysts to flexibly issue queries to introspect endpoint state, just like a database. This flexibility has always been the inspiration for Velociraptor, and the development of the Velociraptor Query Language (VQL) followed the footsteps of OSQuery to provide a powerful and flexible query language.&lt;/p>
+&lt;p>However, while OSQuery provides a query engine with many plugins exposing machine state, it is not typically enough on its own. OSQuery itself does not provide a server, nor does it provide a GUI (there are a number of OSQuery servers, such as &lt;a href="https://github.com/fleetdm/fleet" target="_blank" >FleetDM/Fleet&lt;/a>
+).&lt;/p>
+&lt;p>While, Velociraptor was designed to be a scalable DFIR tool that is easy to deploy (typically &lt;a href="https://www.youtube.com/watch?v=l1_sKDmNWS4&amp;amp;t=550s" target="_blank" >deployed in minutes&lt;/a>
+). It is typically more complicated to deploy OSQuery at scale, use it to hunt widely and post-process the results.&lt;/p>
+&lt;p>Nevertheless, OSQuery has been around for a long time, and there are many existing queries that could be used immediately, without needing to convert then to VQL first.&lt;/p>
+
+&lt;div class="mynotices tip">
+ &lt;div heading="tip">&lt;p>Velociraptor and OSQuery are not an either or choice — you can use
+them both at the same time!&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>In recent releases Velociraptor directly integrates OSQuery on all supported platforms — so you can issue the same OSQuery query you always did and it would work exactly the same within Velociraptor. This blog post explains how the integration is done, and we go though a typical example to how Velociraptor can use OSQuery to hunt through many machines quickly.&lt;/p>
+&lt;h3 id="osquery-integration">OSQuery integration&lt;/h3>
+&lt;p>OSQuery itself is a query engine — it is distributed a single executable which is capable of evaluating a query, and returning a result set (essentially a table of rows and columns). In this sense OSQuery is very similar to VQL queries, which also return a result set.&lt;/p>
+&lt;p>The goal of the OSQuery integration is to make OSQuery appear as a natural extension to VQL. That is, within Velociraptor, OSQuery output is indistinguishable from the output of native VQL queries. This allows one to filter and enrich the OSQuery query using standard VQL.&lt;/p>
+&lt;p>Let’s have a look at the VQL artifact that implements OSQuery integration&lt;/p>
+&lt;pre>&lt;code class="language-yaml">name: Windows.OSQuery.Generic
+description: |
+ OSQuery is an excellent tool for querying system state across the
+ three supported Velociraptor platform (Windows/Linux/MacOS).
+
+ You can read more about OSQuery on https://osquery.io/
+
+reference:
+ - https://osquery.io/
+ - https://github.com/osquery/osquery
+
+# I am not actually sure if OSQuery allows arbitrary command execution via SQL?
+required_permissions:
+ - EXECVE
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+tools:
+ - name: OSQueryWindows
+ github_project: Velocidex/OSQuery-Releases
+ github_asset_regex: windows-amd64.exe
+
+parameters:
+ - name: Query
+ default: &amp;quot;SELECT * FROM osquery_info&amp;quot;
+
+sources:
+ - query: |
+ LET binary &amp;lt;= SELECT FullPath
+ FROM Artifact.Generic.Utils.FetchBinary(ToolName=&amp;quot;OSQueryWindows&amp;quot;)
+
+ LET result = SELECT * FROM execve(
+ argv=[binary[0].FullPath, &amp;quot;--json&amp;quot;, Query],
+ length=1000000)
+
+ SELECT * FROM foreach(row=result,
+ query={
+ SELECT * FROM parse_json_array(data=Stdout)
+ })
+&lt;/code>&lt;/pre>
+&lt;p>As described in a&lt;a href="https://medium.com/velociraptor-ir/velociraptor-in-the-tool-age-d896dfe71b9" target="_blank" > previous post&lt;/a>
+, Velociraptor will deliver the OSQuery binary to the endpoint securely (line 29–30), then shell out to the binary executing the provided query (line 32–34). Finally the result is parsed from JSON and returned as a standard VQL result set (line 36–39).&lt;/p>
+&lt;p>The entire OSQuery integration is implemented as above in VQL — one does not need to do anything else in order to launch an OSQuery query on a remote host… In particular, one does not need to have OSQuery installed on the endpoint in advance! Velociraptor will push the binary to the endpoint on demand, managing binary versioning if required and maintaining a local copy of OSQuery on the endpoint.&lt;/p>
+&lt;h3 id="lets-go-hunting">Let’s go hunting…&lt;/h3>
+&lt;p>Let’s look for an interesting OSQuery query that we might want to run. A great resource of public OSQuery queries can be found in Recon Infosec’s public OSQuery resource &lt;a href="https://rhq.reconinfosec.com/tactics/lateral_movement/" target="_blank" >https://rhq.reconinfosec.com/&lt;/a>
+. For this example I will choose the query looking for&lt;a href="https://rhq.reconinfosec.com/tactics/lateral_movement/" target="_blank" > SMB/Named Pipes&lt;/a>
+, written by Eric Capuano.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="58c07109a6140be0a386339b9d48f5ee">
+ &lt;div data-featherlight="#58c07109a6140be0a386339b9d48f5ee" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-13-velociraptor-and-osquery-2a4306dd23c/../../img/1xDWUDCakSzp1rOEoFAX0nQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>A Named Pipe is a Windows IPC method that allows communication between different processes. Many attack tools open multiple processes, and use named pipes to communicate between those, &lt;a href="https://labs.f-secure.com/blog/detecting-cobalt-strike-default-modules-via-named-pipe-analysis/" target="_blank" >including metasploit or Cobalt Strike.&lt;/a>
+&lt;/p>
+&lt;p>The query identifies processes using named pipes, making it a nice signal or a baseline for which processes in your environment typically communicate with pipes.&lt;/p>
+&lt;p>To test this query, I created a quick named pipe server in Powershell that creates a named pipe called &lt;strong>BlackJack&lt;/strong>.&lt;/p>
+&lt;pre>&lt;code class="language-powershell">while (1) {
+ $npipeServer = new-object System.IO.Pipes.NamedPipeServerStream('BlackJack',
+ [System.IO.Pipes.PipeDirection]::InOut)
+
+ $npipeServer.WaitForConnection()
+ $npipeServer.Close()
+}
+&lt;/code>&lt;/pre>
+&lt;p>After selecting my test machine in the Velociraptor GUI, I created a new collection then searched for the OSQuery artifact. Since this is a Windows system, I select the Windows variant of the artifact.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="c151875f2b82743b7afeac2003e10cf2">
+ &lt;div data-featherlight="#c151875f2b82743b7afeac2003e10cf2" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-13-velociraptor-and-osquery-2a4306dd23c/../../img/1RVNYzIVcDFFheVsNVh6VNg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>After selecting the &lt;strong>Windows.OSQuery.Generic&lt;/strong> artifact, I can click the “Configure Parameters” screen where I am able to enter the OSQuery query to run.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="8efcd86f75ab160311829c8b54b016b6">
+ &lt;div data-featherlight="#8efcd86f75ab160311829c8b54b016b6" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-13-velociraptor-and-osquery-2a4306dd23c/../../img/1EHhozA18vJkf_71fWEzixw.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>Finally I click the “Launch” button to start the new collection. This will collect the &lt;strong>Windows.OSQuery.Generic&lt;/strong> artifact on this machine, Velociraptor will push the OSQuery binary to the endpoints and cache it locally. On subsequent collections, the endpoint will compare the local hash of the binary with the required hash and only fetch a new version if necessary — therefore subsequent executions are very rapid.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="84fdae57901e79a40846c53dd51611b5">
+ &lt;div data-featherlight="#84fdae57901e79a40846c53dd51611b5" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-13-velociraptor-and-osquery-2a4306dd23c/../../img/1erZCLT_m1iht3lwyLXrjzQ.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>As can be seen above, the OSQuery query produces a table of results, indistinguishable from a typical Velociraptor artifact.&lt;/p>
+&lt;h3 id="extending-osquery-with-vql">Extending OSQuery with VQL&lt;/h3>
+&lt;p>The previous OSQuery query returns all the named pipes on the endpoint and their owner processes. Suppose we now wanted to build on this query and identify high value signals — for the sake of this example, suppose the named pipe “&lt;strong>BlackJack&lt;/strong>” is a known malicious name belonging to a specific malware variant. Let us therefore, collect a process memory dump of all processes which open a named pipe with the name BlackJack for further analysis. We wish to do so by extending the OSQuery query we had earlier with some VQL.&lt;/p>
+&lt;p>I created a new custom Velociraptor artifact by wrapping some VQL around the existing OSQuery artifacts. To do this I click on the “View Artifacts” screen, select “Add an Artifact” and type the following YAML artifact into the GUI.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="42b173ee0ce797c9557cf1609dca1f2c">
+ &lt;div data-featherlight="#42b173ee0ce797c9557cf1609dca1f2c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-13-velociraptor-and-osquery-2a4306dd23c/../../img/1KP41G6qnjZSKb1M4HqjRbg.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The full artifact text is also shown here.&lt;/p>
+&lt;pre>&lt;code class="language-yaml">name: Custom.OSQuery.BlackJack
+description: |
+ Get memory dumps of all processes with a named pipe called BlackJack
+
+parameters:
+ - name: NamedProcessRegex
+ default: BlackJack
+ - name: OSQuery_query
+ default: &amp;quot;SELECT proc.parent AS process_parent, proc.path AS process_path, proc.pid AS process_id, proc.cwd AS process_directory, pipe.pid AS pipe_pid, pipe.name AS pipe_name FROM processes proc JOIN pipes pipe ON proc.pid=pipe.pid;&amp;quot;
+
+sources:
+ - precondition:
+ SELECT OS From info() where OS = 'windows'
+
+ query: |
+ LET matching_processes = SELECT *
+ FROM Artifact.Windows.OSQuery.Generic(Query=OSQuery_query)
+ WHERE pipe_name =~ NamedProcessRegex
+ GROUP BY process_id
+
+ SELECT * FROM foreach(row=matching_processes,
+ query={
+ SELECT pipe_name, process_id, process_path,
+ upload(file=FullPath) AS MemDump
+ FROM proc_dump(pid=int(int=process_id))
+ })
+&lt;/code>&lt;/pre>
+&lt;p>Velociraptor Artifacts are simply YAML files which encapsulate VQL queries and provide the whole thing with a name. Users now simply need to collect the &lt;strong>Custom.OSQuery.BlackJack&lt;/strong> artifact without needing to write their own VQL.&lt;/p>
+&lt;p>Let’s take a look at how this artifact works. The VQL simply calls the same &lt;strong>Windows.OSQuery.Generic&lt;/strong> artifact we ran previously, it then filters the result set to only match the &lt;strong>BlackJack&lt;/strong> pipe. For each matching process, the VQL then call the &lt;strong>proc_dump()&lt;/strong> plugin to obtain a dump of process memory and then uploads it to the server.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="0aa9de61c332ff056753e9267fbe3272">
+ &lt;div data-featherlight="#0aa9de61c332ff056753e9267fbe3272" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2020/2020-12-13-velociraptor-and-osquery-2a4306dd23c/../../img/1S7hKtacdqBTHg_We6pG90A.png" alt="" />
+ &lt;/div>
+ &lt;figcaption>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;p>The result is a 230Mb dump file that can be opened by the windows debugger for each process found holding a named pipe called BlackJack.&lt;/p>
+&lt;p>We can now hunt our entire deployment looking for specific named pipes in seconds.&lt;/p>
+&lt;h3 id="conclusions">Conclusions&lt;/h3>
+&lt;p>In this blog post I demonstrated how Velociraptor integrates OSQuery as a natural extension to the Velociraptor Query Language. To use OSQuery with Velociraptor, one simply collects the relevant artifact from the endpoint. Users do not need to have OSQuery installed on the endpoint — Velociraptor manages the distribution and update of the binary as needed transparently behind the scenes.&lt;/p>
+&lt;p>We then saw how to extend OSQuery queries seamlessly with the additional functionality built into Velociraptor, by capturing and uploading memory dumps as additional triaging artifacts.&lt;/p>
+&lt;p>So what are the pros and cons of using OSQuery within Velociraptor?&lt;/p>
+&lt;p>The biggest advantage of the OSQuery integration is that existing OSQuery queries just work without modifications. This avoids having to rewrite the same queries in VQL using Velociraptor’s native query language (and potentially having to learn yet another query language). Having the ability to directly use OSQuery queries makes all the OSQuery resources on the web immediately available for use with Velociraptor (For example &lt;a href="https://community.carbonblack.com/t5/Query-Exchange/idb-p/query_exchange" target="_blank" >Carbon Black’s Query Exchange&lt;/a>
+).&lt;/p>
+&lt;p>An obvious disadvantage of the integration is that Velociraptor still ends up shelling to OSQuery to actually perform the query — therefore Velociraptor has no control of the resource usage consumed by OSQuery during query execution (however cancelling the artifact collection will terminate the OSQuery process). While normal VQL queries have throttling setting controlling the CPU load, we lose this ability when running the OSQuery process.&lt;/p>
+&lt;p>To play with this feature yourself, take&lt;a href="https://github.com/Velocidex/velociraptor" target="_blank" > Velociraptor for a spin&lt;/a>
+! It is a available on GitHub under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list &lt;a href="mailto:velociraptor-discuss@googlegroups.com" >velociraptor-discuss@googlegroups.com&lt;/a>
+ . You can also chat with us directly on discord &lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+&lt;/p></description></item></channel></rss>

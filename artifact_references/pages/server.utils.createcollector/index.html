@@ -1,0 +1,1006 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.139.4"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Server.Utils.CreateCollector :: Velociraptor - Digging deeper!</title>
+<link href=/css/nucleus.css?1772163115 rel=stylesheet><link href=/css/font-awesome-all.min.css?1772163115 rel=stylesheet><link href=/css/featherlight.min.css?1772163115 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1772163115 rel=stylesheet><link href=/css/auto-complete.css?1772163115 rel=stylesheet><link href=/css/theme.css?1772163115 rel=stylesheet><link href=/css/tabs.css?1772163115 rel=stylesheet><link href=/css/hugo-theme.css?1772163115 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1772163115 rel=stylesheet><link href=/css/dark.css?1772163115 rel=stylesheet><link href=/css/syntax.css?1772163115 rel=stylesheet><link href=/css/light.css?1772163115 rel=stylesheet><link href=/css/hljs.css?1772163115 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1772163115 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1772163115></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/artifact_references/pages/server.utils.createcollector/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><div class=highlightable><ul class=topics><li data-nav-id=https://docs.velociraptor.app/announcements/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/><i class="fas fa-bullhorn"></i>Announcements</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/><i class="fas fa-exclamation-triangle"></i>Security Advisories</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2025-14728/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2025-14728/>CVE-2025-14728</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2025-6264/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2025-6264/>CVE-2025-6264</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2025-0914/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2025-0914/>CVE-2025-0914</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2024-10526/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2024-10526/>CVE-2024-10526</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-5950/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2023-5950/>CVE-2023-5950</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-2226/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2023-2226/>CVE-2023-2226</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0242/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2023-0242/>CVE-2023-0242</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0290/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2023-0290/>CVE-2023-0290</a></div></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/><i class="fas fa-book-reader"></i>Documentation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/overview/>Velociraptor Overview</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/history/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/overview/history/>History</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/overview/support/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/overview/support/>Support Policy</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/overview/security/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/overview/security/>Security</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/>Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/quickstart/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/quickstart/>Quickstart</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/>Server Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/key_concepts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/key_concepts/>Key Concepts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/key_decisions/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/key_decisions/>Key Decisions</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/deployment_example/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/deployment_example/>Deployment Example</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/multifrontend/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/multifrontend/>Multi-Frontend</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/upgrades/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/upgrades/>Upgrades</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/orgs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/orgs/>Organizations</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/clients/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/clients/>Deploying Clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/>Offline Collections</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/building/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/building/>Building</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/running/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/running/>Running</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/collection_data/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/collection_data/>Collection Data</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/updating/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/updating/>Updating</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/troubleshooting/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/troubleshooting/>Troubleshooting</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/security/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/security/>Security</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/resources/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/resources/>Performance</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/references/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/references/><i class="fas fa-book"></i>Config Reference</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/>The Admin GUI</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/gui/artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/artifacts/>Managing Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/keyboard_shortcuts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/keyboard_shortcuts/>Keyboard Shortcuts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/user_preferences/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/user_preferences/>User Preferences</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/customizing/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/customizing/>Customization</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/>Managing Clients</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/clients/searching/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/searching/>Searching for clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/interrogation/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/interrogation/>Interrogation</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/artifacts/>Collecting Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/labels/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/labels/>Labels</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/metadata/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/metadata/>Metadata</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/quarantine/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/quarantine/>Quarantine</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/vfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/vfs/>Virtual File System</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/shell/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/shell/>Shell Commands</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/monitoring/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/monitoring/>Monitoring</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/>VQL</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/vql/fundamentals/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/fundamentals/>VQL Fundamentals</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/events/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/events/>Event Queries</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/join/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/join/>JOIN in VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/artifacts/>Artifacts</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/calling/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/artifacts/calling/>Calling Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/managing/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/artifacts/managing/>Managing Artifacts</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/extending_vql/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/extending_vql/>Extending VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/vql_reference/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/vql_reference/><i class="fas fa-book"></i>VQL Reference</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/>Artifacts</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/managing/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/managing/>Managing Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/basic_fields/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/basic_fields/>Basic Fields</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/advanced_fields/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/advanced_fields/>Advanced Fields</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/parameters/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/parameters/>Parameters</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/sources/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/sources/>Sources</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/preconditions/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/preconditions/>Preconditions</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/export_imports/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/export_imports/>Export & Imports</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/calling_artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/calling_artifacts/>Calling Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/event_queues/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/event_queues/>Event Queues</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/tools/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/tools/>Tools</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/resources/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/resources/>Resource Limits</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/security/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/security/>Security</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/use_cases/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/use_cases/>Other Use Cases</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/tips/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/tips/>Artifact Writing Tips</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/artifact_reference/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/artifact_reference/><i class="fas fa-book"></i>Artifact Reference</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/exchange_reference/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/exchange_reference/><i class="fas fa-code"></i>Artifact Exchange</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/notebooks/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/notebooks/>Notebooks</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/hunting/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/hunting/>Hunting</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/>Forensic Analysis</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/filesystem/>Searching Filesystems</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/paths/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/filesystem/paths/>Velociraptor Paths</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/remapping/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/filesystem/remapping/>Remapping Accessors</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/ntfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/filesystem/ntfs/>NTFS Analysis</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/searching/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/searching/>Searching Content</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/deaddisk/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/deaddisk/>Dead Disk Analysis</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/deaddisk/creating_running/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/deaddisk/creating_running/>Creating & Running</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/binary/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/binary/>Binary parsing</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/evidence_of_execution/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/evidence_of_execution/>Evidence Of Execution</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/event_logs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/event_logs/>Event Logs</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/volatile/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/volatile/>Volatile State</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/file_collection/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/file_collection/>File Acquisition</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/file_collection/bulk/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/file_collection/bulk/>Bulk File Acquisition</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/file_collection/vfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/file_collection/vfs/>VFS Uploads</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/file_collection/exporting/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/file_collection/exporting/>Bulk File Exports</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/server_automation/>Server Automation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_api/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/server_automation/server_api/>Server API</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_monitoring/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/server_automation/server_monitoring/>Server Monitoring</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/>CLI</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/cli/acl/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/acl/>acl</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/artifacts/>artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/collector/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/collector/>collector</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/config/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/config/>config</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/deaddisk/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/deaddisk/>deaddisk</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/fs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/fs/>fs (filesystem)</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/fuse/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/fuse/>fuse</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/query/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/query/>query</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/server_service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/server_service/>server_service</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/service/>service</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/tools/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/tools/>tools</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/user/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/user/>user</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/misc/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/misc/>Miscellaneous</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/flags/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/flags/>CLI flags</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/>Troubleshooting</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/deployment/>Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/server/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/deployment/server/>Server</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/client/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/deployment/client/>Client</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/offline_collector/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/deployment/offline_collector/>Offline Collector</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/operations/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/operations/>Operations</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/operations/server_ops/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/operations/server_ops/>Server Ops</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/operations/remote_clients/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/operations/remote_clients/>Remote Clients</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/vql/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/vql/>VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/>Debugging</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/internal/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/internal/>Internal</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/internal/metrics/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/internal/metrics/>Metrics</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/internal/go_profiles/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/internal/go_profiles/>Golang</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/client/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/client/>Client</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/client/client_monitoring/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/client/client_monitoring/>Monitoring</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/client/client_flows/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/client/client_flows/>Flows</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/>Global</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/datastore/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/datastore/>Datastore</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/datastore/replication/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/datastore/replication/>Replication</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/>Services</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/export/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/export/>ExportContainers</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/throttler/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/throttler/>Throttler</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/user_manager/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/user_manager/>User Manager</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/open_close/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/open_close/>Open-close</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/tempfiles/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/tempfiles/>tempfiles</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/worker/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/worker/>worker</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/>VQL</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/queries/>Queries</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/active_queries/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/queries/active_queries/>Active Queries</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/plugin_monitor/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/queries/plugin_monitor/>Plugin Monitor</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/recent_queries/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/queries/recent_queries/>Recent Queries</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/>Plugins</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/etw/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/etw/>ETW</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/glob/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/glob/>Glob</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/ntfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/ntfs/>NTFS Cache</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/sigma/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/sigma/>Sigma Tracker</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/windows_event/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/windows_event/>Windows Event Log Watcher</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/zip/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/zip/>Zip</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/process/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/process/>Process Tracker</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/sqlite/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/sqlite/>Sqlite</a></div></li></ul></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/>Org</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/>Services</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/broadcast_service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/broadcast_service/>Broadcast</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/queue_manager/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/queue_manager/>QueueManager</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/vfs_service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/vfs_service/>VFS</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/notifier/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/notifier/>Notifier</a></div></li></ul></li></ul></li></ul></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/downloads/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/downloads/><i class="fas fa-download"></i>Downloads</a></div></li><hr><li data-nav-id=https://docs.velociraptor.app/vql_reference/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/><i class="fas fa-book"></i>VQL Reference</a></div><ul><li data-nav-id=https://docs.velociraptor.app/vql_reference/popular/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/popular/>Frequently Used ✨</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/windows/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/windows/>Windows-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/linux/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/linux/>Linux-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/server/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/server/>Server-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/parsers/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/parsers/>Parsers</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/encode/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/encode/>Encode/Decode</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/event/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/event/>Event Plugins</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/experimental/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/experimental/>Experimental</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/developer/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/developer/>Developer</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/other/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/other/>Other</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/accessors/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/accessors/>Accessors</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/training/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/training/><i class="fas fa-graduation-cap"></i>Training</a></div><ul><li data-nav-id=https://docs.velociraptor.app/training/playbooks/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/training/playbooks/><i class="fas fa-play"></i>Playbooks</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/blog/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/blog/><i class="fas fa-newspaper"></i>Blog</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/><i class="fas fa-chalkboard-teacher"></i>Presentations</a></div><ul><li data-nav-id=https://docs.velociraptor.app/presentations/2022_linuxconf_au/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_linuxconf_au/>Linux Conf Au 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_auscert/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_auscert/>Auscert 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_sans_summit/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_sans_summit/>SANS Summit 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_velocon/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_velocon/>Velocon 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_dfrws_apac/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_dfrws_apac/>DFRWS APAC 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_everything_open/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2023_everything_open/>EverythingOpen 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_velocon/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2023_velocon/>VeloCON 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2024_auscert/>Auscert 2024</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert-detection-engineering/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2024_auscert-detection-engineering/>Auscert 2024 Talk</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2025_auscert-detection-engineering/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2025_auscert-detection-engineering/>Auscert 2025 Workshop</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/exchange/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/exchange/><i class="fas fa-code"></i>Artifact Exchange</a></div></li><li data-nav-id=https://docs.velociraptor.app/artifact_references/ class="dd-item parent haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/artifact_references/><i class="fas fa-book"></i>Artifact Reference</a></div></li><li data-nav-id=https://docs.velociraptor.app/knowledge_base/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/knowledge_base/><i class="fas fa-brain"></i>Knowledge Base</a></div></li><li data-nav-id=https://docs.velociraptor.app/search/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/search/><i class='fas fa-search'></i>Search</a></div></li></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>$("#sidebar i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()})</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/artifact_references/pages/server.utils.createcollector.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Server.Utils.CreateCollector</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents></nav></div></div></div></div><div id=head-tags><div class=tags><a class=tag-link href=/tags/server-artifact>Server Artifact</a></div></div><div id=body-inner><h1>Server.Utils.CreateCollector</h1><p>A utility artifact to create a stand alone collector.</p><p>This artifact is actually invoked by the Offline collector GUI and
+that is the recommended way to launch it. You can find the Offline
+collector builder in the <code>Server Artifacts</code> section of the GUI.</p><pre><code class=language-yaml>
+name: Server.Utils.CreateCollector
+description: |
+  A utility artifact to create a stand alone collector.
+
+  This artifact is actually invoked by the Offline collector GUI and
+  that is the recommended way to launch it. You can find the Offline
+  collector builder in the `Server Artifacts` section of the GUI.
+
+type: SERVER
+
+parameters:
+  - name: OS
+    default: Windows
+    type: choices
+    choices:
+      - Windows
+      - Windows_x86
+      - Linux
+      - MacOS
+      - MacOSArm
+      - Generic
+
+  - name: artifacts
+    description: A list of artifacts to collect
+    type: json_array
+    default: |
+      ["Generic.Client.Info"]
+
+  - name: encryption_scheme
+    description: |
+      Encryption scheme to use. Currently supported are Password, X509 or PGP
+
+  - name: encryption_args
+    description: |
+      Encryption arguments
+    type: json
+    default: |
+      {}
+
+  - name: parameters
+    description: A dict containing the parameters to set.
+    type: json
+    default: |
+      {}
+
+  - name: target
+    description: Output type
+    type: choices
+    default: ZIP
+    choices:
+      - ZIP
+      - GCS
+      - S3
+      - SFTP
+      - Azure
+      - SMBShare
+
+  - name: target_args
+    description: Type Dependent args
+    type: json
+    default: "{}"
+
+  - name: opt_verbose
+    default: Y
+    type: bool
+    description: Show verbose progress.
+
+  - name: opt_banner
+    default: Y
+    type: bool
+    description: Show Velociraptor banner.
+
+  - name: opt_prompt
+    default: N
+    type: bool
+    description: Wait for a prompt before closing.
+
+  - name: opt_admin
+    default: Y
+    type: bool
+    description: Require administrator privilege when running.
+
+  - name: opt_tempdir
+    default:
+    description: A directory to write tempfiles in
+
+  - name: opt_level
+    default: "5"
+    type: int
+    description: Compression level (0=no compression).
+
+  - name: opt_concurrency
+    default: "2"
+    type: int
+    description: Number of concurrency queries
+
+  - name: opt_format
+    default: "jsonl"
+    description: Output format (jsonl or csv)
+
+  - name: opt_output_directory
+    default: ""
+    description: Where we actually write the collection to. You can specify this as a mapped drive to write over the network.
+
+  - name: opt_filename_template
+    default: "Collection-%Hostname%-%TIMESTAMP%"
+    description: |
+      The filename to use. You can expand environment variables as
+      well as the following: %Hostname%, %FQDN% and %TIMESTAMP%.
+
+  - name: opt_collector_filename
+    type: string
+    description: |
+      If used, this option overrides the default filename of the collector being built.
+
+  - name: opt_cpu_limit
+    default: "0"
+    type: int
+    description: |
+      A number between 0 to 100 representing the target maximum CPU
+      utilization during running of this artifact.
+
+  - name: opt_progress_timeout
+    default: "1800"
+    type: int
+    description: |
+      If specified the collector is terminated if it made no progress
+      in this long. Note: Execution time may be a lot longer since
+      each time any result is produced this counter is reset.
+
+  - name: opt_timeout
+    default: "0"
+    type: int
+    description: |
+      If specified the collection must complete in the given time. It
+      will be cancelled if the collection exceeds this time.
+
+  - name: opt_version
+    default: ""
+    type: string
+    description: |
+      If specified the collection will be packed with the specified
+      version of the binary. NOTE: This is rarely what you want
+      because the packed builtin artifacts are only compatible with
+      the current release version.
+
+  - name: opt_delete_at_exit
+    type: bool
+    default: N
+    description: |
+      If specified the collection will be deleted at exit. This only
+      makes sense when uploading to the cloud or a remote
+      location. NOTE: There is no way to check that the upload
+      actually worked so this flag deletes the collection regardless
+      of upload success.
+
+  - name: StandardCollection
+    type: hidden
+    default: |
+      LET _ &lt;= log(message="Will collect package %v", args=zip_filename)
+
+      SELECT * FROM collect(artifacts=Artifacts,
+            args=Parameters, output=zip_filename,
+            cpu_limit=CpuLimit,
+            progress_timeout=ProgressTimeout,
+            timeout=Timeout,
+            password=pass[0].Pass,
+            level=Level,
+            concurrency=Concurrency,
+            format=Format,
+            remapping=Remapping,
+            metadata=ContainerMetadata)
+
+  - name: S3Collection
+    type: hidden
+    default: |
+      // A utility function to upload the file.
+      LET upload_file(filename, name, accessor) = upload_s3(
+          file=filename,
+          accessor=accessor,
+          bucket=TargetArgs.bucket,
+          name=name,
+          credentials_key=TargetArgs.credentialsKey,
+          credentials_secret=TargetArgs.credentialsSecret,
+          credentials_token=TargetArgs.credentialsToken,
+          region=TargetArgs.region,
+          endpoint=TargetArgs.endpoint,
+          serverside_encryption=TargetArgs.serverSideEncryption,
+          kms_encryption_key=TargetArgs.kmsEncryptionKey,
+          s3upload_root=TargetArgs.s3UploadRoot,
+          skip_verify=TargetArgs.noverifycert)
+
+  - name: GCSCollection
+    type: hidden
+    default: |
+      LET GCSBlob &lt;= parse_json(data=target_args.GCSKey)
+
+      // A utility function to upload the file.
+      LET upload_file(filename, name, accessor) = upload_gcs(
+          file=filename,
+          accessor=accessor,
+          bucket=target_args.bucket,
+          project=GCSBlob.project_id,
+          name=name,
+          credentials=target_args.GCSKey)
+
+  - name: AzureSASURL
+    type: hidden
+    default: |
+      // A utility function to upload the file.
+      LET upload_file(filename, name, accessor) = upload_azure(
+          file=filename,
+          accessor=accessor,
+          sas_url=TargetArgs.sas_url,
+          name=name)
+
+  - name: SMBCollection
+    type: hidden
+    default: |
+      // A utility function to upload the file.
+      LET upload_file(filename, name, accessor) = upload_smb(
+          file=filename,
+          accessor=accessor,
+          username=TargetArgs.username,
+          password=TargetArgs.password,
+          server_address=TargetArgs.server_address,
+          name=name)
+
+  - name: SFTPCollection
+    type: hidden
+    default : |
+      LET upload_file(filename, name, accessor) = upload_sftp(
+        file=filename,
+        accessor=accessor,
+        name=name,
+        user=TargetArgs.user,
+        path=TargetArgs.path,
+        privatekey=TargetArgs.privatekey,
+        endpoint=TargetArgs.endpoint,
+        hostkey = TargetArgs.hostkey)
+
+  - name: CommonCollections
+    type: hidden
+    default: |
+      LET S = scope()
+      LET Remapping &lt;= if(condition=Remapping,
+          then=log(message="Will load remapping rules from %v", args=Remapping) &amp;&amp;
+               read_file(filename=Remapping),
+          else="")
+
+      // Add all the tools we are going to use to the inventory.
+      LET _ &lt;= SELECT inventory_add(tool=ToolName, hash=ExpectedHash, version=S.Version)
+       FROM parse_csv(filename="/uploads/inventory.csv", accessor="me")
+       WHERE log(message="Adding tool " + ToolName +
+             " version " + (S.Version || "Unknown"))
+
+      LET baseline &lt;= SELECT Fqdn, dirname(path=Exe) AS ExePath, Exe,
+         scope().CWD AS CWD, Hostname
+      FROM info()
+
+      LET OutputPrefix &lt;= if(condition= OutputPrefix,
+        then=pathspec(parse=OutputPrefix),
+        else= if(condition= baseline[0].CWD,
+          then=pathspec(parse= baseline[0].CWD),
+          else=pathspec(parse= baseline[0].ExePath)))
+
+      LET _ &lt;= log(message="Output Prefix : %v", args= OutputPrefix)
+
+      LET FormatMessage(Message) = regex_transform(
+          map=dict(`%FQDN%`=baseline[0].Fqdn,
+                   `%Hostname%`=baseline[0].Hostname,
+                   `%Timestamp%`=timestamp(epoch=now()).MarshalText),
+          source=Message)
+
+      // Format the filename safely according to the filename
+      // template. This will be the name uploaded to the bucket.
+      LET formatted_zip_name &lt;= regex_replace(
+          source=expand(path=FormatMessage(Message=FilenameTemplate)),
+          re="[^0-9A-Za-z\\-]", replace="_")
+
+      // This is where we write the files on the endpoint.
+      LET zip_filename &lt;= OutputPrefix + ( formatted_zip_name + ".zip" )
+      LET LogFile &lt;= OutputPrefix + ( formatted_zip_name + ".log" )
+
+      LET _ &lt;= log(message="Log file is at %v", args=LogFile)
+
+      // Create the log file and start writing into it
+      // Just forward output from the logging() plugin
+      LET LogPipe &lt;= pipe(query={
+        SELECT format(format="[%v] %v %v\n",
+                      args=(level, time, msg)) AS Line
+        FROM logging(prelog=TRUE)
+      })
+
+      LET _ &lt;= background(query={
+          SELECT copy(accessor="pipe", filename="LogPipe", dest=LogFile) AS C
+          FROM scope()
+      })
+
+      -- Remove the zip file and log file when done if the user asked for it.
+      LET _ &lt;= if(condition=DeleteOnExit, then=atexit(query={
+         SELECT rm(filename=zip_filename), rm(filename=log_filename) FROM scope()
+         WHERE log(message="Removed Zip file %v", args=zip_filename)
+      }, env=dict(zip_filename=zip_filename, log_filename=LogFile)))
+
+      -- Make a random hex string as a random password
+      LET RandomPassword &lt;= SELECT format(format="%02x",
+            args=rand(range=255)) AS A
+      FROM range(end=25)
+
+      LET pass = SELECT * FROM switch(a={
+
+         -- For X509 encryption we use a random session password.
+         SELECT join(array=RandomPassword.A) as Pass From scope()
+         WHERE encryption_scheme =~ "pgp|x509"
+          AND log(message="I will generate a container password using the %v scheme",
+                  args=encryption_scheme)
+
+      }, b={
+
+         -- Otherwise the user specified the password.
+         SELECT encryption_args.password as Pass FROM scope()
+         WHERE encryption_scheme =~ "password"
+
+      }, c={
+
+         -- No password specified.
+         SELECT Null as Pass FROM scope()
+      })
+
+      -- For X509 encryption_scheme, store the encrypted
+      -- password in the metadata file for later retrieval.
+      LET ContainerMetadata = if(
+          condition=encryption_args.public_key,
+          then=dict(
+             EncryptedPass=pk_encrypt(data=pass[0].Pass,
+                public_key=encryption_args.public_key,
+             scheme=encryption_scheme),
+          Scheme=encryption_scheme,
+          PublicKey=encryption_args.public_key))
+
+  - name: CloudCollection
+    type: hidden
+    default: |
+      LET TargetArgs &lt;= target_args
+
+      // When uploading to the cloud it is allowed to use directory //
+      // separators and we trust the filename template to be a valid
+      // filename.
+      LET upload_name &lt;= regex_replace(
+          source=expand(path=FormatMessage(Message=FilenameTemplate)),
+          re="[^0-9A-Za-z\\-/]", replace="_")
+
+      LET _ &lt;= log(message="Will collect package %v and upload to cloud bucket %v",
+         args=[zip_filename, TargetArgs.bucket])
+
+      LET Result &lt;= SELECT
+          upload_file(filename=Container,
+                      name= upload_name + ".zip",
+                      accessor="file") AS Upload,
+          upload_file(filename=LogFile,
+                      name= upload_name + ".log",
+                      accessor="file") AS LogUpload
+
+      FROM collect(artifacts=Artifacts,
+          args=Parameters,
+          format=Format,
+          output=zip_filename,
+          cpu_limit=CpuLimit,
+          progress_timeout=ProgressTimeout,
+          timeout=Timeout,
+          password=pass[0].Pass,
+          level=Level,
+          concurrency=Concurrency,
+          remapping=Remapping,
+          metadata=ContainerMetadata)
+
+      LET _ &lt;= if(condition=NOT Result[0].Upload.Path,
+         then=log(message="&lt;red&gt;Failed to upload to cloud bucket!&lt;/&gt; Leaving the collection behind for manual upload!"),
+         else=log(message="&lt;green&gt;Collection Complete!&lt;/&gt; Please remove %v when you are sure it was properly transferred", args=zip_filename))
+
+      SELECT * FROM Result
+
+
+  - name: FetchBinaryOverride
+    type: hidden
+    description: |
+       A replacement for Generic.Utils.FetchBinary which
+       grabs files from the local archive.
+
+    default: |
+       LET RequiredTool &lt;= ToolName
+       LET S = scope()
+
+       LET matching_tools &lt;= SELECT ToolName, Filename
+       FROM parse_csv(filename="/uploads/inventory.csv", accessor="me")
+       WHERE RequiredTool = ToolName
+
+       LET get_ext(filename) = parse_string_with_regex(
+             regex="(\\.[a-z0-9]+)$", string=filename).g1
+
+        LET FullPath &lt;= if(condition=matching_tools,
+        then=copy(filename=matching_tools[0].Filename,
+             accessor="me", dest=tempfile(
+                 extension=get_ext(filename=matching_tools[0].Filename),
+                 remove_last=TRUE,
+                 permissions=if(condition=IsExecutable, then="x"))))
+
+       SELECT FullPath, FullPath AS OSPath,
+              Filename AS Name
+       FROM matching_tools
+
+export: |
+  // Use this JSON schema to validate an offline collector spec.yaml
+  LET SpecSchema &lt;= '''
+  {
+    "type": "object",
+    "properties": {
+        "OS": {
+           "description": "OS Target to use",
+           "enum": ["Generic", "Windows", "Linux", "Windows_x86", "MacOS", "MacOSArm"],
+           "default": "Generic"
+        },
+        "Artifacts": {
+           "type": "object",
+           "description": "Keys are artifact names to collect and values are strings",
+           "patternProperties": {
+              "^.+$": {
+                "type": "object",
+                "patternProperties": {
+                   "^.+$": {
+                      "type": "string"
+                   }
+                }
+              }
+           }
+        },
+        "Target": {
+           "description": "The type of collector to use",
+           "enum": ["ZIP", "GCS", "S3", "Azure", "SMBShare", "SFTP"]
+        },
+        "EncryptionScheme": {
+           "enum": ["None", "X509", "Password", "PGP"],
+           "default": "None"
+        },
+        "EncryptionArgs": {
+           "type": "object",
+           "description": "Args for encryption",
+           "properties": {
+             "public_key": {
+               "type": "string"
+             },
+             "password": {
+               "type": "string"
+             }
+           },
+           "additionalProperties": false
+        },
+        "OptVerbose": {
+           "type": "boolean",
+           "default": true
+        },
+        "OptBanner": {
+           "type": "boolean",
+           "default": true
+        },
+        "OptPrompt": {
+           "type": "boolean",
+           "default": false
+        },
+        "OptAdmin": {
+           "type": "boolean",
+           "default": true
+        },
+        "OptTempdir": {
+            "type": "string",
+            "default": "$TMP"
+        },
+        "OptLevel": {
+           "type": "integer",
+           "default": 5
+        },
+        "OptConcurrency": {
+           "type": "integer",
+           "default": 2
+        },
+        "OptFilenameTemplate": {
+           "type": "string",
+           "default": "Collection-%FQDN%-%TIMESTAMP%"
+        },
+        "OptCollectorTemplate": {"type": "string"},
+        "OptFormat": {
+          "enum": ["jsonl", "csv"],
+          "default": "jsonl"
+        },
+        "OptOutputDirectory":  {"type": "string"},
+        "OptCpuLimit":  {"type": "integer"},
+        "OptProgressTimeout":  {"type": "integer"},
+        "OptTimeout":  {"type": "integer"},
+        "OptDeleteAtExit":  {"type": "boolean"}
+    },
+    "allOf": [
+      { "description": "Target Args for GCS",
+        "if": {
+           "properties": { "Target": { "const": "GCS" } }
+        },
+        "then": {
+           "properties": {
+              "TargetArgs": {
+                 "type": "object",
+                 "properties": {
+                    "bucket": {"type": "string"},
+                    "GCSKey": {"type": "string"}
+                 },
+                 "additionalProperties": false,
+                 "required": ["bucket", "GCSKey"]
+              }
+           }
+        }
+      },
+      { "description": "Target Args for S3",
+        "if": {
+           "properties": { "Target": { "const": "S3" } }
+        },
+        "then": {
+           "properties": {
+              "TargetArgs": {
+               "type": "object",
+               "properties": {
+                 "bucket": {"type": "string"},
+                 "credentialsKey": {"type": "string"},
+                 "credentialsSecret": {"type": "string"},
+                 "credentialsToken": {"type": "string"},
+                 "region": {"type": "string"},
+                 "endpoint": {"type": "string"},
+                 "s3UploadRoot": {"type": "string"},
+                 "serverSideEncryption": {"type": "string"},
+                 "kmsEncryptionKey": {"type": "string"},
+                 "noverifycert": {"type": "boolean"}
+               },
+               "additionalProperties": false,
+               "required": ["bucket"]
+              }
+           }
+        }
+      },
+      { "description": "Target Args for AzureSASURL",
+        "if": {
+           "properties": { "Target": { "const": "Azure" } }
+        },
+        "then": {
+           "properties": {
+              "TargetArgs": {
+                 "type": "object",
+                 "properties": {
+                    "sas_url": {"type": "string"}
+                 },
+                 "additionalProperties": false,
+                 "required": ["sas_url"]
+              }
+           }
+        }
+      },
+      { "description": "Target Args for SMBShare",
+        "if": {
+           "properties": { "Target": { "const": "SMBShare" } }
+        },
+        "then": {
+           "properties": {
+              "TargetArgs": {
+                 "type": "object",
+                 "properties": {
+                   "username": {"type": "string"},
+                   "password": {"type": "string"},
+                   "server_address": {"type": "string"}
+                 },
+                 "additionalProperties": false,
+                 "required": ["username", "password", "server_address"]
+              }
+           }
+        }
+      },
+      { "description": "Target Args for SFTPCollection",
+        "if": {
+           "properties": { "Target": { "const": "SFTP" } }
+        },
+        "then": {
+           "properties": {
+              "TargetArgs": {
+                 "type": "object",
+                  "properties": {
+                     "path": {"type": "string"},
+                     "privatekey": {"type": "string"},
+                     "user": {"type": "string"},
+                     "endpoint": {"type": "string"},
+                     "hostkey": {"type": "string"}
+                  },
+                  "additionalProperties": false,
+                  "required": ["user", "privatekey", "endpoint"]
+              }
+           }
+        }
+      },
+      { "description": "Target Args for ZIP",
+        "if": {
+           "properties": { "Target": { "const": "ZIP" } }
+        },
+        "then": {
+           "properties": {
+              "TargetArgs": {
+                 "type": "object",
+                 "default": {},
+                 "additionalProperties": false,
+                 "properties": {}
+             }
+           }
+        }
+      }
+    ]
+  }
+  '''
+
+sources:
+  - query: |
+      LET ParameterSpec &lt;= to_dict(item={
+         SELECT _value AS _key, dict() AS _value
+         FROM foreach(row=artifacts)
+      }) + parameters
+
+      -- Check for errors in the Spec
+      LET _ &lt;= SELECT {
+         SELECT name FROM artifact_definitions(names=_key)
+      } AS Def
+      FROM items(item=ParameterSpec)
+      WHERE Def || log(message="Artifact &lt;red&gt;%v&lt;/&gt; not found",
+           args=_key, dedup= -1, level="ERROR")
+
+      LET Binaries &lt;= SELECT * FROM foreach(
+          row={
+             SELECT tools FROM artifact_definitions(deps=TRUE, names=artifacts)
+          }, query={
+             SELECT * FROM foreach(row=tools,
+             query={
+                SELECT name AS Binary FROM scope()
+             })
+          }) GROUP BY Binary
+
+      // Choose the right target binary depending on the target OS
+      LET tool_name = SELECT * FROM switch(
+       a={ SELECT "VelociraptorWindows" AS Type FROM scope() WHERE OS = "Windows"},
+       b={ SELECT "VelociraptorWindows_x86" AS Type FROM scope() WHERE OS = "Windows_x86"},
+       c={ SELECT "VelociraptorLinux" AS Type FROM scope() WHERE OS = "Linux"},
+       d={ SELECT "VelociraptorCollector" AS Type FROM scope() WHERE OS = "MacOS"},
+       e={ SELECT "VelociraptorCollector" AS Type FROM scope() WHERE OS = "MacOSArm"},
+       f={ SELECT "VelociraptorCollector" AS Type FROM scope() WHERE OS = "Generic"},
+       g={ SELECT "" AS Type FROM scope()
+           WHERE NOT log(message="Unknown target type " + OS) }
+      )
+
+      LET Target &lt;= tool_name[0].Type
+
+      // This is what we will call it.
+      LET CollectorName &lt;= opt_collector_filename ||
+          format(format='Collector_%v', args=inventory_get(tool=Target).Definition.filename)
+
+      LET CollectionArtifact &lt;= SELECT Value FROM switch(
+        a = { SELECT CommonCollections + StandardCollection AS Value
+              FROM scope()
+              WHERE target = "ZIP" },
+        b = { SELECT S3Collection + CommonCollections + CloudCollection AS Value
+              FROM scope()
+              WHERE target = "S3" },
+        c = { SELECT GCSCollection + CommonCollections + CloudCollection AS Value
+              FROM scope()
+              WHERE target = "GCS" },
+        d = { SELECT SFTPCollection + CommonCollections + CloudCollection AS Value
+              FROM scope()
+              WHERE target = "SFTP" },
+        e = { SELECT AzureSASURL + CommonCollections + CloudCollection AS Value
+              FROM scope()
+              WHERE target = "Azure" },
+        f = { SELECT SMBCollection + CommonCollections + CloudCollection AS Value
+              FROM scope()
+              WHERE target = "SMBShare" },
+        z = { SELECT "" AS Value  FROM scope()
+              WHERE log(message="Unknown collection type " + target) }
+      )
+
+      LET use_server_cert = encryption_scheme =~ "x509"
+         AND NOT encryption_args.public_key =~ "-----BEGIN CERTIFICATE-----"
+         AND log(message="Pubkey encryption specified, but no cert/key provided. Defaulting to server frontend cert")
+
+      -- For x509, if no public key cert is specified, we use the
+      -- server's own key. This makes it easy for the server to import
+      -- the file again.
+      LET updated_encryption_args &lt;= if(
+         condition=use_server_cert,
+         then=dict(public_key=server_frontend_cert(),
+                   scheme="x509"),
+         else=encryption_args || dict()
+      )
+
+      -- Add custom definition if needed. Built in definitions are not added
+      LET definitions &lt;= SELECT * FROM chain(
+      a = { SELECT name, description, tools, export, parameters, sources
+            FROM artifact_definitions(deps=TRUE, names=artifacts)
+            WHERE NOT compiled_in AND
+              log(message="Adding artifact_definition for " + name) },
+
+      // Create the definition of the Collector artifact.
+      b = { SELECT "Collector" AS name, (
+                    dict(name="Artifacts",
+                         default=serialize(format='json', item=artifacts),
+                         type="json_array"),
+                    dict(name="Parameters",
+                         default=serialize(format='json', item=ParameterSpec),
+                         type="json"),
+                    dict(name="encryption_scheme", default=encryption_scheme),
+                    dict(name="encryption_args",
+                         default=serialize(format='json', item=updated_encryption_args),
+                         type="json"
+                         ),
+                    dict(name="Level", default=opt_level, type="int"),
+                    dict(name="Remapping", default=""),
+                    dict(name="Concurrency", default=opt_concurrency, type="int"),
+                    dict(name="Format", default=opt_format),
+                    dict(name="OutputPrefix", default=opt_output_directory),
+                    dict(name="FilenameTemplate", default=opt_filename_template),
+                    dict(name="CpuLimit", type="int",
+                         default=opt_cpu_limit),
+                    dict(name="ProgressTimeout", type="int",
+                         default=opt_progress_timeout),
+                    dict(name="Timeout", default=opt_timeout, type="int"),
+                    dict(name="DeleteOnExit", default=opt_delete_at_exit, type="bool"),
+                    dict(name="target_args",
+                         default=serialize(format='json', item=target_args),
+                         type="json"),
+                ) AS parameters,
+                (
+                  dict(query=CollectionArtifact[0].Value),
+                ) AS sources
+            FROM scope() },
+
+      // Override FetchBinary to get files from the executable.
+      c = { SELECT "Generic.Utils.FetchBinary" AS name,
+            (
+               dict(name="SleepDuration", type="int", default="0"),
+               dict(name="ToolName"),
+               dict(name="ToolInfo"),
+               dict(name="TemporaryOnly", type="bool"),
+               dict(name="Version"),
+               dict(name="IsExecutable", type="bool", default="Y"),
+            ) AS parameters,
+            (
+               dict(query=FetchBinaryOverride),
+            ) AS sources FROM scope()  }
+      )
+
+      LET optional_cmdline = SELECT * FROM chain(
+        a={ SELECT "-v" AS Opt FROM scope() WHERE opt_verbose},
+        b={ SELECT "--nobanner" AS Opt FROM scope() WHERE NOT opt_banner},
+        c={ SELECT "--require_admin" AS Opt FROM scope() WHERE opt_admin},
+        d={ SELECT "--prompt" AS Opt FROM scope() WHERE opt_prompt},
+        e={ SELECT "--tempdir" AS Opt FROM scope() WHERE opt_tempdir},
+        f={ SELECT opt_tempdir AS Opt FROM scope() WHERE opt_tempdir}
+      )
+
+      // Build the autoexec config file depending on the user's
+      // collection type choices.
+      LET autoexec &lt;= dict(autoexec=dict(
+          argv=("artifacts", "collect", "Collector") + optional_cmdline.Opt,
+          artifact_definitions=definitions)
+      )
+
+      LET _ &lt;= upload(accessor="data", file=serialize(format="yaml",
+        item=dict(
+          OS=OS,
+          Artifacts=ParameterSpec,
+          Target=target,
+          EncryptionScheme=encryption_scheme || "None",
+          EncryptionArgs=encryption_args || dict(),
+          OptVerbose=opt_verbose,
+          OptBanner=opt_banner,
+          OptPrompt=opt_prompt,
+          OptAdmin=opt_admin,
+          OptTempdir=opt_tempdir,
+          OptLevel=opt_level,
+          OptConcurrency=opt_concurrency,
+          OptFormat=opt_format,
+          OptOutputDirectory=opt_output_directory,
+          OptFilenameTemplate=opt_filename_template,
+          OptCollectorFilename=opt_collector_filename,
+          OptCpuLimit=opt_cpu_limit,
+          OptProgressTimeout=opt_progress_timeout,
+          OptTimeout=opt_timeout,
+          OptDeleteAtExit=opt_delete_at_exit
+        )), name="spec.yaml")
+
+      // Do the actual repacking.
+      SELECT repack(
+           upload_name=CollectorName,
+           target=tool_name[0].Type,
+           binaries=Binaries.Binary,
+           version=opt_version,
+           config=serialize(format='json', item=autoexec)) AS Repacked
+      FROM scope()
+
+</code></pre><footer class=footline></footer></div></div></section><div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1772163115></script><script src=/js/perfect-scrollbar.min.js?1772163115></script><script src=/js/perfect-scrollbar.jquery.min.js?1772163115></script><script src=/js/jquery.sticky.js?1772163115></script><script src=/js/featherlight.min.js?1772163115></script><script src=/js/highlight.min.js?1772163115></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1772163115></script><script src=/js/learn.js?1772163115></script><script src=/js/hugo-learn.js?1772163115></script></body></html>

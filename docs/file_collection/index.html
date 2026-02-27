@@ -1,0 +1,506 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.139.4"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>File Acquisition :: Velociraptor - Digging deeper!</title>
+<link href=/css/nucleus.css?1772163121 rel=stylesheet><link href=/css/font-awesome-all.min.css?1772163121 rel=stylesheet><link href=/css/featherlight.min.css?1772163121 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1772163121 rel=stylesheet><link href=/css/auto-complete.css?1772163121 rel=stylesheet><link href=/css/theme.css?1772163121 rel=stylesheet><link href=/css/tabs.css?1772163121 rel=stylesheet><link href=/css/hugo-theme.css?1772163121 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1772163121 rel=stylesheet><link href=/css/dark.css?1772163121 rel=stylesheet><link href=/css/syntax.css?1772163121 rel=stylesheet><link href=/css/light.css?1772163121 rel=stylesheet><link href=/css/hljs.css?1772163121 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1772163121 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1772163121></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/docs/file_collection/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><div class=highlightable><ul class=topics><li data-nav-id=https://docs.velociraptor.app/announcements/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/><i class="fas fa-bullhorn"></i>Announcements</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/><i class="fas fa-exclamation-triangle"></i>Security Advisories</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2025-14728/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2025-14728/>CVE-2025-14728</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2025-6264/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2025-6264/>CVE-2025-6264</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2025-0914/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2025-0914/>CVE-2025-0914</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2024-10526/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2024-10526/>CVE-2024-10526</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-5950/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2023-5950/>CVE-2023-5950</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-2226/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2023-2226/>CVE-2023-2226</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0242/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2023-0242/>CVE-2023-0242</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0290/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2023-0290/>CVE-2023-0290</a></div></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/ class="dd-item parent haschildren"><div><i class="fa fa-angle-down fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/><i class="fas fa-book-reader"></i>Documentation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/overview/>Velociraptor Overview</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/history/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/overview/history/>History</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/overview/support/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/overview/support/>Support Policy</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/overview/security/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/overview/security/>Security</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/>Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/quickstart/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/quickstart/>Quickstart</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/>Server Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/key_concepts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/key_concepts/>Key Concepts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/key_decisions/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/key_decisions/>Key Decisions</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/deployment_example/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/deployment_example/>Deployment Example</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/multifrontend/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/multifrontend/>Multi-Frontend</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/upgrades/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/upgrades/>Upgrades</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/orgs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/orgs/>Organizations</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/clients/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/clients/>Deploying Clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/>Offline Collections</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/building/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/building/>Building</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/running/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/running/>Running</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/collection_data/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/collection_data/>Collection Data</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/updating/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/updating/>Updating</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/troubleshooting/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/troubleshooting/>Troubleshooting</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/security/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/security/>Security</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/resources/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/resources/>Performance</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/references/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/references/><i class="fas fa-book"></i>Config Reference</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/>The Admin GUI</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/gui/artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/artifacts/>Managing Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/keyboard_shortcuts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/keyboard_shortcuts/>Keyboard Shortcuts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/user_preferences/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/user_preferences/>User Preferences</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/customizing/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/customizing/>Customization</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/>Managing Clients</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/clients/searching/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/searching/>Searching for clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/interrogation/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/interrogation/>Interrogation</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/artifacts/>Collecting Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/labels/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/labels/>Labels</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/metadata/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/metadata/>Metadata</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/quarantine/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/quarantine/>Quarantine</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/vfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/vfs/>Virtual File System</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/shell/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/shell/>Shell Commands</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/monitoring/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/monitoring/>Monitoring</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/>VQL</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/vql/fundamentals/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/fundamentals/>VQL Fundamentals</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/events/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/events/>Event Queries</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/join/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/join/>JOIN in VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/artifacts/>Artifacts</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/calling/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/artifacts/calling/>Calling Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/managing/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/artifacts/managing/>Managing Artifacts</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/extending_vql/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/extending_vql/>Extending VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/vql_reference/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/vql_reference/><i class="fas fa-book"></i>VQL Reference</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/>Artifacts</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/managing/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/managing/>Managing Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/basic_fields/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/basic_fields/>Basic Fields</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/advanced_fields/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/advanced_fields/>Advanced Fields</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/parameters/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/parameters/>Parameters</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/sources/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/sources/>Sources</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/preconditions/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/preconditions/>Preconditions</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/export_imports/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/export_imports/>Export & Imports</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/calling_artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/calling_artifacts/>Calling Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/event_queues/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/event_queues/>Event Queues</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/tools/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/tools/>Tools</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/resources/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/resources/>Resource Limits</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/security/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/security/>Security</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/use_cases/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/use_cases/>Other Use Cases</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/tips/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/tips/>Artifact Writing Tips</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/artifact_reference/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/artifact_reference/><i class="fas fa-book"></i>Artifact Reference</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/exchange_reference/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/exchange_reference/><i class="fas fa-code"></i>Artifact Exchange</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/notebooks/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/notebooks/>Notebooks</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/hunting/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/hunting/>Hunting</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/>Forensic Analysis</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/filesystem/>Searching Filesystems</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/paths/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/filesystem/paths/>Velociraptor Paths</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/remapping/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/filesystem/remapping/>Remapping Accessors</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/ntfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/filesystem/ntfs/>NTFS Analysis</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/searching/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/searching/>Searching Content</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/deaddisk/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/deaddisk/>Dead Disk Analysis</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/deaddisk/creating_running/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/deaddisk/creating_running/>Creating & Running</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/binary/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/binary/>Binary parsing</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/evidence_of_execution/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/evidence_of_execution/>Evidence Of Execution</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/event_logs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/event_logs/>Event Logs</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/volatile/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/volatile/>Volatile State</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/file_collection/ class="dd-item active haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/file_collection/>File Acquisition</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/file_collection/bulk/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/file_collection/bulk/>Bulk File Acquisition</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/file_collection/vfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/file_collection/vfs/>VFS Uploads</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/file_collection/exporting/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/file_collection/exporting/>Bulk File Exports</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/server_automation/>Server Automation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_api/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/server_automation/server_api/>Server API</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_monitoring/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/server_automation/server_monitoring/>Server Monitoring</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/>CLI</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/cli/acl/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/acl/>acl</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/artifacts/>artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/collector/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/collector/>collector</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/config/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/config/>config</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/deaddisk/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/deaddisk/>deaddisk</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/fs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/fs/>fs (filesystem)</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/fuse/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/fuse/>fuse</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/query/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/query/>query</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/server_service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/server_service/>server_service</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/service/>service</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/tools/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/tools/>tools</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/user/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/user/>user</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/misc/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/misc/>Miscellaneous</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/flags/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/flags/>CLI flags</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/>Troubleshooting</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/deployment/>Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/server/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/deployment/server/>Server</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/client/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/deployment/client/>Client</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/offline_collector/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/deployment/offline_collector/>Offline Collector</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/operations/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/operations/>Operations</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/operations/server_ops/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/operations/server_ops/>Server Ops</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/operations/remote_clients/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/operations/remote_clients/>Remote Clients</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/vql/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/vql/>VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/>Debugging</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/internal/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/internal/>Internal</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/internal/metrics/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/internal/metrics/>Metrics</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/internal/go_profiles/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/internal/go_profiles/>Golang</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/client/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/client/>Client</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/client/client_monitoring/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/client/client_monitoring/>Monitoring</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/client/client_flows/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/client/client_flows/>Flows</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/>Global</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/datastore/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/datastore/>Datastore</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/datastore/replication/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/datastore/replication/>Replication</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/>Services</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/export/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/export/>ExportContainers</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/throttler/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/throttler/>Throttler</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/user_manager/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/user_manager/>User Manager</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/open_close/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/open_close/>Open-close</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/tempfiles/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/tempfiles/>tempfiles</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/worker/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/worker/>worker</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/>VQL</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/queries/>Queries</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/active_queries/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/queries/active_queries/>Active Queries</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/plugin_monitor/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/queries/plugin_monitor/>Plugin Monitor</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/recent_queries/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/queries/recent_queries/>Recent Queries</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/>Plugins</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/etw/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/etw/>ETW</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/glob/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/glob/>Glob</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/ntfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/ntfs/>NTFS Cache</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/sigma/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/sigma/>Sigma Tracker</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/windows_event/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/windows_event/>Windows Event Log Watcher</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/zip/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/zip/>Zip</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/process/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/process/>Process Tracker</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/sqlite/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/sqlite/>Sqlite</a></div></li></ul></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/>Org</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/>Services</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/broadcast_service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/broadcast_service/>Broadcast</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/queue_manager/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/queue_manager/>QueueManager</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/vfs_service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/vfs_service/>VFS</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/notifier/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/notifier/>Notifier</a></div></li></ul></li></ul></li></ul></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/downloads/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/downloads/><i class="fas fa-download"></i>Downloads</a></div></li><hr><li data-nav-id=https://docs.velociraptor.app/vql_reference/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/><i class="fas fa-book"></i>VQL Reference</a></div><ul><li data-nav-id=https://docs.velociraptor.app/vql_reference/popular/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/popular/>Frequently Used ✨</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/windows/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/windows/>Windows-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/linux/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/linux/>Linux-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/server/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/server/>Server-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/parsers/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/parsers/>Parsers</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/encode/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/encode/>Encode/Decode</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/event/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/event/>Event Plugins</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/experimental/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/experimental/>Experimental</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/developer/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/developer/>Developer</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/other/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/other/>Other</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/accessors/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/accessors/>Accessors</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/training/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/training/><i class="fas fa-graduation-cap"></i>Training</a></div><ul><li data-nav-id=https://docs.velociraptor.app/training/playbooks/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/training/playbooks/><i class="fas fa-play"></i>Playbooks</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/blog/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/blog/><i class="fas fa-newspaper"></i>Blog</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/><i class="fas fa-chalkboard-teacher"></i>Presentations</a></div><ul><li data-nav-id=https://docs.velociraptor.app/presentations/2022_linuxconf_au/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_linuxconf_au/>Linux Conf Au 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_auscert/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_auscert/>Auscert 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_sans_summit/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_sans_summit/>SANS Summit 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_velocon/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_velocon/>Velocon 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_dfrws_apac/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_dfrws_apac/>DFRWS APAC 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_everything_open/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2023_everything_open/>EverythingOpen 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_velocon/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2023_velocon/>VeloCON 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2024_auscert/>Auscert 2024</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert-detection-engineering/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2024_auscert-detection-engineering/>Auscert 2024 Talk</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2025_auscert-detection-engineering/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2025_auscert-detection-engineering/>Auscert 2025 Workshop</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/exchange/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/exchange/><i class="fas fa-code"></i>Artifact Exchange</a></div></li><li data-nav-id=https://docs.velociraptor.app/artifact_references/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/artifact_references/><i class="fas fa-book"></i>Artifact Reference</a></div></li><li data-nav-id=https://docs.velociraptor.app/knowledge_base/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/knowledge_base/><i class="fas fa-brain"></i>Knowledge Base</a></div></li><li data-nav-id=https://docs.velociraptor.app/search/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/search/><i class='fas fa-search'></i>Search</a></div></li></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>$("#sidebar i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()})</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/file_collection/_index.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>File Acquisition</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents><ul><li><a href=#why-collect-files>Why collect files?</a></li><li><a href=#file-uploads>File Uploads</a></li><li><a href=#the-vql-upload-function>The VQL upload function</a><ul><li></li><li><a href=#accessing-file-uploads-on-the-server>Accessing file uploads on the server</a></li><li><a href=#enumerating-uploads-using-vql>Enumerating uploads using VQL</a></li></ul></li><li><a href=#upload-related-features>Upload-related Features</a><ul><li><a href=#filesystem-accessors>Filesystem Accessors</a></li><li><a href=#password-protected-file-downloads>Password-protected file downloads</a></li></ul></li><li><a href=#mitigating-network-and-server-impacts>Mitigating Network and Server Impacts</a><ul><li><a href=#resumable-uploads>Resumable Uploads</a></li><li><a href=#network-rate-limits>Network Rate Limits</a></li><li><a href=#collection-resource-limits>Collection Resource Limits</a></li><li><a href=#datastore-file-compression>Datastore File Compression</a></li><li><a href=#datastore-disk-usage-protection>Datastore Disk Usage Protection</a></li><li><a href=#remote-upload-destinations>Remote Upload Destinations</a></li></ul></li><li><a href=#more-topics>More topics&mldr;</a></li></ul></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>File Acquisition</h1><p>Traditional DFIR tools focus on file acquisition and often rely on file <em>copies</em>
+as their primary data source. These tools typically perform subsequent analysis
+on a centralized server or network-isolated system.</p><p>Unlike those tools, Velociraptor is designed to perform analysis directly on the
+endpoint. This decentralized approach scales far more easily than centralized
+processing, with live systems also providing a far richer source of forensic
+data.</p><p>However, Velociraptor is fully capable of performing file acquisition and has
+many features that allow you to do this quickly and efficiently. This section
+covers Velociraptor&rsquo;s features that support file acquisition, and explains how
+to work with these files after you acquire them.</p><div class="mynotices tip"><div heading=" Understanding Collections vs. File Acquisition "><p>We refer to the process of running an artifact as &ldquo;a collection&rdquo;, regardless of
+whether the process copies files from the target system. While VQL queries <em>can</em>
+copy files, this is only one of many available actions.</p><p>Velociraptor queries are written in VQL (Velociraptor Query Language) and
+packaged inside a YAML data structure which we call an
+<a href=/docs/artifacts/>artifact</a>
+. You then <strong>collect</strong> these artifacts
+on one or more target endpoints.</p><p>VQL artifacts can combine data from multiple sources to create a more complete
+picture of an event than traditional &ldquo;offline&rdquo; file analysis can provide. For
+example, on a live endpoint, Velociraptor can:</p><ul><li>Combine file and API data: VQL queries can extract information from static
+files, system APIs, and volatile (memory) sources simultaneously. An example
+of this is parsing Windows event logs. While traditional tools might just look
+at the <code>.evtx</code> file, VQL can simultaneously query the Registry API to find
+specific DLLs that translate raw event codes into human-readable messages.</li><li>Access live context, such as active system state data that is unavailable when
+examining an isolated file or a disk image.</li></ul><p>While other DFIR tools often use &ldquo;collection&rdquo; to imply file acquisition,
+Velociraptor collections usually return only parsed data.</p><p>In Velociraptor we perform <strong>file acquisition</strong> (to use the more accurate term)
+primarily for the purpose of preserving evidence. Centralized file processing
+can be done, but it is significantly more complicated and less efficient than
+just querying the data sources directly on the endpoint.</p><p>You might also notice that we sometimes use the term &ldquo;flow&rdquo; as an alternative to
+the term &ldquo;collection&rdquo;. This is for historical reasons, but it might also be
+helpful to think in terms of this neutral term since it isn&rsquo;t colloquially
+associated with the process of copying files.</p></div></div><h2 id=why-collect-files>Why collect files?</h2><p>File acquisition, is typically performed for two distinct reasons:</p><ol><li>To preserve forensic evidence.</li><li>To allow for additional analysis on a separate system (not the original
+computer) using external tools.</li></ol><p>Traditional forensic tools and workflows often blur the distinction between
+these two goals, especially when such systems centralize the parsing and
+extraction of data. This conflation is compounded by traditional methodologies
+that emphasize evidence preservation and working exclusively on file copies
+(often captured in the form of disk images), as investigations of yesteryear
+often had litigation as their primary goal.</p><p>While these considerations certainly still apply to some investigations, the
+majority of modern IR investigations do not have litigation as an end goal.
+Modern investigations frequently require scaling to an extent that makes bulk
+file collection and centralized processing highly impractical and painfully
+slow. The centralized file processing approach is at odds with the goal of rapid
+incident response. For that reason, Velociraptor is not designed around the
+centralized processing paradigm, although you can still use Velociraptor to work
+with <a href=/docs/deployment/offline_collections/collection_data/>file copies</a>
+and <a href=/docs/forensic/deaddisk/>disk images</a>
+in a centralized
+manner if necessary. And that might be necessary under certain circumstances,
+but you should take advantage of Velociraptor&rsquo;s scalable, decentralized design
+whenever possible.</p><p>That is, the recommended approach with Velociraptor is:</p><ul><li>Query data sources on the live endpoint when possible.</li><li>Avoid copying files unless you have a specific reason to do so, such as for
+evidence preservation or for analysis by external tools.</li><li>If you must preserve file-based evidence, then copy the files in addition to
+querying the files and non-file data sources on the live endpoint.</li></ul><p>For example, if you are looking for specific events in the Windows event log,
+run queries against the live system to find those events, and then copy the
+<code>.evtx</code> file <em>only if</em> the events are found.</p><p>If you wish to perform wholesale preservation of file-based evidence, say for
+legal reasons, then disk images are still considered the gold standard for that
+purpose. You might still consider creating disk images <em>in addition to</em>
+investigating the endpoint with Velociraptor. Velociraptor does also provide
+artifacts that facilitate
+<a href=/docs/file_collection/bulk/>bulk file collection</a>
+if you need to do selective file preservation.</p><p>With all that considered, let&rsquo;s look at how files are actually collected&mldr;</p><h2 id=file-uploads>File Uploads</h2><p>In Velociraptor, a &ldquo;file upload&rdquo; is the transfer of a file from an endpoint to
+the server, which then stores the file in its filestore. The VQL <code>upload()</code>
+function is the workhorse behind this capability and is used in many of the
+<a href=/artifact_references/>built-in artifacts</a>
+.</p><p>Velociraptor enables efficient file transfer and storage through several
+built-in mechanisms:</p><ul><li><strong>File Upload Deduplication</strong>: If different artifacts request the same file
+within the same collection, it is only transferred and stored once.</li><li><strong>Sparse File Handling</strong>: For large but mostly empty files (like the Windows
+USN journal), Velociraptor only transfers regions containing actual data. Such
+files are called &ldquo;sparse files&rdquo;. Velociraptor creates a corresponding <code>.idx</code>
+file mapping out the sections that contain data, and it then uses this to
+reconstruct the original layout on the server, if required. This can
+significantly reduce the size of the collection for certain files that tend to
+be very large. When exporting files from the GUI, you can choose whether to
+pad out sparse files or keep them in their compact form.</li><li><strong>Compressed Storage</strong>: Since version 0.75, the server stores data in a
+compressed form by default. This can greatly improve storage efficiency (by up
+to 80–90% compared to previous versions) since many of the files we work with
+are highly compressible.</li></ul><p>Beyond uploading files to the server, specialized plugins like <code>upload_s3()</code>,
+<code>upload_gcs()</code>, <code>upload_azure()</code>, and <code>upload_sftp()</code> allow endpoints to send
+data
+<a href=#remote-upload-destinations>directly to external cloud storage providers or remote servers</a>
+.</p><div class="mynotices tip"><div heading=" Terminology note "><p>New users might find the &ldquo;upload&rdquo; and &ldquo;download&rdquo; terminology a bit confusing.</p><ul><li>In the context of Velociraptor we generally use the term <strong>upload</strong> to refer
+to a file transfer <em>from the client</em> to the server (or other destination).</li><li>In general we use the term <strong>download</strong> to refer to the act of transferring
+files <em>from the server</em> to your local workstation, usually via the
+Velociraptor GUI.</li></ul><p>Note that in the Velociraptor GUI, particularly in the VFS browser, uploading
+from the client is sometimes described using the term &ldquo;download&rdquo; because the VFS
+browser presents actions from the server&rsquo;s perspective (the server is
+&ldquo;downloading&rdquo; from the client). Technically, the client always initiates the
+upload to the server: <em>By design, the Velociraptor server never accesses the
+client directly!</em></p><p>To summarize the terminology conventions used in our documentation:</p><ul><li><strong>Collect:</strong> Artifact execution and data transfer, which <em>might</em> include file
+uploads.</li><li><strong>Upload:</strong> Client → Server or another remote storage destination (File
+transfer)</li><li><strong>Download/Export:</strong> Server → User Workstation (File transfer)</li></ul></div></div><h2 id=the-vql-upload-function>The VQL upload function</h2><p>The VQL <a href=/vql_reference/popular/upload/>upload()</a>
+function is the
+primary mechanism for transferring files from an endpoint to the server
+filestore. It can be triggered based on specific query criteria, and all
+resulting files are associated with the collection that invoked the function.</p><p>When this function is used, the uploaded files are stored on the server and
+associated with the collection that invoked the <code>upload()</code> function.</p><p>Alternatively, if you want to upload to destinations other than the server,
+Velociraptor has a range of other upload-related functions that are
+<a href=#remote-upload-destinations>described below</a>
+.</p><h6 id=a-basic-example>A Basic Example</h6><p>To target specific files, use <code>upload()</code> in conjunction with the <code>glob()</code>
+plugin. The following query identifies and uploads all executable files from
+every user&rsquo;s Downloads folder on a Windows endpoint:</p><pre><code class=language-vql>SELECT OSPath, upload(file=OSPath) AS Upload
+FROM glob(globs=&quot;C:/Users/*/Downloads/*.exe&quot;)
+</code></pre><p>Of course if you know the exact path of a file that you want to upload to the
+server then you don&rsquo;t need to use the <code>glob()</code> plugin, but this plugin is
+usually used when <a href=/docs/forensic/filesystem/>searching the filesystem</a>
+.
+The <code>upload()</code> function requires an OSPath in its <code>file</code> argument, so any
+plugin that produces an OSPath will work, or you could manually specify a path
+to target a particular file.</p><h3 id=accessing-file-uploads-on-the-server>Accessing file uploads on the server</h3><p>In the collection&rsquo;s <strong>Uploaded Files</strong> tab, each file upload is automatically
+displayed with both a download link and a link to view the file using the
+built-in file inspector (the &ldquo;preview&rdquo; option).</p><p><figure id=3bd31897aee5d2a515cfa727f459edb8><div data-featherlight=#3bd31897aee5d2a515cfa727f459edb8 class=figure><img src=uploaded_files.png alt="Uploaded Files tab"></div><figcaption><a class=image-link href=uploaded_files.png><i class="fa fa-download"></i></a>
+Uploaded Files tab</figcaption></figure></p><p><figure id=18fb4cfed91be30e8b8224888620ec65><div data-featherlight=#18fb4cfed91be30e8b8224888620ec65 class=figure><img src=uploaded_files_preview.png alt="File Inspector view"></div><figcaption><a class=image-link href=uploaded_files_preview.png><i class="fa fa-download"></i></a>
+File Inspector view</figcaption></figure></p><p>In other VQL results tables, you can configure which
+<a href=/docs/artifacts/advanced_fields/#-column_types->column types</a>
+are used to facilitate GUI access to the uploaded files.</p><p>For example, if we use the <code>upload()</code> function in an artifact and assign it to
+the columns named <code>FilePreview</code> and <code>FileDownload</code>:</p><pre><code class=language-vql>SELECT OSPath,
+        upload(file=OSPath) AS FileDownload,
+        upload(file=OSPath) AS FilePreview
+FROM glob(globs=&quot;C:/Users/*/Downloads/*.exe&quot;)
+</code></pre><p>then we can also define how we want them displayed in the results table in the
+GUI using the <a href=/docs/artifacts/advanced_fields/#-column_types->column_types</a>
+section in the artifact:</p><pre><code class=language-yaml>column_types:
+  - name: FilePreview
+    type: preview_upload
+  - name: FileDownload
+    type: download
+</code></pre><p>The column types, if specified in the artifact definition, will be applied to
+the named columns when the results are viewed in a notebook. However, you can
+also manually edit the column types in the GUI when viewing any results table:</p><p><img class=inline src=format_columns.png></p><p>When you edit column types in a notebook, the GUI creates a dict containing the
+specification and assigns it to the <code>ColumnTypes</code> VQL variable, for example the
+YAML <code>column_types</code> specification shown above can alternatively be included in
+your VQL as:</p><pre><code class=language-vql>LET ColumnTypes &lt;= dict(`FilePreview`='preview_upload', `FileDownload`='download')
+</code></pre><p>The VQL specification approach is more commonly used in Velociraptor notebooks,
+although these are based on <a href>notebook templates</a>
+which are also just
+artifacts, and therefore also support the YAML-based <code>column_types</code>
+specification.</p><h3 id=enumerating-uploads-using-vql>Enumerating uploads using VQL</h3><p>The uploads associated with a collection can be enumerated in Velociraptor
+notebooks using the VQL
+<a href=/vql_reference/server/uploads/>uploads()</a>
+plugin.</p><p>This plugin returns information about all the uploads in a collection, including
+2 fields that can be used to access the file in the server&rsquo;s filestore:</p><ul><li><code>vfs_path</code>: a PathSpec object</li><li><code>Upload</code>: an UploadResponse object</li></ul><p>These fields can be used in subsequent VQL actions to access or manipulate the
+file copy that is stored in the server&rsquo;s filestore. For example, the <code>vfs_path</code>
+can be used with the
+<a href=/vql_reference/server/file_store_delete/><code>file_store_delete()</code></a>
+function, if necessary.</p><h4 id=for-an-individual-collection>For an individual collection</h4><p>It&rsquo;s easy to enumerate the file uploads associated with any collection in a
+notebook.</p><h6 id=example>Example</h6><pre><code class=language-vql>LET ColumnTypes &lt;= dict(`Upload`='download')
+
+SELECT *
+FROM uploads(client_id=ClientId, flow_id=FlowId)
+</code></pre><p><figure id=ce3c4103c9fdc3970e9864080fe38d1c><div data-featherlight=#ce3c4103c9fdc3970e9864080fe38d1c class=figure><img src=uploads.png alt="Listing a collections uploads in a notebook"></div><figcaption><a class=image-link href=uploads.png><i class="fa fa-download"></i></a>
+Listing a collections uploads in a notebook</figcaption></figure></p><p>Note that in a collection notebook the <code>ClientId</code> and <code>FlowId</code> values don&rsquo;t need
+to be explicitly specified, since they are already present in the notebook&rsquo;s VQL
+scope.</p><h4 id=for-a-hunt>For a hunt</h4><p>File uploads associated with a hunt can be similarly enumerated in a notebook by
+iterating over the flows linked to the hunt.</p><h6 id=example-1>Example</h6><pre><code class=language-vql>LET ColumnTypes &lt;= dict(`Upload`='download')
+LET HuntId &lt;= &quot;H.ABCXYZ&quot;
+
+SELECT *
+FROM foreach(
+  row={
+    SELECT ClientId,
+           FlowId
+    FROM hunt_flows(hunt_id=HuntId)
+  },
+  query={
+    SELECT *
+    FROM uploads(client_id=ClientId, flow_id=FlowId)
+  })
+</code></pre><p>In a hunt notebook the <code>HuntId</code> does not need to be explicitly set as it is
+already present in the notebook&rsquo;s VQL scope.</p><p>Also note that if the artifacts being hunted include file uploads with the
+appropriate <code>column_types</code> set, then the notebook will display links to the
+uploaded files when you run a simple
+<code>SELECT * FROM source(artifact="ArtifactName")</code>
+query, which is the default query for a new hunt notebook.</p><h2 id=upload-related-features>Upload-related Features</h2><p>Velociraptor has several features that work together with the <code>upload()</code>
+function to extend what it can access, make it safer to use, and to improve
+upload efficiency in certain scenarios.</p><h3 id=filesystem-accessors>Filesystem Accessors</h3><p><a href=/vql_reference/accessors/>Accessors</a>
+act as filesystem drivers,
+allowing the <code>upload()</code> function to read from diverse sources such as:</p><ul><li>the standard OS API (<code>file</code> accessor),</li><li>raw cluster level (<code>ntfs</code>, <code>fat</code>, <code>ext4</code> accessors),</li><li>Windows registry (<code>registry</code> accessor),</li><li>memory (<code>winpmem</code> accessor),</li><li>compressed archives (<code>zip</code>, <code>gzip</code>, <code>bzip2</code> accessors)</li></ul><p>and many other specialized formats.</p><p>This means that you can upload files directly from sources that would normally
+be restricted or require an intermediate processing step. For example:</p><ul><li>locked &ldquo;in use&rdquo; files can be accessed using the <code>ntfs</code> accessor, bypassing OS
+file locks.</li><li>if a file is inside a supported container-type file format (let&rsquo;s say a <code>.pst</code>
+archive or a <code>.zip</code> file or the Window registry) you can upload the file
+directly from the archive without needing to first extract the archive. There
+is no need to extract archives or make temporary copies of files before
+uploading them.</li></ul><p>As an interesting application of accessors, and demonstrating the usefulness of
+their modular nature, the <code>ssh</code> accessor can be used to
+<a href>upload files from a remote host via SSH</a>
+,
+that is: without needing a Velociraptor client on the remote host.</p><p>Any data that has been generated by another function or plugin can be uploaded
+as a file if you use the <code>upload()</code> function with the <code>data</code> accessor.</p><h3 id=password-protected-file-downloads>Password-protected file downloads</h3><p>For additional safety when locally handling files, and to reduce the chance of
+your local antivirus accidentally quarantining potential malware that you intend
+to analyze, you can set a downloads password (such as the industry-standard
+&ldquo;infected&rdquo;) in your <a href=/docs/gui/user_preferences/>user preferences</a>
+.
+This ensures that any files exported from the GUI are placed in a
+password-protected zip and thereby made safe for transit to your analysis
+environment.</p><p>When a download password is set, all prepared downloads (i.e. bulk exports) and
+single-file downloads from the GUI will be zipped and password-protected. To
+unset this behavior, clear the download password in your user preferences.</p><h2 id=mitigating-network-and-server-impacts>Mitigating Network and Server Impacts</h2><p>The collection of potentially many files simultaneously from many clients can
+result in a significant resource impact on the server, as well as possibly
+impacting normal network operations.</p><p>In addition, the collected files are stored on the server&rsquo;s filesystem within
+the Velociraptor datastore, so you need to ensure that your server has
+sufficient disk space to suit your collection goals.</p><p><em>You should always consider the potential impacts when planning collections that
+involve bulk file uploads, or uploads of very large files.</em> Fortunately,
+Velociraptor has several mechanisms that help mitigate the potential impacts
+associated with file collections at scale.</p><h3 id=resumable-uploads>Resumable Uploads</h3><p>The Resumable Uploads feature allows large files to be transferred to the server
+in the background (asynchronously), and continue transferring where they left
+off after a network or client interruption. Whether the client crashes, the
+system reboots, the network goes down, or the collection simply times out, the
+transfer progress that has already been made is preserved on the server.</p><div class="mynotices info"><div heading=" Experimental feature "><p>Resumable Uploads is considered an advanced and still slightly experimental
+feature and is therefore &ldquo;opt-in&rdquo; via a boolean VQL variable. It&rsquo;s not enabled
+by default.</p><p>In addition, enabling this feature comes with some caveats and changes to upload
+behavior that might be confusing to the user (see the
+<a href=/vql_reference/popular/upload/>upload function documentation</a>
+for more details).</p><p>As with any advanced feature, Resumable Uploads have seen continuous refinement.
+While it was a major highlight of the 0.72 release, some stability issues were
+noted in subsequent versions, leading to the feature being disabled in certain
+releases to ensure that server performance wasn&rsquo;t impacted during high-load
+scenarios. You should use the latest stable release for the most reliable
+experience, especially if you intend to use this feature.</p></div></div><p>Resumable uploads are enabled by setting the VQL variable <code>UPLOAD_IS_RESUMABLE</code>
+in a query. Note that this means that the feature is enabled <em>per query</em> - it is
+not a feature that can (currently) be enabled or disabled globally for all
+collections. It can also be enabled <em>per artifact</em> by setting the variable as an
+artifact parameter, which the <code>Generic.Collectors.File</code>, <code>FileFinder</code> artifacts,
+and <code>Triage</code> artifacts have by default.</p><p>When this feature is enabled for a query, Velociraptor uses <em>upload transactions</em>:</p><ol><li>Instead of the VQL query waiting for the entire file to reach the server, the
+<code>upload()</code> function returns an Upload ID immediately.</li><li>The VQL query then continues its execution while the actual data transfer
+happens asynchronously in the background.</li><li>If the client is interrupted, the transaction state is stored, allowing the
+server to ask the client to resume the specific data stream upon
+reconnection.</li></ol><p>While resumable uploads can be incredibly useful in challenging network
+environments, they aren&rsquo;t really necessary for most file collections which
+typically consist of relatively few files that are mostly moderate in size.</p><p>Resumable uploads are most useful for large file transfers, such as:</p><ul><li>Full memory images (WinPmem/AVML).</li><li>Bulk file collections like <code>Windows.Triage.Targets</code> (depending on what you
+choose to collect).</li><li>Large logs or database files that exceed several gigabytes.</li></ul><p>Resumable transfers may also be helpful in unstable network environments, such
+as when attempting file collections over an unstable internet link.</p><h4 id=checking-the-status-of-resumable-uploads>Checking the status of resumable uploads</h4><p>On the server, you can check which file uploads are outstanding for a specific
+collection using the <a href=/vql_reference/other/upload_transactions/>upload_transactions()</a>
+plugin.</p><p>For example, in the following screenshot you can see that the client is
+disconnected, and that several files are pending upload. In particular, the
+first file will be resumed from its <code>start offset</code> while the files listed below
+it will be sent from offset 0.</p><p><figure id=db60ccdfbafcaac605a210a9b7264658><div data-featherlight=#db60ccdfbafcaac605a210a9b7264658 class=figure><img src=upload_transactions.png alt="Checking upload transactions"></div><figcaption><a class=image-link href=upload_transactions.png><i class="fa fa-download"></i></a>
+Checking upload transactions</figcaption></figure></p><p><code>upload_transactions()</code> can be run from any notebook on the server, but for
+convenience we are running it here in the collection notebook so that it
+automatically has access to <code>ClientId</code> and <code>FlowId</code> from the notebook&rsquo;s VQL
+environment.</p><p>Note that uploads will be resumed from the offset recorded by the server. If the
+file changes during a client interruption then the upload will be resumed from
+that offset on the changed file. For this reason it is not advisable to use
+resumable uploads for files that are expected to change frequently.</p><h3 id=network-rate-limits>Network Rate Limits</h3><p>Velociraptor allows you to define a <code>global_upload_rate</code> and a
+<code>per_client_upload_rate</code> within the <code>Frontend.resources</code> configuration section,
+both measured in bytes per second.</p><ul><li><code>global_upload_rate</code>: This setting caps the total bandwidth that the server
+allows for all incoming client uploads.</li><li><code>per_client_upload_rate</code>: Restricts the bandwidth utilised by each individual
+client. This is a global value that applies to every client connected to that
+frontend.</li></ul><p>These settings, if configured appropriately, can ensure that the client-server
+data transfers do not saturate network links during large-scale collections.</p><h3 id=collection-resource-limits>Collection Resource Limits</h3><p>It is often hard to determine in advance how much data will be collected or how
+long it will take. It might happen that a certain endpoint has many more files
+than you anticipated, or that a certain file might be unusually large on some
+particular endpoint.</p><p><a href=/docs/artifacts/resources/>Resource limits</a>
+is a feature
+intended to protect against such unforeseen circumstances. Velociraptor allows
+limits to be set, after which the collection is cancelled. In particular, the
+<code>max_upload_bytes</code> and <code>timeout</code> resource limits provide an additional safeguard
+against unexpected/accidental uploads of extremely large files.</p><p>To guard against accidental server disk exhaustion, there is a default limit of
+1GB per collection. This limit, and the default 10-minute timeout, can be
+increased in the GUI for larger acquisitions. Alternatively they can be
+<a href=/docs/artifacts/advanced_fields/#-resources->defined in the artifact</a>
+if the artifact is expected to usually result in large data transfers (such as
+and artifact which uploads memory dumps).</p><p>Keep in mind that if the specified limits are exceeded then the collection will
+be considered &ldquo;failed&rdquo;, although it can easily be re-collected with new
+increased limits being applied if you decide that the large transfer is
+acceptable.</p><p>To do that:</p><ul><li>navigate to the client&rsquo;s collections list screen</li><li>copy the failed collection</li><li>increase the resource limits before launching it.</li></ul><p><figure id=9c4fd79d9c6ed27334eb3a38a42be8e7><div data-featherlight=#9c4fd79d9c6ed27334eb3a38a42be8e7 class=figure><img src=resource_limit.png alt="Collections are automatically cancelled when they exceed a limit"></div><figcaption><a class=image-link href=resource_limit.png><i class="fa fa-download"></i></a>
+Collections are automatically cancelled when they exceed a limit</figcaption></figure></p><p>If a collection is running longer than you expected, you can interactively
+cancel it (or hunt, consisting of many collections) by clicking the &ldquo;Stop&rdquo;
+button. When stopping a hunt, all participating clients will be told to cancel
+their individual collections.</p><h3 id=datastore-file-compression>Datastore File Compression</h3><p>In older versions compression was only applied during network transport. Since
+version 0.75, the server stores uploaded files in a compressed form by default
+to improve storage utilization. The compression is performed by the client, and
+therefore has minimal performance cost to the server. On the server the
+decompression is handled transparently, such as when exporting files from the
+GUI or accessing them via VQL.</p><p>This feature significantly mitigates the risk of bulk file uploads unexpectedly
+depleting the disk space on the server.</p><h3 id=datastore-disk-usage-protection>Datastore Disk Usage Protection</h3><p>The server includes a disk usage checker that automatically disables writes when
+free space hits a minimum threshold (50 MB by default). Under these conditions,
+the server returns a <code>503</code> error to clients, causing them to buffer data locally
+rather than risk file corruption or data loss on the server. This mechanism
+protects critical metadata, such as hunt objects and organization settings,
+which were vulnerable to corruption in older releases.</p><p>The GUI will also display an alert if the minimum threshold is encountered.</p><p><figure id=184b68d7f35334e8c48001fb6379cf00><div data-featherlight=#184b68d7f35334e8c48001fb6379cf00 class=figure><img src=freediskspace.png alt="Free disk space alert"></div><figcaption><a class=image-link href=freediskspace.png><i class="fa fa-download"></i></a>
+Free disk space alert</figcaption></figure></p><h3 id=remote-upload-destinations>Remote Upload Destinations</h3><p>It&rsquo;s also possible to have the client upload files to destinations other than
+the Velociraptor server. This is most often used with
+<a href=/docs/deployment/offline_collections/>offline collections</a>
+to upload a large collection container zip to a remote destination, but the same
+upload functions can be used in any VQL queries to upload individual files.</p><p>Using remote upload destinations rather than your Velociraptor server is one way
+to avoid the potential impacts of bulk/large file uploads on the server. You
+can, for example, upload files to cloud storage services which have practically
+unlimited storage capacity.</p><p>Of course the downside to that approach is that your collected files will then
+be separate from your non-file collection data. But in some cases that may be
+the preferred option, for example:</p><ul><li>where the files need to be fed into further automated processing pipelines</li><li>where the remote destination serves as a long-term storage vault for evidence
+preservation, independent of Velociraptor.</li></ul><p>To avoid impacting a network&rsquo;s internet link you could also consider setting up
+a MinIO/SMB/WebDAV/SFTP server on the local network and then using the
+corresponding VQL function to send the collected files to that destination.
+However, since version 0.75 the files sent to the server&rsquo;s datastore are
+compressed by default, as mentioned above, while files sent to other
+destinations will not benefit from this automatic compression.</p><p>Velociraptor currently supports the following remote upload destinations:</p><ul><li><p><strong>Google Cloud Storage</strong>: using the <code>upload_gcs</code> function.</p><p>See <a href=/knowledge_base/tips/setup_gcs_storage/>How to set up a GCS Bucket for file uploads</a>
+.</p></li><li><p><strong>AWS S3</strong> or <strong>MinIO</strong>: using the <code>upload_s3</code> function.</p><p>MinIO is a self-hosted S3-compatible server.</p><p>See <a href=/knowledge_base/tips/dropbox_server/>How to set up a MinIO (S3-compatible) dropbox server for file uploads</a>
+.</p></li><li><p><strong>Azure Blob Storage</strong>: using the <code>upload_azure</code> function.</p><p>See <a href=/knowledge_base/tips/setup_azure_storage/>How to set up Azure Blob Storage for file uploads</a>
+.</p></li><li><p><strong>SMB Share</strong>: using the <code>upload_smb</code> function.</p><p>See <a href=/knowledge_base/tips/setup_smb_share/>How to set up a SMB share for file uploads</a>
+.</p></li><li><p><strong>SFTP server</strong>: using the <code>upload_sftp</code> function.</p><p>See <a href=/knowledge_base/tips/setting_up_sftp/>How to set up a SFTP server for file uploads</a>
+.</p></li><li><p><strong>WebDAV server</strong>: using the <code>upload_webdav</code> function.</p><p>See the <a href=/vql_reference/other/upload_webdav/>upload_webdav</a>
+function documentation.</p></li><li><p><strong>Generic HTTP server</strong>: using the <code>http_client</code> function.</p><p>The generic <code>http_client</code> VQL function can also be used to transfer files to a
+generic web service destination, a common use case being to submit files to
+malware analysis sandboxes.
+See the function&rsquo;s
+<a href=/vql_reference/popular/http_client/#example---uploading-files>documentation</a>
+for examples.</p></li></ul><div class="mynotices note"><div heading=" Differences from the upload function "><p>Note that unlike the <code>upload()</code> function, these plugins do not support resumable
+uploads, or any features that rely on server-side functionality. Uploads to the
+remote destinations are not tracked by the server, although the function&rsquo;s
+results will be included in the data and logs that are returned, as with any
+other collection.</p><p>Each remote destination type offers its own particular options and you should
+refer to the function-specific documentation in the
+<a href=/vql_reference/>VQL reference</a>
+, and the vendor documentation for
+the supported cloud storage providers.</p></div></div><h2 id=more-topics>More topics&mldr;</h2><ul class="children children-li"><li><a href=/docs/file_collection/bulk/>Bulk File Acquisition</a></li><li><a href=/docs/file_collection/vfs/>VFS Uploads</a></li><li><a href=/docs/file_collection/exporting/>Exporting Bulk File Collections</a></li></ul><footer class=footline></footer></div></div></section><div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1772163121></script><script src=/js/perfect-scrollbar.min.js?1772163121></script><script src=/js/perfect-scrollbar.jquery.min.js?1772163121></script><script src=/js/jquery.sticky.js?1772163121></script><script src=/js/featherlight.min.js?1772163121></script><script src=/js/highlight.min.js?1772163121></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1772163121></script><script src=/js/learn.js?1772163121></script><script src=/js/hugo-learn.js?1772163121></script></body></html>

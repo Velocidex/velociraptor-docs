@@ -1,0 +1,598 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.139.4"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Velociraptor Security Configuration :: Velociraptor - Digging deeper!</title>
+<link href=/css/nucleus.css?1772163121 rel=stylesheet><link href=/css/font-awesome-all.min.css?1772163121 rel=stylesheet><link href=/css/featherlight.min.css?1772163121 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1772163121 rel=stylesheet><link href=/css/auto-complete.css?1772163121 rel=stylesheet><link href=/css/theme.css?1772163121 rel=stylesheet><link href=/css/tabs.css?1772163121 rel=stylesheet><link href=/css/hugo-theme.css?1772163121 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1772163121 rel=stylesheet><link href=/css/dark.css?1772163121 rel=stylesheet><link href=/css/syntax.css?1772163121 rel=stylesheet><link href=/css/light.css?1772163121 rel=stylesheet><link href=/css/hljs.css?1772163121 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1772163121 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1772163121></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/docs/deployment/security/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><div class=highlightable><ul class=topics><li data-nav-id=https://docs.velociraptor.app/announcements/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/><i class="fas fa-bullhorn"></i>Announcements</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/><i class="fas fa-exclamation-triangle"></i>Security Advisories</a></div><ul><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2025-14728/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2025-14728/>CVE-2025-14728</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2025-6264/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2025-6264/>CVE-2025-6264</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2025-0914/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2025-0914/>CVE-2025-0914</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2024-10526/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2024-10526/>CVE-2024-10526</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-5950/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2023-5950/>CVE-2023-5950</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-2226/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2023-2226/>CVE-2023-2226</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0242/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2023-0242/>CVE-2023-0242</a></div></li><li data-nav-id=https://docs.velociraptor.app/announcements/advisories/cve-2023-0290/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/announcements/advisories/cve-2023-0290/>CVE-2023-0290</a></div></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/ class="dd-item parent haschildren"><div><i class="fa fa-angle-down fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/><i class="fas fa-book-reader"></i>Documentation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/overview/>Velociraptor Overview</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/overview/history/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/overview/history/>History</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/overview/support/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/overview/support/>Support Policy</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/overview/security/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/overview/security/>Security</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/ class="dd-item parent haschildren"><div><i class="fa fa-angle-down fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/>Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/quickstart/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/quickstart/>Quickstart</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/>Server Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/key_concepts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/key_concepts/>Key Concepts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/key_decisions/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/key_decisions/>Key Decisions</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/deployment_example/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/deployment_example/>Deployment Example</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/multifrontend/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/multifrontend/>Multi-Frontend</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/server/upgrades/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/server/upgrades/>Upgrades</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/orgs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/orgs/>Organizations</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/clients/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/clients/>Deploying Clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/>Offline Collections</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/building/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/building/>Building</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/running/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/running/>Running</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/collection_data/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/collection_data/>Collection Data</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/updating/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/updating/>Updating</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/offline_collections/troubleshooting/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/offline_collections/troubleshooting/>Troubleshooting</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/security/ class="dd-item active"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/security/>Security</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/resources/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/resources/>Performance</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/deployment/references/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/deployment/references/><i class="fas fa-book"></i>Config Reference</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/>The Admin GUI</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/gui/artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/artifacts/>Managing Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/keyboard_shortcuts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/keyboard_shortcuts/>Keyboard Shortcuts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/user_preferences/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/user_preferences/>User Preferences</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/gui/customizing/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/gui/customizing/>Customization</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/>Managing Clients</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/clients/searching/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/searching/>Searching for clients</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/interrogation/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/interrogation/>Interrogation</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/artifacts/>Collecting Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/labels/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/labels/>Labels</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/metadata/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/metadata/>Metadata</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/quarantine/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/quarantine/>Quarantine</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/vfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/vfs/>Virtual File System</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/shell/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/shell/>Shell Commands</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/clients/monitoring/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/clients/monitoring/>Monitoring</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/>VQL</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/vql/fundamentals/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/fundamentals/>VQL Fundamentals</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/events/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/events/>Event Queries</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/join/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/join/>JOIN in VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/artifacts/>Artifacts</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/calling/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/artifacts/calling/>Calling Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/artifacts/managing/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/artifacts/managing/>Managing Artifacts</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/extending_vql/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/extending_vql/>Extending VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/vql/vql_reference/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/vql/vql_reference/><i class="fas fa-book"></i>VQL Reference</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/>Artifacts</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/managing/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/managing/>Managing Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/basic_fields/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/basic_fields/>Basic Fields</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/advanced_fields/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/advanced_fields/>Advanced Fields</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/parameters/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/parameters/>Parameters</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/sources/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/sources/>Sources</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/preconditions/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/preconditions/>Preconditions</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/export_imports/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/export_imports/>Export & Imports</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/calling_artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/calling_artifacts/>Calling Artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/event_queues/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/event_queues/>Event Queues</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/tools/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/tools/>Tools</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/resources/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/resources/>Resource Limits</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/security/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/security/>Security</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/use_cases/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/use_cases/>Other Use Cases</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/tips/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/tips/>Artifact Writing Tips</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/artifact_reference/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/artifact_reference/><i class="fas fa-book"></i>Artifact Reference</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/artifacts/exchange_reference/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/artifacts/exchange_reference/><i class="fas fa-code"></i>Artifact Exchange</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/notebooks/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/notebooks/>Notebooks</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/hunting/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/hunting/>Hunting</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/>Forensic Analysis</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/filesystem/>Searching Filesystems</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/paths/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/filesystem/paths/>Velociraptor Paths</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/remapping/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/filesystem/remapping/>Remapping Accessors</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/filesystem/ntfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/filesystem/ntfs/>NTFS Analysis</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/searching/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/searching/>Searching Content</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/deaddisk/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/deaddisk/>Dead Disk Analysis</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/forensic/deaddisk/creating_running/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/deaddisk/creating_running/>Creating & Running</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/binary/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/binary/>Binary parsing</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/evidence_of_execution/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/evidence_of_execution/>Evidence Of Execution</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/event_logs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/event_logs/>Event Logs</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/forensic/volatile/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/forensic/volatile/>Volatile State</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/file_collection/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/file_collection/>File Acquisition</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/file_collection/bulk/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/file_collection/bulk/>Bulk File Acquisition</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/file_collection/vfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/file_collection/vfs/>VFS Uploads</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/file_collection/exporting/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/file_collection/exporting/>Bulk File Exports</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/server_automation/>Server Automation</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_api/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/server_automation/server_api/>Server API</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/server_automation/server_monitoring/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/server_automation/server_monitoring/>Server Monitoring</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/>CLI</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/cli/acl/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/acl/>acl</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/artifacts/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/artifacts/>artifacts</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/collector/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/collector/>collector</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/config/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/config/>config</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/deaddisk/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/deaddisk/>deaddisk</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/fs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/fs/>fs (filesystem)</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/fuse/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/fuse/>fuse</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/query/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/query/>query</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/server_service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/server_service/>server_service</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/service/>service</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/tools/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/tools/>tools</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/user/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/user/>user</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/misc/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/misc/>Miscellaneous</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/cli/flags/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/cli/flags/>CLI flags</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/>Troubleshooting</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/deployment/>Deployment</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/server/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/deployment/server/>Server</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/client/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/deployment/client/>Client</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/deployment/offline_collector/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/deployment/offline_collector/>Offline Collector</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/operations/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/operations/>Operations</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/operations/server_ops/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/operations/server_ops/>Server Ops</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/operations/remote_clients/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/operations/remote_clients/>Remote Clients</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/vql/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/vql/>VQL</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/>Debugging</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/internal/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/internal/>Internal</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/internal/metrics/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/internal/metrics/>Metrics</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/internal/go_profiles/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/internal/go_profiles/>Golang</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/client/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/client/>Client</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/client/client_monitoring/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/client/client_monitoring/>Monitoring</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/client/client_flows/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/client/client_flows/>Flows</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/>Global</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/datastore/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/datastore/>Datastore</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/datastore/replication/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/datastore/replication/>Replication</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/>Services</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/export/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/export/>ExportContainers</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/throttler/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/throttler/>Throttler</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/user_manager/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/user_manager/>User Manager</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/open_close/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/open_close/>Open-close</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/tempfiles/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/tempfiles/>tempfiles</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/worker/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/services/worker/>worker</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/>VQL</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/queries/>Queries</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/active_queries/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/queries/active_queries/>Active Queries</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/plugin_monitor/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/queries/plugin_monitor/>Plugin Monitor</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/recent_queries/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/queries/recent_queries/>Recent Queries</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/>Plugins</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/etw/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/etw/>ETW</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/glob/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/glob/>Glob</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/ntfs/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/ntfs/>NTFS Cache</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/sigma/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/sigma/>Sigma Tracker</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/windows_event/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/windows_event/>Windows Event Log Watcher</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/zip/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/zip/>Zip</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/process/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/process/>Process Tracker</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/sqlite/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/global/vql/plugins/sqlite/>Sqlite</a></div></li></ul></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/>Org</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/>Services</a></div><ul><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/broadcast_service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/broadcast_service/>Broadcast</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/queue_manager/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/queue_manager/>QueueManager</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/vfs_service/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/vfs_service/>VFS</a></div></li><li data-nav-id=https://docs.velociraptor.app/docs/troubleshooting/debugging/org/services/notifier/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/docs/troubleshooting/debugging/org/services/notifier/>Notifier</a></div></li></ul></li></ul></li></ul></li></ul></li></ul></li><li data-nav-id=https://docs.velociraptor.app/downloads/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/downloads/><i class="fas fa-download"></i>Downloads</a></div></li><hr><li data-nav-id=https://docs.velociraptor.app/vql_reference/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/><i class="fas fa-book"></i>VQL Reference</a></div><ul><li data-nav-id=https://docs.velociraptor.app/vql_reference/popular/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/popular/>Frequently Used ✨</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/windows/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/windows/>Windows-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/linux/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/linux/>Linux-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/server/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/server/>Server-only</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/parsers/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/parsers/>Parsers</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/encode/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/encode/>Encode/Decode</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/event/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/event/>Event Plugins</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/experimental/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/experimental/>Experimental</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/developer/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/developer/>Developer</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/other/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/other/>Other</a></div></li><li data-nav-id=https://docs.velociraptor.app/vql_reference/accessors/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/vql_reference/accessors/>Accessors</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/training/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/training/><i class="fas fa-graduation-cap"></i>Training</a></div><ul><li data-nav-id=https://docs.velociraptor.app/training/playbooks/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/training/playbooks/><i class="fas fa-play"></i>Playbooks</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/blog/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/blog/><i class="fas fa-newspaper"></i>Blog</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/ class="dd-item haschildren"><div><i class="fa fa-angle-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/><i class="fas fa-chalkboard-teacher"></i>Presentations</a></div><ul><li data-nav-id=https://docs.velociraptor.app/presentations/2022_linuxconf_au/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_linuxconf_au/>Linux Conf Au 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_auscert/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_auscert/>Auscert 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_sans_summit/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_sans_summit/>SANS Summit 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_velocon/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_velocon/>Velocon 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2022_dfrws_apac/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2022_dfrws_apac/>DFRWS APAC 2022</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_everything_open/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2023_everything_open/>EverythingOpen 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2023_velocon/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2023_velocon/>VeloCON 2023</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2024_auscert/>Auscert 2024</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2024_auscert-detection-engineering/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2024_auscert-detection-engineering/>Auscert 2024 Talk</a></div></li><li data-nav-id=https://docs.velociraptor.app/presentations/2025_auscert-detection-engineering/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/presentations/2025_auscert-detection-engineering/>Auscert 2025 Workshop</a></div></li></ul></li><li data-nav-id=https://docs.velociraptor.app/exchange/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/exchange/><i class="fas fa-code"></i>Artifact Exchange</a></div></li><li data-nav-id=https://docs.velociraptor.app/artifact_references/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/artifact_references/><i class="fas fa-book"></i>Artifact Reference</a></div></li><li data-nav-id=https://docs.velociraptor.app/knowledge_base/ class="dd-item haschildren"><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/knowledge_base/><i class="fas fa-brain"></i>Knowledge Base</a></div></li><li data-nav-id=https://docs.velociraptor.app/search/ class=dd-item><div><i class="fa fa-chevron-right fa-sm category-icon"></i>
+<a rel=nofollow href=/search/><i class='fas fa-search'></i>Search</a></div></li></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>$("#sidebar i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()})</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/deployment/security/_index.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Velociraptor Security Configuration</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents><ul><li><a href=#velociraptor-communications>Velociraptor communications</a><ul><li><a href=#velociraptors-internal-pki>Velociraptor’s internal PKI</a></li><li><a href=#messages>Messages</a></li><li><a href=#http-protocol>HTTP protocol</a></li></ul></li><li><a href=#securing-network-communications>Securing Network communications</a><ul><li><a href=#self-signed-deployment>Self-signed deployment</a></li><li><a href=#deployment-signed-by-lets-encrypt>Deployment signed by Let&rsquo;s encrypt</a></li><li><a href=#deployment-with-tls-certificates-signed-by-external-ca>Deployment with TLS certificates signed by external CA</a></li><li><a href=#restricting-access-to-the-gui-from-ip-blocks>Restricting access to the GUI from IP blocks</a></li><li><a href=#deploying-mtls-authentication>Deploying mTLS authentication</a></li></ul></li><li><a href=#securing-the-server>Securing the server</a><ul><li><a href=#gui-users>GUI Users</a></li><li><a href=#auditing-user-actions>Auditing User actions</a></li><li><a href=#authenticating-the-user>Authenticating the user</a></li><li><a href=#lock-down-mode>Lock down mode</a></li><li><a href=#preventing-new-client-enrollments>Preventing new client enrollments</a></li><li><a href=#removing-plugins-from-a-shared-server>Removing plugins from a shared server</a></li></ul></li><li><a href=#securing-vql>Securing VQL</a><ul><li><a href=#controlling-access-to-artifacts>Controlling access to artifacts</a></li></ul></li></ul></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Velociraptor Security Configuration</h1><p>Velociraptor is a highly privileged service with elevated access to
+thousands of endpoints across the enterprise. It is therefore crucial
+to secure the deployment as much as possible.</p><p>While Velociraptor is designed with security in mind, there are a
+number of architectural choices you can make related to security.</p><p>In this article we begin with a discussion of the communication
+protocol used by Velociraptor and suggest a number of alternative
+deployment methods to ensure it can be secured on the network. We then
+discuss the Velociraptor permission model and suggest some further
+steps to ensure user actions are audited and controlled.</p><h2 id=velociraptor-communications>Velociraptor communications</h2><p>How do Velociraptor clients communicate with the server? You can read
+a lot more details about Velociraptor&rsquo;s encryption scheme and
+communication protocol in our <a href=/blog/2020/2020-09-28-velociraptor-network-communications-30568624043a/>Velociraptor Communications Blog
+post</a>
+, but we will go through the most important aspects here.</p><h3 id=velociraptors-internal-pki>Velociraptor’s internal PKI</h3><p>Every Velociraptor deployment creates an internal PKI which underpins
+it. The configuration wizard create an internal CA with an X.509
+certificate and a private key. This CA is used to</p><ol><li><p>Creating <a href=/docs/deployment/references/#Frontend.certificate>initial server certificates</a>
+and any additional certificates for key rotation.</p></li><li><p>Verifying the server during client-server communications. <a href=/docs/deployment/references/#Client.ca_certificate>The CA public
+certificate</a>
+is embedded in the client’s configuration and is used to verify (and therefore trust) the server.</p></li><li><p>Creating API keys for programmatic access. The server is then able to verify
+API clients.</p></li><li><p>Creating client certificates for (optional) mTLS. This allows clients to be
+authenticated using certificates.</p></li></ol><p>The configuration file contains the CA’s X.509 certificate in the
+<code>Client.ca_certificate</code> key (and is therefore included in the client
+configuration). The private key is contained in the <code>CA.private_key</code> parameter.
+Since the client’s configuration contains the (trusted) CA&rsquo;s certificate, it is
+able to verify the server&rsquo;s certificate during communications.</p><p>The internal CA will be used to verify the different Velociraptor components in
+all cases, regardless of whether other TLS certificates are used. While it is
+possible to reissue/rotate server certificates the CA certificate can not be
+reissued without re-deploying all the clients.</p><div class="mynotices warning"><div heading=" Protecting the CA private key "><p>In a secure installation you should remove the <code>CA.private_key</code> section from
+the server config and keep it offline. You only need it to
+<a href=/docs/server_automation/server_api/#creating-an-api-client-configuration>create new API keys</a>
+and when
+<a href=/knowledge_base/tips/rolling_certificates/>rotating server certificates</a>
+(typically after 1 year).
+The server does not need it during normal operations.</p></div></div><h3 id=messages>Messages</h3><p>Clients and servers communicate by sending each other messages (which
+are simply protocol buffers), for example, a message may contain VQL
+queries or result sets. Messages are collected into a list and sent in
+a single POST operation in a <strong>MessageList</strong> protobuf. This protobuf
+is encrypted using a session key with a symmetric cipher
+(<code>aes_128_cbc</code>). The session key is chosen by the sending party and is
+written into an encrypted <strong>Cipher</strong> protobuf and sent along with each
+message.</p><p><figure id=83c53b1ebe5936d6250041e7776e7008><div data-featherlight=#83c53b1ebe5936d6250041e7776e7008 class=figure><img src=communication_overview.png alt="Velociraptor Communication overview"></div><figcaption><a class=image-link href=communication_overview.png><i class="fa fa-download"></i></a>
+Velociraptor Communication overview</figcaption></figure></p><p>This symmetric key is encoded in a <strong>Cipher Properties</strong> protobuf
+which is encrypted in turn using the receiving party’s public key and
+signed using the sending party’s private key.</p><div class="mynotices tip"><div heading=" Messages are double encrypted "><p>You might have noticed that <strong>MessageList</strong> protobufs are encrypted
+and signed, but they are usually still delivered within a TLS session -
+therefore there are two layers of encryption.</p><p>The internal encryption scheme&rsquo;s main purpose is not only to encrypt
+the messages but to sign them. This prevents messages from one client
+from impersonating another client.</p></div></div><h3 id=http-protocol>HTTP protocol</h3><p>Velociraptor uses HTTPS POST messages to deliver message sets to the
+server. The server in turn sends messages to the client in the body of
+the POST request. The client connects to one of the server URLs
+provided in the <strong>Client.server_urls</strong> setting in its config file.</p><p>Before the client communicates with the server, the client must verify
+it is actually talking with the correct server. This happens at two
+levels:</p><ul><li><p>If the URL is a HTTPS URL then the TLS connection needs to be
+verified</p></li><li><p>The client will fetch the url /server.pem to receive the server’s
+internal certificate. This certificate must be verified by the
+embedded CA.</p></li></ul><p>Note that this verification is essential in order to prevent the
+client from accidentally talking with captive portals or MITM proxies.</p><p>It is important to understand that the server&rsquo;s internal certificate
+is <strong>always</strong> signed by the Velociraptor internal CA and is <strong>always</strong>
+named with the name <code>VelociraptorServer</code>. It is completely
+independent of the TLS certificates that control the HTTPS
+connection (which may be external certificates).</p><p>The client will <strong>always</strong> verify the internal server certificate in
+order to decrypt the messages as described above. This means that even
+when a MITM proxy is able to decode the HTTPS connections, there is no
+visible plain text due to the included messages being encrypted again
+by the internal server certificate.</p><h2 id=securing-network-communications>Securing Network communications</h2><p>The following are some common network deployment scenarios. Simple
+scenarios are covered by the configuration generation wizard, but for
+more complex scenarios you will need to tweak the configuration file
+after generating it.</p><h3 id=self-signed-deployment>Self-signed deployment</h3><p>This is the simplest deployment scenario handled by the configuration
+wizard.</p><p>When deploying in self-signed mode, Velociraptor will use its internal
+CA to general TLS certificates as well. The TLS server certificate
+will be generated with the common name <code>VelociraptorServer</code> and be
+signed with the Velociraptor internal CA:</p><ol><li><p>The setting <code>Client.use_self_signed_ssl</code> will be set to true. This
+causes the client to <strong>require</strong> that the server certificate have a
+common name of <code>VelociraptorServer</code> and it <strong>must</strong> be verified by
+the embedded CA certificate in <code>Client.ca_certificate</code>.</p><p>This essentially pins the server’s certificate in the client — even
+if a MITM attacker was able to mint another certificate (even if it
+was trusted by the global roots!) it would not be valid since it
+was not issued by Velociraptor’s internal CA which is the only CA
+we trust in this mode! In this way self-signed mode is more secure
+than when using a public CA.</p><p>This mode also has the server use the <code>VelociraptorServer</code> internal
+certificate for securing the HTTPS connection as well.</p></li><li><p>The GUI is also served using self-signed certificates which will
+generally result in a browser SSL warning. To avoid a MITM attack
+on a browser the GUI is forced to only bind to the localhost in
+this configuration. For increased security we recommend using the
+GUI using SSH to tunnel the connections into the localhost:</p><pre><code class=language-sh>ssh user@velociraptor.server -L 8889:127.0.0.1:8889
+</code></pre><p>Now use your browser on https://127.0.0.1:8889/ on your port
+forwarded workstation.</p><p>Alternatively you can decide to expose the GUI on the public
+interface by changing the server configuration file:</p><pre><code class=language-yaml>GUI:
+  bind_address: 0.0.0.0
+  bind_port: 8889
+</code></pre><p>In this configuration you may use standard port filtering or
+firewalls to restrict access to the GUI port while allowing clients
+to connect freely to the frontend port (since these can be
+different ports).</p></li></ol><h3 id=deployment-signed-by-lets-encrypt>Deployment signed by Let&rsquo;s encrypt</h3><p>The next deployment scenario handled by the configuration wizard uses
+Let&rsquo;s encrypt to automatically assign certificates to the HTTPS TLS
+connections.</p><p>In this scenario, the server will request Let&rsquo;s Encrypt to mint
+certificates for the domain name provided. In order to this to work,
+Let&rsquo;s Encrypt will go through a verification protocol requiring one of
+their servers to connect to the Velociraptor server over port 80 and
+443.</p><p>Therefore, the server needs to be reachable over ports 80 and 443 (You
+can not serve over a non standard SSL port with Let&rsquo;s Encrypt).</p><div class="mynotices warning"><div heading=" Filtering ports "><p>If you filter port 80 from the internet then Let&rsquo;s Encrypt will be
+unable to verify the domain and will likely blacklist the domain name
+for a period.</p><p>It is crucial that port 80 and 443 be unfiltered to the world. It is
+difficult to recover from a blacklisting event other than waiting for
+a long period of time.</p></div></div><p>In this configuration:</p><ol><li><p>The <code>Client.use_self_signed_ssl</code> is switched off. This tells the
+client that it should verify the TLS connection using public root
+CA&rsquo;s.</p></li><li><p>The GUI is configured to bind to all interfaces as above. This is
+required to allow connections from the Let&rsquo;s Encrypt servers.</p></li></ol><p>In this scenario the GUI must share the same port as the frontend
+because the TLS certificate can only be issued to port 443. This means
+that the GUI is accessible from the world as it is sharing the same
+port as the frontend service and we can not use traditional port
+filtering to restrict access.</p><h3 id=deployment-with-tls-certificates-signed-by-external-ca>Deployment with TLS certificates signed by external CA</h3><p>This is a common scenario where there is an SSL inspection proxy
+between the client and server communications. In this case the proxy
+will present a certificate for the server signed by another CA
+(usually an internal self-signed CA associated with the inspection
+software).</p><p>Alternatively you may choose to buy TLS certificates from a commercial
+CA (this use case is very similar).</p><p>In this scenario, the client needs to verify the TLS connections using this custom CA certificate:</p><ol><li><p>From the client&rsquo;s point of view it is not in self-signed mode,
+because Velociraptor itself did not issue this certificate,
+therefore <code>Client.use_self_signed_ssl</code> should be false.</p></li><li><p>Additionally the certificate should be verified using the
+inspection CA&rsquo;s certificate. Therefore that certificate should be
+added to <code>Client.Crypto.root_certs</code>:</p><pre><code class=language-yaml>Client:
+   Crypto:
+      root_certs: |
+         -----BEGIN CERTIFICATE-----
+         &lt;certificate 1&gt;
+         -----END CERTIFICATE-----
+         -----BEGIN CERTIFICATE-----
+         &lt;certificate 2&gt;
+         -----END CERTIFICATE-----
+</code></pre></li><li><p>The server may need to present custom certificates. Add those to
+the Frontend section (Certificates need to be in PEM format with
+unencrypted private keys to allow the server to start without user
+interaction):</p><pre><code class=language-yaml>Frontend:
+    tls_certificate_filename: /etc/cert.pem
+    tls_private_key_filename /etc/cert.key
+</code></pre><p>Do not change the <code>Frontend.certificate</code> field as Velociraptor will
+still require to verify the server using it&rsquo;s own CA.</p><p>Note that only the TLS communications will be visible to the TLS
+interception proxy. It will be unable to see any clear text since
+there are always two layers of encryption.</p></li></ol><h3 id=restricting-access-to-the-gui-from-ip-blocks>Restricting access to the GUI from IP blocks</h3><p>If your users normally access the GUI from a predictable
+network IP block you can add a list of network addresses in the
+<a href=/docs/deployment/references/#GUI.allowed_cidr>GUI.allowed_cidr</a>
+part of the
+config file. This setting will automatically reject connections to the
+GUI applications from IP addresses outside the allowed range.</p><h3 id=deploying-mtls-authentication>Deploying mTLS authentication</h3><p>An additional layer of security can be provided by enabling
+Mutual TLS (mTLS) authentication between clients and server.
+This mechanism requires the client to present a valid client certificate before
+the server even allows a connection to the frontend. The client certificate is
+included in the client configuration file.</p><p>Although clients cannot enroll or communicate without a valid configuration
+file, it is possible to connect and fingerprint the server if the mTLS policy is
+not enabled. For servers exposed to the public internet this may be undesirable
+even though this doesn&rsquo;t present any substantial risk.</p><p>mTLS provides an additional layer of security in that connections from the
+internet (from clients or non-clients) to the frontend are required to present a
+valid certificate in order to complete the TLS connection.</p><p>To implement this strategy you need to:</p><ol><li>Generate client-side certificates signed by the internal Velociraptor CA.</li><li>Specify that the frontend requires the client to present a valid
+client side certificate signed by the internal Velociraptor CA.</li></ol><h4 id=generating-client-side-certificates>Generating client side certificates</h4><p>The client side certificate is just a certificate signed by the internal CA. The
+server will verify the validity of the client certificate but does not track
+issued certificates or provide a CRL mechanism. The client certificate is not
+used to individually identify clients, so we only need to issue one certificate
+that allows us to verify all clients. All clients will present the
+same certificate when connecting.</p><p>Since the certificate needed is the same as an API client certificate, we can
+use the same process to generate one for mTLS:</p><pre><code>$ velociraptor --config /etc/velociraptor/server.config.yaml config api_client --name &quot;Client&quot; /tmp/dummy.api.config.yaml
+Creating API client file on /tmp/dummy.api.config.yaml.
+No role added to user Client. You will need to do this later using the 'acl grant' command.
+</code></pre><div class="mynotices warning"><div heading=" API User permissions "><p>This will create an API configuration file for an API user called &ldquo;Client&rdquo;,
+containing the key pair that we need. However the <code>config api_client</code> command
+shown above will not actually create a user on the Velociraptor server since we
+deliberately didn&rsquo;t specify the <code>--role</code> flag.</p><p>It is critical that the user has no roles or permissions on the server to
+prevent this key from being used to connect to the API ports. Therefore the
+message concerning the use the <code>acl_grant</code> command shown above
+<em>should NOT be followed</em>.</p></div></div><p>Once the key is generated you can see it in the resulting yaml file encoded in
+PEM format. Simply copy the two blocks - <code>client_private_key</code> and
+<code>client_cert</code> - into the client&rsquo;s config file
+<a href=/docs/deployment/references/#Client.Crypto.client_certificate>Client.Crypto.client_certificate</a>
+and <a href=/docs/deployment/references/#Client.Crypto.client_certificate_private_key>Client.Crypto.client_certificate_private_key</a>
+,
+or into the server config if you intend to use the GUI to repack the MSI or
+generate client configs for multiple orgs (service restart will be required to
+read these new config items).</p><pre><code class=language-yaml>Client:
+   Crypto:
+      client_certificate: |
+        -----BEGIN CERTIFICATE-----
+        &lt;certificate&gt;
+        -----END CERTIFICATE-----
+      client_certificate_private_key: |
+        -----BEGIN RSA PRIVATE KEY-----
+        &lt;key&gt;
+        -----END RSA PRIVATE KEY-----
+</code></pre><p>Note that this client certificate will only be used if the server requests it,
+so it is fine to add the client certificate to the client config even if you
+only intend to enable mTLS later.</p><div class="mynotices info"><div heading=info><p>Client certificates generated as described above will be valid for 1 year. It is
+highly likely that you will upgrade your clients before this 1-year period
+elapses and so we recommended that you issue a new client cert during the
+upgrade process by including an updated (i.e. with a new client cert) client
+config in your client package, for example MSI for Windows clients.</p></div></div><h4 id=requiring-client-side-certificates>Requiring client side certificates</h4><p>On the server you can require frontend connections to present valid
+client side certificates by setting the
+<a href=/docs/deployment/references/#Frontend.require_client_certificates>Frontend.require_client_certificates</a>
+to true.</p><p>Once this setting is made it will not be possible to connect to the
+frontend without presenting a relevant client side certificate. This
+makes troubleshooting a bit more challenging.</p><p>For example the following will fail:</p><pre><code class=language-sh>$ curl -k https://127.0.0.1:8000/server.pem
+curl: (56) OpenSSL SSL_read: error:0A000412:SSL routines::sslv3 alert bad certificate, errno 0
+</code></pre><p>To allow curl to connect you will need to create a PEM file with both
+the certificate and the private key in it (Copied from the YAML files
+above):</p><pre><code>-----BEGIN CERTIFICATE-----
+....
+-----END CERTIFICATE-----
+-----BEGIN RSA PRIVATE KEY-----
+....
+-----END RSA PRIVATE KEY-----
+</code></pre><p>Now we can use curl to connect successfully</p><pre><code class=language-sh>curl -k https://127.0.0.1:8000/server.pem --cert /tmp/client.pem | openssl x509 -text
+</code></pre><h2 id=securing-the-server>Securing the server</h2><p>In the following sections we discuss how the GUI application can be
+further secured. Since Velociraptor commands such privileged access to
+the network it is important to ensure this access can not be misused.</p><h3 id=gui-users>GUI Users</h3><p>Velociraptor&rsquo;s GUI is the nerve center for managing a Velociraptor
+deployment so we need to ensure we secure it with proper user
+authentication. Within Velociraptor, the user is central and is
+associated with a set if roles and permissions which control what the
+user is able to do.</p><p>Users and permissions are managed in the GUI&rsquo;s <code>Users</code> screen (which
+is visible to administrators)</p><p><figure id=44ecac6f37edbbb93c7479a8683d2810><div data-featherlight=#44ecac6f37edbbb93c7479a8683d2810 class=figure><img src=user_management.png alt="Managing User Permissions"></div><figcaption><a class=image-link href=user_management.png><i class="fa fa-download"></i></a>
+Managing User Permissions</figcaption></figure></p><p>Velociraptor offers a number of options to authenticate users into the
+GUI. The type of authenticator is specified in the
+<a href=/docs/deployment/references/#GUI.authenticator.type>GUI.authenticator.type</a>
+setting. The config wizard supports some basic authenticators but
+others have to be manually configured.</p><p>To make deployment easier the configuration wizard supports creating
+<code>Initial Users</code>. These user accounts will be created automatically
+when the server starts upon first installation and be given the administrator role.</p><p>This provides a way to bootstrap the administrator into the server. If
+the <code>Basic</code> authentication method is specified, the password hashes
+and salt will be initialized from the configuration file. For other
+authentication methods that do not use passwords, the password hashes
+are ignored.</p><pre><code class=language-yaml>GUI:
+  initial_users:
+  - name: mic
+    password_hash: aa3a779......
+    password_salt: f8707a7......
+</code></pre><h4 id=adding-a-new-user>Adding a new user</h4><p>To add a new user, the GUI can be used by clicking on the <code>+</code> icon and
+setting a user name.</p><p><figure id=b11738c2d52609ce424d0a1578e31bcf><div data-featherlight=#b11738c2d52609ce424d0a1578e31bcf class=figure><img src=user_adding.png alt="Adding a new user"></div><figcaption><a class=image-link href=user_adding.png><i class="fa fa-download"></i></a>
+Adding a new user</figcaption></figure></p><p>By default the user is added to the selected org with the <code>Read Only</code>
+role. You can assign the new user to any number of orgs using the GUI</p><p><figure id=00d294214441c9f7cc6936dec34be655><div data-featherlight=#00d294214441c9f7cc6936dec34be655 class=figure><img src=user_assign_org.png alt="Assign a new user to orgs"></div><figcaption><a class=image-link href=user_assign_org.png><i class="fa fa-download"></i></a>
+Assign a new user to orgs</figcaption></figure></p><h4 id=roles-and-permissions>Roles and permissions</h4><p>Velociraptor users are assigned various permissions to control their
+actions in different <code>Orgs</code>. To make it easier to deal with a group of
+permissions, Velociraptor has the concept of a <code>role</code> which can be
+thought of as just a predefined set of permissions.</p><p>The actual permission check is made against the set of permissions
+the user has. Assigning a role to a user gives them a set of
+permissions, but you can also assign permissions separately.</p><p><figure id=f953b6cc274faa51ee37a5d4e9646e2d><div data-featherlight=#f953b6cc274faa51ee37a5d4e9646e2d class=figure><img src=user_assign_roles.png alt="Assign Roles and Permissions to a user"></div><figcaption><a class=image-link href=user_assign_roles.png><i class="fa fa-download"></i></a>
+Assign Roles and Permissions to a user</figcaption></figure></p><p>In the above screenshot we see the <code>testuser</code> has the read only role
+which allows them to read already collected results from
+clients. Additionally we also gave them the <code>Label Clients</code> permission
+so they can assign labels to different clients (potentially affecting
+their membership in hunts).</p><p>User roles and permissions extend far beyond the GUI itself
+though. Since Velociraptor is really a VQL engine and provides
+powerful capabilities for automation and post processing via
+notebooks, the VQL engine itself respects the user&rsquo;s permissions.</p><p>Therefore while the VQL query is executed the user&rsquo;s permissions are
+checked against the different VQL plugins and functions, and if the
+user does not have permissions to run these, the plugin will be
+prevented from running.</p><p><figure id=7a940194d0330a65cf9c8420ae5d9cc6><div data-featherlight=#7a940194d0330a65cf9c8420ae5d9cc6 class=figure><img src=VQL_permissions.png alt="User permissions are checked in notebook evaluation"></div><figcaption><a class=image-link href=VQL_permissions.png><i class="fa fa-download"></i></a>
+User permissions are checked in notebook evaluation</figcaption></figure></p><p>In the above screenshot, the <code>testuser</code> user attempted to run the
+<code>SELECT * FROM info()</code> plugin but that plugin requires the
+<code>MACHINE_STATE</code> permission (because it inspects properties of the
+server like hostname etc). Therefore the plugin will be rejected and
+an error log emitted.</p><p>However the user may still run other plugins like the <code>hunt_results()</code>
+plugin to inspect results (because the user has the read permission).</p><p>You can check which permission each plugin requires in the reference
+site&rsquo;s <code>VQL Reference</code> section.</p><p><figure id=97d46e839e697df811d8bb9bd12d414f><div data-featherlight=#97d46e839e697df811d8bb9bd12d414f class=figure><img src=VQL_permissions_reference.png alt="Inspecting VQL plugin permissions"></div><figcaption><a class=image-link href=VQL_permissions_reference.png><i class="fa fa-download"></i></a>
+Inspecting VQL plugin permissions</figcaption></figure></p><div class="mynotices warning"><div heading=" Selecting User permissions "><p>While you can have very fine control over the user&rsquo;s roles and
+permissions we suggest that you stick to the built in roles and they
+way they should be used as much as possible.</p><p>This is because sometimes there are unexpected escalation paths
+between permissions that you might not be aware of. For example,
+giving a user the <code>Server Artifact Writer</code> role can easily lead to
+privilege escalation as the user can modify an existing server
+artifact to run VQL to grant them other roles, and trick an
+administrator in running that artifact.</p><p>This is why we say that some roles are &ldquo;Administrator Equivalent&rdquo;
+because it is easy to escalate from them to more powerful
+roles. Typically we try to limit access to trusted users anyway and
+not rely too much on the user roles.</p></div></div><h3 id=auditing-user-actions>Auditing User actions</h3><p>Some actions in the UI (Or in VQL notebooks) are important for server
+security. We call these actions <code>Auditable Actions</code> because we want to
+report them taking place.</p><p>Velociraptor records auditable actions in two ways:</p><ol><li>The Audit log is written to the audit directory</li><li>The Audit event is written to the <code>Server.Audit.Logs</code> event artifact.</li></ol><p>This allows events to be recorded and <strong>also</strong> be automatically acted
+upon with a server event query using the <code>watch_monitoring()</code> plugin.</p><p>You can forward server event logs to a remote syslog server by setting
+the value in the <a href=/docs/deployment/references/#Logging.remote_syslog_server>Logging.remote_syslog_server</a>
+part
+of the config. We recommend this be done to archive audit logs.</p><p>However, much more interestingly, Velociraptor treats server audit
+events as simply another event query called
+<code>Server.Audit.Logs</code>. Therefore you can view it as just another server
+event artifact in the GUI.</p><p><figure id=c912f5d8f689b6209619ff23f5eb8acd><div data-featherlight=#c912f5d8f689b6209619ff23f5eb8acd class=figure><img src=viewing_audit_logs.png alt="Viewing server audit logs"></div><figcaption><a class=image-link href=viewing_audit_logs.png><i class="fa fa-download"></i></a>
+Viewing server audit logs</figcaption></figure></p><p>The audit event is divided into fixed fields (<code>ServerTime</code>,
+<code>operation</code> and <code>principal</code>) and a variable column <code>details</code> with a
+per event data.</p><p>By having the data recorded as a timed artifact we can apply filtering
+etc using the notebook. The below query isolates only administrator
+actions within the time of interest.</p><p><figure id=f302d64a8b4b77c2f869dc9d7264971f><div data-featherlight=#f302d64a8b4b77c2f869dc9d7264971f class=figure><img src=querying_audit_logs.png alt="Querying audit logs within the Velociraptor GUI"></div><figcaption><a class=image-link href=querying_audit_logs.png><i class="fa fa-download"></i></a>
+Querying audit logs within the Velociraptor GUI</figcaption></figure></p><p>Additionally it is possible to forward audit events to external
+systems. For example, <code>Elastic.Events.Upload</code> can forward audit events
+to Elastic, while <code>Server.Alerts.Notification</code> can forward these to a
+slack channel.</p><h3 id=authenticating-the-user>Authenticating the user</h3><p>Users can be authenticated using a variety of ways, including Active
+Directory, Client Certificates, Multi-Factor Authentication
+etc. Velociraptor offers a number of different <code>authenticators</code> to
+allow flexibility with authenticating users.</p><h4 id=basic-authentication>Basic Authentication</h4><p>The simplest authentication is <code>Basic</code> authentication. In this mode,
+the GUI requires the user to provide a username and password using the
+HTTP <code>Basic</code> Authentication mode. While these credentials are
+typically encrypted using HTTPS in transit, basic authentication is
+not considered secure and should be avoided because Velociraptor
+itself has to manage the passwords.</p><p>Velociraptor will store the password hashes and salts in the filestore
+for each user and verify them on each HTTP request.</p><p>When basic authentication is configured, a user can update their own
+password using the GUI</p><p><figure id=d4261e619816db6901921ed5dccea17e><div data-featherlight=#d4261e619816db6901921ed5dccea17e class=figure><img src=updating_own_password.png alt="Updating a users own password"></div><figcaption><a class=image-link href=updating_own_password.png><i class="fa fa-download"></i></a>
+Updating a users own password</figcaption></figure></p><p>Sometimes administrators need to update another user&rsquo;s password. This
+can be done from the user management screen.</p><p><figure id=864efe1cf58414957fe330e3b3027a6d><div data-featherlight=#864efe1cf58414957fe330e3b3027a6d class=figure><img src=updating_user_password.png alt="Updating another users password"></div><figcaption><a class=image-link href=updating_user_password.png><i class="fa fa-download"></i></a>
+Updating another users password</figcaption></figure></p><p>Note that password management is supposed to be very simplistic
+because for production servers we recommend to use an external
+authentication service (e.g. OIDC)</p><h4 id=oauth2-services>OAuth2 services</h4><p>A number of public identity providers are directly supported in
+Velociraptor and based on OAuth2 protocol.</p><p>You can read more about setting up <a href=/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/>GitHub, Azure and Google</a>
+as an OAuth2 provider.</p><h3 id=lock-down-mode>Lock down mode</h3><p>Many users use Velociraptor for incident response purposes and
+collecting telemetry. While it is convenient to have Velociraptor
+already deployed and active in the environment, this may increase the
+risk for misuse when not used for response.</p><p>For this purpose Velociraptor has a &ldquo;lockdown mode&rdquo;. This mode
+prevents Velociraptor from performing any active modification to the
+environment.</p><p>This is implemented by denying all users from certain powerful
+permissions - even if the user is an administrator!</p><p>The following permissions are denied while in lockdown mode</p><ul><li><code>ARTIFACT_WRITER</code></li><li><code>SERVER_ARTIFACT_WRITER</code></li><li><code>EXECVE</code></li><li><code>SERVER_ADMIN</code></li><li><code>FILESYSTEM_WRITE</code></li><li><code>FILESYSTEM_READ</code></li><li><code>MACHINE_STATE</code></li></ul><p>After initial deployment and configuration, the administrator can set
+the server in lockdown by adding the following configuration directive
+to the <code>server.config.yaml</code> and restarting the server:</p><pre><code class=language-yaml>lockdown: true
+</code></pre><p>Therefore it will still be possible to read existing collections, and
+continue collecting client monitoring data but not edit artifacts or
+start new hunts or collections.</p><p>During an active IR the server may be taken out of lockdown by
+removing the directive from the configuration file and restarting the
+service. Usually the configuration file is only writable by root and
+the Velociraptor server process is running as a low privilege account
+which can not write to the config file. This combination makes it
+difficult for a compromised Velociraptor administrator account to
+remove the lockdown and use Velociraptor as a lateral movement
+vehicle.</p><h3 id=preventing-new-client-enrollments>Preventing new client enrollments</h3><p>By default, new clients can enroll at any time if they have a valid client
+configuration file. Normally this is what you&rsquo;d want because you may be using a
+client distribution method that provides ongoing deployment of new clients.</p><p>In some circumstances you may wish to suspend client deployment. For example, if
+you have decided that all intended clients are deployed and that your deployment
+phase is over then you may choose to switch to a more strict deployment process
+to ensure that rogue clients cannot be enrolled. This is unusual but in
+high-security environments it may be a requirement. By &ldquo;rogue client&rdquo; we mean
+any client deployed outside of an approved process, regardless of whether the
+intention is benign or not - it could just be that you want to ensure that the
+IT department doesn&rsquo;t accidentally deploy new clients beyond a certain point.</p><p>To ensure that no new clients can enroll, you can set the value of the
+<a href=/docs/deployment/references/#Frontend.resources.enrollments_per_second><code>Frontend.resources.enrollments_per_second</code></a>
+configuration key to <code>-1</code>.</p><p>As with all server config changes, this will require a service restart. To
+reverse this policy you can either remove the config key or comment it out to
+resume accepting client enrollments.</p><h3 id=removing-plugins-from-a-shared-server>Removing plugins from a shared server</h3><p>While Velociraptor allows user to run arbitrary VQL in notebooks it
+does control access to the things that the queries can do by applying
+a user&rsquo;s ACL token to each plugin.</p><p>This means that administrators are typically allowed to run all
+plugins, even those that might compromise the server (e.g. the
+<code>execve()</code> plugin can run arbitrary shell commands!)</p><p>For shared server environments it is better to prevent these plugins
+from running at all - even for administrators.</p><p>Velociraptor allows the configuration file to specify which VQL plugins are allowed using the <a href=/docs/deployment/references/#defaults.allowed_plugins>defaults.allowed_plugins</a>
+, <a href=/docs/deployment/references/#defaults.allowed_functions>defaults.allowed_functions</a>
+and <a href=/docs/deployment/references/#defaults.allowed_accessors>defaults.allowed_accessors</a></p><p>The easiest way to populate these is to answer Yes to <code>Do you want to restrict VQL functionality on the server?</code> in the configuration
+wizard. This will implement the <a href=https://github.com/Velocidex/velociraptor/blob/master/bin/allowlist.go target=_blank>default allow
+list</a>
+(which you can tweak later as required).</p><p>If these lists are populated, only the plugins mentioned are allowed
+to be registered at all. This results in an error message like <code>Plugin Info Not Found</code> when the plugin is used.</p><p>The purpose of this security measure is to completely remove
+functionality from the server, regardless of the permissions model. It
+is only needed when the server is shared between potentially untrusted
+users. Usually you should not implement this because it causes a lot
+of functionality to randomly break (e.g. any artifacts that might
+depend on a plugin which is not in the allow list will fail).</p><h2 id=securing-vql>Securing VQL</h2><p>Velociraptor uses VQL extensively in the form of <a href=/docs/artifacts/>artifacts</a>
+and <a href=/docs/notebooks/>notebooks</a>
+. Since a VQL query can do many potentially
+dangerous actions, it is important to restrict the type of actions the
+query can perform based on the user&rsquo;s ACL token. When the VQL query is
+started, the user&rsquo;s ACL token is loaded into the query environment. As
+the query continues executing, various VQL plugins and functions are
+evaluated by the VQL engine. VQL plugins and functions may have
+requirements as to the type of permission required to run. You can see
+the required permission for each plugin in the <a href=/vql_reference/>VQL reference</a>
+page.</p><p><figure id=b97efd0107cba1d8fb3092e1ff4c89a5><div data-featherlight=#b97efd0107cba1d8fb3092e1ff4c89a5 class=figure><img src=vql_reference.png alt="Example VQL reference showing required permissions"></div><figcaption><a class=image-link href=vql_reference.png><i class="fa fa-download"></i></a>
+Example VQL reference showing required permissions</figcaption></figure></p><p>This mechanism allows lower privilege users to run VQL safely - those
+actions that require permissions the user does not have will simply be
+ignored (and a log message emitted).</p><p>ACL checks are always enforced on the server, for example in notebooks
+and server artifacts. A user with the <code>Analyst</code>role, has no
+<code>FILESYSTEM_READ</code> permission, and therefore if they tried to run a
+<code>glob()</code> based query in a notebook they will be denied.</p><p><figure id=196ec55e34d6df03b4ebf8d676437672><div data-featherlight=#196ec55e34d6df03b4ebf8d676437672 class=figure><img src=notebook_permission_denied.png alt="Permission denied error in the notebook"></div><figcaption><a class=image-link href=notebook_permission_denied.png><i class="fa fa-download"></i></a>
+Permission denied error in the notebook</figcaption></figure></p><h3 id=controlling-access-to-artifacts>Controlling access to artifacts</h3><p>While ACL checks are enforced on the server, on the client all ACL
+checks are disabled. This means that as long as a user is able to
+schedule the collection on the client, the collection can do anything
+at all. This makes sense as we want the VQL to be evaluated the same
+way regardless of who launched the collection in the first place.</p><p>However this may give lower privilege users a lot of power over the
+entire network. For example the artifact
+<a href=/artifact_references/pages/windows.system.powershell/>Windows.System.PowerShell</a>
+allows
+running arbitrary shell commands on the endpoint. While this is a
+useful capability in limited situations it may lead to severe
+compromise if misused!</p><p>Velociraptor allows for an artifact to specify the
+<code>required_permissions</code> field.</p><pre><code class=language-yaml>name: Windows.System.PowerShell
+description: |
+  This artifact allows running arbitrary commands through the system
+    powershell.
+  ....
+required_permissions:
+  - EXECVE
+</code></pre><p>This field specifies that the server check the user has all of the
+required permissions before the server allows the artifact to be
+scheduled. If a user with the <code>Investigator</code> role tries to launch this
+artifact, they will be denied (since the usually lack the <code>EXECVE</code>
+permission)</p><p><img class=inline src=launch_artifact_permission_denied.png></p><p>Typically we set the <code>required_permissions</code> field on client artifacts
+that can do dangerous things if misused. In particular, if the
+artifact parameter can specify running arbitrary code.</p><div class="mynotices tip"><div heading=" Delegating artifact permissions "><p>The <code>required_permissions</code> check is only done on the artifact being
+launched. It does not apply to any dependent artifacts called from the
+launched artifact. This is deliberate as it allows you to create
+curated safe versions of the dangerous artifacts to be used by lower
+privilege users. For example, while <code>Windows.System.PowerShell</code>
+requires an <code>EXECVE</code> permission because its parameter allows arbitrary
+commands to run, we can wrap it with a safe version:</p><pre><code class=language-yaml>name: Custom.SafePowershellDir
+sources:
+  - query: |
+        SELECT * FROM Artifact.Windows.System.PowerShell(Command=&quot;dir C:/&quot;)
+</code></pre><p>This artifact can not be misused because the command passed to
+<code>Windows.System.PowerShell</code> is a fixed string and can not be changed
+by the user that initiates the collection.</p></div></div><footer class=footline></footer></div></div></section><div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1772163121></script><script src=/js/perfect-scrollbar.min.js?1772163121></script><script src=/js/perfect-scrollbar.jquery.min.js?1772163121></script><script src=/js/jquery.sticky.js?1772163121></script><script src=/js/featherlight.min.js?1772163121></script><script src=/js/highlight.min.js?1772163121></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1772163121></script><script src=/js/learn.js?1772163121></script><script src=/js/hugo-learn.js?1772163121></script></body></html>

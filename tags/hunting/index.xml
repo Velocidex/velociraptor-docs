@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hunting on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/hunting/</link><description>Recent content in Hunting on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Fri, 06 Dec 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/hunting/index.xml" rel="self" type="application/rss+xml"/><item><title>How do I get a list of hunts across multiple organizations?</title><link>https://docs.velociraptor.app/knowledge_base/tips/multi_org/</link><pubDate>Fri, 06 Dec 2024 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/multi_org/</guid><description>&lt;h1 id="how-do-i-get-a-list-of-hunts-across-multiple-organizations">How do I get a list of hunts across multiple organizations?&lt;/h1>
+&lt;p>Are you looking for a way to generate user metrics across the entire server (like Hunts run per user)?&lt;/p>
+&lt;p>Orgs are separated out so when you run a query you are running that query within the context of the org. Normally the hunts scheduled in an organization can be accessed using the &lt;a href="https://docs.velociraptor.app/vql_reference/server/hunts/" target="_blank" >hunts()&lt;/a>
+ plugin, but that normally acts within a single Org.&lt;/p>
+&lt;p>To run a query in another org, you can switch org contexts using the &lt;a href="https://docs.velociraptor.app/vql_reference/misc/query/" target="_blank" >query()&lt;/a>
+ plugin.&lt;/p>
+&lt;p>So for example to see all hunts in all orgs:&lt;/p>
+&lt;pre>&lt;code class="language-sql">SELECT * FROM foreach(
+ row={
+ SELECT OrgId FROM orgs()
+ },
+ query={
+ SELECT * FROM query(query={
+ SELECT * FROM hunts()
+ }, org_id=OrgId)
+ })
+&lt;/code>&lt;/pre>
+&lt;p>This query iterates over all the orgs, then runs the &lt;code>SELECT * FROM hunts()&lt;/code> query within the org context.&lt;/p>
+&lt;p>You can simplify the query using LET stored queries:&lt;/p>
+&lt;pre>&lt;code class="language-sql">LET MyQuery = SELECT * FROM hunts()
+LET AllOrgs = SELECT OrgId FROM orgs()
+
+SELECT * FROM foreach(row=AllOrgs,
+ query={
+ SELECT * FROM query(query=MyQuery, org_id=OrgId)
+ })
+&lt;/code>&lt;/pre>
+&lt;p>Of course your user account must have access to the orgs. Each org has a separate ACL for each user, so your user needs to have at least the &lt;code>READ_RESULTS&lt;/code> permission to be able to see the org.&lt;/p>
+&lt;p>Some plugins (e.g. &lt;a href="https://docs.velociraptor.app/vql_reference/server/hunt/" target="_blank" >hunt()&lt;/a>
+ ) support orgs directly for convenience but generally you should use the above approach. This will also remind you that each such query is running in a separate org context and therefore can not see other data at the same time.&lt;/p></description></item><item><title>How do I re-collect a failed artifact in a hunt?</title><link>https://docs.velociraptor.app/knowledge_base/tips/retry_hunt/</link><pubDate>Sat, 10 Sep 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/retry_hunt/</guid><description>&lt;h1 id="how-do-i-re-collect-a-failed-artifact-in-a-hunt">How do I re-collect a failed artifact in a hunt?&lt;/h1>
+&lt;p>Sometimes collecting an artifact in a hunt does not work as
+expected.&lt;/p>
+&lt;p>Most commonly the issue is that the timeout or upload limit
+for collecting the artifact is exceeded and Velociraptor cancels the
+collection to prevent placing the endpoint under too much strain.&lt;/p>
+&lt;p>How do we work around this? We can recollect the artifact only on that
+failed endpoint with a few button clicks.&lt;/p>
+&lt;p>In the following example I will start a collection for the &lt;code>$MFT&lt;/code> but
+I will only set the timeout to 10 seconds and &lt;code>100Mb&lt;/code> uploaded.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="0ba972a70fb6250f0ee496937816f5da">
+ &lt;div data-featherlight="#0ba972a70fb6250f0ee496937816f5da" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/retry_hunt/hunting_by_label.png" alt="Hunting for Files">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="hunting_by_label.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Hunting for Files
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>In the hunt resources screen I can specify limits for collection from
+any one client. These limits are intended to set reasonable boundaries
+for how much data I am expecting to collect so we do not overload the
+network or the endpoint itself.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="0236c3a1bc3ef7011b95d15fe95e50ce">
+ &lt;div data-featherlight="#0236c3a1bc3ef7011b95d15fe95e50ce" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/retry_hunt/setting_resources.png" alt="Setting resource limits">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="setting_resources.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Setting resource limits
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Clearly these limits are too small for this client because the
+collection was cancelled after 10 seconds. Normally the default
+timeout of 10 Minutes, but collecting such a lot of data may take
+longer than that.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="c5b5bd78121f5d048b804c18df1cc2bc">
+ &lt;div data-featherlight="#c5b5bd78121f5d048b804c18df1cc2bc" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/retry_hunt/timed_out.png" alt="Collection timed out">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="timed_out.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Collection timed out
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Although some data was transferred, not all the data was fully
+collected. This might be acceptable but if this machine is really
+compromised how can I recollect the same artifact?&lt;/p>
+&lt;p>By inspecting the collections for each client in the &lt;code>Clients&lt;/code> tab, I
+can quickly see which one failed.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="bc4c15b33d5358cfb85ac5b40f6d57f2">
+ &lt;div data-featherlight="#bc4c15b33d5358cfb85ac5b40f6d57f2" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/retry_hunt/failed_collection.png" alt="Inspecting failed collection">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="failed_collection.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Inspecting failed collection
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Since a hunt is just a grouping of regular collections, I can navigate
+to the client in the interface (by clicking the client button) and
+find the hunt&amp;rsquo;s collection that failed.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="4c00e77178b78da5f50b6eb01e57de17">
+ &lt;div data-featherlight="#4c00e77178b78da5f50b6eb01e57de17" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/retry_hunt/copy_collection.png" alt="Copying the collection">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="copy_collection.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Copying the collection
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Now I just copy the collection as normal and here I can update the
+resource limits if needed (or maybe change some of the parameters).&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="828032523771120ecaa25224dc9e4ca0">
+ &lt;div data-featherlight="#828032523771120ecaa25224dc9e4ca0" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/retry_hunt/successful_collection.png" alt="Successful Collection">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="successful_collection.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Successful Collection
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Now that this collection is completed I can just look at the results
+of the collections by itself or download the collection files for
+further analysis.&lt;/p>
+&lt;p>However, it is much more useful to keep all related collections in the
+same hunt. This helps when analyzing the hunt results in the notebook
+or exporting all the related files at once.&lt;/p>
+
+&lt;div class="mynotices tip">
+ &lt;div heading=" Hunts are a set of collections ">&lt;p>It is best to think of a &lt;code>hunt&lt;/code> as just a set of related artifact
+collections. You can add/remove collections from this set at will.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>I am adding the new collection to the hunt manually by clicking the
+&lt;code>Add to Hunt&lt;/code> button.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="148b3895b977cdc2068a2da55191249f">
+ &lt;div data-featherlight="#148b3895b977cdc2068a2da55191249f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/retry_hunt/manually_adding_hunt_collection.png" alt="Manually Adding the collection to the hunt">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="manually_adding_hunt_collection.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Manually Adding the collection to the hunt
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>The interface shows me all hunts that collected the same artifact so I
+choose which hunt to add it to.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="1b371e4db1eaa277f42eea9c0bdaae1c">
+ &lt;div data-featherlight="#1b371e4db1eaa277f42eea9c0bdaae1c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/retry_hunt/new_hunt_collection.png" alt="The new collection is now part of the hunt">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="new_hunt_collection.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ The new collection is now part of the hunt
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Now the new successful collection is part of the hunt. I can see it as
+a second entry in the client&amp;rsquo;s list.&lt;/p>
+
+&lt;div class="mynotices note">
+ &lt;div heading=" Deleting the old collection ">&lt;p>Velociraptor does not automatically delete the old failed collection
+because it may still have some useful data (some data &lt;strong>was&lt;/strong>
+transferred).&lt;/p>
+&lt;p>If you do not want the old data any more, then just click the &lt;code>Delete Flow&lt;/code> button once a better collection is available.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;h2 id="using-vql">Using VQL&lt;/h2>
+&lt;p>The above discussion was how to manually redo collections in the GUI
+but if there are many collections, it might be easier to use VQL to do
+this.&lt;/p>
+&lt;pre>&lt;code class="language-vql">LET NewCollections = SELECT ClientId, FlowId,
+ collect_client(client_id=ClientId,
+ artifacts=Flow.request.artifacts,
+ spec=Flow.request.specs,
+ max_bytes=1000000000,
+ timeout=600) AS NewCollection
+FROM hunt_flows(hunt_id=HuntId)
+WHERE Flow.state =~ &amp;quot;ERROR&amp;quot;
+
+SELECT ClientId, NewCollection, hunt_add(
+ client_id=ClientId,
+ hunt_id=HuntId,
+ flow_id=NewCollection.flow_id) AS Hunt
+FROM NewCollections
+&lt;/code>&lt;/pre>
+&lt;ol>
+&lt;li>
+&lt;p>The &lt;code>NewCollections&lt;/code> query gets all Flows in the &lt;code>ERROR&lt;/code> state
+within a hunt and schedules a new collection using the same
+artifacts but increasing the maximum upload size to 1gb and timeout
+to 600 seconds.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The next query adds the new collection to the hunt.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>Note this query will only work after &lt;a href="https://github.com/Velocidex/velociraptor/commit/768021225bd617bb279fe424dcdf29c6d7d467b4" target="_blank" >#2067&lt;/a>
+&lt;/p></description></item><item><title>How to control hunting by label groups?</title><link>https://docs.velociraptor.app/knowledge_base/tips/hunt_by_label/</link><pubDate>Sat, 10 Sep 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/hunt_by_label/</guid><description>&lt;h1 id="how-to-control-hunting-by-label-groups">How to control hunting by label groups?&lt;/h1>
+&lt;p>In Velociraptor, &lt;code>Hunts&lt;/code> are sets of the same collections across
+clients. For example, a hunt for &lt;code>Scheduled Tasks&lt;/code> will automatically
+collect the scheduled tasks from each client.&lt;/p>
+&lt;p>When creating the hunt it is possible to target the hunt to a
+&lt;code>Label&lt;/code>. This only schedules the hunt on clients that have that same
+label. This is useful when collecting a lot of data which does not
+make sense to collect from every machine in the fleet. For example in
+the following screenshot I am limiting the heavy triaging collection
+to machines with the label &lt;code>Triage&lt;/code>.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="1912e2fbc6ef8afb41e2a31045e48e4f">
+ &lt;div data-featherlight="#1912e2fbc6ef8afb41e2a31045e48e4f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/hunt_by_label/limiting_hunts.png" alt="Limiting a hunt to a label">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="limiting_hunts.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Limiting a hunt to a label
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h2 id="assigning-clients-to-the-hunt">Assigning clients to the hunt.&lt;/h2>
+&lt;p>Normally when we limit a hunt for a label we immediately schedule the
+hunt on all machines with that label.&lt;/p>
+&lt;p>However it also works the other way around - When a label is added on
+a client, if the hunt targets this label, the client will be
+automatically added to the hunt!&lt;/p>
+&lt;p>This means it is possible to create heavy hunts targeting specific
+labels, and then as the investigation progresses, simply assign the
+label to the client to automatically cause the hunt to collect on that
+client.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="ea294614153c0d0ea666c75a2d1b6b1f">
+ &lt;div data-featherlight="#ea294614153c0d0ea666c75a2d1b6b1f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/hunt_by_label/apply_label.png" alt="Apply a label to a client to trigger hunt participation">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="apply_label.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Apply a label to a client to trigger hunt participation
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p></description></item></channel></rss>

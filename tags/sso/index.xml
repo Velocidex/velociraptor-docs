@@ -1,0 +1,1540 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Sso on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/sso/</link><description>Recent content in Sso on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Mon, 26 Jan 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/sso/index.xml" rel="self" type="application/rss+xml"/><item><title>How to set up OIDC authentication using ADFS</title><link>https://docs.velociraptor.app/knowledge_base/tips/setup_adfs/</link><pubDate>Mon, 26 Jan 2026 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/setup_adfs/</guid><description>&lt;h1 id="how-to-set-up-oidc-authentication-using-adfs">How to set up OIDC authentication using ADFS&lt;/h1>
+&lt;p>This guide walks you through the configuration of Microsoft ADFS as an OIDC
+authentication provider for Velociraptor.&lt;/p>
+
+&lt;div class="mynotices warning">
+ &lt;div heading=" Environment ">&lt;p>This procedure has been tested with Windows Server 2022 and ADFS 4.0
+Velociraptor has been deployed using self signed certificate&lt;/p>
+&lt;p>ADFS OpenID Configuration can be read with &lt;a href="https://auth.domain.local/adfs/.well-known/openid-configuration" target="_blank" >https://auth.domain.local/adfs/.well-known/openid-configuration&lt;/a>
+
+SSL certificate on ADFS is provided by Let&amp;rsquo;s Encrypt.
+Velociraptor Server is on velociraptor.local&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="116d87abb001ab31733627a8ef09b16b">
+ &lt;div data-featherlight="#116d87abb001ab31733627a8ef09b16b" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_adfs/network_overview.png" alt="setup_adfs">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="network_overview.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ setup_adfs
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>The high-level steps of this setup process are:&lt;/p>
+&lt;ol>
+&lt;li>Deploy Velociraptor using Self Signed Certificates.&lt;/li>
+&lt;li>Create a new Application Group in ADFS.&lt;/li>
+&lt;li>Add the authenticator settings to your Velociraptor config.&lt;/li>
+&lt;li>Start Velociraptor&lt;/li>
+&lt;li>Add test users to Velociraptor.&lt;/li>
+&lt;li>Test the authentication process.&lt;/li>
+&lt;/ol>
+&lt;h2 id="1-deploy-velociraptor-using-self-signed-certificates">1. Deploy Velociraptor using Self Signed Certificates&lt;/h2>
+&lt;p>Velociraptor quickstart &amp;gt; &lt;a href="https://docs.velociraptor.app/docs/deployment/quickstart/" target="_blank" >https://docs.velociraptor.app/docs/deployment/quickstart/&lt;/a>
+&lt;/p>
+&lt;h2 id="2-create-a-new-application-group-in-adfs">2. Create a new Application Group in ADFS&lt;/h2>
+&lt;p>&lt;strong>1. Open ADFS Management&lt;/strong>
+Open Server Manager &amp;gt; Tool &amp;gt; AD FS Management
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="dc63bafb764b92891d759054b75c743e">
+ &lt;div data-featherlight="#dc63bafb764b92891d759054b75c743e" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_adfs/adfs1.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="adfs1.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>&lt;strong>2. Create a New Application Group&lt;/strong>
+Select Application Groups and create a new one
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="0a93007d79db022e5203fddc23f79333">
+ &lt;div data-featherlight="#0a93007d79db022e5203fddc23f79333" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_adfs/adfs2.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="adfs2.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>&lt;strong>3. Welcome&lt;/strong>
+Enter a name and select Server Application accessing a web API
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="dcafa8479877216632f94298c54bf823">
+ &lt;div data-featherlight="#dcafa8479877216632f94298c54bf823" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_adfs/adfs3.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="adfs3.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>&lt;strong>4. Server application&lt;/strong>
+Enter your Redirect URI : &lt;a href="https://velociraptor.local:8889/auth/oidc/callback" target="_blank" >https://velociraptor.local:8889/auth/oidc/callback&lt;/a>
+ and add it
+Save your client identifier, we will use it on velociraptor config file
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="fb7e02b250c946e1e75410bb0fadbbd6">
+ &lt;div data-featherlight="#fb7e02b250c946e1e75410bb0fadbbd6" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_adfs/adfs4.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="adfs4.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>&lt;strong>5. Configure Application Credentials&lt;/strong>
+Generate a shared secret and save it
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="28c6a9880f43e1a5012479d6ef055161">
+ &lt;div data-featherlight="#28c6a9880f43e1a5012479d6ef055161" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_adfs/adfs5.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="adfs5.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>&lt;strong>6. Configure WEB API&lt;/strong>
+Enter your application identifier and add it
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="2889981fe9eca64e8c6a7065c74568d4">
+ &lt;div data-featherlight="#2889981fe9eca64e8c6a7065c74568d4" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_adfs/adfs6.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="adfs6.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>&lt;strong>7. Access Control Policy&lt;/strong>
+On next window, Choose Access Control Policy and filter as needed
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="be94570201a67e616f3dd1bf44ef6d34">
+ &lt;div data-featherlight="#be94570201a67e616f3dd1bf44ef6d34" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_adfs/adfs7.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="adfs7.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>&lt;strong>8. Configure Application Permissions&lt;/strong>
+Select email, openid, profile
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="cf1a11dbbe06c1e4ca1d6ab5e74c3d16">
+ &lt;div data-featherlight="#cf1a11dbbe06c1e4ca1d6ab5e74c3d16" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_adfs/adfs8.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="adfs8.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>&lt;strong>9. Summary&lt;/strong>
+Validate your summary and click Next, then complete.
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="3c1956f350aa7006bea245a936ab6f82">
+ &lt;div data-featherlight="#3c1956f350aa7006bea245a936ab6f82" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_adfs/adfs9.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="adfs9.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h2 id="3-add-the-authenticator-settings-to-your-velociraptor-config">3. Add the authenticator settings to your Velociraptor config&lt;/h2>
+&lt;p>In the &lt;code>GUI&lt;/code> section of your Velociraptor config you should have the following
+authenticator settings by default:&lt;/p>
+&lt;pre>&lt;code class="language-yaml"> authenticator:
+ type: Basic
+&lt;/code>&lt;/pre>
+&lt;p>We no longer want Basic auth and instead want SSO, so replace that with these
+new settings to match our Keycloak configuration:&lt;/p>
+&lt;pre>&lt;code class="language-yaml"> type: oidc
+ oidc_issuer: https://domain.local/adfs
+ oidc_name: adfs
+ oauth_client_id: e49d074b-c157-40cd-a1b4-0a863bac99aa
+ oauth_client_secret: scwp-348TOdnNJ7hzP3pKGXcYS4Ohu2q0JMCyDT0
+ # uncommment below if you want a full debug
+ # oidc_debug: true
+&lt;/code>&lt;/pre>
+&lt;p>The &lt;code>oauth_client_secret&lt;/code> is the value we obtained at the end of step 5. The
+&lt;code>oauth_client_id&lt;/code> is the name we used for the OIDC Client ID in that same
+section in step 4.&lt;/p>
+&lt;h2 id="4-start-velociraptor">4. Start Velociraptor&lt;/h2>
+&lt;p>The server should now start cleanly and continue running. In the log messages
+you should see &lt;code>GUI will use the oidc authenticator&lt;/code>. That means everything is
+OK with the authenticator config.&lt;/p>
+
+&lt;div class="mynotices tip">
+ &lt;div heading="tip">&lt;p>While configuring, testing and potentially troubleshooting problems, it&amp;rsquo;s
+easier if you can see Velociraptor&amp;rsquo;s log messages. You can stop the server
+service and then run the server manually on the command line by using the
+following commands:&lt;/p>
+&lt;pre>&lt;code class="language-bash">sudo systemctl stop velociraptor_server
+sudo -u velociraptor bash
+velociraptor -c /etc/velociraptor/server.config.yaml frontend -v
+&lt;/code>&lt;/pre>
+&lt;p>This will display the log messages in the terminal.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;h2 id="5-add-users">5. Add Users&lt;/h2>
+&lt;p>Even if you have added groups/users through Access Control Policy in step 7, you have
+to create users in Velociraptor. Users can be created using VQL in Velociraptor
+notebooks but since we have now switched authentication providers we no longer
+have access to the GUI. Of course we could have added the users before we
+switched but let&amp;rsquo;s pretend we didn&amp;rsquo;t and instead do it from the command line.&lt;/p>
+&lt;p>We will make &lt;code>bob@domain.local&lt;/code> a server admin and grant &lt;code>fred@domain.local&lt;/code> the &amp;ldquo;reader&amp;rdquo;
+role, which provides minimal access to Velociraptor&amp;rsquo;s GUI. Note that you have to use the user
+email field in Active Directory. The following two commands will create these users:&lt;/p>
+&lt;pre>&lt;code class="language-sh">velociraptor --config server.config.yaml user add --role administrator bob@domain.local
+velociraptor --config server.config.yaml user add --role reader fred@domain.local
+&lt;/code>&lt;/pre>
+&lt;p>NOTE: We provide the &lt;code>--config&lt;/code> flag so that this invocation of the velociraptor
+binary knows which datastore to add the new users to. This can be done while the
+server service is running or not running, but either way the service will need
+to be restarted to update itself with the datastore changes.&lt;/p>
+&lt;p>Because of our OIDC authenticator config, when adding each user we will receive
+an acknowledgement message saying
+&lt;code>&amp;quot;Authentication will occur via oidc - therefore no password needs to be set.&amp;quot;&lt;/code>&lt;/p>
+&lt;h2 id="6-test-authentication-process">6. Test authentication process&lt;/h2>
+&lt;p>Test the authentication process by going to &lt;code>https://velociraptor.local:8889/&lt;/code>&lt;/p>
+&lt;p>You will be presented with the choice to log in with Keycloak (multiple
+authentication providers are supported but we only have one configured).&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="d56141154f7205b5c7e860b78a68d493">
+ &lt;div data-featherlight="#d56141154f7205b5c7e860b78a68d493" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_adfs/adfs10.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="adfs10.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Enter initial credentials using DOMAIN\bob or &lt;a href="mailto:bob@domain.local" >bob@domain.local&lt;/a>
+&lt;/p></description></item><item><title>How to set up authentication using Google OAuth SSO</title><link>https://docs.velociraptor.app/knowledge_base/tips/setup_google_oauth/</link><pubDate>Mon, 28 Apr 2025 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/setup_google_oauth/</guid><description>&lt;h1 id="how-to-set-up-authentication-using-google-oauth-sso">How to set up authentication using Google OAuth SSO&lt;/h1>
+&lt;p>This guide walks you through the configuration of Google OAuth SSO as an
+authentication provider. This requires a user to authenticate via Google
+Workspace using it&amp;rsquo;s associated authentication policy. For example if 2-factor
+authentication is required then users will need to satisfy this requirement.&lt;/p>
+&lt;p>Once the user authenticates to Google, they are redirected back into the
+Velociraptor application with a token that allows the application to request
+information about the user (for example, the username or email address).&lt;/p>
+&lt;h2 id="before-you-begin">Before You Begin&lt;/h2>
+&lt;p>Please note the following requirements:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>Your Velociraptor server must have a valid SSL certificate already issued and
+configured. This can be a certificate issued by Let&amp;rsquo;s Encrypt or
+&lt;a href="https://docs.velociraptor.app/knowledge_base/tips/ssl/" >another public CA&lt;/a>
+.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Google restricts OAuth 2.0 applications to using Authorized Domains. According
+to Google:&lt;/p>
+&lt;blockquote>
+&lt;p>To use a domain as an authorized domain for OAuth, it must be a &amp;ldquo;top private
+domain&amp;rdquo;, which is the domain component available for registration on a
+public suffix, such as the domain before the .com, .net, or .biz, or similar
+top-level domains. Subdomains are controlled by the parent domain and are
+not considered top private domains.&lt;/p>
+&lt;p>For example, if your application home page is
+&lt;a href="https://sub.example.com/product" target="_blank" >https://sub.example.com/product&lt;/a>
+, you would need to verify ownership of the
+example.com domain. This verification is necessary to ensure the security and
+trustworthiness of the application.&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="registering-velociraptor-as-an-oauth-application">Registering Velociraptor as an OAuth application&lt;/h3>
+&lt;p>Before using Google to authenticate, you need to register your Velociraptor
+deployment as an OAuth App with Google. You register Velociraptor as an OAuth
+app by accessing the Google cloud console at &lt;a href="https://console.cloud.google.com" target="_blank" >https://console.cloud.google.com&lt;/a>
+.
+You must set up a cloud account and create a cloud project even if you do not
+host your server on Google&amp;rsquo;s Cloud Platform.&lt;/p>
+&lt;p>The ultimate goal of this step is to obtain OAuth credentials that will be used
+in the Velociraptor configuration, but there are a few things set up first.&lt;/p>
+&lt;p>Navigate to &lt;code>APIs and Services&lt;/code> in the GCP console and select &lt;code>Credentials&lt;/code> and
+the &lt;code>OAuth Consent Screen&lt;/code> tab.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="9c8e77333d046d43b34218e805542bdc">
+ &lt;div data-featherlight="#9c8e77333d046d43b34218e805542bdc" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_google_oauth/sso11.png" alt="Creating application credentials">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="sso11.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Creating application credentials
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Further down the page you need to provide an authorized domain.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="3825e5676e990c7b3e1b943ffe4f3c54">
+ &lt;div data-featherlight="#3825e5676e990c7b3e1b943ffe4f3c54" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_google_oauth/sso12.png" alt="Authorizing domains">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="sso12.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Authorizing domains
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>In order to add an Authorized Domain you need to &lt;em>verify it&lt;/em>. Google&amp;rsquo;s help pages
+&lt;a href="https://developers.google.com/identity/protocols/oauth2/production-readiness/brand-verification#authorized-domains" target="_blank" >explain it further&lt;/a>
+.&lt;/p>
+&lt;p>In this example we assume that you purchased your domain with Google
+domains which makes this step easier since it is already verified.&lt;/p>
+&lt;p>We can go back to the cloud console and &lt;code>Create Credentials&lt;/code> &amp;gt; &lt;code>OAuth client ID&lt;/code>:&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="3dc0bd9997e760aead192b5445751a4a">
+ &lt;div data-featherlight="#3dc0bd9997e760aead192b5445751a4a" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_google_oauth/sso15.png" alt="Creating OAuth2 client ID">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="sso15.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Creating OAuth2 client ID
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Now select &lt;code>Web App&lt;/code> and set the &lt;code>Authorized redirect URIs&lt;/code> to
+&lt;code>https://&amp;lt;Your Domain Name&amp;gt;/auth/google/callback&lt;/code> -
+This is the URL that successful OAuth authentication will redirect
+to. Velociraptor accepts this redirect and uses it to log the user on.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="26350079900961c7e05b20cad0cdffe1">
+ &lt;div data-featherlight="#26350079900961c7e05b20cad0cdffe1" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_google_oauth/sso16.png" alt="Specifying the redirect URL">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="sso16.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Specifying the redirect URL
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>If all goes well the Google Cloud Console will give us a client ID and
+a client secret.&lt;/p>
+&lt;h3 id="generating-configuration">Generating configuration&lt;/h3>
+&lt;p>To generate a server config file run the &lt;code>config generate&lt;/code> command to invoke the
+configuration wizard:&lt;/p>
+&lt;pre>&lt;code class="language-sh">velociraptor config generate -i
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="5241444b699d56a56c6a7dd2b2976f92">
+ &lt;div data-featherlight="#5241444b699d56a56c6a7dd2b2976f92" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_google_oauth/config1.png" alt="Select SSO deployment type">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="config1.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Select SSO deployment type
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="165b14163109e6db0cd0b727a44b93a9">
+ &lt;div data-featherlight="#165b14163109e6db0cd0b727a44b93a9" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_google_oauth/config2.png" alt="Select Google as authentication provider">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="config2.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Select Google as authentication provider
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="0bc3b877ab32da47a205b2b5f8314dc4">
+ &lt;div data-featherlight="#0bc3b877ab32da47a205b2b5f8314dc4" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_google_oauth/config3.png" alt="Enter OAuth credentials">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="config3.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Enter OAuth credentials
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>The configuration wizard asks a number of questions and creates a
+server configuration file. The first question is &amp;ldquo;Deployment Type&amp;rdquo; and you
+should choose the option &lt;strong>Authenticate users with SSO&lt;/strong>.&lt;/p>
+&lt;p>In addition to other common configuration questions the
+following are relevant to configuring SSO:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>What is the public DNS name of the Master Frontend&lt;/strong>: This should match the
+CN field of your valid SSL certificate.&lt;/li>
+&lt;li>&lt;strong>Select the SSO Authentication Provider&lt;/strong>: Here you should choose the option &amp;ldquo;Google&amp;rdquo;.&lt;/li>
+&lt;li>&lt;strong>Enter the OAuth Client ID&lt;/strong>: the name as specified in Google Cloud Console.&lt;/li>
+&lt;li>&lt;strong>Enter the OAuth Client Secret&lt;/strong>: as specified in Google Cloud Console.&lt;/li>
+&lt;li>&lt;strong>GUI Username or email address to authorize:&lt;/strong> The initial set of
+administrator accounts can be stored in the configuration file. When
+Velociraptor starts it will automatically add these accounts as
+administrators. When using SSO, Velociraptor does not use any passwords so
+only the user names will be requested. While accounts can be specified here it
+is optional as they can also be created later, as we&amp;rsquo;ll show below. Entering a
+blank value will cause the wizard to move on to the next question.&lt;/li>
+&lt;/ul>
+&lt;h2 id="grant-access-to-velociraptor">Grant Access to Velociraptor&lt;/h2>
+&lt;p>The OAuth flow ensures the user&amp;rsquo;s identity is correct but does not give them
+permission to log into Velociraptor. Note that having an OAuth-enabled
+application on the web allows anyone with a Google identity to authenticate to
+the application but the user is still required to be authorized explicitly. If a
+user is rejected, you will see messages similar to the following in the Audit
+log:&lt;/p>
+&lt;pre>&lt;code class="language-json"> {
+ &amp;quot;level&amp;quot;: &amp;quot;error&amp;quot;,
+ &amp;quot;method&amp;quot;: &amp;quot;GET&amp;quot;,
+ &amp;quot;msg&amp;quot;: &amp;quot;User rejected by GUI&amp;quot;,
+ &amp;quot;remote&amp;quot;: &amp;quot;192.168.0.10:40570&amp;quot;,
+ &amp;quot;time&amp;quot;: &amp;quot;2018-12-21T18:17:47+10:00&amp;quot;,
+ &amp;quot;user&amp;quot;: &amp;quot;mike@velocidex.com&amp;quot;
+ }
+&lt;/code>&lt;/pre>
+&lt;p>In order to authorize the user we must explicitly add them using the
+Velociraptor Admin tool:&lt;/p>
+&lt;pre>&lt;code class="language-text">$ velociraptor --config ~/server.config.yaml user add mike@velocidex.com
+Authentication will occur via Google - therefore no password needs to be set.
+&lt;/code>&lt;/pre>
+&lt;p>Note that Velociraptor does not ask for a password, since authentication will
+occur using Google&amp;rsquo;s SSO.&lt;/p>
+&lt;h2 id="authenticate-and-access-the-velociraptor-gui">Authenticate and access the Velociraptor GUI&lt;/h2>
+&lt;p>Since you have added users from the command line you will need to restart the
+Velociraptor service:&lt;/p>
+&lt;pre>&lt;code class="language-sh">sudo systemctl restart velociraptor_server
+&lt;/code>&lt;/pre>
+&lt;p>Then access the GUI. If your web browser is already logged into Google then the
+authentication process should be transparent. If not then you will be directed
+to Google to authenticate and you will then be redirected back to the
+Velociraptor GUI after successful logon.&lt;/p>
+&lt;p>We can see that the logged in user is authenticated by Google, and we
+can also see the user&amp;rsquo;s Google avatar at the top right.&lt;/p>
+&lt;!-- ![Velociraptor Dashboard](dashboard.png) -->
+
+&lt;div class="mynotices note">
+ &lt;div heading="note">&lt;p>Velociraptor will retain its OAuth token for 24 hours. Each day users
+will need to re-grant OAuth credentials. Therefore revoking a user
+from the Google Admin console may take a full day to take effect. To
+remove access sooner you should simply remove all permissions from the
+user using &lt;code>velociraptor user grant '{}'&lt;/code>.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+</description></item><item><title>How to set up OIDC authentication using Keycloak</title><link>https://docs.velociraptor.app/knowledge_base/tips/setup_keycloak/</link><pubDate>Sat, 28 Dec 2024 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/setup_keycloak/</guid><description>&lt;h1 id="how-to-set-up-oidc-authentication-using-keycloak">How to set up OIDC authentication using Keycloak&lt;/h1>
+&lt;p>This guide walks you through the configuration of
+&lt;a href="https://www.keycloak.org/" target="_blank" >Keycloak&lt;/a>
+ as an OIDC authentication provider for
+Velociraptor.&lt;/p>
+&lt;p>Keycloak, as a self-hosted, free, and open source solution, may be an attractive
+choice for Velociraptor deployments where using cloud-based and/or commercial
+providers is not practical or possible. Most of the steps shown here would be
+the same or similar for other self-hosted OIDC solutions (for example Zitadel or
+Authentik), so it may be useful even if you are not using Keycloak.&lt;/p>
+
+&lt;div class="mynotices warning">
+ &lt;div heading=" Production deployment of Keycloak ">&lt;p>Keycloak is a Java application which can be installed manually or deployed via
+several officially documented container-based methods. This guide partly mirrors Keycloak&amp;rsquo;s
+&lt;a href="https://www.keycloak.org/getting-started/getting-started-docker" target="_blank" >Getting started guide&lt;/a>
+
+which uses Docker to create a &lt;em>&amp;ldquo;development mode&amp;rdquo; instance&lt;/em> of Keycloak. This
+method starts a working Keycloak instance but does not create a persistent
+database or a production-ready secured server, since the goal here is only to
+demonstrate the integration with Velociraptor.&lt;/p>
+&lt;p>For production-ready deployment guidance we refer you to
+&lt;a href="https://www.keycloak.org/server/configuration-production" target="_blank" >Configuring Keycloak for production&lt;/a>
+
+and the official &lt;a href="https://www.keycloak.org/documentation" target="_blank" >Keycloak documentation&lt;/a>
+.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>As mentioned above, the goal of this guide is to demonstrate a working SSO
+configuration for Velociraptor using Keycloak. The basic steps and configuration
+will be very similar or even identical for production deployments however some
+of the steps shown here are deliberately over-simplified for reasons of brevity
+and therefore do not reflect security best practices. Also Keycloak has a vast
+array of options and capabilities, which we recommend you explore later, but the
+intention here is to get up and running with a basic working integration since
+it is better to start simple and be sure that it&amp;rsquo;s working as expected before
+possibly adding complexity to it.&lt;/p>
+&lt;p>In this simplified setup we have two hosts, with DNS names &lt;code>keycloak.local&lt;/code> and
+&lt;code>velociraptor.local&lt;/code>. Substitute your DNS names where applicable. The two hosts
+don&amp;rsquo;t need to be on the same network but the Velociraptor host needs to be able
+to DNS-resolve the name of the Keycloak server and reach it on port 443. It&amp;rsquo;s
+not necessary that the Keycloak server be able to resolve the Velociraptor
+server&amp;rsquo;s DNS name but your server probably already has a DNS name already so
+that clients can connect to it.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+ 
+ 
+
+&lt;figure id="d1d61019841b4ed3a43cafc19e745e56">
+ &lt;div data-featherlight="#d1d61019841b4ed3a43cafc19e745e56" class="figure">
+ &lt;svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 658.5 380" width="658.5" height="380">
+ &lt;!-- svg-source:excalidraw -->
+ 
+ &lt;defs>
+ 
+ 
+ &lt;/defs>
+ &lt;g transform="translate(448.5 77.5) rotate(0 90 12.5)">&lt;text x="90" y="17.619999999999997" font-family="Excalifont, Xiaolai, Segoe UI Emoji" font-size="20px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">velociraptor.local&lt;/text>&lt;/g>&lt;g stroke-linecap="round" transform="translate(428.5 50) rotate(0 110 40)">&lt;path d="M20 0 C88.57 -0.88, 160.01 -1.61, 200 0 M20 0 C58.54 -1.53, 98.43 -0.46, 200 0 M200 0 C211.69 1.33, 220.42 6.57, 220 20 M200 0 C211.6 0.43, 217.78 6.44, 220 20 M220 20 C220.28 32.33, 220.74 47.02, 220 60 M220 20 C220.42 29.27, 219.9 37.09, 220 60 M220 60 C219.25 73.02, 212.98 81.3, 200 80 M220 60 C219.38 74.64, 213.91 78.45, 200 80 M200 80 C158.64 82.64, 111.86 82.36, 20 80 M200 80 C129.17 77.64, 58.47 78.32, 20 80 M20 80 C7.8 79.81, -1.25 74.46, 0 60 M20 80 C4.42 78.88, 2.09 75.29, 0 60 M0 60 C-2.04 51.46, 0.64 37.8, 0 20 M0 60 C-0.59 44.56, 0.99 28.68, 0 20 M0 20 C-1.89 6, 5.69 0.76, 20 0 M0 20 C0.34 5.1, 7.14 -2.09, 20 0" stroke="#1e1e1e" stroke-width="2" fill="none">&lt;/path>&lt;/g>&lt;g transform="translate(18.5 77.5) rotate(0 101.5 12.5)">&lt;text x="101.49999999999999" y="17.619999999999997" font-family="Excalifont, Xiaolai, Segoe UI Emoji" font-size="20px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">keycloak.local&lt;/text>&lt;/g>&lt;g stroke-linecap="round" transform="translate(10 50) rotate(0 110 40)">&lt;path d="M20 0 C76.96 -0.66, 132.14 -0.78, 200 0 M20 0 C62.04 0.37, 104.12 0.24, 200 0 M200 0 C213.23 1.37, 220.57 6.48, 220 20 M200 0 C213.56 2, 221.3 6.97, 220 20 M220 20 C221.55 28.63, 219.47 39.69, 220 60 M220 20 C219.3 31.71, 219.58 43.2, 220 60 M220 60 C219.26 74.79, 212.38 80.88, 200 80 M220 60 C218.17 75.49, 215.12 79.31, 200 80 M200 80 C131.97 80.13, 62.31 80.12, 20 80 M200 80 C130.24 82.46, 58.61 81.1, 20 80 M20 80 C6.8 81, -0.91 73.89, 0 60 M20 80 C6.95 81.88, 0.47 74.89, 0 60 M0 60 C-1.01 48.08, -1 40.08, 0 20 M0 60 C0.26 44.86, -0.6 30.27, 0 20 M0 20 C-1.4 7.51, 7.67 -0.6, 20 0 M0 20 C2.15 5.2, 5.79 0.48, 20 0" stroke="#1e1e1e" stroke-width="2" fill="none">&lt;/path>&lt;/g>&lt;g stroke-linecap="round">&lt;g transform="translate(241.01502374283154 88.96543240222326) rotate(0 84.74741701882738 -0.9890726441210518)">&lt;path d="M-0.5 -0.03 C14.43 -0.16, 60.79 -1.83, 89.32 -1.98 C117.86 -2.12, 157.5 -1.02, 170.69 -0.9" stroke="#1e1e1e" stroke-width="2.5" fill="none" stroke-dasharray="8 10">&lt;/path>&lt;/g>&lt;g transform="translate(241.01502374283154 88.96543240222326) rotate(0 84.74741701882738 -0.9890726441210518)">&lt;path d="M22.77 -9.15 C17.92 -6.07, 8.15 -2.18, -0.5 -0.03" stroke="#1e1e1e" stroke-width="2.5" fill="none">&lt;/path>&lt;/g>&lt;g transform="translate(241.01502374283154 88.96543240222326) rotate(0 84.74741701882738 -0.9890726441210518)">&lt;path d="M23.19 7.95 C18.25 6.28, 8.36 5.41, -0.5 -0.03" stroke="#1e1e1e" stroke-width="2.5" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;g stroke-linecap="round">&lt;g transform="translate(435.5 228) rotate(0 23 -40)">&lt;path d="M0.74 0.88 C4.55 -5.76, 15.38 -25.94, 22.89 -39.54 C30.41 -53.13, 41.87 -74.05, 45.84 -80.67 M-0.33 0.3 C3.31 -6.22, 14.34 -24.95, 21.89 -38.28 C29.45 -51.61, 40.75 -72.51, 44.99 -79.7" stroke="#1e1e1e" stroke-width="2" fill="none">&lt;/path>&lt;/g>&lt;g transform="translate(435.5 228) rotate(0 23 -40)">&lt;path d="M41.11 -56.52 C43.68 -63.72, 42.49 -70.81, 44.99 -79.7 M41.11 -56.52 C41.65 -62.21, 43.78 -68.79, 44.99 -79.7" stroke="#1e1e1e" stroke-width="2" fill="none">&lt;/path>&lt;/g>&lt;g transform="translate(435.5 228) rotate(0 23 -40)">&lt;path d="M27.11 -64.44 C33.94 -69.33, 36.97 -74.03, 44.99 -79.7 M27.11 -64.44 C31.13 -68.28, 36.67 -72.93, 44.99 -79.7" stroke="#1e1e1e" stroke-width="2" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;g transform="translate(50 10) rotate(0 70 10)">&lt;text x="70" y="14.096" font-family="Excalifont, Xiaolai, Segoe UI Emoji" font-size="16px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">OIDC Provider&lt;/text>&lt;/g>&lt;g transform="translate(468.5 10) rotate(0 70 10)">&lt;text x="70" y="14.096" font-family="Excalifont, Xiaolai, Segoe UI Emoji" font-size="16px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">OIDC Client&lt;/text>&lt;/g>&lt;g stroke-linecap="round" transform="translate(345.6143342216468 250) rotate(0 63.941917866069446 38.268516949888806)">&lt;path d="M0 0 C50.92 -1.01, 99.18 0.86, 127.88 0 M0 0 C27.22 -0.35, 52.93 -1.09, 127.88 0 M127.88 0 C129 14.97, 127.16 33.27, 127.88 76.54 M127.88 0 C128.45 25.83, 128.67 51.78, 127.88 76.54 M127.88 76.54 C79.19 75.12, 34.34 75.28, 0 76.54 M127.88 76.54 C80.11 76.62, 32.38 76.24, 0 76.54 M0 76.54 C-0.1 48.8, -0.34 17.81, 0 0 M0 76.54 C1.01 56.33, 1.2 35.69, 0 0" stroke="#000000" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;g stroke-linecap="round">&lt;g transform="translate(344.5387364707516 260.71653439224417) rotate(0 64.42096614922218 0)">&lt;path d="M-1.04 -0.51 C20.56 -0.79, 107.14 -1.3, 128.92 -1.13 M0.62 -1.82 C22.13 -2.04, 106.57 -0.22, 128.02 -0.19" stroke="#000000" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;g stroke-linecap="round" transform="translate(350.1023696906017 254.27156980000882) rotate(0 2.5009765625 2.5009765625)">&lt;path d="M5 2.5 C5 2.65, 4.99 2.79, 4.96 2.94 C4.94 3.08, 4.9 3.22, 4.85 3.36 C4.8 3.49, 4.74 3.63, 4.67 3.75 C4.59 3.88, 4.51 4, 4.42 4.11 C4.32 4.22, 4.22 4.32, 4.11 4.42 C4 4.51, 3.88 4.59, 3.75 4.67 C3.63 4.74, 3.49 4.8, 3.36 4.85 C3.22 4.9, 3.08 4.94, 2.94 4.96 C2.79 4.99, 2.65 5, 2.5 5 C2.36 5, 2.21 4.99, 2.07 4.96 C1.92 4.94, 1.78 4.9, 1.65 4.85 C1.51 4.8, 1.38 4.74, 1.25 4.67 C1.13 4.59, 1 4.51, 0.89 4.42 C0.78 4.32, 0.68 4.22, 0.59 4.11 C0.49 4, 0.41 3.88, 0.34 3.75 C0.26 3.63, 0.2 3.49, 0.15 3.36 C0.1 3.22, 0.06 3.08, 0.04 2.94 C0.01 2.79, 0 2.65, 0 2.5 C0 2.36, 0.01 2.21, 0.04 2.07 C0.06 1.92, 0.1 1.78, 0.15 1.65 C0.2 1.51, 0.26 1.38, 0.34 1.25 C0.41 1.13, 0.49 1, 0.59 0.89 C0.68 0.78, 0.78 0.68, 0.89 0.59 C1 0.49, 1.13 0.41, 1.25 0.34 C1.38 0.26, 1.51 0.2, 1.65 0.15 C1.78 0.1, 1.92 0.06, 2.07 0.04 C2.21 0.01, 2.36 0, 2.5 0 C2.65 0, 2.79 0.01, 2.94 0.04 C3.08 0.06, 3.22 0.1, 3.36 0.15 C3.49 0.2, 3.63 0.26, 3.75 0.34 C3.88 0.41, 4 0.49, 4.11 0.59 C4.22 0.68, 4.32 0.78, 4.42 0.89 C4.51 1, 4.59 1.13, 4.67 1.25 C4.74 1.38, 4.8 1.51, 4.85 1.65 C4.9 1.78, 4.94 1.92, 4.96 2.07 C4.99 2.21, 5 2.43, 5 2.5 C5.01 2.57, 5.01 2.43, 5 2.5" stroke="none" stroke-width="0" fill="#fa5252">&lt;/path>&lt;path d="M5 2.5 C5 2.65, 4.99 2.79, 4.96 2.94 C4.94 3.08, 4.9 3.22, 4.85 3.36 C4.8 3.49, 4.74 3.63, 4.67 3.75 C4.59 3.88, 4.51 4, 4.42 4.11 C4.32 4.22, 4.22 4.32, 4.11 4.42 C4 4.51, 3.88 4.59, 3.75 4.67 C3.63 4.74, 3.49 4.8, 3.36 4.85 C3.22 4.9, 3.08 4.94, 2.94 4.96 C2.79 4.99, 2.65 5, 2.5 5 C2.36 5, 2.21 4.99, 2.07 4.96 C1.92 4.94, 1.78 4.9, 1.65 4.85 C1.51 4.8, 1.38 4.74, 1.25 4.67 C1.13 4.59, 1 4.51, 0.89 4.42 C0.78 4.32, 0.68 4.22, 0.59 4.11 C0.49 4, 0.41 3.88, 0.34 3.75 C0.26 3.63, 0.2 3.49, 0.15 3.36 C0.1 3.22, 0.06 3.08, 0.04 2.94 C0.01 2.79, 0 2.65, 0 2.5 C0 2.36, 0.01 2.21, 0.04 2.07 C0.06 1.92, 0.1 1.78, 0.15 1.65 C0.2 1.51, 0.26 1.38, 0.34 1.25 C0.41 1.13, 0.49 1, 0.59 0.89 C0.68 0.78, 0.78 0.68, 0.89 0.59 C1 0.49, 1.13 0.41, 1.25 0.34 C1.38 0.26, 1.51 0.2, 1.65 0.15 C1.78 0.1, 1.92 0.06, 2.07 0.04 C2.21 0.01, 2.36 0, 2.5 0 C2.65 0, 2.79 0.01, 2.94 0.04 C3.08 0.06, 3.22 0.1, 3.36 0.15 C3.49 0.2, 3.63 0.26, 3.75 0.34 C3.88 0.41, 4 0.49, 4.11 0.59 C4.22 0.68, 4.32 0.78, 4.42 0.89 C4.51 1, 4.59 1.13, 4.67 1.25 C4.74 1.38, 4.8 1.51, 4.85 1.65 C4.9 1.78, 4.94 1.92, 4.96 2.07 C4.99 2.21, 5 2.43, 5 2.5 C5.01 2.57, 5.01 2.43, 5 2.5" stroke="#000000" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;g stroke-linecap="round" transform="translate(360.3650650031017 254.27156980000882) rotate(0 2.5009765625 2.5009765625)">&lt;path d="M5 2.5 C5 2.65, 4.99 2.79, 4.96 2.94 C4.94 3.08, 4.9 3.22, 4.85 3.36 C4.8 3.49, 4.74 3.63, 4.67 3.75 C4.59 3.88, 4.51 4, 4.42 4.11 C4.32 4.22, 4.22 4.32, 4.11 4.42 C4 4.51, 3.88 4.59, 3.75 4.67 C3.63 4.74, 3.49 4.8, 3.36 4.85 C3.22 4.9, 3.08 4.94, 2.94 4.96 C2.79 4.99, 2.65 5, 2.5 5 C2.36 5, 2.21 4.99, 2.07 4.96 C1.92 4.94, 1.78 4.9, 1.65 4.85 C1.51 4.8, 1.38 4.74, 1.25 4.67 C1.13 4.59, 1 4.51, 0.89 4.42 C0.78 4.32, 0.68 4.22, 0.59 4.11 C0.49 4, 0.41 3.88, 0.34 3.75 C0.26 3.63, 0.2 3.49, 0.15 3.36 C0.1 3.22, 0.06 3.08, 0.04 2.94 C0.01 2.79, 0 2.65, 0 2.5 C0 2.36, 0.01 2.21, 0.04 2.07 C0.06 1.92, 0.1 1.78, 0.15 1.65 C0.2 1.51, 0.26 1.38, 0.34 1.25 C0.41 1.13, 0.49 1, 0.59 0.89 C0.68 0.78, 0.78 0.68, 0.89 0.59 C1 0.49, 1.13 0.41, 1.25 0.34 C1.38 0.26, 1.51 0.2, 1.65 0.15 C1.78 0.1, 1.92 0.06, 2.07 0.04 C2.21 0.01, 2.36 0, 2.5 0 C2.65 0, 2.79 0.01, 2.94 0.04 C3.08 0.06, 3.22 0.1, 3.36 0.15 C3.49 0.2, 3.63 0.26, 3.75 0.34 C3.88 0.41, 4 0.49, 4.11 0.59 C4.22 0.68, 4.32 0.78, 4.42 0.89 C4.51 1, 4.59 1.13, 4.67 1.25 C4.74 1.38, 4.8 1.51, 4.85 1.65 C4.9 1.78, 4.94 1.92, 4.96 2.07 C4.99 2.21, 5 2.43, 5 2.5 C5.01 2.57, 5.01 2.43, 5 2.5" stroke="none" stroke-width="0" fill="#fab005">&lt;/path>&lt;path d="M5 2.5 C5 2.65, 4.99 2.79, 4.96 2.94 C4.94 3.08, 4.9 3.22, 4.85 3.36 C4.8 3.49, 4.74 3.63, 4.67 3.75 C4.59 3.88, 4.51 4, 4.42 4.11 C4.32 4.22, 4.22 4.32, 4.11 4.42 C4 4.51, 3.88 4.59, 3.75 4.67 C3.63 4.74, 3.49 4.8, 3.36 4.85 C3.22 4.9, 3.08 4.94, 2.94 4.96 C2.79 4.99, 2.65 5, 2.5 5 C2.36 5, 2.21 4.99, 2.07 4.96 C1.92 4.94, 1.78 4.9, 1.65 4.85 C1.51 4.8, 1.38 4.74, 1.25 4.67 C1.13 4.59, 1 4.51, 0.89 4.42 C0.78 4.32, 0.68 4.22, 0.59 4.11 C0.49 4, 0.41 3.88, 0.34 3.75 C0.26 3.63, 0.2 3.49, 0.15 3.36 C0.1 3.22, 0.06 3.08, 0.04 2.94 C0.01 2.79, 0 2.65, 0 2.5 C0 2.36, 0.01 2.21, 0.04 2.07 C0.06 1.92, 0.1 1.78, 0.15 1.65 C0.2 1.51, 0.26 1.38, 0.34 1.25 C0.41 1.13, 0.49 1, 0.59 0.89 C0.68 0.78, 0.78 0.68, 0.89 0.59 C1 0.49, 1.13 0.41, 1.25 0.34 C1.38 0.26, 1.51 0.2, 1.65 0.15 C1.78 0.1, 1.92 0.06, 2.07 0.04 C2.21 0.01, 2.36 0, 2.5 0 C2.65 0, 2.79 0.01, 2.94 0.04 C3.08 0.06, 3.22 0.1, 3.36 0.15 C3.49 0.2, 3.63 0.26, 3.75 0.34 C3.88 0.41, 4 0.49, 4.11 0.59 C4.22 0.68, 4.32 0.78, 4.42 0.89 C4.51 1, 4.59 1.13, 4.67 1.25 C4.74 1.38, 4.8 1.51, 4.85 1.65 C4.9 1.78, 4.94 1.92, 4.96 2.07 C4.99 2.21, 5 2.43, 5 2.5 C5.01 2.57, 5.01 2.43, 5 2.5" stroke="#000000" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;g stroke-linecap="round" transform="translate(371.07848146944787 254.722290953855) rotate(0 2.5009765625 2.5009765625)">&lt;path d="M5 2.5 C5 2.65, 4.99 2.79, 4.96 2.94 C4.94 3.08, 4.9 3.22, 4.85 3.36 C4.8 3.49, 4.74 3.63, 4.67 3.75 C4.59 3.88, 4.51 4, 4.42 4.11 C4.32 4.22, 4.22 4.32, 4.11 4.42 C4 4.51, 3.88 4.59, 3.75 4.67 C3.63 4.74, 3.49 4.8, 3.36 4.85 C3.22 4.9, 3.08 4.94, 2.94 4.96 C2.79 4.99, 2.65 5, 2.5 5 C2.36 5, 2.21 4.99, 2.07 4.96 C1.92 4.94, 1.78 4.9, 1.65 4.85 C1.51 4.8, 1.38 4.74, 1.25 4.67 C1.13 4.59, 1 4.51, 0.89 4.42 C0.78 4.32, 0.68 4.22, 0.59 4.11 C0.49 4, 0.41 3.88, 0.34 3.75 C0.26 3.63, 0.2 3.49, 0.15 3.36 C0.1 3.22, 0.06 3.08, 0.04 2.94 C0.01 2.79, 0 2.65, 0 2.5 C0 2.36, 0.01 2.21, 0.04 2.07 C0.06 1.92, 0.1 1.78, 0.15 1.65 C0.2 1.51, 0.26 1.38, 0.34 1.25 C0.41 1.13, 0.49 1, 0.59 0.89 C0.68 0.78, 0.78 0.68, 0.89 0.59 C1 0.49, 1.13 0.41, 1.25 0.34 C1.38 0.26, 1.51 0.2, 1.65 0.15 C1.78 0.1, 1.92 0.06, 2.07 0.04 C2.21 0.01, 2.36 0, 2.5 0 C2.65 0, 2.79 0.01, 2.94 0.04 C3.08 0.06, 3.22 0.1, 3.36 0.15 C3.49 0.2, 3.63 0.26, 3.75 0.34 C3.88 0.41, 4 0.49, 4.11 0.59 C4.22 0.68, 4.32 0.78, 4.42 0.89 C4.51 1, 4.59 1.13, 4.67 1.25 C4.74 1.38, 4.8 1.51, 4.85 1.65 C4.9 1.78, 4.94 1.92, 4.96 2.07 C4.99 2.21, 5 2.43, 5 2.5 C5.01 2.57, 5.01 2.43, 5 2.5" stroke="none" stroke-width="0" fill="#40c057">&lt;/path>&lt;path d="M5 2.5 C5 2.65, 4.99 2.79, 4.96 2.94 C4.94 3.08, 4.9 3.22, 4.85 3.36 C4.8 3.49, 4.74 3.63, 4.67 3.75 C4.59 3.88, 4.51 4, 4.42 4.11 C4.32 4.22, 4.22 4.32, 4.11 4.42 C4 4.51, 3.88 4.59, 3.75 4.67 C3.63 4.74, 3.49 4.8, 3.36 4.85 C3.22 4.9, 3.08 4.94, 2.94 4.96 C2.79 4.99, 2.65 5, 2.5 5 C2.36 5, 2.21 4.99, 2.07 4.96 C1.92 4.94, 1.78 4.9, 1.65 4.85 C1.51 4.8, 1.38 4.74, 1.25 4.67 C1.13 4.59, 1 4.51, 0.89 4.42 C0.78 4.32, 0.68 4.22, 0.59 4.11 C0.49 4, 0.41 3.88, 0.34 3.75 C0.26 3.63, 0.2 3.49, 0.15 3.36 C0.1 3.22, 0.06 3.08, 0.04 2.94 C0.01 2.79, 0 2.65, 0 2.5 C0 2.36, 0.01 2.21, 0.04 2.07 C0.06 1.92, 0.1 1.78, 0.15 1.65 C0.2 1.51, 0.26 1.38, 0.34 1.25 C0.41 1.13, 0.49 1, 0.59 0.89 C0.68 0.78, 0.78 0.68, 0.89 0.59 C1 0.49, 1.13 0.41, 1.25 0.34 C1.38 0.26, 1.51 0.2, 1.65 0.15 C1.78 0.1, 1.92 0.06, 2.07 0.04 C2.21 0.01, 2.36 0, 2.5 0 C2.65 0, 2.79 0.01, 2.94 0.04 C3.08 0.06, 3.22 0.1, 3.36 0.15 C3.49 0.2, 3.63 0.26, 3.75 0.34 C3.88 0.41, 4 0.49, 4.11 0.59 C4.22 0.68, 4.32 0.78, 4.42 0.89 C4.51 1, 4.59 1.13, 4.67 1.25 C4.74 1.38, 4.8 1.51, 4.85 1.65 C4.9 1.78, 4.94 1.92, 4.96 2.07 C4.99 2.21, 5 2.43, 5 2.5 C5.01 2.57, 5.01 2.43, 5 2.5" stroke="#000000" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;g stroke-opacity="0.9" fill-opacity="0.9" stroke-linecap="round" transform="translate(387.1055424590751 270.77465983187085) rotate(0 21.360101269687846 21.360101269687846)">&lt;path d="M19.16 -0.23 C23.44 -1.03, 29.62 0.75, 33.42 3.45 C37.22 6.15, 40.81 11.46, 41.97 15.96 C43.12 20.46, 42.3 26.41, 40.34 30.46 C38.38 34.51, 34.21 38.33, 30.22 40.28 C26.22 42.23, 20.72 43.18, 16.4 42.14 C12.07 41.1, 7.03 37.79, 4.27 34.02 C1.5 30.24, -0.42 24.07, -0.18 19.48 C0.07 14.89, 2.27 9.7, 5.73 6.48 C9.19 3.26, 18.05 1.14, 20.59 0.19 C23.14 -0.76, 20.98 0.42, 21 0.77 M19.72 -0.31 C24.02 -0.97, 29.26 1.6, 32.88 4.19 C36.51 6.79, 40.03 10.88, 41.46 15.27 C42.89 19.66, 43.3 26.36, 41.48 30.54 C39.66 34.72, 34.8 38.49, 30.53 40.35 C26.26 42.21, 20.16 42.74, 15.87 41.72 C11.57 40.7, 7.29 38, 4.74 34.24 C2.2 30.48, 0.31 23.84, 0.57 19.18 C0.84 14.51, 3.35 9.39, 6.33 6.27 C9.32 3.14, 16.43 1.51, 18.5 0.43 C20.58 -0.65, 18.55 -0.61, 18.81 -0.19" stroke="none" stroke-width="0" fill="#04aaf7">&lt;/path>&lt;path d="M17.44 -0.08 C21.61 -1.26, 27.42 0.16, 31.42 2.48 C35.43 4.79, 39.73 9.51, 41.48 13.82 C43.22 18.13, 43.42 24, 41.89 28.34 C40.35 32.67, 36.27 37.43, 32.26 39.84 C28.25 42.26, 22.34 43.56, 17.8 42.83 C13.26 42.11, 8.01 39.07, 5 35.51 C1.99 31.94, -0.29 26.09, -0.27 21.45 C-0.25 16.81, 2.04 11.15, 5.1 7.65 C8.17 4.15, 15.94 1.62, 18.14 0.45 C20.34 -0.73, 18.29 0.28, 18.32 0.6 M21.61 -0.1 C25.95 -0.4, 32.14 1.83, 35.6 4.73 C39.06 7.63, 41.69 12.88, 42.36 17.32 C43.03 21.77, 41.79 27.33, 39.61 31.41 C37.43 35.5, 33.43 40.08, 29.3 41.85 C25.17 43.63, 19.18 43.76, 14.83 42.07 C10.49 40.38, 5.76 35.65, 3.25 31.7 C0.75 27.76, -0.83 22.88, -0.18 18.42 C0.47 13.95, 3.63 8.05, 7.15 4.91 C10.67 1.77, 18.65 0.43, 20.94 -0.42 C23.23 -1.27, 20.94 -0.71, 20.88 -0.19" stroke="#000000" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;g stroke-linecap="round">&lt;g transform="translate(414.1837065210507 286.9990118963285) rotate(0 -3.3114080732229922 5.9489359900645695)" fill-rule="evenodd">&lt;path d="M0 0 C-0.31 -0.07, -0.57 0.63, -1.83 -0.41 C-3.09 -1.46, -5.98 -5.62, -7.57 -6.27 C-9.16 -6.93, -10.52 -5.79, -11.36 -4.35 C-12.2 -2.91, -12.63 0.53, -12.61 2.37 C-12.6 4.22, -10.47 5.65, -11.27 6.74 C-12.07 7.83, -16.44 7.74, -17.42 8.89 C-18.41 10.04, -18.04 12.9, -17.2 13.64 C-16.36 14.39, -13.8 14.04, -12.38 13.35 C-10.96 12.66, -10.16 8.72, -8.7 9.48 C-7.24 10.23, -5 16.42, -3.62 17.87 C-2.24 19.32, -0.39 20.35, -0.42 18.17 C-0.44 15.99, -4.08 7.1, -3.78 4.8 C-3.48 2.5, 0.23 4.17, 1.39 4.35 C2.54 4.53, 1.85 5.61, 3.16 5.87 C4.47 6.12, 7.96 6.74, 9.24 5.87 C10.51 5, 11.64 1.43, 10.8 0.63 C9.97 -0.16, 5.11 2.18, 4.22 1.11 C3.34 0.04, 5.78 -4.68, 5.49 -5.76 C5.19 -6.84, 3.43 -6.15, 2.47 -5.35 C1.52 -4.54, 0.17 -1.81, -0.24 -0.92 C-0.65 -0.03, -0.04 -0.15, 0 0" stroke="none" stroke-width="0" fill="#40c057" fill-rule="evenodd">&lt;/path>&lt;path d="M0 0 C-0.31 -0.07, -0.57 0.63, -1.83 -0.41 C-3.09 -1.46, -5.98 -5.62, -7.57 -6.27 C-9.16 -6.93, -10.52 -5.79, -11.36 -4.35 C-12.2 -2.91, -12.63 0.53, -12.61 2.37 C-12.6 4.22, -10.47 5.65, -11.27 6.74 C-12.07 7.83, -16.44 7.74, -17.42 8.89 C-18.41 10.04, -18.04 12.9, -17.2 13.64 C-16.36 14.39, -13.8 14.04, -12.38 13.35 C-10.96 12.66, -10.16 8.72, -8.7 9.48 C-7.24 10.23, -5 16.42, -3.62 17.87 C-2.24 19.32, -0.39 20.35, -0.42 18.17 C-0.44 15.99, -4.08 7.1, -3.78 4.8 C-3.48 2.5, 0.23 4.17, 1.39 4.35 C2.54 4.53, 1.85 5.61, 3.16 5.87 C4.47 6.12, 7.96 6.74, 9.24 5.87 C10.51 5, 11.64 1.43, 10.8 0.63 C9.97 -0.16, 5.11 2.18, 4.22 1.11 C3.34 0.04, 5.78 -4.68, 5.49 -5.76 C5.19 -6.84, 3.43 -6.15, 2.47 -5.35 C1.52 -4.54, 0.17 -1.81, -0.24 -0.92 C-0.65 -0.03, -0.04 -0.15, 0 0 M0 0 C-0.31 -0.07, -0.57 0.63, -1.83 -0.41 C-3.09 -1.46, -5.98 -5.62, -7.57 -6.27 C-9.16 -6.93, -10.52 -5.79, -11.36 -4.35 C-12.2 -2.91, -12.63 0.53, -12.61 2.37 C-12.6 4.22, -10.47 5.65, -11.27 6.74 C-12.07 7.83, -16.44 7.74, -17.42 8.89 C-18.41 10.04, -18.04 12.9, -17.2 13.64 C-16.36 14.39, -13.8 14.04, -12.38 13.35 C-10.96 12.66, -10.16 8.72, -8.7 9.48 C-7.24 10.23, -5 16.42, -3.62 17.87 C-2.24 19.32, -0.39 20.35, -0.42 18.17 C-0.44 15.99, -4.08 7.1, -3.78 4.8 C-3.48 2.5, 0.23 4.17, 1.39 4.35 C2.54 4.53, 1.85 5.61, 3.16 5.87 C4.47 6.12, 7.96 6.74, 9.24 5.87 C10.51 5, 11.64 1.43, 10.8 0.63 C9.97 -0.16, 5.11 2.18, 4.22 1.11 C3.34 0.04, 5.78 -4.68, 5.49 -5.76 C5.19 -6.84, 3.43 -6.15, 2.47 -5.35 C1.52 -4.54, 0.17 -1.81, -0.24 -0.92 C-0.65 -0.03, -0.04 -0.15, 0 0" stroke="#087f5b" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;g stroke-linecap="round">&lt;g stroke-opacity="0.9" fill-opacity="0.9" transform="translate(388.1646049331026 291.73753339505186) rotate(0 21.047557886136133 0)">&lt;path d="M0.26 0.28 C7.26 0.24, 34.61 -0.21, 41.55 -0.22 M-0.27 -0.05 C6.92 -0.02, 35.55 0.47, 42.51 0.36" stroke="#000000" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;g stroke-linecap="round">&lt;g stroke-opacity="0.9" fill-opacity="0.9" transform="translate(393.25993396287697 276.30300446808565) rotate(0 14.659303301924297 2.593116626464507)">&lt;path d="M0 0 C0.13 0.38, 0.09 1.58, 0.77 2.28 C1.46 2.97, 2.81 3.68, 4.1 4.19 C5.4 4.7, 6.64 5.13, 8.54 5.34 C10.43 5.55, 12.97 5.55, 15.48 5.45 C17.99 5.34, 21.44 5.28, 23.58 4.71 C25.72 4.14, 27.36 2.86, 28.32 2.03 C29.27 1.2, 29.15 0.12, 29.32 -0.26 M0 0 C0.13 0.38, 0.09 1.58, 0.77 2.28 C1.46 2.97, 2.81 3.68, 4.1 4.19 C5.4 4.7, 6.64 5.13, 8.54 5.34 C10.43 5.55, 12.97 5.55, 15.48 5.45 C17.99 5.34, 21.44 5.28, 23.58 4.71 C25.72 4.14, 27.36 2.86, 28.32 2.03 C29.27 1.2, 29.15 0.12, 29.32 -0.26" stroke="#000000" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;g stroke-opacity="0.9" fill-opacity="0.9" stroke-linecap="round" transform="translate(401.33384988679643 269.39213020227817) rotate(0 7.764217176558077 22.41115194065469)">&lt;path d="M8.39 0.35 C9.87 0.59, 11.9 3.79, 13.03 7.22 C14.17 10.64, 15.08 16.25, 15.2 20.92 C15.33 25.58, 14.63 31.39, 13.77 35.21 C12.91 39.03, 11.55 42.57, 10.05 43.81 C8.54 45.06, 6.3 44.75, 4.72 42.69 C3.14 40.63, 1.27 35.9, 0.56 31.48 C-0.14 27.06, 0 20.7, 0.48 16.16 C0.96 11.63, 2.03 6.85, 3.42 4.24 C4.8 1.63, 7.85 0.99, 8.8 0.49 C9.76 0, 9.17 0.92, 9.14 1.25 M7.74 0.52 C9.47 0.1, 11.68 2.21, 13 4.88 C14.31 7.55, 15.42 11.88, 15.63 16.55 C15.84 21.22, 15.11 28.52, 14.26 32.89 C13.41 37.25, 12.02 40.95, 10.54 42.72 C9.05 44.5, 6.92 44.94, 5.33 43.54 C3.73 42.14, 1.95 38.14, 0.97 34.33 C-0.01 30.51, -0.9 25.34, -0.57 20.65 C-0.25 15.96, 1.66 9.57, 2.91 6.19 C4.16 2.8, 6.12 1.3, 6.92 0.33 C7.73 -0.63, 7.77 0.08, 7.75 0.42" stroke="#000000" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;g stroke-linecap="round">&lt;g stroke-opacity="0.9" fill-opacity="0.9" transform="translate(394.77588547250286 308.04009652652667) rotate(0 14.659303301924297 -2.677051221420811)">&lt;path d="M0 0 C0.68 -0.72, 2.68 -3.4, 4.1 -4.32 C5.53 -5.24, 6.64 -5.3, 8.54 -5.52 C10.43 -5.73, 12.97 -5.73, 15.48 -5.63 C17.99 -5.52, 21.44 -5.45, 23.58 -4.86 C25.72 -4.28, 27.36 -2.95, 28.32 -2.1 C29.27 -1.24, 29.15 -0.12, 29.32 0.27 M0 0 C0.68 -0.72, 2.68 -3.4, 4.1 -4.32 C5.53 -5.24, 6.64 -5.3, 8.54 -5.52 C10.43 -5.73, 12.97 -5.73, 15.48 -5.63 C17.99 -5.52, 21.44 -5.45, 23.58 -4.86 C25.72 -4.28, 27.36 -2.95, 28.32 -2.1 C29.27 -1.24, 29.15 -0.12, 29.32 0.27" stroke="#000000" stroke-width="1" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;g transform="translate(308.5 350) rotate(0 100 10)">&lt;text x="100" y="14.096" font-family="Excalifont, Xiaolai, Segoe UI Emoji" font-size="16px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">end user (web browser)&lt;/text>&lt;/g>&lt;g stroke-linecap="round">&lt;g transform="translate(236.5 132) rotate(0 56 48)">&lt;path d="M0.23 -1.01 C9.89 5.93, 40.46 26.13, 58.92 42.27 C77.38 58.41, 102.01 86.73, 110.98 95.83 M-1.1 1.07 C8.83 8.1, 41.99 27.42, 61.07 43.42 C80.14 59.42, 104.62 88.51, 113.34 97.06" stroke="#1e1e1e" stroke-width="2" fill="none">&lt;/path>&lt;/g>&lt;g transform="translate(236.5 132) rotate(0 56 48)">&lt;path d="M24.35 5.59 C13.47 1.34, 4.77 -1.07, 0.23 -1.01 M24.35 5.59 C18.41 3.55, 10.57 1.16, 0.23 -1.01" stroke="#1e1e1e" stroke-width="2" fill="none">&lt;/path>&lt;/g>&lt;g transform="translate(236.5 132) rotate(0 56 48)">&lt;path d="M14.46 19.55 C7.26 9.97, 2.32 2.27, 0.23 -1.01 M14.46 19.55 C11.26 13.45, 6.25 7.06, 0.23 -1.01" stroke="#1e1e1e" stroke-width="2" fill="none">&lt;/path>&lt;/g>&lt;/g>&lt;mask>&lt;/mask>&lt;/svg>
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="network_overview.svg">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Network overview
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+&lt;/p>
+&lt;p>The high-level steps of this setup process are:&lt;/p>
+&lt;ol>
+&lt;li>Create a self-hosted Docker-based Keycloak instance.&lt;/li>
+&lt;li>Configure an authentication realm, OIDC client and test users in Keycloak.&lt;/li>
+&lt;li>Configure the authentication provider in Velociraptor.&lt;/li>
+&lt;li>Add test users to Velociraptor.&lt;/li>
+&lt;li>Test the authentication process.&lt;/li>
+&lt;/ol>
+&lt;h2 id="create-a-docker-based-keycloak-instance">Create a Docker-based Keycloak instance&lt;/h2>
+&lt;p>We assume that Docker has already been installed and configured on the
+designated Keycloak host. We aren&amp;rsquo;t going to use Docker Compose but for
+production deployment you might prefer to do so, and example configurations can
+be found on the internet.&lt;/p>
+&lt;p>Before we install Keycloak we are going to need a certificate for it to use. Here
+we will generate a simple self-signed cert with corresponding private key but ideally in
+production you would have a cert signed by a trusted CA.&lt;/p>
+&lt;p>&lt;strong>1. Generate a key pair&lt;/strong>&lt;/p>
+&lt;pre>&lt;code class="language-sh"># Create keycloak-server.crt.pem and keycloak-server.key.pem
+openssl req -newkey rsa:2048 -nodes -subj &amp;quot;/CN=keycloak.local&amp;quot; \
+-addext &amp;quot;subjectAltName=DNS:keycloak.local,IP:192.168.56.1&amp;quot; \
+-keyout keycloak-server.key.pem -x509 -days 3650 -out keycloak-server.crt.pem
+# Set appropriate permissions on files
+chmod -R 644 keycloak-server*
+&lt;/code>&lt;/pre>
+&lt;p>NOTE: The certificate SAN is required by Velociraptor. If not present you will receive
+this error when trying to start Velociraptor.&lt;br>
+&lt;code>error: gui: starting frontend: Get &amp;quot;https://keycloak.local/.well-known/openid-configuration&amp;quot;: x509: certificate relies on legacy Common Name field, use SANs instead&lt;/code>&lt;br>
+Putting the IP in the SAN is not really necessary but helpful if you need to
+connect to Keycloak&amp;rsquo;s admin page using it&amp;rsquo;s IP.&lt;/p>
+&lt;p>Now that we have the key pair we can run Docker which will pull the latest
+Keycloak image (26.0.7 at the time of writing).&lt;/p>
+&lt;p>&lt;strong>2. Run the Docker command.&lt;/strong>&lt;/p>
+&lt;pre>&lt;code class="language-sh">docker run -p 443:443 -e KC_HOSTNAME=keycloak.local \
+-e KC_BOOTSTRAP_ADMIN_USERNAME=admin -e KC_BOOTSTRAP_ADMIN_PASSWORD=admin \
+-v /root/keycloak-server.crt.pem:/etc/x509/https/keycloak-server.crt.pem \
+-v /root/keycloak-server.key.pem:/etc/x509/https/keycloak-server.key.pem \
+-e KC_HTTPS_CERTIFICATE_FILE=/etc/x509/https/keycloak-server.crt.pem \
+-e KC_HTTPS_CERTIFICATE_KEY_FILE=/etc/x509/https/keycloak-server.key.pem \
+quay.io/keycloak/keycloak:latest start-dev --https-port=443
+&lt;/code>&lt;/pre>
+&lt;p>We set various Keycloak config options as Docker environment variables and
+make the cert and private key available inside the Docker using volume mapping.&lt;/p>
+&lt;p>If the Docker fails to start, you should inspect the command output for errors.
+If successful it should report
+&lt;code>Listening on: http://0.0.0.0:8080 and https://0.0.0.0:443&lt;/code>.&lt;/p>
+&lt;p>The KC_BOOTSTRAP* variables create an initial user &lt;code>admin&lt;/code> with password
+&lt;code>admin&lt;/code> which we use to configure Keycloak in the next section.&lt;/p>
+&lt;h2 id="configure-keycloak">Configure Keycloak&lt;/h2>
+&lt;p>Next we go through the steps that are almost the same as described in Keycloak&amp;rsquo;s
+&lt;a href="https://www.keycloak.org/getting-started/getting-started-docker" target="_blank" >Getting started guide&lt;/a>
+.&lt;/p>
+&lt;p>Connect to Keycloak&amp;rsquo;s Admin Console (in this case: &lt;a href="https://keycloak.local" target="_blank" >https://keycloak.local&lt;/a>
+) and
+log in with the &lt;code>admin&lt;/code> user.&lt;/p>
+&lt;p>&lt;strong>3. Create an authentication realm&lt;/strong>&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="a95eb8c08fa648913b9893b649864bc1">
+ &lt;div data-featherlight="#a95eb8c08fa648913b9893b649864bc1" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_keycloak/keycloak00.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="keycloak00.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>You can use any name for the realm but here we are going to just use &lt;code>myrealm&lt;/code>
+for convenience.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="53dcd412a99f4cf293824a7b329e2c3f">
+ &lt;div data-featherlight="#53dcd412a99f4cf293824a7b329e2c3f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_keycloak/keycloak01.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="keycloak01.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Click &lt;strong>Create&lt;/strong>.&lt;/p>
+&lt;p>&lt;strong>4. Create OIDC client configuration for Velociraptor&lt;/strong>&lt;/p>
+&lt;p>In this step we create a new client record and client secret which we will use
+later in the Velociraptor configuration. In the realm selection drop-down ensure
+that you are in the new &lt;code>myrealm&lt;/code> realm.&lt;/p>
+&lt;p>In the sidebar select &lt;strong>Clients&lt;/strong> and then select &lt;strong>Create client&lt;/strong>.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="b765549e2d38410bcea9c79f931c3c84">
+ &lt;div data-featherlight="#b765549e2d38410bcea9c79f931c3c84" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_keycloak/keycloak02.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="keycloak02.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>This will start a 3-page configuration wizard. On the first page the &lt;strong>Client
+ID&lt;/strong> is all that&amp;rsquo;s required. Enter &lt;code>velociraptor&lt;/code> and click &lt;strong>Next&lt;/strong>.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="79217a623d69f8f8d2136f7b6f875fc7">
+ &lt;div data-featherlight="#79217a623d69f8f8d2136f7b6f875fc7" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_keycloak/keycloak03.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="keycloak03.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>On the second page, choose &lt;strong>Client authentication: ON&lt;/strong> and
+&lt;strong>Authentication flow: Standard flow&lt;/strong> (only). Then click &lt;strong>Next&lt;/strong>.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="0f8adf194ac2d23ee44bde03f971a5b8">
+ &lt;div data-featherlight="#0f8adf194ac2d23ee44bde03f971a5b8" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_keycloak/keycloak04.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="keycloak04.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>On the third page we use the following values (adapt to your DNS names if your
+are replicating the setup in your own environment):&lt;/p>
+&lt;ul>
+&lt;li>Valid redirect URIs: &lt;code>https://velociraptor.local:8889/auth/oidc/keycloak/callback&lt;/code>&lt;/li>
+&lt;li>Valid post logout redirect URIs:
+&lt;code>https://velociraptor.local:8889/app/logoff.html&lt;/code>&lt;/li>
+&lt;li>Web origins: &lt;code>https://velociraptor.local&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="680a948778124e0b21e6b194ef5b310a">
+ &lt;div data-featherlight="#680a948778124e0b21e6b194ef5b310a" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_keycloak/keycloak05.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="keycloak05.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Then click &lt;strong>Save&lt;/strong>. Your OIDC client configuration is now created.&lt;/p>
+&lt;p>On the page that follows, go to the &lt;strong>Credentials&lt;/strong> tab. There you will find the
+&lt;strong>Client secret&lt;/strong> which you will need for your Velociraptor configuration. It is
+randomly generated and you can regenerate it if desired, but if you do so then
+don&amp;rsquo;t forget to update your Velociraptor server&amp;rsquo;s config with the new secret.
+Typically you would only regenerate it if you suspected a compromised secret.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="c028e0441ef62c53cd66ed4eb371c2bd">
+ &lt;div data-featherlight="#c028e0441ef62c53cd66ed4eb371c2bd" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_keycloak/keycloak06.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="keycloak06.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>The next action is to configure email addresses as login usernames. To do that
+navigate via the sidebar to &lt;strong>Realm settings&lt;/strong> &amp;gt; &lt;strong>Login&lt;/strong> tab. Ensure that
+&lt;strong>Email as username&lt;/strong> and &lt;strong>Login with email&lt;/strong> are enabled. The additional user
+preferences shown in the following screenshot are optional and in your case
+would be determined by your organizational policies.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="688b70e233f7b149f02f81f39ecb073a">
+ &lt;div data-featherlight="#688b70e233f7b149f02f81f39ecb073a" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_keycloak/keycloak08.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="keycloak08.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>The last action in this step is to configure the required actions for
+authentication so that users don&amp;rsquo;t have to enter additional information when
+they first log in.
+Navigate via the sidebar to &lt;strong>Authentication&lt;/strong> &amp;gt; &lt;strong>Required actions&lt;/strong> tab.
+Disable all options except &lt;strong>Update password&lt;/strong>.&lt;/p>
+&lt;p>&lt;strong>5. Create test users&lt;/strong>&lt;/p>
+&lt;p>We will need at least one user account to test the authentication. From the
+sidebar select &lt;strong>Users&lt;/strong> and then click the &lt;strong>Create new user&lt;/strong> button.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="f75abd5fd7309f3da9986f814ab200a5">
+ &lt;div data-featherlight="#f75abd5fd7309f3da9986f814ab200a5" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_keycloak/keycloak07.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="keycloak07.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>For the user account I am going to create one named &lt;code>bob@local&lt;/code>. Remember that
+we previously enabled &lt;strong>Email as username&lt;/strong> and &lt;strong>Login with email&lt;/strong>, so all
+other fields are optional. I also selected &lt;strong>Email verified&lt;/strong> to avoid an email
+verification step when logging in.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="cb7b6a63eddd5ea217e2a8190ea68bd7">
+ &lt;div data-featherlight="#cb7b6a63eddd5ea217e2a8190ea68bd7" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_keycloak/keycloak09.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="keycloak09.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>After creating the account, go to the Credentials tab and set a password. Note
+that we leave &lt;strong>Temporary:ON&lt;/strong> set so that the password must be changed on first
+logon. Note also that this is a simplified demonstration so for that reason
+we&amp;rsquo;re ONLY using password auth while Keycloak easily supports multi-factor
+authentication.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="d0e5f2107f59ca1869103d86263ad441">
+ &lt;div data-featherlight="#d0e5f2107f59ca1869103d86263ad441" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_keycloak/keycloak10.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="keycloak10.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Repeat the user creation actions to also create a user account
+&lt;code>fred@local&lt;/code>.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="2e597f774790a1692072c8401de23a6c">
+ &lt;div data-featherlight="#2e597f774790a1692072c8401de23a6c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_keycloak/keycloak11.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="keycloak11.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Now we are ready to move to configuring the Velociraptor side of things.&lt;/p>
+&lt;h2 id="configure-velociraptor">Configure Velociraptor&lt;/h2>
+
+&lt;div class="mynotices tip">
+ &lt;div heading="tip">&lt;p>While configuring, testing and potentially troubleshooting problems, it&amp;rsquo;s
+easier if you can see Velociraptor&amp;rsquo;s log messages. You can stop the server
+service and then run the server manually on the command line by using the
+following commands:&lt;/p>
+&lt;pre>&lt;code class="language-bash">sudo systemctl stop velociraptor_server
+sudo -u velociraptor bash
+velociraptor -c /etc/velociraptor/server.config.yaml frontend -v
+&lt;/code>&lt;/pre>
+&lt;p>This will display the log messages in the terminal.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>&lt;strong>6. Add the authenticator settings to your Velciraptor config&lt;/strong>&lt;/p>
+&lt;p>In the &lt;code>GUI&lt;/code> section of your Velociraptor config you should have the following
+authenticator settings by default:&lt;/p>
+&lt;pre>&lt;code class="language-yaml"> authenticator:
+ type: Basic
+&lt;/code>&lt;/pre>
+&lt;p>We no longer want Basic auth and instead want SSO, so replace that with these
+new settings to match our Keycloak configuration:&lt;/p>
+&lt;pre>&lt;code class="language-yaml"> type: oidc
+ oidc_issuer: https://keycloak.local/realms/myrealm
+ oidc_name: keycloak
+ avatar: https://www.keycloak.org/resources/images/logo.svg
+ oauth_client_id: velociraptor
+ oauth_client_secret: p4EABoniopnasbrmstDnsHrQcSukNmp2
+&lt;/code>&lt;/pre>
+&lt;p>The &lt;code>oauth_client_secret&lt;/code> is the value we obtained at the end of step 4. The
+&lt;code>oauth_client_id&lt;/code> is the name we used for the OIDC Client ID in that same
+section.&lt;/p>
+&lt;p>The &lt;code>oidc_name&lt;/code> can be anything you want but it must exactly match
+(case-sensitive) the substring used in the &lt;strong>Valid redirect URIs&lt;/strong> field of the
+client configuration in Keycloak.&lt;/p>
+&lt;p>Keycloak requires that the &lt;code>oidc_issuer&lt;/code> field specify the path
+&lt;code>/realms/myrealm&lt;/code> as this is where is serves the OpenID Endpoint Configuration
+that Velociraptor will need to access. If you have somehow gotten this wrong
+then Velociraptor will log an error such as:
+&lt;code>[ERROR] can not get information from OIDC provider, check https://keycloak.local/.well-known/openid-configuration is correct and accessible from the server.&lt;/code>&lt;/p>
+&lt;p>Before you start Velociraptor, if you are using a self-signed cert for Keycloak
+then also attend to the next step.&lt;/p>
+&lt;p>&lt;strong>7. Copy the Keycloak server cert to the trusted root store.&lt;/strong>&lt;/p>
+&lt;p>Because the Keycloak server is using a certificate that wasn&amp;rsquo;t issued by a
+trusted CA, we need to add it&amp;rsquo;s certificate to the trusted root store on the
+Velociraptor server. Assuming your server is Ubuntu or similar this means saving
+a copy of the certificate to &lt;code>/etc/ssl/certs&lt;/code>.&lt;/p>
+&lt;p>Without this step you will see this error in the log when attempting to start
+Velociraptor:
+&lt;code>error: gui: starting frontend: Get &amp;quot;https://keycloak.local/...&amp;quot;: x509: certificate signed by unknown authority (possibly because of &amp;quot;crypto/rsa: verification error&amp;quot; while trying to verify candidate authority certificate &amp;quot;keycloak.local&amp;quot;)&lt;/code>&lt;/p>
+&lt;p>&lt;strong>8. Start Velociraptor&lt;/strong>&lt;/p>
+&lt;p>The server should now start cleanly and continue running. In the log messages
+you should see &lt;code>GUI will use the oidc authenticator&lt;/code>. That means everything is
+OK with the authenticator config.&lt;/p>
+&lt;p>One possible gotcha is if the server&amp;rsquo;s &lt;code>GUI.public_url&lt;/code> setting is still using
+an IP address or if &lt;code>GUI.bind_address&lt;/code> is not set to &lt;code>0.0.0.0&lt;/code> then you may get
+stopped with the error:
+&lt;code>error: gui: starting frontend: Authentication type 'oidc' requires valid public_url parameter&lt;/code>&lt;/p>
+&lt;p>In this case the &lt;code>GUI.public_url&lt;/code> is set to &lt;code>https://velociraptor.local:8889/&lt;/code>.&lt;/p>
+&lt;h2 id="add-test-users">Add test users&lt;/h2>
+&lt;p>We have created 2 users in Keycloak but these users don&amp;rsquo;t yet exist in
+Velociraptor. Velociraptor has it&amp;rsquo;s own permissions model and therefore needs to
+know about any users so that once they authenticate the correct permissions can
+be applied.&lt;/p>
+&lt;p>Users can be created using VQL in Velociraptor notebooks but since we have now
+switched authentication providers we no longer have access to the GUI. Of course
+we could have added the users before we switched but let&amp;rsquo;s pretend we didn&amp;rsquo;t and
+instead do it from the command line.&lt;/p>
+&lt;p>We will make &lt;code>bob@local&lt;/code> a server admin and grant &lt;code>fred@local&lt;/code> the &amp;ldquo;reader&amp;rdquo;
+role, which provides minimal access to Velociraptor&amp;rsquo;s GUI. The following two
+commands will create these users:&lt;/p>
+&lt;p>&lt;strong>9. Add users to the datastore&lt;/strong>&lt;/p>
+&lt;pre>&lt;code class="language-sh">velociraptor --config server.config.yaml user add --role administrator bob@local
+velociraptor --config server.config.yaml user add --role reader fred@local
+&lt;/code>&lt;/pre>
+&lt;p>NOTE: We provide the &lt;code>--config&lt;/code> flag so that this invocation of the velociraptor
+binary knows which datastore to add the new users to. This can be done while the
+server service is running or not running, but either way the service will need
+to be restarted to update itself with the datastore changes.&lt;/p>
+&lt;p>Because of our OIDC authenticator config, when adding each user we will receive
+an acknowledgement message saying
+&lt;code>&amp;quot;Authentication will occur via oidc - therefore no password needs to be set.&amp;quot;&lt;/code>&lt;/p>
+&lt;h2 id="test-authentication-process">Test authentication process&lt;/h2>
+&lt;p>Test the authentication process by going to &lt;code>https://velociraptor.local:8889/&lt;/code>&lt;/p>
+&lt;p>You will be presented with the choice to log in with Keycloak (multiple
+authentication providers are supported but we only have one configured).&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="31e5adca94cd8097aa53d3d80b854494">
+ &lt;div data-featherlight="#31e5adca94cd8097aa53d3d80b854494" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_keycloak/auth00.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="auth00.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Enter initial credentials (password that was set in Keycloak).&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="cdf9c2bc39d8b9246798ea0c93a41a77">
+ &lt;div data-featherlight="#cdf9c2bc39d8b9246798ea0c93a41a77" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_keycloak/auth01.png" alt="Login page">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="auth01.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Login page
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>You will be required to change the password because we configured
+&lt;strong>Temporary:ON&lt;/strong> when setting the account&amp;rsquo;s password.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="2aa22cd981916f37b088880464064e88">
+ &lt;div data-featherlight="#2aa22cd981916f37b088880464064e88" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_keycloak/auth02.png" alt="Change the password">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="auth02.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Change the password
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="8a64b7f7025e7880b3bf2e942eb4a6b9">
+ &lt;div data-featherlight="#8a64b7f7025e7880b3bf2e942eb4a6b9" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_keycloak/auth03.png" alt="Successful login!">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="auth03.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Successful login!
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="a8eb9d50ba9e3b752201affb797b7391">
+ &lt;div data-featherlight="#a8eb9d50ba9e3b752201affb797b7391" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_keycloak/auth04.png" alt="We can verify that the user has the server admin role.">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="auth04.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ We can verify that the user has the server admin role.
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="e6be4f3b4580ccf759ee6011572ac2d7">
+ &lt;div data-featherlight="#e6be4f3b4580ccf759ee6011572ac2d7" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/setup_keycloak/auth05.png" alt="We can sign out and sign in again.">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="auth05.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ We can sign out and sign in again.
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>The same process applies to &lt;code>fred@local&lt;/code> except that we can verify in
+Velociraptor that the user has the read-only role.&lt;/p>
+
+&lt;div class="mynotices tip">
+ &lt;div heading="tip">&lt;p>For testing multiple users in the same web browser you may have trouble
+fully logging a user out because while logged out of Velociraptor the OIDC
+session is still active.&lt;/p>
+&lt;p>Logout of the OIDC session can be achieved by
+navigating to the the endpoint
+&lt;code>https://keycloak.local/realms/myrealm/protocol/openid-connect/logout&lt;/code>
+from within the same web browser and choosing to log out.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;h2 id="what-next">What next?&lt;/h2>
+&lt;p>Once you have the working authentication setup, as per this guide, then you can
+begin experimenting with additional options while knowing that any change which
+causes a negative effect can be reverted back to a known working state. This is
+a much easier approach than diving in with a complex configuration and spending
+hours troubleshooting why it doesn&amp;rsquo;t work.&lt;/p>
+&lt;p>Since the Docker installation used in the guide is non-permanent it will reset
+when you restart the docker VM. For testing and experimenting that&amp;rsquo;s a good
+thing as you gain familiarity by going through the process. As mentioned,
+Keycloak supports multifactor authentication, complex authentication flow
+options, themeable login screens, and many other cool features. However for
+permanent configuration you will need to learn how to create a persistent
+Keycloak database, possibly using a different deployment method.&lt;/p></description></item><item><title>How can I configure Velociraptor for multiple SSO providers</title><link>https://docs.velociraptor.app/knowledge_base/tips/multiple_oauth/</link><pubDate>Sat, 26 Mar 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/multiple_oauth/</guid><description>&lt;h1 id="how-can-i-configure-velociraptor-for-multiple-sso-providers">How can I configure Velociraptor for multiple SSO providers&lt;/h1>
+&lt;p>Velociraptor can be configured to use a single SSO provider using the usual configuration building wizard (see &lt;a href="https://docs.velociraptor.app/docs/deployment/server/#configuring-google-oauth-sso" target="_blank" >Here&lt;/a>
+), but the wizard does not offer to configure multiple providers.&lt;/p>
+&lt;p>Sometimes we want to have multiple providers so we can allow users from another organization to be able to log into Velociraptor. To do this we need to configure the SSO authenticator manually in the configuration file.&lt;/p>
+&lt;p>Simply run &lt;code>velociraptor config generate -i&lt;/code> and select the OAuth provider for the first provider. In the end your config file will have the following section where &lt;code>oauth_client_id&lt;/code> and &lt;code>oauth_client_secret&lt;/code> refer to the Google OAuth app you created:&lt;/p>
+&lt;pre>&lt;code class="language-yaml">GUI:
+ ... more settings ...
+ authenticator:
+ type: Google
+ oauth_client_id: 12345.apps.googleusercontent.com
+ oauth_client_secret: XYZ1234
+&lt;/code>&lt;/pre>
+&lt;p>To provide multiple authenticators, you will need to manually change to the &lt;code>multi&lt;/code> authenticator type:&lt;/p>
+&lt;pre>&lt;code class="language-yaml">GUI:
+ ... more settings ...
+ authenticator:
+ type: multi
+ sub_authenticators:
+ - type: Google
+ oauth_client_id: 12345.apps.googleusercontent.com
+ oauth_client_secret: XYZ1234
+ - type: GitHub
+ oauth_client_id: 123456
+ oauth_client_secret: 76521376523
+ - type: oidc
+ oidc_issuer: https://accounts.google.com
+ oidc_name: Rapid7
+ avatar: https://example.com/avatar.png
+ oauth_client_id: XXXXX
+ oauth_client_secret: AAAAA
+&lt;/code>&lt;/pre>
+&lt;p>Note that you can have multiple &lt;code>OIDC&lt;/code> authenticators and each can have a separate name and an icon associated with it (e.g. if multiple organizations use separate Okta logins).&lt;/p>
+&lt;p>
+
+
+
+
+
+
+&lt;figure id="47a0513752ad43ed9f3f48bd62462858">
+ &lt;div data-featherlight="#47a0513752ad43ed9f3f48bd62462858" class="figure">
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/multiple_oauth/https://user-images.githubusercontent.com/3856546/160241517-c2bf85e5-7d5d-4d3b-ac24-b2bfbda5436b.png" alt="Logging in with multiple providers" />
+ &lt;/div>
+ &lt;figcaption>
+ Logging in with multiple providers
+ &lt;/figcaption>
+&lt;/figure>
+
+
+&lt;/p>
+&lt;h2 id="granting-a-user-a-role">Granting a user a role.&lt;/h2>
+&lt;p>Velociraptor will trust any of the configured authenticators, to identify the user and based on the username, grant the user the appropriate roles on the Velociraptor server. You will need to grant the user a role either through the command line:&lt;/p>
+&lt;pre>&lt;code>velociraptor user add --role administrator mike@gmail.comm
+&lt;/code>&lt;/pre>
+&lt;p>Or via a notebook cell:&lt;/p>
+&lt;pre>&lt;code class="language-sql">SELECT user_create(user=&amp;quot;mike@gmail.com&amp;quot;, role=&amp;quot;administrator&amp;quot;)
+FROM scope()
+&lt;/code>&lt;/pre>
+
+&lt;div class="mynotices warning">
+ &lt;div heading=" Trusting multiple providers ">&lt;p>Be aware that trusting multiple identity providers can result in account hijack if a user can get an account of the same name on another provider. Velociraptor just uses the account name provided by the OAuth provider to grant access and does not keep track of which provider actually identified the user.&lt;/p>
+&lt;p>In simple terms, if a user has username &amp;ldquo;mike&amp;rdquo; on &lt;code>OIDC&lt;/code> provider 1 and another user can get say a GitHub account for the user &amp;ldquo;mike&amp;rdquo;, then the second user can impersonate the first user by logging in with the second provider.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+</description></item></channel></rss>
