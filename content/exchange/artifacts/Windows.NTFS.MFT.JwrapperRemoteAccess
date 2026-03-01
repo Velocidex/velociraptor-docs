@@ -1,0 +1,27 @@
+name: Windows.NTFS.MFT.JwrapperRemoteAccess
+description: |
+   This artifact uses Windows.NTFS.MFT (By Matt Green - @mgreen27) to identify IP addresses pertaining to SimpleHelp RMM usage. SimpleHelp uses Jwrapper Remote Access under the hood and logs the destination address and port to a file within directory ".\ProgramData\JWrapper-Remote Access\JWAppsSharedConfig\hash.repository\urls\".
+   
+   Alternatively, the IP addresses can also be identified from the config file located within "C:\\ProgramData\\JWrapper-Remote Access\\JWAppsSharedConfig\\serviceconfig.xml". 
+
+
+type: CLIENT
+
+parameters:
+  - name: PathRegex
+    description: "Regex search over OSPath."
+    default: "JWrapper-Remote Access\\\\JWAppsSharedConfig\\\\hash.repository\\\\urls\\\\"
+    type: regex
+  - name: FileRegex
+    description: "Regex search over File Name"
+    default: "^(https?)__[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}__[0-9]{1,5}$"
+    type: regex
+
+
+sources:
+  - query: |
+      SELECT * 
+      FROM Artifact.Windows.NTFS.MFT(
+            FileRegex=FileRegex,
+            PathRegex=PathRegex   
+        )
