@@ -1,0 +1,259 @@
+name: Custom.MacOS.Detection.DylibHijacking
+author: Blake McDermott & Ford Larman
+description: |
+   This artifact is intended to alert on executables susceptible to dylib injection and highjacking. This includes checking the executable for library validation issues such as `com.apple.security.cs.disable-library-validation` and `com.apple.security.cs.allow-dyld-environment-variables`, multiple (relative) `@executable_path`'s and `LC_LOAD_WEAK_DYLIB` entries. The artifact `TargetPath` looks at the default installation path for MacOS binaries (MachO). To run the artifact against a binary in a non-standard location, add it to the csv `TargetPath` parameter. Results will be displayed in two parts, `dylibloads` and `libraryvalidation`. Only duplicate entries will be displayed for `dylibloads`.
+   
+   NOTE: This artifact runs best against targeted endpoints rather than an entire network. It is also recommended to increase the deafult `Timeout` period to 6000 seconds or more as performance is quite slow.
+
+# Can be CLIENT, CLIENT_EVENT, SERVER, SERVER_EVENT or NOTEBOOK
+type: CLIENT
+
+required_permissions:
+  - EXECVE
+  
+parameters:
+   - name: TargetPath
+     type: csv
+     default: |
+        Glob
+        /Applications/*/Contents/MacOS/*
+        
+   - name: ExcludePath
+     type: regex
+     description: Binaries to exclude incase of excessive permission issue errors.
+     default: ''
+        
+   - name: YaraRule
+     type: yara
+     description: https://github.com/airbnb/binaryalert/blob/master/rules/public/MachO.yara
+     default: |
+        rule MachO {
+            meta:
+                description = "Mach-O binaries"
+            condition:
+                uint32(0) == 0xfeedface or uint32(0) == 0xcefaedfe or uint32(0) == 0xfeedfacf or uint32(0) == 0xcffaedfe or uint32(0) == 0xcafebabe or uint32(0) == 0xbebafeca
+        }
+  
+export: |
+    LET x64_Profile = '''[
+        ["Header", 32,[
+            ["Magic", 0, "Enumeration", {
+                "type": "uint32",
+                "choices": {
+                    "0": UNKNOWN,
+                    "0xFEEDFACE": "MH_MAGIC",
+                    "0xCEFAEDFE": "MH_CIGAM",
+                    "0xFEEDFACF": "MH_MAGIC_64",
+                    "0xCFFAEDFE": "MH_CIGAM_64",
+                    "0xCAFEBABE": "FAT_MAGIC",
+                    "0xBEBAFECA": "FAT_CIGAM"
+                }
+            }],
+            ["CPU_Type", 4, "Enumeration", {
+                "type": "int32",
+                "choices": {
+                    "-1": "ANY",
+                    "7": "X86",
+                    "16777223": "X86_64",
+                    "8": "MIPS",
+                    "10": "MC98000",
+                    "12": "ARM",
+                    "16777234": "ARM64",
+                    "14": "SPARC",
+                    "18": "POWERPC",
+                    "16777228": "POWERPC_64"
+                }
+            }],
+            ["CPU_Subtype", 8, "uint32"],
+            ["Filetype", 12, "Enumeration", {
+                "type": "uint32",
+                "choices": {
+                    "1": "MH_OBJECT",
+                    "2": "MH_EXECUTE",
+                    "3": "MH_FVMLIB",
+                    "4": "MH_CORE",
+                    "5": "MH_PRELOAD",
+                    "6": "MH_DYLIB",
+                    "7": "MH_DYLINKER",
+                    "8": "MH_BUNDLE"
+                }
+            }],
+            ["NumberCommands", 16, "uint32"],
+            ["SizeOfCommands", 20, "uint32"],
+            ["Flagss", 24, "uint32"],
+            ["Reserved", 28, "uint32"],
+            ["LoadCommands", 32, "Array", {
+                "type": "LoadCommand",
+                "count": "x=>x.NumberCommands"
+            }]
+        ]],
+        ["LoadCommand", "x=>x.cmdsize", [
+            ["cmd", 0, "Enumeration", {
+                "type": "uint32",
+                "choices": {
+                    "1": 'LC_SEGMENT',
+                    "2": 'LC_SYMTAB',
+                    "3": 'LC_SYMSEG',
+                    "4": 'LC_THREAD',
+                    "5": 'LC_UNIXTHREAD',
+                    "6": 'LC_LOADFVMLIB',
+                    "7": 'LC_IDFVMLIB',
+                    "8": 'LC_IDENT',
+                    "9": 'LC_FVMFILE',
+                    "10": 'LC_PREPAGE',
+                    "11": 'LC_DYSYMTAB',
+                    "12": 'LC_LOAD_DYLIB',
+                    "13": 'LC_ID_DYLIB',
+                    "14": 'LC_LOAD_DYLINKER',
+                    "15": 'LC_ID_DYLINKER',
+                    "16": 'LC_PREBOUND_DYLIB',
+                    "17": 'LC_ROUTINES',
+                    "18": 'LC_SUB_FRAMEWORK',
+                    "19": 'LC_SUB_UMBRELLA',
+                    "20": 'LC_SUB_CLIENT',
+                    "21": 'LC_SUB_LIBRARY',
+                    "22": 'LC_TWOLEVEL_HINTS',
+                    "23": 'LC_PREBIND_CKSUM',
+                    "2147483672": 'LC_LOAD_WEAK_DYLIB',
+                    "25": 'LC_SEGMENT_64',
+                    "26": 'LC_ROUTINES_64',
+                    "27": 'LC_UUID',
+                    "2147483676": 'LC_RPATH',
+                    "29": 'LC_CODE_SIGNATURE',
+                    "30": 'LC_SEGMENT_SPLIT_INFO',
+                    "2147483679": 'LC_REEXPORT_DYLIB',
+                    "32": 'LC_LAZY_LOAD_DYLIB',
+                    "33": 'LC_ENCRYPTION_INFO',
+                    "34": 'LC_DYLD_INFO',
+                    "2147483682": 'LC_DYLD_INFO_ONLY',
+                }
+            }],
+            ["cmdsize", 4, "uint32"],
+            ["timestamp", 8, "uint32"],
+            ["current_version", 12, "uint32"],
+            ["compatibility_version", 16, "uint32"],
+            ["Name", 24, "String", {
+                "length": "x=>x.cmdsize"
+            }]
+        ]]
+        ]'''
+        
+        LET FAT_Profile = '''[
+        ["Header", 0, [
+            ["Magic", 0, "Enumeration", {
+                "type": "uint32",
+                "choices": {
+                    "0": UNKNOWN,
+                    "0xFEEDFACE": "MH_MAGIC",
+                    "0xCEFAEDFE": "MH_CIGAM",
+                    "0xFEEDFACF": "MH_MAGIC_64",
+                    "0xCFFAEDFE": "MH_CIGAM_64",
+                    "0xCAFEBABE": "FAT_MAGIC",
+                    "0xBEBAFECA": "FAT_CIGAM"
+                }
+            }],
+            ["NFAT_Arch", 4, "uint32b"],
+            ["FAT_Archs", 8, "Array", {
+                "type": "FAT_Arch",
+                "count": "x=>x.NFAT_Arch"
+            }]
+        ]],
+        ["FAT_Arch", 20, [
+            ["CPU_Type", 0, "Enumeration", {
+                "type": "int32b",
+                "choices": {
+                    "-1": "ANY",
+                    "7": "X86",
+                    "16777223": "X86_64",
+                    "8": "MIPS",
+                    "10": "MC98000",
+                    "12": "ARM",
+                    "16777234": "ARM64",
+                    "14": "SPARC",
+                    "18": "POWERPC",
+                    "16777228": "POWERPC_64"
+                }
+            }],
+            ["CPU_Subtype", 4, "uint32b"],
+            ["Offset", 8, "uint32b"],
+            ["Size", 12, "uint32b"],
+            ["Align", 16, "uint32b"]
+        ]]
+        ]'''
+        
+        LET yara_rule = YaraRule
+        
+        // Parse FAT_Profile for Architecture details
+        LET FatHeader = SELECT OSPath, parse_binary(filename=OSPath, profile=FAT_Profile, struct='Header').FAT_Archs AS Header FROM foreach(
+            row={SELECT * FROM glob(globs=TargetPath.Glob) WHERE NOT OSPath =~ ExcludePath},
+            query={SELECT OSPath, log(message="OS Path: %v, Exclude Path: %v", args=[OSPath, ExcludePath]) FROM yara(rules=yara_rule, files=OSPath)}
+            ) 
+        
+        LET Archs = SELECT * FROM foreach(
+            row=FatHeader,
+            query={SELECT OSPath, * FROM foreach(row=Header)}
+        ) WHERE CPU_Type =~ "X86_64" OR CPU_Type =~ "POWERPC_64"
+        
+        // Parse x64_Profile for dylib details
+        LET Headers = SELECT * FROM foreach(
+            row=Archs,
+            query={SELECT OSPath, CPU_Type, parse_binary(filename=OSPath, offset=Offset, profile=x64_Profile, struct='Header').LoadCommands AS LoadCommands FROM scope()}
+        ) 
+        
+        
+        LET LC = SELECT cmd AS LoadCommand, Name AS FilePath, CPU_Type AS Architecture, OSPath FROM foreach(
+            row=Headers,
+            query={SELECT *, CPU_Type, OSPath FROM foreach(row=LoadCommands)}
+        ) WHERE LoadCommand = "LC_LOAD_DYLIB" OR LoadCommand = "LC_LOAD_WEAK_DYLIB" OR LoadCommand = "LC_RPATH"
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'darwin'
+  - name: dylib loads
+    query:
+        
+        LET PathDepth = SELECT len(list=split(string=FilePath, sep="\\.\\.")[:-1]) AS Hops, split(string=FilePath, sep="\\.\\.")[-1] AS Dirs, OSPath FROM LC WHERE LoadCommand = "LC_RPATH"
+        
+        
+        LET ExecPaths = SELECT FilePath[6:] AS Executable_Path, * FROM LC WHERE (LoadCommand = "LC_LOAD_DYLIB" OR LoadCommand = "LC_LOAD_WEAK_DYLIB") AND FilePath =~ "@rpath"
+        
+        
+        LET AllPaths = SELECT * FROM foreach(
+            row={SELECT *, path_join(components=path_split(path=OSPath)[:(0-(Hops + 1))]) AS BinPath, OSPath AS TempPath FROM PathDepth WHERE Hops >= 1},
+            query={SELECT BinPath+Dirs+Executable_Path AS RPathGlobs, BinPath, Executable_Path, Dirs, Hops, TempPath FROM ExecPaths
+            }
+        ) 
+        GROUP BY RPathGlobs
+        
+        LET DylibGlobs = SELECT * FROM foreach(
+            row=AllPaths,
+            query={SELECT *, TempPath FROM glob(globs=RPathGlobs)}
+        ) 
+        
+        // Display results for duplicate .dylib loads per application - Duplicate folders will also be reported if detected.
+        SELECT * FROM foreach(
+            row={
+                SELECT Name AS NameCount, count() AS Count
+                FROM DylibGlobs 
+                GROUP BY Name, TempPath
+            },
+            query={
+                SELECT if(condition=Name =~".dylib", then="Dylib", else="Folder") AS Type, Name, OSPath, Count, TempPath, hash(path=OSPath) AS Hash,
+                authenticode(filename=OSPath) AS Authenticode, if(condition=Name[-6:] =~ ".dylib", then="Duplicate .dylib file names! This is an indication of potential highjacking. Validate the file hashes against known examples.", else="Duplicate directory paths!") AS Result
+                FROM DylibGlobs
+                WHERE Name = NameCount AND Count >= 2
+            }
+        )
+        
+
+# Execute codesign on target executable and check for values.
+  - name: library validation
+    query:
+        
+      LET LibraryInfo = SELECT OSPath AS AppName, Entitlements["plist"]["dict"]["key"] AS keys FROM foreach(
+                        row = {SELECT OSPath FROM Archs GROUP BY OSPath},
+                        query = {SELECT parse_xml(file=Stdout, accessor="data") AS Entitlements, OSPath, Stdout FROM execve(argv=["codesign", "-d", "--entitlements", ":-", OSPath])}
+                    )
+                    
+        // Check for potential library validation issues from LibraryInfo
+        SELECT *, if(condition="com.apple.security.cs.allow-dyld-environment-variables" IN keys OR "com.apple.security.cs.disable-library-validation" IN keys, then="Potential dylib injection - 'com.apple.security.cs.allow-dyld-environment-variables' or 'com.apple.security.cs.disable-library-validation' present!", else="No library validation issues found.") AS Result FROM LibraryInfo
