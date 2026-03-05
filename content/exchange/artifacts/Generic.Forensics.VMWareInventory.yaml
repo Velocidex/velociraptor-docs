@@ -6,30 +6,18 @@ description: |
   search for settings like RAM size, Guest OS, or network modes.
 
 parameters:
-  - name: SearchMode
-    type: choices
-    default: Auto_Detect_Both
-    choices: ["Auto_Detect_Both", "Fusion_Mac_Only", "Workstation_Windows_Only", "Custom_Path"]
-  - name: CustomPath
-    default: "C:/Users/*/Documents/Virtual Machines/**/*.vmx"
+  - name: path_list
+    type: csv
+    default: |
+      globs
+      /Users/*/Virtual Machines*/**/*.vmwarevm/*.vmx
+      C:/Users/*/Documents/Virtual Machines/**/*.vmx
 
 sources:
   - name: VMWare_Config_Audit
     query: |
-      LET mac_glob = "/Users/*/Virtual Machines*/**/*.vmwarevm/*.vmx"
-      LET win_glob = "C:/Users/*/Documents/Virtual Machines/**/*.vmx"
-
-      LET path_list <= if(
-          condition=(SearchMode = "Fusion_Mac_Only"), then=[mac_glob],
-          else=if(
-            condition=(SearchMode = "Workstation_Windows_Only"), then=[win_glob],
-            else=if(
-              condition=(SearchMode = "Custom_Path"), then=[CustomPath],
-              else=[mac_glob, win_glob]
-            )
-          )
-        )
-      LET vmx_files = SELECT OSPath, Mtime FROM glob(globs=path_list)
+      LET vmx_files = SELECT OSPath, Mtime FROM glob(globs=path_list.globs)
+      
       SELECT 
         OSPath,
         Mtime AS LastModified,
