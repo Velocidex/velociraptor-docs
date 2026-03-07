@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Cobalt Strike on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/cobalt-strike/</link><description>Recent content in Cobalt Strike on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Tue, 09 Nov 2021 04:54:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/cobalt-strike/index.xml" rel="self" type="application/rss+xml"/><item><title>Cobalt Strike payload discovery and data manipulation in VQL</title><link>https://docs.velociraptor.app/blog/2021/2021-11-09-vql-data-manipulation/</link><pubDate>Tue, 09 Nov 2021 04:54:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2021/2021-11-09-vql-data-manipulation/</guid><description>&lt;p>Velociraptor’s ability for data manipulation is a core platform capability
+that drives a lot of the great content we have available in terms of data
+parsing for artifacts and live analysis. After a recent engagement with
+less common encoded Cobalt Strike beacons, and finding sharable files on
+VirusTotal, I thought it would be a good opportunity to walk through some
+workflow around data manipulation with VQL for analysis. In this post I
+will walk though some background, collection at scale, and finally talk
+about processing target files to extract key indicators.&lt;/p>
+&lt;h2 id="background">Background&lt;/h2>
+&lt;p>The Microsoft Build Engine (MSBuild.exe) is a signed Windows binary that
+can be used to load C# or Visual Basic code via an inline task project
+file. Legitimately used in Windows software development, it can handle XML
+formatted task files that define requirements for loading and building
+Visual Studio configurations. Adversaries can abuse this mechanism for
+execution as defence evasion and to bypass application whitelisting -
+&lt;a href="https://attack.mitre.org/techniques/T1127/001/" target="_blank" >ATT&amp;amp;CK T1127&lt;/a>
+.&lt;/p>
+&lt;p>In this particular engagement, the Rapid7 MDR/IR team responded to an
+intrusion in which during lateral movement, the adversary dropped many
+variants of an MSBuild inline task file to several machines and then
+executed MSBuild via wmi to load an embedded Cobalt Strike beacon.
+Detecting an in memory Cobalt Strike beacon is trivial for active threats
+with our process based yara and carving content.&lt;/p>
+&lt;p>The problem in this case was: how do you discover, then decode these encoded
+files on disk quickly to find any additional scope using Velociraptor?&lt;/p>
+&lt;h2 id="collection">Collection&lt;/h2>
+&lt;p>First task is discovery and collecting our files in scope from the network.
+Typically this task may be slow to deploy or rely on cobbled together
+capabilities from other teams. The Velociraptor hunt is an easy button for
+this use case.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="ee679eeaf193b08a0f915ba1ad72527f">
+ &lt;div data-featherlight="#ee679eeaf193b08a0f915ba1ad72527f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-11-09-vql-data-manipulation/01_new_hunt.png" alt="Velociraptor GUI : hunt : add hunt">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="01_new_hunt.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Velociraptor GUI : hunt : add hunt
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Velociraptor has several valuable artifacts for hunting over Windows file
+systems with yara: &lt;code>Windows.Detection.Yara.NTFS&lt;/code> and &lt;code>Generic.Detection.Yara.Glob&lt;/code>
+spring to mind readily. In this instance I am selecting Yara.NTFS. I have
+leveraged this artifact in the field for hunting malware, searching logs or
+any other capability where both metadata and content based discovery is desired.&lt;/p>
+
+&lt;div class="mynotices tip">
+ &lt;div heading=" Windows.Detection.Yara.NTFS ">&lt;ul>
+&lt;li>This artifact searches the MFT, returns a list of target files then runs Yara over the target list.&lt;/li>
+&lt;li>The artifact leverages &lt;code>Windows.NTFS.MFT&lt;/code> so similar regex filters can be applied including Path, Size and date.&lt;/li>
+&lt;li>The artifact also has an option to search across all attached drives and upload any files with Yara hits.&lt;/li>
+&lt;/ul>
+&lt;p>Some examples of path regex may include:&lt;/p>
+&lt;ul>
+&lt;li>Extension at a path: &lt;code>Windows/System32/.+\\.dll$&lt;/code>&lt;/li>
+&lt;li>More wildcards: &lt;code>Windows/.+/.+\\.dll$&lt;/code>&lt;/li>
+&lt;li>Specific file: &lt;code>Windows/System32/kernel32\.dll$&lt;/code>&lt;/li>
+&lt;li>Multiple extensions: &lt;code>\.(php|aspx|resx|asmx)$&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="93f6d827c4c3491cceee8665f9904590">
+ &lt;div data-featherlight="#93f6d827c4c3491cceee8665f9904590" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-11-09-vql-data-manipulation/02_find_artifact.png" alt="Select artifact : Windows.Detection.Yara.NTFS">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="02_find_artifact.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Select artifact : Windows.Detection.Yara.NTFS
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>The file filter: &lt;code>Windows/Temp/[^/]*\.TMP$&lt;/code> will suffice in this case to target
+our adversaries path for payloads before applying our yara rule. Typically when
+running discovery like this, an analyst can also apply additional options like
+file size or time stamp bounds for use at scale and optimal performance.
+The yara rule deployed in this case was simply quick and dirty hex conversion of
+text directly from the project file referencing the unique variable setup that
+was common across acquired samples.&lt;/p>
+&lt;pre>&lt;code class="language-yara">rule MSBuild_buff {
+ meta:
+ description = &amp;quot;Detect unique variable setup MSBuild inline task project file&amp;quot;
+ author = &amp;quot;Matt Green - @mgreen27&amp;quot;
+ date = &amp;quot;2021-10-22&amp;quot;
+ strings:
+ // byte[] buff = new byte[]
+ $buff = { 62 79 74 65 5b 5d 20 62 75 66 66 20 3d 20 6e 65 77 20 62 79 74 65 5b 5d }
+
+ // byte[] key_code = new byte[]
+ $key_code = { 62 79 74 65 5b 5d 20 6b 65 79 5f 63 6f 64 65 20 3d 20 6e 65 77 20 62 79 74 65 5b 5d }
+
+condition:
+ any of them
+}
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="814a3690dd95bed896fd195e2e9b4a44">
+ &lt;div data-featherlight="#814a3690dd95bed896fd195e2e9b4a44" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-11-09-vql-data-manipulation/03_configure_artifact.png" alt="Windows.Detection.Yara.NTFS hunt configuration">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="03_configure_artifact.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Windows.Detection.Yara.NTFS hunt configuration
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>After launching the hunt, results become available inside the hunt entry on the
+Velociraptor server for download or additional analysis.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="cc2577f1ee0ebd3ff5decabdffe65090">
+ &lt;div data-featherlight="#cc2577f1ee0ebd3ff5decabdffe65090" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-11-09-vql-data-manipulation/04_hunt_results.png" alt="Hunt results">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="04_hunt_results.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Hunt results
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h2 id="payload-decode">Payload decode&lt;/h2>
+&lt;p>The Cobalt Strike payload is a string with represented characters xor encoded
+as a hex formatted buffer and key in embedded C Sharp code as seen below.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="d3b60f386ce841d16376135ff619d807">
+ &lt;div data-featherlight="#d3b60f386ce841d16376135ff619d807" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-11-09-vql-data-manipulation/05_payload_b.png" alt="MSBuild inline task project file with CobaltStrike payload">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="05_payload_b.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ MSBuild inline task project file with CobaltStrike payload
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h3 id="enumerate-collected-files-and-find-location-on-server">Enumerate collected files and find location on server&lt;/h3>
+&lt;p>So far we have only collected files that have suspicious content. Now we want
+to post process the result and try to extract more information from the payload.&lt;/p>
+
+&lt;div class="mynotices tip">
+ &lt;div heading=" Velociraptor notebook ">&lt;p>The Velociraptor notebook is a gui component that lets the user run VQL directly
+on the server. In this case we are leveraging the notebook attached to our hunt
+to post process results opposed to downloading the files and processing offline.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>Our first step of decode is to examine all the files we collected in the hunt.
+The first query enumerates all the individual collections in the hunt, while the
+second query retrieves the files collected for each job.&lt;/p>
+&lt;pre>&lt;code class="language-vql">-- find flow ids for each client
+LET hunt_flows = SELECT *, Flow.client_id as ClientId, Flow.session_id as FlowId
+FROM hunt_flows(hunt_id='H.C6508PLOOPD2U')
+
+-- extract uploaded files and path on server
+Let targets = SELECT * FROM foreach(row=hunt_flows,
+ query={
+ SELECT
+ file_store(path=vfs_path) as SamplePath,
+ file_size as SampleSize
+ FROM uploads(client_id=ClientId,flow_id=FlowId)
+ })
+
+SELECT * FROM targets
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="3f50ada340e903fbbcc22a8bea8cad4f">
+ &lt;div data-featherlight="#3f50ada340e903fbbcc22a8bea8cad4f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-11-09-vql-data-manipulation/06_notebook_files.png" alt="Find the location of all files collected">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="06_notebook_files.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Find the location of all files collected
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h3 id="extract-encoded-payload-and-xor-key">Extract encoded payload and xor key&lt;/h3>
+&lt;p>For the second step, to extract target bytes we leverage the &lt;code>parse_records_with_regex()&lt;/code>
+plugin to extract the strings of interest (Data and Key) in our target files.
+Note: the buffer_size argument allows VQL to examine a larger buffer than the
+default size in order to capture the typically very large payloads in these build
+files. We have also included a 200 character limitation on the data field initially
+as this will improve performance when working on VQL. We have also specified buffer
+size to be larger than default and just larger than the biggest payload in scope.&lt;/p>
+&lt;pre>&lt;code class="language-vql">-- regex to extract Data and Key fields
+LET target_regex = 'buff = new byte\\[\\]\\s*{(?P&amp;lt;Data&amp;gt;[^\\n]*)};\\s+byte\\[\\]\\s+key_code = new byte\\[\\]\\s*{(?P&amp;lt;Key&amp;gt;[^\\n]*)};\\n'
+
+SELECT * FROM foreach(row=targets,
+ query={
+ SELECT
+ basename(path=SamplePath) as Sample,
+ SampleSize,
+ Key, --obtained from regex
+ read_file(filename=Data,accessor='data',length=200) as DataExtract -- obtained by regex, only output 200 characters
+ FROM parse_records_with_regex(
+ file=SamplePath,buffer_size=15000000,
+ regex=target_regex)
+ })
+&lt;/code>&lt;/pre>
+
+&lt;div class="mynotices tip">
+ &lt;div heading=" Parse records with regex ">&lt;p>&lt;code>parse_records_with_regex()&lt;/code> is a VQL plugin that parses a file with a set of regexp and yields matches as records. The file is read into a large buffer. Then each regular expression is applied to the buffer, and all matches are emitted as rows.&lt;/p>
+&lt;p>The regular expressions are specified in the Go syntax. They are expected to contain capture variables to name the matches extracted.&lt;/p>
+&lt;p>The aim of this plugin is to split the file into records which can be further parsed. For example, if the file consists of multiple records, this plugin can be used to extract each record, while &lt;code>parse_string_with_regex()&lt;/code> can be used to further split each record into elements. This works better than trying to write a more complex regex which tries to capture a lot of details in one pass.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="4633b91489ef66189b2a7d05196f7651">
+ &lt;div data-featherlight="#4633b91489ef66189b2a7d05196f7651" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-11-09-vql-data-manipulation/07_notebook_regex.png" alt="VQL: extract data and keys">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="07_notebook_regex.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ VQL: extract data and keys
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h3 id="extract-normalisation">Extract normalisation&lt;/h3>
+&lt;p>The third step adds a custom function for hex normalisation and converts the inline
+C Sharp style encoding to a standard hex encoded string which VQL can easily parse.
+In this case, the local normalise function will ensure we have valid 2 character hex.
+The &lt;code>regex_replace()&lt;/code> will strip the leading &amp;lsquo;0x&amp;rsquo; from the hex strings and prepare for
+xor processing.&lt;/p>
+&lt;pre>&lt;code class="language-vql">-- regex to extract Data and Key fields
+LET target_regex = 'buff = new byte\\[\\]\\s*{(?P&amp;lt;Data&amp;gt;[^\\n]*)};\\s+byte\\[\\]\\s+key_code = new byte\\[\\]\\s*{(?P&amp;lt;Key&amp;gt;[^\\n]*)};\\n'
+
+-- normalise function to fix bad hex strings
+LET normalise_hex(value) = regex_replace(source=value,re='0x(.)[,}]',replace='0x0\$1,')
+
+SELECT * FROM foreach(row=targets,
+ query={
+ SELECT
+ basename(path=SamplePath) as Sample,
+ SampleSize,
+ regex_replace(re=&amp;quot;0x|,&amp;quot;, replace=&amp;quot;&amp;quot;, source=normalise_hex(value=Key)) as KeyNormalised,
+ regex_replace(re=&amp;quot;0x|,&amp;quot;, replace=&amp;quot;&amp;quot;, source=normalise_hex(value=Data)) as DataNormalised
+ FROM parse_records_with_regex(
+ file=SamplePath,buffer_size=15000000,
+ regex=target_regex)
+ })
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="cb8e16046aee3529d635f9f5aeb5296f">
+ &lt;div data-featherlight="#cb8e16046aee3529d635f9f5aeb5296f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-11-09-vql-data-manipulation/08_notebook_normalise.png" alt="VQL: hex normalisation">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="08_notebook_normalise.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ VQL: hex normalisation
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h3 id="extract-to-bytes">Extract to bytes&lt;/h3>
+&lt;p>The fourth step converts hex to bytes and validates that the next stage is working. In the example VQL below
+we pass the hex text to the &lt;code>unhex()&lt;/code> function to produce raw bytes for our variables.&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT * FROM foreach(row=targets,
+ query={
+ SELECT
+ basename(path=SamplePath) as Sample,
+ SampleSize,
+ unhex(string=regex_replace(re=&amp;quot;0x|,&amp;quot;, replace=&amp;quot;&amp;quot;, source=normalise_hex(value=Key))) as KeyBytes,
+ read_file(filename=
+ unhex(string=regex_replace(re=&amp;quot;0x|,&amp;quot;, replace=&amp;quot;&amp;quot;, source=normalise_hex(value=Data))),
+ accessor='data',length=200) as DataBytesExtracted
+ FROM parse_records_with_regex(
+ file=SamplePath,buffer_size=15000000,
+ regex=target_regex)
+ })
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="969e29f786572e97d9206d0aac70db89">
+ &lt;div data-featherlight="#969e29f786572e97d9206d0aac70db89" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-11-09-vql-data-manipulation/09_notebook_bytes.png" alt="VQL: extract bytes">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="09_notebook_bytes.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ VQL: extract bytes
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h3 id="xor-decode">Xor decode&lt;/h3>
+&lt;p>VQL&amp;rsquo;s flexibility comes with its ability to reuse existing artifacts in different ways.
+The fifth step is running Velociraptor’s &lt;code>xor()&lt;/code> function and piping the output into our
+the existing &lt;code>Windows.Carving.CobaltStrike()&lt;/code> configuration decoder.&lt;/p>
+&lt;pre>&lt;code class="language-vql">-- extract bytes
+LET bytes &amp;lt;= SELECT * FROM foreach(row=targets,
+ query={
+ SELECT
+ SamplePath, basename(path=SamplePath) as Sample, SampleSize,
+ unhex(string=regex_replace(re=&amp;quot;0x|,&amp;quot;, replace=&amp;quot;&amp;quot;, source=normalise_hex(value=Key))) as KeyBytes,
+ read_file(filename=
+ unhex(string=regex_replace(re=&amp;quot;0x|,&amp;quot;, replace=&amp;quot;&amp;quot;, source=normalise_hex(value=Data))),
+ accessor='data') as DataBytes
+ FROM parse_records_with_regex(
+ file=SamplePath,buffer_size=15000000,
+ regex=target_regex)
+ })
+
+-- pass bytes to cobalt strike parser and format key indicators im interested in
+SELECT *, FROM foreach(row=bytes,query={
+ SELECT *,
+ basename(path=SamplePath) as Sample,SampleSize
+ FROM Artifact.Windows.Carving.CobaltStrike(TargetBytes=xor(key=KeyBytes,string=DataBytes))
+})
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="d4add562a61558278b9c9ab194d0e575">
+ &lt;div data-featherlight="#d4add562a61558278b9c9ab194d0e575" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-11-09-vql-data-manipulation/10_notebook_parse.png" alt="VQL: parse config">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="10_notebook_parse.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ VQL: parse config
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Decoded Cobalt Strike configuration is clearly observed.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="17de019bc45650fe7a7dfa21f611f268">
+ &lt;div data-featherlight="#17de019bc45650fe7a7dfa21f611f268" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-11-09-vql-data-manipulation/11_notebook_config_example.png" alt="Cobalt strike configuration example">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="11_notebook_config_example.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Cobalt strike configuration example
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>The smallest file also includes a Cobalt Strike shellcode stager, which I have recently
+added to the Velociraptor Cobalt Strike parser.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="bafab20256d8f473d1a2252f8fcc075f">
+ &lt;div data-featherlight="#bafab20256d8f473d1a2252f8fcc075f" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-11-09-vql-data-manipulation/12_notebook_shellcode_example.png" alt="Cobalt strike shellcode example">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="12_notebook_shellcode_example.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ Cobalt strike shellcode example
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h3 id="additional-analysis">Additional analysis&lt;/h3>
+&lt;p>Finally, we may have a desire to extract specific key indicators and compare across
+samples. A simple data stack on key indicators of interest.&lt;/p>
+&lt;pre>&lt;code class="language-vql">-- pass bytes to cobalt strike parser and format key indicators im interested in
+LET cobalt = SELECT *, FROM foreach(row=bytes,query={
+ SELECT
+ basename(path=SamplePath) as Sample,SampleSize,
+ Hash as DecodeHash,
+ Rule,Offset,Xor,DecodedConfig
+ FROM Artifact.Custom.Windows.Carving.CobaltStrike(TargetBytes=xor(key=KeyBytes,string=DataBytes))
+})
+
+-- quick data stack on a few things to show sample analysis
+SELECT count() as Total,
+ if(condition= Xor=~'^0x(2e|69)$', then=DecodedConfig.BeaconType, else= 'Shellcode stager') as Type,
+ if(condition= Xor=~'^0x(2e|69)$', then=DecodedConfig.LicenseId, else= DecodedConfig.Licence) as License,
+ if(condition= Xor=~'^0x(2e|69)$', then=dict(SpawnTox86=DecodedConfig.SpawnTox86,SpawnTox64=DecodedConfig.SpawnTox64), else= 'N/A') as SpawnTo,
+ if(condition= Xor=~'^0x(2e|69)$', then=DecodedConfig.Port, else= 'N/A') as Port,
+ if(condition= Xor=~'^0x(2e|69)$', then=DecodedConfig.C2Server, else= DecodedConfig.Server) as Server
+FROM cobalt
+GROUP BY Type, Licence,SpawnTo,Port,Server
+&lt;/code>&lt;/pre>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="ff3510a66310692294d31fc40e2b6416">
+ &lt;div data-featherlight="#ff3510a66310692294d31fc40e2b6416" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-11-09-vql-data-manipulation/13_notebook_example.png" alt="VQL results: key indicators of interest">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="13_notebook_example.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ VQL results: key indicators of interest
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h2 id="conclusions">Conclusions&lt;/h2>
+&lt;p>In this post we showed discovery, then decode of encoded Cobalt Strike beacons on disk.
+Velociraptor can read, manipulate and enrich data efficiently across a large network
+without the overhead of needing to extract and process manually.&lt;/p>
+&lt;p>Whilst most traditional workflows concentrate on collection and offline analysis,
+Velociraptor notebook also enables data manipulation and flexibility in analysis.
+If you would like to try out these features in Velociraptor, It is available on
+&lt;a href="https://github.com/Velocidex/velociraptor" target="_blank" >GitHub&lt;/a>
+ under an open source license. As
+always, please file issues on the bug tracker or ask questions on our mailing list
+&lt;a href="mailto:velociraptor-discuss@googlegroups.com" >velociraptor-discuss@googlegroups.com&lt;/a>
+. You can also chat with us directly on discord
+at &lt;a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord&lt;/a>
+.&lt;/p>
+&lt;h2 id="references">References&lt;/h2>
+&lt;ol>
+&lt;li>&lt;a href="https://attack.mitre.org/techniques/T1127/001/" target="_blank" >MITRE ATT&amp;amp;CK T1127.001 - Trusted Developer Utilities Proxy Execution: MSBuild&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="https://github.com/3gstudent/msbuild-inline-task" target="_blank" >MSBuild Inline Task template&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="https://www.virustotal.com/gui/file/cf54b9078d63eaeb0300e70d0ef6cf4d3a4d83842fe08cb951f841549663e1e2" target="_blank" >VirusTotal sample - &lt;code>I20xQy.TMP&lt;/code>&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="https://www.virustotal.com/gui/file/52ade62a412fed9425b75610620c85d9c143593cd50c2269066b120ac05dc8c3" target="_blank" >VirusTotal sample - &lt;code>CSLHP.TMP&lt;/code>&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="https://www.virustotal.com/gui/file/b4ede02ea3c198f5e7d3fbab3cadc1266538d23a43a2825ece7d4c75b7208fa9" target="_blank" >VirusTotal sample - &lt;code>ddppllkm.TMP&lt;/code>&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="https://www.virustotal.com/gui/file/152722a89fd87ecdf73fd18558622f22f980bddd6928cad31859453d41f7b8dd" target="_blank" >VirusTotal sample - &lt;code>gujf2z0z.0.cs.TMP&lt;/code>&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="https://www.virustotal.com/gui/file/78d2078c4e740aff4a2a289387ba8cfc1de6c02ed48c4c65b53582303192dab2" target="_blank" >VirusTotal sample - &lt;code>Ofeq81u.TMP&lt;/code>&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="https://www.virustotal.com/gui/file/507f988ab1f8229e84bb83dcb5a896b1747957b998aad7c7ccdd301096726999" target="_blank" >VirusTotal sample - &lt;code>zzyhukwK.TMP&lt;/code>&lt;/a>
+&lt;/li>
+&lt;/ol></description></item></channel></rss>

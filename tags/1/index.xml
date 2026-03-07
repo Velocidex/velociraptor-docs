@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>1 on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/1/</link><description>Recent content in 1 on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><atom:link href="https://docs.velociraptor.app/tags/1/index.xml" rel="self" type="application/rss+xml"/><item><title>Windows.Kerberos.GoldenTicketTriage</title><link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.kerberos.goldentickettriage/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.kerberos.goldentickettriage/</guid><description>&lt;p>It analyzes klist output to identify Kerberos tickets with unusually long lifetimes as well as tickets where the Kdc Called field is empty.&lt;/p>
+&lt;p>It detects forged or abnormal Kerberos tickets by inspecting the local ticket cache and, optionally, session-specific caches.&lt;/p>
+&lt;p>Golden Tickets often stand out due to their unusually long lifetimes and/or an empty Kdc Called field, since the TGT is generated offline rather than issued by a legitimate KDC.&lt;/p>
+&lt;p>Within the artifact, you can configure a ticket lifetime threshold (for example, 1 year or more).&lt;/p>
+&lt;p>Setting this value to 0 disables filtering and returns all ticket information.&lt;/p>
+&lt;p>Additionally, there is an optional filter for FlagEmptyKdcCalled, which only triggers when FlagEmptyKdcCalled = true.&lt;/p>
+&lt;ul>
+&lt;li>CacheTickets:
+&lt;ul>
+&lt;li>Runs &lt;code>klist&lt;/code> and parses ALL tickets (#0/#1/#2/&amp;hellip;)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>SessionTickets:
+&lt;ul>
+&lt;li>Runs &lt;code>klist sessions&lt;/code> then tries &lt;code>klist -li 0x&amp;lt;LogonId&amp;gt;&lt;/code> for interactive user sessions&lt;/li>
+&lt;li>Sessions that error (1314 / klist failed) are silently skippe&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>TicketType:
+&lt;ul>
+&lt;li>TGT if Server starts with &amp;ldquo;krbtgt/&amp;rdquo;&lt;/li>
+&lt;li>TGS otherwise&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Filtering:
+&lt;ul>
+&lt;li>MaxLifetimeYears = 0 -&amp;gt; no filtering (returns all tickets)&lt;/li>
+&lt;li>Otherwise returns only suspicious tickets:
+&lt;ul>
+&lt;li>Long lifetime &amp;gt;= MaxLifetimeYears&lt;/li>
+&lt;li>Empty &amp;ldquo;Kdc Called:&amp;rdquo; (only if FlagEmptyKdcCalled=true)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;pre>&lt;code class="language-yaml">
+name: Windows.Kerberos.GoldenTicketTriage
+author: Deniz Ciftci
+description: |
+ It analyzes klist output to identify Kerberos tickets with unusually long lifetimes as well as tickets where the Kdc Called field is empty.
+ 
+ It detects forged or abnormal Kerberos tickets by inspecting the local ticket cache and, optionally, session-specific caches.
+ 
+ Golden Tickets often stand out due to their unusually long lifetimes and/or an empty Kdc Called field, since the TGT is generated offline rather than issued by a legitimate KDC.
+ 
+ Within the artifact, you can configure a ticket lifetime threshold (for example, 1 year or more). 
+ 
+ Setting this value to 0 disables filtering and returns all ticket information. 
+ 
+ Additionally, there is an optional filter for FlagEmptyKdcCalled, which only triggers when FlagEmptyKdcCalled = true.
+
+ - CacheTickets:
+ - Runs `klist` and parses ALL tickets (#0/#1/#2/...)
+ - SessionTickets:
+ - Runs `klist sessions` then tries `klist -li 0x&amp;lt;LogonId&amp;gt;` for interactive user sessions
+ - Sessions that error (1314 / klist failed) are silently skippe
+ - TicketType:
+ - TGT if Server starts with "krbtgt/"
+ - TGS otherwise
+ - Filtering:
+ - MaxLifetimeYears = 0 -&amp;gt; no filtering (returns all tickets)
+ - Otherwise returns only suspicious tickets:
+ * Long lifetime &amp;gt;= MaxLifetimeYears
+ * Empty "Kdc Called:" (only if FlagEmptyKdcCalled=true)
+
+type: CLIENT
+
+parameters:
+ - name: MaxLifetimeYears
+ type: int
+ default: 1
+ description: Set 0 to return all tickets.
+
+ - name: FlagEmptyKdcCalled
+ type: bool
+ default: true
+ description: Flag empty "Kdc Called:".
+
+required_permissions:
+ - EXECVE
+
+sources:
+ - precondition:
+ SELECT OS FROM info() WHERE OS = 'windows'
+ name: CacheTickets
+ query: |
+ LET PS = '$ErrorActionPreference="SilentlyContinue";' +
+ 'function gf($b,$pat){$m=[regex]::Match($b,$pat);if($m.Success){$m.Groups[1].Value.Trim()}else{$null}};' +
+ '$txt=(&amp;amp; klist 2&amp;gt;&amp;amp;1 | Out-String);' +
+ '$logon="0x0"; if($txt -match "Current LogonId is 0:0x([0-9a-fA-F]+)"){ $logon=("0x"+$Matches[1]) };' +
+ '$out=@();' +
+ '$ms=[regex]::Matches($txt,"(?ms)^#(?&amp;lt;Idx&amp;gt;\d+)&amp;gt;\\s*(?&amp;lt;Block&amp;gt;.*?)(?=^#\\d+&amp;gt;|\\z)");' +
+ 'foreach($m in $ms){' +
+ '$idx=[int]$m.Groups["Idx"].Value;' +
+ '$b=$m.Groups["Block"].Value;' +
+ '$client=gf $b "(?m)^\\s*Client:\\s*(.+?)\\s*$";' +
+ '$server=gf $b "(?m)^\\s*Server:\\s*(.+?)\\s*$";' +
+ '$enctype=gf $b "(?m)^\\s*KerbTicket Encryption Type:\\s*(.+?)\\s*$";' +
+ '$flags=gf $b "(?m)^\\s*Ticket Flags\\s*(.+?)\\s*$";' +
+ '$st=gf $b "(?m)^\\s*Start Time:\\s*(.+?)\\s*$";' +
+ '$et=gf $b "(?m)^\\s*End Time:\\s*(.+?)\\s*$";' +
+ '$rt=gf $b "(?m)^\\s*Renew Time:\\s*(.+?)\\s*$";' +
+ '$kdc=gf $b "(?m)^\\s*Kdc Called:\\s*(.*?)\\s*$";' +
+
+ '$days=$null; $hours=$null; $life=$null; $sy=$null; $ey=$null;' +
+ 'try{' +
+ '$stc=($st -replace "\\s*\\(local\\)\\s*","").Trim();' +
+ '$etc=($et -replace "\\s*\\(local\\)\\s*","").Trim();' +
+ '$sd=[datetime]::Parse($stc);' +
+ '$ed=[datetime]::Parse($etc);' +
+ '$ts=($ed-$sd);' +
+ '$days=[int]([math]::Floor($ts.TotalDays));' +
+ '$hours=[int]([math]::Floor($ts.TotalHours));' +
+ '$life = if($ts.TotalDays -ge 1){ "{0}d {1}h" -f $days, $ts.Hours } else { "{0}h {1}m" -f $ts.Hours, $ts.Minutes };' +
+ '}catch{}' +
+ 'try{' +
+ '$sy=[int]([regex]::Match($st,"(\\d{4})").Groups[1].Value);' +
+ '$ey=[int]([regex]::Match($et,"(\\d{4})").Groups[1].Value);' +
+ '}catch{}' +
+
+ '$tt= if($server -match "^(?i)krbtgt/"){ "TGT" } else { "TGS" };' +
+ '$out += [pscustomobject]@{' +
+ 'Source="CACHE";LogonIdHex=$logon;TicketType=$tt;TicketIndex=$idx;' +
+ 'Client=$client;Server=$server;EncType=$enctype;TicketFlags=$flags;' +
+ 'StartTime=$st;EndTime=$et;RenewTime=$rt;KdcCalled=$kdc;' +
+ 'LifetimeDays=$days;LifetimeHours=$hours;Lifetime=$life;' +
+ 'LifetimeYears=if($sy -ne $null -and $ey -ne $null){ ($ey-$sy) } else { $null }' +
+ '};' +
+ '};' +
+ '$out | ConvertTo-Json -Compress'
+
+ LET R = SELECT Stdout, Stderr, ExitStatus
+ FROM execve(argv=['powershell.exe','-NoProfile','-NonInteractive','-ExecutionPolicy','Bypass','-Command', PS])
+
+ LET J = SELECT row
+ FROM foreach(row=R, query={
+ SELECT row
+ FROM foreach(row=parse_json(data=Stdout), query={ SELECT row FROM scope() })
+ })
+
+ SELECT
+ row.Source AS Source,
+ row.LogonIdHex AS LogonIdHex,
+ row.TicketType AS TicketType,
+ row.TicketIndex AS TicketIndex,
+ row.Client AS Client,
+ row.Server AS Server,
+ row.EncType AS EncType,
+ row.TicketFlags AS TicketFlags,
+ row.StartTime AS StartTime,
+ row.EndTime AS EndTime,
+ row.RenewTime AS RenewTime,
+ row.KdcCalled AS KdcCalled,
+
+ row.LifetimeYears AS LifetimeYears,
+ row.LifetimeDays AS LifetimeDays,
+ row.LifetimeHours AS LifetimeHours,
+ row.Lifetime AS Lifetime,
+
+ ((MaxLifetimeYears &amp;gt; 0) AND (row.LifetimeYears &amp;gt;= MaxLifetimeYears)) AS Flag_LongLifetime,
+ (FlagEmptyKdcCalled AND (row.KdcCalled = NULL OR row.KdcCalled =~ '^\\s*$')) AS Flag_EmptyKdcCalled,
+ (
+ ((MaxLifetimeYears &amp;gt; 0) AND (row.LifetimeYears &amp;gt;= MaxLifetimeYears))
+ OR (FlagEmptyKdcCalled AND (row.KdcCalled = NULL OR row.KdcCalled =~ '^\\s*$'))
+ ) AS Suspicious
+ FROM J
+ WHERE (MaxLifetimeYears = 0)
+ OR (
+ ((MaxLifetimeYears &amp;gt; 0) AND (row.LifetimeYears &amp;gt;= MaxLifetimeYears))
+ OR (FlagEmptyKdcCalled AND (row.KdcCalled = NULL OR row.KdcCalled =~ '^\\s*$'))
+ )
+
+ - precondition:
+ SELECT OS FROM info() WHERE OS = 'windows'
+ name: SessionTickets
+ query: |
+ LET PS = '$ErrorActionPreference="SilentlyContinue";' +
+ 'function gf($b,$pat){$m=[regex]::Match($b,$pat);if($m.Success){$m.Groups[1].Value.Trim()}else{$null}};' +
+ '$sess=(&amp;amp; klist sessions 2&amp;gt;&amp;amp;1 | Out-String);' +
+ '$out=@();' +
+ '$lines=$sess -split "`r?`n";' +
+ 'foreach($ln in $lines){' +
+ 'if($ln -notmatch "0:0x"){ continue };' +
+ 'if($ln -notmatch "Interactive"){ continue };' +
+ 'if($ln -notmatch "0:0x([0-9a-fA-F]+)"){ continue };' +
+ '$luid=$Matches[1];' +
+ '$user=""; if($ln -match "0:0x[0-9a-fA-F]+\\s+(.+?)\\s+\\S+:\\S+"){ $user=$Matches[1].Trim() };' +
+ 'if($user -notmatch "^[^\\\\]+\\\\[^\\\\]+$"){ continue };' +
+ 'if($user -match "\\$$"){ continue };' +
+ 'if($user -match "^NT AUTHORITY\\\\"){ continue };' +
+ 'if($user -match "^Window Manager\\\\"){ continue };' +
+ 'if($user -match "^Font Driver Host\\\\"){ continue };' +
+
+ '$txt=(&amp;amp; cmd.exe /c ("klist -li 0x"+$luid) 2&amp;gt;&amp;amp;1 | Out-String);' +
+ 'if($txt -notmatch "Cached Tickets"){ continue };' +
+ 'if($txt -match "Error calling API"){ continue };' +
+ 'if($txt -match "klist failed"){ continue };' +
+
+ '$logon=("0x"+$luid);' +
+ '$ms=[regex]::Matches($txt,"(?ms)^#(?&amp;lt;Idx&amp;gt;\d+)&amp;gt;\\s*(?&amp;lt;Block&amp;gt;.*?)(?=^#\\d+&amp;gt;|\\z)");' +
+ 'foreach($m in $ms){' +
+ '$idx=[int]$m.Groups["Idx"].Value;' +
+ '$b=$m.Groups["Block"].Value;' +
+ '$client=gf $b "(?m)^\\s*Client:\\s*(.+?)\\s*$";' +
+ '$server=gf $b "(?m)^\\s*Server:\\s*(.+?)\\s*$";' +
+ '$enctype=gf $b "(?m)^\\s*KerbTicket Encryption Type:\\s*(.+?)\\s*$";' +
+ '$flags=gf $b "(?m)^\\s*Ticket Flags\\s*(.+?)\\s*$";' +
+ '$st=gf $b "(?m)^\\s*Start Time:\\s*(.+?)\\s*$";' +
+ '$et=gf $b "(?m)^\\s*End Time:\\s*(.+?)\\s*$";' +
+ '$rt=gf $b "(?m)^\\s*Renew Time:\\s*(.+?)\\s*$";' +
+ '$kdc=gf $b "(?m)^\\s*Kdc Called:\\s*(.*?)\\s*$";' +
+
+ '$days=$null; $hours=$null; $life=$null; $sy=$null; $ey=$null;' +
+ 'try{' +
+ '$stc=($st -replace "\\s*\\(local\\)\\s*","").Trim();' +
+ '$etc=($et -replace "\\s*\\(local\\)\\s*","").Trim();' +
+ '$sd=[datetime]::Parse($stc);' +
+ '$ed=[datetime]::Parse($etc);' +
+ '$ts=($ed-$sd);' +
+ '$days=[int]([math]::Floor($ts.TotalDays));' +
+ '$hours=[int]([math]::Floor($ts.TotalHours));' +
+ '$life = if($ts.TotalDays -ge 1){ "{0}d {1}h" -f $days, $ts.Hours } else { "{0}h {1}m" -f $ts.Hours, $ts.Minutes };' +
+ '}catch{}' +
+ 'try{' +
+ '$sy=[int]([regex]::Match($st,"(\\d{4})").Groups[1].Value);' +
+ '$ey=[int]([regex]::Match($et,"(\\d{4})").Groups[1].Value);' +
+ '}catch{}' +
+
+ '$tt= if($server -match "^(?i)krbtgt/"){ "TGT" } else { "TGS" };' +
+ '$out += [pscustomobject]@{' +
+ 'Source="SESSIONS";LogonIdHex=$logon;TicketType=$tt;TicketIndex=$idx;' +
+ 'Client=$client;Server=$server;EncType=$enctype;TicketFlags=$flags;' +
+ 'StartTime=$st;EndTime=$et;RenewTime=$rt;KdcCalled=$kdc;' +
+ 'LifetimeDays=$days;LifetimeHours=$hours;Lifetime=$life;' +
+ 'LifetimeYears=if($sy -ne $null -and $ey -ne $null){ ($ey-$sy) } else { $null }' +
+ '};' +
+ '};' +
+ '};' +
+ '$out | ConvertTo-Json -Compress'
+
+ LET R = SELECT Stdout, Stderr, ExitStatus
+ FROM execve(argv=['powershell.exe','-NoProfile','-NonInteractive','-ExecutionPolicy','Bypass','-Command', PS])
+
+ LET J = SELECT row
+ FROM foreach(row=R, query={
+ SELECT row
+ FROM foreach(row=parse_json(data=Stdout), query={ SELECT row FROM scope() })
+ })
+
+ SELECT
+ row.Source AS Source,
+ row.LogonIdHex AS LogonIdHex,
+ row.TicketType AS TicketType,
+ row.TicketIndex AS TicketIndex,
+ row.Client AS Client,
+ row.Server AS Server,
+ row.EncType AS EncType,
+ row.TicketFlags AS TicketFlags,
+ row.StartTime AS StartTime,
+ row.EndTime AS EndTime,
+ row.RenewTime AS RenewTime,
+ row.KdcCalled AS KdcCalled,
+
+ row.LifetimeYears AS LifetimeYears,
+ row.LifetimeDays AS LifetimeDays,
+ row.LifetimeHours AS LifetimeHours,
+ row.Lifetime AS Lifetime,
+
+ ((MaxLifetimeYears &amp;gt; 0) AND (row.LifetimeYears &amp;gt;= MaxLifetimeYears)) AS Flag_LongLifetime,
+ (FlagEmptyKdcCalled AND (row.KdcCalled = NULL OR row.KdcCalled =~ '^\\s*$')) AS Flag_EmptyKdcCalled,
+ (
+ ((MaxLifetimeYears &amp;gt; 0) AND (row.LifetimeYears &amp;gt;= MaxLifetimeYears))
+ OR (FlagEmptyKdcCalled AND (row.KdcCalled = NULL OR row.KdcCalled =~ '^\\s*$'))
+ ) AS Suspicious
+ FROM J
+ WHERE (MaxLifetimeYears = 0)
+ OR (
+ ((MaxLifetimeYears &amp;gt; 0) AND (row.LifetimeYears &amp;gt;= MaxLifetimeYears))
+ OR (FlagEmptyKdcCalled AND (row.KdcCalled = NULL OR row.KdcCalled =~ '^\\s*$'))
+ )
+
+&lt;/code>&lt;/pre></description></item></channel></rss>

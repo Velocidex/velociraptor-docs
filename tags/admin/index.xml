@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Admin on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/admin/</link><description>Recent content in Admin on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sun, 27 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/admin/index.xml" rel="self" type="application/rss+xml"/><item><title>How do I upgrade my server and clients?</title><link>https://docs.velociraptor.app/knowledge_base/tips/upgrading/</link><pubDate>Sun, 27 Mar 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/upgrading/</guid><description>&lt;h1 id="how-do-i-upgrade-my-server-and-clients">How do I upgrade my server and clients?&lt;/h1>
+&lt;p>To upgrade the Velociraptor server to a new version, simply download the latest release binary from the GitHub Release Page and regenerate a new &lt;code>Debian&lt;/code> package as described above, but using the existing configuration file.&lt;/p>
+&lt;p>See &lt;a href="https://docs.velociraptor.app/docs/deployment/server/#server-upgrades" >this page for more details&lt;/a>
+&lt;/p>
+&lt;p>To upgrade the Velociraptor clients, you will need to push out new MSIs using the existing client configuration files.&lt;/p>
+&lt;p>More details on &lt;a href="https://docs.velociraptor.app/docs/deployment/clients/#client-upgrades" >Client upgrades&lt;/a>
+&lt;/p>
+&lt;h2 id="supported-upgrade-scenarios">Supported Upgrade Scenarios&lt;/h2>
+&lt;p>Matching client and server versions is the most supported configuration.
+See &lt;a href="https://docs.velociraptor.app/docs/overview/support/#client-and-server-versioning" >the support policy&lt;/a>
+&lt;/p>
+&lt;p>Before upgrading perform testing of the combination of client and server versions to be used, compatibility of mixed versions is best efforts based on community testing and issues being reported.&lt;/p>
+&lt;ul>
+&lt;li>Check &lt;a href="https://github.com/Velocidex/velociraptor/issues" target="_blank" >GitHub&lt;/a>
+ for issues reported by the community.&lt;/li>
+&lt;li>Read &lt;a href="https://github.com/Velocidex/velociraptor/releases" target="_blank" >release notes&lt;/a>
+ for all versions between the current version, and the version you are moving to if skipping versions. Generally though avoid skipping versions.&lt;/li>
+&lt;/ul>
+&lt;h2 id="other-tips">Other tips&lt;/h2>
+&lt;ul>
+&lt;li>Recent versions of clients and servers generally can communicate with each other without a problem, but new functionality may not be available on old clients. Artifacts like &lt;a href="https://github.com/Velocidex/velociraptor/issues/1566" target="_blank" >this&lt;/a>
+ will (0.6.4+) help reduce this.&lt;/li>
+&lt;li>Upgrading the server before clients is more common, so version problems are more likely to have been caught in community testing with this approach.&lt;/li>
+&lt;li>Consider running a parallel deployment as the most compatible way to upgrade. Such as when upgrading and there are known breaking changes between the current client and target server versions (going from self-signed to auto cert), or when there are large version differences (unusual combinations of client and server).&lt;/li>
+&lt;/ul></description></item></channel></rss>

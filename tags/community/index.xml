@@ -1,0 +1,1205 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Community on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/community/</link><description>Recent content in Community on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sat, 01 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/community/index.xml" rel="self" type="application/rss+xml"/><item><title>The Velociraptor annual community survey</title><link>https://docs.velociraptor.app/blog/2023/2023-04-03-velociraptor-survey/</link><pubDate>Sat, 01 Apr 2023 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2023/2023-04-03-velociraptor-survey/</guid><description>&lt;p>Velociraptor is an open source project led and shaped by the
+community. Over the years, Velociraptor has become a real force in the
+field of DFIR making it the obvious choice for many operational
+situations.&lt;/p>
+&lt;p>The Velociraptor development team is committed to continue making
+Velociraptor the premier open source DFIR and security tool. We are
+therefore interested to hear about how the tool is used in the
+community and what the community expectations are in regard to
+capabilities, features and use cases. We use this information in order
+to shape future development direction, set priorities and develop our
+road map.&lt;/p>
+&lt;p>In early 2023, the Velociraptor team distributed a community
+survey which was very well received. We are grateful to the community
+members who took the time to respond. As an open source project, we
+depend on our community to contribute. There are many ways
+contributors can help the project, from developing code, to filing
+bugs or improving documentation. One of the most important ways users
+can contribute is by providing valuable feedback through channels such
+as this survey, to help shape the future road map and new features.&lt;/p>
+&lt;p>In this blog post I wanted to share some of the responses we received.&lt;/p>
+&lt;h2 id="who-are-the-velociraptor-community">Who are the Velociraptor Community?&lt;/h2>
+&lt;p>Overall there were 213 responses. By far the majority of responders
+were &lt;code>Analysts&lt;/code> (57%) and &lt;code>Managers&lt;/code> (26%) indicating that most of the
+respondents are people who know and use Velociraptor frequently.&lt;/p>
+&lt;p>We wanted to get a feel for the type of companies using
+Velociraptor. Users fell pretty evenly into company sizes, with about
+30% of responses from small companies (less than 100 employees) and
+20% of responses from very large companies of 10,000 employees or
+more.&lt;/p>
+&lt;p>These companies also came from a wide range of industries. While many
+were primarily in the information security fields such as Managed
+Security Service Providers (MSSP), Consultants and Cybersecurity
+businesses, we also saw a large number of responses from the
+Government sector, the Aerospace industries, Education,
+Banking/Finance, Health care, etc.&lt;/p>
+&lt;p>With such a wide range of users we were interested in how often users
+were using Velociraptor. About a third of users use Velociraptor
+frequently, a third use it occasionally and a third are in the process
+of evaluating and learning about the tool.&lt;/p>
+&lt;h2 id="velociraptor-use-cases">Velociraptor use cases&lt;/h2>
+&lt;p>Velociraptor is a powerful tool with a wide feature set. We wanted to
+glimpse an idea of what features were most popular and how users
+prioritize these features. Specifically, we asked about the following
+main use cases:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Client monitoring and alerts (Detection).&lt;/strong>&lt;/p>
+&lt;p>Velociraptor can collect client event queries focused on
+detection. This allows the client to autonomously monitor the
+endpoint and send back high value events when certain conditions
+are met.&lt;/p>
+&lt;p>12% of users were actively using this feature to monitor the end
+point.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Proactively hunt for indicators (Threat intelligence)&lt;/strong>&lt;/p>
+&lt;p>Velociraptor&amp;rsquo;s unique ability to collect artifacts at scale from
+many system can be combined with threat intelligence information
+(such as hashes, etc.) to proactively hunt for compromises by known
+actors. This question was specifically related to hunting for threat
+feed indicators, such as hashes, IP addresses etc.&lt;/p>
+&lt;p>16% of users were utilizing this feature&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Ongoing forwarding of events to another system&lt;/strong>&lt;/p>
+&lt;p>Velociraptor&amp;rsquo;s client monitoring queries can be used to simply
+forward events (such as ETW feeds).&lt;/p>
+&lt;p>6% of users were utilizing this feature&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Collecting bulk files for analysis on another system (Digital
+Forensics)&lt;/strong>&lt;/p>
+&lt;p>Velociraptor can be used to collect bulk files from the endpoint
+for later analysis by other tools (for example using the
+&lt;code>Windows.Collection.KapeFiles&lt;/code> artifact).&lt;/p>
+&lt;p>20% of users were using this feature regularly.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Parse for indicators on the endpoint (Digital Forensics)&lt;/strong>&lt;/p>
+&lt;p>Velociraptor&amp;rsquo;s artifacts are used to directly parse files on the
+endpoint, returning actionable high value information quickly
+without the need for lengthy post processing.&lt;/p>
+&lt;p>21% of users use these types of queries.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Proactive hunt for indicators across many systems (Incident
+Response)&lt;/strong>&lt;/p>
+&lt;p>Velociraptor can hunt for artifacts from many endpoints at once.&lt;/p>
+&lt;p>21% of users use this capability.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>We further asked for the relative importance of these features.&lt;/p>
+&lt;p>Users valued most the ability to collect bulk files and hunting for
+artifacts across many systems, followed by the ability to parse
+artifacts directly on the endpoints.&lt;/p>
+&lt;h2 id="backwards-compatibility">Backwards compatibility&lt;/h2>
+&lt;p>As developers we need to understand how important backwards
+compatibility is to users so we can develop effective update
+procedures.&lt;/p>
+&lt;p>Some users deployed Velociraptor for limited time engagements so they
+did not need backwards compatibility for stored data as they wouldn&amp;rsquo;t be
+upgrading to major versions within the same deployment.&lt;/p>
+&lt;p>Other users required more stable data migration but were generally
+happy with removing data compatibility if necessary. For example, with
+one response stating &amp;ldquo;I would rather you prioritize improvements over
+compatibility even if it breaks things.&amp;rdquo;&lt;/p>
+&lt;p>Another user explained: &amp;ldquo;In a typical Incident Response scenario,
+Digital Forensics data has a shelf life of a few weeks or months at
+best and I am comfortable with the convertibility and portability of
+much of the data that Velociraptor collects such that archival data
+can still be worked with even if newer versions of the server no
+longer support a deprecated format/archive. Just saying that I think
+there will be workarounds if this becomes an issue for folks with
+mountains of legacy data that hasn’t been exported somewhere more
+meaningful for longer term storage and historical data
+analytic/intelligence purposes.&amp;rdquo;&lt;/p>
+&lt;p>Generally most users indicated they rarely or never needed to go back
+to archived data and re-analyze.&lt;/p>
+&lt;h2 id="version-compatibility">Version compatibility&lt;/h2>
+&lt;p>The Velociraptor &lt;a href="https://docs.velociraptor.app/docs/overview/support/" target="_blank" >support
+policy&lt;/a>
+
+officially only supports clients and servers on the same release
+version. However in reality it usually takes longer to upgrade clients
+than servers. While some users are able to upgrade clients promptly,
+many users estimate between 10-50% of deployed clients are a version
+older than the server.&lt;/p>
+&lt;p>The Velociraptor team therefore needs to maintain some compatibility
+with older clients to allow time for users to upgrade their endpoints.&lt;/p>
+&lt;h2 id="the-offline-collector">The offline collector&lt;/h2>
+&lt;p>The offline collector is a way to use Velociraptor&amp;rsquo;s artifacts without
+needing to deploy a server. This feature is used mainly when we need
+to rely on another party to run the actual collection or we are not
+able to deploy a new agent on the endpoint.&lt;/p>
+&lt;p>This feature is used exclusively by about 10% of users, while a
+further 30% of users use it frequently. It is an important feature for
+Velociraptor and the Velociraptor team should devote more time to
+making this even more seamless and easy to use.&lt;/p>
+&lt;p>Most users of the offline collection deploy it manually (50%), while
+deploying via another EDR tool, or via Group Policy are also robust
+options. Some users have created custom wrappers to deploy the offline
+collector in the field.&lt;/p>
+&lt;p>The Offline collection supports directly uploading the collection to a
+cloud server using a number of methods.&lt;/p>
+&lt;p>The most popular upload method is to an &lt;code>AWS S3 bucket&lt;/code> (30%) while
+the &lt;code>SFTP connector&lt;/code> in the cloud or a &lt;code>custom SFTP server&lt;/code> on a VM
+are also popular options (20% and 23%). Uploading directly to &lt;code>Google Cloud Storage&lt;/code> is the least popular option at about 5%.&lt;/p>
+&lt;p>Manual copy methods were also popular ranging from EDR based copying
+to Zoom file copy.&lt;/p>
+&lt;p>A commonly requested method was &lt;code>Azure blob storage&lt;/code> which
+Velociraptor currently does not support. Many responses indicate that
+&lt;code>SFTP&lt;/code> is currently a workaround to the lack of direct Azure
+support. The Velociraptor team should prioritize supporting Azure blob
+storage.&lt;/p>
+&lt;h2 id="data-analysis">Data analysis&lt;/h2>
+&lt;p>Velociraptor supports collecting raw files (e.g. Event log files,
+&lt;code>$MFT&lt;/code> etc) for analysis in other tools. Alternatively Velociraptor
+already contains extensive parsers for most forensic artifacts that
+can be used directly on the endpoint.&lt;/p>
+&lt;p>Most users do use the built in forensic parsing and analysis artifacts
+(55%) but many users also collect raw files (e.g. via the
+&lt;code>Windows.Collection.KapeFiles&lt;/code> artifact).&lt;/p>
+&lt;h2 id="vql-artifacts">VQL artifacts&lt;/h2>
+&lt;p>Velociraptor uses the Velociraptor Query Language to perform
+collections and analysis. The VQL is usually shared via an &lt;code>Artifact&lt;/code>
+with the community.&lt;/p>
+&lt;p>Most users utilize the built in artifacts as well as the &lt;a href="https://docs.velociraptor.app/exchange/" target="_blank" >artifact
+exchange&lt;/a>
+. A significant
+number of users also develop their own artifacts for their own
+use. Over 60% of users report that they develop their own artifacts.&lt;/p>
+&lt;p>For those users who develop their own artifacts, we asked about
+limitations and difficulties in this process. A common theme that
+arose was around debugging artifacts and the lack of a VQL debugger
+and better error reporting.&lt;/p>
+&lt;p>Training and documentation was also pointed as needing improvements. A
+suggestion was made to enhance documentation with a lot more examples
+of how each VQL plugin can be used in practice.&lt;/p>
+&lt;p>Luckily the Velociraptor team is running a training course at
+&lt;a href="https://www.blackhat.com/us-23/training/schedule/#digging-deeper-with-velociraptor-30129" target="_blank" >BlackHat 2023&lt;/a>
+
+this year so users can learn from the Velociraptor developers detailed information of how to deploy Velociraptor and write effective custom VQL.&lt;/p>
+&lt;h2 id="role-based-access-controls">Role based access controls&lt;/h2>
+&lt;p>Velociraptor is a very powerful tool and concentrates a lot of
+responsibility in the hands of a few users. To control access to the
+tool, Velociraptor has a role based access control mechanism, where
+users can be assigned roles from &lt;code>administrator&lt;/code>, &lt;code>investigator&lt;/code> to
+read-only access provided by the &lt;code>reader&lt;/code> role.&lt;/p>
+&lt;p>Users generally found this feature very useful, with 40% of users
+finding it &lt;code>moderately useful&lt;/code> and a further 20% and 15% further
+finding it &lt;code>very useful&lt;/code> and &lt;code>extremely useful&lt;/code>, respectively.&lt;/p>
+&lt;p>The main suggestions for improvements include:&lt;/p>
+&lt;ol>
+&lt;li>Easier management through the GUI (as of version 0.6.8 all user
+ACLs are managed through the GUI now).&lt;/li>
+&lt;li>Custom roles with more granular permissions.&lt;/li>
+&lt;li>Better logging and auditing.&lt;/li>
+&lt;li>Some way to allow a specific role to only run a pre-approved subset
+of artifacts. Some way to only run signed/hashed VQL - prevent a
+malicious artifact being dropped on the server.&lt;/li>
+&lt;li>Making it clearer what each permission grants the user.&lt;/li>
+&lt;/ol>
+&lt;h2 id="multi-tenant-support">Multi-tenant support&lt;/h2>
+&lt;p>In recent versions, Velociraptor offers a fully multi-tenanted mode,
+where organizations can be created and destroyed quickly with minimal
+resource overheads. This feature is used by 25% of respondents, who
+are mainly consultants using it to separate out different
+customers. Some companies use multi-tenancies to separate out different
+organizations in the same business or subsidiaries.&lt;/p>
+&lt;h2 id="client-monitoring-and-alerting">Client monitoring and alerting&lt;/h2>
+&lt;p>Velociraptor can run &lt;code>event queries&lt;/code> on the client. These VQL queries
+run continuously and stream results to the server when certain
+conditions are met. A common use case for these is to generate alerts
+and for enhanced detection.&lt;/p>
+&lt;p>Some users deploy client monitoring artifacts frequently while others
+see it as an alternative to EDR tools, when these are available. The
+primary use case breakdown was:&lt;/p>
+&lt;ol>
+&lt;li>Detection (e.g. alert when an anomalous event occurs) - 27% of users&lt;/li>
+&lt;li>Collection of client events (e.g. forward process event logs to an
+external system) - 18% of users&lt;/li>
+&lt;li>Remediation (e.g. quarantine or remove files automatically) - 15% of users&lt;/li>
+&lt;/ol>
+&lt;p>While 30% of users do not use client monitoring at all.&lt;/p>
+&lt;p>The main pain point with client monitoring seems to be the lack of
+integrated alerting capability (an &lt;a href="https://github.com/Velocidex/velociraptor/issues/1869" target="_blank" >issue currently being worked
+on&lt;/a>
+). Some
+useful feedback on this feature included:&lt;/p>
+&lt;ul>
+&lt;li>Better support for integration with business tools - e.g., Teams,
+Slack, etc.&lt;/li>
+&lt;li>Easier to manage event data.&lt;/li>
+&lt;li>Not having to build a server side artifact for each client_event
+artifact. And a dashboard that lists all alerts. Also, an easier
+way to forward alerts based on severity.&lt;/li>
+&lt;li>Lack of pre-built detection rules / packs. In other words, it would
+be easier to tune down, than to build up.&lt;/li>
+&lt;/ul>
+&lt;h2 id="the-quarantine-feature">The Quarantine feature&lt;/h2>
+&lt;p>Velociraptor can quarantine an endpoint by collecting the
+&lt;code>Windows.Remediation.Quarantine&lt;/code> artifact. This artifact tunes the
+firewall rules on the endpoint to block all external network
+communication while maintaining connectivity to the Velociraptor
+host. This allows for an endpoint to be isolated during
+investigation.&lt;/p>
+&lt;p>The feature was &amp;ldquo;sometimes used&amp;rdquo; by about 30% of users and &amp;ldquo;always used&amp;rdquo;
+by 12%, making it a popular feature.&lt;/p>
+&lt;h2 id="how-is-velociraptor-deployed">How is Velociraptor deployed?&lt;/h2>
+&lt;p>Velociraptor is a very light weight solution, typically taking a few
+minutes to provision a new deployment. For many of our users,
+Velociraptor is used in an Incident Response context on an as-needed
+basis (46%). Other users prefer a more permanent deployment (25%).&lt;/p>
+&lt;p>For larger environments, Velociraptor also supports multi-server
+configuration (used by 13% of users), while the more traditional
+single server deployment option is used by 70% of users.&lt;/p>
+&lt;p>While some users deploy very short lived deployments of several days
+or less (13%), most users keep their deployment for several weeks
+(27%) to months or permanently (44% of users).&lt;/p>
+&lt;p>Velociraptor is designed to work efficiently with many end points. We
+recommend a maximum of 15-20k endpoints on a single server before
+switching to a multi-server architecture (although users reported
+success with larger deployment sizes on a single server). This level
+of performance is adequate in practice for the majority of users.&lt;/p>
+&lt;p>Many users run deployments of less than 250 endpoints (44%) while a
+further 40% of users deploy to less than 5,000 endpoints.&lt;/p>
+&lt;p>Approximately 10% of users have deployment sizes larger than 25,000
+endpoints with 2% of users over 100,000 endpoints.&lt;/p>
+&lt;h2 id="popular-operating-systems">Popular operating systems&lt;/h2>
+&lt;p>Among Velociraptor&amp;rsquo;s supported operating systems, Windows 64-bit, is
+the most popular (with 82% of users ranking it the most deployed OS
+type), while Linux is the next most popular deployed endpoint OS (26%
+ranked second, and 48% third). Finally, Mac is the third popular choice
+for Velociraptor&amp;rsquo;s users, with 32-bit Windows systems still very
+prevalent.&lt;/p>
+&lt;h2 id="resources-and-references">Resources and references&lt;/h2>
+&lt;p>Velociraptor&amp;rsquo;s web site at &lt;a href="https://docs.velociraptor.app/" target="_blank" >https://docs.velociraptor.app/&lt;/a>
+ contains a
+wealth of reference material, training courses and presentations. We
+also have an active YouTube channel (&lt;a href="https://www.youtube.com/@velocidexenterprises8702" target="_blank" >https://www.youtube.com/@velocidexenterprises8702&lt;/a>
+) with many instructional videos.&lt;/p>
+&lt;p>While some users ranked the website as &lt;code>Extremely Useful&lt;/code> (25%) there
+is clearly room for improvements with 42% of users only rating it as
+&lt;code>Very Useful&lt;/code> or &lt;code>Moderately Useful&lt;/code> (28%).&lt;/p>
+&lt;p>Suggestions for improvements included:&lt;/p>
+&lt;ul>
+&lt;li>More in-depth YouTube videos breaking down the tool&amp;rsquo;s features with
+workflows.&lt;/li>
+&lt;li>More detailed &amp;ldquo;how to&amp;rdquo; with practical examples.&lt;/li>
+&lt;li>Improved documentation about functions and plugins with a
+slightly more detailed explanation and a small example.&lt;/li>
+&lt;li>Documents seem to be outdated, would like to see updates to the
+documentation to reflect the new versions and features.&lt;/li>
+&lt;/ul>
+&lt;h2 id="testimonials">Testimonials&lt;/h2>
+&lt;p>Finally I wanted to share with you some of the testimonials that users
+wrote in the survey. We are humbled with the encouraging and positive
+words we read, and are excited to be making an impact on the DFIR
+field.&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>I have to congratulate you and thank you for developing such an
+amazing tool. It&amp;rsquo;s the future of DFIR. I hope Rapid7 won&amp;rsquo;t make it
+very expensive in the future.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Awesome product, can&amp;rsquo;t wait to use it in prod!&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>This is a game changer for the DFIR industry. Keep up the great work.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Keep the file system based back end, its simplicity makes chain of
+custody/court submissions possible.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>I thoroughly love Velociraptor. The team and community are absolutely
+fantastic. I would go as far as to say that Mike and Matthew Green
+are my favorite infosec gentlemen in the industry.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Y&amp;rsquo;all are awesome. I feel like I was pretty critical but that&amp;rsquo;s
+because this is an amazing software, and want to see it continue to
+grow and improve.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>We have been deploying Velociraptor to client environments almost
+since it was released. Our DFIR business model is entirely centered
+around it and it works very well for us. It is a great solution that
+just keeps getting better and better&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="conclusions">Conclusions&lt;/h2>
+&lt;p>This is our first Velociraptor community survey, and it has proven to
+be extremely useful. Since Velociraptor is a community-led open source
+project, we need an open feedback loop to our users, to understand
+where things need to be improved and what features should be
+prioritized.&lt;/p>
+&lt;p>At the same time, since Velociraptor is an open source project, I hope
+this survey will inspire contributions from the community. We value
+all contributions, from code to documentation, testing and bug reports.&lt;/p>
+&lt;p>Finally for all our US based users, we hope to see you all in person
+at &lt;a href="https://www.blackhat.com/us-23/training/schedule/#digging-deeper-with-velociraptor-30129" target="_blank" >BlackHat 2023&lt;/a>
+ this year! Join us for an in depth Velociraptor
+training and to geek out with VQL for 4 days, learning practical,
+actionable skills and supporting this open source project.&lt;/p></description></item><item><title>A Closer Look at the Winning Entry in the 2021 Velociraptor Contributor Competition</title><link>https://docs.velociraptor.app/blog/2021/2021-10-22-a-closer-look-at-the-winning-entry-in-the-2021-velociraptor-contributor-competition-575c387610af/</link><pubDate>Wed, 20 Oct 2021 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2021/2021-10-22-a-closer-look-at-the-winning-entry-in-the-2021-velociraptor-contributor-competition-575c387610af/</guid><description>&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="cd15faa9282be96dc84056013b62c692">
+ &lt;div data-featherlight="#cd15faa9282be96dc84056013b62c692" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-10-22-a-closer-look-at-the-winning-entry-in-the-2021-velociraptor-contributor-competition-575c387610af/16AEbbSzNdpNFVHh0VnSEoA.jpeg" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="16AEbbSzNdpNFVHh0VnSEoA.jpeg">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>On Friday October 9 the Velociraptor team crowned the grand prize winner in our 2021 Contributor Competition — unanimously won by Justin Welgemoed. His entry, “File Type Detection and Client-Server-Client Workflows” absolutely WOWed the judges. Want to learn more about Justin’s submission and how it takes Velociraptor to the next level? Read below for a deep dive into his work.&lt;/p>
+&lt;h3 id="2021-velociraptor-contributor-competition-entry">2021 Velociraptor Contributor Competition Entry:&lt;/h3>
+&lt;h2 id="file-type-detection-and-client-server-client-workflows">File Type Detection and Client-Server-Client Workflows&lt;/h2>
+&lt;p>Currently most Velociraptor artifacts are written in such a way that they are self-contained and are therefore mostly useful in a standalone manner. In other words the common approach to artifact-writing tends to produce monolithic artifacts which typically have to:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>do some kind of targeting logic&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>do something with the target files (if found)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>do something with or about the results&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>The current approach results in a few downsides and inefficiencies:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>some artifacts end up being rather lengthy and difficult to understand at a glance.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>there is inevitably a lot of very similar or even duplicated logic across many artifacts.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>artifacts are heavily dependent of path specifications which makes them somewhat brittle and prone to missing filesystem targets which are not in the conventional locations. This also means that the current artifacts are mainly suited to the use case of “online” data due to the the heavy reliance on path specifications. Thus many Velociraptor artifacts (without modification) are usable only on “live/online” endpoints and will not work against “offline” data, for example data which has been collected through disk imaging or other collection methods.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="goals">Goals&lt;/h2>
+&lt;ol>
+&lt;li>
+&lt;p>The first goal of this demonstration is to show that Velociraptor artifacts can implement client-server-client workflow automation, with decision logic being driven by the server-side in order to achieve a more dynamic/flexible and modular system of DFIR data collection. This also shows that Velociraptor can support reasonably complex workflows implemented &lt;em>using only VQL&lt;/em>, rather than having to implement decision logic in an external application that interfaces via the Velociraptor API. In a nutshell: client artifacts and server artifacts can dance together. Client artifacts don’t have to do all the heavy lifting on their own. Server Monitoring artifacts are essentially server-based services that are an underutilized yet powerful component of Velociraptor.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The 2nd goal here is to demonstrate an approach that uses more concise and reusable Velociraptor artifacts. This is accomplished in 3 ways:&lt;/p>
+&lt;p>a. by creating artifacts that each do a very specific thing, i.e. functional simplification which also increases reusability.&lt;/p>
+&lt;p>b. by shifting some processing logic to the server side. In this way the processing logic can be spread across multiple artifacts.&lt;/p>
+&lt;p>c. through use of Velociraptor features in the artifact definition and in the VQL plugins set which directly facilitate code reuse, mainly these ones:&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="the-artifact-plugin">the Artifact() plugin&lt;/h2>
+&lt;p>This allows Velociraptor artifacts to call other artifacts… which can then call other artifacts… and so on. With some careful planning this allows us to construct artifacts with branching logic to other (reusable) artifacts. This plugin also allows us to call a series of artifacts from one parent artifact, and perhaps have several layers of artifacts below the child artifact. This arrangement of logically related artifacts can amount to a sort of “playbook” where artifacts are invoked automatically rather than being run independently and manually.&lt;/p>
+&lt;p>Recently it &lt;a href="https://github.com/Velocidex/velociraptor/issues/1235#issuecomment-915721425" target="_blank" >became possible&lt;/a>
+ to use preconditions in artifacts that are called by other artifacts. This allows us to have artifacts that can adapt themselves to their environment or the data. In this demo we use that approach to have unified triage artifacts that will run equally well on Windows, Mac and Linux.&lt;/p>
+&lt;h2 id="exportimports">export/imports&lt;/h2>
+&lt;p>This &lt;a href="https://github.com/Velocidex/velociraptor/pull/1087" target="_blank" >relatively new&lt;/a>
+ feature allows artifacts to share blocks of code, including VQL, with other artifacts. Some of the current bundled artifacts are overloaded with huge reference lists and signature definitions. Artifacts such as these could benefit by having their weighty reference components allocated to dedicated artifacts which don’t have any VQL queries. These artifacts would then significantly cut down the size of some existing artifacts and again it is something that facilitates code-sharing across artifacts.&lt;/p>
+&lt;ol start="3">
+&lt;li>
+&lt;p>The 3rd goal is to demonstrate that artifacts can be easily created to support multiple platforms, as mentioned above. Although this demonstration targets Windows files it does not require that the processing be done &lt;em>on&lt;/em> a Windows system. That means that it can also be used for “offline” processing of Windows files collected via external mechanisms (for example Kroll’s KAPE collection tool or disk images).&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The 4th goal is to demonstrate a setup artifact that loads artifacts, tools and server monitoring tasks in 2 easy steps.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The 5th goal is to show that RawSec GENE is an excellent evtx triaging/analysis tool. I hope that more DFIR people start using it and support the tool’s author, &lt;a href="https://github.com/qjerome" target="_blank" >Quentin Jerome&lt;/a>
+, who has put years into it’s development and it’s sibling open-source DFIR tools that are very much under-appreciated.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="7d3d9de6d7a3e85ece2842583bbcd3de">
+ &lt;div data-featherlight="#7d3d9de6d7a3e85ece2842583bbcd3de" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-10-22-a-closer-look-at-the-winning-entry-in-the-2021-velociraptor-contributor-competition-575c387610af/0Ks_idnCHMco1SmfD.gif" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="0Ks_idnCHMco1SmfD.gif">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;ol start="6">
+&lt;li>The sixth goal is demonstrating how the Velociraptor &lt;code>starl()&lt;/code> function allows us to instantly add functionality to VQL. This amazing capability was contributed by Velociraptor community member &lt;a href="https://github.com/clayscode" target="_blank" >Clay Norris&lt;/a>
+.&lt;/li>
+&lt;/ol>
+&lt;h2 id="what-we-want-velociraptor-to-do">What we want Velociraptor to do&lt;/h2>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="032cb90192d57029960c3c3f14ee9a00">
+ &lt;div data-featherlight="#032cb90192d57029960c3c3f14ee9a00" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-10-22-a-closer-look-at-the-winning-entry-in-the-2021-velociraptor-contributor-competition-575c387610af/0emFBMgzFjONNrRTz.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="0emFBMgzFjONNrRTz.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>Locate evtx and exe files on the client based on file magic &lt;a href="https://www.netspi.com/blog/technical/web-application-penetration-testing/magic-bytes-identifying-common-file-formats-at-a-glance/?print=print" target="_blank" >(&amp;ldquo;magic bytes&amp;rdquo;)&lt;/a>
+ using Yara rather than using explicit file paths or file name&lt;/p>
+&lt;ul>
+&lt;li>Artifact: Custom.Client.FindByMagics&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Have the Velociraptor server create a client-side flow to run &lt;a href="https://github.com/0xrawsec/gene" target="_blank" >&lt;code>GENE&lt;/code>&lt;/a>
+ analysis against each evtx file.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Have the Velociraptor server create a client-side flow to run &lt;a href="https://github.com/fireeye/capa" target="_blank" >&lt;code>CAPA&lt;/code>&lt;/a>
+ analysis against each executable (pe32) file.&lt;/p>
+&lt;ul>
+&lt;li>Artifact: &lt;code>Custom.Server.DispatchTriage&lt;/code>&lt;/li>
+&lt;li>Artifact: &lt;code>Custom.Client.TriageGene&lt;/code>&lt;/li>
+&lt;li>Artifact: &lt;code>Custom.Client.TriageCapa&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Have the server interpret the results and create more client-side flows to do something else in response to the triaging artifacts’ results. Perhaps upload these specific files back to the server to preserve evidence contained in them.&lt;/p>
+&lt;ul>
+&lt;li>Artifact: &lt;code>Custom.Server.DispatchUpload&lt;/code>&lt;/li>
+&lt;li>Artifact: &lt;code>Custom.Client.TriageUpload&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Bonus points: Hijacking the VFS browser “upload” function to allow us to kick off the above workflow from the VFS browser. 🤠&lt;/p>
+&lt;ul>
+&lt;li>Artifact: &lt;code>System.VFS.DownloadFile&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>In a nutshell:
+&lt;em>&lt;strong>We want to run a single artifact and then let Velociraptor decide what the next steps should be… and then iterate that process.&lt;/strong>&lt;/em>&lt;/p>
+&lt;p>Although this is a simplified and somewhat contrived example, it aims to demonstrate concepts rather than being a comprehensive real-world solution. It provides an example that can be expanded upon and repurposed quite easily.&lt;/p>
+&lt;h2 id="step-0-follow-along-on-your-own-velociraptor">Step 0: Follow along on your own Velociraptor&lt;/h2>
+&lt;h3 id="artifact-tempsetupdemohttpsgithubcompredictiplevelociraptorcompetitionblobmainartifactstempsetupdemoyaml">Artifact: &lt;a href="https://github.com/predictiple/VelociraptorCompetition/blob/main/artifacts/Temp.Setup.Demo.yaml" target="_blank" >Temp.Setup.Demo&lt;/a>
+&lt;/h3>
+&lt;p>You can try this all on your own Velociraptor. You don’t have to do this but you might like to see it in action on your own server. &lt;em>It’s probably not best to do this on a production server&lt;/em>, so if you don’t have a test server you can instantly set one up by running a local-mode Velociraptor (which is both the server and client) with the following command:&lt;/p>
+&lt;pre>&lt;code> velociraptor-v0.6.1-windows-amd64.exe gui
+&lt;/code>&lt;/pre>
+
+&lt;div class="mynotices note">
+ &lt;div heading="note">&lt;p>Please use the latest version: 0.6.1&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>There are a few simple steps to get the artifacts and tools set up on your server:&lt;/p>
+&lt;ol>
+&lt;li>First step is to add the demo setup artifact — Temp.Setup.Demo - to your server&amp;rsquo;s artifact repository.
+To do that run this VQL in a Velociraptor notebook:&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code class="language-vql">SELECT artifact_set(prefix=&amp;quot;Temp.&amp;quot;, definition=Content) AS LoadResponse FROM http_client(url=&amp;quot;https://raw.githubusercontent.com/predictiple/VelociraptorCompetition/main/artifacts/Temp.Setup.Demo.yaml&amp;quot;)
+&lt;/code>&lt;/pre>
+&lt;p>The result should looks something like this:&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="8ca06816ef95784ebb081869026b160a">
+ &lt;div data-featherlight="#8ca06816ef95784ebb081869026b160a" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-10-22-a-closer-look-at-the-winning-entry-in-the-2021-velociraptor-contributor-competition-575c387610af/0mVKrLKiDNo2goSmo.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="0mVKrLKiDNo2goSmo.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;ol start="2">
+&lt;li>Then run the demo artifact which will:
+&lt;ul>
+&lt;li>install the other artifacts&lt;/li>
+&lt;li>download the tools to your server’s inventory, and&lt;/li>
+&lt;li>load the server monitoring artifacts.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;p>Run this VQL this in a Velociraptor notebook to run the artifact (be aware that this one may take a minute or two because it downloads the tool binaries to your server):&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT * from Artifact.Temp.Setup.Demo()
+&lt;/code>&lt;/pre>
+&lt;p>The result should looks something like this (and the red text does not mean anything went wrong — it’s just logging information… in red 🤷):&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="f0ac4d2a862ac9b108f3f0de9c41d275">
+ &lt;div data-featherlight="#f0ac4d2a862ac9b108f3f0de9c41d275" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-10-22-a-closer-look-at-the-winning-entry-in-the-2021-velociraptor-contributor-competition-575c387610af/0WTDSXnbi3EEJwsFy.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="0WTDSXnbi3EEJwsFy.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>After it completes you can check that all the tools are loaded into the inventory by running this VQL query in a notebook:&lt;/p>
+&lt;pre>&lt;code class="language-vql">SELECT * FROM inventory() WHERE name =~ 'gene' OR name =~ 'capa'
+&lt;/code>&lt;/pre>
+&lt;p>The tools in this repo are all the latest release versions from the author’s repositories. I have just unzipped and renamed them for convenience, but they can be downloaded from the original repos if you’re paranoid:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>GENE binaries: &lt;a href="https://github.com/0xrawsec/gene" target="_blank" >https://github.com/0xrawsec/gene&lt;/a>
+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>GENE rules: &lt;a href="https://github.com/0xrawsec/gene-rules/blob/master/compiled.gen" target="_blank" >https://github.com/0xrawsec/gene-rules/blob/master/compiled.gen&lt;/a>
+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>CAPA&lt;/code> binaries: &lt;a href="https://github.com/fireeye/capa" target="_blank" >https://github.com/fireeye/capa&lt;/a>
+&lt;/p>
+&lt;/li>
+&lt;/ul>
+
+&lt;div class="mynotices tip">
+ &lt;div heading="tip">&lt;p>For testing purposes you can also download some evtx files from &lt;a href="https://github.com/sans-blue-team/DeepBlueCLI" target="_blank" >here&lt;/a>
+ which contain events from simulated malicious activity.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>Now we’re ready to go!
+&lt;em>Поехали!&lt;/em>&lt;/p>
+&lt;h2 id="step-1-locate-interesting-files-based-on-file-magics-using-yara">Step 1: Locate interesting files based on file magics (using Yara)&lt;/h2>
+&lt;h3 id="artifact-customclientfindbymagicshttpsgithubcompredictiplevelociraptorcompetitionblobmainartifactscustomclientfindbymagicsyaml">Artifact: &lt;a href="https://github.com/predictiple/VelociraptorCompetition/blob/main/artifacts/Custom.Client.FindByMagics.yaml" target="_blank" >Custom.Client.FindByMagics&lt;/a>
+&lt;/h3>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="25d2b803ed88eb41c4d9db09e9dff951">
+ &lt;div data-featherlight="#25d2b803ed88eb41c4d9db09e9dff951" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-10-22-a-closer-look-at-the-winning-entry-in-the-2021-velociraptor-contributor-competition-575c387610af/0T3ni2VWXKla2p4mN.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="0T3ni2VWXKla2p4mN.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Our first adventure is locating files of interest without explicitly telling Velociraptor their locations or file names.&lt;/p>
+&lt;p>Sure we know that evtx files are supposed to all be in &lt;code>C:\Windows\System32\winevt\logs&lt;/code>, but imagine a scenario that a server admin may have diligently saved some evtx files to his desktop while troubleshooting some unrelated issue 2 weeks ago, long before anyone even suspected that the server was compromised. Upon investigating you find that the server’s logs retain only about 2 days worth of events, making those saved logs on the admin’s desktop &lt;em>extremely valuable!&lt;/em> Of course &lt;em>you wouldn’t know&lt;/em> that the admin fortuitously did that and &lt;em>he may not know&lt;/em> that there’s a security incident going on or that you even exist! So finding evidence in unexpected places can be pretty important. In this hypothetical scenario we could find these unexpected files using the fact that Windows evtx files have a known file magic: ElfFile. Such file magics (signatures) can easily be identified using Velociraptor&amp;rsquo;s built-in Yara plugin and we&amp;rsquo;ll use that fact in this demonstration.&lt;/p>
+&lt;p>For other files where the file magic is insufficient to identify the exact type of data — for example text logs which are all text and don’t have any file magic (although there are indirect ways to solve that problem) — we can do a deeper dive into the file content using additional Yara scans as another layer in the identification process, and thus resolve ambiguous file types into specific data types. In this way we can resolve more than just basic file magics: we can extend the concept to a more precise level of resolution which we can call “data types”. For example, we can disambiguate text logs into the specific data types of “Apache access log” vs. “Apache error log” vs. “Windows Defender log” using deeper levels of inspection. And we can do this without needing to know their file paths or file names! Awesome!&lt;/p>
+&lt;p>But for the purpose of keeping this demonstration as concise as possible we will only be dealing with evtx and exe files which are reliably and unambiguously identifiable using just file magics. Extending the identification to data types is an exercise left to the reader 😃 (and yes, this could also be done quite well with Velociraptor’s amazing &lt;a href="https://docs.velociraptor.app/vql_reference/parsers/#parse_binary" target="_blank" >parse_binary&lt;/a>
+ function)&lt;/p>
+&lt;p>In addition to freeing us up from the annoying dependency on path specifications, this approach also allows us to target files that have had their file extension changed or removed. As mentioned previously, having our targeting done independent of file paths and/or file names allows us to deal with the “offline data” use case more easily. And as a bonus it also makes things relatively platform-independent.&lt;/p>
+
+&lt;div class="mynotices note">
+ &lt;div heading="note">&lt;p>More fancy filtering could be implemented but we’re trying to keep it simple. The goal of this artifact is to identify relevant files and report back with their path. Subsequent artifacts could apply additional targeting logic based on things like timestamps or file content for example. In this case we are going to do more in-depth analysis with &lt;a href="https://github.com/0xrawsec/gene" target="_blank" >GENE&lt;/a>
+ and &lt;a href="https://github.com/fireeye/capa" target="_blank" >&lt;code>CAPA&lt;/code>&lt;/a>
+ and use these tools to identify a subset of files that are more significant than the rest.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="eb518e7c935bf41120a0b3428404e536">
+ &lt;div data-featherlight="#eb518e7c935bf41120a0b3428404e536" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-10-22-a-closer-look-at-the-winning-entry-in-the-2021-velociraptor-contributor-competition-575c387610af/0KpOIdK2H4TRVxqQY.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="0KpOIdK2H4TRVxqQY.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>We have embedded the 2 Yara rules inside the artifact parameters, however if we needed to use a more extensive list of Yara rules then would be impractical to put them inside the artifact definition. In that situation there are several alternatives:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>store the rules in a separate file that could be added to the Velociraptor tool inventory and treated as a non-executable tool.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>host a rules file on a web server and retrieve it on the client using the &lt;code>http_client()&lt;/code> function.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>store the rules in a dedicated artifact and export it using the &lt;a href="https://github.com/Velocidex/velociraptor/pull/1087" target="_blank" >export/imports&lt;/a>
+ feature. &lt;strong>This approach apparently doesn’t work when the exports section is in an artifact which is being called from another artifact using the Artifacts plugin, so it would not work if we called Custom.Client.FindByMagics from System.VFS.DownloadFile via the VFS browser GUI. I should probably log an issue about that&amp;hellip;&lt;/strong> &lt;em>(note: this is fixed in &lt;a href="https://github.com/Velocidex/velociraptor/pull/1299" target="_blank" >#1299&lt;/a>
+, so it will be possible to do it this way starting from v0.6.2)&lt;/em> Anyway for that reason we have just kept it simple and embedded the 2 rules as an artifact parameter.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="step-2-have-velociraptor-server-decide-what-the-client-should-do-next">Step 2: Have Velociraptor server decide what the client should do next&lt;/h2>
+&lt;h3 id="artifact-customserverdispatchtriagehttpsgithubcompredictiplevelociraptorcompetitionblobmainartifactscustomserverdispatchtriageyaml">Artifact: &lt;a href="https://github.com/predictiple/VelociraptorCompetition/blob/main/artifacts/Custom.Server.DispatchTriage.yaml" target="_blank" >&lt;code>Custom.Server.DispatchTriage&lt;/code>&lt;/a>
+&lt;/h3>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="d43bde966999525f30b6ea53d15f8981">
+ &lt;div data-featherlight="#d43bde966999525f30b6ea53d15f8981" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-10-22-a-closer-look-at-the-winning-entry-in-the-2021-velociraptor-contributor-competition-575c387610af/0udXI_u4F2ICHqTpw.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="0udXI_u4F2ICHqTpw.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>The purpose of this artifact is to pair the files found by the FindByMagics artifact with the appropriate next step, i.e. the next artifact that needs to take action on the file. It’s essentially a patchboard between incoming file magic types and outgoing Velociraptor artifacts.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="ab4de0a0d4fa904b2fabf6e1dea79c28">
+ &lt;div data-featherlight="#ab4de0a0d4fa904b2fabf6e1dea79c28" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-10-22-a-closer-look-at-the-winning-entry-in-the-2021-velociraptor-contributor-competition-575c387610af/0CXp9HmOZ468aSyHI.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="0CXp9HmOZ468aSyHI.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>This artifact runs as a server-side monitoring artifact and listens for flow completions of our FindByMagics artifact. It retrieves the monitored artifact&amp;rsquo;s results and pairs each result with a follow-up artifact. It then dispatches the follow-up artifact to the client using the &lt;code>client_collect()&lt;/code> VQL function. To avoid dispatching a new client flow for every input file it compiles the list of target files into a list (for each type and accessor) and then dispatches a single artifact and passes the list and accessor to the artifact.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="06b3f553ae69c0a0706c956a25e66d2c">
+ &lt;div data-featherlight="#06b3f553ae69c0a0706c956a25e66d2c" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-10-22-a-closer-look-at-the-winning-entry-in-the-2021-velociraptor-contributor-competition-575c387610af/0XXPJV8BuU0Kz6_xT.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="0XXPJV8BuU0Kz6_xT.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>In order to achieve deduplication of the list of targets we have used Velociraptor’s &lt;code>starl()&lt;/code> function which allows us to define a simple deduplicate function using Python code:&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="ed5fa360008645e83a0360c1112084eb">
+ &lt;div data-featherlight="#ed5fa360008645e83a0360c1112084eb" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-10-22-a-closer-look-at-the-winning-entry-in-the-2021-velociraptor-contributor-competition-575c387610af/0HXqgoqyoIzZKbE4j.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="0HXqgoqyoIzZKbE4j.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>&lt;a href="https://github.com/google/starlark-go" target="_blank" >Starlark&lt;/a>
+ is a dialect of Python. We’ve used it here because Velociraptor doesn’t currently have a function to deduplicate a list of values. So we’ve just given VQL a new capability, and it’s very cool to be able to that “on the fly” through the &lt;code>starl()&lt;/code> function.&lt;/p>
+&lt;p>To make things configurable we have used artifact parameters for the list of monitored artifacts as well as for the item-level input-&amp;gt;output pairing (“Response Mapping”). So you can add or remove monitored artifacts very easily without changing the artifact’s code.&lt;/p>
+&lt;p>You can also set up your own mappings of file magics -&amp;gt; response artifacts. One MagidID value can map to more than 1 dispatched artifact (one-to-many), so it is possible to have 2 or more types of analysis (via their own independent artifacts) run in response to a particular file type being identified. It’s also possible to have multiple MagicID values map to the same dispatched artifact (many-to-one), for example if the dispatched artifact performed some format-independent function such as uploading the target files to the server.&lt;/p>
+&lt;h2 id="step-3-send-new-orders-to-the-client">Step 3: Send new orders to the client&lt;/h2>
+&lt;h3 id="artifact-customclienttriagegenehttpsgithubcompredictiplevelociraptorcompetitionblobmainartifactscustomclienttriagegeneyaml">Artifact: &lt;a href="https://github.com/predictiple/VelociraptorCompetition/blob/main/artifacts/Custom.Client.TriageGene.yaml" target="_blank" >&lt;code>Custom.Client.TriageGene&lt;/code>&lt;/a>
+&lt;/h3>
+&lt;h3 id="artifact-customclienttriagecapahttpsgithubcompredictiplevelociraptorcompetitionblobmainartifactscustomclienttriagecapayaml">Artifact: &lt;a href="https://github.com/predictiple/VelociraptorCompetition/blob/main/artifacts/Custom.Client.TriageCapa.yaml" target="_blank" >&lt;code>Custom.Client.TriageCapa&lt;/code>&lt;/a>
+&lt;/h3>
+&lt;p>These artifacts are probably not as good as they could be, but their main purpose is to illustrate that more in-depth analysis can be scheduled on a client based on the results of a previously run artifact. This process can be iterative and involve branching logic.&lt;/p>
+&lt;p>The key things to notice about these artifacts are:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>They are multi-platform. So they can be run on the 3 main operating systems without OS-specific targeting. They can also work on “offline” data, where files from 1 operating system are being processed on a different operating system.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The tool definitions (“tools” section of the artifact) are as simple as possible because we’ve already defined and initialised (incl. downloading) the tools during the setup process. The tool definitions here are just to ensure that these tools are available to this artifact.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>We don’t mess around with fancy-pants unzipping of tools in our artifact. Several of the Velociraptor-bundled artifacts download zipped tools from GitHub and then unzip them on the client. This is done for user-convenience but it creates unnecessary complexity in the artifact, plus we really shouldn’t be using tools in zips that have been pulled straight from GitHub. It’s better to download the tools, unzip the tools, test/validate the tools, and then store them in your Velociraptor’s inventory. This approach also means that your endpoints don’t need access to GitHub because all the tools will be pulled from the Velociraptor server.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>We set the artifact parameters to “hidden” because we don’t intend these artifacts to be used standalone.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>We give them a generous timeout because we could be targeting a large set of files that were previously collected and are now being analysed “offline”. Also &lt;code>Capa&lt;/code> is written in Python and slow as molasses.&lt;/p>
+&lt;/li>
+&lt;/ol>
+
+&lt;div class="mynotices note">
+ &lt;div heading="note">&lt;p>Windows Defender will probably prevent &lt;code>Capa&lt;/code> from running. You may need to temporarily disable it’s realtime protection option or else add a realtime scanning exclusion for the folder your testing on.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;h2 id="step-4-have-velociraptor-server-decide-what-the-client-should-do-next">Step 4: Have Velociraptor server decide what the client should do next&lt;/h2>
+&lt;h3 id="artifact-customserverdispatchuploadhttpsgithubcompredictiplevelociraptorcompetitionblobmainartifactscustomserverdispatchuploadyaml">Artifact: &lt;a href="https://github.com/predictiple/VelociraptorCompetition/blob/main/artifacts/Custom.Server.DispatchUpload.yaml" target="_blank" >&lt;code>Custom.Server.DispatchUpload&lt;/code>&lt;/a>
+&lt;/h3>
+&lt;p>The triaging artifacts in the previous step have now looked at the target files in more depth and given some sort of risk-rating or assessment based on the information in (or about) each file.&lt;/p>
+&lt;p>Similarly to Step 2, the server can now collate that information and conditionally dispatch another artifact to the client. The artifact is almost identical to the one described in Step 2 other than for the fact that it’s now using criticality_score in the decision process instead of magic_id.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="6738f3b603e07333c9c278faa1131bf2">
+ &lt;div data-featherlight="#6738f3b603e07333c9c278faa1131bf2" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-10-22-a-closer-look-at-the-winning-entry-in-the-2021-velociraptor-contributor-competition-575c387610af/0MeJqIkpWMmr0fjtY.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="0MeJqIkpWMmr0fjtY.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>The client artifact we will dispatch here is &lt;code>Custom.Server.DispatchUpload&lt;/code>, which is described in the next step.&lt;/p>
+&lt;h2 id="step-5-send-new-orders-to-the-client">Step 5: Send new orders to the client&lt;/h2>
+&lt;h3 id="artifact-customclienttriageuploadhttpsgithubcompredictiplevelociraptorcompetitionblobmainartifactscustomclienttriageuploadyaml">Artifact: &lt;a href="https://github.com/predictiple/VelociraptorCompetition/blob/main/artifacts/Custom.Client.TriageUpload.yaml" target="_blank" >&lt;code>Custom.Client.TriageUpload&lt;/code>&lt;/a>
+&lt;/h3>
+&lt;p>This artifact is a simple one that just uploads the files identified by the previous steps as containing relevant information.&lt;/p>
+&lt;p>In other words, what we have accomplished is the &lt;strong>preservation of evidence based on the actual evidence contained within the files themselves&lt;/strong>. This is a better approach than just uploading everything and &lt;em>then&lt;/em> checking to see what the files contain.&lt;/p>
+&lt;h2 id="step-x-bonus-points-hijacking-the-vfs-browser-upload-function">Step X: Bonus points: Hijacking the VFS browser upload function&lt;/h2>
+&lt;h3 id="artifact-systemvfsdownloadfilehttpsgithubcompredictiplevelociraptorcompetitionblobmainartifactssystemvfsdownloadfileyaml">Artifact: &lt;a href="https://github.com/predictiple/VelociraptorCompetition/blob/main/artifacts/System.VFS.DownloadFile.yaml" target="_blank" >System.VFS.DownloadFile&lt;/a>
+&lt;/h3>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;img class="inline" src="0AjvQfNC5jIycbk5N.png" />
+
+
+
+
+&lt;/p>
+&lt;p>Under the hood Velociraptor itself uses many artifacts that contain VQL for performing various functions, including many of the functions exposed via the Velociraptor GUI. The VFS (Virtual File System) browser in the GUI has an associated artifact named System.VFS.DownloadFile (&lt;a href="https://github.com/Velocidex/velociraptor/blob/54d878fd57a9250b44965429750a4d20e7850b3e/artifacts/definitions/System/VFS/DownloadFile.yaml" target="_blank" >https://github.com/Velocidex/velociraptor/blob/54d878fd57a9250b44965429750a4d20e7850b3e/artifacts/definitions/System/VFS/DownloadFile.yaml&lt;/a>
+)&lt;/p>
+&lt;p>This artifact provides 2 functions which are invoked by 2 buttons in the VFS GUI:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>“download_one_file”&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>“download_recursive”&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>We would like to be able to browse around on the client machine and when we find an interesting folder we want to be able to click a button and let Velociraptor do the rest! To do that we are going to have to hijack one of those buttons. The “Download Recursive” button and corresponding VQL artifact’s function seems to be the best match for our purposes since we want to target a folder and do stuff recursively with the files in that folder.&lt;/p>
+
+&lt;div class="mynotices note">
+ &lt;div heading="note">&lt;p>It sucks that we need to hijack a built-in “system” artifact to do this, and we feel really bad about doing it (well not really), but at present there are no “custom function” buttons available in the VFS browser GUI. So for now we do this with full knowledge that it is frowned upon and that we are subverting functionality which may be needed for other purposes.&lt;/p>
+&lt;/div>
+&lt;/div>
+
+
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="a37dc61428f27b0aa943fbc213f20e28">
+ &lt;div data-featherlight="#a37dc61428f27b0aa943fbc213f20e28" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-10-22-a-closer-look-at-the-winning-entry-in-the-2021-velociraptor-contributor-competition-575c387610af/0EkAQm0IkMK23HT1I.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="0EkAQm0IkMK23HT1I.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>In the System.VFS.DownloadFile artifact we&amp;rsquo;ve replaced the download_recursive function with our own one that runs our Custom.Client.FindByMagics artifact and pass the parameters Path and Accessor to it. With that minimal information the FindByMagics artifact can begin it&amp;rsquo;s work. Thus we have replaced the native function and by extension we have hijacked the &amp;ldquo;Download Recursive&amp;rdquo; button in the VFS browser. Neat!&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="5032595fea4cb8a351d713c484210f64">
+ &lt;div data-featherlight="#5032595fea4cb8a351d713c484210f64" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-10-22-a-closer-look-at-the-winning-entry-in-the-2021-velociraptor-contributor-competition-575c387610af/0umZkoPpBx_LFI-9W.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="0umZkoPpBx_LFI-9W.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>We also added the 1-hour timeout into the artifact so that it’s behaviour is consistent with the timeout of the Custom.Client.FindByMagics artifact. Finding files can take a long time, so this is just to avoid frustrating timeouts - however it should rarely take anything as long as an hour.&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="bd639b718385ab42d334c66473151c94">
+ &lt;div data-featherlight="#bd639b718385ab42d334c66473151c94" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-10-22-a-closer-look-at-the-winning-entry-in-the-2021-velociraptor-contributor-competition-575c387610af/0_Sg3JaXOEeWZJCE2.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="0_Sg3JaXOEeWZJCE2.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="cb74835ff0aec87531b52cb820a7697d">
+ &lt;div data-featherlight="#cb74835ff0aec87531b52cb820a7697d" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-10-22-a-closer-look-at-the-winning-entry-in-the-2021-velociraptor-contributor-competition-575c387610af/0xXQllV14weMpItFW.png" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="0xXQllV14weMpItFW.png">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;h2 id="lets-see-it-all-in-action">Let’s see it all in action!&lt;/h2>
+&lt;p>Starting from the Custom.Client.FindByMagics artifact:&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="edcb8eb71fc0e15cdccedecea7dc2f5a">
+ &lt;div data-featherlight="#edcb8eb71fc0e15cdccedecea7dc2f5a" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-10-22-a-closer-look-at-the-winning-entry-in-the-2021-velociraptor-contributor-competition-575c387610af/0P7T09VWmEbhqsG60.gif" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="0P7T09VWmEbhqsG60.gif">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>Starting from the VFS browser:&lt;/p>
+&lt;p>
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="43cd7ab71f68cc0c2259447a5e59179d">
+ &lt;div data-featherlight="#43cd7ab71f68cc0c2259447a5e59179d" class="figure">
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-10-22-a-closer-look-at-the-winning-entry-in-the-2021-velociraptor-contributor-competition-575c387610af/0jRHjFoyYXAAtoPRy.gif" alt="">
+ &lt;/div>
+ &lt;figcaption>
+ &lt;a class="image-link" href="0jRHjFoyYXAAtoPRy.gif">&lt;i class="fa fa-download">&lt;/i>&lt;/a>
+ 
+ &lt;/figcaption>
+&lt;/figure>
+
+
+
+
+&lt;/p>
+&lt;p>(p.s. sorry my gif recording software caught some jitter)&lt;/p>
+&lt;h2 id="conclusion">Conclusion&lt;/h2>
+&lt;p>So what we have here is a set of artifacts that work together to implement a simple workflow. We run a single artifact and all we give it is a filesystem path where it should start looking for stuff. With the VFS browser hack we can even simplify that a bit more and reduce it to just browsing around and clicking a button. We can even browse around the Volume Shadow Copies and target these and other sneaky hidden files. Velociraptor then finds relevant stuff and decides what to do with that stuff.&lt;/p>
+&lt;p>Although this is a simplified example the concepts can be applied to much more creative artifacts in order to produce quite complex workflows. We hope you’ll find this useful and apply your own creativity in creating cleverer workflows that do super-awesome things!&lt;/p>
+&lt;p>Have fun guys!!!&lt;/p>
+&lt;p>What do you think of Justin’s submission? Drop your comments, thoughts and questions into the Discord server or by tweeting @velocidex and keep the conversation going!&lt;/p></description></item><item><title>The 2021 Contributor Contest</title><link>https://docs.velociraptor.app/blog/2021/2021-10-08-contributor-contest/</link><pubDate>Tue, 12 Oct 2021 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2021/2021-10-08-contributor-contest/</guid><description>&lt;p>The 2021 Velociraptor Contributor Competition has drawn to a close and
+this year we have received 6 excellent submissions. Each submission
+pushes the state of the art in DFIR and enhances Velociraptor&amp;rsquo;s
+capabilities. Without our wonderful Community an open source project
+such as Velociraptor would not be nearly as capable.&lt;/p>
+&lt;h1 id="and-the-winners-are">And the winners are&amp;hellip;&lt;/h1>
+&lt;p>We are thrilled to announce the winners of the Competition! Each of these
+submissions separated itself from the pack by earning the top combined
+ratings in five key selection criteria:&lt;br>&lt;br> Usefulness, Creativity,
+Effort/Difficulty, Completeness of Solution and Clarity of Documentation
+&lt;br>&lt;br>&lt;/p>
+&lt;p>Without further ado, the winners are&amp;hellip;&lt;/p>
+&lt;ul>
+&lt;li>Grand Prize ($5,000 USD) - &lt;strong>Justin Welgemoed&lt;/strong>&lt;/li>
+&lt;li>Second Place ($3,000 USD) - &lt;strong>Eduardo Cunha Mattos&lt;/strong>&lt;/li>
+&lt;li>Third Place ($2,000 USD) - &lt;strong>Josh Brower&lt;/strong>&lt;/li>
+&lt;/ul>
+&lt;p>Congratulations to all three winners! We&amp;rsquo;ll be reaching out soon with details
+on how to claim your prizes. The Velociraptor team would also like to
+sincerely thank all the judges for their valuable time and effort in evaluating
+the submissions. A great big shoutout and thanks to all our Community members
+who submitted entries as well.&lt;/p>
+&lt;p>You can still view our award presentation at the SANS Threat Hunting Summit by
+registering to view a replay of the summit &lt;a href="https://www.sans.org/cyber-security-training-events/threat-hunting-and-incident-response-summit-2021/" target="_blank" >here&lt;/a>
+.
+But until then, take a look at all the submissions below and evaluate them yourself.&lt;/p>
+&lt;p>Be sure to follow us on Twitter &lt;strong>@velocidex&lt;/strong>, join our &lt;a href="https://docs.velociraptor.app/discord/" target="_blank" >Discord server&lt;/a>
+,
+sign up for our &lt;a href="https://groups.google.com/g/velociraptor-discuss" target="_blank" >mailing list&lt;/a>
+
+and regularly check out this blog for details on upcoming Velociraptor events. We have some exciting things planned for the rest of 2021, into 2022 and beyond!
+&lt;br>
+&lt;br>
+&lt;br>&lt;/p>
+&lt;h2 id="justin-welgemoed">Justin Welgemoed&lt;/h2>
+&lt;p>This submission demonstrates how Velociraptor can be used to automate
+collection, analysis and post processing using a combination of client
+and server artifacts. Justin has also re-purposed the GUI to automate
+further processing of files by signature identification using tools
+such as &lt;code>GENE&lt;/code> and &lt;code>CAPA&lt;/code> for further triaging.&lt;/p>
+&lt;h3 id="references">References:&lt;/h3>
+&lt;p>&lt;a href="https://github.com/predictiple/VelociraptorCompetition.git" target="_blank" >https://github.com/predictiple/VelociraptorCompetition.git&lt;/a>
+
+&lt;br>
+&lt;br>
+&lt;br>&lt;/p>
+&lt;h2 id="shae-bailey">Shae Bailey&lt;/h2>
+&lt;p>Shae contributed a number of artifacts to enhance Cobalt strike
+detection and utilize ETW for real time monitoring.&lt;/p>
+&lt;h3 id="references-1">References:&lt;/h3>
+&lt;p>&lt;a href="https://drive.google.com/drive/folders/1Jr4CJO6y2VZVNl7vRSiuAs8Ys7IDmVub?usp=sharing" target="_blank" >https://drive.google.com/drive/folders/1Jr4CJO6y2VZVNl7vRSiuAs8Ys7IDmVub?usp=sharing&lt;/a>
+
+&lt;br>
+&lt;br>
+&lt;br>&lt;/p>
+&lt;h2 id="eduardo-cunha-mattos">Eduardo Cunha Mattos&lt;/h2>
+&lt;p>Eduardo contributed many useful artifacts including a number of MacOS artifacts&lt;/p>
+&lt;p>Some highlights include&lt;/p>
+&lt;ul>
+&lt;li>Loki integration&lt;/li>
+&lt;li>Enriched hollows hunter&lt;/li>
+&lt;li>Registry UsrClass&lt;/li>
+&lt;li>JECmd integration&lt;/li>
+&lt;/ul>
+&lt;h3 id="references-2">References&lt;/h3>
+&lt;p>&lt;a href="https://github.com/eduardomcm/VelociraptorCompetition" target="_blank" >https://github.com/eduardomcm/VelociraptorCompetition&lt;/a>
+
+&lt;br>
+&lt;br>
+&lt;br>&lt;/p>
+&lt;h2 id="jonathan-woodward">Jonathan Woodward&lt;/h2>
+&lt;p>Jonathan contributed many MacOS artifacts focusing on acquisition of critical files for DFIR triaging.&lt;/p>
+&lt;h3 id="references-3">References&lt;/h3>
+&lt;p>&lt;a href="https://drive.google.com/drive/folders/1cmmoOkP5tWD9skIAU5ClWRG_uagzUYVO?usp=sharing" target="_blank" >https://drive.google.com/drive/folders/1cmmoOkP5tWD9skIAU5ClWRG_uagzUYVO?usp=sharing&lt;/a>
+
+&lt;br>
+&lt;br>
+&lt;br>&lt;/p>
+&lt;h2 id="josh-brower">Josh Brower&lt;/h2>
+&lt;p>Josh wrote VQL artifacts that uses a sysmon configuration as a source to filter out known-good processes when running pslist() across Windows endpoints.&lt;/p>
+&lt;h3 id="references-4">References&lt;/h3>
+&lt;p>Context &amp;amp; Overview video: &lt;a href="https://www.screencast.com/t/iLw4f2jL0FPu" target="_blank" >https://www.screencast.com/t/iLw4f2jL0FPu&lt;/a>
+&lt;/p>
+&lt;p>Code: &lt;a href="https://gist.github.com/defensivedepth/09a6c91a593bdc62b63f2d40b1bc2f84" target="_blank" >https://gist.github.com/defensivedepth/09a6c91a593bdc62b63f2d40b1bc2f84&lt;/a>
+
+&lt;br>
+&lt;br>
+&lt;br>&lt;/p>
+&lt;h2 id="daniel-kelly">Daniel Kelly&lt;/h2>
+&lt;p>Daniel contributed a large number of useful artifacts providing
+collection capabilities for Windows and Linux focused around initial
+triage.&lt;/p>
+&lt;h3 id="references-5">References&lt;/h3>
+&lt;p>&lt;a href="https://drive.google.com/drive/folders/1Q3b4b1NN_xo5_2ak1-INn8l5kIBbfNZ2?usp=sharing" target="_blank" >https://drive.google.com/drive/folders/1Q3b4b1NN_xo5_2ak1-INn8l5kIBbfNZ2?usp=sharing&lt;/a>
+&lt;/p></description></item></channel></rss>
