@@ -1,0 +1,33 @@
+
+name: Windows.IRScript
+author: Golan Agi - @go-LANz
+description: |
+    The DFIR script by @Bert-JanP collects information from multiple sources and structures the output in the current directory as a folder and a zip file.
+    script collects the following information when running as normal user: Local IP Info, Open Connection, Autorun Information (Startup Folder & Registry Run keys, Active Users, Local Users, Connections Made From Office Applications, Active SMB Shares, RDP Sessions, Active Processes, Active USB Connections, PowerShell History, DNS Cache, Installed Drivers, Installed Software, Running Services, Scheduled Tasks, Browser history and profile files
+    
+tools:
+  - name: IRScript
+    url: https://github.com/Bert-JanP/Incident-Response-Powershell/archive/refs/tags/V3.0.0.zip
+    version: 3.0
+    serve_locally: true
+    
+sources:
+  - query: |
+        
+        LET TmpDir <= tempdir(remove_last='Y') --Create temp directory
+        
+        LET ToolZip <= SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(ToolName="IRScript", IsExecutable=FALSE, TemporaryOnly=TRUE) --Fetch the zip into the disk
+        
+        LET _ <= SELECT * FROM unzip(filename=ToolZip.FullPath, output_directory=TmpDir) --Unzips the file into the temp directory we have created
+        
+        LET DFIRScript <= path_join(components=[TmpDir, 'DFIR-Script.ps1'], path_type='windows') --"Calculate" the full path to the .ps1 file
+        
+        LET RunScript <= SELECT *
+        FROM execve(argv=["powershell", "-ExecutionPolicy", "bypass", "-file", DFIRScript],cwd=TmpDir) --Runs the script and sets the working directory as the temp directory
+        
+        LET OutputPath <= path_join(components=[TmpDir, 'DFIR-*.zip'], path_type='windows') --"Calculate" the full path of the script output zip file
+        LET UploadFile <= SELECT *, upload(file=FullPath) AS Upload FROM glob(globs=OutputPath) --Upload the script output zip file
+        SELECT * FROM chain(
+            a=RunScript,
+            b=UploadFile
+        ) --The "Chain" - sets the sequence of events
