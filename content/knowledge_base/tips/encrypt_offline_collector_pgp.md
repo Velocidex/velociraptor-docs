@@ -1,7 +1,7 @@
 # Encrypt and decrypt an offline collector using PGP public and private keys
 
 
-Velociraptor supports three modes for encrypting Offline Collectors: Password, X.509 Secured, and PGP-secured (as [described here](https://docs.velociraptor.app/docs/deployment/offline_collections/#collection-security)). 
+Velociraptor supports three modes for encrypting Offline Collectors: Password, X.509 Secured, and PGP-secured (as [described here](https://docs.velociraptor.app/docs/deployment/offline_collections/#collection-security)).
 While X.509 is the standard for automatic server imports, using PGP is a great alternative when you need to decrypt collections independently of the Velociraptor Server.
 
 
@@ -12,7 +12,7 @@ When using PGP, Velociraptor follows a "hybrid" encryption approach:
 1. **Generation**: Velociraptor generates a high-entropy random password.
 2. **Encryption**: The collected data is encrypted with this password.
 3. **Envelope**: The password itself is encrypted using your PGP Public Key and stored in the metadata.
-4. **Decryption**: To access the data, you must first decrypt the password using your **PGP Private Key**, then decompress the protected zip using the password. 
+4. **Decryption**: To access the data, you must first decrypt the password using your **PGP Private Key**, then decompress the protected zip using the password.
 
 
 ### Step 1: Generate a PGP key-pair
@@ -38,7 +38,7 @@ gpg --armor --export ilo@test.com > key.pub
 
 ### Step 2: Configure the Collector Spec
 
- > The easiest way to build the Offline Collector is in the GUI. This approach will generate a Velociraptor Offline Collector and a spec.yaml.  
+ > The easiest way to build the Offline Collector is in the GUI. This approach will generate a Velociraptor Offline Collector and a spec.yaml.
 
 The following will show how to build the offline collector using CLI:
 
@@ -77,7 +77,7 @@ EncryptionArgs:
   public_key: |-
     -----BEGIN PGP PUBLIC KEY BLOCK-----
 
-    REDACTED... 
+    REDACTED...
     -----END PGP PUBLIC KEY BLOCK-----
   password: ""
 OptVerbose: Y
@@ -98,7 +98,7 @@ OptVersion: ""
 OptDeleteAtExit: N
 ```
 
-**Step 3: Build the Offline Collector** 
+**Step 3: Build the Offline Collector**
 
 Run the following command to "repack" the Velociraptor binary into a standalone collector based on your spec.
 ```sh
@@ -123,12 +123,15 @@ Run the following command to "repack" the Velociraptor binary into a standalone 
 
 ### Step 4: Decrypt the Results
 
-The Velociraptor Offline Collector will generate a Collector.zip file. The filestructure within the container is documented as [described here](https://docs.velociraptor.app/docs/deployment/offline_collections/collection_data/#pgp-or-x509-non-server-cert-encryption-schemes):
+The Velociraptor Offline Collector will generate a Collector.zip
+file. The file structure within the container is documented as
+[described
+here](https://docs.velociraptor.app/docs/deployment/offline_collections/collection_data/#pgp-or-x509-non-server-cert-encryption-schemes):
 
 - data.zip
 - metadata.json
 
-Within the metadata.json file you fill find the encrypted password in the EncryptedPass entry: 
+Within the metadata.json file you fill find the encrypted password in the `EncryptedPass` entry:
 ```json
 [
  {
@@ -139,7 +142,7 @@ Within the metadata.json file you fill find the encrypted password in the Encryp
 ]
 ```
 
-You can decrypt the password and the data using the following commands: 
+You can decrypt the password and the data using the following commands:
 ```sh
 # 1. Extract the encrypted pass from metadata
 # 2. Base64 decode it
@@ -148,9 +151,7 @@ You can decrypt the password and the data using the following commands:
 PASS=$(7z e -so Collection.zip metadata.json | jq -r '.[].EncryptedPass' | base64 -d | gpg --decrypt)
 7z x Collection.zip "-p$PASS" -y
 ```
-This assumes that the private key is in your gpg vault. 
+This assumes that the private key is in your gpg vault.
 
 ### Working with the data
 Working with the Offline Collection data is [described here](https://docs.velociraptor.app/docs/deployment/offline_collections/collection_data/)
-
-
