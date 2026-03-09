@@ -44,20 +44,17 @@ function addToNode(dom, nodes) {
                 cls = "fa fa-angle-down fa-sm category-icon";
             }
 
-            let title = $("<div>").append(
-                $("<i>").attr( "class", cls));
+            let title = $("<div>").append($("<i>").attr( "class", cls));
             title.append($("<a>").attr(
                 "href", x.link).append(unescapeHtml(x.title)));
-            new_dom.append(title);
 
             let new_ul = $("<ul>");
             addToNode(new_ul, children);
-            new_dom.append(new_ul);
+            new_dom.append(title).append(new_ul);
 
         } else {
             let cls = "fa fa-chevron-right fa-sm category-icon";
-            let title = $("<div>").append(
-                $("<i>").attr("class", cls));
+            let title = $("<div>").append($("<i>").attr("class", cls));
             title.append($("<a>").attr(
                 "href", x.link).append(unescapeHtml(x.title)));
             new_dom.append(title);
