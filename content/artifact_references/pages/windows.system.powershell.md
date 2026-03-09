@@ -90,7 +90,8 @@ sources:
              if(condition=len(list=Stderr) &gt;= SizeLimit,
                 then=upload(accessor="data",
                             file=Stderr,
-                            name="Stderr" + str(str=count()))) AS StderrUpload
+                            name="Stderr" + str(str=count()))) AS StderrUpload,
+             *
       FROM execve(argv=[PowerShellExe,
         "-ExecutionPolicy", "Unrestricted", "-encodedCommand",
         base64encode(string=utf16_encode(string=Command))

@@ -2024,3 +2024,9 @@ PathSpec
 UploadResponse
 reconnection
 Bing
+
+conn
+HECs
+backoff
+semver
+pathname

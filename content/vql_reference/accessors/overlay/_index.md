@@ -19,7 +19,7 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-paths|A list of paths to try to resolve each path.|list of OSPath (required)
+paths|A list of paths to try to resolve.|list of OSPath (required)
 accessor|File accessor|string
 
 ### Description

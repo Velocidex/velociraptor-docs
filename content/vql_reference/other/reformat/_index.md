@@ -1,5 +1,5 @@
 ---
-title: template
+title: reformat
 index: true
 noTitle: true
 no_edit: true
@@ -10,7 +10,7 @@ no_edit: true
 <div class="vql_item"></div>
 
 
-## template
+## reformat
 <span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
@@ -19,11 +19,11 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-template|A Go Template compatible string.|string (required)
-expansion|An object to be expanded into the template.|ordereddict.Dict (required)
-html|Use when the output should be html escaped.|bool
+artifact|The artifact VQL to reformat.|string (required)
 
 ### Description
 
-Expand a Go style template .
+Reformat VQL
+
+This function will reformat the artifact provided and return the reformatted content.
 

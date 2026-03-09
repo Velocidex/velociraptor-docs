@@ -1,5 +1,5 @@
 ---
-title: template
+title: semver
 index: true
 noTitle: true
 no_edit: true
@@ -10,7 +10,7 @@ no_edit: true
 <div class="vql_item"></div>
 
 
-## template
+## semver
 <span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
@@ -19,11 +19,9 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-template|A Go Template compatible string.|string (required)
-expansion|An object to be expanded into the template.|ordereddict.Dict (required)
-html|Use when the output should be html escaped.|bool
+version|A string to convert to a semantic version|string (required)
 
 ### Description
 
-Expand a Go style template .
+Parse a semantic version string.
 

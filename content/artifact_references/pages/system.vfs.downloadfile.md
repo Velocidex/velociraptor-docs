@@ -40,7 +40,7 @@ parameters:
       we download all files below it.
   - name: UPLOAD_IS_RESUMABLE
     type: bool
-    default: Y
+    default: N
     description: If set the uploads can be resumed if the flow times out or errors.
 
 sources:

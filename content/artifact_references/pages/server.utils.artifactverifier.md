@@ -1,0 +1,92 @@
+---
+title: Server.Utils.ArtifactVerifier
+hidden: true
+tags: [Server Artifact]
+---
+
+Verify a set of artifacts and returns results in a structured way.
+
+You can run this on the command line like:
+```
+velociraptor -r Server.Utils.ArtifactVerifier --SearchGlob '/path/to/*.yaml'
+```
+
+
+<pre><code class="language-yaml">
+name: Server.Utils.ArtifactVerifier
+description: |
+  Verify a set of artifacts and returns results in a structured way.
+
+  You can run this on the command line like:
+  ```
+  velociraptor -r Server.Utils.ArtifactVerifier --SearchGlob '/path/to/*.yaml'
+  ```
+
+type: SERVER
+
+parameters:
+- name: SearchGlob
+  default: /tmp/*.yaml
+  description: A glob to capture all artifacts to verify
+
+- name: ErrorIsFatal
+  type: bool
+  default: N
+  description: If set, an error is produced if any artifact is failed.
+
+sources:
+- query: |
+    -- Convert the array to a string
+    LET _Stringify(X) = SELECT str(str=_value) AS value
+      FROM foreach(row=X)
+    LET Stringify(X) = _Stringify(X=X).value
+
+    LET maybeLog(Path) = if(condition=ErrorIsFatal,
+      then=log(level="ERROR", dedup= -1, message="%v failed!", args=Path),
+      else=TRUE)
+
+    LET PassLogError(Verify, Path) = NOT Verify.Errors
+      OR NOT maybeLog(Path=Path)
+
+    -- Extract the name of the artifact from the raw data - needed if
+    -- the yaml can not be parsed at all then we need to fallback to a
+    -- regex.
+    LET GetName(Artifact) = parse_string_with_regex(
+        regex='''^name:\s*(.+)''', string=Artifact).g1
+
+    LET Files = SELECT OSPath,
+                       read_file(filename=OSPath) AS Data
+      FROM glob(globs=SearchGlob)
+
+    LET Artifacts &lt;= SELECT *,
+       artifact_set(definition=Data, repository="local") AS Definition
+    FROM Files
+
+    LET Results &lt;= SELECT name,
+           path,
+           PassLogError(Verify=Verify, Path=path) AS passed,
+           Stringify(X=Verify.Errors) AS errors,
+           Stringify(X=Verify.Warnings) AS warnings
+    FROM foreach(row=Artifacts,
+                 query={
+        SELECT OSPath AS path,
+               GetName(Artifact=Data) AS name,
+               verify(artifact=Data, repository="local") AS Verify
+        FROM scope()
+      })
+
+    -- Add some metadata to the output and present in the same row.
+    SELECT timestamp(epoch=now()) AS timestamp,
+       config.version as metadata,
+       dict(
+         total=len(list=Results),
+         passed=len(list=filter(list=Results, condition="x=&gt;x.passed")),
+         failed=len(list=filter(list=Results, condition="x=&gt;NOT x.passed")),
+         warnings=len(list=filter(list=Results, condition="x=&gt;x.warnings"))
+       ) AS summary,
+       { SELECT name FROM Results } as artifacts,
+       Results as results
+    FROM scope()
+
+</code></pre>
+
