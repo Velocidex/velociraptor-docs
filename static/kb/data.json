@@ -1,5 +1,14 @@
 [
     {
+        "title": "Encrypt and decrypt an offline collector using PGP public and private keys",
+        "link": "/knowledge_base/tips/encrypt_offline_collector_pgp",
+        "tags": [],
+        "author": "ilostab",
+        "author_link": "https://github.com/ilostab",
+        "author_avatar": "https://avatars.githubusercontent.com/u/92776796?v=4",
+        "date": "2026-03-07"
+    },
+    {
         "title": "How to set up OIDC authentication using ADFS",
         "link": "/knowledge_base/tips/setup_adfs",
         "tags": [

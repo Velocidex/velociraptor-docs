@@ -29,6 +29,7 @@ progress_timeout|If no progress is detected in this many seconds, we terminate t
 org_id|If specified, the query will run in the specified org space (Use 'root' to refer to the root org)|string
 runas|If specified, the query will run as the specified user|string
 inherit|If specified we inherit the scope instead of building a new one.|bool
+exit|A callback to consider each row. When the callback returns TRUE the query is aborted|Lambda
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">IMPERSONATION</span>
 
@@ -154,5 +155,20 @@ You need to have the IMPERSONATION ACL permission to be able to do
 this (Usually only admins have it). This permission is equivalent
 to administrator because a user with this permission can become
 any user they want including the administrator.
+
+### Dynamic exit condition
+
+You can use the `query()` plugin to terminate a query early by
+setting a lambda callback for the `exit` parameter:
+
+```vql
+LET my_limit <= 5
+
+SELECT *
+FROM query(query={
+   SELECT _value AS Value
+   FROM range(start=0, end=20)
+}, exit='x=>x._value >= my_limit', inherit=true)
+```
 
 

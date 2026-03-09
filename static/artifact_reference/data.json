@@ -1341,15 +1341,6 @@
         ]
     },
     {
-        "title": "Server.Information.Clients",
-        "description": "This artifact returns the total list of clients, their hostnames and\nthe last times they were seen.\n",
-        "link": "/artifact_references/pages/server.information.clients",
-        "type": "server",
-        "tags": [
-            "Server Artifact"
-        ]
-    },
-    {
         "title": "Server.Information.Users",
         "description": "List the user names and SIDs on each machine. We get this\ninformation from the last time we collected Windows.Sys.Users. If we\nnever collected it for this machine, there will be no results.\n",
         "link": "/artifact_references/pages/server.information.users",
@@ -1737,6 +1728,15 @@
         ]
     },
     {
+        "title": "Server.Utils.ArtifactVerifier",
+        "description": "Verify a set of artifacts and returns results in a structured way.",
+        "link": "/artifact_references/pages/server.utils.artifactverifier",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
         "title": "Server.Utils.BackupDirectory",
         "description": "This server monitoring artifact will automatically export and\nbackup selected collected artifacts to a directory on the server.\n",
         "link": "/artifact_references/pages/server.utils.backupdirectory",
@@ -1770,6 +1770,15 @@
         "type": "server",
         "tags": [
             "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.Clients",
+        "description": "View detailed client informations",
+        "link": "/artifact_references/pages/server.utils.clients",
+        "type": "notebook",
+        "tags": [
+            "notebook"
         ]
     },
     {
@@ -2269,7 +2278,7 @@
     },
     {
         "title": "Windows.Collectors.Remapping",
-        "description": "Calculate a remapping file for a collection zip.",
+        "description": "Calculates a remapping config for a collection container (zip).",
         "link": "/artifact_references/pages/windows.collectors.remapping",
         "type": "server",
         "tags": [
@@ -2835,6 +2844,15 @@
         ]
     },
     {
+        "title": "Windows.Forensics.Amcache",
+        "description": "The Amcache.hve is a registry artifact that stores metadata\nused by the OS\u2019s application compatibility infrastructure to \nrecord metadata about binaries present on the system. This \nincludes file paths, hashes, timestamps, and install/interaction \ninformation for executables and drivers. ",
+        "link": "/artifact_references/pages/windows.forensics.amcache",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "Windows.Forensics.Bam",
         "description": "The Background Activity Moderator (BAM) is a Windows service that\nControls activity of background applications.  This service exists\nin Windows 10 only after Fall Creators update \u2013 version 1709.",
         "link": "/artifact_references/pages/windows.forensics.bam",
@@ -3034,7 +3052,7 @@
     },
     {
         "title": "Windows.KapeFiles.Extract",
-        "description": "The Windows.KapeFiles.Targets artifact collects files into a Zip\nfile. Zip files cannot generally preserve timestamps since they\nonly have a single timestamp concept. Velociraptor will only record\nthe modified time in the zip file header itself but all the times\nare present in the metadata file:",
+        "description": "Extracts file collected by the `Windows.KapeFiles.Targets` or\n`Windows.Triage.Targets` artifacts. and restores the original\ntimestamps on the extracted files.",
         "link": "/artifact_references/pages/windows.kapefiles.extract",
         "type": "server",
         "tags": [
@@ -3043,7 +3061,7 @@
     },
     {
         "title": "Windows.KapeFiles.Remapping",
-        "description": "This artifact automates the rebuilding of remapping rules to be able to\neasily post-process the results of the Windows.KapeFiles.Targets.",
+        "description": "Automates the creation of remapping rules to enable post-processing file\nuploads collected by the `Windows.KapeFiles.Targets` or\n`Windows.Triage.Targets` artifacts.",
         "link": "/artifact_references/pages/windows.kapefiles.remapping",
         "type": "client",
         "tags": [
@@ -3606,15 +3624,6 @@
         "type": "client_event",
         "tags": [
             "Client Event Artifact"
-        ]
-    },
-    {
-        "title": "Windows.System.Amcache",
-        "description": "Get information from the system's amcache.",
-        "link": "/artifact_references/pages/windows.system.amcache",
-        "type": "client",
-        "tags": [
-            "Client Artifact"
         ]
     },
     {
