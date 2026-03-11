@@ -47,7 +47,8 @@ sources:
         SELECT _value as HuntId FROM items(item=AllHunts)
       }, query={
         SELECT * FROM cancellations(HuntId=HuntId)
-      })
+      }, workers=50
+      )
 
 </code></pre>
 

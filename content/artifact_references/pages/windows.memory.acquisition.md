@@ -18,10 +18,10 @@ trade-off. Empirically we found that using S2 compression gives a
 reasonable compression and very high speed reducing acquisition time
 from the no compression options significantly.
 
-To decompress the image you can use the [Go WinPmem binary](https://github.com/Velocidex/WinPmem/releases/download/v4.0.rc1/go-winpmem_amd64_1.0-rc1.exe)
+To decompress the image you can use the [Go WinPmem binary](https://github.com/Velocidex/WinPmem/releases)
 
 ```
-go-winpmem.exe expand image.compressed image.raw
+go-winpmem.exe extract image.compressed image.raw
 ```
 
 
@@ -42,10 +42,10 @@ description: |
   reasonable compression and very high speed reducing acquisition time
   from the no compression options significantly.
 
-  To decompress the image you can use the [Go WinPmem binary](https://github.com/Velocidex/WinPmem/releases/download/v4.0.rc1/go-winpmem_amd64_1.0-rc1.exe)
+  To decompress the image you can use the [Go WinPmem binary](https://github.com/Velocidex/WinPmem/releases)
 
   ```
-  go-winpmem.exe expand image.compressed image.raw
+  go-winpmem.exe extract image.compressed image.raw
   ```
 
 implied_permissions:

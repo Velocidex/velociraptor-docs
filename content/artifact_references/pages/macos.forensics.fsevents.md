@@ -67,6 +67,10 @@ parameters:
      description: Filter by flags
      type: regex
      default: .
+   - name: MaxFileSize
+     type: int
+     default: "10000000"
+     description: "Read up to that many bytes"
    - name: DateAfter
      type: timestamp
      description: "search for source files with Btime after this date. YYYY-MM-DDTmm:hh:ssZ"
@@ -256,11 +260,10 @@ sources:
                 Btime as SourceBtime
             FROM
                 foreach(row=parse_binary(
-                    filename=read_file(filename=OSPath, accessor="gzip", length=1000000),
+                    filename=read_file(filename=OSPath, accessor="gzip", length=MaxFileSize),
                     accessor="data",
                     profile=FSEventProfile, struct="FSEventsProfile").Entries)
         })
-        WHERE EntryPath =~ PathRegex AND EntryFlags =~ FlagsRegex
 
       SELECT
         items.path as EntryPath,
@@ -273,6 +276,7 @@ sources:
         Version
       FROM
         flatten(query=x)
+      WHERE EntryPath =~ PathRegex AND EntryFlags =~ FlagsRegex
 
 </code></pre>
 

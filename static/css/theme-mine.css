@@ -1136,3 +1136,12 @@ table tr th {
     width: 100%;
     height: 100vh;
 }
+
+.category-icon {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.sidemenu.hidden {
+    display: none;
+}

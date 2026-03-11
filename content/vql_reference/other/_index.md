@@ -69,11 +69,13 @@ not yet been categorized.
 |[rand](rand)|<span class='vql_type'>Function</span>|Selects a random number|
 |[rate](rate)|<span class='vql_type'>Function</span>|Calculates the rate (derivative) between two quantities|
 |[read_crypto_file](read_crypto_file)|<span class='vql_type'>Plugin</span>|Read a previously stored encrypted local storage file|
+|[reformat](reformat)|<span class='vql_type'>Function</span>|Reformat VQL|
 |[rekey](rekey)|<span class='vql_type'>Function</span>|Causes the client to rekey and regenerate a new client ID|
 |[remap](remap)|<span class='vql_type'>Function</span>|Apply a remapping configuration to the root scope|
 |[rm](rm)|<span class='vql_type'>Function</span>|Remove a file from the filesystem using the API|
 |[rsyslog](rsyslog)|<span class='vql_type'>Function</span>|Send an RFC5424 compliant remote syslog message|
 |[sample](sample)|<span class='vql_type'>Plugin</span>|Executes 'query' and samples every n'th row|
+|[semver](semver)|<span class='vql_type'>Function</span>|Parse a semantic version string|
 |[serialize](serialize)|<span class='vql_type'>Function</span>|Encode an object as a string|
 |[sigma_log_sources](sigma_log_sources)|<span class='vql_type'>Function</span>|Constructs a Log sources object to be used in sigma rules|
 |[similarity](similarity)|<span class='vql_type'>Function</span>|Compare two Dicts for similarity|
@@ -101,5 +103,6 @@ not yet been categorized.
 |[version](version)|<span class='vql_type'>Function</span>|Gets the version of a VQL plugin or function|
 |[write_crypto_file](write_crypto_file)|<span class='vql_type'>Plugin</span>|Write a query into an encrypted local storage file|
 |[write_csv](write_csv)|<span class='vql_type'>Plugin</span>|Write a query into a CSV file|
+|[write_file](write_file)|<span class='vql_type'>Function</span>|Writes a string onto a file|
 |[write_jsonl](write_jsonl)|<span class='vql_type'>Plugin</span>|Write a query into a JSONL file|
 |[yarax](yarax)|<span class='vql_type'>Plugin</span>|Scan files using yara rules (Using the new yarax engine)|

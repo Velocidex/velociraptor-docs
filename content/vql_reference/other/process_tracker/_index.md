@@ -22,8 +22,10 @@ Arg | Description | Type
 sync_query|Source for full tracker updates. Query must emit rows with the ProcessTrackerUpdate shape - usually uses pslist() to form a full sync.|StoredQuery
 sync_period|How often to do a full sync (default 5000 msec).|int64
 update_query|An Event query that produces live updates of the tracker state.|StoredQuery
-max_size|Maximum size of process tracker LRU.|int64
+max_size|Maximum size of process tracker LRU.|uint64
+max_expiry|Expire process records older than this much.|uint64
 enrichments|One or more VQL lambda functions that can enrich the data for the process.|list of string
+cache|The path to the cache file - if not set we use a memory based cache.|string
 
 ### Description
 

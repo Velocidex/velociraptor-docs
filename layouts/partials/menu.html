@@ -21,19 +21,19 @@
     </section>
   {{end}}
 
-    <div class="highlightable">
-    <ul class="topics">
+    {{ if .IsHome }}
+      {{ with resources.Get "js/menu-tml.js" }}
+       {{ with resources.ExecuteAsTemplate "js/menu.js" $ . }}
+         {{ $a := .RelPermalink }}
+       {{ end }}
+      {{ end }}
+    {{ end }}
 
-{{- if eq .Site.Params.ordersectionsby "title"}}
-  {{- range .Site.Home.Sections.ByTitle}}
-  {{- template "section-tree-nav" dict "sect" . "currentnode" $currentNode "showvisitedlinks" $showvisitedlinks}}
-  {{- end}}
-{{- else}}
-  {{- range .Site.Home.Sections.ByWeight}}
-  {{- template "section-tree-nav" dict "sect" . "currentnode" $currentNode "showvisitedlinks" $showvisitedlinks}}
-  {{- end}}
-{{- end}}
-    </ul>
+    <script src="/js/menu.js" type="text/javascript">
+    </script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
     <hr />
     {{ $disableShortcutsTitle := .Site.Params.DisableShortcutsTitle}}
     {{with .Site.Menus.shortcuts}}
@@ -100,80 +100,18 @@
   </div>
 </nav>
 
-<!-- templates -->
-{{- define "section-tree-nav" }}
-{{- $showvisitedlinks := .showvisitedlinks }}
-{{- $mycurrentNode := .currentnode }}
- {{- with .sect}}
-  {{- if and .IsSection (or (not (or .Params.no_menu .Params.hidden)) $.showhidden)}}
-    {{- $numberOfPages := (add (len .Pages) (len .Sections)) }}
-    {{- safeHTML .Params.head}}
-    <li data-nav-id="{{.Permalink}}" class="dd-item
-        {{- if .IsAncestor $mycurrentNode}} parent{{end}}
-        {{- if eq .Permalink $mycurrentNode.Permalink}} active{{end}}
-        {{- if .Params.alwaysopen}} alwaysopen{{end -}}
-        {{- if ne $numberOfPages 0 }} haschildren{{end}}
-        ">
-      <div>
-        {{- if and ( ne $numberOfPages 0 ) (not .Params.no_children)  }}
-          {{- if or (.IsAncestor $mycurrentNode) (.Params.alwaysopen) }}
-            <i class="fa fa-angle-down fa-sm category-icon"></i>
-          {{- else -}}
-            <i class="fa fa-angle-right fa-sm category-icon"></i>
-          {{- end}}
-        {{ else }}
-            <i class="fa fa-chevron-right fa-sm category-icon"></i>
-        {{- end}}
-        <a rel="nofollow" href="{{ .RelPermalink}}">{{safeHTML .Params.Pre}}{{or .Params.Menutitle .Title}}{{safeHTML .Params.Post}}</a>
-
-        {{- if $showvisitedlinks}}<i class="fa fa-circle-thin read-icon"></i>{{end}}
-      </div>
-      {{- if and ( ne $numberOfPages 0) (not .Params.no_children) }}
-        <ul>
-          {{- .Scratch.Set "pages" .Pages }}
-          {{- if .Sections}}
-          {{- .Scratch.Set "pages" (.Pages | union .Sections) }}
-          {{- end}}
-          {{- $pages := (.Scratch.Get "pages") }}
-          {{- $pages = .Pages }}
-
-        {{- if eq .Site.Params.ordersectionsby "title"}}
-          {{- range $pages.ByTitle }}
-            {{- if and (or .Params.hidden .Params.no_menu) (not $.showhidden) }}
-            {{- else}}
-            {{- template "section-tree-nav" dict "sect" . "currentnode" $mycurrentNode "showvisitedlinks" $showvisitedlinks }}
-            {{- end}}
-          {{- end}}
-        {{- else}}
-          {{- range $pages.ByWeight }}
-            {{- if and (or .Params.hidden .Params.no_menu) (not $.showhidden) }}
-            {{- else}}
-            {{- template "section-tree-nav" dict "sect" . "currentnode" $mycurrentNode "showvisitedlinks" $showvisitedlinks }}
-            {{- end}}
-          {{- end}}
-        {{- end}}
-        </ul>
-      {{- end}}
-    </li>
-  {{- else}}
-    {{- if not (or .Params.Hidden .Params.no_menu) }}
-      <li data-nav-id="{{.Permalink}}" class="dd-item
-     {{- if eq .Permalink $mycurrentNode.Permalink}} active{{end -}}
-      ">
-        <div>
-          <a rel="nofollow" href="{{ .RelPermalink}}">
-            {{safeHTML .Params.Pre}}{{.LinkTitle}}{{safeHTML .Params.Post}}
-          </a>
-          {{- if $showvisitedlinks}}<i class="fa fa-circle-thin read-icon"></i>{{end}}
-        </div>
-    </li>
-     {{- end}}
-  {{- end}}
- {{- end}}
-{{- end}}
-
 <script>
-  $("#sidebar i.fa-angle-right").each(function() {
+
+  findlink(window.menu, "{{.RelPermalink}}");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
       $( this ).parent().parent().find("ul").hide();
   });
+
+  // Only show it once the menu is stable - this avoids unintended flickering
+  menu.removeClass("hidden");
+
 </script>

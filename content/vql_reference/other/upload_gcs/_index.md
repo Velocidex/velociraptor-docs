@@ -24,7 +24,7 @@ name|The name of the file that should be stored on the server|string
 accessor|The accessor to use|string
 bucket|The bucket to upload to|string (required)
 project|The project to upload to|string (required)
-credentials|The credentials to use|string (required)
+credentials|The credentials to use|string
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 
