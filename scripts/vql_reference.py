@@ -61,6 +61,9 @@ def BuildDefinition(filename, item):
 
             result+=("%s|%s|%s\n" % (name, description, type))
 
+        if item.get("free_form_args"):
+            result+="`**`|Free Form Args|\n"
+
     permissions = item.get("metadata", {}).get("permissions")
     if permissions:
         result += '\n<span class="permission_list vql_type">Required permissions:</span>'

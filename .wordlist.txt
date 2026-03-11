@@ -2030,3 +2030,6 @@ HECs
 backoff
 semver
 pathname
+
+Bleve
+dir

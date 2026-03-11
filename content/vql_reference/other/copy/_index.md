@@ -22,7 +22,8 @@ Arg | Description | Type
 filename|The file to copy from.|OSPath (required)
 accessor|The accessor to use|string
 dest|The destination file to write.|string (required)
-permissions|Required permissions (e.g. 'x').|string
+permissions|Permissions for the destination file (e.g. `rw-rw-rwx` or `0755`).|string
+dir_permissions|Permissions for intermediate directories.|string
 append|If true we append to the target file otherwise truncate it|bool
 create_directories|If true we ensure the destination directories exist|bool
 

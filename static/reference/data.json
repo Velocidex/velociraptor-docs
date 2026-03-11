@@ -1427,7 +1427,7 @@
         "name": "copy",
         "description": "Copy a file.",
         "type": "Function",
-        "version": 2,
+        "version": 3,
         "args": [
             {
                 "name": "filename",
@@ -1449,7 +1449,12 @@
             {
                 "name": "permissions",
                 "type": "string",
-                "description": "Required permissions (e.g. 'x')."
+                "description": "Permissions for the destination file (e.g. `rw-rw-rwx` or `0755`)."
+            },
+            {
+                "name": "dir_permissions",
+                "type": "string",
+                "description": "Permissions for intermediate directories."
             },
             {
                 "name": "append",
@@ -3365,6 +3370,7 @@
         "name": "host",
         "description": "Perform a DNS resolution.",
         "type": "Function",
+        "version": 2,
         "args": [
             {
                 "name": "name",
@@ -3778,6 +3784,7 @@
         "name": "hunt_results",
         "description": "Retrieve the results of a hunt.",
         "type": "Plugin",
+        "version": 2,
         "args": [
             {
                 "name": "artifact",
@@ -4020,6 +4027,54 @@
             "linux_amd64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "index",
+        "description": "Create a local index from a query.",
+        "type": "Plugin",
+        "version": 1,
+        "args": [
+            {
+                "name": "query",
+                "type": "StoredQuery",
+                "description": "A VQL Query to parse and execute.",
+                "required": true
+            },
+            {
+                "name": "mapping",
+                "type": "ordereddict.Dict",
+                "description": "A dict to describe field mapping."
+            },
+            {
+                "name": "default_analyzer",
+                "type": "string",
+                "description": "The default analyzer to use."
+            },
+            {
+                "name": "output",
+                "type": "string",
+                "description": "The file path to create the index on.",
+                "required": true
+            }
+        ],
+        "metadata": {
+            "permissions": "FILESYSTEM_WRITE"
+        },
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
+    },
+    {
+        "name": "index_search",
+        "description": "Search a previously created index.",
+        "type": "Plugin",
+        "version": 1,
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        },
+        "platforms": [
+            "linux_amd64_cgo"
         ]
     },
     {
@@ -6348,6 +6403,7 @@
         "name": "parse_json_array",
         "description": "Parses events from a line oriented json file.",
         "type": "Plugin",
+        "version": 2,
         "args": [
             {
                 "name": "data",
@@ -10528,6 +10584,7 @@
         "name": "unzip",
         "description": "Unzips a file into a directory.",
         "type": "Plugin",
+        "version": 2,
         "args": [
             {
                 "name": "filename",

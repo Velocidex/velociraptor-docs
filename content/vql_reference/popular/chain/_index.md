@@ -20,6 +20,7 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 async|If specified we run all queries asynchronously and combine the output.|bool
+`**`|Free Form Args|
 
 ### Description
 
