@@ -1449,7 +1449,7 @@
             {
                 "name": "permissions",
                 "type": "string",
-                "description": "Permissions for the destination file (e.g. 'rw-rw-rwx' or '0755')."
+                "description": "Permissions for the destination file (e.g. `rw-rw-rwx` or `0755`)."
             },
             {
                 "name": "dir_permissions",

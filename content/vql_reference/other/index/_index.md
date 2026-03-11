@@ -30,7 +30,7 @@ output|The file path to create the index on.|string (required)
 
 Create a local index from a query.
 
-This plugin uses [bleve](https://blevesearch.com/) to build an
+This plugin uses [Bleve](https://blevesearch.com/) to build an
 on-disk full text index of the query. The index can be searched
 with `index_search()`.
 
