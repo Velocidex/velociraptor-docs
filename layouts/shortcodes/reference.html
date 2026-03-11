@@ -122,6 +122,15 @@ function DrawResults(data) {
               row.find(".type").append(type);
               args_template.find("tbody").append(row);
           };
+
+          console.log(item);
+          if(item.free_form_args) {
+              args_template.find("tbody").append(`<tr>
+   <td class="name">**</td>
+   <td class="description">Free form args</td>
+   <td class="type"></td>
+   </tr>`);
+          }
           template.find(".args").append(args_template);
       };
 

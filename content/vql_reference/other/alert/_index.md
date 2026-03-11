@@ -22,6 +22,7 @@ Arg | Description | Type
 name|Name of the alert.|string (required)
 dedup|Suppress same message in this many seconds (default 7200 sec or 2 hours).|int64
 condition|If specified we ignore the alert unless the condition is true|Any
+`**`|Free Form Args|
 
 ### Description
 

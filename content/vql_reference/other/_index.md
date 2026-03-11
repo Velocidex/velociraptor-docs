@@ -44,6 +44,8 @@ not yet been categorized.
 |[getpid](getpid)|<span class='vql_type'>Function</span>|Returns the current pid of the Velociraptor process|
 |[help](help)|<span class='vql_type'>Plugin</span>|Dump information about all VQL functions and plugins|
 |[host](host)|<span class='vql_type'>Function</span>|Perform a DNS resolution|
+|[index](index)|<span class='vql_type'>Plugin</span>|Create a local index from a query|
+|[index_search](index_search)|<span class='vql_type'>Plugin</span>|Search a previously created index|
 |[ip](ip)|<span class='vql_type'>Function</span>|Format an IP address|
 |[lazy_dict](lazy_dict)|<span class='vql_type'>Function</span>|Construct a dict from arbitrary keyword args - does not materialize args so it is suitable for building args via `**` expansion|
 |[logscale_upload](logscale_upload)|<span class='vql_type'>Plugin</span>|Upload rows to LogScale ingestion server|
