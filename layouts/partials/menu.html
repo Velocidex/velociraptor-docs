@@ -21,7 +21,11 @@
     </section>
     {{end}}
 
-    {{ $fn := printf "js/menu-%v.js" .GitInfo.AbbreviatedHash }}
+    {{ $fn := "js/menu.js" }}
+    {{ with .Site.GetPage "/" }}
+       {{ $fn = printf "js/menu-%v.js" .GitInfo.AbbreviatedHash }}
+    {{ end }}
+
     {{ if .IsHome }}
       {{ with resources.Get "js/menu-tml.js" }}
        {{ with resources.ExecuteAsTemplate $fn $ . }}
