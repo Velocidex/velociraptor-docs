@@ -19,17 +19,18 @@
         </li>
       </ul>
     </section>
-  {{end}}
+    {{end}}
 
+    {{ $fn := printf "js/menu-%v.js" .GitInfo.AbbreviatedHash }}
     {{ if .IsHome }}
       {{ with resources.Get "js/menu-tml.js" }}
-       {{ with resources.ExecuteAsTemplate "js/menu.js" $ . }}
+       {{ with resources.ExecuteAsTemplate $fn $ . }}
          {{ $a := .RelPermalink }}
        {{ end }}
       {{ end }}
     {{ end }}
 
-    <script src="/js/menu.js" type="text/javascript">
+    <script src="/{{ $fn }}" type="text/javascript">
     </script>
 
     <div class="highlightable">

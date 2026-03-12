@@ -7,6 +7,8 @@ disqusShortname: velocidex-velociraptor
 #security:
 #  enableInlineShortcodes: true
 
+enableGitInfo: true
+
 params:
   noDisqus: true
   themeVariant: "mine"
