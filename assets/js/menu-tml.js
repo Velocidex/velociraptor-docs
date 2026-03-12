@@ -1,3 +1,4 @@
+// Built on {{ now.UTC | time.Format "2006-01-02T15:04:05Z07:00" }}
 window.menu = [
     {{ if .IsHome }}
       {{- range .Site.Home.Sections.ByWeight}}
@@ -74,7 +75,7 @@ function addToNode(dom, nodes) {
           {{- template "section-tree-nav-json" dict "sect" . -}}
         {{- end -}}
        {{- end -}}
-      ]},
+     ], "no_children": "{{.Params.no_children | html }}"},
    {{- else -}}
     {{- if not (or .Params.Hidden .Params.no_menu) -}}
       {"link": "{{.RelPermalink}}", "title": "{{.Params.Pre | html}}{{.LinkTitle | html }}{{.Params.Post | html}}"},
