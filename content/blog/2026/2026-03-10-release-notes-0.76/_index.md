@@ -74,7 +74,7 @@ making the binary extremely large:
 
  However for regular builds:
 
--   Use the minio S3 library to connect to AWS - this library is much
+-   Use the MinIO S3 library to connect to AWS - this library is much
     much smaller and easier to use.
 -   Remove Google cloud dependencies: pubsub is a rarely used feature,
     and with Google cloud storage (GCS) we can always enable S3
