@@ -9,7 +9,7 @@ tags:
 author: "Mike Cohen"
 date: 2026-03-10
 noindex: false
-draft: false
+draft: true
 ---
 
 I am very excited to announce that the latest Velociraptor release
@@ -22,7 +22,41 @@ this release.
 
 This release improves a number of GUI features.
 
-### Bundled searchable documentation
+### Local searchable documentation
+
+Recently we have been having issues with Google refusing to index of
+our documentation website, despite our best efforts to get them to do
+so. This has made it frustrating for users trying to find relevant
+technical information.
+
+To help mitigate this problem we have added a local documentation
+search feature that allows you to search our docs directly from the
+Velociraptor GUI. You can read more about how to use it
+[here]({{< ref "/docs/gui/local_docs/" >}}).
+
+![Local documentation search and preview](local_docs_search.png)
+
+This search feature is powered by the
+[Bleve](https://blevesearch.com/) search engine, which is also now
+available to be used for indexing and searching VQL query results
+[as described below]({{< relref "#full-text-indexing-and-searching" >}}).
+
+
+## New VQL plugins
+
+### Full text indexing and searching
+
+Many users forward their Velociraptor results to Elasticsearch or
+Opensearch so that the data is indexed and more easily searchable. In
+this release we've added the ability to index and search results
+locally using the [Bleve](https://blevesearch.com/) search engine,
+which provides Full Text Search (FTS) capabilities similar to
+Elasticsearch and other NoSQL database solutions.
+
+This capability is provided by the following new VQL plugins:
+- [index]({{< ref "/vql_reference/other/index" >}})
+- [index_search]({{{< ref "/vql_reference/other/index_search/" >}}})
+
 
 
 ## Removed plugins

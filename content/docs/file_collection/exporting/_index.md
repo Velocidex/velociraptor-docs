@@ -90,10 +90,18 @@ files. If you are preparing exports for collections or hunts that are
 unusually large, then the default timeout (10 minutes) for this process may be
 insufficient.
 
-In that case, you may need to set a greater timeout value, which you can do via
-the
+In that case, you may need to set a greater timeout value, which you
+can do by preparing the export via a server artifact, with an extended
+timeout value. This approach is demonstrated by the
+`Server.Utils.ExportHunt` artifact.
+
+Alternatively, if you persistently need a higher timeout value, you
+can set it globally via the
 [defaults.export_max_timeout_sec]({{< ref "/docs/deployment/references/#defaults.export_max_timeout_sec" >}})
-setting in the server config.
+setting in the server config. However, as with all resource limits,
+the default values are intended to protect your server from unusual
+resource consumption, so you should try to avoid changing the global
+defaults unless you've considered the potential impacts.
 
 There is also a default limit of 10 concurrent export preparation processes. If
 your server hardware is capable of more then you might need to increase this
