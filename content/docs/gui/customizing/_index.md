@@ -1,16 +1,36 @@
 ---
 title: Customizing the GUI
-menutitle: Customization
+menutitle: GUI Customization
 date: 2025-09-26
-last_reviewed: 2025-09-29
+last_reviewed: 2026-03-10
 draft: false
-weight: 100
-summary: "Customize your GUI experience."
+weight: 40
+summary: Customize the GUI experience
 ---
+
+Several aspects of the GUI can be customized to suit your
+organizational needs:
+
+* [Certain pages in the GUI can be customized](#custom-gui-pages).
+* [Custom sidebar links and context menus items can be created](#create-sidebar-links-and-context-menus-for-external-resources).
+  This can be done globally (for all users) or on a per-user basis.
+* [Custom themes can be added](#developing-custom-themes).
+* [Additional language translations can be added](#developing-custom-translations).
+
+The last two items require code-level changes and are therefore only
+recommended for developers, however Velociraptor is designed so that
+these can be done in a relatively easy modular way. For more
+information, see the relevant section below. If you do decide to
+develop new themes or language translations for the GUI, then we hope
+you'll consider contributing these back to the project for the benefit
+of the Velociraptor community!
+
+## Custom GUI pages
 
 Certain pages in the GUI allow for customization. The layout and content of
 these pages are defined in corresponding Velociraptor
 [artifacts]({{< ref "/docs/artifacts/" >}}).
+
 These artifacts contain templates written in
 [Go's templating language](https://pkg.go.dev/text/template)
 that then produce the HTML that the user ultimately sees and interacts with.
@@ -20,29 +40,38 @@ the Go Template Language. This allows you to also include VQL queries
 (server-side only, since this is where the templates are run!) in your template,
 and display the results in tabular or various graphical formats.
 
+Customization of these artifacts and the corresponding pages they
+produce are global changes. That is, the customizations are visible to
+all users on the server, unlike
+[user preferences]({{< ref "/docs/gui/user_preferences/" >}})
+which are per-user.
+
 {{% notice info "Some web development experience is required" %}}
 
-Customizing GUI content does require a reasonable degree of understanding of
-HTML as well as of Go's templating language. Typically customization amounts to
-small tweaks where you might make a change to the layout or customize specific
-elements that you don't like, although extensive customization can be done if
-you really need to.
+Customizing GUI content does require a reasonable degree of
+understanding of HTML as well as of Go's templating language. Typical
+customization usually amounts to small tweaks where you might make a
+change to the layout or customize certain elements to suit your needs.
+However, extensive customization can be done if you really need to.
 
-There are many excellent guides to templating and HTML available on the internet
-and for that reason this is not intended to be a tutorial on those topics.
+There are many excellent guides to templating and HTML available on
+the internet and for that reason this is not intended to be a tutorial
+on those topics.
 
-If this is all new to you, you can still experiment by changing one small thing
-at a time. Because the customization is done via a custom artifact, if you mess
-it up you can always delete the custom artifact and Velociraptor will then
-revert to using the default built-in one!
+If this is all new to you, you can still experiment by changing one
+small thing at a time. The customizations are implemented as custom
+artifacts, so if you mess it up you can always delete the custom
+artifact and Velociraptor will then revert to using the default
+built-in one. For obvious reasons, we recommend that all
+customizations be developed and tested on a non-production server. You
+can easily transfer your custom artifacts to a different server once
+you are happy with them.
 
 {{% /notice %}}
 
-## Which pages can be customized?
-
 Currently there are 3 pages in the GUI that support full customization.
 
-These, and their corresponding artifacts, are:
+These pages and their corresponding artifacts, are:
 
 - `Server.Internal.Welcome` - The Welcome page
   ![](welcome.png)

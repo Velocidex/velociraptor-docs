@@ -2033,3 +2033,6 @@ pathname
 
 Bleve
 dir
+
+FTS
+NoSQL

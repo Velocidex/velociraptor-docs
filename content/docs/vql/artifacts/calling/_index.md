@@ -103,8 +103,9 @@ for example:
 
 `SELECT * FROM Artifact.ArtifactName(parameter1='value1', parameter2='value2')`
 
-Since version 0.74, parameter unpacking (`` `**`=my_param_dict ``) is also
-supported for the `Artifact` plugin.
+[Argument unpacking]({{< ref "/docs/vql/fundamentals/#argument-unpacking" >}})
+(`` `**`=my_param_dict ``) is also supported for the `Artifact`
+plugin.
 
 Backticks are used for
 [names with spaces or special characters]({{< ref "/docs/vql/fundamentals/#identifiers-with-spaces" >}})

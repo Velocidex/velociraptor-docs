@@ -90,46 +90,52 @@ by editing the `Server.Monitor.Health` artifact.
 
 {{% /notice %}}
 
-### Table Widgets
+### Working with tables
 
-A common UI element in the Velociraptor GUI is the table widget. Since
-Velociraptor deals with VQL queries and all queries simply return a
-list of rows, the GUI presents a lot of results in a table form.
+Since VQL queries are at the core of Velociraptor, and all queries
+return a list of rows (i.e. a table of data), much of the GUI is
+dedicated to presenting these results in tabular form.
 
-![Table widgets](table_widgets.png)
+All Velociraptor tables have a common set of tools available, which
+are available in a common table toolbar that you'll see whenever
+tabular results are presented in the GUI.
 
-All Velociraptor tables have some common tools available as can be
-seen above:
+![Table manipulation and navigation widgets](table_widgets.png)
 
-1. **Collapse/Expand All Columns** - Sometimes the content of some cells can take up
-   a lot of vertical space. This option toggles between showing the full row
-   heights or shrinking the row display to a standard height.
-   ![](widget_collapse.png)
+The table toolbar consists of the following buttons:
 
-2. **The Column Selector** - Allows users to show/hide columns. This is
-   useful when there are many columns and the table takes up a lot of
-   horizontal real estate, or when some columns provide too much
-   data that you don't want to see.
-   ![](widget_columns.png)
+- **Collapse/Expand All Columns** - Sometimes the content of some
+  cells can take up a lot of vertical space. This option toggles
+  between showing the full row heights or shrinking the row display to
+  a standard height.
 
-3. **View Raw JSON** - All VQL queries simply return a result set encoded
-   as a list of JSON objects. For more complex tables it is sometimes
-   easier to see the precise JSON returned, and clicking on this
-   button displays the raw json in a dialog box.
+  ![](widget_collapse.png)
 
-![Raw JSON viewer](raw_json_view.png)
+- **The Column Selector** - Allows users to show/hide columns. This is
+  useful when there are many columns and the table takes up a lot of
+  horizontal real estate, or when some columns provide too much data
+  that you don't want to see.
 
-4. **Download table as CSV or JSON** - Clicking on these buttons exports the
-   _visible_ table data to a CSV or JSON file. This is usually used to filter
-   out uninteresting columns and produce data files that can be used in other
-   applications, e.g. Excel.
+  ![](widget_columns.png)
 
-5. **Fullscreen** - A new feature in version 0.75 is that an individual table
-   can be viewed fullscreen. This opens the table in fullscreen view in a new
-   browser tab. This is useful when working with large tables where you need all
-   the screen space you can get.
+- **View Raw JSON** - All VQL queries simply return a result set
+  encoded as a list of JSON objects. For more complex tables it is
+  sometimes easier to see the precise JSON returned, and clicking on
+  this button displays the raw json in a dialog box.
 
-6. **Pagination/Navigation Widget** - The right side of the table widget is
-   where you will find all the options to navigate through the table data. You
-   can choose how many rows to display per page and navigate forward/back, or
-   skip to the first, last, or a specific page number.
+  ![Raw JSON viewer](raw_json_view.png)
+
+- **Download table as CSV or JSON** - Clicking on these buttons
+  exports the _visible_ table data to a CSV or JSON file. This is
+  usually used to filter out uninteresting columns and produce data
+  files that can be used in other applications, e.g. Excel.
+
+- **Fullscreen** - This opens the table in fullscreen view in a new
+  browser tab. This is useful when working with large tables where you
+  need all the screen space you can get.
+
+- **Pagination/Navigation Widget** - To the right side is the table
+  navigation widget. This is where you will find all the options to
+  navigate through the table data. You can choose how many rows to
+  display per page and navigate forward/backward, skip to the first,
+  last, or go to a specific page number.
