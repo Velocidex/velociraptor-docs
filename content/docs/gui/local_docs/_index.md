@@ -75,8 +75,8 @@ https://github.com/Velocidex/velociraptor-docs/raw/refs/heads/gh-pages/docs_inde
 and upload it into the tools inventory, as you would do with other
 tools in an offline server situation.
 
-If you are prepopulating the tools inventory on a server in advance of
-working offline, the
+If you are pre-populating the tools inventory on a server in advance
+of working offline, the
 [`Server.Utils.UploadTools`]({{< ref "/artifact_references/pages/server.utils.uploadtools/" >}})
 artifact will include the docs index in the tools package that it
 downloads.
