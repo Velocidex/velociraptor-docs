@@ -1145,3 +1145,15 @@ table tr th {
 .sidemenu.hidden {
     display: none;
 }
+
+li.dd-item {
+    width: max-content;
+}
+
+body #sidebar ul li li {
+    overflow: hidden;
+}
+
+ul.sidebar {
+    width: max-content;
+}

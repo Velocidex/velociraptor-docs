@@ -119,4 +119,11 @@
   // Only show it once the menu is stable - this avoids unintended flickering
   menu.removeClass("hidden");
 
+  // Scroll the highlighted element into view
+  $(window).on('load', function(){
+      $("li.dd-item.active")[0].scrollIntoView();
+  })
+
+  menu.find("li.dd-item.active")[0].scrollIntoView();
+
 </script>
