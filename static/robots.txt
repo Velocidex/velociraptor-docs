@@ -8,3 +8,4 @@ Disallow: /css/
 Disallow: /artifact_references/
 Disallow: /exchange/
 Disallow: /vql_reference/
+Disallow: /tags/

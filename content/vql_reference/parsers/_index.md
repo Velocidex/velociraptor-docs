@@ -1,8 +1,10 @@
 ---
-title: Parsers
+itle: Parsers
 weight: 50
 linktitle: Parsers
 index: true
+sitemap:
+  disable: true
 no_edit: true
 no_children: true
 ---

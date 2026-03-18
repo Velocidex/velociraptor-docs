@@ -3,6 +3,8 @@ title: "VQL Reference"
 menutitle: VQL Reference
 date: 2021-06-12T05:12:26Z
 draft: false
+sitemap:
+  disable: true
 weight: 60
 noDisqus: true
 no_edit: true

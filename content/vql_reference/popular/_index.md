@@ -1,8 +1,10 @@
 ---
-title: Frequently Used ✨
+itle: Frequently Used ✨
 weight: 10
 linktitle: Frequently Used
 index: true
+sitemap:
+  disable: true
 no_edit: true
 no_children: true
 ---

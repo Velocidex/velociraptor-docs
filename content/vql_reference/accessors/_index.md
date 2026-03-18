@@ -1,8 +1,10 @@
 ---
-title: Accessors
+itle: Accessors
 weight: 100
 linktitle: Accessors
 index: true
+sitemap:
+  disable: true
 no_edit: true
 no_children: true
 ---

@@ -1,8 +1,10 @@
 ---
-title: Developer
+itle: Developer
 weight: 85
 linktitle: Developer
 index: true
+sitemap:
+  disable: true
 no_edit: true
 no_children: true
 ---

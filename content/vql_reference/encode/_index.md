@@ -1,8 +1,10 @@
 ---
-title: Encode/Decode
+itle: Encode/Decode
 weight: 60
 linktitle: Encode/Decode
 index: true
+sitemap:
+  disable: true
 no_edit: true
 no_children: true
 ---
