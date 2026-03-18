@@ -1,8 +1,10 @@
 ---
-title: Windows-only
+itle: Windows-only
 weight: 20
 linktitle: Windows
 index: true
+sitemap:
+  disable: true
 no_edit: true
 no_children: true
 ---

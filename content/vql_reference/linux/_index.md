@@ -1,8 +1,10 @@
 ---
-title: Linux-only
+itle: Linux-only
 weight: 30
 linktitle: Linux
 index: true
+sitemap:
+  disable: true
 no_edit: true
 no_children: true
 ---

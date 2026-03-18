@@ -115,10 +115,20 @@ if __name__ == "__main__" :
     for filename, file_config in config.items():
         EnsureDirExists(os.path.dirname(filename))
         with open(filename, "w") as fd:
-            fd.write("---\ntitle: %s\nweight: %s\nlinktitle: %s\nindex: true\nno_edit: true\nno_children: true\n---\n\n%s" % (
-                file_config["title"], file_config["weight"],
-                file_config.get("linktitle", file_config["title"]),
-                file_config["description"]))
+            fd.write("""---
+itle: %s
+weight: %s
+linktitle: %s
+index: true
+sitemap:
+  disable: true
+no_edit: true
+no_children: true
+---
+
+%s""" % (file_config["title"], file_config["weight"],
+         file_config.get("linktitle", file_config["title"]),
+         file_config["description"]))
 
             children = []
 

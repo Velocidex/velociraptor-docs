@@ -3,6 +3,8 @@ menutitle: "Artifact Exchange"
 title: "Artifact Exchange"
 date: 2025-01-24
 draft: false
+sitemap:
+  disable: true
 weight: 300
 noDisqus: true
 no_edit: true
