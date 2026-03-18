@@ -1,6 +1,8 @@
 ---
 title: Windows.Registry.RDP
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

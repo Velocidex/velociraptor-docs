@@ -1,6 +1,8 @@
 ---
 title: Windows.Remediation.ScheduledTasks
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

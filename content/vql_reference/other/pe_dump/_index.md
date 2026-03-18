@@ -2,6 +2,8 @@
 title: pe_dump
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: Windows.Applications.Firefox.Downloads
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 
@@ -43,6 +45,8 @@ precondition: SELECT OS From info() where OS = 'windows'
 
 sources:
   - query: |
+        // linter: symbol_mask_warn:url
+
         LET places_files = SELECT * from foreach(
           row={
              SELECT Uid, Name AS User,

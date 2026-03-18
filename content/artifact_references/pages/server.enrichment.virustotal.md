@@ -1,6 +1,8 @@
 ---
 title: Server.Enrichment.Virustotal
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: Linux.Events.HTTPConnections
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
 ---
 
@@ -53,6 +55,8 @@ parameters:
 
 sources:
   - query: |
+      // linter: symbol_mask_warn:host
+
       SELECT System.Timestamp AS Timestamp,
              System.ProcessName AS ProcessName,
              System.ProcessID AS Pid,

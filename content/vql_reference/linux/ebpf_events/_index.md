@@ -2,6 +2,8 @@
 title: ebpf_events
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

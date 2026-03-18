@@ -1,6 +1,8 @@
 ---
 title: Server.Import.PreviousReleases
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

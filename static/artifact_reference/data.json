@@ -442,7 +442,7 @@
     },
     {
         "title": "Linux.Debian.Packages",
-        "description": "List all packages installed on the system, both deb packages and \"snaps\".\nThe installed deb package information is fetched from the DPKG status file,\nwhile the snap package list is fetched from the snap daemon through a UNIX\nsocket HTTP call (since detailed snap package information is not easily\nin files).",
+        "description": "List all packages installed on the system, both deb packages and \"snaps\".",
         "link": "/artifact_references/pages/linux.debian.packages",
         "type": "client",
         "tags": [
@@ -1890,6 +1890,15 @@
         ]
     },
     {
+        "title": "Server.Utils.ExportHunt",
+        "description": "Export a hunt to a Zip download.",
+        "link": "/artifact_references/pages/server.utils.exporthunt",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
         "title": "Server.Utils.ImportCollection",
         "description": "The Velociraptor offline collector is an automated, preconfigured\ncollection tool. Users can use the collector to automatically\ncollect any artifacts on endpoints that do not have the Velociraptor\nclient (offline endpoints).",
         "link": "/artifact_references/pages/server.utils.importcollection",
@@ -2782,7 +2791,7 @@
     },
     {
         "title": "Windows.Events.Mutants",
-        "description": "This artifact detects creation of Mutants and triggers an alert. \n",
+        "description": "This artifact detects creation of Mutants and triggers an alert.\n",
         "link": "/artifact_references/pages/windows.events.mutants",
         "type": "client_event",
         "tags": [

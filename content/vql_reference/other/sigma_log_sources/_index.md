@@ -2,6 +2,8 @@
 title: sigma_log_sources
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

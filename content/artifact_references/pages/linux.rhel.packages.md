@@ -1,6 +1,8 @@
 ---
 title: Linux.RHEL.Packages
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

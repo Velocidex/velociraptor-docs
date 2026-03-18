@@ -1,6 +1,8 @@
 ---
 title: Windows.NTFS.Recover
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

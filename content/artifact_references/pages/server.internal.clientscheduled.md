@@ -1,6 +1,8 @@
 ---
 title: Server.Internal.ClientScheduled
 hidden: true
+sitemap:
+  disable: true
 tags: [Internal Artifact]
 ---
 

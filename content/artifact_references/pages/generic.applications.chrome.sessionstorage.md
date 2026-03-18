@@ -1,6 +1,8 @@
 ---
 title: Generic.Applications.Chrome.SessionStorage
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

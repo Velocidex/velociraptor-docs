@@ -1,6 +1,8 @@
 ---
 title: Server.Monitoring.ClientCount
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
 ---
 

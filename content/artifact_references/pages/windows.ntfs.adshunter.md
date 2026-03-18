@@ -1,6 +1,8 @@
 ---
 title: Windows.NTFS.ADSHunter
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: Server.Utils.SaveFavoriteFlow
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

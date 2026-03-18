@@ -1,6 +1,8 @@
 ---
 title: Server.Internal.MetadataModifications
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
 ---
 

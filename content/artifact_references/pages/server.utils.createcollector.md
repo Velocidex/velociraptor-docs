@@ -1,6 +1,8 @@
 ---
 title: Server.Utils.CreateCollector
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

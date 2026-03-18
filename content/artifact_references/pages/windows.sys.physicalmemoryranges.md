@@ -1,6 +1,8 @@
 ---
 title: Windows.Sys.PhysicalMemoryRanges
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

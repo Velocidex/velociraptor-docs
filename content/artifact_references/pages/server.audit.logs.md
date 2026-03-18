@@ -1,6 +1,8 @@
 ---
 title: Server.Audit.Logs
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
 ---
 

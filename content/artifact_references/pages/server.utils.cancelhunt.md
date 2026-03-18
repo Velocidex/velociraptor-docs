@@ -1,6 +1,8 @@
 ---
 title: Server.Utils.CancelHunt
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

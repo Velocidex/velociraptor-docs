@@ -1,6 +1,8 @@
 ---
 title: MacOS.System.Dock
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

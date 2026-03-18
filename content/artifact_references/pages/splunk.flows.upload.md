@@ -1,6 +1,8 @@
 ---
 title: Splunk.Flows.Upload
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
 ---
 
@@ -166,6 +168,8 @@ parameters:
 
 sources:
   - query: |
+        // linter: symbol_mask_warn:url|token|index
+
         LET completions = SELECT * FROM watch_monitoring(
                      artifact="System.Flow.Completion")
                  WHERE Flow.artifacts_with_results =~ ArtifactNameRegex

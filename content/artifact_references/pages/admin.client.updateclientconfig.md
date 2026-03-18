@@ -1,6 +1,8 @@
 ---
 title: Admin.Client.UpdateClientConfig
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

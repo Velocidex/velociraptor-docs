@@ -1,6 +1,8 @@
 ---
 title: Windows.Applications.ChocolateyPackages
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

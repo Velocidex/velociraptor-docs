@@ -1,6 +1,8 @@
 ---
 title: Admin.Client.Uninstall
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

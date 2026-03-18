@@ -1,6 +1,8 @@
 ---
 title: Windows.Timeline.MFT
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: Windows.Events.TrackProcessesETW
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
 ---
 

@@ -2,6 +2,8 @@
 title: filter
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

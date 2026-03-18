@@ -1,6 +1,8 @@
 ---
 title: Server.Internal.Alerts
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
 ---
 

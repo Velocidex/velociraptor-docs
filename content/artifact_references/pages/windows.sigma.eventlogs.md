@@ -1,6 +1,8 @@
 ---
 title: Windows.Sigma.EventLogs
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: Server.Internal.UserManager
 hidden: true
+sitemap:
+  disable: true
 tags: [Internal Artifact]
 ---
 

@@ -1,5 +1,15 @@
 [
     {
+        "title": "Generic.Forensics.VMWareInventory",
+        "author": "klehri-r7",
+        "description": "Finds and parses VMware VM configuration files (.vmx) on Mac and Windows. \nIt turns text into an organized list (dictionary) so you can easily \nsearch for settings like RAM size, Guest OS, or network modes.\n",
+        "link": "/exchange/artifacts/pages/generic.forensics.vmwareinventory",
+        "tags": [],
+        "author_link": "https://github.com/klehri-r7",
+        "author_avatar": "https://avatars.githubusercontent.com/u/183785760?v=4",
+        "date": "2026-03-05"
+    },
+    {
         "title": "Windows.Detection.LotusBlossom.Chrysalis",
         "author": "mgreen27",
         "description": "Assists scoping IOCs related to the recent publicly disclosed Notepad++ \nsupply chain attack. ",

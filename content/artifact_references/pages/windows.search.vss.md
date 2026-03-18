@@ -1,6 +1,8 @@
 ---
 title: Windows.Search.VSS
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

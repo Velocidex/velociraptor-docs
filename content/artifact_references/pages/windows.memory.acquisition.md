@@ -1,6 +1,8 @@
 ---
 title: Windows.Memory.Acquisition
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

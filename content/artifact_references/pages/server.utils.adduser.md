@@ -1,6 +1,8 @@
 ---
 title: Server.Utils.AddUser
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

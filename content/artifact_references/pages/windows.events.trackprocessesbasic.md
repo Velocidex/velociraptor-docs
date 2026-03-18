@@ -1,6 +1,8 @@
 ---
 title: Windows.Events.TrackProcessesBasic
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
 ---
 

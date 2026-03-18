@@ -1,6 +1,8 @@
 ---
 title: Windows.Applications.Firefox.History
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

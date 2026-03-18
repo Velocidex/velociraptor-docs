@@ -1,6 +1,8 @@
 ---
 title: Generic.Forensic.LocalHashes.Query
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

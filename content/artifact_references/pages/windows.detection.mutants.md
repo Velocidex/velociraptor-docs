@@ -1,6 +1,8 @@
 ---
 title: Windows.Detection.Mutants
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: Generic.Applications.Office.Keywords
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

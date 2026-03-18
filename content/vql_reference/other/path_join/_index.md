@@ -2,6 +2,8 @@
 title: path_join
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

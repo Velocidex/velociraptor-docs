@@ -1,6 +1,8 @@
 ---
 title: Generic.Forensic.HashLookup
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
 ---
 

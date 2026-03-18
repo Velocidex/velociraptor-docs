@@ -1,6 +1,8 @@
 ---
 title: Admin.Client.Remove
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

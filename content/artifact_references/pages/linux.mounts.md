@@ -1,6 +1,8 @@
 ---
 title: Linux.Mounts
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

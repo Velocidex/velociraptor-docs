@@ -1,6 +1,8 @@
 ---
 title: Windows.Detection.Yara.Device
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

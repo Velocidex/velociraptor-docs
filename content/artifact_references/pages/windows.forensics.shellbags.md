@@ -1,6 +1,8 @@
 ---
 title: Windows.Forensics.Shellbags
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

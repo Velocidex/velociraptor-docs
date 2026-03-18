@@ -1,6 +1,8 @@
 ---
 title: Windows.System.CmdShell
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

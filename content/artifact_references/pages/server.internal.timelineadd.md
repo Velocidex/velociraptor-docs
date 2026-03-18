@@ -1,6 +1,8 @@
 ---
 title: Server.Internal.TimelineAdd
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
 ---
 

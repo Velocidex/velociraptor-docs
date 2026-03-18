@@ -2,6 +2,8 @@
 title: rm_client_monitoring
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

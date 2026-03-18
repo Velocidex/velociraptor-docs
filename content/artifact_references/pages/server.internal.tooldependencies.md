@@ -1,6 +1,8 @@
 ---
 title: Server.Internal.ToolDependencies
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: Windows.Detection.BinaryRename
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

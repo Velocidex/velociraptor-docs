@@ -1,6 +1,8 @@
 ---
 title: Generic.System.EfiSignatures
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: Generic.Forensic.Timeline
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

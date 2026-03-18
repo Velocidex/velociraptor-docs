@@ -1,6 +1,8 @@
 ---
 title: Elastic.Flows.Upload
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: Linux.Network.Netstat
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

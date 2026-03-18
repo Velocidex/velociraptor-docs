@@ -1,6 +1,8 @@
 ---
 title: Linux.Sys.LogGrep
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

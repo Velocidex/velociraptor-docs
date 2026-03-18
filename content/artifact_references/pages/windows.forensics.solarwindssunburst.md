@@ -1,6 +1,8 @@
 ---
 title: Windows.Forensics.SolarwindsSunburst
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

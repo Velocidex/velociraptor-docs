@@ -2,6 +2,8 @@
 title: watch_usn
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

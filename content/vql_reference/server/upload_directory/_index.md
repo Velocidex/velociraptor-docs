@@ -2,6 +2,8 @@
 title: upload_directory
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

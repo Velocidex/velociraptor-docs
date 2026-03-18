@@ -1,6 +1,8 @@
 ---
 title: LogScale.Flows.Upload
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
 ---
 

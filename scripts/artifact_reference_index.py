@@ -22,6 +22,8 @@ project = "velociraptor-docs"
 template = """---
 title: %s
 hidden: true
+sitemap:
+  disable: true
 tags: [%s]
 ---
 

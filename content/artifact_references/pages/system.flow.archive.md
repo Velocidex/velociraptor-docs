@@ -1,6 +1,8 @@
 ---
 title: System.Flow.Archive
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
 ---
 

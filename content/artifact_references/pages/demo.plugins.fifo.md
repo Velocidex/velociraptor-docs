@@ -1,6 +1,8 @@
 ---
 title: Demo.Plugins.Fifo
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
 ---
 

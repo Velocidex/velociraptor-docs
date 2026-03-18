@@ -1,6 +1,8 @@
 ---
 title: Windows.Persistence.PowershellRegistry
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

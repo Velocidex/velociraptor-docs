@@ -2,6 +2,8 @@
 title: base64encode
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

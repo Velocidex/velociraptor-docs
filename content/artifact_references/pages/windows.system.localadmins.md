@@ -1,6 +1,8 @@
 ---
 title: Windows.System.LocalAdmins
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

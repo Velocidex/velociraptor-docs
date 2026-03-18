@@ -2,6 +2,8 @@
 title: hunt
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 
@@ -20,6 +22,7 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 description|Description of the hunt|string
+tags|A list of tags to add to the hunt|list of string
 artifacts|A list of artifacts to collect|list of string (required)
 expires|A time for expiry (e.g. now() + 1800)|LazyExpr
 spec|Parameters to apply to the artifacts|Any

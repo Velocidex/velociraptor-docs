@@ -1,6 +1,8 @@
 ---
 title: MacOS.Detection.Autoruns
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

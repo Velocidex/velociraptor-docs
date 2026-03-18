@@ -1,6 +1,8 @@
 ---
 title: Windows.EventLogs.Telerik
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

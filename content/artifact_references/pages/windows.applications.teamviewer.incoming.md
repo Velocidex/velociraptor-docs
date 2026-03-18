@@ -1,6 +1,8 @@
 ---
 title: Windows.Applications.TeamViewer.Incoming
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

@@ -2,6 +2,8 @@
 title: js_get
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

@@ -2,6 +2,8 @@
 title: collect_client
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

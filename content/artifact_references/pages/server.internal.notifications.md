@@ -1,6 +1,8 @@
 ---
 title: Server.Internal.Notifications
 hidden: true
+sitemap:
+  disable: true
 tags: [Internal Artifact]
 ---
 

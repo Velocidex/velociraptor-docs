@@ -1,6 +1,8 @@
 ---
 title: Server.Powershell.EncodedCommand
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: Server.Import.Extras
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

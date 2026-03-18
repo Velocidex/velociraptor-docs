@@ -2,6 +2,8 @@
 title: crypto_rc4
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: Generic.Detection.Logs
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

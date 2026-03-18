@@ -2,6 +2,8 @@
 title: sample
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

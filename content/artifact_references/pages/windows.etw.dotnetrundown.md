@@ -1,6 +1,8 @@
 ---
 title: Windows.ETW.DotNetRundown
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: Server.Alerts.WinPmem
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
 ---
 
