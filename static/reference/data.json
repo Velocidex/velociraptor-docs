@@ -4118,7 +4118,7 @@
             {
                 "name": "sort",
                 "type": "string",
-                "description": "The field to sort by (preceed with - to sort in descending order).",
+                "description": "The field to sort by (precede with - to sort in descending order).",
                 "repeated": true
             },
             {
