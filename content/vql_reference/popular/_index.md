@@ -1,5 +1,5 @@
 ---
-itle: Frequently Used ✨
+title: Frequently Used ✨
 weight: 10
 linktitle: Frequently Used
 index: true

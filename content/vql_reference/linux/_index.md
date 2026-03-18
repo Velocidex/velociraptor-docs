@@ -1,5 +1,5 @@
 ---
-itle: Linux-only
+title: Linux-only
 weight: 30
 linktitle: Linux
 index: true

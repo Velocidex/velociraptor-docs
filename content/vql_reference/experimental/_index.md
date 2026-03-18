@@ -1,5 +1,5 @@
 ---
-itle: Experimental
+title: Experimental
 weight: 80
 linktitle: Experimental
 index: true

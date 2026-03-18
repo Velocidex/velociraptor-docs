@@ -116,7 +116,7 @@ if __name__ == "__main__" :
         EnsureDirExists(os.path.dirname(filename))
         with open(filename, "w") as fd:
             fd.write("""---
-itle: %s
+title: %s
 weight: %s
 linktitle: %s
 index: true

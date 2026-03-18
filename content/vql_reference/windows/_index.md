@@ -1,5 +1,5 @@
 ---
-itle: Windows-only
+title: Windows-only
 weight: 20
 linktitle: Windows
 index: true

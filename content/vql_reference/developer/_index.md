@@ -1,5 +1,5 @@
 ---
-itle: Developer
+title: Developer
 weight: 85
 linktitle: Developer
 index: true

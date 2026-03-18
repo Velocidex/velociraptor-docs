@@ -1,5 +1,5 @@
 ---
-itle: Parsers
+title: Parsers
 weight: 50
 linktitle: Parsers
 index: true
