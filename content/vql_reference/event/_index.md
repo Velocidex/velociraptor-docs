@@ -1,5 +1,5 @@
 ---
-itle: Event Plugins
+title: Event Plugins
 weight: 70
 linktitle: Event Plugins
 index: true

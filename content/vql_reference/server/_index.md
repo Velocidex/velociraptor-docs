@@ -1,5 +1,5 @@
 ---
-itle: Server-only
+title: Server-only
 weight: 40
 linktitle: Server
 index: true

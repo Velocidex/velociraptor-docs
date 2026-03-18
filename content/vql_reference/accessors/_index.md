@@ -1,5 +1,5 @@
 ---
-itle: Accessors
+title: Accessors
 weight: 100
 linktitle: Accessors
 index: true

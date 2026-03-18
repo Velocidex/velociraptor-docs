@@ -1,5 +1,5 @@
 ---
-itle: Other
+title: Other
 weight: 90
 linktitle: Other
 index: true

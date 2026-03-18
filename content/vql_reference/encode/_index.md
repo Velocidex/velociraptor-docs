@@ -1,5 +1,5 @@
 ---
-itle: Encode/Decode
+title: Encode/Decode
 weight: 60
 linktitle: Encode/Decode
 index: true
