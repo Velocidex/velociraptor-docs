@@ -2,6 +2,8 @@
 title: read_reg_key
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

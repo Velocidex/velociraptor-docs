@@ -1,6 +1,8 @@
 ---
 title: Windows.NTFS.I30
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

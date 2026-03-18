@@ -1,6 +1,8 @@
 ---
 title: Windows.System.CatFiles
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

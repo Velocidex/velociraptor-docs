@@ -1,6 +1,8 @@
 ---
 title: Windows.KapeFiles.Extract
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

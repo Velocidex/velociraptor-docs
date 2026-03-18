@@ -1,6 +1,8 @@
 ---
 title: Server.Enrichment.HybridAnalysis
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

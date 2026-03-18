@@ -2,6 +2,8 @@
 title: parse_pe
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

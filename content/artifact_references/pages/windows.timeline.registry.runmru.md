@@ -1,6 +1,8 @@
 ---
 title: Windows.Timeline.Registry.RunMRU
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 
@@ -64,6 +66,8 @@ parameters:
 
 sources:
  - query: |
+        // linter: symbol_mask_warn:source|user
+
         LET hostname_lu &lt;= SELECT Fqdn FROM info()
         LET HKEY_USERS &lt;= pathspec(parse="HKEY_USERS", path_type="registry")
 

@@ -1,6 +1,8 @@
 ---
 title: Windows.ETW.Registry
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
 ---
 

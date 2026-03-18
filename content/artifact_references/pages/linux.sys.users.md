@@ -1,6 +1,8 @@
 ---
 title: Linux.Sys.Users
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

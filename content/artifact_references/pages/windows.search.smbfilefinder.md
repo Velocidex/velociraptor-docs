@@ -1,6 +1,8 @@
 ---
 title: Windows.Search.SMBFileFinder
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

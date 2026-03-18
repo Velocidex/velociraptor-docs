@@ -1,6 +1,8 @@
 ---
 title: Linux.Syslog.SSHLogin
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

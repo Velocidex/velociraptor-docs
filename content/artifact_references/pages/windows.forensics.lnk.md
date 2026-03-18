@@ -1,6 +1,8 @@
 ---
 title: Windows.Forensics.Lnk
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

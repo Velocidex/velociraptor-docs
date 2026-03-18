@@ -1,6 +1,8 @@
 ---
 title: Windows.Packs.Persistence
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

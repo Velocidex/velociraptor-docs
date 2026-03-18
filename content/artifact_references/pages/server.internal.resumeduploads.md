@@ -1,6 +1,8 @@
 ---
 title: Server.Internal.ResumedUploads
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

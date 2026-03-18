@@ -2,6 +2,8 @@
 title: ntfs_vss
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

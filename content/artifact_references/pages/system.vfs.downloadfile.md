@@ -1,6 +1,8 @@
 ---
 title: System.VFS.DownloadFile
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

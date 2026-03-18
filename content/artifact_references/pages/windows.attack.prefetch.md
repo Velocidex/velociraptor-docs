@@ -1,6 +1,8 @@
 ---
 title: Windows.Attack.Prefetch
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

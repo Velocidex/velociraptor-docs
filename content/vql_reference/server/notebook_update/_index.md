@@ -2,6 +2,8 @@
 title: notebook_update
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

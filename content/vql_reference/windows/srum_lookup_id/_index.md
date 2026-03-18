@@ -2,6 +2,8 @@
 title: srum_lookup_id
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

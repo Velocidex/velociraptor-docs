@@ -1,6 +1,8 @@
 ---
 title: System.VFS.ListDirectory
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: Windows.Applications.Edge.Favicons
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

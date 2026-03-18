@@ -1,6 +1,8 @@
 ---
 title: Demo.Plugins.GUI
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

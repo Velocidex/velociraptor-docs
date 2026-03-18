@@ -1,6 +1,8 @@
 ---
 title: Server.Alerts.PsExec
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
 ---
 

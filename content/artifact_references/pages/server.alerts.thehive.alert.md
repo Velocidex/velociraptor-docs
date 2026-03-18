@@ -1,6 +1,8 @@
 ---
 title: Server.Alerts.TheHive.Alert
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
 ---
 

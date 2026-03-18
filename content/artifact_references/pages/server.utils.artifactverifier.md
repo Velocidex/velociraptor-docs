@@ -1,6 +1,8 @@
 ---
 title: Server.Utils.ArtifactVerifier
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

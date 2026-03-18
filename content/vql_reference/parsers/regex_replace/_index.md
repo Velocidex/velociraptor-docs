@@ -2,6 +2,8 @@
 title: regex_replace
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

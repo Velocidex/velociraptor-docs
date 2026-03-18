@@ -1,6 +1,8 @@
 ---
 title: Triage.Collection.UploadTable
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

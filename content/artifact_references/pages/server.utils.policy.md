@@ -1,6 +1,8 @@
 ---
 title: Server.Utils.Policy
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

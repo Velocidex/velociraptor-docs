@@ -1,6 +1,8 @@
 ---
 title: Windows.EventLogs.AlternateLogon
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

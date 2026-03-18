@@ -1,6 +1,8 @@
 ---
 title: Notebooks.Default
 hidden: true
+sitemap:
+  disable: true
 tags: [notebook]
 ---
 

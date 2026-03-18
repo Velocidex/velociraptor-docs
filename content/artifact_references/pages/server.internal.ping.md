@@ -1,6 +1,8 @@
 ---
 title: Server.Internal.Ping
 hidden: true
+sitemap:
+  disable: true
 tags: [Internal Artifact]
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: Windows.System.Powershell.ModuleAnalysisCache
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

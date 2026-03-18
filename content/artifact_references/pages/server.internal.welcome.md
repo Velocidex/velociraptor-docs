@@ -1,6 +1,8 @@
 ---
 title: Server.Internal.Welcome
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

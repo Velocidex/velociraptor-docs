@@ -2,6 +2,8 @@
 title: yara_lint
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

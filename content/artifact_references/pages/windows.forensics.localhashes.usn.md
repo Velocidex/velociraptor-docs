@@ -1,6 +1,8 @@
 ---
 title: Windows.Forensics.LocalHashes.Usn
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
 ---
 

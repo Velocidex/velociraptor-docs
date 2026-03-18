@@ -1,6 +1,8 @@
 ---
 title: Server.Monitor.Health
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
 ---
 

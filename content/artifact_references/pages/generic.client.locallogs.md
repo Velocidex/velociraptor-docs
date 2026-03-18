@@ -1,6 +1,8 @@
 ---
 title: Generic.Client.LocalLogs
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: MacOS.Detection.InstallHistory
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

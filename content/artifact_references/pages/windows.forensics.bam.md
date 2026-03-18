@@ -1,6 +1,8 @@
 ---
 title: Windows.Forensics.Bam
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

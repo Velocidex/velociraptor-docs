@@ -1,6 +1,8 @@
 ---
 title: System.Upload.Completion
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
 ---
 

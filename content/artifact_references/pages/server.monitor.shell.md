@@ -1,6 +1,8 @@
 ---
 title: Server.Monitor.Shell
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
 ---
 

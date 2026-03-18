@@ -1,6 +1,8 @@
 ---
 title: Server.Enrichment.GeoIP
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: Windows.ActiveDirectory.SharpHound
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

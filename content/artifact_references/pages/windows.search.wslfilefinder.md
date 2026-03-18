@@ -1,6 +1,8 @@
 ---
 title: Windows.Search.WSLFileFinder
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

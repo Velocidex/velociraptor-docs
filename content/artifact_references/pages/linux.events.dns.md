@@ -1,6 +1,8 @@
 ---
 title: Linux.Events.DNS
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
 ---
 

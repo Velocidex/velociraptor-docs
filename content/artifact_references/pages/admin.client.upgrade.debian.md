@@ -1,6 +1,8 @@
 ---
 title: Admin.Client.Upgrade.Debian
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: MacOS.Network.PacketCapture
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

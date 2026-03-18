@@ -1,6 +1,8 @@
 ---
 title: Linux.Users.RootUsers
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

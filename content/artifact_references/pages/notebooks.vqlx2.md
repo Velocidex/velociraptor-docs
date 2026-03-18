@@ -1,6 +1,8 @@
 ---
 title: Notebooks.VQLx2
 hidden: true
+sitemap:
+  disable: true
 tags: [notebook]
 ---
 

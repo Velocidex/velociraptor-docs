@@ -1,6 +1,8 @@
 ---
 title: Windows.Collectors.File
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

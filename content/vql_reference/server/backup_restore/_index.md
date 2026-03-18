@@ -2,6 +2,8 @@
 title: backup_restore
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

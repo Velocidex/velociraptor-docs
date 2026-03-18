@@ -2,6 +2,8 @@
 title: watch_auditd
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

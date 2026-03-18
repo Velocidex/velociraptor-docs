@@ -1,6 +1,8 @@
 ---
 title: Generic.Client.VQL
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

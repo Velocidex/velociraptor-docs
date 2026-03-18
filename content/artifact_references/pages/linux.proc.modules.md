@@ -1,6 +1,8 @@
 ---
 title: Linux.Proc.Modules
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

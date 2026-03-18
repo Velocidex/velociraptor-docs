@@ -1,6 +1,8 @@
 ---
 title: Server.Orgs.NewOrg
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

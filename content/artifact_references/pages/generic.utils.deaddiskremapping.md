@@ -1,6 +1,8 @@
 ---
 title: Generic.Utils.DeadDiskRemapping
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

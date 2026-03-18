@@ -1,6 +1,8 @@
 ---
 title: Windows.System.Shares
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

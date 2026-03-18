@@ -1,6 +1,8 @@
 ---
 title: Windows.Collectors.Remapping
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

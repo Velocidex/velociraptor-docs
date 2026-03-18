@@ -1,6 +1,8 @@
 ---
 title: Generic.System.Pstree
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

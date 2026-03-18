@@ -1,6 +1,8 @@
 ---
 title: Windows.EventLogs.RDPAuth
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: Windows.Registry.RecentDocs
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

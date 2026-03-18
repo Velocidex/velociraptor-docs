@@ -1,6 +1,8 @@
 ---
 title: Linux.Forensics.ImmutableFiles
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: Windows.Network.ListeningPorts
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

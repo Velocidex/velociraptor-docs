@@ -1,6 +1,8 @@
 ---
 title: LogScale.Events.Clients
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
 ---
 

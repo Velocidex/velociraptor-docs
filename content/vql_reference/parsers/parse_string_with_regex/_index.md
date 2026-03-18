@@ -2,6 +2,8 @@
 title: parse_string_with_regex
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

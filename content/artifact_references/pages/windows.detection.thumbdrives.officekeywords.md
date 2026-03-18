@@ -1,6 +1,8 @@
 ---
 title: Windows.Detection.Thumbdrives.OfficeKeywords
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
 ---
 

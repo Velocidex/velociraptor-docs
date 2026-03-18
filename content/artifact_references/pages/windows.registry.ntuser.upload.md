@@ -1,6 +1,8 @@
 ---
 title: Windows.Registry.NTUser.Upload
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: Generic.System.HostsFile
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

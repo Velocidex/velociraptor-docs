@@ -2,6 +2,8 @@
 title: notebook_export
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

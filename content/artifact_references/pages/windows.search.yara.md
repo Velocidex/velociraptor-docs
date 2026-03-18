@@ -1,6 +1,8 @@
 ---
 title: Windows.Search.Yara
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

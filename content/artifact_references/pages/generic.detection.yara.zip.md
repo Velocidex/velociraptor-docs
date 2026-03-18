@@ -1,6 +1,8 @@
 ---
 title: Generic.Detection.Yara.Zip
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

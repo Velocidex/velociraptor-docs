@@ -1,6 +1,8 @@
 ---
 title: Generic.Forensic.Carving.URLs
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

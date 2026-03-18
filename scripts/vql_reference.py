@@ -31,7 +31,16 @@ def EnsureDirExists(dirname):
 
 def SaveDefinitions(filename, name, texts):
     with open(filename, "w") as fd:
-        fd.write("---\ntitle: %s\nindex: true\nnoTitle: true\nno_edit: true\n---\n\n" % name)
+        fd.write("""---
+title: %s
+index: true
+noTitle: true
+sitemap:
+   disable: true
+no_edit: true
+---
+
+""" % name)
         for text in texts:
             fd.write(text)
 

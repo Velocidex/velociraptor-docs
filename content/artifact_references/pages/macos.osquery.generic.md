@@ -1,6 +1,8 @@
 ---
 title: MacOS.OSQuery.Generic
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

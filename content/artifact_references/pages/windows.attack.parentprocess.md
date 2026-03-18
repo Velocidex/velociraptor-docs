@@ -1,6 +1,8 @@
 ---
 title: Windows.Attack.ParentProcess
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

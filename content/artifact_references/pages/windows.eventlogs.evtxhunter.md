@@ -1,6 +1,8 @@
 ---
 title: Windows.EventLogs.EvtxHunter
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

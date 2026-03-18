@@ -1,6 +1,8 @@
 ---
 title: Windows.EventLogs.PowershellModule
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

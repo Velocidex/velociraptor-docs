@@ -1,6 +1,8 @@
 ---
 title: Generic.Network.InterfaceAddresses
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

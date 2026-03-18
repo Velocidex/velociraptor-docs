@@ -1,6 +1,8 @@
 ---
 title: Windows.ETW.WMIProcessCreate
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
 ---
 
