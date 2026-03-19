@@ -1,0 +1,214 @@
+name: Windows.Sys.StartupItemsWithHash
+description: |
+    Applications that will be started up from the various run key
+    locations. This artifact extracts file hashes for all referenced executables.
+    
+    Modified from Windows.Sys.StartupItems to include hash values for 
+    registry-based startup entries.
+    
+    v2 Changes:
+    - Improved path parsing for unquoted paths with arguments
+    - Filters out RunNotification keys (not actual startup items)
+    - Better handling of paths with spaces
+
+reference:
+  - https://docs.microsoft.com/en-us/windows/desktop/setupapi/run-and-runonce-registry-keys
+
+author: Greedy Team
+
+parameters:
+  - name: AlsoUpload
+    type: bool
+    description: If set we also upload the files in the startup folders
+    
+  - name: runKeyGlobs
+    type: csv
+    default: |
+      KeyGlobs
+      HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\*
+      HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce\*
+      HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Run\*
+      HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\RunOnce\*
+      HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run\*
+      HKEY_USERS\*\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\*
+      HKEY_USERS\*\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce\*
+      HKEY_USERS\*\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Run\*
+      HKEY_USERS\*\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\RunOnce\*
+      HKEY_USERS\*\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run\*
+      
+  - name: startupApprovedGlobs
+    type: csv
+    default: |
+      KeyGlobs
+      HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\**
+      HKEY_USERS\*\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\**
+      
+  - name: startupFolderDirectories
+    type: csv
+    default: |
+      FileGlobs
+      C:/ProgramData/Microsoft/Windows/Start Menu/Programs/Startup/**
+      C:/Users/*/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/**
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+      
+    query: |
+        LET approved <=
+           SELECT Name as ApprovedName,
+                  encode(string=Data, type="hex") as Enabled
+           FROM glob(globs=startupApprovedGlobs.KeyGlobs,
+                     accessor="registry")
+           WHERE Enabled =~ "^0[0-9]0+$"
+
+        LET extract_executable(value) = SELECT * FROM switch(
+            quoted={
+                SELECT regex_replace(
+                    source=value, 
+                    re='^"([^"]+)".*$', 
+                    replace="$1"
+                ) AS Path
+                FROM scope()
+                WHERE value =~ '^"'
+            },
+
+            rundll={
+                SELECT regex_replace(
+                    source=value,
+                    re='^.*?rundll32(?:\\.exe)?\\s+"?([^",\\s]+\\.dll).*$',
+                    replace="$1"
+                ) AS Path
+                FROM scope()
+                WHERE value =~ '(?i)rundll32'
+            },
+
+            default={
+                SELECT regex_replace(
+                    source=value,
+                    re='^(.*?\\.(?i)(?:exe|dll|cmd|bat|ps1|vbs|js))(?:\\s+.*)?$',
+                    replace="$1"
+                ) AS Path
+                FROM scope()
+            }
+        )
+        
+        LET normalize_path(path) = expand(path=regex_replace(
+            source=path,
+            re='\\s+$',
+            replace=""
+        ))
+        
+        LET safe_hash(filepath) = SELECT * FROM if(
+            condition=filepath AND filepath != "" AND filepath =~ '(?i)\\.(exe|dll|cmd|bat|ps1|vbs|js)$',
+            then={
+                SELECT 
+                    hash(path=filepath) AS Hash,
+                    stat(filename=filepath) AS FileInfo
+                FROM scope()
+            },
+            else={
+                SELECT NULL AS Hash, NULL AS FileInfo FROM scope()
+            }
+        )
+
+        LET registry_entries = SELECT 
+            Name,
+            OSPath,
+            Data.value as CommandLine,
+            normalize_path(path=extract_executable(value=Data.value)[0].Path) AS FilePath,
+            if(
+                condition={
+                    SELECT Enabled from approved
+                    WHERE Name = ApprovedName
+                },
+                then="enabled", 
+                else="disabled"
+            ) as Enabled,
+            "Registry" AS Source
+        FROM glob(
+            globs=runKeyGlobs.KeyGlobs,
+            accessor="registry"
+        )
+
+        WHERE NOT OSPath =~ "RunNotification"
+
+        LET registry_with_hash = SELECT
+            Name,
+            OSPath,
+            CommandLine AS Details,
+            FilePath,
+            Enabled,
+            Source,
+            safe_hash(filepath=FilePath)[0].Hash AS Hash,
+            safe_hash(filepath=FilePath)[0].FileInfo AS FileInfo,
+            if(condition=AlsoUpload AND FilePath, then=upload(file=FilePath)) AS Upload
+        FROM registry_entries
+        WHERE FilePath AND FilePath != ""
+
+        LET enrich_file(OSPath) = SELECT * FROM switch(
+            ini={
+                SELECT regex_replace(
+                    re="[^0-9a-z_]", 
+                    replace=".",
+                    source=read_file(filename=OSPath, length=1024)
+                ) AS Details
+                FROM scope()
+                WHERE OSPath.Basename =~ "\\.(bat|ini|ps1)$"
+            }, 
+            lnk={
+                SELECT { 
+                    SELECT SourceFile, ShellLinkHeader, LinkInfo, LinkTarget, StringData, ExtraData 
+                    FROM Artifact.Windows.Forensics.Lnk(TargetGlob=OSPath)
+                } as Details
+                FROM scope()
+                WHERE OSPath.Basename =~ "\\.lnk$"
+            }, 
+            default={
+                SELECT NULL AS Details
+                FROM scope()
+            }
+        )
+        
+        LET get_lnk_target(OSPath) = SELECT * FROM if(
+            condition=OSPath.Basename =~ "\\.lnk$",
+            then={
+                SELECT StringData.TargetPath AS TargetPath
+                FROM Artifact.Windows.Forensics.Lnk(TargetGlob=OSPath)
+            },
+            else={
+                SELECT NULL AS TargetPath FROM scope()
+            }
+        )
+        
+        LET file_entries = SELECT 
+            Name, 
+            OSPath,
+            enrich_file(OSPath=OSPath)[0].Details AS Details,
+            str(str=OSPath) AS FilePath,
+            get_lnk_target(OSPath=OSPath)[0].TargetPath AS LnkTargetPath,
+            "enabled" as Enabled,
+            "StartupFolder" AS Source,
+            hash(path=OSPath) AS Hash,
+            stat(filename=OSPath) AS FileInfo,
+            if(condition=AlsoUpload, then=upload(file=OSPath)) AS Upload
+        FROM glob(globs=startupFolderDirectories.FileGlobs)
+        WHERE NOT Name =~ "^desktop\\.ini$"
+
+        SELECT 
+            Name,
+            OSPath,
+            Details,
+            FilePath,
+            Enabled,
+            Source,
+            Hash.MD5 AS MD5,
+            Hash.SHA1 AS SHA1,
+            Hash.SHA256 AS SHA256,
+            FileInfo.Size AS FileSize,
+            FileInfo.Mtime AS ModifiedTime,
+            Upload
+        FROM chain(
+            first=registry_with_hash,
+            second=file_entries
+        )
