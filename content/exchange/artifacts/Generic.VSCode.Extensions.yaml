@@ -7,9 +7,6 @@ description: |
   operating systems. This list can be used to hunt for known malicious
   extensions by name or ID.
 
-  The artifact returns the raw JSON from the extensions file. The notebook
-  provides a more user-friendly view.
-
   Since the data from the endpoints do not contain useful information such as
   detailed publisher information, a description, latest available version
   and a global install count, a notebook suggestion is provided to enrich
@@ -19,7 +16,7 @@ description: |
   API. Due to the overwhelming number of published extensions (more than 120.000
   at the time of writing), this query will take a while. Only a few thousand
   extensions are queried by default. Change this by adjusting the variable
-  MaxPages. The returned data can be used to get more detailed information about
+  `MaxPages`. The returned data can be used to get more detailed information about
   the extension, revealing outdated extensions and obscure extensions from
   unknown publishers.
 
@@ -31,12 +28,14 @@ parameters:
       Where to look for extension.json files on various OSes
     type: csv
     default: |
-      OS,Glob
-      windows,C:\Users\*\.vscode\extensions\extensions.json
-      linux,/home/*/.vscode/extensions/extensions.json
-      darwin,/Users/*/.vscode/extensions/extensions.json
+      Glob
+      C:\Users\*\.vscode\extensions\extensions.json
+      /home/*/.vscode/extensions/extensions.json
+      /Users/*/.vscode/extensions/extensions.json
 
 column_types:
+  - name: _ExtensionsFile
+    description: Extentions file name
   - name: ID
     description: Extension name
   - name: _UUID
@@ -44,7 +43,7 @@ column_types:
   - name: Version
     description: Extension version
   - name: UpToDate
-    description: Whether VSCode considers this version up-to-date
+    description: Whether VSCode considers this version up-to-date (not reliable)
   - name: Publisher
     description: The name of the publisher
   - name: _PublisherID
@@ -59,27 +58,13 @@ column_types:
 
 sources:
   - query: |
-       LET Info <= SELECT OS
-         FROM info()
-       LET Globs = SELECT Glob
-         FROM ExtensionGlobs
-         WHERE OS = Info[0].OS
-       SELECT *
-       FROM foreach(
-         row={
-           SELECT OSPath
-           FROM glob(globs=Globs.Glob)
-         },
-         query={
-           SELECT OSPath,
-                  parse_json_array(data=Data) AS Extensions
-           FROM read_file(filenames=OSPath)
-         })
-    notebook:
-      - type: vql
-        name: Visual Studio Code extensions
-        template: |
-          SELECT 
+      LET ExtData = SELECT *
+        FROM flatten(query={
+            SELECT OSPath,
+                   parse_json_array(data=read_file(filename=OSPath)) AS Extensions
+            FROM glob(globs=ExtensionGlobs.Glob)
+          })
+      SELECT
                    OSPath AS _ExtensionsFile,
                    Extensions.identifier.id AS ID,
                    Extensions.identifier.uuid AS _UUID,
@@ -90,22 +75,25 @@ sources:
                    timestamp(epoch=Extensions.metadata.installedTimestamp) AS InstalledAt,
                    Extensions.location.path AS _Location,
                    Extensions AS _Info
-            FROM flatten(query={
-                           SELECT *
-                           FROM source()
-                         })
+            FROM ExtData
             WHERE Extensions
 
+    notebook:
       - type: vql_suggestion
         name: Enrich data with VS Code marketplace information
         template: |
+          LET ColumnTypes <= dict(_ClientId='client',
+                        _FlowId='flow',
+                        ClientId='client',
+                        FlowId='flow')
+
           LET PageStart <= 1
 
           // There are around 120.000 thousands extensions, but they are fetched in order
           // of popularity (install count(?)), so fetching a few thousands is typically
           // enough to enrich most installed extensions. Increase as needed:
           //LET MaxPages <= 200
-          LET MaxPages <= 5
+          LET MaxPages <= 20
 
           // There is a maximum page size. The exact size is unknown, but 1000 is a good
           // default:
@@ -265,6 +253,36 @@ sources:
                                   name='VSCodeMarketplaceList',
                                   query=MarketplaceList)
 
+          /*
+          # Installed extensions
+
+          Installed extensions enriched with information from the marketplace API
+          */
+          LET Enh = get(
+              item=ExtraInfo,
+              field=ID)
+
+          SELECT
+              _ExtensionsFile,
+              Publisher,
+              Enh._PublisherInfo AS _PublisherInfo,
+              ID,
+              _UUID,
+              Enh.DisplayName AS Name,
+              Enh.Description AS Description,
+              Version AS InstalledVersion,
+              Enh.LatestVersion AS MPlaceVersion,
+              InstalledAt,
+              Enh.LastUpdated AS MPlaceUpdateAt,
+              Enh.InstallCount AS MPlaceInstallCount,
+              if(condition=Enh.RatingCount > RatingCountThreshold, then=Enh.RatingAvg) AS MPlaceRating,
+              _Location,
+              _Info,
+              S.ClientId AS _ClientId,
+              S.FlowId AS _FlowId,
+              S.Fqdn AS _Fqdn
+          FROM source()
+
 
           /*
           # VS Code marketplace extensions
@@ -274,40 +292,3 @@ sources:
           SELECT
               *
           FROM MarketplaceList
-
-
-          /*
-          # Installed extensions
-
-          Installed extensions enriched with information from the marketplace API
-          */
-          LET Enh = get(
-              item=ExtraInfo,
-              field=Extensions.identifier.id)
-
-          LET Enriched = SELECT
-              OSPath AS _ExtensionsFile,
-              Extensions.metadata.publisherDisplayName AS Publisher,
-              Enh._PublisherInfo AS _PublisherInfo,
-              Extensions.identifier.id AS ID,
-              Extensions.identifier.uuid AS _UUID,
-              Enh.DisplayName AS Name,
-              Enh.Description AS Description,
-              Extensions.version AS InstalledVersion,
-              Enh.LatestVersion AS MPlaceVersion,
-              timestamp(epoch=Extensions.metadata.installedTimestamp) AS InstalledAt,
-              Enh.LastUpdated AS MPlaceUpdateAt,
-              Enh.InstallCount AS MPlaceInstallCount,
-              if(condition=Enh.RatingCount > RatingCountThreshold, then=Enh.RatingAvg) AS MPlaceRating,
-              Extensions.location.path AS _Location,
-              Extensions AS _Info
-            FROM flatten(
-              query={
-              SELECT
-              *
-              FROM source()
-            })
-            WHERE Extensions
-
-          SELECT *
-          FROM Enriched
