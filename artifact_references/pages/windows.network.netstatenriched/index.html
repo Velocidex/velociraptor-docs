@@ -1,0 +1,245 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.158.0"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Windows.Network.NetstatEnriched :: Velociraptor - Digging deeper!</title><link href=/css/nucleus.css?1774052122 rel=stylesheet><link href=/css/font-awesome-all.min.css?1774052122 rel=stylesheet><link href=/css/featherlight.min.css?1774052122 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1774052122 rel=stylesheet><link href=/css/auto-complete.css?1774052122 rel=stylesheet><link href=/css/theme.css?1774052122 rel=stylesheet><link href=/css/tabs.css?1774052122 rel=stylesheet><link href=/css/hugo-theme.css?1774052122 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1774052122 rel=stylesheet><link href=/css/dark.css?1774052122 rel=stylesheet><link href=/css/syntax.css?1774052122 rel=stylesheet><link href=/css/light.css?1774052122 rel=stylesheet><link href=/css/hljs.css?1774052122 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774052122 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1774052122></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/artifact_references/pages/windows.network.netstatenriched/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><script src=/js/menu-6d49effe.js type=text/javascript></script><div class=highlightable><ul class="sidemenu sidebar hidden"></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>findlink(window.menu,"/artifact_references/pages/windows.network.netstatenriched/");let menu=$(".sidemenu.hidden");addToNode(menu,window.menu),menu.find("i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()}),menu.removeClass("hidden"),$(window).on("load",function(){$("li.dd-item.active")[0].scrollIntoView()}),menu.find("li.dd-item.active")[0].scrollIntoView()</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/artifact_references/pages/windows.network.netstatenriched.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Windows.Network.NetstatEnriched</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents></nav></div></div></div></div><div id=head-tags><div class=tags><a class=tag-link href=/tags/client-artifact>Client Artifact</a></div></div><div id=body-inner><h1>Windows.Network.NetstatEnriched</h1><p>NetstatEnhanced adds additional data points to the Netstat artifact and
+enables verbose search options.</p><p>Examples include: Process name and path, Authenticode information or
+network connection details.</p><p>WARNING:
+KillProcess - attempts to use Taskill to kill the processes returned.
+DumpProcess - dumps the process as a sparse file for post-processing.</p><p>Please only use these switches after scoping as there are no guardrails on
+shooting yourself in the foot.</p><pre><code class=language-yaml>
+name: Windows.Network.NetstatEnriched
+author: "Matt Green - @mgreen27"
+description: |
+  NetstatEnhanced adds additional data points to the Netstat artifact and
+  enables verbose search options.
+
+  Examples include: Process name and path, Authenticode information or
+  network connection details.
+
+  WARNING:
+  KillProcess - attempts to use Taskill to kill the processes returned.
+  DumpProcess - dumps the process as a sparse file for post-processing.
+
+  Please only use these switches after scoping as there are no guardrails on
+  shooting yourself in the foot.
+
+required_permissions:
+  - EXECVE
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+parameters:
+  - name: IPRegex
+    description: "regex search over IP address fields."
+    default:  .
+    type: regex
+  - name: PortRegex
+    description: "regex search over port fields."
+    default: .
+    type: regex
+  - name: Family
+    description: "IP version family selection"
+    type: choices
+    default: ALL
+    choices:
+       - ALL
+       - IPv4
+       - IPv6
+  - name: FamilyMap
+    type: hidden
+    default: |
+      Choice,Regex
+      ALL,"."
+      IPv4,"^IPv4$"
+      IPv6,"^IPv6$"
+
+  - name: Type
+    description: "Transport protocol type selection"
+    type: choices
+    default: ALL
+    choices:
+       - ALL
+       - TCP
+       - UDP
+  - name: TypeMap
+    type: hidden
+    default: |
+      Choice,Regex
+      ALL,"."
+      TCP,"^TCP$"
+      UDP,"^UDP$"
+
+  - name: Status
+    description: "TCP status selection"
+    type: choices
+    default: ALL
+    choices:
+       - ALL
+       - ESTABLISHED
+       - LISTENING
+       - OTHER
+  - name: StatusMap
+    type: hidden
+    default: |
+      Choice,Regex
+      ALL,"."
+      ESTABLISHED,"^ESTAB$"
+      LISTENING,"^LISTEN$"
+      OTHER,"CLOS|SENT|RCVD|LAST|WAIT|DELETE"
+
+  - name: ProcessNameRegex
+    description: "regex search over source process name"
+    default: ^(malware\.exe|.*)$
+    type: regex
+  - name: ProcessPathRegex
+    description: "regex search over source process path"
+    default: .
+    type: regex
+  - name: CommandLineRegex
+    description: "regex search over source process commandline"
+    default: .
+    type: regex
+  - name: HashRegex
+    description: "regex search over source process hash"
+    default: .
+    type: regex
+  - name: UsernameRegex
+    description: "regex search over source process user context"
+    default: .
+    type: regex
+  - name: AuthenticodeSubjectRegex
+    description: "regex search over source Authenticode Subject"
+    default: .
+    type: regex
+  - name: AuthenticodeIssuerRegex
+    description: "regex search over source Authenticode Issuer"
+    default: .
+    type: regex
+  - name: AuthenticodeVerified
+    description: "Authenticode signiture selection"
+    type: choices
+    default: ALL
+    choices:
+       - ALL
+       - TRUSTED
+       - UNSIGNED
+       - NOT TRUSTED
+  - name: AuthenticodeVerifiedMap
+    type: hidden
+    default: |
+      Choice,Regex
+      ALL,"."
+      TRUSTED,"^trusted$"
+      UNSIGNED,"^unsigned$"
+      NOT TRUSTED,"unsigned|disallowed|untrusted|error"
+  - name: DumpProcess
+    description: "WARNING: If selected will attempt to dump process from all results."
+    type: bool
+  - name: KillProcess
+    description: "WARNING: If selected will attempt to kill process from all results."
+    type: bool
+  - name: DISABLE_DANGEROUS_API_CALLS
+    type: bool
+    description: |
+      Enable this to disable potentially flakey APIs which may cause
+      crashes.
+
+sources:
+  - name: Netstat
+    query: |
+      LET VerifiedRegex &lt;= SELECT Regex
+            FROM parse_csv(filename=AuthenticodeVerifiedMap, accessor="data")
+            WHERE Choice=AuthenticodeVerified LIMIT 1
+      LET StatusRegex &lt;= SELECT Regex
+            FROM parse_csv(filename=StatusMap, accessor="data")
+            WHERE Choice=Status LIMIT 1
+      LET FamilyRegex &lt;= SELECT Regex
+            FROM parse_csv(filename=FamilyMap, accessor="data")
+            WHERE Choice=Family LIMIT 1
+      LET TypeRegex &lt;= SELECT Regex
+            FROM parse_csv(filename=TypeMap, accessor="data")
+            WHERE Choice=Type LIMIT 1
+
+      LET process &lt;= SELECT Pid as PsId,
+            Ppid,
+            Name,
+            CommandLine,
+            Exe,
+            Hash,
+            Authenticode,
+            Username
+        FROM Artifact.Windows.System.Pslist(
+            DISABLE_DANGEROUS_API_CALLS=DISABLE_DANGEROUS_API_CALLS)
+        WHERE Name =~ ProcessNameRegex
+            AND Exe =~ ProcessPathRegex
+            AND CommandLine =~ CommandLineRegex
+
+      LET results = SELECT Pid,
+                { SELECT Ppid FROM process WHERE PsId = Pid } as Ppid,
+                { SELECT Name FROM process WHERE PsId = Pid } as Name,
+                { SELECT Exe FROM process WHERE PsId = Pid } as Path,
+                { SELECT CommandLine FROM process WHERE PsId = Pid } as CommandLine,
+                { SELECT Hash FROM process WHERE PsId = Pid } as Hash,
+                { SELECT Username FROM process WHERE PsId = Pid } as Username,
+                { SELECT Authenticode FROM process WHERE PsId = Pid } as Authenticode,
+                FamilyString as Family,
+                TypeString as Type,
+                Status,
+                Laddr.IP as Laddr,
+                Laddr.Port as Lport,
+                Raddr.IP as Raddr,
+                Raddr.Port as Rport,
+                Timestamp
+            FROM netstat()
+            WHERE
+                Name =~ ProcessNameRegex
+                AND Path =~ ProcessPathRegex
+                and CommandLine =~ CommandLineRegex
+                and Username =~ UsernameRegex
+                and ( Hash.MD5 =~ HashRegex
+                  or Hash.SHA1 =~ HashRegex
+                  or Hash.SHA256 =~ HashRegex
+                  or not Hash )
+                and ( Authenticode.IssuerName =~ AuthenticodeIssuerRegex or not Authenticode )
+                and ( Authenticode.SubjectName =~ AuthenticodeSubjectRegex or not Authenticode )
+                and ( Authenticode.Trusted =~ VerifiedRegex.Regex[0] or not Authenticode )
+                and Status =~ StatusRegex.Regex[0]
+                and Family =~ FamilyRegex.Regex[0]
+                and Type =~ TypeRegex.Regex[0]
+                and ( format(format="%v", args=Laddr) =~ IPRegex
+                    or format(format="%v", args=Raddr) =~ IPRegex )
+                and ( format(format="%v", args=Lport) =~ PortRegex
+                    or format(format="%v", args=Rport) =~ PortRegex )
+
+      LET Regions(Pid) = SELECT dict(Offset=Address, Length=Size) AS Sparse
+        FROM vad(pid=Pid)
+        WHERE Protection =~ "r"
+      LET dump = SELECT *,
+            upload(accessor="sparse",
+                    file=pathspec(
+                    Path=serialize(item=Regions(Pid=Pid).Sparse),
+                    DelegateAccessor="process",
+                    DelegatePath=format(format="/%d", args=Pid)),
+                     name=pathspec(Path=format(format="%d.dd", args=Pid))) AS ProcessMemory
+        FROM results
+      LET kill = SELECT *, pskill(pid=Pid) AS KillProcess
+        FROM results
+      LET dumpandkill = SELECT *, pskill(pid=Pid) AS KillProcess
+        FROM dump
+
+      SELECT * FROM switch(
+            a = {
+                SELECT *, if(condition= KillProcess=Null,then='Success',else=KillProcess) AS KillProcess
+                FROM if(condition= DumpProcess AND KillProcess, then= dumpandkill )},
+            b = { SELECT * FROM if(condition= DumpProcess, then= dump )},
+            c = {
+                SELECT *, if(condition= KillProcess=Null,then='Success',else=KillProcess) AS KillProcess
+                FROM if(condition= KillProcess, then= kill)
+            },
+            catch = results
+        )
+
+</code></pre><footer class=footline></footer></div></div></section><div style=left:-1e3px;overflow:scroll;position:absolute;top:-1e3px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1774052122></script><script src=/js/perfect-scrollbar.min.js?1774052122></script><script src=/js/perfect-scrollbar.jquery.min.js?1774052122></script><script src=/js/jquery.sticky.js?1774052122></script><script src=/js/featherlight.min.js?1774052122></script><script src=/js/highlight.min.js?1774052122></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1774052122></script><script src=/js/learn.js?1774052122></script><script src=/js/hugo-learn.js?1774052122></script></body></html>

@@ -1,0 +1,213 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.158.0"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Windows.Remediation.Sinkhole :: Velociraptor - Digging deeper!</title><link href=/css/nucleus.css?1774052122 rel=stylesheet><link href=/css/font-awesome-all.min.css?1774052122 rel=stylesheet><link href=/css/featherlight.min.css?1774052122 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1774052122 rel=stylesheet><link href=/css/auto-complete.css?1774052122 rel=stylesheet><link href=/css/theme.css?1774052122 rel=stylesheet><link href=/css/tabs.css?1774052122 rel=stylesheet><link href=/css/hugo-theme.css?1774052122 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1774052122 rel=stylesheet><link href=/css/dark.css?1774052122 rel=stylesheet><link href=/css/syntax.css?1774052122 rel=stylesheet><link href=/css/light.css?1774052122 rel=stylesheet><link href=/css/hljs.css?1774052122 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774052122 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1774052122></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/artifact_references/pages/windows.remediation.sinkhole/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><script src=/js/menu-6d49effe.js type=text/javascript></script><div class=highlightable><ul class="sidemenu sidebar hidden"></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>findlink(window.menu,"/artifact_references/pages/windows.remediation.sinkhole/");let menu=$(".sidemenu.hidden");addToNode(menu,window.menu),menu.find("i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()}),menu.removeClass("hidden"),$(window).on("load",function(){$("li.dd-item.active")[0].scrollIntoView()}),menu.find("li.dd-item.active")[0].scrollIntoView()</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/artifact_references/pages/windows.remediation.sinkhole.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Windows.Remediation.Sinkhole</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents></nav></div></div></div></div><div id=head-tags><div class=tags><a class=tag-link href=/tags/client-artifact>Client Artifact</a></div></div><div id=body-inner><h1>Windows.Remediation.Sinkhole</h1><p><strong>Apply a Sinkhole via Windows hosts file modification</strong>
+This content will modify the Windows hosts file by a configurable
+lookup table.</p><p>On application, the original configuration is backed up.
+When reapplying a sinkhole, the original configuration is restored then
+changes applied to maintain integrity of the restore process.
+If RestoreBackup is selected the artifact will restore the backup
+configuration, then delete the backup with no further processing.</p><p>NOTE:
+Modifying the hosts file may cause network communication issues. I have
+disabled any sinkhole settings on the Velociraptor agent configuration
+but there are no rail guards on other domains. Use with caution.</p><pre><code class=language-yaml>
+name: Windows.Remediation.Sinkhole
+description: |
+   **Apply a Sinkhole via Windows hosts file modification**
+   This content will modify the Windows hosts file by a configurable
+   lookup table.
+
+   On application, the original configuration is backed up.
+   When reapplying a sinkhole, the original configuration is restored then
+   changes applied to maintain integrity of the restore process.
+   If RestoreBackup is selected the artifact will restore the backup
+   configuration, then delete the backup with no further processing.
+
+   NOTE:
+   Modifying the hosts file may cause network communication issues. I have
+   disabled any sinkhole settings on the Velociraptor agent configuration
+   but there are no rail guards on other domains. Use with caution.
+
+author: Matt Green - @mgreen27
+
+required_permissions:
+  - EXECVE
+
+implied_permissions:
+  - FILESYSTEM_WRITE
+
+type: CLIENT
+
+parameters:
+  - name: HostsFile
+    description: Path to hosts file
+    default: C:\Windows\System32\drivers\etc\hosts
+  - name: HostsFileBackup
+    description: Name to backup original hosts file. If reapplying the artifact this file is used as the base.
+    default: C:\Windows\System32\drivers\etc\hosts.velociraptor.backup
+  - name: CommentPrefix
+    description: Prefix to add to description in hosts file comments.
+    default: "Velociraptor sinkhole"
+  - name: RestoreBackup
+    description: "Restore hosts file backup"
+    type: bool
+  - name: SinkholeTable
+    description: Table of Domains to add to or modify in hosts file.
+    type: csv
+    default: |
+        Domain,Sinkhole,Description
+        evil.com,127.0.0.1,Evilcorp C2 domain
+
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+      -- Extract sink hole requirements from table
+      LET changes &lt;= SELECT
+                Domain,
+                Sinkhole,
+                if(condition=Description,
+                  then= CommentPrefix + ': ' + Description,
+                  else= CommentPrefix) as Description
+            FROM SinkholeTable
+
+      -- Check for backup to determine if sinkhole applied
+      LET check_backup = SELECT OSPath FROM stat(filename=HostsFileBackup)
+      WHERE log(message="Found backup at %v", args=OSPath)
+
+      -- Backup old config
+      LET Backup = copy(filename=HostsFile, dest=HostsFileBackup)
+
+      -- Restore old config
+      LET restore = SELECT * FROM chain(
+            z=log(message="Will restore from backup"),
+            a=copy(filename=HostsFileBackup,dest=HostsFile),
+            b={
+                SELECT *
+                FROM if(condition=RestoreBackup,
+                    then={
+                        SELECT *
+                        FROM execve(argv=['cmd.exe', '/c',
+                            'del','/F',HostsFileBackup])
+                    })
+            })
+
+      -- Write hosts file
+      LET write(DataBlob) = copy(filename=DataBlob,dest=HostsFile,accessor='data')
+
+      -- FlushDNS
+      LET flushdns = SELECT *
+        FROM execve(argv=['cmd.exe', '/c','ipconfig','/flushdns'])
+
+      -- Find existing entries to modify
+      LET existing &lt;= SELECT
+            parse_string_with_regex(
+            string=Line,
+            regex=[
+                "^\\s+(?P&lt;Resolution&gt;[^\\s]+)\\s+" +
+                "(?P&lt;Hostname&gt;[^\\s]+)\\s*\\S*$"
+            ]) as Record,
+            Line
+        FROM parse_lines(filename=HostsFile)
+        WHERE
+            Record AND Line
+            AND NOT Line =~ '^#'
+
+      -- Parse a URL to get domain name.
+      LET get_domain(URL) = parse_string_with_regex(
+           string=URL, regex='^https?://(?P&lt;Domain&gt;[^:/]+)').Domain
+
+      -- extract Velociraptor config for policy
+      LET extracted_config &lt;= SELECT * FROM foreach(
+          row=config.server_urls,
+            query={
+                SELECT get_domain(URL=_value) AS Domain
+                FROM scope()
+            })
+
+      -- Set existing entries to sinkholed values
+      LET find_modline &lt;= SELECT * FROM foreach(row=changes,
+            query={
+                SELECT
+                    format(format='\t%v\t\t%v\t\t# %v',
+                    args=[Sinkhole,Domain,Description]) as Line,
+                    Domain,
+                    'modification' as Type
+                FROM existing
+                WHERE
+                    Record.Hostname = Domain
+                    AND NOT Domain in extracted_config.Domain
+                GROUP BY Line
+            })
+
+      -- Add new hostsfile entries
+      LET find_newline &lt;= SELECT * FROM foreach(row=changes,
+            query={
+                SELECT
+                    format(format='\t%v\t\t%v\t\t# %v',
+                        args=[Sinkhole,Domain,Description]) as Line,
+                    Domain,
+                    'new entry' as Type
+                FROM scope()
+                WHERE
+                    NOT Domain in find_modline.Domain
+                    AND NOT Domain in extracted_config.Domain
+            })
+
+      -- Determine which lines should stay the same
+      LET find_line &lt;= SELECT
+                Line,
+                Record.Hostname as Domain,
+                'old entry' as Type
+            FROM existing
+            WHERE
+                NOT Domain in find_modline.Domain
+                AND NOT Domain in find_newline.Domain
+
+      -- Add all lines to staging object
+      LET build_lines &lt;= SELECT Line FROM chain(
+            a=find_modline,
+            b=find_newline,
+            c=find_line
+      )
+
+      -- Join lines from staging object
+      LET HostsData = join(array=build_lines.Line,sep='\r\n')
+
+      -- Force start of backup or restore if applicable
+      LET backup_restore &lt;= if(
+         condition= RestoreBackup AND log(message="Will attempt to restore backup"),
+         then= if(
+            condition= check_backup,
+            then= restore,
+            -- then= { SELECT * FROM restore },
+            else= log(message='Can not restore hosts file as backup does not exist.')),
+
+         else= if(
+           condition= check_backup,
+           then={
+              SELECT * FROM chain(
+                 a= log(message='Backup hosts file already exists.'),
+                 b= restore)
+              },
+          else= Backup)
+        )
+
+      -- Do kick off logic
+      LET do_it &lt;= SELECT * FROM if(condition= NOT RestoreBackup,
+            then= {
+                SELECT * FROM chain(
+                    a= log(message='Adding hosts entries.'),
+                    b= write(DataBlob=HostsData),
+                    c= flushdns
+                )})
+
+      -- Finally show resultant HostsFile
+      SELECT * FROM Artifact.Windows.System.HostsFile(HostsFile=HostsFile)
+
+</code></pre><footer class=footline></footer></div></div></section><div style=left:-1e3px;overflow:scroll;position:absolute;top:-1e3px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1774052122></script><script src=/js/perfect-scrollbar.min.js?1774052122></script><script src=/js/perfect-scrollbar.jquery.min.js?1774052122></script><script src=/js/jquery.sticky.js?1774052122></script><script src=/js/featherlight.min.js?1774052122></script><script src=/js/highlight.min.js?1774052122></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1774052122></script><script src=/js/learn.js?1774052122></script><script src=/js/hugo-learn.js?1774052122></script></body></html>

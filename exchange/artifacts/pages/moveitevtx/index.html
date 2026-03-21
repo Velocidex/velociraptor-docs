@@ -1,0 +1,93 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.158.0"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Windows.EventLogs.MoveIt :: Velociraptor - Digging deeper!</title><link href=/css/nucleus.css?1774052124 rel=stylesheet><link href=/css/font-awesome-all.min.css?1774052124 rel=stylesheet><link href=/css/featherlight.min.css?1774052124 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1774052124 rel=stylesheet><link href=/css/auto-complete.css?1774052124 rel=stylesheet><link href=/css/theme.css?1774052124 rel=stylesheet><link href=/css/tabs.css?1774052124 rel=stylesheet><link href=/css/hugo-theme.css?1774052124 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1774052124 rel=stylesheet><link href=/css/dark.css?1774052124 rel=stylesheet><link href=/css/syntax.css?1774052124 rel=stylesheet><link href=/css/light.css?1774052124 rel=stylesheet><link href=/css/hljs.css?1774052124 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774052124 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1774052124></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/exchange/artifacts/pages/moveitevtx/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><script src=/js/menu-6d49effe.js type=text/javascript></script><div class=highlightable><ul class="sidemenu sidebar hidden"></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>findlink(window.menu,"/exchange/artifacts/pages/moveitevtx/");let menu=$(".sidemenu.hidden");addToNode(menu,window.menu),menu.find("i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()}),menu.removeClass("hidden"),$(window).on("load",function(){$("li.dd-item.active")[0].scrollIntoView()}),menu.find("li.dd-item.active")[0].scrollIntoView()</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/exchange/artifacts/MoveITEvtx.yaml target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Windows.EventLogs.MoveIt</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Windows.EventLogs.MoveIt</h1><p>This Artifact enables scoping EventLogs from Progress Software&rsquo;s MoveIT File
+Transfer. It is designed to assist in identifying exfiltration resulting from
+the exploitation of CVE-2023-34362</p><p>This artifact parses EvtxHunter output and returns a set of fields in results.
+An unparsed data field is availible in the hidden _RawData field.</p><p>There are several parameter&rsquo;s available for search leveraging regex.</p><ul><li>EvtxGlob glob of EventLogs to target. Default to MoveIt.evtx but can be targeted.</li><li>dateAfter enables search for events after this date.</li><li>dateBefore enables search for events before this date.</li><li>IocRegex enables regex search over the message field.</li><li>IgnoreRegex enables a regex whitelist for the Message field.</li><li>IdRegex enables a regex query to select specific event Ids.</li><li>VSSAnalysisAge enables searching over VSS.</li></ul><p>NOTE: MoveIT event logging may not be turned on by default.</p><pre><code class=language-yaml>
+name:  Windows.EventLogs.MoveIt
+author: Rapid7 team -  Ted Samuels, @mgreen27 &amp; @scudette
+description: |
+  This Artifact enables scoping EventLogs from Progress Software's MoveIT File
+  Transfer. It is designed to assist in identifying exfiltration resulting from
+  the exploitation of CVE-2023-34362
+
+  This artifact parses EvtxHunter output and returns a set of fields in results.
+  An unparsed data field is availible in the hidden _RawData field.
+
+  There are several parameter's available for search leveraging regex.
+
+    - EvtxGlob glob of EventLogs to target. Default to MoveIt.evtx but can be targeted.
+    - dateAfter enables search for events after this date.
+    - dateBefore enables search for events before this date.
+    - IocRegex enables regex search over the message field.
+    - IgnoreRegex enables a regex whitelist for the Message field.
+    - IdRegex enables a regex query to select specific event Ids.
+    - VSSAnalysisAge enables searching over VSS.
+
+  NOTE: MoveIT event logging may not be turned on by default.
+
+reference:
+    - https://www.rapid7.com/blog/post/2023/06/01/rapid7-observed-exploitation-of-critical-moveit-transfer-vulnerability/
+    - https://www.huntress.com/blog/moveit-transfer-critical-vulnerability-rapid-respons
+    - https://www.mandiant.com/resources/blog/zero-day-moveit-data-theft
+    - https://nvd.nist.gov/vuln/detail/CVE-2023-34362
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+parameters:
+  - name: EvtxGlob
+    default: '%SystemRoot%\System32\Winevt\Logs\MOVEit.evtx'
+  - name: IocRegex
+    type: regex
+    description: "IOC Regex"
+    default:
+  - name: IgnoreRegex
+    description: "Regex of string to witelist"
+    type: regex
+  - name: IdRegex
+    default: .
+    type: regex
+  - name: VSSAnalysisAge
+    type: int
+    default: 0
+    description: |
+       If larger than zero we analyze VSS within this many days
+       ago. (e.g 7 will analyze all VSS within the last week).  Note
+       that when using VSS analysis we have to use the ntfs accessor
+       for everything which will be much slower.
+  - name: DateAfter
+    type: timestamp
+    description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
+  - name: DateBefore
+    type: timestamp
+    description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
+
+sources:
+  - query: |
+      LET Parse(X) = to_dict(
+        item={
+           SELECT split(sep=":", string=Column0)[0] AS _key,
+                  regex_replace(re="^\\s+|\\s+$", replace="", source=split(sep=":", string=Column0)[1]) AS _value
+           FROM split_records(accessor="data", filenames=X, regex="\r\n")
+           WHERE Column0 =~ "^[a-zA-Z0-9]+:"
+        }) +  parse_string_with_regex(regex="User '(?P&lt;User&gt;[^']+)'", string=X)
+
+      SELECT EventTime,Computer,Channel,Provider,EventID,EventRecordID,
+        Parse(X=split(string=EventData.Data[0],sep="\r\n\r\n")[1]) as EventData,
+        split(string=EventData.Data[0],sep="\r\n\r\n")[0] as Message,
+        FullPath,
+        EventData.Data[0] as _RawData
+      FROM Artifact.Windows.EventLogs.EvtxHunter(
+                        EvtxGlob=EvtxGlob,
+                        IocRegex=IocRegex,
+                        IdRegex=IdRegex,
+                        WhitelistRegex=IgnoreRegex,
+                        DateAfter=DateAfter,
+                        DateBefore=DateBefore,
+                        VSSAnalysisAge=VSSAnalysisAge )
+
+</code></pre><footer class=footline></footer></div></div></section><div style=left:-1e3px;overflow:scroll;position:absolute;top:-1e3px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1774052124></script><script src=/js/perfect-scrollbar.min.js?1774052124></script><script src=/js/perfect-scrollbar.jquery.min.js?1774052124></script><script src=/js/jquery.sticky.js?1774052124></script><script src=/js/featherlight.min.js?1774052124></script><script src=/js/highlight.min.js?1774052124></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1774052124></script><script src=/js/learn.js?1774052124></script><script src=/js/hugo-learn.js?1774052124></script></body></html>

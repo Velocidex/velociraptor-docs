@@ -1,0 +1,95 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.158.0"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Server Upgrades :: Velociraptor - Digging deeper!</title><link href=/css/nucleus.css?1774052124 rel=stylesheet><link href=/css/font-awesome-all.min.css?1774052124 rel=stylesheet><link href=/css/featherlight.min.css?1774052124 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1774052124 rel=stylesheet><link href=/css/auto-complete.css?1774052124 rel=stylesheet><link href=/css/theme.css?1774052124 rel=stylesheet><link href=/css/tabs.css?1774052124 rel=stylesheet><link href=/css/hugo-theme.css?1774052124 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1774052124 rel=stylesheet><link href=/css/dark.css?1774052124 rel=stylesheet><link href=/css/syntax.css?1774052124 rel=stylesheet><link href=/css/light.css?1774052124 rel=stylesheet><link href=/css/hljs.css?1774052124 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774052124 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1774052124></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/docs/deployment/server/upgrades/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><script src=/js/menu-6d49effe.js type=text/javascript></script><div class=highlightable><ul class="sidemenu sidebar hidden"></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>findlink(window.menu,"/docs/deployment/server/upgrades/");let menu=$(".sidemenu.hidden");addToNode(menu,window.menu),menu.find("i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()}),menu.removeClass("hidden"),$(window).on("load",function(){$("li.dd-item.active")[0].scrollIntoView()}),menu.find("li.dd-item.active")[0].scrollIntoView()</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/deployment/server/upgrades/_index.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Server Upgrades</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents><ul><li><a href=#upgrading-a-server-in-place-upgrade>Upgrading a server (in-place upgrade)</a><ul><li><a href=#create-a-new-server-installation-package>Create a new server installation package</a></li><li><a href=#run-the-upgrade>Run the upgrade</a></li></ul></li><li><a href=#reverting-versions>Reverting versions</a></li><li><a href=#migrating-clients-to-a-new-server>Migrating clients to a new server</a></li></ul></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Server Upgrades</h1><p>Upgrading the server component is usually a simple matter of creating a new
+server installation package using the latest version and your existing
+configuration file, and then applying it to your server.</p><div class="mynotices tip"><div heading=" Backing up your configuration file "><p>The configuration file contains cryptographic keys that allow clients
+and server to communicate. Each time the configuration is regenerated
+(e.g. using <code>velociraptor config generate</code>), new keys are created.</p><p>It is imperative to backup the configuration file somewhere safe
+(perhaps offline) and re-use the same file when upgrading to a new
+version of Velociraptor in order to preserve the key material and
+maintain client communication.</p><p>Remember to always make a backup copy of your config file before upgrading and
+after upgrading, just in case changes are made by the upgrade!</p></div></div><p>From time to time, the schema of the configuration file may evolve with newer
+versions. When a newer version of Velociraptor encounters an older configuration
+file, it attempts to upgrade the configuration file to the latest version. This
+happens automatically and is usually a seamless process.</p><p>During the installation package preparation the upgraded config file is embedded
+into the server package so you will receive an upgraded configuration file
+installed to the <code>/etc/</code> directory. You can see the version that wrote the
+configuration file in the <code>version</code> section of the configuration file.</p><div class="mynotices note"><div heading=" Client-Server Backward Compatibility "><p>The Velociraptor server is intended to be
+<a href=/docs/overview/support/#client-and-server-versioning>backwardly-compatible with older clients</a>
+across the previous few releases, which allows you to upgrade the server and
+then upgrade the clients. This backward-compatibility is mainly in terms of
+client-server communication - that is, older clients should be able to continue
+communicating with a newer server version. However, older clients will not be
+able to run artifacts that use newer features and functionality, so ideally you
+should try to upgrade your clients to the same version as the server as soon as
+possible after upgrading the server.</p><p>Note that you should always upgrade the server first.</p></div></div><h2 id=upgrading-a-server-in-place-upgrade>Upgrading a server (in-place upgrade)</h2><p>To upgrade the Velociraptor server to a new version, first download the
+<a href=/downloads/>latest release binary</a>
+,
+appropriate for your server&rsquo;s architecture.</p><h3 id=create-a-new-server-installation-package>Create a new server installation package</h3><p>On your server, create a new server installation package using the new binary
+(which we&rsquo;ve renamed &lsquo;velociraptor&rsquo; in the commands below) and your existing
+config file (which will be <code>/etc/velociraptor/server.config.yaml</code> on an existing
+server):</p><p><strong>Debian-based server:</strong></p><pre><code class=language-sh>./velociraptor debian server --config /etc/velociraptor/server.config.yaml
+</code></pre><p>or</p><p><strong>RPM-based server:</strong></p><pre><code class=language-sh>./velociraptor rpm server --config /etc/velociraptor/server.config.yaml
+</code></pre><p>The output file will be automatically named to reflect the version and
+architecture of the new Velociraptor version, but you can choose any file name
+you want and specify it with the <code>--output &lt;your_file_name></code> flag.</p><h3 id=run-the-upgrade>Run the upgrade</h3><p>Then upgrade by installing the new server package using the relevant command
+below, according to your server&rsquo;s packaging system.</p><p><strong>Debian-based server installation:</strong></p><pre><code>$ sudo dpkg -i velociraptor_server_0.74.2_amd64.deb
+Selecting previously unselected package velociraptor-server.
+(Reading database ... 527396 files and directories currently installed.)
+Preparing to unpack velociraptor_server_0.74.2_amd64.deb ...
+Unpacking velociraptor-server (0.74.2) ...
+Setting up velociraptor-server (0.74.2) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/velociraptor_server.service → /etc/systemd/system/velociraptor_server.service.
+</code></pre><p>or</p><p><strong>RPM-based server installation:</strong></p><pre><code>$ sudo rpm -Uvh velociraptor-server-0.74.2.x86_64.rpm
+Verifying...                          ################################# [100%]
+Preparing...                          ################################# [100%]
+Updating / installing...
+   1:velociraptor-server-0:0.74.2-A   ################################# [100%]
+Created symlink '/etc/systemd/system/multi-user.target.wants/velociraptor_server.service' → '/etc/systemd/system/velociraptor_server.service'.
+</code></pre><p>The upgrade should proceed smoothly. After upgrading you can check that the
+service is running:</p><pre><code>$ systemctl status velociraptor_server.service
+● velociraptor_server.service - Velociraptor server
+     Loaded: loaded (/etc/systemd/system/velociraptor_server.service; enabled; vendor preset: enabled)
+     Active: active (running) since Tue 2025-04-08 12:25:34 SAST; 3min 5s ago
+   Main PID: 3514 (velociraptor.bi)
+      Tasks: 19 (limit: 4537)
+     Memory: 67.2M
+        CPU: 4.249s
+     CGroup: /system.slice/velociraptor_server.service
+             ├─3514 /usr/local/bin/velociraptor.bin --config /etc/velociraptor/server.config.yaml frontend
+             └─3522 /usr/local/bin/velociraptor.bin --config /etc/velociraptor/server.config.yaml frontend
+
+Apr 08 12:25:34 linux64-client systemd[1]: Started Velociraptor server.
+</code></pre><h2 id=reverting-versions>Reverting versions</h2><p>It is generally ok to revert from later versions to earlier versions since the
+migration process is generally non destructive.</p><p>The process is identical to the one for in-place upgrades described above,
+except that you would create the installer package using the earlier version of
+the Velociraptor binary.</p><h2 id=migrating-clients-to-a-new-server>Migrating clients to a new server</h2><p>If you wanted to completely change the way the server is configured, for example
+if you need to switch from self- signed to Let&rsquo;s Encrypt certificates, you can
+stand up a completely new server (with a different DNS name, certificates, keys
+etc.) and then migrate existing clients to it. Of course there are many other
+reasons why you might want to start with a new server and migrate existing
+clients to it.</p><p>This method allows the orderly migration of Velociraptor clients from
+an old server to a new server by using a remote client upgrade.</p><ol><li><p>Set up the new server. Ideally using the same server version as the old
+server. Preferably also deploy a few clients just to test that they can
+connect and be managed before you start migrating existing clients to it.</p></li><li><p>(Optional) On the new server you may want the same labels, hunts, global
+notebooks, etc. as on the old server. You can restore the latest daily backup
+from the old server to preserve various server configuration items, as
+described in
+<a href=/knowledge_base/tips/backing_up/#restoring-from-daily-backups>Restoring from daily backups</a>
+.</p></li><li><p>Export the appropriate client config from the new server. Copy it to the old
+server. Use the <code>Server.Utils.CreateMSI</code> or
+<code>Server.Utils.CreateLinuxPackages</code> artifacts to create installer packages for
+your target platforms. Use the client config from the new server in the
+artifact parameter <code>CustomConfig</code> so that installer packages will contain the
+config pointing the clients to the new server.</p></li><li><p>Use the old server to push the new installer packages to existing clients
+using the <code>Admin.Client.Upgrade.&lt;platform></code> artifact in a hunt. Alternatively
+you could use an external package management solution to deploy the new
+installer packages.</p><p>The &ldquo;upgrade&rdquo; will replace the old client config with the new one. These
+clients will then connect to the new server. If you&rsquo;ve use the same writeback
+file location in both the old and new configs then the clients will re-enroll
+using their existing client ID (which is stored in the writeback file).</p></li></ol><p>As always, you should test the process on a limited scale before applying it to
+all your clients.</p><footer class=footline></footer></div></div></section><div style=left:-1e3px;overflow:scroll;position:absolute;top:-1e3px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1774052124></script><script src=/js/perfect-scrollbar.min.js?1774052124></script><script src=/js/perfect-scrollbar.jquery.min.js?1774052124></script><script src=/js/jquery.sticky.js?1774052124></script><script src=/js/featherlight.min.js?1774052124></script><script src=/js/highlight.min.js?1774052124></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1774052124></script><script src=/js/learn.js?1774052124></script><script src=/js/hugo-learn.js?1774052124></script></body></html>

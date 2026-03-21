@@ -1,0 +1,87 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.158.0"><meta name=description content="Interrogation is the process of learning general information about the
+endpoint we are monitoring. Each endpoint is automatically
+interrogated when it first joins the Velociraptor server, and the GUI
+shows this general information about each client.
+"><link rel=icon href=/images/favicon.png type=image/png><title>Interrogation - Make the endpoint tell us what it knows! :: Velociraptor - Digging deeper!</title><link href=/css/nucleus.css?1774052123 rel=stylesheet><link href=/css/font-awesome-all.min.css?1774052123 rel=stylesheet><link href=/css/featherlight.min.css?1774052123 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1774052123 rel=stylesheet><link href=/css/auto-complete.css?1774052123 rel=stylesheet><link href=/css/theme.css?1774052123 rel=stylesheet><link href=/css/tabs.css?1774052123 rel=stylesheet><link href=/css/hugo-theme.css?1774052123 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1774052123 rel=stylesheet><link href=/css/dark.css?1774052123 rel=stylesheet><link href=/css/syntax.css?1774052123 rel=stylesheet><link href=/css/light.css?1774052123 rel=stylesheet><link href=/css/hljs.css?1774052123 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774052123 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1774052123></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/blog/html/2018/08/10/interrogation_make_the_endpoint_tell_us_what_it_knows/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><script src=/js/menu-6d49effe.js type=text/javascript></script><div class=highlightable><ul class="sidemenu sidebar hidden"></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>findlink(window.menu,"/blog/html/2018/08/10/interrogation_make_the_endpoint_tell_us_what_it_knows/");let menu=$(".sidemenu.hidden");addToNode(menu,window.menu),menu.find("i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()}),menu.removeClass("hidden"),$(window).on("load",function(){$("li.dd-item.active")[0].scrollIntoView()}),menu.find("li.dd-item.active")[0].scrollIntoView()</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/html/2018/08/10/interrogation_make_the_endpoint_tell_us_what_it_knows/_index.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Interrogation - Make the endpoint tell us what it knows!</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Interrogation - Make the endpoint tell us what it knows!</h1><p>When writing Velociraptor we decided to keep things very simple - we did
+away with a lot of the information gathered during interrogate in favor
+of a much simpler data model.</p><h1 id=data-modelling---the-interrogate-flow>Data Modelling - The Interrogate Flow</h1><p>GRR maintains an elaborate model of client data. For example, GRR
+collects and maintains a list of clients' network interfaces, users,
+user's home directory etc. This information is maintained in elaborate
+protobufs and stored in the database in many rows.</p><p>While some of this information is needed for client searching, GRR
+maintains vastly more information than necessary in this data model. The
+client data model is built during the interrogate phase (A periodic flow
+run on the clients to refresh server side data).</p><p>Maintaining such a complex data model results in a very rigid design.
+For example, if a user wanted to collect more information from clients
+they would need to modify protobufs, update the interrogate flow,
+recompile the code and redeploy. These modifications are also very
+invasive as once code has been heavily modified, there is an overhead of
+keeping these modifications in sync with newer upstream versions.</p><p>Velociraptor also maintains client information via its Interrogate flow.
+However, Velociraptor's interrogate flow simply issues a series of VQL
+queries, and these responses are stored directly in the database with
+minimal interpretation. Indexes are maintained for some information
+which users should be able to search on, but there is no attempt to
+build or maintain a client data model at all (You can see details of the
+model described below in the FileBaseDataStore post).</p><p>The advantage of this approach is that users can simply add extra VQL
+queries to the interrogate phase to collect more tailored site specific
+information. This does not require compiling of any code or redeploying
+the server. The following example illustrates the power of this
+technique.</p><h1 id=customizing-the-interrogate-flow>Customizing the Interrogate flow.</h1><p>Normally Velociraptor collects minimal information from the client upon
+interrogation (i.e. when the client first enrols or when interrogated
+periodically). However it is very easy to customize this collection
+depending on local site requirements. In this section we work through a
+step by step example of extending the Velociraptor interrogate flow.</p><p>Suppose that in our deployment we wanted to check if a machine is able
+to be logged into remotely. For a Linux machine we want to see all
+authorized_keys files on every machine that enrolls. Collecting this
+information allows us to quickly see which machines a compromised user
+account could spread to.</p><p>We know we need to issue a VQL query but we are not 100% sure which one.
+Luckily we can use Velociraptor itself to run the query locally using
+the syntax "velociraptor query &lt;query>".</p><p>Start with a simple glob query to find all authorized_keys files:</p><pre><code class=language-{.sourceCode>SELECT FullPath from glob(globs=&quot;/home/*/.ssh/authorized_keys&quot;)
+</code></pre><p>Suppose we now want to actually grab a copy of all files so we can
+archive them on the server This will keep a record of the authorized
+keys on the server for each Interrogate flow. If we run the flow
+periodically we will end up with a time based evolution of the
+authorized keys files on each host. Pretty handy!</p><pre><code class=language-{.sourceCode>SELECT FullPath,
+   timestamp(epoch=Sys.Mtim.Sec) as Mtime,
+   upload(file=FullPath) as Upload
+FROM glob(globs=&quot;/home/*/.ssh/authorized_keys&quot;)
+</code></pre><p>We can run the query locally using the Velociraptor tool:</p><pre><code class=language-{.sourceCode>mic@localhost:/tmp&gt; velociraptor query &quot;select FullPath, \
+   timestamp(epoch=Sys.Mtim.Sec) as Mtime, \
+   upload(file=FullPath) as Upload \
+   FROM glob(globs=['/home/*/.ssh/authorized_keys'])&quot;
+
+velociraptor: Uploaded home/mic/.ssh/authorized_keys (395 bytes)
+[
+ {
+  &quot;FullPath&quot;: &quot;/home/mic/.ssh/authorized_keys&quot;,
+  &quot;Mtime&quot;: &quot;2018-08-03T18:20:19+10:00&quot;,
+  &quot;Upload&quot;: {
+    &quot;Path&quot;: &quot;home/mic/.ssh/authorized_keys&quot;,
+    &quot;Size&quot;: 395
+ }
+}
+]
+</code></pre><p>Velociraptor's query command enables us to run the query directly on
+the local host and observe the results. When the same query is issued to
+the Velociraptor client, the same result will be generated and sent to
+the server. This enables us to interactively develop and test our
+queries without needing to run a full client/server.</p><p>Note the upload() VQL function which causes the file to be uploaded to
+the server. (When run locally the file will be copied to the upload
+directory as can be seen by the upload confirmation message), but when
+run within the Velociraptor client, the file will be uploaded to the
+server and stored within the flow.</p><p>We can now add the query to all Interrogate flows that will be run from
+now on. We simply add it to the configuration file under the
+Interrogate.additional_queries key:</p><pre><code class=language-{.sourceCode>Interrogate.additional_queries:
+ Query:
+   - Name: Authorized Keys
+     VQL: &gt;
+       select FullPath, timestamp(epoch=Mtime.Sec) as Mtime,
+       upload(file=FullPath) as Upload
+       from glob(globs='/home/*/.ssh/authorized_keys')
+</code></pre><p>From now on the additional query will be recorded for all clients. The
+GUI shows it in the client information page:</p><p><figure id=f508b5059efcee6e9724be365a2a9c7f><div data-featherlight=#f508b5059efcee6e9724be365a2a9c7f class=figure><img src=image6.png alt></div><figcaption><a class=image-link href=image6.png><i class="fa fa-download"></i></a></figcaption></figure></p><footer class=footline></footer></div></div></section><div style=left:-1e3px;overflow:scroll;position:absolute;top:-1e3px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1774052123></script><script src=/js/perfect-scrollbar.min.js?1774052123></script><script src=/js/perfect-scrollbar.jquery.min.js?1774052123></script><script src=/js/jquery.sticky.js?1774052123></script><script src=/js/featherlight.min.js?1774052123></script><script src=/js/highlight.min.js?1774052123></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1774052123></script><script src=/js/learn.js?1774052123></script><script src=/js/hugo-learn.js?1774052123></script></body></html>

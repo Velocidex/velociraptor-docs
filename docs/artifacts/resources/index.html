@@ -1,0 +1,85 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.158.0"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Limiting resource usage :: Velociraptor - Digging deeper!</title><link href=/css/nucleus.css?1774052123 rel=stylesheet><link href=/css/font-awesome-all.min.css?1774052123 rel=stylesheet><link href=/css/featherlight.min.css?1774052123 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1774052123 rel=stylesheet><link href=/css/auto-complete.css?1774052123 rel=stylesheet><link href=/css/theme.css?1774052123 rel=stylesheet><link href=/css/tabs.css?1774052123 rel=stylesheet><link href=/css/hugo-theme.css?1774052123 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1774052123 rel=stylesheet><link href=/css/dark.css?1774052123 rel=stylesheet><link href=/css/syntax.css?1774052123 rel=stylesheet><link href=/css/light.css?1774052123 rel=stylesheet><link href=/css/hljs.css?1774052123 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774052123 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1774052123></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/docs/artifacts/resources/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><script src=/js/menu-6d49effe.js type=text/javascript></script><div class=highlightable><ul class="sidemenu sidebar hidden"></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>findlink(window.menu,"/docs/artifacts/resources/");let menu=$(".sidemenu.hidden");addToNode(menu,window.menu),menu.find("i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()}),menu.removeClass("hidden"),$(window).on("load",function(){$("li.dd-item.active")[0].scrollIntoView()}),menu.find("li.dd-item.active")[0].scrollIntoView()</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/artifacts/resources/_index.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Limiting resource usage</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents><ul><li><a href=#time-limits>Time Limits</a></li><li><a href=#resource-limits>Resource Limits</a></li><li><a href=#data-limits>Data Limits</a></li><li><a href=#limiting-memory-use>Limiting Memory Use</a></li></ul></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Limiting resource usage</h1><p>Velociraptor often runs on performance sensitive endpoints, like
+servers and laptops, as well as low resource machines like cloud
+virtual machines. It is critical to ensure that Velociraptor does not
+generate undue load on the endpoint, leading to performance
+degradation.</p><p>Resource limits can be placed on queries and collections. These limits
+are usually set in the artifact collection or hunt creation workflows
+in the GUI. However it is possible to predefine these limits in the
+artifact definitions themselves using the <code>resources</code> key. If resource
+limits are specified in the artifact then the user still has the
+opportunity to change these as usual in the GUI workflows.</p><p>Resource limits are essential for controlling the load on endpoints
+and preventing collections from negatively impacting users or network
+infrastructure. They protect the endpoint.</p><p>They act as a &ldquo;fail safe&rdquo; mechanism to prevent accidents, such as
+inadvertently collecting massive quantities of data or using excessive
+resources.</p><p>Setting resource limits can ensure that runaway queries or collections
+that take too long are cancelled before they cause too many problems.</p><p>Resource control is specific to an artifact and what it does. For
+example, CPU limiting is useful for artifacts doing heavy processing
+like Yara scans but not necessarily for others.</p><p>Limits are set using the <code>resources</code> key in the artifact definition.</p><p>resources:</p><ul><li><code>timeout</code></li><li><code>ops_per_second</code></li><li><code>cpu_limit</code></li><li><code>iops_limit</code></li><li><code>max_rows</code></li><li><code>max_upload_bytes</code></li><li><code>max_batch_wait</code></li><li><code>max_batch_rows</code></li><li><code>max_batch_rows_buffer</code></li></ul><p>If you define <code>resources</code> in your artifact, you only need to specify
+the subkeys relevant to the resources you want to limit. Default
+values will apply to any subkeys not specified, and as mentioned
+above, users still have the opportunity to override these limits in
+the GUI before collecting the artifact.</p><p><strong>Example:</strong></p><pre><code class=language-yaml>resources:
+  timeout: 1800
+  cpu_limit: 50
+</code></pre><p><figure id=706e6d2d3003fb264b9a3f34c76f9913><div data-featherlight=#706e6d2d3003fb264b9a3f34c76f9913 class=figure><img src=collection_CPU50.png alt="An example of a 50% CPU limit being applied"></div><figcaption><a class=image-link href=collection_CPU50.png><i class="fa fa-download"></i></a>
+An example of a 50% CPU limit being applied</figcaption></figure></p><h2 id=time-limits>Time Limits</h2><p>There are two timeouts. The first is for the overall collection and
+for offline collections there is no timeout by default. There is also
+a progress timeout which aims to catch cases where a query is not
+making progress in a reasonable time.</p><p><code>Timeout / Max Execution Time</code>: This sets a maximum duration for an
+artifact collection. The default timeout is 600 seconds. If the
+timeout is reached, the collection is timed out and cancelled.</p><ul><li><p><code>timeout</code> (Query Timeout): A general timeout parameter can be set
+for a query. This timeout applies to the entire query and cancels
+the collection when exceeded. Timed-out flows might need to be
+re-run with increased timeouts Setting a timeout is considered a
+way to make a query safe enough. Queries are typically limited to
+10 minutes (600 seconds).</p></li><li><p><code>progress_timeout</code> (Max Idle Time in Seconds): This parameter, set
+in the resources section, terminates a query if no progress (rows
+emitted) is detected within the specified time. By default, it is
+not set (which means there is no limit). In the context of offline
+collectors, this kills the specific artifact that is not making
+progress, allowing the collection to move on. This parameter can
+also be provided to the <code>query()</code> plugin for more fine-grained
+control. This limit cannot currently be specified in an artifact&rsquo;s
+<code>resources</code> section.</p></li><li><p>Notebook Query Timeout: The timeout for notebook queries is 10 minutes, by
+default. Normally this should be more than sufficient for any reasonable
+notebook query, but in rare cases if you need to set this to a longer
+interval you can do so via
+<a href=/docs/deployment/references/#defaults.notebook_cell_timeout_min>a config setting</a>
+(which requires a server restart).</p></li></ul><h2 id=resource-limits>Resource Limits</h2><p>Resource limits can be applied to any artifacts/collections, although
+the effectiveness of these limits depends on what the artifact
+actually does. In particular CPU and IO limits are not enforceable
+when running external applications via execve().</p><ul><li><p><strong>CPU Limit</strong>: This limits how much CPU the Velociraptor agent can
+use on average.</p><ul><li><p>Setting a CPU limit pauses the query when the average CPU usage exceeds the
+limit, and it resumes when the average drops below the threshold.</p></li><li><p>CPU limiting works in all queries, but the underlying plugin needs to
+support pausing.</p></li><li><p>CPU limiting can cause queries to take longer or even not complete if the
+limit is set too low, since a limited query will stop until the CPU load for
+the entire process drops below the threshold, other queries which are not
+limited may preempt it.</p></li><li><p>Setting a global CPU limit is generally not recommended; Only artifacts
+which are known to impose a high CPU load should have throttling enabled.</p></li></ul></li><li><p><strong>IOPS Limit</strong>: The iops_limit parameter limits the I/O per
+second. The mechanism works by throttling the client based on an IO
+budget, not necessarily tied to real CPU load or bandwidth, and is
+most useful for large Yara scans. It can also be set on the
+<code>query()</code> plugin.</p></li></ul><p><strong><i class="fas fa-warning"></i> CPU and IOPS limits do not apply to external tools invoked by an
+artifact since Velociraptor has no control over the resources they
+consume.</strong></p><h2 id=data-limits>Data Limits</h2><ul><li><p><strong>Max Rows</strong>: This limit restricts the number of rows returned by a
+collection. This limit is set per collection and works by
+cancelling the entire collection once the limit is reached. Server
+artifacts currently don&rsquo;t enforce a row limit.</p></li><li><p><strong>Max Upload Bytes</strong>: This limits the total amount of data
+transferred back from the client as an &ldquo;Upload&rdquo; (i.e. bulk
+files). This limit is set per collection and cancels the entire
+collection when reached. This is a crucial limit to prevent
+accidentally collecting massive amounts of data.</p></li></ul><h2 id=limiting-memory-use>Limiting Memory Use</h2><p>It is not possible to limit memory usage via artifacts. However there
+is a <a href=/docs/deployment/references/#Client.max_memory_hard_limit>setting</a>
+that
+implements a hard limit for clients. If the memory usage exceeds the
+limit the client will hard exit. If it is installed as a Windows
+service then the service recovery option should restart the client
+automatically.</p><p>The server monitors memory usage and will cancel a query if it reaches
+a high limit. Memory is controlled via a nanny for the entire process,
+with hard and soft limits. If memory is exceeded, it kills the query.</p><footer class=footline></footer></div></div></section><div style=left:-1e3px;overflow:scroll;position:absolute;top:-1e3px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1774052123></script><script src=/js/perfect-scrollbar.min.js?1774052123></script><script src=/js/perfect-scrollbar.jquery.min.js?1774052123></script><script src=/js/jquery.sticky.js?1774052123></script><script src=/js/featherlight.min.js?1774052123></script><script src=/js/highlight.min.js?1774052123></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1774052123></script><script src=/js/learn.js?1774052123></script><script src=/js/hugo-learn.js?1774052123></script></body></html>

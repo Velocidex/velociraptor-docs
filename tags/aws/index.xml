@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>AWS on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/aws/</link><description>Recent content in AWS on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Fri, 14 Nov 2025 03:15:34 +0200</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/aws/index.xml" rel="self" type="application/rss+xml"/><item><title>SFTP in AWS</title><link>https://docs.velociraptor.app/blog/2021/2021-12-11-sftp-in-aws/</link><pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/blog/2021/2021-12-11-sftp-in-aws/</guid><description>&lt;p&gt;Many people use Velociraptor&amp;rsquo;s &lt;a href="https://docs.velociraptor.app/docs/deployment/offline_collections/" &gt;offline collector&lt;/a&gt;
+ feature to collect any artifacts without
+having the Velociraptor client actually installed on the
+endpoint. While the offline collector feature is great to
+interactively triage a machine, the produced collection zip file is
+normally quite large and unwieldy to transfer.&lt;/p&gt;
+&lt;p&gt;To help with this, Velociraptor offers the option to send the file
+back to the cloud via a number of mechanisms, including upload to S3
+buckets directly, WebDAV upload and using Secure FTP (sftp).&lt;/p&gt;
+&lt;p&gt;One of the challenges with automatic uploading to the cloud is
+securely configuring the upload mechanism. Since the credentials for
+any upload service are embedded inside the collector, it is important
+to ensure that these credentials have minimal additional permissions.&lt;/p&gt;
+&lt;p&gt;For example, when using a cloud bucket to collect triage data from
+endpoints, the bucket policy must be configured to allow a service
+account full write access. However, using these credentials should not
+allow anyone to list existing bucket resources, or to download
+critical triage data from other hosts!&lt;/p&gt;
+&lt;p&gt;I have &lt;a href="https://docs.velociraptor.app/blog/2019/2019-10-08_triage-with-velociraptor-pt-3-d6f63215f579/" &gt;previously&lt;/a&gt;
+ described how to use Google cloud&amp;rsquo;s service accounts to upload to
+a GCP bucket securely.&lt;/p&gt;
+&lt;p&gt;In this post I describe how to set up Amazon&amp;rsquo;s SFTP transfer service
+to securely allow the Velociraptor collector to upload files without
+granting the collector permission to download the files again, delete
+them or discover other uploads in the bucket.&lt;/p&gt;
+&lt;p&gt;I would like to thank Simon Irwin from Rapid7 for his assistance and
+guidance with AWS - I am certainly not an expert and needed a lot of
+help figuring this process out. This is one of the reasons I wanted to
+document the process in order to save others time.&lt;/p&gt;
+&lt;h2 id="overview"&gt;Overview&lt;/h2&gt;
+&lt;p&gt;The main AWS service I will use is the &lt;a href="https://docs.aws.amazon.com/transfer/latest/userguide/what-is-aws-transfer-family.html" target="_blank" &gt;AWS Transfer Family&lt;/a&gt;
+ documented extensively on the AWS documentation site.&lt;/p&gt;
+&lt;p&gt;In a nutshell, the service requires creating an sftp transfer server
+backed by an S3 bucket. The SFTP server does not use real usernames
+for authentication, but rather throwaway usernames I create just for
+that service.&lt;/p&gt;
+&lt;p&gt;Each of these throwaway sftp users are given an SSH key pair (public
+and private keys) which they use to authenticate with the service. The
+private key will be embedded in the Velociraptor collector and allow
+the collector to upload to the service. However, by setting up
+restrictive policies I can limit the permissions of the sftp user.&lt;/p&gt;
+&lt;h2 id="creating-an-aws-bucket"&gt;Creating an AWS bucket&lt;/h2&gt;
+&lt;p&gt;I will begin by creating an S3 bucket called &lt;code&gt;velociraptor-test&lt;/code&gt; that
+will contain all the collector files uploaded from the endpoints.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="4c3d61ba8d60da3eb245ff2ecad7bc67"&gt;
+ &lt;div data-featherlight="#4c3d61ba8d60da3eb245ff2ecad7bc67" class="figure"&gt;
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-12-11-sftp-in-aws/creating_S3_bucket.png" alt="Creating an S3 bucket"&gt;
+ &lt;/div&gt;
+ &lt;figcaption&gt;
+ &lt;a class="image-link" href="creating_S3_bucket.png"&gt;&lt;i class="fa fa-download"&gt;&lt;/i&gt;&lt;/a&gt;
+ Creating an S3 bucket
+ &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+
+
+
+&lt;/p&gt;
+&lt;h2 id="aws-policies"&gt;AWS Policies&lt;/h2&gt;
+&lt;p&gt;AWS controls access via roles and policies. For this configuration I
+will need to create two policies:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;The first policy I will call &lt;code&gt;velociraptor-upload-policy&lt;/code&gt; grants
+full access to the AWS transfer service with full use of the
+provided s3 bucket.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The second policy I will call &lt;code&gt;velociraptor-sftp-upload-only&lt;/code&gt;
+policy will apply to the sftp user and only grant upload
+permissions.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="velociraptor-upload-policy"&gt;velociraptor-upload-policy&lt;/h3&gt;
+&lt;p&gt;This policy grants full access to the new bucket I created earlier.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-json"&gt;
+{
+ &amp;quot;Version&amp;quot;: &amp;quot;2012-10-17&amp;quot;,
+ &amp;quot;Statement&amp;quot;: [
+ {
+ &amp;quot;Effect&amp;quot;: &amp;quot;Allow&amp;quot;,
+ &amp;quot;Action&amp;quot;: [
+ &amp;quot;s3:PutObject&amp;quot;,
+ &amp;quot;s3:GetObject&amp;quot;,
+ &amp;quot;s3:ListBucket&amp;quot;,
+ &amp;quot;s3:DeleteObject&amp;quot;,
+ &amp;quot;s3:PutObjectAcl&amp;quot;
+ ],
+ &amp;quot;Resource&amp;quot;: [
+ &amp;quot;arn:aws:s3:::velociraptor-test&amp;quot;,
+ &amp;quot;arn:aws:s3:::velociraptor-test/*&amp;quot;
+ ]
+ }
+ ]
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id="velociraptor-sftp-upload-only"&gt;velociraptor-sftp-upload-only&lt;/h3&gt;
+&lt;p&gt;This policy only grants upload rights&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-json"&gt;{
+&amp;quot;Version&amp;quot;: &amp;quot;2012-10-17&amp;quot;,
+&amp;quot;Statement&amp;quot;: [
+ {
+ &amp;quot;Sid&amp;quot;: &amp;quot;AllowListingOfUserFolder&amp;quot;,
+ &amp;quot;Action&amp;quot;: [
+ &amp;quot;s3:ListBucket&amp;quot;
+ ],
+ &amp;quot;Effect&amp;quot;: &amp;quot;Allow&amp;quot;,
+ &amp;quot;Resource&amp;quot;: [
+ &amp;quot;arn:aws:s3:::${transfer:HomeBucket}&amp;quot;
+ ],
+ &amp;quot;Condition&amp;quot;: {
+ &amp;quot;StringLike&amp;quot;: {
+ &amp;quot;s3:prefix&amp;quot;: [
+ &amp;quot;${transfer:HomeFolder}/*&amp;quot;,
+ &amp;quot;${transfer:HomeFolder}&amp;quot;
+ ]
+ }
+ }
+ },
+ {
+ &amp;quot;Sid&amp;quot;: &amp;quot;HomeDirObjectAccess&amp;quot;,
+ &amp;quot;Effect&amp;quot;: &amp;quot;Allow&amp;quot;,
+ &amp;quot;Action&amp;quot;: [
+ &amp;quot;s3:PutObject&amp;quot;,
+ &amp;quot;s3:PutObjectACL&amp;quot;
+ ],
+ &amp;quot;Resource&amp;quot;: &amp;quot;arn:aws:s3:::${transfer:HomeDirectory}*&amp;quot;
+ }
+]
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;div class="mynotices note"&gt;
+ &lt;div heading="note"&gt;&lt;p&gt;I found that I needed to give the &lt;code&gt;s3:ListBucket&lt;/code&gt; permission in order
+to upload files - this seems a bit strange to me but I could not get
+upload to work without this permission. Despite having this
+permission, it is still not possible to actually list the files in the
+bucket anyway.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;h2 id="aws-roles"&gt;AWS Roles&lt;/h2&gt;
+&lt;p&gt;An AWS role is a set of policies that applies to a particular
+service. In this case I will create a new role that allows uploading
+to the s3 bucket I created. Search for the &lt;a href="https://console.aws.amazon.com/iamv2/home#/roles" target="_blank" &gt;IAM
+screen&lt;/a&gt;
+ in the AWS
+console and select &amp;ldquo;Create a new role&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;In the first step, the UI asks us to associate the role with a
+service, Select the &lt;code&gt;Transfer&lt;/code&gt; as the service.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="4c31157c085282232ab4a87bc754a87b"&gt;
+ &lt;div data-featherlight="#4c31157c085282232ab4a87bc754a87b" class="figure"&gt;
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-12-11-sftp-in-aws/create_role_1.png" alt="Creating a new role"&gt;
+ &lt;/div&gt;
+ &lt;figcaption&gt;
+ &lt;a class="image-link" href="create_role_1.png"&gt;&lt;i class="fa fa-download"&gt;&lt;/i&gt;&lt;/a&gt;
+ Creating a new role
+ &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+
+
+
+&lt;/p&gt;
+&lt;p&gt;Next associate the role with the &lt;code&gt;velociraptor-upload-policy&lt;/code&gt;
+policy. I will name the role &lt;code&gt;velociraptor-upload-role&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="eafcb84dc40fa490ad73642145b6c33e"&gt;
+ &lt;div data-featherlight="#eafcb84dc40fa490ad73642145b6c33e" class="figure"&gt;
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-12-11-sftp-in-aws/create_role_2.png" alt="Creating a new role - associating with policy"&gt;
+ &lt;/div&gt;
+ &lt;figcaption&gt;
+ &lt;a class="image-link" href="create_role_2.png"&gt;&lt;i class="fa fa-download"&gt;&lt;/i&gt;&lt;/a&gt;
+ Creating a new role - associating with policy
+ &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+
+
+
+&lt;/p&gt;
+&lt;h2 id="creating-the-sftp-server"&gt;Creating the SFTP server&lt;/h2&gt;
+&lt;p&gt;Now I need to create an sftp server in the Transfer service. Search
+for the &lt;a href="https://us-east-2.console.aws.amazon.com/transfer/home" target="_blank" &gt;AWS Transfer
+Family&lt;/a&gt;
+ screen
+and select &amp;ldquo;Create Server&amp;rdquo;. I will choose this to be an SFTP server.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="111ed8b76270da1c8c6e733f41c9d2d2"&gt;
+ &lt;div data-featherlight="#111ed8b76270da1c8c6e733f41c9d2d2" class="figure"&gt;
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-12-11-sftp-in-aws/creating_sftp_server.png" alt="Creating the sftp server"&gt;
+ &lt;/div&gt;
+ &lt;figcaption&gt;
+ &lt;a class="image-link" href="creating_sftp_server.png"&gt;&lt;i class="fa fa-download"&gt;&lt;/i&gt;&lt;/a&gt;
+ Creating the sftp server
+ &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+
+
+
+&lt;/p&gt;
+&lt;p&gt;The identity provider is &amp;ldquo;Service managed&amp;rdquo; - this means I will manage
+the sftp users with throwaway ssh keys.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="949eaaa113828affc723861e42b0eca3"&gt;
+ &lt;div data-featherlight="#949eaaa113828affc723861e42b0eca3" class="figure"&gt;
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-12-11-sftp-in-aws/sftp_server_2.png" alt="Creating the sftp server - Identity Providers"&gt;
+ &lt;/div&gt;
+ &lt;figcaption&gt;
+ &lt;a class="image-link" href="sftp_server_2.png"&gt;&lt;i class="fa fa-download"&gt;&lt;/i&gt;&lt;/a&gt;
+ Creating the sftp server - Identity Providers
+ &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+
+
+
+&lt;/p&gt;
+&lt;p&gt;Finally I will choose S3 to be our storage backend&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="393005be81fd3b34853161bdd986a64d"&gt;
+ &lt;div data-featherlight="#393005be81fd3b34853161bdd986a64d" class="figure"&gt;
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-12-11-sftp-in-aws/sftp_server_3.png" alt="Creating the sftp server - Backend storage"&gt;
+ &lt;/div&gt;
+ &lt;figcaption&gt;
+ &lt;a class="image-link" href="sftp_server_3.png"&gt;&lt;i class="fa fa-download"&gt;&lt;/i&gt;&lt;/a&gt;
+ Creating the sftp server - Backend storage
+ &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+
+
+
+&lt;/p&gt;
+&lt;p&gt;Once the server is created, the AWS console will remind us that no
+users are added to the service yet. This will be our next task&amp;hellip;&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="a3d6bf736f1570c77a159c956ef0b213"&gt;
+ &lt;div data-featherlight="#a3d6bf736f1570c77a159c956ef0b213" class="figure"&gt;
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-12-11-sftp-in-aws/create_sftp_server_final.png" alt="Creating the sftp server - Success!"&gt;
+ &lt;/div&gt;
+ &lt;figcaption&gt;
+ &lt;a class="image-link" href="create_sftp_server_final.png"&gt;&lt;i class="fa fa-download"&gt;&lt;/i&gt;&lt;/a&gt;
+ Creating the sftp server - Success!
+ &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+
+
+
+&lt;/p&gt;
+&lt;h2 id="adding-sftp-users-to-the-sftp-server"&gt;Adding SFTP users to the sftp server.&lt;/h2&gt;
+&lt;p&gt;Our ultimate goal is to create throw-away sftp users which can
+authenticate to the service with an SSH key pair and upload triage
+files.&lt;/p&gt;
+&lt;p&gt;I will now create an SSH key pair on my machine - this will contain a
+private key and a public key (Note: do not protect these keys with a
+passphrase):&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="3acece6ca5509bfab5be835f19e6d31f"&gt;
+ &lt;div data-featherlight="#3acece6ca5509bfab5be835f19e6d31f" class="figure"&gt;
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-12-11-sftp-in-aws/generating_keys.png" alt="Generating SSH key pair for the new sftp user"&gt;
+ &lt;/div&gt;
+ &lt;figcaption&gt;
+ &lt;a class="image-link" href="generating_keys.png"&gt;&lt;i class="fa fa-download"&gt;&lt;/i&gt;&lt;/a&gt;
+ Generating SSH key pair for the new sftp user
+ &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+
+
+
+&lt;/p&gt;
+&lt;p&gt;In the AWS console I select the new server and click on &amp;ldquo;Add user&amp;rdquo; to
+add a new user.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="72f907f39190f980e4823dc6fda8fe71"&gt;
+ &lt;div data-featherlight="#72f907f39190f980e4823dc6fda8fe71" class="figure"&gt;
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-12-11-sftp-in-aws/adding_user.png" alt="Adding a new SFTP user"&gt;
+ &lt;/div&gt;
+ &lt;figcaption&gt;
+ &lt;a class="image-link" href="adding_user.png"&gt;&lt;i class="fa fa-download"&gt;&lt;/i&gt;&lt;/a&gt;
+ Adding a new SFTP user
+ &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+
+
+
+&lt;/p&gt;
+&lt;p&gt;I will add the &lt;code&gt;velociraptor-upload-role&lt;/code&gt; role I created earlier to
+this sftp user, allowing the user to interact with the s3 bucket.&lt;/p&gt;
+&lt;p&gt;I will now also add a &lt;code&gt;scope down policy&lt;/code&gt; to further restrict the
+access this user has to upload only by selecting the
+&lt;code&gt;velociraptor-sftp-upload-only&lt;/code&gt; policy.&lt;/p&gt;
+&lt;p&gt;Next I will add the user&amp;rsquo;s public key to the AWS console&amp;rsquo;s
+configuration by simply pasting the public key I generated earlier.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="a5088a5322a2a7430ff64012c6935661"&gt;
+ &lt;div data-featherlight="#a5088a5322a2a7430ff64012c6935661" class="figure"&gt;
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-12-11-sftp-in-aws/adding_public_key_to_user.png" alt="Adding a new SFTP user’s public keys"&gt;
+ &lt;/div&gt;
+ &lt;figcaption&gt;
+ &lt;a class="image-link" href="adding_public_key_to_user.png"&gt;&lt;i class="fa fa-download"&gt;&lt;/i&gt;&lt;/a&gt;
+ Adding a new SFTP user’s public keys
+ &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+
+
+
+&lt;/p&gt;
+&lt;p&gt;Finally I create the new user with the name &lt;code&gt;velouploader&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class="mynotices tip"&gt;
+ &lt;div heading=" Creating users with different access "&gt;&lt;p&gt;In our example I created a user with an upload only policy that could
+not read any of the files in the bucket. However, you can also create
+a user with full access to the bucket by removing the scope down policy
+or apply a different policy per user.&lt;/p&gt;
+&lt;p&gt;This is convenient to allow the investigator the ability to download
+the collected files by creating a separate sftp user for them without
+a scope-down policy.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;h2 id="testing-access-controls"&gt;Testing access controls&lt;/h2&gt;
+&lt;p&gt;It is imperative to ensure that access controls are working the way
+they are supposed to! Therefore I will now test my setup using the
+built in sftp client in my operating system (I can find the endpoint&amp;rsquo;s
+public DNS name using the AWS console).&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-sh"&gt;sftp -i sftpuser.key velouploader@s-9d35031a046643d88.server.transfer.us-east-2.amazonaws.com
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="fc19bce12b71716d5785848c6dfe1071"&gt;
+ &lt;div data-featherlight="#fc19bce12b71716d5785848c6dfe1071" class="figure"&gt;
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-12-11-sftp-in-aws/testing_permissions.png" alt="Testing ACLs"&gt;
+ &lt;/div&gt;
+ &lt;figcaption&gt;
+ &lt;a class="image-link" href="testing_permissions.png"&gt;&lt;i class="fa fa-download"&gt;&lt;/i&gt;&lt;/a&gt;
+ Testing ACLs
+ &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+
+
+
+&lt;/p&gt;
+&lt;p&gt;At first I upload a small file and confirm it works as expected. Then
+I try to list the directory, and read the file out again - both
+attempts fail due to the scope down policy.&lt;/p&gt;
+&lt;p&gt;Finally attempting to overwrite the old file by re-uploading the same
+file again, also fails.&lt;/p&gt;
+&lt;h2 id="creating-an-sftp-offline-collector"&gt;Creating an SFTP Offline Collector&lt;/h2&gt;
+&lt;p&gt;I am now ready to create our offline collectors. I will login to
+Velociraptor&amp;rsquo;s web UI and navigate to &lt;code&gt;Server Artifacts&lt;/code&gt; screen. Once
+there I click the &lt;code&gt;Build Offline Collector&lt;/code&gt; button. For this example,
+I will create a collector using the &lt;code&gt;Windows.KapeFiles.Targets&lt;/code&gt;
+artifact and just collect the &lt;code&gt;$MFT&lt;/code&gt; file.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="03a6f626c7dc9257d0f6f5dc10f45b05"&gt;
+ &lt;div data-featherlight="#03a6f626c7dc9257d0f6f5dc10f45b05" class="figure"&gt;
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-12-11-sftp-in-aws/kapefiles_1.png" alt="Creating an offline collector"&gt;
+ &lt;/div&gt;
+ &lt;figcaption&gt;
+ &lt;a class="image-link" href="kapefiles_1.png"&gt;&lt;i class="fa fa-download"&gt;&lt;/i&gt;&lt;/a&gt;
+ Creating an offline collector
+ &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+
+
+
+&lt;/p&gt;
+&lt;p&gt;Now I will configure the collector to use the SFTP upload method,
+giving the username I created earlier and pasting the private key I
+generated.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="d89d188c2b1292cbce1be02ebad522a4"&gt;
+ &lt;div data-featherlight="#d89d188c2b1292cbce1be02ebad522a4" class="figure"&gt;
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-12-11-sftp-in-aws/kapefiles_2.png" alt="Configuring the offline collector for SFTP uploads"&gt;
+ &lt;/div&gt;
+ &lt;figcaption&gt;
+ &lt;a class="image-link" href="kapefiles_2.png"&gt;&lt;i class="fa fa-download"&gt;&lt;/i&gt;&lt;/a&gt;
+ Configuring the offline collector for SFTP uploads
+ &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+
+
+
+&lt;/p&gt;
+&lt;p&gt;I selected the collection method to SFTP which changes the form to
+allow for more parameters to be specified:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The Private key is the file I generated earlier with &lt;code&gt;ssh-keygen&lt;/code&gt; - I will just paste the file content into this form.&lt;/li&gt;
+&lt;li&gt;The user is the sftp user that Velociraptor will log in as.&lt;/li&gt;
+&lt;li&gt;The Endpoint is the DNS name of the sftp server I created followed
+by a colon and the port number (usually port 22).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Once the collector is created I am able to run it on a test system.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="10c8abe76dcf953a35457450239ad6be"&gt;
+ &lt;div data-featherlight="#10c8abe76dcf953a35457450239ad6be" class="figure"&gt;
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-12-11-sftp-in-aws/kapefiles_3.png" alt="Running the collector to collect the MFT"&gt;
+ &lt;/div&gt;
+ &lt;figcaption&gt;
+ &lt;a class="image-link" href="kapefiles_3.png"&gt;&lt;i class="fa fa-download"&gt;&lt;/i&gt;&lt;/a&gt;
+ Running the collector to collect the MFT
+ &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+
+
+
+&lt;/p&gt;
+&lt;p&gt;As can be seen the upload is mostly fine except there are some
+features that are not possible due to the restricted
+permissions. Although, the log file shows a failure the file did
+successfully upload as can be confirmed in the bucket view.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="812d03654f322e6b1694781d6d413067"&gt;
+ &lt;div data-featherlight="#812d03654f322e6b1694781d6d413067" class="figure"&gt;
+ &lt;img src="https://docs.velociraptor.app/blog/2021/2021-12-11-sftp-in-aws/success.png" alt="Verifying files uploaded in the S3 bucket"&gt;
+ &lt;/div&gt;
+ &lt;figcaption&gt;
+ &lt;a class="image-link" href="success.png"&gt;&lt;i class="fa fa-download"&gt;&lt;/i&gt;&lt;/a&gt;
+ Verifying files uploaded in the S3 bucket
+ &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+
+
+
+&lt;/p&gt;
+&lt;h1 id="conclusions"&gt;Conclusions&lt;/h1&gt;
+&lt;p&gt;In this post I examined how to configure a secure SFTP upload service
+in AWS that can safely receive triage data from the Velociraptor
+offline collector.&lt;/p&gt;
+&lt;p&gt;The sftp uploading functionality is actually implemented by the
+&lt;code&gt;upload_sftp()&lt;/code&gt; plugin &lt;a href="https://docs.velociraptor.app/vql_reference/other/upload_sftp/" &gt;documented here&lt;/a&gt;
+. This means that you can use
+this functionality in any VQL query at all - either on the client side
+or on the server side.&lt;/p&gt;
+&lt;p&gt;For example it is possible to automatically back up server side hunts
+or collections to the SFTP bucket.&lt;/p&gt;</description></item></channel></rss>

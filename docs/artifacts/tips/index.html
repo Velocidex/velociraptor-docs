@@ -1,0 +1,93 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.158.0"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Artifact Writing Tips :: Velociraptor - Digging deeper!</title><link href=/css/nucleus.css?1774052123 rel=stylesheet><link href=/css/font-awesome-all.min.css?1774052123 rel=stylesheet><link href=/css/featherlight.min.css?1774052123 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1774052123 rel=stylesheet><link href=/css/auto-complete.css?1774052123 rel=stylesheet><link href=/css/theme.css?1774052123 rel=stylesheet><link href=/css/tabs.css?1774052123 rel=stylesheet><link href=/css/hugo-theme.css?1774052123 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1774052123 rel=stylesheet><link href=/css/dark.css?1774052123 rel=stylesheet><link href=/css/syntax.css?1774052123 rel=stylesheet><link href=/css/light.css?1774052123 rel=stylesheet><link href=/css/hljs.css?1774052123 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774052123 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1774052123></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/docs/artifacts/tips/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><script src=/js/menu-6d49effe.js type=text/javascript></script><div class=highlightable><ul class="sidemenu sidebar hidden"></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>findlink(window.menu,"/docs/artifacts/tips/");let menu=$(".sidemenu.hidden");addToNode(menu,window.menu),menu.find("i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()}),menu.removeClass("hidden"),$(window).on("load",function(){$("li.dd-item.active")[0].scrollIntoView()}),menu.find("li.dd-item.active")[0].scrollIntoView()</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/artifacts/tips/_index.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Artifact Writing Tips</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents><ul><li><a href=#development-and-testing-workflow>Development and testing workflow</a></li><li><a href=#tips-for-creating-better-artifacts>Tips for creating better artifacts</a><ul><li><a href=#descriptions>Descriptions</a></li><li><a href=#references>References</a></li><li><a href=#author>Author</a></li><li><a href=#parameters>Parameters</a></li><li><a href=#sources>Sources</a></li></ul></li></ul></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Artifact Writing Tips</h1><h2 id=development-and-testing-workflow>Development and testing workflow</h2><p>Typically we have a new idea for a new data collection or anomaly detection. The
+following is a suggested workflow for creating and testing the VQL to implement
+your idea, and then packaging it into an reusable artifact.</p><p><strong>1. Set up an artifact development environment</strong></p><ul><li><p>The first step is to develop the VQL that will achieve your goal by writing
+the VQL in a <a href=/docs/notebooks/>notebook</a>
+on the target
+operating system itself. You can instantly set up such a VQL development
+environment by running <code>velociraptor gui</code> on the target operating system.
+This will start a <a href=/docs/deployment/#instant-velociraptor>self-contained Velociraptor server</a>
+which includes a single built-in client.</p></li><li><p>Velociraptor global notebooks are actually a special kind of artifact where
+each cell corresponds to an artifact source. You can create a
+<a href>notebook template</a>
+that defines your parameters, tools, imports and exports - almost anything
+you would need in a normal artifact. Notebooks also support file &ldquo;uploads&rdquo;
+if you need to use that function within your VQL.</p></li></ul><p><strong>2. Develop your VQL</strong></p><ul><li><p>While developing the VQL, use VQL&rsquo;s <code>log()</code> function liberally to provide
+helpful debugging info.</p></li><li><p>Use the <code>typeof()</code> function to learn about the data types for values returned
+by your queries.</p></li><li><p>You can also add the <code>EXPLAIN</code> directive to your <code>SELECT</code> statements to
+produce detailed information in the VQL log.</p></li><li><p>You can remove the above from your final artifact, but it&rsquo;s probably best to
+keep them in your VQL until <em>after</em> you have moved the VQL into your final
+(non-notebook) artifact and successfully tested it.</p></li></ul><p><strong>3. Copy the VQL to your final artifact</strong></p><ul><li><p>You can also create your final artifact in the same self-contained test
+environment. Just copy the VQL from your notebook cell into a source in your
+artifact.</p></li><li><p>When you&rsquo;re ready to test your artifact you can run a collection test against
+the local built-in client (if it&rsquo;s a client artifact) or on the server itself
+(if you&rsquo;re developing a server artifact).</p></li></ul><p><strong>4. Move your artifact to your deployed Velociraptor server and test</strong></p><ul><li>It&rsquo;s always crucial to perform limited testing of new artifacts before
+deploying them in a fleet-wide hunt. Always test your artifact by collecting
+it against a small number of clients. If your production environment has a
+diverse set of operating systems or OS versions then try to ensure that your
+test targets are sufficiently representative of your endpoint environment.</li></ul><h2 id=tips-for-creating-better-artifacts>Tips for creating better artifacts</h2><p>While writing good VQL queries is the main challenge when creating artifacts,
+it&rsquo;s worth considering polishing other aspects of your artifacts to make them
+more user-friendly, comprehensible, and maintainable. A well-crafted artifact is
+one that&rsquo;s easy to understand and improve upon - even if you haven&rsquo;t looked at
+it for a year.</p><p>Here are a few ideas and things to consider that could improve the quality of
+your artifacts.</p><h3 id=descriptions>Descriptions</h3><ul><li><p>Ensure that your artifacts have sufficient information in the <code>description</code>
+field to guide users on it&rsquo;s correct usage, especially if the artifact has
+complicated logic or has many parameters. It&rsquo;s good to explain conditions
+under which the artifact is expected to work, or conditions under which the
+artifact may not work (if there are any).</p></li><li><p>Try to start the artifact description with a short <strong>lead sentence</strong> which
+summarizes the purpose of the artifact. For example: <em>&ldquo;Reports network
+connections and enriches them with process information&rdquo;</em>. This lead sentence
+makes it easy for users to understand the artifact&rsquo;s purpose at a glance and
+quickly find the artifact they are looking for without having to read the
+entire description. Avoid starting the artifact description with &ldquo;This
+artifact&mldr;&rdquo; because it&rsquo;s superfluous wording when a user has selected it and
+is looking at the artifact in the GUI&rsquo;s artifact viewer - you should rather
+get straight to the point of describing what it does.</p></li><li><p>Include relevant <strong>keywords</strong> in your artifact&rsquo;s description since the
+entire field is added to the artifact search index which means users will be
+able to find it by searching for your keywords. For example, if your
+artifact&rsquo;s name is &ldquo;Windows.Forensics.Shellbags&rdquo; then make sure you also
+include the word &ldquo;registry&rdquo; somewhere in the description. That way users
+searching for registry-related artifacts can search for the word &ldquo;registry&rdquo;
+and your artifact will be included in the results.</p></li><li><p>If you have included external links in your <code>description</code> field then consider
+making them <strong>references</strong> instead. That is unless you need the external links
+to be searchable since the <code>reference</code> field is <em>not</em> indexed for GUI artifact
+searches.</p></li><li><p>If your artifact was tested against a specific operating system version or
+data from a particular application/API version then it&rsquo;s helpful to include
+those details in the description. This helps others to identify potential
+causes if your artifact unexpectedly stops working in future.</p></li><li><p>If your artifact description needs to include URLs that you <em>don&rsquo;t</em> want turned
+into clickable hyperlinks then enclose them in backticks. In addition you
+could also defang those URLs to be even safer.</p></li><li><p>Artifacts descriptions are rendered as HTML in various places within the GUI.
+The HTML level 2 heading is used for the artifact name, and level 3 headings
+are used for subsections of the artifact. So if you want to include headings
+in your artifact description markdown (for example &ldquo;Notes&rdquo; or Usage"), then it
+is best if you make those headings level 3 (e.g. <code>### Notes</code>) or below so that
+they fit in nicely with the other headings.</p></li></ul><h3 id=references>References</h3><ul><li><p>If your artifact encompasses complex ideas that cannot be described in the
+<code>description</code> field for practical reasons, then consider including links to
+external information sources in the <code>reference</code> field.</p></li><li><p>It&rsquo;s good etiquette to provide links and credits in the <code>reference</code> field if
+the artifact is based on research, processes, or algorithms published by other
+people or projects.</p></li></ul><h3 id=author>Author</h3><ul><li>If you are planning to make your artifact public then it&rsquo;s a good idea to use
+the <code>author</code> field and include some information which will allow others to
+contact you (if you don&rsquo;t mind that). It doesn&rsquo;t need to be your real name -
+it could be you GitHub or social media handle or anonymous email address. If
+other users find issues they may want to report these to you directly.</li></ul><h3 id=parameters>Parameters</h3><ul><li><p>If possible, try to ensure that your artifact includes <strong>parameter defaults</strong>
+for all parameters. A well-designed artifact should not fail when it&rsquo;s run
+without any parameter customization. Users have a general expectation that
+just running an artifact, without customizing the parameters, should not
+result in an errored collection. At worst the artifact should possibly return
+no data and then ideally also produce a meaningful log message.</p></li><li><p>Make full use of the user-oriented features that are available for parameters.
+For example, use the <code>description</code>, <code>friendly_name</code>, and <code>validating_regex</code>
+fields whenever appropriate. These parameter properties affect how parameters
+are presented in the GUI and are intended to guide users towards making the
+correct choices when customizing artifact parameters.</p></li></ul><h3 id=sources>Sources</h3><ul><li><p>If you have more than one source it&rsquo;s best to give each source a name.</p></li><li><p>If you find that you repeating any of the same VQL queries in multiple
+artifact sources then you might consider consolidating them in the <code>export</code>
+section. Remember that VQL in the <code>export</code> section is run before VQL in all
+<code>sources</code>. Custom functions, variables and query results from <code>export</code> are
+available to all sources.</p></li><li><p>Well-structured VQL with helpful inline comments is the ideal way to make your
+artifacts comprehensible to others. Try out the
+<a href=/docs/gui/artifacts/#editor-preferences-and-vql-reformatting>Reformat VQL</a>
+button in the artifact editor.</p></li></ul><footer class=footline></footer></div></div></section><div style=left:-1e3px;overflow:scroll;position:absolute;top:-1e3px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1774052123></script><script src=/js/perfect-scrollbar.min.js?1774052123></script><script src=/js/perfect-scrollbar.jquery.min.js?1774052123></script><script src=/js/jquery.sticky.js?1774052123></script><script src=/js/featherlight.min.js?1774052123></script><script src=/js/highlight.min.js?1774052123></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1774052123></script><script src=/js/learn.js?1774052123></script><script src=/js/hugo-learn.js?1774052123></script></body></html>

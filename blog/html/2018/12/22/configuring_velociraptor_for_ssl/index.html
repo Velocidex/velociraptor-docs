@@ -1,0 +1,113 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.158.0"><meta name=description content="This post describes how to deploy Velociraptor with SSL on a cloud VM.
+"><link rel=icon href=/images/favicon.png type=image/png><title>Configuring Velociraptor for SSL :: Velociraptor - Digging deeper!</title><link href=/css/nucleus.css?1774052123 rel=stylesheet><link href=/css/font-awesome-all.min.css?1774052123 rel=stylesheet><link href=/css/featherlight.min.css?1774052123 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1774052123 rel=stylesheet><link href=/css/auto-complete.css?1774052123 rel=stylesheet><link href=/css/theme.css?1774052123 rel=stylesheet><link href=/css/tabs.css?1774052123 rel=stylesheet><link href=/css/hugo-theme.css?1774052123 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1774052123 rel=stylesheet><link href=/css/dark.css?1774052123 rel=stylesheet><link href=/css/syntax.css?1774052123 rel=stylesheet><link href=/css/light.css?1774052123 rel=stylesheet><link href=/css/hljs.css?1774052123 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774052123 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1774052123></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/blog/html/2018/12/22/configuring_velociraptor_for_ssl/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><script src=/js/menu-6d49effe.js type=text/javascript></script><div class=highlightable><ul class="sidemenu sidebar hidden"></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>findlink(window.menu,"/blog/html/2018/12/22/configuring_velociraptor_for_ssl/");let menu=$(".sidemenu.hidden");addToNode(menu,window.menu),menu.find("i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()}),menu.removeClass("hidden"),$(window).on("load",function(){$("li.dd-item.active")[0].scrollIntoView()}),menu.find("li.dd-item.active")[0].scrollIntoView()</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/html/2018/12/22/configuring_velociraptor_for_ssl/_index.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Configuring Velociraptor for SSL</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Configuring Velociraptor for SSL</h1><p>We have previously seen how to deploy a new Velociraptor server. For a
+simple deployment we can have Velociraptor server and clients
+provisioned in minutes.</p><p>Usually we deploy a specific Velociraptor deployment on our DFIR
+engagements. We use cloud resources to provision the server and have the
+clients connect to this cloud VM. A proper secure deployment of
+Velociraptor will use SSL for securing both client communication and
+protecting the web GUI.</p><p>In the past provisioning an SSL enabled web application was complex and
+expensive - you had to create certificate signing requests, interact
+with a CA. Pay for the certificates, then configure the server. In
+particular you had to remember to renew the cert in 2 years or your
+website suddenly broke!</p><p>Those days are over with the emergence of Lets Encrypt! and autocert.
+These days applications can automatically provision their own
+certificates. Velociraptor can manage its own certificates, fully
+automatically - and then renew its certificates when the time comes with
+no user intervention required.</p><p>In this blog post we will see how to configure a new Velociraptor server
+in a cloud VM.</p><h1 id=setting-up-a-domain>Setting up a domain</h1><p>The first step in deploying an SSL enabled web application is to have a
+domain name. SSL verifies the authenticity of a web site by its DNS
+name.</p><p>We go over to Google Domains and buy a domain. In this post I will be
+using the domain rekall-innovations.com.</p><h1 id=provisioning-a-virtual-machine>Provisioning a Virtual Machine</h1><p>Next we provision an Ubuntu VM from any cloud provider. Depending on
+your deployment size your VM should be large enough. An 8 or 16Gb VM
+should be sufficient for around 5-10k clients. Additionally we will need
+sufficient disk space to hold the data we will collect. We recommend to
+start with a modest amount of storage and then either backup data as it
+gets collected or increase the storage volume as needed.</p><p>Our virtual machine will receive connections over ports 80 and 443.</p><p>::: {.note}
+::: {.admonition-title}
+Note
+:::</p><p>When using SSL both the client communication <em>and</em> the GUI are served
+over the same ports to benefit from SSL transport encryption.
+:::</p><p>When we deploy our Virtual Machine we may choose either a static IP
+address or allow the cloud provider to assign a dynamic IP address. We
+typically choose a dynamic IP address and so we need to configure
+Dynamic DNS.</p><p>Go to the Google Domains dashboard and create a new dynamic DNS for your
+domain. In our example we will use velociraptor.rekall-innovations.com
+as our endpoint address.</p><p><figure id=4a47a0db6e60853dedfcfdf08a5ca249><div data-featherlight=#4a47a0db6e60853dedfcfdf08a5ca249 class=figure><img src=1.png alt=image></div><figcaption><a class=image-link href=1.png><i class="fa fa-download"></i></a>
+image</figcaption></figure></p><p>After the dynamic address is created, we can get the credentials for
+updating the IP address.</p><p><figure id=fb5c81ed3a220004b71069645f112867><div data-featherlight=#fb5c81ed3a220004b71069645f112867 class=figure><img src=2.png alt=image></div><figcaption><a class=image-link href=2.png><i class="fa fa-download"></i></a>
+image</figcaption></figure></p><p>Next we install ddclient on our VM. This will update our dynamic IP
+address whenever the external interface changes. Configure the file
+`/etc/ddclient.conf`:</p><pre><code class=language-{.sourceCode>protocol=dyndns2
+use=web
+server=domains.google.com
+ssl=yes
+login=X13342342XYZ
+password='slk43521kj'
+velociraptor.rekall-innovations.com
+</code></pre><p>Next configure the service to start:</p><pre><code class=language-{.sourceCode># Configuration for ddclient scripts
+# generated from debconf on Tue Oct 23 20:25:23 AEST 2018
+#
+# /etc/default/ddclient
+
+# Set to &quot;true&quot; if ddclient should be run every time DHCP client ('dhclient'
+# from package isc-dhcp-client) updates the systems IP address.
+run_dhclient=&quot;false&quot;
+
+# Set to &quot;true&quot; if ddclient should be run every time a new ppp connection is
+# established. This might be useful, if you are using dial-on-demand.
+run_ipup=&quot;false&quot;
+
+# Set to &quot;true&quot; if ddclient should run in daemon mode
+# If this is changed to true, run_ipup and run_dhclient must be set to false.
+run_daemon=&quot;true&quot;
+
+# Set the time interval between the updates of the dynamic DNS name in seconds.
+# This option only takes effect if the ddclient runs in daemon mode.
+daemon_interval=&quot;300&quot;
+</code></pre><p>Run dhclient and check that it updates the address correctly.</p><h1 id=configuring-velociraptor-for-ssl>Configuring Velociraptor for SSL</h1><p>Now comes the hard part! We need to configure Velociraptor to use SSL.
+Edit the following in your server.config.yaml file (if you do not have
+one yet you can generate one using velociraptor config
+generate > server.config.yaml ):</p><pre><code class=language-{.sourceCode>Client:
+   server_urls:
+   - https://velociraptor.rekall-innovations.com/
+
+autocert_domain: velociraptor.rekall-innovations.com
+autocert_cert_cache: /etc/velociraptor_cache/
+</code></pre><p>The autocert_domain parameter tells Velociraptor to provision its own
+cert for this domain automatically. The certificates will be stored in
+the directory specified by autocert_cert_cache. You don't have to
+worry about rotating the certs, Velociraptor will automatically renew
+them.</p><p>Obviously now the clients need to connect to the control channel over
+SSL so we also need to direct the client's server_urls parameter to
+the SSL port.</p><p>Lets start the frontend (We need to start Velociraptor as root because
+it must be able to bind to port 80 and 443):</p><pre><code class=language-{.sourceCode>$ sudo velociraptor --config server.config.yaml frontend -v
+
+[INFO] 2018-12-22T17:12:42+10:00 Loaded 43 built in artifacts
+[INFO] 2018-12-22T17:12:42+10:00 Increased open file limit to 999999
+[INFO] 2018-12-22T17:12:42+10:00 Launched gRPC API server on 127.0.0.1:8888
+[INFO] 2018-12-22T17:12:42+10:00 Autocert specified - will listen on ports 443 and 80. I will ignore specified GUI port at 8889
+[INFO] 2018-12-22T17:12:42+10:00 Autocert specified - will listen on ports 443 and 80. I will ignore specified Frontend port at 8889
+[INFO] 2018-12-22T17:12:42+10:00 Frontend is ready to handle client requests using HTTPS
+</code></pre><p>If all goes well we now can point our browser to
+<a href=https://velociraptor.rekall-innovations.com/ target=_blank>https://velociraptor.rekall-innovations.com/</a>
+and it should just work.
+Don't forget to provision a user and password using:</p><pre><code class=language-{.sourceCode>$ velociraptor --config server.config.yaml user add mic
+</code></pre><h1 id=notes>Notes</h1><p>The autocert configuration is very easy to do but there are a few
+caveats:</p><ol><li>Both ports 80 and 443 must be accessible over the web. This is
+needed because Letsencrypt's servers need to connect to our domain
+name in order to verify our domain ownership.</li><li>It is not possible to change the ports from port 80 and 443 due to
+limitations in Letsencrypt's ACME protocol. This is why we can not
+have more than one Velociraptor deployment on the same IP currently.</li></ol><p>We have seen how easy it is to deploy secure Velociraptor servers. In
+the next post we will discuss how to enhance security further by
+deploying two factor authentication with Google's Single Sign On (SSO).</p><p>::: {.note}
+::: {.admonition-title}
+Note
+:::</p><p>This feature will be available in the upcoming 0.27 release. You can try
+it now by building from git head.
+:::</p><footer class=footline></footer></div></div></section><div style=left:-1e3px;overflow:scroll;position:absolute;top:-1e3px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1774052123></script><script src=/js/perfect-scrollbar.min.js?1774052123></script><script src=/js/perfect-scrollbar.jquery.min.js?1774052123></script><script src=/js/jquery.sticky.js?1774052123></script><script src=/js/featherlight.min.js?1774052123></script><script src=/js/highlight.min.js?1774052123></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1774052123></script><script src=/js/learn.js?1774052123></script><script src=/js/hugo-learn.js?1774052123></script></body></html>

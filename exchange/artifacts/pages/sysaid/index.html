@@ -1,0 +1,177 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.158.0"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Windows.Detection.SysAid :: Velociraptor - Digging deeper!</title><link href=/css/nucleus.css?1774052124 rel=stylesheet><link href=/css/font-awesome-all.min.css?1774052124 rel=stylesheet><link href=/css/featherlight.min.css?1774052124 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1774052124 rel=stylesheet><link href=/css/auto-complete.css?1774052124 rel=stylesheet><link href=/css/theme.css?1774052124 rel=stylesheet><link href=/css/tabs.css?1774052124 rel=stylesheet><link href=/css/hugo-theme.css?1774052124 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1774052124 rel=stylesheet><link href=/css/dark.css?1774052124 rel=stylesheet><link href=/css/syntax.css?1774052124 rel=stylesheet><link href=/css/light.css?1774052124 rel=stylesheet><link href=/css/hljs.css?1774052124 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774052124 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1774052124></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/exchange/artifacts/pages/sysaid/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><script src=/js/menu-6d49effe.js type=text/javascript></script><div class=highlightable><ul class="sidemenu sidebar hidden"></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>findlink(window.menu,"/exchange/artifacts/pages/sysaid/");let menu=$(".sidemenu.hidden");addToNode(menu,window.menu),menu.find("i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()}),menu.removeClass("hidden"),$(window).on("load",function(){$("li.dd-item.active")[0].scrollIntoView()}),menu.find("li.dd-item.active")[0].scrollIntoView()</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/exchange/artifacts/SysAid.yaml target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Windows.Detection.SysAid</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Windows.Detection.SysAid</h1><p>Detects artifacts associated with post exploitation activity of
+LaceTempest related to the SysAid 0day.</p><p>There are several sub artifact scopes, with configurable regex parameters to
+target.</p><ul><li>Yara.Process: Targets observed malware and cobalt strike via process yara</li><li>Disk.Ntfs: targets known disk IOCs via Windows.ntfs.mft</li><li>Forensic.Usn: targets known disk IOCs via USN journal</li><li>Evtx.Defender: Searches Defender event logs for evidence of associated alerts</li><li>Evtx.NetworkIOC: targets known strings of network IOCs in Firewall, Sysmon logs.</li><li>Evtx.PowershellIOC: targets known strings of powershell IOCs in Powershell logs.</li></ul><pre><code class=language-yaml>
+name: Windows.Detection.SysAid
+author: Matt Green - @mgreen27
+description: |
+   Detects artifacts associated with post exploitation activity of 
+   LaceTempest related to the SysAid 0day.
+   
+   There are several sub artifact scopes, with configurable regex parameters to 
+   target.
+   
+   - Yara.Process: Targets observed malware and cobalt strike via process yara
+   - Disk.Ntfs: targets known disk IOCs via Windows.ntfs.mft
+   - Forensic.Usn: targets known disk IOCs via USN journal
+   - Evtx.Defender: Searches Defender event logs for evidence of associated alerts
+   - Evtx.NetworkIOC: targets known strings of network IOCs in Firewall, Sysmon logs.
+   - Evtx.PowershellIOC: targets known strings of powershell IOCs in Powershell logs.
+   
+type: CLIENT
+resources:
+  timeout: 1800
+  
+parameters:
+  - name: FileNameRegex
+    description: FileName disk IOC regex
+    type: regex
+    default: ^(usersfiles\.war|user\.exe|leave)$
+  - name: PathRegex
+    description: Path disk IOC regex
+    type: regex
+    default: \\Program Files\\SysAidServer\\tomcat\\webapps\\
+  - name: AllDrives
+    type: bool
+    description: target all drives.
+  - name: DefenderDetection
+    description: Regex of Defender strings to hunt in Defender evtx
+    type: regex
+    default: Win32/Clop|Win32/TurtleLoader
+  - name: NetworkIoc
+    description: Regex of network IOCs to hunt evtx
+    default: 81\.19\.138\.52|45\.182\.189\.100|179\.60\.150\.34|45\.155\.37\.105
+  - name: PowershellIoc
+    description: Regex of Powershell string IOCs to hunt evtx
+    default: STOP-PROCs FOUND\! Exiting|userentry\|getLogo\\\.jsp\|Go|179\.60\.150\.34
+  - name: UploadYaraHits
+    type: bool
+  - name: YaraRule
+    type: yara
+    default: |
+        rule Windows_Trojan_HazelCobra_6a9fe48a {
+            meta:
+                author = "Elastic Security"
+                id = "6a9fe48a-6fd9-4bce-ac43-254c02d6b3a4"
+                fingerprint = "4dc883be5fb6aae0dac0ec5d64baf24f0f3aaded6d759ec7dccb1a2ae641ae7b"
+                creation_date = "2023-11-01"
+                last_modified = "2023-11-01"
+                threat_name = "Windows.Trojan.HazelCobra"
+                reference_sample = "b5acf14cdac40be590318dee95425d0746e85b1b7b1cbd14da66f21f2522bf4d"
+                severity = 100
+                arch_context = "x86"
+                scan_context = "file, memory"
+                license = "Elastic License v2"
+                os = "windows"
+            strings:
+                $a1 = { 83 E9 37 48 63 C2 F6 C2 01 75 0C C0 E1 04 48 D1 F8 88 4C 04 40 EB 07 }
+                $s1 = "Data file loaded. Running..." fullword
+                $s2 = "No key in args" fullword
+                $s3 = "Can't read data file" fullword
+            condition:
+                $a1 or all of ($s*)
+        }
+        rule Windows_Trojan_FlawedGrace_8c5eb04b {
+            meta:
+                author = "Elastic Security"
+                id = "8c5eb04b-301b-4d05-a010-3329e5b764c6"
+                fingerprint = "46ce025974792cdefe9d4f4493cee477c0eaf641564cd44becd687c27d9e7c30"
+                creation_date = "2023-11-01"
+                last_modified = "2023-11-02"
+                threat_name = "Windows.Trojan.FlawedGrace"
+                reference_sample = "966112f3143d751a95c000a990709572ac8b49b23c0e57b2691955d6fda1016e"
+                severity = 100
+                arch_context = "x86"
+                scan_context = "file, memory"
+                license = "Elastic License v2"
+                os = "windows"
+            strings:
+                $a1 = "Grace finalized, no more library calls allowed." ascii fullword
+                $a2 = ".?AVReadThread@TunnelIO@NS@@" ascii fullword
+                $a3 = ".?AVTunnelClientDirectIO@NS@@" ascii fullword
+                $a4 = ".?AVWireClientConnectionThread@NS@@" ascii fullword
+                $a5 = ".?AVWireParam@NS@@" ascii fullword
+            condition:
+                3 of them
+        }
+        rule win_cobalt_strike_auto {
+            meta:
+                author = "Felix Bilstein - yara-signator at cocacoding dot com"
+                date = "2023-07-11"
+                description = "Detects win.cobalt_strike."
+                malpedia_reference = "https://malpedia.caad.fkie.fraunhofer.de/details/win.cobalt_strike"
+                malpedia_license = "CC BY-SA 4.0"
+                malpedia_sharing = "TLP:WHITE"
+            strings:
+                $sequence_0 = { e9???????? eb0a b801000000 e9???????? }
+                $sequence_1 = { 3bc7 750d ff15???????? 3d33270000 }
+                $sequence_2 = { ff15???????? 03c6 59 8bf0 }
+                $sequence_3 = { ff05???????? 891e 8937 894f08 894604 c7470408000000 5b }
+                $sequence_4 = { ff15???????? 03f8 03f0 83f8ff 740b 3b750c 7ce0 }
+                $sequence_5 = { eb0b 8b45d4 83c010 8945d4 eb84 e9???????? 837d0c18 }
+                $sequence_6 = { ff13 83c40c 3bc7 7545 }
+                $sequence_7 = { eb0c 890d???????? e8???????? 59 5f 5e 5d }
+                $sequence_8 = { 85c0 741d ff15???????? 85c0 7513 }
+                $sequence_9 = { e8???????? e9???????? 833d????????01 7505 e8???????? }
+                $sequence_10 = { 8bd0 e8???????? 85c0 7e0e }
+                $sequence_11 = { 85c0 7405 e8???????? 8b0d???????? 85c9 }
+                $sequence_12 = { e8???????? 488d4c2420 41b800200000 488bd3 e8???????? 4533c0 488bd3 }
+                $sequence_13 = { c1e810 25ff000000 b901000000 486bc901 488b542448 88040a 8b0424 }
+                $sequence_14 = { 83f835 741d ff15???????? 413bc6 7312 b9e8030000 ff15???????? }
+                $sequence_15 = { 7514 488b4f20 ff15???????? 488b4f20 ff15???????? 488b7f30 4885ff }
+
+            condition:
+                7 of them
+        }
+     
+reference:
+    - https://profero.io/posts/sysaidonpremvulnerability/
+    - https://www.sysaid.com/blog/service-desk/on-premise-software-security-vulnerability-notification
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+sources:
+  - name: Yara.Process
+    query: |
+      SELECT * FROM Artifact.Windows.Detection.Yara.Process(
+                                YaraRule=YaraRule,
+                                UploadHits=UploadYaraHits )
+  - name: Disk.Ntfs
+    query: |
+      SELECT * FROM Artifact.Windows.NTFS.MFT(  AllDrives=AllDrives,
+                                                FileRegex=FileNameRegex,
+                                                PathRegex=PathRegex )
+  - name: Forensic.Usn
+    query: |
+      SELECT * FROM Artifact.Windows.Forensics.Usn( AllDrives=AllDrives,
+                                                    FileNameRegex=FileNameRegex,
+                                                    PathRegex=PathRegex )
+  - name: Evtx.Defender
+    query: |
+      SELECT * FROM Artifact.Windows.EventLogs.EvtxHunter(
+                EvtxGlob='%SystemRoot%\\System32\\Winevt\\Logs\\*Defender*.evtx',
+                IocRegex= DefenderDetection )
+                
+  - name: Evtx.NetworkIOC
+    query: |
+      SELECT * FROM Artifact.Windows.EventLogs.EvtxHunter(
+                EvtxGlob='%SystemRoot%\\System32\\Winevt\\Logs\\*{Firewall,Sysmon}*.evtx',
+                IocRegex= NetworkIoc )
+
+  - name: Evtx.Powershell
+    query: |
+      SELECT * FROM Artifact.Windows.EventLogs.EvtxHunter(
+                EvtxGlob='%SystemRoot%\\System32\\Winevt\\Logs\\*Powershell*.evtx',
+                IocRegex= PowershellIoc )
+                
+                
+column_types:
+  - name: HitContext
+    type: preview_upload
+
+</code></pre><footer class=footline></footer></div></div></section><div style=left:-1e3px;overflow:scroll;position:absolute;top:-1e3px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1774052124></script><script src=/js/perfect-scrollbar.min.js?1774052124></script><script src=/js/perfect-scrollbar.jquery.min.js?1774052124></script><script src=/js/jquery.sticky.js?1774052124></script><script src=/js/featherlight.min.js?1774052124></script><script src=/js/highlight.min.js?1774052124></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1774052124></script><script src=/js/learn.js?1774052124></script><script src=/js/hugo-learn.js?1774052124></script></body></html>

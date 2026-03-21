@@ -1,0 +1,171 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.158.0"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Windows.Detection.Yara.NTFS :: Velociraptor - Digging deeper!</title><link href=/css/nucleus.css?1774052122 rel=stylesheet><link href=/css/font-awesome-all.min.css?1774052122 rel=stylesheet><link href=/css/featherlight.min.css?1774052122 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1774052122 rel=stylesheet><link href=/css/auto-complete.css?1774052122 rel=stylesheet><link href=/css/theme.css?1774052122 rel=stylesheet><link href=/css/tabs.css?1774052122 rel=stylesheet><link href=/css/hugo-theme.css?1774052122 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1774052122 rel=stylesheet><link href=/css/dark.css?1774052122 rel=stylesheet><link href=/css/syntax.css?1774052122 rel=stylesheet><link href=/css/light.css?1774052122 rel=stylesheet><link href=/css/hljs.css?1774052122 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774052122 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1774052122></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/artifact_references/pages/windows.detection.yara.ntfs/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><script src=/js/menu-6d49effe.js type=text/javascript></script><div class=highlightable><ul class="sidemenu sidebar hidden"></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>findlink(window.menu,"/artifact_references/pages/windows.detection.yara.ntfs/");let menu=$(".sidemenu.hidden");addToNode(menu,window.menu),menu.find("i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()}),menu.removeClass("hidden"),$(window).on("load",function(){$("li.dd-item.active")[0].scrollIntoView()}),menu.find("li.dd-item.active")[0].scrollIntoView()</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/artifact_references/pages/windows.detection.yara.ntfs.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Windows.Detection.Yara.NTFS</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents></nav></div></div></div></div><div id=head-tags><div class=tags><a class=tag-link href=/tags/client-artifact>Client Artifact</a></div></div><div id=body-inner><h1>Windows.Detection.Yara.NTFS</h1><p>This artifact searches the MFT, returns a list of target files then runs YARA
+over the target list.</p><p>There are 3 kinds of YARA rules that can be deployed:</p><ol><li>URL link to a YARA rule.</li><li>Shorthand YARA in the format <code>wide nocase ascii:string1,string2,string3</code>.</li><li>or a Standard YARA rule attached as a parameter.</li></ol><p>Only one method of YARA will be applied and search order is as above.</p><p>The artifact uses Windows.NTFS.MFT so similar regex filters can be applied
+including Path, Size and date. The artifact also has an option to search across
+all attached drives and upload any files with YARA hits.</p><p>Some examples of path regex may include:</p><ul><li>Extension at a path: <code>C:\\Windows\\System32\\.+\.dll$</code></li><li>More wildcards: <code>Windows\\.+\\.+\.dll$</code></li><li>Specific file: <code>Windows\\System32\\kernel32\.dll$</code></li><li>Multiple extensions: <code>\.(php|aspx|resx|asmx)$</code></li></ul><p>Note: no drive and forward slashes - these expressions are for paths
+relative to the root of the filesystem.
+If upload is selected NumberOfHits is redundant and not advised as hits are
+grouped by path to ensure files only downloaded once.</p><pre><code class=language-yaml>
+name: Windows.Detection.Yara.NTFS
+author: Matt Green - @mgreen27
+description: |
+  This artifact searches the MFT, returns a list of target files then runs YARA
+  over the target list.
+
+  There are 3 kinds of YARA rules that can be deployed:
+
+  1. URL link to a YARA rule.
+  2. Shorthand YARA in the format `wide nocase ascii:string1,string2,string3`.
+  3. or a Standard YARA rule attached as a parameter.
+
+  Only one method of YARA will be applied and search order is as above.
+
+  The artifact uses Windows.NTFS.MFT so similar regex filters can be applied
+  including Path, Size and date. The artifact also has an option to search across
+  all attached drives and upload any files with YARA hits.
+
+  Some examples of path regex may include:
+
+  * Extension at a path: `C:\\Windows\\System32\\.+\.dll$`
+  * More wildcards: `Windows\\.+\\.+\.dll$`
+  * Specific file: `Windows\\System32\\kernel32\.dll$`
+  * Multiple extensions: `\.(php|aspx|resx|asmx)$`
+
+  Note: no drive and forward slashes - these expressions are for paths
+  relative to the root of the filesystem.
+  If upload is selected NumberOfHits is redundant and not advised as hits are
+  grouped by path to ensure files only downloaded once.
+
+type: CLIENT
+parameters:
+  - name: FileNameRegex
+    description: Only file names that match this regular expression will be scanned.
+    default: ^kernel32\.dll$
+  - name: PathRegex
+    description: Only paths that match this regular expression will be scanned.
+    default: C:\\Windows\\System32\\
+  - name: DriveLetter
+    description: "Target drive. Default is a C:"
+    default: "C:"
+  - name: SizeMax
+    type: int
+  - name: SizeMin
+    type: int
+  - name: AllDrives
+    type: bool
+  - name: UploadHits
+    type: bool
+  - name: EarliestSILastChanged
+    type: timestamp
+  - name: LatestSILastChanged
+    type: timestamp
+  - name: EarliestFNCreation
+    type: timestamp
+  - name: LatestFNCreation
+    type: timestamp
+  - name: YaraUrl
+    description: If configured will attempt to download Yara rules form Url
+    default:
+    type: upload
+  - name: YaraRule
+    type: yara
+    description: Final Yara option and the default if no other options provided.
+    default: |
+        rule IsPE:TestRule {
+           meta:
+              author = "the internet"
+              date = "2021-03-04"
+              description = "A simple PE rule to test yara features"
+          condition:
+             uint16(0) == 0x5A4D and
+             uint32(uint32(0x3C)) == 0x00004550
+        }
+  - name: NumberOfHits
+    description: THis artifact will stop by default at one hit. This setting allows additional hits
+    default: 1
+    type: int64
+  - name: ContextBytes
+    description: Include this amount of bytes around hit as context.
+    default: 0
+    type: int
+
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+      -- check which Yara to use
+      LET yara_rules = YaraUrl || YaraRule
+
+      -- first find all matching files mft
+      LET files = SELECT
+            OSPath, IsDir
+        FROM Artifact.Windows.NTFS.MFT(
+            MFTDrive=DriveLetter, AllDrives=AllDrives,
+            FileRegex=FileNameRegex,PathRegex=PathRegex,
+            SizeMax=SizeMax, SizeMin=SizeMin)
+        WHERE NOT IsDir
+            AND NOT OSPath =~ '''\\\\.\\.:\\&lt;Err&gt;\\'''
+            AND if(condition=EarliestSILastChanged,
+                then= LastRecordChange0x10 &gt; EarliestSILastChanged,
+                else= True)
+            AND if(condition=LatestSILastChanged,
+                then= LastRecordChange0x10 &lt; LatestSILastChanged,
+                else= True)
+            AND if(condition=EarliestFNCreated,
+                then= Created0x30 &gt; EarliestFNCreation,
+                else= True)
+            AND if(condition=LatestFNCreated,
+                then= Created0x30 &lt; LatestFNCreation,
+                else= True)
+
+      -- scan files and only report a single hit.
+      LET hits = SELECT * FROM foreach(row=files,
+            query={
+                SELECT
+                    FileName, OSPath,
+                    File.Size AS Size,
+                    File.ModTime AS ModTime,
+                    Rule, Tags, Meta,
+                    String.Name as YaraString,
+                    String.Offset as HitOffset,
+                    if(condition=String.Data,
+                       then=upload(
+                            accessor='scope',
+                            file='String.Data',
+                            name=format(format="%v-%v-%v",
+                            args=[
+                                OSPath,
+                                if(condition= String.Offset - ContextBytes &lt; 0,
+                                    then= 0,
+                                    else= String.Offset - ContextBytes),
+                                if(condition= String.Offset + ContextBytes &gt; File.Size,
+                                    then= File.Size,
+                                    else= String.Offset + ContextBytes) ]
+                            ))) as HitContext
+                FROM yara(rules=yara_rules,
+                   files=OSPath, context=ContextBytes, number=NumberOfHits)
+            })
+
+      -- upload files that have hit
+      LET upload_hits=SELECT *,
+            upload(file=OSPath) AS Upload
+        FROM hits
+        GROUP BY OSPath
+
+      -- return rows
+      SELECT * FROM if(condition=UploadHits,
+        then={ SELECT * FROM upload_hits},
+        else={ SELECT * FROM hits})
+
+column_types:
+  - name: HitContext
+    type: preview_upload
+
+</code></pre><footer class=footline></footer></div></div></section><div style=left:-1e3px;overflow:scroll;position:absolute;top:-1e3px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1774052122></script><script src=/js/perfect-scrollbar.min.js?1774052122></script><script src=/js/perfect-scrollbar.jquery.min.js?1774052122></script><script src=/js/jquery.sticky.js?1774052122></script><script src=/js/featherlight.min.js?1774052122></script><script src=/js/highlight.min.js?1774052122></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1774052122></script><script src=/js/learn.js?1774052122></script><script src=/js/hugo-learn.js?1774052122></script></body></html>

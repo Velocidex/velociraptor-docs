@@ -1,0 +1,232 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.158.0"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Windows.Detection.ReflectedAssemblies :: Velociraptor - Digging deeper!</title><link href=/css/nucleus.css?1774052124 rel=stylesheet><link href=/css/font-awesome-all.min.css?1774052124 rel=stylesheet><link href=/css/featherlight.min.css?1774052124 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1774052124 rel=stylesheet><link href=/css/auto-complete.css?1774052124 rel=stylesheet><link href=/css/theme.css?1774052124 rel=stylesheet><link href=/css/tabs.css?1774052124 rel=stylesheet><link href=/css/hugo-theme.css?1774052124 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1774052124 rel=stylesheet><link href=/css/dark.css?1774052124 rel=stylesheet><link href=/css/syntax.css?1774052124 rel=stylesheet><link href=/css/light.css?1774052124 rel=stylesheet><link href=/css/hljs.css?1774052124 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774052124 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1774052124></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/exchange/artifacts/pages/reflectedassemblies/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><script src=/js/menu-6d49effe.js type=text/javascript></script><div class=highlightable><ul class="sidemenu sidebar hidden"></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>findlink(window.menu,"/exchange/artifacts/pages/reflectedassemblies/");let menu=$(".sidemenu.hidden");addToNode(menu,window.menu),menu.find("i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()}),menu.removeClass("hidden"),$(window).on("load",function(){$("li.dd-item.active")[0].scrollIntoView()}),menu.find("li.dd-item.active")[0].scrollIntoView()</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/exchange/artifacts/ReflectedAssemblies.yaml target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Windows.Detection.ReflectedAssemblies</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Windows.Detection.ReflectedAssemblies</h1><p>Collects current running .NET assemblies and replicates ProcessHacker&rsquo;s .NET
+Assemblies view.</p><p>By Default, the artifact will filter out assemblies with a ModulePath on disk
+and built in Modules with Dynamic flag which indicate reflectively loaded
+assemblies.</p><p>Typical workflow would be to run once and scope the target ModuleID the rerun
+and specifiy ModuleIDRegex to pull back module information.</p><p>Queries the Microsoft-Windows-DotNETRuntimeRundown ETW provider so ensure
+timeout path is sufficient.</p><pre><code class=language-yaml>
+name: Windows.Detection.ReflectedAssemblies
+author: "Matt Green - @mgreen27"
+description: |
+   Collects current running .NET assemblies and replicates ProcessHacker's .NET 
+   Assemblies view.
+   
+   By Default, the artifact will filter out assemblies with a ModulePath on disk 
+   and built in Modules with Dynamic flag which indicate reflectively loaded 
+   assemblies.
+   
+   Typical workflow would be to run once and scope the target ModuleID the rerun 
+   and specifiy ModuleIDRegex to pull back module information.
+   
+   Queries the Microsoft-Windows-DotNETRuntimeRundown ETW provider so ensure 
+   timeout path is sufficient.
+   
+type: CLIENT
+
+parameters:
+  - name: ProcessRegex
+    default: .
+    type: regex
+  - name: PidRegex
+    default: .
+    type: regex
+  - name: Timeout
+    default: 60
+    type: int
+  - name: AssemblyNameRegex
+    default: .
+    type: regex
+  - name: ModuleIDRegex
+    description: Regex of ModuleID to return Module Methods. Module Methods will not return unless configured.
+    type: regex
+  - name: ModulePathExclusion
+    default: 'C:\\|\.dll$'
+    type: regex
+  - name: ShowAll
+    description: By default we only show unmapped assemblies. This will ignore ModulePathExclusion to show all.
+    type: bool
+
+precondition: SELECT OS From info() where OS = 'windows'
+sources:
+  - query: |
+      LET VQL_MATERIALIZE_ROW_LIMIT &lt;= 27000
+      
+      LET collected &lt;= SELECT System.ID AS EventID,
+                            System.ProcessID AS ProcessID,
+                            *
+        FROM watch_etw(description="CLR Rundown Provider",
+                       guid="{A669021C-C450-4609-A035-5AF59AF4DF18}",
+                       any=if(condition= ModuleIDRegex,
+                                then= 0x78,
+                                else= 0x48),
+                       timeout=Timeout)
+        WHERE ProcessID =~ PidRegex
+            AND EventID in (151,153,155,157,187,143)
+            AND log(message="CLR Rundown Provider any=" + if(condition=ModuleIDRegex,
+                                                                  then="0x78",
+                                                                  else="0x48"))
+        
+      LET ordered = SELECT *,
+                format(format='%v_%v',
+                        args=[System.ProcessID,System.ID]) AS __OrderMe
+        FROM collected
+        WHERE NOT EventID = 143
+        ORDER BY __OrderMe DESC
+                       
+      LET Cache &lt;= lru()
+      
+      LET results = SELECT
+          process_tracker_get(id=ProcessID) AS ProcessDetails,
+          get(item=Cache,
+              field=format(format="AppDomainName%v_%v",
+                           args=[ProcessID, EventData.AppDomainID])) ||
+            get(item=Cache,
+                field=format(format="AppDomainName%v_%v",
+                             args=[ProcessID, get(
+                               item=Cache,
+                               field=format(
+                                 format="AppDomainID%v_%v",
+                                 args=[ProcessID, EventData.AssemblyID]))])) AS AppDomainName,
+          EventData.ModuleID AS ModuleID,
+          EventData.AssemblyID AS AssemblyID,
+          EventData.ModuleFlags AS ModuleFlags,
+          get(
+            item=Cache,
+            field=format(
+              format="FullyQualifiedAssemblyName%v_%v",
+              args=[ProcessID, EventData.AssemblyID])) AS FullyQualifiedAssemblyName,
+          EventData.ModuleILPath AS ModuleILPath,
+          get(
+            item=Cache,
+            field=format(
+              format="ClrDetails%v",
+              args=ProcessID)) AS ClrDetails
+        FROM ordered
+        WHERE (EventID = 157
+                &amp;&amp; set(
+                    item=Cache,
+                    field=format(
+                          format="AppDomainName%v_%v",
+                          args=[ProcessID, EventData.AppDomainID]),
+                    value=EventData.AppDomainName), 
+            EventID = 155
+                &amp;&amp; set(
+                    item=Cache,
+                    field=format(
+                        format="FullyQualifiedAssemblyName%v_%v",
+                        args=[ProcessID, EventData.AssemblyID]),
+                    value=EventData.FullyQualifiedAssemblyName),
+            EventID = 155
+                &amp;&amp; set(
+                    item=Cache,
+                    field=format(
+                        format="AppDomainID%v_%v",
+                        args=[ProcessID, EventData.AssemblyID]),
+                    value=EventData.AppDomainID), 
+            EventID = 187
+                &amp;&amp; set(
+                    item=Cache,
+                    field=format(
+                        format="ClrDetails%v",
+                        args=ProcessID),
+                    value=dict(
+                        ClrInstanceID=EventData.ClrInstanceID,
+                        ClrVersion=format(
+                            format='%s.%s.%s.%s',
+                            args=[
+                                EventData.VMMajorVersion, 
+                                EventData.VMMinorVersion,
+                                EventData.VMBuildNumber, 
+                                EventData.VMQfeNumber]),
+                        RuntimeDllPath=EventData.RuntimeDllPath
+                    )),
+            EventID = 151, 
+            EventID = 153)
+         AND EventID IN (151, 153)
+              AND ProcessDetails.Data.Name =~ ProcessRegex
+      
+      -- match process hacker ModuleFlags
+      LET PROFILE = '''[
+                     ["ClrDeets", 0, [
+                       ["ModuleFlags", 0, "Flags", {
+                           type: "uint32b",
+                           bitmap: {
+                            "DomainNeutral": 0,
+                            "Native": 1,
+                            "Dynamic": 2,
+                           }
+                        }],
+                     ]],
+                    ]'''
+
+      LET hex_value(number) = format(format='0x%08x',args=int(int=number))
+      
+      LET final &lt;= SELECT 
+        dict(
+            StartTime=ProcessDetails.StartTime,
+            Pid=ProcessDetails.Id,
+            Name=ProcessDetails.Data.Name,
+            Exe=ProcessDetails.Data.Exe,
+            CommandLine=ProcessDetails.Data.CommandLine,
+            Username=ProcessDetails.Data.Username ) AS ProcessDetails, 
+        AppDomainName,
+        ModuleID,
+        AssemblyID,
+        join(array=parse_binary(accessor='data',filename=unhex(string=hex_value(number=ModuleFlags)),
+                profile=PROFILE,struct='ClrDeets').ModuleFlags,sep=',') as ModuleFlags,
+        FullyQualifiedAssemblyName,
+        ModuleILPath,
+        ClrDetails
+      FROM results
+      WHERE NOT ModuleILPath =~ ModulePathExclusion
+            AND NOT ModuleFlags = 'Dynamic'
+            AND FullyQualifiedAssemblyName =~ AssemblyNameRegex
+      GROUP BY Address, AppDomainName, FullyQualifiedAssemblyName
+        
+      SELECT * FROM final
+      
+  - name: Module Methods
+    query: |
+      LET lookup &lt;= SELECT * FROM final
+      
+      LET ModuleIDRegex2 &lt;= join(array=final.ModuleID,sep='|')
+      
+      LET final_lookup(moduleid) = SELECT AppDomainName,AssemblyID,FullyQualifiedAssemblyName
+        FROM lookup WHERE ModuleID = moduleid
+      
+      LET module_results = SELECT    ProcessID,
+                process_tracker_get(id=System.ProcessID).Data.Name AS ProcessName,
+                EventData.MethodID as MethodID,
+                EventData.ModuleID as ModuleID,
+                EventData.MethodStartAddress as MethodStartAddress,
+                EventData.MethodSize as MethodSize,
+                EventData.MethodToken as MethodToken,
+                EventData.MethodFlags as MethodFlags,
+                EventData.MethodNamespace as MethodNamespace,
+                EventData.MethodName as MethodName,
+                EventData.MethodSignature as MethodSignature
+        FROM collected
+        WHERE System.ID = 143 
+            AND ProcessName =~ ProcessRegex
+            AND ModuleID =~ ModuleIDRegex
+            AND ModuleID =~ ModuleIDRegex2
+      
+      SELECT ProcessID, ProcessName,
+        final_lookup(moduleid=ModuleID )[0] as AssemblyDetails,
+        ModuleID,
+        MethodID,
+        MethodStartAddress,
+        MethodSize,
+        MethodToken,
+        MethodFlags,
+        MethodNamespace,
+        MethodName,
+        MethodSignature
+      FROM module_results
+
+</code></pre><footer class=footline></footer></div></div></section><div style=left:-1e3px;overflow:scroll;position:absolute;top:-1e3px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1774052124></script><script src=/js/perfect-scrollbar.min.js?1774052124></script><script src=/js/perfect-scrollbar.jquery.min.js?1774052124></script><script src=/js/jquery.sticky.js?1774052124></script><script src=/js/featherlight.min.js?1774052124></script><script src=/js/highlight.min.js?1774052124></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1774052124></script><script src=/js/learn.js?1774052124></script><script src=/js/hugo-learn.js?1774052124></script></body></html>

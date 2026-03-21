@@ -1,0 +1,138 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.158.0"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Windows.Detection.TeamViewerLanguage :: Velociraptor - Digging deeper!</title><link href=/css/nucleus.css?1774052124 rel=stylesheet><link href=/css/font-awesome-all.min.css?1774052124 rel=stylesheet><link href=/css/featherlight.min.css?1774052124 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1774052124 rel=stylesheet><link href=/css/auto-complete.css?1774052124 rel=stylesheet><link href=/css/theme.css?1774052124 rel=stylesheet><link href=/css/tabs.css?1774052124 rel=stylesheet><link href=/css/hugo-theme.css?1774052124 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1774052124 rel=stylesheet><link href=/css/dark.css?1774052124 rel=stylesheet><link href=/css/syntax.css?1774052124 rel=stylesheet><link href=/css/light.css?1774052124 rel=stylesheet><link href=/css/hljs.css?1774052124 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774052124 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1774052124></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/exchange/artifacts/pages/teamviewerlanguage/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><script src=/js/menu-6d49effe.js type=text/javascript></script><div class=highlightable><ul class="sidemenu sidebar hidden"></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>findlink(window.menu,"/exchange/artifacts/pages/teamviewerlanguage/");let menu=$(".sidemenu.hidden");addToNode(menu,window.menu),menu.find("i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()}),menu.removeClass("hidden"),$(window).on("load",function(){$("li.dd-item.active")[0].scrollIntoView()}),menu.find("li.dd-item.active")[0].scrollIntoView()</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/exchange/artifacts/TeamViewerLanguage.yaml target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Windows.Detection.TeamViewerLanguage</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Windows.Detection.TeamViewerLanguage</h1><p>This artifact enables collection of TeamViewer log entries for keyboard layout
+changes.</p><p>The artifact firstly searches for TeamViewer log filenames, then applies yara
+to extract log lines. The artifact by default hunts for Chinese, Vietnamese
+and Russian language changes as priority, then uses a catch all for generic
+changes. You can add additional targeted yara as desired to sort output.</p><p>In each log entry there are two language codes, the first being keyboard
+layout of the connecting system and the second one the default input profile
+of the target host. The same language codes could indicate legitimate support.</p><p>Lookup Language codes at the Microsoft link for references. Examples below:</p><p>0409 - US English<br>0419 - Russian<br>0804 - Chinese Simplified<br>0404 - Chinese Traditional<br>042a - Vietnamese</p><pre><code class=language-yaml>
+name: Windows.Detection.TeamViewerLanguage
+author: Matt Green - @mgreen27
+description: |
+   This artifact enables collection of TeamViewer log entries for keyboard layout 
+   changes.  
+   
+   The artifact firstly searches for TeamViewer log filenames, then applies yara 
+   to extract log lines. The artifact by default hunts for Chinese, Vietnamese 
+   and Russian language changes as priority, then uses a catch all for generic 
+   changes. You can add additional targeted yara as desired to sort output.  
+   
+   In each log entry there are two language codes, the first being keyboard 
+   layout of the connecting system and the second one the default input profile 
+   of the target host. The same language codes could indicate legitimate support.
+   
+   Lookup Language codes at the Microsoft link for references. Examples below:  
+   
+   0409 - US English  
+   0419 - Russian  
+   0804 - Chinese Simplified  
+   0404 - Chinese Traditional  
+   042a - Vietnamese  
+   
+reference:
+  - https://twitter.com/cyb3rops/status/1600157565148483584
+  - https://github.com/Neo23x0/signature-base/blob/master/yara/log_teamviewer_keyboard_layouts.yar
+  - https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/default-input-locales-for-windows-language-packs?view=windows-11
+  
+type: CLIENT
+
+parameters:
+   - name: TargetFileRegex
+     default: ^TeamViewer.._Logfile.*\.log$
+     description: target teamviewer log filenames.
+   - name: DriveLetter
+     default: "C:"
+   - name: AllDrives
+     type: bool
+   - name: LayoutRegex
+     default: .
+     description: Regex of Layout to filter for
+   - name: YaraToScan
+     description: Yata to scan. High priority rules first then catch all for generic changes at end.
+     default: |
+        rule LOG_TeamViewer_Connect_Chinese_Keyboard_Layout {
+           meta:
+              description = "Detects a suspicious TeamViewer log entry stating that the remote systems had a Chinese keyboard layout"
+              author = "Florian Roth"
+              date = "2019-10-12"
+              modified = "2020-12-16"
+              score = 60
+              limit = "Logscan"
+              reference = "https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/default-input-locales-for-windows-language-packs"
+           strings:
+              /* Source has Chinese simplified keyboard layout */
+              $x1 = "Changing keyboard layout to: 0804" ascii
+              $x2 = "Changing keyboard layout to: 042a"
+              /* Avoiding Chinese to Chinese support cases */
+              $fp1 = "Changing keyboard layout to: 08040804" ascii
+              $fp2 = "Changing keyboard layout to: 042a042a" ascii
+           condition:
+              ( #x1 + #x2 ) &gt; ( #fp1 + #fp2 )
+        }
+        rule LOG_TeamViewer_Connect_Russian_Keyboard_Layout {
+           meta:
+              description = "Detects a suspicious TeamViewer log entry stating that the remote systems had a Russian keyboard layout"
+              author = "Florian Roth"
+              date = "2019-10-12"
+              modified = "2022-12-07"
+              score = 60
+              limit = "Logscan"
+              reference = "https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/default-input-locales-for-windows-language-packs"
+           strings:
+              /* Source has Russian keyboard layout */
+              $x1 = "Changing keyboard layout to: 0419" ascii
+              /* Avoiding Russian to Russian support cases */
+              $fp1 = "Changing keyboard layout to: 04190419" ascii
+           condition:
+              #x1 &gt; #fp1
+        }
+        rule LOG_TeamViewer_Connect_any_Keyboard_Layout {
+           meta:
+              description = "Detects a generic TeamViewer log entry stating change in keyboard layout"
+           strings:
+             $x1 = "Changing keyboard layout to:" ascii
+            condition:
+              any of them
+        }
+
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+      LET hits = SELECT OSPath,Rule,
+        Meta.description as RuleDescription,
+        filter(list=split(string=HitContext,sep='\r\n'),regex='Changing keyboard layout to')[0] as HitContent
+      FROM Artifact.Windows.Detection.Yara.NTFS(
+            FileNameRegex=TargetFileRegex,PathRegex='.',
+            AllDrives=AllDrives,
+            DriveLetter=DriveLetter,
+            NumberOfHits=9999999, 
+            ContextBytes=50,
+            YaraRule=YaraToScan )
+      
+
+      LET details = SELECT*,
+            parse_string_with_regex(string=HitContent,
+            regex=[
+                '^(?P&lt;EventTime&gt;\\d{4}.\\d{2}.\\d{2}.\\d{2}:\\d{2}:\\d{2}[^\\s]+)',
+                'Changing keyboard layout to: (?P&lt;KeyboardLayout&gt;[^\\s]+)']) as Details
+      FROM hits
+
+      SELECT
+        timestamp(string=Details.EventTime) as EventTime,
+        Rule,
+        Details.KeyboardLayout as KeyboardLayout,
+        HitContent, 
+        RuleDescription,
+        OSPath
+      FROM details
+      WHERE KeyboardLayout =~ LayoutRegex
+
+</code></pre><footer class=footline></footer></div></div></section><div style=left:-1e3px;overflow:scroll;position:absolute;top:-1e3px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1774052124></script><script src=/js/perfect-scrollbar.min.js?1774052124></script><script src=/js/perfect-scrollbar.jquery.min.js?1774052124></script><script src=/js/jquery.sticky.js?1774052124></script><script src=/js/featherlight.min.js?1774052124></script><script src=/js/highlight.min.js?1774052124></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1774052124></script><script src=/js/learn.js?1774052124></script><script src=/js/hugo-learn.js?1774052124></script></body></html>

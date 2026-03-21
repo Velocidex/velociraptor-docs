@@ -1,0 +1,312 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.158.0"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Generic.Utils.DeadDiskRemapping :: Velociraptor - Digging deeper!</title><link href=/css/nucleus.css?1774052121 rel=stylesheet><link href=/css/font-awesome-all.min.css?1774052121 rel=stylesheet><link href=/css/featherlight.min.css?1774052121 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1774052121 rel=stylesheet><link href=/css/auto-complete.css?1774052121 rel=stylesheet><link href=/css/theme.css?1774052121 rel=stylesheet><link href=/css/tabs.css?1774052121 rel=stylesheet><link href=/css/hugo-theme.css?1774052121 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1774052121 rel=stylesheet><link href=/css/dark.css?1774052121 rel=stylesheet><link href=/css/syntax.css?1774052121 rel=stylesheet><link href=/css/light.css?1774052121 rel=stylesheet><link href=/css/hljs.css?1774052121 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774052121 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1774052121></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/artifact_references/pages/generic.utils.deaddiskremapping/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><script src=/js/menu-6d49effe.js type=text/javascript></script><div class=highlightable><ul class="sidemenu sidebar hidden"></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>findlink(window.menu,"/artifact_references/pages/generic.utils.deaddiskremapping/");let menu=$(".sidemenu.hidden");addToNode(menu,window.menu),menu.find("i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()}),menu.removeClass("hidden"),$(window).on("load",function(){$("li.dd-item.active")[0].scrollIntoView()}),menu.find("li.dd-item.active")[0].scrollIntoView()</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/artifact_references/pages/generic.utils.deaddiskremapping.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Generic.Utils.DeadDiskRemapping</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents></nav></div></div></div></div><div id=head-tags><div class=tags><a class=tag-link href=/tags/server-artifact>Server Artifact</a></div></div><div id=body-inner><h1>Generic.Utils.DeadDiskRemapping</h1><p>Calculate a remapping configuration from a dead disk image.</p><p>The artifact uses some heuristics to calculate a suitable remapping
+configuration for a dead disk image:</p><p>The following cases are handled:</p><ul><li><p>If ImagePath is a directory to a mounted partition then we
+generate directory remapping. This is suitable for handling images
+with filesystems that Velociraptor cannot yet directly handle.</p></li><li><p>If the ImagePath points to a file which starts with the NTFS
+signature we assume this is a partition image and not a disk
+image.</p></li><li><p>If the ImagePath is a full disk image we assume it has a partition
+table at the front, we then enumerate all the partitions and look
+for an NTFS partition with a <code>Windows</code> directory at the top
+level. We assume this is the windows drive and remap it to the C:
+drive.</p></li></ul><pre><code class=language-yaml>
+name: Generic.Utils.DeadDiskRemapping
+description: |
+  Calculate a remapping configuration from a dead disk image.
+
+  The artifact uses some heuristics to calculate a suitable remapping
+  configuration for a dead disk image:
+
+  The following cases are handled:
+
+  * If ImagePath is a directory to a mounted partition then we
+    generate directory remapping. This is suitable for handling images
+    with filesystems that Velociraptor cannot yet directly handle.
+
+  * If the ImagePath points to a file which starts with the NTFS
+    signature we assume this is a partition image and not a disk
+    image.
+
+  * If the ImagePath is a full disk image we assume it has a partition
+    table at the front, we then enumerate all the partitions and look
+    for an NTFS partition with a `Windows` directory at the top
+    level. We assume this is the windows drive and remap it to the C:
+    drive.
+
+type: SERVER
+
+parameters:
+  - name: ImagePath
+    default: /tmp/image.dd
+    description: Path to the image file to inspect.
+
+  - name: Accessor
+    description: |
+      Accessor to read the image with.
+
+      If not provided guess based on image file extension.
+
+  - name: Hostname
+    default: Virtual Host
+
+  - name: Upload
+    type: bool
+    default: "Y"
+    description: If specified we upload the generated YAML
+
+  - name: CommonRemapping
+    description: Common clauses for all remapping in YAML
+    default: |
+      remappings:
+      - type: permissions
+        permissions:
+        - COLLECT_CLIENT
+        - FILESYSTEM_READ
+        - FILESYSTEM_WRITE
+        - READ_RESULTS
+        - MACHINE_STATE
+        - SERVER_ADMIN
+        - COLLECT_SERVER
+        - EXECVE
+      - type: impersonation
+        os: windows
+        hostname: {{ .Hostname }}
+        env:
+        - key: SystemRoot
+          value: C:\Windows
+        - key: WinDir
+          value: C:\Windows
+        disabled_functions:
+        - amsi
+        - lookupSID
+        - token
+        disabled_plugins:
+        - execve
+        - http_client
+        - users
+        - certificates
+        - handles
+        - pslist
+        - interfaces
+        - modules
+        - netstat
+        - partitions
+        - proc_dump
+        - proc_yara
+        - vad
+        - winobj
+        - wmi
+      - type: shadow
+        from:
+          accessor: zip
+        "on":
+          accessor: zip
+      - type: shadow
+        from:
+          accessor: raw_reg
+        "on":
+          accessor: raw_reg
+      - type: shadow
+        from:
+          accessor: data
+        "on":
+          accessor: data
+
+export: |
+   -- Searches for a partition with a Windows directory, Unless this
+   -- is a partition image.
+   LET _FindWindowsPartition(ImagePath, Accessor) = SELECT *
+     FROM switch(
+       a={
+       SELECT 0 AS StartOffset, Accessor, ImagePath AS PartitionPath
+       FROM stat(filename=ImagePath)
+       WHERE IsDir
+     },
+       b={
+       // Check for a partition image if there is an NTFS header at
+       // the start.
+       SELECT 0 AS StartOffset,
+              GuessAccessor(ImagePath=ImagePath) AS Accessor,
+              pathspec(
+                 DelegateAccessor="offset",
+                 Delegate=pathspec(
+                    DelegateAccessor=GuessAccessor(ImagePath=ImagePath),
+                    DelegatePath=ImagePath,
+                    Path="0")) AS PartitionPath,
+              read_file(accessor=GuessAccessor(ImagePath=ImagePath),
+                       filename=ImagePath,
+                       length=4, offset=3) AS Magic
+       FROM scope()
+       WHERE Magic = "NTFS"
+        AND log(message="Detected NTFS signature at offset 0 - " +
+               "assuming this is a Windows partition image")
+     },
+       c={
+
+       // Assume this is a disk image with a partition table - look
+       // for the first Windows OS partition
+       SELECT StartOffset, Accessor, _PartitionPath AS PartitionPath
+       FROM Artifact.Windows.Forensics.PartitionTable(
+           ImagePath=ImagePath,
+           Accessor=GuessAccessor(ImagePath=ImagePath))
+       WHERE log(level="DEBUG", dedup=-1,
+                 message="Searching for Windows directory: %#x-%#x (%v) %v - Magic %v",
+                 args=[StartOffset, EndOffset, Size, name, Magic])
+         AND TopLevelDirectory =~ "Windows"
+         AND log(message="&lt;green&gt;Found Windows Partition&lt;/&gt; at offset %#x with top level directory %v",
+                 args=[StartOffset, TopLevelDirectory])
+       LIMIT 1
+     })
+
+   -- Guess the correct accessor based on the file extension. This
+   -- allows us to handle several image formats.
+   LET GuessAccessor(ImagePath) = Accessor ||
+     if(condition=ImagePath =~ 'vmdk$', then='vmdk') ||
+     if(condition=ImagePath =~ 'vhdx$', then='vhdx') ||
+     if(condition=ImagePath =~ 'e01$', then='ewf')
+
+   LET _MapHiveToKey(Hive, Key, Name, ImagePath) = log(dedup=-1,
+      message="&lt;green&gt;Adding hive %v&lt;/&gt;", args=Hive) &amp;&amp;
+   dict(type="mount",
+    `description`=Name,
+    `from`=dict(accessor="raw_reg",
+      path_type="registry",
+      prefix=pathspec(
+        Path="/",
+        DelegateAccessor="raw_ntfs",
+        Delegate=ImagePath + Hive)),
+    on=dict(accessor="registry", prefix=Key, path_type="registry"))
+
+   LET _MapDirHiveToKey(Hive, Key, Name) = log(dedup=-1,
+      message="&lt;green&gt;Adding hive %v&lt;/&gt;", args=Hive) &amp;&amp;
+   dict(type="mount",
+    `description`=Name,
+    `from`=dict(accessor="raw_reg",
+      path_type="registry",
+      prefix=pathspec(
+        Path="/",
+        DelegateAccessor="file",
+        DelegatePath=Hive)),
+    on=dict(accessor="registry", prefix=Key, path_type="registry"))
+
+    -- Look for user hives and map them in HKEY_USERS
+    LET _FindUserHives(ImagePath) = SELECT _MapHiveToKey(
+           Name="Map User hive for " + OSPath[-2],
+           Hive=OSPath,
+           Key="HKEY_USERS\\" + OSPath[-2],
+           ImagePath=ImagePath
+        ) AS Map
+      FROM glob(globs='/Users/*/NTUser.DAT',
+                accessor="raw_ntfs",
+                root=ImagePath)
+      WHERE log(dedup=-1, message="&lt;green&gt;Found User Hive at %v&lt;/&gt;", args=OSPath.Path)
+
+    LET _FindDirUserHives(ImagePath) = SELECT _MapDirHiveToKey(
+           Name="Map User hive for " + OSPath[-2],
+           Hive=OSPath,
+           Key="HKEY_USERS\\" + OSPath[-2]) AS Map
+      FROM glob(globs='/Users/*/NTUser.DAT',
+                root=ImagePath)
+      WHERE log(dedup=-1, message="&lt;green&gt;Found User Hive at %v&lt;/&gt;", args=OSPath.Path)
+
+    LET CalculateWindowsMappings(ImagePath) = Remappings.remappings + (
+       dict(type="mount",
+            `from`=dict(accessor="raw_ntfs", prefix=ImagePath),
+            on=dict(accessor="ntfs", prefix="\\\\.\\C:", path_type="ntfs")
+      ),
+       dict(type="mount",
+            `from`=dict(accessor="raw_ntfs", prefix=ImagePath),
+            on=dict(accessor="file", prefix="C:", path_type="windows")
+      ),
+       dict(type="mount",
+            `from`=dict(accessor="raw_ntfs", prefix=ImagePath),
+            on=dict(accessor="auto", prefix="C:", path_type="windows")
+      ),
+      _MapHiveToKey(Name="Map Software Hive",
+                    ImagePath=ImagePath,
+                    Hive="/Windows/System32/Config/SOFTWARE",
+                    Key="HKEY_LOCAL_MACHINE/Software"),
+      _MapHiveToKey(Name="Map Security Hive",
+                    ImagePath=ImagePath,
+                    Hive="/Windows/System32/Config/Security",
+                    Key="HKEY_LOCAL_MACHINE/Security"),
+      _MapHiveToKey(Name="Map System Hive",
+                    ImagePath=ImagePath,
+                    Hive="/Windows/System32/Config/System",
+                    Key="HKEY_LOCAL_MACHINE/System"),
+      _MapHiveToKey(Name="Map SAM Hive",
+                    ImagePath=ImagePath,
+                    Hive="/Windows/System32/Config/SAM",
+                    Key="SAM"),
+      _MapHiveToKey(Name="Map Amcache Hive",
+                    ImagePath=ImagePath,
+                    Hive="/Windows/appcompat/Programs/Amcache.hve",
+                    Key="Amcache")
+    ) + _FindUserHives(ImagePath=WindowsPartition.PartitionPath).Map
+
+    LET CalculateWindowsDirMappings(ImagePath) = Remappings.remappings + (
+       dict(type="mount",
+            description="Mount Directory " + ImagePath + " on C: drive",
+            `from`=dict(accessor="file", prefix=ImagePath),
+            on=dict(accessor="ntfs", prefix="\\\\.\\C:", path_type="ntfs")
+      ),
+      dict(type="mount",
+            `from`=dict(accessor="file", prefix=ImagePath),
+            on=dict(accessor="file", prefix="C:", path_type="windows")
+      ),
+       dict(type="mount",
+            `from`=dict(accessor="file", prefix=ImagePath),
+            on=dict(accessor="auto", prefix="C:", path_type="windows")
+      ),
+      _MapDirHiveToKey(Name="Map Software Hive",
+                       Hive="/Windows/System32/Config/SOFTWARE",
+                       Key="HKEY_LOCAL_MACHINE/Software"),
+      _MapDirHiveToKey(Name="Map Security Hive",
+                       Hive="/Windows/System32/Config/Security",
+                       Key="HKEY_LOCAL_MACHINE/Security"),
+      _MapDirHiveToKey(Name="Map System Hive",
+                       Hive="/Windows/System32/Config/System",
+                       Key="HKEY_LOCAL_MACHINE/System"),
+      _MapDirHiveToKey(Name="Map SAM Hive",
+                       Hive="/Windows/System32/Config/SAM",
+                       Key="SAM"),
+      _MapDirHiveToKey(Name="Map Amcache Hive",
+                       Hive="/Windows/appcompat/Programs/Amcache.hve",
+                       Key="Amcache")
+    ) + _FindDirUserHives(ImagePath=ImagePath).Map
+
+sources:
+- query: |
+    LET WindowsPartition &lt;=
+      _FindWindowsPartition(ImagePath=ImagePath, Accessor=Accessor)[0]
+
+    LET Remappings &lt;= parse_yaml(
+      filename=template(template=CommonRemapping,
+                        expansion=dict(Hostname=Hostname)),
+      accessor="data")
+
+    -- Select the type of mapping to calculate depending on what ImagePath is.
+    LET CalculateMappings =
+       ( stat(filename=ImagePath).IsDir &amp;&amp;
+         CalculateWindowsDirMappings(ImagePath=ImagePath) ) ||
+       ( WindowsPartition.PartitionPath &amp;&amp;
+         CalculateWindowsMappings(ImagePath=WindowsPartition.PartitionPath) ) ||
+         log(message="&lt;red&gt;No suitable mapping found&lt;/&gt;")
+
+    LET YamlText = serialize(format="yaml",
+         item=dict(remappings=CalculateMappings))
+
+    SELECT if(condition=Upload,
+              then=upload(accessor="data", file=YamlText, name="remapping.yaml"),
+              else=YamlText) AS Remapping
+    FROM scope()
+
+column_types:
+- name: Remapping
+  type: upload_preview
+
+</code></pre><footer class=footline></footer></div></div></section><div style=left:-1e3px;overflow:scroll;position:absolute;top:-1e3px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1774052121></script><script src=/js/perfect-scrollbar.min.js?1774052121></script><script src=/js/perfect-scrollbar.jquery.min.js?1774052121></script><script src=/js/jquery.sticky.js?1774052121></script><script src=/js/featherlight.min.js?1774052121></script><script src=/js/highlight.min.js?1774052121></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1774052121></script><script src=/js/learn.js?1774052121></script><script src=/js/hugo-learn.js?1774052121></script></body></html>

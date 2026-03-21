@@ -1,0 +1,140 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.158.0"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Customizing the GUI :: Velociraptor - Digging deeper!</title><link href=/css/nucleus.css?1774052124 rel=stylesheet><link href=/css/font-awesome-all.min.css?1774052124 rel=stylesheet><link href=/css/featherlight.min.css?1774052124 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1774052124 rel=stylesheet><link href=/css/auto-complete.css?1774052124 rel=stylesheet><link href=/css/theme.css?1774052124 rel=stylesheet><link href=/css/tabs.css?1774052124 rel=stylesheet><link href=/css/hugo-theme.css?1774052124 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1774052124 rel=stylesheet><link href=/css/dark.css?1774052124 rel=stylesheet><link href=/css/syntax.css?1774052124 rel=stylesheet><link href=/css/light.css?1774052124 rel=stylesheet><link href=/css/hljs.css?1774052124 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774052124 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1774052124></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/docs/gui/customizing/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><script src=/js/menu-6d49effe.js type=text/javascript></script><div class=highlightable><ul class="sidemenu sidebar hidden"></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>findlink(window.menu,"/docs/gui/customizing/");let menu=$(".sidemenu.hidden");addToNode(menu,window.menu),menu.find("i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()}),menu.removeClass("hidden"),$(window).on("load",function(){$("li.dd-item.active")[0].scrollIntoView()}),menu.find("li.dd-item.active")[0].scrollIntoView()</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/gui/customizing/_index.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Customizing the GUI</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents><ul><li><a href=#custom-gui-pages>Custom GUI pages</a><ul><li></li></ul></li><li><a href=#create-sidebar-links-and-context-menus-for-external-resources>Create sidebar links and context menus for external resources</a><ul><li></li></ul></li><li><a href=#developing-custom-themes>Developing custom themes</a></li><li><a href=#developing-custom-translations>Developing custom translations</a></li></ul></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Customizing the GUI</h1><p>Several aspects of the GUI can be customized to suit your
+organizational needs:</p><ul><li><a href=#custom-gui-pages>Certain pages in the GUI can be customized</a>
+.</li><li><a href=#create-sidebar-links-and-context-menus-for-external-resources>Custom sidebar links and context menus items can be created</a>
+.
+This can be done globally (for all users) or on a per-user basis.</li><li><a href=#developing-custom-themes>Custom themes can be added</a>
+.</li><li><a href=#developing-custom-translations>Additional language translations can be added</a>
+.</li></ul><p>The last two items require code-level changes and are therefore only
+recommended for developers, however Velociraptor is designed so that
+these can be done in a relatively easy modular way. For more
+information, see the relevant section below. If you do decide to
+develop new themes or language translations for the GUI, then we hope
+you&rsquo;ll consider contributing these back to the project for the benefit
+of the Velociraptor community!</p><h2 id=custom-gui-pages>Custom GUI pages</h2><p>Certain pages in the GUI allow for customization. The layout and content of
+these pages are defined in corresponding Velociraptor
+<a href=/docs/artifacts/>artifacts</a>
+.</p><p>These artifacts contain templates written in
+<a href=https://pkg.go.dev/text/template target=_blank>Go&rsquo;s templating language</a>
+that then produce the HTML that the user ultimately sees and interacts with.</p><p>The artifact specifies a template containing markdown plus elements written in
+the Go Template Language. This allows you to also include VQL queries
+(server-side only, since this is where the templates are run!) in your template,
+and display the results in tabular or various graphical formats.</p><p>Customization of these artifacts and the corresponding pages they
+produce are global changes. That is, the customizations are visible to
+all users on the server, unlike
+<a href=/docs/gui/user_preferences/>user preferences</a>
+which are per-user.</p><div class="mynotices info"><div heading=" Some web development experience is required "><p>Customizing GUI content does require a reasonable degree of
+understanding of HTML as well as of Go&rsquo;s templating language. Typical
+customization usually amounts to small tweaks where you might make a
+change to the layout or customize certain elements to suit your needs.
+However, extensive customization can be done if you really need to.</p><p>There are many excellent guides to templating and HTML available on
+the internet and for that reason this is not intended to be a tutorial
+on those topics.</p><p>If this is all new to you, you can still experiment by changing one
+small thing at a time. The customizations are implemented as custom
+artifacts, so if you mess it up you can always delete the custom
+artifact and Velociraptor will then revert to using the default
+built-in one. For obvious reasons, we recommend that all
+customizations be developed and tested on a non-production server. You
+can easily transfer your custom artifacts to a different server once
+you are happy with them.</p></div></div><p>Currently there are 3 pages in the GUI that support full customization.</p><p>These pages and their corresponding artifacts, are:</p><ul><li><p><code>Server.Internal.Welcome</code> - The Welcome page<figure id=96d1f95a24237bb402358f51c75ea6fd><div data-featherlight=#96d1f95a24237bb402358f51c75ea6fd class=figure><img src=welcome.png alt></div><figcaption><a class=image-link href=welcome.png><i class="fa fa-download"></i></a></figcaption></figure></p></li><li><p><code>Server.Monitor.Health</code> - The Server Dashboard page<figure id=30988fdfecd8f495ffd344a38e8ec5f5><div data-featherlight=#30988fdfecd8f495ffd344a38e8ec5f5 class=figure><img src=dashboard.png alt></div><figcaption><a class=image-link href=dashboard.png><i class="fa fa-download"></i></a></figcaption></figure></p></li><li><p><code>Generic.Client.Info</code> - The VQL Drilldown page which shows data about any
+selected client.<figure id=56ae80fa1733a9eb2cb4c1ba84fdf772><div data-featherlight=#56ae80fa1733a9eb2cb4c1ba84fdf772 class=figure><img src=vql_drilldown.png alt></div><figcaption><a class=image-link href=vql_drilldown.png><i class="fa fa-download"></i></a></figcaption></figure></p></li></ul><h4 id=including-image-content>Including image content</h4><p>The GUI is not served from disk which means that, by default, you cannot place
+images on disk and expect them to be picked up and served like a typical web
+server. Images that the GUI uses are compiled into the binary as static web
+assets and then served from memory.</p><p>So what do you do if you want to include custom images? Well there are a few
+options to consider:</p><ol><li><p>It is possible to include links to images from external locations using the
+<code>&lt;img></code> HTML tag, although this may be problematic if there is proxying or
+content filtering in your network environment, or if the external image
+hosting is unreliable or slow.</p></li><li><p>If you are doing extensive customization or customization that requires
+compiling your own server binary then these images can be included in the
+source tree under <code>gui/velociraptor/src/public</code> which will then serve these
+as static assets.</p></li><li><p>The config allows for serving static files from a disk location using the
+<a href=/docs/deployment/references/#GUI.reverse_proxy.url>GUI.reverse_proxy.url</a>
+setting. For example, to serve the image located at <code>/opt/www/foo.png</code> so
+that it&rsquo;s available using <code>&lt;img src="/images/foo.png"></code> you can add the
+following to your server config:</p><pre><code class=language-yaml>GUI:
+reverse_proxy:
+    - route: /images/
+      url: file:///opt/www/
+      require_auth: true
+</code></pre></li><li><p>For inclusion of one or two small images it is possible to add them to
+the artifact itself, which can be done by encoding them and embedding them as
+data URIs inside the template section of the artifact. The benefit of doing
+so is that the custom artifact is then self-contained and portable. The
+downside is that the embedded images may take up a quite a bit of space in
+the artifact and therefore might not be very visually pleasing. Here is an
+example of what that would look like:</p><p><figure id=27b49533f0e23c0cdbd8cabeb45bdc9c><div data-featherlight=#27b49533f0e23c0cdbd8cabeb45bdc9c class=figure><img src=welcome2.png alt="An image embedded as a data URI"></div><figcaption><a class=image-link href=welcome2.png><i class="fa fa-download"></i></a>
+An image embedded as a data URI</figcaption></figure></p><p>As mentioned, this approach is generally better for small images for example
+SVGs which are more compact than their equivalent raster format
+representations. However all image formats that modern browsers support
+should work as data URIs. There are online tools that will help you create a
+data URI from an image and wrap it in an <code>&lt;imag></code> tag.</p></li></ol><p>Regardless of the method you choose, you will then see your image on the
+customized page.</p><p><figure id=fe38ee6f25e48788a833364fb2a210ce><div data-featherlight=#fe38ee6f25e48788a833364fb2a210ce class=figure><img src=welcome3.png alt="Custom image added"></div><figcaption><a class=image-link href=welcome3.png><i class="fa fa-download"></i></a>
+Custom image added</figcaption></figure></p><div class="mynotices note"><div heading=" HTML security considerations "><p>For our GUI templates we use Go&rsquo;s text/template package, not the html/template
+package. In addition some sanitization is applied to the resultant HTML for
+security reasons, so not all HTML tags and features are available.</p></div></div><h2 id=create-sidebar-links-and-context-menus-for-external-resources>Create sidebar links and context menus for external resources</h2><p>You can add custom sidebar links and context menu items for all users via the
+config file, or specifically for each user via VQL.</p><p><figure id=b424135dc6da8886e44079d71dd01086><div data-featherlight=#b424135dc6da8886e44079d71dd01086 class=figure><img src=sidebar_links.png alt="Custom sidebar links"></div><figcaption><a class=image-link href=sidebar_links.png><i class="fa fa-download"></i></a>
+Custom sidebar links</figcaption></figure></p><p>Sidebar links are just a quick way of navigating somewhere. Usually this is to
+an external website, but it can also be used for linking to a specific page
+within the Velociraptor GUI.</p><p><figure id=928ba23acf5098371e5c34b0b1af1051><div data-featherlight=#928ba23acf5098371e5c34b0b1af1051 class=figure><img src=context_links.png alt="Default context links + 1 custom link"></div><figcaption><a class=image-link href=context_links.png><i class="fa fa-download"></i></a>
+Default context links + 1 custom link</figcaption></figure></p><p>Context links allow sending the data in any table cell to an external service.</p><p>Custom links specified per users are merged with those specified globally in the
+config, plus with the default links. If you want to hide the default links, you
+can add a custom link with the same <code>Text</code> as the default field and set the link
+to <code>Disabled</code>.</p><h4 id=adding-links-for-all-users>Adding links for all users</h4><p>Custom links can be specified globally (for all users) via the server config.
+These are defined in the
+<a href=/docs/deployment/references/#GUI.links>GUI.links</a>
+config section.</p><p>The config reference explains what fields and values can be used when creating a
+GUI link. The same fields and values are used when creating links for specific
+users via VQL, except that they are then formatted as a VQL dict rather than in
+YAML format.</p><p>Here is an example of a custom sidebar link that will take users to the
+Velociraptor repo on GitHub:</p><pre><code class=language-yaml>GUI:
+  links:
+  - text: Velociraptor repo
+    url: https://github.com/Velocidex/velociraptor/
+    icon_url: data:image/svg+xml;base64,[...omitted for brevity...]
+    type: sidebar
+    new_tab: true
+    disabled: false
+</code></pre><p>The following example will create a context link that will send cell data to
+a Brave search:</p><pre><code class=language-yaml>GUI:
+  links:
+  - text: Brave
+    url: https://search.brave.com/search
+    type: context
+    parameter: q
+    disabled: false
+    icon_url: data:image/png;base64,[...omitted for brevity...]
+</code></pre><h4 id=adding-links-for-specific-users>Adding links for specific users</h4><p>Links are added for individual users using the
+<a href=/vql_reference/server/user_options/>user_options</a>
+VQL function.</p><p>The <code>user_options</code> function is typically used together with the
+<a href=/vql_reference/server/gui_users/>gui_users</a>
+plugin, to enumerate
+the user accounts and then (possibly conditionally) update their preferences.
+The account used to update preferences for other users needs to be a server
+administrator.</p><p>As mentioned above, user-specific links are merged with global links, including
+the default ones.</p><div class="mynotices tip"><div heading=" Creating base64-encoded icons "><p>To include icons with your custom links they need to be added as Data URIs,
+which means the image (jpeg, png, or svg) need to be base64 encoded. While there
+are many online tools that can do this, conveniently we can also do this in a
+notebook using VQL!</p><p>The following VQL will read an image file from the local filesystem, encode it,
+and output it in the format that&rsquo;s needed for the YAML config.</p><pre><code class=language-vql>LET icon &lt;= SELECT &quot;data:image/svg+xml;base64,&quot; + base64encode(string=Data) AS icon_url
+            FROM read_file(filenames=&quot;/home/user/github-square.svg&quot;)
+SELECT serialize(format=&quot;yaml&quot;, item=icon[0]) AS icon_url_yaml FROM scope()
+</code></pre></div></div><h2 id=developing-custom-themes>Developing custom themes</h2><p>We try to provide enough themes so that at least one will satisfy your tastes,
+but if you have a very specific requirement we&rsquo;ve built Velociraptor&rsquo;s GUI in
+such a way that adding themes is not too difficult if you have experience with
+CSS development.</p><p>Each theme is just a CSS stylesheet. The currently included theme files can
+be viewed
+<a href=https://github.com/Velocidex/velociraptor/tree/master/gui/velociraptor/src/themes. target=_blank>here</a>
+.</p><h2 id=developing-custom-translations>Developing custom translations</h2><p>Velociraptor is designed so that additional languages can be added to the GUI
+relatively easily in a modular way.</p><p>Each user is able to independently select
+their preferred language in their
+<a href=/docs/gui/user_preferences/>user preferences</a>
+,
+amongst other preferences such as theme and their local time zone.</p><p>We already support English, German, Spanish, Portuguese, French, Japanese, and
+Vietnamese, but we welcome assistance in supporting other languages that we
+haven&rsquo;t got covered yet. If you would like to contribute towards supporting
+additional languages then please reach out to us on Discord.</p><footer class=footline></footer></div></div></section><div style=left:-1e3px;overflow:scroll;position:absolute;top:-1e3px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1774052124></script><script src=/js/perfect-scrollbar.min.js?1774052124></script><script src=/js/perfect-scrollbar.jquery.min.js?1774052124></script><script src=/js/jquery.sticky.js?1774052124></script><script src=/js/featherlight.min.js?1774052124></script><script src=/js/highlight.min.js?1774052124></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1774052124></script><script src=/js/learn.js?1774052124></script><script src=/js/hugo-learn.js?1774052124></script></body></html>

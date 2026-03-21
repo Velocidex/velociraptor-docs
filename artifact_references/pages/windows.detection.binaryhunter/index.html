@@ -1,0 +1,177 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.158.0"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Windows.Detection.BinaryHunter :: Velociraptor - Digging deeper!</title><link href=/css/nucleus.css?1774052122 rel=stylesheet><link href=/css/font-awesome-all.min.css?1774052122 rel=stylesheet><link href=/css/featherlight.min.css?1774052122 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1774052122 rel=stylesheet><link href=/css/auto-complete.css?1774052122 rel=stylesheet><link href=/css/theme.css?1774052122 rel=stylesheet><link href=/css/tabs.css?1774052122 rel=stylesheet><link href=/css/hugo-theme.css?1774052122 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1774052122 rel=stylesheet><link href=/css/dark.css?1774052122 rel=stylesheet><link href=/css/syntax.css?1774052122 rel=stylesheet><link href=/css/light.css?1774052122 rel=stylesheet><link href=/css/hljs.css?1774052122 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774052122 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1774052122></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/artifact_references/pages/windows.detection.binaryhunter/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><script src=/js/menu-6d49effe.js type=text/javascript></script><div class=highlightable><ul class="sidemenu sidebar hidden"></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>findlink(window.menu,"/artifact_references/pages/windows.detection.binaryhunter/");let menu=$(".sidemenu.hidden");addToNode(menu,window.menu),menu.find("i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()}),menu.removeClass("hidden"),$(window).on("load",function(){$("li.dd-item.active")[0].scrollIntoView()}),menu.find("li.dd-item.active")[0].scrollIntoView()</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/artifact_references/pages/windows.detection.binaryhunter.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Windows.Detection.BinaryHunter</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents></nav></div></div></div></div><div id=head-tags><div class=tags><a class=tag-link href=/tags/client-artifact>Client Artifact</a></div></div><div id=body-inner><h1>Windows.Detection.BinaryHunter</h1><p>This artifact enables hunting for binary attributes.</p><p>The artifact takes a glob targeting input, then checks each file in scope for an MZ header.
+The artifact also queries Authenticode details and parses out PE attributes.</p><p>Both PE and Authenticode output can be queried for relevant strings by using a regex filter and whitelist to hunt with.
+This enables unique capability to hunt for specific things such as PE imports, exports or other attributes.</p><p>Note: this artifacts filters are cumulative so a hash based hit will return
+no results if the file is filtered out by other filters.
+For most performant searches use path, size and and date filters. By default
+the artifact uses the &lsquo;auto&rsquo; data accessor but can also be changed as desired.</p><pre><code class=language-yaml>
+name: Windows.Detection.BinaryHunter
+author: "Matt Green - @mgreen27"
+description: |
+    This artifact enables hunting for binary attributes.
+
+    The artifact takes a glob targeting input, then checks each file in scope for an MZ header.
+    The artifact also queries Authenticode details and parses out PE attributes.
+
+    Both PE and Authenticode output can be queried for relevant strings by using a regex filter and whitelist to hunt with.
+    This enables unique capability to hunt for specific things such as PE imports, exports or other attributes.
+
+    Note: this artifacts filters are cumulative so a hash based hit will return
+    no results if the file is filtered out by other filters.
+    For most performant searches use path, size and and date filters. By default
+    the artifact uses the 'auto' data accessor but can also be changed as desired.
+
+parameters:
+  - name: TargetGlob
+    description: Glob to target.
+    default: "C:/Users/**/*"
+  - name: Accessor
+    description: Velociraptor accessor to use. Changing to ntfs will increase scan time.
+    default: auto
+  - name: UnexpectedExtension
+    description: "Exclude binaries with expected extension: com|cpl|dll|drv|exe|mui|scr|sfx|sys|winmd"
+    type: bool
+  - name: ExcludeTrusted
+    description: Exclude binaries with Trusted Authenticode certificates.
+    type: bool
+  - name: AuthenticodeRegex
+    description: Regex to search through all authenrticode data.
+    default: .
+    type: regex
+  - name: AuthenticodeWhitelistRegex
+    description: Regex to whitelist in all Authenticode data.
+    default:
+    type: regex
+  - name: PEInformationRegex
+    description: Regex to filter for PE information. e.g VersionInformation, exports etc
+    default: .
+    type: regex
+  - name: PEInformationWhitelistRegex
+    description: Regex to whitelist for PE information. e.g VersionInformation, exports etc
+    default:
+    type: regex
+  - name: DateAfter
+    description: Search for binaries with timestamps after this date. YYYY-MM-DDTmm:hh:ssZ
+    type: timestamp
+  - name: DateBefore
+    description: Search for binaries with timestamps before this date. YYYY-MM-DDTmm:hh:ssZ
+    type: timestamp
+  - name: SizeMax
+    description: Return binaries only under this size in bytes.
+    type: int64
+    default: 4294967296
+  - name: SizeMin
+    description: Return binaries only over this size in bytes.
+    type: int64
+    default: 0
+  - name: MD5List
+    description: MD5 hash list to hunt for. New MD5 hash on each line
+    default:
+  - name: SHA1List
+    description: SHA1 hash list to hunt for. New SHA1 hash on each line
+    default:
+  - name: SHA256List
+    description: SHA256 hash list to hunt for. New SHA256 hash on each line
+    default:
+  - name: DISABLE_DANGEROUS_API_CALLS
+    type: bool
+    description: |
+      Enable this to disable potentially flakey APIs which may cause
+      crashes.
+  - name: UploadFiles
+    type: bool
+    description: |
+      Select to upload files.
+
+sources:
+  - query: |
+      -- setup hash lists if needed
+      LET MD5Array &lt;= split(sep='\\s+',string=MD5List)
+      LET SHA1Array &lt;=  split(sep='\\s+',string=SHA1List)
+      LET SHA256Array &lt;= split(sep='\\s+',string=SHA256List)
+
+      -- firstly find files in scope with performance
+      LET find_files = SELECT *,
+            read_file(filename=OSPath,accessor=Accessor,offset=0,length=2) as _Header
+        FROM if(condition=DateBefore AND DateAfter,
+            then={
+                SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
+                FROM glob(globs=TargetGlob,accessor=Accessor)
+                WHERE NOT IsDir AND NOT IsLink
+                    AND Size &gt; SizeMin AND Size &lt; SizeMax
+                    AND ( Mtime &lt; DateBefore OR Ctime &lt; DateBefore OR Btime &lt; DateBefore )
+                    AND ( Mtime &gt; DateAfter OR Ctime &gt; DateAfter OR Btime &gt; DateAfter )
+            },
+            else={ SELECT * FROM  if(condition=DateBefore,
+                then={
+                    SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
+                    FROM glob(globs=OSPath,accessor=Accessor)
+                    WHERE NOT IsDir AND NOT IsLink
+                        AND Size &gt; SizeMin AND Size &lt; SizeMax
+                        AND ( Mtime &lt; DateBefore OR Ctime &lt; DateBefore OR Btime &lt; DateBefore )
+                },
+                else={ SELECT * FROM  if(condition=DateAfter,
+                then={
+                    SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
+                    FROM glob(globs=TargetGlob,accessor=Accessor)
+                    WHERE NOT IsDir AND NOT IsLink
+                        AND Size &gt; SizeMin AND Size &lt; SizeMax
+                        AND ( Mtime &gt; DateAfter OR Ctime &gt; DateAfter OR Btime &gt; DateAfter )
+                },
+                else={
+                    SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
+                    FROM glob(globs=TargetGlob,accessor=Accessor)
+                    WHERE NOT IsDir AND NOT IsLink
+                        AND Size &gt; SizeMin AND Size &lt; SizeMax
+                })})})
+        WHERE _Header = 'MZ'
+            AND if(condition= UnexpectedExtension,
+                then= NOT Name =~ '\.(com|cpl|dll|drv|exe|mui|scr|sfx|sys|winmd)$',
+                else= True)
+
+
+      -- parse PE attributes and run final filters
+      LET results = SELECT
+        dict(OSPath=OSPath,Name=Name,Size=Size,
+            Timestamps=dict(Mtime=Mtime,Atime=Atime,Ctime=Ctime,Btime=Btime)
+                ) as File,
+        authenticode(filename=OSPath) as Authenticode,
+        parse_pe(file=OSPath) as PE,
+        hash(path=OSPath) as Hash
+      FROM find_files
+      WHERE
+        serialize(item=Authenticode) =~ AuthenticodeRegex
+        AND NOT if(condition=WhitelistRegex,
+            then= serialize(item=Authenticode) =~ AuthenticodeWhitelistRegex,
+            else= False)
+        AND serialize(item=PE) =~ PEInformationRegex
+        AND NOT if(condition=PEInformationWhitelistRegex,
+            then= serialize(item=PE) =~ PEInformationWhitelistRegex,
+            else= False)
+        AND if(condition= ExcludeTrusted,
+                then= NOT Authenticode.Trusted = "trusted",
+                else= True)
+        AND if(condition= MD5List OR SHA1List OR SHA256List,
+            then=(
+                    if(condition= MD5List,
+                    then= Hash.MD5 in MD5Array)
+                 OR if(condition= SHA1List,
+                        then= Hash.SHA1 in SHA1Array)
+                 OR if(condition= SHA256List,
+                        then= Hash.SHA256 in SHA256Array)
+            ), else = True )
+      
+      LET upload_files= SELECT *,
+            upload(file=File.OSPath) as UploadFile
+      FROM results
+      
+      SELECT * FROM if(condition= UploadFiles,
+                        then= upload_files,
+                        else= results)
+
+</code></pre><footer class=footline></footer></div></div></section><div style=left:-1e3px;overflow:scroll;position:absolute;top:-1e3px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1774052122></script><script src=/js/perfect-scrollbar.min.js?1774052122></script><script src=/js/perfect-scrollbar.jquery.min.js?1774052122></script><script src=/js/jquery.sticky.js?1774052122></script><script src=/js/featherlight.min.js?1774052122></script><script src=/js/highlight.min.js?1774052122></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1774052122></script><script src=/js/learn.js?1774052122></script><script src=/js/hugo-learn.js?1774052122></script></body></html>

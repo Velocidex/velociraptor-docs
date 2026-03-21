@@ -1,0 +1,266 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.158.0"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Linux.Network.Nethogs :: Velociraptor - Digging deeper!</title><link href=/css/nucleus.css?1774052124 rel=stylesheet><link href=/css/font-awesome-all.min.css?1774052124 rel=stylesheet><link href=/css/featherlight.min.css?1774052124 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1774052124 rel=stylesheet><link href=/css/auto-complete.css?1774052124 rel=stylesheet><link href=/css/theme.css?1774052124 rel=stylesheet><link href=/css/tabs.css?1774052124 rel=stylesheet><link href=/css/hugo-theme.css?1774052124 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1774052124 rel=stylesheet><link href=/css/dark.css?1774052124 rel=stylesheet><link href=/css/syntax.css?1774052124 rel=stylesheet><link href=/css/light.css?1774052124 rel=stylesheet><link href=/css/hljs.css?1774052124 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774052124 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1774052124></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/exchange/artifacts/pages/linux.network.nethogs/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><script src=/js/menu-6d49effe.js type=text/javascript></script><div class=highlightable><ul class="sidemenu sidebar hidden"></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>findlink(window.menu,"/exchange/artifacts/pages/linux.network.nethogs/");let menu=$(".sidemenu.hidden");addToNode(menu,window.menu),menu.find("i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()}),menu.removeClass("hidden"),$(window).on("load",function(){$("li.dd-item.active")[0].scrollIntoView()}),menu.find("li.dd-item.active")[0].scrollIntoView()</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/exchange/artifacts/Linux.Network.Nethogs.yaml target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Linux.Network.Nethogs</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Linux.Network.Nethogs</h1><p>Monitor network use per process using the tool &ldquo;nethogs&rdquo;. This artifact will
+list all processes that produces (non-local) network traffic on the client.
+The NetstatEnriched artifact is used to provide detailed information about the
+process using netstat and the process tracker, along with the bytes received
+and sent in bytes per second.</p><p>Note that the tool/package &ldquo;nethogs&rdquo; needs to be installed before calling this
+artifact. Set the parameter InstallNethogs to true in order to automatically
+install the package and its dependencies (Debian-based systems only).</p><p>Using techniques like stacking, rare occurances of processes contacting the
+Internet can be spotted. Notebook suggestions give you total traffic overview,
+as well as boilerplate code to plot the traffic for a selected process.</p><p>Also see Linux.Event.Network.Nethogs for a nethogs event artifact.</p><pre><code class=language-yaml>
+name: Linux.Network.Nethogs
+author: 'Andreas Misje - @misje'
+description: |
+  Monitor network use per process using the tool "nethogs". This artifact will
+  list all processes that produces (non-local) network traffic on the client.
+  The NetstatEnriched artifact is used to provide detailed information about the
+  process using netstat and the process tracker, along with the bytes received
+  and sent in bytes per second.
+
+  Note that the tool/package "nethogs" needs to be installed before calling this
+  artifact. Set the parameter InstallNethogs to true in order to automatically
+  install the package and its dependencies (Debian-based systems only).
+
+  Using techniques like stacking, rare occurances of processes contacting the
+  Internet can be spotted. Notebook suggestions give you total traffic overview,
+  as well as boilerplate code to plot the traffic for a selected process.
+
+  Also see Linux.Event.Network.Nethogs for a nethogs event artifact.
+
+parameters:
+  - name: InstallNethogs
+    description: Install nethogs using apt-get
+    type: bool
+    default: false
+
+  - name: Duration
+    type: int
+    description: Number of seconds to monitor processes
+    default: 300
+
+  - name: NetstatCachePeriod
+    description: Number of seconds to cache netstat data
+    type: int
+    default: 10
+
+  - name: ProcessRegex
+    description: |
+      Only look for processes whose name / command line matches this regex
+    type: regex
+    default: .+
+
+  - name: PIDRegex
+    description: |
+      Only look for processes whose PID matches this regex
+    type: regex
+    default: .+
+
+  - name: UIDRegex
+    description: |
+      Only look for processes whose owner ID (UID) matches this regex
+    type: regex
+    default: .+
+
+precondition:
+  SELECT * FROM info() where OS = 'linux'
+
+sources:
+    - query: |
+         LET Hoggers = SELECT Timestamp,
+                              Process,
+                              int(int=PID) AS PID,
+                              UID,
+                              parse_float(string=Sent) AS Sent,
+                              parse_float(string=Recv) AS Recv
+           FROM query(
+             timeout=Duration,
+             inherit=true,
+             query={
+               SELECT *
+               FROM foreach(
+                 row={
+                   SELECT *
+                   FROM execve(argv=['/usr/sbin/nethogs', '-t', '-C'],
+                               length=10000,
+                               sep='\n\nRefreshing:\n')
+                 },
+                 query={
+                   SELECT timestamp(epoch=now()) AS Timestamp,
+                          *
+                   FROM parse_records_with_regex(
+                     accessor='data',
+                     file=Stdout,
+                     regex='''^\s*(?P&lt;Process&gt;[^\t]+)/(?P&lt;PID&gt;\d+)/(?P&lt;UID&gt;\d+)\t(?P&lt;Sent&gt;[^\t]+)\t(?P&lt;Recv&gt;\S+)''')
+                   WHERE Process =~ ProcessRegex
+                    AND PID =~ PIDRegex
+                         AND UID =~ UIDRegex
+                 })
+             })
+
+         LET Netstat &lt;= memoize(
+             name='netstat',
+             key='Pid',
+             period=NetstatCachePeriod,
+             query={
+               SELECT *
+               FROM Artifact.Linux.Network.NetstatEnriched()
+             })
+
+         LET Result = SELECT *
+           FROM foreach(
+             row={
+               SELECT *
+               FROM Hoggers
+             },
+             query={
+               SELECT *
+               FROM foreach(
+                 row={
+                   SELECT 
+                          dict(
+                            Timestamp=Timestamp,
+                            Process=Process,
+                            PID=PID,
+                            UID=UID,
+                            Sent=Sent,
+                            Recv=Recv,
+                            ProcInfo=dict(
+                              CommandLine=NULL,
+                              Username=NULL,
+                              StartTime=NULL)) + (get(
+                              item=Netstat,
+                              field=PID) || dict(
+                              Name=NULL,
+                              Laddr=NULL,
+                              Lport=NULL,
+                              Raddr=NULL,
+                              Rport=NULL,
+                              Status=NULL,
+                              ProcInfo=dict(),
+                              CallChain=NULL,
+                              ChildrenTree=NULL)) AS Contents
+                   FROM scope()
+                   WHERE Contents
+                 },
+                 column='Contents')
+             })
+
+         // Leverage the InstallDeb utility to do the actual package install:
+         LET InstallDeps = SELECT *
+           FROM if(
+             condition=InstallNethogs,
+             then={
+               SELECT *
+               FROM Artifact.Linux.Utils.InstallDeb(DebName='nethogs')
+             })
+
+         SELECT *
+         FROM chain(a_install=InstallDeps,
+                    b_result=Result)
+
+      notebook:
+        - type: vql
+          name: Traffic
+          template: |
+            /*
+            # Network traffic
+
+            {{ $TimeRange := Query "SELECT min(item=Timestamp) AS StartTime, max(item=Timestamp) AS EndTime FROM source() GROUP BY 1" | Expand }}
+            Network traffic (in bytes per second) between {{ Get $TimeRange "0.StartTime" }}
+            and {{ Get $TimeRange "0.EndTime" }}
+            */
+            LET ColumnTypes = dict(
+                _ChildrenTree='tree')
+
+            SELECT 
+                   Timestamp,
+                   PID,
+                   ProcInfo.Name || Process AS Name,
+                   ProcInfo.CommandLine AS CmdLine,
+                   ProcInfo.Username AS Username,
+                   ProcInfo.StartTime AS StartTime,
+                   Laddr,
+                   Lport,
+                   Raddr,
+                   Rport,
+                   Status,
+                   humanize(
+                     bytes=Sent * 1024) AS Sent,
+                   humanize(
+                     bytes=Recv * 1024) AS Recv,
+                   ProcInfo AS _ProcInfo,
+                   CallChain AS _CalLChain,
+                   ChildrenTree AS _ChildrenTree
+            FROM source()
+            LIMIT 50
+
+        - type: vql_suggestion
+          name: Total traffic
+          template: |
+            /*
+            # Network traffic summary
+
+            {{ $TimeRange := Query "SELECT min(item=Timestamp) AS StartTime, max(item=Timestamp) AS EndTime FROM source() GROUP BY 1" | Expand }}
+            This is a **rough estimate** of the total bytes sent and received between
+            {{ Get $TimeRange "0.StartTime" }} and {{ Get $TimeRange "0.EndTime" }}.
+            */
+            LET Summary = SELECT 
+                     PID,
+                     ProcInfo.Name || Process AS Name,
+                     ProcInfo.CommandLine AS CommandLine,
+                     ProcInfo.Username AS Username,
+                     ProcInfo.StartTime AS StartTime,
+                     // nethogs -t outputs a data rate every second. Adding these
+                     // values give us a rough estimate of the data transferred
+                     sum(
+                       item=Sent * 1024) AS Sent,
+                     sum(
+                       item=Recv * 1024) AS Recv
+              FROM source()
+              GROUP BY PID, Name
+
+            SELECT *,
+                   humanize(
+                     bytes=Sent) AS Sent,
+                   humanize(
+                     bytes=Recv) AS Recv,
+                   humanize(
+                     bytes=Recv + Sent) AS Total
+            FROM Summary
+            LIMIT 50
+
+        - type: vql_suggestion
+          name: Plot traffic for PID
+          template: |
+            // The process whose traffic to plot:
+            LET PIDTarget = 1234
+
+            /*
+            {{ $Vars := Query "SELECT PIDTarget, min(item=Timestamp) AS StartTime, max(item=Timestamp) AS EndTime FROM source() GROUP BY 1" | Expand }}
+            # Network traffic for PID {{ Get $Vars "0.PIDTarget" }}
+
+            Network traffic (in bytes per second) between {{ Get $Vars "0.StartTime" }}
+            and {{ Get $Vars "0.EndTime" }}
+            */
+            LET SinglePSStats = SELECT 
+                                       Timestamp.Unix AS Timestamp,
+                                       Sent * 1024 AS Sent,
+                                       Recv * 1024 AS Recv
+              FROM source()
+              WHERE PID = PIDTarget
+              LIMIT 50
+
+            /*
+            {{ Query "SELECT * FROM SinglePSStats" | TimeChart }}
+            */
+
+            // We do not really need this, but we need to execute some VQL
+            // in order for the plot to appear:
+            SELECT *
+            FROM SinglePSStats
+</code></pre><footer class=footline></footer></div></div></section><div style=left:-1e3px;overflow:scroll;position:absolute;top:-1e3px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1774052124></script><script src=/js/perfect-scrollbar.min.js?1774052124></script><script src=/js/perfect-scrollbar.jquery.min.js?1774052124></script><script src=/js/jquery.sticky.js?1774052124></script><script src=/js/featherlight.min.js?1774052124></script><script src=/js/highlight.min.js?1774052124></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1774052124></script><script src=/js/learn.js?1774052124></script><script src=/js/hugo-learn.js?1774052124></script></body></html>

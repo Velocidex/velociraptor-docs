@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Collector on Velociraptor - Digging deeper!</title><link>https://docs.velociraptor.app/tags/collector/</link><description>Recent content in Collector on Velociraptor - Digging deeper!</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Fri, 14 Nov 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://docs.velociraptor.app/tags/collector/index.xml" rel="self" type="application/rss+xml"/><item><title>How to create an "online collector" binary</title><link>https://docs.velociraptor.app/knowledge_base/tips/online_collector/</link><pubDate>Fri, 14 Nov 2025 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/online_collector/</guid><description>&lt;h1 id="how-to-create-an-online-collector-binary"&gt;How to create an &amp;ldquo;online collector&amp;rdquo; binary&lt;/h1&gt;
+&lt;p&gt;Velociraptor &lt;a href="https://docs.velociraptor.app/docs/deployment/offline_collections/" &gt;offline collectors&lt;/a&gt;
+
+are immensely popular with our users. They are an appealing option because of
+the simplicity and convenience of having a single executable file that any
+desktop-support-level person in a remote environment can run. The collector can
+then exfiltrate&amp;hellip; oops, I mean &amp;ldquo;upload&amp;rdquo;&amp;hellip; the collected data from the
+environment to a cloud storage service such as S3, GCS, Azure, etc.&lt;/p&gt;
+&lt;p&gt;Another reason why they are so popular is that many DFIR practitioners need to
+investigate systems in environments where there is strong resistance to
+installing any new software. Offline collectors do their work without
+installation, which overcomes that obstacle to a large degree.&lt;/p&gt;
+&lt;p&gt;So offline collectors are a great option because &lt;em&gt;&amp;ldquo;it&amp;rsquo;s just an exe&amp;rdquo;&lt;/em&gt; and it
+doesn&amp;rsquo;t require any user interaction besides clicking it. It&amp;rsquo;s hard not to love
+that level of simplicity!&lt;/p&gt;
+&lt;p&gt;However there are downsides to offline collectors:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;You really need to plan ahead about what you want to collect. An offline
+collection is often a one-shot opportunity to collect what you need. Iteration
+would require creating a new collector each time. By contrast a
+network-connected &amp;ldquo;online&amp;rdquo; client makes it easy to quickly pivot and dig
+deeper in response to findings.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Offline collectors need to be packaged with the artifacts and tools that they
+need. This means that you can&amp;rsquo;t quickly create a new artifact and add it to
+your offline collector without rebuilding and redistributing a new binary. If
+your artifacts need tools then bundling them into a collector binary can
+significantly increase the file size.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Because offline collectors do not provide progress updates and resource
+telemetry to the server, we cannot get feedback on how the collection is going
+or on the resource utilization.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="collections-vs-file-acquisitions"&gt;Collections vs. File acquisitions&lt;/h4&gt;
+&lt;p&gt;Many users see the word &amp;ldquo;collector&amp;rdquo; in the term offline collector and take that
+to mean that it&amp;rsquo;s intended to be a bulk file collector (like KAPE and many other
+file acquisition / triage tools). This is not the case: in Velociraptor a
+&amp;ldquo;collection&amp;rdquo; is the execution of any VQL on the endpoint. Velociraptor
+collections typically return JSON-structured &lt;strong&gt;data&lt;/strong&gt;, and can &lt;em&gt;optionally&lt;/em&gt;
+include file copies. But most often Velociraptor collections don&amp;rsquo;t copy files
+unless there&amp;rsquo;s a good reason to do so, like for preservation purposes &lt;em&gt;after&lt;/em&gt;
+detecting potential evidence in the file.&lt;/p&gt;
+&lt;h4 id="cloud-storage-in-the-middle-architecture"&gt;Cloud-storage-in-the-middle architecture&lt;/h4&gt;
+&lt;p&gt;I&amp;rsquo;ve also observed that some users will use offline collectors to upload
+collection data to a cloud storage service and then have their server import the
+collections from that storage service. If the offline collector on the endpoint
+can access the internet (to upload files to a cloud storage provider, for
+example) and your Velociraptor server is likely also accessible - or can be
+made accessible - from the internet then a Velociraptor client on the endpoint
+can probably connect the server. I suspect that sometimes this &amp;ldquo;cloud dropbox&amp;rdquo;
+approach might be driven more by the alluring convenience of offline collectors
+rather than being a sensible system architecture choice. Even if it&amp;rsquo;s somehow
+technically justifiable, it&amp;rsquo;s still an awfully inefficient way to do things.&lt;/p&gt;
+&lt;p&gt;Of course there may be some unusual technical constraints that force one to use
+cloud storage as an intermediary, but there&amp;rsquo;s also a good chance that this is
+being done purely because of the simplicity that the offline collector offers.
+And in that case the investigation is incurring delays and wasting resources by
+routing the data via cloud storage - even if you manage to automate the
+transfers.&lt;/p&gt;
+&lt;p&gt;So the question to ask yourself is: &lt;em&gt;Should I really be using an offline
+collector?&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;If your offline collector can connect to a storage service on the internet then
+it might be worth having it just connect to your Velociraptor server via the
+internet. In terms of the data collected, the exact same data can be collected
+by a client (including files).&lt;/p&gt;
+&lt;p&gt;The Velociraptor client can be repacked to replicate the offline collector&amp;rsquo;s
+single-file, no-installation, &amp;ldquo;just run it&amp;rdquo; simplicity. Here&amp;rsquo;s how:&lt;/p&gt;
+&lt;h4 id="creating-an-online-client-collector"&gt;Creating an online (client) collector&lt;/h4&gt;
+&lt;p&gt;Assuming that client-server connectivity &lt;em&gt;is&lt;/em&gt; possible, you can repack a client
+using the same config embedding and autoexec mechanisms that offline collectors
+use. You can create a binary that starts in client mode and that doesn&amp;rsquo;t require
+installation. It can do all the same collections that an offline collector would
+do, with none of the disadvantages mentioned above. And all it needs is to be
+run locally by some suitably privileged person such as a desktop admin.&lt;/p&gt;
+&lt;p&gt;Here&amp;rsquo;s how to create and run such a client binary:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Download the latest Velociraptor binary for the target platform. In this case
+I am going to use the Windows binary for the target platform and I am going
+to repack it on Linux (where my binary is aliased as &lt;code&gt;velociraptor&lt;/code&gt;).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Download the client config from the
+&lt;a href="https://docs.velociraptor.app/docs/gui/#the-server-dashboard" &gt;server Dashboard&lt;/a&gt;
+ page.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Edit the client config and add an autoexec section above the existing config:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-yaml"&gt;autoexec:
+ argv: [&amp;quot;client&amp;quot;, &amp;quot;-v&amp;quot;, &amp;quot;--require_admin&amp;quot;]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;code&gt;-v&lt;/code&gt; is added so that the terminal gives some visual
+feedback to let the local helper who started it know that &amp;ldquo;it&amp;rsquo;s busy&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;--require_admin&lt;/code&gt; is added since an installed client normally runs with
+elevated privileges. Offline collectors usually also enforce this
+requirement.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Also add a label section to the Client section of the config - i.e.
+&lt;code&gt;Client.labels&lt;/code&gt;. This label will be used to kick off an initial hunt when the
+client enrolls.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-yaml"&gt; labels:
+ - autocollect
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="3b02f52cd64edb3fd9a7545a11bae91e"&gt;
+ &lt;div data-featherlight="#3b02f52cd64edb3fd9a7545a11bae91e" class="figure"&gt;
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/online_collector/autoconfig.png" alt="The config file should look something like this"&gt;
+ &lt;/div&gt;
+ &lt;figcaption&gt;
+ &lt;a class="image-link" href="autoconfig.png"&gt;&lt;i class="fa fa-download"&gt;&lt;/i&gt;&lt;/a&gt;
+ The config file should look something like this
+ &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+
+
+
+&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Now we do the repacking step:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-sh"&gt;velociraptor config repack --exe=velociraptor-v0.75.4-windows-amd64.exe client.root.config.yaml autocollector.exe
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;and the results should look something like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-text"&gt;...
+[
+ {
+ &amp;quot;RepackInfo&amp;quot;: {
+ &amp;quot;Path&amp;quot;: &amp;quot;/tmp/autoclient/autocollector.exe&amp;quot;,
+ &amp;quot;Size&amp;quot;: 69291504,
+ &amp;quot;UploadId&amp;quot;: 0,
+ &amp;quot;sha256&amp;quot;: &amp;quot;398e0b37bd279f46c03508edd50649b2655516409d682fd1cd4be866b7b03bc1&amp;quot;,
+ &amp;quot;md5&amp;quot;: &amp;quot;24a4cd934d91a95c72853985d2766db0&amp;quot;,
+ &amp;quot;Components&amp;quot;: [
+ &amp;quot;autocollector.exe&amp;quot;
+ ]
+ }
+ }
+]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;On your Velociraptor server set up a new hunt targeting the &lt;code&gt;autocollect&lt;/code&gt;
+label.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;The hunt should include the same artifacts that you would have chosen for
+an offline collector&lt;/strong&gt;&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Don&amp;rsquo;t forget to start the hunt!&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="a36715e5227211dc4d070a0473f4b1b6"&gt;
+ &lt;div data-featherlight="#a36715e5227211dc4d070a0473f4b1b6" class="figure"&gt;
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/online_collector/hunt.png" alt="target the hunt by label (and yes, I know you still want to KAPE everything!)"&gt;
+ &lt;/div&gt;
+ &lt;figcaption&gt;
+ &lt;a class="image-link" href="hunt.png"&gt;&lt;i class="fa fa-download"&gt;&lt;/i&gt;&lt;/a&gt;
+ target the hunt by label (and yes, I know you still want to KAPE everything!)
+ &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+
+
+
+&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Send the &lt;code&gt;autocollector.exe&lt;/code&gt; file to a helpful administrator or other support
+staff who will run it on the machines in their environment. Tell them to &amp;lsquo;Run
+As Administrator&amp;rsquo; and to consider the machines &amp;ldquo;busy&amp;rdquo; as long as the terminal
+window stays open.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;When the exe is run (as administrator) it will open a terminal window and
+show activity as it connects to the server, enrolls, joins the hunt, and
+collects the data.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="cc38af5cdb321b595739756b824daa58"&gt;
+ &lt;div data-featherlight="#cc38af5cdb321b595739756b824daa58" class="figure"&gt;
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/online_collector/busy_collecting.png" alt="busy collecting…"&gt;
+ &lt;/div&gt;
+ &lt;figcaption&gt;
+ &lt;a class="image-link" href="busy_collecting.png"&gt;&lt;i class="fa fa-download"&gt;&lt;/i&gt;&lt;/a&gt;
+ busy collecting…
+ &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+
+
+
+&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;On the server the client is a normal client. You will be able to see it join
+the hunt and be able to view the collection results when it&amp;rsquo;s completed the
+hunt.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure id="441e9068bd336046e9a26ed10d6b4e37"&gt;
+ &lt;div data-featherlight="#441e9068bd336046e9a26ed10d6b4e37" class="figure"&gt;
+ &lt;img src="https://docs.velociraptor.app/knowledge_base/tips/online_collector/client_connected.png" alt="collection completed successfully"&gt;
+ &lt;/div&gt;
+ &lt;figcaption&gt;
+ &lt;a class="image-link" href="client_connected.png"&gt;&lt;i class="fa fa-download"&gt;&lt;/i&gt;&lt;/a&gt;
+ collection completed successfully
+ &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+
+
+
+&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Now the same collection as an offline collector is completed, except that
+the results having been sent back directly to the server. The terminal
+window is still be open on the endpoint, so you are now free to do more
+collections as you would do with any live client, but which would not be
+possible with an offline collector.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Finally, you&amp;rsquo;ve instructed the local admins to leave the machines alone as
+long as the terminal windows are open. But now you&amp;rsquo;re done with a specific
+computer. So now you want to close the terminal on that machine to signal to
+the admins that it&amp;rsquo;s done.&lt;/p&gt;
+&lt;p&gt;Copy the client_id for that machine and in a global notebook and run this VQL,
+substituting your target client&amp;rsquo;s ID:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-vql"&gt;SELECT killkillkill(client_id=&amp;quot;C.c6ec9a50598f590b&amp;quot;) FROM scope()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;The client will be sent the kill signal and the terminal will close.&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id="so-online-collector-vs-offline-collector"&gt;So&amp;hellip; Online collector vs. Offline collector?&lt;/h4&gt;
+&lt;p&gt;By using a non-persistent client we are able to do exactly the same collections
+as could be done with an offline collector, but with all the benefits of an
+online client and none of the disadvantages of an offline collector!&lt;/p&gt;
+&lt;p&gt;From the perspective of the helpful person running the client locally on the
+endpoints, there is no difference between running this or running an offline
+collector (with an offline collector you also should advise them to leave it
+alone until the terminal closes).&lt;/p&gt;
+&lt;p&gt;If your goal is to do bulk file acquisition then with this method you have all
+the files in your server&amp;rsquo;s datastore without the cost, hassles and delays of
+sending the data via a cloud storage service and then importing collection
+archives into the server.&lt;/p&gt;</description></item><item><title>How can I quickly reconfigure an offline collector?</title><link>https://docs.velociraptor.app/knowledge_base/tips/reconfigure_offline_collector/</link><pubDate>Fri, 06 May 2022 00:00:00 +0000</pubDate><guid>https://docs.velociraptor.app/knowledge_base/tips/reconfigure_offline_collector/</guid><description>&lt;h1 id="how-can-i-quickly-reconfigure-an-offline-collector"&gt;How can I quickly reconfigure an offline collector?&lt;/h1&gt;
+&lt;p&gt;The offline collector is a pre-configured version of Velociraptor that
+automatically collects certain artifacts when invoked with no command line args.&lt;/p&gt;
+&lt;p&gt;The offline collector is a full Velociraptor binary that simply has a custom
+configuration embedded. So you can still use the collector binary to perform any
+operations that an unmodified Velociraptor binary is capable of.&lt;/p&gt;
+&lt;p&gt;Usually the collector is built using the GUI by selecting the correct artifacts
+and injecting parameters into the embedded configuration file. But sometimes we
+might want to slightly modify the embedded configuration, and firing up a GUI to
+rebuild a new collector from scratch is a bit too much work.&lt;/p&gt;
+&lt;p&gt;Here we describe an easy way to quickly modify the embedded configuration, which
+is suitable for small changes in the embedded configuration. While it is
+recommended that you use the GUI to prepare a completely new collector, for
+small tweaks to an existing offline collector this method may be quicker.&lt;/p&gt;
+&lt;p&gt;Also note that you can override or append command line arguments to those
+embedded in and offline collector using
+&lt;a href="https://docs.velociraptor.app/docs/cli/#autoexec-mode-and-post-args" &gt;post-args&lt;/a&gt;
+,
+which may be sufficient when you want to change the collector behaviour on a
+once-off basis.&lt;/p&gt;
+&lt;h2 id="general-method"&gt;General Method&lt;/h2&gt;
+&lt;p&gt;Assuming you have an existing offline collector named
+&lt;code&gt;Collector_velociraptor-v0.74.3-windows-amd64.exe&lt;/code&gt;:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;First extract the existing embedded config from the collector into a local
+file:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class="language-sh"&gt;Collector_velociraptor-v0.74.3-windows-amd64.exe config show &amp;gt; config.yaml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start="2"&gt;
+&lt;li&gt;
+&lt;p&gt;Next, edit the config file - for example, you might want to tweak one or two
+parameters.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Finally, repack the new configuration file into a new collector:&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class="language-sh"&gt;Collector_velociraptor-v0.74.3-windows-amd64.exe config repack config.yaml new_collector.exe
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You can verify that the new collector has the modified configuration using
+&lt;code&gt;new_collector.exe config show&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;In the example above the &lt;code&gt;config repack&lt;/code&gt; command repacked the collector config
+into a copy of the binary which invoked the command. This is the default
+behaviour. If you wish to repack into a different binary then please see the
+next section.&lt;/p&gt;
+&lt;p&gt;Also note that the commands above are invoked using the offline collector binary
+itself, since this is just a normal Velociraptor binary which happens to have an
+embedded config. This is just for convenience - you could use any Velociraptor
+binary on any platform to do the config extraction or repacking, provided you
+also supply it with the target binary that it will use in generating the output
+file (see next section).&lt;/p&gt;
+&lt;h3 id="repacking-to-a-different-binary"&gt;Repacking to a different binary&lt;/h3&gt;
+
+&lt;div class="mynotices warning"&gt;
+ &lt;div heading=" Limitations "&gt;&lt;p&gt;Repacking the config into a different binary will not transfer any bundled tools
+to the new binary! This will cause the collection to fail if the offline
+collector can&amp;rsquo;t access these tools from an alternative location, such as from a
+URL defined in the embedded artifacts&amp;rsquo; tool definitions. And even if it can
+download the tool from an external location, you may not want it to.&lt;/p&gt;
+&lt;p&gt;If your collector uses artifacts which use tools then you should NOT use the
+method described here. You should instead rebuild your offline collector using
+the GUI or the CLI &lt;code&gt;collector&lt;/code&gt; command.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;You can use the &lt;code&gt;--exe&lt;/code&gt; flag to specify a different target binary. This allows
+you to transfer an existing collector config to a different architecture, and/or
+to a newer binary version. For example:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-sh"&gt;# from Windows amd64 to i386
+velociraptor-v0.74.3-windows-amd64.exe config repack --exe velociraptor-v0.74.3-windows-386.exe config.yaml new_collector.exe
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;or&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-sh"&gt;# using Linux to repack a Windows collector
+./velociraptor-v0.74.3-linux-amd64 config repack --exe velociraptor-v0.74.3-windows-amd64.exe config.yaml new_collector.exe
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="repacking-a-generic-collector"&gt;Repacking a Generic Collector&lt;/h2&gt;
+&lt;p&gt;The &lt;a href="https://docs.velociraptor.app/docs/offline_triage/#the-generic-offline-collector" target="_blank" &gt;Generic Collector&lt;/a&gt;
+
+is independent of any binary. It&amp;rsquo;s essentially a standalone collector config
+with compression applied. This allows it to be used with any Velociraptor binary
+since it is external to the binary.&lt;/p&gt;
+&lt;p&gt;You can unpack the Generic Collector into uncompressed YAML as follows:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;First extract the existing embedded config from the collector into a local
+file:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class="language-sh"&gt;velociraptor config show --embedded_config Collector_velociraptor-collector &amp;gt; Collector_velociraptor-collector.yaml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start="2"&gt;
+&lt;li&gt;
+&lt;p&gt;Then make minor tweaks if needed, as mentioned above.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;And then repack it back into the Generic Collector format using the &lt;code&gt;--exe&lt;/code&gt;
+flag. In this case the &amp;ldquo;exe&amp;rdquo; can be any generic collector file including the
+default &amp;ldquo;blank&amp;rdquo; one available on our
+&lt;a href="https://github.com/Velocidex/velociraptor/releases" target="_blank" &gt;GitHub Releases page&lt;/a&gt;
+
+(named &lt;code&gt;velociraptor-collector&lt;/code&gt;).&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class="language-sh"&gt;velociraptor config repack --exe velociraptor-collector Collector_velociraptor-collector.yaml new_generic-collector
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Even though the &lt;code&gt;velociraptor-collector&lt;/code&gt; file is not actually an exe, this works
+because the generic collector file contains the same embedding section as any
+Velociraptor binary, so the &lt;code&gt;config repack&lt;/code&gt; command recognizes it as a valid
+binary and therefore allows it as an alternative repacking target.&lt;/p&gt;</description></item></channel></rss>

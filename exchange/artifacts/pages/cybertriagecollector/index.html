@@ -1,0 +1,176 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.158.0"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>CyberTriage.Collector :: Velociraptor - Digging deeper!</title><link href=/css/nucleus.css?1774052124 rel=stylesheet><link href=/css/font-awesome-all.min.css?1774052124 rel=stylesheet><link href=/css/featherlight.min.css?1774052124 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1774052124 rel=stylesheet><link href=/css/auto-complete.css?1774052124 rel=stylesheet><link href=/css/theme.css?1774052124 rel=stylesheet><link href=/css/tabs.css?1774052124 rel=stylesheet><link href=/css/hugo-theme.css?1774052124 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1774052124 rel=stylesheet><link href=/css/dark.css?1774052124 rel=stylesheet><link href=/css/syntax.css?1774052124 rel=stylesheet><link href=/css/light.css?1774052124 rel=stylesheet><link href=/css/hljs.css?1774052124 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774052124 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1774052124></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/exchange/artifacts/pages/cybertriagecollector/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><script src=/js/menu-6d49effe.js type=text/javascript></script><div class=highlightable><ul class="sidemenu sidebar hidden"></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>findlink(window.menu,"/exchange/artifacts/pages/cybertriagecollector/");let menu=$(".sidemenu.hidden");addToNode(menu,window.menu),menu.find("i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()}),menu.removeClass("hidden"),$(window).on("load",function(){$("li.dd-item.active")[0].scrollIntoView()}),menu.find("li.dd-item.active")[0].scrollIntoView()</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/exchange/artifacts/CyberTriageCollector.yaml target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>CyberTriage.Collector</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>CyberTriage.Collector</h1><p>Runs the Cyber Triage (<a href=http://cybertriage.com target=_blank>http://cybertriage.com</a>
+) Collector to copy forensic artifacts for automated analysis. The Dynamic collection will include EXEs, DLLs, and other files referenced by artifacts.
+The output of the collection can be saved to a Velociraptor server, a Cyber Triage server, or cloud storage (S3 or Azure).
+Configuration information is available at - <a href=https://docs.cybertriage.com/en/latest/chapters/integrations/velociraptor_collect.html target=_blank>https://docs.cybertriage.com/en/latest/chapters/integrations/velociraptor_collect.html</a>
+It requires the Velociraptor server to have copies of the Cyber Triage Deployer script and optional configuration files.
+History. 1.0 - Initial artifact creation
+Contact <a href=mailto:support@cybertriage.com>support@cybertriage.com</a>
+with any questions.
+Copyright (c) 2025 Sleuth Kit Labs LLC. All rights reserved.</p><pre><code class=language-yaml>
+name: CyberTriage.Collector
+description: 
+     Runs the Cyber Triage (http://cybertriage.com) Collector to copy
+     forensic artifacts for automated analysis. The Dynamic collection
+     will include EXEs, DLLs, and other files referenced by artifacts. 
+
+     The output of the collection can be saved to a Velociraptor server, 
+     a Cyber Triage server, or cloud storage (S3 or Azure).
+
+     Configuration information is available at - 
+         https://docs.cybertriage.com/en/latest/chapters/integrations/velociraptor_collect.html
+     
+     It requires the Velociraptor server to have copies of the Cyber Triage Deployer script and 
+     optional configuration files. 
+     
+     History.
+     1.0 - Initial artifact creation
+
+     Contact support@cybertriage.com with any questions.
+
+     Copyright (c) 2025 Sleuth Kit Labs LLC. All rights reserved. 
+     
+type: CLIENT
+
+resources:
+   timeout: 14400
+   max_upload_bytes: 4294967296
+
+parameters:
+   - name: PowerShellExe
+     default: "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+     description: Where the PowerShell executable is located, this should not be changed unless you are using 
+       a newer verison of PowerShell
+     
+   - name: script_temp_location
+     default: "C:\\Windows\\temp\\deploy_cyber_triage_collector.ps1"
+     description: Where the Deployer script will be downloaded to
+
+   - name: CollectorConfig_temp_location
+     default: "C:\\Windows\\temp\\CollectorConfig.yaml"
+     description: Where the (optional) cloud storage configuration file will be copied to
+     
+   - name: filesets_temp_location
+     default: "C:\\Windows\\temp\\filesets.yaml"
+     description: Where the custom file rules configuration file will be copied to
+
+     # This needs to be updated if the Deployer script writes data to a different location
+   - name: outputFilesSpec
+     description: List of files to copy back after the Collector runs. 
+     type: csv
+     default: |
+       Glob
+       Windows\Temp\file.json.gz*
+
+   - name: Root
+     description: |
+       On Windows, this is the device to apply all the glob on
+       (e.g. `C:`). On *NIX, this should be a path to a subdirectory or
+       /.
+     default: "C:"
+
+   - name: Accessor
+     default: auto
+     description: |
+       On Windows, this can be changed to `ntfs`.
+
+tools:
+  - name: deploy_cyber_triage_collector
+    serve_locally: false
+
+# TODO: Uncomment this if using cloud storage
+#  - name: CollectorConfig.yaml
+#    serve_locally: false
+
+# TODO: Uncomment this if using custom file rules
+#  - name: filesets.yaml
+#    serve_locally: false
+
+    
+precondition: SELECT OS From info() where OS = 'windows'
+
+sources:
+   - name: Run Deployer Script
+     query: |
+       // Get the path to the Deployer script on the server.
+       LET collector &lt;= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
+                 ToolName= "deploy_cyber_triage_collector", IsExecutable=FALSE,
+                 TemporaryOnly=FALSE)
+
+       // Copy powershell script from Tools to c:\Windows\Temp. We had escaping issues when running from the download location.
+       LET cp &lt;= SELECT copy(filename=collector[0].OSPath, accessor="file", 
+                             dest=script_temp_location)
+                   FROM scope()
+
+                 
+       // TODO: Uncomment below if using cloud storage config file. This copies the file from the server to temp folder. 
+       //LET CollectorConfig &lt;= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
+       //                            ToolName= "CollectorConfig.yaml", IsExecutable=FALSE,
+       //                            TemporaryOnly=FALSE)
+       //LET cp1 &lt;= SELECT copy(filename=CollectorConfig[0].OSPath, accessor="file", 
+       //                          dest=CollectorConfig_temp_location)
+       //                FROM scope()
+
+
+       
+       // TODO: Uncomment below if using custom file collection rules. This copies the file from the server to temp folder. 
+       //LET filesets &lt;= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
+       //             ToolName= "filesets.yaml", IsExecutable=FALSE,
+       //             TemporaryOnly=FALSE)
+       //LET cp2 &lt;= SELECT copy(filename=filesets[0].OSPath, accessor="file", 
+       //                          dest=filesets_temp_location)
+       //                FROM scope()
+
+       
+       // Launch the script - it will download and run the Collector
+       SELECT * FROM execve(argv=[PowerShellExe,
+                    "-ExecutionPolicy", "Unrestricted", "-encodedCommand",
+                 base64encode(string=utf16_encode(string=script_temp_location))])
+
+       // TODO: Remove the rest of this file if the Deployer script sends data to cloud or CT Server. 
+       // This section will send the JSON file back to the server. 
+   - name: Get Collector File Metadata and Upload
+     query: |
+       LET RootPath &lt;= pathspec(Path=Root, accessor=Accessor)
+
+       // Generate the collection globs for each device
+       LET specs = SELECT RootPath + Glob AS Glob
+            FROM outputFilesSpec
+            WHERE log(message=format(
+               format="Processing Device %v with %v: glob is %v",
+               args=[Root, Accessor, Glob]))
+
+       // Join all the collection rules into a single Glob plugin. This ensure we
+       // only make one pass over the filesystem. We only want LFNs.
+       LET hits = SELECT OSPath AS SourceFile, Size
+        FROM glob(globs=specs.Glob, accessor=Accessor)
+        WHERE NOT IsDir AND log(message="Found " + SourceFile)
+
+       // Pass all the results to the next query. This will serialize
+       // to disk if there are too many results.
+       LET all_results &lt;=
+         SELECT Size, SourceFile
+         FROM hits
+       // Upload the files
+       LET uploaded_files = SELECT * FROM foreach(row={
+          SELECT * FROM all_results
+        },
+        workers=30,
+        query={
+          SELECT SourceFile, Size,
+               upload(file=SourceFile, accessor=Accessor) AS Upload
+            FROM scope()
+        })
+
+       // Separate the hashes into their own column.
+       SELECT now() AS CopiedOnTimestamp, SourceFile,
+             Upload.Path AS DestinationFile,
+               Size AS FileSize, Upload.sha256 AS SourceFileSha256
+        FROM uploaded_files
+
+</code></pre><footer class=footline></footer></div></div></section><div style=left:-1e3px;overflow:scroll;position:absolute;top:-1e3px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1774052124></script><script src=/js/perfect-scrollbar.min.js?1774052124></script><script src=/js/perfect-scrollbar.jquery.min.js?1774052124></script><script src=/js/jquery.sticky.js?1774052124></script><script src=/js/featherlight.min.js?1774052124></script><script src=/js/highlight.min.js?1774052124></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1774052124></script><script src=/js/learn.js?1774052124></script><script src=/js/hugo-learn.js?1774052124></script></body></html>

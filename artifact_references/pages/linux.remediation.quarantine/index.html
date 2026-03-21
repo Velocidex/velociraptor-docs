@@ -1,0 +1,344 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.158.0"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Linux.Remediation.Quarantine :: Velociraptor - Digging deeper!</title><link href=/css/nucleus.css?1774052121 rel=stylesheet><link href=/css/font-awesome-all.min.css?1774052121 rel=stylesheet><link href=/css/featherlight.min.css?1774052121 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1774052121 rel=stylesheet><link href=/css/auto-complete.css?1774052121 rel=stylesheet><link href=/css/theme.css?1774052121 rel=stylesheet><link href=/css/tabs.css?1774052121 rel=stylesheet><link href=/css/hugo-theme.css?1774052121 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1774052121 rel=stylesheet><link href=/css/dark.css?1774052121 rel=stylesheet><link href=/css/syntax.css?1774052121 rel=stylesheet><link href=/css/light.css?1774052121 rel=stylesheet><link href=/css/hljs.css?1774052121 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774052121 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1774052121></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/artifact_references/pages/linux.remediation.quarantine/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><script src=/js/menu-6d49effe.js type=text/javascript></script><div class=highlightable><ul class="sidemenu sidebar hidden"></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>findlink(window.menu,"/artifact_references/pages/linux.remediation.quarantine/");let menu=$(".sidemenu.hidden");addToNode(menu,window.menu),menu.find("i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()}),menu.removeClass("hidden"),$(window).on("load",function(){$("li.dd-item.active")[0].scrollIntoView()}),menu.find("li.dd-item.active")[0].scrollIntoView()</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/artifact_references/pages/linux.remediation.quarantine.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Linux.Remediation.Quarantine</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents></nav></div></div></div></div><div id=head-tags><div class=tags><a class=tag-link href=/tags/client-artifact>Client Artifact</a></div></div><div id=body-inner><h1>Linux.Remediation.Quarantine</h1><p>Applies network quarantine to a Linux system using nftables.</p><p>It expects the target system to have nftables installed, and uses the
+associated <code>nft</code> CLI tool.</p><p>The artifact will create a table, with the default name
+<code>vrr_quarantine_table</code>, which contains three chains: One for inbound traffic,
+one for outbound traffic, and the other for forwarding traffic. The chains
+will cut off all traffic except those for DNS lookup and to the Velociraptor
+server.</p><p>To unquarantine the system, set the <code>RemovePolicy</code> parameter to <code>True</code>.</p><p>The parameter <code>ForbiddenTestURL</code> is used to test if the quarantine is working
+as expected, so set it to a URL that should not be reachable from a
+quarantined system.</p><pre><code class=language-yaml>
+name: Linux.Remediation.Quarantine
+description: |
+  Applies network quarantine to a Linux system using nftables.
+
+  It expects the target system to have nftables installed, and uses the
+  associated `nft` CLI tool.
+
+  The artifact will create a table, with the default name
+  `vrr_quarantine_table`, which contains three chains: One for inbound traffic,
+  one for outbound traffic, and the other for forwarding traffic. The chains
+  will cut off all traffic except those for DNS lookup and to the Velociraptor
+  server.
+
+  To unquarantine the system, set the `RemovePolicy` parameter to `True`.
+
+  The parameter `ForbiddenTestURL` is used to test if the quarantine is working
+  as expected, so set it to a URL that should not be reachable from a
+  quarantined system.
+
+precondition: SELECT OS From info() where OS = 'linux'
+
+type: CLIENT
+
+required_permissions:
+  - EXECVE
+  - NETWORK
+
+parameters:
+  - name: pathToNFT
+    default: /usr/sbin/nft
+    description: We depend on nft to manage the tables, chains, and rules.
+
+  - name: TableName
+    default: vrr_quarantine_table
+    description: Name of the quarantine table
+
+  - name: ForbiddenTestURL
+    default: https://www.google.com
+    description: URL for forbidden connection check
+
+  - name: MessageBox
+    description: |
+        Optional message box notification to send to logged in users. 256
+        character limit.
+
+  - name: RemovePolicy
+    type: bool
+    description: Tickbox to remove policy.
+
+sources:
+  - query: |
+       LET State &lt;= dict(installed=FALSE)
+
+       LET SetInstalled = set(item=State, field="installed", value=TRUE)
+
+       LET ClearInstalled = set(item=State, field="installed", value=FALSE) || TRUE
+
+       LET run_command(Cmd, Message) = SELECT
+           timestamp(epoch=now()) AS Time,
+           format(format="Running %v: %v, Returned %v %v",
+                  args=[Cmd, Stdout || Stderr, ReturnCode,
+                    Message || ""]) AS Result
+         FROM execve(argv=Cmd, length=10000)
+
+       // If a MessageBox configured truncate to 256 character limit
+       LET MessageBox &lt;= parse_string_with_regex(regex='^(?P&lt;Message&gt;.{0,255}).*',
+                                                 string=MessageBox).Message
+
+       // Parse a URL to get domain name.
+       LET get_domain(URL) = split(string=url(parse=URL).Host, sep=":")[0]
+
+       LET get_port(URL) = if(condition=url(parse=URL).Host =~ ":",
+                              then=split(string=url(parse=URL).Host, sep=":")[1],
+                              else=if(condition=url(parse=URL).Scheme = "https",
+                                      then="443",
+                                      else="80"))
+
+       LET add_to_in_chain(DstAddr, DstPort) = (pathToNFT, 'add', 'rule', 'inet',
+             TableName, 'inbound_chain', 'ip', 'saddr', host(name=DstAddr)[0],
+             'tcp', 'sport', '{', DstPort, '}', 'ct', 'state', 'established', 'accept')
+
+       LET add_to_out_chain(DstAddr, DstPort) = (pathToNFT, 'add', 'rule', 'inet',
+             TableName, 'outbound_chain', 'ip', 'daddr', host(name=DstAddr)[0],
+             'tcp', 'dport', '{', DstPort, '}', 'ct', 'state', 'established,new', 'accept')
+
+       // extract Velociraptor config for policy
+       LET extracted_config &lt;= SELECT get_domain(URL=_value) AS DstAddr,
+                                      get_port(URL=_value) AS DstPort,
+                                      'VelociraptorFrontEnd' AS Description,
+                                      _value AS URL
+         FROM foreach(row=config.server_urls)
+
+       LET send_message_box(Msg) = SELECT timestamp(epoch=now()) AS Time,
+                                          Result
+         FROM if(condition=MessageBox,
+                 then={
+           SELECT Msg + ' MessageBox sent.' AS Result
+           FROM execve(argv=['wall', MessageBox])
+         },
+                 else={
+           SELECT Msg AS Result
+           FROM scope()
+         })
+
+       // delete table
+       LET delete_table_cmd = (pathToNFT, 'delete', 'table', 'inet',
+             TableName)
+
+       // add table
+       LET add_table_cmd = (pathToNFT, 'add', 'table', 'inet',
+             TableName)
+
+       // add inbound chain
+       LET add_inbound_chain_cmd = (pathToNFT, 'add', 'chain', 'inet',
+             TableName, 'inbound_chain', '{', 'type', 'filter', 'hook', 'input', 'priority', '0\;', 'policy', 'drop\;', '}')
+
+       // add udp rule inbound chain to allow DNS lookups
+       LET add_udp_rule_to_inbound_chain_cmd = (pathToNFT, 'add', 'rule', 'inet',
+             TableName, 'inbound_chain', 'udp', 'sport', 'domain', 'ct', 'state', 'established', 'accept')
+
+       // add localhost inbound rule to allow DNS lookups (needed on some ubuntu systems)
+       // This is where systemd-resolved listens for local dns cache
+       LET add_localhost_rule_to_inbound_chain_cmd = (pathToNFT, 'add', 'rule', 'inet',
+             TableName, 'inbound_chain', 'ip', 'daddr', '127.0.0.53', 'accept')
+
+       // add outbound chain
+       LET add_outbound_chain_cmd = (pathToNFT, 'add', 'chain', 'inet',
+             TableName, 'outbound_chain', '{', 'type', 'filter', 'hook', 'output', 'priority', '0\;', 'policy', 'drop\;', '}')
+
+       // add tcp rule outbound chain to allow DNS traffics
+       LET add_tcp_rule_to_outbound_chain_cmd = (pathToNFT, 'add', 'rule', 'inet',
+             TableName, 'outbound_chain', 'tcp', 'dport', '{', '53', '}', 'ct', 'state', 'new,established', 'accept')
+
+       // add udp rule outbound chain to allow DNS and DHCP traffics
+       LET add_udp_rule_to_outbound_chain_cmd = (pathToNFT, 'add', 'rule', 'inet',
+             TableName, 'outbound_chain', 'udp', 'dport', '{', '53,67,68', '}', 'ct', 'state', 'new,established', 'accept')
+
+       // add localhost outbound rule to allow DNS lookups (needed on some ubuntu systems)
+       LET add_localhost_rule_to_outbound_chain_cmd = (pathToNFT, 'add', 'rule', 'inet',
+             TableName, 'outbound_chain', 'ip', 'saddr', '127.0.0.53', 'accept')
+
+       // add forward chain
+       LET add_forward_chain_cmd = (pathToNFT, 'add', 'chain', 'inet',
+             TableName, 'forward_chain', '{', 'type', 'filter', 'hook', 'forward', 'priority', '0\;', 'policy', 'drop\;', '}')
+
+       // delete quarantine table
+       LET delete_quarantine_table = SELECT timestamp(epoch=now()) AS Time,
+                                            TableName + ' table removed.' AS Result
+         FROM execve(argv=delete_table_cmd, length=10000)
+         WHERE ClearInstalled
+
+       // add tcp rule to inbound_chain to allow connections from Velociraptor
+       // FIXME(gye): may need to add IPv6 rules if DstAddr is an IPv6 address
+       LET add_velociraptor_rule_to_inbound_chain = SELECT *
+         FROM foreach(row={
+           SELECT DstAddr,
+                  DstPort,
+                  add_to_in_chain(DstAddr=DstAddr, DstPort=DstPort) AS cmd
+           FROM extracted_config
+         },
+                      query={
+           SELECT *
+           FROM run_command(Cmd=cmd,
+                            Message='Added tcp rule to inbound_chain in ' +
+                              TableName + ' table.')
+         })
+
+       // add tcp rule to inbound_chain to allow connections from Velociraptor
+       // FIXME(gye): may need to add IPv6 rules if DstAddr is an IPv6 address
+       LET add_velociraptor_rule_to_outbound_chain = SELECT *
+         FROM foreach(row={
+           SELECT DstAddr,
+                  DstPort,
+                  add_to_out_chain(DstAddr=DstAddr, DstPort=DstPort) AS cmd
+           FROM extracted_config
+         },
+                      query={
+           SELECT *
+           FROM run_command(Cmd=cmd,
+                            Message='Added tcp rule to inbound_chain in ' +
+                              TableName + ' table.')
+         })
+
+       // test connection to a frontend server
+       LET test_connection = SELECT *
+         FROM foreach(row={
+           SELECT DstAddr,
+                  DstPort,
+                  URL + 'server.pem' AS pem_url
+           FROM extracted_config
+           WHERE log(message="Will check connectivity with " + pem_url, dedup=-1)
+         },
+                      query={
+           SELECT format(format="Testing connectivity with %v: %v",
+                         args=[Url, Response]) AS Result
+           FROM http_client(url=pem_url)
+           WHERE Response = 200 AND log(dedup=-1,
+                message="got %v for url %v", args=[Response, Url])
+           LIMIT 1
+         })
+
+       // test connection to the ForbiddenTestURL - if the connection
+       // can not be made, this will run in the http_client timeout that
+       // can not be set manually. thus, the artifact will run for
+       // approx. 2 minutes. Returns true if we are able to connect.
+       LET test_forbidden_connection = SELECT *
+         FROM http_client(url=log(message="Testing forbidden connection to " +
+                                    ForbiddenTestURL,
+                                  dedup=-1)
+                           &amp;&amp; ForbiddenTestURL)
+         WHERE NOT Response =~ '^5..$' AND log(dedup=-1,
+             message="got %v for url %v", args=[Response, Url])
+         LIMIT 1
+
+       // final checks to keep or remove policy
+       // first check if connection to velociraptor server can be made
+       LET final_check_allowed = SELECT *
+         FROM if(
+           condition=test_connection,
+           then=send_message_box(Msg=TableName + ' connection test successful.'),
+           else={
+           SELECT *
+           FROM run_command(
+             Cmd=log(
+               dedup=-1,
+               message="%v failed connection test. Removing quarantine table.",
+               args=TableName,
+               level="ERROR")
+              &amp;&amp; delete_table_cmd,
+             Message=TableName + ' failed connection test. Removing quarantine table.')
+           WHERE ClearInstalled
+         })
+
+       // then check if connection to ForbiddenTestURL can NOT be made
+       // TODO(gyee): for now we are using the wall commmand to send the message.
+       // Will need to look into using libnotify instead.
+       LET final_check_forbidden = SELECT *
+         FROM if(
+           condition=State.installed
+            AND test_forbidden_connection,
+           then={
+           SELECT *
+           FROM run_command(
+             Cmd=log(
+               dedup=-1,
+               message="%v failed forbidden connection test - connection to %v could be established. Removing quarantine table.",
+               args=[TableName, ForbiddenTestURL],
+               level="ERROR")
+              &amp;&amp; delete_table_cmd,
+             Message=TableName + ' failed forbidden connection test. Removing quarantine table.')
+           WHERE ClearInstalled
+         },
+           else=send_message_box(
+             Msg=TableName + ' forbidden connection test successful.'))
+
+       LET check_nft_cmd = (pathToNFT, "--version")
+
+       // Execute content
+       LET doit = SELECT *
+         FROM if(condition=RemovePolicy,
+                 then={
+           SELECT *
+           FROM delete_quarantine_table
+         },
+                 else={
+           SELECT *
+           FROM chain(
+             a=delete_quarantine_table,
+             b={
+           SELECT *
+           FROM run_command(Cmd=add_table_cmd,
+                            Message=SetInstalled
+                             &amp;&amp; TableName + ' added.')
+         },
+             c={
+           SELECT *
+           FROM run_command(
+             Cmd=add_inbound_chain_cmd,
+             Message='Added inbound_chain to ' + TableName + ' table.')
+         },
+             d=add_velociraptor_rule_to_inbound_chain,
+             e=run_command(Cmd=add_udp_rule_to_inbound_chain_cmd,
+                           Message='Added udp rule to inbound_chain in ' +
+                             TableName + ' table.'),
+             f=run_command(Cmd=add_localhost_rule_to_inbound_chain_cmd,
+                           Message='Added localhost rule to inbound_chain in ' +
+                             TableName + ' table.'),
+             g=run_command(
+               Cmd=add_outbound_chain_cmd,
+               Message='Added outbound_chain to ' + TableName + ' table.'),
+             h=add_velociraptor_rule_to_outbound_chain,
+             i=run_command(Cmd=add_tcp_rule_to_outbound_chain_cmd,
+                           Message='Added tcp rule to outbound_chain in ' +
+                             TableName + ' table.'),
+             j=run_command(Cmd=add_udp_rule_to_outbound_chain_cmd,
+                           Message='Added udp rule to outbound_chain in ' +
+                             TableName + ' table.'),
+             k=run_command(Cmd=add_localhost_rule_to_outbound_chain_cmd,
+                           Message='Added localhost rule to outbound_chain in ' +
+                             TableName + ' table.'),
+             l=run_command(
+               Cmd=add_forward_chain_cmd,
+               Message='Added forward_chain to ' + TableName + ' table.'),
+             m={
+           SELECT *
+           FROM final_check_allowed
+         },
+             n={
+           SELECT *
+           FROM if(condition=State.installed,
+                   then=final_check_forbidden)
+         })
+         })
+
+       SELECT *
+       FROM if(condition={
+           SELECT *
+           FROM run_command(Cmd=check_nft_cmd, Message='Check for ' + pathToNFT)
+           WHERE Result =~ "nftables"
+         },
+               then=doit,
+               else={
+           SELECT *
+           FROM scope()
+           WHERE log(level="ERROR",
+                     message="nftables is not installed - quarantine not supported")
+            AND FALSE
+         })
+
+</code></pre><footer class=footline></footer></div></div></section><div style=left:-1e3px;overflow:scroll;position:absolute;top:-1e3px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1774052121></script><script src=/js/perfect-scrollbar.min.js?1774052121></script><script src=/js/perfect-scrollbar.jquery.min.js?1774052121></script><script src=/js/jquery.sticky.js?1774052121></script><script src=/js/featherlight.min.js?1774052121></script><script src=/js/highlight.min.js?1774052121></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1774052121></script><script src=/js/learn.js?1774052121></script><script src=/js/hugo-learn.js?1774052121></script></body></html>

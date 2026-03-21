@@ -1,0 +1,139 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.158.0"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>How to automatically post process flows with an external program. :: Velociraptor - Digging deeper!</title><link href=/css/nucleus.css?1774052125 rel=stylesheet><link href=/css/font-awesome-all.min.css?1774052125 rel=stylesheet><link href=/css/featherlight.min.css?1774052125 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1774052125 rel=stylesheet><link href=/css/auto-complete.css?1774052125 rel=stylesheet><link href=/css/theme.css?1774052125 rel=stylesheet><link href=/css/tabs.css?1774052125 rel=stylesheet><link href=/css/hugo-theme.css?1774052125 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1774052125 rel=stylesheet><link href=/css/dark.css?1774052125 rel=stylesheet><link href=/css/syntax.css?1774052125 rel=stylesheet><link href=/css/light.css?1774052125 rel=stylesheet><link href=/css/hljs.css?1774052125 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774052125 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1774052125></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/knowledge_base/tips/post_process_with_external_program/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><script src=/js/menu-6d49effe.js type=text/javascript></script><div class=highlightable><ul class="sidemenu sidebar hidden"></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>findlink(window.menu,"/knowledge_base/tips/post_process_with_external_program/");let menu=$(".sidemenu.hidden");addToNode(menu,window.menu),menu.find("i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()}),menu.removeClass("hidden"),$(window).on("load",function(){$("li.dd-item.active")[0].scrollIntoView()}),menu.find("li.dd-item.active")[0].scrollIntoView()</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/knowledge_base/tips/post_process_with_external_program.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>How to automatically post process flows with an external program.</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents><ul><li><a href=#1-finding-the-result-files-in-a-flow>1. Finding the result files in a flow.</a></li><li><a href=#2-launching-the-python-program>2. Launching the Python program</a></li><li><a href=#3-automating-post-processing>3. Automating post processing.</a></li><li><a href=#4-convert-to-an-artifact-and-install>4. Convert to an artifact and install</a></li></ul></nav></div></div></div></div><div id=head-tags><div class=tags><a class=tag-link href=/tags/vql>vql</a></div></div><div id=body-inner><h1 id=how-to-automatically-post-process-flows-with-an-external-program>How to automatically post process flows with an external program.</h1><p>Sometimes we want to automatically post process a collection using an
+external program - for example a Python script. This short article
+will illustrate how to launch a python program automatically to post
+process a collection.</p><p>For our example we will write a Python program to post process the
+<code>Generic.Client.Info</code> artifact. As soon as the artifact is collected
+we want to extract the <code>Hostname</code> field from the <code>BasicInformation</code>
+source and greet the host with a welcome message.</p><h2 id=1-finding-the-result-files-in-a-flow>1. Finding the result files in a flow.</h2><p>Velociraptor collects artifacts in <code>Flows</code> which are stored as a
+collection of files within the VFS. You can see all the files in a
+particular flow using the <code>enumerate_flow()</code> plugin:</p><pre><code class=language-sql>SELECT * FROM enumerate_flow(client_id=ClientId, flow_id=FlowId)
+</code></pre><p><figure id=6b6a0143878bd191751e2dcef0d58cd2><div data-featherlight=#6b6a0143878bd191751e2dcef0d58cd2 class=figure><img src=enumerate_flow.png alt="Enumerating Flow Files"></div><figcaption><a class=image-link href=enumerate_flow.png><i class="fa fa-download"></i></a>
+Enumerating Flow Files</figcaption></figure></p><p>You will notice that each file has a <code>Type</code> field and the path to the
+file is given using the file store path. This allows the file to be
+opened using the <code>fs</code> accessor in VQL.</p><p>However to receive the full file on disk, the <code>file_store()</code> function
+can be used.</p><p>When collecting an artifact, each source query in the artifact is
+stored in a single file on disk. In our case we want to know the file
+that contains the <code>BasicInformation</code> source:</p><pre><code class=language-sql>SELECT file_store(path=Data.VFSPath) AS Path
+FROM enumerate_flow(client_id=ClientId, flow_id=FlowId)
+WHERE Type = &quot;Result&quot; AND Path =~ &quot;BasicInformation&quot;
+</code></pre><h2 id=2-launching-the-python-program>2. Launching the Python program</h2><p>Now that we can find the path to the correct file, we need to launch
+an external program to receive this path.</p><p>Let&rsquo;s encapsulate the logic in a VQL function:</p><pre><code class=language-sql>LET _GetPath(ClientId, FlowId) =
+  SELECT file_store(path=Data.VFSPath) AS Path
+  FROM enumerate_flow(client_id=ClientId, flow_id=FlowId)
+  WHERE Type = &quot;Result&quot; AND Path =~ &quot;BasicInformation&quot;
+
+LET GetPath(ClientId, FlowId) = _GetPath(ClientId=ClientId, FlowId=FlowId)[0].Path
+
+SELECT *
+FROM execve(argv=[&quot;python.exe&quot;, &quot;C:/MyScript.py&quot;, GetPath(ClientId=ClientId, FlowId=FlowId)])
+</code></pre><p>This query will extract the path to the <code>BasicInformation</code> source and
+launch my python script, while passing it the path to the result set.</p><p>While working in a notebook I can iterate on developing my python
+script by recalculating the cell all the time.</p><p><figure id=02046dd392911c979575a5cba31a1558><div data-featherlight=#02046dd392911c979575a5cba31a1558 class=figure><img src=iterating_dev.png alt="Iterating development of the python script"></div><figcaption><a class=image-link href=iterating_dev.png><i class="fa fa-download"></i></a>
+Iterating development of the python script</figcaption></figure></p><p>My goal is to write a python script which reads the result set from
+disk (which is just a line separated <code>JSON</code> file), then extracts the
+<code>Hostname</code> column. Finally the python program will emit a <code>JSON</code>
+object per line into <code>Stdout</code></p><pre><code class=language-python>import sys
+import json
+
+if __name__ == &quot;__main__&quot;:
+    PathName = sys.argv[1]
+    with open(PathName, mode=&quot;r&quot;) as fd:
+        for line in fd.readlines():
+            try:
+                data = json.loads(line)
+                response = dict(Greeting = &quot;Hello &quot; + data[&quot;Hostname&quot;])
+                print(json.dumps(response))
+            except Exception as e:
+                print(&quot;Exception %s&quot; % e)
+                continue
+</code></pre><p>Now that I have a python program which generates a JSON object per
+line, I can expand the JSON object into a row using the <code>foreach()</code>
+plugin:</p><pre><code class=language-sql>LET _GetPath(ClientId, FlowId) =
+  SELECT file_store(path=Data.VFSPath) AS Path
+  FROM enumerate_flow(client_id=ClientId, flow_id=FlowId)
+  WHERE Type = &quot;Result&quot; AND Path =~ &quot;BasicInformation&quot;
+
+LET GetPath(ClientId, FlowId) = _GetPath(ClientId=ClientId, FlowId=FlowId)[0].Path
+
+SELECT *
+FROM foreach(row={
+    SELECT parse_json(data=Stdout) AS Row
+    FROM execve(argv=[&quot;python.exe&quot;, &quot;C:/MyScript.py&quot;,
+                  GetPath(ClientId=ClientId, FlowId=FlowId)])
+  },
+  column=&quot;Row&quot;)
+</code></pre><h2 id=3-automating-post-processing>3. Automating post processing.</h2><p>So far I was working in a notebook, but now I want to write the
+artifact that will trigger it automatically. I want the server itself
+to monitor when a new <code>Generic.Client.Info</code> collection is made and
+automatically post process it - So I need a <code>Server Event Monitor</code>
+artifact.</p><p>When a collection is complete, the server emits a
+<code>System.Flow.Completion</code> event, which I can watch using
+<code>watch_monitoring()</code>. I can then filter collection by the artifacts
+they found to obtain the <code>ClientId</code> and <code>FlowId</code>.</p><p>Putting it all together:</p><pre><code class=language-sql>LET Completions = SELECT FlowId, ClientId
+   FROM watch_monitoring(artifact='System.Flow.Completion')
+   WHERE Flow.artifacts_with_results =~ &quot;Generic.Client.Info/BasicInformation&quot;
+
+LET PostProcess(ClientId, FlowId) = SELECT *
+   FROM foreach(row={
+      SELECT parse_json(data=Stdout) AS Row
+      FROM execve(argv=[&quot;python.exe&quot;, &quot;C:/MyScript.py&quot;,
+                  GetPath(ClientId=ClientId, FlowId=FlowId)])
+    },
+    column=&quot;Row&quot;)
+
+LET _GetPath(ClientId, FlowId) =
+  SELECT file_store(path=Data.VFSPath) AS Path
+  FROM enumerate_flow(client_id=ClientId, flow_id=FlowId)
+  WHERE Type = &quot;Result&quot; AND Path =~ &quot;BasicInformation&quot;
+
+LET GetPath(ClientId, FlowId) = _GetPath(ClientId=ClientId, FlowId=FlowId)[0].Path
+
+SELECT * FROM foreach(row=Completions, query={
+  SELECT * FROM PostProcess(ClientId=ClientId, FlowId=FlowId)
+})
+</code></pre><p>I can test this in a notebook and see it works!</p><h2 id=4-convert-to-an-artifact-and-install>4. Convert to an artifact and install</h2><p>My Final artifact looks like this</p><pre><code class=language-yaml>name: Custom.BasicInformation.EnrichPython
+type: SERVER_EVENT
+sources:
+  - query: |
+        LET Completions = SELECT FlowId,
+                                 ClientId
+          FROM watch_monitoring(artifact='System.Flow.Completion')
+          WHERE Flow.artifacts_with_results =~ &quot;Generic.Client.Info/BasicInformation&quot;
+
+        LET PostProcess(ClientId, FlowId) = SELECT *
+          FROM foreach(row={
+            SELECT parse_json(data=Stdout) AS Row
+            FROM execve(argv=[&quot;python.exe&quot;, &quot;C:/MyScript.py&quot;,
+                          GetPath(ClientId=ClientId, FlowId=FlowId)])
+          },
+                       column=&quot;Row&quot;)
+
+        LET _GetPath(ClientId, FlowId) = SELECT file_store(path=Data.VFSPath) AS Path
+          FROM enumerate_flow(client_id=ClientId, flow_id=FlowId)
+          WHERE Type = &quot;Result&quot;
+           AND Path =~ &quot;BasicInformation&quot;
+
+        LET GetPath(ClientId, FlowId) = _GetPath(ClientId=ClientId, FlowId=FlowId)[0].Path
+
+        SELECT *
+        FROM foreach(row=Completions,
+                     query={
+            SELECT *
+            FROM PostProcess(ClientId=ClientId, FlowId=FlowId)
+          })
+</code></pre><p>I can add it and install it as a server event monitor. Then each time I
+collect <code>Generic.Client.Info</code> the artifact will automatically post
+process the results.</p><p><figure id=2a5ec0db8b2763a78c26422a56a4c32d><div data-featherlight=#2a5ec0db8b2763a78c26422a56a4c32d class=figure><img src=server_event_artifact.png alt="Post processing the collections with Python!"></div><figcaption><a class=image-link href=server_event_artifact.png><i class="fa fa-download"></i></a>
+Post processing the collections with Python!</figcaption></figure></p><p>This quick example shows how to automatically post process collections
+with external programs. You need to be able to shell out to the
+external program which will run on the server. We used Python in this
+example just for illustration purposes but you can use any language to
+write the external program.</p><p>You can also use <code>watch_monitoring()</code> with the name of the new
+artifact to watch for post processed results as well! &mldr; <code>We need to go deeper!</code> - for example use <code>Elastic.Events.Upload</code> to upload those
+to Elastic.</p><footer class=footline></footer></div></div></section><div style=left:-1e3px;overflow:scroll;position:absolute;top:-1e3px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1774052125></script><script src=/js/perfect-scrollbar.min.js?1774052125></script><script src=/js/perfect-scrollbar.jquery.min.js?1774052125></script><script src=/js/jquery.sticky.js?1774052125></script><script src=/js/featherlight.min.js?1774052125></script><script src=/js/highlight.min.js?1774052125></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1774052125></script><script src=/js/learn.js?1774052125></script><script src=/js/hugo-learn.js?1774052125></script></body></html>

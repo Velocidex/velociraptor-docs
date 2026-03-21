@@ -1,0 +1,246 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.158.0"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Windows.System.VAD :: Velociraptor - Digging deeper!</title><link href=/css/nucleus.css?1774052122 rel=stylesheet><link href=/css/font-awesome-all.min.css?1774052122 rel=stylesheet><link href=/css/featherlight.min.css?1774052122 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1774052122 rel=stylesheet><link href=/css/auto-complete.css?1774052122 rel=stylesheet><link href=/css/theme.css?1774052122 rel=stylesheet><link href=/css/tabs.css?1774052122 rel=stylesheet><link href=/css/hugo-theme.css?1774052122 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1774052122 rel=stylesheet><link href=/css/dark.css?1774052122 rel=stylesheet><link href=/css/syntax.css?1774052122 rel=stylesheet><link href=/css/light.css?1774052122 rel=stylesheet><link href=/css/hljs.css?1774052122 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774052122 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1774052122></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/artifact_references/pages/windows.system.vad/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><script src=/js/menu-6d49effe.js type=text/javascript></script><div class=highlightable><ul class="sidemenu sidebar hidden"></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>findlink(window.menu,"/artifact_references/pages/windows.system.vad/");let menu=$(".sidemenu.hidden");addToNode(menu,window.menu),menu.find("i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()}),menu.removeClass("hidden"),$(window).on("load",function(){$("li.dd-item.active")[0].scrollIntoView()}),menu.find("li.dd-item.active")[0].scrollIntoView()</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/artifact_references/pages/windows.system.vad.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Windows.System.VAD</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents></nav></div></div></div></div><div id=head-tags><div class=tags><a class=tag-link href=/tags/client-artifact>Client Artifact</a></div></div><div id=body-inner><h1>Windows.System.VAD</h1><p>This artifact enables enumeration of process memory sections via the Virtual
+Address Descriptor (VAD). The VAD is used by the Windows memory manager to
+describe allocated process memory ranges.</p><p>Available filters include process, mapping path, memory permissions
+or by content with yara.</p><p>Use the UploadSection switch to upload any sections.</p><p>A notebook suggestion is available for Strings analysis on uploaded sections.</p><p>NOTE:</p><ul><li>ProtectionChoice is a choice to filter on section protection. Default is
+all sections and ProtectionRegex can override selection.</li><li>To filter on unmapped sections the MappingNameRegex: ^$ can be used.</li><li>When uploading sections during analysis, its recommended to run once for
+scoping, then a second time once confirmed for upload.</li></ul><pre><code class=language-yaml>
+name: Windows.System.VAD
+author: "Matt Green - @mgreen27"
+description: |
+  This artifact enables enumeration of process memory sections via the Virtual
+  Address Descriptor (VAD). The VAD is used by the Windows memory manager to
+  describe allocated process memory ranges.
+
+  Available filters include process, mapping path, memory permissions
+  or by content with yara.
+
+  Use the UploadSection switch to upload any sections.
+
+  A notebook suggestion is available for Strings analysis on uploaded sections.
+
+  NOTE:
+
+  - ProtectionChoice is a choice to filter on section protection. Default is
+  all sections and ProtectionRegex can override selection.
+  - To filter on unmapped sections the MappingNameRegex: ^$ can be used.
+  - When uploading sections during analysis, its recommended to run once for
+  scoping, then a second time once confirmed for upload.
+
+parameters:
+  - name: ProcessRegex
+    description: A regex applied to process names.
+    default: .
+    type: regex
+  - name: PidRegex
+    default: .
+    type: regex
+  - name: ProtectionChoice
+    type: choices
+    description: Select memory permission you would like to return. Default All.
+    default: Any
+    choices:
+      - Any
+      - Execute, read and write
+      - Any executable
+  - name: ProtectionRegex
+    type: regex
+    description: Allows a manual regex selection of section Protection permissions. If configured take preference over Protection choice.
+  - name: MappingNameRegex
+    type: regex
+  - name: UploadSection
+    description: Upload suspicious section.
+    type: bool
+  - name: SuspiciousContent
+    description: A yara rule of suspicious section content
+    type: yara
+  - name: ContextBytes
+    description: Include this amount of bytes around yara hit as context.
+    default: 0
+    type: int
+
+export: |
+  // These functions help to resolve the Kernel Device Filenames
+  // into a regular filename with drive letter.
+  LET DriveReplaceLookup &lt;= SELECT
+     split(sep_string="\\", string=Name)[-1] AS Drive,
+     upcase(string=SymlinkTarget) AS Target,
+     len(list=SymlinkTarget) AS Len
+  FROM winobj()
+  WHERE Name =~ "^\\\\GLOBAL\\?\\?\\\\.:"
+
+  LET _DriveReplace(Path) = SELECT Drive + Path[Len:] AS ResolvedPath
+  FROM DriveReplaceLookup
+  WHERE upcase(string=Path[:Len]) = Target
+
+  LET DriveReplace(Path) = _DriveReplace(Path=Path)[0].ResolvedPath || Path
+
+sources:
+  - query: |
+      -- firstly find processes in scope
+      LET processes = SELECT int(int=Pid) AS Pid,
+              Name, Exe, CommandLine, StartTime
+        FROM process_tracker_pslist()
+        WHERE Name =~ ProcessRegex
+            AND format(format="%d", args=Pid) =~ PidRegex
+            AND log(message="Scanning pid %v : %v", args=[Pid, Name])
+
+      -- next find sections in scope
+      LET sections = SELECT * FROM foreach(
+          row=processes,
+          query={
+            SELECT StartTime as ProcessCreateTime,Pid, Name,
+                DriveReplace(Path=MappingName) AS MappingName,
+                format(format='%x-%x', args=[Address, Address+Size]) AS AddressRange,
+                Address as _Address,
+                State,Type,ProtectionMsg,Protection,
+                Size as SectionSize,
+                pathspec(
+                    DelegateAccessor="process",
+                    DelegatePath=Pid,
+                    Path=Address) AS _PathSpec
+            FROM vad(pid=Pid)
+            WHERE if(condition=MappingNameRegex,
+                    then= MappingName=~MappingNameRegex,
+                    else= True)
+                AND if(condition = ProtectionRegex,
+                    then= Protection=~ProtectionRegex,
+                    else= if(condition= ProtectionChoice='Any',
+                        then= TRUE,
+                    else= if(condition= ProtectionChoice='Execute, read and write',
+                        then= Protection= 'xrw',
+                    else= if(condition= ProtectionChoice='Any executable',
+                        then= Protection=~'x'))))
+          })
+
+      -- if suspicious yara added, search for it
+      LET yara_sections = SELECT *
+        FROM foreach(row={
+                SELECT * FROM sections
+                WHERE NOT State =~ "RESERVE"
+            }, query={
+                SELECT
+                    ProcessCreateTime, Pid, Name,MappingName,
+                    AddressRange,State,Type,ProtectionMsg,
+                    Protection,SectionSize,
+                    dict(Rule=Rule,
+                         Meta=Meta,
+                         Tags=Tags,
+                         Offset=String.Offset,
+                         Name=String.Name) as YaraHit,
+                    upload( accessor='scope',
+                            file='String.Data',
+                            name=format(format="%v-%v_%v.bin-%v-%v",
+                            args=[
+                                Name, Pid, AddressRange,
+                                if(condition= String.Offset - ContextBytes &lt; 0,
+                                    then= 0,
+                                    else= String.Offset - ContextBytes),
+                                if(condition= String.Offset + ContextBytes &gt; SectionSize,
+                                    then= SectionSize,
+                                    else= String.Offset + ContextBytes ) ])
+                            ) as HitContext,
+                    _PathSpec, _Address
+                FROM yara(  blocksize=if(condition= SectionSize &lt; 10000000,
+                                            then= SectionSize,
+                                            else= 10000000 ),
+                            accessor='offset',
+                            files=_PathSpec,
+                            rules=SuspiciousContent,
+                            end=SectionSize,  key='X',
+                            number=1,
+                            context=ContextBytes
+                        )
+            })
+
+      -- finalise results
+      LET results = SELECT *,
+             process_tracker_callchain(id=Pid).Data as ProcessChain
+        FROM if(condition= SuspiciousContent,
+                    then= yara_sections,
+                    else= sections)
+
+      -- upload sections if selected
+      LET upload_results = SELECT *,
+        upload(accessor='sparse',
+               file=pathspec(
+                    DelegateAccessor="process",
+                    DelegatePath=Pid,
+                    Path=[dict(Offset=_Address, Length=SectionSize),]),
+                name=pathspec(
+                    Path=format(
+                        format='%v-%v_%v.bin',
+                        args= [ Name, Pid, AddressRange ]))) as SectionDump
+            FROM results
+
+      -- output rows
+      SELECT * FROM if(condition= UploadSection,
+                    then= upload_results,
+                    else= results)
+
+    notebook:
+      - type: vql_suggestion
+        name: Strings analysis
+        template: |
+
+            /*
+            # Strings analysis
+            */
+
+            LET MinStringSize = 8
+            LET FindPrintable = '''
+                    rule find_strings {
+                        strings:
+                            $wide = /(^|[^ -~\s]\x00)([ -~\s]\x00){%#%,}(\x00|[^ -~\s]|$)/
+                            $ascii = /(^|[^ -~\s])([ -~\s]{%#%,})([^ -~\s]|$)/
+                        condition:
+                            any of them
+                    }'''
+            LET YaraRule = regex_replace(source=FindPrintable,re='''\%\#\%''',replace=str(str=MinStringSize))
+
+
+            LET sections = SELECT vfs_path, client_path,file_size, uploaded_size
+                FROM uploads(client_id=ClientId, flow_id=FlowId)
+                WHERE vfs_path =~ '\.bin$'
+
+            LET find_result(name) = SELECT *
+                FROM source(artifact="Windows.System.VAD")
+                WHERE SectionDump.StoredName = name
+                LIMIT 1
+
+
+            LET row_results = SELECT *, find_result(name=client_path)[0] as Result
+            FROM sections
+            WHERE Result
+
+            SELECT * FROM foreach(row=row_results,
+                query={
+                    SELECT
+                        regex_replace(source=String.Data,re='[^ -~]',replace='') as String,
+                        strip(prefix='$',string=String.Name) as Type,
+                        String.Offset as Offset,
+                        Result.MappingName as MappingName,
+                        Result.AddressRange as AddressRange,
+                        Result.Name as ProcesName,
+                        Result.Pid as Pid,
+                        Result.Protection as Protection
+                        --,vfs_path
+                    FROM yara(
+                            accessor='fs',
+                            files=vfs_path,
+                            rules=YaraRule,
+                            key='X',
+                            number=9999999999999999 )
+                })
+                WHERE NOT String =~ '''^\s*$'''
+
+column_types:
+  - name: HitContext
+    type: preview_upload
+
+</code></pre><footer class=footline></footer></div></div></section><div style=left:-1e3px;overflow:scroll;position:absolute;top:-1e3px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1774052122></script><script src=/js/perfect-scrollbar.min.js?1774052122></script><script src=/js/perfect-scrollbar.jquery.min.js?1774052122></script><script src=/js/jquery.sticky.js?1774052122></script><script src=/js/featherlight.min.js?1774052122></script><script src=/js/highlight.min.js?1774052122></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1774052122></script><script src=/js/learn.js?1774052122></script><script src=/js/hugo-learn.js?1774052122></script></body></html>

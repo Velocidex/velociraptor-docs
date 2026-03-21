@@ -1,0 +1,128 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.158.0"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>Server.Monitor.Health :: Velociraptor - Digging deeper!</title><link href=/css/nucleus.css?1774052122 rel=stylesheet><link href=/css/font-awesome-all.min.css?1774052122 rel=stylesheet><link href=/css/featherlight.min.css?1774052122 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1774052122 rel=stylesheet><link href=/css/auto-complete.css?1774052122 rel=stylesheet><link href=/css/theme.css?1774052122 rel=stylesheet><link href=/css/tabs.css?1774052122 rel=stylesheet><link href=/css/hugo-theme.css?1774052122 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1774052122 rel=stylesheet><link href=/css/dark.css?1774052122 rel=stylesheet><link href=/css/syntax.css?1774052122 rel=stylesheet><link href=/css/light.css?1774052122 rel=stylesheet><link href=/css/hljs.css?1774052122 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774052122 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1774052122></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/artifact_references/pages/server.monitor.health/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><script src=/js/menu-6d49effe.js type=text/javascript></script><div class=highlightable><ul class="sidemenu sidebar hidden"></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>findlink(window.menu,"/artifact_references/pages/server.monitor.health/");let menu=$(".sidemenu.hidden");addToNode(menu,window.menu),menu.find("i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()}),menu.removeClass("hidden"),$(window).on("load",function(){$("li.dd-item.active")[0].scrollIntoView()}),menu.find("li.dd-item.active")[0].scrollIntoView()</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title='Edit this page' href=https://github.com/Velocidex/velociraptor-docs/edit/master/content/artifact_references/pages/server.monitor.health.md target=blank><i class="fas fa-code-branch"></i>
+<span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>Server.Monitor.Health</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents></nav></div></div></div></div><div id=head-tags><div class=tags><a class=tag-link href=/tags/server-event-artifact>Server Event Artifact</a></div></div><div id=body-inner><h1>Server.Monitor.Health</h1><p>This is the main server health dashboard. It is shown on the
+homescreen and enabled by default on all new installs.</p><p>You may edit this artifact to customize your server dashboard.</p><p>Alternatively, edit the Welcome screen at the
+<code>Server.Internal.Welcome</code> artifact.</p><pre><code class=language-yaml>
+name: Server.Monitor.Health
+description: |
+  This is the main server health dashboard. It is shown on the
+  homescreen and enabled by default on all new installs.
+
+  You may edit this artifact to customize your server dashboard.
+
+  Alternatively, edit the Welcome screen at the
+  `Server.Internal.Welcome` artifact.
+
+type: SERVER_EVENT
+
+sources:
+  - name: Prometheus
+    query: SELECT sleep(time=10000000) FROM scope()
+
+reports:
+  - type: SERVER_EVENT
+    # Only allow the report to run for 10 seconds - this is plenty for
+    # the GUI.
+    timeout: 10
+    parameters:
+      - name: Sample
+        default: "6"
+
+    template: |
+      {{ define "CPU" }}
+        LET SampledData &lt;= SELECT * FROM sample(
+             n=atoi(string=Sample),
+             query={
+              SELECT _ts as Timestamp,
+                  CPUPercent,
+                  int(int=MemoryUse / 1048576) AS MemoryUse_Mb,
+                  TotalFrontends
+              FROM source(source="Prometheus",
+                  start_time=StartTime, end_time=EndTime,
+                  artifact="Server.Monitor.Health")
+        })
+
+        LET Stats &lt;= SELECT count() AS Count,
+            timestamp(epoch=min(item=Timestamp)) AS MinTime,
+            timestamp(epoch=max(item=Timestamp)) AS MaxTime,
+            timestamp(epoch=StartTime) AS StartTime
+        FROM SampledData
+        GROUP BY 1
+
+        // Include a log for verification. Last data should always be
+        // very recent and sample should be passed properly.
+        LET _ &lt;= log(message="Graphs cover times from %v (%v). Actual data available from %v (%v) to %v (%v) with %v rows. Data is sampled every %v samples.", args=[
+           Stats[0].StartTime.String, humanize(time=Stats[0].StartTime),
+           Stats[0].MinTime.String, humanize(time=Stats[0].MinTime),
+           Stats[0].MaxTime.String, humanize(time=Stats[0].MaxTime),
+           Stats[0].Count, Sample])
+
+        SELECT * FROM SampledData
+      {{ end }}
+
+      {{ define "CurrentConnections" }}
+        SELECT * FROM sample(
+             n=atoi(string=Sample),
+             query={
+               SELECT _ts as Timestamp,
+                  client_comms_current_connections
+               FROM source(source="Prometheus",
+                           start_time=StartTime, end_time=EndTime,
+                           artifact="Server.Monitor.Health")
+        })
+      {{ end }}
+
+      {{ $time_rows := Query "SELECT timestamp(epoch=now()) AS Now FROM scope()" | Expand }}
+      ## Server status @ {{ Render ( Get $time_rows "0.Now" ) }}
+
+      &lt;p&gt;The following are total across all frontends.&lt;/p&gt;
+          &lt;span class="container"&gt;
+            &lt;span class="row"&gt;
+              &lt;span class="col-sm panel"&gt;
+               CPU and Memory Utilization
+               {{- Query "CPU" | TimeChart "RSS.yaxis" 2 -}}
+              &lt;/span&gt;
+              &lt;span class="col-sm panel"&gt;
+               Currently Connected Clients
+               {{- Query "CurrentConnections" | TimeChart "RSS.yaxis" 2 -}}
+              &lt;/span&gt;
+            &lt;/span&gt;
+          &lt;/span&gt;
+
+      ## Current Orgs
+      {{ define "OrgsTable" }}
+         LET ColumnTypes &lt;= dict(ClientConfig='url')
+         LET OrgsTable = SELECT Name, OrgId,
+                         upload(accessor='data', file=_client_config,
+                                name='client.'+OrgId+'.config.yaml') AS _Upload
+         FROM orgs()
+
+         SELECT Name, OrgId, link_to(upload=_Upload) AS ClientConfig
+         FROM OrgsTable
+      {{ end }}
+
+      {{ Query "OrgsTable" | Table }}
+
+      ## Disk Space
+
+      {{ Query "SELECT * FROM Artifact.Generic.Client.DiskSpace()" | Table }}
+
+      ## Users
+
+      {{ define "UserPermissions" }}
+        SELECT name, effective_policy AS _EffectivePolicy,
+               join(array=roles, sep=", ") AS Roles
+        FROM gui_users()
+      {{ end }}
+
+      {{ Query "UserPermissions" | Table }}
+
+      ## Server version
+
+      {{ Query "SELECT server_version FROM config" | Table }}
+
+</code></pre><footer class=footline></footer></div></div></section><div style=left:-1e3px;overflow:scroll;position:absolute;top:-1e3px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1774052122></script><script src=/js/perfect-scrollbar.min.js?1774052122></script><script src=/js/perfect-scrollbar.jquery.min.js?1774052122></script><script src=/js/jquery.sticky.js?1774052122></script><script src=/js/featherlight.min.js?1774052122></script><script src=/js/highlight.min.js?1774052122></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1774052122></script><script src=/js/learn.js?1774052122></script><script src=/js/hugo-learn.js?1774052122></script></body></html>

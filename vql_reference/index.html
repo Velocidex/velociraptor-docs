@@ -1,0 +1,60 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.158.0"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>VQL Reference :: Velociraptor - Digging deeper!</title><link href=/css/nucleus.css?1774052125 rel=stylesheet><link href=/css/font-awesome-all.min.css?1774052125 rel=stylesheet><link href=/css/featherlight.min.css?1774052125 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1774052125 rel=stylesheet><link href=/css/auto-complete.css?1774052125 rel=stylesheet><link href=/css/theme.css?1774052125 rel=stylesheet><link href=/css/tabs.css?1774052125 rel=stylesheet><link href=/css/hugo-theme.css?1774052125 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1774052125 rel=stylesheet><link href=/css/dark.css?1774052125 rel=stylesheet><link href=/css/syntax.css?1774052125 rel=stylesheet><link href=/css/light.css?1774052125 rel=stylesheet><link href=/css/hljs.css?1774052125 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774052125 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1774052125></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/vql_reference/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><script src=/js/menu-6d49effe.js type=text/javascript></script><div class=highlightable><ul class="sidemenu sidebar hidden"></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>findlink(window.menu,"/vql_reference/");let menu=$(".sidemenu.hidden");addToNode(menu,window.menu),menu.find("i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()}),menu.removeClass("hidden"),$(window).on("load",function(){$("li.dd-item.active")[0].scrollIntoView()}),menu.find("li.dd-item.active")[0].scrollIntoView()</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>VQL Reference</span></span>
+<meta itemprop=position content="1"></span></div></div></div><div id=head-tags></div><div id=body-inner><h1>VQL Reference</h1><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>This page lists all the plugins, functions and accessors which are available in Velociraptor.</span></div><div class=expand-content style=display:none><ul><li><strong>Plugins</strong> are the data sources of VQL queries. While SQL queries refer to
+static tables of data, VQL queries refer to plugins, which generate data rows to
+be filtered by the query. Unlike SQL, VQL plugins also receive keyword
+arguments. When the plugin is evaluated it simply generates a sequence of rows
+which are further filtered by the query. This allows VQL statements to be
+chained naturally since plugin args may also be other queries.</li><li><strong>Functions</strong> are used to transform the data returned by plugins. They
+return (transformed) values, not rows.</li><li><strong>Accessors</strong> are used to access bulk data from various sources using a
+standard file-like interface.</li></ul><div class="mynotices note"><div heading=note><p>VQL <em>plugins</em> are not the same as VQL <em>functions</em>. A helpful &lsquo;rule of thumb&rsquo; is
+that plugins always follow the <code>FROM</code> keyword because they generate a table
+consisting of rows from the data source, while functions (which return a single
+value instead of a sequence of rows) are only present in column specifications
+(i.e. after <code>SELECT</code>) or in condition clauses (i.e. after the <code>WHERE</code> keyword).</p></div></div><div class="mynotices tip"><div heading=tip><p>If you are not exactly sure what you&rsquo;re looking for or just want to browse
+what&rsquo;s available, we have also provided listings by general categories <a href=/vql_reference/popular/>which you
+can access in the sidebar</a>
+.</p></div></div></div></div><script src=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js></script><div class=input-group><input type=text id=myInput onkeyup=doSearch() class=form-control placeholder="Search for VQL plugins, functions, or accessors" aria-describedby=basic-addon2>
+<span class=input-group-addon id=basic-addon2><i class="fas fa-search"></i></span></div><hr><div class=search_results></div><script>let all_data=[];$.ajax({url:"/reference/data.json"}).done(function(e){all_data=e,DrawResults(e)}),$(document).ready(function(){$("#myInput").focus()});function doSearch(){let t=document.getElementById("myInput"),n=t.value.toUpperCase(),e=[];for(let t=0;t<all_data.length;t++){let s=all_data[t];s.name.toUpperCase().includes(n)&&e.push(s)}DrawResults(e)}function DrawResults(e){$(".search_results").empty();for(let s=0;s<e.length;s++){let t=e[s],n=$(`
+<div class="panel panel-default color">
+  <div class="panel-heading color">
+    <a class="title link" href=""><h3 class="panel-title color " ></h3></a>
+    <div class="type vql_type label label-warning pull-right"></div>
+  </div>
+  <div class="panel-body color">
+    <div class="border color">
+      <div class="border color">
+        <div class="idea-inner-text-main color">
+          <img class="user-avatar inline">
+          <p class="description"></p>
+          <p class="args"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>`);if(n.find(".title").append(t.name),n.find(".description").append(t.description),n.find(".link").attr("href",getLink(t)),n.find(".type").append(t.type),n.find(".idea-tag").append(`<i class="linkcolour label label-info pull-right">`+(t.category||"other")+`</i>`),t.metadata&&t.metadata.permissions){let e=$(`
+            <span class="vql_type">Required permissions:</span>
+            <span class="permission_list linkcolour "></span>`);n.find(".permissions").append(e);for(x of t.metadata.permissions.split(","))n.find(".permission_list").append(`<span class=" label label-important">`+x+`</span>`)}let o=t.args||[];if(o.length>0){let e=$(`
+<table>
+  <thead>
+   <tr>
+    <th>Arg</th>
+    <th>Description</th>
+    <th>Type</th>
+   </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+`);for(let i=0;i<t.args.length;i++){let n=t.args[i],s=$(`<tr>
+   <td class="name"></td>
+   <td class="description"></td>
+   <td class="type"></td>
+   </tr>`),o=n.type;n.repeated&&(o="repeated "+o),n.required&&(o+=" (required) "),s.find(".name").append(n.name),s.find(".description").append(n.description),s.find(".type").append(o),e.find("tbody").append(s)}t.free_form_args&&e.find("tbody").append(`<tr>
+   <td class="name">**</td>
+   <td class="description">Free form args</td>
+   <td class="type"></td>
+   </tr>`),n.find(".args").append(e)}$(".search_results").append(n)}}function getLink(e){return e.category?"/vql_reference/"+e.category+"/"+e.name:"/vql_reference/other/"+e.name}</script><footer class=footline></footer></div></div></section><div style=left:-1e3px;overflow:scroll;position:absolute;top:-1e3px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1774052125></script><script src=/js/perfect-scrollbar.min.js?1774052125></script><script src=/js/perfect-scrollbar.jquery.min.js?1774052125></script><script src=/js/jquery.sticky.js?1774052125></script><script src=/js/featherlight.min.js?1774052125></script><script src=/js/highlight.min.js?1774052125></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1774052125></script><script src=/js/learn.js?1774052125></script><script src=/js/hugo-learn.js?1774052125></script></body></html>

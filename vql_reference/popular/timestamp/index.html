@@ -1,0 +1,68 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.158.0"><meta name=description content><link rel=icon href=/images/favicon.png type=image/png><title>timestamp :: Velociraptor - Digging deeper!</title><link href=/css/nucleus.css?1774052125 rel=stylesheet><link href=/css/font-awesome-all.min.css?1774052125 rel=stylesheet><link href=/css/featherlight.min.css?1774052125 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1774052125 rel=stylesheet><link href=/css/auto-complete.css?1774052125 rel=stylesheet><link href=/css/theme.css?1774052125 rel=stylesheet><link href=/css/tabs.css?1774052125 rel=stylesheet><link href=/css/hugo-theme.css?1774052125 rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link href=/css/theme-mine.css?1774052125 rel=stylesheet><link href=/css/dark.css?1774052125 rel=stylesheet><link href=/css/syntax.css?1774052125 rel=stylesheet><link href=/css/light.css?1774052125 rel=stylesheet><link href=/css/hljs.css?1774052125 rel=stylesheet><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774052125 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1774052125></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script><script>var doNotTrack=!1,dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes";if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-QYH72LMYCS")}</script><script></script></head><body data-url=/vql_reference/popular/timestamp/><nav id=sidebar><div id=header-wrapper><div id=header><a href=https://docs.velociraptor.app/><img class="logo dark" src=https://docs.velociraptor.app//images/VeloR7_DarkMode.svg>
+<img class="logo light" src=https://docs.velociraptor.app//images/VeloR7_LightMode.svg></a><div class="ThemeSelector darkmode"><i class="fas fa-moon"></i></div><div class="ThemeSelector lightmode"><i class="fas fa-sun"></i></div><script>const regex=new RegExp("theme=darkmode");regex.test(document.cookie)?$("body").addClass("dark").removeClass("light"):$("body").addClass("light").removeClass("dark"),$(".ThemeSelector.darkmode").on("click",function(){return $("body").addClass("dark").removeClass("light"),document.cookie="theme=darkmode;path=/",!1}),$(".ThemeSelector.lightmode").on("click",function(){return $("body").addClass("light").removeClass("dark"),document.cookie="theme=lightmode;path=/",!1})</script></div></div><script src=/js/menu-6d49effe.js type=text/javascript></script><div class=highlightable><ul class="sidemenu sidebar hidden"></ul><hr><section id=shortcuts><h3></h3><ul><li><a rel=nofollow class=padding href=https://github.com/Velocidex/velociraptor><i class='fab fa-github'></i>GitHub</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/discord/><i class='fab fa-discord'></i>Discord</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/youtube/><i class='fab fa-youtube'></i>YouTube</a></li><li><a rel=nofollow class=padding href=mailto:velociraptor-discuss@googlegroups.com><i class='fas fa-envelope'></i>Mailing List</a></li><li><a rel=nofollow class=padding href=https://docs.velociraptor.app/rss/><i class='fas fa-rss'></i>RSS</a></li><li><a rel=nofollow class=padding href=https://docs.rapid7.com/insightidr/velociraptor-integration/><i class='fa fa-question-circle'></i>Rapid7 Docs</a></li></ul></section><section id=footer><div class=footer-copyright>Brought to you by
+<img src=/images/Rapid7_logo.svg class=rapid7><br><i class="fas fa-copyright"></i> 2025</div></section></div></nav><script>findlink(window.menu,"/vql_reference/popular/timestamp/");let menu=$(".sidemenu.hidden");addToNode(menu,window.menu),menu.find("i.fa-angle-right").each(function(){$(this).parent().parent().find("ul").hide()}),menu.removeClass("hidden"),$(window).on("load",function(){$("li.dd-item.active")[0].scrollIntoView()}),menu.find("li.dd-item.active")[0].scrollIntoView()</script><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=breadcrumbs itemscope itemtype=http://schema.org/BreadcrumbList><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i>
+</a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span>
+<span class=links itemprop=itemListElement itemscope itemtype=http://schema.org/ListItem><span itemprop=item><span itemprop=name>timestamp</span></span>
+<meta itemprop=position content="1"></span></div><div class=progress><div class=wrapper><nav id=TableOfContents><ul><li><a href=#timestamp>timestamp</a><ul><li><a href=#description>Description</a></li><li><a href=#example>Example</a></li></ul></li></ul></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><div class=vql_item></div><h2 id=timestamp>timestamp</h2><p><span class='vql_type label label-warning pull-right page-header'>Function</span></p><div class=vqlargs></div><table><thead><tr><th>Arg</th><th>Description</th><th>Type</th></tr></thead><tbody><tr><td>epoch</td><td></td><td>Any</td></tr><tr><td>cocoatime</td><td></td><td>int64</td></tr><tr><td>mactime</td><td>HFS+</td><td>int64</td></tr><tr><td>winfiletime</td><td></td><td>int64</td></tr><tr><td>string</td><td>Guess a timestamp from a string</td><td>string</td></tr><tr><td>format</td><td>A format specifier as per the Golang time.Parse</td><td>string</td></tr></tbody></table><h3 id=description>Description</h3><p>Convert from different types to a time.Time.</p><p>This is one of the most important functions in VQL. We need to
+convert timestamps very frequently from various
+representations. Most commonly from strings, Unix epoch times etc.</p><p>This function is pretty smart and tries to do the right thing most
+of the time automatically. For example, you can provide the epoch
+parameter as an integer representing seconds since the epoch,
+milliseconds or microseconds since the epoch.</p><pre><code class=language-vql>SELECT timestamp(epoch=1630414425) AS Time1,
+       timestamp(epoch=1630414425000) AS Time2,
+       timestamp(epoch=1630414425000000) AS Time3,
+FROM scope()
+</code></pre><p>You can also provide a string, and <code>timestamp()</code> will try to parse
+it by guessing what it represents. For example:</p><pre><code class=language-vql>SELECT timestamp(string='March 3 2019'),
+       timestamp(string='07/25/2019 5pm')
+FROM scope()
+</code></pre><p>For more control over the parsing of strings, use the <code>format</code>
+parameter to specify a template which will be used to parse the
+timestamp.</p><p>The format template uses a constant time as an example of how the
+time is layed out. It represents a template for a timestamp that
+<strong>must</strong> use the following date constants</p><ul><li>Year: &ldquo;2006&rdquo; &ldquo;06&rdquo;</li><li>Month: &ldquo;Jan&rdquo; &ldquo;January&rdquo;</li><li>Textual day of the week: &ldquo;Mon&rdquo; &ldquo;Monday&rdquo;</li><li>Numeric day of the month: &ldquo;2&rdquo; &ldquo;_2&rdquo; &ldquo;02&rdquo;</li><li>Numeric day of the year: &ldquo;__2&rdquo; &ldquo;002&rdquo;</li><li>Hour: &ldquo;15&rdquo; &ldquo;3&rdquo; &ldquo;03&rdquo; (PM or AM)</li><li>Minute: &ldquo;4&rdquo; &ldquo;04&rdquo;</li><li>Second: &ldquo;5&rdquo; &ldquo;05&rdquo;</li><li>AM/PM mark: &ldquo;PM&rdquo;</li><li>&ldquo;-0700&rdquo; ±hhmm</li><li>&ldquo;-07:00&rdquo; ±hh:mm</li><li>&ldquo;-07&rdquo; ±hh</li></ul><pre><code class=language-vql>SELECT timestamp(string=&quot;8/30/2021 6:01:28 PM&quot;,
+                 format=&quot;1/2/2006 3:04:05 PM&quot;)
+FROM scope()
+</code></pre><p>If the timestamp is ambiguous - i.e. does not specify a timezone
+you can provide a timezone hint using the <code>PARSE_TZ</code> VQL
+variable. This will only be used if the timestamp is ambiguous. If
+<code>PARSE_TZ</code> is <code>local</code> then we use the local timezone on the
+endpoint.</p><h3 id=example>Example</h3><pre><code class=language-vql>LET PARSE_TZ &lt;= &quot;local&quot;
+
+SELECT timestamp(string=&quot;Thu Aug 29 2024 21:03&quot;),
+       timestamp(string=&quot;Thu Aug 29 2024 21:03 CEST&quot;)
+FROM scope()
+</code></pre><p>The first timestamp will be parsed according to the local timezone
+because it is ambiguous. However, the second timestamp is not
+ambiguous and <code>PARSE_TZ</code> has no effect.</p><p>Internally VQL uses Golang&rsquo;s
+<a href=https://golang.org/pkg/time/#Time target=_blank>time.Time</a>
+object to represent
+times and this is what is returned by the <code>timestamp()</code> VQL
+function. This object has a number of useful methods which are
+available via fields on the timestamp object:</p><pre><code class=language-json>{
+  &quot;Day&quot;: 26,
+  &quot;Hour&quot;: 8,
+  &quot;ISOWeek&quot;: 2024,
+  &quot;IsDST&quot;: &quot;false&quot;,
+  &quot;IsZero&quot;: &quot;false&quot;,
+  &quot;Minute&quot;: 53,
+  &quot;Month&quot;: 3,
+  &quot;Nanosecond&quot;: 231540468,
+  &quot;Second&quot;: 37,
+  &quot;String&quot;: &quot;2024-03-26T06:53:37Z&quot;,
+  &quot;UTC&quot;: &quot;2024-03-26T06:53:37.231540468Z&quot;,
+  &quot;Unix&quot;: 1711436017,
+  &quot;UnixMicro&quot;: 1711436017231540,
+  &quot;UnixMilli&quot;: 1711436017231,
+  &quot;UnixNano&quot;: 1711436017231540500,
+  &quot;Weekday&quot;: 2,
+  &quot;Year&quot;: 2024,
+  &quot;YearDay&quot;: 86,
+  &quot;Zone&quot;: &quot;SAST&quot;
+}
+</code></pre><p>For example <code>timestamp(epoch=now()).Month</code> is the current month.</p><p>To perform time manipulations you can convert times back to the
+seconds from epoch, then add/subtract times. For example the
+following calculates the time exactly one day (24 hours) before
+the stated time:</p><pre><code class=language-vql>SELECT timestamp(epoch=timestamp(epoch=&quot;2024-03-26T06:53:37Z&quot;).Unix - 86400)
+FROM scope()
+</code></pre><footer class=footline></footer></div></div></section><div style=left:-1e3px;overflow:scroll;position:absolute;top:-1e3px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1774052125></script><script src=/js/perfect-scrollbar.min.js?1774052125></script><script src=/js/perfect-scrollbar.jquery.min.js?1774052125></script><script src=/js/jquery.sticky.js?1774052125></script><script src=/js/featherlight.min.js?1774052125></script><script src=/js/highlight.min.js?1774052125></script><script>hljs.highlightAll()</script><script src=/js/modernizr.custom-3.6.0.js?1774052125></script><script src=/js/learn.js?1774052125></script><script src=/js/hugo-learn.js?1774052125></script></body></html>
