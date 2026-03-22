@@ -1,0 +1,114 @@
+name: Generic.Client.ADStatus
+author: Andreas Misje – @misje
+description: |
+  Get Active Directory join status from a computer. The information returned
+  depends on the operating system, but DomainJoined (boolean) and Domain is
+  returned for all. DomainJoined is always set. Domain is always uppercase.
+
+  On Linux, realm/sssd is used to query AD status/configuration. The following
+  columns are returned:
+
+    - _RealmType (e.g. "kerberos")
+    - _RealmName (e.g. "AD.EXAMPLE.ORG")
+    - Domain (e.g. "AD.EXAMPLE.ORG)
+    - AllowedUsers (e.g. ["bob"])
+    - AllowedGroups (e.g. ["it"])
+    - DomainJoined (boolean)
+
+  On Windows, `dsregcmd` is used to return AD status/configuration. Only a small
+  part of its output is returned:
+
+    - AzureAdJoined (boolean)
+    - EnterpriseJoined (boolean)
+    - DomainJoined (boolean)
+    - NetBIOS (e.g. "EXAMPLE")
+    - Domain (e.g. "AD.EXAMPLE.ORG)
+    - DeviceName (e.g. "DESKTOP-FOO")
+
+  On macOS, `dsconfigad` is used to return AD status/configuration:
+
+    - Domain (e.g. "AD.EXAMPLE.ORG")
+    - DeviceName (e.g. "DESKTOP-FOO")
+    - AdminGroups (e.g. ["it"])
+    - DomainJoined (boolean)
+
+type: CLIENT
+
+sources:
+  - query: |
+      LET Info <= SELECT OS
+        FROM info()
+
+      LET SplitString(String) = filter(regex='.+',
+                                       list=split(string=String, sep=', ?'))
+
+      LET LinuxStatus = SELECT
+          parse_string_with_regex(
+            string=Stdout,
+            regex=(''' +type: +(?P<_RealmType>.*)''', ''' +realm-name: +(?P<_RealmName>.*)''', ''' +domain-name: +(?P<Domain>.*)''', ''' +permitted-logins: +(?P<AllowedUsers>.*)''', ''' +permitted-groups: +(?P<AllowedGroups>.*)''', )) AS ADStatus
+        FROM execve(
+          argv=('realm', 'list'))
+
+      LET WindowsStatus = SELECT
+          parse_string_with_regex(
+            string=Stdout,
+            regex=('''(?s)Device State.+AzureAdJoined *: *(?P<AzureAdJoined>\S+)''', '''(?s)Device State.+EnterpriseJoined *: *(?P<EnterpriseJoined>\S+)''', '''(?s)Device State.+DomainJoined *: *(?P<DomainJoined>\S+)''', '''(?s)Device State.+DomainName *: *(?P<NetBIOS>\S+)''', '''(?s)Device State.+Device Name *: *(?P<DeviceName>\S+)''', )) AS ADStatus
+        FROM execve(
+          argv=('dsregcmd', '/status'))
+
+      LET DarwinStatus = SELECT
+          parse_string_with_regex(
+            string=Stdout,
+            regex=('''Active Directory Domain += +(?P<Domain>\S+)''', '''Computer Account += +(?P<DeviceName>\S+)\$''', ''' +Allowed admin groups += +(?P<AdminGroups>.+)''', )) AS ADStatus
+        FROM execve(
+          argv=('dsconfigad', '-show'))
+
+      LET ADDict = SELECT
+          ADStatus + dict(Domain=upcase(string=ADStatus.Domain)) AS ADStatus
+        FROM switch(
+          linux={
+          SELECT *
+          FROM if(
+            condition=Info[0].OS = 'linux',
+            then={
+          SELECT ADStatus + dict(
+                   DomainJoined=ADStatus != dict(),
+                   AllowedUsers=SplitString(String=ADStatus.AllowedUsers),
+                   AllowedGroups=SplitString(String=ADStatus.AllowedGroups)) AS ADStatus
+          FROM LinuxStatus
+        })
+        },
+          windows={
+          SELECT
+          *
+          FROM if(
+            condition=Info[0].OS = 'windows',
+            then={
+          SELECT
+          ADStatus + dict(
+            AzureAdJoined=ADStatus.AzureAdJoined = 'YES',
+            EnterpriseJoined=ADStatus.EnterpriseJoined = 'YES',
+            DomainJoined=ADStatus.DomainJoined = 'YES') +
+            parse_string_with_regex(
+              string=ADStatus.DeviceName,
+              regex='''^(?P<DeviceName>[^.]+)\.(?P<Domain>\S+)$''') AS ADStatus
+          FROM WindowsStatus
+        })
+        },
+          darwin={
+          SELECT
+          *
+          FROM if(
+            condition=Info[0].OS = 'darwin',
+            then={
+          SELECT
+          ADStatus + dict(
+            DomainJoined=ADStatus != dict(),
+            AdminGroups=SplitString(
+              String=ADStatus.AdminGroups)) AS ADStatus
+          FROM DarwinStatus
+        })
+        })
+
+      SELECT *
+      FROM foreach(row=ADDict, column='ADStatus')

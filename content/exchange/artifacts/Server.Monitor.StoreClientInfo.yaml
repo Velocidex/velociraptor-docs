@@ -1,0 +1,111 @@
+name: Server.Monitor.StoreClientInfo
+author: Andreas Misje – @misje
+description: |
+  Save data from client interrogation as client metadata.
+
+  This artifact listens for flow completions, typically Custom.Generic.Client.Info,
+  your own override of the interrogation artifact, and extracts any information
+  gathered in the interrogation.
+
+  The primary use case for this artifact is to any useful information about the
+  client as metadata so that it can be indexed and search for, e.g. "OS: windows",
+  "arch: amd64", "dual_boot: true", "ad_joined: false" etc.
+
+  NOTE: The sources referred to in InfoMetadata should only return a single line.
+  If more lines are returned, only the first line is used.
+
+  See also Server.Monitor.StoreClientHWInfo.
+
+type: SERVER_EVENT
+
+parameters:
+  - name: InterrogationArtifact
+    type: regex
+    description: |
+      Name of the client artifact to watch
+    default: Custom.Generic.Client.Info
+
+  - name: InfoMetadata
+    description: |
+      The artifact source (e.g. BasicInformation), the field to save, and an
+      optional alias to give the field as a metadata name
+    type: csv
+    default: |
+      Source,Field,Alias
+      BasicInformation,OS,os
+      BasicInformation,Architecture,arch
+
+  - name: KeepEmptyValues
+    description: |
+      If true, an empty value will be stored as metadata. If false, the metadata
+      will not be set at all. Note that if a metadata value was previously empty,
+      this will not remove that value.
+    type: bool
+    default: false
+
+sources:
+  - query: |
+      LET ExtractSource(Artifact) = regex_replace(
+          re='[^/]+(?:/(?P<Source>.+))?',
+          replace='$1',
+          source=Artifact)
+
+      LET Interrogation = SELECT *
+        FROM foreach(row={
+          SELECT *
+          FROM watch_monitoring(artifact='System.Flow.Completion')
+          WHERE Flow.artifacts_with_results =~ InterrogationArtifact
+        },
+                     query={
+          SELECT *
+          FROM foreach(row=Flow.artifacts_with_results,
+                       query={
+          SELECT ExtractSource(Artifact=_value) AS _Source,
+                 ClientId,
+                 *
+          FROM source(client_id=ClientId,
+                      flow_id=Flow.session_id,
+                      artifact=InterrogationArtifact,
+                      source=ExtractSource(Artifact=_value))
+          WHERE ExtractSource(Artifact=_value) IN InfoMetadata.Source
+          GROUP BY _Source
+        })
+        })
+
+      // With info as dict:
+      LET InfoDict = SELECT _value.ClientId AS ClientId,
+                            _value._Source AS _Source,
+                            _value AS Data
+        FROM items(item={ SELECT * FROM Interrogation })
+
+      LET SelectedMetadata = SELECT *
+        FROM foreach(row=InfoDict,
+                     query={
+          SELECT ClientId,
+                 to_dict(item={
+          SELECT *
+          FROM foreach(row=InfoMetadata,
+                       query={
+          SELECT Alias || Field AS _key,
+                 get(item=Data, member=Field) AS _value
+          FROM scope()
+          WHERE _Source = Source
+           AND (KeepEmptyValues OR (_value != NULL
+                    AND len(list=str(str=_value))))
+        })
+        }) - dict(ClientId=NULL, _Source=NULL) AS Metadata
+          FROM scope()
+        })
+
+      // Set the metadata and return the dict of data, as well as the the
+      // client_set_metadata() result:
+      // Do not store an empty dict. This has proved to cause issues:
+      LET SetMetadata = SELECT *, if(condition=Metadata,
+                                     then=client_set_metadata(
+                                       client_id=ClientId,
+                                       metadata=Metadata),
+                                     else=false) AS Updated
+        FROM SelectedMetadata
+
+      SELECT *
+      FROM SetMetadata

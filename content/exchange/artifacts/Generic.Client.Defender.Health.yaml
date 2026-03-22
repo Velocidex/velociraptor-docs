@@ -1,0 +1,150 @@
+name: Generic.Client.Defender.Health
+author: Andreas Misje – @misje
+description: |
+  Get MDATP health
+
+  Microsoft Defender for Endpoint Advanced Threat Protection is an EDR solution
+  for Windows, Darwin and Linux. This artifact retrieves all available information
+  about the agents's status and configuration. The artifact will fail if MDATP is
+  not installed on the endpoint.
+
+  The output from the MDATP status commands vary significantly between Windows
+  and Linux/Darwin. The output on Linux and Darwin are almost identical, with a
+  few exceptions:
+
+  Linux has these additional fields:
+
+    - behaviorMonitoring
+    - supplementaryEventsSubsystem
+
+  Darwin has these additional fields:
+
+    - deviceControlEnforcementLevel
+    - ecsConfigurationIds
+    - fullDiskAccessEnabled
+    - networkEventsSubsystem
+    - tamperProtection
+    - troubleshootingMode
+
+  The notebook suggestion "Common MDATP health information" provides a nice
+  summary of information of fields present in at least Windows and one of Linux
+  and Darwin.
+
+type: CLIENT
+
+implied_permissions:
+  - EXECVE
+
+sources:
+  - query: |
+      LET Info <= SELECT OS
+        FROM info()
+
+      SELECT *
+      FROM if(
+        condition=Info[0].OS = 'linux',
+        then={
+          SELECT parse_json(data=Stdout) AS MDATPHealth
+          FROM execve(argv=['/usr/bin/mdatp', 'health', '--output', 'json'])
+        },
+        else=if(
+          condition=Info[0].OS = 'darwin',
+          then={
+          SELECT parse_json(data=Stdout) AS MDATPHealth
+          FROM execve(argv=['/usr/local/bin/mdatp', 'health', '--output', 'json'])
+        },
+          else=if(
+            condition=Info[0].OS = 'windows',
+            then={
+          SELECT
+          to_dict(item={
+          SELECT _key,
+                 _value
+          FROM parse_records_with_regex(
+            file=Stdout,
+            accessor='data',
+            regex='''^\s*(?P<_key>\S+)\s+:\s+(?P<_value>[^\r\n]+)''')
+        }) + dict(
+            edrMachineId=read_file(
+              accessor='reg',
+              filename='''HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Advanced Threat Protection\senseId''')) AS MDATPHealth
+          FROM Artifact.Windows.System.PowerShell(
+            Command='Get-MpComputerStatus')
+        })))
+
+    notebook:
+      - name: Common MDATP health information
+        type: vql_suggestion
+        template: |
+          /*
+          # Common MDATP health information
+          */
+          LET ColumnTypes <= dict(`ClientId`='client')
+
+          LET S = scope()
+
+          LET Result <= SELECT
+              ClientId,
+              S.Fqdn || client_info(client_id=ClientId).os_info.fqdn AS Fqdn,
+              S.MDATPHealth || dict() AS D
+            FROM source()
+
+          SELECT *
+          FROM foreach(
+            row=Result,
+            query={
+              SELECT *
+              FROM if(
+                condition='AMEngineVersion' IN D,
+                then={
+              SELECT
+              ClientId,
+              Fqdn,
+              D.edrMachineId AS edrMachineId,
+              D.AMProductVersion AS appVersion,
+              D.AMEngineVersion AS engineVersion,
+              D.AntivirusSignatureVersion AS definitionsVersion,
+              timestamp(string=D.AntivirusSignatureLastUpdated) AS definitionsUpdated,
+              if(condition=D.DefenderSignaturesOutOfDate = NULL,
+                  then=NULL,
+                  else=D.DefenderSignaturesOutOfDate != 'False') AS definitionsUpToDate,
+              if(condition=D.BehaviorMonitorEnabled = NULL,
+                  then=NULL,
+                  else=D.BehaviorMonitorEnabled = 'True') AS behaviorMonitoringEnabled,
+              if(condition=D.RealTimeProtectionEnabled = NULL,
+                  then=NULL,
+                  else=D.RealTimeProtectionEnabled = 'True') AS realTimeProtectionEnabled,
+              if(
+                condition=D.IsTamperProtected = NULL,
+                then=NULL,
+                else=D.IsTamperProtected = 'True') AS tamperProtectionEnabled,
+              if(
+                condition=D.TroubleShootingMode = NULL,
+                then=NULL,
+                else=D.TroubleShootingMode != 'Disabled') AS troubleshootingModeEnabled
+              FROM scope()
+            },
+                else={
+              SELECT
+              ClientId,
+              Fqdn,
+              D.edrMachineId AS edrMachineId,
+              D.appVersion AS appVersion,
+              D.engineVersion AS engineVersion,
+              D.definitionsVersion AS definitionsVersion,
+              timestamp(
+                epoch=D.definitionsUpdated) AS definitionsUpdated,
+              if(
+                condition=D.definitionsStatus.`$type` = NULL,
+                then=NULL,
+                else=D.definitionsStatus.`$type` = 'upToDate') AS definitionsUpToDate,
+              // Not available in Darwin:
+              D.behaviorMonitoring.displayValue AS behaviorMonitoringEnabled,
+              D.realTimeProtectionEnabled.value AS realTimeProtectionEnabled,
+              // Not available in Linux:
+              D.tamperProtection.displayValue AS tamperProtectionEnabled,
+              // Not available in Linux:
+              D.troubleshootingMode AS troubleshootingModeEnabled
+              FROM scope()
+            })
+            })
