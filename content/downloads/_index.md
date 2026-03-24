@@ -78,7 +78,7 @@ This page is for the current release. [The previous Release is 0.75.6]({{< ref "
 
 ## Release notes
 
-Full release notes are published in our [release blog post]({{< ref "/blog/2026/2026-03-release-notes-0.76/" >}})
+Full release notes are published in our [release blog post]({{< ref "/blog/2026/2026-03-10-release-notes-0.76/" >}})
 
 {{% notice note "Support for Windows 7" %}}
 
