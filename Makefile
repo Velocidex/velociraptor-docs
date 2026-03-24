@@ -38,3 +38,6 @@ index:
 	cd /tmp/index && zip -r ../index.zip * && cd -
 	mkdir -p ./static/docs_index/
 	mv /tmp/index.zip ./static/docs_index/docs_index_v1.zip
+
+comparisons:
+	python scripts/comparisons.py

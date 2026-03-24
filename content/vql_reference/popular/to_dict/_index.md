@@ -52,11 +52,11 @@ materialize the dict into memory once.
 
 ```vql
 LET PidLookup <= to_dict(item={
-    SELECT str(str=Pid) AS _key, Name AS _value
+    SELECT Pid AS _key, Name AS _value
     FROM pslist()
 })
 
-SELECT Pid, get(item=PidLookup, field=str(str=Pid))
+SELECT Pid, get(item=PidLookup, field=Pid)
 FROM pslist()
 ```
 
