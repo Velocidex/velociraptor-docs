@@ -8,18 +8,19 @@ tags:
  - Automation
 
 author: "Mike Cohen"
-date: 2026-03-10
+date: 2026-03-21
 noindex: false
 draft: false
 ---
 
 Digital forensics has always been a fast evolving field with newly
-researched techniques announced frequently. Many DFIR tools are
-published as a proof of concept or to parse specific file formats.
+researched techniques announced frequently. Many single purpose DFIR
+tools are published as a proof of concept or to parse specific file
+formats.
 
 Velociraptor's goal has always been to be the one stop shop for all
 DFIR analysis and collection. Velociraptor has powerful capabilities
-and is actually able to forensically parse and analyze many forensic
+and is able to forensically parse and analyze many forensic
 artifacts. Velociraptor can do this in a distributed way making it
 easier to hunt across a large number of endpoints securely and
 efficiently.
@@ -30,14 +31,13 @@ to a large more complete framework like Velociraptor, because it is
 perceived to be easier to use.
 
 This concern may be keeping many users from fully exploring
-Velociraptor's capabilities - it just might seem an overkill to
+Velociraptor's capabilities - it just might seem like an overkill to
 install a Velociraptor client and server and learn new concepts like
-VQL, Artifacts, analysis notebooks etc.
-
-It is sometimes just easier to run a single use tool (for example
-`AmCacheParser.exe` from the [EZ Tools
-suite](hhttps://ericzimmerman.github.io/#!index.md) and produce a CSV
-file that can be examined in a familiar tool like `Excel` quickly).
+VQL, Artifacts, analysis notebooks etc. It is sometimes just easier to
+run a single use tool (for example `AmCacheParser.exe` from the [EZ
+Tools suite](hhttps://ericzimmerman.github.io/#!index.md) and produce
+a CSV file that can be examined in a familiar tool like `Excel`
+quickly).
 
 What few people realize, however, is that Velociraptor is also capable
 of single tool use! It is actually very simple to use it in this way
@@ -95,9 +95,9 @@ C:\Windows\System32>c:\velociraptor.exe fs cp c:\Windows\system32\sru\SRUDB.dat 
 ## Parsing the evidence
 
 Copying files off the target system is all very well, but ultimately
-we need to parse and analyze those files to get insight of what
+we need to parse and analyze those files to get an insight of what
 happened. Many DFIR tools, scripts and adhoc programs are available to
-parse many forensically relevant files. These tools have varied
+parse forensically relevant files. These tools have varied
 installation dependencies and are often out of date and poorly
 maintained.
 
@@ -108,10 +108,10 @@ GUI tool to view ESE files is
 which can dump out all the tables. However for SRUM analysis we
 typically need further parsing of the specific tables.
 
-One parser is the
+One such parser is the
 [SrumECMD](https://github.com/EricZimmerman/Srum). This parser uses
 the Microsoft JET library to access the file, so it needs to run on
-Windows making it more inconvenient to use. Additionally the files
+Windows, making it inconvenient to use. Additionally the files
 need to be "repaired" to be opened by the JET library.
 
 Velociraptor parses files using `Artifacts`. You can think of
@@ -122,16 +122,20 @@ Velociraptor allows artifacts to be run on the command line, just like
 mini programs. You can search for the artifacts you need on the
 [Artifacts Search
 Page](https://docs.velociraptor.app/artifact_references/) to find the
-`Windows.Forensics.SRUM` artifact is the one used to parse SRUM files.
+`Windows.Forensics.SRUM` artifact is the one used to parse SRUM
+files. This artifact uses Velociraptor's native ESE parser which does
+not need any external libraries, or to "repair" the files. In
+combination with the transparent NTFS access, the artifact simply
+parses the existing file bypassing file locks transparently.
 
-Artifacts produce structured output as JSON,CSV and uploaded
-files. Usually we store all related files collected by an artifact in
-a single ZIP file. Artifacts also accept parameters to control the way
-they work.
+Velociraptor's artifacts produce structured output as JSON,CSV and
+uploaded files. Usually we store all related files collected by an
+artifact in a single ZIP file. Artifacts also accept parameters to
+control the way they work.
 
-Running an artifact on the command line is done using the `-r`
-flag. We can see what parameters the `Windows.Forensics.SRUM` artifact
-will accept using the `-h` flag:
+Running an artifact on the command line is done using the `-r` flag
+(also called `--run`). We can see what parameters the
+`Windows.Forensics.SRUM` artifact will accept using the `-h` flag:
 
 ```
 > c:\velociraptor.exe -r Windows.Forensics.SRUM -h
@@ -190,7 +194,7 @@ file off the system.
 ## Examining the collection
 
 Velociraptor exports collections into a standardized ZIP based
-structure. The file includes JSON and CSV formatted structured data, as
+file. The file includes JSON and CSV formatted structured data, as
 well as any bulk files collected.
 
 We can examine the content of the collection using any ZIP program,
@@ -223,9 +227,9 @@ C:\Windows\System32>c:\velociraptor.exe unzip -l c:\output\test.zip
  ...
  ```
 
-We can see that the ZIP file contains the raw file (uploaded under the
-upload directory) as well as results collected under the `results`
-directory.
+We can see that the ZIP file contains the raw `srudb.dat` file
+(uploaded under the upload directory) as well as results collected
+under the `results` directory.
 
 {{% notice "tip" "Extracting the collection" %}}
 
@@ -395,13 +399,13 @@ Although it is convenient to collect artifacts with external binaries,
 this can be a problem in practice.
 
 Introducing binaries to an end point may trigger security software
-alert and can present risk to stability and security, especially if
+alert and can present risks to stability and security, especially if
 the binary is not very trusted.
 
 Additionally running third party tools can interfere with the forensic
 evidence we usually collect. For example executables can create
-additional prefetch entries, powershell may introduce block logs and
-USN journals may be rotated.
+additional prefetch entries, powershell may introduce script block
+logs and USN journals may be rotated.
 
 Many external tools actually have equivalent native VQL parsers - for
 example the
@@ -429,16 +433,17 @@ any VQL plugin to be run on the server, thereby facilitating full
 automation.
 
 In release 0.76, Velociraptor's CLI was streamlined to have the same
-interface collecting artifacts from an endpoint or interactively. This
-makes it more intuitive to use.
+user interface for collecting artifacts from an endpoint or
+interactively. This makes it more intuitive to use.
 
-In the following I collect the `Windows.Forensics.Lnk` artifact
-remotely from a client using the CLI. This artifact scans the endpoint
-for `LNK` files, parses them and reports any suspicious files.
+In the following example, I collect the `Windows.Forensics.Lnk`
+artifact remotely from a client using the CLI. This artifact scans the
+endpoint for `LNK` files, parses them and reports any suspicious
+files.
 
 Before I start I will create an [API key]({{% ref
 "/docs/server_automation/server_api/#creating-an-api-client-configuration"
-%}} so I can connect to the server:
+%}}) so I can connect to the server:
 
 ```shell
 velociraptor --config server.config.yaml config api_client --name APIClient --role administrator api.config.yaml
@@ -488,17 +493,20 @@ Velociraptor then goes through these steps:
    tasked via a `Flow`. You can think of a flow as a unique identifier
    under which the server is able to track this collection, store the
    results and display it in the GUI.
+
 2. Once the flow is scheduled, the command waits for the collection to
    complete. This can take some time, or even not happen at all. For
-   example, if the client is offline, the flow not complete until the
-   client comes back online. Velociraptor flows are typically
-   asynchronous and a more robust approach using the API needs to
-   account for this.
+   example, if the client is offline, the flow will not complete until
+   the client comes back online.
 
-   However, assuming the client is online this convenient approach
-   should work relatively quickly.
+   Velociraptor flows are typically asynchronous and a more robust
+   approach using the API needs to account for this. However, assuming
+   the client is online this convenient approach should work
+   relatively quickly.
+
 3. Once the flow completes, Velociraptor will export it to a ZIP file
    and fetch it from the server.
+
 4. The collection is stored into the relevant location just as it was before.
 
 The nice thing about this new workflow is that it is very similar to
@@ -507,13 +515,19 @@ analyst's local workstation as a simple file ready for further
 automation or inspection.
 
 The new CLI workflow is just a convenience around a number of API
-calls. We received feedback that users found using the raw API too
+calls. We received feedback that users found using the raw API
 difficult, so this new workflow was introduced for the simple case of
-scheduling a collection, and receiving the results.
+scheduling a collection, and receiving the results. If you want to use
+the raw API to replicate a similar function in your own scripts, you
+can look at the source code for this command to inspect the raw API
+calls used.
 
 {{% notice "warning" "Offline clients" %}}
 
-When schedule a collection as above the CLI waits for the collection to end before download the results. This may take a long time if the client is not currently online. In this case the CLI will timeout and exit.
+When schedule a collection as above, the CLI waits for the collection
+to end before downloading the results. This may take a long time if
+the client is not currently online. In this case the CLI will timeout
+and exit.
 
 You can retrieve the results at a later time by knowing the flow id
 that was scheduled. Use the `artifacts fetch` command to fetch a
@@ -574,3 +588,22 @@ can be installed on the fleet. This is usually done via the
 ...
 ]
 ```
+
+The server creates the MSI then it gets downloaded to my local
+workstation as part of the artifact collection.
+
+## Conclusions
+
+In this blog post we saw how to use the Command Line Interface (CLI)
+to achieve various tasks with simplicity and speed. The CLI interface
+makes artifacts into an extensible mini VQL program which can be used
+conveniently as an isolated tool.
+
+Instead of writing your own stand alone script to perform a single use
+analysis, please consider writing it as a VQL artifact. The benefits
+to the user include:
+
+* A single user interface, both CLI and GUI
+* The ability to collect the artifact at scale from many endpoints at the same time.
+* Machine readable output which can be parsed and post-processed by others
+* The ability to submit your work to the Artifact Exchange for wider visibility within the community.

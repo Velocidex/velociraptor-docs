@@ -41,6 +41,14 @@ This search feature is powered by the
 available to be used for indexing and searching VQL query results [as
 described below]({{< relref "#full-text-indexing-and-searching" >}}).
 
+## CLI Improvements
+
+The command line interface has been streamlined to use artifacts as
+extensible mini-VQL programs. This makes it easy to use specific
+artifacts as replacements for one shot scripts. See our blog post on
+[The Velociraptor CLI]({{% ref "/blog/2026/2026-03-21-cli/" %}}) for a
+complete discussion.
+
 ## New VQL plugins
 
 ### Full text indexing and searching
