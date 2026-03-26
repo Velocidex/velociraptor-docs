@@ -120,9 +120,8 @@ understand VQL to use Artifacts**.
 
 Velociraptor allows artifacts to be run on the command line, just like
 mini programs. You can search for the artifacts you need on the
-[Artifacts Search
-Page](https://docs.velociraptor.app/artifact_references/) to find the
-`Windows.Forensics.SRUM` artifact is the one used to parse SRUM
+[Artifacts Search Page]({{% ref "/artifact_references/" %}}) to find
+the `Windows.Forensics.SRUM` artifact is the one used to parse SRUM
 files. This artifact uses Velociraptor's native ESE parser which does
 not need any external libraries, or to "repair" the files. In
 combination with the transparent NTFS access, the artifact simply

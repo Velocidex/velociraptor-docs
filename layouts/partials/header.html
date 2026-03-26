@@ -50,7 +50,7 @@
     {{ end }}
         <section id="body">
         <div id="overlay"></div>
-        <div class="padding highlightable">
+        <div class="padding highlightable scroller">
           {{ $editURL := "" }}
           {{ if .File }}
           {{ $editURL = printf "%s%s%s" .Site.Params.editURL ( replace .File.Dir "\\" "/" ) .File.LogicalName }}

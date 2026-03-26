@@ -8,7 +8,7 @@ sitemap:
 weight: 60
 noDisqus: true
 no_edit: true
-disableToc: true
+disableToc: false
 chapter: false
 pre: <i class="fas fa-book"></i>
 head: <hr>

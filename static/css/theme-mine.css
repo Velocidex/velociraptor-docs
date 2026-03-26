@@ -1157,3 +1157,7 @@ body #sidebar ul li li {
 ul.sidebar {
     width: max-content;
 }
+
+h1, h2, h3 {
+    scroll-margin-top: 80px;
+}
