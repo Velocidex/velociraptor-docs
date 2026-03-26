@@ -476,8 +476,8 @@ function doSearchVQL() {
   let filter = input.value.toUpperCase();
 
   let result = [];
-  for(let i=0;i<all_data.length; i++) {
-    let item = all_data[i];
+  for(let i=0;i<all_vql_data.length; i++) {
+    let item = all_vql_data[i];
 
     if (item.name.toUpperCase().includes(filter)) {
       result.push(item);
