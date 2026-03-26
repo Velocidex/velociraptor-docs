@@ -30,7 +30,7 @@ With network-connected clients the results are uploaded to the
 Velociraptor server. File uploads are also done separately rather than
 being bundled into a single zip archive. This might not be desirable
 in certain circumstances, for example:
-- if the server's storage is not spec'ed to handle the total size of
+- if the server's storage is not spec'd to handle the total size of
   these bulk collections, which are typically large if they consist
   mostly of copied files. In that case, you might want the collections
   uploaded to an alternative destination where storage space is less
@@ -47,7 +47,7 @@ the selected client artifacts, tools, and remote upload configuration
 included. Since it's all just VQL you could, in theory, create a
 client artifact that replicates the actions of any offline collector.
 However, in practice the
-[Server.Utils.CreateCollector]({{< ref "/artifact_references/pages/server.utils.createcollector/" >}})
+[`Server.Utils.CreateCollector`]({{< ref "/artifact_references/pages/server.utils.createcollector/" >}})
 artifact is significantly complex. Creating a custom version of it
 that can be run by clients would be a daunting task. It's much easier
 to create the offline collector in the normal way, and then run it via
@@ -433,7 +433,7 @@ Some things to notice about this artifact:
   seen in the **Requests** tab after running
   `Server.Utils.CreateCollector` in the previous test build.
 
-  ![Server.Utils.CreateCollector Requests tab](createcollector_requests.png)
+  ![The `Server.Utils.CreateCollector` Requests tab](createcollector_requests.png)
 
 - The `Server.Utils.CreateCollector` has some parameters that I want
   to be able to easily change, so I've added those as parameters to my
@@ -472,7 +472,7 @@ Some things to notice about this artifact:
 I can now run this artifact on my server to generate the offline
 collector and store it in the tools repository.
 
-![Custom.CreateCollectorTool Uploaded Files](createcollectortool_uploads.png)
+![`Custom.CreateCollectorTool` Uploaded Files](createcollectortool_uploads.png)
 
 The **Uploaded Files** tab of the collection makes the offline collector
 and associated spec file available for download, but I don't need to
@@ -481,7 +481,7 @@ do that because the tool is already stored in the tools inventory.
 On the **Results** tab I can see that the tool has been added to the
 inventory.
 
-![Custom.CreateCollectorTool Uploaded Files](createcollectortool_results.png)
+![`Custom.CreateCollectorTool` Uploaded Files](createcollectortool_results.png)
 
 I can also verify that the tool is in the inventory by running the
 following query in a notebook:

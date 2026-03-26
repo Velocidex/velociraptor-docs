@@ -2033,3 +2033,8 @@ pathname
 
 Bleve
 dir
+
+<url-free> content/knowledge_base/tips/offline_collector_tool.md
+--------------------------------------------------------------------------------
+embeddable
+spec'd
