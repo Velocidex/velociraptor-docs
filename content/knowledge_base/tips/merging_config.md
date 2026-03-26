@@ -60,16 +60,6 @@ While the `config show` command can be used to manipulate the
 configuration file, sometimes we want to change a few values at
 runtime on a temporary basis.
 
-The first option is using the `--config_override` flag to specify the
-path to a JSON merge file that overrides the configuration at
-runtime. Velociraptor will load the configuration file specified by
-the `--config` flag as normal, but then will apply the JSON merge blob
-to override specific fields.
-
-This is useful for specifying a larger configuration manipulation - it
-will not change the main config file at all, but will change the
-running configuration
-
 ## Overriding configuration via command line flags
 
 Velociraptor allows most configuration settings to be overriden by
