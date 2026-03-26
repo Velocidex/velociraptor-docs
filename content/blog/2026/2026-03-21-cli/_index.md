@@ -599,7 +599,7 @@ to achieve various tasks with simplicity and speed. The CLI interface
 makes artifacts into an extensible mini VQL program which can be used
 conveniently as an isolated tool.
 
-Instead of writing your own stand alone script to perform a singel use
+Instead of writing your own stand alone script to perform a single use
 analysis, please consider writing it as a VQL artifact. The benefits
 to the user include:
 
