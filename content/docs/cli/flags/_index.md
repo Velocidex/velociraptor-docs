@@ -19,8 +19,6 @@ These CLI flags are available for all commands (but may not be relevant to all).
     --embedded_config=EMBEDDED_CONFIG
                                 Extract the embedded configuration from this file.
 -a, --api_config=API_CONFIG    The API configuration file.
--o, --config_override=CONFIG_OVERRIDE
-                                A json object to override the config.
     --runas=RUNAS              Run as this username's ACLs
     --definitions=DEFINITIONS  A directory containing artifact definitions
     --[no-]nocolor             Disable color output
@@ -35,4 +33,6 @@ These CLI flags are available for all commands (but may not be relevant to all).
     --[no-]prompt              Present a prompt before exit
     --max_wait=10              Maximum time to queue results.
     --timezone=TIMEZONE        Default encoding timezone (e.g. Australia/Brisbane). If not set we use UTC
+-r, --run=RUN                  Run an artifact as a CLI tool.
 ```
+
