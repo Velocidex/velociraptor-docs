@@ -1,6 +1,8 @@
 ---
 title: Windows.Detection.PsexecService
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
 ---
 

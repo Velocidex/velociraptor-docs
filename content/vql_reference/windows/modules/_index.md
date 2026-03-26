@@ -2,6 +2,8 @@
 title: modules
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

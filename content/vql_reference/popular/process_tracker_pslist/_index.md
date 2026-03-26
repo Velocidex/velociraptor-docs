@@ -2,6 +2,8 @@
 title: process_tracker_pslist
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

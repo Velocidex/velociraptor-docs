@@ -1,6 +1,8 @@
 ---
 title: Server.Slack.Clients.Online
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
 ---
 

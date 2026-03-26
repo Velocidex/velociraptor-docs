@@ -1,6 +1,8 @@
 ---
 title: MacOS.Detection.Yara.Process
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

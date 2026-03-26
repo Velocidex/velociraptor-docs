@@ -1,6 +1,8 @@
 ---
 title: Windows.Forensics.Pst
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

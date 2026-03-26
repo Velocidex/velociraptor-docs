@@ -1,6 +1,8 @@
 ---
 title: Linux.Applications.Chrome.Extensions
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

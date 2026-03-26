@@ -22,6 +22,8 @@ template = """---
 title: %s
 hidden: true
 tags: %s
+sitemap:
+  disable: true
 editURL: https://github.com/%s/%s/edit/master/%s
 ---
 

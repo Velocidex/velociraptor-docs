@@ -1,6 +1,8 @@
 ---
 title: Server.Import.PreviousReleases
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 
@@ -44,11 +46,12 @@ parameters:
     description: |
       The Velociraptor Release to import.
     type: choices
-    default: v0.74
+    default: v0.75
     choices:
       - v0.72
       - v0.73
       - v0.74
+      - v0.75
 
 sources:
   - query: |

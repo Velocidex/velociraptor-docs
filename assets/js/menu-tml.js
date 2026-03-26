@@ -36,7 +36,7 @@ function addToNode(dom, nodes) {
             cls += " active";
         }
 
-        let new_dom = $("<li>").attr("class", cls);
+        let new_dom = $("<li>").attr("class", cls).attr("linkTo", x.link);
         let children = x.children || [];
 
         if(children.length > 0) {
@@ -75,7 +75,7 @@ function addToNode(dom, nodes) {
           {{- template "section-tree-nav-json" dict "sect" . -}}
         {{- end -}}
        {{- end -}}
-     ], "no_children": "{{.Params.no_children | html }}"},
+     ]},
    {{- else -}}
     {{- if not (or .Params.Hidden .Params.no_menu) -}}
       {"link": "{{.RelPermalink}}", "title": "{{.Params.Pre | html}}{{.LinkTitle | html }}{{.Params.Post | html}}"},

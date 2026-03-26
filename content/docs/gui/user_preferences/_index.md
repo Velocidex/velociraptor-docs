@@ -4,8 +4,8 @@ menutitle: User Preferences
 date: 2025-09-26
 last_reviewed: 2025-09-29
 draft: false
-weight: 90
-summary: "Personalize your GUI experience."
+weight: 30
+summary: Personalize your GUI experience
 ---
 
 Users can set their own preferences for several GUI aspects. These are set in the

@@ -1,6 +1,8 @@
 ---
 title: Server.Internal.ClientTasks
 hidden: true
+sitemap:
+  disable: true
 tags: [Internal Artifact]
 ---
 

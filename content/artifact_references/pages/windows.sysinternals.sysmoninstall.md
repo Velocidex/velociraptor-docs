@@ -1,6 +1,8 @@
 ---
 title: Windows.Sysinternals.SysmonInstall
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

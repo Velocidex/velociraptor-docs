@@ -2,6 +2,8 @@
 title: reg_rm_value
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

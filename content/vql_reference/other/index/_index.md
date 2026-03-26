@@ -2,6 +2,8 @@
 title: index
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 
@@ -23,6 +25,10 @@ query|A VQL Query to parse and execute.|StoredQuery (required)
 mapping|A dict to describe field mapping.|ordereddict.Dict
 default_analyzer|The default analyzer to use.|string
 output|The file path to create the index on.|string (required)
+workers|Index with this many workers (default 2)|int64
+purge|If set we delete the index to start fresh|bool
+batch|Default batch size for index (default 1000)|int64
+silent|Do not forward events (this is faster)|bool
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_WRITE</span>
 

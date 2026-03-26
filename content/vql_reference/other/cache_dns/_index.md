@@ -2,6 +2,8 @@
 title: cache_dns
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

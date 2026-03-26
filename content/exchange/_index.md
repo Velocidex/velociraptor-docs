@@ -6,7 +6,9 @@ draft: false
 weight: 150
 pre: <i class="fas fa-code"></i>
 no_edit: true
-disableToc: true
+sitemap:
+ disable: true
+disableToc: false
 no_children: true
 rss_data_file: static/exchange/data.json
 rss_title: Velociraptor Artifact Exchange

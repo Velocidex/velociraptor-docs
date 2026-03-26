@@ -1,6 +1,8 @@
 ---
 title: Windows.System.Signers
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

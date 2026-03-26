@@ -2,6 +2,8 @@
 title: upload_s3
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: MacOS.Forensics.FSEvents
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

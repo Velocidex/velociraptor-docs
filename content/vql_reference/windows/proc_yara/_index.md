@@ -2,6 +2,8 @@
 title: proc_yara
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

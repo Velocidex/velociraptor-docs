@@ -1,6 +1,8 @@
 ---
 title: Generic.Client.DiskUsage
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

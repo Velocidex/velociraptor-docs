@@ -2,6 +2,8 @@
 title: link_to
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

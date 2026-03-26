@@ -2,6 +2,8 @@
 title: upload_sftp
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

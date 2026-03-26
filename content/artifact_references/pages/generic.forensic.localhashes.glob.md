@@ -1,6 +1,8 @@
 ---
 title: Generic.Forensic.LocalHashes.Glob
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

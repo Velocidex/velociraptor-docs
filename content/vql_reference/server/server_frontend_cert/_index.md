@@ -2,6 +2,8 @@
 title: server_frontend_cert
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

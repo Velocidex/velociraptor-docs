@@ -2,6 +2,8 @@
 title: utf16_encode
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

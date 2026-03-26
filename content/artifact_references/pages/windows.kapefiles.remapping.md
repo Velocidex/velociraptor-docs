@@ -1,6 +1,8 @@
 ---
 title: Windows.KapeFiles.Remapping
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 
@@ -181,7 +183,8 @@ export: |
 
 sources:
   - query: |
-      SELECT remap(clear=TRUE, config=GetRemapping) AS Remapping
+      SELECT remap(clear=TRUE,
+         config=GetRemapping(FlowId=FlowId, ClientId=ClientId)) AS Remapping
       FROM scope()
 
 </code></pre>

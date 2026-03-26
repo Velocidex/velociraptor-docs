@@ -1,6 +1,8 @@
 ---
 title: Server.Internal.MasterRegistrations
 hidden: true
+sitemap:
+  disable: true
 tags: [Internal Artifact]
 ---
 

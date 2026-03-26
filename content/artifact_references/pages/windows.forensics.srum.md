@@ -1,6 +1,8 @@
 ---
 title: Windows.Forensics.SRUM
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 
@@ -13,8 +15,8 @@ description: |
   Process the SRUM database.
 
 reference:
-  - https://www.sans.org/cyber-security-summit/archives/file/summit-archive-1492184583.pdf
-  - https://cyberforensicator.com/2017/08/06/windows-srum-forensics/
+  - https://medium.com/@cyberengage.org/making-sense-of-srum-data-with-srum-dump-tool-67b90402df41
+  - https://blog.elcomsoft.com/2025/08/analyzing-the-windows-srum-database/
 
 type: client
 
@@ -47,6 +49,8 @@ export: |
       func=srum_lookup_id(file=OSPath, accessor=Accessor, id=Id),
       key=format(format="%v-%v-%v", args=[OSPath, Accessor, Id]))
 
+  LET SRUMFiles = SELECT OSPath FROM glob(globs=SRUMLocation)
+
 imports:
   - Windows.Sys.AllUsers
 
@@ -60,35 +64,35 @@ sources:
 
   - name: Execution Stats
     query: |
-        LET SRUMFiles &lt;= SELECT OSPath FROM glob(globs=SRUMLocation)
-
-        SELECT  AutoIncId AS ID,
+      SELECT * FROM foreach(row=SRUMFiles,
+      query={
+           SELECT  AutoIncId AS ID,
                 TimeStamp,
-                ResolveESEId(OSPath=SRUMFiles.OSPath,
+                ResolveESEId(OSPath=OSPath,
                              Accessor=accessor, Id=AppId) AS App,
-                ResolveESEId(OSPath=SRUMFiles.OSPath,
+                ResolveESEId(OSPath=OSPath,
                              Accessor=accessor, Id=UserId) AS UserSid,
-                LookupSIDCache(SID=srum_lookup_id(
-                    file=SRUMFiles, accessor=accessor, id=UserId) || "") AS User,
+                LookupSIDCache(SID=ResolveESEId(
+                    OSPath=OSPath, Accessor=accessor, Id=UserId) || "") AS User,
                 timestamp(winfiletime=EndTime) AS EndTime,
                 DurationMS,
                 NetworkBytesRaw
-        FROM parse_ese(file=SRUMFiles.OSPath,
-                       accessor=accessor, table=ExecutionGUID)
-        WHERE App =~ ExecutableRegex
+           FROM parse_ese(file=OSPath,
+                          accessor=accessor, table=ExecutionGUID)
+           WHERE App =~ ExecutableRegex
+      })
 
   - name: Application Resource Usage
     query: |
-        LET SRUMFiles &lt;= SELECT OSPath FROM glob(globs=SRUMLocation)
-
-        SELECT AutoIncId as SRUMId,
+      SELECT * FROM foreach(row=SRUMFiles,
+      query={
+         SELECT AutoIncId as SRUMId,
                TimeStamp,
-               ResolveESEId(OSPath=SRUMFiles.OSPath,
-                            Accessor=accessor, Id=AppId) AS App,
-               ResolveESEId(OSPath=SRUMFiles.OSPath,
+               ResolveESEId(OSPath=OSPath, Accessor=accessor, Id=AppId) AS App,
+               ResolveESEId(OSPath=OSPath,
                             Accessor=accessor, Id=UserId) AS UserSid,
-               LookupSIDCache(SID=srum_lookup_id(
-                    file=SRUMFiles, accessor=accessor, id=UserId) || "") AS User,
+               LookupSIDCache(SID=ResolveESEId(
+                    OSPath=OSPath, Accessor=accessor, Id=UserId) || "") AS User,
                ForegroundCycleTime,
                BackgroundCycleTime,
                FaceTime,
@@ -104,51 +108,52 @@ sources:
                BackgroundNumReadOperations,
                BackgroundNumWriteOperations,
                BackgroundNumberOfFlushes
-        FROM parse_ese(file=SRUMFiles.OSPath,
+          FROM parse_ese(file=SRUMFiles.OSPath,
                        accessor=accessor, table=ApplicationResourceUsageGUID)
-        WHERE App =~ ExecutableRegex
+          WHERE App =~ ExecutableRegex
+      })
 
   - name: Network Connections
     query: |
-        LET SRUMFiles &lt;= SELECT OSPath FROM glob(globs=SRUMLocation)
-
+      SELECT * FROM foreach(row=SRUMFiles,
+      query={
         SELECT AutoIncId as SRUMId,
              TimeStamp,
-             ResolveESEId(OSPath=SRUMFiles.OSPath,
+             ResolveESEId(OSPath=OSPath,
                           Accessor=accessor, Id=AppId) AS App,
-             ResolveESEId(OSPath=SRUMFiles.OSPath,
+             ResolveESEId(OSPath=OSPath,
                           Accessor=accessor, Id=UserId) AS UserSid,
-             LookupSIDCache(SID=srum_lookup_id(
-                    file=SRUMFiles, accessor=accessor, id=UserId) || "") AS User,
+             LookupSIDCache(SID=ResolveESEId(
+                    OSPath=OSPath, Accessor=accessor, Id=UserId) || "") AS User,
              InterfaceLuid,
              ConnectedTime,
              timestamp(winfiletime=ConnectStartTime) AS StartTime
-        FROM parse_ese(file=SRUMFiles.OSPath,
+        FROM parse_ese(file=OSPath,
                        accessor=accessor, table=NetworkConnectionsGUID)
         WHERE App =~ ExecutableRegex
+      })
 
   - name: Network Usage
     query: |
-        LET SRUMFiles &lt;= SELECT OSPath FROM glob(globs=SRUMLocation)
-
+      SELECT * FROM foreach(row=SRUMFiles,
+      query={
         SELECT AutoIncId as SRUMId,
              TimeStamp,
-             ResolveESEId(OSPath=SRUMFiles.OSPath,
+             ResolveESEId(OSPath=OSPath,
                           Accessor=accessor, Id=AppId) AS App,
-             ResolveESEId(OSPath=SRUMFiles.OSPath,
+             ResolveESEId(OSPath=OSPath,
                           Accessor=accessor, Id=UserId) AS UserSid,
-             LookupSIDCache(SID=srum_lookup_id(
-                    file=SRUMFiles, accessor=accessor, id=UserId) || "") AS User,
+             LookupSIDCache(SID=ResolveESEId(
+                    OSPath=OSPath, Accessor=accessor, Id=UserId) || "") AS User,
              UserId,
              BytesSent,
              BytesRecvd,
              InterfaceLuid,
              L2ProfileId,
              L2ProfileFlags
-        FROM parse_ese(file=SRUMFiles.OSPath,
-                       accessor=accessor, table=NetworkUsageGUID)
+        FROM parse_ese(file=OSPath, accessor=accessor, table=NetworkUsageGUID)
         WHERE App =~ ExecutableRegex
-
+      })
     notebook:
         - type: vql_suggestion
           name: SRUM Network Usage summary

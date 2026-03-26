@@ -1,6 +1,8 @@
 ---
 title: Linux.OSQuery.Generic
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

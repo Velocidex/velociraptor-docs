@@ -1,6 +1,8 @@
 ---
 title: Windows.System.DLLs
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

@@ -2,6 +2,8 @@
 title: get_flow
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

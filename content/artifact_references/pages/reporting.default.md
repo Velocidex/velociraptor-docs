@@ -1,6 +1,8 @@
 ---
 title: Reporting.Default
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

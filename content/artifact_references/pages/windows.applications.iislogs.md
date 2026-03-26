@@ -1,6 +1,8 @@
 ---
 title: Windows.Applications.IISLogs
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

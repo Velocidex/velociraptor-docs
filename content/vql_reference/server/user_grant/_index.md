@@ -2,6 +2,8 @@
 title: user_grant
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

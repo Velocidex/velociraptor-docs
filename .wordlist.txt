@@ -2038,3 +2038,16 @@ dir
 --------------------------------------------------------------------------------
 embeddable
 spec'd
+FTS
+NoSQL
+
+<url-free> ./content/blog/2026/2026-03-21-cli/_index.md
+--------------------------------------------------------------------------------
+CreateMSI
+EZ
+EseDatabaseView
+HighLevelTargets
+RawCopy
+SrumECMD
+createmsi
+AmCacheParser

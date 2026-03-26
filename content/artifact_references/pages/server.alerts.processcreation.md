@@ -1,6 +1,8 @@
 ---
 title: Server.Alerts.ProcessCreation
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
 ---
 

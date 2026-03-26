@@ -1,6 +1,8 @@
 ---
 title: Elastic.EventLogs.Sysmon
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

@@ -2,6 +2,8 @@
 title: upload_webdav
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

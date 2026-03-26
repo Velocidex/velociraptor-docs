@@ -1,6 +1,8 @@
 ---
 title: MacOS.Applications.Chrome.History
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

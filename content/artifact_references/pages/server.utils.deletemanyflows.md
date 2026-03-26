@@ -1,6 +1,8 @@
 ---
 title: Server.Utils.DeleteManyFlows
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

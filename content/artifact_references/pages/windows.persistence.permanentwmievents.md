@@ -1,6 +1,8 @@
 ---
 title: Windows.Persistence.PermanentWMIEvents
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

@@ -3,6 +3,8 @@ title: Event Plugins
 weight: 70
 linktitle: Event Plugins
 index: true
+sitemap:
+  disable: true
 no_edit: true
 no_children: true
 ---

@@ -1,6 +1,8 @@
 ---
 title: Windows.Detection.WMIProcessCreation
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: Windows.ETW.DNSQueriesServer
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
 ---
 

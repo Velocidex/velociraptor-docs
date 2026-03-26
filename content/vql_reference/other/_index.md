@@ -3,6 +3,8 @@ title: Other
 weight: 90
 linktitle: Other
 index: true
+sitemap:
+  disable: true
 no_edit: true
 no_children: true
 ---

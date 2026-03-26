@@ -2,6 +2,8 @@
 title: watch_ebpf
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

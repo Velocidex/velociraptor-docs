@@ -1,6 +1,8 @@
 ---
 title: Linux.Events.EBPF
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: Windows.Registry.MountPoints2
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

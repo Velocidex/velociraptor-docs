@@ -1,6 +1,8 @@
 ---
 title: Server.Monitor.Profile
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

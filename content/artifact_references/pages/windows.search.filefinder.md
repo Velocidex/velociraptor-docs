@@ -1,6 +1,8 @@
 ---
 title: Windows.Search.FileFinder
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 
@@ -71,6 +73,9 @@ precondition:
   SELECT * FROM info() where OS = 'windows'
 
 parameters:
+  - name: Glob
+    description: "Search for this file glob"
+
   - name: SearchFilesGlobTable
     type: csv
     default: |
@@ -132,7 +137,7 @@ sources:
                Btime AS BTime,
                Ctime AS CTime, "" AS Keywords,
                IsDir, Data
-        FROM glob(globs=SearchFilesGlobTable.Glob,
+        FROM glob(globs=Glob || SearchFilesGlobTable.Glob,
                   accessor=Accessor)
 
       LET more_recent = SELECT * FROM if(

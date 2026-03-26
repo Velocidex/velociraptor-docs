@@ -2,6 +2,8 @@
 title: column_filter
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

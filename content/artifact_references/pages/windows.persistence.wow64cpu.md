@@ -1,6 +1,8 @@
 ---
 title: Windows.Persistence.Wow64cpu
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

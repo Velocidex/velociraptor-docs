@@ -1,6 +1,8 @@
 ---
 title: Windows.ETW.ViewSessions
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

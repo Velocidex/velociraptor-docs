@@ -3546,12 +3546,18 @@
         "name": "hunt",
         "description": "Create and launch a hunt.",
         "type": "Function",
-        "version": 2,
+        "version": 3,
         "args": [
             {
                 "name": "description",
                 "type": "string",
                 "description": "Description of the hunt"
+            },
+            {
+                "name": "tags",
+                "type": "string",
+                "description": "A list of tags to add to the hunt",
+                "repeated": true
             },
             {
                 "name": "artifacts",
@@ -4033,7 +4039,7 @@
         "name": "index",
         "description": "Create a local index from a query.",
         "type": "Plugin",
-        "version": 1,
+        "version": 2,
         "args": [
             {
                 "name": "query",
@@ -4056,6 +4062,26 @@
                 "type": "string",
                 "description": "The file path to create the index on.",
                 "required": true
+            },
+            {
+                "name": "workers",
+                "type": "int64",
+                "description": "Index with this many workers (default 2)"
+            },
+            {
+                "name": "purge",
+                "type": "bool",
+                "description": "If set we delete the index to start fresh"
+            },
+            {
+                "name": "batch",
+                "type": "int64",
+                "description": "Default batch size for index (default 1000)"
+            },
+            {
+                "name": "silent",
+                "type": "bool",
+                "description": "Do not forward events (this is faster)"
             }
         ],
         "metadata": {
@@ -4070,6 +4096,37 @@
         "description": "Search a previously created index.",
         "type": "Plugin",
         "version": 1,
+        "args": [
+            {
+                "name": "path",
+                "type": "string",
+                "description": "The file path to the index to open.",
+                "required": true
+            },
+            {
+                "name": "search",
+                "type": "string",
+                "description": "A Bleve search query. See https://blevesearch.com/docs/Query-String-Query/",
+                "required": true
+            },
+            {
+                "name": "fields",
+                "type": "string",
+                "description": "A list of fields to include from the index.",
+                "repeated": true
+            },
+            {
+                "name": "sort",
+                "type": "string",
+                "description": "The field to sort by (precede with - to sort in descending order).",
+                "repeated": true
+            },
+            {
+                "name": "start",
+                "type": "uint64",
+                "description": "Row number to start."
+            }
+        ],
         "metadata": {
             "permissions": "FILESYSTEM_READ"
         },

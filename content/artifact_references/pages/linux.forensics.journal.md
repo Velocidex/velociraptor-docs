@@ -1,6 +1,8 @@
 ---
 title: Linux.Forensics.Journal
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 
@@ -127,6 +129,7 @@ sources:
                EventData.SYSLOG_IDENTIFIER AS Unit,
                EventData.MESSAGE AS Message
         FROM source()
+        ORDER BY Timestamp
 
 </code></pre>
 

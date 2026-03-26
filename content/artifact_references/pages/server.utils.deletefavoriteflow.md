@@ -1,6 +1,8 @@
 ---
 title: Server.Utils.DeleteFavoriteFlow
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

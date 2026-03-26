@@ -1,6 +1,8 @@
 ---
 title: Windows.Detection.Impersonation
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

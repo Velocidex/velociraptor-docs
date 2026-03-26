@@ -1,6 +1,8 @@
 ---
 title: Linux.Sys.Pslist
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

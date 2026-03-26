@@ -1,6 +1,8 @@
 ---
 title: Linux.Applications.Docker.Info
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: MacOS.System.Wifi
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

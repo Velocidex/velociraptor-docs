@@ -3,6 +3,8 @@ title: Experimental
 weight: 80
 linktitle: Experimental
 index: true
+sitemap:
+  disable: true
 no_edit: true
 no_children: true
 ---

@@ -2,6 +2,8 @@
 title: cidr_contains
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

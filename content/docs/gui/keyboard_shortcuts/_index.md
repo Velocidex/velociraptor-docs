@@ -5,7 +5,7 @@ date: 2025-05-16
 last_reviewed: 2025-09-04
 draft: false
 weight: 80
-summary: "Learn about keyboard shortcuts in the GUI"
+summary: Learn about keyboard shortcuts in the GUI
 ---
 
 The Velociraptor GUI supports many keyboard shortcuts to navigate around

@@ -1,6 +1,8 @@
 ---
 title: MacOS.Sys.SUID
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

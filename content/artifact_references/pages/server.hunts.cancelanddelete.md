@@ -1,6 +1,8 @@
 ---
 title: Server.Hunts.CancelAndDelete
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

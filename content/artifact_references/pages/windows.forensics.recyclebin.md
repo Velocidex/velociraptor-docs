@@ -1,6 +1,8 @@
 ---
 title: Windows.Forensics.RecycleBin
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

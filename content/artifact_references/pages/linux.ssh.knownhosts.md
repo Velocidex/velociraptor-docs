@@ -1,6 +1,8 @@
 ---
 title: Linux.Ssh.KnownHosts
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

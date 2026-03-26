@@ -31,7 +31,16 @@ def EnsureDirExists(dirname):
 
 def SaveDefinitions(filename, name, texts):
     with open(filename, "w") as fd:
-        fd.write("---\ntitle: %s\nindex: true\nnoTitle: true\nno_edit: true\n---\n\n" % name)
+        fd.write("""---
+title: %s
+index: true
+noTitle: true
+sitemap:
+   disable: true
+no_edit: true
+---
+
+""" % name)
         for text in texts:
             fd.write(text)
 
@@ -106,10 +115,20 @@ if __name__ == "__main__" :
     for filename, file_config in config.items():
         EnsureDirExists(os.path.dirname(filename))
         with open(filename, "w") as fd:
-            fd.write("---\ntitle: %s\nweight: %s\nlinktitle: %s\nindex: true\nno_edit: true\nno_children: true\n---\n\n%s" % (
-                file_config["title"], file_config["weight"],
-                file_config.get("linktitle", file_config["title"]),
-                file_config["description"]))
+            fd.write("""---
+title: %s
+weight: %s
+linktitle: %s
+index: true
+sitemap:
+  disable: true
+no_edit: true
+no_children: true
+---
+
+%s""" % (file_config["title"], file_config["weight"],
+         file_config.get("linktitle", file_config["title"]),
+         file_config["description"]))
 
             children = []
 

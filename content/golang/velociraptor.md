@@ -1,6 +1,8 @@
 +++
 title = "Velociraptor"
 type = "code"
+[sitemap]
+  disable = true
 vanity = "https://github.com/Velocidex/velociraptor"
 # find velociraptor/ -type d -printf "\"%p\",\n" |grep -v -E '(.git|definitions|testdata|gui/velociraptor/src)' | sort
 aliases = [

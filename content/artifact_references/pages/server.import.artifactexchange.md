@@ -1,6 +1,8 @@
 ---
 title: Server.Import.ArtifactExchange
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

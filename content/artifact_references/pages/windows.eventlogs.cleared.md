@@ -1,6 +1,8 @@
 ---
 title: Windows.EventLogs.Cleared
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

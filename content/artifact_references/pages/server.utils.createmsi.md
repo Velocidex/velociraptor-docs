@@ -1,6 +1,8 @@
 ---
 title: Server.Utils.CreateMSI
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

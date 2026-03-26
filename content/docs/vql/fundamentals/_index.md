@@ -79,6 +79,52 @@ type, and if they are required or optional.
 
 {{% /notice %}}
 
+#### Argument unpacking
+
+Args can be passed to plugins or functions as a dict.
+
+In the following simple example, the plugin's args are first packed
+into a dict. The plugin is then passed the dict using the special `**`
+arg, which unpacks the dict into the separate arguments that the
+plugin expects.
+
+###### Example
+
+```vql
+LET args <= dict(root="c:/windows", globs="*")
+
+SELECT *
+FROM glob(`**`=args)
+```
+
+Note that the `**` has to be enclosed in backticks because
+[it is an identifier that uses non-alphanumeric characters]({{< ref "/docs/vql/fundamentals/#identifiers-with-spaces" >}}).
+
+#### Free-form Args
+
+Certain plugins and functions, namely:
+- `alert`
+- `array`
+- `chain`
+- `dict`
+- `sigma_log_sources`
+- `switch`
+- `typeof`
+
+accept arbitrary arguments, which we call "free-form args".
+
+However all args still have to be named, so you'll usually see the
+args specified as `a=, b=, c=` just for simplicity.
+
+###### Example
+
+```vql
+SELECT *
+    FROM chain(
+      a={ SELECT * FROM ...) },
+      b={ SELECT * FROM ...) })
+```
+
 ### Life of a query
 
 In order to understand how VQL works, let's follow a single row through the query.

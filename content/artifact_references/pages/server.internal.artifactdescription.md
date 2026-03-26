@@ -1,6 +1,8 @@
 ---
 title: Server.Internal.ArtifactDescription
 hidden: true
+sitemap:
+  disable: true
 tags: [Internal Artifact]
 ---
 

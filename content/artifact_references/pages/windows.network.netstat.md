@@ -1,6 +1,8 @@
 ---
 title: Windows.Network.Netstat
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

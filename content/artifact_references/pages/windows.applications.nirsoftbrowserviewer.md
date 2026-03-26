@@ -1,6 +1,8 @@
 ---
 title: Windows.Applications.NirsoftBrowserViewer
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

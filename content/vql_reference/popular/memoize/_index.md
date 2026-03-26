@@ -2,6 +2,8 @@
 title: memoize
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 
@@ -53,7 +55,7 @@ key.
 
 ```vql
 LET m <= memoize(query={
-   SELECT str(str=Pid) AS Key, Name, Pid, Ppid FROM pslist()
+   SELECT Pid AS Key, Name, Pid, Ppid FROM pslist()
 }, key='Key')
 ```
 
@@ -65,8 +67,16 @@ You can access the cache using the `get()` function or the `.`
 operator. If the key matches the entire row is retrieved:
 
 ```vql
-SELECT get(item=m, field=str(str=Pid)).Name AS ProcessName
+SELECT get(item=m, field=Pid).Name AS ProcessName
 FROM source()
 ```
+
+The `period` parameter is the number of seconds before the query
+is considered stale. When the data is stale, the query will be
+re-run to get fresh data.
+
+Providing the `filename` parameter allows the data to be stored to a
+file. This is helpful when the query is very large or the results
+need to be re-used in another query.
 
 

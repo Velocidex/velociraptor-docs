@@ -2,6 +2,8 @@
 title: rot13
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: Generic.Detection.Yara.Glob
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

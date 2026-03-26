@@ -1,6 +1,8 @@
 ---
 title: Linux.Utils.InstallDeb
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

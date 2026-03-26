@@ -2,6 +2,8 @@
 title: get_client_monitoring
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

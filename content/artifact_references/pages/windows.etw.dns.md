@@ -1,6 +1,8 @@
 ---
 title: Windows.ETW.DNS
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
 ---
 

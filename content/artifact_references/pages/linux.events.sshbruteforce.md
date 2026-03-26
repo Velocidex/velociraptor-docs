@@ -1,6 +1,8 @@
 ---
 title: Linux.Events.SSHBruteforce
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
 ---
 

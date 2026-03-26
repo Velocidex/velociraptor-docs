@@ -1,6 +1,8 @@
 ---
 title: Server.Monitoring.ScheduleHunt
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
 ---
 

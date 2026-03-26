@@ -1,6 +1,8 @@
 ---
 title: Linux.Remediation.Quarantine
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

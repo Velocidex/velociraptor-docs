@@ -1,6 +1,8 @@
 ---
 title: Generic.Client.Info
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: Server.Utils.BackupDirectory
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
 ---
 

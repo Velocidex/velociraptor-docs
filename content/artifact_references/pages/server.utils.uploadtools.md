@@ -1,6 +1,8 @@
 ---
 title: Server.Utils.UploadTools
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 
@@ -59,6 +61,8 @@ parameters:
 sources:
   - name: DownloaderScript
     query: |
+      // linter: symbol_mask_warn:url
+
       LET AllCurlCommands =
         SELECT format(format="curl -O -L -C - %v", args=url) AS Curl
         FROM inventory()

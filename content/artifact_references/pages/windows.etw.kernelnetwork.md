@@ -1,6 +1,8 @@
 ---
 title: Windows.ETW.KernelNetwork
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
 ---
 

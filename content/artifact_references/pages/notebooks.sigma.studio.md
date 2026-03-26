@@ -1,6 +1,8 @@
 ---
 title: Notebooks.Sigma.Studio
 hidden: true
+sitemap:
+  disable: true
 tags: [notebook]
 ---
 

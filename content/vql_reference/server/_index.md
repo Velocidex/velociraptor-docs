@@ -3,6 +3,8 @@ title: Server-only
 weight: 40
 linktitle: Server
 index: true
+sitemap:
+  disable: true
 no_edit: true
 no_children: true
 ---

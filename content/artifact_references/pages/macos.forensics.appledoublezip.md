@@ -1,6 +1,8 @@
 ---
 title: MacOS.Forensics.AppleDoubleZip
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

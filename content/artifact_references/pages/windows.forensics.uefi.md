@@ -1,6 +1,8 @@
 ---
 title: Windows.Forensics.UEFI
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

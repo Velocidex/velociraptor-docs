@@ -1,6 +1,8 @@
 ---
 title: Server.Utils.DeleteClient
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

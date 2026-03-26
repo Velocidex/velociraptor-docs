@@ -1,6 +1,8 @@
 ---
 title: Windows.Applications.OfficeMacros
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: Windows.Applications.MegaSync
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 

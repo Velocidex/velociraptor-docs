@@ -1,6 +1,8 @@
 ---
 title: Server.Hunts.List
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
 ---
 

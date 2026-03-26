@@ -2,6 +2,8 @@
 title: parse_lines
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
 ---
 

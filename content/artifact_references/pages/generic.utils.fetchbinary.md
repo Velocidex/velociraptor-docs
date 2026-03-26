@@ -1,6 +1,8 @@
 ---
 title: Generic.Utils.FetchBinary
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
 ---
 
@@ -70,6 +72,10 @@ parameters:
       If true we use a temporary directory to hold the binary and
       remove it afterwards
 
+  - name: IgnoreErrors
+    type: bool
+    description: If set we ignore errors and let the caller handle it.
+
 implied_permissions:
   - SERVER_ADMIN
   - FILESYSTEM_WRITE
@@ -98,7 +104,7 @@ sources:
       // By default the temp directory is created inside a trusted directory.
       LET TempDir &lt;= tempdir(remove_last=TRUE)
 
-      // Where store the file. If the user specified TemporaryOnly we
+      // Where to store the file. If the user specified TemporaryOnly we
       // remove it with the tempdir, otherwise we store it in the trusted
       // directory.
       LET binpath &lt;= if(condition=TemporaryOnly, then=TempDir, else=dirname(path=TempDir))
@@ -146,8 +152,9 @@ sources:
                 AND Hash.SHA256 = args.ToolHash
         }, else={
            SELECT * FROM scope()
-           WHERE NOT log(message="No valid setup - is tool " + ToolName +
-                        " configured in the server inventory?")
+           WHERE NOT log(
+             level="ERROR", message="No valid setup - is tool " + ToolName +
+             " configured in the server inventory?")
         })
 
       // Check if the existing file in the binary file cache matches
@@ -174,7 +181,15 @@ sources:
                  args=[timeout])) AND sleep(time=timeout) AND FALSE
         },
         d=download_multiple,
-        e=download_single)
+        e=download_single,
+        f={
+           -- Emit an error message to fail the collection.
+           SELECT *
+           FROM scope()
+           WHERE if(condition=NOT IgnoreErrors,
+                    then=log(message="tool %v not available!", level="ERROR", args=ToolName))
+             AND FALSE
+        })
 
 </code></pre>
 
