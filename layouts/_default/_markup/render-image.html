@@ -21,16 +21,20 @@
 {{ if ( hasSuffix $filename ".svg" ) }}
   {{ $data := readFile $filename }}
   {{ $data = strings.ReplaceRE `(?ms)<style class="style-fonts">.+?</style>` `` $data }}
-
+  {{ with resources.FromString (print (path.Dir $filename) "/" (path.BaseName $filename )  "_.svg" ) $data }}
+     {{ $lnk := .RelPermalink }}
 <figure id="{{ $id }}">
   <div data-featherlight="#{{ $id }}" class="figure">
-    {{ $data  | safeHTML}}
+    <img src="{{ $lnk }}" alt="{{ $caption }}" />
   </div>
   <figcaption>
-    <a class="image-link" href="{{ $src }}"><i class="fa fa-download"></i></a>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="{{ $src }}"><i class="fa fa-download"></i></a>
     {{ $caption }}
   </figcaption>
 </figure>
+{{ end }}
 
 {{ else }}
 
@@ -45,7 +49,10 @@
     <img src="{{ $src }}" alt="{{ $caption }}">
   </div>
   <figcaption>
-    <a class="image-link" href="{{ $src }}"><i class="fa fa-download"></i></a>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="{{ $src }}">
+      <i class="fa fa-download"></i></a>
     {{ $caption }}
   </figcaption>
 </figure>

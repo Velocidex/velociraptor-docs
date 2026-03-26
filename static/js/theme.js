@@ -85,7 +85,11 @@ function insertHTML(html, target, hash) {
             $.globalEval(this.text);
         });
     });
+
+    hljs.highlightAll();
 }
+
+const ignoreExtentions = new RegExp(/(png|svg)$/i);
 
 function navigateTo(target) {
     let url = new URL(target, window.location.href);
@@ -95,14 +99,17 @@ function navigateTo(target) {
     }
 
     // Only navigate internal links
-    let bare_link =   url.pathname;
+    let bare_link = url.pathname;
+    if(ignoreExtentions.test(bare_link)) {
+        return true;
+    }
     let hash = url.hash.slice(1);
     setActiveMenu(bare_link);
 
     jQuery.ajax({
         url: target,
         type: "GET",
-        success: function(resp) {
+        success: function(resp, status, xhr) {
             insertHTML(resp, url.href, hash);
         },
         error: function(xhr, status, error) {
