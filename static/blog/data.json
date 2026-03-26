@@ -1,5 +1,23 @@
 [
  {
+  "title": "Velociraptor CLI",
+  "description": "The Velociraptor CLI is a powerful interface for using\nand automating Velociraptor\n",
+  "link": "/blog/2026/2026-03-21-cli/",
+  "tags": [
+   "Automation"
+  ],
+  "date": "2026-03-10"
+ },
+ {
+  "title": "Velociraptor 0.76 Release",
+  "description": "Velociraptor Release 0.76 is now available\n",
+  "link": "/blog/2026/2026-03-10-release-notes-0.76/",
+  "tags": [
+   "Release"
+  ],
+  "date": "2026-03-10"
+ },
+ {
   "title": "Memory Analysis with Velociraptor - Part 2",
   "description": "This blog is the second part of the memory analysis series.\nWe will dive into how to detect fileless malware with Velociraptor\nlive in RAM (i.e. without dumping the RAM).\n",
   "link": "/blog/2025/2025-12-22-memory-analysis-pt2/",
