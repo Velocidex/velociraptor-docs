@@ -138,12 +138,6 @@
   });
 
   // Replace links in the body with ajax links.
-  $(document).ready(function() {
-      $("section#body").find("a").click(function(e) {
-          let target = $(this).attr("href");
-          return navigateTo(target);
-      }).addClass("redirected");
-  });
-
+  $(document).ready(decorateLinks);
 
 </script>
