@@ -67,7 +67,7 @@ Filters, which are available as a drop-down list next to the search bar.
 | **Include Empty sources** | `empty:true`           | Same as "All Artifacts" filter but also includes <br>artifacts without sources.\*\* |
 
 \*\* For more information about artifacts without sources see
-[here]({{< ref "/docs/artifacts/use_cases/#source-free-artifacts" >}}).
+[here]({{< ref "/docs/artifacts/use_cases/#sourceless-artifacts" >}}).
 
 The above filter expressions can also be used in the search bar directly and
 combined with search strings. Searches are _not_ case-sensitive.
@@ -121,8 +121,7 @@ prefix!), and the option to only import artifacts that match a name filter.
 The file structure inside the zip doesn't matter. Velociraptor will search for
 all files in the zip with a `.yaml` or `.yml` file extension. The imported
 artifacts will be saved to the server's datastore using the file and folder
-structure described
-[here]({{< ref "/docs/artifacts/basic_fields/#basic-fields" >}}).
+structure described [here]({{< ref "/docs/artifacts/basic_fields/" >}}).
 
 ### Importing Artifacts From Velociraptor's Specialized Artifact Projects
 
@@ -173,7 +172,7 @@ import artifact:
 - `Server.Import.CuratedSigma`
 
 For more information please see the
-[version 0.75 release notes]({{< ref "/blog/2025/2025-08-30-release-notes-0.75/#removing-some-large-artifacts" >}}).
+[version 0.75 release notes]({{< ref "/blog/2025/2025-08-30-release-notes-0.75/#removal-of-some-large-artifacts" >}}).
 
 {{% /notice %}}
 

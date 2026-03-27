@@ -102,6 +102,9 @@ def SaveDataJson(definitions):
         fd.write(json.dumps(summary, indent=4))
         print("Writing data.json in %s" % args.reference_data)
 
+def convertNameToLURL(name):
+    return name.lower()
+
 if __name__ == "__main__" :
     args = parser.parse_args()
 
@@ -156,6 +159,6 @@ no_children: true
                     first_description = first_description[0]
                 fd.write("|[%s](%s)|<span class='vql_type'>%s</span>|%s|\n" % (
                     definition.get("name"),
-                    definition.get("name"),
+                    convertNameToLURL(definition.get("name")),
                     definition.get("type", ""),
                     first_description))
