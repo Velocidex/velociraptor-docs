@@ -61,7 +61,7 @@ search engine, which provides Full Text Search (FTS) capabilities
 similar to Elasticsearch and other NoSQL database solutions.
 
 This capability is provided by the following new VQL plugins:
-- [index]({{< ref "/vql_reference/other/index" >}})
+- [index]({{< ref "/vql_reference/other/index/" >}})
 - [index_search]({{{< ref "/vql_reference/other/index_search/" >}}})
 
 ## Removed plugins
