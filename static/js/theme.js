@@ -608,9 +608,9 @@ function DrawResultsVQL(data) {
 
 function getLink(item) {
     if (item.category) {
-        return "/vql_reference/" + item.category + "/" + item.name;
+        return "/vql_reference/" + item.category + "/" + item.name + "/";
     }
-    return "/vql_reference/other/" + item.name;
+    return "/vql_reference/other/" + item.name + "/";
 }
 
 
