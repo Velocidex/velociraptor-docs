@@ -22,7 +22,7 @@ If you are having problems with a client that is:
 - is failing to start
 
 then please see the section
-[Client communications issues]({{< ref "/docs/troubleshooting/deployment/client/#client-communications-issues" >}})
+[Client communications issues]({{< ref "/docs/troubleshooting/deployment/client/" >}})
 within the Deployment Troubleshooting section.
 
 {{% /notice %}}

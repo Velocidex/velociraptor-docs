@@ -29,6 +29,8 @@ function decorateLinks(nodes) {
             return navigateTo(target);
         }).addClass("redirected");
     });
+
+    installFigureHandlers();
 }
 
 function copyDom(id, new_dom) {
@@ -50,23 +52,23 @@ function setActiveMenu(bare_link) {
     active_node.each(expandNode);
 }
 
-function insertHTML(html, target, hash) {
+function insertHTML(html, target, opts) {
     let body = jQuery.parseHTML(html);
     jQuery.each(body, function(idx, x) {
         if(x.id == "body") {
-            copyDom("#body-inner", x);
+            // Now mutate the dom.
             copyDom("#TableOfContents", x);
             copyDom("span.links", x);
+            copyDom("#body-inner", x);
 
-            if(target != window.location.pathname) {
-                window.history.pushState(null, null, target);
-            }
-            if(hash) {
+            // Do this when the dom has finished rendering.
+            if(opts.scroll) {
+                restoreScroll(opts.scroll);
+
+            } else if(opts.hash) {
                 // There is a hash in the url - scroll the
                 // ID into view.
-                $("#" + hash).each(function() {
-                    $(this)[0].scrollIntoView();
-                });
+                scrollToHash(opts.hash);
 
             } else {
                 // Scroll the top into view
@@ -75,7 +77,18 @@ function insertHTML(html, target, hash) {
                 });
             }
 
+            // Do not push history on popstate as it will clear
+            // the forward history. We need to wait for the page to settle down.
+            if(!opts.popstate && !opts.scroll &&
+               target != window.location.pathname) {
+                // console.log("Saving scroll " + target + " " + window.scrollY);
+                window.history.pushState({
+                    scroll: window.scrollY,
+                }, null, target);
+            }
+
             decorateLinks();
+
         }
     });
 
@@ -91,7 +104,11 @@ function insertHTML(html, target, hash) {
 
 const ignoreExtentions = new RegExp(/(png|svg)$/i);
 
-function navigateTo(target) {
+function navigateTo(target, opts) {
+    if(!opts) {
+        opts = {};
+    }
+
     let url = new URL(target, window.location.href);
     if(url.origin != window.location.origin) {
         // External URL
@@ -103,17 +120,22 @@ function navigateTo(target) {
     if(ignoreExtentions.test(bare_link)) {
         return true;
     }
-    let hash = url.hash.slice(1);
+
+    opts.hash = url.hash.slice(1);
     setActiveMenu(bare_link);
+
+    if(!opts.popstate) {
+        updateScroll();
+    }
 
     jQuery.ajax({
         url: target,
         type: "GET",
         success: function(resp, status, xhr) {
-            insertHTML(resp, url.href, hash);
+            insertHTML(resp, url.href, opts);
         },
         error: function(xhr, status, error) {
-            insertHTML(xhr.responseText, url.href, hash);
+            insertHTML(xhr.responseText, url.href, opts);
         },
     });
 
@@ -594,6 +616,89 @@ function getLink(item) {
 
 $(window).bind('popstate', function(event) {
     let target = event.currentTarget.location.pathname;
-    navigateTo(target);
+    let original_scroll = history.state.scroll || 0;
+    navigateTo(target, {scroll: original_scroll, popstate: true});
     return false;
 });
+
+let blockUpdate = false;
+
+function updateScroll() {
+    //console.log("Update scroll " + window.location + " " + window.scrollY);
+    if(!blockUpdate) {
+        window.history.replaceState({
+            scroll: window.scrollY,
+        }, null, window.location);
+    }
+};
+
+function scrollToHash(hash) {
+    if(!blockUpdate) {
+        blockUpdate = true;
+        for(let i=0; i<50; i+=50) {
+            setTimeout(function() {
+                $("#" + $.escapeSelector(hash)).each(function() {
+                    $(this)[0].scrollIntoView();
+                });
+            }, i);
+        };
+
+        setTimeout(function() {
+            blockUpdate = false;
+        }, 500);
+    };
+}
+
+function restoreScroll(scroll) {
+    // console.log("Restoring scroll " + target + " " + opts.scroll);
+    if(!blockUpdate) {
+        blockUpdate = true;
+        for(let i=0; i<50; i+=50) {
+            setTimeout(function() {
+                window.scrollTo(0, scroll);
+            }, i);
+        };
+
+        setTimeout(function() {
+            blockUpdate = false;
+        }, 500);
+    };
+}
+
+// Constantly update the scroll state so going back and forth
+// replicates the state of the page at that time.
+window.setInterval(updateScroll, 2000);
+
+function installFigureHandlers() {
+    $("div.figure").on("click", function() {
+        let new_node = $(`
+<div class="featherlight modal"
+  style="display: block;">
+<div class="featherlight-content">
+<button class="featherlight-close-icon featherlight-close"
+   aria-label="Close">✕</button>
+<figure class="featherlight-inner">
+<div class="figure">
+  <img>
+</div>
+<figcaption>
+<a class="image-link" target="_blank" rel="noopener noreferrer" href="attack_timeline.svg" tabindex="-1">
+<i class="fa fa-download"></i>
+</a>
+</figcaption></figure></div></div>`);
+        new_node.on("click", function() {
+            $(".modal").remove();
+            return false;
+        });
+
+        let img = $(this).find("img");
+        new_node.find("img").
+            attr("src", img.attr("src")).
+            attr("alt", img.attr("alt"));
+
+        new_node.find("figcaption").append(img.attr("alt"));
+
+        $("body").append(new_node);
+        return false;
+    });
+}

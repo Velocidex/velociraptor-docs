@@ -134,7 +134,7 @@ as a shared secret between all the Org clients and the server.
 #### Creating client installer packages
 
 To create an installation package that connects to the new Org, you
-need to [build an MSI]({{% ref "/docs/deployment/clients/#official-release-msi" %}})
+need to [build an MSI]({{% ref "/docs/deployment/clients/#repacking-the-official-release-msi" %}})
 within the target Org:
 
 1. First switch to the relevant Org with the GUI selector

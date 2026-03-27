@@ -19,7 +19,7 @@ following are only available when running Velociraptor on Windows.
 |[etw_sessions](etw_sessions)|<span class='vql_type'>Plugin</span>|Enumerates all active ETW sessions|
 |[handles](handles)|<span class='vql_type'>Plugin</span>|Enumerate process handles|
 |[interfaces](interfaces)|<span class='vql_type'>Plugin</span>|List all active network interfaces using the API|
-|[lookupSID](lookupSID)|<span class='vql_type'>Function</span>|Get information about the SID|
+|[lookupSID](lookupsid)|<span class='vql_type'>Function</span>|Get information about the SID|
 |[modules](modules)|<span class='vql_type'>Plugin</span>|Enumerate Loaded DLLs|
 |[partitions](partitions)|<span class='vql_type'>Plugin</span>|List all partitions|
 |[proc_dump](proc_dump)|<span class='vql_type'>Plugin</span>|Dumps process memory|

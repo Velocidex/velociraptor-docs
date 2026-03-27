@@ -1,0 +1,9 @@
+# Config file for running https://github.com/anilsenay/htmlcheck
+
+DirectoryPath: /home/mic/projects/velociraptor-docs/public/
+TestFilesConcurrently: true
+OutputDir: /tmp/.htmltest/
+CheckExternal: false
+IgnoreAltMissing: true
+IgnoreDirectoryMissingTrailingSlash: true
+IgnoreInternalEmptyHash: true
