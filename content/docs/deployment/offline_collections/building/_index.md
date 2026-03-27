@@ -67,7 +67,7 @@ You can start the offline collector builder using either:
   be used is defined as a Velociraptor [tool]({{< ref "/docs/artifacts/tools/" >}})
   and the server will attempt to download it from GitHub. If your server has no
   internet access then this obviously won't work, so in that case you'll need to
-  [manually upload the binary]({{< relref "#overriding-the-default-binaries" >}}).
+  [manually upload the binary]({{< relref "#overriding-the-default-velociraptor-binaries" >}}).
 
 - **Encryption**
 

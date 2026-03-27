@@ -492,13 +492,6 @@ You can learn more about the Admin GUI [here]({{< ref "/docs/gui/" >}}).
 
 ## Import artifacts from external projects
 
-{{% notice note %}}
-
-This step only applies if you are using version 0.75 or above. For older
-versions you can [skip to the next step](#step-7-create-an-installation-package-for-windows-clients).
-
-{{% /notice %}}
-
 Over time Velociraptor has spawned many sub-projects for curating and
 managing certain larger, more complex [artifacts]({{< ref "/docs/artifacts/" >}}).
 

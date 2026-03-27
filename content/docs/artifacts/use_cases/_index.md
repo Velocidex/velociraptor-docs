@@ -211,7 +211,7 @@ We could, for example:
   function (based on custom notebook templates).
 - configure client monitoring using the `set_client_monitoring` function or
   server monitoring using the `set_server_monitoring` function.
-- run [server artifacts which import other artifacts]({{< ref "/docs/gui/artifacts/#importing-artifacts-using-server-artifacts" >}})
+- run [server artifacts which import other artifacts]({{< ref "/docs/gui/artifacts/#importing-artifacts-from-velociraptors-specialized-artifact-projects" >}})
 - run [artifacts which define and download tools]({{< relref "#standalone-tool-definitions" >}})
   to the server's tool inventory \
   (or we could add/update tools using VQL's `inventory_add` and `inventory_get`

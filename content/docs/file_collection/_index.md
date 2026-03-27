@@ -245,10 +245,11 @@ your VQL as:
 LET ColumnTypes <= dict(`FilePreview`='preview_upload', `FileDownload`='download')
 ```
 
-The VQL specification approach is more commonly used in Velociraptor notebooks,
-although these are based on [notebook templates]() which are also just
-artifacts, and therefore also support the YAML-based `column_types`
-specification.
+The VQL specification approach is more commonly used in Velociraptor
+notebooks, although these are based on
+[notebook templates]({{< ref "/docs/artifacts/notebook_templates" >}}),
+which are also just artifacts, and therefore also support the
+YAML-based `column_types` specification.
 
 
 ### Enumerating uploads using VQL

@@ -1,5 +1,22 @@
 [
     {
+        "title": "How to create and use an offline collector as a tool",
+        "link": "/knowledge_base/tips/offline_collector_tool",
+        "tags": [
+            "automation",
+            "deployment",
+            "acquisition",
+            "collector",
+            "tools",
+            "s3",
+            "garage"
+        ],
+        "author": "predictiple",
+        "author_link": "https://github.com/predictiple",
+        "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
+        "date": "2026-03-26"
+    },
+    {
         "title": "Encrypt and decrypt an offline collector using PGP public and private keys",
         "link": "/knowledge_base/tips/encrypt_offline_collector_pgp",
         "tags": [],

@@ -370,7 +370,7 @@ does not support importing collection containers that are secured by PGP, X.509
 certs _other than the server's cert_, or fixed passwords. However import of
 collections secured by these other security schemes are supported using
 alternative methods
-[described below]({{< relref "/#importing-via-a-notebook" >}}).
+[described below]({{< relref "#importing-via-a-notebook" >}}).
 
 Alternatively, if you want to use the `Server.Utils.ImportCollection` server
 artifact to import a collection container that's been secured using a fixed
@@ -720,7 +720,7 @@ requires that we store it in Base64-encoded form.
 
 If you are working in a separate environment from your Velociraptor deployment,
 it is still possible to make use of a Velociraptor notebook, as described
-[here]({{< relref "/docs/deployment/offline_collections/collection_data/#pgp-x509-non-server-cert-encryption-schemes" >}}),
+[here]({{< relref "#pgp-or-x509-non-server-cert-encryption-schemes" >}}),
 to do the password decryption. Since the notebook only needs the encrypted
 password and the relevant cert, it can be done on an
 [Instant Velociraptor]({{< ref "/docs/deployment/#instant-velociraptor" >}})

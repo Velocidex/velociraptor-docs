@@ -443,7 +443,15 @@ WHERE condition.  Finally we wish to quit the query once a single row
 is found so we specify a LIMIT of 1 row.
 
 {{% notice note "Waiting for a query" %}}
-  Note the `LET _ <=` statement. This tells VQL to materialize the query and store the result in a dummy variable. This statement causes VQL to pause and wait for the query to complete before evaluating the next query. See [Materialized LET expressions]({{< ref "/docs/vql/#materialized-let-expressions" >}}) for more about this.
+
+Note the `LET _ <=` statement. This tells VQL to materialize the query
+and store the result in a dummy variable. This statement causes VQL to
+pause and wait for the query to complete before evaluating the next
+query.
+
+See [Materialized LET expressions]({{< ref "/docs/vql/fundamentals/#materialized-let-expressions" >}})
+for more about this.
+
 {{% /notice %}}
 
 After this query exits we know the collection is complete. This may

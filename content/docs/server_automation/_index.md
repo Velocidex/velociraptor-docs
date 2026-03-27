@@ -53,9 +53,9 @@ the running server will not be aware that these changes are made.
 It is only supported to run administrative VQL plugins using the
 following methods:
 
-1. The notebooks
+1. Notebooks
 2. Server Artifacts
-3. Using the [Velociraptor API]({{% ref "server_api/#using-the-shell-for-automation" %}})
+3. Using the [Velociraptor API]({{< ref "/docs/server_automation/server_api/" >}})
 
 {{% /notice %}}
 

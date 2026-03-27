@@ -254,7 +254,7 @@ will be created in that temporary datastore.
 As you can see in the above output, the `collector` command is really just a
 wrapper for the `Server.Utils.CreateCollector` artifact. Therefore it's
 functionality could be replicated using the same VQL
-[query against the API]({{< ref "/docs/server_automation/server_api/#using-the-shell-for-automation" >}}),
+[query against the API]({{< ref "/docs/server_automation/server_api/#using-the-built-in-api-client" >}}),
 but that would be far less convenient.
 
 ### Reproducing configurations from previously-created collectors
