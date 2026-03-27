@@ -143,7 +143,7 @@ collection by name
 Favorites are currently stored in the GUI user's profiles so each user
 can maintain their own list of favorites. However you can save a
 favorite into your own profile using the
-[favorite_save](/vql_reference/server/#favorites_save) VQL function,
+[favorite_save]({{< ref "/vql_reference/server/favorites_save" >}}) VQL function,
 so a team may create a set of common favorites using a SERVER VQL
 artifact.
 

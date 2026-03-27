@@ -17,7 +17,7 @@ example when troubleshooting a query-related issue that isn't easily
 reproducible on other machines.
 
 The `query` command is also also used when
-[running API queries on the command line]({{< ref "/docs/server_automation/server_api/#using-the-shell-for-automation" >}}).
+[running API queries on the command line]({{< ref "/docs/server_automation/server_api/#using-the-built-in-api-client" >}}).
 When used with the `--api_config` flag, the query is sent to the server and runs
 on the server.
 

@@ -104,7 +104,7 @@ used:
 - The **ntfs** accessor is used to access files using the built in NTFS parser.
 
 When accessing a disk image that contains an NTFS filesystem, we apply
-[remapping rules]({{< ref "/docs/forensic/deaddisk/remapping/" >}})
+[remapping rules]({{< ref "/docs/forensic/filesystem/remapping/" >}})
 that translate requests to the abovementioned accessors into
 [compound pathspec objects]({{< ref "/docs/forensic/filesystem/paths/#nested-accessors-and-pathspecs" >}})
 which include additional (delegate) accessors such as `vmdk` and `raw_ntfs`.

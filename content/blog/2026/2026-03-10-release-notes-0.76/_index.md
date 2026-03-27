@@ -31,8 +31,8 @@ technical information.
 
 To help mitigate this problem we have added a local documentation
 search feature that allows you to search our docs directly from the
-Velociraptor GUI. You can read more about how to use it [here]({{< ref
-"/docs/gui/local_docs/" >}}).
+Velociraptor GUI. You can read more about how to use it
+[here]({{< ref "/docs/gui/local_docs/" >}}).
 
 ![Local documentation search and preview](local_docs_search.png)
 
@@ -61,8 +61,9 @@ search engine, which provides Full Text Search (FTS) capabilities
 similar to Elasticsearch and other NoSQL database solutions.
 
 This capability is provided by the following new VQL plugins:
-- [index]({{< ref "/vql_reference/other/index/" >}})
-- [index_search]({{{< ref "/vql_reference/other/index_search/" >}}})
+- <a href="https://docs.velociraptor.app/vql_reference/other/index/">index</a>
+- <a href="https://docs.velociraptor.app/vql_reference/other/index_search/">index_search</a>
+
 
 ## Removed plugins
 

@@ -366,7 +366,8 @@ the available methods are:
 
 - importing [artifact packs]({{< ref "/docs/gui/artifacts/#importing-artifact-packs" >}})
 
-- importing artifacts [using server import artifacts]({{< ref "/docs/gui/artifacts/#importing-artifacts-using-server-artifacts" >}})
+- importing artifacts
+  [using server import artifacts]({{< ref "/docs/gui/artifacts/#importing-artifacts-from-velociraptors-specialized-artifact-projects" >}})
 
 In VQL we can create artifacts using the
 [artifact_set()]({{< ref "/vql_reference/server/artifact_set/" >}}) function,

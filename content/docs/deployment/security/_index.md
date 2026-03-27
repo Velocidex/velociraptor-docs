@@ -709,7 +709,12 @@ plugins, even those that might compromise the server (e.g. the
 For shared server environments it is better to prevent these plugins
 from running at all - even for administrators.
 
-Velociraptor allows the configuration file to specify which VQL plugins are allowed using the [defaults.allowed_plugins]({{% ref "/docs/deployment/references/#defaults.allowed_plugins" %}}), [defaults.allowed_functions]({{% ref "/docs/deployment/references/#defaults.allowed_functions" %}}) and [defaults.allowed_accessors]({{% ref "/docs/deployment/references/#defaults.allowed_accessors" %}})
+Velociraptor allows the configuration file to specify which VQL
+plugins are allowed using the
+[security.allowed_plugins]({{% ref "/docs/deployment/references/#security.allowed_plugins" %}}),
+[security.allowed_functions]({{% ref "/docs/deployment/references/#security.allowed_functions" %}})
+and
+[security.allowed_accessors]({{% ref "/docs/deployment/references/#security.allowed_accessors" %}})
 
 The easiest way to populate these is to answer Yes to `Do you want to
 restrict VQL functionality on the server?` in the configuration

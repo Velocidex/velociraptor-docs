@@ -109,7 +109,7 @@ At a high level, deploying Velociraptor consists of 3 tasks: setting up a
 server, deploying clients, and granting user access to the server's web UI.
 
 **Task 1: Deploy a Server**
-- [Choose the deployment options]({{< ref "/docs/deployment/server#key-deployment-decisions" >}}) that
+- [Choose the deployment options]({{< ref "/docs/deployment/server/key_decisions/" >}}) that
   work best for you and install your server.
 
 **Task 2: Authorize Users**
