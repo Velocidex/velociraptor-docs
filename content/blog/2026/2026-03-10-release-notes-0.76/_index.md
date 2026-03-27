@@ -31,8 +31,8 @@ technical information.
 
 To help mitigate this problem we have added a local documentation
 search feature that allows you to search our docs directly from the
-Velociraptor GUI. You can read more about how to use it [here]({{< ref
-"/docs/gui/local_docs/" >}}).
+Velociraptor GUI. You can read more about how to use it
+[here]({{< ref "/docs/gui/local_docs/" >}}).
 
 ![Local documentation search and preview](local_docs_search.png)
 
