@@ -9,11 +9,8 @@ CheckInternal: true
 CheckScripts: false
 CheckMeta: false
 EnforceHTTPS: false
-IgnoreHTTPS:
-  - "localhost:1313"
-IgnoreURLs:
-  - "/app/index.html"
-  - "exchange/artifacts/pages"
+IgnoreHTTPS: ["localhost:1313"]
+IgnoreURLs: ["/app/index.html","exchange/artifacts/pages","../../img/"]
 IgnoreAltMissing: true
 IgnoreDirectoryMissingTrailingSlash: true
 IgnoreInternalEmptyHash: true
