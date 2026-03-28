@@ -650,7 +650,7 @@ export: |
   // MaxRows, if set, will limit the number of rows. A last row will indicate
   // that the number of rows have been limited, and from what total value.
   // MaxCols, unless set to NULL, limits the number of columns. A single-cell
-  // columns will indicate that columns are missing:
+  // column will indicate that columns are missing:
   LET FullTable(Rows, Headers=NULL, MaxRows=NULL, MaxCols=100,
   MaxCellLength=NULL, MaxHeaderLength=30, FormatData=true) =
       if(
