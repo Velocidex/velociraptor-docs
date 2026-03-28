@@ -225,7 +225,7 @@ parameters:
     default: 30
 
 imports:
-  - Exchange.Server.Alerts.Mail
+  - Server.Alerts.Mail
 
 sources:
   - query: |
@@ -485,7 +485,7 @@ sources:
       FROM foreach(row=Results,
                    query={
           SELECT *
-          FROM Artifact.Custom.Generic.Utils.SendEmail(
+          FROM Artifact.Generic.Utils.SendEmail(
             Secret=ServerSecret,
             Recipients=Unique(
               Items=Recipients.Address + if(
