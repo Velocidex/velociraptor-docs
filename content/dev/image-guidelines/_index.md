@@ -404,7 +404,7 @@ VHS](https://github.com/charmbracelet/vhs).
 
 VHS is an open source application which provides a scripted, styled, terminal
 recording environment. This allows us to create such recordings in a
-reproducible way, and this means that it's easy for us to update the exising
+reproducible way, and this means that it's easy for us to update the existing
 recordings when new versions are released.
 
 ![example ](vhs.gif)

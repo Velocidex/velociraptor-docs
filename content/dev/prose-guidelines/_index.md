@@ -28,7 +28,7 @@ Markdown Content section.
 
 Our docs website is compiled by Hugo which interprets markdown based on the
 Commonmark standard. Therefore it's best to avoid using features from any other
-flavours of markdown such as GFM, as they may not be rendered correctly or at
+flavors of markdown such as GFM, as they may not be rendered correctly or at
 all by Hugo.
 
 ### Inline code
@@ -103,7 +103,7 @@ better to carefully craft one rather than relying on "auto".
 ### KB articles
 
 Tags are recommended. These help users find related content. Do not use
-meaningless tags such as "velociraptor" or "dfir".
+meaningless tags such as "velociraptor" or "DFIR".
 
 ### VQL reference documents
 
