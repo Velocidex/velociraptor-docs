@@ -1,5 +1,15 @@
 [
     {
+        "title": "Generic.VSCode.Extensions",
+        "author": "misje",
+        "description": "List all installed Visual Studio code extensions",
+        "link": "/exchange/artifacts/pages/generic.vscode.extensions",
+        "tags": [],
+        "author_link": "https://github.com/misje",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4006538?v=4",
+        "date": "2026-03-21"
+    },
+    {
         "title": "Generic.Forensics.VMWareInventory",
         "author": "klehri-r7",
         "description": "Finds and parses VMware VM configuration files (.vmx) on Mac and Windows. \nIt turns text into an organized list (dictionary) so you can easily \nsearch for settings like RAM size, Guest OS, or network modes.\n",

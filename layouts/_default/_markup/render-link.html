@@ -2,7 +2,7 @@
 {{- $href := $u.String -}}
 {{- if strings.HasPrefix $u.String "#" -}}
   {{- $href = printf "%s#%s" .PageInner.RelPermalink $u.Fragment -}}
-{{- else if strings.HasPrefix .Destination "HAHAHUGOSHORTCODE" -}}
+{{- else if or (strings.HasPrefix .Destination "HAHAHUGOSHORTCODE") (strings.HasPrefix .Page.Path "/exchange/") -}}
 {{- else if and $href (not $u.IsAbs) -}}
   {{- $path := strings.TrimPrefix "./" $u.Path -}}
   {{- $found := false }}
