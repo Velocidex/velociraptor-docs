@@ -24,6 +24,11 @@ parameters:
      description: Except these processes from detections when they access honeyfiles.
      type: string
      default: "/usr/bin/updatedb"
+   - name: HomeDirRootGlob
+     description: |
+         If set, treat all sub directories found in this glob (e.g. "/home/*")
+         as user homes, with the directory name as username. If empty, enumerate
+         non-system users in passwd instead (which will not work for remote users).
    - name: HoneyUserRegex
      description: User name regex that will be used to host honeyfiles.
      type: string
@@ -58,13 +63,20 @@ sources:
                                     len(list=unhex(string=MagicBytes)) - 7 AS _PaddingSize
         FROM Honeyfiles
       
-      LET target_users = SELECT User,
-                                Homedir,
-                                Uid
+      LET passwd_users = SELECT User,
+                                Homedir
         FROM Artifact.Linux.Sys.Users()
         WHERE int(int=Uid) >= 1000
          AND NOT Homedir = '/nonexistent'
               AND User =~ HoneyUserRegex
+      
+      LET home_users = SELECT Name AS User,
+                              OSPath AS Homedir
+        FROM glob(globs=HomeDirRootGlob)
+        WHERE User =~ HoneyUserRegex
+      
+      LET target_users = SELECT *
+        FROM if(condition=HomeDirRootGlob, then=home_users, else=passwd_users)
       
       LET show_honeyfiles = SELECT TargetPath,
                                    Enabled,
