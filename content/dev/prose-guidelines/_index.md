@@ -1,4 +1,7 @@
-# Guidelines for prose (written content)
+---
+title: Guidelines for prose (written content)
+weight: 10
+---
 
 This document provides guidance for writing style in the Velociraptor
 documentation. It specifies some informal standards and advice with the goal of
@@ -83,8 +86,9 @@ command components: `[binary]` `[command]` `[subcommand]` `[flags]` `[args]`
 
 ### Page links
 
-Use the Hugo shortcode `[]({{< ref "/abc/xyz/" >}})` for page links so that Hugo
-will do link checking.
+Use markdown for page links so that Hugo will do link checking
+automatically. For internal links that are broken, Hugo will fail to
+compile and let you know immediately.
 
 ## Page content structure
 
@@ -143,4 +147,3 @@ Avoid line breaks in links.
 
 Bold all UI elements (buttons, tabs, menu names) to help users scan the page
 quickly.
-

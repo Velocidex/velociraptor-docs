@@ -21,7 +21,12 @@ The first thing I will do is create a Slack channel to receives messages from Ve
 
 I will create a new channel called “alerts”
 
-Next I will create an App which will communicate with the workspace and be able to post messages to the alerts channel. (This [reference ](https://api.slack.com/start/overview#creating)has a lot of details on this step, which I will just skip but you should consult it for your own use). First I visit the slack API page at [https://api.slack.com/apps](../../img/apps)
+Next I will create an App which will communicate with the workspace
+and be able to post messages to the alerts channel. (This [reference
+](https://api.slack.com/start/overview#creating)has a lot of details
+on this step, which I will just skip but you should consult it for
+your own use). First I visit the slack API page at
+[https://api.slack.com/apps](https://api.slack.com/apps)
 
 ![](../../img/14J5S4V0jlkVLvFKI3SaeUA.png)
 

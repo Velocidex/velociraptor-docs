@@ -1,4 +1,7 @@
-# Guidelines for creating image content
+---
+title: Guidelines for creating image content
+weight: 10
+---
 
 This document provides guidance for creating image content for the Velociraptor
 documentation. It specifies some informal standards and gives some tool-specific
@@ -42,8 +45,8 @@ The guidance in this document is intended to:
 Image content generally falls into one of these categories:
 
 1. [Screenshots](#screenshots)
-	- unannotated
-	- annotated
+    - unannotated
+    - annotated
 2. [Line diagrams](#line-diagrams) (flow charts, sequence diagrams, etc.)
 3. [GIF animations](#gif-animations) (typically use for short video clips of
    things like terminal sessions)
@@ -404,7 +407,7 @@ recording environment. This allows us to create such recordings in a
 reproducible way, and this means that it's easy for us to update the exising
 recordings when new versions are released.
 
-![example ](image-guidelines/vhs.gif)
+![example ](vhs.gif)
 
 The environment and scripted steps for each recording are specified in a `.tape`
 file which is a small text file.
@@ -424,5 +427,3 @@ the existing recording.
 > VHS on the Linux machine, and have the VHS omit that part from the recording.
 > See `wix_build.tape` for an example.
 >
-
-
