@@ -1372,7 +1372,7 @@ sources:
         row=Results,
         query={
           SELECT *
-          FROM Artifact.Custom.Generic.Utils.SendEmail(
+          FROM Artifact.Generic.Utils.SendEmail(
             Secret=Secret,
             Recipients=RequireNonEmpty(
               Value=Unique(Items=Recipients.Address + CreatorAddrs(
