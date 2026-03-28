@@ -1361,10 +1361,11 @@ sources:
                                           field=NotifyMetadataEMail)),
           else=[])
 
-      LET Subject = format(format='%v %v %v',
-                           args=(FQDN, ResultString, ShortenStringList(
-                               List=request.artifacts,
-                               MaxLength=1)))
+      LET Subject = format(
+                format='%v %v %v',
+                args=(FQDN || "Client", ResultString, ShortenStringList(
+                    List=request.artifacts,
+                    MaxLength=1)))
 
       SELECT *
       FROM foreach(
