@@ -278,4 +278,4 @@ source license. As always please file issues on the bug tracker or ask
 questions on our mailing list
 [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com)
 . You can also chat with us directly on discord
-[https://www.velocidex.com/discord](../../img/discord)
+[https://www.velocidex.com/discord](https://www.velocidex.com/discord)

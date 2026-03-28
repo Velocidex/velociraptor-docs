@@ -1,1 +1,28 @@
-<a href="{{ .Destination | safeURL }}"{{ with .Title}} title="{{ . }}"{{ end }}{{ if or (strings.HasPrefix .Destination "http") (strings.HasPrefix .Destination "https") }} target="_blank"{{ end }} >{{ .Text | safeHTML }}</a>
+{{- $u := urls.Parse .Destination -}}
+{{- $href := $u.String -}}
+{{- if strings.HasPrefix $u.String "#" -}}
+  {{- $href = printf "%s#%s" .PageInner.RelPermalink $u.Fragment -}}
+{{- else if or (strings.HasPrefix .Destination "HAHAHUGOSHORTCODE") (strings.HasPrefix .Page.Path "/exchange/") -}}
+{{- else if and $href (not $u.IsAbs) -}}
+  {{- $path := strings.TrimPrefix "./" $u.Path -}}
+  {{- $found := false }}
+  {{- with or
+    ($.PageInner.GetPage $path)
+    ($.PageInner.Resources.Get $path)
+    (resources.Get $path)
+  -}}
+    {{- $href = .RelPermalink -}}
+    {{- $found = true -}}
+    {{- with $u.RawQuery -}}
+      {{- $href = printf "%s?%s" $href . -}}
+    {{- end -}}
+    {{- with $u.Fragment -}}
+      {{- $href = printf "%s#%s" $href . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if and (not $found) (not (strings.HasPrefix .Destination "/exchange/")) }}
+    {{ fmt.Errorf "%v: Link to %v not found" .Page .Destination }}
+  {{ end -}}
+{{- end -}}
+<a href="{{ $href }}" {{- with .Title }} title="{{ . }}" {{- end }}>{{ .Text }}</a>
+{{- /**/ -}}

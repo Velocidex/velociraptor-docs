@@ -61,9 +61,8 @@ search engine, which provides Full Text Search (FTS) capabilities
 similar to Elasticsearch and other NoSQL database solutions.
 
 This capability is provided by the following new VQL plugins:
-- <a href="https://docs.velociraptor.app/vql_reference/other/index/">index</a>
-- <a href="https://docs.velociraptor.app/vql_reference/other/index_search/">index_search</a>
-
+- [index](/vql_reference/other/index/)
+- [index_search](/vql_reference/other/index_search/)
 
 ## Removed plugins
 
