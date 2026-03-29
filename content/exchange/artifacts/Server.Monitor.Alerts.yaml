@@ -258,7 +258,7 @@ sources:
                           S.flow_id AS FlowId,
                           name AS Message,
                           S.artifact AS ArtifactName,
-                          S.artifact_Type AS ArtifactType,
+                          S.artifact_type AS ArtifactType,
                           event_data AS Context
         FROM watch_monitoring(artifact='Server.Internal.Alerts')
         WHERE MsgMatched
