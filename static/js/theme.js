@@ -105,6 +105,10 @@ function insertHTML(html, target, opts) {
         }
     });
 
+    $("#top-bar").removeClass("hidden");
+    $("#body-inner").removeClass("loading");
+
+    // Execute any scripts in the new page
     var dom = $(html);
     dom.filter('section').each(function(){
         $(this).find("script").each(function() {
@@ -141,6 +145,8 @@ function navigateTo(target, opts) {
     if(!opts.popstate) {
         updateScroll();
     }
+
+    $("#body-inner").addClass("loading");
 
     jQuery.ajax({
         url: target,
@@ -204,9 +210,7 @@ function doSearchKB() {
 }
 
 function DrawResultsKB(data) {
-    let node = $(".search_results");
-
-    node.empty();
+    let node = clearSearchPane(data);
 
   for(let i=0;i<data.length; i++) {
     let item = data[i];
@@ -302,8 +306,7 @@ function doSearchArtifacts() {
 }
 
 function DrawResultsArtifacts(data) {
-    let node = $(".search_results");
-    node.empty();
+    let node = clearSearchPane(data);
 
   for(let i=0;i<data.length; i++) {
     let item = data[i];
@@ -390,8 +393,7 @@ function doSearchExchange() {
 }
 
 function DrawResultsExchange(data) {
-    let node = $(".search_results");
-        node.empty();
+    let node = clearSearchPane(data);
 
   for(let i=0;i<data.length; i++) {
     let item = data[i];
@@ -497,8 +499,7 @@ function doSearchBlog() {
 }
 
 function DrawResultsBlog(data) {
-    let node = $(".search_results");
-    node.empty();
+    let node = clearSearchPane(data);
 
   for(let i=0;i<data.length; i++) {
     let item = data[i];
@@ -590,8 +591,7 @@ function doSearchVQL() {
 }
 
 function DrawResultsVQL(data) {
-    let node =  $(".search_results");
-    node.empty();
+    let node = clearSearchPane(data);
 
   for(let i=0;i<data.length; i++) {
     let item = data[i];
@@ -702,7 +702,6 @@ function doSearch() {
       input.value = filter;
       start_count = parseInt(params.get("start") || 0);
       $("#start-count").text(start_count);
-      $("#body-inner").removeClass("loading");
       searchInitialized = true;
   }
 
@@ -710,7 +709,13 @@ function doSearch() {
   params.set("start", start_count);
   setParamsToHistory(params);
 
+  if(!filter) {
+      $("#body-inner").removeClass("loading");
+      return;
+  }
+
   console.log("Searching for ", filter);
+  $("#body-inner").addClass("loading");
 
   jQuery.ajax({
       url: searchUrl,
@@ -738,8 +743,7 @@ function doSearch() {
           }
       },
       error: function(xhr, status, error) {
-          let node =  $(".search_results");
-          node.empty();
+          let node = clearSearchPane();
 
           let resp_text = xhr.responseText || '';
           let error_message = "Error connecting to search server "+resp_text;
@@ -766,7 +770,9 @@ function SearchPageForward() {
 
 function SearchPageBack() {
     let start_count = parseInt($("#start-count").text() || 0);
-
+    if(start_count == 0) {
+        return;
+    }
     let prev = start_count - 50;
     if(prev < 0) {
         prev = 0;
@@ -777,8 +783,7 @@ function SearchPageBack() {
 }
 
 function DrawResultsSearch(data) {
-    let node = $(".search_results");
-    node.empty();
+    let node = clearSearchPane(data);
 
   for(let i=0;i<data.length; i++) {
     let hit = data[i];
@@ -857,7 +862,7 @@ function DrawResultsSearch(data) {
 
 
 function initSearch() {
-    doSearchDelay();
+    doSearch();
 }
 
 function getLink(item) {
@@ -884,9 +889,14 @@ let blockUpdate = false;
 
 function updateScroll() {
     if(!blockUpdate) {
-        window.history.replaceState({
-            scroll: window.scrollY,
-        }, null, window.location);
+        // Only update if necessary
+        let current_scroll = window.scrollY;
+        let state_scroll = window.history.state.scroll;
+        if(current_scroll != state_scroll) {
+            window.history.replaceState({
+                scroll: current_scroll,
+            }, null, window.location);
+        }
     }
 };
 
@@ -907,20 +917,38 @@ function scrollToHash(hash) {
     };
 }
 
+let scrollRestoreActive = false;
+
+
+// Due to reflow the initial scroll position may not be correct. Keep
+// trying to reset the scroll position for some time to allow the page
+// to reflow into position.
 function restoreScroll(scroll) {
+    let end = 2000;
+
     if(!blockUpdate) {
         blockUpdate = true;
-        for(let i=0; i<2000; i+=50) {
+        scrollRestoreActive = true;
+
+        for(let i=0; i<end; i+=50) {
             setTimeout(function() {
-                window.scrollTo(0, scroll);
+                if(scrollRestoreActive && scroll != window.scrollY) {
+                    window.scrollTo(0, scroll);
+                }
             }, i);
         };
 
         setTimeout(function() {
             blockUpdate = false;
-        }, 500);
+        }, end);
     };
 }
+
+// When the user starts to manually scroll, abort the restoreScroll() function.
+$(window).on("scroll", function() {
+    scrollRestoreActive = false;
+});
+
 
 // Constantly update the scroll state so going back and forth
 // replicates the state of the page at that time.
@@ -1216,10 +1244,50 @@ function installFigureHandlers() {
 
 const _doSearchDelay = $.debounce(500, false, doSearch);
 
+function clearSearchPane(data) {
+    let node = $(".search_results");
+    node.empty();
+    if (!data || !data.length) {
+        node.text("No results available");
+    }
+    return node;
+};
+
 
 function doSearchDelay() {
     $("#body-inner").addClass("loading");
-    $(".search_results").empty();
+    clearSearchPane();
 
     _doSearchDelay();
 };
+
+
+function searchShortcutMust(value) {
+    let input = document.getElementById('myInput');
+    let filter = input.value;
+
+    let terms = filter.split(" ");
+    filter = $.map(terms, function(x, idx){
+        if(!x.startsWith("+")) {
+            return "+" + x;
+        }
+        return x;
+    });
+    input.value = filter.join(" ");
+    doSearch();
+}
+
+function searchShortcutTag(value) {
+    let input = document.getElementById('myInput');
+    let filter = input.value;
+
+    let term = " +tags:" + value;
+    if(filter.includes(term)) {
+        filter = filter.replace(term, "");
+    } else {
+        filter += term;
+    }
+
+    input.value = filter;
+    doSearch();
+}
