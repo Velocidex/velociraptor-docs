@@ -1357,15 +1357,18 @@ sources:
       // Resolve an optional recipient address from the configured client metadata field:
       LET MetadataAddrs = if(
           condition=NotifyMetadataEMail,
-          then=AddrOrEmptyList(String=get(item=client_metadata(client_id=ClientId),
-                                          field=NotifyMetadataEMail)),
+          then=AddrOrEmptyList(
+            String=get(
+              item=client_metadata(
+                client_id=ClientId),
+              field=NotifyMetadataEMail)),
           else=[])
 
       LET Subject = format(
-                format='%v %v %v',
-                args=(FQDN || "Client", ResultString, ShortenStringList(
-                    List=request.artifacts,
-                    MaxLength=1)))
+          format='%v %v %v',
+          args=(FQDN || "Client", ResultString, ShortenStringList(
+              List=request.artifacts,
+              MaxLength=1)))
 
       SELECT *
       FROM foreach(
