@@ -72,6 +72,25 @@ description: |
   | Details.Connections.0.DestinationIp | 198.51.100.42 |
   | Details.Connections.0.DestinationPort | 443 |
 
+  ## Client and flow details
+
+  Detailed information about the client and the flow (if relevant) are included
+  in separate tables, if enabled. Use `ClientMetadata` to add additional client
+  information. If you are creating alerts from a server monitoring artifact
+  monitoring client event queries (or flow completions / logs), and want to
+  display client and flow information from the original source, the fields
+
+  - ClientId
+  - FlowId
+  - Artifact
+  - ArtifactType
+
+  can be set to override the information set by the server monitoring artifact.
+  For instance, set ClientId to that of the source client instaed of having
+  client_id reported as "server", or set Artifact and ArtifactType to that of
+  the monitored artifact instead of getting the information about the server
+  event artifact.
+
 type: SERVER_EVENT
 
 parameters:
@@ -135,26 +154,35 @@ parameters:
       for every flow completion.
     default: 10
 
+  - name: IncludeClientDetails
+    type: bool
+    description: |
+      Include details about the client, like FQDN, system, OS etc. The alert must
+      originate from a client collection or monitoring artifact unless `ClientId`
+      is set in the alert context.
+    default: true
+
+  - name: ClientMetadata
+    type: csv
+    description: |
+      Include selected client metadata as additional context in the e-mail. If
+      `Alias` is set, the metadata field is renamed. Requires
+      `IncludeClientDetails`.
+    default: |
+      Field,Alias
+
   - name: IncludeFlowDetails
     type: bool
     description: |
       Include information about the originating flow, such as the creator and
-      artifact arguments, when the alert came from a collection.
+      artifact arguments, when the alert comes from a collection. You may specify
+      (override) the flow ID by setting the variable `FlowId` in the context.
 
   - name: KeepEmptyRows
     type: bool
     description: |
       By default, rows with false-like values are removed from the e-mail. Enable
       this to keep them and preserve a more consistent layout.
-
-  - name: ClientMetadata
-    type: csv
-    description: |
-      Include selected client metadata as additional context in the e-mail. If
-      `Alias` is set, the metadata field is renamed. Metadata values are shown as
-      individual rows with a `Client ` prefix for clarity.
-    default: |
-      Field,Alias
 
   - name: SeverityTransforms
     type: csv
@@ -252,14 +280,15 @@ sources:
       LET MsgMatched = IncludeMsg
          AND NOT ExcludeMsg
 
-      LET Alerts = SELECT timestamp(epoch=now()) AS ServerTime,
-                          timestamp(epoch=timestamp) AS AlertTime,
-                          S.client_id AS ClientId,
-                          S.flow_id AS FlowId,
-                          name AS Message,
-                          S.artifact AS ArtifactName,
-                          S.artifact_type AS ArtifactType,
-                          event_data AS Context
+      LET Alerts = SELECT
+          timestamp(epoch=now()) AS ServerTime,
+          timestamp(epoch=timestamp) AS AlertTime,
+          event_data.ClientId || S.client_id AS ClientId,
+          event_data.FlowId || S.flow_id AS FlowId,
+          name AS Message,
+          event_data.Artifact || S.artifact AS ArtifactName,
+          event_data.ArtifactType || S.artifact_type AS ArtifactType,
+          event_data AS Context
         FROM watch_monitoring(artifact='Server.Internal.Alerts')
         WHERE MsgMatched
 
@@ -299,12 +328,16 @@ sources:
       // The last matching transform wins, allowing later rows to override earlier ones.
       LET Severity = Severities.Level[-1]
 
-      // Used to remove the original severity field from the context (will be used
-      // as a subtraction dict):
+      // Used to remove the original severity field and possibly client/flow/artifact
+      // override fields from the context:
       LET SeverityDummyDict = to_dict(item={
           SELECT Member AS _key
           FROM SeverityTransforms
-        }) + dict(Severity=NULL)
+        }) + dict(Severity=NULL,
+                  ClientId=NULL,
+                  FlowId=NULL,
+                  Artifact=NULL,
+                  ArtifactType=NULL)
 
       // Build the mail subject/header text
       LET Title(IncludeMessage) = template(
@@ -391,11 +424,9 @@ sources:
 
       // Start from the alert context, optionally drop empty values, and remove the
       // original severity members since their derived value is already shown above.
-      LET AlertDetailsDict = FilterContextKeys(Context=RemoveEmpties(
-                                                 Obj=FlattenedContext -
-                                                   SeverityDummyDict,
-                                                 DoIt=NOT
-                                                   KeepEmptyRows))
+      LET AlertDetailsDict = FilterContextKeys(
+          Context=RemoveEmpties(Obj=FlattenedContext - SeverityDummyDict,
+                                DoIt=NOT KeepEmptyRows))
 
       // Render alert context as a headerless two-column HTML table, enforcing
       // key/value truncation and a hard row cap to keep messages readable.
@@ -445,21 +476,21 @@ sources:
       // Assemble the named mail sections, then drop any that ended up empty so
       // the final message only includes relevant context.
       LET Tables(HTML) = RemoveEmpties(
-          Obj=dict(`Alert summary`=Table(Values=AlertInfo,
-                                         HTML=HTML,
-                                         KeepEmpty=KeepEmptyRows),
-                   `Alert details`=AlertDetails,
-                   `Client details`=if(
-                     condition=ClientId != 'server',
-                     then=Table(Values=ClientInfo(HTML=HTML),
-                                HTML=HTML,
-                                KeepEmpty=KeepEmptyRows)),
-                   `Flow details`=Table(
-                     Values=if(condition=HTML,
-                               then=FlowDetails[0].HTML,
-                               else=FlowDetails[0].PlainText),
-                     HTML=HTML,
-                     KeepEmpty=KeepEmptyRows)))
+          Obj=dict(
+            `Alert summary`=Table(Values=AlertInfo,
+                                  HTML=HTML,
+                                  KeepEmpty=KeepEmptyRows),
+            `Alert details`=AlertDetails,
+            `Client details`=if(condition=IncludeClientDetails
+                                 AND ClientId != 'server',
+                                then=Table(Values=ClientInfo(HTML=HTML),
+                                           HTML=HTML,
+                                           KeepEmpty=KeepEmptyRows)),
+            `Flow details`=Table(Values=if(condition=HTML,
+                                           then=FlowDetails[0].HTML,
+                                           else=FlowDetails[0].PlainText),
+                                 HTML=HTML,
+                                 KeepEmpty=KeepEmptyRows)))
 
       LET PlainText = format(format='%v\n\n%v',
                              args=(Summary(HTML=false), join(
