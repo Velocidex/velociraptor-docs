@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>How to set up Azure Blob Storage for file uploads :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847311" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847311" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847311" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847311" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847311" rel="stylesheet">
+    <link href="/css/theme.css?1774847311" rel="stylesheet">
+    <link href="/css/tabs.css?1774847311" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847311" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847311" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847311" rel="stylesheet"><link href="/css/syntax.css?1774847311" rel="stylesheet"><link href="/css/light.css?1774847311" rel="stylesheet"><link href="/css/hljs.css?1774847311" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847311" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847311"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/knowledge_base/tips/setup_azure_storage/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/knowledge_base\/tips\/setup_azure_storage\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/knowledge_base/tips/setup_azure_storage.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">How to set up Azure Blob Storage for file uploads</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#setup-steps">Setup steps</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/deployment">deployment</a>
+
+  <a class="tag-link" href="/tags/uploads">uploads</a>
+
+  <a class="tag-link" href="/tags/triage">triage</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+
+        
+
+
+
+	<h1 id="how-to-set-up-azure-blob-storage-for-file-uploads">How to set up Azure Blob Storage for file uploads</h1>
+<p>Microsoft Azure&rsquo;s Blob Storage service can be a useful upload destination for
+receiving files from Velociraptor clients or collection containers from
+<a href="/docs/deployment/offline_collections/">offline collectors</a>
+in scenarios where the source system is internet connected and you do not want
+to stand up storage services on the local network.</p>
+<p>This is made possible by the
+<a href="/vql_reference/other/upload_azure/">upload_azure</a> VQL function.</p>
+<p>Azure supports an authentication policy called
+<a href="https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview" target="_blank" >Shared Access Signature (SAS)</a>
+making it convenient and secure to provide limited access to the a storage
+container. Using this method, we can embed a simple SAS URL that provides access
+to upload data to the storage container without granting the ability to download
+or remove any data.</p>
+<p>This article explains how to set up an Azure storage container with appropriate
+security for file uploads.</p>
+<hr>
+<h3 id="setup-steps">Setup steps</h3>
+<ol>
+<li>
+<p>Create a storage account.</p>
+</li>
+<li>
+<p>Create a new data storage container to receive the uploads</p>
+</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_azure_storage/creating_azure_container.png"
+         class="inline"
+         alt="Creating a new Azure Blob storage container"
+         width="1354" height="496">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="creating_azure_container.png">
+      <i class="fa fa-download"></i></a>
+    Creating a new Azure Blob storage container
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<ol start="3">
+<li>Add a role assignment to allow the storage account to manage the storage</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_azure_storage/azure_role_assignment.png"
+         class="inline"
+         alt="Adding a role assignment to the storage account"
+         width="1226" height="453">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="azure_role_assignment.png">
+      <i class="fa fa-download"></i></a>
+    Adding a role assignment to the storage account
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<ol start="4">
+<li>Generate a SAS Policy URL.</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_azure_storage/generating_sas_policy.png"
+         class="inline"
+         alt="Right click on the container to generate a SAS policy"
+         width="562" height="375">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="generating_sas_policy.png">
+      <i class="fa fa-download"></i></a>
+    Right click on the container to generate a SAS policy
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<ol start="5">
+<li>Create a SAS policy with only write and create access. You can
+specify an appropriate expiry time for the SAS URL. After this time
+the uploader will no longer work.</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_azure_storage/sas_policy_details.png"
+         class="inline"
+         alt="SAS Policy should have only Write and Create Access"
+         width="550" height="622">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="sas_policy_details.png">
+      <i class="fa fa-download"></i></a>
+    SAS Policy should have only Write and Create Access
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<ol start="6">
+<li>Test the SAS URL works properly</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_azure_storage/testing_sas_url.png"
+         class="inline"
+         alt="Test the SAS Policy by uploading a small file in the notebook"
+         width="1328" height="574">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="testing_sas_url.png">
+      <i class="fa fa-download"></i></a>
+    Test the SAS Policy by uploading a small file in the notebook
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<ol start="7">
+<li>Embed the SAS URL in the offline collector.</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_azure_storage/sas_collector.png"
+         class="inline"
+         alt="Simply paste the SAS URL in the collector GUI"
+         width="1211" height="499">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="sas_collector.png">
+      <i class="fa fa-download"></i></a>
+    Simply paste the SAS URL in the collector GUI
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847311"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847311"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847311"></script>
+    <script src="/js/jquery.sticky.js?1774847311"></script>
+    <script src="/js/featherlight.min.js?1774847311"></script>
+    <script src="/js/highlight.min.js?1774847311"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847311"></script>
+    <script src="/js/learn.js?1774847311"></script>
+    <script src="/js/hugo-learn.js?1774847311"></script>
+    
+    
+
+  </body>
+</html>

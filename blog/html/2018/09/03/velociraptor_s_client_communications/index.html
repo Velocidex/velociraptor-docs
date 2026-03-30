@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="In the latest point release of the Velociraptor IR tool (0.2.3) we
+have improved upon GRR&#39;s client communications protocol to deliver a
+fast and efficient, yet extremely responsive client
+communication. This post explains the design of the client
+communication and how it solves the problems with the old GRR&#39;s client
+communication.
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Velociraptor&#39;s client communications :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847308" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847308" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847308" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847308" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847308" rel="stylesheet">
+    <link href="/css/theme.css?1774847308" rel="stylesheet">
+    <link href="/css/tabs.css?1774847308" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847308" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847308" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847308" rel="stylesheet"><link href="/css/syntax.css?1774847308" rel="stylesheet"><link href="/css/light.css?1774847308" rel="stylesheet"><link href="/css/hljs.css?1774847308" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847308" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847308"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/blog/html/2018/09/03/velociraptor_s_client_communications/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/blog\/html\/2018\/09\/03\/velociraptor_s_client_communications\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/html/2018/09/03/velociraptor_s_client_communications/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Velociraptor&#39;s client communications</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#how-does-the-grr-client-communicate">How does the GRR client communicate?</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#making-the-client-more-responsive">Making the client more responsive</a></li>
+    <li><a href="#conclusions">Conclusions</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Velociraptor&#39;s client communications
+            </h1>
+            
+          
+
+        
+
+
+
+	<h3 id="how-does-the-grr-client-communicate">How does the GRR client communicate?</h3>
+<p>The GRR client protocol is depicted below.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/html/2018/09/03/velociraptor_s_client_communications/comms1.png"
+         class="inline"
+         alt=""
+         width="624" height="483">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="comms1.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Due to network realities such as NAT, firewalls etc, it is not possible
+to directly connect to the client, so GRR relies on the client
+connecting to the server in order to communicate with it.</p>
+<p>The GRR client makes periodic POST requests to the server to both send
+replies and receive new instructions. Since POST requests are very short
+lived (most client polls carry no data) the client has to repeat the
+polls periodically.</p>
+<p>There are two parameters which determine how the GRR client behaves
+-poll_max and poll_min. When there is some requests sent to the
+client, the client will reduce its poll wait time to poll_min (default
+0.2 seconds). When nothing happens, the client will increase its poll
+time gradually up to poll_max (default 10 minutes).</p>
+<p>Having long poll times means that any new flows launched on an idle
+client must wait for up to 10 minutes before the client polls again in
+order to send the new requests to the client. Unfortunately reducing the
+poll_max setting actually increases server load, as the server needs to
+hit the database more often to serve each poll. This scheme essentially
+poses a trade off - for a responsive client, we must have a low
+poll_max (i.e. more frequent polls) but this increases the load on the
+frontend so it can not be too low.</p>
+<p>When GRR is normally deployed it produces 2 types of clients on the web
+interface: the debug client has max_poll set to 5 seconds making
+testing easier because it is more responsive, but the non-debug version
+has max_poll set to 10 minutes. For example at Velocidex, one of our
+clients had once accidentally deployed the debug version and the server
+was slammed with 5 second polls from several thousand clients! This
+rendered the server useless, returning HTTP 500 status codes for most
+client polls. The only way to recover was to push new config to the
+clients and restart their GRR service in order to lower the poll
+frequency and recover control over the deployment.</p>
+<h1 id="catastrophic-failure-under-load">Catastrophic failure under load</h1>
+<p>The other problem with GRR's client communication protocol is that it
+tends to exhibit catastrophic failure under load. When the client makes
+a HTTP POST operation, the server goes through the following steps in
+order:</p>
+<ol>
+<li>Unpack and decrypts any replies the client sends in its POST message</li>
+<li>Queue these replies on a worker queue</li>
+<li>Read the client's job queue for any outstanding requests to the
+client.</li>
+<li>Pack and encrypt these requests to the client.</li>
+<li>Write them as the body response of the HTTP POST with hopefully a
+200 HTTP status.</li>
+</ol>
+<p>In previous posts we have seen that GRR's overuse of queuing leads to
+extreme loads on the database, so under load (e.g. when a large hunt is
+taking place), the above process may take some time until the server can
+obtain a lock on the database row, write and read the messages, and
+compose its response.</p>
+<p>What tends to happen under load, is that the client will time the
+request out if the server takes too long, or the server itself may
+timeout the request with a HTTP 500 code. The client, thinking it has
+not got through will try to POST the same data again (this time it will
+wait longer though).</p>
+<p>This essentially makes things worse, because the replies are probably
+already mostly queued so the next retry will re-queue the same requests
+(these will be discarded by the worker anyway but they are still
+queued), increasing database pressure and server load. This manifests in
+a critical meltdown of the frontends who pretty soon serve mostly 500
+errors (making things worse again).</p>
+<p>This is the reason why resource provision is so important with GRR, if
+the frontends are just too slow to be able to keep up, the connections
+will start to timeout, and load increases (rather than decreases)
+causing a catastrophic failure.</p>
+<h1 id="how-can-we-fix-this">How can we fix this?</h1>
+<p>The main problem with a polling scheme is that the user experience is
+terrible - even if we reduce the poll wait times to few seconds, users
+will have to wait to view the results of their actions - leading to an
+overall experience of a slow and sluggish system. For a responsive user
+interface we need to have client round trips of a second or less and
+having poll_max set this low will just use up too many resources. This
+is particularly noticeable in the VFS browser since it takes so long to
+navigate to the desired directory and download files interactively.</p>
+<p>Other endpoint monitoring systems use distributed pub/sub systems like
+RabbitMQ or Firebase realtime database to inform the clients of new
+requests. In those systems, the client makes a TCP connection to an
+endpoint and holds the connection open for long periods of time, the
+server can then immediately push new requests to the client as soon as
+they are published. This seems like the way to go but we did not want to
+introduce another dependency on Velociraptor (we really like it being a
+self contained - working out of the box binary).</p>
+<p>In particular we also wanted to solve the catastrophic failure we saw
+with GRR clients under load (described above). This means that we need
+to make sure that the clients are not sending data faster than the
+server can process it. We definitely want to avoid the POST timing out
+with a 500 error and the client retrying the same POST since this is the
+main cause for the catastrophic failures we experienced with GRR.</p>
+<p>We can do this by keeping the client's connection open for as long as
+we need, but in order to not time it out, we send the HTTP status code
+immediately, then process the POST data, while sending the client
+keepalive data periodically using HTTP chunked transfer encoding.</p>
+<p>To the client, and any proxies in the way, it simply looks like the POST
+request was received immediately, and the response body is downloaded
+slowly (there is always some pad data flowing so none of the TCP or HTTP
+timers are triggered since the connection is always active). This is
+illustrated in the diagram below.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/html/2018/09/03/velociraptor_s_client_communications/comms2.png"
+         class="inline"
+         alt=""
+         width="624" height="424">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="comms2.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>This scheme has the two main advantages:</p>
+<ol>
+<li>By returning a 200 status to the client before we begin processing,
+the client knows we received the data. They are then able to
+de-queue these messages and will not transmit them again.</li>
+<li>By keeping the client connected while the server is processing the
+request we avoid any additional data from being sent to the server
+while it is busy. The client will be blocked on the HTTP connection
+and will actually pause its running VQL query while the server is
+processing the current responses. This mechanism actually throttles
+the clients to allow the server to keep up.</li>
+</ol>
+<h2 id="making-the-client-more-responsive">Making the client more responsive</h2>
+<p>We really wanted to make clients more responsive. We were frankly sick
+of having to wait up to 10 minutes to access a client that we knew was
+online in our IR work. To make the client more responsive we wanted to
+use the same technique to keep the client connection open for long
+periods of time, and then send instructions to the client as soon as the
+user issues a new flow.</p>
+<p>In the GRR scheme new requests are sent on the same connections as
+client replies are received. This won't work if the client connection
+is held open for long periods of time because while the client is
+blocked reading new responses from the server, it can not send any
+replies (the POST header was already sent).</p>
+<p>To fix this we switched to two separate POST connections on two server
+handlers, a reader handler and a writer handler. The writer handler only
+receives messages from the client to the server (i.e. replies to client
+requests), while the reader handler blocks the client for prolonged time
+and sends client requests as soon as new flows are launched.</p>
+<p>This scheme allows a full duplex, responsive communication protocol,
+with no polling overheads. This can be seen in the diagram below.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/html/2018/09/03/velociraptor_s_client_communications/comms3.png"
+         class="inline"
+         alt=""
+         width="624" height="372">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="comms3.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The client establishes the reader channel by sending a HTTP POST request
+to the reader handler. The server checks for any messages for the
+client, and sees that there are none pending. It will then keep the
+client's connection open as before, trickle sending pad data (using
+HTTP chunked transfer encoding) to keep the connection open for as long
+as possible.</p>
+<p>When the user launches a new flow, the server can immediately forward
+the client's requests on the open channel, completing the POST
+operation. The client will then process the requests and send the
+responses with a separate HTTP POST to the writer channel. In the
+meantime the reader channel will re-POST to the reader handler and
+become blocked and ready for the next request.</p>
+<p>This scheme has the following advantages:</p>
+<ol>
+<li>The user's flow is executed instantly by the client. This makes for
+example, the VFS browser instant - as soon as the user clicks the
+&quot;refresh directory listing&quot; button, the directory is refreshed. As
+soon as the user wants to view a file, the file is downloaded etc.</li>
+<li>There is hardly any polling activity. The clients open a reader
+connection once and hold it for many minutes. The server need only
+check the queue at the beginning of the connection and then only if
+it knows there is a new flow launched for this client. This means
+server load is really low.</li>
+</ol>
+<p>However, the scheme also has some disadvantages:</p>
+<ol>
+<li>TCP connections are held for long periods of time tying up server
+resources. In particular the open sockets count towards the
+process's open file descriptor limit. It is typically necessary to
+increase this limit (by default it is 1024 which is very low).</li>
+<li>Deploying over multiple servers is a bit more complex because a
+client may be blocked on one server and the flow is launched on
+another server. Velociraptor now has a notification API to allow
+inter server RPCs to propagate notifications between servers.</li>
+</ol>
+<p>We believe that these limitations can be easily managed. They are no
+different from typical limitations of large scale pub/sub systems (they
+too need to hold many TCP connections open). In our testing we have not
+seen a problem scaling to many thousands of connected clients with very
+low resource use.</p>
+<p>Velociraptor now also has a pool client that allows spinning up several
+thousand clients at the same time. This helps with testing a deployment
+to make sure it can handle the increased open file limit and test how
+large scale hunts can be handled.</p>
+<h2 id="conclusions">Conclusions</h2>
+<p>The new responsive client communications protocol allows for near
+instantaneous access to clients. This actually reduces the overall load
+on the system because we do not need to perform frequent client polls
+just to check if a new flow is launched. User experience is much better
+as users can interact with clients immediately.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847308"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847308"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847308"></script>
+    <script src="/js/jquery.sticky.js?1774847308"></script>
+    <script src="/js/featherlight.min.js?1774847308"></script>
+    <script src="/js/highlight.min.js?1774847308"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847308"></script>
+    <script src="/js/learn.js?1774847308"></script>
+    <script src="/js/hugo-learn.js?1774847308"></script>
+    
+    
+
+  </body>
+</html>

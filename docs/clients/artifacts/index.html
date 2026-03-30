@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Collecting Artifacts :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847309" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847309" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847309" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847309" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847309" rel="stylesheet">
+    <link href="/css/theme.css?1774847309" rel="stylesheet">
+    <link href="/css/tabs.css?1774847309" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847309" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847309" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847309" rel="stylesheet"><link href="/css/syntax.css?1774847309" rel="stylesheet"><link href="/css/light.css?1774847309" rel="stylesheet"><link href="/css/hljs.css?1774847309" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847309" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847309"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/clients/artifacts/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/clients\/artifacts\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/clients/artifacts/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Collecting Artifacts</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#example-collect-scheduled-tasks-from-endpoint">Example: collect scheduled tasks from endpoint.</a>
+      <ul>
+        <li><a href="#initiating-a-new-collection">Initiating a new collection</a></li>
+        <li><a href="#searching-for-artifacts-to-collect">Searching for artifacts to collect</a></li>
+        <li><a href="#setting-artifact-parameters">Setting artifact parameters</a></li>
+        <li><a href="#specify-resources">Specify Resources</a></li>
+        <li><a href="#inspecting-the-collection-request">Inspecting the collection request</a></li>
+        <li><a href="#launching-the-collection">Launching the collection</a></li>
+      </ul>
+    </li>
+    <li><a href="#inspecting-collection-results">Inspecting collection results</a></li>
+    <li><a href="#inspecting-and-modifying-artifacts">Inspecting and modifying artifacts</a></li>
+    <li><a href="#saving-collections-to-a-favorite-list">Saving collections to a favorite list</a></li>
+    <li><a href="#learn-more">Learn more</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Collecting Artifacts
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>Velociraptor&rsquo;s superpower is a powerful query language termed
+<strong>VQL</strong>. You might be surprised to learn that you have already been
+using VQL all this time. When clicking in the VFS interface to sync a
+directory listing or download files, the GUI was collecting artifacts
+behind the scenes.</p>
+<p>Click on the <strong>Collected Artifacts</strong> sidebar screen to view the
+artifacts that have been collected so far.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/artifacts/collected_artifacts_.svg" alt="Collected Artifacts"
+         class="inline"
+         height="817"
+         width="1074.6666666666665"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="collected_artifacts.svg"><i class="fa fa-download"></i></a>
+    Collected Artifacts
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>This screen consists of two panes - the top pane shows a list of all
+the <strong>Artifacts</strong> collected so far from this endpoint, while the bottom
+pane shows information about the selected artifact.</p>
+<p>All artifacts have a <strong>Name</strong>. In our example, you can see that we have been
+collecting <code>System.VFS.ListDirectory</code> in order to populate the VFS screen.</p>
+<p>Each artifact collection has a unique <code>Flow ID</code>, which is how
+Velociraptor refers to a collection. The collection is created at a
+certain time and starts some time later. If the client is offline, the
+collection will start when it comes back online.</p>
+<p>Collections also take parameters. In the previous example, the
+<code>System.VFS.ListDirectory</code> artifact was used to list the directory
+&ldquo;C:\Users\user2&rdquo;.</p>
+<p>A collection of artifacts can return rows or upload
+files. This is because an artifact is simply a VQL query and all
+queries return a sequence of rows.</p>
+<h2 id="example-collect-scheduled-tasks-from-endpoint">Example: collect scheduled tasks from endpoint.</h2>
+<p>To illustrate how artifacts can be used, let&rsquo;s collect a common
+forensic artifact from our Windows endpoint. Windows allows commands
+to be scheduled in the future. These tasks are typically stored in the
+<code>C:\Windows\System32\Tasks</code> directory as XML files.</p>
+<p>While it is nice to know the details behind where the scheduled tasks
+are stored and how to parse them - this is completely unnecessary with
+Velociraptor, since we have a built-in artifact ready to collect and
+parse these tasks!</p>
+<p>In the following I will walk through the steps for scheduling a new
+<code>Windows.System.TaskScheduler</code> collection.</p>
+<h3 id="initiating-a-new-collection">Initiating a new collection</h3>
+<p>Start a new collection by clicking the <strong>New Collection</strong> button <i
+class="fas fa-plus"></i>. This will open the new collection wizard as
+show below.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/artifacts/new_collection_wizard_.svg" alt="New Collection Wizard"
+         class="inline"
+         height="796.3833333333333"
+         width="1066.808988764045"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="new_collection_wizard.svg"><i class="fa fa-download"></i></a>
+    New Collection Wizard
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The Wizard contains a number of steps but you can skip them if they
+are not needed. For this exercise we will examine each step in turn</p>
+<h3 id="searching-for-artifacts-to-collect">Searching for artifacts to collect</h3>
+<p>In the first step, search for an artifact to collect the type of
+information you are after. In this case we will search for &ldquo;task&rdquo; to
+see our <code>Windows.System.TaskScheduler</code> artifact.</p>
+<p>The next step allows us to modify artifact parameters.</p>
+<h3 id="setting-artifact-parameters">Setting artifact parameters</h3>
+<p>Artifacts may accept parameters from the user which change the way the
+artifact works. The detail of how artifact parameters work is
+described in <a href="/docs/artifacts/parameters/">Artifact Parameters</a> but for the moment we just update
+the parameters needed for the <code>Windows.System.TaskScheduler</code> artifact.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/artifacts/artifact_parameters_.svg" alt="Artifact Parameters"
+         class="inline"
+         height="696.0266666666666"
+         width="1104.5347593582887"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="artifact_parameters.svg"><i class="fa fa-download"></i></a>
+    Artifact Parameters
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>This artifact does not require much updating.  Artifacts have default
+values for their parameter such that they mostly do the right thing
+without needing to change them. In this case, the <code>TasksPath</code>
+parameter specifies where to find the task XML files and is already
+set to the default location.</p>
+<p>For the purposes of our example, we will also upload the raw XML
+files, so set the <code>AlsoUpload</code> parameter.</p>
+<h3 id="specify-resources">Specify Resources</h3>
+<p>Velociraptor often runs on performance sensitive endpoints, like
+servers and laptops, as well as low resource machines like cloud
+virtual machines. It is critical to ensure that Velociraptor does not
+generate undue load on the endpoint, leading to performance
+degradation.</p>
+<p>Velociraptor contains a number of mechanism to limit resource usage,
+as a &ldquo;fail safe&rdquo; and to prevent accidentally overloading the
+endpoint. You can read more details on <a href="/docs/artifacts/resources/">Resource Limits here</a>, but for now notice that
+Velociraptor&rsquo;s default resource limits are pretty sensible for most use cases.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/artifacts/resource_use.png"
+         class="inline"
+         alt="Artifact Resource usage"
+         width="1200" height="748">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="resource_use.png">
+      <i class="fa fa-download"></i></a>
+    Artifact Resource usage
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Collections by default run for 600 seconds before being cancelled -
+odds are that collecting the scheduled tasks files should not take
+that long. It should also not transfer more than a Gigabyte (which is
+the default upload limit). So no custom limits are needed.</p>
+<h3 id="inspecting-the-collection-request">Inspecting the collection request</h3>
+<p>Just prior to collecting, you can view the collection request in the GUI. This
+gives a final view on what exactly will be collected, but may also be useful if
+you want to subsequently automate the same collection using the
+<code>collect_client()</code> VQL function.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/artifacts/collection_request.png"
+         class="inline"
+         alt="The collection request"
+         width="1200" height="748">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="collection_request.png">
+      <i class="fa fa-download"></i></a>
+    The collection request
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="launching-the-collection">Launching the collection</h3>
+<p>Finally, click <strong>Launch</strong> to start the collection. After a short time,
+the collection will complete.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/artifacts/viewing_complete_collection_.svg" alt="Collection Complete"
+         class="inline"
+         height="795.0000000000001"
+         width="1053.3333333333335"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="viewing_complete_collection.svg"><i class="fa fa-download"></i></a>
+    Collection Complete
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>We can see that this collection uploaded 227 files and added 227
+rows. The VQL query parses each XML file in turn and uploads it to the server.</p>
+<h2 id="inspecting-collection-results">Inspecting collection results</h2>
+<p>We can see more information about this collection in the tabs in the
+bottom pane:</p>
+<ol>
+<li><strong>Logs</strong> - As the VQL query is executing on the endpoint, the query may
+produce log messages. This is called the <strong>Query Log</strong> and it is
+forwarded to the server. We are able to see how the query is
+progressing based on the query log.</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/artifacts/query_logs_.svg" alt="Query Log"
+         class="inline"
+         height="716.3399999999999"
+         width="1029.1884057971013"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="query_logs.svg"><i class="fa fa-download"></i></a>
+    Query Log
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<ol start="2">
+<li><strong>Uploaded Files</strong> - This tab shows all the files uploaded by this
+query. You can download any of these files individually from the
+server by simply clicking the link, or click the preview button to
+examine the file in the GUI.</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/artifacts/uploaded_files_.svg" alt="Uploaded Files"
+         class="inline"
+         height="689"
+         width="1152.6984126984125"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="uploaded_files.svg"><i class="fa fa-download"></i></a>
+    Uploaded Files
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/artifacts/uploaded_files_preview.png"
+         class="inline"
+         alt="Uploaded File Preview"
+         width="1280" height="640">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="uploaded_files_preview.png">
+      <i class="fa fa-download"></i></a>
+    Uploaded File Preview
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<ol start="3">
+<li><strong>Result Tab</strong> - This shows each result set in a table. A single
+collection may collect several artifacts. In this case you can
+choose which artifact to view by clicking the pull-down menu.</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/artifacts/results_tab.png"
+         class="inline"
+         alt="Result Tab"
+         width="1280" height="668">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="results_tab.png">
+      <i class="fa fa-download"></i></a>
+    Result Tab
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="inspecting-and-modifying-artifacts">Inspecting and modifying artifacts</h2>
+<p>The <strong>View Artifacts</strong> screen allows you to search and find all
+artifacts loaded by the Velociraptor server.</p>
+<p>You can learn more about Velociraptor Artifacts in
+<a href="/docs/artifacts/">this section</a>.</p>
+<p>Search for an artifact in the search screen and select an artifact to view it.</p>
+<p>The left pane shows the name of the artifact, a description and any
+parameters the artifact may take. Finally we can inspect the VQL
+source of the artifact.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/artifacts/artifacts_main_screen_.svg" alt="View Artifacts screen"
+         class="inline"
+         height="833.25"
+         width="1104.333333333333"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="artifacts_main_screen.svg"><i class="fa fa-download"></i></a>
+    View Artifacts screen
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>You can edit any artifact by clicking the &ldquo;Edit an Artifact&rdquo; button <i
+class="fas fa-pencil-alt"></i></p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/artifacts/edit_artifact.png"
+         class="inline"
+         alt="Edit Artifact"
+         width="1200" height="828">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="edit_artifact.png">
+      <i class="fa fa-download"></i></a>
+    Edit Artifact
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>User artifacts usually have the prefix <code>Custom.</code> since user artifacts cannot
+override built in artifacts or use existing artifact names. When editing an
+existing artifact, Velociraptor will automatically add the <code>Custom.</code> prefix to
+the artifact name and saving it will produce a new artifact. Therefore both the
+custom and built in artifact exist in Velociraptor at the same time. This allows
+you to collect either the original or the customized version as you please.</p>
+<h2 id="saving-collections-to-a-favorite-list">Saving collections to a favorite list</h2>
+<p>Many users find that they tend to collect some artifacts more commonly
+than others. In that case you can save your favorite collections by
+name and just recall them by clicking in the favorites list button.</p>
+<p>To save a new favorite you select an existing (previously run) collection and
+click the <strong>Save Collection</strong> button in the collection list&rsquo;s toolbar.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/artifacts/favorites_.svg" alt="Saving a collection to your favorites"
+         class="inline"
+         height="606"
+         width="1289.4956217162874"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="favorites.svg"><i class="fa fa-download"></i></a>
+    Saving a collection to your favorites
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>A collection saved to your favorites includes any custom parameters from the
+collection you are basing it on.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/artifacts/favorites2.png"
+         class="inline"
+         alt="Adding a collection from favorites"
+         width="1191" height="685">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="favorites2.png">
+      <i class="fa fa-download"></i></a>
+    Adding a collection from favorites
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="learn-more">Learn more</h2>
+<p>Go <a href="/docs/artifacts/">here</a> to learn more about Velociraptor
+Artifacts and about how to write your own artifacts.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847310"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847310"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847310"></script>
+    <script src="/js/jquery.sticky.js?1774847310"></script>
+    <script src="/js/featherlight.min.js?1774847310"></script>
+    <script src="/js/highlight.min.js?1774847310"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847310"></script>
+    <script src="/js/learn.js?1774847310"></script>
+    <script src="/js/hugo-learn.js?1774847310"></script>
+    
+    
+
+  </body>
+</html>

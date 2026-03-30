@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="Velociraptor can use sftp to securely transfer data to an AWS S3 bucket. However configuring this service securely is not trivial. This post walks the reader through the steps of setting up a secure sftp upload only bucket that can be used with Velociraptor.
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>SFTP in AWS :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847307" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847307" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847307" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847307" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847307" rel="stylesheet">
+    <link href="/css/theme.css?1774847307" rel="stylesheet">
+    <link href="/css/tabs.css?1774847307" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847307" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847307" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847307" rel="stylesheet"><link href="/css/syntax.css?1774847307" rel="stylesheet"><link href="/css/light.css?1774847307" rel="stylesheet"><link href="/css/hljs.css?1774847307" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847307" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847307"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/blog/2021/2021-12-11-sftp-in-aws/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/blog\/2021\/2021-12-11-sftp-in-aws\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/2021/2021-12-11-sftp-in-aws/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">SFTP in AWS</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#creating-an-aws-bucket">Creating an AWS bucket</a></li>
+    <li><a href="#aws-policies">AWS Policies</a>
+      <ul>
+        <li><a href="#velociraptor-upload-policy">velociraptor-upload-policy</a></li>
+        <li><a href="#velociraptor-sftp-upload-only">velociraptor-sftp-upload-only</a></li>
+      </ul>
+    </li>
+    <li><a href="#aws-roles">AWS Roles</a></li>
+    <li><a href="#creating-the-sftp-server">Creating the SFTP server</a></li>
+    <li><a href="#adding-sftp-users-to-the-sftp-server">Adding SFTP users to the sftp server.</a></li>
+    <li><a href="#testing-access-controls">Testing access controls</a></li>
+    <li><a href="#creating-an-sftp-offline-collector">Creating an SFTP Offline Collector</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/aws">AWS</a>
+
+  <a class="tag-link" href="/tags/offline-collector">Offline Collector</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              SFTP in AWS
+            </h1>
+            
+            <div class="author pull-right">
+              Mike Cohen
+              <span class="date">2021-12-20</span>
+            </div>
+            
+          
+
+        
+
+
+
+	<p>Many people use Velociraptor&rsquo;s <a href="/docs/deployment/offline_collections/">offline collector</a> feature to collect any artifacts without
+having the Velociraptor client actually installed on the
+endpoint. While the offline collector feature is great to
+interactively triage a machine, the produced collection zip file is
+normally quite large and unwieldy to transfer.</p>
+<p>To help with this, Velociraptor offers the option to send the file
+back to the cloud via a number of mechanisms, including upload to S3
+buckets directly, WebDAV upload and using Secure FTP (sftp).</p>
+<p>One of the challenges with automatic uploading to the cloud is
+securely configuring the upload mechanism. Since the credentials for
+any upload service are embedded inside the collector, it is important
+to ensure that these credentials have minimal additional permissions.</p>
+<p>For example, when using a cloud bucket to collect triage data from
+endpoints, the bucket policy must be configured to allow a service
+account full write access. However, using these credentials should not
+allow anyone to list existing bucket resources, or to download
+critical triage data from other hosts!</p>
+<p>I have <a href="/blog/2019/2019-10-08_triage-with-velociraptor-pt-3-d6f63215f579/">previously</a> described how to use Google cloud&rsquo;s service accounts to upload to
+a GCP bucket securely.</p>
+<p>In this post I describe how to set up Amazon&rsquo;s SFTP transfer service
+to securely allow the Velociraptor collector to upload files without
+granting the collector permission to download the files again, delete
+them or discover other uploads in the bucket.</p>
+<p>I would like to thank Simon Irwin from Rapid7 for his assistance and
+guidance with AWS - I am certainly not an expert and needed a lot of
+help figuring this process out. This is one of the reasons I wanted to
+document the process in order to save others time.</p>
+<h2 id="overview">Overview</h2>
+<p>The main AWS service I will use is the <a href="https://docs.aws.amazon.com/transfer/latest/userguide/what-is-aws-transfer-family.html" target="_blank" >AWS Transfer Family</a> documented extensively on the AWS documentation site.</p>
+<p>In a nutshell, the service requires creating an sftp transfer server
+backed by an S3 bucket. The SFTP server does not use real usernames
+for authentication, but rather throwaway usernames I create just for
+that service.</p>
+<p>Each of these throwaway sftp users are given an SSH key pair (public
+and private keys) which they use to authenticate with the service. The
+private key will be embedded in the Velociraptor collector and allow
+the collector to upload to the service. However, by setting up
+restrictive policies I can limit the permissions of the sftp user.</p>
+<h2 id="creating-an-aws-bucket">Creating an AWS bucket</h2>
+<p>I will begin by creating an S3 bucket called <code>velociraptor-test</code> that
+will contain all the collector files uploaded from the endpoints.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-12-11-sftp-in-aws/creating_S3_bucket.png"
+         class="inline"
+         alt="Creating an S3 bucket"
+         width="1635" height="541">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="creating_S3_bucket.png">
+      <i class="fa fa-download"></i></a>
+    Creating an S3 bucket
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="aws-policies">AWS Policies</h2>
+<p>AWS controls access via roles and policies. For this configuration I
+will need to create two policies:</p>
+<ol>
+<li>
+<p>The first policy I will call <code>velociraptor-upload-policy</code> grants
+full access to the AWS transfer service with full use of the
+provided s3 bucket.</p>
+</li>
+<li>
+<p>The second policy I will call <code>velociraptor-sftp-upload-only</code>
+policy will apply to the sftp user and only grant upload
+permissions.</p>
+</li>
+</ol>
+<h3 id="velociraptor-upload-policy">velociraptor-upload-policy</h3>
+<p>This policy grants full access to the new bucket I created earlier.</p>
+<pre><code class="language-json">
+{
+  &quot;Version&quot;: &quot;2012-10-17&quot;,
+  &quot;Statement&quot;: [
+  {
+    &quot;Effect&quot;: &quot;Allow&quot;,
+    &quot;Action&quot;: [
+      &quot;s3:PutObject&quot;,
+      &quot;s3:GetObject&quot;,
+      &quot;s3:ListBucket&quot;,
+      &quot;s3:DeleteObject&quot;,
+      &quot;s3:PutObjectAcl&quot;
+    ],
+    &quot;Resource&quot;: [
+       &quot;arn:aws:s3:::velociraptor-test&quot;,
+       &quot;arn:aws:s3:::velociraptor-test/*&quot;
+    ]
+  }
+ ]
+}
+</code></pre>
+<h3 id="velociraptor-sftp-upload-only">velociraptor-sftp-upload-only</h3>
+<p>This policy only grants upload rights</p>
+<pre><code class="language-json">{
+&quot;Version&quot;: &quot;2012-10-17&quot;,
+&quot;Statement&quot;: [
+  {
+    &quot;Sid&quot;: &quot;AllowListingOfUserFolder&quot;,
+    &quot;Action&quot;: [
+      &quot;s3:ListBucket&quot;
+    ],
+    &quot;Effect&quot;: &quot;Allow&quot;,
+    &quot;Resource&quot;: [
+      &quot;arn:aws:s3:::${transfer:HomeBucket}&quot;
+     ],
+    &quot;Condition&quot;: {
+      &quot;StringLike&quot;: {
+          &quot;s3:prefix&quot;: [
+              &quot;${transfer:HomeFolder}/*&quot;,
+              &quot;${transfer:HomeFolder}&quot;
+          ]
+      }
+    }
+  },
+  {
+    &quot;Sid&quot;: &quot;HomeDirObjectAccess&quot;,
+    &quot;Effect&quot;: &quot;Allow&quot;,
+    &quot;Action&quot;: [
+      &quot;s3:PutObject&quot;,
+      &quot;s3:PutObjectACL&quot;
+    ],
+    &quot;Resource&quot;: &quot;arn:aws:s3:::${transfer:HomeDirectory}*&quot;
+  }
+]
+}
+</code></pre>
+
+<div class="mynotices note">
+  <div heading="note"><p>I found that I needed to give the <code>s3:ListBucket</code> permission in order
+to upload files - this seems a bit strange to me but I could not get
+upload to work without this permission. Despite having this
+permission, it is still not possible to actually list the files in the
+bucket anyway.</p>
+</div>
+</div>
+
+
+<h2 id="aws-roles">AWS Roles</h2>
+<p>An AWS role is a set of policies that applies to a particular
+service. In this case I will create a new role that allows uploading
+to the s3 bucket I created. Search for the <a href="https://console.aws.amazon.com/iamv2/home#/roles" target="_blank" >IAM
+screen</a> in the AWS
+console and select &ldquo;Create a new role&rdquo;.</p>
+<p>In the first step, the UI asks us to associate the role with a
+service, Select the <code>Transfer</code> as the service.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-12-11-sftp-in-aws/create_role_1.png"
+         class="inline"
+         alt="Creating a new role"
+         width="1181" height="524">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="create_role_1.png">
+      <i class="fa fa-download"></i></a>
+    Creating a new role
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Next associate the role with the <code>velociraptor-upload-policy</code>
+policy. I will name the role <code>velociraptor-upload-role</code>.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-12-11-sftp-in-aws/create_role_2.png"
+         class="inline"
+         alt="Creating a new role - associating with policy"
+         width="1090" height="711">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="create_role_2.png">
+      <i class="fa fa-download"></i></a>
+    Creating a new role - associating with policy
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="creating-the-sftp-server">Creating the SFTP server</h2>
+<p>Now I need to create an sftp server in the Transfer service. Search
+for the <a href="https://us-east-2.console.aws.amazon.com/transfer/home" target="_blank" >AWS Transfer
+Family</a> screen
+and select &ldquo;Create Server&rdquo;. I will choose this to be an SFTP server.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-12-11-sftp-in-aws/creating_sftp_server.png"
+         class="inline"
+         alt="Creating the sftp server"
+         width="1181" height="536">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="creating_sftp_server.png">
+      <i class="fa fa-download"></i></a>
+    Creating the sftp server
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The identity provider is &ldquo;Service managed&rdquo; - this means I will manage
+the sftp users with throwaway ssh keys.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-12-11-sftp-in-aws/sftp_server_2.png"
+         class="inline"
+         alt="Creating the sftp server - Identity Providers"
+         width="1179" height="511">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="sftp_server_2.png">
+      <i class="fa fa-download"></i></a>
+    Creating the sftp server - Identity Providers
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Finally I will choose S3 to be our storage backend</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-12-11-sftp-in-aws/sftp_server_3.png"
+         class="inline"
+         alt="Creating the sftp server - Backend storage"
+         width="1166" height="458">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="sftp_server_3.png">
+      <i class="fa fa-download"></i></a>
+    Creating the sftp server - Backend storage
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Once the server is created, the AWS console will remind us that no
+users are added to the service yet. This will be our next task&hellip;</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-12-11-sftp-in-aws/create_sftp_server_final.png"
+         class="inline"
+         alt="Creating the sftp server - Success!"
+         width="1599" height="477">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="create_sftp_server_final.png">
+      <i class="fa fa-download"></i></a>
+    Creating the sftp server - Success!
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="adding-sftp-users-to-the-sftp-server">Adding SFTP users to the sftp server.</h2>
+<p>Our ultimate goal is to create throw-away sftp users which can
+authenticate to the service with an SSH key pair and upload triage
+files.</p>
+<p>I will now create an SSH key pair on my machine - this will contain a
+private key and a public key (Note: do not protect these keys with a
+passphrase):</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-12-11-sftp-in-aws/generating_keys.png"
+         class="inline"
+         alt="Generating SSH key pair for the new sftp user"
+         width="729" height="612">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="generating_keys.png">
+      <i class="fa fa-download"></i></a>
+    Generating SSH key pair for the new sftp user
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>In the AWS console I select the new server and click on &ldquo;Add user&rdquo; to
+add a new user.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-12-11-sftp-in-aws/adding_user.png"
+         class="inline"
+         alt="Adding a new SFTP user"
+         width="888" height="778">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="adding_user.png">
+      <i class="fa fa-download"></i></a>
+    Adding a new SFTP user
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>I will add the <code>velociraptor-upload-role</code> role I created earlier to
+this sftp user, allowing the user to interact with the s3 bucket.</p>
+<p>I will now also add a <code>scope down policy</code> to further restrict the
+access this user has to upload only by selecting the
+<code>velociraptor-sftp-upload-only</code> policy.</p>
+<p>Next I will add the user&rsquo;s public key to the AWS console&rsquo;s
+configuration by simply pasting the public key I generated earlier.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-12-11-sftp-in-aws/adding_public_key_to_user.png"
+         class="inline"
+         alt="Adding a new SFTP user’s public keys"
+         width="892" height="302">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="adding_public_key_to_user.png">
+      <i class="fa fa-download"></i></a>
+    Adding a new SFTP user’s public keys
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Finally I create the new user with the name <code>velouploader</code></p>
+
+<div class="mynotices tip">
+  <div heading=" Creating users with different access "><p>In our example I created a user with an upload only policy that could
+not read any of the files in the bucket. However, you can also create
+a user with full access to the bucket by removing the scope down policy
+or apply a different policy per user.</p>
+<p>This is convenient to allow the investigator the ability to download
+the collected files by creating a separate sftp user for them without
+a scope-down policy.</p>
+</div>
+</div>
+
+
+<h2 id="testing-access-controls">Testing access controls</h2>
+<p>It is imperative to ensure that access controls are working the way
+they are supposed to! Therefore I will now test my setup using the
+built in sftp client in my operating system (I can find the endpoint&rsquo;s
+public DNS name using the AWS console).</p>
+<pre><code class="language-sh">sftp -i sftpuser.key velouploader@s-9d35031a046643d88.server.transfer.us-east-2.amazonaws.com
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-12-11-sftp-in-aws/testing_permissions.png"
+         class="inline"
+         alt="Testing ACLs"
+         width="1334" height="404">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="testing_permissions.png">
+      <i class="fa fa-download"></i></a>
+    Testing ACLs
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>At first I upload a small file and confirm it works as expected. Then
+I try to list the directory, and read the file out again - both
+attempts fail due to the scope down policy.</p>
+<p>Finally attempting to overwrite the old file by re-uploading the same
+file again, also fails.</p>
+<h2 id="creating-an-sftp-offline-collector">Creating an SFTP Offline Collector</h2>
+<p>I am now ready to create our offline collectors. I will login to
+Velociraptor&rsquo;s web UI and navigate to <code>Server Artifacts</code> screen. Once
+there I click the <code>Build Offline Collector</code> button. For this example,
+I will create a collector using the <code>Windows.KapeFiles.Targets</code>
+artifact and just collect the <code>$MFT</code> file.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-12-11-sftp-in-aws/kapefiles_1.png"
+         class="inline"
+         alt="Creating an offline collector"
+         width="1312" height="900">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="kapefiles_1.png">
+      <i class="fa fa-download"></i></a>
+    Creating an offline collector
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Now I will configure the collector to use the SFTP upload method,
+giving the username I created earlier and pasting the private key I
+generated.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-12-11-sftp-in-aws/kapefiles_2.png"
+         class="inline"
+         alt="Configuring the offline collector for SFTP uploads"
+         width="1266" height="886">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="kapefiles_2.png">
+      <i class="fa fa-download"></i></a>
+    Configuring the offline collector for SFTP uploads
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>I selected the collection method to SFTP which changes the form to
+allow for more parameters to be specified:</p>
+<ul>
+<li>The Private key is the file I generated earlier with <code>ssh-keygen</code> - I will just paste the file content into this form.</li>
+<li>The user is the sftp user that Velociraptor will log in as.</li>
+<li>The Endpoint is the DNS name of the sftp server I created followed
+by a colon and the port number (usually port 22).</li>
+</ul>
+<p>Once the collector is created I am able to run it on a test system.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-12-11-sftp-in-aws/kapefiles_3.png"
+         class="inline"
+         alt="Running the collector to collect the MFT"
+         width="960" height="701">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="kapefiles_3.png">
+      <i class="fa fa-download"></i></a>
+    Running the collector to collect the MFT
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>As can be seen the upload is mostly fine except there are some
+features that are not possible due to the restricted
+permissions. Although, the log file shows a failure the file did
+successfully upload as can be confirmed in the bucket view.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-12-11-sftp-in-aws/success.png"
+         class="inline"
+         alt="Verifying files uploaded in the S3 bucket"
+         width="1619" height="510">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="success.png">
+      <i class="fa fa-download"></i></a>
+    Verifying files uploaded in the S3 bucket
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h1 id="conclusions">Conclusions</h1>
+<p>In this post I examined how to configure a secure SFTP upload service
+in AWS that can safely receive triage data from the Velociraptor
+offline collector.</p>
+<p>The sftp uploading functionality is actually implemented by the
+<code>upload_sftp()</code> plugin <a href="/vql_reference/other/upload_sftp/">documented here</a>. This means that you can use
+this functionality in any VQL query at all - either on the client side
+or on the server side.</p>
+<p>For example it is possible to automatically back up server side hunts
+or collections to the SFTP bucket.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847307"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847307"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847307"></script>
+    <script src="/js/jquery.sticky.js?1774847307"></script>
+    <script src="/js/featherlight.min.js?1774847307"></script>
+    <script src="/js/highlight.min.js?1774847307"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847307"></script>
+    <script src="/js/learn.js?1774847307"></script>
+    <script src="/js/hugo-learn.js?1774847307"></script>
+    
+    
+
+  </body>
+</html>

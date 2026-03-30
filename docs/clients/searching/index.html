@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Searching for clients :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847309" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847309" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847309" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847309" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847309" rel="stylesheet">
+    <link href="/css/theme.css?1774847309" rel="stylesheet">
+    <link href="/css/tabs.css?1774847309" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847309" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847309" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847309" rel="stylesheet"><link href="/css/syntax.css?1774847309" rel="stylesheet"><link href="/css/light.css?1774847309" rel="stylesheet"><link href="/css/hljs.css?1774847309" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847309" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847309"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/clients/searching/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/clients\/searching\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/clients/searching/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Searching for clients</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#search-syntax">Search syntax</a></li>
+    <li><a href="#search-results">Search results</a></li>
+    <li><a href="#selecting-a-client">Selecting a client</a>
+      <ul>
+        <li><a href="#client-info-labels-and-metadata">Client Info, Labels and Metadata</a></li>
+        <li><a href="#the-vfs">The VFS</a></li>
+        <li><a href="#collections">Collections</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Searching for clients
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>To work with a specific client, search for it using the search bar at the top of
+the Admin GUI.</p>
+<p>Click the <i class="fas fa-search"></i> button to see all clients or choose a
+preset search from the dropdown.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/searching/search_overview_.svg" alt="Searching for a client"
+         class="inline"
+         height="378"
+         width="1230.1408450704225"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="search_overview.svg"><i class="fa fa-download"></i></a>
+    Searching for a client
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Or search using freeform text (simple wildcards are supported) or a structured
+<a href="/docs/clients/searching/#search-syntax">search expression</a>.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/searching/search_freeform_.svg" alt="Searching using a wildcard"
+         class="inline"
+         height="365"
+         width="1286.0550458715597"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="search_freeform.svg"><i class="fa fa-download"></i></a>
+    Searching using a wildcard
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="search-syntax">Search syntax</h2>
+<p>The search bar allows for freeform text searches but you can also perform
+searches using defined search operators and terms. The search bar provides
+autocompletion to guide your choices.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/searching/search_autocomplete.png"
+         class="inline"
+         alt="Searching autocompletion"
+         width="592" height="338">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="search_autocomplete.png">
+      <i class="fa fa-download"></i></a>
+    Searching autocompletion
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The following <strong>search operators</strong> are available:</p>
+<ul>
+<li><code>all</code> : show all clients</li>
+<li><code>label</code>: search clients by label</li>
+<li><code>host</code>: search for hostnames</li>
+<li><code>ip</code>: search based on last known IP address</li>
+<li><code>mac</code>: search based on recorded MAC addresses</li>
+<li><code>recent</code>: show clients your user has recently interacted with</li>
+</ul>
+<p>In addition, if you have configured indexing of selected
+<a href="/docs/clients/metadata/">client metadata</a> fields then those field
+names will also be available as search operators.</p>
+<p>The following <strong>search terms</strong> are recognized:</p>
+<ul>
+<li><code>none</code>: currently only supported with the <code>label</code> operator and used to return
+unlabelled clients.</li>
+</ul>
+<p>Search patterns can utilize the wildcard symbol <code>*</code> anywhere in the pattern. The
+wildcard can occur more than once in a pattern. If specified on it&rsquo;s own <code>*</code> is
+equivalent to the search operator <code>all</code>, which is also the same as searching
+with an empty search expression.</p>
+
+<div class="mynotices tip">
+  <div heading=" Searching clients using VQL "><p>More complex searches can be done in a notebook using VQL.</p>
+<p>The GUI&rsquo;s search function uses a client info index. This provides performant
+searches even when the server has many thousands of clients. The client info
+index can also be queried via VQL using the
+<a href="/vql_reference/server/clients/">clients()</a>
+plugin which has a <code>search</code> argument that accepts the same search syntax as
+the GUI&rsquo;s search bar, for example
+<code>SELECT client_id FROM clients(search=&quot;label:none&quot;)</code>.</p>
+<p>However VQL also allows you to search client info fields that aren&rsquo;t indexed and
+apply more refined filtering using VQL constructs such as <code>WHERE</code> clauses.</p>
+</div>
+</div>
+
+
+
+<div class="mynotices note">
+  <div heading=" Searching index update frequency "><p>The recency (&ldquo;freshness&rdquo;) of the client info data is determined by how often
+<a href="/docs/clients/interrogation/">client interrogation</a>
+is run. By default this data is updated daily but the frequency of collection
+can be changed in the client configuration file using the setting
+<code>Client.client_info_update_time</code>.</p>
+<p>The search index on the server is rebuilt periodically to avoid inconsistencies.
+By default this occurs every 5 minutes. The frequency of this process can be
+configured in the server configuration file using the setting
+<code>defaults.reindex_period_seconds</code>.</p>
+</div>
+</div>
+
+
+<h2 id="search-results">Search results</h2>
+<p>The results from the search are shown as a paged table.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/searching/search_columns_.svg" alt=""
+         class="inline"
+         height="275"
+         width="1300"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="search_columns.svg"><i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The table contains seven columns:</p>
+<ol>
+<li>
+<p><strong>Client selection checkboxes</strong>. You can select one or more (or all) clients
+from the search results and then perform bulk operations on them. Once any
+clients are selected then the <strong>Label Clients</strong>, <strong>Delete Clients</strong>, and
+<strong>Kill Clients</strong> buttons will become available in the toolbar above the
+client list.</p>
+</li>
+<li>
+<p>The <strong>online status</strong> of the host is shown as a color icon.</p>
+<ul>
+<li>A green dot indicates that the host is currently connected to the server.</li>
+<li>A flashing warning triangle icon indicates the host is not currently
+connected but was connected between 15 minutes and 24 hours ago.</li>
+<li>A solid warning triangle indicates that the host has not been seen for more
+than 24 hours.</li>
+</ul>
+<p>Clicking on the online status column header toggles the
+search between all clients and only those that are currently online.</p>
+</li>
+<li>
+<p>The <strong>Client ID</strong> of the host. All clients have a unique ID starting with <code>C.</code>.</p>
+<p>The client ID is a unique identifier, unlike hostnames or other endpoint
+identifiers which have no guarantee of uniqueness and which may change over
+time. The client ID is derived from the client&rsquo;s cryptographic key and is
+stored on the endpoint in the client writeback file. Clicking on the client
+id will take you to the client&rsquo;s information screen and switch all client
+views to the selected client. The client indicator at the top-center of the
+screen shows you which client you currently have selected.</p>
+</li>
+<li>
+<p>The <strong>Hostname</strong> reported by the client.</p>
+</li>
+<li>
+<p>The <strong>Fully Qualified Domain Name</strong> (FQDN) reported by the client.</p>
+</li>
+<li>
+<p>The <strong>Operating System version</strong> (OS Version) reported by the client.</p>
+</li>
+<li>
+<p>Any <strong>Labels</strong> applied to the host. Clicking on a label removes the
+label from this host. <a href="/docs/clients/labels/">Labels</a> exist on
+the server only and are used for organizing clients, targeting hunts and
+other client management functions.</p>
+</li>
+</ol>
+
+<div class="mynotices note">
+  <div heading=" Deleting active clients "><p>You might be wondering what happens if you delete active clients?</p>
+<p>When you select one or more clients (using the selection checkboxes) and then
+delete them, this action deletes their records from the client info index and
+deletes any existing collections data associated with them from the datastore.</p>
+<p>If the client is still active, or temporarily offline and later becomes active,
+the client will continue as though nothing happened. It&rsquo;s old data will be gone
+due to the delete action but the client doesn&rsquo;t know or care about data that it
+previously sent to the server. The client still has it&rsquo;s Client ID.</p>
+<p>The server will re-enroll the client and instruct the client to perform a new
+interrogation flow so that it&rsquo;s client info record can be updated.</p>
+</div>
+</div>
+
+
+<p>Once you select and view a particular client, as described in the next section,
+it will be automatically added to your Most Recently Used (MRU) list. The
+<strong>Recent Hosts</strong> search preset will show you the clients on this list.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/searching/search_presets.png"
+         class="inline"
+         alt="Recently viewed clients"
+         width="928" height="410">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="search_presets.png">
+      <i class="fa fa-download"></i></a>
+    Recently viewed clients
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="selecting-a-client">Selecting a client</h2>
+<p>Clicking on any <strong>Client ID</strong> in the search results will take you to the
+client&rsquo;s <strong>Overview</strong> page and switch all client views to the currently selected
+client.</p>
+<p>The client indicator at the top-center of the screen shows you which client you
+are currently working with.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/searching/client_overview_.svg" alt="Client Overview"
+         class="inline"
+         height="776"
+         width="1154"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="client_overview.svg"><i class="fa fa-download"></i></a>
+    Client Overview
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="client-info-labels-and-metadata">Client Info, Labels and Metadata</h3>
+<p>Velociraptor maintains some basic information about the host, such as its
+hostname, labels, last seen IP, and last seen time. This is shown in the
+<strong>Overview</strong> and <strong>VQL Drilldown</strong> pages. Velociraptor gathers this
+information from the endpoint upon first enrollment and periodically thereafter
+through a process that we refer to as
+<a href="/docs/clients/interrogation/">Interrogation</a>.
+You can manually refresh this information at any time by clicking the
+<strong>Interrogate</strong> button.</p>
+<p>Hosts may have <strong>labels</strong> attached to them. A label is any name associated with
+a host. Labels are useful when we need to hunt or perform other operations on a
+well defined group of hosts. We can restrict a hunt to one or more labels to
+avoid collecting unnecessary data or to target specific operating systems.
+Labels are explained <a href="/docs/clients/labels/">here</a>
+in more detail.</p>
+<p>Each client can have associated arbitrary metadata. You can use this
+metadata in VQL, in Notebooks or in server artifacts. <strong>Client metadata</strong> is
+explained <a href="/docs/clients/metadata/">here</a>
+in more detail.</p>
+<p>The <strong>VQL Drilldown</strong> page shows more information about the client, including
+telemetry of the client&rsquo;s footprint on the endpoint and more information about
+the endpoint.</p>
+<p>The <strong>Shell</strong> page allows you to run shell commands on the client. This is
+explained <a href="/docs/clients/shell/">here</a>
+in more detail.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/searching/vql_drilldown.png"
+         class="inline"
+         alt="VQL Drilldown"
+         width="1280" height="960">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="vql_drilldown.png">
+      <i class="fa fa-download"></i></a>
+    VQL Drilldown
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h4 id="quarantining-a-host">Quarantining a host</h4>
+<p>You can quarantine a host using the <strong>Quarantine Host</strong> (<i class="fas
+fa-briefcase-medical"></i>) button.</p>
+<p>Quarantining a host will reconfigure the
+hosts&rsquo;s network stack to only allow it to communicate with the Velociraptor
+server. This allows you to continue investigating the host remotely while
+preventing the host from making other network connections. Client Quarantine is
+explained <a href="/docs/clients/quarantine/">here</a> in more detail.</p>
+<h3 id="the-vfs">The VFS</h3>
+<p>With a client selected we can browse it&rsquo;s filesystem using the Virtual
+FileSystem (VFS) viewer. The VFS is explained
+<a href="/docs/clients/vfs/">here</a> in more detail.</p>
+<h3 id="collections">Collections</h3>
+<p>The <strong>Collected</strong> button on the Overview page will take you to the client&rsquo;s
+Collections page where you can schedule new Artifact collections for that
+client, or view the status and results of previously run collections.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/searching/client_collections.png"
+         class="inline"
+         alt="Collections page"
+         width="1600" height="901">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="client_collections.png">
+      <i class="fa fa-download"></i></a>
+    Collections page
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847309"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847309"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847309"></script>
+    <script src="/js/jquery.sticky.js?1774847309"></script>
+    <script src="/js/featherlight.min.js?1774847309"></script>
+    <script src="/js/highlight.min.js?1774847309"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847309"></script>
+    <script src="/js/learn.js?1774847309"></script>
+    <script src="/js/hugo-learn.js?1774847309"></script>
+    
+    
+
+  </body>
+</html>

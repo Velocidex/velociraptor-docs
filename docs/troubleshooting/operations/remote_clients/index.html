@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Troubleshooting Remote Client Issues :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847310" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847310" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847310" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847310" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847310" rel="stylesheet">
+    <link href="/css/theme.css?1774847310" rel="stylesheet">
+    <link href="/css/tabs.css?1774847310" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847310" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847310" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847310" rel="stylesheet"><link href="/css/syntax.css?1774847310" rel="stylesheet"><link href="/css/light.css?1774847310" rel="stylesheet"><link href="/css/hljs.css?1774847310" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847310" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847310"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/troubleshooting/operations/remote_clients/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/troubleshooting\/operations\/remote_clients\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/troubleshooting/operations/remote_clients/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Troubleshooting Remote Client Issues</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#debugging-a-remote-client">Debugging a remote client</a></li>
+        <li><a href="#enabling-tracing">Enabling tracing</a></li>
+        <li><a href="#inspecting-a-remote-clients-log">Inspecting a remote client&rsquo;s log</a></li>
+        <li><a href="#debugging-client-crashes-windows-only">Debugging client crashes (Windows only)</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Troubleshooting Remote Client Issues
+            </h1>
+            
+          
+
+        
+
+
+
+	
+<div class="mynotices note">
+  <div heading="note"><p>The steps in this section assume you are troubleshooting a client that has
+already enrolled and is actively communicating with the server.</p>
+<p>If you are having problems with a client that is:</p>
+<ul>
+<li>not communicating with the server, or</li>
+<li>that has never connected to the server, or</li>
+<li>is failing to start</li>
+</ul>
+<p>then please see the section
+<a href="/docs/troubleshooting/deployment/client/">Client communications issues</a>
+within the Deployment Troubleshooting section.</p>
+</div>
+</div>
+
+
+<h3 id="debugging-a-remote-client">Debugging a remote client</h3>
+<p>In the
+<a href="/docs/troubleshooting/deployment/server/">Deployment troubleshooting section</a>
+we explain how to bring up the debug server by providing the <code>--debug</code> flag on
+the command line. However clients are often remote and it&rsquo;s therefore not always
+possible to debug the client by starting it with this flag. Often we are also
+trying to troubleshoot an issue that happens while collecting an artifact from a
+remote client and we want to see what is actually happening in the client
+process itself.</p>
+<p>We can debug the client while it is running without starting the debug server
+using the artifact <code>Generic.Client.Profile</code>. This artifact has access to the
+same data exposed through the debug server, but does not require the debug flag
+to be enabled in advance.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/troubleshooting/operations/remote_clients/client_profile_artifact.png"
+         class="inline"
+         alt="Collecting the client profile"
+         width="1281" height="631">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="client_profile_artifact.png">
+      <i class="fa fa-download"></i></a>
+    Collecting the client profile
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>By default the artifact collects the most useful information the
+developers require, but you can customize the artifact parameters to
+collect more detailed information if required.</p>
+<p>You can share the result of the collection by exporting and sharing it with the
+development team via Discord or GitHub issues.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/troubleshooting/operations/remote_clients/exporting_client_profile_.svg" alt="Exporting the client profile"
+         class="inline"
+         height="759.0328125"
+         width="1060.6622662266227"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="exporting_client_profile.svg"><i class="fa fa-download"></i></a>
+    Exporting the client profile
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="enabling-tracing">Enabling tracing</h3>
+<p>While collecting the profile at any time is useful, it is sometimes hard to
+catch the problem on the client at exactly the right moment. For example, if a
+particular query causes a memory leak or severe performance issues it&rsquo;s possible
+that these may occur too quickly, thus preventing the <code>Generic.Client.Profile</code>
+artifact from running. Or the client may have already crashed/restarted, or be
+too resource-starved to actually collect the artifact.</p>
+<p>In such situations we recommend enabling tracing during the collection of the
+suspected problem artifact. This setting will cause the client to take profile
+snapshots at specified intervals during query execution and automatically
+include them in the collection results uploaded to the server.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/troubleshooting/operations/remote_clients/enabling_trace.png"
+         class="inline"
+         alt="Enabling periodic trace during artifact collection"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="enabling_trace.png">
+      <i class="fa fa-download"></i></a>
+    Enabling periodic trace during artifact collection
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>At each interval the client will upload a zip file containing critical profile
+information during query execution. This information allows us to see the
+client&rsquo;s memory and resource footprint as the query progresses, as well as the
+logs from the client.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/troubleshooting/operations/remote_clients/trace_logs.png"
+         class="inline"
+         alt="The trace logs"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="trace_logs.png">
+      <i class="fa fa-download"></i></a>
+    The trace logs
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="inspecting-a-remote-clients-log">Inspecting a remote client&rsquo;s log</h3>
+<p>One of the first troubleshooting steps for client-related issues is to run the
+client manually from the command line with the <code>-v</code> flag which prints client
+logs to the screen. This helps to identify startup issues or transient network
+issues. This is often impractical or impossible when the client is remote and we
+have means of access to it other than Velociraptor itself.</p>
+<p>We could use the Velociraptor client to collect it&rsquo;s own plaintext logs from
+disk, however the client, by default, does not write its logs to disk. This is
+done to prevent information leakage risks - the client&rsquo;s log may contain
+sensitive information such as collected artifacts.</p>
+<p>To overcome this, it is possible to tell the client to log to an encrypted local
+storage file. This allows us to collect the file from the client later and
+decrypt it on the server while not creating any information leakage risk.</p>
+<p>To enable local client logging, you create a new label group
+(e.g. <code>logged</code>) and then assign the <code>Generic.Client.LocalLogs</code> client
+monitoring artifact to this group. This allows you to begin logging on
+any client by labeling it so that it joins the group.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/troubleshooting/operations/remote_clients/local_client_logs.png"
+         class="inline"
+         alt="Configuring local client logs"
+         width="2400" height="1688">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="local_client_logs.png">
+      <i class="fa fa-download"></i></a>
+    Configuring local client logs
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Logs will be written continuously into the specified file on the
+endpoint. The file is encrypted and can only be decrypted on the
+server but the client can append logging information, even after a
+reboot.</p>
+<p>When we want to inspect the log file, we simply collect it from the
+endpoint using the <code>Generic.Client.LocalLogsRetrieve</code> artifact.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/troubleshooting/operations/remote_clients/encrypted_local_log_file.png"
+         class="inline"
+         alt="Retrieving the encrypted log file"
+         width="1281" height="624">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="encrypted_local_log_file.png">
+      <i class="fa fa-download"></i></a>
+    Retrieving the encrypted log file
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The notebook tab will automatically decrypt the logs and display them
+in a results table.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/troubleshooting/operations/remote_clients/reading_encrypted_file.png"
+         class="inline"
+         alt="Decrypting the local log file"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="reading_encrypted_file.png">
+      <i class="fa fa-download"></i></a>
+    Decrypting the local log file
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="debugging-client-crashes-windows-only">Debugging client crashes (Windows only)</h3>
+<p>On Windows, the client usually runs as a service. If a crash occurs while
+Velociraptor is running as a Windows service the traceback of the error is
+printed to Stderr, however these messages are not visible nor stored anywhere.
+This means that if Velociraptor crashes we cannot see the panic backtrace which
+is extremely useful for debugging the reason for the crash. In addition the
+Windows service recovery settings will cause the client to restart automatically
+after a crash which might make it hard to detect that a crash has occurred.</p>
+<p>The Windows binary accepts the setting <code>Client.panic_file</code> in the client config
+file. By default this setting is not present but can be added to the config on
+selected clients where there is a reproducible issue resulting in the client
+crashing. Adding this setting to the config will require local or remote access
+to the client&rsquo;s filesystem.</p>
+<p>This setting allows us to specify a path to a log file on the client where
+Velociraptor will write Stdout and Stderr in the event of a crash. A value of
+<code>$Temp/panic.log</code> will cause the log to be written to the Velociraptor client&rsquo;s
+temp directory which by default should be <code>C:\Program Files\Velociraptor\Tools</code>.</p>
+<p>This feature is currently not implemented for non-Windows platforms where
+this setting will have no effect.</p>
+<p>Please submit this file, along with any additional information about what user
+actions might have caused the crash, to our developer team by
+<a href="https://github.com/Velocidex/velociraptor/issues/" target="_blank" >opening a new issue on GitHub</a>.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847310"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847310"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847310"></script>
+    <script src="/js/jquery.sticky.js?1774847310"></script>
+    <script src="/js/featherlight.min.js?1774847310"></script>
+    <script src="/js/highlight.min.js?1774847310"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847310"></script>
+    <script src="/js/learn.js?1774847310"></script>
+    <script src="/js/hugo-learn.js?1774847310"></script>
+    
+    
+
+  </body>
+</html>

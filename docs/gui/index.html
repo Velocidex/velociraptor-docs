@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>The Admin GUI :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847310" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847310" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847310" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847310" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847310" rel="stylesheet">
+    <link href="/css/theme.css?1774847310" rel="stylesheet">
+    <link href="/css/tabs.css?1774847310" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847310" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847310" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847310" rel="stylesheet"><link href="/css/syntax.css?1774847310" rel="stylesheet"><link href="/css/light.css?1774847310" rel="stylesheet"><link href="/css/hljs.css?1774847310" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847310" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847310"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/gui/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/gui\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/gui/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">The Admin GUI</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-welcome-screen">The Welcome screen</a>
+      <ul>
+        <li><a href="#server-metadata">Server Metadata</a></li>
+        <li><a href="#server-secrets">Server Secrets</a></li>
+      </ul>
+    </li>
+    <li><a href="#user-preferences">User Preferences</a></li>
+    <li><a href="#the-server-dashboard">The Server Dashboard</a>
+      <ul>
+        <li><a href="#working-with-tables">Working with tables</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              The Admin GUI
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>The Admin GUI is a web application that can be used to interact and
+manage Velociraptor. The GUI allows users to schedule new collections,
+edit existing artifacts or write new ones and launch hunts.</p>
+<h2 id="the-welcome-screen">The Welcome screen</h2>
+<p>The Velociraptor landing page offers some links to commonly used tasks
+within the application.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/gui/welcome.png"
+         class="inline"
+         alt="The Velociraptor Welcome Screen"
+         width="1063" height="750">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="welcome.png">
+      <i class="fa fa-download"></i></a>
+    The Velociraptor Welcome Screen
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+
+<div class="mynotices tip">
+  <div heading="tip"><p>You can
+<a href="/docs/gui/customizing/">customize the Welcome screen</a>
+by editing the <code>Server.Internal.Welcome</code> artifact.</p>
+</div>
+</div>
+
+
+<h3 id="server-metadata">Server Metadata</h3>
+<p>The link to <strong>View Server Configuration</strong> takes you to the page where server
+administrators can edit/view server metadata. This is a collection of key-value
+pairs that can contain items such as URIs that can be shared by multiple
+artifacts.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/gui/server_metadata.png"
+         class="inline"
+         alt="The Server Metadata editor"
+         width="1200" height="533">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="server_metadata.png">
+      <i class="fa fa-download"></i></a>
+    The Server Metadata editor
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Metadata items can be strings or stringified representations of any other data
+type. Artifacts can access server metadata using the
+<a href="/docs/artifacts/parameters/#-server_metadata-">server_metadata</a>
+parameter type, and VQL (running on the server, for example in a notebook) can
+set or retrieve items from server metadata using the
+<a href="/vql_reference/server/server_set_metadata/">server_set_metadata</a>
+and
+<a href="/vql_reference/server/server_metadata/">server_metadata</a>
+functions, respectively.</p>
+<h3 id="server-secrets">Server Secrets</h3>
+<p>The <strong>Manage Server Secrets</strong> link will take you to the page where you can
+define <a href="/blog/2024/2024-03-10-release-notes-0.72/#secret-management">server secrets</a>,
+which are credentials and other parameters for interacting with external systems
+that can be securely provided to certain VQL plugins via artifacts. Placing
+secrets in a centralized location allows artifacts to use them without exposing
+them to non-administrator users on the server.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/gui/server_secrets.png"
+         class="inline"
+         alt="Manage Server Secrets"
+         width="1200" height="342">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="server_secrets.png">
+      <i class="fa fa-download"></i></a>
+    Manage Server Secrets
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="user-preferences">User Preferences</h2>
+<p>The User can customize their interface by clicking on the user tile at the top
+right of the screen. There are a number of aspects of the GUI application that
+can be adjusted.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/gui/preferences_light_.svg" alt="Adjusting user preferences"
+         class="inline"
+         height="519"
+         width="1143.452157598499"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="preferences_light.svg"><i class="fa fa-download"></i></a>
+    Adjusting user preferences
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>You can read more about the individual options
+<a href="/docs/gui/user_preferences/">here</a>.</p>
+<h2 id="the-server-dashboard">The Server Dashboard</h2>
+<p>The Server Dashboard can be accessed using the <i class="fas fa-home"></i> icon
+on the sidebar. The dashboard shows the current state of the deployment at a
+high level.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/gui/dashboard.png"
+         class="inline"
+         alt="The Server Dashboard"
+         width="1200" height="716">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="dashboard.png">
+      <i class="fa fa-download"></i></a>
+    The Server Dashboard
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The dashboard shows graphs of total memory and CPU used by all frontends. On the
+right, the total number of currently connected clients is shown.</p>
+<p>By default the view shows data for the past day although you can choose a
+different time interval from the range-picker on the top-right, or select and
+drag inside the graph to zoom in on a specific time range.</p>
+<p>Below the graphs are tables showing other aspects of the server deployment, for
+example disk space and users.</p>
+
+<div class="mynotices tip">
+  <div heading="tip"><p>All data shown on the dashboard is driven by VQL queries.
+The dashboard layout and underlying queries can be
+<a href="/docs/gui/customizing/">customized</a>
+by editing the <code>Server.Monitor.Health</code> artifact.</p>
+</div>
+</div>
+
+
+<h3 id="working-with-tables">Working with tables</h3>
+<p>Since VQL queries are at the core of Velociraptor, and all queries
+return a list of rows (i.e. a table of data), much of the GUI is
+dedicated to presenting these results in tabular form.</p>
+<p>All Velociraptor tables have a common set of tools available, which
+are available in a common table toolbar that you&rsquo;ll see whenever
+tabular results are presented in the GUI.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/gui/table_widgets.png"
+         class="inline"
+         alt="Table manipulation and navigation widgets"
+         width="968" height="215">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="table_widgets.png">
+      <i class="fa fa-download"></i></a>
+    Table manipulation and navigation widgets
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The table toolbar consists of the following buttons:</p>
+<ul>
+<li>
+<p><strong>Collapse/Expand All Columns</strong> - Sometimes the content of some
+cells can take up a lot of vertical space. This option toggles
+between showing the full row heights or shrinking the row display to
+a standard height.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/docs/gui/widget_collapse.png"
+     width="871"
+     height="198"/>
+
+
+
+
+</p>
+</li>
+<li>
+<p><strong>The Column Selector</strong> - Allows users to show/hide columns. This is
+useful when there are many columns and the table takes up a lot of
+horizontal real estate, or when some columns provide too much data
+that you don&rsquo;t want to see.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/docs/gui/widget_columns.png"
+     width="891"
+     height="198"/>
+
+
+
+
+</p>
+</li>
+<li>
+<p><strong>View Raw JSON</strong> - All VQL queries simply return a result set
+encoded as a list of JSON objects. For more complex tables it is
+sometimes easier to see the precise JSON returned, and clicking on
+this button displays the raw json in a dialog box.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/gui/raw_json_view.png"
+         class="inline"
+         alt="Raw JSON viewer"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="raw_json_view.png">
+      <i class="fa fa-download"></i></a>
+    Raw JSON viewer
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+<li>
+<p><strong>Download table as CSV or JSON</strong> - Clicking on these buttons
+exports the <em>visible</em> table data to a CSV or JSON file. This is
+usually used to filter out uninteresting columns and produce data
+files that can be used in other applications, e.g. Excel.</p>
+</li>
+<li>
+<p><strong>Fullscreen</strong> - This opens the table in fullscreen view in a new
+browser tab. This is useful when working with large tables where you
+need all the screen space you can get.</p>
+</li>
+<li>
+<p><strong>Pagination/Navigation Widget</strong> - To the right side is the table
+navigation widget. This is where you will find all the options to
+navigate through the table data. You can choose how many rows to
+display per page and navigate forward/backward, skip to the first,
+last, or go to a specific page number.</p>
+</li>
+</ul>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847310"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847310"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847310"></script>
+    <script src="/js/jquery.sticky.js?1774847310"></script>
+    <script src="/js/featherlight.min.js?1774847310"></script>
+    <script src="/js/highlight.min.js?1774847310"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847310"></script>
+    <script src="/js/learn.js?1774847310"></script>
+    <script src="/js/hugo-learn.js?1774847310"></script>
+    
+    
+
+  </body>
+</html>

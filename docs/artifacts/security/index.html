@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Artifact Security :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847309" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847309" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847309" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847309" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847309" rel="stylesheet">
+    <link href="/css/theme.css?1774847309" rel="stylesheet">
+    <link href="/css/tabs.css?1774847309" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847309" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847309" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847309" rel="stylesheet"><link href="/css/syntax.css?1774847309" rel="stylesheet"><link href="/css/light.css?1774847309" rel="stylesheet"><link href="/css/hljs.css?1774847309" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847309" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847309"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/artifacts/security/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/artifacts\/security\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/artifacts/security/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Artifact Security</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#hidden-artifacts">Hidden artifacts</a>
+      <ul>
+        <li><a href="#example-making-only-certain-artifacts-visible">Example: Making only certain artifacts visible.</a></li>
+      </ul>
+    </li>
+    <li><a href="#basic-artifacts">Basic artifacts</a></li>
+    <li><a href="#controlling-access-to-client-artifacts">Controlling access to client artifacts</a>
+      <ul>
+        <li><a href="#restricting-dangerous-client-artifacts">Restricting dangerous client artifacts</a></li>
+        <li><a href="#client-artifacts-collection-permissions-model">Client artifacts collection permissions model</a></li>
+      </ul>
+    </li>
+    <li><a href="#server-artifacts-and-impersonation">Server artifacts and Impersonation</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Artifact Security
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>Artifacts are the main way in which users interact with Velociraptor:
+Users launch artifact collections from clients and collect artifacts
+on the Velociraptor server.</p>
+<p>At its core an artifact is simply a way to package VQL queries to make
+them easier to use.</p>
+<p>However, for new users the number of artifacts can be
+overwhelming. Coupled with the power that artifacts can wield there is
+a need to control which users are able to access which artifacts: This
+helps to avoid mistakes due to inexperience. For example running a
+<code>Windows.KapeFiles.Target</code> collections as a large scale hunt is almost
+always a bad idea!</p>
+<p>Most users develop their own operating procedures specifying:</p>
+<ol>
+<li>Which artifacts are to be used in which situation</li>
+<li>Who is allowed to launch more sensitive artifacts</li>
+<li>How artifacts are to be used (what type of arguments are allowed).</li>
+</ol>
+<p>In the below page we discuss how Velociraptor enabled each of these
+goals.</p>
+
+<div class="mynotices warning">
+  <div heading=" Artifact Security is complicated! "><p>Being able to collect sensitive forensic information from endpoints at
+all is a very powerful permissions. It is important to emphasize that
+the below security measures are <strong>not comprehensive</strong>! There are many
+escalation paths for an <code>investigator</code> role to take over the
+endpoints - for example, acquiring <code>lsass.exe</code> memory or downloading
+the <code>SAM</code> or <code>NTDS.dit</code></p>
+<p>You should consider the restrictions described below as best effort to
+avoid accidental errors - the true security boundary is in the ability
+to collect artifacts at all.</p>
+<p>Do not grant the <code>investigator</code> role to users you do not trust!</p>
+<p>Similarly, do not grant the <code>reader</code> role to users you do not trust to
+view all collected data (including PII and security sensitive data
+that is collected as part of the forensic process).</p>
+<p>Be especially careful with the implementation of <code>SOAR</code> like
+functionality via the API - extending the API to external programs
+increases the attack surface, especially if the <code>SOAR</code> application is
+able to schedule collections on endpoints. You can mitigate this to
+some extent using <code>Basic Artifacts</code> (see below).</p>
+</div>
+</div>
+
+
+<h2 id="hidden-artifacts">Hidden artifacts</h2>
+<p>The first goal is to clean up the vast number of artifacts that are
+presented through the GUI. Because Velociraptor allows artifacts to be
+customized, new artifacts to be added to large number of artifacts
+imported from external sources (i.e. <code>Artifact Packs</code>), there could be
+hundreds or thousands of artifacts loaded in the system. Many have
+similar but different functionality. This can overwhelm a user with
+too much choice and be confusing.</p>
+<p>To clean up the interface, Velociraptor allows artifacts to be hidden
+from the GUI. This means that they are not shown as part of the search
+functionality in the artifact collections wizard or in the
+artifact. However the artifacts still exist in Velociraptor and can be
+seen as part of the <code>artifact_definitions()</code> plugin output.</p>
+<p>The visibility of an artifact is controlled by <code>artifact metadata</code> - a
+field attached to each artifact in the system. You can hide or show
+each artifact using the <code>artifact_set_metadata()</code> function.</p>
+<h3 id="example-making-only-certain-artifacts-visible">Example: Making only certain artifacts visible.</h3>
+<p>The following VQL can be run in a notebook to hide all artifacts other
+than a selected set:</p>
+<pre><code class="language-sql">LET VisibleArtifacts &lt;= SELECT * FROM parse_csv(accessor=&quot;data&quot;,
+filename='''Artifacts
+Windows.Search.FileFinder
+Windows.Forensics.Usn
+Windows.NTFS.MFT
+Generic.Client.Info
+''')
+
+
+SELECT name, name in VisibleArtifacts.Artifacts AS Visible
+FROM artifact_definitions()
+WHERE artifact_set_metadata(hidden=NOT name in VisibleArtifacts.Artifacts, name=name) OR TRUE
+</code></pre>
+<p>This results in only those artifacts appearing in the GUI.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/artifacts/security/hidden_artifacts_.svg" alt="Hidden Artifacts"
+         class="inline"
+         height="911.5977473853579"
+         width="1190.2808870116155"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="hidden_artifacts.svg"><i class="fa fa-download"></i></a>
+    Hidden Artifacts
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>This reduced view can help guide users into more preferred playbooks
+and procedures, reducing confusion.</p>
+<h2 id="basic-artifacts">Basic artifacts</h2>
+<p>While hiding the artifacts in the GUI helps to reduce clutter, it
+does not stop someone from launching those artifacts (for example
+using a VQL query). The artifacts are actually still available but
+they are just hidden. Therefore hiding an artifact <strong>is not a security
+measure</strong>.</p>
+<p>In Velociraptor, a user&rsquo;s permissions control what actions they can
+take in the GUI <strong>or</strong> using a VQL query. If a user is allowed to
+collect artifacts from the client, they can collect <strong>any</strong> artifact,
+including hidden artifacts.</p>
+<p>However some artifacts are more dangerous than others and require more
+experienced operators.</p>
+<p>Velociraptor user permission are given as part of <code>Roles</code> or
+specifically granted in the user policy.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/artifacts/security/user_permissions_.svg" alt="Giving a user reduced roles and additional permissions"
+         class="inline"
+         height="725"
+         width="1623.7914691943129"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="user_permissions.svg"><i class="fa fa-download"></i></a>
+    Giving a user reduced roles and additional permissions
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The above example shows a user given the <code>Read Only</code> role. This role
+does not allow the user to collect new artifacts from the endpoint,
+nor does it allow them to update notebook cells (but they can read
+notebooks).</p>
+<p>However, here I give the user additional permissions on top of their role:</p>
+<ol>
+<li>Label Clients - the user is allowed to manipulate client labels</li>
+<li>Collect Basic Client - The user is allowed to collect basic artifacts from the client.</li>
+<li>Notebook Editor - The user is allowed to update notebook cells (and
+by extension evaluate VQL queries on the server).</li>
+</ol>
+<p>If the user attempts to collect an artifact from a client, they will
+be denied because they do not have the <code>COLLECT_CLIENT</code> permission.</p>
+<p>However we can allow the user to collect <strong>Some</strong> artifacts that we
+deem to be safe.</p>
+<pre><code class="language-sql">LET BasicArtifacts &lt;= SELECT * FROM parse_csv(accessor=&quot;data&quot;,
+filename='''Artifacts
+Generic.Client.Info
+''')
+
+
+SELECT name, name in BasicArtifacts.Artifacts AS Basic
+FROM artifact_definitions()
+WHERE artifact_set_metadata(basic=NOT name in BasicArtifacts.Artifacts, name=name) OR TRUE
+</code></pre>
+<p>The artifact <code>Generic.Client.Info</code> is deemed basic and therefore this
+user can collect it.</p>
+<h2 id="controlling-access-to-client-artifacts">Controlling access to client artifacts</h2>
+<p>Now that we have learned how to hide artifacts in the search GUI, and
+how to mark some artifacts as basic, we can proceed to tie down some
+artifacts in a safe way.</p>
+<p>To illustrate this approach, suppose I wanted to allow my low
+privilege user to run <code>ipconfig</code> on the remote system. I know that I
+can shell out to the system shell using the artifact
+<code>Windows.System.CmdShell</code>. However, giving the user access to that
+artifact is extremely dangerous - because that artifact allows
+arbitrary commands to be launched on the endpoint.</p>
+<p>I want to further reduce the way in which the
+<code>Windows.System.CmdShell</code> artifact is called by <strong>removing the user&rsquo;s
+choices for the artifact parameters</strong>.</p>
+<p>I can create a new artifact</p>
+<pre><code class="language-yaml">name: Custom.Ifconfig
+sources:
+  - query: |
+        SELECT * FROM Artifact.Windows.System.CmdShell(Command=&quot;ipconfig&quot;)
+</code></pre>
+<p>This artifact takes no parameters and so the user can not change the
+command to anything other than <code>ipconfig</code> (which I deem safe to run on
+any endpoint).</p>
+<p>Now I will add the <code>basic</code> metadata to this artifact which will allow
+the user to launch it. However the user is unable to change the
+parameters or run arbitrary code.</p>
+<p>In this way it is possible to lock down a standard operating procedure
+for users:</p>
+<ul>
+<li>Velociraptor Built in artifacts are very powerful and very generic -
+their actions can be controlled by many parameters.</li>
+<li>You can write <strong>wrapper artifacts</strong> to narrow down the choices</li>
+<li>Setting those artifacts as basic can allow users to use a reduced
+functionality version of the artifacts safely.</li>
+</ul>
+
+<div class="mynotices warning">
+  <div heading=" Allowing users to modify artifacts "><p>Users with the <code>ARTIFACT_WRITER</code> permission are allowed to modify the
+artifact itself. Therefore, if the user can change the artifact the
+above access control is bypassed.</p>
+<p>We consider users with <code>ARTIFACT_WRITER</code> as admin equivalent since it
+is easy to escalate to full admin with that permission.</p>
+</div>
+</div>
+
+
+<h3 id="restricting-dangerous-client-artifacts">Restricting dangerous client artifacts</h3>
+<p>In the previous section we saw how to allow users <strong>without the
+<code>COLLECT_CLIENT</code></strong> permission to launch some curated <code>basic</code>
+artifacts.</p>
+<p>However, if the user has <code>COLLECT_CLIENT</code> permissions, they are able
+to launch any client artifact. Once launched, the client will run the
+artifact without any ACL enforcement at all. However, not all client
+artifacts are created equal. Some client artifacts are more powerful
+than others.</p>
+<p>Some client artifacts allow running arbitrary commands on the
+endpoint. For example, as we have seen previously, the
+<code>Windows.System.CmdShell</code> artifact allows running arbitrary shell
+commands, because the commandline to run is a user supplied parameter
+directly passed to the shell, using the the <code>execve()</code> plugin. This
+can be leveraged for a complete domain compromise by e.g. running a
+malicious command on all assets in the environment.</p>
+<p>On the other hand, while the <code>Windows.Sysinternals.Autoruns</code> artifact
+also called the <code>execve()</code> plugin, the arguments supplied are
+sanitized from user input.</p>
+<p>If a user is not fully trusted, they may be allowed to collect the
+<code>Windows.Sysinternals.Autoruns</code> but definitely should be prevented
+from collecting the <code>Windows.System.CmdShell</code>.</p>
+<p>Because client artifacts do not use any ACL protection, as artifact
+writers, we need to be careful to not inadvertently give the user more
+permissions than intended on the endpoint.</p>
+<p>Client artifacts can specify the <code>required_permissions</code> field to
+direct the server to check the initiating user has those permissions
+before allowing the artifact to be scheduled. This field is used to
+restrict collection of powerful, risky artifacts to only
+administrative users.</p>
+<p>The corollary is that we should try to sanitize user input as much as
+possible to restrict the use of dangerous functions. For example:</p>
+<ol>
+<li>
+<p>When using <code>execve()</code>, build the command line based on user input
+but do not allow user input to be directly interpolated into the
+command in such a way that it can change the meaning of the
+command.</p>
+</li>
+<li>
+<p>When using an artifact that uses plugins that allow writing to
+arbitrary files (e.g. <code>copy()</code>), do not allow the user to specify
+the path and content of the files to write. This can be misused to
+e.g. write startup locations and take over the endpoint. Similar
+advice applies to writing registry keys, deleting files etc.</p>
+</li>
+</ol>
+
+<div class="mynotices tip">
+  <div heading=" Safely using execve() "><p>The <code>execve()</code> plugin allows artifacts to launch external
+commands. This plugin accepts a list of parameters (called <code>argv</code>)
+instead of a single command line. The plugin will construct a safe
+command line by escaping single arguments if necessary, so you should
+not need to worry about escaping.</p>
+<p>Specifically, do not launch commands via the shell:</p>
+<pre><code class="language-sql">SELECT * FROM execve(argv=[&quot;cmd.exe&quot;, &quot;/c&quot;, &quot;cacls &quot; + DirectoryName])
+</code></pre>
+<p>Instead always directly run the target binary - Velociraptor will
+suitable escape the command line if required.</p>
+<pre><code class="language-sql">SELECT * FROM execve(argv=[&quot;cacls.exe&quot;, DirectoryName])
+</code></pre>
+</div>
+</div>
+
+
+<p>How can we tell if a client artifact gives extra permissions to users?</p>
+<p>In recent versions, Velociraptor has a VQL query static analyzer,
+which among other warnings also suggests to check permissions:</p>
+<pre><code>$ velociraptor -v artifacts verify ./content/exchange/artifacts/*
+...
+[ERROR] 2025-05-23T11:55:30Z ./content/exchange/artifacts/RemoteIconForcedAuth.yaml: Call to Artifact.Windows.Forensics.Lnk contain unknown parameter Glob
+[INFO] 2025-05-23T11:55:30Z ./content/exchange/artifacts/RemoteIconForcedAuth.yaml: Suggestion: Add EXECVE to artifact's required_permissions or implied_permissions fields
+</code></pre>
+<p>The artifact verifier checks all plugins and functions in the artifact
+and ensures that dangerous permissions are listed in either of the
+following fields:</p>
+<ol>
+<li>
+<p>The <code>required_permissions</code> field is used to restrict who can launch
+the artifact. Only users who already have that permission can
+launch it, therefore the artifact does not add additional
+permissions.</p>
+</li>
+<li>
+<p>The <code>implied_permissions</code> field is used to declare that this
+permission is handled appropriately in this artifact. For example,
+the <code>execve()</code> plugin arguments are properly sanitized. Therefore,
+the verifier can suppress this warning.</p>
+</li>
+</ol>
+<p>Ideally you should aim to have no verifier warnings.</p>
+<h3 id="client-artifacts-collection-permissions-model">Client artifacts collection permissions model</h3>
+<p>To summarize, when collecting client artifacts the following security
+features are available:</p>
+<ol>
+<li>
+<p>If a user does not have the <code>COLLECT_CLIENT</code> permission, they can
+not collect any artifacts.</p>
+</li>
+<li>
+<p>Giving a user the <code>COLLECT_BASIC</code> permissions allows them to collect
+<code>Basic</code> artifacts. Any artifact can be denoted as <code>Basic</code> by
+setting the metadata field.</p>
+</li>
+<li>
+<p>Giving the user the <code>COLLECT_CLIENT</code> permission allows the user to
+collect any client artifact, as long as they also have the
+permissions specified in the <code>required_permissions</code> fields of that
+artifact.</p>
+</li>
+<li>
+<p>Artifacts with open ended capabilities (e.g. running arbitrary
+commands), should restrict their <code>required_permissions</code> field to
+users who already have that permission. This ensures users can not
+collect artifacts that give them additional permissions.</p>
+</li>
+<li>
+<p>Artifacts that properly sanitize use of dangerous permissions,
+should declare those in <code>implied_permissions</code> which allows the
+verifier to suppress these warnings.</p>
+</li>
+</ol>
+<h2 id="server-artifacts-and-impersonation">Server artifacts and Impersonation</h2>
+<p>The above discussion centered around controlling access to client
+artifacts. But sometimes we need to also control access to server
+artifacts. For example, suppose I wanted to allow the restricted user
+above to create a hunt with the <code>Generic.Client.Info</code> artifact in it.</p>
+<p>In order for users to create hunts, they need the <code>Start Hunt</code>
+permission. However giving users this permission allows them to create
+<strong>any</strong> hunt which is dangerous. I really only want to allow the user
+to create a <strong>specific</strong> hunt.</p>
+<p>I can use the above approach to create a wrapper artifact:</p>
+<pre><code class="language-yaml">name: Start.Hunt.Generic.Client.Info
+type: SERVER
+
+sources:
+  - query: |
+      SELECT hunt(description=&quot;A general hunt&quot;,
+                  artifacts='Generic.Client.Info')
+      FROM scope()
+</code></pre>
+<p>This artifact allows a user to start a hunt. I can mark it as a basic
+artifact and allow my user to launch it.</p>
+<p>However, this still does not work!</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/artifacts/security/server_artifacts_permissions_.svg" alt="Server artifacts run with the permissions of the launching user"
+         class="inline"
+         height="698"
+         width="2058.2463465553237"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="server_artifacts_permissions.svg"><i class="fa fa-download"></i></a>
+    Server artifacts run with the permissions of the launching user
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The reason is that server artifacts are running on the server, where
+ACL permissions are enforced. The VQL query itself is running with the
+user token and so can only ever do the same permissions that the user
+is allowed to do.</p>
+<p>This means that the while I can mark the artifact itself as <code>basic</code>
+and allow the user to run the artifact, the VQL inside the artifact
+can not exceed the permissions of the user.</p>
+<p>In order to achieve what I want here (which is to give the user a
+controlled privilege to do just one thing), I need to have the server
+artifact running with different credentials than the launching user -
+In order words I need to <code>Impersonate</code> the admin user.</p>
+<pre><code class="language-yaml">name: Start.Hunt.Generic.Client.Info
+type: SERVER
+impersonate: admin
+
+sources:
+  - query: |
+      SELECT hunt(description=&quot;A general hunt&quot;,
+                  artifacts='Generic.Client.Info')
+      FROM scope()
+</code></pre>
+<p>The <code>impersonate: admin</code> directive tells Velociraptor that when
+running this artifact, the server will use the permissions of the
+admin user instead of the launching user.</p>
+<p>This is exactly the same as the Linux <code>suid</code> mechanism or the windows
+<code>Impersonation</code> mechanism.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/artifacts/security/impersonation.png"
+         class="inline"
+         alt="This time the artifact works with the impersonated user"
+         width="1843" height="375">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="impersonation.png">
+      <i class="fa fa-download"></i></a>
+    This time the artifact works with the impersonated user
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847309"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847309"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847309"></script>
+    <script src="/js/jquery.sticky.js?1774847309"></script>
+    <script src="/js/featherlight.min.js?1774847309"></script>
+    <script src="/js/highlight.min.js?1774847309"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847309"></script>
+    <script src="/js/learn.js?1774847309"></script>
+    <script src="/js/hugo-learn.js?1774847309"></script>
+    
+    
+
+  </body>
+</html>

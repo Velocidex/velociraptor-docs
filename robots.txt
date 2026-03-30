@@ -1,0 +1,11 @@
+User-agent: *
+Sitemap: https://docs.velocidex.com/sitemap.xml
+Allow: /docs/
+Allow: /blog/
+Allow: /knowledge_base/
+Disallow: /js/
+Disallow: /css/
+Disallow: /artifact_references/
+Disallow: /exchange/
+Disallow: /vql_reference/
+Disallow: /tags/

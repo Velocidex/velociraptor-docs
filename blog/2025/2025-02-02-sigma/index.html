@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="Recent versions of Velociraptor have incorporated a powerful
+Sigma engine built right into Velociraptor. This blog post details
+how you can write custom Sigma rules to leverage Velociraptor&#39;s
+Sigma capabilities.
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Developing Sigma Rules in Velociraptor :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847308" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847308" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847308" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847308" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847308" rel="stylesheet">
+    <link href="/css/theme.css?1774847308" rel="stylesheet">
+    <link href="/css/tabs.css?1774847308" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847308" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847308" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847308" rel="stylesheet"><link href="/css/syntax.css?1774847308" rel="stylesheet"><link href="/css/light.css?1774847308" rel="stylesheet"><link href="/css/hljs.css?1774847308" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847308" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847308"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/blog/2025/2025-02-02-sigma/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/blog\/2025\/2025-02-02-sigma\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/2025/2025-02-02-sigma/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Developing Sigma Rules in Velociraptor</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#what-is-sigma">What is Sigma?</a></li>
+    <li><a href="#anatomy-of-a-sigma-rule">Anatomy of a Sigma Rule</a></li>
+    <li><a href="#sigma-models">Sigma Models</a></li>
+    <li><a href="#writing-custom-sigma-rules">Writing custom Sigma Rules</a>
+      <ul>
+        <li><a href="#the-windowssigmabase-log-triage-model">The Windows.Sigma.Base Log Triage Model</a></li>
+      </ul>
+    </li>
+    <li><a href="#developing-custom-detection-rules">Developing custom detection rules.</a>
+      <ul>
+        <li><a href="#example-workflow-detecting-bits-client-activity">Example Workflow: Detecting BITS Client Activity</a></li>
+        <li><a href="#step-1-capture-test-events">Step 1: Capture Test Events</a></li>
+        <li><a href="#step-2-developing-rules-with-sigma-studio">Step 2: Developing rules with Sigma Studio</a></li>
+        <li><a href="#step-3-test-the-rule-on-the-fleet">Step 3: Test the rule on the fleet.</a></li>
+      </ul>
+    </li>
+    <li><a href="#conclusions">Conclusions</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/sigma">Sigma</a>
+
+  <a class="tag-link" href="/tags/detection">Detection</a>
+
+  <a class="tag-link" href="/tags/forensics">Forensics</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Developing Sigma Rules in Velociraptor
+            </h1>
+            
+            <div class="author pull-right">
+              Mike Cohen
+              <span class="date">2025-02-02</span>
+            </div>
+            
+          
+
+        
+
+
+
+	
+<div class="mynotices note">
+  <div heading=" Upcoming release 0.74 "><p>This post discusses some features that will be available in the
+upcoming 0.74 release. Although the general methodology is available
+in earlier releases, some of the GUI features are new.</p>
+<p>If you want to play with these new features and provide feedback,
+please feel free to <a href="https://github.com/Velocidex/velociraptor/tree/master?tab=readme-ov-file#getting-the-latest-version" target="_blank" >download the latest version</a> for testing.</p>
+</div>
+</div>
+
+
+<p>Recent versions of Velociraptor have incorporated a powerful Sigma
+engine built right into Velociraptor. This blog post details how you
+can write custom Sigma rules to leverage Velociraptor&rsquo;s Sigma
+capabilities.</p>
+<h2 id="what-is-sigma">What is Sigma?</h2>
+<p>You can read more about Sigma in our <a href="/blog/2024/2024-05-09-detection-engineering/">Detection Engineering</a> blog post. Since
+that post, Sigma has been adopted as the standard detection mechanism
+within Velociraptor.</p>
+<p>To begin, let&rsquo;s define some terms.  In Velociraptor an <code>Event</code> is
+simply a key/value set (AKA a <code>Dictionary</code> or <code>Row</code>). The <code>Event</code> can
+be produced from a variety of sources as we examine below. The
+producer of a particular type of events is called a <code>Log Source</code>,
+which in Velociraptor is simply a VQL query, emitting rows as Events.</p>
+<p>Sigma is a standard for writing <code>Detection Rules</code>. In this context, a
+detection rule is a rule that processes some <code>Events</code> to produce a
+<code>Detection</code> - i.e. a binary classification of whether the event is
+noteworthy for further inspection. You can think of a Sigma rule as a
+filter - events are fed into the rule and the rule filter events which
+do not match and allows through those events that match the rule.</p>
+<p>This process is illustrated in the diagram below:</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../2024/2024-05-09-detection-engineering/velociraptor_sigma_flow.svg"
+         class="inline"
+         alt="Velociraptor Sigma Workflow" />
+  </div>
+  <figcaption>
+    Velociraptor Sigma Workflow
+  </figcaption>
+</figure>
+
+
+</p>
+<p><code>Sigma Rules</code> are pushed to the endpoint into the <code>sigma()</code>
+plugin. Events are generated via <code>Log Sources</code> on the client and any
+matching events are forwarded to the server.</p>
+<h2 id="anatomy-of-a-sigma-rule">Anatomy of a Sigma Rule</h2>
+<p>An example Sigma rule can be seen below.</p>
+<pre><code class="language-yaml">title: PSExec Lateral Movement
+logsource:
+    product: windows
+    service: system
+detection:
+    selection:
+        Channel: System
+        EventID: 7045
+    selection_PSEXESVC_in_service:
+        Service: PSEXESVC
+    selection_PSEXESVC_in_path:
+        ImagePath|contains: PSEXESVC
+    condition: selection and (selection_PSEXESVC_in_service or selection_PSEXESVC_in_path)
+</code></pre>
+<p>This rule has several sections:</p>
+<ol>
+<li>The <code>logsource</code> section specifies an event source to match the rule
+against.</li>
+<li>The <code>detection</code> clause contains a list of <code>selections</code> joined into
+a logical <code>condition</code>.</li>
+<li>Selections refer to abstract fields that map to actual fields
+within the event. These mappings are called <code>Field Mappings</code>.</li>
+</ol>
+<p>The Sigma standard does not define what log sources are actually
+available in any specific environment, nor does it define the specific
+structure of each event. Similarly the <code>Field Mappings</code> are not
+defined by the standard.</p>
+<p>The executing environment maps the rule&rsquo;s <code>logsource</code> section with a
+particular VQL query that generates events. The executing environment
+evaluating the rule also defines a set of <code>Field Mappings</code> which allow
+selections to address specific fields within the event.</p>
+<h2 id="sigma-models">Sigma Models</h2>
+<p>Because Sigma does not specify exactly how to interpret the rule, we
+need something else to be able to properly evaluate a Sigma rule:</p>
+<ol>
+<li>Specific <code>Log Sources</code> need to be declared - rules can only access
+these pre-defined <code>Log Sources</code></li>
+<li>A set of <code>Field Mappings</code> must be defined to map between abstract
+field names to concrete fields within the event object that is
+returned by the log source.</li>
+</ol>
+<p>Therefore a rule can only operate within a specific environment and it
+is generally not guaranteed to evaluate the rule in a different
+environment.</p>
+<p>In Velociraptor, we call the execution environment the <code>Sigma Model</code>. The Model defines a specific set of <code>Log Sources</code> and <code>Field Mappings</code> designed to operate in concert with Sigma Rules in a
+specific context.</p>
+<p>Sigma Rules can only be safely interpreted within the context of a
+specific <code>Sigma Model</code>.</p>
+<p>For example, if an organization is running a particular SIEM product
+and use Sigma rules for detection, there is no guarantee that those
+same rules will work in another organization running a different SIEM
+product. We refer to the <code>Sigma Model</code> specific to each environment -
+for example the <code>Elastic Common Schema Model</code> allows writing Sigma
+rules against those logs collected by the <code>Elastic SIEM</code> and their
+respective schema (which is well defined).</p>
+<p>One of the main criticisms of Sigma is that it is not well defined
+(unlike the <code>Elastic Common Schema</code> for example), making
+inter-operation fairly error prone and difficult.</p>
+<p>In Velociraptor, we avoid this issue by defining a <code>Sigma Model</code>
+precisely and only evaluating rules within that well defined model. We
+end up with various &ldquo;flavors&rdquo; of Sigma rules.</p>
+<p>Velociraptor separates the implementation of the <code>Sigma Model</code> from
+the maintainance of the <code>Sigma Rules</code> themselves. This makes it easier
+to maintain a set of rules separately from the model itself.</p>
+<p>For example, the <a href="https://sigma.velocidex.com/" target="_blank" >Velociraptor Sigma Project</a> maintains
+<code>Velociraptor.Hayabusa.Ruleset</code> artifact which is a port of the Sigma
+rules maintained by the Hayabusa project to the <code>Windows.Sigma.Base</code>
+triage model.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-02-02-sigma/inheritance_.svg" alt="Curated sets of Sigma Rules can be maintained through artifact delegation"
+         class="inline"
+         height="692"
+         width="1524.9455676516327"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="inheritance.svg"><i class="fa fa-download"></i></a>
+    Curated sets of Sigma Rules can be maintained through artifact delegation
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>This allows users to easily leverage existing model to write and
+maintain their own custom set of rules.</p>
+<h2 id="writing-custom-sigma-rules">Writing custom Sigma Rules</h2>
+<p>While it is common to use curated rule sets for triage, this article
+explains the process of developing and testing custom rules.</p>
+<p>Below is a worked example of applying the <code>Log Triage Model</code> to
+develop a Sigma Rule to detect misuse of the <code>BITS</code> service.</p>
+<h3 id="the-windowssigmabase-log-triage-model">The Windows.Sigma.Base Log Triage Model</h3>
+<p>The <a href="https://sigma.velocidex.com/docs/models/windows_base/" target="_blank" >Windows.Sigma.Base
+Model</a>, is used
+for triaging event log files on Windows:</p>
+<ol>
+<li>
+<p>The model defines log sources that access static Event Log Files on
+a Windows System.</p>
+</li>
+<li>
+<p>The model defines a set of <code>Field Mappings</code> to access common fields
+within the event log messages, as extracted by the <code>Log Sources</code>.</p>
+</li>
+</ol>
+<p>This model is useful for <a href="/training/playbooks/triage-logs/">rapidly triaging event logs</a> on an endpoint in order to
+quickly surface relevant events. You can view the details of this
+Sigma Model on the Velociraptor Sigma project&rsquo;s pages</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-02-02-sigma/windows_base_.svg" alt="Windows Base Sigma Model triages event logs "
+         class="inline"
+         height="793.5862068965519"
+         width="1083.2227488151661"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="windows_base.svg"><i class="fa fa-download"></i></a>
+    Windows Base Sigma Model triages event logs 
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The reference page helps us write the Sigma rules by documenting
+exactly which log sources are available in this model and giving some
+example events produced by these models.</p>
+
+<div class="mynotices note">
+  <div heading=" Sigma rules are generally not portable across operating environments! "><p>Although Sigma is in theory an interchange format between different
+SIEMs products, in practice it is difficult to port rules between
+different evaluation engines (Or different Sigma Models):</p>
+<ol>
+<li>There is no guarantee that the rule&rsquo;s <code>Log Source</code> is actually
+available in a different model.</li>
+<li>Fields may not exist in other models.</li>
+<li>There may not be field mappings for the same field in different
+models, or the mappings may clash with other fields.</li>
+</ol>
+<p>To achieve portability between SIEM systems we need to develop a Sigma
+Model to fully emulate another environment to be able to directly
+consume the same rules.</p>
+<p>In Velociraptor we are less concerned with portability and more
+concerned with having Sigma rules as a way of implementing an easy to
+use and powerful detection engine. Velociraptor defines a range of
+different <code>Sigma Models</code>, some are defined with the intention to
+directly consume a large set of rules from another project (For example
+the
+<a href="https://sigma.velocidex.com/docs/models/windows_base/" target="_blank" >Windows.Sigma.Base</a>
+model was written to consume Hayabusa rules for the
+<a href="https://sigma.velocidex.com/docs/artifacts/velociraptor_hayabusa_ruleset/" target="_blank" >Windows.Hayabusa.Ruleset</a>
+artifact), while others are defined to make powerful telemetry events
+available to rule writers (For example the
+<a href="https://sigma.velocidex.com/docs/models/windows_etw_base/" target="_blank" >Windows.ETW.Base</a>
+model exposes ETW sources not usually available in centralized server
+based SIEM architectures).</p>
+</div>
+</div>
+
+
+<h2 id="developing-custom-detection-rules">Developing custom detection rules.</h2>
+<p>One of the challenges with rapidly developing detection rules is
+iterating through the process of generating events, inspecting the
+produced events, updating the rules and applying the rule on the event
+sources.</p>
+<p>A simple approach to developing detection rules is to:</p>
+<ol>
+<li>Find an exploit or specific tool to emulate the specific attack on
+the target platform. For example, one may use
+<a href="https://www.metasploit.com/" target="_blank" >Metasploit</a> or <a href="https://github.com/redcanaryco/atomic-red-team" target="_blank" >Atomic Red
+Team</a> to emulate a
+particular attack on the target platform (e.g. Exchange Server).</li>
+<li>While the attack is performed, ensure sensors are enabled and
+forwading events to the target SIEM.</li>
+<li>Implement the detection rules on the SIEM</li>
+<li>Examine if the rule triggers. If the rule does not trigger go to
+step 1 and try to figure out why it does not trigger.</li>
+<li>Finally try to figure out how to tweak the original exploit to
+ensure the rule may trigger in slight variations of the attack
+(e.g. slightly different command line). This step is essential to
+make the detection robust.</li>
+</ol>
+<p>The more complicated the detection pipeline (with event forwarders,
+data lakes, matching engines etc) the more complicated it is to
+iterate through the above steps.</p>
+<p>Testing the rules in future also becomes impractical as it requires
+setting up a large infrastructure footprint to be able to successful
+run the exploit. If the original vulnerability is patched, running the
+exploit may not work and an older unpatched system is required.</p>
+<p>To develop detection rules effectively we must separate the event
+generation step and the event detection step. To generate the raw
+events, we must run the exploit on a real system. However to test
+detection rules, we can simply replay the events into the detection
+engine, testing detection rules in isolation.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-02-02-sigma/detection_workflow_.svg" alt="Detection rule development workflow"
+         class="inline"
+         height="479.5"
+         width="1338"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="detection_workflow.svg"><i class="fa fa-download"></i></a>
+    Detection rule development workflow
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The <code>Sigma Model</code> already supports this kind of workflow. The model
+defines a set of <code>Log Sources</code> which emit raw events. We can then
+replay these events back into the detection engine to rapidly develop
+the <code>Sigma Rule</code>.</p>
+<p>The workflow is illustrated above:</p>
+<ol>
+<li>
+<p><code>Recording Mode</code>: We start off by recording the relevant events on
+the detected platform. We use the relevant Sigma Model&rsquo;s Log Source
+to record relevant events into JSON files. This step must
+necessarily be run on the target platform as it records real life
+behavior.</p>
+</li>
+<li>
+<p><code>Replay/Test Mode</code>: In this mode we can replay the JSON files
+collected previously back into the same <code>Sigma Engine</code>. Except that
+this time, instead of using the real log source, we substitute a
+mock log source which replays events back from JSON files. This
+step can be done on any platform since the events are
+isolated.</p>
+<p>In this mode we are able to quickly iterate over the same events
+and even enable debugging mode which assists in figuring out why an
+event would match a specific condition.</p>
+</li>
+<li>
+<p><code>Detection Mode</code>: Once the rules are validated we can deploy them
+in real life and ensure they match on the real log sources. In
+production the proper log sources are used to feed live events from
+the system to the <code>Sigma Engine</code> with the validated <code>Sigma Rules</code></p>
+</li>
+</ol>
+<h3 id="example-workflow-detecting-bits-client-activity">Example Workflow: Detecting BITS Client Activity</h3>
+<p>To illustrate the process I will develop a Sigma rule to detect suspicious BITS client activity. BITS is a windows service which is often misused to download malware onto the endpoint.</p>
+<p>The service may be abused using the <code>bitsadmin</code> command:</p>
+<pre><code>bitsadmin.exe /transfer /download /priority foreground https://www.google.com c:\Users\Administrator\test.ps1
+</code></pre>
+<p>To start off we will use the <code>Windows.Sigma.Base</code> model, which
+inspects the windows event log files. We have already seen the BITS
+client log source in this model previously and know that the events
+are read from
+<code>C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-Bits-Client%4Operational.evtx</code></p>
+<p>Let&rsquo;s take a look at the raw events in this file using the event
+viewer.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-02-02-sigma/bits_event_log_.svg" alt="Viewing the BITS Event Logs"
+         class="inline"
+         height="612.5124716553288"
+         width="924.1453287197232"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="bits_event_log.svg"><i class="fa fa-download"></i></a>
+    Viewing the BITS Event Logs
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The relevant event I am interested in is event ID 59 - which tells me
+the URL where the file was downloaded from. Since the service is used
+legitimately by the system there are many URLs mentioned which are not
+suspicious. My rule will need to exclude those URLs to only
+concentrate on the suspicious uses.</p>
+<h3 id="step-1-capture-test-events">Step 1: Capture Test Events</h3>
+<p>My first step is to collect relevant events from the relevant <code>Sigma Model</code>. I do this by collecting the
+<code>Windows.Sigma.Base.CaptureTestSet</code> artifact. This companion artifact
+to the <code>Windows.Sigma.Base</code> artifact uses the same log sources but
+simply records the raw events.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-02-02-sigma/capturing_events_.svg" alt="Capturing Raw Events from the test system"
+         class="inline"
+         height="771.2285276073619"
+         width="1054.4266103484688"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="capturing_events.svg"><i class="fa fa-download"></i></a>
+    Capturing Raw Events from the test system
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>In this case I will only collect events from the <code>bits_client</code> log
+source and only those events that mention URLs. I can time box the
+events to only collect recent events if I want but in this case I will
+collect from all available time to get a good selection of URLs used.</p>
+<p>Once the collection is done (I can collect this remotely from the
+server), I have the raw events available. I can download the raw JSON
+from the GUI table view, after possibly filtering them further using
+the GUI.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-02-02-sigma/raw_events_.svg" alt="The Raw Events from the Log Source"
+         class="inline"
+         height="697"
+         width="1439.0393013100436"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="raw_events.svg"><i class="fa fa-download"></i></a>
+    The Raw Events from the Log Source
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>I can pre-filter these events in the notebook to see what is
+representative of normal behavior and what is unusual. In this case, I
+identify that event ID 59 is associates with transfer job started for
+example <code>BITS started the Chrome Component Updater transfer job that is associated with the XXX</code>.</p>
+<p>I will extract the domain name part from the URL and group by it so I
+can see all unique URLs collected.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-02-02-sigma/narrowing_events_.svg" alt="Narrowing down events of interest using stacking and filtering"
+         class="inline"
+         height="434"
+         width="1460"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="narrowing_events.svg"><i class="fa fa-download"></i></a>
+    Narrowing down events of interest using stacking and filtering
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>In practice I can collect a more representative set of these events by
+collecting the artifact using a hunt (which can include the entire
+deployment). This will give me a more representative set of download
+URLs found in the environment so I can reduce false positives.</p>
+<h3 id="step-2-developing-rules-with-sigma-studio">Step 2: Developing rules with Sigma Studio</h3>
+<p>To effectively develop rules, one must be able to iterate quickly by
+applying the rules against the collected events. To assist with this
+process, I will use the <code>Sigma Studio</code> notebook template.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-02-02-sigma/sigma_studio_1_.svg" alt="Creating a new Sigma Studio Notebook"
+         class="inline"
+         height="737.1818903891976"
+         width="1001.4478260869564"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="sigma_studio_1.svg"><i class="fa fa-download"></i></a>
+    Creating a new Sigma Studio Notebook
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Velociraptor notebooks are interactive documents allowing users to
+dissect and analyse data using VQL. The <code>Sigma Studio</code> template is
+specifically designed to make manipulation of Sigma Rules simpler.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-02-02-sigma/sigma_studio_2_.svg" alt="The Sigma Studio Notebook assists in writing rules"
+         class="inline"
+         height="783.3632781717887"
+         width="1162.3443396226412"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="sigma_studio_2.svg"><i class="fa fa-download"></i></a>
+    The Sigma Studio Notebook assists in writing rules
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The notebook has a number of important sections:</p>
+<ol>
+<li>The Sigma Editor button launches a dedicated editor to edit Sigma rules.</li>
+<li>By clicking the <code>Notebook Uploads</code> button you can upload the test
+events described in Step 1 above.</li>
+<li>Once these raw events are uploaded to the cell, the bottom table
+will render the raw events, while the top table renders only those
+events matching the rules.</li>
+</ol>
+<p>I will start off by uploading the test events I collected previously.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-02-02-sigma/sigma_studio_3_.svg" alt="Uploading test events"
+         class="inline"
+         height="488"
+         width="1207.3507014028055"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="sigma_studio_3.svg"><i class="fa fa-download"></i></a>
+    Uploading test events
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h4 id="editing-the-sigma-rules">Editing the Sigma Rules</h4>
+<p>I will launch the <code>Sigma Editor</code> by clicking on the button.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-02-02-sigma/sigma_studio_4_.svg" alt="Writing the Sigma rule"
+         class="inline"
+         height="763.1516155758078"
+         width="1124.6600985221676"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="sigma_studio_4.svg"><i class="fa fa-download"></i></a>
+    Writing the Sigma rule
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Within the editor I select the <code>Windows.Sigma.Base</code> model. Next I
+select the <code>bits-client</code> log source from the pull down. The editor
+will show me available log sources within this model.</p>
+<p>The editor displays so documentation about the log source and presents
+a syntax highlighted Sigma text editor populated with a template
+rule. For those not familiar with Sigma, comments help to guide the
+user into filling in the desired fields.</p>
+<p>For this detection, I will search for event ID 59, which reveal the
+URL associated with the bits job. However, I will suppress jobs from
+URLs accessing specific domains.</p>
+<p>Pressing <code>?</code> will suggest any of the field mappings defined within
+the model.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-02-02-sigma/sigma_studio_5_.svg" alt="Auto-Completion of Field Mappings"
+         class="inline"
+         height="378"
+         width="1460"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="sigma_studio_5.svg"><i class="fa fa-download"></i></a>
+    Auto-Completion of Field Mappings
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>In this case I know that <code>EventID</code> is a field mapping to extract the
+log message&rsquo;s Event ID, and the <code>Url</code> field mapping will extract the
+<code>url</code> field from the <code>EventData</code></p>
+<p>The rule I came up with is:</p>
+<pre><code class="language-yaml">title: Suspicious BITs Jobs
+logsource:
+ product: windows
+ service: bits-client
+
+detection:
+ select_event:
+   EventID: 59
+
+ allowed_urls:
+   Url|re:
+    - edgedl.me.gvt1.com
+
+ condition: select_event and not allowed_urls
+
+details: &quot;Bits Job %JobTitle% accessed URL %Url%&quot;
+</code></pre>
+<ul>
+<li>
+<p>The rule consumes events from the <code>windows/bits-client</code> log source
+(which in this model ends up reading the events from the
+<code>C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-Bits-Client%4Operational.evtx</code>
+log file.</p>
+</li>
+<li>
+<p>There are two selections:</p>
+<ol>
+<li>If the event id equal to 59</li>
+<li>Does the URL match one of the specified regular expressions</li>
+</ol>
+</li>
+<li>
+<p>Finally the rule will match only if the first selection is true and
+the second selection is false (i.e. only event 59 which do not match
+one of the allowed urls).</p>
+</li>
+<li>
+<p>The <code>details</code> field specified a message that will be emitted when
+the rule matches. This allows us to specify a simple human readable
+alert to explain what the rule has detected. You can add field
+interpolations enclosed in <code>%</code> to the message.</p>
+</li>
+</ul>
+<p>When I save the rule, the notebook will be refreshed and recalculated
+using the new rule applied on the sample events I uploaded previously.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-02-02-sigma/sigma_studio_6_.svg" alt="Applying the rule to the test set"
+         class="inline"
+         height="777"
+         width="1595.2601156069363"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="sigma_studio_6.svg"><i class="fa fa-download"></i></a>
+    Applying the rule to the test set
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>You can see a detailed description of why the rule matched. For rules
+with many selections and complex condition clauses this allows us to
+inspect each condition in isolation.</p>
+<h4 id="unavailable-field-mappings">Unavailable Field Mappings</h4>
+<p>Sigma strictly requires field mappings to already exist in the model
+so they can be referenced. This makes it impossible to access fields
+in the event which have not previously been defined within the model.</p>
+<p>To solve this problem, Velociraptor&rsquo;s Sigma implementation allows, as
+a special case, to use field names with <code>.</code> separating fields within
+the event. The above rule can be written without any field mappings
+as:</p>
+<pre><code class="language-yaml">title: Suspicious BITs Jobs
+logsource:
+ product: windows
+ service: bits-client
+
+detection:
+ select_event:
+   System.EventID.Value: 59
+
+ allowed_urls:
+   EventData.url|re:
+    - edgedl.me.gvt1.com
+
+ condition: select_event and not allowed_urls
+
+details: &quot;Bits Job %EventData.name% accessed URL %EventData.url%&quot;
+</code></pre>
+<p>It is better to use model field mappings if they are already defined
+in the model because this makes its easier to port the rule to other
+models, however if one is not available you can fall back to this
+method of referencing fields directly.</p>
+<h3 id="step-3-test-the-rule-on-the-fleet">Step 3: Test the rule on the fleet.</h3>
+<p>Now that we have a working Sigma rule we can apply this rule to the
+wider fleet to assess the rule&rsquo;s false positive rate. As we apply the
+rule more widely we are likely to discover more legitimate uses of the
+BITS service and so we might need to add more URLs to the allow list.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-02-02-sigma/testing_sigma_rules_.svg" alt="Creating a hunt to test the rule widely"
+         class="inline"
+         height="825.2395833333335"
+         width="1512.3359073359075"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="testing_sigma_rules.svg"><i class="fa fa-download"></i></a>
+    Creating a hunt to test the rule widely
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-02-02-sigma/sigma_hunt_.svg" alt="Viewing results from Sigma Hunt"
+         class="inline"
+         height="586"
+         width="1483.2675044883304"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="sigma_hunt.svg"><i class="fa fa-download"></i></a>
+    Viewing results from Sigma Hunt
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="conclusions">Conclusions</h2>
+<p>This Blog post explains the rational behind separating Sigma Rules
+into <code>Sigma Models</code>. Velociraptor&rsquo;s Sigma implementation allows for
+the creation of many specialized <code>Sigma Models</code> which can operate in
+completely different environments.</p>
+<p>For example, the <code>Windows.Sigma.Base</code> model operates on parsing of
+event log files on the endpoint (triaging existing logs). On the other
+hand the <code>Windows.Sigma.BaseEvents</code> model watches log files in real
+time to generate Sigma based events on current activity.</p>
+<p>Similarly the <code>Linux.Sigma.EBPF</code> model surfaces real time telemetry
+collected from EBPF sensors on Linux and makes these available to
+Sigma rule authors. This flexibility allows applying Sigma in many
+different scenarios, making it a power technique.</p>
+<p>The main difficulty with writing Sigma rules is being able to iterate
+through generating event data, applying the Sigma Rule, debugging the
+rule and testing the detection at scale.</p>
+<p>This post describes a new Sigma rule writing workflow that allows to
+rapidly iterate through the detection process, then apply the test to
+the entire fleet quickly to test false positive rates.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847308"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847308"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847308"></script>
+    <script src="/js/jquery.sticky.js?1774847308"></script>
+    <script src="/js/featherlight.min.js?1774847308"></script>
+    <script src="/js/highlight.min.js?1774847308"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847308"></script>
+    <script src="/js/learn.js?1774847308"></script>
+    <script src="/js/hugo-learn.js?1774847308"></script>
+    
+    
+
+  </body>
+</html>

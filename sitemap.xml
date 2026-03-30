@@ -1,0 +1,1540 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+<url>
+  <loc>https://docs.velociraptor.app/announcements/2021-artifact-contest/</loc>
+  <!-- size: 4478 -->
+  <lastmod>2026-01-07T23:39:40-05:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/announcements/2022-velocon/</loc>
+  <!-- size: 23193 -->
+  <lastmod>2022-09-26T21:00:06+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/announcements/2023-trainings/</loc>
+  <!-- size: 9300 -->
+  <lastmod>2023-08-23T02:27:46+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/announcements/advisories/cve-2023-0242/cve-2023-0242/</loc>
+  <!-- size: 5344 -->
+  <lastmod>2026-01-07T23:39:40-05:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/announcements/advisories/cve-2023-0290/cve-2023-0290/</loc>
+  <!-- size: 4976 -->
+  <lastmod>2026-01-07T23:39:40-05:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/announcements/advisories/cve-2023-2226/cve-2023-2226/</loc>
+  <!-- size: 3324 -->
+  <lastmod>2024-11-22T11:36:34+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/announcements/advisories/cve-2023-5950/cve-2023-5950/</loc>
+  <!-- size: 3380 -->
+  <lastmod>2026-01-07T23:39:40-05:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/announcements/advisories/cve-2024-10526/cve-2024-10526/</loc>
+  <!-- size: 4440 -->
+  <lastmod>2024-11-22T11:36:34+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/announcements/advisories/cve-2025-0914/cve-2025-0914/</loc>
+  <!-- size: 3650 -->
+  <lastmod>2025-02-28T15:30:17+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/announcements/advisories/cve-2025-14728/</loc>
+  <!-- size: 2075 -->
+  <lastmod>2025-12-30T02:39:46+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/announcements/advisories/cve-2025-14728/cve-2025-14728/</loc>
+  <!-- size: 4147 -->
+  <lastmod>2025-12-30T02:39:46+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/announcements/advisories/cve-2025-6264/cve-2025-6264/</loc>
+  <!-- size: 5067 -->
+  <lastmod>2025-06-25T21:49:48+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2019/2019-03-02/</loc>
+  <!-- size: 5672 -->
+  <lastmod>2021-11-08T12:54:41+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2019/2019-09-11_velociraptor-s-client-side-buffer-3ce03697a4e6/</loc>
+  <!-- size: 4837 -->
+  <lastmod>2021-09-04T23:25:10+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2019/2019-10-02_triage-with-velociraptor-pt-1-253f57ce96c0/</loc>
+  <!-- size: 5274 -->
+  <lastmod>2021-11-08T12:54:41+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2019/2019-10-04_triage-with-velociraptor-pt-2-d0f79066ca0e/</loc>
+  <!-- size: 4670 -->
+  <lastmod>2021-09-04T23:25:10+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2019/2019-10-08_triage-with-velociraptor-pt-3-d6f63215f579/</loc>
+  <!-- size: 8511 -->
+  <lastmod>2025-07-28T17:14:23+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2019/2019-11-12_windows-event-logs-d8d8e615c9ca/</loc>
+  <!-- size: 11065 -->
+  <lastmod>2025-07-28T17:14:23+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2019/2019-11-15_recovering-deleted-ntfs-files-with-velociraptor-1fcf09855311/</loc>
+  <!-- size: 10140 -->
+  <lastmod>2021-09-04T23:25:10+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2019/2019-12-08-velociraptor-to-elasticsearch-3a9fc02c6568/</loc>
+  <!-- size: 7133 -->
+  <lastmod>2025-12-10T02:40:04+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2019/2019-12-31_digging-into-the-system-resource-usage-monitor-srum-afbadb1a375/</loc>
+  <!-- size: 6919 -->
+  <lastmod>2022-01-18T17:46:06+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2020/2020-01-12_hunting-malware-using-mutants-ea08e86dfc19/</loc>
+  <!-- size: 9248 -->
+  <lastmod>2025-07-28T17:14:23+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2020/2020-03-06-velociraptor-post-processing-with-jupyter-notebook-and-pandas-8a344d05ee8c/</loc>
+  <!-- size: 13078 -->
+  <lastmod>2025-07-28T17:14:23+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2020/2020-03-07-extending-vql-plugins-7fb004cb6ec4/</loc>
+  <!-- size: 11755 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2020/2020-03-28-velociraptor-notebooks-d02e0bd11230/</loc>
+  <!-- size: 8783 -->
+  <lastmod>2022-01-18T17:46:06+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2020/2020-03-29-velociraptors-acl-model-7f497575daee/</loc>
+  <!-- size: 12310 -->
+  <lastmod>2021-11-08T12:54:41+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2020/2020-04-16-velociraptor-e48a47e0317d/</loc>
+  <!-- size: 17269 -->
+  <lastmod>2022-01-18T17:46:06+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2020/2020-06-14-the-velociraptor-query-language-pt-1-d721bff100bf/</loc>
+  <!-- size: 10942 -->
+  <lastmod>2021-11-08T12:54:41+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2020/2020-06-19-the-velociraptor-query-language-pt-2-fe92bb7aa150/</loc>
+  <!-- size: 6602 -->
+  <lastmod>2021-09-04T23:25:10+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2020/2020-07-13-velociraptor-in-the-tool-age-d896dfe71b9/</loc>
+  <!-- size: 12056 -->
+  <lastmod>2026-03-28T17:08:19+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2020/2020-07-14-triage-with-velociraptor-pt-4-cf0e60810d1e/</loc>
+  <!-- size: 11651 -->
+  <lastmod>2026-01-07T23:39:40-05:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2020/2020-08-16-profiling-the-beast-58913437fd16/</loc>
+  <!-- size: 10491 -->
+  <lastmod>2026-01-09T10:35:42+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/</loc>
+  <!-- size: 8099 -->
+  <lastmod>2026-01-07T23:39:40-05:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2020/2020-09-28-velociraptor-network-communications-30568624043a/</loc>
+  <!-- size: 16337 -->
+  <lastmod>2025-11-28T05:46:12+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/</loc>
+  <!-- size: 12630 -->
+  <lastmod>2024-04-04T11:43:59+09:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2020/2020-12-13-velociraptor-and-osquery-2a4306dd23c/</loc>
+  <!-- size: 11431 -->
+  <lastmod>2025-07-28T17:14:23+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/</loc>
+  <!-- size: 8777 -->
+  <lastmod>2026-03-28T17:08:19+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2021/2021-01-19-parsing-binary-files-d31114a41f14/</loc>
+  <!-- size: 8224 -->
+  <lastmod>2022-08-28T16:21:56+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2021/2021-01-22-concurrent-vql-6d381fdb0b1f/</loc>
+  <!-- size: 7277 -->
+  <lastmod>2021-07-13T01:57:28+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/</loc>
+  <!-- size: 7687 -->
+  <lastmod>2022-01-18T17:46:06+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2021/2021-02-02-detecting-dll-hijacking-with-vql-e9a735354257/</loc>
+  <!-- size: 6804 -->
+  <lastmod>2025-07-28T17:14:23+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2021/2021-02-03-migrating-from-osquery-to-velociraptor-d4143799953f/</loc>
+  <!-- size: 13784 -->
+  <lastmod>2024-01-17T02:36:54+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2021/2021-02-13-digging-for-files-with-velociraptor-a1c0a21e242b/</loc>
+  <!-- size: 8473 -->
+  <lastmod>2021-07-13T01:57:28+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2021/2021-04-16-digging-into-process-memory-33c60a640cdb/</loc>
+  <!-- size: 8786 -->
+  <lastmod>2021-11-08T12:54:41+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2021/2021-04-21-the-next-phase-of-velociraptor-bf696c2c3491/</loc>
+  <!-- size: 8148 -->
+  <lastmod>2021-07-13T01:57:28+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2021/2021-04-29-scaling-velociraptor-57acc4df76ed/</loc>
+  <!-- size: 10529 -->
+  <lastmod>2021-06-25T11:36:13+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/</loc>
+  <!-- size: 11319 -->
+  <lastmod>2025-02-18T13:07:18+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/</loc>
+  <!-- size: 11037 -->
+  <lastmod>2022-01-18T17:46:06+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2021/2021-07-12-velociraptor-vs-printnightmare/</loc>
+  <!-- size: 8820 -->
+  <lastmod>2022-01-18T17:46:06+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2021/2021-08-18-velociraptor-and-etw/</loc>
+  <!-- size: 8557 -->
+  <lastmod>2021-09-11T00:24:46+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2021/2021-09-03-process-spoofing/</loc>
+  <!-- size: 9350 -->
+  <lastmod>2022-01-18T17:46:06+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2021/2021-09-07-release-notes-0.6.1/</loc>
+  <!-- size: 15485 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2021/2021-09-17-carlos-intro/</loc>
+  <!-- size: 2778 -->
+  <lastmod>2021-09-17T12:27:07-04:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2021/2021-10-08-contributor-contest/</loc>
+  <!-- size: 3727 -->
+  <lastmod>2022-01-18T17:46:06+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2021/2021-10-22-a-closer-look-at-the-winning-entry-in-the-2021-velociraptor-contributor-competition-575c387610af/</loc>
+  <!-- size: 25397 -->
+  <lastmod>2026-01-07T23:39:40-05:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2021/2021-11-09-eql2vql/</loc>
+  <!-- size: 15913 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2021/2021-11-09-vql-data-manipulation/</loc>
+  <!-- size: 14765 -->
+  <lastmod>2022-01-18T17:46:06+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2021/2021-12-11-sftp-in-aws/</loc>
+  <!-- size: 10483 -->
+  <lastmod>2025-11-14T03:15:34+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2022/2022-01-05-release-notes-0.6.3/</loc>
+  <!-- size: 9274 -->
+  <lastmod>2025-04-28T18:02:22+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2022/2022-01-05-searching-for-files-on-linux/</loc>
+  <!-- size: 12215 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2022/2022-01-12-wmi-eventing/</loc>
+  <!-- size: 6902 -->
+  <lastmod>2026-01-07T23:39:40-05:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2022/2022-03-21-paths/</loc>
+  <!-- size: 12853 -->
+  <lastmod>2022-03-29T15:36:37+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2022/2022-03-22-deaddisk/</loc>
+  <!-- size: 18079 -->
+  <lastmod>2025-12-10T02:40:04+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2022/2022-03-23-release-notes/</loc>
+  <!-- size: 9592 -->
+  <lastmod>2026-01-07T23:39:40-05:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2022/2022-06-21-release-notes/</loc>
+  <!-- size: 5112 -->
+  <lastmod>2022-06-22T16:57:53+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2022/2022-08-04-post-processing/</loc>
+  <!-- size: 15757 -->
+  <lastmod>2026-01-09T10:35:42+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2022/2022-08-15-release-notes/</loc>
+  <!-- size: 8643 -->
+  <lastmod>2022-09-20T13:10:13-04:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2022/2022-08-17-process-tracker/</loc>
+  <!-- size: 12446 -->
+  <lastmod>2024-12-19T16:05:41+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2022/2022-11-21-release-notes/</loc>
+  <!-- size: 11834 -->
+  <lastmod>2025-11-14T03:15:34+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2023/2023-01-13-tracking-an-adversary-in-realtime/</loc>
+  <!-- size: 11235 -->
+  <lastmod>2023-01-13T02:31:25+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2023/2023-02-13-release-notes-0.6.8/</loc>
+  <!-- size: 6548 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2023/2023-04-03-velociraptor-survey/</loc>
+  <!-- size: 17538 -->
+  <lastmod>2023-04-27T12:47:45-04:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2023/2023-04-05-qakbot/</loc>
+  <!-- size: 9095 -->
+  <lastmod>2023-04-14T14:49:09+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2023/2023-05-05-release-notes-0.6.9/</loc>
+  <!-- size: 14453 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2023/2023-07-27-release-notes-0.7.0/</loc>
+  <!-- size: 7667 -->
+  <lastmod>2023-08-30T22:16:28+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2023/2023-11-15-release-notes-0.7.1/</loc>
+  <!-- size: 14213 -->
+  <lastmod>2023-12-19T12:34:35-05:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2023/2023-11-15-sigma_in_velociraptor/</loc>
+  <!-- size: 21373 -->
+  <lastmod>2024-09-30T09:32:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2024/2024-03-10-release-notes-0.72/</loc>
+  <!-- size: 22999 -->
+  <lastmod>2025-04-28T18:02:22+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2024/2024-04-12-registry-hunter/</loc>
+  <!-- size: 16157 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2024/2024-05-09-detection-engineering/</loc>
+  <!-- size: 29677 -->
+  <lastmod>2024-12-19T16:05:41+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2024/2024-07-22-how-to-use-your-own-certificates/</loc>
+  <!-- size: 13311 -->
+  <lastmod>2025-09-05T17:02:21+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2024/2024-09-10-release-notes-0.73/</loc>
+  <!-- size: 18362 -->
+  <lastmod>2024-10-15T01:23:17+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2024/2024-09-12-timelines/</loc>
+  <!-- size: 22443 -->
+  <lastmod>2024-11-15T00:29:27+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2025/2025-02-02-sigma/</loc>
+  <!-- size: 20806 -->
+  <lastmod>2025-02-12T13:01:38+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2025/2025-02-23-release-notes-0.74/</loc>
+  <!-- size: 9228 -->
+  <lastmod>2025-09-01T14:57:10+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2025/2025-08-30-release-notes-0.75/</loc>
+  <!-- size: 12480 -->
+  <lastmod>2025-11-14T03:15:34+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2025/2025-09-28-adaptive-collections/</loc>
+  <!-- size: 19869 -->
+  <lastmod>2025-11-16T15:14:47+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2025/2025-11-15-memory-analysis-pt1/</loc>
+  <!-- size: 26386 -->
+  <lastmod>2025-12-10T02:40:04+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2025/2025-12-22-memory-analysis-pt2/</loc>
+  <!-- size: 20111 -->
+  <lastmod>2025-12-22T15:24:10+01:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2026/2026-03-10-release-notes-0.76/</loc>
+  <!-- size: 3838 -->
+  <lastmod>2026-03-28T17:08:19+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/2026/2026-03-21-cli/</loc>
+  <!-- size: 28907 -->
+  <lastmod>2026-03-26T22:48:37+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/html/2018/08/10/browsing_around_the_filesystem/</loc>
+  <!-- size: 5648 -->
+  <lastmod>2021-09-04T23:25:10+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/html/2018/08/10/design_differences_between_velociraptor_and_grr/</loc>
+  <!-- size: 8640 -->
+  <lastmod>2022-01-18T17:46:06+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/html/2018/08/10/files_files_everything_is_just_a_file/</loc>
+  <!-- size: 8428 -->
+  <lastmod>2022-01-18T17:46:06+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/html/2018/08/10/hunting_what_velociraptors_do_best/</loc>
+  <!-- size: 4281 -->
+  <lastmod>2022-01-18T17:46:06+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/html/2018/08/10/interrogation_make_the_endpoint_tell_us_what_it_knows/</loc>
+  <!-- size: 5262 -->
+  <lastmod>2021-09-04T23:25:10+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/html/2018/08/10/introducing_velociraptor/</loc>
+  <!-- size: 3654 -->
+  <lastmod>2025-04-28T18:02:22+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/html/2018/08/10/the_velocidex_query_language/</loc>
+  <!-- size: 11368 -->
+  <lastmod>2021-11-08T12:54:41+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/html/2018/08/20/velociraptor_artifacts/</loc>
+  <!-- size: 17552 -->
+  <lastmod>2022-01-18T17:46:06+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/html/2018/09/03/velociraptor_s_client_communications/</loc>
+  <!-- size: 10905 -->
+  <lastmod>2021-11-08T12:54:41+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/html/2018/09/29/detecting_powershell_persistence_with_velociraptor_and_yara/</loc>
+  <!-- size: 17503 -->
+  <lastmod>2022-01-18T17:46:06+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/html/2018/09/30/velorciraptor_s_filesystem_s_accessors/</loc>
+  <!-- size: 16133 -->
+  <lastmod>2022-01-18T17:46:06+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/html/2018/11/09/event_queries_and_endpoint_monitoring/</loc>
+  <!-- size: 7999 -->
+  <lastmod>2022-01-18T17:46:06+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/html/2018/12/09/more_on_client_event_collection/</loc>
+  <!-- size: 4194 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/html/2018/12/10/server_side_vql_queries_and_events/</loc>
+  <!-- size: 12124 -->
+  <lastmod>2021-09-04T23:25:10+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/html/2018/12/22/configuring_velociraptor_for_ssl/</loc>
+  <!-- size: 6752 -->
+  <lastmod>2021-09-04T23:25:10+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/html/2018/12/23/deploying_velociraptor_with_oauth_sso/</loc>
+  <!-- size: 7119 -->
+  <lastmod>2021-09-04T23:25:10+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/html/2019/02/09/velociraptor_python_api/</loc>
+  <!-- size: 11257 -->
+  <lastmod>2022-01-18T17:46:06+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/html/2019/02/10/velociraptor_performance/</loc>
+  <!-- size: 12797 -->
+  <lastmod>2022-01-18T17:46:06+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/html/2019/02/14/alerting_on_event_patterns/</loc>
+  <!-- size: 10685 -->
+  <lastmod>2021-11-08T12:54:41+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/html/2019/03/02/agentless_hunting_with_velociraptor/</loc>
+  <!-- size: 5623 -->
+  <lastmod>2021-11-08T12:54:41+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/blog/html/2019/08/28/the_velociraptor_api/</loc>
+  <!-- size: 5931 -->
+  <lastmod>2021-11-08T12:54:41+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/dev/image-guidelines/</loc>
+  <!-- size: 17025 -->
+  <lastmod>2026-03-28T17:08:19+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/dev/prose-guidelines/</loc>
+  <!-- size: 4347 -->
+  <lastmod>2026-03-28T17:08:19+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/</loc>
+  <!-- size: 849 -->
+  <lastmod>2023-11-30T16:42:41+11:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/artifacts/</loc>
+  <!-- size: 21557 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/artifacts/advanced_fields/</loc>
+  <!-- size: 15330 -->
+  <lastmod>2026-01-09T10:35:42+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/artifacts/basic_fields/</loc>
+  <!-- size: 13732 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/artifacts/event_queues/</loc>
+  <!-- size: 12089 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/artifacts/export_imports/</loc>
+  <!-- size: 4566 -->
+  <lastmod>2025-12-10T02:40:04+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/artifacts/parameters/</loc>
+  <!-- size: 17930 -->
+  <lastmod>2025-09-05T09:58:05+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/artifacts/preconditions/</loc>
+  <!-- size: 9743 -->
+  <lastmod>2026-03-27T17:43:09+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/artifacts/resources/</loc>
+  <!-- size: 6504 -->
+  <lastmod>2025-11-14T03:15:34+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/artifacts/security/</loc>
+  <!-- size: 15574 -->
+  <lastmod>2025-06-20T12:42:48+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/artifacts/sources/</loc>
+  <!-- size: 2106 -->
+  <lastmod>2025-06-18T06:40:30+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/artifacts/tips/</loc>
+  <!-- size: 8184 -->
+  <lastmod>2025-06-18T06:40:30+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/artifacts/tools/</loc>
+  <!-- size: 12674 -->
+  <lastmod>2026-01-07T23:39:40-05:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/artifacts/use_cases/</loc>
+  <!-- size: 17127 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/cli/</loc>
+  <!-- size: 6870 -->
+  <lastmod>2025-11-14T03:15:34+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/cli/acl/</loc>
+  <!-- size: 1106 -->
+  <lastmod>2025-06-18T06:40:30+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/cli/artifacts/</loc>
+  <!-- size: 10682 -->
+  <lastmod>2025-09-05T09:58:05+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/cli/collector/</loc>
+  <!-- size: 14549 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/cli/config/</loc>
+  <!-- size: 3162 -->
+  <lastmod>2025-06-18T06:40:30+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/cli/deaddisk/</loc>
+  <!-- size: 2872 -->
+  <lastmod>2025-12-10T02:40:04+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/cli/flags/</loc>
+  <!-- size: 1679 -->
+  <lastmod>2026-03-27T01:42:52+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/cli/fs/</loc>
+  <!-- size: 3266 -->
+  <lastmod>2025-09-05T09:58:05+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/cli/fuse/</loc>
+  <!-- size: 7738 -->
+  <lastmod>2025-11-28T05:46:12+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/cli/misc/</loc>
+  <!-- size: 7344 -->
+  <lastmod>2025-11-28T05:46:12+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/cli/query/</loc>
+  <!-- size: 5852 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/cli/server_service/</loc>
+  <!-- size: 1101 -->
+  <lastmod>2025-09-05T09:58:05+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/cli/service/</loc>
+  <!-- size: 2152 -->
+  <lastmod>2025-09-05T09:58:05+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/cli/tools/</loc>
+  <!-- size: 1982 -->
+  <lastmod>2025-09-05T09:58:05+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/cli/user/</loc>
+  <!-- size: 1092 -->
+  <lastmod>2025-09-05T09:58:05+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/clients/artifacts/</loc>
+  <!-- size: 7964 -->
+  <lastmod>2026-01-01T14:12:03+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/clients/interrogation/</loc>
+  <!-- size: 3079 -->
+  <lastmod>2026-02-27T05:30:38+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/clients/labels/</loc>
+  <!-- size: 4857 -->
+  <lastmod>2025-01-10T06:17:17+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/clients/metadata/</loc>
+  <!-- size: 4057 -->
+  <lastmod>2025-01-10T06:17:17+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/clients/monitoring/</loc>
+  <!-- size: 8712 -->
+  <lastmod>2025-01-25T12:47:46+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/clients/quarantine/</loc>
+  <!-- size: 2772 -->
+  <lastmod>2025-01-10T06:17:17+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/clients/searching/</loc>
+  <!-- size: 8887 -->
+  <lastmod>2025-01-10T06:17:17+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/clients/shell/</loc>
+  <!-- size: 2135 -->
+  <lastmod>2025-01-25T12:47:46+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/clients/vfs/</loc>
+  <!-- size: 6973 -->
+  <lastmod>2025-01-25T12:47:46+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/deployment/</loc>
+  <!-- size: 14979 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/deployment/clients/</loc>
+  <!-- size: 43533 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/deployment/offline_collections/</loc>
+  <!-- size: 21885 -->
+  <lastmod>2025-12-10T02:40:04+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/deployment/offline_collections/building/</loc>
+  <!-- size: 18302 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/deployment/offline_collections/collection_data/</loc>
+  <!-- size: 48164 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/deployment/offline_collections/running/</loc>
+  <!-- size: 9319 -->
+  <lastmod>2025-11-28T05:46:12+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/deployment/offline_collections/updating/</loc>
+  <!-- size: 3228 -->
+  <lastmod>2025-11-14T03:15:34+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/deployment/orgs/</loc>
+  <!-- size: 6919 -->
+  <lastmod>2026-03-27T17:43:09+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/deployment/quickstart/</loc>
+  <!-- size: 26274 -->
+  <lastmod>2026-02-10T00:35:05-05:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/deployment/references/_reference/</loc>
+  <!-- size: 236425 -->
+  <lastmod>2026-03-26T10:06:20+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/deployment/resources/</loc>
+  <!-- size: 9757 -->
+  <lastmod>2026-01-09T10:35:42+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/deployment/security/</loc>
+  <!-- size: 33469 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/deployment/server/</loc>
+  <!-- size: 1245 -->
+  <lastmod>2026-03-28T17:08:19+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/deployment/server/deployment_example/</loc>
+  <!-- size: 23822 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/deployment/server/key_concepts/</loc>
+  <!-- size: 17189 -->
+  <lastmod>2026-01-07T23:39:40-05:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/deployment/server/key_decisions/</loc>
+  <!-- size: 3147 -->
+  <lastmod>2025-05-06T22:27:07+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/deployment/server/multifrontend/</loc>
+  <!-- size: 11654 -->
+  <lastmod>2025-04-28T18:02:22+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/deployment/server/upgrades/</loc>
+  <!-- size: 7814 -->
+  <lastmod>2026-02-27T05:30:38+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/file_collection/</loc>
+  <!-- size: 28360 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/file_collection/bulk/</loc>
+  <!-- size: 10303 -->
+  <lastmod>2026-02-27T05:30:38+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/file_collection/exporting/</loc>
+  <!-- size: 8516 -->
+  <lastmod>2026-03-15T17:12:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/file_collection/vfs/</loc>
+  <!-- size: 11881 -->
+  <lastmod>2026-02-27T05:30:38+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/forensic/binary/</loc>
+  <!-- size: 23759 -->
+  <lastmod>2025-11-14T03:15:34+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/forensic/deaddisk/</loc>
+  <!-- size: 13836 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/forensic/deaddisk/creating_running/</loc>
+  <!-- size: 14175 -->
+  <lastmod>2026-02-27T05:30:38+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/forensic/event_logs/</loc>
+  <!-- size: 7697 -->
+  <lastmod>2025-07-02T15:57:08+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/forensic/evidence_of_execution/</loc>
+  <!-- size: 6917 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/forensic/filesystem/</loc>
+  <!-- size: 12886 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/forensic/filesystem/ntfs/</loc>
+  <!-- size: 14246 -->
+  <lastmod>2026-02-27T05:30:38+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/forensic/filesystem/paths/</loc>
+  <!-- size: 15530 -->
+  <lastmod>2025-11-28T05:46:12+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/forensic/filesystem/remapping/</loc>
+  <!-- size: 5744 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/forensic/searching/</loc>
+  <!-- size: 5213 -->
+  <lastmod>2025-07-02T15:57:08+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/forensic/volatile/</loc>
+  <!-- size: 7821 -->
+  <lastmod>2025-07-02T15:57:08+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/gui/</loc>
+  <!-- size: 5278 -->
+  <lastmod>2026-03-15T17:12:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/gui/artifacts/</loc>
+  <!-- size: 15587 -->
+  <lastmod>2026-03-27T17:43:09+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/gui/customizing/</loc>
+  <!-- size: 10398 -->
+  <lastmod>2026-03-15T17:12:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/gui/keyboard_shortcuts/</loc>
+  <!-- size: 3830 -->
+  <lastmod>2026-03-15T17:12:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/gui/local_docs/</loc>
+  <!-- size: 6653 -->
+  <lastmod>2026-03-15T17:12:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/gui/user_preferences/</loc>
+  <!-- size: 2373 -->
+  <lastmod>2026-03-15T17:12:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/hunting/</loc>
+  <!-- size: 8910 -->
+  <lastmod>2026-02-27T05:30:38+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/notebooks/</loc>
+  <!-- size: 4756 -->
+  <lastmod>2026-01-01T14:12:03+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/overview/</loc>
+  <!-- size: 15180 -->
+  <lastmod>2026-02-27T05:30:38+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/overview/history/</loc>
+  <!-- size: 4023 -->
+  <lastmod>2021-11-08T12:54:41+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/overview/security/</loc>
+  <!-- size: 1732 -->
+  <lastmod>2025-06-20T12:42:48+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/overview/support/</loc>
+  <!-- size: 8087 -->
+  <lastmod>2026-03-27T17:43:09+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/server_automation/</loc>
+  <!-- size: 5627 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/server_automation/server_api/</loc>
+  <!-- size: 20808 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/server_automation/server_monitoring/</loc>
+  <!-- size: 7368 -->
+  <lastmod>2025-06-20T16:35:12+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/troubleshooting/</loc>
+  <!-- size: 669 -->
+  <lastmod>2025-09-29T14:45:26+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/troubleshooting/debugging/</loc>
+  <!-- size: 6003 -->
+  <lastmod>2025-09-29T14:45:26+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/troubleshooting/debugging/client/client_flows/</loc>
+  <!-- size: 584 -->
+  <lastmod>2025-09-05T17:02:21+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/troubleshooting/debugging/client/client_monitoring/</loc>
+  <!-- size: 3992 -->
+  <lastmod>2025-09-29T14:45:26+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/export/</loc>
+  <!-- size: 894 -->
+  <lastmod>2025-09-29T14:45:26+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/open_close/</loc>
+  <!-- size: 630 -->
+  <lastmod>2025-09-29T14:45:26+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/tempfiles/</loc>
+  <!-- size: 697 -->
+  <lastmod>2025-09-29T14:45:26+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/troubleshooting/debugging/global/services/throttler/</loc>
+  <!-- size: 2559 -->
+  <lastmod>2025-11-28T05:46:12+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/etw/</loc>
+  <!-- size: 2288 -->
+  <lastmod>2025-09-29T14:45:26+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/glob/</loc>
+  <!-- size: 1150 -->
+  <lastmod>2025-09-29T14:45:26+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/sigma/</loc>
+  <!-- size: 1951 -->
+  <lastmod>2025-09-29T14:45:26+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/sqlite/</loc>
+  <!-- size: 1393 -->
+  <lastmod>2025-09-29T14:45:26+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/plugins/windows_event/</loc>
+  <!-- size: 2243 -->
+  <lastmod>2025-09-29T14:45:26+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/active_queries/</loc>
+  <!-- size: 597 -->
+  <lastmod>2025-09-29T14:45:26+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/troubleshooting/debugging/global/vql/queries/plugin_monitor/</loc>
+  <!-- size: 1279 -->
+  <lastmod>2025-09-29T14:45:26+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/troubleshooting/debugging/internal/go_profiles/</loc>
+  <!-- size: 3787 -->
+  <lastmod>2025-09-29T14:45:26+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/troubleshooting/debugging/internal/metrics/</loc>
+  <!-- size: 4241 -->
+  <lastmod>2025-09-05T17:02:21+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/troubleshooting/deployment/client/</loc>
+  <!-- size: 5761 -->
+  <lastmod>2025-11-28T05:46:12+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/troubleshooting/deployment/offline_collector/</loc>
+  <!-- size: 2844 -->
+  <lastmod>2025-11-14T03:15:34+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/troubleshooting/deployment/server/</loc>
+  <!-- size: 6365 -->
+  <lastmod>2025-09-29T14:45:26+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/troubleshooting/operations/remote_clients/</loc>
+  <!-- size: 6252 -->
+  <lastmod>2026-03-27T17:43:09+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/troubleshooting/operations/server_ops/</loc>
+  <!-- size: 4769 -->
+  <lastmod>2026-01-09T10:35:42+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/troubleshooting/vql/</loc>
+  <!-- size: 3043 -->
+  <lastmod>2025-09-29T14:45:26+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/vql/</loc>
+  <!-- size: 1098 -->
+  <lastmod>2025-01-25T12:47:46+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/vql/artifacts/calling/</loc>
+  <!-- size: 7253 -->
+  <lastmod>2026-03-15T17:12:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/vql/artifacts/managing/</loc>
+  <!-- size: 8113 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/vql/events/</loc>
+  <!-- size: 2368 -->
+  <lastmod>2025-01-25T12:47:46+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/vql/extending_vql/</loc>
+  <!-- size: 12282 -->
+  <lastmod>2026-01-01T14:12:03+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/vql/fundamentals/</loc>
+  <!-- size: 34299 -->
+  <lastmod>2026-03-15T17:12:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/docs/vql/join/</loc>
+  <!-- size: 8053 -->
+  <lastmod>2024-04-15T11:48:58+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/downloads/</loc>
+  <!-- size: 2720 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/downloads/previous_downloads/</loc>
+  <!-- size: 2521 -->
+  <lastmod>2026-03-27T23:48:42+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/</loc>
+  <!-- size: 532 -->
+  <lastmod>2026-03-26T22:48:37+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/automating_labels/</loc>
+  <!-- size: 9730 -->
+  <lastmod>2022-03-26T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/automating_metadata/</loc>
+  <!-- size: 17262 -->
+  <lastmod>2025-01-30T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/backing_up/</loc>
+  <!-- size: 11155 -->
+  <lastmod>2025-11-13T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/clone_organization_to_other_server/</loc>
+  <!-- size: 2175 -->
+  <lastmod>2023-07-24T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/cloudflare_checkip/</loc>
+  <!-- size: 1039 -->
+  <lastmod>2025-06-18T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/cloudflare_tunnel/</loc>
+  <!-- size: 1820 -->
+  <lastmod>2025-05-19T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/collect_artifact_unknown/</loc>
+  <!-- size: 2982 -->
+  <lastmod>2024-08-31T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/debugging_clients/</loc>
+  <!-- size: 2383 -->
+  <lastmod>2022-03-21T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/decimaldecode/</loc>
+  <!-- size: 4015 -->
+  <lastmod>2022-11-02T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/deleting_old_data/</loc>
+  <!-- size: 2177 -->
+  <lastmod>2024-07-19T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/deploying_in_agentless_mode/</loc>
+  <!-- size: 2677 -->
+  <lastmod>2022-03-26T22:59:49+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/download_password/</loc>
+  <!-- size: 903 -->
+  <lastmod>2024-03-18T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/dropbox_server/</loc>
+  <!-- size: 5313 -->
+  <lastmod>2025-07-05T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/encrypt_offline_collector_pgp/</loc>
+  <!-- size: 5083 -->
+  <lastmod>2026-03-07T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/favorites/</loc>
+  <!-- size: 3075 -->
+  <lastmod>2022-04-26T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/getting_latest_release/</loc>
+  <!-- size: 3321 -->
+  <lastmod>2022-09-03T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/glibc_errors/</loc>
+  <!-- size: 3539 -->
+  <lastmod>2022-04-26T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/hunt_by_label/</loc>
+  <!-- size: 1255 -->
+  <lastmod>2022-09-10T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/huntlabel/</loc>
+  <!-- size: 548 -->
+  <lastmod>2022-05-20T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/identifier_with_space/</loc>
+  <!-- size: 598 -->
+  <lastmod>2022-03-27T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/merging_config/</loc>
+  <!-- size: 3419 -->
+  <lastmod>2022-04-26T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/multi_org/</loc>
+  <!-- size: 1698 -->
+  <lastmod>2024-12-06T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/multiparts_uploads/</loc>
+  <!-- size: 3235 -->
+  <lastmod>2022-05-21T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/multiple_oauth/</loc>
+  <!-- size: 2962 -->
+  <lastmod>2022-03-26T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/notebook_timeout/</loc>
+  <!-- size: 1241 -->
+  <lastmod>2022-03-29T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/offline_collector_tool/</loc>
+  <!-- size: 25201 -->
+  <lastmod>2026-03-26T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/online_collector/</loc>
+  <!-- size: 9273 -->
+  <lastmod>2025-11-14T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/operating_on_columns/</loc>
+  <!-- size: 7988 -->
+  <lastmod>2025-09-26T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/plugin_not_found/</loc>
+  <!-- size: 1595 -->
+  <lastmod>2023-05-05T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/post_process_with_external_program/</loc>
+  <!-- size: 7187 -->
+  <lastmod>2025-06-29T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/prepopulate_server/</loc>
+  <!-- size: 4251 -->
+  <lastmod>2025-10-14T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/proxy/</loc>
+  <!-- size: 1484 -->
+  <lastmod>2022-04-15T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/quarantine/</loc>
+  <!-- size: 650 -->
+  <lastmod>2023-03-04T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/random/</loc>
+  <!-- size: 601 -->
+  <lastmod>2023-08-09T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/reconfigure_offline_collector/</loc>
+  <!-- size: 5302 -->
+  <lastmod>2022-05-06T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/retry_hunt/</loc>
+  <!-- size: 4284 -->
+  <lastmod>2022-09-10T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/rolling_certificates/</loc>
+  <!-- size: 6328 -->
+  <lastmod>2022-04-26T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/set_operations/</loc>
+  <!-- size: 3171 -->
+  <lastmod>2024-12-16T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/setting_up_sftp/</loc>
+  <!-- size: 3315 -->
+  <lastmod>2025-02-25T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/setup_adfs/</loc>
+  <!-- size: 5257 -->
+  <lastmod>2026-01-26T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/setup_azure_storage/</loc>
+  <!-- size: 1997 -->
+  <lastmod>2025-11-14T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/setup_gcs_storage/</loc>
+  <!-- size: 2467 -->
+  <lastmod>2025-11-14T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/setup_google_oauth/</loc>
+  <!-- size: 6790 -->
+  <lastmod>2025-04-28T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/setup_keycloak/</loc>
+  <!-- size: 15944 -->
+  <lastmod>2024-12-28T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/setup_smb_share/</loc>
+  <!-- size: 2534 -->
+  <lastmod>2025-11-14T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/ssl/</loc>
+  <!-- size: 2375 -->
+  <lastmod>2022-04-18T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/startup_artifacts/</loc>
+  <!-- size: 5166 -->
+  <lastmod>2022-04-26T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/upgrading/</loc>
+  <!-- size: 2054 -->
+  <lastmod>2022-03-27T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/urldecode/</loc>
+  <!-- size: 1112 -->
+  <lastmod>2022-06-06T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/knowledge_base/tips/velocirator_misuse/</loc>
+  <!-- size: 5995 -->
+  <lastmod>2025-08-28T00:00:00+00:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/presentations/2021_blueteam_village/</loc>
+  <!-- size: 647 -->
+  <lastmod>2022-09-26T21:00:06+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/presentations/2021_dfrws_us/</loc>
+  <!-- size: 1033 -->
+  <lastmod>2022-09-26T21:00:06+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/presentations/2021_osdfc/</loc>
+  <!-- size: 709 -->
+  <lastmod>2022-09-26T21:00:06+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/presentations/2022_auscert/</loc>
+  <!-- size: 5002 -->
+  <lastmod>2022-09-26T21:00:06+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/presentations/2022_dfrws_apac/</loc>
+  <!-- size: 2336 -->
+  <lastmod>2026-01-07T23:39:40-05:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/presentations/2022_dfrws_us/</loc>
+  <!-- size: 2455 -->
+  <lastmod>2026-01-07T23:39:40-05:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/presentations/2022_linuxconf_au/</loc>
+  <!-- size: 1889 -->
+  <lastmod>2022-01-18T19:56:24+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/presentations/2022_sans_summit/</loc>
+  <!-- size: 1424 -->
+  <lastmod>2023-08-23T02:27:46+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/presentations/2022_tech_user_group_cbr/</loc>
+  <!-- size: 1630 -->
+  <lastmod>2024-05-25T15:33:33+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/presentations/2022_velocon/</loc>
+  <!-- size: 16173 -->
+  <lastmod>2023-08-23T02:27:46+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/presentations/2023_auscert/</loc>
+  <!-- size: 1985 -->
+  <lastmod>2024-05-25T15:33:33+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/presentations/2023_everything_open/</loc>
+  <!-- size: 1918 -->
+  <lastmod>2023-08-23T02:27:46+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/presentations/2023_velocon/</loc>
+  <!-- size: 28559 -->
+  <lastmod>2023-10-25T19:32:59+11:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/presentations/2024_auscert/</loc>
+  <!-- size: 1379 -->
+  <lastmod>2024-05-25T15:33:33+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/presentations/2024_auscert-detection-engineering/</loc>
+  <!-- size: 2796 -->
+  <lastmod>2024-05-25T15:33:33+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/presentations/2025_auscert-detection-engineering/</loc>
+  <!-- size: 3276 -->
+  <lastmod>2025-05-20T16:01:23+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/rss/</loc>
+  <!-- size: 1071 -->
+  <lastmod>2026-03-26T22:48:37+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/training/</loc>
+  <!-- size: 1052 -->
+  <lastmod>2025-01-16T09:07:35+02:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/training/comparisons/</loc>
+  <!-- size: 1540 -->
+  <lastmod>2026-03-26T10:06:20+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/training/comparisons/eztools/</loc>
+  <!-- size: 794 -->
+  <lastmod>2026-03-26T10:06:20+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/training/comparisons/raw_copy/</loc>
+  <!-- size: 793 -->
+  <lastmod>2026-03-26T10:06:20+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/training/playbooks/finding_files/</loc>
+  <!-- size: 5673 -->
+  <lastmod>2025-03-29T01:12:17+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/training/playbooks/preservation/</loc>
+  <!-- size: 8144 -->
+  <lastmod>2025-02-12T13:01:38+10:00</lastmod>
+</url>
+<url>
+  <loc>https://docs.velociraptor.app/training/playbooks/triage-logs/</loc>
+  <!-- size: 5149 -->
+  <lastmod>2024-09-30T09:32:42+02:00</lastmod>
+</url>
+</urlset>

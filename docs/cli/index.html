@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>The Velociraptor CLI :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847309" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847309" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847309" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847309" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847309" rel="stylesheet">
+    <link href="/css/theme.css?1774847309" rel="stylesheet">
+    <link href="/css/tabs.css?1774847309" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847309" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847309" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847309" rel="stylesheet"><link href="/css/syntax.css?1774847309" rel="stylesheet"><link href="/css/light.css?1774847309" rel="stylesheet"><link href="/css/hljs.css?1774847309" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847309" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847309"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/cli/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/cli\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/cli/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">The Velociraptor CLI</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#general-command-syntax">General command syntax</a></li>
+    <li><a href="#how-to-get-help-for-commands">How to get help for commands</a></li>
+    <li><a href="#how-to-get-vql-help">How to get VQL help</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#autoexec-mode-and-post-args">Autoexec mode and post args</a></li>
+    <li><a href="#learn-about-the-commands-available-in-the-cli">Learn about the commands available in the CLI</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              The Velociraptor CLI
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>Velociraptor offers many features via it&rsquo;s command line interface (CLI).</p>
+<p>In addition to functioning as a client or server, the binary also provides
+several utility functions that are accessible on the command line, which in many
+cases are CLI equivalents of functions that are available in VQL.</p>
+<p>You can also do investigation of the local system using the CLI alone, as
+described <a href="/docs/deployment/#command-line-investigation-tool">here</a>,
+<a href="/docs/cli/artifacts/#-artifacts-collect-">here</a> and
+<a href="/docs/cli/query/">here</a>.</p>
+
+<div class="mynotices info">
+  <div heading=" Be aware of filesystem permissions when working on the command line "><p>When installed as a service, Velociraptor&rsquo;s datastore directory is owned by the
+service account named <code>velociraptor</code> and accessible to the <code>velociraptor</code> user
+group. New users often aren&rsquo;t aware of this fact and run CLI commands on the
+server which accidentally create files in the datastore using their own user
+account or the <code>root</code> account. These files are subsequently inaccessible to the
+Velociraptor service which may then fail to start.</p>
+<p>Some CLI commands work directly with files in the datastore, which can result in
+them being inadvertently owned by your user account. You can avoid creating
+permissions problems by switching to the <code>velociraptor</code> user. On most Linux
+systems this can be done with the command <code>sudo -u velociraptor bash</code>.</p>
+</div>
+</div>
+
+
+<h2 id="general-command-syntax">General command syntax</h2>
+<p>Velociraptor&rsquo;s CLI commands generally consist of a command and optionally a
+subcommand, using a subject-verb syntax. For example <code>config show</code>.</p>
+<p>There are <a href="/docs/cli/flags/">global flags</a> that can be used with
+any command, and also flags that are specific to each command and
+subcommand.</p>
+<h2 id="how-to-get-help-for-commands">How to get help for commands</h2>
+<p>You can use the <code>-h</code> flag or the <code>help</code> command with all Velociraptor commands
+to see available options and usage details.</p>
+<ul>
+<li><code>velociraptor &lt;command&gt; -h</code> or</li>
+<li><code>velociraptor help &lt;command&gt;</code>
+will provide help for a command or command group.</li>
+</ul>
+<p>For subcommands:</p>
+<ul>
+<li><code>velociraptor &lt;command&gt; &lt;subcommand&gt; -h</code> or</li>
+<li><code>velociraptor help &lt;command&gt; &lt;subcommand&gt;</code>
+will provide help for a specific subcommand.</li>
+</ul>
+<p>You can print a short listing of help for all commands by using the <code>-h</code>
+flag:</p>
+<ul>
+<li><code>velociraptor -h</code></li>
+</ul>
+<p>You can print a more verbose listing of help for all commands by using the
+<code>--help-long</code> flag:</p>
+<ul>
+<li><code>velociraptor --help-long</code></li>
+</ul>
+<p>A huge number of command line flags and environment variables are supported -
+too many to show in the standard help listing. To see all of these, set the
+environment variable <code>DEBUG=1</code> before running the help command:</p>
+<p><code>DEBUG=1 velociraptor -h</code></p>
+<h2 id="how-to-get-vql-help">How to get VQL help</h2>
+<p>For those situations where you&rsquo;re working in a bunker without internet access.</p>
+<h4 id="-vql-list-">[ vql list ]</h4>
+<p>Prints the reference documentation for all VQL plugins, functions and accessors
+in Markdown format.</p>
+<p>Can be piped through <a href="https://github.com/charmbracelet/glow" target="_blank" >Glow</a> to page it
+and pretty-print it.</p>
+<p>For example:</p>
+<pre><code class="language-sh">velociraptor vql list | glow -p
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/cli/glow.png"
+         class="inline"
+         alt=""
+         width="636" height="598">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="glow.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h4 id="-vql-export-">[ vql export ]</h4>
+<p>Prints the reference documentation for all VQL plugins, functions and accessors
+in YAML format.</p>
+<p>The output can be piped through <a href="https://github.com/mikefarah/yq" target="_blank" >yq</a> to filter,
+transform, or pretty-print it.</p>
+<p>For example:</p>
+<pre><code class="language-sh">velociraptor vql export | yq -P '.[] | select(.type == &quot;Function&quot;) | select(.name == &quot;stat&quot;)'
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/cli/yq.png"
+         class="inline"
+         alt=""
+         width="923" height="421">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="yq.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="autoexec-mode-and-post-args">Autoexec mode and post args</h2>
+<p>Velociraptor has the ability to embed config and files in its binary when using
+<a href="/docs/cli/config/#-config-repack-">the <code>config repack</code> command</a>.
+When the binary is run without any CLI commands it first checks whether it has
+an embedded config and if it does then it loads it. A special section in the
+config, named <code>autoexec.argv</code>, tells the binary what command line (including
+flags) to execute. The embedded config can also store custom artifacts.
+This is how <a href="/docs/deployment/offline_collections/">offline collectors</a>
+work.</p>
+<ul>
+<li>
+<p>When the binary is run <em><strong>with</strong></em> CLI commands it executes them, and ignores
+the <code>autoexec.argv</code> spec (if the embedded config contains one).</p>
+</li>
+<li>
+<p>When the binary is run <em><strong>without</strong></em> any CLI commands, and it has an
+<code>autoexec.argv</code> spec which it can execute, then it does so.</p>
+</li>
+</ul>
+<p>But what if you want it to load the autoexec section but change it&rsquo;s behavior
+with additional CLI flags?</p>
+<p>For that special case we have a special CLI pseudo-flag: <code>--</code></p>
+<p>This special flag separates the CLI arguments into pre and post args. Post
+args will be appended to any that are in the embedded autoexec command line,
+while still allowing the autoexec spec to load and execute it&rsquo;s commands (if it
+has any).</p>
+<p>As a concrete example, suppose we have created an offline collector named
+<code>velociraptor_collector.exe</code>. If we just run it without any args it does it&rsquo;s
+offline collector business and we can&rsquo;t change how it runs. If we run it with
+any CLI arguments then it&rsquo;s just a normal binary, since the offline collector
+behaviour is skipped due to the presence of a command.</p>
+<p>If we run it with the <code>config show</code> command we can inspect the embedded config
+and see that it contains the following <code>autoexec.argv</code> section:</p>
+<pre><code class="language-yaml">autoexec:
+  argv:
+  - artifacts
+  - collect
+  - Collector
+  - -v
+  - --require_admin
+</code></pre>
+<p>But what if we want it to slightly modify the autoexec behaviour by adding
+<code>--nobanner</code> and <code>--prompt</code> to the autoexec command line because we decided (for
+arbitrary reasons) that we want to hide the Velociraptor banner and also have it
+pause for user acknowledgement at the end of the collection?</p>
+<p>We can do this by adding <code>-- --nobanner --prompt</code> to the command line.</p>
+<pre><code class="language-sh">velociraptor_collector.exe -- --nobanner --prompt
+</code></pre>
+<p>Because the command line doesn&rsquo;t include any commands, the embedded config will
+still be loaded and the <code>autoexec.argv</code> command line will be executed. However
+it now appends our new flags to the command line, which is equivalent to having
+this in the autoexec section:</p>
+<pre><code class="language-yaml">autoexec:
+  argv:
+  - artifacts
+  - collect
+  - Collector
+  - -v
+  - --require_admin
+  - --nobanner
+  - --prompt
+</code></pre>
+<p>The above would look like this on the command line:</p>
+<pre><code class="language-sh">velociraptor_collector.exe artifacts collect Collector -v --require_admin --nobanner --prompt
+</code></pre>
+<p>This modifies the offline collector behaviour slightly but it otherwise
+continues according to the embedded spec.</p>
+<p>Autoexec mode can be used in a lot of novel ways besides the usual offline
+collector use case. So this method of tweaking the command line allows you to
+use any of the global or command-specific
+<a href="/docs/cli/flags/">CLI flags</a></p>
+<p>Note that if a flag is specified in <code>autoexec.argv</code> then it can&rsquo;t be negated
+or overridden. You can only add flags that have not already been used.</p>
+<h2 id="learn-about-the-commands-available-in-the-cli">Learn about the commands available in the CLI</h2>
+
+
+
+
+
+
+
+<ul class="children children-li">
+	
+
+	
+		
+			
+		
+	
+
+	
+
+	
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/cli/acl/" >The &#34;acl&#34; command group</a>
+</li>
+				
+
+				
+					
+<p>Manipulate ACLs (access control lists).</p>
+					
+				
+			
+			
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/cli/artifacts/" >The &#34;artifacts&#34; command group</a>
+</li>
+				
+
+				
+					
+<p>Commands for working with artifacts</p>
+					
+				
+			
+			
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/cli/collector/" >The &#34;collector&#34; command</a>
+</li>
+				
+
+				
+					
+<p>Build an offline collector</p>
+					
+				
+			
+			
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/cli/config/" >The &#34;config&#34; command group</a>
+</li>
+				
+
+				
+					
+<p>Commands for working with the config</p>
+					
+				
+			
+			
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/cli/deaddisk/" >The &#34;deaddisk&#34; command</a>
+</li>
+				
+
+				
+					
+<p>Create a deaddisk configuration</p>
+					
+				
+			
+			
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/cli/fs/" >The &#34;fs&#34; command group</a>
+</li>
+				
+
+				
+					
+<p>Run filesystem commands.</p>
+					
+				
+			
+			
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/cli/fuse/" >The &#34;fuse&#34; command</a>
+</li>
+				
+
+				
+					
+<p>Mount collection containers on folders.</p>
+					
+				
+			
+			
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/cli/query/" >The &#34;query&#34; command</a>
+</li>
+				
+
+				
+					
+<p>Run VQL queries on the command line.</p>
+					
+				
+			
+			
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/cli/server_service/" >The &#34;server_service&#34; command group</a>
+</li>
+				
+
+				
+					
+<p>Manipulate the Velociraptor server service on Windows.</p>
+					
+				
+			
+			
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/cli/service/" >The &#34;service&#34; command group</a>
+</li>
+				
+
+				
+					
+<p>Manipulate the Velociraptor client service on Windows and macOS.</p>
+					
+				
+			
+			
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/cli/tools/" >The &#34;tools&#34; command group</a>
+</li>
+				
+
+				
+					
+<p>Commands for working with the tools inventory.</p>
+					
+				
+			
+			
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/cli/user/" >The &#34;user&#34; command group</a>
+</li>
+				
+
+				
+					
+<p>Commands for working with users</p>
+					
+				
+			
+			
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/cli/misc/" >Miscellaneous commands</a>
+</li>
+				
+
+				
+					
+<p>All other commands not previously covered.</p>
+					
+				
+			
+			
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/cli/flags/" >Global CLI flags</a>
+</li>
+				
+
+				
+					
+<p>CLI flags that are available for all commands.</p>
+					
+				
+			
+			
+		
+	
+
+	
+</ul>
+
+
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847309"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847309"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847309"></script>
+    <script src="/js/jquery.sticky.js?1774847309"></script>
+    <script src="/js/featherlight.min.js?1774847309"></script>
+    <script src="/js/highlight.min.js?1774847309"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847309"></script>
+    <script src="/js/learn.js?1774847309"></script>
+    <script src="/js/hugo-learn.js?1774847309"></script>
+    
+    
+
+  </body>
+</html>

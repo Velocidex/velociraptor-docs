@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>VFS Uploads :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847310" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847310" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847310" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847310" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847310" rel="stylesheet">
+    <link href="/css/theme.css?1774847310" rel="stylesheet">
+    <link href="/css/tabs.css?1774847310" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847310" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847310" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847310" rel="stylesheet"><link href="/css/syntax.css?1774847310" rel="stylesheet"><link href="/css/light.css?1774847310" rel="stylesheet"><link href="/css/hljs.css?1774847310" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847310" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847310"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/file_collection/vfs/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/file_collection\/vfs\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/file_collection/vfs/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">VFS Uploads</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#uploading-a-single-file">Uploading a single file</a></li>
+    <li><a href="#recursively-collecting-directories">Recursively collecting directories</a></li>
+    <li><a href="#re-collecting-files">Re-collecting files</a></li>
+    <li><a href="#inspecting-collected-files-in-the-gui">Inspecting collected files in the GUI</a></li>
+    <li><a href="#exporting-collected-files">Exporting collected files</a>
+      <ul>
+        <li></li>
+        <li><a href="#downloading-files-individually">Downloading files individually</a></li>
+        <li><a href="#exporting-files-in-bulk">Exporting files in bulk</a></li>
+      </ul>
+    </li>
+    <li><a href="#advanced-options">Advanced Options</a>
+      <ul>
+        <li><a href="#setting-resource-limits">Setting resource limits</a></li>
+        <li><a href="#enabling-resumable-uploads-for-vfs-collections">Enabling resumable uploads for VFS collections</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              VFS Uploads
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>In Velociraptor, the Virtual File System (VFS) browser provides a server-side
+cached view of an endpoint&rsquo;s filesystem. Unlike a traditional network mount, the
+VFS is actually a server-side cache that presents a snapshot of the files and
+directories collected from the client. Because it is a cache, you can browse
+previously collected directory structures and files even when the endpoint is
+offline.</p>
+<p>In the VFS browser there are two main operations:</p>
+<ul>
+<li>Generating directory listings of the client&rsquo;s filesystem.</li>
+<li>Uploading files from the client, individually or in bulk.</li>
+</ul>
+<p>The VFS browser also supports Windows registry access, but here we are only
+discussing operations on the conventional filesystem. Registry access is
+functionally identical to filesystem access and we essentially treat the
+registry as just another filesystem (which it
+<a href="https://rwmj.wordpress.com/2010/02/18/why-the-windows-registry-sucks-technically/" target="_blank" >arguably</a>
+is), with registry values being treated as files. This means that all the
+filesystem operations discussed here can also be applied to the Windows
+registry.</p>
+<h2 id="uploading-a-single-file">Uploading a single file</h2>
+<p>Before you can upload a file, you need to navigate to its directory in the VFS
+tree. To do this, you enumerate the filesystem contents using the <strong>Refresh this
+directory</strong> button in the VFS browser. You can repeat this step to incrementally
+navigate deeper into the filesystem tree. There is also a button to enumerate
+the filesystem recursively, but that will take longer and could be unnecessary
+if you are only interested in a specific directory&rsquo;s contents.</p>
+<p>To <em>upload</em> a file from an endpoint into the VFS cache, you click the <strong>Collect
+from the client</strong> button within the VFS interface.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/vfs/vfs_view_.svg" alt="Collecting a file from a client"
+         class="inline"
+         height="1749"
+         width="2318.666666666666"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="vfs_view.svg"><i class="fa fa-download"></i></a>
+    Collecting a file from a client
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<ul>
+<li>
+<p>Clicking this button initiates a collection on the endpoint using the
+<a href="/artifact_references/pages/system.vfs.downloadfile/"><code>System.VFS.DownloadFile</code></a>
+artifact. This artifact uses the <code>upload()</code> VQL function to transfer files
+from the client to the server.</p>
+</li>
+<li>
+<p>The client divides large files into chunks and pushes them to the server via
+HTTP POST messages over a persistent communication channel.</p>
+</li>
+<li>
+<p>Once successfully received, the server stores the file in its filestore, and a
+floppy disk icon appears next to the filename in the VFS view to indicate a
+local copy is now available for inspection. Files that have been successfully
+cached on the server are marked with a <strong>floppy disk</strong> icon in the GUI.</p>
+</li>
+<li>
+<p>Files are stored (compressed by default since v0.75) in the server&rsquo;s
+filestore, but can be exported for external analysis. When exporting files,
+the native compression is removed.</p>
+</li>
+</ul>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/vfs/vfs_collect_cached.png"
+         class="inline"
+         alt="Files already in the VFS cache"
+         width="1200" height="486">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="vfs_collect_cached.png">
+      <i class="fa fa-download"></i></a>
+    Files already in the VFS cache
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>In addition to collecting individual files, you can also upload an entire
+directory, including subdirectories, to the server in a single
+<code>System.VFS.DownloadFile</code> collection, as explained in the next section.</p>
+<h2 id="recursively-collecting-directories">Recursively collecting directories</h2>
+<p>You can recursively sync (that is, upload) an entire directory to the VFS cache,
+although this may result in transferring large volumes of data. Use this feature
+sparingly, and only after carefully considering the potential impact of this
+action.</p>
+<ol>
+<li>
+<p>To do this, you first enumerate the filesystem contents using the <strong>Refresh
+this directory</strong> button in the VFS browser. You can repeat this step to
+incrementally navigate deeper into the filesystem tree. There is also a
+button to enumerate the filesystem recursively, but that will take longer and
+could be unnecessary if you are only interested in a specific directory&rsquo;s
+contents.</p>
+</li>
+<li>
+<p>Once you have navigated to a point in the directory structure where you want
+to start the recursive collection, click the &ldquo;Recursively download this
+directory from the client&rdquo; button.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/vfs/vfs_download_recursive.png"
+         class="inline"
+         alt="VFS recursive download button"
+         width="1200" height="298">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="vfs_download_recursive.png">
+      <i class="fa fa-download"></i></a>
+    VFS recursive download button
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Initiating this action will display a warning message to confirm the action
+that it will take.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/vfs/vfs_rescursive_warning.png"
+         class="inline"
+         alt="Recursive download warning message"
+         width="1200" height="352">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="vfs_rescursive_warning.png">
+      <i class="fa fa-download"></i></a>
+    Recursive download warning message
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+</ol>
+<h2 id="re-collecting-files">Re-collecting files</h2>
+<p>It&rsquo;s possible that the directories or files might have changed on the endpoint
+since you last enumerated the directories or uploaded the files. When you are
+using the VFS browser you are actually working with data that the server already
+has, that is you are working with the server&rsquo;s VFS cache. Although it presents a
+view of the endpoint&rsquo;s filesystem, it is not a live view.</p>
+<p>If the file is likely to have changed since you collected it, for example in the
+case of log files, then you can fetch the file again using the
+<strong>Re-collect from the client</strong> button.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/vfs/vfs_recollect.png"
+         class="inline"
+         alt="Re-collect a file from the endpoint"
+         width="1200" height="696">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="vfs_recollect.png">
+      <i class="fa fa-download"></i></a>
+    Re-collect a file from the endpoint
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Similarly, you may need to refresh the directories if you have reason to suspect
+that they might have changed since your last collection.</p>
+<p>You can also perform another recursive sync to re-collect all files in a
+directory, but be aware that this results in duplicate files being stored on the
+server. Although the VFS browser always presents you with the latest collected
+copy of any file, the filestore also retains all previously collected copies.
+This may be useful if your intention is to capture point-in-time copies of
+certain files, but if used carelessly it can result in a lot of wasted disk
+space on the server.</p>
+
+<div class="mynotices tip">
+  <div heading=" Handling &#39;Locked&#39; Files with Accessors "><p>One of the most powerful features of Velociraptor&rsquo;s file collection is its
+ability to automatically bypass operating system file-locking and other
+restrictions on Windows endpoints. This is thanks to Velociraptor&rsquo;s modular
+<a href="/docs/forensic/filesystem/#filesystem-accessors">accessor</a>
+architecture.</p>
+<p>By default, Velociraptor uses the <code>auto</code> accessor. On Windows, this accessor
+first tries to use standard OS APIs to read a file, but if the file is locked by
+another process (as a registry hive or the pagefile usually are, for example),
+then it automatically falls back to the <code>ntfs</code> accessor. This allows the client
+to parse the raw NTFS filesystem and extract file data directly from the disk,
+thus bypassing the OS file locks.</p>
+</div>
+</div>
+
+
+<h2 id="inspecting-collected-files-in-the-gui">Inspecting collected files in the GUI</h2>
+<p>Once cached, you can inspect collected files directly in the GUI using its
+built-in <strong>File Inspector</strong> viewer, which allows you to view the file contents
+as hex or plaintext, view file metadata, and perform basic operation such as
+search on the file data.</p>
+<p>To open the File Inspector, select a file and then click the Preview link
+which you&rsquo;ll find under its <strong>Properties</strong> tab.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/vfs/vfs_view_2_.svg" alt="Accessing the File Inspector view"
+         class="inline"
+         height="706.3333333333334"
+         width="1049.5"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="vfs_view_2.svg"><i class="fa fa-download"></i></a>
+    Accessing the File Inspector view
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/vfs/vfs_inspect_file.png"
+         class="inline"
+         alt="Inspecting a file"
+         width="1200" height="510">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="vfs_inspect_file.png">
+      <i class="fa fa-download"></i></a>
+    Inspecting a file
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Because you are inspecting a server-side copy of the file, you can do this
+regardless of whether the client is online or not. Similarly for exporting
+these files, as we&rsquo;ll explain next, the client&rsquo;s online status is irrelevant.</p>
+<h2 id="exporting-collected-files">Exporting collected files</h2>
+<p>In the VFS browser, you can download the collected files from the server&rsquo;s
+filestore to your local workstation. You might want to do this for external
+analysis or other purposes.</p>
+<p>You can download files individually or export them in bulk.</p>
+<h4 id="password-protecting-downloads">Password-protecting downloads</h4>
+<p>For additional safety during file-handling, and to prevent your local antivirus
+from accidentally quarantining potential malware, you can set a <strong>downloads
+password</strong> in your <a href="/docs/gui/user_preferences/">user preferences</a>.
+This ensures that any files exported from the VFS or anywhere else in the GUI
+are encrypted and thereby made safe for transit to your analysis environment.</p>
+<p>When a download password is set, all prepared downloads (i.e. bulk exports) and
+single-file downloads will be zipped and password-protected. To unset this
+behavior, clear the download password in your user preferences.</p>
+<h3 id="downloading-files-individually">Downloading files individually</h3>
+<p>A single file can be downloaded using the button that&rsquo;s located alongside <code>Last Collected</code>, or by right-clicking on any table row that has a floppy disk icon.</p>
+<p>The timestamp displayed on the download button serves as a reminder that you
+will be downloading the file <em>as it was at the time it was collected</em>. If you
+have reason to think that the file might have changed then you may decide to
+<a href="#re-collecting-files">re-collect it</a> so that you have an up to
+date copy in the VFS cache.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/vfs/vfs_last_collected.png"
+         class="inline"
+         alt="Download a single file"
+         width="1200" height="738">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="vfs_last_collected.png">
+      <i class="fa fa-download"></i></a>
+    Download a single file
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="exporting-files-in-bulk">Exporting files in bulk</h3>
+<p>The process of exporting files in bulk always involves two steps, and optionally
+a third step if you want to download all the files at once.</p>
+<ol>
+<li>
+<p>Prepare the download by clicking the <strong>Prepare Download</strong> button.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/vfs/vfs_export_files_.svg" alt="Prepare Download"
+         class="inline"
+         height="348"
+         width="1220"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="vfs_export_files.svg"><i class="fa fa-download"></i></a>
+    Prepare Download
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>This copies all files in the target folder (by default, the currently
+selected directory in the VFS tree, and its subdirectories) into a single
+flow using the <code>System.VFS.Export</code> server artifact. You can specify your own
+glob pattern if you want the export to only include certain files, or if you
+don&rsquo;t want to include subdirectories (in which case the glob pattern should
+be <code>/*</code>). Only files which are cached in the server&rsquo;s filestore will be
+included - it does not initiate any new file uploads from the client.</p>
+</li>
+<li>
+<p>The &ldquo;Prepare Download&rdquo; action creates a new server collection which copies
+the targeted files. It then displays a link to the flow. Click on it to view
+the flow.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/vfs/vfs_prepare_download_flowid.png"
+         class="inline"
+         alt="Resulting FlowId"
+         width="1200" height="309">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="vfs_prepare_download_flowid.png">
+      <i class="fa fa-download"></i></a>
+    Resulting FlowId
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Since the export creation process is implemented as a server collection, you
+can also find it by navigating to the collection listings on the <strong>Server
+Artifacts</strong> screen. This is useful if you decide to navigate away to do
+something else in the GUI and come back to the prepared download later.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/vfs/vfs_export_collection.png"
+         class="inline"
+         alt="A System.VFS.Export server collection"
+         width="1200" height="533">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="vfs_export_collection.png">
+      <i class="fa fa-download"></i></a>
+    A System.VFS.Export server collection
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>There are two ways to download the files from this newly-created collection:</p>
+<ul>
+<li>
+<p>Files can be individually downloaded from the flow&rsquo;s <strong>Uploaded Files</strong> tab.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/vfs/vfs_prepare_download_flow1.png"
+         class="inline"
+         alt="Individual file download links"
+         width="1200" height="507">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="vfs_prepare_download_flow1.png">
+      <i class="fa fa-download"></i></a>
+    Individual file download links
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+<li>
+<p>or they can all be packaged into a single downloadable zip container using
+the <strong>Download Results</strong> button on the flow&rsquo;s <strong>Artifact Collection</strong> tab.
+This option is explained in more detail in
+<a href="/docs/file_collection/exporting/">Exporting Files</a></p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/vfs/vfs_prepare_download_flow2.png"
+         class="inline"
+         alt="Preparing a collection container zip containing all the files"
+         width="1199" height="768">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="vfs_prepare_download_flow2.png">
+      <i class="fa fa-download"></i></a>
+    Preparing a collection container zip containing all the files
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="advanced-options">Advanced Options</h2>
+<h3 id="setting-resource-limits">Setting resource limits</h3>
+<p>Since the VFS file upload actions are implemented as artifact collections under
+the hood, they are subject to the default collection limits - the most relevant
+to VFS uploads being a 1 GB size limit and a 10 minute timeout.</p>
+<p>If a VFS collection times out or fails due to reaching the default limits, you
+can re-run the collection with increased limits: navigate to the client&rsquo;s
+collections list and copy the failed collection, but increase the resource
+limits before launching it.</p>
+<p>Resource limits are explained in more detail
+<a href="/docs/file_collection/#collection-resource-limits">here</a> and
+<a href="/docs/artifacts/resources/">here</a>.</p>
+<h3 id="enabling-resumable-uploads-for-vfs-collections">Enabling resumable uploads for VFS collections</h3>
+<p>By default, this resumable uploads are not enabled for the
+<code>System.VFS.DownloadFile</code> artifact which is the underlying file collection
+artifact used in the VFS browser interface.</p>
+<p>If a VFS file transfer fails, you can retry it with the resumable upload
+option enabled. To do this:</p>
+<ol>
+<li>go to the client&rsquo;s collections list</li>
+<li>copy the failed collection</li>
+<li>enable the <code>UPLOAD_IS_RESUMABLE</code> parameter on the Configure Parameters screen</li>
+<li>(re)launch the collection.</li>
+</ol>
+<p>As discussed <a href="/docs/file_collection/#resumable-uploads">here</a>,
+resumable uploads are only suited to certain situations which is why the feature
+is not enabled by default.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847310"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847310"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847310"></script>
+    <script src="/js/jquery.sticky.js?1774847310"></script>
+    <script src="/js/featherlight.min.js?1774847310"></script>
+    <script src="/js/highlight.min.js?1774847310"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847310"></script>
+    <script src="/js/learn.js?1774847310"></script>
+    <script src="/js/hugo-learn.js?1774847310"></script>
+    
+    
+
+  </body>
+</html>

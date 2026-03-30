@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Windows.Vhdx.RemapConfigBuilder :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847311" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847311" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847311" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847311" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847311" rel="stylesheet">
+    <link href="/css/theme.css?1774847311" rel="stylesheet">
+    <link href="/css/tabs.css?1774847311" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847311" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847311" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847311" rel="stylesheet"><link href="/css/syntax.css?1774847311" rel="stylesheet"><link href="/css/light.css?1774847311" rel="stylesheet"><link href="/css/hljs.css?1774847311" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847311" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847311"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/exchange/artifacts/pages/windows.vhdx.remapconfigbuilder/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/exchange\/artifacts\/pages\/windows.vhdx.remapconfigbuilder\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/exchange/artifacts/Windows.Vhdx.RemapConfigBuilder.yaml" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Windows.Vhdx.RemapConfigBuilder</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents"></nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Windows.Vhdx.RemapConfigBuilder
+            </h1>
+            
+          
+
+        
+
+
+<p>Create remapping configuration YAML file(s) to virtually mount<br>
+VHDX profiles into virtual Velociraptor clients.</p>
+<p>This artifact is part of the Vhdx Suite. This suite requires to have
+the Velociraptor server artifact <code>Windows.Sys.Users</code> override on the
+server to work properly.</p>
+<p>Read the dedicated blog post before using this artifact.</p>
+<pre><code class="language-yaml">
+  name: Windows.Vhdx.RemapConfigBuilder
+  description: |
+    Create remapping configuration YAML file(s) to virtually mount  
+    VHDX profiles into virtual Velociraptor clients.
+    
+    This artifact is part of the Vhdx Suite. This suite requires to have 
+    the Velociraptor server artifact `Windows.Sys.Users` override on the 
+    server to work properly.
+
+    Read the dedicated blog post before using this artifact.
+
+  author: Yann Malherbe - @mirwitch
+
+  reference: 
+    - https://labs.infoguard.ch/posts/automation_of_vhdx_investigations/
+
+  type: CLIENT
+
+  implied_permissions:
+    - FILESYSTEM_WRITE
+
+  parameters:
+    - name: vhdxFolderPath
+      type: string
+      default: "F:\\vhdx\\"
+      description: "Directory containing VHDX profile files."
+
+    - name: usernameExtractor
+      type: regex
+      default: "profile_(?&lt;Username&gt;.*).vhdx"
+      description: "Regex used to extract usernames from filenames."
+
+    - name: user
+      type: regex
+      default: Administrator
+      description: "Optional filter to restrict which profiles to process."
+
+    - name: virtualHostname
+      type: string
+      default: "VHDX"
+      description: "Hostname to assign to the virtual clients."
+
+    - name: vhdxOffset
+      type: hidden
+      default: 1048576
+      description: "NTFS start offset inside VHDX."
+      
+    - name: batchSize
+      type: int
+      default: 30
+      description: "Number of profiles per virtual client." 
+
+  sources:
+    - precondition:
+        SELECT OS From info() where OS = 'windows'
+
+      query: |
+          // Static remapping header
+          LET RemappingHeader =''' 
+          remappings:
+          - type: permissions
+            permissions:
+            - COLLECT_CLIENT
+            - FILESYSTEM_READ
+            - FILESYSTEM_WRITE
+            - READ_RESULTS
+            - MACHINE_STATE
+            - SERVER_ADMIN
+          - type: impersonation
+            os: windows
+            hostname: "&lt;VIRTUAL_HOSTNAME&gt;"
+            env:
+            - key: SystemRoot
+              value: C:\Windows
+            - key: WinDir
+              value: C:\Windows
+            disabled_functions:
+            - amsi
+            - lookupSID
+            - token
+            disabled_plugins:
+            - users
+            - certificates
+            - handles
+            - pslist
+            - interfaces
+            - modules
+            - netstat
+            - partitions
+            - proc_dump
+            - proc_yara
+            - vad
+            - winobj
+            - wmi
+          
+          - type: shadow
+            from:
+              accessor: data
+            "on":
+              accessor: data
+          
+          - type: shadow
+            from:
+              accessor: raw_reg
+            "on":
+              accessor: raw_reg
+          
+          - type: shadow
+            from:
+              accessor: zip
+            "on":
+              accessor: zip
+          '''
+          
+          // Remapping required per user
+          LET RemappingUser = '''
+          - type: mount
+            description: 'NTFS - &lt;USERNAME&gt;'
+            from:
+              accessor: raw_ntfs
+              prefix: |
+                {
+                  "DelegateAccessor": "offset",
+                  "Delegate": {
+                    "DelegateAccessor": "vhdx",
+                    "DelegatePath": "&lt;VHDX_PATH&gt;",
+                    "Path":"/&lt;VHDX_OFFSET&gt;"
+                  },
+                  "Path": "&lt;PROFILE_PATH&gt;"
+                }
+            "on":
+              accessor: ntfs
+              prefix: '\\.\C:\Users\&lt;USERNAME&gt;'
+              path_type: ntfs
+          
+          - type: mount
+            description: 'File - &lt;USERNAME&gt;'
+            from:
+              accessor: raw_ntfs
+              prefix: |
+                {
+                  "DelegateAccessor": "offset",
+                  "Delegate": {
+                    "DelegateAccessor": "vhdx",
+                    "DelegatePath": "&lt;VHDX_PATH&gt;",
+                    "Path":"/&lt;VHDX_OFFSET&gt;"
+                  },
+                  "Path": "&lt;PROFILE_PATH&gt;"
+                }
+            "on":
+              accessor: file
+              prefix: 'C:\Users\&lt;USERNAME&gt;'
+              path_type: windows
+          
+          - type: mount
+            description: 'Auto - &lt;USERNAME&gt;'
+            from:
+              accessor: raw_ntfs
+              prefix: |
+                {
+                  "DelegateAccessor": "offset",
+                  "Delegate": {
+                    "DelegateAccessor": "vhdx",
+                    "DelegatePath": "&lt;VHDX_PATH&gt;",
+                    "Path":"/&lt;VHDX_OFFSET&gt;"
+                  },
+                  "Path": "&lt;PROFILE_PATH&gt;"
+                }
+            "on":
+              accessor: auto
+              prefix: 'C:\Users\&lt;USERNAME&gt;'
+              path_type: windows
+          
+          - type: mount
+            description: 'Registry - &lt;USERNAME&gt; NTUSER.DAT'
+            from:
+              accessor: raw_reg
+              prefix: |-
+                {
+                  "Path": "/",
+                  "DelegateAccessor": "raw_ntfs",
+                  "Delegate": {
+                    "DelegateAccessor":"offset",
+                    "Delegate": {
+                      "DelegateAccessor": "vhdx",
+                      "DelegatePath": "&lt;VHDX_PATH&gt;",
+                      "Path": "/&lt;VHDX_OFFSET&gt;"
+                    },
+                    "Path":"&lt;PROFILE_PATH&gt;/NTUSER.DAT"
+                  }
+                }
+              path_type: registry
+            "on":
+              accessor: registry
+              prefix: HKEY_USERS\&lt;USERNAME&gt;
+              path_type: registry  
+          
+          - type: mount
+            description: 'Registry - &lt;USERNAME&gt; UsrClass'
+            from:
+              accessor: raw_reg
+              prefix: |-
+                {
+                  "Path": "/",
+                  "DelegateAccessor": "raw_ntfs",
+                  "Delegate": {
+                    "DelegateAccessor":"offset",
+                    "Delegate": {
+                      "DelegateAccessor": "vhdx",
+                      "DelegatePath": "&lt;VHDX_PATH&gt;",
+                      "Path": "/&lt;VHDX_OFFSET&gt;"
+                    },
+                    "Path":"&lt;PROFILE_PATH&gt;/AppData/Local/Microsoft/Windows/UsrClass.dat"
+                  }
+                }
+              path_type: registry
+            "on":
+              accessor: registry
+              prefix: HKEY_USERS\&lt;USERNAME&gt;_Classes
+              path_type: registry
+          '''
+
+          // Get the list of user profiles of interest
+          LET userProfilesList = SELECT *,
+                  parse_string_with_regex(
+                      string=Name, 
+                      regex=usernameExtractor
+                  ) AS userProfile 
+              FROM glob(globs=vhdxFolderPath+"/*.vhdx") 
+              WHERE userProfile.Username AND userProfile.Username =~ user
+              
+              
+          // Split the user list into batches
+          LET userBatch = SELECT rows AS user_batch 
+              FROM batch(query={
+                SELECT *
+                FROM userProfilesList
+              }, batch_size=batchSize)
+
+
+          // Create the header of the remapping file
+          LET HeaderRemapping = regex_replace(re="&lt;VIRTUAL_HOSTNAME&gt;", 
+                                              replace=virtualHostname + "_" + firstBatchUser, 
+                                              source=RemappingHeader)
+          
+          // Create the user sections of the remapping file
+          LET UserRemapping = SELECT
+                  regex_replace(re="&lt;USERNAME&gt;", 
+                      replace=userProfile.Username, source= 
+                  regex_replace(re="&lt;PROFILE_PATH&gt;", 
+                      replace="/Profile", source= 
+                  regex_replace(re="&lt;VHDX_OFFSET&gt;", 
+                      replace=vhdxOffset, source=
+                  regex_replace(re="&lt;VHDX_PATH&gt;", 
+                      replace=regex_replace(
+                          re="\\\\", replace="/", source=OSPath), 
+                  source=RemappingUser)
+                  ))) AS Content
+              FROM scope()
+              
+          // Iterate on the users part of the bulk
+          LET BulkUserRemapping = SELECT * FROM foreach(
+              row=user_batch,
+              query=UserRemapping
+              )
+          
+          // Write the remapping content in a temp file
+          LET tmpFile = tempfile(
+                      data=HeaderRemapping + BulkUserRemapping.Content, 
+                      remove_last=TRUE
+                  )
+              
+          // Retrieve the directory from the running Velociraptor executable
+          LET veloInfo = SELECT Exe FROM info()
+
+          // Get the first user of the batch
+          LET firstBatchUser = user_batch[0].userProfile.Username
+
+          // Get the remapping filename
+          LET remappingFilename = firstBatchUser + ".yaml"
+          
+          // Copy the file to the remapping YAML file
+          LET copyFile = SELECT copy(
+                  filename=tmpFile, 
+                  dest=pathspec(parse=veloInfo[0].Exe).Dirname + "Vhdx" + "Remapping" + remappingFilename,
+                  create_directories=TRUE) AS CreatedConfig
+              FROM scope()
+
+
+
+          // Create dedicated YAML file for each batch of users
+          SELECT * FROM foreach(row=userBatch, query=copyFile)
+</code></pre>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847311"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847311"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847311"></script>
+    <script src="/js/jquery.sticky.js?1774847311"></script>
+    <script src="/js/featherlight.min.js?1774847311"></script>
+    <script src="/js/highlight.min.js?1774847311"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847311"></script>
+    <script src="/js/learn.js?1774847311"></script>
+    <script src="/js/hugo-learn.js?1774847311"></script>
+    
+    
+
+  </body>
+</html>
+

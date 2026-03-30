@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="WMI Eventing is a fairly well known technique in DFIR however
+some tools may not provide the coverage you expect. This
+article covers WMI and specifically detection in less familiar
+custom namespaces.
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>WMI Event Consumers: what are you missing? :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847307" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847307" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847307" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847307" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847307" rel="stylesheet">
+    <link href="/css/theme.css?1774847307" rel="stylesheet">
+    <link href="/css/tabs.css?1774847307" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847307" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847307" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847307" rel="stylesheet"><link href="/css/syntax.css?1774847307" rel="stylesheet"><link href="/css/light.css?1774847307" rel="stylesheet"><link href="/css/hljs.css?1774847307" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847307" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847307"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/blog/2022/2022-01-12-wmi-eventing/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/blog\/2022\/2022-01-12-wmi-eventing\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/2022/2022-01-12-wmi-eventing/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">WMI Event Consumers: what are you missing?</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#background">Background</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#collection">Collection</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/wmi">WMI</a>
+
+  <a class="tag-link" href="/tags/detection">Detection</a>
+
+  <a class="tag-link" href="/tags/vql">VQL</a>
+
+  <a class="tag-link" href="/tags/asep">ASEP</a>
+
+  <a class="tag-link" href="/tags/etw">ETW</a>
+
+  <a class="tag-link" href="/tags/t1546.003">T1546.003</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              WMI Event Consumers: what are you missing?
+            </h1>
+            
+            <div class="author pull-right">
+              Matt Green - @mgreen27
+              <span class="date">2022-01-12</span>
+            </div>
+            
+          
+
+        
+
+
+
+	<p>WMI Eventing is a fairly well known technique in DFIR, however some
+tools may not provide the coverage you expect. This article covers
+WMI eventing visibility and detection including custom namespaces.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2022/2022-01-12-wmi-eventing/00SelectionBias.png"
+         class="inline"
+         alt="Selection bias in WWII: missing what is not collected."
+         width="1000" height="681">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="00SelectionBias.png">
+      <i class="fa fa-download"></i></a>
+    Selection bias in WWII: missing what is not collected.
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="background">Background</h2>
+<p>There has been a fair bit of research and observations of WMI eventing
+in field over the last years. In short, a WMI event consumer is a
+method of subscribing to certain system events, then enabling an action
+of some sort. Common adversary use cases may include persistence, privilege
+escalation, or as a collection trigger. Represented as ATT&amp;CK T1546.003
+this technique has been observed in use from APT, through to trash-tic
+worm and coin miner threats.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2022/2022-01-12-wmi-eventing/01WMIOverview.png"
+         class="inline"
+         alt="WMI Eventing: 3 system classes"
+         width="1268" height="614">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="01WMIOverview.png">
+      <i class="fa fa-download"></i></a>
+    WMI Eventing: 3 system classes
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>There are three system classes in every active event consumer:</p>
+<ol>
+<li>__EventFilter is a WQL query that outlines the trigger event of
+interest.</li>
+<li>__EventConsumer is an action to perform upon triggering an event.</li>
+<li>__FilterToConsumerBinding is the registration mechanism that binds
+a filter to a consumer.</li>
+</ol>
+<p>Most detection will focus on collecting the WMI classes in root/subscription
+and, in some tools root/default WMI namespaces.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2022/2022-01-12-wmi-eventing/02Autoruns.png"
+         class="inline"
+         alt="Autoruns 14.07: detects root/default and root/subscription namespace WMI event consumers"
+         width="1056" height="362">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="02Autoruns.png">
+      <i class="fa fa-download"></i></a>
+    Autoruns 14.07: detects root/default and root/subscription namespace WMI event consumers
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h4 id="custom-namespaces">Custom Namespaces</h4>
+<p>At Blackhat 2018 Lee Christensen and Matt Graeber presented &ldquo;Subverting
+Sysmon: Application of a Formalized Security Product Evasion Methodology&rdquo;.
+This excellent talk focused on defense evasion methodology and highlighted
+potential collection gaps in telemetry tools around WMI eventing. In this
+case, the focus was on Sysmon behaviour of collection only in
+root/subscription, interestingly, it also highlighted the possibility to
+implement __EventConsumer classes in arbitrary namespaces.</p>
+<p>It is detection of WMI Event Consumers in arbitrary namespaces that I&rsquo;m going
+to focus. For anyone interested in testing I have written
+<a href="https://github.com/mgreen27/mgreen27.github.io/blob/master/static/other/WMIEventingNoisemaker/WmiEventingNoisemaker.ps1" target="_blank" >a script to generate WMI event consumers</a>.
+This script wraps several powershell functions released during the Black
+Hat talk to test creating working event consumers.</p>
+<p>First step was to create a custom namespace event consumer. In this
+instance I selected the namespace name <code>totallylegit</code> and attached an
+ActiveScript event consumer.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2022/2022-01-12-wmi-eventing/04WMIEventGeneration.png"
+         class="inline"
+         alt="WMIEventingNoismaker.ps1:Generate active script EventConsumer"
+         width="1048" height="250">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="04WMIEventGeneration.png">
+      <i class="fa fa-download"></i></a>
+    WMIEventingNoismaker.ps1:Generate active script EventConsumer
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="collection">Collection</h2>
+<p>Velociraptor has several valuable artifacts for hunting WMI Event
+Consumers:</p>
+<ul>
+<li><code>Windows.Sysinternals.Autoruns</code> - leverages a thirdparty deployment of
+Sysinternals Autoruns and typically my go to ASEP collection artifact but
+limited by visibility in root/default and root/subscription only.</li>
+<li><code>Windows.Persistence.PermanentWMIEvents</code> - recently upgraded to query
+all ROOT namespaces.</li>
+</ul>
+
+<div class="mynotices tip">
+  <div heading=" Windows.Persistence.PermanentWMIEvents "><ul>
+<li>This artifact reports currently deployed permanent WMI Event Consumers.</li>
+<li>The artifact collects Binding information, then presents associated Filters and Consumers.</li>
+<li>Target a specific namespace, or tick <code>AllRootNamespaces</code> to collect all
+root namespace event consumers.</li>
+</ul>
+</div>
+</div>
+
+
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2022/2022-01-12-wmi-eventing/05collection.png"
+         class="inline"
+         alt="Windows.Persistence.PermanentWMIEvents: configuration options"
+         width="1642" height="330">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="05collection.png">
+      <i class="fa fa-download"></i></a>
+    Windows.Persistence.PermanentWMIEvents: configuration options
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2022/2022-01-12-wmi-eventing/05collection_results.png"
+         class="inline"
+         alt="Windows.Persistence.PermanentWMIEvents: results"
+         width="1320" height="492">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="05collection_results.png">
+      <i class="fa fa-download"></i></a>
+    Windows.Persistence.PermanentWMIEvents: results
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h4 id="telemetry">Telemetry</h4>
+<p>Unfortunately prior to Windows 10 WMI logging was fairly limited. Sysmon and
+other telemetry sources often rely on WMI eventing itself to collect WMI
+eventing telemetry events. That means custom classes require namespace and
+class existence prior to telemetry subscription. Sysmon as seen below also
+does not have coverage for root/default namespace.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2022/2022-01-12-wmi-eventing/03SysmonEid20.png"
+         class="inline"
+         alt="Sysmon collection: Event ID 20 mapping (__EventConsumer)"
+         width="1584" height="722">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="03SysmonEid20.png">
+      <i class="fa fa-download"></i></a>
+    Sysmon collection: Event ID 20 mapping (__EventConsumer)
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The good news is since Windows 10, WMI logging has improved significantly
+and we can now query the event log: Microsoft-Windows-WMI-Activity or
+subscribe the underlying ETW provider of the same name. In the VQL below
+I filter the ETW event on event consumer creation or delete operations.</p>
+<pre><code class="language-vql">SELECT
+    System.TimeStamp AS EventTime,
+    System.ID as EventId,
+    strip(prefix='\\\\\.\\',string=EventData.NamespaceName) as NamespaceName,
+    EventData.Operation as Operation,
+    GetProcessInfo(TargetPid=int(int=EventData.ClientProcessId))[0] as Process
+FROM watch_etw(guid=&quot;{1418ef04-b0b4-4623-bf7e-d74ab47bbdaa}&quot;)
+WHERE EventId = 11
+    AND Operation =~ 'WbemServices::(PutInstance|DeleteInstance|PutClass|DeleteClass)'
+    AND Operation =~ 'EventConsumer|EventFilter|FilterToConsumerBinding'
+</code></pre>
+<p>I have included a completed artifact in the artifact exchange:
+<a href="https://docs.velociraptor.app/exchange/artifacts/pages/wmieventing/" target="_blank" >Windows.ETW.WMIEventing</a>.
+That artifact includes process enrichment, targeting both creation and deletion of EventConsumers.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2022/2022-01-12-wmi-eventing/06ETW.png"
+         class="inline"
+         alt="Custom namespace provider registration and process enrichment"
+         width="1129" height="480">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="06ETW.png">
+      <i class="fa fa-download"></i></a>
+    Custom namespace provider registration and process enrichment
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2022/2022-01-12-wmi-eventing/06ETWb.png"
+         class="inline"
+         alt="Windows.ETW.WMIEventing: all operations event consumer creation and removal"
+         width="863" height="301">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="06ETWb.png">
+      <i class="fa fa-download"></i></a>
+    Windows.ETW.WMIEventing: all operations event consumer creation and removal
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h4 id="event-log">Event Log</h4>
+<p>Similar filters can be used with <code>Windows.EventLogs.EvtxHunter</code> for
+detection. Its worthy to note, event logs hold less verbose logging for
+the registration than ETW but this use case is helpful when coming late
+to the party during an investigation.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2022/2022-01-12-wmi-eventing/07EvtxHunter.png"
+         class="inline"
+         alt="Windows.EventLogs.EvtxHunter: hunt for event consumer string"
+         width="472" height="363">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="07EvtxHunter.png">
+      <i class="fa fa-download"></i></a>
+    Windows.EventLogs.EvtxHunter: hunt for event consumer string
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2022/2022-01-12-wmi-eventing/07EvtxHunterb.png"
+         class="inline"
+         alt="Windows.EventLogs.EvtxHunter: detect event consumer class creation"
+         width="667" height="673">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="07EvtxHunterb.png">
+      <i class="fa fa-download"></i></a>
+    Windows.EventLogs.EvtxHunter: detect event consumer class creation
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h1 id="conclusions">Conclusions</h1>
+<p>During this post, we have shown three techniques for detecting WMI event consumers
+that are worth considering. We can collect these data-points over an entire
+network in minutes using Velociraptor&rsquo;s &ldquo;hunt&rdquo; capability. Similarly
+Velociraptor notebook workflow assists excluding known good entries quickly as part of analysis.</p>
+<p>The Velociraptor platform aims to provide visibility and access
+to endpoint data. If you would like to try Velociraptor it is available on GitHub under an open source license.
+As always, please file issues on the bug tracker or ask questions on our
+mailing list <a href="mailto:velociraptor-discuss@googlegroups.com" target="_blank" >velociraptor-discuss@googlegroups.com</a>. You can also chat with
+us directly on discord at <a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord</a></p>
+<h2 id="references">References</h2>
+<ol>
+<li><a href="https://docs.microsoft.com/en-us/windows/win32/wmisdk/about-wmi" target="_blank" >Microsoft documentation, About WMI</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1546/003/" target="_blank" >MITRE ATT&amp;CK T1546.003, Event Triggered Execution: Windows Management Instrumentation Event Subscription</a></li>
+<li><a href="https://www.youtube.com/watch?v=R5IEyoFpZq0" target="_blank" >Christensen.L and Graeber.M, Blackhat 2018 - Subverting Sysmon: Application of a Formalized Security Product Evasion Methodology</a></li>
+<li><a href="https://github.com/jsecurity101/Windows-API-To-Sysmon-Events/" target="_blank" >JSecurity101, Windows APIs To Sysmon-Events</a></li>
+</ol>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847307"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847307"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847307"></script>
+    <script src="/js/jquery.sticky.js?1774847307"></script>
+    <script src="/js/featherlight.min.js?1774847307"></script>
+    <script src="/js/highlight.min.js?1774847307"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847307"></script>
+    <script src="/js/learn.js?1774847307"></script>
+    <script src="/js/hugo-learn.js?1774847307"></script>
+    
+    
+
+  </body>
+</html>

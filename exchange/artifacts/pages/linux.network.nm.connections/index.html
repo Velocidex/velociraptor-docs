@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Linux.Network.NM.Connections :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847311" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847311" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847311" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847311" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847311" rel="stylesheet">
+    <link href="/css/theme.css?1774847311" rel="stylesheet">
+    <link href="/css/tabs.css?1774847311" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847311" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847311" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847311" rel="stylesheet"><link href="/css/syntax.css?1774847311" rel="stylesheet"><link href="/css/light.css?1774847311" rel="stylesheet"><link href="/css/hljs.css?1774847311" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847311" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847311"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/exchange/artifacts/pages/linux.network.nm.connections/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/exchange\/artifacts\/pages\/linux.network.nm.connections\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/exchange/artifacts/Linux.Network.NM.Connections.yaml" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Linux.Network.NM.Connections</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents"></nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Linux.Network.NM.Connections
+            </h1>
+            
+          
+
+        
+
+
+<p>NetworkManager is a popular high-level interface for configuring
+networks in Linux systems, in particular Ubuntu and other Debian-based
+flavours. This artifact lists the NetworkManager state, all configured
+connections and their settings, as well as when the connections were
+last activated. A list of BSSIDs per connection is also retrieved.</p>
+<p>All the information is retrieved from NetworkManager configuration
+files and other state files. Connection information is stored in
+the /etc/NetworkManager/system-connections as long as the &ldquo;keyfile&rdquo;
+plugin is selected in /etc/NetworkManager/NetworkManager.conf (this
+is the default). Note that by default, NetworkManager doesn&rsquo;t manage
+connections defined in /etc/network/interfaces.</p>
+<p>Whether the connections are currently active is not stored in file
+and must be queried using using nmcli or through dbus. This artifact
+runs nmcli as an external program to retrieve this information.
+Information such as IP addresses, routes, DNS servers, available Wi-Fi
+networks and other settings will also be collected through nmcli.</p>
+<p>This artifact also exports two functions, parse_ini(filename) and
+parse_ini_as_dict(filename), which may be useful to parse INI files
+in other artifacts.</p>
+<pre><code class="language-yaml">
+name: Linux.Network.NM.Connections
+author: 'Andreas Misje - @misje'
+description: |
+  NetworkManager is a popular high-level interface for configuring
+  networks in Linux systems, in particular Ubuntu and other Debian-based
+  flavours. This artifact lists the NetworkManager state, all configured
+  connections and their settings, as well as when the connections were
+  last activated. A list of BSSIDs per connection is also retrieved.
+
+  All the information is retrieved from NetworkManager configuration
+  files and other state files. Connection information is stored in
+  the /etc/NetworkManager/system-connections as long as the "keyfile"
+  plugin is selected in /etc/NetworkManager/NetworkManager.conf (this
+  is the default). Note that by default, NetworkManager doesn't manage
+  connections defined in /etc/network/interfaces.
+
+  Whether the connections are currently active is not stored in file
+  and must be queried using using nmcli or through dbus. This artifact
+  runs nmcli as an external program to retrieve this information.
+  Information such as IP addresses, routes, DNS servers, available Wi-Fi
+  networks and other settings will also be collected through nmcli.
+
+  This artifact also exports two functions, parse_ini(filename) and
+  parse_ini_as_dict(filename), which may be useful to parse INI files
+  in other artifacts.
+
+reference:
+  - https://developer-old.gnome.org/NetworkManager/stable/nm-settings-keyfile.html
+  - https://developer-old.gnome.org/NetworkManager/stable/settings-connection.html
+  - https://developer-old.gnome.org/NetworkManager/stable/settings-802-11-wireless.html
+
+type: CLIENT
+
+required_permissions:
+    - EXECVE
+
+parameters:
+  - name: RedactSecrets
+    default: true
+    type: bool
+    description: |
+        Replace Wi-FI PSKs (wifi-security/psk) with "\&lt;REDACTED\&gt;".
+
+export: |
+    /* Parse an INI config file and return Section (the part enclosed in '[]' on
+       lines of their own), Key and Value. */
+    LET parse_ini(filename) = SELECT * FROM foreach(row={
+        SELECT * FROM parse_records_with_regex(file=filename,
+            regex='''(?m)\[\s*(?P&lt;Section&gt;[^\]]+)\s*\](?P&lt;Contents&gt;[^\[]*)''')
+        }, query={
+            SELECT Section, Key, Value
+                FROM parse_records_with_regex(file=Contents,
+                    accessor='data',
+                    regex='^[\s\n]*(?P&lt;Key&gt;[^=]+)=(?P&lt;Value&gt;.*)')
+        })
+
+    /* Parse an INI config file and return a single column, Contents, with
+       the contents. Section names are prepended to keys, separated by '/'. */
+    LET parse_ini_as_dict(filename) = SELECT to_dict(item={
+            SELECT lowcase(string=Section + '/' + Key) AS _key, Value AS _value
+            FROM parse_ini(filename=filename)
+        }) AS Contents
+        FROM scope()
+
+column_types:
+  - name: LastActivated
+    type: timestamp
+    description: |
+        When the connection was last fully successfully activated. This
+        timestamp may be updated periodically while the connection is active.
+
+precondition: |
+    SELECT OS FROM info() WHERE OS = 'linux'
+
+sources:
+  - name: State
+    description: |
+        NetworkManager have three states that may be toggled:
+        NetworkingEnabled, which disables all networking (managed by
+        NetworkManager); WirelessEnabled, which disables wireless networking;
+        and WWANEnabled, which disables mobile data connections.
+    query: |
+        LET State_ = SELECT parse_string_with_regex(string=Data,
+        regex=('''NetworkingEnabled=(?P&lt;NetworkingEnabled&gt;\S+)''',
+            '''WirelessEnabled=(?P&lt;WirelessEnabled&gt;\S+)''',
+            '''WWANEnabled=(?P&lt;WWANEnabled&gt;\S+)''')) AS Fields
+        FROM read_file(filenames='/var/lib/NetworkManager/NetworkManager.state')
+
+        LET State = SELECT Fields.NetworkingEnabled AS NetworkingEnabled,
+            Fields.WirelessEnabled AS WirelessEnabled,
+            Fields.WWANEnabled AS WWANEnabled
+            FROM State_
+
+        SELECT * FROM State
+
+  - name: ConnectionConfigs
+    description: |
+        All connections configured in NetworkManager. Columns returned are
+        OSPath and a dict with the connection configuration.
+    query: |
+        LET ConfiguredConnections &lt;= SELECT * FROM foreach(row={
+            SELECT OSPath FROM glob(globs='/etc/NetworkManager/system-connections/*.nmconnection')
+            }, query=if(condition=RedactSecrets, then={
+                SELECT OSPath,
+                    Contents + dict(`wifi-security/psk`='&lt;REDACTED&gt;')
+                        AS Contents
+                    FROM parse_ini_as_dict(filename=OSPath)
+            }, else={
+                SELECT *, OSPath FROM parse_ini_as_dict(filename=OSPath)
+            })
+        )
+
+        SELECT OSPath, Contents FROM ConfiguredConnections
+
+  - name: Connections
+    description: |
+        Return a handful of useful properties from ConnectionConfigs in a
+        more readable table with individual column names: Name, UUID, Type,
+        Device and LastActivated. LastActivated are fetched from another
+        state file and combined with the results from ConnectionConfigs.
+    query: |
+        LET Timestamps = SELECT UUID, if(condition=parse_float(string=Timestamp),
+            then=timestamp(epoch=Timestamp), else=null) AS Timestamp
+            FROM parse_records_with_regex(file='/var/lib/NetworkManager/timestamps',
+                regex='''(?P&lt;UUID&gt;[-A-Fa-f0-9]+)+=(?P&lt;Timestamp&gt;\S+)''')
+
+        LET Connections &lt;= SELECT Name, _UUID AS UUID, Type, Device, LastActivated
+            FROM foreach(row={
+                SELECT * FROM ConfiguredConnections
+                }, query={
+                    SELECT Contents.`connection/id` AS Name,
+                        Contents.`connection/uuid` AS _UUID,
+                        Contents.`connection/type` AS Type,
+                        Contents.`connection/interface-name` AS Device,
+                        Timestamp AS LastActivated
+                    FROM Timestamps
+                    WHERE _UUID=UUID
+            })
+
+        SELECT * FROM Connections
+
+  - name: ActiveConnections
+    description: |
+        Return connections from Connections that are currently active,
+        by asking the NetworkManager daemon through the utility "nmcli".
+    query: |
+        LET nmcli = SELECT Stdout
+            FROM execve(argv=['nmcli', '-t', '-f', 'uuid', 'connection', 'show', '--active'])
+
+        LET ActiveConnections = SELECT * FROM foreach(row={
+            SELECT * FROM parse_lines(accessor='data',
+                filename=nmcli.Stdout)
+            }, query={
+                SELECT * FROM Connections WHERE UUID=Line
+            })
+
+        SELECT * FROM ActiveConnections
+
+  - name: DeviceStatus
+    description: |
+        Ask NetworkManager through "nmcli" about the status of all network
+        interfaces, managed as well unmanaged, with detailed information such
+        as IP addresses, routes, MTU and DNS settings.
+    query: |
+        LET nmcli = SELECT Stdout
+            FROM execve(argv=['nmcli', '-t', 'device', 'show'])
+
+        LET DeviceStatus = SELECT * FROM foreach(row=split(sep='\n\n',
+            string=nmcli.Stdout), query={
+                SELECT parse_string_with_regex(string=_value,
+                    regex='''GENERAL.DEVICE:(?P&lt;Device&gt;.+)''').Device AS Device,
+                    to_dict(item={
+                        SELECT Key AS _key, Value AS _value
+                            FROM parse_records_with_regex(file=_value, accessor='data',
+                                regex='^\n?(?P&lt;Key&gt;[^:]+):(?P&lt;Value&gt;.*)')
+                    }) AS Status
+                    FROM scope()
+            })
+
+        /* We're pretty much done now, but the output could be a lot nicer to
+           work with. */
+
+        LET S = scope()
+        LET Status &lt;= SELECT * FROM foreach(row={SELECT * FROM DeviceStatus},
+            column='Status')
+
+        LET to_array(col, dev) = filter(list=array(a={
+            SELECT * FROM column_filter(include=col, query={
+                SELECT * FROM Status WHERE `GENERAL.DEVICE` = dev
+            })}), condition='x=&gt;x')
+
+        LET prettify_route(col, dev) = SELECT *
+            FROM foreach(row=to_array(dev=dev, col=col), query={
+                SELECT S.Dest AS Dest, S.NextHop AS NextHop, int(int=S.Metric) AS Metric
+                FROM foreach(row={
+                    SELECT parse_string_with_regex(string=S._value, regex=(
+                        '''dst\s*=\s*(?P&lt;Dest&gt;[^,]+)''',
+                        '''nh\s*=\s*(?P&lt;NextHop&gt;[^,]+)''',
+                        '''mt\s*=\s*(?P&lt;Metric&gt;\d+)''')) AS R
+                        FROM scope()
+                    }, column='R')
+                })
+                WHERE Dest
+
+        SELECT `GENERAL.DEVICE` AS Device,
+            S.`GENERAL.TYPE` AS Type,
+            S.`GENERAL.CONNECTION` AS Connection,
+            S.`GENERAL.STATE` AS State,
+            S.`GENERAL.HWADDR` AS Mac,
+            S.`GENERAL.MTU` AS MTU,
+            to_array(dev=`GENERAL.DEVICE`, col='IP4.ADDRESS') AS Addresses,
+            prettify_route(dev=`GENERAL.DEVICE`, col='IP4.ROUTE') AS Routes,
+            S.`IP4.GATEWAY` AS Gateway,
+            to_array(dev=`GENERAL.DEVICE`, col='IP4.DNS') AS DNSServers,
+            to_array(dev=`GENERAL.DEVICE`, col='IP4.DOMAIN') AS DNSDomains,
+            to_array(dev=`GENERAL.DEVICE`, col='IP4.SEARCHES') AS DNSSearches,
+            to_array(dev=`GENERAL.DEVICE`, col='IP6.ADDRESS') AS _IPv6Addresses,
+            prettify_route(dev=`GENERAL.DEVICE`, col='IP6.ROUTE') AS _IPv6Routes,
+            S.`IP6.GATEWAY` AS _IPv6Gateway,
+            to_array(dev=`GENERAL.DEVICE`, col='IP6.DNS') AS _IPv6DNSServers,
+            to_array(dev=`GENERAL.DEVICE`, col='IP6.DOMAIN') AS _IPv6DNSDomains,
+            to_array(dev=`GENERAL.DEVICE`, col='IP6.SEARCHES') AS _IPv6DNSSearches
+            FROM Status
+
+  - name: AvailableAccessPoints
+    description: |
+        Ask NetworkManager through "nmcli" about details about all available
+        Wi-Fi access points
+    query: |
+        LET nmcli = SELECT Stdout
+            FROM execve(argv=['nmcli', '-t', '-m', 'multiline', '-f',
+                'ssid,bssid,mode,chan,freq,rate,signal,security,wpa-flags,rsn-flags,device,active,in-use',
+                'device', 'wifi', 'list'])
+
+        LET AccessPoints = SELECT * FROM foreach(row=filter(list=split(sep='\x01\x02',
+                /* Separate sections of key–values by injecting a blob and then
+                   split on that string. nmcli also has a "tabular" output mode,
+                   but ":", the separator, is also part of the output and is
+                   "escaped" by "/", making the parsing difficult. */
+                string=regex_replace(source=nmcli.Stdout, re='(?m)^IN-USE:.*$',
+                    replace='$0\x01\x02')), regex='.'), query={
+
+                SELECT to_dict(item={
+                    SELECT Key AS _key, Value as _value FROM parse_records_with_regex(
+                        file=_value, accessor='data', regex='^\n?(?P&lt;Key&gt;[^:]+):(?P&lt;Value&gt;.*)')
+                }) AS Contents FROM scope() WHERE _value
+            })
+            WHERE Contents
+
+        SELECT DEVICE AS Device, SSID, BSSID, MODE AS Mode, CHAN AS Chan,
+            FREQ AS Freq, RATE AS Rate, SIGNAL AS Signal, SECURITY AS Security,
+            ACTIVE='yes' AS Active, `WPA-FLAGS` AS WPAFlags, `RSN-FLAGS` AS RSNFlags,
+            `IN-USE`='*' AS InUse
+            FROM foreach(row=AccessPoints, column='Contents')
+
+  - name: SeenBSSIDs
+    description: |
+        A list of BSSIDs (each BSSID formatted as a MAC address like
+        "00:11:22:33:44:55") that have been detected as part of the Wi-Fi
+        network. NetworkManager internally tracks previously seen BSSIDs.
+    query: |
+        LET SeenBSSIDs &lt;= SELECT UUID AS _UUID, filter(list=split(sep_string=',', string=BSSIDs),
+            regex='.+') AS BSSIDs
+            FROM parse_records_with_regex(file='/var/lib/NetworkManager/seen-bssids',
+                regex='''(?P&lt;UUID&gt;[-A-Fa-f0-9]+)+=(?P&lt;BSSIDs&gt;\S+)''')
+
+        SELECT * FROM foreach(row=SeenBSSIDs, query={
+            SELECT Name, UUID, Device, BSSIDs FROM Connections
+            WHERE _UUID=UUID
+        })
+
+</code></pre>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847311"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847311"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847311"></script>
+    <script src="/js/jquery.sticky.js?1774847311"></script>
+    <script src="/js/featherlight.min.js?1774847311"></script>
+    <script src="/js/highlight.min.js?1774847311"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847311"></script>
+    <script src="/js/learn.js?1774847311"></script>
+    <script src="/js/hugo-learn.js?1774847311"></script>
+    
+    
+
+  </body>
+</html>
+

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Server.Enrichment.EchoTrail :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847311" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847311" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847311" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847311" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847311" rel="stylesheet">
+    <link href="/css/theme.css?1774847311" rel="stylesheet">
+    <link href="/css/tabs.css?1774847311" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847311" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847311" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847311" rel="stylesheet"><link href="/css/syntax.css?1774847311" rel="stylesheet"><link href="/css/light.css?1774847311" rel="stylesheet"><link href="/css/hljs.css?1774847311" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847311" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847311"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/exchange/artifacts/pages/server.enrichment.echotrail/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/exchange\/artifacts\/pages\/server.enrichment.echotrail\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/exchange/artifacts/Server.Enrichment.EchoTrail.yaml" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Server.Enrichment.EchoTrail</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents"></nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Server.Enrichment.EchoTrail
+            </h1>
+            
+          
+
+        
+
+
+<p>This is a process execution enrichment artifact that can be called from within another artifact (such as one looking at running processes) to enrich the
+data made available by that artifact. We are calling the EchoTrail v2 API which is still in beta.</p>
+<p>NOTE: The EchoTrail free API is limited to 25 queries per day which is very low for most use cases. This artifact may send more than 25 queries at the API!</p>
+<p>Ex.</p>
+<p><code>SELECT * from Artifact.Server.Enrichment.EchoTrail(lookup_image='C:\Windows\system32\svchost.exe', lookup_parent_image='C:\Windows\explorer.exe')</code></p>
+<p>Additional lookup parameters that can be passed:</p>
+<ul>
+<li><code>lookup_hostname</code>: The hostname which the execution occurred on (for host-specific prevelance metrics)</li>
+<li><code>lookup_image_hash</code>: The SHA256 hash of the process image</li>
+<li><code>lookup_parent_image_hash</code>: The SHA256 hash of the process parent image</li>
+<li><code>lookup_commandline</code>: Command line arguments of the process</li>
+</ul>
+<pre><code class="language-yaml">
+name: Server.Enrichment.EchoTrail
+author: Eric Capuano - @eric_capuano
+description: |
+  
+  This is a process execution enrichment artifact that can be called from within another artifact (such as one looking at running processes) to enrich the 
+  data made available by that artifact. We are calling the EchoTrail v2 API which is still in beta. 
+  
+  NOTE: The EchoTrail free API is limited to 25 queries per day which is very low for most use cases. This artifact may send more than 25 queries at the API!
+
+  Ex.
+
+    `SELECT * from Artifact.Server.Enrichment.EchoTrail(lookup_image='C:\Windows\system32\svchost.exe', lookup_parent_image='C:\Windows\explorer.exe')`
+
+  Additional lookup parameters that can be passed:
+
+    - `lookup_hostname`: The hostname which the execution occurred on (for host-specific prevelance metrics)
+    - `lookup_image_hash`: The SHA256 hash of the process image 
+    - `lookup_parent_image_hash`: The SHA256 hash of the process parent image
+    - `lookup_commandline`: Command line arguments of the process
+
+type: SERVER
+
+parameters:
+    - name: EchoTrailKey
+      type: string
+      description: API key for EchoTrail. Leave blank here if using server metadata store.
+      default:
+    - name: lookup_hostname
+      type: string
+      description: The hostname which the execution occurred on
+      default:
+    - name: lookup_image
+      type: string
+      description: The full path to the process image 
+      default:
+    - name: lookup_image_hash
+      type: string
+      description: The SHA256 hash of the process image 
+      default:
+    - name: lookup_parent_image
+      type: string
+      description: The full path to the process parent image
+      default:
+    - name: lookup_parent_image_hash
+      type: string
+      description: The SHA256 hash of the process parent image 
+      default:
+    - name: lookup_commandline
+      type: string
+      description: Command line arguments of the process
+      default:
+    - name: lookup_include_scores
+      type: bool
+      description: 
+      default: true
+    - name: lookup_include_description
+      type: bool
+      description: 
+      default: true
+    - name: lookup_include_detections
+      type: bool
+      description: 
+      default: true
+    - name: record_this_execution
+      type: bool
+      description: Record this as an actual execution in the EchoTrail database to contribute statistics
+      default: false
+
+sources:
+  - query: |
+
+        LET Creds = if(
+           condition=EchoTrailKey,
+           then=EchoTrailKey,
+           else=server_metadata().EchoTrailKey)
+
+        LET URL &lt;= 'https://api.echotrail.io/v2/process_execution'
+
+        LET Data = SELECT parse_json(data=Content) AS EchoTrailLookup
+        FROM http_client(url=URL,
+                         headers=dict(
+                          `Accept`="application/json",
+                          `x-api-key`=Creds,
+                          `Content-Type`="application/json"),
+                          method='POST',
+                          data=serialize(item=dict(
+                            hostname=lookup_hostname,
+                            image=lookup_image, 
+                            hash=lookup_image_hash,
+                            parent_image=lookup_parent_image, 
+                            parent_hash=lookup_parent_image_hash,
+                            commandline=lookup_commandline, 
+                            include_scores=lookup_include_scores,
+                            include_description=lookup_include_description,
+                            include_detections=lookup_include_detections,
+                            record_execution=record_this_execution
+                            )
+                          )
+                        )
+
+        SELECT
+            EchoTrailLookup.description AS Description,
+            EchoTrailLookup.echotrail_score AS EchoTrailScore,
+            EchoTrailLookup.global.rank AS GlobalRank,
+            EchoTrailLookup.global.host_prev AS HostPrevalence,
+            EchoTrailLookup.global.path_score AS PathScore,
+            EchoTrailLookup.global.parent_score AS ParentScore,
+            EchoTrailLookup.global.overall_score AS OverallScore,
+            EchoTrailLookup AS EchoTrailLookup
+        FROM Data
+
+</code></pre>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847311"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847311"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847311"></script>
+    <script src="/js/jquery.sticky.js?1774847311"></script>
+    <script src="/js/featherlight.min.js?1774847311"></script>
+    <script src="/js/highlight.min.js?1774847311"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847311"></script>
+    <script src="/js/learn.js?1774847311"></script>
+    <script src="/js/hugo-learn.js?1774847311"></script>
+    
+    
+
+  </body>
+</html>
+

@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="As defenders, we rely on effective detection capabilities.
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Detection Engineering :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847308" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847308" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847308" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847308" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847308" rel="stylesheet">
+    <link href="/css/theme.css?1774847308" rel="stylesheet">
+    <link href="/css/tabs.css?1774847308" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847308" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847308" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847308" rel="stylesheet"><link href="/css/syntax.css?1774847308" rel="stylesheet"><link href="/css/light.css?1774847308" rel="stylesheet"><link href="/css/hljs.css?1774847308" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847308" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847308"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/blog/2024/2024-05-09-detection-engineering/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/blog\/2024\/2024-05-09-detection-engineering\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/2024/2024-05-09-detection-engineering/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Detection Engineering</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#what-is-detection-engineering">What is Detection Engineering?</a></li>
+    <li><a href="#traditional-siem-based-detection">Traditional SIEM based detection</a></li>
+    <li><a href="#the-sigma-rule-format">The Sigma Rule format</a>
+      <ul>
+        <li><a href="#log-sources">Log sources</a></li>
+        <li><a href="#field-mappings">Field mappings</a></li>
+        <li><a href="#using-sigma-rules-effectively">Using Sigma Rules effectively</a></li>
+      </ul>
+    </li>
+    <li><a href="#sigma-shortcomings">Sigma shortcomings</a></li>
+    <li><a href="#on-endpoint-detection">On-endpoint detection</a></li>
+    <li><a href="#case-study-velociraptor">Case study: Velociraptor</a></li>
+    <li><a href="#velociraptor-curated-rules">Velociraptor curated rules</a></li>
+    <li><a href="#using-on-endpoint-detection-for-incident-response-triage">Using on-endpoint detection for Incident Response Triage</a></li>
+    <li><a href="#extending-the-capabilities-of-sigma-rules">Extending the capabilities of Sigma rules</a></li>
+    <li><a href="#real-time-sigma-alerting">Real Time Sigma alerting</a></li>
+    <li><a href="#conclusions">Conclusions</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/sigma">Sigma</a>
+
+  <a class="tag-link" href="/tags/detection">Detection</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Detection Engineering
+            </h1>
+            
+          
+
+        
+
+
+
+	
+<div class="mynotices note">
+  <div heading="  "><p>This post accompanies the presentation <a href="https://present.velocidex.com/presentations/2024-auscert-detection_engineering/index.html" target="_blank" >Advances in Detection Engineering</a> presented at the annual <a href="https://conference.auscert.org.au/program/" target="_blank" >Auscert 2024 Conference</a> on the 24th May 2024</p>
+</div>
+</div>
+
+
+<p>As defenders, we rely on having an efficient and effective detection
+capabilities so we can shut down attacks quickly before the damage is
+done. To do this effectively, defenders rely on automated detection,
+driven by specific rules. While there are many detection platforms
+available with different ways of writing rules, there is a lot of
+commonality in the type of rules that are needed for effective
+detection - this new discipline is called &ldquo;Detection Engineering&rdquo;.</p>
+<h2 id="what-is-detection-engineering">What is Detection Engineering?</h2>
+<p>While intrusion detection systems and tools have always been in use in
+the enterprise space, it has only been a recent realization that tools
+alone are not sufficient for effective detection. Organizations must
+dedicate resources and expertise to specialists in tuning and
+architecting effective detection system.</p>
+<p>The discipline of <code>Detection Engineering</code> is a science of writing,
+maintaining and testing detection rules and systems against an
+evolving threat landscape. It is now considered an important integral
+part for an effective and mature security program.</p>
+<p>This blog post discusses some of the challenges in testing and
+maintaining detection rules, specifically Sigma rules. We also cover
+some emerging scenarios where detection engineering can be employed,
+such as in Forensic Triage and wider Threat Hunting.</p>
+<h2 id="traditional-siem-based-detection">Traditional SIEM based detection</h2>
+<p>Traditionally detection focuses on event logs as the main source of
+information. Event logs are parsed and shipped from the endpoints to a
+central data mining server where queries are run over the data.</p>
+<p>For example, using the ELK stack, the Winlogbeats endpoint agent:</p>
+<ol>
+<li>
+<p>Parses certain raw event logs on the endpoint (For example Sysmon
+event log)</p>
+</li>
+<li>
+<p>Applies normalization of fields (mostly renaming fields) to the
+Elastic Common Schema (ECS).</p>
+</li>
+<li>
+<p>Forwards events to an Elastic Cluster.</p>
+</li>
+<li>
+<p>Queries are run on the Elastic cluster using a specialized query
+language to detect anomalies.</p>
+</li>
+</ol>
+<p>Other stacks collect different sources, implement different
+normalization process and have different query languages and dialects.</p>
+<p>When comparing various detection technologies we can see that although
+the basic principals are similar (collect logs, normalize logs into a
+schema, forward to data mining system and then query the data) the
+specifics are very different.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-05-09-detection-engineering/edr_env_.svg" alt=""
+         class="inline"
+         height="878.888889"
+         width="1425.555556"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="edr_env.svg"><i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="the-sigma-rule-format">The Sigma Rule format</h2>
+<p>Because each system is different, it is difficult to exchange
+detection rules within the community. For example an Elastic query
+might apply to those running the ELK stack but will not be applicable
+to those running Splunk or another system.</p>
+<p>The <code>Sigma</code> standard was designed to try to address the situation by
+creating another layer of abstraction over the actual detection stack,
+in order to facilitate rule exchange. The hope is that rules can be
+immediately usable across different detection stacks.</p>
+<p>This is achieved by defining an abstract YAML based format for writing
+detection rules. These rules are then fed to specialized <code>Sigma Compilers</code> to produce stack specific queries for difference SIEM
+vendors.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-05-09-detection-engineering/sigma_architecture_.svg" alt=""
+         class="inline"
+         height="1295.3333333333335"
+         width="1032.2222222222222"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="sigma_architecture.svg"><i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Sigma addresses the differences between the detection stacks by
+introducing abstractions at various levels:</p>
+<ul>
+<li>
+<p>The differences in internal Schema normalization is addressed by
+abstracting field names. Rather than selecting a standard, well
+defined taxonomy of field names, Sigma leaves the precise fields
+allowed within a rule to the Sigma Compiler <code>Field Mapping</code>
+configuration.</p>
+</li>
+<li>
+<p>Different detection stacks collect different event logs. However,
+instead of specifying the precise event logs a rule applies to,
+Sigma defines an abstract <code>log source</code> which is mapped to the
+concrete source using the Sigma Compiler&rsquo;s <code>Log Source Mappings</code>.</p>
+</li>
+</ul>
+<p>This lack of rigorous definitions leads to inaccuracies and
+compatibility problems as we shall see shortly, however let&rsquo;s first
+examine a typical <code>Sigma Rule</code>:</p>
+<pre><code class="language-yaml">logsource:
+    category: process_creation
+    product: windows
+detection:
+    process_creation:
+        EventID: 4688
+        Channel: Security
+    selection:
+        -   CommandLine|contains|all:
+                - \AppData\Roaming\Oracle
+                - \java
+                - '.exe '
+        -   CommandLine|contains|all:
+                - cscript.exe
+                - Retrive
+                - '.vbs '
+    condition: process_creation and selection
+</code></pre>
+<h3 id="log-sources">Log sources</h3>
+<p>Sigma rules are written to target certain events from particular log
+sources. The Sigma rule specifies the log source in the <code>logsource</code>
+section, breaking it by category, product and service etc.</p>
+<p>This example rule specifies that it applies on events collected from
+the <code>process_creation</code> log. But what does <code>process_creation</code> mean
+exactly?  The <a href="https://sigmahq.io/docs/basics/log-sources.html" target="_blank" >Sigma
+documentation</a> doesn&rsquo;t
+really specify what that means.</p>
+<p>Typically we can get process creation information for various sources,
+for example <code>Sysmon Event ID 1</code> is a common source of process
+creation. Similarly the Windows <code>Security Log</code> generates <code>Event ID 4688</code>. Of course we could always forward events from a local EDR or
+other security software which records process execution, but the
+rule&rsquo;s <code>logsource</code> section does not specify precisely what the event
+log actually is.</p>
+<h3 id="field-mappings">Field mappings</h3>
+<p>The above rule specifies a <code>detection</code> section. This section consists
+of a condition which when satisfied, causes the rule to fire. The
+above rule compares the command line to a number of strings. The rule
+refers to the command line using the <code>CommandLine</code> field.</p>
+<p>In practice, the event itself consists of various fields, but the
+exact name of each field depends on the data normalization that takes
+place at the sensor level. For example Elastic Common Schema
+<a href="https://www.elastic.co/guide/en/ecs/current/ecs-process.html#field-process-command-line" target="_blank" >normalizes</a>
+the <code>CommandLine</code> field to <code>process.command_line</code> in the ECS Schema.</p>
+<p>Therefore <code>Sigma</code> uses a target-specific translation between abstract
+Sigma fields to the actual field in the event record in the target
+SIEM. This translation is called <code>Field Mapping</code> and depends on the
+target detection stack used and its event normalization (and to some
+extent its own configuration).</p>
+<h3 id="using-sigma-rules-effectively">Using Sigma Rules effectively</h3>
+<p>When using <code>Sigma rules</code> in practice, there are many false
+positive. Usually the rules need to be tailored for the
+environment. For example, in some environments running <code>PsExec</code> is a
+common practice between system administrators and so alerting on
+lateral movement using <code>PsExec</code> is going to be a false positive.</p>
+<p>The detection engineer&rsquo;s main challenge is to understand what rules
+can be ignored and how they can be bypassed. This takes a lot of
+practice and experience.</p>
+<p>Consider the following <a href="https://github.com/Yamato-Security/hayabusa-rules/blob/dfcce330da37d49610f63f7923ba54dc5d930c9a/hayabusa/builtin/System/Sys_7045_Med_LateralMovement-PSEXEC.yml" target="_blank" >Sigma
+rule</a>
+excerpt:</p>
+<pre><code class="language-yaml">title: PSExec Lateral Movement
+logsource:
+    product: windows
+    service: system
+detection:
+    selection:
+        Channel: System
+        EventID: 7045
+    selection_PSEXESVC_in_service:
+        Service: PSEXESVC
+    selection_PSEXESVC_in_path:
+        ImagePath|contains: PSEXESVC
+    condition: selection and (selection_PSEXESVC_in_service or selection_PSEXESVC_in_path)
+</code></pre>
+<p>This rule detects when a new service is created with the name
+<code>PSEXESVC</code> or a service is created with that name included in the path.
+While this is the default behavior of <code>PsExec</code> it is trivial to bypass this
+rule. Viewing the <a href="https://learn.microsoft.com/en-us/sysinternals/downloads/psexec" target="_blank" >PsExec
+Documentation</a>
+we can see that the <code>-r</code> flag can change this service name to anything
+while the filename itself can be changed as well.</p>
+<p>An experienced detection engineer will recognize that better telemetry
+can help detect when a program is renamed by using the
+<code>OriginalFileName</code> field from Sysmon&rsquo;s process execution logs with <a href="https://github.com/SigmaHQ/sigma/blob/6412c1a02bb60e631c6d341f6fc41d6f3c507f98/rules/windows/process_creation/proc_creation_win_renamed_binary_highly_relevant.yml" target="_blank" >the following rule</a> excerpt:</p>
+<pre><code class="language-yaml">title: Potential Defense Evasion Via Rename Of Highly Relevant Binaries
+author: Matthew Green - @mgreen27, Florian Roth (Nextron Systems), frack113
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+      - Description: 'Execute processes remotely'
+      - Product: 'Sysinternals PsExec'
+      - OriginalFileName:
+          - 'psexec.exe'
+</code></pre>
+<p>This is an excellent example where additional information (in the form
+of the executable&rsquo;s <code>VersionInformation</code> resource) gathered from the
+endpoint can help improve detection efficiency significantly. We will
+see below how adding more details to the collected data (perhaps
+beyond the event log itself) can vastly improve the quality and
+fidelity of detection rules.</p>
+<p>As a second example, let&rsquo;s explore the use of hashes in detection
+rules. Consider the <a href="https://github.com/SigmaHQ/sigma/blob/6412c1a02bb60e631c6d341f6fc41d6f3c507f98/deprecated/windows/driver_load_win_vuln_lenovo_driver.yml" target="_blank" >following
+rule</a>
+excerpt which detects the loading of a known vulnerable driver:</p>
+<pre><code class="language-yaml">title: Vulnerable Lenovo Driver Load
+author: Florian Roth (Nextron Systems)
+logsource:
+    category: driver_load
+        product: windows
+detection:
+    selection_sysmon:
+        Hashes|contains:
+        - 'SHA256=F05B1EE9E2F6AB704B8919D5071BECBCE6F9D0F9D0BA32A460C41D5272134ABE'
+        - 'SHA1=B89A8EEF5AEAE806AF5BA212A8068845CAFDAB6F'
+        - 'MD5=B941C8364308990EE4CC6EADF7214E0F'
+    selection_hash:
+        - sha256: 'f05b1ee9e2f6ab704b8919d5071becbce6f9d0f9d0ba32a460c41d5272134abe'
+        - sha1: 'b89a8eef5aeae806af5ba212a8068845cafdab6f'
+        - md5: 'b941c8364308990ee4cc6eadf7214e0f'
+    condition: 1 of selection*
+</code></pre>
+<p>Attackers often load vulnerable drivers so they can exploit them to
+gain access to kernel space. While it is well known that hashes are
+usually a weak signal (because the attacker can trivially change the
+file) in the case of loaded drivers, the driver must be signed to be
+successfully inserted into the kernel.</p>
+<p>This had led to a misconception that driver files cannot be
+modified - otherwise their digital signature will be invalidated
+making them unable to be loaded into the kernel.</p>
+<p>Unfortunately this is not true - a signed binary file
+can easily be modified in such as a way that it&rsquo;s authenticode hash
+(which is signed) remains the same but its file hash changes. This is
+because a file hash covers the entire file, while the authenticode
+hash only covers selected regions of the binary. It is very easy to
+modify a binary in those regions which are not covered by the
+authenticode hash (usually some padding areas towards the end of the
+file) while retaining its authenticode hash.</p>
+<p>An experienced detection engineer is aware of this shortcoming and
+would not use hashes directly in a Sigma rule. Instead <a href="https://github.com/SigmaHQ/sigma/blob/6412c1a02bb60e631c6d341f6fc41d6f3c507f98/rules/windows/driver_load/driver_load_win_vuln_hevd_driver.yml" target="_blank" >the following
+rule</a>
+may be used:</p>
+<pre><code class="language-yaml">title: Vulnerable HackSys Extreme Vulnerable Driver Load
+author: Nasreddine Bencherchali (Nextron Systems)
+logsource:
+    product: windows
+    category: driver_load
+detection:
+    selection_name:
+        ImageLoaded|endswith: '\HEVD.sys'
+    selection_sysmon:
+        Hashes|contains:
+        - 'IMPHASH=f26d0b110873a1c7d8c4f08fbeab89c5' # Version 3.0
+        - 'IMPHASH=c46ea2e651fd5f7f716c8867c6d13594' # Version 3.0
+    selection_other:
+        Imphash:
+        - 'f26d0b110873a1c7d8c4f08fbeab89c5' # Version 3.0
+        - 'c46ea2e651fd5f7f716c8867c6d13594' # Version 3.0
+    condition: 1 of selection*
+</code></pre>
+<p>This rule uses the <code>ImpHash</code> which is a hash of the import table of
+the executable. Since the import table <strong>is</strong> covered within the
+authenticode hash it is not possible to modify the binary in such a
+way that its digital signature remains valid while the <code>ImpHash</code>
+changes.</p>
+
+<div class="mynotices note">
+  <div heading=" Sysmon Hash Reporting "><p>Sadly Sysmon currently does not report the <strong>Authenticode Hash</strong> of
+the binary which would be ideal as it can not be changed without
+invalidating the signature and covers all the important parts of the
+executable file. Currently Sysmon only reports file hashes (which are
+easily changed) and <code>ImpHash</code> which can be easily changed as well
+but will invalidate signature.</p>
+</div>
+</div>
+
+
+<h2 id="sigma-shortcomings">Sigma shortcomings</h2>
+<p>While Sigma rules are supposed to be directly usable between detection
+stacks, by simply changing the compiler backend. However this is rarely the
+case.  Because the Sigma standard is not well specified and lacks a
+common taxonomy it is difficult to use a rule designed to operate on
+the output of Sysmon event logs with a detection stack that only uses
+System logs or EDR logs.</p>
+<p>For example, in the above example rule, we see that the rule requires
+the <code>Channel</code> to match <code>Security</code> and the <code>EventID</code> to match <code>4688</code> -
+clearly this rule can only apply on the security event log
+source. Replacing the log source with Sysmon provided events (which do
+technically provide the <code>process_creation</code> log source) will simply
+never fire this rule!</p>
+
+<div class="mynotices note">
+  <div heading=" Sanitizing Sigma Rules "><p>Because the <code>logsource</code> section of the Sigma specification is not
+really specific enough, most rules have a further <code>detection</code> clause
+to better define the precise log source. Although technically it is
+not always accurate to use that clause instead of the <code>logsource</code>
+because the clause can be use in an arbitrary logical context, most of
+the time it is a filter so can be taken as a substitute for the real
+log source.</p>
+</div>
+</div>
+
+
+<p>The <code>logsource</code> section is simply redundant at best and misleading at
+worst; a user can assume the rule will detect an attack when Sysmon
+logs are available but this is simply not the case. It would be better
+if Sigma rules were less ambiguous and simply contained precise log
+source information.</p>
+<p>There is also little error checking due to a lack of precise
+taxonomy. A sigma rule can specify an unknown field that is simply not
+present in the event but there is no way to know that the rule will
+fail to match. Apart from the obvious problem of a rule specifying a
+mis-typed field, the field may not be collected at all from the
+endpoint.</p>
+<p>The example above uses the <code>CommandLine</code> field of the System event
+4688, however this is not always present! According to the <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/component-updates/command-line-process-auditing" target="_blank" >Microsoft
+Documentation</a>
+this field is only present sometimes:</p>
+<blockquote>
+<blockquote>
+<p>In order to see the additions to event ID 4688, you must enable the
+new policy setting: Include command line in process creation events.</p>
+</blockquote>
+</blockquote>
+<p>Without knowledge of the endpoint policy in the specific deployment it
+is impossible to know if this rule will ever fire.</p>
+<p>The following example rule is invalid and exists within <a href="https://github.com/SigmaHQ/sigma/blob/6412c1a02bb60e631c6d341f6fc41d6f3c507f98/rules/windows/create_remote_thread/create_remote_thread_win_susp_uncommon_source_image.yml" target="_blank" >the official
+Sigma repository</a>:</p>
+<pre><code>title: Remote Thread Creation By Uncommon Source Image
+logsource:
+    product: windows
+    category: create_remote_thread
+detection:
+    create_remote_thread:
+        EventID: 8
+        Channel: Microsoft-Windows-Sysmon/Operational
+    selection:
+        SourceImage|endswith:
+            - \bash.exe
+            - \cscript.exe
+            ...
+            - \wmic.exe
+            - \wscript.exe
+    filter_main_winlogon_1:
+        SourceImage: C:\Windows\System32\winlogon.exe
+        TargetImage:
+            - C:\Windows\System32\services.exe
+            - C:\Windows\System32\wininit.exe
+            - C:\Windows\System32\csrss.exe
+    filter_main_winlogon_2:
+        SourceImage: C:\Windows\System32\winlogon.exe
+        TargetParentImage: System
+        TargetParentProcessId: 4
+        ...
+    condition: create_remote_thread and (selection and not 1 of filter_main_* and
+        not 1 of filter_optional_*)
+</code></pre>
+<p>At first sight this looks like a good rule - It targets Sysmon process
+execution logs (EventID 8) using a channel detection section (the
+<code>logsource</code> section is as usual meaningless and should be
+ignored). However on very close examination we can see this rule
+references the fields <code>TargetParentProcessId</code> and
+<code>TargetParentImage</code>. Consulting the <a href="https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon#event-id-8-createremotethread" target="_blank" >Sysmon
+Documentation</a>
+we can see that there is no such field in the Sysmon output. Therefore
+this rule will generally not work for standard Sysmon installs.</p>
+<h2 id="on-endpoint-detection">On-endpoint detection</h2>
+<p>The previously described model relies on forwarding events from the
+endpoint to a central location, where detection is actually made. This
+approach is challenging in practice:</p>
+<ol>
+<li>There is a trade-off between the volume and type of events relayed
+to the SIEM: On a typical Windows system there are hundreds of
+different event logs and event types. It is impossible to forward
+all events from the endpoint to the SIEM without increasing the
+network, storage and processing cost on the SIEM itself. A choice
+must be made of which events to forward.</li>
+<li>Some of the normalization steps taken aim to reduce the total data
+transferred by removing some redundant fields from certain
+events. We have already seen before that <code>CommandLine</code> for Event ID
+4688 is an optional field which needs to be deliberately enabled in
+practice.</li>
+</ol>
+<p>Detection capabilities are slowly migrating from a purely centralized
+detection engine that processes forwarded events from the endpoint, to
+more endpoint-focused detection capabilities where the endpoint can
+autonomously enrich and respond to detection events. This allows the
+endpoint to triage the events by applying detection rules on the
+endpoint directly. Therefore only high value events are forwarded to
+the SIEM.</p>
+<h2 id="case-study-velociraptor">Case study: Velociraptor</h2>
+<p>Velociraptor is a powerful endpoint incident response and triaging
+tool. At its core, Velociraptor uses the Velociraptor Query Languages
+(VQL) to perform flexible triaging on the endpoint.</p>
+<p>Recently, Velociraptor gained a native <code>sigma()</code> plugin, allowing the
+endpoint agent to directly evaluate Sigma rules. A VQL artifact is
+sent to the endpoint over the network containing several main
+sections:</p>
+<ol>
+<li>A set of <code>Sigma</code> rules to evaluate</li>
+<li>A list of <code>logsource</code> queries to evaluate directly from the on disk
+event log files.</li>
+<li>A mapping between Sigma rules and their corresponding event fields.</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-05-09-detection-engineering/velociraptor_sigma_flow_.svg" alt="Velociraptor Sigma Workflow"
+         class="inline"
+         height="525.4545454545455"
+         width="1082.383226927995"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="velociraptor_sigma_flow.svg"><i class="fa fa-download"></i></a>
+    Velociraptor Sigma Workflow
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="velociraptor-curated-rules">Velociraptor curated rules</h2>
+<p>As described previously, it is difficult to directly use <code>Sigma</code> rules
+without careful verification. The <a href="https://sigma.velocidex.com/" target="_blank" >Velociraptor Sigma
+Project</a> implements a Velociraptor
+artifact compiler which builds a VQL Artifact with a curated and
+verified set of rules.</p>
+<p>The compiler verifies the following things</p>
+<ol>
+<li>
+<p>Many rules do not have accurate <code>logsource</code> sections but instead
+specify the event log to be read in their first detection
+clause. Therefore the compiler overrides the <code>logsource</code> with a
+more accurate source based on the <code>detection</code> clause.</p>
+</li>
+<li>
+<p>The compiler compares the known set of event fields to the set of
+fields specified in the Sigma rule and flags any rules which refer
+to unknown fields.</p>
+</li>
+<li>
+<p>Remove rules with non-standard or unsupported Sigma modifiers.</p>
+</li>
+</ol>
+<p>The Velociraptor Sigma project curates a number of rule sets from
+sources such as:</p>
+<ul>
+<li><a href="https://github.com/Yamato-Security/hayabusa-rules" target="_blank" >Hayabusa</a> is a
+project to maintain Sigma rules for on endpoint analysis. Hayabusa is
+also a standalone engine to match the Sigma rules on the endpoint&rsquo;s
+event logs (similar to Velociraptor&rsquo;s <code>sigma()</code> plugin)</li>
+<li><a href="https://github.com/WithSecureLabs/chainsaw" target="_blank" >ChainSaw</a> is a
+repository of Sigma rules with more of a focus on Linux systems.</li>
+<li><a href="https://github.com/SigmaHQ/sigma/" target="_blank" >SigmaHQ</a> is the official rule
+repository of the Sigma project. These rules are cleaned up,
+corrected and included into the Hayabusa project rule sets.</li>
+</ul>
+<h2 id="using-on-endpoint-detection-for-incident-response-triage">Using on-endpoint detection for Incident Response Triage</h2>
+<p>Traditional SIEM based detection has to balance a number of tradeoffs
+like volume of logs collected, and number of false positives to reduce
+SIEM analyst&rsquo;s churn.</p>
+<p>However, Incident Response Triaging has a different set of
+requirements. Usually the incident responder needs to understand what
+happened on the system without really knowing what is normal. When
+evaluating Sigma rules in the incident response context, it is ok to
+have more false positives in favor of exposing more possibly
+suspicious activity.</p>
+<p>In the following example I collect the <code>Velociraptor Hayabusa Ruleset</code>
+artifact from the endpoint. The ruleset is extensive and rules are
+broken down by rule level and rule status. However in this case I want
+to try out all the rules - including very noisy ones because I want to
+get an overview of what might have happened on this endpoint.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-05-09-detection-engineering/collecting_sigma_rules.png"
+         class="inline"
+         alt="Collecting the sigma artifact"
+         width="1661" height="604">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="collecting_sigma_rules.png">
+      <i class="fa fa-download"></i></a>
+    Collecting the sigma artifact
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The Hayabusa ruleset is extensive and might collect many false
+positives. In this case it took around 6 minutes to apply the rules on
+all the event log files and returned over 60k hits from about 4200
+rules.</p>
+<p>Generally it is impractical to review every single hit, so we
+typically rely on Stacking the results. Within the Velociraptor GUI I
+will stack by the Rule&rsquo;s <code>Title</code> by clicking the sort icon at the top
+of the column</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-05-09-detection-engineering/stacking_a_column.png"
+         class="inline"
+         alt="Stacking rules by title"
+         width="1210" height="466">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="stacking_a_column.png">
+      <i class="fa fa-download"></i></a>
+    Stacking rules by title
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Once the column is sorted, a stacking icon will appear next to
+it. Clicking on that icon will display the stacking dialog view. This
+view shows the different unique values of the selected column and the
+total number of items of that value. In our case it shows the total
+number of times the specific rule has fired.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-05-09-detection-engineering/viewing_column_stack.png"
+         class="inline"
+         alt="Viewing the stacking stats"
+         width="1222" height="562">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="viewing_column_stack.png">
+      <i class="fa fa-download"></i></a>
+    Viewing the stacking stats
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Clicking the icon in each row seeks the table immediately to view all
+the rows with the same <code>Title</code> value. In this case I want to quickly
+view the hits from the <code>Windows Defender Threat Detected</code> rule.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-05-09-detection-engineering/viewing_common_rows.png"
+         class="inline"
+         alt="Viewing common rows"
+         width="1200" height="373">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="viewing_common_rows.png">
+      <i class="fa fa-download"></i></a>
+    Viewing common rows
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Using this technique I can quickly review the most interesting rules
+and their corresponding hits directly in the GUI without needing to
+recalculate anything. I can see what type of potentially suspicious
+activity has taken place on the endpoint and identify outliers
+quickly - despite the high false positive rate.</p>
+<h2 id="extending-the-capabilities-of-sigma-rules">Extending the capabilities of Sigma rules</h2>
+<p>The previous section demonstrated how Sigma can be used for rapid
+triaging - The workflow is simple and effective, simply match a large
+number of rules against the on-host event log files to quickly
+identify and classify suspicious behavior.</p>
+<p>This works much better than running the Sigma rules at the SIEM
+because the SIEM does not receive all the events on the
+endpoint. Having the ability to view more event sources can improve
+our detection ability without concern for scalability of the SIEM or
+increasing the amount of uploaded event traffic between the endpoint
+and the detection platform.</p>
+<p>But can we go further? Why stop at event logs at all? Being on the
+endpoint directly actually provides access to a whole class of new data
+sources which are far beyond the simple event logs collected by the
+system. For example, we can directly examine registry keys, search for
+and parse files on the endpoint and much more.</p>
+<p>Consider the <a href="https://github.com/Velocidex/velociraptor-sigma-rules/blob/master/rules/vql/rclone.yml" target="_blank" >following Velociraptor Sigma
+rule</a>:</p>
+<pre><code class="language-yaml">title: Rclone
+logsource:
+    category: vql
+    product: windows
+
+detection:
+    selection:
+      &quot;EventData|vql&quot;:
+          x=&gt;x.Files OR x.Registry
+
+    condition: selection
+
+vql: |
+  x=&gt;dict(EventData=dict(
+    Files={
+      SELECT OSPath, Size, read_file(filename=OSPath, length=100) AS Data
+      FROM glob(globs=Path, accessor=&quot;auto&quot;)
+    },
+    Registry=to_dict(item={
+      SELECT Name AS _key, Data.value AS _value
+      FROM glob(globs=Key, accessor=&quot;registry&quot;)
+    })))
+
+vql_args:
+    Path: C:\Users\*\AppData\Roaming\rclone\rclone.conf
+    Key: HKEY_USERS\*\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\Store\*rclone*
+</code></pre>
+<p>This rule uses the special <code>logsource</code> of type <code>vql</code> which allows the
+event to be generated by running arbitrary VQL queries. In this case
+the query looks at both the presence of a registry key <strong>or</strong> the
+presence of a configuration file on the endpoint. If either of these
+artifacts exist, the rule matches. Note that this rule goes above and
+beyond event logs to directly look at system configuration.</p>
+<p>Velociraptor has traditionally been used to collect forensic artifacts
+for manual inspection. The ability to write detection rules against
+forensic artifacts allows us to quickly triage the endpoint without
+manually reviewing the forensic artifacts.</p>
+<ul>
+<li>Forensic artifacts paint the picture of <strong>what happened on the
+endpoint</strong> in as much detail as possible.</li>
+<li>Sigma rules quickly flag the obvious things on the endpoint <strong>which
+are known to be bad</strong>.</li>
+</ul>
+<p>Therefore Forensic Sigma rules help to rapidly triage forensic
+findings, they do not replace those but work in tandem with the
+collection and analysis of forensic artifacts.</p>
+<h2 id="real-time-sigma-alerting">Real Time Sigma alerting</h2>
+<p>Velociraptor&rsquo;s VQL language is fully asynchronous and can watch for
+changes on the endpoint in real time. In Velociraptor&rsquo;s terminology we
+can write <a href="/docs/clients/monitoring/">Event Monitoring Queries</a>.</p>
+<p>Rather than parsing event log files as log sources for Sigma rule
+matching, we can tweak the VQL slightly to feed real time events into
+the Sigma rule matching. This allows us to apply Sigma rules on log
+sources in real time - in effect creating real time detection rules.</p>
+<p>The <code>Velociraptor Hayabusa Live Detection</code> option in the Curated
+import artifact will import an event monitoring version of the same
+curated Sigma rules. I can configure the artifact in the usual way.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-05-09-detection-engineering/configuring_monitoring.png"
+         class="inline"
+         alt="Configuring the Monitoring Sigma detection artifact"
+         width="1251" height="611">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="configuring_monitoring.png">
+      <i class="fa fa-download"></i></a>
+    Configuring the Monitoring Sigma detection artifact
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>This time the endpoint will forward detection events to the server in
+real time.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-05-09-detection-engineering/live_sigma_detection.png"
+         class="inline"
+         alt="Live detection of Sigma rules"
+         width="2126" height="677">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="live_sigma_detection.png">
+      <i class="fa fa-download"></i></a>
+    Live detection of Sigma rules
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>In the above I can see immediately suspicious use of <code>PSExec</code> in real
+time!</p>
+<h2 id="conclusions">Conclusions</h2>
+<p>This blog post explores the discipline of <code>Detection Engineering</code>. Although this is not a new idea - people have been
+refining and analysing detection rules since intrusion detection
+systems were invented. By treating detection engineering as an art and
+a science and dedicating specialist roles to it within an
+organization, we can encourage and support this important role.</p>
+<p>Detection Engineering is about maximizing detection efficacy given the
+limitations of existing detection systems. We discussed the common
+event collection feeding into a central SIEM architecture and how to
+write detection rules for this architecture.</p>
+<p>The Sigma rule format was designed to abstract the specifics of the
+detection stack by presenting an abstract rule language. The hope was
+that rules can be easily interchanged between different detection
+stacks and so could be easily shared within the detection community.</p>
+<p>However in practice the lack of rigor and well defined taxonomy in
+Sigma makes porting rules between detection stacks error prone and
+manual. Detection Engineers need to scrutinize rules to determine if
+they are likely to work within their own environment. We discuss some
+of the pitfalls to watch for when scrutinizing Sigma rules. We also
+discussed how detection engineers can assess if a Sigma rule is
+fragile and how it can be strengthened by utilizing more detailed log
+sources.</p>
+<p>Next we explored how Sigma rules can be applied on the endpoint itself
+to access more log sources than are typically shipped to the SIEM. By
+evaluating the rules directly on the endpoint, it is possible to use
+Sigma rules for incident response triage purposes. I then demonstrate
+the process of triage via Sigma rules using Velociraptor&rsquo;s built in
+Sigma support and the Hayabusa ruleset by using stacking to rapidly
+zero in on the suspicious activity.</p>
+<p>How can we further improve detection efficacy? Why restrict ourselves
+to event logs? Velociraptor&rsquo;s Sigma engine can use arbitrary VQL to
+generate events from sources like registry keys, paths and many other
+forensic artifacts. This allows detection rules to have unprecedented
+reach.</p>
+<p>Finally we looked at utilizing Sigma rules with real time event queries
+allowing Velociraptor to alert in real time when Sigma rules match,
+instead of having to post process events from the event log file.</p>
+<p>If you like to try Sigma in Velociraptor, take <a href="https://github.com/Velocidex/velociraptor" target="_blank" >Velociraptor for a
+spin</a>!  It is available on
+GitHub under an open source license. As always please file issues on
+the bug tracker or ask questions on our mailing list
+<a href="mailto:velociraptor-discuss@googlegroups.com" target="_blank" >velociraptor-discuss@googlegroups.com</a>
+. You can also chat with us directly on discord
+<a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord</a>
+.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847308"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847308"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847308"></script>
+    <script src="/js/jquery.sticky.js?1774847308"></script>
+    <script src="/js/featherlight.min.js?1774847308"></script>
+    <script src="/js/highlight.min.js?1774847308"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847308"></script>
+    <script src="/js/learn.js?1774847308"></script>
+    <script src="/js/hugo-learn.js?1774847308"></script>
+    
+    
+
+  </body>
+</html>

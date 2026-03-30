@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Windows.Veeam.RestorePoints.MetadataFiles :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847311" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847311" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847311" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847311" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847311" rel="stylesheet">
+    <link href="/css/theme.css?1774847311" rel="stylesheet">
+    <link href="/css/tabs.css?1774847311" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847311" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847311" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847311" rel="stylesheet"><link href="/css/syntax.css?1774847311" rel="stylesheet"><link href="/css/light.css?1774847311" rel="stylesheet"><link href="/css/hljs.css?1774847311" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847311" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847311"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/exchange/artifacts/pages/windows.veeam.restorepoints.metadatafiles/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/exchange\/artifacts\/pages\/windows.veeam.restorepoints.metadatafiles\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/exchange/artifacts/Windows.Veeam.RestorePoints.MetadataFiles.yaml" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Windows.Veeam.RestorePoints.MetadataFiles</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents"></nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Windows.Veeam.RestorePoints.MetadataFiles
+            </h1>
+            
+          
+
+        
+
+
+<p>Parses the metadata found in Veeam backup chain metadata files (<code>.vbm</code>) to extract relevant fields for each Restore Point.</p>
+<p>These files are generated by Veeam Backup &amp; Replication during backup jobs. This artifact accepts metadata from <strong>unencrypted</strong> backups of virtual and physical infrastructures.</p>
+<pre><code class="language-yaml">
+name: Windows.Veeam.RestorePoints.MetadataFiles
+
+description: |
+  Parses the metadata found in Veeam backup chain metadata files (`.vbm`) to extract relevant fields for each Restore Point.
+  
+  These files are generated by Veeam Backup &amp; Replication during backup jobs. This artifact accepts metadata from **unencrypted** backups of virtual and physical infrastructures.
+
+author: Synacktiv, Maxence Fossat - @cybiosity
+
+reference:
+  - https://www.synacktiv.com/publications/using-veeam-metadata-for-efficient-extraction-of-backup-artefacts-13
+
+type: CLIENT
+
+precondition: SELECT OS FROM info() WHERE OS = 'windows'
+
+parameters:
+  - name: BackupRepositories
+    description: List of Backup Repositories where ".vbm" files should be looked for.
+    type: csv
+    default: |
+      BackupRepoPath
+      C:/BackupRepo1
+      D:/BackupRepo2
+
+required_permissions:
+  - FILESYSTEM_READ
+
+sources:
+  - query: |
+      // ============================
+      // === Formatting functions ===
+      // ============================
+      
+      // Function to format XML properties
+      LET format_properties(Properties) = to_dict(item={ 
+          SELECT AttrName AS _key,
+                 Value AS _value
+            FROM Properties
+      })
+
+      // Function to format disk_info capacity for HvAuxData
+      LET hv_disk_capacity(Disks) = to_dict(item= {
+          SELECT disk_info.CHvVmRctIdentifier.AttrFileId AS _key,
+                 disk_info.Attrcapacity AS _value
+            FROM Disks
+      })
+
+      // Function to format disk_info sizes for HvAuxData
+      LET hv_disk_size(Disks) = to_dict(item= {
+          SELECT disk_info.extent.Attrfilename AS _key,
+                 disk_info.extent.Attrsize AS _value
+            FROM Disks
+      })
+      
+      // Function to format CRawDiskInfo sizes for HvAuxData
+      LET hv_raw_disk_size(RawDisks) = to_dict(item= {
+          SELECT CRawDiskInfo.SourceFileName AS _key,
+                 CRawDiskInfo.ValidProcessedOffset AS _value
+            FROM RawDisks
+      })
+      
+      // Function to format Disk capacity for DesktopOibAuxData
+      LET desktop_disk_capacity(Disks) = to_dict(item= {
+          SELECT DevSetupInfo.AttrDevPath AS _key,
+                 Capacity AS _value
+            FROM Disks
+      })
+      
+      // Function to format Disk sizes for DesktopOibAuxData
+      LET desktop_disk_size(Disks) = to_dict(item= {
+          SELECT OriginalDiskUniqueId AS _key,
+                 Capacity AS _value
+            FROM Disks
+      })
+      
+      // Function to format Disk capacity for COibAuxDataVmware
+      LET vmware_disk_capacity(Disks) = to_dict(item= {
+          SELECT `Uuid` AS _key,
+                 Capacity AS _value
+            FROM Disks
+      })
+      
+      // Function to format Disk sizes for COibAuxDataVmware
+      LET vmware_disk_size(Disks) = to_dict(item= {
+          SELECT FlatFileName AS _key,
+                 ValidProcessedOffset AS _value
+            FROM Disks
+      })
+      
+      // Restore Point type
+      LET restore_point_type = dict(
+          `0`='Full',
+          `1`='Increment'
+      )
+      
+      // Backup encryption state
+      LET back_enc_state = dict(
+          `0`='Unencrypted',
+          `2`='Encrypted'
+      )
+
+
+
+
+      // ========================
+      // === Initial parsing ====
+      // ========================
+      
+      // Parsing XML for each Veeam backup chain metadata file
+      LET backup_repos = SELECT BackupRepoPath FROM BackupRepositories
+      LET xml = SELECT * FROM foreach(row=backup_repos,
+          query={
+              SELECT Name AS MetadataFile, 
+                     parse_xml(file=OSPath) AS Metadata
+                FROM glob(globs='/**/*.vbm', root=BackupRepoPath, accessor='auto')
+          })
+      
+      // Extracting interesting fields from the parsed metadata
+      LET metadata = SELECT MetadataFile,
+             Metadata.BackupMeta.BackupMetaInfo.Oibs.OIB AS ObjectsInBackup,
+             Metadata.BackupMeta.BackupMetaInfo.Objects.Object AS Objects,
+             Metadata.BackupMeta.BackupMetaInfo.Hosts.Host AS Hosts,
+             Metadata.BackupMeta.BackupMetaInfo.Storages.Storage AS Storages,
+             Metadata.BackupMeta.BackupMetaInfo.Points.Point AS RestorePoints,
+             Metadata.BackupMeta.Backup AS Backups
+        FROM xml
+      
+
+      
+
+      // =========================      
+      // === Objects In Backup ===
+      // =========================
+      
+      // Expanding each Object In Backup (OIB) for each vbm file
+      LET oibs = SELECT * FROM foreach(row=metadata,
+          query={
+              SELECT MetadataFile, Objects, Hosts, Storages, RestorePoints, Backups,
+                     _value.AttrDisplayName AS DisplayName,
+                     _value.AttrVmName AS VMName,
+                     _value.AttrState AS State,
+                     _value.AttrType AS Type,
+                     _value.AttrAlgorithm AS Algorithm,
+                     _value.AttrHealthStatus AS HealthStatus,
+                     _value.AttrHasIndex AS HasIndex,
+                     _value.AttrHasExchange AS HasExchange,
+                     _value.AttrHasSharePoint AS HasSharePoint,
+                     _value.AttrHasSql AS HasSQL,
+                     _value.AttrHasAd AS HasAD,
+                     _value.AttrHasOracle AS HasOracle,
+                     _value.AttrHasPostgreSql AS HasPostgreSQL,
+                     _value.AttrHasVeeamArchiver AS HasVeeamArchiver,
+                     _value.AttrIsCorrupted AS IsCorrupted,
+                     _value.AttrIsRecheckCorrupted AS IsRecheckCorrupted,
+                     _value.AttrIsConsistent AS IsConsistent,
+                     _value.AttrNeedHealthCheckRepair AS NeedHealthCheckRepair,
+                     _value.AttrIsPartialActiveFull AS IsPartialActiveFull,
+                     _value.AttrProductVersion AS ProductVersion,
+                     _value.AttrProductVersionFlags AS ProductVersionFlags,
+                     _value.AttrProductIsRentalLicense AS ProductIsRentalLicense,
+                     _value.AttrObjectId AS ObjectID,
+                     _value.AttrStorageId AS StorageID,
+                     _value.AttrPointId AS RestorePointID,
+                     _value.AttrEffectiveMemoryMb AS TempMemory,
+                     timestamp(string=_value.AttrCreationTimeUtc) AS CreationTimeUTC,
+                     timestamp(string=_value.AttrCompletionTimeUtc) AS CompletionTimeUTC,
+                     humanize(bytes=int(int=_value.AttrApproxSize)) AS ApproximateSize,
+                     parse_xml(file=_value.AttrAuxData, accessor='data').COibAuxData AS AuxData,
+                     format_properties(
+                            Properties = parse_xml(file=_value.AttrGuestInfo, accessor='data').GuestInfo.Property
+                         ) AS GuestInfo
+                FROM foreach(row=ObjectsInBackup)
+          })
+      
+      // Correlating OIBs with Objects information
+      LET oibs_objects = SELECT * FROM foreach(row=oibs,
+          query={
+              SELECT MetadataFile, Hosts, Storages, RestorePoints, Backups, DisplayName, VMName, State, Type, Algorithm, HealthStatus, HasIndex, HasExchange, HasSharePoint, HasSQL, HasAD, HasOracle, HasPostgreSQL, HasVeeamArchiver, IsCorrupted, IsRecheckCorrupted, IsConsistent, NeedHealthCheckRepair, IsPartialActiveFull, ProductVersion, ProductVersionFlags, ProductIsRentalLicense, StorageID, RestorePointID, CreationTimeUTC, CompletionTimeUTC, ApproximateSize,
+                     format(format='%d MiB',
+                         args = int(int=TempMemory) || int(int=AuxData.DesktopOibAuxData.SystemConfiguration.RAMInfo.AttrTotalSizeMB))
+                      AS Memory,
+                     hv_disk_capacity(Disks=AuxData.HvAuxData.disks.disk)
+                       + desktop_disk_capacity(Disks=AuxData.DesktopOibAuxData.Disk)
+                       + vmware_disk_capacity(Disks=AuxData.COibAuxDataVmware.Disk)
+                       AS DisksCapacity,
+                     hv_disk_size(Disks=AuxData.HvAuxData.disks.disk)
+                       + hv_raw_disk_size(RawDisks=AuxData.HvAuxData.raw_disks.CRawDiskBackupObject)
+                       + desktop_disk_size(Disks=AuxData.DesktopOibAuxData.Disk)
+                       + vmware_disk_size(Disks=AuxData.COibAuxDataVmware.Disk)
+                       AS ExtractableFilesSize,
+                     GuestInfo.GuestOsName AS GuestOSName,
+                     GuestInfo.GuestOsType AS GuestOSType,
+                     GuestInfo.DnsName AS GuestDNSName,
+                     GuestInfo.`Ip` AS GuestIP,
+                     GuestInfo.ToolsStatus AS GuestToolsStatus,
+                     GuestInfo.ToolsVersionStatus AS GuestToolsVersionStatus,
+                     _value.AttrViType || 'Physical machine' AS VirtualType,
+                     _value.AttrName AS ExtractName,
+                     _value.AttrObjectId AS ExtractID,
+                     _value.AttrHostId AS HostID
+                FROM foreach(row=Objects) WHERE _value.AttrId = ObjectID
+          })
+      
+      // Correlating OIBs with Hosts information
+      LET oibs_hosts = SELECT * FROM foreach(row=oibs_objects,
+          query={
+              SELECT MetadataFile, Storages, RestorePoints, Backups, DisplayName, VMName, State, Type, Algorithm, HealthStatus, HasIndex, HasExchange, HasSharePoint, HasSQL, HasAD, HasOracle, HasPostgreSQL, HasVeeamArchiver, IsCorrupted, IsRecheckCorrupted, IsConsistent, NeedHealthCheckRepair, IsPartialActiveFull, ProductVersion, ProductVersionFlags, ProductIsRentalLicense, StorageID, RestorePointID, CreationTimeUTC, CompletionTimeUTC, ApproximateSize, Memory, DisksCapacity, ExtractableFilesSize, GuestOSName, GuestOSType, GuestDNSName, GuestIP, GuestToolsStatus, GuestToolsVersionStatus, VirtualType, ExtractName, ExtractID,
+                     _value.AttrName AS HostName,
+                     _value.AttrHostInstanceId AS HostInstanceID
+                FROM foreach(row=Hosts) WHERE _value.AttrId = HostID
+          })
+    
+      // Correlating OIBs with Storages information
+      LET oibs_storages = SELECT * FROM foreach(row=oibs_hosts,
+          query={
+              SELECT MetadataFile, RestorePoints, Backups, DisplayName, VMName, State, Type, Algorithm, HealthStatus, HasIndex, HasExchange, HasSharePoint, HasSQL, HasAD, HasOracle, HasPostgreSQL, HasVeeamArchiver, IsCorrupted, IsRecheckCorrupted, IsConsistent, NeedHealthCheckRepair, IsPartialActiveFull, ProductVersion, ProductVersionFlags, ProductIsRentalLicense, RestorePointID, CreationTimeUTC, CompletionTimeUTC, ApproximateSize, Memory, DisksCapacity, ExtractableFilesSize, GuestOSName, GuestOSType, GuestDNSName, GuestIP, GuestToolsStatus, GuestToolsVersionStatus, VirtualType, ExtractName, ExtractID, HostName, HostInstanceID,
+                     parse_xml(file=_value.AttrPartialPath, accessor='data').Path.Elements AS BackupFile,
+                     _value.AttrFilePath AS BackupFilePath,
+                     parse_xml(file=_value.AttrStats, accessor='data').CBackupStats AS Stats
+                FROM foreach(row=Storages) WHERE _value.AttrId = StorageID
+          })
+          
+      // Correlating OIBs with Restore Points information
+      LET oibs_points = SELECT * FROM foreach(row=oibs_storages,
+          query={
+              SELECT MetadataFile, Backups, DisplayName, VMName, State, Type, Algorithm, HealthStatus, HasIndex, HasExchange, HasSharePoint, HasSQL, HasAD, HasOracle, HasPostgreSQL, HasVeeamArchiver, IsCorrupted, IsRecheckCorrupted, IsConsistent, NeedHealthCheckRepair, IsPartialActiveFull, ProductVersion, ProductVersionFlags, ProductIsRentalLicense, CreationTimeUTC, CompletionTimeUTC, ApproximateSize, Memory, DisksCapacity, ExtractableFilesSize, GuestOSName, GuestOSType, GuestDNSName, GuestIP, GuestToolsStatus, GuestToolsVersionStatus, VirtualType, ExtractName, ExtractID, HostName, HostInstanceID, BackupFile, BackupFilePath,
+                     Stats.BackupSize AS BackupSize,
+                     Stats.DataSize AS DataSize,
+                     Stats.DedupRatio AS DeduplicationRatio,
+                     Stats.CompressRatio AS CompressionRatio,
+                     split(string=_value.AttrNum, sep='\\.')[0] AS RestorePointNumber,
+                     restore_point_type[_value.AttrType] AS RestorePointType,
+                     _value.AttrBackupId AS BackupID
+                FROM foreach(row=RestorePoints) WHERE _value.AttrId = RestorePointID
+          })
+          
+      // Correlating OIBs with Backups information
+      LET oibs_backups = SELECT * FROM foreach(row=oibs_points,
+          query={
+              SELECT MetadataFile, DisplayName, VMName, State, Type, Algorithm, HealthStatus, HasIndex, HasExchange, HasSharePoint, HasSQL, HasAD, HasOracle, HasPostgreSQL, HasVeeamArchiver, IsCorrupted, IsRecheckCorrupted, IsConsistent, NeedHealthCheckRepair, IsPartialActiveFull, ProductVersion, ProductVersionFlags, ProductIsRentalLicense, CreationTimeUTC, CompletionTimeUTC, ApproximateSize, Memory, DisksCapacity, ExtractableFilesSize, GuestOSName, GuestOSType, GuestDNSName, GuestIP, GuestToolsStatus, GuestToolsVersionStatus, VirtualType, ExtractName, ExtractID, HostName, HostInstanceID, BackupFile, BackupFilePath, BackupSize, DataSize, DeduplicationRatio, CompressionRatio, RestorePointNumber, RestorePointType,
+                     _value.AttrJobName AS JobName,
+                     _value.AttrPolicyName AS PolicyName,
+                     _value.AttrDirPath AS BackupDirectory,
+                     back_enc_state[_value.AttrEncryptionState] AS BackupEncryptionState
+                FROM foreach(row=Backups) WHERE _value.AttrId = BackupID
+          })
+
+       
+
+
+      // ===================
+      // === Final query ===
+      // ===================
+      
+      SELECT DisplayName,
+             CreationTimeUTC,
+             CompletionTimeUTC,
+             ApproximateSize,
+             DisksCapacity,
+             RestorePointNumber,
+             RestorePointType,
+             HostName,
+             HostInstanceID,
+             BackupFile,
+             BackupFilePath,
+             ExtractableFilesSize,
+             BackupSize,
+             DataSize,
+             DeduplicationRatio,
+             CompressionRatio,
+             VirtualType,
+             VMName,
+             Memory,
+             GuestOSName,
+             GuestOSType,
+             GuestDNSName,
+             GuestIP,
+             GuestToolsStatus,
+             GuestToolsVersionStatus,
+             State,
+             Type,
+             Algorithm,
+             HealthStatus,
+             HasIndex,
+             HasExchange,
+             HasSharePoint,
+             HasSQL,
+             HasAD,
+             HasOracle,
+             HasPostgreSQL,
+             HasVeeamArchiver,
+             IsCorrupted,
+             IsRecheckCorrupted,
+             IsConsistent,
+             NeedHealthCheckRepair,
+             IsPartialActiveFull,
+             ProductVersion,
+             ProductVersionFlags,
+             ProductIsRentalLicense,
+             JobName,
+             PolicyName,
+             BackupEncryptionState,
+             BackupDirectory,
+             MetadataFile,
+             ExtractName,
+             ExtractID
+        FROM oibs_backups
+
+</code></pre>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847311"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847311"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847311"></script>
+    <script src="/js/jquery.sticky.js?1774847311"></script>
+    <script src="/js/featherlight.min.js?1774847311"></script>
+    <script src="/js/highlight.min.js?1774847311"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847311"></script>
+    <script src="/js/learn.js?1774847311"></script>
+    <script src="/js/hugo-learn.js?1774847311"></script>
+    
+    
+
+  </body>
+</html>
+

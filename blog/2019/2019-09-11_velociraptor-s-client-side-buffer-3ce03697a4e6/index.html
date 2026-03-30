@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="The recent velociraptor release features a client side buffer. What does this do and how does it change the incident response field?">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Velociraptor’s client side buffer :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847307" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847307" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847307" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847307" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847307" rel="stylesheet">
+    <link href="/css/theme.css?1774847307" rel="stylesheet">
+    <link href="/css/tabs.css?1774847307" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847307" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847307" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847307" rel="stylesheet"><link href="/css/syntax.css?1774847307" rel="stylesheet"><link href="/css/light.css?1774847307" rel="stylesheet"><link href="/css/hljs.css?1774847307" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847307" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847307"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/blog/2019/2019-09-11_velociraptor-s-client-side-buffer-3ce03697a4e6/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/blog\/2019\/2019-09-11_velociraptor-s-client-side-buffer-3ce03697a4e6\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/2019/2019-09-11_velociraptor-s-client-side-buffer-3ce03697a4e6/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Velociraptor’s client side buffer</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li></li>
+        <li><a href="#what-is-a-localbuffer">What is a local buffer?</a></li>
+        <li><a href="#what-does-a-buffer-file-allows-us-todo">What does a buffer file allows us to do?</a></li>
+        <li><a href="#event-monitoring-queries">Event Monitoring queries</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Velociraptor’s client side buffer
+            </h1>
+            
+          
+
+        
+
+
+
+	<h4 id="by-mike-cohen">By Mike Cohen</h4>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1__SLf0Z8PXOXTWfjXyuTk__Xg.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>The recent <a href="https://www.velocidex.com/" target="_blank" >Velociraptor</a> <a href="https://github.com/Velocidex/velociraptor/releases" target="_blank" >release</a> (0.3.3) features a client side buffer. What does this do and how does it change Velociraptor’s approach to incident response?</p>
+<h3 id="what-is-a-localbuffer">What is a local buffer?</h3>
+<p>The Velociraptor client is really just a (Velociraptor Query Language) VQL execution engine. When collecting an artifact, the client running on the endpoint, simply executes the VQL and streams rows from the query to the server as they occur.</p>
+<p>Previously the client would attempt to upload the rows periodically to the server, and while this upload was taking place, the VQL query was paused. If the server was unavailable (for example if the endpoint was not on the internet), the VQL query simply paused until the rows could be sent.</p>
+<p>In the recent 0.3.3 release we introduced a local file buffer between the execution engine and the server communication thread. Now the Velociraptor client’s VQL engine operates independently of the communication thread, and is not paused if the server is not reachable. This is illustrated in the diagram below:</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1__6BhCwfeFhoO0Jf4UP3g25Q.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>By default the file on disk is allowed to grow to 1GB in size, but usually it is truncated to zero bytes if the client is online and communicating with the server.</p>
+<h3 id="what-does-a-buffer-file-allows-us-todo">What does a buffer file allows us to do?</h3>
+<p>Using a file on disk allows us to run the VQL query as quickly as possible. For example, some artifacts require collection of many files. Since network traffic is typically much slower than disk activity, previously we were only able to collect data at the speed at which we could send it on the network. An artifact collection could take quite some hours if there was a lot of data to upload and a slow network link.</p>
+<p>With the new system we are allowed to buffer up to 1GB of data (which also includes uploaded files) before we have to pause the query. This allows many artifacts to completely finished — even if the client is not online. Later when then client resumes connection with the server, that data can be uploaded over time — even if the network is very slow.</p>
+<h3 id="event-monitoring-queries">Event Monitoring queries</h3>
+<p>One of the differences between Velociraptor and other tools is that VQL queries allow us to build a complete monitoring and response framework.</p>
+<p>Typically EDR tools deploy sensors which collect data and feed it to a back-end system. Processes on the back-end system detect anomalous activity and respond to this either by gather more information or alerting. This long latency round trip between detection and response delays the response activity and is only possible when the client is connected and online.</p>
+<p>With the recent Velociraptor release, we can deploy monitoring VQL artifacts which simply watch the endpoint for certain events. These events can then be automatically acted upon — typically to implement response actions (e.g. kill a bad process) or to enrich the event information collected (e.g. acquire extra hashes or the binaries of suspicious files).</p>
+<p>Because the file buffer allows the VQL engine to operate even when the client is not online, VQL event monitoring queries are not interrupted and continue to work autonomously without involvement from the server.</p>
+<h4 id="example-office-macros-on-thumbdrive">Example: Office macros on thumb drive</h4>
+<p>An example of an event monitoring artifact is the <strong>Windows.Detection.Thumbdrives.List</strong> artifact. This artifact watches for any newly inserted USB thumb drive and simply lists the files on it. In some environments it is interesting to see any newly added files on a USB removable drive.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/0__nPIixkbpqm__LNbv2.jpg"
+         class="inline"
+         alt="The Windows.Detection.Thumbdrives.List artifact watches for newly added removable drives and reports new files added to them." />
+  </div>
+  <figcaption>
+    The Windows.Detection.Thumbdrives.List artifact watches for newly added removable drives and reports new files added to them.
+  </figcaption>
+</figure>
+
+
+
+The Windows.Detection.Thumbdrives.List artifact watches for newly added removable drives and reports new files added to them.</p>
+<p>Previously, when a thumb drive was added, Velociraptor sent the file listing to the server immediately. However, if the endpoint was offline, this data blocked further monitoring by the query.</p>
+<p>Starting with the 0.3.3 release, Velociraptor will now queue the messages in its local file buffer immediately, and transfer the data to the server when it can — even if it is currently not on the internet or online. The messages will simply be forwarded to the server at a later time.</p>
+<h4 id="conclusions">Conclusions</h4>
+<p>This feature allows Velociraptor to monitor the end point without being connected to the server at all. In effect this implements a <strong>response plan</strong>: The endpoint is given a plan of what to do in the case certain events occur (in the form of monitoring VQL queries) and can implement this plan autonomously without needing to contact the server.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847307"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847307"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847307"></script>
+    <script src="/js/jquery.sticky.js?1774847307"></script>
+    <script src="/js/featherlight.min.js?1774847307"></script>
+    <script src="/js/highlight.min.js?1774847307"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847307"></script>
+    <script src="/js/learn.js?1774847307"></script>
+    <script src="/js/hugo-learn.js?1774847307"></script>
+    
+    
+
+  </body>
+</html>

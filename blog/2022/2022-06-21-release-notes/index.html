@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="Velociraptor Release 0.6.5 is now LIVE. This post discusses some of the new features.
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Velociraptor 0.6.5 Release :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847307" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847307" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847307" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847307" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847307" rel="stylesheet">
+    <link href="/css/theme.css?1774847307" rel="stylesheet">
+    <link href="/css/tabs.css?1774847307" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847307" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847307" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847307" rel="stylesheet"><link href="/css/syntax.css?1774847307" rel="stylesheet"><link href="/css/light.css?1774847307" rel="stylesheet"><link href="/css/hljs.css?1774847307" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847307" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847307"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/blog/2022/2022-06-21-release-notes/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/blog\/2022\/2022-06-21-release-notes\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/2022/2022-06-21-release-notes/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Velociraptor 0.6.5 Release</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#table-transformations">Table transformations</a></li>
+    <li><a href="#multi-lingual-support">Multi-Lingual support</a></li>
+    <li><a href="#new-interface-themes">New interface themes</a></li>
+    <li><a href="#error-handling-in-vql">Error handling in VQL</a></li>
+    <li><a href="#custom-timezone-support">Custom Timezone support</a></li>
+    <li><a href="#a-new-musl-build-target">A new MUSL build target</a></li>
+    <li><a href="#conclusions">Conclusions</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/release">Release</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Velociraptor 0.6.5 Release
+            </h1>
+            
+            <div class="author pull-right">
+              Mike Cohen
+              <span class="date">2022-06-21</span>
+            </div>
+            
+          
+
+        
+
+
+
+	<p>I am very excited to announce the latest Velociraptor release
+0.6.5. This release has been in the making for a few months now and
+has a lot of new features.</p>
+<p>In this post I will discuss some of the interesting new features.</p>
+<h2 id="table-transformations">Table transformations</h2>
+<p>Velociraptor collections or hunts are usually post processed or
+filtered in <code>Notebooks</code>. This allows users to refine and post process
+the data in complex ways. For example, to view only the Velociraptor
+service from a hunt collecting all services
+(<code>Windows.System.Services</code>), one would click on the Notebook tab and
+modify the query by adding a <code>WHERE</code> statement.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2022/2022-06-21-release-notes/vql_filter.png"
+         class="inline"
+         alt="Filtering rows with VQL"
+         width="1119" height="589">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="vql_filter.png">
+      <i class="fa fa-download"></i></a>
+    Filtering rows with VQL
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>In our experience this type of quickly filtering/sorting a table is
+very common and sometimes we dont really need the full power of
+VQL. In 0.6.5 we introduced <code>table transformations</code> - simple
+filtering/sorting operations on every table in the GUI.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2022/2022-06-21-release-notes/transform_table1.png"
+         class="inline"
+         alt="Transform any table in the GUI"
+         width="1039" height="579">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="transform_table1.png">
+      <i class="fa fa-download"></i></a>
+    Transform any table in the GUI
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>We can now select simple table transformations like filtering or
+sorting. The GUI will automatically generate the required query.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2022/2022-06-21-release-notes/transform_table2.png"
+         class="inline"
+         alt="Setting simple table transformations"
+         width="788" height="626">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="transform_table2.png">
+      <i class="fa fa-download"></i></a>
+    Setting simple table transformations
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="multi-lingual-support">Multi-Lingual support</h2>
+<p>Velociraptor&rsquo;s community of DFIR professionals is global! We have
+users from all over the world and although most users are fluent in
+English, we wanted to acknowledge our truly international user base by
+adding internationalization into the GUI. You can now select from a
+number of popular languages (Don&rsquo;t see your language here? We would
+love additional contributions!).</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2022/2022-06-21-release-notes/language.png"
+         class="inline"
+         alt="Select from a number of popular languages"
+         width="999" height="433">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="language.png">
+      <i class="fa fa-download"></i></a>
+    Select from a number of popular languages
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Here is a screenshot showing our German translations</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2022/2022-06-21-release-notes/de.png"
+         class="inline"
+         alt="The Velociraptor interface in German"
+         width="1349" height="520">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="de.png">
+      <i class="fa fa-download"></i></a>
+    The Velociraptor interface in German
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="new-interface-themes">New interface themes</h2>
+<p>The 0.6.5 release expanded our previous offering of 3 themes into 7
+themes with a selection of light and dark themes. We even have a retro
+feel <code>ncurses</code> theme that looks like a familiar terminal&hellip;</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2022/2022-06-21-release-notes/ncurses.png"
+         class="inline"
+         alt="A stunning retro ncurses theme"
+         width="1357" height="552">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="ncurses.png">
+      <i class="fa fa-download"></i></a>
+    A stunning retro ncurses theme
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="error-handling-in-vql">Error handling in VQL</h2>
+<p>Velociraptor is simply a VQL engine; Users write VQL artifacts and run
+these queries on the endpoint.</p>
+<p>Previously it was difficult to tell when VQL encountered an
+error. Sometimes a missing file is expected, and other times it means
+something went wrong. From Velociraptor&rsquo;s point of view, as long as
+the VQL query ran successfully on the endpoint the collection was a
+success. The VQL query can generate logs to provide more information
+but the user had to actually look at the logs to determine if there
+was a problem.</p>
+<p>For example, in a hunt parsing a file on the endpoints, it was
+difficult to tell which of the thousands of machines failed to parse a
+file. Previously, Velociraptor marked the collection as successful if
+the VQL query ran - even if it returned no rows because the file
+failed to parse.</p>
+<p>In 0.6.5 there is a mechanism for VQL authors to convey more nuanced
+information to the user by way of error levels. The VQL <code>log()</code>
+function was expanded to take a <code>level</code> parameter. When the level is
+<code>ERROR</code> the collection will be marked as failed in the GUI.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2022/2022-06-21-release-notes/fail.png"
+         class="inline"
+         alt="A failed VQL query"
+         width="1125" height="611">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="fail.png">
+      <i class="fa fa-download"></i></a>
+    A failed VQL query
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2022/2022-06-21-release-notes/fail_log.png"
+         class="inline"
+         alt="Query Log messages have their own log level"
+         width="1353" height="629">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="fail_log.png">
+      <i class="fa fa-download"></i></a>
+    Query Log messages have their own log level
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="custom-timezone-support">Custom Timezone support</h2>
+<p>Timestamps are a central part of most DFIR work. Although it is best
+practice to always work in UTC times it is sometimes a real pain to
+have to convert from UTC to local time in one&rsquo;s head! Since
+Velociraptor always uses
+<a href="https://datatracker.ietf.org/doc/html/rfc3339" target="_blank" >RFC3389</a> to represent
+times unambiguously but for human consumption it is convenient to
+represent these times in different local times.</p>
+<p>You can now select a more convenient timezone in the GUI by clicking
+your user preferences and setting the relevant timezone.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2022/2022-06-21-release-notes/timezone_selection.png"
+         class="inline"
+         alt="Selecting a custom timezone"
+         width="1237" height="520">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="timezone_selection.png">
+      <i class="fa fa-download"></i></a>
+    Selecting a custom timezone
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The preferred time will be shown in most times in the UI
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2022/2022-06-21-release-notes/timezone_vfs.png"
+         class="inline"
+         alt="Timezone selection influences how times are shown"
+         width="1359" height="655">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="timezone_vfs.png">
+      <i class="fa fa-download"></i></a>
+    Timezone selection influences how times are shown
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="a-new-musl-build-target">A new MUSL build target</h2>
+<p>On Linux Go binaries are mostly static but always link to <code>Glibc</code>
+which is shipped with the Linux distribution. This means that
+traditionally Velociraptor had problems running on very old Linux
+machines (previous to Ubuntu 18.04). We used to build a more
+compatible version on an old Centos VM but this was manual and did not
+support the latest Go compiler.</p>
+<p>In 0.6.5 we added a new build target using
+<a href="https://www.musl-libc.org/" target="_blank" >MUSL</a> - a light weight <code>Glibc</code>
+replacement. The produced binary is completely static and should run
+on a much wider range of Linux versions. This is still considered
+experimental but should improve the experience on older Linux
+machines.</p>
+<h2 id="conclusions">Conclusions</h2>
+<p>If you like the new features, take <a href="https://github.com/Velocidex/velociraptor" target="_blank" >Velociraptor for a
+spin</a>!  It is a available
+on GitHub under an open source license. As always please file issues
+on the bug tracker or ask questions on our mailing list
+<a href="mailto:velociraptor-discuss@googlegroups.com" target="_blank" >velociraptor-discuss@googlegroups.com</a>
+. You can also chat with us directly on discord
+<a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord</a>
+.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847307"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847307"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847307"></script>
+    <script src="/js/jquery.sticky.js?1774847307"></script>
+    <script src="/js/featherlight.min.js?1774847307"></script>
+    <script src="/js/highlight.min.js?1774847307"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847307"></script>
+    <script src="/js/learn.js?1774847307"></script>
+    <script src="/js/hugo-learn.js?1774847307"></script>
+    
+    
+
+  </body>
+</html>

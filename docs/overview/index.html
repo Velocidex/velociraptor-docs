@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title> :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847310" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847310" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847310" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847310" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847310" rel="stylesheet">
+    <link href="/css/theme.css?1774847310" rel="stylesheet">
+    <link href="/css/tabs.css?1774847310" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847310" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847310" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847310" rel="stylesheet"><link href="/css/syntax.css?1774847310" rel="stylesheet"><link href="/css/light.css?1774847310" rel="stylesheet"><link href="/css/hljs.css?1774847310" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847310" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847310"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/overview/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/overview\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/overview/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name"></span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-incident-response-timeline">The incident response timeline</a></li>
+    <li><a href="#how-can-you-use-velociraptor">How can you use Velociraptor?</a></li>
+    <li><a href="#the-velociraptor-ecosystem">The Velociraptor ecosystem</a></li>
+    <li><a href="#vql---the-velociraptor-difference">VQL - the Velociraptor difference</a></li>
+    <li><a href="#the-velociraptor-philosophy">The Velociraptor Philosophy</a></li>
+    <li><a href="#velociraptor-is-a-mature-enterprise-grade-dfir-framework">Velociraptor is a mature enterprise grade DFIR framework</a></li>
+    <li><a href="#who-are-these-documentation-pages-for">Who are these documentation pages for?</a></li>
+    <li><a href="#how-to-get-started-with-velociraptor">How to get started with Velociraptor</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              
+            </h1>
+            
+          
+
+        
+
+
+
+	
+<div class="mynotices note">
+  <div heading="  "><p>Velociraptor is a unique, enterprise grade, open-source platform for
+endpoint monitoring, digital forensic and cyber response. Velociraptor
+covers the entirety of the attack life cycle, providing responders a
+powerful capability to address past, present and future events.</p>
+</div>
+</div>
+
+
+<h2 id="the-incident-response-timeline">The incident response timeline</h2>
+<p>The attack timeline consists of 3 general times; The initial attack,
+the time of response and future attacker activities.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/overview/attack_timeline_.svg" alt="Velociraptor and the attack timeline"
+         class="inline"
+         height="622.3628821857274"
+         width="1205"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="attack_timeline.svg"><i class="fa fa-download"></i></a>
+    Velociraptor and the attack timeline
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<ul>
+<li>
+<p><strong>The initial attack</strong>: If Velociraptor is not already deployed as a
+standard part of the environment, the initial attack is likely to
+have occurred at a prior time before Velociraptor&rsquo;s
+installation. This time could range from hours to weeks or months.</p>
+<p>Velociraptor&rsquo;s digital forensic capability provides a lens into
+these past activities: By utilizing the latest state of the art
+digital forensic artifacts and analysis technology, Velociraptor can
+reveal important clues of the initial vector of compromise.</p>
+</li>
+<li>
+<p><strong>The present time</strong>: Once Velociraptor is installed in the
+environment, the primary goal is to quickly identify compromised
+assets. Velociraptor&rsquo;s powerful triaging artifacts can identify
+anomalies quickly and at scale. By scaling triage analysis to the
+entire environment (In Velociraptor&rsquo;s terminology: <code>Hunting the environment</code>) we are able to zero in on compromised assets quickly.</p>
+<p>Once identified, triaged assets can be analyzed in detail,
+preserving important volatile information such as processes, network
+connections and memory. These collections can be made with minimal
+endpoint impact, using Velociraptor&rsquo;s sophisticated control of
+endpoint resource usage.</p>
+<p>Additionally, Velociraptor can be used for remediation at
+scale. This makes recovering from incidents or securing systems
+against future attacks faster and more efficient.</p>
+</li>
+<li>
+<p><strong>Detecting future attacks</strong>: Once installed in the environment,
+Velociraptor&rsquo;s client monitoring capability allows for live,
+realtime detection of malicious activity. By tapping into live event
+sources, such as Event Tracing for Windows (<code>ETW</code>) or <code>eBPF</code> on
+Linux, and utilizing <code>Sigma</code> rules, Velociraptor&rsquo;s detection engine
+can identify suspicious activity in real time.</p>
+<p>Velociraptor&rsquo;s real time monitoring can also ensure future
+compliance and detect when an endpoint falls out of compliance
+(either maliciously or accidentally). For example by changing
+configuration to weaken endpoint security.</p>
+</li>
+</ul>
+<h2 id="how-can-you-use-velociraptor">How can you use Velociraptor?</h2>
+<p>Velociraptor can be used in many ways depending on your requirements.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/overview/use_cases_.svg" alt="Some of the common ways to use Velociraptor"
+         class="inline"
+         height="829.3317699445045"
+         width="1855.3154235625216"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="use_cases.svg"><i class="fa fa-download"></i></a>
+    Some of the common ways to use Velociraptor
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<ul>
+<li>
+<p><strong>Client Server deployment</strong>: This is the most common way to use
+Velociraptor. The agent (In Velociraptor terminology <code>client</code>) is
+deployed as a service on all endpoints. The Velociraptor server may
+be deployed in the cloud or on premises. Clients connect back to the
+server using a persistent connection, ready to be tasked by the
+Velociraptor investigator to collect artifacts, hunt etc.</p>
+<p>This deployment method allows you to rapidly iterate through the
+investigative process, collecting evidence, analysing and
+re-collecting rapidly.</p>
+</li>
+<li>
+<p><strong>Offline collector</strong>: If the Velociraptor client can not be
+installed on the endpoint, Velociraptor allows the creation of
+<code>Offline Collectors</code>. These are preconfigured binaries, set to
+collect specific artifacts into a local encrypted ZIP file. The
+collections can be automatically uploaded to a central repository
+such as a cloud storage service.</p>
+<p>Collections can be subsequently imported into the server for
+analysis, just like the client server model above.</p>
+</li>
+<li>
+<p><strong>Interactive analysis</strong>: Velociraptor can be used for analysis of
+raw disk images. Using remapping rules, a <code>virtual client</code> can be
+launched which uses the disk image to collect the same VQL
+artifacts. This allows disk images to be analysed using the same
+procedure.</p>
+</li>
+</ul>
+<h2 id="the-velociraptor-ecosystem">The Velociraptor ecosystem</h2>
+<p>Velociraptor was designed to be an open system, allowing many other
+tools to interact and utilize Velociraptor as a platform.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/overview/ecosystem_.svg" alt="The Velociraptor Eco-system"
+         class="inline"
+         height="1488.848051450802"
+         width="2325.221350048329"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="ecosystem.svg"><i class="fa fa-download"></i></a>
+    The Velociraptor Eco-system
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<ul>
+<li>
+<p><strong>Collection</strong>: Apart from the usual Client/Server model,
+Velociraptor can also leverage existing EDR or Remote Management
+Tools (e.g. Group Policy) to remotely launch the offline
+collector. The collection can be automatically uploaded to the cloud
+then re-imported into the GUI. This is used by e.g. <a href="https://docs.limacharlie.io/docs/ext-velociraptor" target="_blank" >Lima
+Charlie</a>.</p>
+<p>Velociraptor can also push third party tools to the endpoint,
+executing them remotely and transferring their results back to the
+server. This allows third party tools to be deployed safely at scale
+and orchestrated using Velociraptor in wide ranging Hunts. Examples
+include <a href="https://www.nextron-systems.com/2023/11/03/integration-of-thor-in-velociraptor-supercharging-digital-forensics-and-incident-response/" target="_blank" >Nextron
+Thor</a>,
+<a href="https://www.cybertriage.com/blog/scope-with-velociraptor-analyze-with-cyber-triage/" target="_blank" >Cyber
+Triage</a>
+and <a href="/exchange/artifacts/pages/windows.eventlogs.hayabusa/">Hayabusa</a></p>
+</li>
+<li>
+<p><strong>Analysis</strong>: Velociraptor offers a powerful interactive notebook
+environment for collaborative analysis. However, it is also possible
+to export collected data to other common platforms, such as
+<a href="/artifact_references/pages/server.utils.timesketchupload/">Timesketch</a>.</p>
+</li>
+<li>
+<p><strong>Exports</strong>: Collected data can be conveniently exported to archives
+such as Zip file, automatically <a href="/artifact_references/pages/server.utils.backups3/">backed up the cloud</a> or exported
+in real time to data lakes such as <a href="/artifact_references/pages/splunk.flows.upload/">Splunk</a> or
+<a href="/artifact_references/pages/elastic.eventlogs.sysmon/">Elastic</a>.</p>
+</li>
+<li>
+<p><strong>Automation</strong>: Velociraptor can be fully automated using a <code>gRPC</code>
+based API. The API allows Velociraptor to be controlled from many
+languages, including Python, Go, Java and even Shell Scripts.</p>
+<p>Using the API it is possible to both read collected data and control
+further collection, thereby implementing a flexible SOAR capability
+and enhancing interoperability with other systems.</p>
+</li>
+</ul>
+<h2 id="vql---the-velociraptor-difference">VQL - the Velociraptor difference</h2>
+<p>Velociraptor&rsquo;s power and flexibility comes from the Velociraptor Query
+Language (VQL). VQL is a framework for creating highly customized
+<strong>artifacts</strong>, which allow you to collect, query, and monitor almost
+any aspect of an endpoint, groups of endpoints, or an entire
+network. It can also be used to create continuous monitoring rules on
+the endpoint, as well as automate tasks on the server.</p>
+<p>Unlike other tools, VQL allows users to customize Velociraptor: From
+updating existing artifacts or adding entirely new artifacts, to fully
+automating post processing and system administration. Velociraptor&rsquo;s
+VQL enables an open system, adaptable to any environment or
+requirement with ease.</p>
+<h2 id="the-velociraptor-philosophy">The Velociraptor Philosophy</h2>
+<p>Traditional DFIR procedures typically follow these high level phases:</p>
+<ol>
+<li><code>Acquisition</code>: In this phase the investigator collects all the raw
+data for example, memory or disk images.</li>
+<li><code>Post Processing</code>: In this phase the investigator runs various
+scripts and tools to extract high level information from the raw
+data.</li>
+<li><code>Analysis and Reporting</code>: In this phase the investigator looks
+through the data reported in the previous step and extract
+information relevant to the specific case.</li>
+</ol>
+<p>When experienced DFIR professionals are first introduced to
+Velociraptor, they proceed to use it this traditional
+workflow. However, they soon find out that this process simply does
+not scale and it is not effective. For example, acquiring a basic
+triage collection (<code>$MFT</code>, event logs, USN Journal etc) might be
+several Gb in size. This size is manageable for one or a few hosts,
+but collecting these across 100,000 hosts is simply not viable!</p>
+<p>Velociraptor&rsquo;s philosophy is different: We treat the source of truth
+as the actual endpoints. We then pose targeted queries of these
+endpoints aiming to directly progress the investigation.</p>
+<blockquote>
+<p>Rather than collecting all the data into a central location and then
+running queries on that, we push the queries to the endpoints and
+parse artifacts directly on the endpoint itself.</p>
+</blockquote>
+<p>When reading the rest of the documentation on this site, bear in mind
+the following:</p>
+<ol>
+<li>
+<p>Queries should be targeted and return high value data if possible.</p>
+<ul>
+<li>E.g. instead of collecting all event logs, use targeted
+Sigma rules to highlight only important events.</li>
+</ul>
+</li>
+<li>
+<p>Aim to reduce the amount of post processing on the server as much
+as possible.</p>
+<ul>
+<li>E.g. Instead of parsing the <code>$MFT</code> on the endpoint and then
+filtering it on the server for the time range of interest,
+directly time box the MFT on the endpoint to only deliver
+relevant files.</li>
+</ul>
+</li>
+<li>
+<p>Think about why you want to collect a certain artifact, not what
+the artifact is and how to parse it.</p>
+</li>
+</ol>
+<h2 id="velociraptor-is-a-mature-enterprise-grade-dfir-framework">Velociraptor is a mature enterprise grade DFIR framework</h2>
+<p>The DFIR world moves quickly! There are many threats, vulnerabilities,
+forensic artifacts and detection techniques discovered and reported on
+daily. Many researches release small tools or scripts to showcase
+their work.</p>
+<p>However, it is difficult to scale these ad hoc, small scale tools to an
+enterprise network. Most ad hoc tools are missing enterprise features,
+such as strong auditing, two factor authentication, machine readable
+output, a powerful API that facilitates automation and easy
+integration with other systems, and many other features critical to a
+successful enterprise deployment.</p>
+<p>Velociraptor&rsquo;s goal is to provide the enterprise level platform which
+enables leveraging novel techniques. Velociraptor&rsquo;s mature enterprise
+features are suitable for high security installations. At the same
+time, Velociraptor&rsquo;s VQL language provides the building blocks to
+develop powerful detection, hunting and analysis techniques easily -
+all built in a solid foundation. It is usually trivial to implement
+novel one shot detection tools in VQL leveraging the safety and
+security that comes with Velociraptor.</p>
+<p>For example, imagine new threat is discovered which requires a scan of
+all assets. A researcher publishes a python script to perform this
+scan which works on their systems.</p>
+<p>However, deploying this ad hoc python script widely, perhaps using
+standard system management software, we find excessive CPU use, false
+positives, and potential security vulnerabilities introduced by the
+script itself or additional dependencies. Python or other dependencies
+may not be installed on all assets causing many systems to fail to run
+this tool. The output from the tool may also not be machine readable
+leading to time consuming manual analysis.</p>
+<p>Re-implementing the same functionality in VQL allows the same scan to
+proceed safely with CPU limits, resource controls, tracking which
+endpoints are clean, proper auditing and a secure
+deployment. Additionally we have machine readable output which can be
+easily fed to other systems like SIEM.</p>
+<p>If you do no have the time to reimplement in VQL - no problem! You can
+also deploy the same ah hoc tool with Velociraptor to leverage some of
+the above benefits quickly.</p>
+<h2 id="who-are-these-documentation-pages-for">Who are these documentation pages for?</h2>
+<p>The documentation on this site is therefore split into several types
+of audience:</p>
+<ol>
+<li>
+<p>Enterprise deployment documentation discusses the many features
+that make Velociraptor a powerful enterprise platform:</p>
+<ul>
+<li>Security, Auditing and Deployment documentation</li>
+<li>How to integrate Velociraptor with other platforms. Build
+pipelines and automation.</li>
+<li>Maintaining the deployment in the long term - backup,
+provisioning etc.</li>
+<li>Managing Multi-tenancies and user permissions, ACLs etc</li>
+</ul>
+</li>
+<li>
+<p>Developing new artifacts and forensic capability. This audience is
+more interested in VQL syntax, how to develop novel parsers,
+detection rules and generally enhance the capability of
+Velociraptor.</p>
+</li>
+<li>
+<p>Those practitioners on the front-line of incident response are more
+interested in what kind of artifacts they should be hunting for, in
+which situation and what information can these provide to the
+ongoing response process.</p>
+<p>These are covered by the <a href="/training/playbooks/">playbooks</a>, and artifact references.</p>
+</li>
+</ol>
+<p>These aspects are complimentary - without a secure and well
+maintained enterprise deployment is it difficult to widely deploy
+Velociraptor in an enterprise. Similarly without solid technical
+capabilities to hunt and detect new threats there is no point in
+Velociraptor at all! This is our core mission.</p>
+<h2 id="how-to-get-started-with-velociraptor">How to get started with Velociraptor</h2>
+<p>For a new user with no prior knowledge of Velociraptor, we recommended that you
+follow this learning path:</p>
+<ol>
+<li>
+<p>Start by understanding what Velociraptor is and its purpose as a DFIR and
+endpoint monitoring tool. Learn about its core function of collecting
+endpoint information using VQL (the Velociraptor Query Language). Training
+videos and initial documentation provide this foundational knowledge.</p>
+</li>
+<li>
+<p>Learn how to install and set up Velociraptor, starting with a simple local
+deployment, perhaps on a Windows VM for familiarity. The documentation,
+especially our Quickstart Guide, and training sessions cover installation and
+deployment basics.</p>
+</li>
+<li>
+<p>Become familiar with the Velociraptor GUI. Learn about Artifacts and get
+familiar with using the Artifact Collector flow in the GUI to run some of the
+many built-in artifacts on a single host. This demonstrates the tool&rsquo;s
+capabilities and how to gather data without immediately needing to write
+queries. Explore the artifact documentation to understand the different
+artifact types and capabilities.</p>
+</li>
+<li>
+<p>Once you are comfortable running existing artifacts, dive into the
+Velociraptor Query Language (VQL). This is a crucial step to unlock the
+tool&rsquo;s full potential. Resources like the VQL Fundamentals documentation and
+dedicated training videos are recommended. Practicing with simple examples in
+a notebook is a good way to learn. Becoming familiar with the &ldquo;VQL mindset&rdquo;
+is an important aspect.</p>
+</li>
+<li>
+<p>After building a foundation in VQL, explore more advanced topics. This
+includes writing custom artifacts, understanding the client/server
+architecture in more depth, learning about enterprise deployment
+considerations (performance, resources), client monitoring, hunting, incident
+response features like quarantine, and how to integrate with other tools. The
+VQL reference documentation and community discussions offer insights into
+specific functions and plugins. Throughout this learning journey, you are
+encouraged to consult the extensive documentation available on the
+Velociraptor website, including the main documentation pages, the VQL
+reference, the knowledge base, the blog, and training materials. Engaging
+with the community, such as on Discord, is also a valuable source of help and
+examples.</p>
+</li>
+</ol>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847310"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847310"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847310"></script>
+    <script src="/js/jquery.sticky.js?1774847310"></script>
+    <script src="/js/featherlight.min.js?1774847310"></script>
+    <script src="/js/highlight.min.js?1774847310"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847310"></script>
+    <script src="/js/learn.js?1774847310"></script>
+    <script src="/js/hugo-learn.js?1774847310"></script>
+    
+    
+
+  </body>
+</html>

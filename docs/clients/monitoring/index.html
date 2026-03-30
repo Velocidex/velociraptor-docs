@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Client Monitoring :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847309" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847309" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847309" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847309" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847309" rel="stylesheet">
+    <link href="/css/theme.css?1774847309" rel="stylesheet">
+    <link href="/css/tabs.css?1774847309" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847309" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847309" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847309" rel="stylesheet"><link href="/css/syntax.css?1774847309" rel="stylesheet"><link href="/css/light.css?1774847309" rel="stylesheet"><link href="/css/hljs.css?1774847309" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847309" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847309"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/clients/monitoring/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/clients\/monitoring\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/clients/monitoring/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Client Monitoring</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#client-monitoring-architecture">Client monitoring architecture</a></li>
+    <li><a href="#installing-client-event-queries">Installing client event queries.</a>
+      <ul>
+        <li><a href="#selecting-event-artifacts-to-apply">Selecting event artifacts to apply</a></li>
+        <li><a href="#inspecting-the-current-monitoring-table">Inspecting the current monitoring table</a></li>
+        <li><a href="#viewing-collected-events">Viewing collected events.</a></li>
+        <li><a href="#further-processing-client-monitoring-events">Further processing client monitoring events.</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Client Monitoring
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>We have previously seen how VQL <a href="/docs/vql/events/">Event Queries</a> are simply VQL queries that never terminate,
+generating a row for each event that occurs.</p>
+<p>We can use this property to monitor for events on the endpoint. In
+order to build an effective client monitoring framework we need three
+components:</p>
+<ol>
+<li>
+<p>A number of event plugins that can detect events on the
+endpoint. For example:</p>
+<ul>
+<li><code>watch_etw()</code> allows Velociraptor to monitor ETW events on Windows</li>
+<li><code>watch_syslog()</code> allows following syslog events on Linux</li>
+</ul>
+</li>
+<li>
+<p>Once events are detected and emitted by VQL plugins, we can use the rest of
+the VQL query to process these events, for example by applying further
+filtering or enriching with additional data.</p>
+</li>
+<li>
+<p>Finally a client monitoring architecture must be used to ensure
+event queries are always running and forward these events to the
+server.</p>
+</li>
+</ol>
+<p>In this page we discuss the client monitoring architecture and
+demonstrate how it can be used to feed events from the endpoint to the
+server.</p>
+
+<div class="mynotices tip">
+  <div heading="tip"><p>VQL event plugins generally start with the word &ldquo;watch&rdquo; to indicate they are
+event plugins (e.g. <code>watch_etw</code>, <code>watch_evtx</code>, <code>watch_usn</code> etc). Usually event
+plugins will have a corresponding non-event plugin, for example <code>watch_etvx()</code>
+is an event plugin that watches evtx files for new events and does not
+terminate, while <code>parse_evtx()</code> is a non-event plugin which simply parses the
+evtx files from beginning to end.</p>
+<p>You can search for all available plugins in the
+<a href="/vql_reference/">VQL Reference</a>,
+or browse the event plugins listed
+<a href="/vql_reference/event/">here</a>.</p>
+</div>
+</div>
+
+
+<h2 id="client-monitoring-architecture">Client monitoring architecture</h2>
+<p>The client maintains a set of VQL Event Queries that are all run in parallel.
+This is called the <strong>client monitoring table</strong> (or &ldquo;event table&rdquo; for short) and
+it gets synced from the server when needed. The client stores these Event
+Queries locally in it&rsquo;s <strong>writeback file</strong> so that they are available as soon as
+the client starts - even when not online.</p>
+<p>If the client is offline, the results of these queries will be queued in the
+client’s local file buffer (defined in <code>Client.local_buffer</code> in the config),
+until the client reconnects again, at which time they are sent to the server.
+This architecture ensures that clients that are monitoring a data source do not
+miss events, even when the host is offline. It also means that clients are able
+to monitor for events autonomously - the server is only needed to occasionally
+sync the client&rsquo;s monitoring table in the event that it changes.</p>
+<p>The event queries in the client monitoring table start running when the client
+starts and continue running indefinitely. When any of these event queries
+produce rows, the client streams these events to the server which writes them to
+the datastore.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/monitoring/client_events_arch_.svg" alt="Client Event Architecture"
+         class="inline"
+         height="620.17507"
+         width="857.474356775391"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="client_events_arch.svg"><i class="fa fa-download"></i></a>
+    Client Event Architecture
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="installing-client-event-queries">Installing client event queries.</h2>
+<p>To edit the client monitoring table you must first have a client selected. Then
+from the sidebar choose <strong>Client Events</strong> and then click the &ldquo;Update client
+monitoring table&rdquo; button.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/monitoring/updating_client_events_.svg" alt="Update client monitoring table"
+         class="inline"
+         height="760.1323896752705"
+         width="1131.1237499999997"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="updating_client_events.svg"><i class="fa fa-download"></i></a>
+    Update client monitoring table
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Client monitoring queries can apply to all clients or be targeted based on
+client labels. We refer to the set of all clients having a specific label as a
+<strong>label group</strong>.</p>
+<ul>
+<li>
+<p>Event Artifacts assigned to the the label group &ldquo;All&rdquo; apply to all clients
+regardless of label or OS type (although artifact preconditions are
+still honored).</p>
+</li>
+<li>
+<p>Event Artifacts can target specific label groups. If the client has
+that label applied then the event table for that client will include
+the event artifacts assigned to that label group.</p>
+</li>
+</ul>
+
+<div class="mynotices tip">
+  <div heading=" Controlling event queries on clients using labels "><p>Note that label group membership is dynamic - clients may be added or
+removed from label groups at any time by applying or removing the
+relevant label. Applying a label to a client automatically updates the
+client event monitoring queries as well.</p>
+<p>In this way it is possible to assign clients to label groups that require
+different sets of monitoring queries. For example perhaps you wish to monitor
+only some of your end points for powershell or psexec executions some of the
+time. This can be done by applying the relevant label to those clients and
+removing the label when done.</p>
+</div>
+</div>
+
+
+<h3 id="selecting-event-artifacts-to-apply">Selecting event artifacts to apply</h3>
+<p>Velociraptor uses <a href="/docs/artifacts/">Artifacts</a> which package
+VQL queries in a structured YAML file, and this applies to event queries too.
+Event artifacts are identified by <code>type: CLIENT_EVENT</code> in the definition YAML.</p>
+<p>In the steps that follow the artifact selection UI looks very similar to the new
+collection UI or new hunt UI. The main difference is that the artifact selection
+UI in the Event selection workflow only shows client event artifacts, that is
+artifacts which have <code>CLIENT_EVENT</code> as their type.</p>
+<p>If you create a new event artifact, be sure to mark it as a <code>CLIENT_EVENT</code> type
+or else it will not appear in the artifact selection list for client events.</p>
+<p>In the next step we can select which artifacts will be applied to this label
+group.</p>
+<p>For this example, we select the <code>Windows.ETW.DNS</code> artifact to collect
+DNS lookup from clients.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/monitoring/dns_monitoring.png"
+         class="inline"
+         alt="Monitoring for DNS lookups"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="dns_monitoring.png">
+      <i class="fa fa-download"></i></a>
+    Monitoring for DNS lookups
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="inspecting-the-current-monitoring-table">Inspecting the current monitoring table</h3>
+<p>The current configuration can be viewed by clicking the
+<strong>Update client monitoring table</strong> button.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/monitoring/inspecting_table_.svg" alt="Inspecting client monitoring table"
+         class="inline"
+         height="760.3333333333334"
+         width="1130.5"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="inspecting_table.svg"><i class="fa fa-download"></i></a>
+    Inspecting client monitoring table
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="viewing-collected-events">Viewing collected events.</h3>
+<p>Once the client syncs its client monitoring table, it will start
+forwarding events to the server. Events are simply rows returned by
+the VQL query. The server simply stores these rows in the datastore
+and provides a timeline based UI to inspect the data.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/monitoring/viewing_client_events_.svg" alt="Viewing client events"
+         class="inline"
+         height="596"
+         width="1316.810506566604"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="viewing_client_events.svg"><i class="fa fa-download"></i></a>
+    Viewing client events
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The view is split into two halves. The top half is the timeline view
+while the bottom half is the table view. The events are viewed in
+the table, while the timeline view provides a quick way to navigate
+to specific time ranges.</p>
+<p>The timeline view is split into three rows:</p>
+<ol>
+<li><code>Table View</code> visualizes the time range visible in the table currently.</li>
+<li><code>Available</code> shows the days which have any events in them.</li>
+<li><code>Logs</code> visualizes the days that have any logs in them (You can view query
+logs by selecting the <code>Logs</code> pull down on the top right).</li>
+</ol>
+<p>You can zoom in and out of the visible time ranges using <code>Ctrl-Mouse Wheel</code> or by clicking the timeline itself.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/clients/monitoring/event-monitoring-1_.svg" alt="Interacting with the timeline"
+         class="inline"
+         height="577"
+         width="1274.0337711069417"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="event-monitoring-1.svg"><i class="fa fa-download"></i></a>
+    Interacting with the timeline
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>By clicking the tool bar it is possible to page through the table to
+view visible events. If you need to export the data, simply click the
+<code>Export</code> button and select either JSON or CSV format. The export
+functionality applies to the visible time range only so you can fine-tune
+which events should be exported (simply zoom the visible range in or
+out to include only the desired data).</p>
+
+<div class="mynotices note">
+  <div heading=" Client side buffering "><p>Although VQL queries emit rows in real time, the Velociraptor client does not
+immediately forward the event row to the server. This is done to avoid
+too-frequent communications with the server. Instead, the client will batch rows
+in memory (by default for 120 seconds) and send each batch in a single POST
+upload. This means that it could take up to 2 minutes for events to appear at
+the server once a new artifact is added to the client event table.</p>
+</div>
+</div>
+
+
+<h3 id="further-processing-client-monitoring-events">Further processing client monitoring events.</h3>
+<p>Client event queries simply run on the endpoint and forward rows to
+the server. The event queries generally fall into two categories:</p>
+<ol>
+<li>
+<p>Those that collect real time data such as ETW logs, process executions logs,
+Sysmon logs etc. These are typically collected by Velociraptor and sent
+directory to an external system (e.g. Elastic or Splunk). Typically the VQL
+for such queries contains minimal filtering and the client acts mainly as an
+event forwarder for these event sources.</p>
+</li>
+<li>
+<p>Selective and targeted queries. These artifacts contain refined detection and
+enrichment logic within the VQL query itself such that only high value events
+are actually forwarded. These more targeted queries send fewer rows, but each
+event is expected to have significant value, especially if it represents a
+detection.</p>
+</li>
+</ol>
+<p>In either case, the Velociraptor server does not do anything with the
+events collected by default, other than write them to storage. If you want the
+server to perform additional actions with the incoming events then you should
+use <a href="/docs/server_automation/server_monitoring/">server side event queries</a>.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847309"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847309"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847309"></script>
+    <script src="/js/jquery.sticky.js?1774847309"></script>
+    <script src="/js/featherlight.min.js?1774847309"></script>
+    <script src="/js/highlight.min.js?1774847309"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847309"></script>
+    <script src="/js/learn.js?1774847309"></script>
+    <script src="/js/hugo-learn.js?1774847309"></script>
+    
+    
+
+  </body>
+</html>

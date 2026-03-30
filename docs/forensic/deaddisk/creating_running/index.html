@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Creating a remapping config and running a dead disk client :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847310" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847310" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847310" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847310" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847310" rel="stylesheet">
+    <link href="/css/theme.css?1774847310" rel="stylesheet">
+    <link href="/css/tabs.css?1774847310" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847310" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847310" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847310" rel="stylesheet"><link href="/css/syntax.css?1774847310" rel="stylesheet"><link href="/css/light.css?1774847310" rel="stylesheet"><link href="/css/hljs.css?1774847310" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847310" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847310"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/forensic/deaddisk/creating_running/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/forensic\/deaddisk\/creating_running\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/forensic/deaddisk/creating_running/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Creating a remapping config and running a dead disk client</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#supported-disk-image-formats">Supported disk image formats</a>
+      <ul>
+        <li><a href="#dealing-with-unsupported-image-formats">Dealing with unsupported image formats</a></li>
+      </ul>
+    </li>
+    <li><a href="#creating-a-remapping-config">Creating a remapping config</a>
+      <ul>
+        <li><a href="#non-windows-disk-images">Non-Windows disk images</a></li>
+      </ul>
+    </li>
+    <li><a href="#generating-the-remapping-config">Generating the remapping config</a></li>
+    <li><a href="#running-a-virtual-client-that-uses-the-remapping">Running a virtual client that uses the remapping</a></li>
+    <li><a href="#automating-the-process-in-a-single-server-artifact">Automating the process in a single server artifact</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Creating a remapping config and running a dead disk client
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>In this section we explain the various way to create remapping configs for a
+disk image, how to apply the remapping, and show how the dead disk client can be
+used in the GUI.</p>
+<p>A dead disk remapping can be created in the GUI or using the CLI&rsquo;s
+<a href="/docs/cli/deaddisk/">deaddisk command</a>. Under the hood, both
+methods use the same built-in artifact to inspect the disk image and create the
+remapping. Here we will primarily discuss the GUI-based approach and we refer
+you to the CLI documentation if you&rsquo;d prefer to use a CLI-only approach.</p>
+<p>In general, when running the virtual client with a remapping config we start it
+via the CLI, although the <code>Server.Utils.DeadDiskClient</code> artifact does provide an
+example of how the virtual client can be launched using VQL&rsquo;s <code>execve()</code> plugin.</p>
+<h2 id="supported-disk-image-formats">Supported disk image formats</h2>
+<p>Velociraptor currently supports the following disk image formats via it&rsquo;s
+built-in <a href="/vql_reference/accessors/">accessors</a>:</p>
+<ul>
+<li>
+<p>raw format: a bit-by-bit copy of a hard drive, also know as &ldquo;DD&rdquo; or &ldquo;flat&rdquo;
+format. The file extension is often <code>.img</code> but there is no standard.</p>
+</li>
+<li>
+<p><code>VHDX</code>: virtual hard drive format introduced by Microsoft, usually having the
+<code>.vhdx</code> file extension.</p>
+</li>
+<li>
+<p><code>EWF</code>: Expert Witness Compression Format, sometimes called &ldquo;E01 images&rdquo; and
+having the <code>.e01</code>, <code>.e02</code> etc. file extensions.</p>
+</li>
+<li>
+<p><code>VMDK</code>: virtual hard drive format introduced by VMware, usually having the
+<code>.vmdk</code> file extension.</p>
+
+<div class="mynotices info">
+  <div heading=" VMDK format variants "><p>Most virtual machine platforms can export to several formats. In particular,
+note that VMware can export to raw format, but it always retains the <code>.vmdk</code>
+file extension. In that case you would need to either:</p>
+<ul>
+<li>remove the file extension so that Velociraptor&rsquo;s <code>deaddisk</code> command will
+treat it as a raw image (which it actually is) instead of VMDK format, or</li>
+<li>specify the format accessor using the <code>Accessor</code> parameter when running the
+<code>Generic.Utils.DeadDiskRemapping</code> artifact.</li>
+</ul>
+</div>
+</div>
+
+
+</li>
+</ul>
+<p>The <code>Generic.Utils.DeadDiskRemapping</code> artifact (which is also used by
+<code>Server.Utils.DeadDiskClient</code> and the <code>deaddisk</code> CLI command) recognizes the
+first three formats based on <em>file extension</em> and Velociraptor is able to read
+these formats natively without any additional steps. If the target image file
+has any other extension then it will be regarded as raw format.</p>
+<h3 id="dealing-with-unsupported-image-formats">Dealing with unsupported image formats</h3>
+<p>If you have a disk image in some other unsupported format then the recommended
+course of action is to &ldquo;cross-mount&rdquo; the image to raw format. There are several
+tools which can do this, for example <a href="https://www.pinguin.lu/xmount" target="_blank" >xmount</a>.</p>
+<p>Alternatively you can convert the image to one of the natively-supported
+formats. Many tools exist which can do this, and usually this includes the
+virtualization platforms themselves. The downside of converting formats is that
+it requires a lot of disk space and can take a long time. Therefore
+cross-mounting is usually preferable because it &ldquo;translates&rdquo; one format to
+another on-the-fly without conversion.</p>
+<p>In addition to unsupported image formats you may also have to deal with other
+filesystems, partition systems, and disk encryption. In such circumstances we
+recommend that you consider using
+<a href="https://libguestfs.org/guestmount.1.html" target="_blank" >guestmount</a> and the many other
+excellent tools for working with disk images maintained under the
+<a href="https://libguestfs.org/" target="_blank" >libguestfs project</a>. The general goal is to use such
+tools to do the inspection and apply the necessary transformations, and then
+present the target filesystems in a format that Velociraptor can work with. This
+might be in the form of a block device containing an NTFS partition, or more
+commonly by mounting the target filesystem on a directory and thereby providing
+Velociraptor with transparent access to the underlying image/filesystem.</p>
+<h2 id="creating-a-remapping-config">Creating a remapping config</h2>
+<p>There are several general paths you can take to create a remapping config. Most
+often we have to deal with images of Windows systems, so there is a slight bias
+towards Windows disk images being easier to deal with because they tend to
+conform to a more standardized layout pattern. Linux is trickier to work with
+due to the much larger variety of filesystems, partition management schemes
+(often LVM, which we don&rsquo;t currently support), and complex partitioning.</p>
+<p>In the examples below we&rsquo;ve illustrated the remapping generation using the
+<code>deaddisk</code> CLI command, but since it uses the <code>Generic.Utils.DeadDiskRemapping</code>
+artifact internally, it is equivalent to running that artifact via the GUI.</p>
+<ol>
+<li>
+<p><strong>Remapping from RAW/EWF/VHDX/VMDK image</strong></p>
+<p>In the simplest case, you have a disk image of a Windows system in one of the
+supported image formats.</p>
+<p>The process is straightforward: You run the command
+<code>velociraptor deaddisk --add-windows_disk=...</code> or the
+<code>Generic.Utils.DeadDiskRemapping</code> artifact, specifying the relevant input
+file. This will produce the remapping config, which will be stored in the
+collection&rsquo;s Uploaded Files for the artifact, or output to a file is using
+the CLI.</p>
+</li>
+<li>
+<p><strong>Remapping from other image formats</strong></p>
+<p>If you have a disk image of a Windows system <em>and it&rsquo;s not</em> in one of the
+supported image formats, then you can cross-mount of convert the image to one
+of the supported formats. Then proceed as in the previous scenario.</p>
+</li>
+<li>
+<p><strong>Remapping from a mounted folder</strong></p>
+<p>If you have a disk image of a Windows system in any image formats, but the
+filesystems are protected (for example, by BitLocker) or not natively
+supported by Velociraptor, then you can use external tools such as those
+provided by <code>libguestfs</code> to first unlock the partitions and mount them to a
+directory. You can then use the command
+<code>velociraptor deaddisk --add-windows_directory=...</code> or the
+<code>Generic.Utils.DeadDiskRemapping</code> artifact to inspect the image and create
+the remapping config.</p>
+</li>
+<li>
+<p><strong>Manually crafted remapping</strong></p>
+<p>For advanced use cases you might have to manually craft an appropriate
+remapping config, although you can generate one for a simple disk image and
+then use that as a reference/starting point. To help you do this you could
+use Velociraptor (for example, the artifact
+<code>Windows.Forensics.PartitionTable</code> may provide useful info, or you can use
+similar VQL queries to inspect the image contents), or external tools (for
+example from the libguestfs project).</p>
+</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/deaddisk/creating_running/deadisk_phase1_.svg" alt="Ways to create a deaddisk remapping config"
+         class="inline"
+         height="1550"
+         width="1926.666666666667"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="deadisk_phase1.svg"><i class="fa fa-download"></i></a>
+    Ways to create a deaddisk remapping config
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="non-windows-disk-images">Non-Windows disk images</h3>
+<p>For other operating systems, Velociraptor does not currently have built-in
+artifacts to generate the remapping, although we do have native accessors for
+EXT4 and FAT filesystems. So if you are manually crafting a remapping then you
+could consider using those accessors.</p>
+<p>However the simplest option is usually to rely on an external tool (such as
+<code>guestmount</code>, as mentioned above) to mount the target filesystem as a directory
+so that Velociraptor can access it.</p>
+<h2 id="generating-the-remapping-config">Generating the remapping config</h2>
+<p>The following process will work in most simple cases - namely a disk or
+partition image of a Windows system, where we assume the partition containing a
+folder named <code>Windows</code> is the <code>C:</code> drive.</p>
+<ol>
+<li>
+<p>In the Velociraptor GUI, navigate to <code>Server Artifacts</code> in the sidebar menu.</p>
+</li>
+<li>
+<p>Create a new collection by clicking the <code>New Collection</code> button.</p>
+</li>
+<li>
+<p>Select the <code>Generic.Utils.DeadDiskRemapping</code> artifact:</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/deaddisk/creating_running/dead_disk_remapping_select.png"
+         class="inline"
+         alt="Select Artifact"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="dead_disk_remapping_select.png">
+      <i class="fa fa-download"></i></a>
+    Select Artifact
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+<li>
+<p>In the artifact parameters we configure the path to the image, and provide a
+<code>Hostname</code> that the virtual client will identify itself as.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/deaddisk/creating_running/dead_disk_remapping_configure.png"
+         class="inline"
+         alt="Configure Artifact Parameters"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="dead_disk_remapping_configure.png">
+      <i class="fa fa-download"></i></a>
+    Configure Artifact Parameters
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+<li>
+<p>After launching the artifact, you can inspect the query log to see how the
+artifact automatically inspects each partition to detect the remapping
+configuration.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/deaddisk/creating_running/dead_disk_remapping_logs.png"
+         class="inline"
+         alt="View Artifact Logs"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="dead_disk_remapping_logs.png">
+      <i class="fa fa-download"></i></a>
+    View Artifact Logs
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+<li>
+<p>If successful, the collection&rsquo;s File Uploads tab will now contain the YAML
+remapping config.</p>
+<p>You can inspect it in the GUI:</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/deaddisk/creating_running/dead_disk_remapping_inspect.png"
+         class="inline"
+         alt="Inspect the remapping"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="dead_disk_remapping_inspect.png">
+      <i class="fa fa-download"></i></a>
+    Inspect the remapping
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>And then download the remapping so that you can use it with a virtual client.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/deaddisk/creating_running/dead_disk_remapping_download.png"
+         class="inline"
+         alt="Download the remapping"
+         width="1200" height="559">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="dead_disk_remapping_download.png">
+      <i class="fa fa-download"></i></a>
+    Download the remapping
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+</ol>
+<p>As mentioned previously, the remapping generation step can also be done using
+the CLI&rsquo;s <a href="/docs/cli/deaddisk/">deaddisk command</a>, which runs the
+same <code>Generic.Utils.DeadDiskRemapping</code> artifact.</p>
+<h2 id="running-a-virtual-client-that-uses-the-remapping">Running a virtual client that uses the remapping</h2>
+
+<div class="mynotices info">
+  <div heading=" The remapping config contains static path information "><p>You should ensure that the disk image file or mount point has the exact same
+path when running the client as it had when you created the remapping config,
+since the remapping config contains this path.</p>
+<p>So if you move the image file or use a different mount point after generating
+the remapping then the remapping will not work!</p>
+<p>If you want to run the client on a separate system that is fine, as long as you
+replicate the path to the image / mount point on the client system.</p>
+</div>
+</div>
+
+
+<p>Running the virtual client is basically the same as
+<a href="/docs/deployment/clients/#running-clients-interactively">running a client interactively</a>.
+The only difference is that we now provide it with the remapping config using
+the <code>--remap</code> flag.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/deaddisk/creating_running/deaddisk_client2_.svg" alt="Ways to run a deaddisk client"
+         class="inline"
+         height="1120"
+         width="2320"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="deaddisk_client2.svg"><i class="fa fa-download"></i></a>
+    Ways to run a deaddisk client
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<ol>
+<li>
+<p>We launch the client with the remapping:</p>
+
+
+<div class="tab-panel">
+    <div class="tab-nav">
+    
+        <button
+          data-tab-item="Linux"
+          data-tab-group="default"
+          class="tab-nav-button btn active"
+          onclick="switchTab('default','Linux')"
+         >Linux</button>
+    
+        <button
+          data-tab-item="Windows"
+          data-tab-group="default"
+          class="tab-nav-button btn "
+          onclick="switchTab('default','Windows')"
+         >Windows</button>
+    
+        <button
+          data-tab-item="macOS"
+          data-tab-group="default"
+          class="tab-nav-button btn "
+          onclick="switchTab('default','macOS')"
+         >macOS</button>
+    
+    </div>
+    <div class="tab-content">
+        
+        <div data-tab-item="Linux" data-tab-group="default" class="tab-item active">
+            <pre><code class="language-shell">./velociraptor --config client.config.yaml client --remap remapping.yaml -v
+</code></pre>
+
+        </div>
+        
+        <div data-tab-item="Windows" data-tab-group="default" class="tab-item ">
+            <pre><code class="language-shell">velociraptor.exe --config client.config.yaml client --remap remapping.yaml -v
+</code></pre>
+
+        </div>
+        
+        <div data-tab-item="macOS" data-tab-group="default" class="tab-item ">
+            <pre><code class="language-shell">./velociraptor --config client.config.yaml client --remap remapping.yaml-v
+</code></pre>
+
+        </div>
+        
+    </div>
+</div>
+
+<p>The <code>client.config.yaml</code> is the normal client config that you can download
+from your server&rsquo;s
+<a href="/docs/gui/#the-server-dashboard">Dashboard screen</a>.</p>
+
+<div class="mynotices note">
+  <div heading="note"><p>Since the client will generate a writeback file on disk that contains it&rsquo;s
+unique client ID. This writeback file will persist and cause the client to
+retain the same client ID between runs. If you intend to process further
+images on the same host then you will either need to delete the writeback
+file before starting a new client, or else add the path to a new writeback
+file for these subsequent clients. For the latter option, this can be done by
+adding the path to a new writeback file to the above command line using the
+appropriate <code>--config.client-writeback-&lt;platform&gt;</code> flag - for example,
+<code>--config.client-writeback-linux=/path/to/writeback.yaml</code> for Linux or
+<code>--config.client-writeback-windows=&quot;C:/path/to/writeback.yaml&quot;</code> for Windows.</p>
+</div>
+</div>
+
+
+</li>
+<li>
+<p>If you search clients for the hostname you should see that the client is now
+connected to the server:</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/deaddisk/creating_running/dead_disk_running_search.png"
+         class="inline"
+         alt="Client enrolled and connected"
+         width="1200" height="353">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="dead_disk_running_search.png">
+      <i class="fa fa-download"></i></a>
+    Client enrolled and connected
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>On the client&rsquo;s Overview screen you will see that the impersonated
+information is applied (in this case the client is actually running on the
+server under Linux).</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/deaddisk/creating_running/dead_disk_running_connected.png"
+         class="inline"
+         alt="Client info"
+         width="1200" height="613">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="dead_disk_running_connected.png">
+      <i class="fa fa-download"></i></a>
+    Client info
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+<li>
+<p>You can now collect any artifacts that primarily read from the disk.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/deaddisk/creating_running/collecting_from_image.png"
+         class="inline"
+         alt="Collecting artifacts from the virtual client"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="collecting_from_image.png">
+      <i class="fa fa-download"></i></a>
+    Collecting artifacts from the virtual client
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The query log from every collection will indicate that the data comes from
+the image file, but in the results it will appear as if the queries ran on
+the original endpoint.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/deaddisk/creating_running/collecting_from_image_logs.png"
+         class="inline"
+         alt="Artifact collection logs"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="collecting_from_image_logs.png">
+      <i class="fa fa-download"></i></a>
+    Artifact collection logs
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+</ol>
+<h2 id="automating-the-process-in-a-single-server-artifact">Automating the process in a single server artifact</h2>
+<p>If your disk image is located on the server, you can generate the remapping
+config and launch the virtual client in a one step, using the
+<code>Server.Utils.DeadDiskClient</code> artifact. This artifact runs the client using the
+VQL <code>execve()</code> plugin after generating the remapping config.</p>
+<p>The following process will work in most simple cases - namely a disk or
+partition image of a Windows system, where we assume the partition containing a
+folder named <code>Windows</code> is the <code>C:</code> drive.</p>
+<ol>
+<li>
+<p>In the Velociraptor GUI, navigate to <code>Server Artifacts</code> in the sidebar menu.</p>
+</li>
+<li>
+<p>Create a new collection by clicking the <code>New Collection</code> button.</p>
+</li>
+<li>
+<p>Select the <code>Server.Utils.DeadDiskClient</code> artifact and configure the
+path to the image in the artifact parameters.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/deaddisk/creating_running/artifact_parameters.png"
+         class="inline"
+         alt="Artifact Parameters"
+         width="936" height="533">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="artifact_parameters.png">
+      <i class="fa fa-download"></i></a>
+    Artifact Parameters
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The <code>Hostname</code> parameter controls what the virtual client will identify as. The
+<code>WritebackFile</code> parameter will store the writeback of the virtual client so you
+can reuse it next time to keep the same client id.</p>
+</li>
+<li>
+<p>In the <code>Resources</code> tab you can update the <code>Max Execution time</code>
+which controls how long the virtual client will be alive. By default
+this is 1 hour.</p>
+</li>
+<li>
+<p>After launching the artifact, you can inspect the query log to see how the
+artifact automatically inspects each partition to detect the remapping
+configuration.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/deaddisk/creating_running/artifact_logs.png"
+         class="inline"
+         alt="Artifact Logs"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="artifact_logs.png">
+      <i class="fa fa-download"></i></a>
+    Artifact Logs
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+</ol>
+<p>Although it appears that the collection is not complete, it is actually running
+a client with the remapping in a separate process, so it will wait for the
+timeout before the client is torn down. During this time you can interact with
+the client, collect any artifacts, or have it participate in any hunts.</p>
+<ol start="6">
+<li>
+<p>Search for the hostname to find the new client id.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/deaddisk/creating_running/deaddiskhost.png"
+         class="inline"
+         alt="Search for the new virtual client"
+         width="908" height="308">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="deaddiskhost.png">
+      <i class="fa fa-download"></i></a>
+    Search for the new virtual client
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+<li>
+<p>You can now collect any artifacts that primarily read from the disk.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/deaddisk/creating_running/collecting_from_image2.png"
+         class="inline"
+         alt="Collecting artifacts from the virtual client"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="collecting_from_image2.png">
+      <i class="fa fa-download"></i></a>
+    Collecting artifacts from the virtual client
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+<li>
+<p>The query log from every collection will indicate that the data comes from
+the image file, but in the results it will appear as if the queries ran on
+the original endpoint.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/deaddisk/creating_running/collecting_from_image_logs2.png"
+         class="inline"
+         alt="Artifact collection logs"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="collecting_from_image_logs2.png">
+      <i class="fa fa-download"></i></a>
+    Artifact collection logs
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+<li>
+<p>To end the virtual client session you can either wait for it to time out, or
+navigate back to the <code>Server.Utils.DeadDiskClient</code> collection and cancel it.</p>
+</li>
+</ol>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847310"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847310"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847310"></script>
+    <script src="/js/jquery.sticky.js?1774847310"></script>
+    <script src="/js/featherlight.min.js?1774847310"></script>
+    <script src="/js/highlight.min.js?1774847310"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847310"></script>
+    <script src="/js/learn.js?1774847310"></script>
+    <script src="/js/hugo-learn.js?1774847310"></script>
+    
+    
+
+  </body>
+</html>

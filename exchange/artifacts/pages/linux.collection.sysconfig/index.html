@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Linux.Collection.SysConfig :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847311" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847311" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847311" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847311" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847311" rel="stylesheet">
+    <link href="/css/theme.css?1774847311" rel="stylesheet">
+    <link href="/css/tabs.css?1774847311" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847311" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847311" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847311" rel="stylesheet"><link href="/css/syntax.css?1774847311" rel="stylesheet"><link href="/css/light.css?1774847311" rel="stylesheet"><link href="/css/hljs.css?1774847311" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847311" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847311"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/exchange/artifacts/pages/linux.collection.sysconfig/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/exchange\/artifacts\/pages\/linux.collection.sysconfig\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/exchange/artifacts/Linux.Collection.SysConfig.yaml" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Linux.Collection.SysConfig</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents"></nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Linux.Collection.SysConfig
+            </h1>
+            
+          
+
+        
+
+
+<p>Collect system configurations and upload them.
+Based on TriageSystemConfiguration from forensicartifacts.com</p>
+<pre><code class="language-yaml">
+name: Linux.Collection.SysConfig 
+author: alternate
+description: |
+  Collect system configurations and upload them.
+  Based on TriageSystemConfiguration from forensicartifacts.com
+
+reference:
+  - https://github.com/ForensicArtifacts/artifacts/blob/main/data/triage.yaml
+
+precondition: SELECT OS FROM info() WHERE OS = "linux"
+
+parameters:
+- name: APTSources
+  default: |
+    ["/etc/apt/sources.list", "/etc/apt/sources.list.d/*.list"]
+
+- name: APTTrustKeys
+  default: |
+    ["/etc/apt/trusted.gpg.d/*.gpg", "/etc/apt/trustdb.gpg", "/usr/share/keyrings/*.gpg", "/etc/apt/trusted.gpg"]
+
+- name: CronAtAllowDenyFiles
+  default: |
+    ["/etc/at.allow", "/etc/cron.allow", "/etc/cron.deny", "/etc/at.deny"]
+
+- name: DebianPackagesStatus
+  default: /var/lib/dpkg/status
+
+- name: DebianVersion
+  default: /etc/debian_version
+
+- name: KernelModules
+  default: |
+    ["/etc/modules.conf", "/etc/modprobe.d/*"]
+
+- name: LinuxCACertificates
+  default: |
+    ["/usr/local/share/ca-certificates/*", "/etc/ssl/certs/ca-certificates.crt", "/usr/share/ca-certificates/*"]
+
+- name: LinuxASLREnabled
+  default: /proc/sys/kernel/randomize_va_space
+
+- name: LinuxDSDTTable
+  default: /sys/firmware/acpi/tables/DSDT
+
+- name: LinuxDHCPConfigurationFile
+  default: /etc/dhcp/dhcp.conf
+
+- name: LinuxFstab
+  default: /etc/fstab
+
+- name: LinuxGrubConfiguration
+  default: |
+    ["/boot/grub/grub.cfg", "/boot/grub2/grub.cfg"]
+
+- name: LinuxInitrdFiles
+  default: |
+    ["/boot/initramfs*", "/boot/initrd*"]
+
+- name: LinuxIssueFile
+  default: |
+    ["/etc/issue.net", "/etc/issue"]
+
+- name: LinuxKernelBootloader
+  default: |
+    ["/proc/sys/kernel/bootloader_type", "/proc/sys/kernel/bootloader_version"]
+
+- name: LinuxKernelModuleRestrictions
+  default: |
+    ["/proc/sys/kernel/modules_disabled", "/proc/sys/kernel/kexec_load_disabled"]
+
+- name: LinuxKernelModuleTaintStatus
+  default: /proc/sys/kernel/tainted
+
+- name: LinuxLoaderSystemPreloadFile
+  default: /etc/ld.so.preload
+
+- name: LinuxLocalTime
+  default: /etc/localtime
+
+- name: LinuxLSBInit
+  default: |
+    ["/etc/init.d/*", "/etc/insserv.conf.d/**", "/etc/insserv.conf"]
+
+- name: LinuxLSBRelease
+  default: /etc/lsb-release
+
+- name: LinuxNetworkManager
+  default: |
+    ["/usr/lib/NetworkManager/conf.d/name.conf", "/run/NetworkManager/conf.d/name.conf", 
+     "/var/lib/NetworkManager/*", "/var/lib/NetworkManager/NetworkManager-intern.conf", 
+     "/etc/NetworkManager/conf.d/name.conf", "/etc/NetworkManager/NetworkManager.conf"]
+
+- name: LinuxPamConfigs
+  default: |
+    ["/etc/pam.d/common-password", "/etc/pam.conf", "/etc/pam.d/*"]
+
+- name: LinuxPasswdFile
+  default: /etc/passwd
+
+- name: LinuxProcMounts
+  default: /proc/mounts
+
+- name: LinuxRelease
+  default: |
+    ["/etc/enterprise-release", "/etc/system-release", "/etc/oracle-release", "/etc/lsb-release", "/etc/redhat-release"]
+
+- name: LinuxRestrictedDmesgReadPrivileges
+  default: /proc/sys/kernel/dmesg_restrict
+
+- name: LinuxRestrictedKernelPointerReadPrivileges
+  default: /proc/sys/kernel/kptr_restrict
+
+- name: LinuxRsyslogConfigs
+  default: |
+    ["/etc/rsyslog.d", "/etc/rsyslog.d/*", "/etc/rsyslog.conf"]
+
+- name: LinuxSecureFsLinks
+  default: |
+    ["/proc/sys/fs/protected_symlinks", "/proc/sys/fs/protected_hardlinks"]
+
+- name: LinuxSecureSuidCoreDumps
+  default: /proc/sys/fs/suid_dumpable
+
+- name: LinuxSSDTTables
+  default: /sys/firmware/acpi/tables/SSDT*
+
+- name: LinuxSysctlConfigurationFiles
+  default: |
+    ["/etc/sysctl.d/*.conf", "/etc/sysctl.con", "/usr/lib/sysctl.d/*.conf", 
+     "/run/sysctl.d/*.conf", "/lib/sysctl.d/*.conf", "/usr/local/lib/sysctl.d/*.conf"]
+
+- name: LinuxSyslogNgConfigs
+  default: |
+    ["/etc/syslog-ng/conf-d/*.conf", "/etc/syslog-ng/syslog-ng.conf"]
+
+- name: LinuxSystemdJournalConfig
+  default: /etc/systemd/journald.conf
+
+- name: LinuxSystemdOSRelease
+  default: |
+    ["/usr/lib/os-release", "/etc/os-release"]
+
+- name: LinuxTimezoneFile
+  default: /etc/timezone
+
+- name: LinuxXinetd
+  default: |
+    ["/etc/xinetd.d/**", "/etc/xinetd.conf"]
+
+- name: LocateDatabase
+  default: |
+    ["/etc/updatedb.conf", "/var/lib/mlocate/mlocate.db"]
+
+- name: LoginPolicyConfiguration
+  default: |
+    ["/etc/passwd", "/etc/shadow", "/root/.k5login", "/etc/netgroup", "/etc/nsswitch.conf", "/etc/security/access.conf"]
+
+- name: NetgroupConfiguration
+  default: /etc/netgroup
+
+- name: NfsExportsFile
+  default: |
+    ["/private/etc/exports", "/etc/exports"]
+
+- name: NtpConfFile
+  default: /etc/ntp.conf
+
+- name: PCIDevicesInfoFiles
+  default: |
+    ["/sys/bus/pci/devices/*/config", "/sys/bus/pci/devices/*/vendor", 
+     "/sys/bus/pci/devices/*/device", "/sys/bus/pci/devices/*/class"]
+
+- name: SambaConfigFile
+  default: /etc/samba/smb.conf
+
+- name: SecretsServiceDatabaseFile
+  default: |
+    ["/var/lib/sss/secrets/.secrets.mkey", "/var/lib/sss/secrets/secrets.ldb"]
+
+- name: SshdConfigFile
+  default: |
+    ["/etc/ssh/sshd_config", "/private/etc/ssh/sshd_config"]
+
+- name: SSHHostPubKeys
+  default: /etc/ssh/ssh_host_*_key.pub
+
+- name: UnixGroupsFile
+  default: |
+    ["/etc/group", "/private/etc/group"]
+
+- name: UnixLocalTimeConfigurationFile
+  default: |
+    ["/private/etc/localtime", "/etc/localtime"]
+
+- name: UnixPasswdFile
+  default: |
+    ["/private/etc/passwd", "/etc/passwd"]
+
+- name: UnixShadowFile
+  default: |
+    ["/private/etc/shadow", "/etc/shadow"]
+
+- name: UnixSudoersConfigurationFile
+  default: |
+    ["/etc/sudoers", "/private/etc/sudoers"]
+
+- name: YumSources
+  default: |
+    ["/etc/yum.conf", "/etc/yum.repos.d/*.repo"]
+
+sources:
+- name: uploadAPTSources
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=APTSources))
+
+- name: uploadAPTTrustKeys
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=APTTrustKeys))
+
+- name: uploadCronAtAllowDenyFiles
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=CronAtAllowDenyFiles))
+
+- name: uploadDebianPackagesStatus
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM stat(filename=DebianPackagesStatus)
+
+- name: uploadDebianVersion
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM stat(filename=DebianVersion)
+
+- name: uploadKernelModules
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=KernelModules))
+
+- name: uploadLinuxASLREnabled
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM stat(filename=LinuxASLREnabled)
+
+- name: uploadLinuxCACertificates
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=LinuxCACertificates))
+
+- name: uploadLinuxDHCPConfigurationFile
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM stat(filename=LinuxDHCPConfigurationFile)
+
+- name: uploadLinuxDSDTTable
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM stat(filename=LinuxDSDTTable)
+
+- name: uploadLinuxFstab
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM stat(filename=LinuxFstab)
+
+- name: uploadLinuxGrubConfiguration
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=LinuxGrubConfiguration))
+
+- name: uploadLinuxInitrdFiles
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=LinuxInitrdFiles))
+
+- name: uploadLinuxIssueFile
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=LinuxIssueFile))
+
+- name: uploadLinuxKernelBootloader
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=LinuxKernelBootloader))
+
+- name: uploadLinuxKernelModuleRestrictions
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=LinuxKernelModuleRestrictions))
+
+- name: uploadLinuxKernelModuleTaintStatus
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM stat(filename=LinuxKernelModuleTaintStatus)
+
+- name: uploadLinuxLoaderSystemPreloadFile
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM stat(filename=LinuxLoaderSystemPreloadFile)
+
+- name: uploadLinuxLocalTime
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM stat(filename=LinuxLocalTime)
+
+- name: uploadLinuxLSBInit
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=LinuxLSBInit))
+
+- name: uploadLinuxLSBRelease
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM stat(filename=LinuxLSBRelease)
+
+- name: uploadLinuxNetworkManager
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=LinuxNetworkManager))
+
+- name: uploadLinuxPamConfigs
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=LinuxPamConfigs))
+
+- name: uploadLinuxPasswdFile
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM stat(filename=LinuxPasswdFile)
+
+- name: uploadLinuxProcMounts
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM stat(filename=LinuxProcMounts)
+
+- name: uploadLinuxRelease
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=LinuxRelease))
+
+- name: uploadLinuxRestrictedDmesgReadPrivileges
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM stat(filename=LinuxRestrictedDmesgReadPrivileges)
+
+- name: uploadLinuxRestrictedKernelPointerReadPrivileges
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM stat(filename=LinuxRestrictedKernelPointerReadPrivileges)
+
+- name: uploadLinuxRsyslogConfigs
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=LinuxRsyslogConfigs))
+
+- name: uploadLinuxSecureFsLinks
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=LinuxSecureFsLinks))
+
+- name: uploadLinuxSecureSuidCoreDumps
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM stat(filename=LinuxSecureSuidCoreDumps)
+
+- name: uploadLinuxSSDTTables
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=LinuxSSDTTables)
+
+- name: uploadLinuxSysctlConfigurationFiles
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=LinuxSysctlConfigurationFiles))
+
+- name: uploadLinuxSyslogNgConfigs
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=LinuxSyslogNgConfigs))
+
+- name: uploadLinuxSystemdJournalConfig
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM stat(filename=LinuxSystemdJournalConfig)
+
+- name: uploadLinuxSystemdOSRelease
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=LinuxSystemdOSRelease))
+
+- name: uploadLinuxTimezoneFile
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM stat(filename=LinuxTimezoneFile)
+
+- name: uploadLinuxXinetd
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=LinuxXinetd))
+
+- name: uploadLocateDatabase
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=LocateDatabase))
+
+- name: uploadLoginPolicyConfiguration
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=LoginPolicyConfiguration))
+
+- name: uploadNetgroupConfiguration
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM stat(filename=NetgroupConfiguration)
+
+- name: uploadNfsExportsFile
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=NfsExportsFile))
+
+- name: uploadNtpConfFile
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM stat(filename=NtpConfFile)
+
+- name: uploadPCIDevicesInfoFiles
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=PCIDevicesInfoFiles))
+
+- name: uploadSambaConfigFile
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM stat(filename=SambaConfigFile)
+
+- name: uploadSecretsServiceDatabaseFile
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=SecretsServiceDatabaseFile))
+
+- name: uploadSshdConfigFile
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=SshdConfigFile))
+
+- name: uploadSSHHostPubKeys
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=SSHHostPubKeys)
+
+- name: uploadUnixGroupsFile
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=UnixGroupsFile))
+
+- name: uploadUnixLocalTimeConfigurationFile
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=UnixLocalTimeConfigurationFile))
+
+- name: uploadUnixPasswdFile
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=UnixPasswdFile))
+
+- name: uploadUnixShadowFile
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=UnixShadowFile))
+
+- name: uploadUnixSudoersConfigurationFile
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=UnixSudoersConfigurationFile))
+
+- name: uploadYumSources
+  query: |
+    SELECT OSPath,
+           Mtime,
+           upload(file=OSPath) AS Upload
+    FROM glob(globs=parse_json_array(data=YumSources))
+
+</code></pre>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847311"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847311"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847311"></script>
+    <script src="/js/jquery.sticky.js?1774847311"></script>
+    <script src="/js/featherlight.min.js?1774847311"></script>
+    <script src="/js/highlight.min.js?1774847311"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847311"></script>
+    <script src="/js/learn.js?1774847311"></script>
+    <script src="/js/hugo-learn.js?1774847311"></script>
+    
+    
+
+  </body>
+</html>
+

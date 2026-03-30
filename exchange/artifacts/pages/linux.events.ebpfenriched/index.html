@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Linux.Events.EBPFEnriched :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847311" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847311" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847311" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847311" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847311" rel="stylesheet">
+    <link href="/css/theme.css?1774847311" rel="stylesheet">
+    <link href="/css/tabs.css?1774847311" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847311" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847311" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847311" rel="stylesheet"><link href="/css/syntax.css?1774847311" rel="stylesheet"><link href="/css/light.css?1774847311" rel="stylesheet"><link href="/css/hljs.css?1774847311" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847311" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847311"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/exchange/artifacts/pages/linux.events.ebpfenriched/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/exchange\/artifacts\/pages\/linux.events.ebpfenriched\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/exchange/artifacts/Linux.Events.EBPFEnriched.yaml" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Linux.Events.EBPFEnriched</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents"></nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Linux.Events.EBPFEnriched
+            </h1>
+            
+          
+
+        
+
+
+<p>This artifact forwards EBPF events generated on the endpoint and enriches events with:</p>
+<ul>
+<li>Process details (CommandLine, ParentImage, etc.)</li>
+<li>Docker container details (ContainerName, ContainerImage, Usernames, etc.)</li>
+</ul>
+<p>Requires Linux.Events.TrackProcesses (process tracker), and docker v29+ for hashing of executables and username enrichment in docker containers.</p>
+<pre><code class="language-yaml">
+name: Linux.Events.EBPFEnriched
+author: Zane Gittins
+description: |
+ This artifact forwards EBPF events generated on the endpoint and enriches events with:
+ 
+    * Process details (CommandLine, ParentImage, etc.)
+    * Docker container details (ContainerName, ContainerImage, Usernames, etc.)
+ 
+ Requires Linux.Events.TrackProcesses (process tracker), and docker v29+ for hashing of executables and username enrichment in docker containers.
+
+type: CLIENT_EVENT
+
+parameters:
+  - name: Events
+    description: Events to forward
+    type: csv
+    default: |
+      Event,Desc,Enabled
+      bpf_attach,A bpf program is attached,N
+      chdir,Process changes directory,N
+      fchownat,File ownership is changed,Y
+      file_modification,A process changes the ctime of a file,N
+      kill,Kill another process,N
+      magic_write,Intercepts file writes to capture the header magic,Y
+      mkdir,Process makes new directory,N
+      module_free,A module is unloaded from the kernel,Y
+      mount,A filesystem is mounted,Y
+      openat,A process is opening a file (noisy),N
+      openat2,A process is opening a file (noisy),N
+      sched_process_exec,A process starts,Y
+      sched_process_exit,A process ends,N
+      security_file_open,Files are opened,N
+      security_inode_mknod,A new node is created with mknod (e.g. fifo or device file),Y
+      security_inode_rename,File is being renamed,N
+      security_inode_symlink,Create a symlink,Y
+      security_kernel_post_read_file,Fires when the kernel reads a file (e.g. module),Y
+      security_socket_accept,A process accepted a connection,Y
+      security_socket_bind,A process bind to a local port,Y
+      security_socket_connect,A process is making a connection,Y
+      setxattr,Setting and extended attribute to a file,Y
+      umount2,A filesystem is being unmounted,Y
+      unlink,A file is deleted,N
+      net_packet_dns,DNS network traffic,Y
+      net_packet_http_request,http requests,N
+      ptrace,abused for process injection,Y
+      process_vm_writev,abused for process injection,Y
+  - name: Exclusions
+    description: Granular event exclusion rules for EventData fields.
+    type: csv
+    default: |
+        Event,Reason,FieldName,ExclusionRegex
+        magic_write,Noisy,pathname,.(txt|cmrk2|cmrk4|pid|json|procs|bin|dblwr)$
+        magic_write,Noisy,pathname,^/sys/fs/cgroup/
+        security_socket_connect,Noisy,remote_addr.sa_family,AF_UNIX
+        net_packet_dns,SLD Queries,proto_dns.questions.name,^[^.]*$
+  - name: DockerEnrich
+    description: |
+      If enabled, we attempt to enrich events from docker containers.
+    type: bool
+    default: True
+  - name: DockerAPIEndpoint
+    description: |
+      Docker API endpoint to retrieve container details.
+    type: string
+    default: "/var/run/docker.sock:unix/containers/json"
+  - name: HashOnExecution
+    description: |
+      Calculate hashes on process execution (sched_process_exec).
+    type: bool
+    default: True
+  - name: BufferSize
+    description: |
+      Size of buffer used to delay events for enrichment. Larger buffer size increases enrichment chance, but also memory usage.
+    default: 5000
+    type: int64
+  - name: EnrichmentDelay
+    description: | 
+      Number of seconds to delay enriching events to increase chance they are in the process tracker.
+    type: int64
+    default: 5
+
+export: |
+  // Get hostname from info, as ebpf also has container names.
+  LET ComputerName &lt;= dict(H={ SELECT Hostname FROM info() }).H[0].Hostname
+  
+  // Get paths to /etc/passwd from client and docker containers using overlayfs. Used to enrich events with username.
+  LET AllPasswdPaths = SELECT
+      OSPath
+    FROM glob(
+      globs=["/var/lib/docker/rootfs/overlayfs/*/etc/passwd", "/etc/passwd"])
+  
+  // Get 12 character container id or computer name. We truncate ComputerName at 15 chars for matching on System.HostName (UtsName(16 chars) - null byte)
+  LET GetName(Path) = if(
+      condition=(Path =~ "docker"),
+      then=parse_string_with_regex(
+        regex="\\/(?&lt;ContainerID&gt;[a-z0-9]{12})",
+        string=Path).ContainerID,
+      else=ComputerName[:15])
+  
+  // Enrich usernames from /etc/passwd
+  LET UsernameLookup &lt;= memoize(key="CombinedID",
+                                query={
+      SELECT *
+      FROM foreach(row=AllPasswdPaths,
+                   query={
+      SELECT User AS Username,
+             atoi(string=Uid) AS UserID,
+             GetName(Path=OSPath) + Uid AS CombinedID
+      FROM split_records(
+        filenames=OSPath,
+        regex=":",
+        record_regex="\r?\n",
+        columns=["User", "X", "Uid", "Gid", "Description", "Homedir", "Shell"])
+    })
+    },
+                                period=120)
+  
+  // Get hash of a file on host or in docker container via overlayfs
+  LET get_hash_cache(OSPath, HostName, IsContainer) =
+      if(condition=(HostName
+            AND IsContainer),
+         then=hash(path=("/var/lib/docker/rootfs/overlayfs/" +
+                       HostName + OSPath),
+                   hashselect=["SHA256"]).SHA256,
+         else=hash(path=OSPath, hashselect=["SHA256"]).SHA256)
+  
+  // Parse Exclusions
+  LET ExclusionRules &lt;= SELECT *
+    FROM Exclusions
+  
+  // Function to check if an event should be excluded
+  LET ShouldExclude(EventName, EventData) = len(
+      list=array(_={
+      SELECT *
+      FROM foreach(row=ExclusionRules)
+      WHERE Event = EventName
+       AND get(item=EventData, member=FieldName) =~ ExclusionRegex
+      LIMIT 1
+    })) &gt; 0
+  
+  // Communicate with docker API to get all running containers
+  LET data = SELECT parse_json_array(data=Content) AS Containers
+    FROM http_client(url=DockerAPIEndpoint)
+  
+  LET ContainerLookup &lt;= memoize(key="ContainerID",
+                                 query={
+      SELECT format(format="%.12s", args=Id) AS ContainerID,
+             Id AS FullContainerID,
+             join(array=Names, sep=", ") AS ContainerName,
+             Image AS ContainerImage,
+             State AS ContainerState,
+             Status AS ContainerStatus,
+             timestamp(epoch=Created) AS ContainerCreated
+      FROM foreach(row=data, query={ SELECT * FROM foreach(row=Containers) })
+    },
+                                 period=30)
+  
+  // Get detailed process information for all events
+  LET GetProcInfo(EventData, Tracker, pTracker) = dict(
+      Image=Tracker.Data.Exe || EventData.cmdpath ||
+        System.ProcessName,
+      ImageName=System.ProcessName,
+      CommandLine=Tracker.Data.CommandLine || join(array=EventData.argv, sep=" "),
+      ParentImage=pTracker.Data.Exe,
+      ParentCommandLine=pTracker.Data.CommandLine,
+      CreateTime=timestamp(
+        epoch=EventData.ctime) || System.ThreadStartTime,
+      CallChain=join(
+        array=process_tracker_callchain(
+          id=System.HostProcessID).Data.Name,
+        sep="-&gt;"),
+      TrackerHit=if(
+        condition=Tracker != NULL,
+        then=true,
+        else=false))
+
+sources:
+  - precondition:
+        SELECT OS From info() where OS = 'linux' AND version(plugin="watch_ebpf") &gt;= 0
+    query: |
+      // Comsume only process execution events.
+      LET SelectedEvents &lt;= SELECT *
+        FROM Events
+        WHERE Enabled =~ "Y"
+         AND Event = "sched_process_exec"
+      
+      // Primary event loop, we exclude our own pid and evaluate exclusion rules.
+      LET Logs = SELECT timestamp(epoch=now()) AS Timestamp,
+                        *,
+                        System.HostProcessID != System.ProcessID AS IsContainer
+        FROM watch_ebpf(events=SelectedEvents.Event)
+        WHERE System.HostProcessID != getpid()
+         AND System.HostParentProcessID != getpid()
+              AND NOT ShouldExclude(EventName=System.EventName, EventData=EventData)
+      
+      SELECT
+          ComputerName,
+          System,
+          EventData,
+          GetProcInfo(EventData=EventData,
+                      Tracker=process_tracker_get(id=System.HostProcessID),
+                      pTracker=process_tracker_get(id=System.HostParentProcessID)) AS ProcInfo,
+          IsContainer,
+          get(
+            item=UsernameLookup,
+            field=(System.HostName + str(
+                str=System.UserID))).Username AS Username,
+          if(
+            condition=(IsContainer
+               AND DockerEnrich),
+            then=get(
+              item=ContainerLookup,
+              field=System.HostName)) AS ContainerEnrich,
+          if(
+            condition=(System.EventName = "sched_process_exec"
+               AND HashOnExecution),
+            then=cache(
+              period=300,
+              func=get_hash_cache(
+                OSPath=EventData.pathname,
+                HostName=get(
+                  item=ContainerLookup,
+                  field=System.HostName).FullContainerID,
+                IsContainer=IsContainer),
+              // Cache on dev (device id) + inode, this strategy saves cpu on containers using same overlayfs
+              key=str(
+                str=EventData.dev) + "-" + str(
+                str=EventData.inode))) AS Hash
+      FROM delay(
+        query={
+          SELECT
+          *
+          FROM Logs
+        },
+        delay=EnrichmentDelay,
+        buffer_size=BufferSize)
+  - precondition:
+        SELECT OS From info() where OS = 'linux' AND version(plugin="watch_ebpf") &gt;= 0
+    query: |
+      // Comsume only process injection events, which can be very bursty.
+      LET SelectedEvents &lt;= SELECT *
+        FROM Events
+        WHERE Enabled =~ "Y"
+         AND Event =~ "^(ptrace|process_vm_writev)"
+      
+      // Primary event loop, we exclude our own pid and evaluate exclusion rules.
+      LET Logs = SELECT timestamp(epoch=now()) AS Timestamp,
+                        *,
+                        System.HostProcessID != System.ProcessID AS IsContainer,
+                        System.HostProcessID AS ProcessID
+        FROM watch_ebpf(events=SelectedEvents.Event)
+        WHERE System.HostProcessID != getpid()
+         AND System.HostParentProcessID != getpid()
+              AND NOT ShouldExclude(EventName=System.EventName, EventData=EventData)
+      
+      SELECT
+          ComputerName,
+          System,
+          EventData,
+          GetProcInfo(EventData=EventData,
+                      Tracker=process_tracker_get(id=System.HostProcessID),
+                      pTracker=process_tracker_get(id=System.HostParentProcessID)) AS ProcInfo,
+          IsContainer,
+          get(
+            item=UsernameLookup,
+            field=(System.HostName + str(
+                str=System.UserID))).Username AS Username,
+          if(
+            condition=(IsContainer
+               AND DockerEnrich),
+            then=get(
+              item=ContainerLookup,
+              field=System.HostName)) AS ContainerEnrich
+      FROM dedup(
+        query={
+          SELECT
+          *
+          FROM Logs
+        },
+        key="ProcessID",
+        size=BufferSize)
+  - precondition:
+        SELECT OS From info() where OS = 'linux' AND version(plugin="watch_ebpf") &gt;= 0
+    query: |
+      // Comsume only security_socket_connect, which can be very bursty.
+      LET SelectedEvents &lt;= SELECT *
+        FROM Events
+        WHERE Enabled =~ "Y"
+         AND Event =~ "^(security_socket_connect)"
+      
+      // Primary event loop, we exclude our own pid and evaluate exclusion rules.
+      LET Logs = SELECT timestamp(epoch=now()) AS Timestamp,
+                        *,
+                        System.HostProcessID != System.ProcessID AS IsContainer,
+                        (str(str=System.HostProcessID) +
+                            EventData.remote_addr.sin_addr +
+                            EventData.remote_addr.sin_port +
+                            EventData.remote_addr.sa_family) AS DedupKey
+        FROM watch_ebpf(events=SelectedEvents.Event)
+        WHERE System.HostProcessID != getpid()
+         AND System.HostParentProcessID != getpid()
+              AND NOT ShouldExclude(EventName=System.EventName, EventData=EventData)
+      
+      SELECT
+          ComputerName,
+          System,
+          EventData,
+          GetProcInfo(EventData=EventData,
+                      Tracker=process_tracker_get(id=System.HostProcessID),
+                      pTracker=process_tracker_get(id=System.HostParentProcessID)) AS ProcInfo,
+          IsContainer,
+          get(
+            item=UsernameLookup,
+            field=(System.HostName + str(
+                str=System.UserID))).Username AS Username,
+          if(
+            condition=(IsContainer
+               AND DockerEnrich),
+            then=get(
+              item=ContainerLookup,
+              field=System.HostName)) AS ContainerEnrich
+      FROM dedup(
+        query={
+          SELECT
+          *
+          FROM Logs
+        },
+        key="DedupKey",
+        size=BufferSize)
+  - precondition:
+        SELECT OS From info() where OS = 'linux' AND version(plugin="watch_ebpf") &gt;= 0
+    query: |
+      // Default catch all consumer for events that are not handled in other sources.
+      LET SelectedEvents &lt;= SELECT *
+        FROM Events
+        WHERE Enabled =~ "Y"
+         AND NOT Event =~ "^(sched_process_exec|security_socket_connect|ptrace|process_vm_writev)"
+      
+      // Primary event loop, we exclude our own pid and evaluate exclusion rules.
+      LET Logs = SELECT timestamp(epoch=now()) AS Timestamp,
+                        *,
+                        System.HostProcessID != System.ProcessID AS IsContainer
+        FROM watch_ebpf(events=SelectedEvents.Event)
+        WHERE System.HostProcessID != getpid()
+         AND System.HostParentProcessID != getpid()
+              AND NOT ShouldExclude(EventName=System.EventName, EventData=EventData)
+      
+      SELECT
+          ComputerName,
+          System,
+          EventData,
+          GetProcInfo(EventData=EventData,
+                      Tracker=process_tracker_get(id=System.HostProcessID),
+                      pTracker=process_tracker_get(id=System.HostParentProcessID)) AS ProcInfo,
+          IsContainer,
+          get(
+            item=UsernameLookup,
+            field=(System.HostName + str(
+                str=System.UserID))).Username AS Username,
+          if(
+            condition=(IsContainer
+               AND DockerEnrich),
+            then=get(
+              item=ContainerLookup,
+              field=System.HostName)) AS ContainerEnrich
+      FROM delay(
+        query={
+          SELECT
+          *
+          FROM Logs
+        },
+        delay=(EnrichmentDelay + 5),
+        buffer_size=BufferSize)
+
+</code></pre>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847311"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847311"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847311"></script>
+    <script src="/js/jquery.sticky.js?1774847311"></script>
+    <script src="/js/featherlight.min.js?1774847311"></script>
+    <script src="/js/highlight.min.js?1774847311"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847311"></script>
+    <script src="/js/learn.js?1774847311"></script>
+    <script src="/js/hugo-learn.js?1774847311"></script>
+    
+    
+
+  </body>
+</html>
+

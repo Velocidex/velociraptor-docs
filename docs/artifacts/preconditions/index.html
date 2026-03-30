@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Artifact Preconditions :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847309" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847309" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847309" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847309" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847309" rel="stylesheet">
+    <link href="/css/theme.css?1774847309" rel="stylesheet">
+    <link href="/css/tabs.css?1774847309" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847309" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847309" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847309" rel="stylesheet"><link href="/css/syntax.css?1774847309" rel="stylesheet"><link href="/css/light.css?1774847309" rel="stylesheet"><link href="/css/hljs.css?1774847309" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847309" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847309"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/artifacts/preconditions/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/artifacts\/preconditions\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/artifacts/preconditions/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Artifact Preconditions</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#how-preconditions-are-evaluated">How preconditions are evaluated</a></li>
+    <li><a href="#artifact-level-preconditions-vs-source-level-preconditions">Artifact-level preconditions vs. source-level preconditions</a></li>
+    <li><a href="#serial-vs-parallel-execution">Serial vs. parallel execution</a></li>
+    <li><a href="#preconditions-in-event-artifacts">Preconditions in event artifacts</a></li>
+    <li><a href="#export-and-imports">Export and imports</a></li>
+    <li><a href="#preconditions-and-parameters">Preconditions and parameters</a></li>
+    <li><a href="#use-cases-and-examples">Use Cases and Examples</a>
+      <ul>
+        <li><a href="#1-checking-host-information">1. Checking host information</a></li>
+        <li><a href="#2-checking-the-results-of-another-artifact">2. Checking the results of another artifact</a></li>
+        <li><a href="#3-checking-the-status-of-an-external-tool">3. Checking the status of an external tool</a></li>
+        <li><a href="#4-checking-plugin-versions">4. Checking plugin versions</a></li>
+        <li><a href="#5-checking-date-and-time">5. Checking date and time</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Artifact Preconditions
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>A <strong>precondition</strong> is a query that is run to determine whether the artifact, or
+a particular <a href="/docs/artifacts/sources/">source</a>
+within the artifact, should be collected.</p>
+<p>The most common use for preconditions is to check the operating system and
+sometimes also the architecture, thus making it safe to collect an artifact
+without needing to worry about whether the artifact (or each source in the
+artifact) is designed for the particular architecture or operating system. For
+example, when performing a hunt for a Windows-only artifact (made so using a
+precondition) it is safe to target all clients because Linux and macOS clients
+will just ignore it and return no rows.</p>
+<p>As mentioned, most preconditions target specific operating systems or
+architectures, but a precondition can be an arbitrary VQL query.</p>
+<p>Only VQL queries are allowed for preconditions. That is, preconditions must be a
+VQL <code>SELECT</code> clause. They cannot be VQL functions and cannot include <code>LET</code>
+clauses. However they can include complex <code>WHERE</code> clauses, which can even serve
+as the main determinant of the precondition, as you&rsquo;ll see in some examples
+below.</p>
+<h2 id="how-preconditions-are-evaluated">How preconditions are evaluated</h2>
+<p>When run, a precondition is evaluated to either True or False. In terms of
+&ldquo;thruthiness&rdquo;, True means that the query returned 1 or more rows, while False
+means that the query returned no rows.</p>
+<p>If the precondition evaluates to True then the associated VQL will be executed.
+If False then the associated VQL is skipped. This decision is recorded in the
+collection log for each precondition.</p>
+<h2 id="artifact-level-preconditions-vs-source-level-preconditions">Artifact-level preconditions vs. source-level preconditions</h2>
+<p>Artifacts have two places where preconditions may be defined. You can specify a
+precondition at the top level of the artifact definition, or attach a
+precondition to any source, or use both.</p>
+<p>An artifact-level precondition determines whether the artifact is collected or
+ignored entirely. If the precondition evaluates to True then the artifact is
+collected, however there may also be source-level preconditions that will
+subsequently determine which sources are collected and the
+<a href="#serial-vs-parallel-execution">execution mode</a>
+of the artifact.</p>
+<h2 id="serial-vs-parallel-execution">Serial vs. parallel execution</h2>
+<p>If a precondition is specified at the source level, the VQL engine has no idea
+if any particular source will be used or not. Therefore the engine treats each
+source as an independent query within its own scope. Since the sources are
+independent they can be, and will be, run in parallel. In parallel execution
+mode, any VQL variables defined in one source will not be visible to other
+sources.</p>
+<p>Consider the following artifact:</p>
+<pre><code class="language-yaml">name: MultiSourceParallelMode
+sources:
+  - name: Source1
+    precondition: SELECT * FROM info() WHERE OS = &quot;linux&quot;
+    query: |
+      LET X &lt;= SELECT ....
+      SELECT ...
+  - name: Source2
+    precondition: SELECT * FROM info() WHERE OS = &quot;windows&quot;
+    query: |
+      SELECT * FROM X
+</code></pre>
+<p><code>Source1</code> will only run on Linux systems, and <code>Source2</code> only on Windows systems.
+Therefore it is impossible to share scope between the two sources since
+<code>Source2</code> can never see the variable <code>X</code> defined by <code>Source1</code>.</p>
+<p>Therefore when preconditions are defined at the source level, the artifact must
+be collected in parallel mode, necessitating the creation of an independent
+scope for each source.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/artifacts/preconditions/execution_modes_.svg" alt="execution modes"
+         class="inline"
+         height="740"
+         width="1280"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="execution_modes.svg"><i class="fa fa-download"></i></a>
+    execution modes
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The presence of a precondition on ANY source causes ALL sources in the artifact
+to execute in parallel.</p>
+
+<div class="mynotices tip">
+  <div heading="tip"><p>This means that you can force your artifact to execute in parallel mode
+by adding a precondition to any source, even if the precondition itself
+doesn&rsquo;t actually do anything useful! It can be a query that always evaluates as
+TRUE, for example: <code>precondition: SELECT TRUE FROM scope()</code>.</p>
+<p>Conversely, if you want sources to have access to results from prior sources
+then you need to construct your artifact logic so that it doesn&rsquo;t require or use
+any source-level preconditions.</p>
+</div>
+</div>
+
+
+<p>Artifact-level preconditions have no effect on execution mode.</p>
+<h2 id="preconditions-in-event-artifacts">Preconditions in event artifacts</h2>
+<p>Sources in event artifacts &ndash; that is artifacts of type <code>CLIENT_EVENT</code> OR
+<code>SERVER_EVENT</code> &ndash; always execute in parallel mode, regardless of the presence or
+absence of preconditions. This is necessary because source queries in event
+artifacts are expected to never complete - they just keep producing more rows.
+So no source can ever depend upon the results of any other source.</p>
+<p>Preconditions are nevertheless still just as useful in event artifacts, but just
+don&rsquo;t have any effect on the execution mode of the artifact.</p>
+<h2 id="export-and-imports">Export and imports</h2>
+<p>Preconditions are evaluated before any of the sources are run, including VQL in
+the artifact&rsquo;s <code>export</code> and <code>imports</code>
+<a href="/docs/artifacts/export_imports/">sections</a>.
+This means that any variables and custom functions defined in these sections are
+not available for use in preconditions.</p>
+<p>When parallel execution mode is triggered by the presence of a source-level
+precondition, then each scope gets a copy of the VQL contained in <code>export</code> and
+<code>imports</code>, as can be demonstrated by this example:</p>
+<pre><code class="language-yaml">name: PreconditionParallelExport
+
+export: |
+  LET RandomNumber &lt;= rand(range=100)
+
+sources:
+  - name: one
+    query: SELECT RandomNumber FROM scope()
+  - name: two
+    precondition: SELECT * FROM info()
+    query: SELECT RandomNumber FROM scope()
+</code></pre>
+<p>If a source-level precondition did not exist in the above artifact, then both
+sources would have received the same value for <code>RandomNumber</code> due to them
+sharing a common scope. Instead we see independent results for each source
+because the <code>export</code> section was executed in each scope.</p>
+<h2 id="preconditions-and-parameters">Preconditions and parameters</h2>
+<p>Artifact <a href="/docs/artifacts/parameters/">parameters</a>
+can be used in preconditions, for example:</p>
+<pre><code class="language-yaml">name: PreconditionFromParameters
+
+parameters:
+  - name: DoIt
+    type: bool
+    default: FALSE
+
+sources:
+  - precondition: |
+        SELECT * FROM scope()
+        WHERE DoIt AND log(message=&quot;DoIt is %v&quot;, args=DoIt)
+    query: SELECT * FROM info()
+
+</code></pre>
+<p>will only run if the <code>DoIt</code> parameter is set to TRUE.</p>
+<h2 id="use-cases-and-examples">Use Cases and Examples</h2>
+<h3 id="1-checking-host-information">1. Checking host information</h3>
+<p>By far the most common use for preconditions is to check the operating system,
+sometimes in combination with the architecture. When using tools it is important
+to select the correct tool for each platform <em>and</em> architecture.</p>
+<p>Many details of the host and the state of the client can be obtained from the
+<code>info</code> plugin.</p>
+<p><strong>Examples:</strong></p>
+<pre><code class="language-vql">precondition: SELECT OS From info() where OS =~ 'linux|darwin' AND NOT Architecture = 'arm64'
+</code></pre>
+<p>Applies to only Linux or macOS, but not arm64 architectures.</p>
+<pre><code class="language-vql">precondition: SELECT OS From info() where OS != 'windows'
+</code></pre>
+<p>Applies to all OSes except Windows.</p>
+<pre><code class="language-vql">precondition: SELECT * FROM info() WHERE IsAdmin
+</code></pre>
+<p>Check if the client is running with admin privilege (any platform).</p>
+<h3 id="2-checking-the-results-of-another-artifact">2. Checking the results of another artifact</h3>
+<p>It&rsquo;s possible to run another artifact as a precondition. If the artifact
+produces any rows then the precondition will evaluate True. The artifact used in
+the precondition might be a lightweight check for some indicator before running
+more resource-intensive VQL.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-vql">precondition: SELECT * FROM Artifact.XYZ()
+</code></pre>
+<h5 id="preconditions-when-calling-other-artifacts">Preconditions when calling other artifacts</h5>
+<p>The artifact called in the precondition may itself have preconditions. By
+default the preconditions in the called artifact won&rsquo;t be evaluated unless you
+provide the argument <code>preconditions=TRUE</code> to the Artifact() plugin.</p>
+<h3 id="3-checking-the-status-of-an-external-tool">3. Checking the status of an external tool</h3>
+<p>You can run a command using the <code>execve</code> plugin and base a precondition on it&rsquo;s
+output.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-vql">precondition: |
+  SELECT OS, { SELECT ReturnCode FROM execve(argv=[&quot;dpkg&quot;, &quot;--help&quot;]) } AS ReturnCode
+  FROM info() WHERE OS = 'linux' AND ReturnCode = 0
+</code></pre>
+<p>Applies if the dpkg tool exists and is functioning, on Linux systems.</p>
+<h3 id="4-checking-plugin-versions">4. Checking plugin versions</h3>
+<p>Sometimes Velociraptor&rsquo;s built-in functions and plugins need to evolve in a way
+that affects either their input (that is the accepted arguments may change),
+behaviour, or output. In the case of output changes the function/plugin may not
+produce results in the particular format that previously written VQL expects.
+This doesn&rsquo;t happen often, but when such backwardly-incompatible changes need to
+be made, we increment the plugin&rsquo;s version number. The version number is a
+simple integer.</p>
+<p>Plugin versions can be queried using the <code>version</code> function, and therefore
+preconditions can be created to check the version before running VQL that uses
+it.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-vql">precondition: SELECT * FROM info() WHERE version(plugin=&quot;http_client&quot;) &gt; 2
+query: SELECT Response FROM http_client(url=[&quot;http://a.example.com/test&quot;, &quot;http://b.example.com/test&quot;])
+</code></pre>
+<p>Ensures that the client has the <code>http_client</code> plugin greater than version 2
+(i.e. version 3 or above), since only version 3 or above
+<a href="https://github.com/Velocidex/velociraptor/pull/4265" target="_blank" >supports multiple URLs</a>.</p>
+<h3 id="5-checking-date-and-time">5. Checking date and time</h3>
+<p>In some environments you may want take extra precautions to ensure that
+resource-intensive artifacts don&rsquo;t accidentally get collected during business
+hours.</p>
+<p>Since preconditions are evaluated on the client, this obviously depends on the
+client&rsquo;s clock being correct.</p>
+<p><strong>Examples:</strong></p>
+<pre><code class="language-vql">precondition: |
+  SELECT timestamp(epoch=now()).Weekday.String AS DayName FROM scope()
+  WHERE DayName =~ 'saturday|sunday'
+</code></pre>
+<p>Only run on weekends.</p>
+<pre><code class="language-vql">precondition: |
+  SELECT timestamp(epoch=now()).Hour AS Hour FROM scope()
+  -- UTC time
+  WHERE Hour &lt; 6 OR Hour &gt; 15
+</code></pre>
+<p>Only run outside of office hours.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847309"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847309"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847309"></script>
+    <script src="/js/jquery.sticky.js?1774847309"></script>
+    <script src="/js/featherlight.min.js?1774847309"></script>
+    <script src="/js/highlight.min.js?1774847309"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847309"></script>
+    <script src="/js/learn.js?1774847309"></script>
+    <script src="/js/hugo-learn.js?1774847309"></script>
+    
+    
+
+  </body>
+</html>

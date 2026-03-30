@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Dead Disk Analysis :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847310" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847310" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847310" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847310" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847310" rel="stylesheet">
+    <link href="/css/theme.css?1774847310" rel="stylesheet">
+    <link href="/css/tabs.css?1774847310" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847310" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847310" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847310" rel="stylesheet"><link href="/css/syntax.css?1774847310" rel="stylesheet"><link href="/css/light.css?1774847310" rel="stylesheet"><link href="/css/hljs.css?1774847310" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847310" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847310"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/forensic/deaddisk/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/forensic\/deaddisk\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/forensic/deaddisk/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Dead Disk Analysis</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#how-it-works">How it works</a>
+      <ul>
+        <li><a href="#accessor-remapping">Accessor Remapping</a></li>
+        <li><a href="#host-impersonation">Host impersonation</a></li>
+      </ul>
+    </li>
+    <li><a href="#limitations">Limitations</a></li>
+    <li><a href="#process-overview">Process Overview</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Dead Disk Analysis
+            </h1>
+            
+          
+
+        
+
+
+
+	
+<div class="mynotices tip">
+  <div heading="tip"><p>Velociraptor works best when running on a live endpoint, where it can correlate
+information from disk with information provided by the endpoint&rsquo;s operating
+system - for example, with memory and other volatile sources. Running clients on
+live endpoints should always be your first choice as it presents the richest
+source of data.</p>
+</div>
+</div>
+
+
+<p>While increasingly impractical due to the size of modern hard drives, and
+despite technologies such as TRIM protocols on ubiquitous SSD drives making it
+very unlikely to recover deleted data, disk imaging is still often used to
+preserve disk-based evidence. It&rsquo;s important to note that if you have made a
+disk image <em>that doesn&rsquo;t preclude you from using a live client on the endpoint</em>
+and only falling back to dead disk analysis if the live endpoint becomes
+unavailable. If you resort to dead disk analysis when the live endpoint is still
+available then you are limiting your investigative options and efficiency by
+choice.</p>
+<p>However, sometimes we just don&rsquo;t have the luxury of running a client on the live
+endpoint, and instead we have to rely on disk images of the target system - for
+example, we might be handed a clone of a cloud VM disk after a compromise and
+have no say in the matter (e.g. the original VM may already have been
+destroyed).</p>
+<p>Velociraptor&rsquo;s <a href="/docs/forensic/filesystem/remapping/">remapping</a>
+feature makes it possible to impersonate a live system and provide access to the
+disk image as if it was a real disk attached to the client. While there are
+inherent <a href="#limitations">limitations</a> associated with this
+approach, it allows us to use most <a href="/docs/artifacts/">Velociraptor artifacts</a>
+directly without any changes. It allows Velociraptor to be applied to
+more traditional image-based forensic analysis use cases, while leveraging the
+<a href="/artifact_references/">same artifacts</a> that are used on live
+endpoints.</p>
+<h2 id="how-it-works">How it works</h2>
+<p>This process of host emulation is controlled via remapping rules, defined in a
+dedicated section of the configuration file. In practice this section of the
+config is usually kept in a separate YAML file and merged with the client&rsquo;s
+config using the <code>--remap</code> CLI flag.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/deaddisk/deaddisk_client_.svg" alt="Running a client with a dead disk remapping config"
+         class="inline"
+         height="840"
+         width="1440"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="deaddisk_client.svg"><i class="fa fa-download"></i></a>
+    Running a client with a dead disk remapping config
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+
+<div class="mynotices tip">
+  <div heading="tip"><p>Velociraptor can use the same accessor remapping &amp; impersonation approach with
+<a href="/docs/deployment/offline_collections/collection_data/#dead-disk-analysis-on-a-collection-container">offline collection containers</a>.</p>
+</div>
+</div>
+
+
+<h3 id="accessor-remapping">Accessor Remapping</h3>
+<p>The Velociraptor client normally interrogates the host it is running on. However
+for disk image analysis we want the client to emulate the system under
+investigation so that when it attempts to access the filesystem it is really
+parsing the filesystem contained in the disk image. Under no circumstances
+should the client report data from the analysis machine itself.</p>
+<p>For example, a VQL query that accesses the filesystem on a live endpoint (e.g.
+via the <code>glob()</code> plugin), should look inside the disk image instead of looking
+at the local filesystem of the analysis machine. Paths to files contained in the
+disk image should exactly emulate those on the original endpoint - this is
+necessary so that artifacts which expect files to be in standard locations will
+be able to find them without any explicit path adjustments. In query results,
+the file paths should be reported exactly as they would have appeared in the
+filesystem on the endpoint.</p>
+<p>Velociraptor accesses files using
+<a href="/docs/forensic/filesystem/#filesystem-accessors">filesystem accessors</a>.
+You can think of an accessor as simply a driver that provides access to a file
+or directory. Velociraptor actually provides
+<a href="/vql_reference/accessors/">many types of accessors</a>
+for filesystems and other data sources.</p>
+<p>When accessing a Windows NTFS filesystem the following accessors are commonly
+used:</p>
+<ul>
+<li>
+<p>The <strong>auto</strong> accessor is the default accessor used when an accessor is not
+explicitly specified. The query <code>SELECT * FROM glob(globs='/*')</code> will use the
+<code>auto</code> accessor since an explicit <code>accessor</code> parameter is not provided.</p>
+<p>On Windows the <code>auto</code> accessor attempts to open files using the OS API and
+failing this, reverts to NTFS parsing (for locked files). This is the most
+commonly used accessor.</p>
+</li>
+<li>
+<p>The <strong>file</strong> accessor uses the operating system APIs to open files and
+directories. It is used internally by the <code>auto</code> accessor but you can also use
+it explicitly.</p>
+</li>
+<li>
+<p>The <strong>ntfs</strong> accessor is used to access files using the built in NTFS parser.</p>
+</li>
+</ul>
+<p>When accessing a disk image that contains an NTFS filesystem, we apply
+<a href="/docs/forensic/filesystem/remapping/">remapping rules</a>
+that translate requests to the abovementioned accessors into
+<a href="/docs/forensic/filesystem/paths/#nested-accessors-and-pathspecs">compound pathspec objects</a>
+which include additional (delegate) accessors such as <code>vmdk</code> and <code>raw_ntfs</code>.
+This mechanism transparently provides access via the filesystem of the local
+host, the disk image, and partitions and filesystems in the image, etc.</p>
+<p>Similarly, for access to the Windows registry we construct remapping rules that
+use compound pathspecs to provide access via the various container layers, and
+ultimately present simple registry paths to VQL queries, as they would appear on
+a live Windows endpoint. An artifact that queries the registry using the
+operating system&rsquo;s APIs will now automatically query the raw registry parser
+which accesses the hive file, which is accessed by parsing the NTFS filesystem
+within the disk image.</p>
+<p>By remapping the accessors typically used in a live scenario, we are allowing
+the same VQL queries to apply to a very different (dead disk) scenario <em>without
+any changes</em>.</p>
+<p>For example, this is a remapping rule that provides access to the Windows
+SOFTWARE registry hive inside an EWF-format disk image:</p>
+<pre><code class="language-yaml">- type: mount
+  description: Map the /Windows/System32/Config/SOFTWARE Registry hive on HKEY_LOCAL_MACHINE\Software
+    (Prefixed at /)
+  from:
+    accessor: raw_reg
+    prefix: |-
+      {
+        &quot;Path&quot;: &quot;/&quot;,
+        &quot;DelegateAccessor&quot;: &quot;raw_ntfs&quot;,
+        &quot;Delegate&quot;: {
+          &quot;DelegateAccessor&quot;:&quot;offset&quot;,
+          &quot;Delegate&quot;: {
+            &quot;DelegateAccessor&quot;: &quot;ewf&quot;,
+            &quot;DelegatePath&quot;: &quot;/media/disk_images/ewf/win7.E01&quot;,
+            &quot;Path&quot;: &quot;1048576&quot;
+          },
+          &quot;Path&quot;:&quot;/Windows/System32/Config/SOFTWARE&quot;
+        }
+      }
+    path_type: registry
+  &quot;on&quot;:
+    accessor: registry
+    prefix: HKEY_LOCAL_MACHINE\Software
+    path_type: registry
+</code></pre>
+<p>While this may sound complicated - and to be fair complex pathspecs and nested
+accessors are quite an advanced topic - Velociraptor includes artifacts that can
+inspect the disk image and automatically generate an appropriate mapping for the
+most common disk layouts (primarily Windows), or at least provide you with much
+of the relevant information when automatic remapping generation is not possible.</p>
+<p>So you don&rsquo;t really need to understand the details to be able to generate a
+remapping config. In most cases all you need to do is run an artifact
+which generates the remapping, and then use it!</p>
+<!-- If you're curious, or want to manually create remapping rules for more unusual
+scenarios, we explain accessor remapping in more detail
+[on this page](). -->
+<p>If you&rsquo;re curious, or want to manually create remapping rules for more unusual
+scenarios, we explain accessor remapping in more detail
+<a href="/blog/2022/2022-03-22-deaddisk/#impersonating-an-operating-system">in this blog post</a>.</p>
+<h3 id="host-impersonation">Host impersonation</h3>
+<p>Many artifacts need to examine more than just the filesystem. For example, most
+artifacts have a <a href="/docs/artifacts/preconditions/">precondition</a>
+such as <code>SELECT * FROM info() WHERE OS =~ &quot;windows&quot;</code>. If we were to run on a
+Linux system these artifacts will not work since they are intended to work on
+windows - despite the accessor remapping rules emulating a Windows filesystem.</p>
+<p>The client therefore needs to also present itself to the server as running the
+same operating system family as the original system (e.g. Windows) so that
+artifacts with OS-based preconditions or logic can be run, and so that hunts
+targeting the original host&rsquo;s platform will still apply.</p>
+<p>We therefore need to <strong>impersonate</strong> a Windows system, even though we might
+really be running the client on a Linux machine. Because the client is
+impersonating the original host and emulating its filesystem, it does not have
+to run on the same platform as the original host. You can run it on your
+Velociraptor server, which is probably running on Linux, or you can run the
+virtual client on a separate host which could be running Windows, Linux or
+macOS.</p>
+<p>Here is an example of an impersonation rule:</p>
+<pre><code class="language-yaml">- type: impersonation
+  os: windows
+  hostname: VirtualHostname
+  env:
+  - key: SystemRoot
+    value: C:\Windows
+  - key: WinDir
+    value: C:\Windows
+  disabled_functions:
+  - amsi
+  - lookupSID
+  - token
+  - ...
+  disabled_plugins:
+  - users
+  - certificates
+  - handles
+  - pslist
+  - ...
+</code></pre>
+<p>This impersonation rule implements the following changes:</p>
+<ol>
+<li>
+<p>The <strong>OS</strong> is set to <code>windows</code>. This affects the output from the <code>info()</code>
+plugin which the client uses to gather host information from the local
+system, and which is often used in artifact preconditions. This allows you to
+run the dead disk client on a different platform while impersonating the
+original platform represented in the disk image.</p>
+</li>
+<li>
+<p>The <strong>Hostname</strong> is set to <code>VirtualHostname</code>. This replaces the hostname
+value from the <code>info()</code> plugin. This hostname will be returned by client
+interrogation, and will therefore be used for the virtual client in the
+Velociraptor GUI.</p>
+</li>
+<li>
+<p>Artifacts often use paths constructed from environment variables, for example
+<code>SystemRoot=C:\Windows</code>, and reasonably expect the most common ones to be
+present when running on a live endpoint. In the remapping config we can
+define <strong>environment variables</strong> that will be available to any VQL that the
+client runs.</p>
+</li>
+<li>
+<p>Many artifacts use plugins and functions that query non-disk system state,
+often in order to enrich the collected data. That is, their output does not
+depend <em>only</em> on disk-based data. Using the
+<strong>disabled functions and plugins</strong> sections in the impersonation rule, we can
+disable such plugins and functions so that they return no data rather than
+failing or returning incorrect information. This allows queries that use them
+to complete without failing.</p>
+</li>
+</ol>
+<p>To allow for this, the remapping lets us define the OS and hostname.  When evaluating VQL and communicating
+with the server, the client uses the impersonated values.</p>
+<p>Impersonation aims to make it appear that the VQL artifacts are being collected
+from the original system as if it were running live.</p>
+<h2 id="limitations">Limitations</h2>
+<p>The data available to a dead disk client is significantly more limited than a
+client running on a live endpoint, since the original OS is not present and only
+the filesystems contained in the image will be available to any VQL queries.</p>
+<p>Remapping configs for dead disks disable VQL functions and plugins that return
+data from non-disk sources. This is done to prevent data contamination from the
+analysis machine&rsquo;s OS. This disablement of functions and plugins is done
+automatically when the remapping is generated by our built-in artifacts. This
+means that some artifacts will return no data if they rely on data sources other
+than filesystem (contained in the disk image). Artifacts that rely purely on
+files should reliably produce meaningful results.</p>
+<p>Artifacts that use external tools cannot be used on files stored in the disk
+image, since the remapping only applies to VQL via it&rsquo;s internal accessor model.
+External tools will be unaware of the remapping and will be unable to find the
+files.</p>
+<h2 id="process-overview">Process Overview</h2>
+<p>To summarize the above: Analyzing a disk image is usually a 3-step process.</p>
+<ol>
+<li>
+<p><strong>Create a remapping configuration</strong></p>
+<p>This may require some preparatory steps such as converting or mounting the
+image if it&rsquo;s an unsupported type. The remapping config can be generated
+either via the CLI&rsquo;s <a href="/docs/cli/deaddisk/">deaddisk</a> command,
+or in the GUI using the <code>Generic.Utils.DeadDiskRemapping</code> server artifact.
+For non-standard partition layouts you might have to manually craft an
+appropriate remapping config, although you can generate one for a simple disk
+image and then use that as a reference/starting point.</p>
+</li>
+<li>
+<p><strong>Run a virtual client using the remapping</strong></p>
+<p>The second step is to start a client that will impersonate the original
+system using the remapping config. This client can be run locally on the
+Velociraptor server or on a remote host. It will enroll with the server and
+be manageable as a normal client in the GUI.</p>
+</li>
+<li>
+<p><strong>Run collections against the virtual client</strong></p>
+<p>Since the client is a normal client from the server&rsquo;s perspective, it can
+have collections run individually on it, join hunts, accept labels, etc.
+Anything you would do with a normal client. Note however that it is pointless
+to collect artifacts that rely on non-disk data sources, as these will return
+no data. The general idea is that the client can be treated as a live client,
+so that you don&rsquo;t need to make any distinction between it and live clients
+that your server is managing.</p>
+</li>
+</ol>
+<p>In the case of simple Windows disk images, it is also possible to combine the
+first 2 steps by using the <code>Server.Utils.DeadDiskClient</code> server artifact.</p>
+<p>The following pages describe these above steps in more detail.</p>
+
+
+
+
+
+
+
+<ul class="children children-li">
+	
+
+	
+		
+			
+		
+	
+
+	
+
+	
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/forensic/deaddisk/creating_running/" >Creating a remapping config and running a dead disk client</a>
+</li>
+				
+
+				
+			
+			
+		
+	
+
+	
+</ul>
+
+
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847310"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847310"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847310"></script>
+    <script src="/js/jquery.sticky.js?1774847310"></script>
+    <script src="/js/featherlight.min.js?1774847310"></script>
+    <script src="/js/highlight.min.js?1774847310"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847310"></script>
+    <script src="/js/learn.js?1774847310"></script>
+    <script src="/js/hugo-learn.js?1774847310"></script>
+    
+    
+
+  </body>
+</html>

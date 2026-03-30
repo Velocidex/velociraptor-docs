@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Windows.Timeline.Prefetch.Improved :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847311" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847311" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847311" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847311" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847311" rel="stylesheet">
+    <link href="/css/theme.css?1774847311" rel="stylesheet">
+    <link href="/css/tabs.css?1774847311" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847311" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847311" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847311" rel="stylesheet"><link href="/css/syntax.css?1774847311" rel="stylesheet"><link href="/css/light.css?1774847311" rel="stylesheet"><link href="/css/hljs.css?1774847311" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847311" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847311"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/exchange/artifacts/pages/windows.timeline.prefetch.improved/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/exchange\/artifacts\/pages\/windows.timeline.prefetch.improved\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/exchange/artifacts/Windows.Timeline.Prefetch.Improved.yaml" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Windows.Timeline.Prefetch.Improved</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents"></nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Windows.Timeline.Prefetch.Improved
+            </h1>
+            
+          
+
+        
+
+
+<p>NOTE: This is a fixed version of Windows.Timeline.Prefetch which is
+available in the release binary after 0.7.0-3.</p>
+<p>Windows keeps a cache of prefetch files. When an executable is run,
+the system records properties about the executable to make it faster
+to run next time. By parsing this information we are able to
+determine when binaries are run in the past. On Windows10 we can see
+the last 8 execution times and creation time (9 potential executions).</p>
+<p>This artifact is a timelined output version of the standard Prefetch
+artifact. There are several parameter&rsquo;s availible.</p>
+<ul>
+<li>dateAfter enables search for prefetch evidence after this date.</li>
+<li>dateBefore enables search for prefetch evidence before this date.</li>
+<li>binaryRegex enables to filter on binary name, e.g evil.exe.</li>
+<li>hashRegex enables to filter on prefetch hash.</li>
+</ul>
+<pre><code class="language-yaml">
+name: Windows.Timeline.Prefetch.Improved
+author: Matt Green - @mgreen27
+description: |
+  NOTE: This is a fixed version of Windows.Timeline.Prefetch which is
+  available in the release binary after 0.7.0-3.
+
+  Windows keeps a cache of prefetch files. When an executable is run,
+  the system records properties about the executable to make it faster
+  to run next time. By parsing this information we are able to
+  determine when binaries are run in the past. On Windows10 we can see
+  the last 8 execution times and creation time (9 potential executions).
+
+  This artifact is a timelined output version of the standard Prefetch
+  artifact. There are several parameter's availible.
+    - dateAfter enables search for prefetch evidence after this date.
+    - dateBefore enables search for prefetch evidence before this date.
+    - binaryRegex enables to filter on binary name, e.g evil.exe.
+    - hashRegex enables to filter on prefetch hash.
+
+reference:
+  - https://www.forensicswiki.org/wiki/Prefetch
+
+parameters:
+    - name: prefetchGlobs
+      default: C:\Windows\Prefetch\*.pf
+    - name: dateAfter
+      description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
+      type: timestamp
+    - name: dateBefore
+      description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
+      type: timestamp
+    - name: binaryRegex
+      description: "Regex of executable name."
+      type: regex
+    - name: hashRegex
+      description: "Regex of prefetch hash."
+      type: regex
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+sources:
+  - query: |
+
+      LET hostname &lt;= SELECT Fqdn FROM info()
+
+      SELECT  LastRunTimes as event_time,
+              hostname.Fqdn[0] as hostname,
+              "Prefetch" as parser,
+              message,
+              OSPath as source,
+              Executable as file_name,
+              CreationTime as prefetch_ctime,
+              ModificationTime as prefetch_mtime,
+              FileSize as prefetch_size,
+              Hash as prefetch_hash,
+              Version as prefetch_version,
+              PrefetchFileName as prefetch_file,
+              RunCount as prefetch_count
+      FROM foreach(
+      row={
+        SELECT *
+        FROM Artifact.Windows.Forensics.Prefetch(
+          prefetchGlobs=prefetchGlobs,
+          dateAfter=dateAfter,
+          dateBefore=dateBefore,
+          binaryRegex=binaryRegex,
+          hashRegex=hashRegex)
+      },
+      query={
+        SELECT *
+        FROM chain(a1={
+           SELECT *
+           FROM flatten(query={
+            SELECT Executable,
+                   FileSize,
+                   Hash,
+                   Version,
+                   LastRunTimes,
+                   "Evidence of Execution: " + Executable + format(
+                      format=" Prefetch run count %v", args=RunCount) as message,
+                   RunCount,
+                   OSPath,
+                   PrefetchFileName,
+                   CreationTime,
+                   ModificationTime,
+                   Binary
+            FROM scope()
+          })
+        }, b1={
+            -- One more row for creation time
+            SELECT Executable,
+                   FileSize,
+                   Hash,
+                   Version,
+                   CreationTime AS LastRunTimes,
+                   "Evidence of Execution (Btime): " + Executable + format(
+                      format=" Prefetch run count %v", args=RunCount) as message,
+                   RunCount,
+                   OSPath,
+                   PrefetchFileName,
+                   CreationTime,
+                   ModificationTime,
+                   Binary
+            FROM scope()
+        })
+        -- This group by applies on only a single prefetch file to
+        -- remove duplication with CreationTime
+        GROUP BY LastRunTimes
+      })
+      ORDER BY event_time
+
+</code></pre>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847311"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847311"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847311"></script>
+    <script src="/js/jquery.sticky.js?1774847311"></script>
+    <script src="/js/featherlight.min.js?1774847311"></script>
+    <script src="/js/highlight.min.js?1774847311"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847311"></script>
+    <script src="/js/learn.js?1774847311"></script>
+    <script src="/js/hugo-learn.js?1774847311"></script>
+    
+    
+
+  </body>
+</html>
+

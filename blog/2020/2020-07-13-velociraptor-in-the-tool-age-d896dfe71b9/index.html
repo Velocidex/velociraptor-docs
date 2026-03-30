@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="Velociraptor’s integration with third party tools">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Velociraptor in the tool age :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847307" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847307" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847307" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847307" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847307" rel="stylesheet">
+    <link href="/css/theme.css?1774847307" rel="stylesheet">
+    <link href="/css/tabs.css?1774847307" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847307" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847307" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847307" rel="stylesheet"><link href="/css/syntax.css?1774847307" rel="stylesheet"><link href="/css/light.css?1774847307" rel="stylesheet"><link href="/css/hljs.css?1774847307" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847307" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847307"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/blog/2020/2020-07-13-velociraptor-in-the-tool-age-d896dfe71b9/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/blog\/2020\/2020-07-13-velociraptor-in-the-tool-age-d896dfe71b9\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/2020/2020-07-13-velociraptor-in-the-tool-age-d896dfe71b9/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Velociraptor in the tool age</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#example-hollows-hunter">Example: Hollows hunter</a></li>
+        <li><a href="#writing-the-artifact">Writing the artifact</a></li>
+        <li><a href="#collecting-from-the-endpoint">Collecting from the endpoint</a></li>
+        <li><a href="#tool-support--deep-dive">Tool support — deep dive</a></li>
+        <li><a href="#using-a-custom-tool">Using a custom tool</a></li>
+        <li><a href="#conclusions">Conclusions</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/internals">Internals</a>
+
+  <a class="tag-link" href="/tags/tools">Tools</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Velociraptor in the tool age
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>Velociraptor is a powerful endpoint visibility tool. It has plugins
+and parsers for many file formats, such as raw NTFS access, raw
+registry hive, prefetch files etc.</p>
+<p>However, as most DFIR professionals know, there are so many tools out
+there that we would love to use in our IR work. One of the strengths
+of Velociraptor is its flexibility afforded by the use of the<a href="/docs/vql/">
+Velociraptor Query Language (VQL).</a></p>
+<p>We have written before on how VQL can be extended by use of short
+<a href="/blog/2020/2020-06-14-the-velociraptor-query-language-pt-1-d721bff100bf/">PowerShell scripts</a>,
+by including these scripts directly in the Artifact
+definitions. This is a great way to extend the functionality provided
+by VQL, but what if we wanted to launch a completely separate binary
+on the endpoint, or a larger powershell module? How can Velociraptor
+facilitate the distribution, coordination and collection of tool
+output from thousands of endpoints efficiently and quickly?</p>
+<p>Since <a href="https://github.com/Velocidex/velociraptor/releases" target="_blank" >release 0.4.6</a>,
+Velociraptor supports including external tools directly in the
+artifact definition. This makes it easier than ever before to use
+external tools in your artifacts transparently — Velociraptor will
+ensure the tool is downloaded to the endpoint if needed and is
+available for use in your VQL.</p>
+<h3 id="example-hollows-hunter">Example: Hollows hunter</h3>
+<p>To illustrate the process, we will use the <a href="https://github.com/hasherezade/hollows_hunter" target="_blank" >hollows hunter
+tool</a> as an
+example. This tool is written by the amazing
+<a href="https://hasherezade.github.io/" target="_blank" >HASHEREZADE</a> who develops a bunch of
+useful tools to inspect binaries in memory (most famous is the
+<a href="https://github.com/hasherezade/pe-sieve" target="_blank" >pe_sieve</a> tool).</p>
+<p>We would like to develop a Velociraptor artifact that collects all
+processes potentially injected by using the hollows hunter on the
+endpoint. Before we start though, we need to actually have such a
+sample to test on.</p>
+<p>Thanks to the Atomic Red Team we can use a simple test to inject a dll
+into notepad++. I will use the test for
+<a href="https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1055/T1055.md#atomic-test-1---process-injection-via-mavinjectexe" target="_blank" >T1055</a>
+to inject the dll into <em>notepad++.exe</em> on my test VM (which has the
+Process ID 4108):</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/blog/2020/2020-07-13-velociraptor-in-the-tool-age-d896dfe71b9/1E6SBS406C2B-3BVVJ10Sig.png"
+     width="741"
+     height="56"/>
+
+
+
+
+</p>
+<p>Now we can check that hollows hunter detects this:</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/blog/2020/2020-07-13-velociraptor-in-the-tool-age-d896dfe71b9/1wt1KqixkeSs8Ael96fpAXA.png"
+     width="340"
+     height="80"/>
+
+
+
+
+</p>
+<h3 id="writing-the-artifact">Writing the artifact</h3>
+<p>We now create the artifact in the Velociraptor GUI. Start off by
+selecting the <em>“View Artifacts”</em> pane in the left sidebar and click
+the* “New Artifact”* button to bring up the artifact editor UI. The
+editor will have a pre-filled in template which helps to guide the
+user to produce the correct syntax so I will just edit that.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2020/2020-07-13-velociraptor-in-the-tool-age-d896dfe71b9/1s9fGjhLnwf2uW4vRt3qCQA.png"
+         class="inline"
+         alt=""
+         width="1085" height="813">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="1s9fGjhLnwf2uW4vRt3qCQA.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The first thing I will do is name the artifact
+<em>“Custom.Windows.Detection.ProcessHollowing”</em>. Since this is a custom
+artifact, it must start with the word **Custom. **to keep it distinct
+from Velociraptor’s built in artifacts. I can also add a quick
+description to help users understand what this artifact does.</p>
+<p>Next I will declare that this artifact needs the <strong>hollows_hunter</strong>
+tool. Velociraptor will ensure this tool is available on the endpoint
+when the artifact is collected. The tool’s name is simply a string
+that I will use to refer to the tool below. It will be automatically
+added to Velociraptor’s inventory of external tools.</p>
+<p>By providing the url, Velociraptor can fetch the tool by itself from
+this URL. If the tool is not yet known to Velociraptor, the server
+will fetch the file and calculate the hash the first time and store
+it. In the next section we can see how to manage tools in
+Velociraptor.</p>
+<p>Now we are ready to write the VQL that will use the tool. The VQL will
+run on the endpoint during collection and will need a valid path to
+the hollows hunter executable. Velociraptor will manage uploading the
+executable to the endpoint and caching the binary locally, ensuring
+its hash does not change over time. To make this process as easy to
+use as possible, as far as the artifact writer is concerned, they
+simply need to call the <em>“Generic.Utils.FetchBinary()”</em> artifact to
+get a path to the local binary.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1WWMvYGQvreCfPbKrtDYuew.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>The first VQL query simply calls the <strong>Generic.Utils.FetchBinary()</strong>
+artifact with the required tool name (Note that we don&rsquo;t need to
+specify a url since this is already known to the system). We assign
+the result of this query to the <em>“binaries”</em> variable — which will
+contain an array of rows as is always the case with assigning a query
+to a variable (in this case only one row).</p>
+<p>At the same time we also obtain a temporary directory to store results
+in. This directory will be automatically removed when the query ends
+to clean up.</p>
+<p>Next we call the binary using the <strong>execve()</strong> plugin with the
+appropriate arguments — We wish to dump the memory of affected
+processed and write json results into the temp directory (The length
+parameter forces the execve() plugin to wait until the buffer is full
+before emitting the row — this will wait until the program is done and
+emit a single row with Stdout as a column.)</p>
+<p>After the hollows hunter program ends, we glob over all the files in
+the temp directory and just upload them to the server (we chain the
+two queries together using the <em>chain()</em> plugin).</p>
+<p>The complete artifact can be seen below:</p>
+<pre><code class="language-yaml">name: Custom.Windows.Detection.ProcessHollowing
+description: |
+   Use hollows_hunter to detect suspicious process injections.
+
+   Upload any findings to the server, including process dumps.
+tools:
+ - name: hollows_hunter
+   url: https://github.com/hasherezade/hollows_hunter/releases/download/v0.2.7.1/hollows_hunter64.exe
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+      -- Get the path to the hollows_hunter tool and a fresh temp directory.
+      LET binaries &lt;= SELECT FullPath, tempdir() AS TempDir
+      FROM Artifact.Generic.Utils.FetchBinary(
+         ToolName=&quot;hollows_hunter&quot;)
+
+      -- Run the tool and relay back the output, as well as upload all the files from the tempdir.
+      SELECT * FROM chain(
+      a={SELECT Stdout, NULL AS Upload
+         FROM execve(argv=[binaries[0].FullPath,
+           &quot;/json&quot;, &quot;/dir&quot;, binaries[0].TempDir], length=100000)},
+      b={
+        SELECT upload(file=FullPath) AS Upload
+        FROM glob(globs=&quot;*&quot;, root=binaries[0].TempDir)
+      })
+</code></pre>
+<h3 id="collecting-from-the-endpoint">Collecting from the endpoint</h3>
+<p>Now let&rsquo;s test this artifact by collecting it from our test VM. Simply
+search for the hostname in the search box, and view the* “Collected
+Artifacts”* pane to see previously collected artifacts. Click the
+<em>“Collect new artifacts”</em> button and search for our newly created
+hollows hunter artifact.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1iTGEgzlLFnoQpwwLBTylQg.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>Click* “Launch Collection” *to collect it from the endpoint. We can
+view the query log as it is executing on the endpoint to really
+appreciate what is happening behind the scenes.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1uf7vfDoXWEUYO6KOabXHtw.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>The endpoint initially does not have a copy of the hollows hunter
+binary cached locally, so it needs to download it. The endpoint will
+now sleep a random time before actually downloading it in order to
+stagger downloads from potentially thousands of endpoints in a hunt.</p>
+<p>After a short sleep, the endpoint will download the binary directly
+from GitHub, it will then calculate the hash of the binary it
+downloaded with the expected hash that was sent by the server. If the
+hashes match, then the endpoint will keep this file in the temp
+directory. The hash comparison protects endpoints from the GitHub
+binary changing unexpectedly.</p>
+<p>Finally, the endpoint simply runs the tool, and uploads the results to
+the server.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/15U_9frnLTdA1vsyPuewh4g.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>The user can access those results as normally by simply getting the
+results in a zip file from the <strong>Artifact Collection</strong> tab.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1G9m-FkIBjgzQh1xURAnpzw.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>We can now also hunt for this on our entire fleet to retrieve all the
+injected binaries in minutes!</p>
+<p>Note that once the binary is cached on the endpoint, the Velociraptor
+client will not need to download it again, as long as the cached hash
+matches the expected hash.</p>
+<h3 id="tool-support--deep-dive">Tool support — deep dive</h3>
+<p>In the above example, from the point of view of the artifact writer,
+the hollows hunter binary just magically appeared on the endpoint when
+it was required by an artifact that used it. How does this actually
+work?</p>
+<p>Velociraptor has integrated support for external tools since
+0.4.6. The tools are managed by the velociraptor tools command. You
+can see what tools Velociraptor knows about using the <strong>velociraptor
+tools show</strong> command:</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1y0ApRgFzYELr7A2Ko4AHNQ.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>We can see that Velociraptor knows the hash of the hollows hunter tool
+and it also keeps a copy of the binary in the filestore under a
+special obfuscated name.</p>
+<h3 id="using-a-custom-tool">Using a custom tool</h3>
+<p>Previously we have seen that the endpoints all downloaded the hollows
+hunter binary directly from GitHub. In practice, if you have thousands
+of clients all trying to download the same binary in a hunt it might
+trigger GitHub’s DDoS protections. At larger scale it might be better
+to serve binaries from more reliable source, like cloud buckets or
+Velociraptor’s server itself.</p>
+<p>Suppose we also wanted to use a special version of hollows_hunter
+(perhaps an unreleased version with extra features or detections) so
+we would really like to host the binary ourselves.</p>
+<p>We can directly upload our custom version to Velociraptor using the
+<strong>velociraptor tools upload</strong> command</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1cQ-vwx6uj3JSavrF5m5ejQ.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>Velociraptor will now serve the binary from the frontends directly
+when used (seen by the serve_locally flag). Note that the binary will
+still only be downloaded if the local copy on the endpoint does not
+have the required hash so if this is a frequently used tool it will
+generally not generate a lot of download traffic.</p>
+<h3 id="conclusions">Conclusions</h3>
+<p>The aim of the new tool integration is to have Velociraptor
+automatically manage local caching on the endpoint of external
+files. It is possible to have the endpoints download the files from
+any URL, or serve it locally from Velociraptor itself. Either way,
+Velociraptor ensures the file integrity by specifying in the
+collection request the required file hash.</p>
+<p>Although in this example we used a binary on the endpoint, this is not
+necessary. The scheme works just as well with any file type. For
+example, sysmon configuration files can also be kept in a central
+place and artifacts can sync them on the endpoint and load them as
+required.</p>
+<p>The ability to resync tools on the endpoint opens the door to
+versioned files. For example, we frequently use Yara rule files
+containing frequently changing signatures from threat feeds and other
+intel. By updating the hashes on the Velociraptor server we can force
+endpoints to use the latest version of the signatures whenever an
+artifact is run, but only if they don&rsquo;t already have the latest pack
+of yara rules (which may be large).</p>
+<p>Caching the files locally means the overheads of downloading the file
+each time is eliminated, the artifact YAML itself contains all one
+needs to collect this specific type of evidence. In the above example,
+we can collect the hollows hunter multiple times, but the binary will
+only be actually downloaded once per endpoint. The next collection
+will simply use the same local binary while its hash is not changed.</p>
+<p>To play with this new feature yourself, take Velociraptor for a spin!
+It is a available on
+<a href="https://github.com/Velocidex/velociraptor" target="_blank" >GitHub</a> under and open
+source license. As always please file issues on the bug tracker or ask
+questions on our mailing list
+<a href="mailto:velociraptor-discuss@googlegroups.com" target="_blank" >velociraptor-discuss@googlegroups.com</a>
+. You can also chat with us directly on discord
+<a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord</a></p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847307"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847307"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847307"></script>
+    <script src="/js/jquery.sticky.js?1774847307"></script>
+    <script src="/js/featherlight.min.js?1774847307"></script>
+    <script src="/js/highlight.min.js?1774847307"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847307"></script>
+    <script src="/js/learn.js?1774847307"></script>
+    <script src="/js/hugo-learn.js?1774847307"></script>
+    
+    
+
+  </body>
+</html>

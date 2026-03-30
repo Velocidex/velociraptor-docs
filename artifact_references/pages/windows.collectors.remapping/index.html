@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Windows.Collectors.Remapping :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847307" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847307" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847307" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847307" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847307" rel="stylesheet">
+    <link href="/css/theme.css?1774847307" rel="stylesheet">
+    <link href="/css/tabs.css?1774847307" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847307" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847307" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847307" rel="stylesheet"><link href="/css/syntax.css?1774847307" rel="stylesheet"><link href="/css/light.css?1774847307" rel="stylesheet"><link href="/css/hljs.css?1774847307" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847307" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847307"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/artifact_references/pages/windows.collectors.remapping/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/artifact_references\/pages\/windows.collectors.remapping\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/artifact_references/pages/windows.collectors.remapping.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Windows.Collectors.Remapping</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#example---command-line-use">Example - command line use</a></li>
+        <li><a href="#notes">Notes</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/server-artifact">Server Artifact</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Windows.Collectors.Remapping
+            </h1>
+            
+          
+
+        
+
+
+<p>Calculates a remapping config for a collection container (zip).</p>
+<p>The remapping allows Velociraptor to treat the collection container as a dead
+disk image in a similar way to <code>Generic.Utils.DeadDiskRemapping</code>. This means
+that you can directly analyze the files contained in the collection zip file,
+without needing to extract or import it.</p>
+<p>There are 2 ways to use the remapping generated by this artifact:</p>
+<ol>
+<li>
+<p>Non-interactive command line analysis, as per the example below. <br>
+This approach only requires a Velociraptor binary, i.e. it  does not
+require a server or client, and then uses either the CLI <code>artifacts collect</code> or <code>query</code> commands.</p>
+</li>
+<li>
+<p>Interactive &ldquo;virtual&rdquo; client managed via the Velociraptor GUI (see
+reference below). <br>
+This approach uses a client which connects to the server. The client
+accesses the collection container as a simulated filesystem using the
+remapping that this artifact generates.</p>
+</li>
+</ol>
+<p>In both cases it uses the remapping impersonation feature to impersonate the
+original endpoint&rsquo;s name and platform (Windows). Because of this
+impersonation the virtual client can be run on Linux while still appearing as
+Windows to artifacts and queries.</p>
+<p>Collection containers are typically created by offline collectors using the
+<code>Windows.Triage.Targets</code> or <code>Windows.KapeFiles.Targets</code> artifacts and contain
+files collected from the endpoint, although any artifact that &ldquo;uploads&rdquo; files
+as part of the collection can be used.</p>
+<p>Collection containers can also be created by exporting collections from the
+GUI, using the &ldquo;Download Results&rdquo; facility. This allows you to port
+collections across servers - perhaps to allow an independent analyst to
+examine some files and run further collections without giving them access to
+your server. If they don&rsquo;t have their own Velociraptor server, they can do
+serverless collections/queries as in the following example.</p>
+<h3 id="example---command-line-use">Example - command line use</h3>
+<ol>
+<li>
+<p>Collect files using a bulk file collection artifact - For example
+<code>Windows.Triage.Targets</code> with the <code>_BasicCollection</code> target is a good
+option.</p>
+</li>
+<li>
+<p>Generate the remapping file:</p>
+<pre><code>velociraptor artifacts collect -v Windows.Collectors.Remapping \
+  --args ZipPath=/path/to/collection.zip \
+  --args WriteRemappingPath=/tmp/remapping.yaml
+</code></pre>
+</li>
+<li>
+<p>Apply the remapping file when collecting further artifacts. These
+collections will target the files in the container:</p>
+<pre><code>velociraptor --remap /tmp/remapping.yaml \
+  artifacts collect -v Windows.Registry.Hunter \
+  --args RemappingStrategy=None
+</code></pre>
+<p>The CLI query command can also be used for running ad-hoc queries:</p>
+<pre><code>velociraptor --remap /tmp/remapping.yaml query &quot;SELECT * FROM ... &quot;
+</code></pre>
+</li>
+</ol>
+<h3 id="notes">Notes</h3>
+<ul>
+<li>
+<p>Direct analysis of collection containers protected by fixed passwords or
+X.509 certificates is supported. For password-protected containers you&rsquo;ll
+need to provide the password explicitly as a parameter. For X.509-protected
+containers they are transparently decrypted <em>if they are secured with your
+servers cert and you are running this artifact in the GUI</em>. If you are
+running this artifact on the command line then you&rsquo;ll need to supply the
+server config as an additional command line argument (using the <code>-c</code> flag).
+Alternatively you can remove the protection from the container first using
+the <code>decrypt</code> CLI command. Removing the protection first is also necessary
+if the container was secured using an X.509 (or PGP) cert other than your
+server&rsquo;s one.</p>
+</li>
+<li>
+<p>If you want to run <code>Windows.Registry.Hunter</code> against the data, you&rsquo;ll need
+to disable its own remapping config (i.e. <code>RemappingStrategy: none</code>) so that
+it doesn&rsquo;t interfere with the remapping created by this artifact.</p>
+</li>
+<li>
+<p>The remapping currently doesn&rsquo;t support Volume Shadow Copies contained in
+the collection, however you can still access these files via VQL by
+specifying their paths (e.g.
+<code>GLOBALROOT\DEVICE\HARDDISKVOLUMESHADOWCOPY1\Windows\...</code>)
+which are located outside of any remapped drive roots.</p>
+</li>
+<li>
+<p>VFS browsing of the collection container currently doesn&rsquo;t work.</p>
+</li>
+</ul>
+<pre><code class="language-yaml">
+name: Windows.Collectors.Remapping
+description: |
+  Calculates a remapping config for a collection container (zip).
+
+  The remapping allows Velociraptor to treat the collection container as a dead
+  disk image in a similar way to `Generic.Utils.DeadDiskRemapping`. This means
+  that you can directly analyze the files contained in the collection zip file,
+  without needing to extract or import it.
+
+  There are 2 ways to use the remapping generated by this artifact:
+
+  1. Non-interactive command line analysis, as per the example below. \
+     This approach only requires a Velociraptor binary, i.e. it  does not
+     require a server or client, and then uses either the CLI `artifacts
+     collect` or `query` commands.
+
+  2. Interactive "virtual" client managed via the Velociraptor GUI (see
+     reference below). \
+     This approach uses a client which connects to the server. The client
+     accesses the collection container as a simulated filesystem using the
+     remapping that this artifact generates.
+
+  In both cases it uses the remapping impersonation feature to impersonate the
+  original endpoint's name and platform (Windows). Because of this
+  impersonation the virtual client can be run on Linux while still appearing as
+  Windows to artifacts and queries.
+
+  Collection containers are typically created by offline collectors using the
+  `Windows.Triage.Targets` or `Windows.KapeFiles.Targets` artifacts and contain
+  files collected from the endpoint, although any artifact that "uploads" files
+  as part of the collection can be used.
+
+  Collection containers can also be created by exporting collections from the
+  GUI, using the "Download Results" facility. This allows you to port
+  collections across servers - perhaps to allow an independent analyst to
+  examine some files and run further collections without giving them access to
+  your server. If they don't have their own Velociraptor server, they can do
+  serverless collections/queries as in the following example.
+
+  ### Example - command line use
+
+  1. Collect files using a bulk file collection artifact - For example
+     `Windows.Triage.Targets` with the `_BasicCollection` target is a good
+     option.
+
+  2. Generate the remapping file:
+     ```
+     velociraptor artifacts collect -v Windows.Collectors.Remapping \
+       --args ZipPath=/path/to/collection.zip \
+       --args WriteRemappingPath=/tmp/remapping.yaml
+     ```
+
+  3. Apply the remapping file when collecting further artifacts. These
+     collections will target the files in the container:
+     ```
+     velociraptor --remap /tmp/remapping.yaml \
+       artifacts collect -v Windows.Registry.Hunter \
+       --args RemappingStrategy=None
+     ```
+     The CLI query command can also be used for running ad-hoc queries:
+     ```
+     velociraptor --remap /tmp/remapping.yaml query "SELECT * FROM ... "
+     ```
+
+  ### Notes
+
+  - Direct analysis of collection containers protected by fixed passwords or
+    X.509 certificates is supported. For password-protected containers you'll
+    need to provide the password explicitly as a parameter. For X.509-protected
+    containers they are transparently decrypted _if they are secured with your
+    servers cert and you are running this artifact in the GUI_. If you are
+    running this artifact on the command line then you'll need to supply the
+    server config as an additional command line argument (using the `-c` flag).
+    Alternatively you can remove the protection from the container first using
+    the `decrypt` CLI command. Removing the protection first is also necessary
+    if the container was secured using an X.509 (or PGP) cert other than your
+    server's one.
+
+  - If you want to run `Windows.Registry.Hunter` against the data, you'll need
+    to disable its own remapping config (i.e. `RemappingStrategy: none`) so that
+    it doesn't interfere with the remapping created by this artifact.
+
+  - The remapping currently doesn't support Volume Shadow Copies contained in
+    the collection, however you can still access these files via VQL by
+    specifying their paths (e.g.
+    `GLOBALROOT\DEVICE\HARDDISKVOLUMESHADOWCOPY1\Windows\...`)
+    which are located outside of any remapped drive roots.
+
+  - VFS browsing of the collection container currently doesn't work.
+
+reference:
+  - |
+    [Dead disk analysis on a collection container]
+    (http://docs.velociraptor.app/docs/deployment/offline_collections/collection_data/#dead-disk-analysis-on-a-collection-container)
+
+type: SERVER
+
+# Check if the collection container has file uploads
+precondition: |
+  SELECT * FROM glob(accessor=Accessor,
+                     globs="/uploads/{auto,file,ntfs}",
+                     root=pathspec(DelegatePath=ZipPath,DelegateAccessor="file"))
+
+parameters:
+  - name: ZipPath
+    default: /tmp/collection.zip
+    description: Path to the collection zip file to inspect
+
+  - name: Accessor
+    default: collector
+    type: hidden
+
+  - name: Hostname
+    description: If NOT specified we try to read it from the collection container
+
+  - name: ZIP_PASSWORDS
+    friendly_name: ZipPassword
+    description: Required if the zip container is protected by a fixed password
+
+  - name: Upload
+    type: bool
+    default: "Y"
+    description: |
+      If specified, store the generated YAML remapping file in the collection's
+      File Uploads
+
+  - name: WriteRemappingPath
+    description: If specified, write the YAML remapping file to this path
+
+  - name: CommonRemapping
+    description: Common clauses for all remapping in YAML format
+    default: |
+      remappings:
+      - type: permissions
+        permissions:
+        - COLLECT_CLIENT
+        - FILESYSTEM_READ
+        - FILESYSTEM_WRITE
+        - READ_RESULTS
+        - MACHINE_STATE
+        - SERVER_ADMIN
+        - COLLECT_SERVER
+        - EXECVE
+      - type: impersonation
+        os: windows
+        hostname: "{{ .Hostname }}"
+        env:
+        - key: SystemRoot
+          value: C:\Windows
+        - key: WinDir
+          value: C:\Windows
+        disabled_functions:
+        - amsi
+        - lookupSID
+        - token
+        disabled_plugins:
+        - execve
+        - http_client
+        - users
+        - certificates
+        - handles
+        - pslist
+        - interfaces
+        - modules
+        - netstat
+        - partitions
+        - proc_dump
+        - proc_yara
+        - vad
+        - winobj
+        - wmi
+      - type: shadow
+        from:
+          accessor: zip
+        "on":
+          accessor: zip
+      - type: shadow
+        from:
+          accessor: raw_reg
+        "on":
+          accessor: raw_reg
+      - type: shadow
+        from:
+          accessor: data
+        "on":
+          accessor: data
+
+export: |
+  LET CollectionHostinfo = parse_json(
+      data=read_file(accessor=Accessor,
+                     filename=pathspec(DelegatePath=ZipPath,
+                                       DelegateAccessor="file",
+                                       path_type="zip",
+                                       Path="client_info.json")))
+
+  -- Set the hostname either from the parameters or read it from the file itself
+  LET DerivedHostname = Hostname ||
+                        CollectionHostinfo.Hostname ||
+                        CollectionHostinfo.hostname
+
+  LET Remappings = parse_yaml(
+                    filename=template(template=CommonRemapping,
+                                      expansion=dict(Hostname=DerivedHostname)),
+                    accessor="data")
+
+  -- Normalize the drive name from device to drive. NTFS accessor uses
+  -- device notation. TODO - we currently do nothing with VSS devices.
+  LET NormalizeDrive(Path) = upcase(string=regex_transform(
+      source=Path,
+      map=dict(`\\\\\\\\.\\\\`=""), key="A"))
+
+  -- Get all the unique drive letters so we can combine them at the same place.
+  LET AllDrives = SELECT enumerate(items=OSPath) AS Paths,
+           NormalizeDrive(Path=OSPath.Basename) AS Drive,
+           OSPath AS OSPath
+      FROM glob(
+        accessor=Accessor,
+        globs="/uploads/*/*",
+        root=pathspec(DelegatePath=ZipPath, DelegateAccessor="file"))
+      GROUP BY Drive
+
+  LET ScopeTemplate &lt;= if(condition=ZIP_PASSWORDS,
+                          then=template(template='''
+  LET OVERLAY_ACCESSOR_DELEGATES &lt;= dict(
+       accessor="{{ .Accessor }}",
+       paths={{ .Paths }})
+
+  LET ZIP_PASSWORDS &lt;= "{{ .ZipPassword }}"
+  ''', expansion=dict(ZipPassword=ZIP_PASSWORDS, Accessor=Accessor, Paths="{{ .Paths }}")),
+                          else=template(template='''
+  LET OVERLAY_ACCESSOR_DELEGATES &lt;= dict(
+       accessor="{{ .Accessor }}",
+       paths={{ .Paths }})
+  ''', expansion=dict(Accessor=Accessor, Paths="{{ .Paths }}"))
+  )
+
+  -- Overlay the files that were fetched with all accessors into the
+  -- same directory.
+  LET Overlays = SELECT * FROM foreach(row=["auto", "file", "ntfs"],
+   query={
+      SELECT
+         dict(type="mount",
+              scope=template(template=ScopeTemplate,
+                             expansion=dict(Paths=serialize(item=Paths))),
+              `from`=dict(accessor="overlay"),
+              `on`=dict(accessor=_value,
+                        prefix=Drive,
+                        path_type="windows")) AS Clauses
+      FROM AllDrives
+    })
+
+  -- Search for the hive with this glob and add the first match into
+  -- the registry path specified.
+  LET _FindHive(HiveGlob, RegPath) = SELECT
+        dict(type="mount",
+             description=format(format="Map %v to %v",
+                          args=[OSPath.Path, RegPath]),
+             `from`=dict(accessor="raw_reg",
+                         path_type="registry",
+                         prefix=serialize(format="json",
+                            item=dict(DelegateAccessor=Accessor,
+                                      DelegatePath=OSPath.PathSpec.String))),
+             `on`=dict(accessor="registry",
+                       path_type="registry",
+                       prefix=RegPath)) AS Clauses
+    FROM glob(globs=HiveGlob,
+              accessor=Accessor,
+              root=pathspec(Path="/uploads/",
+                            DelegateAccessor="file",
+                            DelegatePath=ZipPath))
+      LIMIT 1
+
+  -- Look for user hives and map them in HKEY_USERS
+  LET _FindDirUserHives = SELECT
+        dict(type="mount",
+             description=format(format="Map %v to %v",
+                          args=[OSPath.Path, RegPath]),
+             `from`=dict(accessor="raw_reg",
+                         path_type="registry",
+                         prefix=serialize(format="json",
+                            item=dict(DelegateAccessor=Accessor,
+                                      DelegatePath=OSPath.PathSpec.String))),
+             `on`=dict(accessor="registry",
+                       path_type="registry",
+                       prefix="HKEY_USERS/" + OSPath[4])) AS Clauses
+    FROM glob(globs="*/*/Users/*/NTUser.dat",
+              accessor=Accessor,
+              root=pathspec(Path="/uploads/",
+                            DelegateAccessor="file",
+                            DelegatePath=ZipPath))
+
+  LET RegistryMappings = SELECT * FROM chain(
+    a={
+      SELECT *
+      FROM _FindHive(HiveGlob="*/*/Windows/System32/config/Software",
+                     RegPath="HKEY_LOCAL_MACHINE/Software")
+    }, b={
+      SELECT *
+      FROM _FindHive(HiveGlob="*/*/Windows/System32/config/Security",
+                     RegPath="HKEY_LOCAL_MACHINE/Security")
+    }, c={
+      SELECT *
+      FROM _FindHive(HiveGlob="*/*/Windows/System32/config/System",
+                     RegPath="HKEY_LOCAL_MACHINE/System")
+    }, d={
+      SELECT *
+      FROM _FindHive(HiveGlob="*/*/Windows/System32/config/SAM",
+                     RegPath="SAM")
+    }, e={
+      SELECT *
+      FROM _FindHive(HiveGlob="*/*/Windows/appcompat/Programs/Amcache.hve",
+                     RegPath="Amcache")
+    }, f={
+      SELECT * FROM _FindDirUserHives
+    })
+
+sources:
+- name: WriteRemapping
+  query: |
+    LET CalculateMappings &lt;= Remappings.remappings +
+      Overlays.Clauses +
+      RegistryMappings.Clauses
+
+    LET YamlText = serialize(format="yaml",
+                              item=dict(remappings=CalculateMappings))
+
+    LET _ &lt;= log(message="Will use hostname %v for impersonation",
+                 args=DerivedHostname, level="INFO")
+
+    SELECT CalculateMappings,
+        Upload &amp;&amp; upload(accessor="data", file=YamlText, name="remapping.yaml") AS Upload,
+        WriteRemappingPath &amp;&amp; copy(
+              dest=WriteRemappingPath,
+              accessor='data',
+              filename=YamlText) AS RemappingFile
+    FROM scope()
+
+
+- name: CollectionHostInfo
+  query: SELECT CollectionHostinfo FROM scope()
+
+- name: TestRegistryAccess
+  query: |
+    LET _ &lt;= remap(config=YamlText)
+    SELECT OSPath
+    FROM glob(globs="HKEY_LOCAL_MACHINE/Software/*", accessor='registry')
+
+- name: TestFileAccess
+  query: |
+    LET _ &lt;= remap(config=YamlText)
+    SELECT OSPath
+    FROM glob(globs="*/*")
+
+</code></pre>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847307"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847307"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847307"></script>
+    <script src="/js/jquery.sticky.js?1774847307"></script>
+    <script src="/js/featherlight.min.js?1774847307"></script>
+    <script src="/js/highlight.min.js?1774847307"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847307"></script>
+    <script src="/js/learn.js?1774847307"></script>
+    <script src="/js/hugo-learn.js?1774847307"></script>
+    
+    
+
+  </body>
+</html>
+

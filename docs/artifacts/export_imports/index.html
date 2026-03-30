@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Export &amp; Imports :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847309" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847309" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847309" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847309" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847309" rel="stylesheet">
+    <link href="/css/theme.css?1774847309" rel="stylesheet">
+    <link href="/css/tabs.css?1774847309" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847309" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847309" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847309" rel="stylesheet"><link href="/css/syntax.css?1774847309" rel="stylesheet"><link href="/css/light.css?1774847309" rel="stylesheet"><link href="/css/hljs.css?1774847309" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847309" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847309"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/artifacts/export_imports/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/artifacts\/export_imports\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/artifacts/export_imports/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Export &amp; Imports</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#export">Export</a></li>
+    <li><a href="#imports">Imports</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Export &amp; Imports
+            </h1>
+            
+          
+
+        
+
+
+
+	<p><code>export</code> (notice the singular) and <code>imports</code> (notice the plural) work together
+to allow artifacts to share VQL with each other. This allows us to write more
+concise and more consistent artifacts with reusable VQL that can be shared by
+multiple artifacts.</p>
+<p>Artifacts can import the <code>export</code> section from other artifacts using the
+<code>imports</code> field&rsquo;s specification, which is a list of artifact names.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/artifacts/export_imports/export_imports_.svg" alt="VQL reuse with export/imports"
+         class="inline"
+         height="930"
+         width="1268.75"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="export_imports.svg"><i class="fa fa-download"></i></a>
+    VQL reuse with export/imports
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The VQL compiler automatically inserts all VQL statements in the
+<code>export</code> section before each <a href="/docs/artifacts/sources/">source</a>.</p>
+<p>It then inserts the VQL statements in the <code>export</code> sections from the artifacts
+listed in the <code>imports</code> section before each source.</p>
+<p>The VQL statements (functions or variables) defined in these sections are then
+executed prior to the VQL defined in the artifact&rsquo;s sources. The order in which
+these statements are concatenated and then executed is:</p>
+<ol>
+<li>VQL from <code>exports</code></li>
+<li>VQL from <code>imports</code> (possibly from multiple artifacts)</li>
+<li>VQL from <code>sources</code></li>
+</ol>
+<p>If the artifact&rsquo;s sources run in
+<a href="/docs/artifacts/preconditions/#serial-vs-parallel-execution">series</a>
+then the additional VQL from <code>export</code> and <code>imports</code> only executes once. If the
+sources run in parallel then the additional VQL is executed for each source.
+The execution mode is determined by the presence or absence of source-level
+<a href="/docs/artifacts/preconditions/">preconditions</a>.</p>
+<h2 id="export">Export</h2>
+<p>Because the <code>export</code> section is added to each source, this is essentially the
+same as the artifact implicitly &ldquo;importing&rdquo; its own <code>export</code> section.  That is,
+the VQL stored in <code>export</code> can be (and usually is) used by the artifact itself.
+It does not have to be imported by other artifacts in order to be useful.</p>
+<p>This makes the <code>export</code> section a very useful place to put VQL statements that
+are shared across multiple sources, even if you don&rsquo;t intend for other artifacts
+to import them. For example, if your artifact has multiple sources and each one
+repeats the same <code>LET</code> statements (perhaps defining the same custom VQL
+functions) then it may be better to move such shared statements to the <code>export</code>
+section rather than having them duplicated in multiple sources.</p>
+<p>Unlike <code>sources</code>, the <code>export</code> section&rsquo;s VQL can&rsquo;t directly emit results. The
+results need to be made available to VQL in the sources as variables. Therefore
+there&rsquo;s no point in having bare queries (<code>SELECT</code> statements <em>not</em> assigned to
+variables) in the <code>export</code> section; VQL in <code>export</code> typically only consists of
+one or more <code>LET</code> statements.</p>
+<p>Since the VQL in the <code>export</code> section is combined with the VQL in <code>sources</code>, it
+has access to the artifact&rsquo;s <code>parameters</code>. Although artifact parameters are
+available to queries in <code>export</code> you should also consider that other artifacts
+might import from it, and that these could then could fail since they would know
+nothing about the source artifact&rsquo;s parameters (which are not imported). If you
+need your VQL in <code>export</code> to reference a parameter, then ideally you should
+ensure that such statements have a conditional fallback value so that other
+artifacts can reliably make use of your VQL. Alternatively, the other artifacts
+which are importing the VQL would need to ensure that they also provided the
+referenced parameter themselves.</p>
+<p>An artifact can contain an <code>export</code> section but no <code>sources</code> and still be
+<a href="/docs/artifacts/use_cases/#export-only-artifacts-sharing-vql-via-export-imports">imported by other artifacts</a>.
+In such a scenario, the artifact serves only as a container for reusable VQL
+since it can&rsquo;t itself be run (because it has no sources).</p>
+<h2 id="imports">Imports</h2>
+<p>Any <a href="/docs/artifacts/basic_fields/#-type-">type</a>
+of artifact can import the <code>export</code> section from any other type of artifact -
+importing is not constrained by artifact type.</p>
+<p>So, for example, a notebook template (artifact type:<code>NOTEBOOK</code>) can
+simultaneously import the export sections from a <code>CLIENT</code> type artifact and from
+a <code>SERVER_EVENT</code> type artifact. Any <code>export</code> field in any artifact within the
+artifact repository is available to be imported by any other artifact.</p>
+<p>When importing from multiple artifacts, the VQL preserves the order of the
+<code>imports</code> list, and this is added <em>after</em> the VQL from <code>export</code> (if defined in
+the importing artifact), but <em>before</em> the VQL from each source.</p>
+<p>You can also perform imports in VQL using the
+<a href="/vql_reference/server/import/">import</a> function. For example:</p>
+<pre><code class="language-vql">LET _ &lt;= import(artifact=&quot;Windows.System.VAD&quot;)
+</code></pre>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847309"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847309"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847309"></script>
+    <script src="/js/jquery.sticky.js?1774847309"></script>
+    <script src="/js/featherlight.min.js?1774847309"></script>
+    <script src="/js/highlight.min.js?1774847309"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847309"></script>
+    <script src="/js/learn.js?1774847309"></script>
+    <script src="/js/hugo-learn.js?1774847309"></script>
+    
+    
+
+  </body>
+</html>

@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Windows.Forensics.Amcache :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847307" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847307" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847307" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847307" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847307" rel="stylesheet">
+    <link href="/css/theme.css?1774847307" rel="stylesheet">
+    <link href="/css/tabs.css?1774847307" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847307" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847307" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847307" rel="stylesheet"><link href="/css/syntax.css?1774847307" rel="stylesheet"><link href="/css/light.css?1774847307" rel="stylesheet"><link href="/css/hljs.css?1774847307" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847307" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847307"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/artifact_references/pages/windows.forensics.amcache/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/artifact_references\/pages\/windows.forensics.amcache\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/artifact_references/pages/windows.forensics.amcache.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Windows.Forensics.Amcache</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents"></nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/client-artifact">Client Artifact</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Windows.Forensics.Amcache
+            </h1>
+            
+          
+
+        
+
+
+<p>The Amcache.hve is a registry artifact that stores metadata
+used by the OS’s application compatibility infrastructure to
+record metadata about binaries present on the system. This
+includes file paths, hashes, timestamps, and install/interaction
+information for executables and drivers.</p>
+<p>NOTE: execution must be corroborated with additional artifacts.</p>
+<pre><code class="language-yaml">
+name: Windows.Forensics.Amcache
+author: Matthieu Chatelan, Yann Malherbe
+description: |
+  The Amcache.hve is a registry artifact that stores metadata
+  used by the OS’s application compatibility infrastructure to 
+  record metadata about binaries present on the system. This 
+  includes file paths, hashes, timestamps, and install/interaction 
+  information for executables and drivers. 
+  
+  NOTE: execution must be corroborated with additional artifacts.
+  
+reference:
+    - https://www.ssi.gouv.fr/uploads/2019/01/anssi-coriin_2019-analysis_amcache.pdf
+    - https://github.com/libyal/dtformats/blob/main/documentation/AMCache%20file%20(AMCache.hve)%20format.asciidoc
+
+type: CLIENT
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+parameters:
+  - name: amCacheGlob
+    default: "%SYSTEMROOT%/appcompat/Programs/Amcache.hve"
+  - name: NTFS_CACHE_SIZE
+    type: int
+    default: 1000
+
+  - name: File
+    description: Version `From Windows 8/2012 to Windows 10 1709`. This key is constituted of several subkeys where each representing a volume GUID that contains subkeys looking like `Root\File\&lt;GUID&gt;\&lt;MFTId&gt;` 
+    type: bool
+    default: Y
+    
+  - name: Programs
+    description: Version `From Windows 8/2012 to Windows 10 1709`, This key contains installed programs only in subkeys like `Root\Programs\&lt;AppID&gt;` which contains information about the PE in subkeys.
+    type: bool
+    default: Y
+    
+  - name: Generic
+    description: Version `From Windows 8 to Windows 10 1507`, The Generic key contains one subkey named 0, which in turn contains one subkey per driver installed on the system. Each of these subkeys is actually named as the SHA-1 of the driver it represents, preceded by ’0000’ like `\Root\Generic\0\0000&lt;SHA1&gt;`
+    type: bool
+    default: Y
+    
+  - name: InventoryDriverBinary
+    description: Version `From Windows 10 1607`, n this key, each entry is named after the SHA-1 of the driver, preceded by ’0000’, and the subkey representing the drivers.
+    type: bool
+    default: N
+    
+  - name: InventoryApplication
+    description: Version `From Windows 10 1607`, This key contains the installation of a program and also programs installed via an AppXPackage.
+    type: bool
+    default: Y
+    
+  - name: InventoryDeviceContainer
+    description: Version `From Windows 10 1607`, records OS devices such as bluetooth, printers, etc. Has links to DevicePnps
+    type: bool
+    default: N
+    
+  - name: InventoryDriverPackage
+    description: Version `From Windows 10 1607`, records Package information that links to both DeviceContainers and DevicePnPs
+    type: bool
+    default: N
+    
+  - name: InventoryApplicationFile
+    description: Version `From Windows 10 1607`, records EXE files that are part of a program.
+    type: bool
+    default: Y
+    
+  - name: InventoryDevicePnp
+    description: Version `From Windows 10 1607`, records Plug and Play (PnP) devices such as bluetooth, USB, etc. More verbose details than those contained in DeviceContainers
+    type: bool
+    default: N
+    
+  - name: InventoryApplicationShortcut
+    description: Version `From Windows 10 1709`, contains information about LNK files found on the computer in the Start Menu directory
+    type: bool
+    default: Y  
+    
+sources:
+ - name: File
+   query: |
+      SELECT * FROM if(
+        condition=File,
+        then={
+          SELECT * FROM foreach(
+              row={
+                SELECT FullPath from glob(globs=expand(path=amCacheGlob))
+              }, 
+              query={
+                SELECT get(item=scope(), member="100") As ProductId,
+                       get(item=scope(), member="101") As SHA1,
+                       get(item=scope(), member="15") As FullPath,
+                       get(item=scope(), member="11") As ModificationTime,
+                       get(item=scope(), member="12") As CreationTime,
+                       Key.Mtime as LastModifiedKey
+                FROM read_reg_key(
+                   root=pathspec(DelegatePath=FullPath),
+                   globs='/Root/File/*/*',
+                   accessor='raw_reg'
+                )
+              }
+            )
+        }
+      ) 
+      
+ - name: Programs
+   query: |
+      SELECT * FROM if(
+        condition=Programs,
+        then={
+            SELECT * FROM foreach(
+          row={
+            SELECT FullPath from glob(globs=expand(path=amCacheGlob))
+          }, query={
+                SELECT get(item=scope(), member="0") As Name,
+                       get(item=scope(), member="1") As Version,
+                       get(item=scope(), member="2") As Publisher,
+                       get(item=scope(), member="a") As InstallationTime,
+                       get(item=scope(), member="b") As UninstallationTime,
+                       Key.Mtime as LastModifiedKey
+                FROM read_reg_key(
+                   root=pathspec(DelegatePath=FullPath),
+                   globs='/Root/Programs/*',
+                   accessor='raw_reg'
+                )
+            })
+        }
+      ) 
+      
+ - name: Generic
+   query: |
+      SELECT * FROM if(
+        condition=Generic,
+        then={
+            SELECT * FROM foreach(
+          row={
+            SELECT FullPath from glob(globs=expand(path=amCacheGlob))
+          }, query={
+                SELECT Key.Mtime as LastModifiedKey,
+                       Key.OSPath.Path as SHA1
+                FROM read_reg_key(
+                   root=pathspec(DelegatePath=FullPath),
+                   globs='/Root/Generic/0/*',
+                   accessor='raw_reg'
+                )
+            })
+        }
+      ) 
+
+ - name: InventoryDriverBinary
+   query: |
+      SELECT * FROM if(
+        condition=InventoryDriverBinary,
+        then={
+            SELECT * FROM foreach(
+              row={
+                SELECT FullPath from glob(globs=expand(path=amCacheGlob))
+              }, query={
+                SELECT Key.Mtime as Timestamp,
+                       DriverName,
+                       DriverVersion,
+                       Product,
+                       ProductVersion,
+                       DriverCompany,
+                       Service,
+                       DriverType,
+                       DriverTimeStamp,
+                       ImageSize, 
+                       substr(str=DriverId, start=4, end=44) AS SHA1,
+                       split(string=Key.OSPath.Path,sep='"')[1] as FullPath
+                FROM read_reg_key(
+                   root=pathspec(DelegatePath=FullPath),
+                   globs='/Root/InventoryDriverBinary/*',
+                   accessor='raw_reg'
+                )
+            })
+        }
+      ) 
+
+ - name: InventoryApplication
+   query: |
+      SELECT * FROM if(
+        condition=InventoryApplication,
+        then={
+            SELECT * FROM foreach(
+              row={
+                SELECT FullPath from glob(globs=expand(path=amCacheGlob))
+              }, query={
+                SELECT Key.Mtime as Timestamp,
+                       Name,
+                       PackageFullName,
+                       Version,
+                       Publisher,
+                       Source AS SourceApp,
+                       Type,
+                       substr(str=ProgramInstanceId, start=4, end=44) AS SHA1,
+                       ManifestPath,
+                       InstallDate,
+                       Language,
+                       UninstallString
+                       
+                FROM read_reg_key(
+                   root=pathspec(DelegatePath=FullPath),
+                   globs='/Root/InventoryApplication/*',
+                   accessor='raw_reg'
+                )
+            })
+        }
+      )
+      
+ - name: InventoryDeviceContainer
+   query: |
+      SELECT * FROM if(
+        condition=InventoryDeviceContainer,
+        then={
+            SELECT * FROM foreach(
+              row={
+                SELECT FullPath from glob(globs=expand(path=amCacheGlob))
+              }, query={
+                SELECT Key.Mtime as Timestamp,
+                       ModelName,
+                       FriendlyName,
+                       ModelNumber,
+                       Manufacturer,
+                       PrimaryCategory,
+                       Categories,
+                       ModelId
+                FROM read_reg_key(
+                   root=pathspec(DelegatePath=FullPath),
+                   globs='/Root/InventoryDeviceContainer/*',
+                   accessor='raw_reg'
+                )
+            })
+        }
+      )
+
+ - name: InventoryDriverPackage
+   query: |
+      SELECT * FROM if(
+        condition=InventoryDriverPackage,
+        then={
+            SELECT * FROM foreach(
+              row={
+                SELECT FullPath from glob(globs=expand(path=amCacheGlob))
+              }, query={
+                SELECT Key.Mtime as Timestamp,
+                       SYSFILE,
+                       Version,
+                       Provider,
+                       Date,
+                       Class,
+                       Directory,
+                       ClassGuid
+                FROM read_reg_key(
+                   root=pathspec(DelegatePath=FullPath),
+                   globs='/Root/InventoryDriverPackage/*',
+                   accessor='raw_reg'
+                )
+            })
+        }
+      )
+
+ - name: InventoryApplicationFile
+   query: |
+      SELECT * FROM if(
+        condition=InventoryApplicationFile,
+        then={
+            SELECT * FROM foreach(
+              row={
+                SELECT FullPath from glob(globs=expand(path=amCacheGlob))
+              }, query={
+                SELECT Key.Mtime as Timestamp,
+                       Name,
+                       ProductName,
+                       ProductVersion,
+                       Size,
+                       Usn,
+                       substr(str=FileId, start=4, end=44) AS SHA1,
+                       LowerCaseLongPath AS FullPath,
+                       OriginalFileName,
+                       BinaryType,
+                       LinkDate,
+                       AppxPackageFullName
+                FROM read_reg_key(
+                   root=pathspec(DelegatePath=FullPath),
+                   globs='/Root/InventoryApplicationFile/*',
+                   accessor='raw_reg'
+                )
+            })
+        }
+      )
+      
+ - name: InventoryDevicePnp
+   query: |
+      SELECT * FROM if(
+        condition=InventoryDevicePnp,
+        then={
+            SELECT * FROM foreach(
+              row={
+                SELECT FullPath from glob(globs=expand(path=amCacheGlob))
+              }, query={
+                SELECT Key.Mtime as Timestamp,
+                       DriverName,
+                       Enumerator,
+                       Model,
+                       Manufacturer,
+                       Description,
+                       InstallDate,
+                       ParentId,
+                       MatchingId
+                FROM read_reg_key(
+                   root=pathspec(DelegatePath=FullPath),
+                   globs='/Root/InventoryDevicePnp/*',
+                   accessor='raw_reg'
+                )
+            })
+        }
+      )
+      
+ - name: InventoryApplicationShortcut
+   query: |
+      SELECT * FROM if(
+        condition=InventoryApplicationShortcut,
+        then={
+            SELECT * FROM foreach(
+              row={
+                SELECT FullPath from glob(globs=expand(path=amCacheGlob))
+              }, query={
+                SELECT Key.Mtime as Timestamp,
+                       ShortcutPath
+                FROM read_reg_key(
+                   root=pathspec(DelegatePath=FullPath),
+                   globs='/Root/InventoryApplicationShortcut/*',
+                   accessor='raw_reg'
+                )
+            })
+        }
+      )
+
+</code></pre>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847307"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847307"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847307"></script>
+    <script src="/js/jquery.sticky.js?1774847307"></script>
+    <script src="/js/featherlight.min.js?1774847307"></script>
+    <script src="/js/highlight.min.js?1774847307"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847307"></script>
+    <script src="/js/learn.js?1774847307"></script>
+    <script src="/js/hugo-learn.js?1774847307"></script>
+    
+    
+
+  </body>
+</html>
+

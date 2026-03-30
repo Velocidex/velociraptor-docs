@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="Velociraptor Release 0.75 is now available
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Velociraptor 0.75 Release :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847308" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847308" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847308" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847308" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847308" rel="stylesheet">
+    <link href="/css/theme.css?1774847308" rel="stylesheet">
+    <link href="/css/tabs.css?1774847308" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847308" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847308" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847308" rel="stylesheet"><link href="/css/syntax.css?1774847308" rel="stylesheet"><link href="/css/light.css?1774847308" rel="stylesheet"><link href="/css/hljs.css?1774847308" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847308" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847308"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/blog/2025/2025-08-30-release-notes-0.75/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/blog\/2025\/2025-08-30-release-notes-0.75\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/2025/2025-08-30-release-notes-0.75/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Velociraptor 0.75 Release</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#gui-improvements">GUI Improvements</a>
+      <ul>
+        <li><a href="#multi-select-deletion">Multi-select deletion</a></li>
+        <li><a href="#artifact-tagging">Artifact Tagging</a></li>
+        <li><a href="#table-keyboard-navigation">Table keyboard navigation</a></li>
+      </ul>
+    </li>
+    <li><a href="#server-improvements">Server improvements</a>
+      <ul>
+        <li><a href="#storing-compressed-data">Storing compressed data</a></li>
+        <li><a href="#resumable-uploads">Resumable uploads</a></li>
+        <li><a href="#securing-the-server-filesystem">Securing the Server Filesystem</a></li>
+      </ul>
+    </li>
+    <li><a href="#client-improvements">Client improvements</a>
+      <ul>
+        <li><a href="#reworked-lnk-parser">Reworked Lnk parser</a></li>
+        <li><a href="#added-windowsforensicsnotepadparser">Added Windows.Forensics.NotepadParser</a></li>
+        <li><a href="#removal-of-some-large-artifacts">Removal of some large artifacts</a></li>
+      </ul>
+    </li>
+    <li><a href="#conclusions">Conclusions</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/release">Release</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Velociraptor 0.75 Release
+            </h1>
+            
+            <div class="author pull-right">
+              Mike Cohen
+              <span class="date">2025-08-30</span>
+            </div>
+            
+          
+
+        
+
+
+
+	<p>I am very excited to announce that the latest Velociraptor release
+0.75 is now available.</p>
+<p>In this post I will discuss some of the new features introduced by
+this release.</p>
+<h2 id="gui-improvements">GUI Improvements</h2>
+<p>This release improves a number of GUI features.</p>
+<h3 id="multi-select-deletion">Multi-select deletion</h3>
+<p>Previously it was only possible to delete flows, clients, artifacts or
+hunts one at the time. However, in this release it is now possible to
+highlight a set of items by clicking the first item in the range, then
+pressing SHIFT, then clicking the last in the range.</p>
+<p>This allows deleting many items at once from the GUI. The same process works for
+deleting multiple clients, multiple artifacts in the artifacts viewer, multiple
+notebooks, and multiple collections from a client.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-08-30-release-notes-0.75/multi-select_.svg" alt="Selecting multiple flows for deletion"
+         class="inline"
+         height="840.9722222222223"
+         width="1954.8608837970542"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="multi-select.svg"><i class="fa fa-download"></i></a>
+    Selecting multiple flows for deletion
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="artifact-tagging">Artifact Tagging</h3>
+<p>As Velociraptor is used by more and more people, we are seeing many
+public artifact sources becoming widely available for users to add to
+their server. While this is great to see, it is sometimes overwhelming
+to see so many custom artifacts in the artifacts viewer mixed up into
+the same view.</p>
+<p>Previously, we used a prefix to import artifacts so their names would
+be distinct. For example, all artifacts coming from the artifact
+exchange were given the <code>Exchange</code> prefix. This proved problematic in
+practice because it made it difficult for artifacts to import other
+artifacts by their name, when the name could depend on the way the
+user imported the artifacts.</p>
+<p>In this release, Velociraptor introduces the concept of a <code>Tag</code> on the
+artifact. Tags are kept separately from the artifact itself, and can
+be considered part of the artifact metadata.</p>
+<p>You can add tags using the
+<a href="/vql_reference/server/artifact_set_metadata/">artifact_set_metadata</a>
+VQL function, which is used in certain import artifacts.
+This allows grouping of similar artifacts.</p>
+<p>The GUI will add a new search category for each tag to allow the user
+to easily see all artifacts that have the same tag.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-08-30-release-notes-0.75/artifact_tags_.svg" alt="Artifacts can be tagged based on their import source"
+         class="inline"
+         height="1010.3333333333335"
+         width="2294.449760765551"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="artifact_tags.svg"><i class="fa fa-download"></i></a>
+    Artifacts can be tagged based on their import source
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>In the above example, the artifacts imported through the
+<code>Server.Import.Extras</code> artifact are tagged with the <code>Extras</code> tag. They
+can all be seen together and deleted at once if needed (using the
+multi-select method described above).</p>
+<h3 id="table-keyboard-navigation">Table keyboard navigation</h3>
+<p>Velociraptor presents a lot of information in tabular form. This
+release adds keyboard navigation to all tables to make it easier to
+preview a lot of information quickly:</p>
+<ul>
+<li><code>n</code>, <code>p</code> page table forward and backwards.</li>
+<li><code>j</code>, <code>k</code> move selection focus up or down</li>
+<li><code>home</code>, <code>end</code> page table to first or last page.</li>
+</ul>
+<h2 id="server-improvements">Server improvements</h2>
+<h3 id="storing-compressed-data">Storing compressed data</h3>
+<p>Velociraptor is often used to collect large quantities of data from
+endpoints. This data appears in the form of either bulk data
+(e.g. file contents) or JSON data (e.g. the results of VQL queries).</p>
+<p>This data can be quite large and new users often run out of disk space
+when starting to collect from large networks. In previous versions of
+Velociraptor, the server would store the data uncompressed on
+disk. This has some advantages such as being able to post process the
+data using an external script or program because the data is simply
+stored as flat files on the server.</p>
+<p>However, this advantage comes at a massive cost in storage needs. It
+would be much better to store the data compressed on the server and
+only decompress the data as needed.</p>
+<p>Because the Velociraptor server is light weight and needs to support a
+large number of endpoints, it is not practical to have the server
+itself compress the data as it arrives from the endpoints.  Therefore
+in this release, the Velociraptor client is asked to compress data
+into chunks as it is transmitting the data in the first place. The
+server only needs to write the chunks down into storage <strong>without
+needing to decompress the data at all</strong>.</p>
+<p>This new scheme actually makes the server faster, as it needs to write
+less data to storage (reduced IO costs), and does not require the
+server to perform expensive compression/decompression cycles. The
+client does not actually have to do additional work (as it always
+needs to compress data for network transmission anyway), so this
+scheme is an overall improvement in performance.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-08-30-release-notes-0.75/compressed_storage_.svg" alt="Data is now stored compressed on disk"
+         class="inline"
+         height="1047"
+         width="2323.5514018691583"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="compressed_storage.svg"><i class="fa fa-download"></i></a>
+    Data is now stored compressed on disk
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The above example shows a typical <code>Windows.Triage.Targets</code> collection
+with the <code>KapeFiles</code> target on a test system collecting just under 2Gb
+of data (mostly bulk files in this case). However, the actual storage
+used on disk is around 300Mb representing a 85% storage saving.</p>
+<p>Even higher compression ratios were observed with artifacts that
+produce a lot of JSON output, like <code>Windows.NTFS.MFT</code>, since JSON data
+is highly compressible.</p>
+<p>The downside of this change is that the files on the server storage
+are no longer readable by external tools, and so any post processing
+artifacts that use the <a href="/vql_reference/server/file_store/">file_store()</a> to obtain the underlying file
+are unlikely to work. If you need to get the uncompressed data you may
+use the <a href="/vql_reference/other/copy/">copy()</a> function to
+copy the file to a temporary file thereby uncompressing it.</p>
+<p>Since the new compression scheme requires client support it will only
+work with 0.75 clients. If you do not want to enable compression you
+may change <a href="/docs/deployment/references/#Datastore.compression">the configuration setting</a> to &ldquo;none&rdquo;.</p>
+<h3 id="resumable-uploads">Resumable uploads</h3>
+<p>Velociraptor places a reasonable timeout on collections in order to
+avoid accidentally collecting too many files. This is necessary
+because often we do not really know what is on the endpoint before
+collection. For example, say we wanted to collect all browser
+artifacts from an endpoint. Sometimes, a single server may have
+hundreds or even thousands of users (e.g. a Terminal Server) and this
+artifact will end up collecting vast quantities of data, likely not
+targeted to the investigation.</p>
+<p>For this reason, Velociraptor always places a timeout on collections,
+as well as an upload limit. The idea is to catch such accidents early.</p>
+<p>Previously when a collection would reach its limits, the collection
+would be cancelled and the user would be faced with two choices:
+either refine the artifact to be more targeted and collect less data,
+or repeat the collection with larger timeout or upload limits.</p>
+<p>If the user chose to repeat the collection, then all the previous data
+would need to be collected again (since it is a brand new collection).</p>
+<p>In this release, Velociraptor offers <code>Resumable Collections</code>. This
+feature is enabled by default for many artifacts that primarily
+collect files (such as the <code>Windows.Triage.Targets</code> artifact).</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-08-30-release-notes-0.75/resume_uploads_.svg" alt="Resuming uploads from an interrupted collection"
+         class="inline"
+         height="1000.8333333333333"
+         width="2231.0236220472434"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="resume_uploads.svg"><i class="fa fa-download"></i></a>
+    Resuming uploads from an interrupted collection
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>In the above example the <code>Windows.Triage.Targets</code> artifact timed out
+but it is reporting that there are 928 upload transactions remaining
+(i.e. incomplete uploads that can be resumed). Clicking the <code>Resume Uploads</code> button will restart those uploads and set the collection back
+into the running state.</p>
+<p>Note that this may not always be safe. If the filesystem has changed
+since the upload transaction started, the resumed file may not match
+with the initial file. For example, supposed that the original
+artifact searched for <code>C:\Windows\*.exe</code> and found 50 executable files
+to upload, but when the collection was resumed, 10 of the previous
+executables were removed and 10 more were added. The resumed
+collection will not detect the new files and will fail to upload the
+older files.</p>
+<p>If you wish to use resumable uploads in your custom artifact, set the
+<code>UPLOAD_IS_RESUMABLE</code> parameter to <code>TRUE</code>. This changes the <code>upload()</code>
+function to become asynchronous and just queue an upload transaction
+instead of waiting for the upload to complete.</p>
+<h3 id="securing-the-server-filesystem">Securing the Server Filesystem</h3>
+<p>Velociraptor allows users to run arbitrary VQL queries in
+notebooks. These queries run directly on the server and so may allow
+users to view any files or run any commands on the server itself.</p>
+<p>In many higher security deployments there is a need to restrict access
+to the server itself from Velociraptor users. Velociraptor already
+offers an extensive user permission model, with users needing the
+<code>FILESYSTEM_READ</code> permission to be able to read files on the server
+filesystem.</p>
+<p>Often it is necessary to provide users with this permission (for
+example to allow them to post process data using an external tool),
+but we still do not want to allow users to be able to read the entire
+server filesystem.</p>
+<p>In this release it is possible to restrict the directories that VQL is
+allowed to read on the server using <a href="/docs/deployment/references/#security.allowed_file_accessor_prefix">a configuration option</a>.</p>
+<h2 id="client-improvements">Client improvements</h2>
+<h3 id="reworked-lnk-parser">Reworked Lnk parser</h3>
+<p>The <code>Lnk</code> parser is used in many artifacts like
+<code>Windows.Forensics.Shellbags</code>, <code>Windows.Forensics.Lnk</code>, and
+<code>Windows.Forensics.JumpLists</code>.</p>
+<p>The artifact is now more complete with support for many shellbag
+types.</p>
+<h3 id="added-windowsforensicsnotepadparser">Added Windows.Forensics.NotepadParser</h3>
+<p>The new notepad available in Windows 11 provides a lot of valuable forensic
+information. This is now implemented in Velociraptor based on research by
+<a href="https://github.com/ogmini/Notepad-State-Library" target="_blank" >ogmini</a>.</p>
+<h3 id="removal-of-some-large-artifacts">Removal of some large artifacts</h3>
+<p>Over time Velociraptor has spawned many sub-projects for curating and
+managing certain larger, more complex artifacts. As some artifacts became more
+complex and powerful, we moved them into separate projects so that they could be
+developed and managed independently of the main Velociraptor project. Splitting
+these off allows for independent release cycles, thus facilitating more rapid
+development and innovation.</p>
+<p>The following artifacts were removed from the built-in set, and are now
+available to download using the <code>Server.Import.Extras</code> server artifact:</p>
+<ol>
+<li>
+<p>The <code>Windows.KapeFiles.Targets</code> artifact is now managed as part of
+the <a href="https://triage.velocidex.com/" target="_blank" >Velociraptor Triage Project</a>.</p>
+<p>This project intends to develop a set of rules that are used for specifying
+the collection of files from the endpoint.</p>
+<p>Building on from the <code>KapeFiles</code> repository, this project now
+contains the <code>Windows.Triage.Targets</code> artifact based on the old
+<code>KapeFiles</code> project, and the <code>Linux.Triage.UAC</code> artifact based on
+the <code>UAC</code> project.</p>
+</li>
+<li>
+<p>The <code>Generic.Forensic.SQLiteHunter</code> artifact is now managed under the
+<a href="https://sqlitehunter.velocidex.com/" target="_blank" >Velociraptor SQLite Hunter Project</a></p>
+<p>This aims to be a one-stop shop for all <code>SQLite</code>, <code>ESE</code> and many other
+database-oriented forensic artifacts.</p>
+</li>
+<li>
+<p><a href="https://sigma.velocidex.com/" target="_blank" >Velociraptor Sigma Project</a> is the home of
+our artifacts that implement rapid Sigma-based triage and monitoring rules.</p>
+</li>
+<li>
+<p><a href="https://registry-hunter.velocidex.com/" target="_blank" >Velociraptor Registry Hunter Project</a>
+is our project to develop sophisticated registry analysis modules.</p>
+</li>
+<li>
+<p><a href="/exchange/">The Velociraptor Artifact Exchange</a> is our
+repository of community-contributed artifacts.</p>
+</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-08-30-release-notes-0.75/import_extras.png"
+         class="inline"
+         alt="New links on the welcome screen include one to run Server.Import.Extras"
+         width="1020" height="701">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="import_extras.png">
+      <i class="fa fa-download"></i></a>
+    New links on the welcome screen include one to run Server.Import.Extras
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The following artifacts were permanently removed:</p>
+<ol>
+<li>
+<p><code>Generic.Collectors.SQLECmd</code>: Superseded by <code>Generic.Forensic.SQLiteHunter</code></p>
+</li>
+<li>
+<p><code>Server.Import.DeleteArtifacts</code>: Obsolete since custom artifacts can now be
+filtered by tag and then bulk deleted using
+<a href="#multi-select-deletion">multi-select deletion</a>
+as described above.</p>
+</li>
+<li>
+<p><code>Server.Import.UpdatedBuiltin</code>: Superseded by <code>Server.Import.Extras</code>.</p>
+</li>
+<li>
+<p><code>Windows.Analysis.EvidenceOfExecution</code>: A wrapper artifact that is largely
+superseded by <code>Windows.Registry.Hunter</code>, however the underlying artifacts are
+still included.</p>
+</li>
+</ol>
+<h2 id="conclusions">Conclusions</h2>
+<p>There are many more new features and bug fixes in the latest
+release. Please download the release candidate and give it a test and
+provide feedback.</p>
+<p>If you like the new features, take <a href="https://github.com/Velocidex/velociraptor" target="_blank" >Velociraptor for a
+spin</a>!  It is available
+on GitHub under an open source license. As always please file issues
+on the bug tracker or ask questions on our mailing list
+<a href="mailto:velociraptor-discuss@googlegroups.com" target="_blank" >velociraptor-discuss@googlegroups.com</a>
+. You can also chat with us directly on discord
+<a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord</a>
+.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847308"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847308"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847308"></script>
+    <script src="/js/jquery.sticky.js?1774847308"></script>
+    <script src="/js/featherlight.min.js?1774847308"></script>
+    <script src="/js/highlight.min.js?1774847308"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847308"></script>
+    <script src="/js/learn.js?1774847308"></script>
+    <script src="/js/hugo-learn.js?1774847308"></script>
+    
+    
+
+  </body>
+</html>

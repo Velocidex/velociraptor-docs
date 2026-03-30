@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Server Deployment Issues :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847310" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847310" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847310" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847310" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847310" rel="stylesheet">
+    <link href="/css/theme.css?1774847310" rel="stylesheet">
+    <link href="/css/tabs.css?1774847310" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847310" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847310" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847310" rel="stylesheet"><link href="/css/syntax.css?1774847310" rel="stylesheet"><link href="/css/light.css?1774847310" rel="stylesheet"><link href="/css/hljs.css?1774847310" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847310" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847310"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/troubleshooting/deployment/server/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/troubleshooting\/deployment\/server\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/troubleshooting/deployment/server/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Server Deployment Issues</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#server-fails-to-start">Server fails to start</a></li>
+        <li><a href="#server-starts-but-other-issues-are-encountered">Server starts but other issues are encountered</a></li>
+        <li><a href="#gui-connectivity-issues">GUI connectivity issues</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Server Deployment Issues
+            </h1>
+            
+          
+
+        
+
+
+
+	<h3 id="server-fails-to-start">Server fails to start</h3>
+<p>If the server fails to start, typically the Linux service will report something
+unhelpful such as:</p>
+<pre><code class="language-sh">$ sudo systemctl status velociraptor_server.service
+● velociraptor_server.service - Velociraptor server
+     Loaded: loaded (/etc/systemd/system/velociraptor_server.service; enabled; vendor preset: enabled)
+     Active: activating (auto-restart) (Result: exit-code) since Sat 2025-09-27 19:12:03 SAST; 2s ago
+    Process: 5516 ExecStart=/usr/local/bin/velociraptor --config /etc/velociraptor/server.config.yaml frontend (code=exited, status=1/FAILURE)
+   Main PID: 5516 (code=exited, status=1/FAILURE)
+        CPU: 414ms
+
+Sep 27 19:12:03 linux64-client systemd[1]: velociraptor_server.service: Failed with result 'exit-code'.
+</code></pre>
+<h4 id="check-the-system-journal-for-error-messages">Check the system journal for error messages</h4>
+<p>You can sometimes get more information from the system journal for example:</p>
+<pre><code class="language-sh">$ journalctl -u velociraptor_server.service
+Sep 27 19:18:39 linux64-client systemd[1]: Started Velociraptor server.
+Sep 27 19:18:40 linux64-client velociraptor[763]: velociraptor: error: frontend: starting frontend: Invalid GUI.public_url - this should refer to the externally accessible URL for the GUI application. It should end with '/app/index.html'
+Sep 27 19:18:40 linux64-client systemd[1]: velociraptor_server.service: Main process exited, code=exited, status=1/FAILURE
+Sep 27 19:18:40 linux64-client systemd[1]: velociraptor_server.service: Failed with result 'exit-code'.
+</code></pre>
+<p>In the above example we can see that there is an issue with a value in the
+server config, and the error message explains what is required to correct the
+issue.</p>
+<h4 id="try-running-the-server-in-a-terminal">Try running the server in a terminal</h4>
+<p>If you do not see any meaningful errors in the system journal then you can
+proceed to run the server in a terminal which will provide much more detail in
+it&rsquo;s console output.</p>
+<ol>
+<li>First change to the <code>velociraptor</code> user.</li>
+<li>Then start the server as that user using the same command line that&rsquo;s shown by
+the <code>systemctl</code> command&rsquo;s <code>ExecStart</code> value.</li>
+</ol>
+<pre><code class="language-sh">$ sudo -u velociraptor bash
+$ /usr/local/bin/velociraptor --config /etc/velociraptor/server.config.yaml frontend
+[INFO] 2025-09-27T17:56:58Z  _    __     __           _                  __
+[INFO] 2025-09-27T17:56:58Z | |  / /__  / /___  _____(_)________ _____  / /_____  _____
+[INFO] 2025-09-27T17:56:58Z | | / / _ \/ / __ \/ ___/ / ___/ __ `/ __ \/ __/ __ \/ ___/
+[INFO] 2025-09-27T17:56:58Z | |/ /  __/ / /_/ / /__/ / /  / /_/ / /_/ / /_/ /_/ / /
+[INFO] 2025-09-27T17:56:58Z |___/\___/_/\____/\___/_/_/   \__,_/ .___/\__/\____/_/
+[INFO] 2025-09-27T17:56:58Z                                   /_/
+[INFO] 2025-09-27T17:56:58Z Digging deeper!                  https://www.velocidex.com
+[INFO] 2025-09-27T17:56:58Z This is Velociraptor 0.75.2 built on 2025-09-18T07:55:39+02:00 (92250494d)
+[INFO] 2025-09-27T17:56:58Z Environment Variable GOTRACEBACK: none
+[INFO] 2025-09-27T17:56:58Z Loading config from file /etc/velociraptor/server.config.yaml
+[INFO] 2025-09-27T17:56:58Z Initializing logging for /opt/velociraptor/logs/Velociraptor
+velociraptor: error: frontend: loading config file: failed to acquire target io.Writer: failed to create a new file /opt/velociraptor/logs/Velociraptor_info.log.202509220000: failed to open file /opt/velociraptor/logs/Velociraptor_info.log.202509220000: open /opt/velociraptor/logs/Velociraptor_info.log.202509220000: permission denied
+</code></pre>
+<p>In this case, Velociraptor could not start because it cannot write to the
+configured logs directory. This can be corrected by reapplying ownership for the
+<code>velociraptor</code> user to the files in the <code>/opt/velociraptor</code> directory.</p>
+
+<div class="mynotices info">
+  <div heading=" Incorrect permissions in the filestore "><p>Because Velociraptor normally runs as a low privileged user, it needs to
+maintain file ownership as the <code>velociraptor</code> user. Sometimes permissions change
+by accident (usually this happens by running velociraptor as root and
+interacting with the file store - you should <strong>always</strong> change to the
+<code>velociraptor</code> user before interacting with the server).</p>
+<p>It is worth checking file permissions (using <code>ls -l</code>) and recursively returning
+file ownership back to the <code>velociraptor</code> user
+(using the command <code>sudo chown -R velociraptor:velociraptor /path/to/filestore/</code>)</p>
+</div>
+</div>
+
+
+<p>The most common causes of the service not starting are:</p>
+<ul>
+<li>Invalid configuration - either invalid YAML formatting or invalid settings.</li>
+<li>Incorrect filesystem permissions on the server datastore directory.</li>
+<li>Insufficient disk space (i.e. disk full)</li>
+</ul>
+<h3 id="server-starts-but-other-issues-are-encountered">Server starts but other issues are encountered</h3>
+<h4 id="try-running-the-server-in-a-terminal-with-verbose-output">Try running the server in a terminal with verbose output</h4>
+<p>If the server does start but you need to troubleshoot some other issue then you
+can run the server in a terminal with the <code>-v</code> (verbose) flag. This will display
+the full console output, not just errors, so it is useful for checking that
+component services are operating as expected.</p>
+<pre><code class="language-sh">$ sudo -u velociraptor bash
+$ /usr/local/bin/velociraptor --config /etc/velociraptor/server.config.yaml frontend -v
+</code></pre>
+<h3 id="gui-connectivity-issues">GUI connectivity issues</h3>
+<p>If the server starts but you can&rsquo;t connect to the GUI, here are some suggestions
+to troubleshoot the problem.</p>
+<h4 id="check-your-config-settings">Check your config settings</h4>
+<p>To allow remote access to the GUI your server&rsquo;s config needs to have the setting
+<code>GUI.bind_address</code> set to <code>0.0.0.0</code>. A common mistake is to set this to a
+specific IP address which then doesn&rsquo;t work because <code>0.0.0.0</code> and
+<code>127.0.0.1</code> are the only valid values for this setting.</p>
+<h4 id="test-that-the-gui-is-listening-on-the-expected-port">Test that the GUI is listening on the expected port</h4>
+<p>It&rsquo;s always best to first confirm that the GUI port is reachable locally on the
+server before testing from a remote host, since remote connectivity issues might
+be the result of network infrastructure such as firewalls and proxies, or
+network routing issues.</p>
+<p>Use netcat (<code>nc</code>) to check that the Frontend is listening:</p>
+<pre><code class="language-sh">$ nc -vz 127.0.0.1 8889
+Connection to 127.0.0.1 8889 port [tcp/*] succeeded!
+</code></pre>
+<p>You can then repeat the previous test using a non-loopback IP address.</p>
+<p>If your server has a desktop environment then you may also want to try
+connecting locally using a web browser.</p>
+<p>Once you have confirmed that the GUI is accessible from the server itself, then
+you can test from a remote host. If possible first test from another computer on
+the same local network as the server.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847310"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847310"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847310"></script>
+    <script src="/js/jquery.sticky.js?1774847310"></script>
+    <script src="/js/featherlight.min.js?1774847310"></script>
+    <script src="/js/highlight.min.js?1774847310"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847310"></script>
+    <script src="/js/learn.js?1774847310"></script>
+    <script src="/js/hugo-learn.js?1774847310"></script>
+    
+    
+
+  </body>
+</html>

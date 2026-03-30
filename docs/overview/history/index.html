@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>History :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847310" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847310" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847310" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847310" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847310" rel="stylesheet">
+    <link href="/css/theme.css?1774847310" rel="stylesheet">
+    <link href="/css/tabs.css?1774847310" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847310" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847310" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847310" rel="stylesheet"><link href="/css/syntax.css?1774847310" rel="stylesheet"><link href="/css/light.css?1774847310" rel="stylesheet"><link href="/css/hljs.css?1774847310" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847310" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847310"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/overview/history/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/overview\/history\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/overview/history/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">History</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#velociraptor-vs-google-rapid-response">Velociraptor vs Google Rapid Response</a></li>
+        <li><a href="#velociraptor-vs-osquery">Velociraptor vs OSQuery</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              History
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>Velociraptor draws its inspiration from two major open source projects:</p>
+<ul>
+<li>Google Rapid Response:  <a href="https://github.com/google/grr" target="_blank" >https://github.com/google/grr</a></li>
+<li>OSQuery: <a href="https://github.com/osquery/osquery" target="_blank" >https://github.com/osquery/osquery</a></li>
+</ul>
+<p>If you used either of these projects you might wonder how Velociraptor compares to the work that was done before
+it.</p>
+<p>Let&rsquo;s look at the major design differences and priorities of Velociraptor, GRR, and OSQuery.</p>
+<h3 id="velociraptor-vs-google-rapid-response">Velociraptor vs Google Rapid Response</h3>
+<p>Google&rsquo;s Rapid Response (GRR) launched in 2011, and was one of the first tools to allow hunting for forensic artifacts at scale.
+GRR allowed investigators to quickly query network hosts to check files or registry settings. Rather than passively analyse logs that after they were collected into a central location, GRR allowed security professionals to proactively search for evidence of compromise
+across many hosts.</p>
+<p>One of the challenges of remotely accessing machines at scale is
+that many endpoints are not online when investigators need to
+access them. GRR allows for &ldquo;Flows&rdquo; to be scheduled in advance so that evidence is automatically collected
+when the endpoint comes back online.</p>
+<p>GRR and Velociraptor both refer to the process of simultaneously collecting the same file or registry key from
+many machines as a &ldquo;hunt&rdquo;.</p>
+<p>Velociraptor also provides asynchronous
+collection of &ldquo;artifacts&rdquo; from multiple hosts in a similar way. However, Velociraptor artifacts do more than collect
+files or registry keys. Velociraptor can perform
+sophisticated analysis on the endpoint to surface novel adversary
+techniques and detect malicious activity quickly and with precision.</p>
+<p>Another aspect where Velociraptor differs from GRR is in it&rsquo;s ease of
+use and deployment. While GRR requires a complex deployment with many
+moving parts, Velociraptor is a single statically compiled executable
+written in Go. Velociraptor is also much faster than GRR and has a
+much lower memory/CPU footprint on the endpoint. A single
+Velociraptor server can handle over 10,000 endpoint network easily,
+and can be installed in a few minutes on modest hardware.</p>
+<p>GRR primarily collects files and registry keys from the endpoint, with
+minimal parsing capability on the endpoint, preferring instead of
+parse files on the server. Velociraptor&rsquo;s philosophy is to push as
+much of the parsing and analysis to the endpoint as
+possible. Velociraptor contains many powerful forensic analysis modules
+on the endpoint, and uses a powerful query language allowing new parsers to
+be written. This allows endpoints
+to send only the most relevant results and reduces
+unnecessary parsing on the server.</p>
+<h3 id="velociraptor-vs-osquery">Velociraptor vs OSQuery</h3>
+<p>OSQuery was really the first popular example of an open source tool
+that provided a query langauge to allow querying the endpoints. This
+capability allows users to target specific queries in a flexible way
+to address new threats or find new IOCs, making it a popular choice
+among defenders.</p>
+<p>The main limitation with OSQuery is that it uses SQL, a language that is designed for databases and not to query dynamic
+endpoint state. There are limitations in SQL expressions that impact its ability to build concise and flexible
+queries. While simple SQL is easy for beginners to learn, more
+sophisticated queries use SQL contracts that are a pretty complex, such as JOIN operators.</p>
+<p>Velociraptor&rsquo;s VQL also allows users to flexibly
+write new queries to gather new evidence on the endpoint. However, VQL
+is deliberately kept very simple, yet powerfully expressive.</p>
+<p>Additionally, OSQuery suffers from performance issues. Finding files using queries against the &ldquo;file&rdquo; table are notoriously
+expensive. Velociraptor is typically much faster than OSQuery and
+uses much less memory.</p>
+<p>Finally, OSQuery by itself is not sufficient to monitor a large network
+since OSQuery does not include any kind of client/server orchestration
+or GUI. A complete solution requires users to install another tool (such as <a href="https://github.com/fleetdm/fleet" target="_blank" >FleetDM</a>) to use
+OSQuery, increasing complexity and management overhead.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847310"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847310"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847310"></script>
+    <script src="/js/jquery.sticky.js?1774847310"></script>
+    <script src="/js/featherlight.min.js?1774847310"></script>
+    <script src="/js/highlight.min.js?1774847310"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847310"></script>
+    <script src="/js/learn.js?1774847310"></script>
+    <script src="/js/hugo-learn.js?1774847310"></script>
+    
+    
+
+  </body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="Were you planning to try Velociraptor in the past? You can now win some awesome prizes by learning and applying Velociraptor to your own network.
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>2021 Velociraptor Contributor Competition :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847307" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847307" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847307" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847307" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847307" rel="stylesheet">
+    <link href="/css/theme.css?1774847307" rel="stylesheet">
+    <link href="/css/tabs.css?1774847307" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847307" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847307" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847307" rel="stylesheet"><link href="/css/syntax.css?1774847307" rel="stylesheet"><link href="/css/light.css?1774847307" rel="stylesheet"><link href="/css/hljs.css?1774847307" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847307" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847307"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/announcements/2021-artifact-contest/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/announcements\/2021-artifact-contest\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">2021 Velociraptor Contributor Competition</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-contest-is-now-closed">The Contest is now closed!</a></li>
+    <li><a href="#goals">Goals</a></li>
+    <li><a href="#deadline">Deadline</a></li>
+    <li><a href="#winner-announcements">Winner Announcements</a></li>
+    <li><a href="#prizes">Prizes</a></li>
+    <li><a href="#requirements">Requirements</a></li>
+    <li><a href="#non-eligibility">Non-eligibility</a></li>
+    <li><a href="#submission-process">Submission Process</a></li>
+    <li><a href="#selection-criteria">Selection criteria</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              2021 Velociraptor Contributor Competition
+            </h1>
+            
+          
+
+        
+
+
+
+	<h2 id="the-contest-is-now-closed">The Contest is now closed!</h2>
+<p>Check out the <a href="/blog/2021/2021-10-08-contributor-contest/">submissions</a> and watch the winning presentation at the <a href="https://www.sans.org/cyber-security-training-events/threat-hunting-and-incident-response-summit-2021/#agenda" target="_blank" >SANS Threat Hunting Summit</a></p>
+<h2 id="goals">Goals</h2>
+<p>This competition encourages development of useful content and
+extension to the Velociraptor platform. Content may be VQL (server or
+client), plugin, integration, workflow or other capabilities.</p>
+<p>Some specific ideas:</p>
+<ol>
+<li>
+<p><strong>Impactful process/integration</strong> - How does your contribution help in
+making real world DFIR work smoother and more efficient? Describe
+how you used to do this task previously and how it has been
+improved as a result of your contribution.</p>
+</li>
+<li>
+<p><strong>Detection artifacts</strong> - Each submission may contain several VQL
+artifacts - how do the artifacts improve Velociraptor&rsquo;s detection
+capability? Can you include metrics of how effective they are
+compared to previous technology?</p>
+</li>
+<li>
+<p><strong>Monitoring artifacts/plugins</strong> - This category includes real time
+monitoring queries to enhance Velociraptor&rsquo;s endpoint monitoring
+capability.</p>
+</li>
+</ol>
+<h2 id="deadline">Deadline</h2>
+<p>Deadline for submission is Midnight 20th September 2021 anywhere on earth. The email address for submission is: <strong><a href="mailto:contest@velociraptor.app" target="_blank" >contest@velociraptor.app</a></strong></p>
+<h2 id="winner-announcements">Winner Announcements</h2>
+<p>Winners will be announced at the <a href="https://www.sans.org/cyber-security-training-events/threat-hunting-and-incident-response-summit-2021" target="_blank" >SANS Threat Hunting Summit Thurs Oct 7 - Fri, Oct 8, 2021</a></p>
+<h2 id="prizes">Prizes</h2>
+<p>The competition carries 3 prize levels, first prize is <strong>$5000 USD</strong>, Second
+prize <strong>$3000 USD</strong> and third prize at <strong>$2000 USD</strong>. All winners will also
+receive a Velociraptor contributor coin, commemorating them as a
+valued member of the Velociraptor community.</p>
+<p>Winning submissions will also be published on the Velociraptor web
+site.</p>
+<p>Significant contributions will receive some cool Velociraptor
+merchandise.</p>
+<h2 id="requirements">Requirements</h2>
+<p>The submitted content should work with the latest Velociraptor
+release. If your content requires new functionality, work with us to
+implement it in time for the submission deadline.</p>
+<p>A submission must include new functionality in the form of VQL
+artifacts, Velociraptor plugins or new Velociraptor
+code/integration. Submissions should also include a short document or
+video explaining the contribution and its value to the wider DFIR
+community.</p>
+<h2 id="non-eligibility">Non-eligibility</h2>
+<p>The Rapid 7 Velociraptor team can not submit but will be available to
+consult and assist other entrants. You may draw on any member of the
+community for help in creating the contribution (e.g. ask for help on
+Discord, file GitHub issues or feature requests etc), but all
+contributions should be substantially your own.</p>
+<p>We have a lot of industry leaders on the judging panel. Members of the
+judging panel may enter a submission but they may not vote on their
+own submission or any submission for which they declare a conflict of
+interest.</p>
+<h2 id="submission-process">Submission Process</h2>
+<p>The submission should include the code, description and a write up of
+functionality, background and a signed contribution license agreement
+(<a href="https://github.com/Velocidex/velociraptor/blob/master/CLA.md" target="_blank" >CLA</a>).</p>
+<p>In particular we want to know how the submission improves a capability
+or workflow in the real world. We value practical and impactful
+changes over technologically complex, but rarely used additions. The
+submission writeup should be sufficiently detailed for the judging
+panel to properly assess the novelty and usefulness of the submission.</p>
+<p>All submission code will be released under the same license as
+Velociraptor (i.e. <a href="https://github.com/Velocidex/velociraptor/blob/master/LICENSE" target="_blank" >AGPL</a>) and may be included in future
+releases. Contributors should also sign the Velociraptor CLA prior to
+submitting a contribution (Please click <a href="https://cla-assistant.io/Velocidex/velociraptor" target="_blank" >here to sign</a> and indicate your GitHub username in the submission).</p>
+<h2 id="selection-criteria">Selection criteria</h2>
+<p>The Velociraptor competition judges are selected from the wider
+industry and past community contributions. The judges will
+independently rank contributions and will vote based on the following
+broad criteria.</p>
+<ul>
+<li>Usefulness</li>
+<li>Creativity</li>
+<li>Effort / Difficulty</li>
+<li>Completeness of solution</li>
+<li>Clarity of documentation</li>
+</ul>
+<p>Selected works may also be asked to present their work at future
+conferences with the Velociraptor team and featured on the
+Velociraptor blog.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847307"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847307"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847307"></script>
+    <script src="/js/jquery.sticky.js?1774847307"></script>
+    <script src="/js/featherlight.min.js?1774847307"></script>
+    <script src="/js/highlight.min.js?1774847307"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847307"></script>
+    <script src="/js/learn.js?1774847307"></script>
+    <script src="/js/hugo-learn.js?1774847307"></script>
+    
+    
+
+  </body>
+</html>

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Windows.Detection.Onenote :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847311" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847311" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847311" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847311" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847311" rel="stylesheet">
+    <link href="/css/theme.css?1774847311" rel="stylesheet">
+    <link href="/css/tabs.css?1774847311" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847311" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847311" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847311" rel="stylesheet"><link href="/css/syntax.css?1774847311" rel="stylesheet"><link href="/css/light.css?1774847311" rel="stylesheet"><link href="/css/hljs.css?1774847311" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847311" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847311"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/exchange/artifacts/pages/onenote/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/exchange\/artifacts\/pages\/onenote\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/exchange/artifacts/Onenote.yaml" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Windows.Detection.Onenote</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents"></nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Windows.Detection.Onenote
+            </h1>
+            
+          
+
+        
+
+
+<p>This artifact enables detection of malicious .one files and can also be used
+as an embedded file and metadata parser.</p>
+<p>The artifact uses glob targeting and checks file headers to detect .one file
+types in scope. Secondly the artifact looks for EmbeddedFile and Metadata headers.<br>
+Finally the artifact will parse the .one file from discovered offsets and
+enable filters to determine rows returned.</p>
+<p>By default filters target suspicious file content and metadata title text
+observed in the wild.
+Modify ContentRegex to <code>.</code> to include all.</p>
+<p>The artifact also allows upload of both embedded files and source .one files.</p>
+<pre><code class="language-yaml">
+name: Windows.Detection.Onenote
+author: Matt Green - @mgreen27
+description: |
+    This artifact enables detection of malicious .one files and can also be used 
+    as an embedded file and metadata parser.
+    
+    The artifact uses glob targeting and checks file headers to detect .one file 
+    types in scope. Secondly the artifact looks for EmbeddedFile and Metadata headers.   
+    Finally the artifact will parse the .one file from discovered offsets and 
+    enable filters to determine rows returned.  
+     
+    By default filters target suspicious file content and metadata title text 
+    observed in the wild.
+    Modify ContentRegex to ```.``` to include all.  
+    
+    The artifact also allows upload of both embedded files and source .one files.
+    
+reference:
+  - https://github.com/volexity/threat-intel/tree/main/tools/one-extract
+  - https://blog.didierstevens.com/2023/01/22/analyzing-malicious-onenote-documents/
+  
+type: CLIENT
+
+parameters:
+   - name: TargetGlob
+     description: Glob to target .one files
+     default: C:\Users\**
+   - name: ContentRegex
+     description: Regex to filter for on embedded files or Title Metadata
+     default: ^MZ|^TV(oA|pB|pQ|qA|qQ|ro)|^PK|This program cannot be run in dos mode.|@echo|&lt;HTA:APPLICATION|/vbscript|WmiExec|Win32_Process|Powershell|comspec
+   - name: PreviewBytes
+     description: Number of bytes of embedded files to preview in hex
+     type: int64
+     default: 10000
+   - name: ContentExclude
+     description: Regex to filter out on embedded files or Title Metadata
+   - name: IncludeAllMetadata
+     type: bool
+     description: Select to include all Metadata entries
+   - name: UploadEmbedded
+     type: bool
+     description: Select to upload embedded files
+   - name: UploadOriginal
+     type: bool
+     description: Upload original OneNote file
+     
+     
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows' OR OS = 'linux' OR OS = 'darwin'
+
+    query: |
+      LET YaraRule = '''rule onenote_headers {
+                strings:
+                    $EmbeddedFile = { E7 16 E3 BD 65 26 11 45 A4 C4 8D 4D 0B 7A 9E AC }
+                    $Metadata = { F3 1C 00 1C 30 1C 00 1C FF 1D 00 14 82 1d 00 14 }
+    
+                condition:
+                    any of them
+            }'''
+    
+      LET PROFILE = '''[[Metadata, 0, [
+                            ["__Adjust", 2, "uint16"],
+                            ["__SizeOffset",0,"Value",{"value":"x=&gt;4 + (4 * x.__Adjust)"}],
+                            ["Size", "x=&gt;x.__SizeOffset", "uint16"],
+                            ["__Title","x=&gt;x.__SizeOffset + 4","String",{length: "x=&gt;x.Size","term":"$$$_NOTERM_$$$"}],
+                            ["Title",0,"Value",{"value":"x=&gt;regex_replace(source=x.__Title,re='\\x00',replace='')"}],
+                            ["CreateDate", "x=&gt;x.__SizeOffset + 4 + x.Size + 32","WinFileTime"],
+                            # TODO remove recursion lookup and find specific details... 
+                            ["__FindOffset1", "x=&gt;x.__SizeOffset + 4 + x.Size + 48","String",{length: 100, term_hex: "010100000000"}],
+                            ["__FindOffset2", "x=&gt;x.__SizeOffset + 4 + x.Size + 48","String",{length: 100, term_hex: "010000000000"}],
+                            ["__ModificationOffset", 0,"Value",{"value":"x=&gt;if(condition= len(list=x.__FindOffset1) &lt; 100 OR len(list=x.__FindOffset2) &lt; 100,
+                                    then= if(condition= len(list=x.__FindOffset1) &lt; len(list=x.__FindOffset2),
+                                            then= x.__SizeOffset + 4 + x.Size + 48 + len(list=x.__FindOffset1) - 7,
+                                            else= x.__SizeOffset + 4 + x.Size + 48 + len(list=x.__FindOffset2) - 7 ),
+                                    else= null )"}],
+                            ["__ModificationDate", "x=&gt;x.__ModificationOffset","WinFileTime"],
+                            ["ModificationDate", 0,"Value",{"value":"x=&gt;if(condition= x.__ModificationOffset, 
+                                                                            then= x.__ModificationDate,
+                                                                            else= null)"}],
+                        ]],
+                        [EmbeddedFile, 0, [
+                            ["Size", 16, "uint32"],
+                            ["Magic",0,"Value",{"value":"x=&gt;magic(accessor='data',path=read_file(filename=FileName,offset=String.Offset + 36,length=int(int=x.Size)))"}],
+                            ["Extension",0,"Value",{"value":"x=&gt;magic(type='extension',accessor='data',path=read_file(filename=FileName,offset=String.Offset + 36,length=int(int=x.Size)))"}],
+                            ["SHA256",0,"Value",{"value":"x=&gt;hash(hashselect='SHA256',accessor='data',path=read_file(filename=FileName,offset=String.Offset + 36,length=int(int=x.Size))).SHA256"}],
+                        ]]]'''
+      
+      -- firstly we want to find all target files in scope by confirming header
+      LET target_files = SELECT OSPath,Name,Size,Mtime,Btime,Ctime,Atime	,
+                                hash(path=OSPath) as OneFileHash,
+                                format(format='% x',args=[read_file(filename=OSPath,length=16),]) as _Header
+        FROM glob(globs=TargetGlob)
+        WHERE NOT IsDir
+            AND _Header = 'e4 52 5c 7b 8c d8 a7 4d ae b1 53 78 d0 29 96 d3'
+        
+      -- Hash source file here for performance
+      LET target_files_hash = SELECT *, hash(path=OSPath) as Hash FROM target_files
+    
+      -- finally find all headers and parse from offset
+      LET results = SELECT  *,
+                if(condition= Type='EmbeddedFile',
+                then= read_file(filename=OSPath,offset=Offset,length= int(int=Extracted.Size)),
+                else= null ) as _EmbeddedFile 
+        FROM foreach(row=target_files_hash, query={
+                SELECT  OSPath,Name,Size,
+                    dict(Mtime=Mtime,Btime=Btime,Ctime=Ctime,Atime=Atime) as Timestamps,
+                    OneFileHash,
+                    if(condition= String.Name=~ 'metadata',
+                        then= String.Offset - 4,
+                        else= String.Offset + 36 ) as Offset,
+                    strip(string=String.Name,prefix='\$') as Type,
+                    parse_binary(filename=FileName, profile=PROFILE,
+                        offset=if(condition= String.Name=~ 'metadata',
+                                    then= String.Offset - 4,
+                                    else= String.Offset), 
+                        struct=if(condition= String.Name=~ 'metadata',
+                                    then= 'Metadata',
+                                    else= 'EmbeddedFile')) as Extracted
+                FROM yara(files=OSPath,rules=YaraRule,number=9999)
+                ORDER BY Offset
+            })
+        WHERE ( _EmbeddedFile =~ ContentRegex OR Extracted.Title =~ ContentRegex
+                    AND NOT if(condition= ContentExclude,
+                                then= _EmbeddedFile =~ ContentExclude,
+                                else = False ) )
+            OR if(condition= IncludeAllMetadata, then= Type='Metadata')
+
+      LET upload_embedded = SELECT OSPath,Name,Size,Timestamps,
+            OneFileHash,
+            Offset, Type, Extracted,
+            if(condition= Type='EmbeddedFile',
+                then= read_file(filename=_EmbeddedFile,accessor='data',length=PreviewBytes ),
+                else= null ) as EmbeddedPreview,
+            if(condition= Type='EmbeddedFile',
+                then= upload(accessor='scope',file="_EmbeddedFile",
+                            name=format(format='%v_%v.extracted',args=[Name,Offset])),
+                else= null ) as EmbeddedUpload 
+        FROM results
+        
+      LET no_embedded_upload = SELECT  OSPath,Name,Size,Timestamps,
+            OneFileHash, Offset, Type, Extracted,
+            if(condition= Type='EmbeddedFile',
+                then= read_file(filename=_EmbeddedFile,accessor='data',length=PreviewBytes ),
+                else= null ) as EmbeddedPreview
+        FROM results
+        
+      -- output rows, hidden fields dropped
+      LET final_results = SELECT * FROM if(condition=UploadEmbedded,
+                                                    then= upload_embedded,
+                                                    else= no_embedded_upload )
+                                                    
+      -- finally we may want upload original OneNote file but only once for optimisation..
+      LET lookup &lt;= dict()
+      LET upload_ospath = SELECT *,
+                if(condition=get(item=lookup, field=OSPath.String), 
+                    else=if(condition=set(item=lookup, field=OSPath.String, value=TRUE),
+                            then=upload(file=OSPath))) AS OneFileUpload
+        FROM final_results
+      
+       SELECT * FROM if(condition=UploadOriginal,
+                        then= upload_ospath,
+                        else= final_results )
+                        
+column_types:
+  - name: EmbeddedPreview
+    type: base64hex
+
+</code></pre>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847311"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847311"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847311"></script>
+    <script src="/js/jquery.sticky.js?1774847311"></script>
+    <script src="/js/featherlight.min.js?1774847311"></script>
+    <script src="/js/highlight.min.js?1774847311"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847311"></script>
+    <script src="/js/learn.js?1774847311"></script>
+    <script src="/js/hugo-learn.js?1774847311"></script>
+    
+    
+
+  </body>
+</html>
+

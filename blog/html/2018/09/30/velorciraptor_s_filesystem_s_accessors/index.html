@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="The latest release of Velociraptor introduces the ability to access
+raw NTFS volumes, allowing users to read files which are normally
+locked by the operating system such as registry hives, pagefile and
+other locked files.
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Velociraptor&#39;s filesystem&#39;s accessors :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847308" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847308" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847308" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847308" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847308" rel="stylesheet">
+    <link href="/css/theme.css?1774847308" rel="stylesheet">
+    <link href="/css/tabs.css?1774847308" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847308" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847308" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847308" rel="stylesheet"><link href="/css/syntax.css?1774847308" rel="stylesheet"><link href="/css/light.css?1774847308" rel="stylesheet"><link href="/css/hljs.css?1774847308" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847308" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847308"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/blog/html/2018/09/30/velorciraptor_s_filesystem_s_accessors/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/blog\/html\/2018\/09\/30\/velorciraptor_s_filesystem_s_accessors\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/html/2018/09/30/velorciraptor_s_filesystem_s_accessors/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Velociraptor&#39;s filesystem&#39;s accessors</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents"></nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Velociraptor&#39;s filesystem&#39;s accessors
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>In addition, Velociraptor can now also read <a href="https://docs.microsoft.com/en-us/windows/desktop/vss/volume-shadow-copy-service-portal" target="_blank" >Volume Shadow
+Copy</a>
+snapshots. The gives a kind of time-machine ability to allow the
+investigator to look through the drive content at a previous point in
+the past.</p>
+<p>This blog post introduces the new features and describe how
+Velociraptor's filesystem accessors work to provide data from multiple
+sources to VQL queries.</p>
+<p>We have previously seen that Velociraptor can list and download files
+from the client's filesystem, as well as registry keys and values. The
+client's filesystem is made available to VQL plugins such as glob()
+allowing many Artifacts to be written that work on files, registry keys
+and raw NTFS volumes.</p>
+<p>While Velociraptor is a great remote response tool, everything that it
+can do remotely, it can also do locally using a command line interface.
+This gives the user an opportunity to interactively test their VQL
+queries while writing artifacts.</p>
+<p>The latest release adds a couple of convenient command line options
+which allow the user to interact with the filesystem accessors. For
+example, to list the files in a directory we can use the &quot;velociraptor
+fs ls&quot; command:</p>
+<pre><code class="language-{.sourceCode">F:\&gt;velociraptor.exe fs ls
++------+------+------------+---------------------------+---------------------------------+
+| Name | Size |    Mode    |           mtime           |              Data               |
++------+------+------------+---------------------------+---------------------------------+
+| C:   |    0 | d--------- | 1969-12-31T16:00:00-08:00 | Description: Local Fixed Disk   |
+|      |      |            |                           | DeviceID: C:                    |
+|      |      |            |                           | FreeSpace: 12686422016          |
+|      |      |            |                           | Size: 33833349120               |
+|      |      |            |                           | SystemName: DESKTOP-IOME2K5     |
+|      |      |            |                           | VolumeName:                     |
+|      |      |            |                           | VolumeSerialNumber: 9459F443    |
+| D:   |    0 | d--------- | 1969-12-31T16:00:00-08:00 | Description: CD-ROM Disc        |
+|      |      |            |                           | DeviceID: D:                    |
+|      |      |            |                           | FreeSpace: 0                    |
+|      |      |            |                           | Size: 57970688                  |
+|      |      |            |                           | SystemName: DESKTOP-IOME2K5     |
+|      |      |            |                           | VolumeName: VBox_GAs_5.2.11     |
+|      |      |            |                           | VolumeSerialNumber: A993F576    |
++------+------+------------+---------------------------+---------------------------------+
+SELECT Name, Size, Mode.String AS Mode, timestamp(epoch=Mtime.Sec) AS mtime,
+   Data FROM glob(globs=path, accessor=accessor)
+</code></pre>
+<p>The &quot;fs ls&quot; command instructs Velociraptor to list directories using
+its internal filesystem accessors. By default it will use the &quot;file&quot;
+accessor - which simply uses the usual Win32 api filesystem calls (i.e.
+<code>CreateFile</code>, <code>FindFirstFile</code> etc).</p>
+<p>On windows, the file accessor lists the drive letters at the root of the
+filesystem, then allows subdirectories to be listed under each letter.
+The above output shows some metadata for each drive letter (like its
+size etc) and below the table we can see the VQL query that was used to
+generate the table. To be clear, the &quot;fs ls&quot; command is simply a
+shortcut for producing a VQL query that ultimately uses the filesystem
+accessor in the glob() VQL plugin. Therefore, we can enter any glob
+expression to find files:</p>
+<pre><code class="language-{.sourceCode">F:\&gt;velociraptor.exe fs ls -v &quot;c:\program files\**\*.exe&quot;
++--------------------------------+----------+------------+---------------------------+------+
+|            FullPath            |   Size   |    Mode    |           mtime           | Data |
++--------------------------------+----------+------------+---------------------------+------+
+| C:\Program Files\Windows Defen |  4737448 | -rw-rw-rw- | 2018-07-14T17:56:49-07:00 |      |
+| der Advanced Threat Protection |          |            |                           |      |
+| \MsSense.exe                   |          |            |                           |      |
+| C:\Program Files\Windows Defen |   791384 | -rw-rw-rw- | 2018-07-14T17:56:43-07:00 |      |
+| der Advanced Threat Protection |          |            |                           |      |
+| \SenseCncProxy.exe             |          |            |                           |      |
+| C:\Program Files\Windows Defen |  3832016 | -rw-rw-rw- | 2018-07-14T17:56:50-07:00 |      |
+| der Advanced Threat Protection |          |            |                           |      |
+| \SenseIR.exe                   |          |            |                           |      |
+| C:\Program Files\Windows Defen |  2147192 | -rw-rw-rw- | 2018-07-14T18:05:00-07:00 |      |
+| der Advanced Threat Protection |          |            |                           |      |
+| \SenseSampleUploader.exe       |          |            |                           |      |
+........
++--------------------------------+----------+------------+---------------------------+------+
+SELECT FullPath, Size, Mode.String AS Mode, timestamp(epoch=Mtime.Sec) AS mtime, Data FROM
+glob(globs=path, accessor=accessor)
+</code></pre>
+<p>When using the registry filesystem accessor, the registry appears like a
+filesystem, allowing us to run glob expressions against registry keys
+and values (Note that the registry accessor provides the value in the
+metadata):</p>
+<pre><code class="language-{.sourceCode">F:\&gt;velociraptor.exe fs --accessor reg ls &quot;HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\{Run,RunOnce}\*&quot;
++---------------+------+------------+---------------------------+---------------------------------+
+|     Name      | Size |    Mode    |           mtime           |             Data                |
++---------------+------+------------+---------------------------+---------------------------------+
+| OneDriveSetup |  104 | -rwxr-xr-x | 2018-09-03T02:48:53-07:00 | type: SZ                        |
+|               |      |            |                           | value: C:\Windows\SysWOW64\     |
+|               |      |            |                           | OneDriveSetup.exe /thfirstsetup |
+| OneDriveSetup |  104 | -rwxr-xr-x | 2018-09-03T02:48:47-07:00 | type: SZ                        |
+|               |      |            |                           | value:   C:\Windows\SysWOW64\   |
+|               |      |            |                           | OneDriveSetup.exe /thfirstsetup |
++---------------+------+------------+---------------------------+---------------------------------+
+SELECT Name, Size, Mode.String AS Mode, timestamp(epoch=Mtime.Sec) AS mtime,
+Data FROM glob(globs=path, accessor=accessor)
+</code></pre>
+<p>Finally, the NTFS accessor can access files by parsing the NTFS
+filesystem directly. At the top level, the accessor shows all NTFS
+formatted partitions. These include regular drives as well as Volume
+Shadow Copies:</p>
+<pre><code class="language-{.sourceCode">F:\&gt;velociraptor.exe fs --accessor ntfs ls
++--------------------------------+------+------------+---------------------------------------------------------+
+|              Name              | Size |    Mode    |                             Data                        |
++--------------------------------+------+------------+---------------------------------------------------------+
+| \\.\C:                         |    0 | d--------- | Description: Local Fixed Disk                           |
+|                                |      |            | DeviceID: C:                                            |
+|                                |      |            | FreeSpace: 11802157056                                  |
+|                                |      |            | Size: 33833349120                                       |
+|                                |      |            | SystemName: DESKTOP-IOME2K5                             |
+|                                |      |            | VolumeName:                                             |
+|                                |      |            | VolumeSerialNumber: 9459F443                            |
+| \\?\GLOBALROOT\Device\Harddisk |    0 | d--------- | DeviceObject: \\?\GLOBALROOT\Device\                    |
+|                                |      |            |             HarddiskVolumeShadowCopy1                   |
+| VolumeShadowCopy1              |      |            | ID: {CAF25144-8B70-4F9E-B4A9-5CC702281FA1}              |
+|                                |      |            | InstallDate: 20180926154712.490617-420                  |
+|                                |      |            | OriginatingMachine: DESKTOP-IOME2K5                     |
+|                                |      |            | VolumeName: \\?\Volume{3dc4b590-0000-000-501f00000000}\ |
+| \\?\GLOBALROOT\Device\Harddisk |    0 | d--------- | DeviceObject: \\?\GLOBALROOT\Device\                    |
+|                                |      |            |            HarddiskVolumeShadowCopy2                    |
+| VolumeShadowCopy2              |      |            | ID: {E48BFDD7-7D1D-40AE-918C-36FCBB009941}              |
+|                                |      |            | InstallDate: 20180927174025.893104-420                  |
+|                                |      |            | OriginatingMachine: DESKTOP-IOME2K5                     |
+|                                |      |            | VolumeName: \\?\Volume{3dc4b590-0000-000-501f00000000}\ |
++--------------------------------+------+------------+---------------------------------------------------------+
+SELECT Name, Size, Mode.String AS Mode, timestamp(epoch=Mtime.Sec) AS mtime,, Data FROM glob(globs=path, accessor=accessor) WHERE Sys.name_type != 'DOS'
+</code></pre>
+<p>The above example shows two volume shadow copies that Windows has taken
+on two different dates (highlighted above). We can browse these
+snapshots just like they were another drive (We can also apply any glob
+expressions to this path):</p>
+<pre><code class="language-{.sourceCode">F:\&gt;velociraptor.exe fs --accessor ntfs ls &quot;\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\
+Users\test\*.exe&quot;
++------------------+----------+------------+---------------------------+------------------+
+|       Name       |   Size   |    Mode    |           mtime           |       Data       |
++------------------+----------+------------+---------------------------+------------------+
+| velociraptor.exe | 12521472 | -rwxr-xr-x | 2018-08-19T23:37:01-07:00 | mft: 39504-128-0 |
+|                  |          |            |                           | name_type: Win32 |
+| winpmem.exe      |  3619260 | -rwxr-xr-x | 2017-12-28T21:17:50-08:00 | mft: 39063-128-1 |
+|                  |          |            |                           | name_type: POSIX |
++------------------+----------+------------+---------------------------+------------------+
+SELECT Name, Size, Mode.String AS Mode, timestamp(epoch=Mtime.Sec) AS mtime, Data FROM
+glob(globs=path, accessor=accessor) WHERE Sys.name_type != 'DOS'
+</code></pre>
+<p>Volume shadow copies are like a time machine - they can reveal data that
+was stored on the drive days or weeks prior to the time we inspected it
+which makes them very useful for some investigations.</p>
+<h1 id="using-filesystem-accessors-remotely---the-velociraptor-vfs">Using filesystem accessors remotely - The Velociraptor VFS</h1>
+<p>The above description shows how Velociraptor's command line interface
+can be used to interact with the various filesystem accessors. This is
+important for writing and collecting artifacts for triage and general
+system state exploration.</p>
+<p>However, how do filesystem accessors appear in the Velociraptor GUI?</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/html/2018/09/30/velorciraptor_s_filesystem_s_accessors/vfs1.png"
+         class="inline"
+         alt="image"
+         width="1458" height="807">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="vfs1.png">
+      <i class="fa fa-download"></i></a>
+    image
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The nice thing about Velociraptor's GUI is that it is just a way to
+present the same information that the &quot;fs ls&quot; command is getting by
+using the same VQL queries. Therefore the view is very familiar:</p>
+<ol>
+<li>The top level of the Velociraptor VFS represents all the filesystem
+accessors implemented in the client.</li>
+<li>Each of these accessors shows its own view:
+<ol>
+<li>The file accessor uses the OS APIs to list files and
+directories. Its top level is a list of mounted drives (which
+may be CDROM's or even network shares).</li>
+<li>The NTFS accessor shows all NTFS volumes accessible, including
+local drives and Volume Shadow Copies.</li>
+<li>The registry accessor uses Win32 APIs to access the registry and
+shows at the top level a list of all system hives currently
+attached.</li>
+</ol>
+</li>
+<li>For each file listed, the accessor also includes a Data attribute.
+This contains accessor specific metadata about the file (for example
+the MFT entry).</li>
+</ol>
+<p>In the below screenshot we can see how the user may navigate into the
+Volume Shadow Copy and retrieve files from it:</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/html/2018/09/30/velorciraptor_s_filesystem_s_accessors/vfs2.png"
+         class="inline"
+         alt="image"
+         width="1458" height="807">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="vfs2.png">
+      <i class="fa fa-download"></i></a>
+    image
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h1 id="a-note-about-filenames">A note about filenames.</h1>
+<p>NTFS can have several different names to the same file. Typically, a
+short DOS 8.3 style filename (e.g. <code>PROGRA~1</code>), as well as a Win32 long
+filename (e.g. Program Files). You can see the short name for a file
+using the API GetShortPathName() (or the command <code>dir /x</code>), but a program
+needs to deliberately ask for it. Most programs do not explicitly
+collect or show the short filename of a file.</p>
+<p>This can cause problems for DFIR applications. For example, Imagine we
+discovered a Run key to C:\\Users\\test\\runme.exe. If we only
+considered the long filename (as for example returned by the Win32API
+FindFile() or the output of the <code>dir</code> command), then we would assume the
+file has been removed and the run key is not active. In reality however,
+the file may be called &quot;This is some long filename.exe&quot; with a DOS
+name of &quot;runme.exe&quot;. Explorer (and most tools) will only show the long
+filename by default, but the runkey will still execute by referring to
+the DOS filename!</p>
+<p>Usually the short filename is some variation of the long filename with a
+~1 or ~2 at the end. In reality it can be anything. In the snippet
+below, I am setting the short filename for the velociraptor.exe binary
+to be something completely unrelated, then I am running the binary using
+the unrelated filename:</p>
+<pre><code class="language-{.sourceCode">C:\Users\test&gt;fsutil file setshortname velociraptor.exe runme.exe
+C:\Users\test&gt;dir /x *.exe
+ Volume in drive C has no label.
+ Volume Serial Number is 9459-F443
+
+ Directory of C:\Users\test
+
+08/19/2018  11:37 PM        12,521,472 RUNME.EXE    velociraptor.exe
+               2 File(s)     16,140,732 bytes
+               0 Dir(s)  11,783,704,576 bytes free
+C:\Users\test&gt;runme.exe -h
+usage: velociraptor [&lt;flags&gt;] &lt;command&gt; [&lt;args&gt; ...]
+
+An advanced incident response and monitoring agent.
+</code></pre>
+<p>You can see that Windows explorer shows no trace of the runme.exe file
+since it only displays the Win32 long file name:</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/html/2018/09/30/velorciraptor_s_filesystem_s_accessors/vfs3.png"
+         class="inline"
+         alt="image"
+         width="783" height="343">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="vfs3.png">
+      <i class="fa fa-download"></i></a>
+    image
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>It is important for DFIR investigators to be aware of this and test your
+tools! You can see that sysinternals' autoruns program won't have any
+of these shenanigans when I added a runkey to &quot;runme.exe&quot;. It shows
+the real filename velociraptor.exe even though the runkey indicates
+runme.exe:</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/html/2018/09/30/velorciraptor_s_filesystem_s_accessors/vfs4.png"
+         class="inline"
+         alt="image"
+         width="1492" height="571">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="vfs4.png">
+      <i class="fa fa-download"></i></a>
+    image
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Velociraptor treats a file's DOS name and Win32 Name as distinct
+entries in the NTFS directory listing. This allows us to find any
+references to the file by it's DOS name as well as its Win32 name.</p>
+<h1 id="conclusions">Conclusions</h1>
+<p>As Velociraptor gains more functionality, we envision more filesystem
+accessors to become available. The nice thing about these accessors is
+that they just slot in to the rest of the VQL plugins. By providing a
+new accessor, we are able to glob, hash, yara scan etc the new
+abstraction. For example, to yara scan a registry key one simply calls
+the VQL plugin yara with an accessor of reg: yara(rules=myRules,
+files=my_reg_keys, accessor=&quot;reg&quot;)</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847308"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847308"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847308"></script>
+    <script src="/js/jquery.sticky.js?1774847308"></script>
+    <script src="/js/featherlight.min.js?1774847308"></script>
+    <script src="/js/highlight.min.js?1774847308"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847308"></script>
+    <script src="/js/learn.js?1774847308"></script>
+    <script src="/js/hugo-learn.js?1774847308"></script>
+    
+    
+
+  </body>
+</html>

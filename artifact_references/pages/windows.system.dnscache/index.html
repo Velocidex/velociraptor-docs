@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.159.1">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Windows.System.DNSCache :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1774847307" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1774847307" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1774847307" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1774847307" rel="stylesheet">
+    <link href="/css/auto-complete.css?1774847307" rel="stylesheet">
+    <link href="/css/theme.css?1774847307" rel="stylesheet">
+    <link href="/css/tabs.css?1774847307" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1774847307" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1774847307" rel="stylesheet">
+    
+    <link href="/css/dark.css?1774847307" rel="stylesheet"><link href="/css/syntax.css?1774847307" rel="stylesheet"><link href="/css/light.css?1774847307" rel="stylesheet"><link href="/css/hljs.css?1774847307" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1774847307" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1774847307"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/artifact_references/pages/windows.system.dnscache/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-6d49effe.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/artifact_references\/pages\/windows.system.dnscache\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/artifact_references/pages/windows.system.dnscache.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Windows.System.DNSCache</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents"></nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/client-artifact">Client Artifact</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Windows.System.DNSCache
+            </h1>
+            
+          
+
+        
+
+
+<p>Collects DNS cache entries using the WMI class <code>MSFT_DNSClientCache</code>.</p>
+<p>Windows maintains DNS lookups for a short time in the DNS cache.</p>
+<pre><code class="language-yaml">
+name: Windows.System.DNSCache
+description: |
+  Collects DNS cache entries using the WMI class `MSFT_DNSClientCache`.
+
+  Windows maintains DNS lookups for a short time in the DNS cache.
+
+parameters:
+  - name: kMapOfRecordType
+    description: |
+      Mapping of decimal DNS record types to human-readable types
+    type: hidden
+    default: |
+      {
+      "0": "Reserved",
+      "1": "A",
+      "2": "NS",
+      "3": "MD",
+      "4": "MF",
+      "5": "CNAME",
+      "6": "SOA",
+      "7": "MB",
+      "8": "MG",
+      "9": "MR",
+      "10": "NULL",
+      "11": "WKS",
+      "12": "PTR",
+      "13": "HINFO",
+      "14": "MINFO",
+      "15": "MX",
+      "16": "TXT",
+      "17": "RP",
+      "18": "AFSDB",
+      "19": "X25",
+      "20": "ISDN",
+      "21": "RT",
+      "22": "NSAP",
+      "23": "NSAP-PTR",
+      "24": "SIG",
+      "25": "KEY",
+      "26": "PX",
+      "27": "GPOS",
+      "28": "AAAA",
+      "29": "LOC",
+      "30": "NXT",
+      "31": "EID",
+      "32": "NIMLOC",
+      "33": "SRV",
+      "34": "ATMA",
+      "35": "NAPTR",
+      "36": "KX",
+      "37": "CERT",
+      "38": "A6",
+      "39": "DNAME",
+      "40": "SINK",
+      "41": "OPT",
+      "42": "APL",
+      "43": "DS",
+      "44": "SSHFP",
+      "45": "IPSECKEY",
+      "46": "RRSIG",
+      "47": "NSEC",
+      "48": "DNSKEY",
+      "49": "DHCID",
+      "50": "NSEC3",
+      "51": "NSEC3PARAM",
+      "52": "TLSA",
+      "53": "SMIMEA",
+      "54": "Unassigned",
+      "55": "HIP",
+      "56": "NINFO",
+      "57": "RKEY",
+      "58": "TALINK",
+      "59": "CDS",
+      "60": "CDNSKEY",
+      "61": "OPENPGPKEY",
+      "62": "CSYNC",
+      "63": "ZONEMD",
+      "64": "SVCB",
+      "65": "HTTPS",
+      "99": "SPF",
+      "100": "UINFO",
+      "101": "UID",
+      "102": "GID",
+      "103": "UNSPEC",
+      "104": "NID",
+      "105": "L32",
+      "106": "L64",
+      "107": "LP",
+      "108": "EUI48",
+      "109": "EUI64",
+      "249": "TKEY",
+      "250": "TSIG",
+      "251": "IXFR",
+      "252": "AXFR",
+      "253": "MAILB",
+      "254": "MAILA",
+      "255": "*",
+      "256": "URI",
+      "257": "CAA",
+      "258": "AVC",
+      "259": "DOA",
+      "260": "AMTRELAY",
+      "32768": "TA",
+      "32769": "DLV",
+      "65535": "Reserved"
+      }
+
+  - name: kMapOfStatus
+    description: |
+      Mapping of decimal status to human-readable status
+    type: hidden
+    default: |
+      {
+      "0": "Success",
+      "9003": "NotExist",
+      "9701": "NoRecords"
+      }
+
+  - name: kMapOfSection
+    description: |
+      Mapping of decimal section to human-readable section
+    type: hidden
+    default: |
+      {
+      "1": "Answer",
+      "2": "Authority",
+      "3": "Additional"
+      }
+
+sources:
+  - precondition: |
+      SELECT OS from info() where OS = "windows"
+    query: |
+      LET wmiQuery &lt;= '''
+         SELECT Data, Entry, Status, TimeToLive, Type, Section
+         FROM MSFT_DNSClientCache
+      '''
+      LET wmiNamespace &lt;= "root/StandardCimv2"
+      LET MapOfRecordType &lt;= parse_json(data=kMapOfRecordType)
+      LET MapOfStatus &lt;= parse_json(data=kMapOfStatus)
+      LET MapOfSection &lt;= parse_json(data=kMapOfSection)
+
+      LET dns_cache_entries = SELECT
+          Entry AS Name,
+          Data AS Record,
+          get(item=MapOfRecordType,
+              member=str(str=Type), default=Type) AS RecordType,
+          Type AS _RecordType,
+          atoi(string=TimeToLive) AS TTL,
+          get(item=MapOfStatus,
+              member=str(str=Status), default=Status) AS QueryStatus,
+          Status AS _QueryStatus,
+          get(item=MapOfSection,
+              member=str(str=Section), default=Section) AS SectionType,
+          Section AS _SectionType
+      FROM wmi(query=wmiQuery, namespace=wmiNamespace)
+
+      SELECT * FROM dns_cache_entries
+
+</code></pre>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1774847307"></script>
+    <script src="/js/perfect-scrollbar.min.js?1774847307"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1774847307"></script>
+    <script src="/js/jquery.sticky.js?1774847307"></script>
+    <script src="/js/featherlight.min.js?1774847307"></script>
+    <script src="/js/highlight.min.js?1774847307"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1774847307"></script>
+    <script src="/js/learn.js?1774847307"></script>
+    <script src="/js/hugo-learn.js?1774847307"></script>
+    
+    
+
+  </body>
+</html>
+
