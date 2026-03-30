@@ -106,6 +106,9 @@
           <div id="chapter">
         {{ end }}
         <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
           {{if and (not .IsHome) (not .Params.chapter) (not .Params.noTitle) }}
             <h1>
               {{ if or (eq .Kind "taxonomy") (eq .Kind "term") }}

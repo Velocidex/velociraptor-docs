@@ -24,5 +24,9 @@
     {{ fmt.Errorf "%v: Link to %v not found" .Page .Destination }}
   {{ end -}}
 {{- end -}}
-<a href="{{ $href }}" {{- with .Title }} title="{{ . }}" {{- end }}>{{ .Text }}</a>
+<a href="{{ $href }}"
+   {{- if $u.IsAbs }} target="_blank" {{ end -}}
+   {{- with .Title }}
+   title="{{ . }}"
+   {{- end }}>{{ .Text }}</a>
 {{- /**/ -}}

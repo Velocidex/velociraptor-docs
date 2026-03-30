@@ -1,0 +1,23 @@
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js">
+</script>
+
+<div class="search-box">
+<div class="input-group">
+  <span class="input-group-addon" id="prev-page"><i class="fas fa-arrow-left"></i></span>
+  <span class="input-group-addon" id="start-count"></span>
+  <input type="text" id="myInput" onkeyup="doSearchDelay()" class="form-control" placeholder="Search site" aria-describedby="basic-addon2">
+  <span class="input-group-addon" id="page-count"></span>
+  <span class="input-group-addon" id="next-page"><i class="fas fa-arrow-right"></i></span>
+</div>
+</div>
+
+<div class="search_results"></div>
+
+<script>
+  initSearch();
+  $("#next-page").click(SearchPageForward);
+  $("#prev-page").click(SearchPageBack);
+
+  searchUrl = "{{ .Site.Params.searchURL }}";
+</script>

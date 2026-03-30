@@ -9,6 +9,7 @@ weight: 60
 noDisqus: true
 no_edit: true
 disableToc: false
+noTitle: true
 chapter: false
 pre: <i class="fas fa-book"></i>
 head: <hr>

@@ -12,8 +12,8 @@
             "garage"
         ],
         "author": "predictiple",
-        "author_link": "https://github.com/predictiple",
         "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
+        "author_link": "https://github.com/predictiple",
         "date": "2026-03-26"
     },
     {
@@ -163,7 +163,7 @@
         "date": "2025-06-29"
     },
     {
-        "title": "How do I configure check ip for Cloudflare Dynamic DNS?",
+        "title": "How do I configure Cloudflare Dynamic DNS?",
         "link": "/knowledge_base/tips/cloudflare_checkip",
         "tags": [
             "deployment",
@@ -172,8 +172,8 @@
             "checkip"
         ],
         "author": "mgreen27",
-        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
         "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
         "date": "2025-06-18"
     },
     {
