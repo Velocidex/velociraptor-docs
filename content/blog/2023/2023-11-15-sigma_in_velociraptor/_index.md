@@ -284,8 +284,7 @@ based on the event itself - including more complex enrichment
 operators (more on that later!).
 
 After defining the log sources and field mapping, we are ready to
-match Sigma rules using the `sigma()` [VQL
-plugin](http://docs.velociraptor.app/vql_reference/misc/sigma/).
+match Sigma rules using the `sigma()` [VQL plugin](/vql_reference/popular/sigma/).
 
 This plugin receives a number of arguments:
 

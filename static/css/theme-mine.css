@@ -273,7 +273,14 @@ blockquote h1 {
 
 .input-group .form-control {
     font-size: 20px !important;
-    padding: 1.5em !important;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+#contribute-button {
+    margin-top: 0;
 }
 
 .input-group-addon .fas.fa-search {
@@ -1182,17 +1189,29 @@ div.error {
 
 div.search-box {
     position: fixed;
+    padding-top: 30px;
     padding-right: 40px;
-    padding-left: 30px;
+    padding-left: 35px;
     margin-left: -30px;
     top: 0px;
     z-index: 1000;
-    padding-bottom: 20px;
+    padding-bottom: 0px;
     background-color: var(--MAIN-TEXT-background-color);
+    width: -moz-available;
+}
+
+@media only all and (max-width: 47.938em) {
+    div.search-box {
+        margin-left: 40px;
+    }
+
+    div#top-bar.hidden {
+        display: inherit !important;
+    }
 }
 
 div.search_results {
-    padding-top: 30px;
+    padding-top: 80px;
 }
 
 #loading {
@@ -1203,4 +1222,16 @@ div.search_results {
 
 #body-inner.loading #loading {
     display: inherit;
+}
+
+#body-inner.loading .search_results {
+    display: none;
+}
+
+.search_box .input-group input#myInput.form-control {
+    padding-bottom: 3px;
+}
+
+#body-inner.offset {
+    margin-top: 80px;
 }
