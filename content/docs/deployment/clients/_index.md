@@ -69,7 +69,7 @@ however this amounts to running the Velociraptor binary and providing it with a
 material, connection information and other client-related settings.
 
 We saw how to generate the server configuration file in the
-[server deployment guide]({{< ref "/docs/deployment/server/#generate-the-configuration-file" >}}).
+[server deployment guide]({{< ref "/docs/deployment/server/deployment_example/#1-generate-the-configuration-file" >}}).
 The client configuration is contained within the server configuration.
 
 ![Client config is a subset of the full config](client_config_yaml.svg)
@@ -245,9 +245,7 @@ Since the Velociraptor client requires *your* unique configuration file to
 identify the location of *your* server, we can't package the configuration file
 in the official release. Therefore, the official MSI does not include a valid
 configuration file. You will need to modify the release MSI to include your
-client configuration file, which you
-[generated earlier]({{< ref "/docs/deployment/quickstart/#generate-the-configuration-file" >}}),
-and this is done through a process we call "repacking".
+client configuration file. This is done through a process we call "repacking".
 
 The official release installs the Velociraptor executable into
 `C:\Program Files\Velociraptor\`. It then creates a new Windows service that

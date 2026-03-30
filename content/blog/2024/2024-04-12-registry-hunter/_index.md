@@ -48,7 +48,7 @@ Velociraptor has been used to extract values from the windows registry
 for a long time. In Velociraptor the registry is accessible via the
 `registry` accessor (to access the registry via the APIs) and the
 `raw_reg` accessor to parse raw registry hives. See [The Registry
-Accessor]({{% ref "/docs/forensic/filesystem/#the-registry-accessor"
+Accessor]({{% ref "/docs/forensic/filesystem/#searching-the-windows-registry"
 %}}) to read more about how Velociraptor accesses the registry.
 
 This allows Velociraptor to use simple `glob()` expressions to find
@@ -295,9 +295,10 @@ root directory looking for values (the filter `x=>NOT IsDir` captures
 values and rejects keys).
 
 Matching values will cause the `Details` function to be evaluated. The
-`Details` field contains a VQL [lambda function]({{% ref
-"/docs/vql/#vql-lambda-functions" %}}) that will be evaluated on the
-found keys or values. The following values will be available:
+`Details` field contains a
+VQL [lambda function]({{% ref "/docs/vql/fundamentals/#vql-lambda-functions" %}})
+that will be evaluated on the found keys or values. The following
+values will be available:
 
 - `x.OSPath` contains the OSPath of the matching registry key or value
 - `x.Mtime` contains the Modification time of the key

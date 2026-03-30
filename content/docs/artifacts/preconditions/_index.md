@@ -49,7 +49,7 @@ An artifact-level precondition determines whether the artifact is collected or
 ignored entirely. If the precondition evaluates to True then the artifact is
 collected, however there may also be source-level preconditions that will
 subsequently determine which sources are collected and the
-[execution mode]({{< relref "#serial-vs-parallel-execution-mode" >}})
+[execution mode]({{< relref "#serial-vs-parallel-execution" >}})
 of the artifact.
 
 
@@ -282,4 +282,3 @@ precondition: |
   WHERE Hour < 6 OR Hour > 15
 ```
 Only run outside of office hours.
-

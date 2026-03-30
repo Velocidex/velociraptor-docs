@@ -1,0 +1,16 @@
+# Config file for running https://github.com/wjdp/htmltest
+# See https://github.com/wjdp/htmltest/wiki/Using-With-Hugo
+
+DirectoryPath: /home/mic/projects/velociraptor-docs/public/
+TestFilesConcurrently: true
+OutputDir: /tmp/.htmltest/
+CheckExternal: false
+CheckInternal: true
+CheckScripts: false
+CheckMeta: false
+EnforceHTTPS: false
+IgnoreHTTPS: ["localhost:1313"]
+IgnoreURLs: ["/app/index.html","exchange/artifacts/pages","../../img/"]
+IgnoreAltMissing: true
+IgnoreDirectoryMissingTrailingSlash: true
+IgnoreInternalEmptyHash: true

@@ -136,10 +136,30 @@ path: {
       }
 ```
 
-### Dead disk analysis
+### Remapping in dead disk analysis
 
 Remapping is useful to virtualize a query and allow it to run in
 a different environment than it was initially designed for. This
 allows us to reuse artifacts in different contexts. For example, a
 live artifact can be reused with a
 [dead disk image]({{< ref "/docs/forensic/deaddisk/" >}}).
+
+When accessing a disk image that contains an NTFS filesystem, we apply
+remapping rules that translate requests to the abovementioned
+accessors into
+[compound pathspec objects]({{< ref "/docs/forensic/filesystem/paths/#nested-accessors-and-pathspecs" >}})
+which include additional (delegate) accessors such as `vmdk` and `raw_ntfs`.
+This mechanism transparently provides access via the filesystem of the local
+host, the disk image, and partitions and filesystems in the image, etc.
+
+Similarly, for access to the Windows registry we construct remapping rules that
+use compound pathspecs to provide access via the various container layers, and
+ultimately present simple registry paths to VQL queries, as they would appear on
+a live Windows endpoint. An artifact that queries the registry using the
+operating system's APIs will now automatically query the raw registry parser
+which accesses the hive file, which is accessed by parsing the NTFS filesystem
+within the disk image.
+
+By remapping the accessors typically used in a live scenario, we are allowing
+the same VQL queries to apply to a very different (dead disk) scenario _without
+any changes_.

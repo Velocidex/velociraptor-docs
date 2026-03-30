@@ -72,15 +72,16 @@ As you'll see, most of the current artifacts tend to use CamelCase, although
 this is just a convention that has developed organically. You are free to use
 your own naming convention for your own artifacts.
 
-By default when you create a new artifact in the [artifact editor](), it will
-add the prefix `Custom.` to the name. This convention is usually helpful, but
-if you choose not to use it then that's fine too.
+By default when you create a new artifact in the
+[artifact editor]({{< ref "/docs/gui/artifacts/#creating-and-editing-artifacts" >}}),
+it will add the prefix `Custom.` to the name. This convention is
+usually helpful, but if you choose not to use it then that's fine too.
 If you [filter for custom artifacts]({{< ref "/docs/artifacts/managing/" >}})
-on the Artifacts screen, then you will still see all the custom ones regardless
-of their name.
+on the Artifacts screen, then you will still see all the custom ones
+regardless of their name.
 
 Artifacts imported from the [Artifact Exchange]({{< ref "/exchange/" >}}) or
-[other sources]({{< ref "/docs/artifacts/managing/#importing-artifacts-using-server-artifacts" >}})
+[other sources]({{< ref "/docs/artifacts/managing/#importing-artifacts-from-velociraptors-specialized-artifact-projects" >}})
 may, by default, have a prefix added to their names. But again this is
 completely optional (it's implemented through the import artifact's VQL actually
 and configurable by an artifact parameter), and all imported artifacts are
@@ -250,7 +251,7 @@ so it's possible that not all markdown elements will be rendered in the GUI.
 The `description` field _is_ searched when using the search filter on the
 Artifacts screen.
 
-See [Artifact Writing Tips]({{< ref "/docs/artifacts/tips/#artifact-descriptions" >}})
+See [Artifact Writing Tips]({{< ref "/docs/artifacts/tips/#tips-for-creating-better-artifacts" >}})
 for some suggestions on writing good descriptions for your artifacts.
 
 ---

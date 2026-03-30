@@ -1,0 +1,608 @@
+---
+title: "Velociraptor CLI"
+description: |
+   The Velociraptor CLI is a powerful interface for using
+   and automating Velociraptor
+
+tags:
+ - Automation
+
+author: "Mike Cohen"
+date: 2026-03-21
+noindex: false
+draft: false
+---
+
+Digital forensics has always been a fast evolving field with newly
+researched techniques announced frequently. Many single purpose DFIR
+tools are published as a proof of concept or to parse specific file
+formats.
+
+Velociraptor's goal has always been to be the one stop shop for all
+DFIR analysis and collection. Velociraptor has powerful capabilities
+and is able to forensically parse and analyze many forensic
+artifacts. Velociraptor can do this in a distributed way making it
+easier to hunt across a large number of endpoints securely and
+efficiently.
+
+However, Velociraptor's powerful VQL language can seem overwhelming
+for casual use. For many users a simple one purpose tool is preferable
+to a large more complete framework like Velociraptor, because it is
+perceived to be easier to use.
+
+This concern may be keeping many users from fully exploring
+Velociraptor's capabilities - it just might seem like an overkill to
+install a Velociraptor client and server and learn new concepts like
+VQL, Artifacts, analysis notebooks etc. It is sometimes just easier to
+run a single use tool (for example `AmCacheParser.exe` from the [EZ
+Tools suite](hhttps://ericzimmerman.github.io/#!index.md) and produce
+a CSV file that can be examined in a familiar tool like `Excel`
+quickly).
+
+What few people realize, however, is that Velociraptor is also capable
+of single tool use! It is actually very simple to use it in this way
+and it provides a set of powerful parsers and tools already built into
+a single binary that can be launched from the command line - with no
+need to install any other dependencies!
+
+Additionally, Velociraptor's parsers are actively maintained and used
+by a large community, solving the issue of some single use Ad-Hoc
+tools becoming unmaintained over time.
+
+This blog post specifically focuses on using Velociraptor's extensive
+[Command Line Interface mode]({{% ref "/docs/cli/" %}}) as a single
+use tool. This allows users to replace a large number of scripts, and
+adhoc tools with varying levels of maintainance and different
+installation dependencies, with a single well maintained and
+dependable solution.
+
+## Velociraptor - The DFIR Swiss Army
+
+Let's suppose I am investigating a live Windows 11 System and I wanted
+to copy out the `SRUDB.dat` file so I can analyze the `SRUM` database:
+
+```
+C:\Windows\System32>copy c:\Windows\system32\sru\SRUDB.dat c:\output
+The process cannot access the file because it is being used by another process.
+        0 file(s) copied.
+```
+
+This is a pretty common issue - Since the file is in use right now,
+this file is locked and can not be copied by the usual means. This
+issue affects many important files like `NTUSER.DAT` and the registry
+hives.
+
+Some [SRUM analysis scripts](https://github.com/MarkBaggett/srum-dump)
+use `Volume Shadow Copies` to access this locked file, but this is
+problematic as it can trigger endpoint security software alerts or
+even also be blocked.
+
+Other options include [RawCopy](hhttps://github.com/jschicht/RawCopy)
+but this is a binary only, closed source program.
+
+Velociraptor can fall back to raw NTFS parsing when it can not access
+a file. This does not trigger a new Volume Shadow Copy or require any
+additional binaries. We can use the `fs cp` command with the
+`--accessor` flag to have Velociraptor copy the file transparently,
+bypassing local file locks.
+
+```
+C:\Windows\System32>c:\velociraptor.exe fs cp c:\Windows\system32\sru\SRUDB.dat c:\output --accessor auto
+
+{"Name":"SRUDB.dat","Size":9568256,"Mode":"-rw-rw-rw-","Mtime":"2026-03-23T05:18:02.2159378Z","Data":{},"Upload":{"Path":"\\\\?\\c:\\output\\SRUDB.dat","Size":9474048,"UploadId":0,"sha256":"33a1c63b6cb863acf7c79e5d7881d09d7834052250502c05145fb95555495b69","md5":"15491bbc80d63d751c8bcb0114458bce","Components":["SRUDB.dat"]}}
+```
+
+## Parsing the evidence
+
+Copying files off the target system is all very well, but ultimately
+we need to parse and analyze those files to get an insight of what
+happened. Many DFIR tools, scripts and adhoc programs are available to
+parse forensically relevant files. These tools have varied
+installation dependencies and are often out of date and poorly
+maintained.
+
+In this case, the `SRUDB.dat` file is actually a Microsoft JET
+database (Also known as ESE) so we need a tool to view it. A common
+GUI tool to view ESE files is
+[EseDatabaseView](https://www.nirsoft.net/utils/ese_database_view.html)
+which can dump out all the tables. However for SRUM analysis we
+typically need further parsing of the specific tables.
+
+One such parser is the
+[SrumECMD](https://github.com/EricZimmerman/Srum). This parser uses
+the Microsoft JET library to access the file, so it needs to run on
+Windows, making it inconvenient to use. Additionally the files
+need to be "repaired" to be opened by the JET library.
+
+Velociraptor parses files using `Artifacts`. You can think of
+artifacts as simply `VQL` mini-programs. **You do not need to
+understand VQL to use Artifacts**.
+
+Velociraptor allows artifacts to be run on the command line, just like
+mini programs. You can search for the artifacts you need on the
+[Artifacts Search Page]({{% ref "/artifact_references/" %}}) to find
+the `Windows.Forensics.SRUM` artifact is the one used to parse SRUM
+files. This artifact uses Velociraptor's native ESE parser which does
+not need any external libraries, or to "repair" the files. In
+combination with the transparent NTFS access, the artifact simply
+parses the existing file bypassing file locks transparently.
+
+Velociraptor's artifacts produce structured output as JSON,CSV and
+uploaded files. Usually we store all related files collected by an
+artifact in a single ZIP file. Artifacts also accept parameters to
+control the way they work.
+
+Running an artifact on the command line is done using the `-r` flag
+(also called `--run`). We can see what parameters the
+`Windows.Forensics.SRUM` artifact will accept using the `-h` flag:
+
+```
+> c:\velociraptor.exe -r Windows.Forensics.SRUM -h
+...
+Artifact Parameters:
+ --SRUMLocation
+   default: 'c:/windows/system32/sru/srudb.dat'
+...
+ --Upload [bool]
+   Select to Upload the SRUM database file 'srudb.dat'
+
+    Valid values: Y / N
+```
+
+The artifact's defaults are already set to the usual location of the
+`srudb.dat` file but we can override it if needed (for example to
+parse the file we copied earlier). We can also tell the artifact to
+upload (capture) the raw file as well. Let's collect this artifact and
+also get a copy of the raw `SRUDB.DAT` file:
+
+```
+C:\Windows\System32>c:\velociraptor.exe -v -r Windows.Forensics.SRUM --Upload Y -o c:\output\test.zip --format csv
+[INFO] 2026-03-22T23:17:02-07:00  _    __     __           _                  __
+[INFO] 2026-03-22T23:17:02-07:00 | |  / /__  / /___  _____(_)________ _____  / /_____  _____
+[INFO] 2026-03-22T23:17:02-07:00 | | / / _ \/ / __ \/ ___/ / ___/ __ `/ __ \/ __/ __ \/ ___/
+[INFO] 2026-03-22T23:17:02-07:00 | |/ /  __/ / /_/ / /__/ / /  / /_/ / /_/ / /_/ /_/ / /
+[INFO] 2026-03-22T23:17:02-07:00 |___/\___/_/\____/\___/_/_/   \__,_/ .___/\__/\____/_/
+[INFO] 2026-03-22T23:17:02-07:00                                   /_/
+[INFO] 2026-03-22T23:17:02-07:00 Digging deeper!                  https://www.velocidex.com
+[INFO] 2026-03-22T23:17:02-07:00 This is Velociraptor 0.76.1 built on 2026-03-23T15:50:34+10:00 (ac68ce121)
+[INFO] 2026-03-22T23:17:02-07:00 Env var VELOCIRAPTOR_API_CONFIG is not set
+....
+[INFO] 2026-03-22T23:17:03-07:00 Container hash 8c58132d5718a160c0ae786113580b8273b58a5bd584a4ff3f2f07f681b89305
+[
+ {
+   "Container": "c:\\output\\test.zip",
+   "Error": null
+ }
+][INFO] 2026-03-22T23:17:03-07:00 Collection completed in 551.0932ms Seconds
+```
+
+Using the `-v` flag shows useful progress and debugging messages, but
+finally Velociraptor will store the ZIP file containing all the
+data. Adding the `--format csv` flag will also include the structured
+data in CSV format (so it can be analyzed with `Excel`).
+
+{{% notice "tip" "Encrypting the collection" %}}
+
+You can specify a collection password with the `--password` flag to
+ensure the output zip is encrypted. This is useful in cases you need
+to protect the sensitive data collected while transferring the ZIP
+file off the system.
+
+{{% /notice %}}
+
+## Examining the collection
+
+Velociraptor exports collections into a standardized ZIP based
+file. The file includes JSON and CSV formatted structured data, as
+well as any bulk files collected.
+
+We can examine the content of the collection using any ZIP program,
+but Velociraptor already comes with a zip program built in:
+
+```
+C:\Windows\System32>c:\velociraptor.exe unzip -l c:\output\test.zip
+[
+ {
+   "Filename": "/uploads/auto/c%3A/windows/system32/sru/srudb.dat",
+   "Size": 9568256
+ },
+ {
+   "Filename": "/results/Windows.Forensics.SRUM%2FApplication Resource Usage.csv",
+   "Size": 147401
+ },
+ {
+   "Filename": "/results/Windows.Forensics.SRUM%2FApplication Resource Usage.json",
+   "Size": 505150
+ },
+ ...
+ {
+   "Filename": "/results/Windows.Forensics.SRUM%2FExecution Stats.csv",
+   "Size": 123137
+ },
+ {
+   "Filename": "/results/Windows.Forensics.SRUM%2FExecution Stats.json",
+   "Size": 192357
+ },
+ ...
+ ```
+
+We can see that the ZIP file contains the raw `srudb.dat` file
+(uploaded under the upload directory) as well as results collected
+under the `results` directory.
+
+{{% notice "tip" "Extracting the collection" %}}
+
+To just extract all the files from the zip file you can use the `unzip` command:
+
+```
+velociraptor  unzip c:\output\test.zip --dump_dir c:\out_dir\
+```
+
+To only extract some of the data you can use a glob expression to specify a subset of files
+
+```
+velociraptor unzip c:\output\test.zip --dump_dir c:\out_dir\ "/results/*.json"
+```
+
+{{% /notice %}}
+
+## Extending Velociraptor with custom artifacts
+
+While Velociraptor comes with many artifacts built in, the true power
+of VQL is that it enables the community to write custom artifacts to
+parse new file formats or improve on the built in artifacts. This
+allows contributions of cutting edge analysis techniques or
+streamlining artifacts to particular work flows.
+
+Velociraptor comes with a pre-selection of external artifact sources,
+such as the [Artifact Exchange]({{% ref "/exchange/" %}}). You can
+import these artifacts to a Velociraptor server using the
+[Server.Import.Extras]({{% ref
+"/artifact_references/pages/server.import.extras/" %}}) server
+artifact.
+
+You can also just use these artifacts manually on the command
+line. For example, suppose I wanted to use the
+[Windows.Triage.Targets](https://triage.velocidex.com/docs/windows.triage.targets/)
+artifact to perform a triage acquisition.
+
+{{% notice "tip" "The Velociraptor Triage Artifacts" %}}
+
+[The Velociraptor Triage Project](https://triage.velocidex.com/) is a
+related project to develop an effective triage acquisition and
+preservation solution using VQL.
+
+Files are collected based on `Targets` which are heirarchical. Some
+high level targets include `_KapeTriage` or `_Live` which collect a
+large number of files for preservation purposes.
+
+{{% /notice %}}
+
+Since this artifact is not built in, I will need to download the
+[Artifact
+Pack](https://triage.velocidex.com/docs/windows.triage.targets/Windows.Triage.Targets.zip)
+(You can find the link to the pack from
+https://triage.velocidex.com/). The artifact pack is simply a ZIP file
+with yaml artifacts in it.
+
+To collect a high level target and store the resulting collection in a
+zip file I can use the following command line:
+
+```
+velociraptor.exe -v --definitions c:\Windows.Triage.Targets.zip
+  -r Windows.Triage.Targets
+  --HighLevelTargets _KapeTriage,_Live
+  -o c:\output\test.zip
+```
+
+* The `-v` flag emits progress messages in verbose mode (This is
+  recommended for interactive use).
+* The `--definitions` flag loads the custom artifacts directly from
+  the artifact pack.
+* The `-r` flag says to run the artifact `Windows.Triage.Targets`
+* The `--HighLevelTargets` flag is a parameter for the
+  `Windows.Triage.Targets` artifact will collect the high level
+  `_KapeTriage` target as well as the `_Live` target.
+* Finally the output zip will be stored in `c:\output\test.zip`
+
+You can maintain your own ZIP file with your favorite artifacts for
+your own use to suite your own workflows.
+
+## Using external tools on the CLI
+
+So far we have seen how to use Velociraptor's built in capabilities on
+the command line, but sometimes other tools may provide some
+capabilities which are still missing from Velociraptor.
+
+Usually this is not a problem since Velociraptor allows us to
+incorporate third party tools via its [External Tools]({{% ref
+"/docs/artifacts/tools/" %}}) support.
+
+External tools are declared in the artifact definition and the VQL is
+written to launch the tool, and parse its output into the same machine
+readable format as native artifacts.
+
+In the following example I will use the
+[Windows.EventLogs.Hayabusa]({{% ref
+"/exchange/artifacts/pages/windows.eventlogs.hayabusa/" %}}) artifact
+to run an initial triage over the system. This artifact runs an
+external tool [Hayabusa](https://github.com/Yamato-Security/hayabusa)
+to do the analysis. You can find this artifact in the [Artifact
+Exchange]({{% ref "/exchange/" %}}) so I will use that artifact pack
+to load it.
+
+```text
+C:\Windows\System32>f:\velociraptor.exe -v --definitions c:\Users\test\Downloads\artifact_exchange_v2.zip -r Windows.EventLogs.Hayabusa -o c:\output\test.zip
+
+[INFO] 2026-03-23T18:22:52-07:00  _    __     __           _                  __
+[INFO] 2026-03-23T18:22:52-07:00 | |  / /__  / /___  _____(_)________ _____  / /_____  _____
+[INFO] 2026-03-23T18:22:52-07:00 | | / / _ \/ / __ \/ ___/ / ___/ __ `/ __ \/ __/ __ \/ ___/
+[INFO] 2026-03-23T18:22:52-07:00 | |/ /  __/ / /_/ / /__/ / /  / /_/ / /_/ / /_/ /_/ / /
+[INFO] 2026-03-23T18:22:52-07:00 |___/\___/_/\____/\___/_/_/   \__,_/ .___/\__/\____/_/
+[INFO] 2026-03-23T18:22:52-07:00                                   /_/
+[INFO] 2026-03-23T18:22:52-07:00 Digging deeper!                  https://www.velocidex.com
+[INFO] 2026-03-23T18:22:52-07:00 This is Velociraptor 0.76.1 built on 2026-03-24T11:08:49+10:00 (90f260124)
+[INFO] 2026-03-23T18:22:52-07:00 Env var VELOCIRAPTOR_API_CONFIG is not set
+[INFO] 2026-03-23T18:22:52-07:00 Env var VELOCIRAPTOR_CONFIG is not set
+[INFO] 2026-03-23T18:22:52-07:00 Env var VELOCIRAPTOR_LITERAL_CONFIG is not set
+[INFO] 2026-03-23T18:22:52-07:00 Setting empty config
+...
+[INFO] 2026-03-23T18:22:52-07:00 Loaded artifact_exchange_v2.zip:content/exchange/artifacts/Windows.Forensics.PersistenceSniper.yaml
+[INFO] 2026-03-23T18:22:52-07:00 Loaded artifact_exchange_v2.zip:content/exchange/artifacts/Linux.Sysinternals.SysmonEvent.yaml
+[INFO] 2026-03-23T18:22:52-07:00 Loaded artifact_exchange_v2.zip:content/exchange/artifacts/MacOS.Applications.Safari.History.yaml
+....
+[INFO] 2026-03-23T18:22:52-07:00 Setting compression level to 5
+[INFO] 2026-03-23T18:22:52-07:00 Will create container at c:\output\test.zip
+[INFO] 2026-03-23T18:22:52-07:00 Creating tempfile C:\Users\test\AppData\Local\Temp\tmp1257539671..zip
+[INFO] 2026-03-23T18:22:52-07:00 Downloading tool Hayabusa-3.8.1 FROM https://github.com/Yamato-Security/hayabusa/releases/download/v3.8.1/hayabusa-3.8.1-win-x64-live-response.zip
+[INFO] 2026-03-23T18:22:53-07:00 tempdir: Adding global destructor for C:\Users\test\AppData\Local\Temp\tmp1843750255
+[INFO] 2026-03-23T18:22:53-07:00 Local hash of C:\Users\test\AppData\Local\Temp\tmp1257539671..zip: 51ef2aff99bb3ed4e5ebe5b07053c62719263ca7a49223bb0e0bb8785eb479a0, expected 51ef2aff99bb3ed4e5ebe5b07053c62719263ca7a49223bb0e0bb8785eb479a0
+[INFO] 2026-03-23T18:22:54-07:00 execve: Running external command [C:\Users\test\AppData\Local\Temp\tmp1431191296\hayabusa-3.8.1-win-x64.exe update-rules]
+[INFO] 2026-03-23T18:22:55-07:00 execve: Running external command [C:\Users\test\AppData\Local\Temp\tmp1431191296\hayabusa-3.8.1-win-x64.exe csv-timeline --no-wizard --quiet --no-summary --directory C:/Windows/System32/winevt/Logs --output C:\Users\test\AppData\Local\Temp\tmp1431191296\hayabusa_results.csv --min-level medium --profile standard --ISO-8601 --threads 4]
+[INFO] 2026-03-23T18:22:55-07:00 Start time: 2026/03/23 18:22
+[INFO] 2026-03-23T18:22:55-07:00 Total event log files: 371
+[INFO] 2026-03-23T18:22:55-07:00 Total file size: 187.2 MiB
+....
+[INFO] 2026-03-23T18:23:31-07:00 Please submit new Sigma rules with pull requests to: https://github.com/SigmaHQ/sigma/pulls
+[INFO] 2026-03-23T18:23:31-07:00
+[INFO] 2026-03-23T18:23:31-07:00 Starting collection of Windows.EventLogs.Hayabusa/Upload
+[INFO] 2026-03-23T18:23:31-07:00 Collecting file C:\Users\test\AppData\Local\Temp\tmp1431191296\hayabusa_results.csv into /uploads/auto/hayabusa_results.csv (20775842 bytes)
+[INFO] 2026-03-23T18:23:41-07:00 Collected 1 rows for Windows.EventLogs.Hayabusa/Upload
+[INFO] 2026-03-23T18:23:41-07:00 Starting collection of Windows.EventLogs.Hayabusa/Results
+[INFO] 2026-03-23T18:23:43-07:00 Collected 38791 rows for Windows.EventLogs.Hayabusa/Results
+[INFO] 2026-03-23T18:23:43-07:00 RemoveDirectory: removing tempdir C:\Users\test\AppData\Local\Temp\tmp1431191296
+[INFO] 2026-03-23T18:23:43-07:00 RemoveDirectory: removed tempdir C:\Users\test\AppData\Local\Temp\tmp1431191296
+[INFO] 2026-03-23T18:23:43-07:00 RemoveDirectory: removing tempdir C:\Users\test\AppData\Local\Temp\tmp1843750255
+[INFO] 2026-03-23T18:23:43-07:00 RemoveDirectory: removed tempdir C:\Users\test\AppData\Local\Temp\tmp1843750255
+[DEBUG] 2026-03-23T18:23:43-07:00 Query Stats: {"RowsScanned":116412,"PluginsCalled":12,"FunctionsCalled":77652,"ProtocolSearch":35,"ScopeCopy":271656}
+[INFO] 2026-03-23T18:23:43-07:00 Container hash e843a8391e648be3df54c7440a8d6a4d4ee317ad1a8d3e716229811a8237c27f
+[
+ {
+   "Container": "c:\\output\\test.zip",
+   "Error": null
+ }
+][INFO] 2026-03-23T18:23:43-07:00 Collection completed in 50.5909007s Seconds
+```
+
+The above output shows the steps that Velociraptor goes through:
+1. Importing the custom artifacts from the Artifact Exchange pack.
+2. Downloading the Hayabusa tool into a temp file
+3. Perform an integrity check against the hash specified in the artifact.
+4. Run the Hayabusa tool
+5. Collect the output CSV file
+6. Clean up various temp directories
+
+{{% notice "warning" "Running external binaries" %}}
+
+Although it is convenient to collect artifacts with external binaries,
+this can be a problem in practice.
+
+Introducing binaries to an end point may trigger security software
+alert and can present risks to stability and security, especially if
+the binary is not very trusted.
+
+Additionally running third party tools can interfere with the forensic
+evidence we usually collect. For example executables can create
+additional prefetch entries, powershell may introduce script block
+logs and USN journals may be rotated.
+
+Many external tools actually have equivalent native VQL parsers - for
+example the
+[Windows.Hayabusa.Rules](https://sigma.velocidex.com/docs/artifacts/windows.hayabusa.rules/)
+artifact uses the same rules in Hayabusa but using Velociraptor's
+built in Sigma engine.
+
+{{% /notice %}}
+
+## Using the CLI to collect artifacts remotely
+
+So far we have seen how to interactively collect artifacts while being
+logged on to the endpoint directly. This is convenient and very
+simple, the user simply selects the artifact they need to collect and
+the results are stored to a local file on their system!
+
+Velociraptor's super power is the ability to collect forensic
+artifacts at scale and remotely. This is very easy to do using the
+powerful [Velociraptor GUI]({{% ref "/docs/clients/artifacts/" %}})
+but sometimes using the CLI is better (e.g. for automation).
+
+Velociraptor's server can be fully controlled over [Velociraptor's
+API]({{% ref "/docs/server_automation/server_api/" %}}). The API allows
+any VQL plugin to be run on the server, thereby facilitating full
+automation.
+
+In release 0.76, Velociraptor's CLI was streamlined to have the same
+user interface for collecting artifacts from an endpoint or
+interactively. This makes it more intuitive to use.
+
+In the following example, I collect the `Windows.Forensics.Lnk`
+artifact remotely from a client using the CLI. This artifact scans the
+endpoint for `LNK` files, parses them and reports any suspicious
+files.
+
+Before I start I will create an [API key]({{% ref
+"/docs/server_automation/server_api/#creating-an-api-client-configuration"
+%}}) so I can connect to the server:
+
+```shell
+velociraptor --config server.config.yaml config api_client --name APIClient --role administrator api.config.yaml
+
+Creating API client file on api.config.yaml.
+```
+
+Next I collect that artifact in the exact same way as I did above, except that I now provide a client id:
+```shell
+velociraptor -v --api_config api.config.yaml -r Windows.Forensics.Lnk
+   --UploadTarget Y
+   --client_id C.d7f8859f5e0e01f7
+   -o c:\datastore\test.zip
+
+[INFO] 2026-03-28T14:34:25-07:00  _    __     __           _                  __
+[INFO] 2026-03-28T14:34:25-07:00 | |  / /__  / /___  _____(_)________ _____  / /_____  _____
+[INFO] 2026-03-28T14:34:25-07:00 | | / / _ \/ / __ \/ ___/ / ___/ __ `/ __ \/ __/ __ \/ ___/
+[INFO] 2026-03-28T14:34:25-07:00 | |/ /  __/ / /_/ / /__/ / /  / /_/ / /_/ / /_/ /_/ / /
+[INFO] 2026-03-28T14:34:25-07:00 |___/\___/_/\____/\___/_/_/   \__,_/ .___/\__/\____/_/
+[INFO] 2026-03-28T14:34:25-07:00                                   /_/
+[INFO] 2026-03-28T14:34:25-07:00 Digging deeper!                  https://www.velocidex.com
+[INFO] 2026-03-28T14:34:25-07:00 This is Velociraptor 0.76.1 built on 2026-03-24T11:08:49+10:00 (90f260124)
+[INFO] 2026-03-28T14:34:25-07:00 Loaded api config from api.config.yaml
+...
+[INFO] 2026-03-28T14:34:25-07:00 API Client configuration loaded - will make gRPC connection.
+[INFO] 2026-03-28T14:34:25-07:00 Starting query execution.
+[INFO] 2026-03-28T14:34:25-07:00 Scheduled flow F.D744IO927Q3HM on client C.d7f8859f5e0e01f7: [Windows.Forensics.Lnk]
+[INFO] 2026-03-28T14:34:26-07:00 Waiting for flow to finish F.D744IO927Q3HM: Status WAITING
+[INFO] 2026-03-28T14:34:27-07:00 Compiled all artifacts.
+[INFO] 2026-03-28T14:34:27-07:00 Collection succeeded
+[INFO] 2026-03-28T14:34:27-07:00 Time 0: : Sending response part 0 124 B (1 rows).
+{"Download":["downloads","C.d7f8859f5e0e01f7","F.D744IO927Q3HM","WIN-SJE0CKQO83P-C.d7f8859f5e0e01f7-F.D744IO927Q3HM.zip"]}
+[INFO] 2026-03-28T14:34:27-07:00 Storing collection in c:\datastore\test.zip with SHA256 hash 8f67fda6ec225540f0f4ee964f76d9ed4cdaae2c939741460f0ecf27070d8644
+```
+
+The CLI command contains:
+* `--api_config api.config.yaml` is the client API key that was
+  generated for connections to the API.
+* `-r Windows.Forensics.Lnk` collect the `Windows.Forensics.Lnk` artifact
+* `--UploadTarget Y` an artifact parameter to also upload the raw LNK
+  files for preservation.
+* `--client_id C.d7f8859f5e0e01f7` The client ID to target (each Velociraptor client has a unique ID).
+* `-o c:\datastore\test.zip` store the results in this local file.
+
+Velociraptor then goes through these steps:
+1. Schedules a flow on the client. Velociraptor clients can only be
+   tasked via a `Flow`. You can think of a flow as a unique identifier
+   under which the server is able to track this collection, store the
+   results and display it in the GUI.
+
+2. Once the flow is scheduled, the command waits for the collection to
+   complete. This can take some time, or even not happen at all. For
+   example, if the client is offline, the flow will not complete until
+   the client comes back online.
+
+   Velociraptor flows are typically asynchronous and a more robust
+   approach using the API needs to account for this. However, assuming
+   the client is online this convenient approach should work
+   relatively quickly.
+
+3. Once the flow completes, Velociraptor will export it to a ZIP file
+   and fetch it from the server.
+
+4. The collection is stored into the relevant location just as it was before.
+
+The nice thing about this new workflow is that it is very similar to
+the interactive use we saw before. The collection ends up on the
+analyst's local workstation as a simple file ready for further
+automation or inspection.
+
+The new CLI workflow is just a convenience around a number of API
+calls. We received feedback that users found using the raw API
+difficult, so this new workflow was introduced for the simple case of
+scheduling a collection, and receiving the results. If you want to use
+the raw API to replicate a similar function in your own scripts, you
+can look at the source code for this command to inspect the raw API
+calls used.
+
+{{% notice "warning" "Offline clients" %}}
+
+When schedule a collection as above, the CLI waits for the collection
+to end before downloading the results. This may take a long time if
+the client is not currently online. In this case the CLI will timeout
+and exit.
+
+You can retrieve the results at a later time by knowing the flow id
+that was scheduled. Use the `artifacts fetch` command to fetch a
+collected artifact from the server.
+
+```shell
+velociraptor.exe -v  --api_config api.config.yaml  artifacts fetch --client_id C.d7f8859f5e0e01f7 --flow_id F.D744IO927Q3HM --output c:\output\test.zip
+
+[INFO] 2026-03-28T14:47:14-07:00  _    __     __           _                  __
+[INFO] 2026-03-28T14:47:14-07:00 | |  / /__  / /___  _____(_)________ _____  / /_____  _____
+[INFO] 2026-03-28T14:47:14-07:00 | | / / _ \/ / __ \/ ___/ / ___/ __ `/ __ \/ __/ __ \/ ___/
+[INFO] 2026-03-28T14:47:14-07:00 | |/ /  __/ / /_/ / /__/ / /  / /_/ / /_/ / /_/ /_/ / /
+[INFO] 2026-03-28T14:47:14-07:00 |___/\___/_/\____/\___/_/_/   \__,_/ .___/\__/\____/_/
+[INFO] 2026-03-28T14:47:14-07:00                                   /_/
+[INFO] 2026-03-28T14:47:14-07:00 Digging deeper!                  https://www.velocidex.com
+[INFO] 2026-03-28T14:47:14-07:00 This is Velociraptor 0.76.1 built on 2026-03-24T11:08:49+10:00 (90f260124)
+[INFO] 2026-03-28T14:47:14-07:00 Loaded api config from api.config.yaml
+[INFO] 2026-03-28T14:47:14-07:00 Starting query execution.
+[INFO] 2026-03-28T14:47:14-07:00 Time 0: : Sending response part 0 124 B (1 rows).
+{"Download":["downloads","C.d7f8859f5e0e01f7","F.D744IO927Q3HM","WIN-SJE0CKQO83P-C.d7f8859f5e0e01f7-F.D744IO927Q3HM.zip"]}
+[INFO] 2026-03-28T14:47:14-07:00 Storing collection in c:\output\test.zip with SHA256 hash f874e1cce6349d28ea49ce0fb00df845a5f0f6917550ee2cc867f679268f6a3c
+```
+
+{{% /notice %}}
+
+## Using the CLI to manage the server
+
+In the previous section we saw how to schedule an artifact on a remote
+client, wait for the result and fetch it to the local machine. In this
+section we see how to do the same thing on the server. This is useful
+for various server management tasks.
+
+For this example, I will generate new Windows client MSI packages that
+can be installed on the fleet. This is usually done via the
+[Server.Utils.CreateMSI]({{% ref
+"/artifact_references/pages/server.utils.createmsi/" %}}) artifact:
+
+```shell
+> velociraptor.exe -v --api_config api.config.yaml -r Server.Utils.CreateMSI --client_id server -o c:\datastore\test.zip
+
+...
+[INFO] 2026-03-28T14:58:50-07:00 Scheduled flow F.D744U6L0423QA on client server: [Server.Utils.CreateMSI]
+[INFO] 2026-03-28T14:58:51-07:00 Waiting for flow to finish F.D744U6L0423QA: Status FINISHED
+[INFO] 2026-03-28T14:58:51-07:00 Collection succeeded
+[DEBUG] 2026-03-28T14:58:51-07:00  downloadFlowToZip: Copy file from /clients/server/collections/F.D744U6L0423QA/uploads/scope/Org_<root>_velociraptor-v0.76.1-rc1-windows-amd64.msi to /uploads/scope/Org_<root>_velociraptor-v0.76.1-rc1-windows-amd64.msi
+[INFO] 2026-03-28T14:58:52-07:00 Compiled all artifacts.
+[INFO] 2026-03-28T14:58:52-07:00 Time 1: : Sending response part 0 91 B (1 rows).
+{"Download":["downloads","server","F.D744U6L0423QA","server-server-F.D744U6L0423QA.zip"]}
+[INFO] 2026-03-28T14:58:54-07:00 Storing collection in c:\datastore\test.zip with SHA256 hash 27ab24548521139ff489715350181d0c9b119fbb21b5e4b9c655f3deab87b09c
+
+> velociraptor.exe unzip -l c:\datastore\test.zip
+[
+...
+  {
+    "Filename": "/uploads/scope/Org_%3Croot%3E_velociraptor-v0.76.1-rc1-windows-amd64.msi",
+    "Size": 29114368
+  },
+...
+]
+```
+
+The server creates the MSI then it gets downloaded to my local
+workstation as part of the artifact collection.
+
+## Conclusions
+
+In this blog post we saw how to use the Command Line Interface (CLI)
+to achieve various tasks with simplicity and speed. The CLI interface
+makes artifacts into an extensible mini VQL program which can be used
+conveniently as an isolated tool.
+
+Instead of writing your own stand alone script to perform a single use
+analysis, please consider writing it as a VQL artifact. The benefits
+to the user include:
+
+* A single user interface, both CLI and GUI
+* The ability to collect the artifact at scale from many endpoints at the same time.
+* Machine readable output which can be parsed and post-processed by others
+* The ability to submit your work to the Artifact Exchange for wider visibility within the community.

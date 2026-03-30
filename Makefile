@@ -25,9 +25,12 @@ highlight_js:
 serve:
 	hugo serve
 
-clean:
+clean_all:
 	rm -rf ./public/ ./content/artifact_references/pages/*
 	find ./content/vql_reference/ -mindepth 1 -maxdepth 1 -type d -exec rm -rf {} \;
+
+clean:
+	rm -rf ./public/
 
 build:
 	hugo
@@ -38,3 +41,6 @@ index:
 	cd /tmp/index && zip -r ../index.zip * && cd -
 	mkdir -p ./static/docs_index/
 	mv /tmp/index.zip ./static/docs_index/docs_index_v1.zip
+
+comparisons:
+	python scripts/comparisons.py

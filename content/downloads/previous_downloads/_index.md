@@ -5,73 +5,73 @@ draft: false
 weight: 25
 no_children: true
 pre: <i class="fas fa-download"></i>
-release: 0.74.5
-base_release: 0.74
+release: 0.75.6
+base_release: 0.75
 arches:
   - desc: Windows AMD64 (64-bit) Executable
     name: windows-amd64.exe
-    hash: f39d1164fba6a6aeb9759f98bcb6424a96cd6b06833d66714e1be3fc249cd544
+    hash: 09e6c312c5003e4326e3f71cb2d06a596826b50a911aabe76925790f95e67c33
     platform: windows
 
   - desc: Windows AMD64 (64-bit) MSI
     name: windows-amd64.msi
-    hash: 4d8708501edabeab1c30c481b07138f8d06d18610491f100f4e268069b397376
+    hash: 24265847a43dc60e861a3cb9eb7ad0c51b163777b576bddd5f270db84eb522f7
     platform: windows
 
   - desc: Windows 32-bit Executable
     name: windows-386.exe
-    hash: 6ab6f29f459a8eb180b5bc81a8f7711c696599d5068fb09e594e88d20151c452
+    hash: 3273edf9a3807b88f6dc31148cbc15d4e1b3d7b31032827fc7d19620991162d7
     platform: windows
 
   - desc: Windows 32-bit MSI
     name: windows-386.msi
-    hash: 05a3199f5bd721762e79c1436f4b806ca65a4d8350f0e9d710c5099315b3a776
+    hash: 3a5c62ebce53caa150505aaf538f62de465e5b6eae68c058313fe4cf027116c7
     platform: windows
 
   - desc: Linux Ubuntu 22.04 AMD64 and later. Recommended for servers.
     name: linux-amd64
-    hash: c84541d5caa297411c94daefcfc873162fe37a7fe1732f8a808658fc76e0f75e
+    hash: 2f1b1759b376bcaa2f2f3b936580484beb4318d6613e953c124fdc1400c625fb
     platform: linux
-    release: 0.74.6
 
   - desc: Linux Ubuntu 22.04 ARM and later. Recommended for servers or containers.
     name: linux-arm64
-    hash: ab84ed9446f7d2f8da6836579be2df0b5970b94080fde9832f633f3c66e3f0da
+    hash: 62c26e601925f421d1714c39275b7020fe5f52bdb213c77257cb58a981626d7a
     platform: linux
-    release: 0.74.6
 
   - desc: Linux Static Build (Older Releases, e.g. RHEL, Centos) Recommended for clients.
     name: linux-amd64-musl
-    hash: fd359cd1a3634847e10bd13d3ec969b78d42f50caca74914bb0f85b092da96fd
+    hash: 87a330e5459b0b5295290657705808704a7a3fa10d7fe8b0489e0a44fd1d0283
     platform: linux
-    release: 0.74.6
 
   - desc: MacOS AMD64
     name: darwin-amd64
-    hash: a63ea7927c31a760f0307844362a27f812a3354a084e724441e50bebab23ff80
+    hash: 0e616e6794dd100f3763a2d5eec1e180cc8afe35eacbbc9b52b398cdeef9351a
     platform: apple
+    release: 0.75.5
 
   - desc: MacOS ARM (M1, M2 chipsets)
     name: darwin-arm64
-    hash: 4e15e9f63bce88628df3720747945b9f7d097d1fccde9558a4c3d985221df8e5
+    hash: 1c162662bf915d352889b8e9050afb2fa5359f48b19af1e81ca37d8cf0c878ae
     platform: apple
+    release: 0.75.5
 
   - desc: FreeBSD AMD64
     name: freebsd-amd64
-    hash: 7a7a0109d300b385a6b3de06f60d38ddcc1dce80a2b0e0a8d36cc85b843d23e0
+    hash: cee094165cc7e7d5f6e072aac05721a0c29d42859128885c64b0a3679497a5e7
     platform: freebsd
-    release: 0.74.1
+    release: 0.75.1
 
   - desc: Windows AMD64 (64 bits) Executable For Windows 7 Only
     name: windows-amd64-legacy.exe
-    hash: 51a58e048c1dae45efe02a9a088f856a7b63ed9ea47776678b1c5bb5f6f6fc72
+    hash: b89d7d9e22ca548a934759c07b45402bebdf7db147237d797df277585790450e
     platform: windows
+    release: 0.75.5
 
   - desc: Windows 32 bits Executable For Windows 7 Only
     name: windows-386-legacy.exe
-    hash: 2c6acdbab4c1914de72ec4d8f5e9f57d328405fa3192cd3bc11c08a96ddba99e
+    hash: c234860d42c19d368843f96eb2ed2adfa0e866a9b2aee4ca25accbb28aa90a2c
     platform: windows
-
+    release: 0.75.5
 
 ---
 
@@ -81,7 +81,7 @@ This is an old release - check out the [current release]({{< ref "/downloads" >}
 
 ## Release notes
 
-Full release notes are published in our [release blog post]({{< ref "/blog/2025/2025-02-23-release-notes-0.74/" >}})
+Full release notes are published in our [release blog post]({{< ref "/blog/2025/2025-08-30-release-notes-0.75/" >}})
 
 {{% notice note "Support for Windows 7" %}}
 
@@ -105,7 +105,7 @@ However, note the following caveats:
   updated. These builds may miss some specific functionality.
 
 * If you need to use these builds for an offline collector we
-  recommend using [the generic collector]({{< ref "/docs/deployment/offline_collections/#the-generic-offline-collector" >}}).
+  recommend using [the generic collector]({{< ref "/docs/deployment/offline_collections/#the-generic-collector" >}}).
 
 
 **Do not use this build in a general deployment!** Only use it for

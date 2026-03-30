@@ -130,9 +130,8 @@ parameter within the tool configuration screen.
 ![Serving a third party tool from an SMB server](tool_serving_by_smb.png)
 
 You can configure the remote share with read only permissions (read
-[these instructions]({{% ref
-"/knowledge_base/tips/setup_smb_share/#smb-share" %}}) for more details
-on configuring SMB).
+[these instructions]({{% ref "/knowledge_base/tips/setup_smb_share" %}})
+for more details on configuring SMB).
 
 ## The offline collector
 

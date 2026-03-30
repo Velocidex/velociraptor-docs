@@ -152,7 +152,7 @@ those from the community-contributed [Artifact Exchange]({{< ref "/exchange/" >}
 particularly when other artifacts need to refer to an artifact by it's original name.
 
 The artifacts screen supports
-[searching for tags]({{< ref "#searching-artifacts-by-tag" >}}).
+[searching for tags]({{< ref "/docs/gui/artifacts/#searching-artifacts-by-tag" >}}).
 
 The metadata attributes are set for new artifacts using the
 [artifact_set]({{< ref "/vql_reference/server/artifact_set/" >}})

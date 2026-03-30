@@ -4,7 +4,7 @@ title: "RSS Feeds"
 draft: false
 weight: 250
 no_edit: true
-disableToc: true
+disableToc: false
 no_children: true
 noDisqus: true
 hidden: true

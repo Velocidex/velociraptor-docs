@@ -100,7 +100,7 @@ collection is progressing.
 ## VQL improvement - disk based materialize operator
 
 The VQL `LET ... <= ` operator is called the [materializing LET
-operator]({{% ref "/docs/vql/#materialized-let-expressions" %}})
+operator]({{% ref "/docs/vql/fundamentals/#materialized-let-expressions" %}})
 because it expands the following query into a memory array which can
 be accessed cheaply multiple times.
 

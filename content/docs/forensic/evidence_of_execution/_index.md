@@ -131,9 +131,10 @@ accessor.
 {{% notice note %}}
 
 Note the key location is a URL - Velociraptor uses URL notation to
-access raw registry hives as described [here]({{< ref "/docs/forensic/filesystem#raw-registry-parsing" >}}). This one uses
-the ntfs file accessor to access the raw hive data since it is usually
-locked at runtime.
+access raw registry hives as described
+[here]({{< ref "/docs/forensic/filesystem/#raw-registry-file-parsing" >}}).
+This uses the ntfs file accessor to access the raw hive data since it
+is usually locked at runtime.
 
 {{% /notice %}}
 

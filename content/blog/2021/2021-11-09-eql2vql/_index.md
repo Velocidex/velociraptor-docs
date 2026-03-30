@@ -274,14 +274,15 @@ searching for signed of past compromise on endpoints. However what
 about real time alerting? It would be nice to receive immediate
 notification when a detection rule is triggered.
 
-Velociraptor supports real time [client monitoring]({{< ref
-"/docs/client_monitoring/_index.md" >}}) via event queries. Event queries run
-constantly on the endpoint receiving rows from events.
+Velociraptor supports real time
+[client monitoring]({{< ref "/docs/clients/monitoring/" >}})
+via event queries. Event queries run constantly on the endpoint
+receiving rows from events.
 
 We have previously explored how Event Queries can be used for real
-time monitoring and in particular how VQL can leverage [Event Tracing
-for Windows]({{< ref
-"/blog/2021/2021-08-18-velociraptor-and-etw/_index.md" >}}) (ETW).
+time monitoring and in particular how VQL can leverage
+[Event Tracing for Windows]({{< ref "/blog/2021/2021-08-18-velociraptor-and-etw/" >}})
+(ETW).
 
 ### Using EQL detections with real time monitoring
 

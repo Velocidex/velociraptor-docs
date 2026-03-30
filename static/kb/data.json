@@ -1,11 +1,28 @@
 [
     {
+        "title": "How to create and use an offline collector as a tool",
+        "link": "/knowledge_base/tips/offline_collector_tool",
+        "tags": [
+            "automation",
+            "deployment",
+            "acquisition",
+            "collector",
+            "tools",
+            "s3",
+            "garage"
+        ],
+        "author": "predictiple",
+        "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
+        "author_link": "https://github.com/predictiple",
+        "date": "2026-03-26"
+    },
+    {
         "title": "Encrypt and decrypt an offline collector using PGP public and private keys",
         "link": "/knowledge_base/tips/encrypt_offline_collector_pgp",
         "tags": [],
         "author": "ilostab",
-        "author_link": "https://github.com/ilostab",
         "author_avatar": "https://avatars.githubusercontent.com/u/92776796?v=4",
+        "author_link": "https://github.com/ilostab",
         "date": "2026-03-07"
     },
     {
@@ -146,7 +163,7 @@
         "date": "2025-06-29"
     },
     {
-        "title": "How do I configure check ip for Cloudflare Dynamic DNS?",
+        "title": "How do I configure Cloudflare Dynamic DNS?",
         "link": "/knowledge_base/tips/cloudflare_checkip",
         "tags": [
             "deployment",
@@ -155,8 +172,8 @@
             "checkip"
         ],
         "author": "mgreen27",
-        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
         "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
         "date": "2025-06-18"
     },
     {

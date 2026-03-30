@@ -1,147 +1,17 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js">
 </script>
 
+<div class="search-box">
 <div class="input-group">
-  <input type="text" id="myInput" onkeyup="doSearch()" class="form-control"
+  <input type="text" id="myInput" onkeyup="doSearchVQL()" class="form-control"
          placeholder="Search for VQL plugins, functions, or accessors"
          aria-describedby="basic-addon2">
   <span class="input-group-addon" id="basic-addon2"><i class="fas fa-search"></i></span>
 </div>
-
-<hr />
+</div>
 
 <div class="search_results"></div>
 
 <script>
-let all_data = [];
-
-$.ajax({
-  url: "/reference/data.json",
-}).done(function( data ) {
-  all_data = data;
-  DrawResults(data);
-});
-
-$(document).ready(function () {
-    $('#myInput').focus();
-});
-
-function doSearch() {
-  // Declare variables
-  let input = document.getElementById('myInput');
-  let filter = input.value.toUpperCase();
-
-  let result = [];
-  for(let i=0;i<all_data.length; i++) {
-    let item = all_data[i];
-
-    if (item.name.toUpperCase().includes(filter)) {
-      result.push(item);
-    }
-  };
-  DrawResults(result);
-}
-
-function DrawResults(data) {
-  $(".search_results").empty();
-
-  for(let i=0;i<data.length; i++) {
-    let item = data[i];
-    let template = $(`
-<div class="panel panel-default color">
-  <div class="panel-heading color">
-    <a class="title link" href=""><h3 class="panel-title color " ></h3></a>
-    <div class="type vql_type label label-warning pull-right"></div>
-  </div>
-  <div class="panel-body color">
-    <div class="border color">
-      <div class="border color">
-        <div class="idea-inner-text-main color">
-          <img class="user-avatar inline">
-          <p class="description"></p>
-          <p class="args"/>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>`);
-
-      template.find(".title").append(item.name);
-      template.find(".description").append(item.description);
-      template.find(".link").attr("href", getLink(item));
-      template.find(".type").append(item.type)
-      template.find(".idea-tag").append(
-          `<i class="linkcolour label label-info pull-right">` +
-              (item.category || "other") + `</i>`);
-
-      if (item.metadata && item.metadata.permissions) {
-          let html = $(`
-            <span class="vql_type">Required permissions:</span>
-            <span class="permission_list linkcolour "></span>`)
-          template.find(".permissions").append(html);
-
-          for(x of item.metadata.permissions.split(",")) {
-              template.find(".permission_list").append(
-                  `<span class=" label label-important">` + x + `</span>`)
-          };
-      }
-
-      let args = item.args || [];
-      if (args.length > 0) {
-          let args_template = $(`
-<table>
-  <thead>
-   <tr>
-    <th>Arg</th>
-    <th>Description</th>
-    <th>Type</th>
-   </tr>
-  </thead>
-  <tbody>
-  </tbody>
-</table>
-`);
-          for(let i=0;i<item.args.length; i++) {
-              let arg = item.args[i];
-              let row = $(`<tr>
-   <td class="name"></td>
-   <td class="description"></td>
-   <td class="type"></td>
-   </tr>`);
-              let type = arg.type;
-              if (arg.repeated) {
-                  type = "repeated " + type;
-              }
-
-              if (arg.required) {
-                  type += " (required) ";
-              }
-
-              row.find(".name").append(arg.name);
-              row.find(".description").append(arg.description);
-              row.find(".type").append(type);
-              args_template.find("tbody").append(row);
-          };
-
-          if(item.free_form_args) {
-              args_template.find("tbody").append(`<tr>
-   <td class="name">**</td>
-   <td class="description">Free form args</td>
-   <td class="type"></td>
-   </tr>`);
-          }
-          template.find(".args").append(args_template);
-      };
-
-    $(".search_results").append(template);
-  }
-};
-
-function getLink(item) {
-    if (item.category) {
-        return "/vql_reference/" + item.category + "/" + item.name;
-    }
-    return "/vql_reference/other/" + item.name;
-}
-
+  initVQLReference();
 </script>

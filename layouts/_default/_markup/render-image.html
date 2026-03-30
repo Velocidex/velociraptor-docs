@@ -4,10 +4,11 @@
 <!-- Not a page resource must be an external link -->
 {{ if not $src }}
 
-{{ $id := md5 .Destination }}
-<figure id="{{ $id }}">
-  <div data-featherlight="#{{ $id }}" class="figure">
-    <img src="{{ .Destination }}" alt="{{ $caption }}" />
+<figure>
+  <div class="figure">
+    <img src="{{ .Destination }}"
+         class="inline"
+         alt="{{ $caption }}" />
   </div>
   <figcaption>
     {{ $caption }}
@@ -16,36 +17,54 @@
 
 {{ else }}
 
-{{ $id := md5 $src }}
 {{ $filename := path.Join .Page.File.Dir $src }}
 {{ if ( hasSuffix $filename ".svg" ) }}
   {{ $data := readFile $filename }}
-  {{ $data = strings.ReplaceRE `(?ms)<style class="style-fonts">.+?</style>` `` $data }}
-
-<figure id="{{ $id }}">
-  <div data-featherlight="#{{ $id }}" class="figure">
-    {{ $data  | safeHTML}}
+  {{ $font := readFile "assets/fonts/fonts.txt" }}
+  {{ $data := strings.ReplaceRE `(?ms)<style class="style-fonts">.+?</style>` $font $data }}
+  {{ $width := index ( strings.FindRESubmatch "width=\"([^\"]+)\"" $data 1 ) 0 }}
+  {{ $height := index ( strings.FindRESubmatch "height=\"([^\"]+)\"" $data 1 ) 0 }}
+  {{ with resources.FromString (print (path.Dir $filename) "/" (path.BaseName $filename )  "_.svg" ) $data }}
+  {{ $lnk := .RelPermalink }}
+<figure>
+  <div class="figure">
+    <img src="{{ $lnk }}" alt="{{ $caption }}"
+         class="inline"
+         height="{{ index $height 1 }}"
+         width="{{ index $width 1 }}"  />
   </div>
   <figcaption>
-    <a class="image-link" href="{{ $src }}"><i class="fa fa-download"></i></a>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="{{ $src }}"><i class="fa fa-download"></i></a>
     {{ $caption }}
   </figcaption>
 </figure>
+{{ end }}
 
 {{ else }}
 
 {{ if and ( hasSuffix $filename ".png" ) ( lt $src.Height 200 )}}
 
-<img class="inline" src="{{ $src }}" />
+<img class="inline"
+     src="{{ $src.RelPermalink }}"
+     width="{{ $src.Width }}"
+     height="{{ $src.Height }}"/>
 
 {{ else }}
 
-<figure id="{{ $id }}">
-  <div data-featherlight="#{{ $id }}" class="figure">
-    <img src="{{ $src }}" alt="{{ $caption }}">
+<figure>
+  <div class="figure">
+    <img src="{{ $src.RelPermalink }}"
+         class="inline"
+         alt="{{ $caption }}"
+         width="{{ $src.Width }}" height="{{ $src.Height }}">
   </div>
   <figcaption>
-    <a class="image-link" href="{{ $src }}"><i class="fa fa-download"></i></a>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="{{ $src }}">
+      <i class="fa fa-download"></i></a>
     {{ $caption }}
   </figcaption>
 </figure>

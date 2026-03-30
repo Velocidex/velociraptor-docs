@@ -267,7 +267,7 @@ It's a bit more complicated to do this, but generally this is automatically done
 when you're using artifacts such as:
 - [`Generic.Forensic.SQLiteHunter`](https://sqlitehunter.velocidex.com/docs/)
 - [`Windows.KapeFiles.Remapping`]({{< ref "/artifact_references/pages/windows.kapefiles.remapping/" >}})
-- [`Generic.Utils.DeadDiskRemapping`]()
+- [`Generic.Utils.DeadDiskRemapping`]({{< ref "/artifact_references/pages/generic.utils.deaddiskremapping/" >}})
 
 which already have the necessary remapping logic included.
 
