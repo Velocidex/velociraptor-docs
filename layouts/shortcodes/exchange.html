@@ -2,12 +2,11 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js">
 </script>
 
-<div class="row searchbar">
-  <div class="input-group col-lg-8 pull-left">
-    <input type="text" id="myInput" onkeyup="doSearchExchange()" class="form-control"
-           placeholder="Search for an artifact" aria-describedby="basic-addon2">
-    <span class="input-group-addon" id="basic-addon2"><i class="fas fa-search"></i></span>
-  </div>
+<div class="search-box">
+<div class="input-group">
+  <input type="text" id="myInput" onkeyup="doSearchExchange()" class="form-control" placeholder="Search for an exchange artifact" aria-describedby="basic-addon2">
+  <span class="input-group-addon" id="basic-addon2"><i class="fas fa-search"></i></span>
+
   <div class="col-lg-3 pull-right exchange-contribute">
     <button type="button" class="btn btn-default btn-lg pull-right"
             data-toggle="modal" data-target="#myModal">
@@ -15,6 +14,7 @@
       Share your own Artifact
     </button>
   </div>
+</div>
 </div>
 
 <!-- Modal -->

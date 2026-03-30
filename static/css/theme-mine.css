@@ -1164,3 +1164,43 @@ ul.sidebar {
 * {
     scroll-margin-top: 80px;
 }
+
+div.search-breadcrumb {
+    margin: 0;
+    padding: 0;
+}
+
+div.search-breadcrumb a {
+    font-size: small;
+    padding-right: 10px;
+    color: var(--MAIN-TEXT-color);
+}
+
+div.error {
+    color: var(--mynotice-warning-border);
+}
+
+div.search-box {
+    position: fixed;
+    padding-right: 40px;
+    padding-left: 30px;
+    margin-left: -30px;
+    top: 0px;
+    z-index: 1000;
+    padding-bottom: 20px;
+    background-color: var(--MAIN-TEXT-background-color);
+}
+
+div.search_results {
+    padding-top: 30px;
+}
+
+#loading {
+    text-align: center;
+    display: none;
+    opacity: 0.5;
+}
+
+#body-inner.loading #loading {
+    display: inherit;
+}
