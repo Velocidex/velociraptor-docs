@@ -702,6 +702,7 @@ function doSearch() {
       input.value = filter;
       start_count = parseInt(params.get("start") || 0);
       $("#start-count").text(start_count);
+      $("#body-inner").removeClass("loading");
       searchInitialized = true;
   }
 
@@ -724,7 +725,11 @@ function doSearch() {
           if(resp.total_hits) {
               total_hits = "Total " + resp.total_hits;
           }
-          $("#page-count").text(total_hits);
+
+          // Store the total hits in this dom
+          $("#page-count").text(total_hits).
+              data("total_hits", resp.total_hits);
+
           $("#body-inner").removeClass("loading");
 
           let start_count = parseInt($("#start-count").text() || 0);
@@ -746,7 +751,8 @@ function doSearch() {
 }
 
 function SearchPageForward() {
-    let page_count = parseInt($("#page-count").text() || 0);
+    let page_count = parseInt(
+        $("#page-count").data("total_hits") || 0);
     let start_count = parseInt($("#start-count").text() || 0);
 
     let next = start_count + 50;
