@@ -1,0 +1,187 @@
+name: Server.Monitor.Client.Errors.Alert
+author: Andreas Misje – @misje
+description: |
+  Create alerts from errors logged by client event queries.
+
+  Client event queries are often used for important monitoring and automation,
+  but failures in those queries may otherwise go unnoticed in the monitoring logs.
+  This artifact periodically inspects the monitoring logs for active client event
+  artifacts and creates alerts when log entries match the configured include and
+  exclude filters.
+
+  Matching can be controlled by artifact name, log level, and message content.
+  This allows you to alert on all client event query errors, or to focus on a
+  smaller set of important artifacts and known failure patterns.
+
+  Each alert includes useful context such as the artifact name, log level, error
+  message, and the original log timestamp. Duplicate alerts may be suppressed for
+  a configurable interval to avoid repeated notifications for the same problem.
+
+  If `SeverityField` is set, the alert will also include a severity value taken
+  from the matching `IncludeFilter` row. This can be used by
+  `Exchange.Monitor.Alerts` to format, filter, and forward the alert as an
+  e-mail notification.
+
+  Note that many errors produced by native VQL functions and plugins are logged
+  with the `DEFAULT` level rather than `ERROR`. To alert on these, either add
+  your own checks that log `ERROR`, or match the native log messages with
+  `IncludeFilter`.
+
+  Note that this will periodically query **all** clients that have event queries
+  configured for them. Be sure to ignore event artifacts as needed in
+  `ExcludeFilter`.
+
+type: SERVER_EVENT
+
+parameters:
+  - name: Period
+    type: int
+    description: |
+      Seconds between each monitoring log inspection
+    default: 60
+
+  - name: DedupInterval
+    type: int
+    description: |
+      Do not create a new alert if an identical alert was created within these
+      many seconds
+    default: 3600
+
+  - name: IncludeFilter
+    type: csv
+    description: |
+      Only include messages matching these artifacts, log levels and messages
+    default: |
+      Artifact,Level,Message,Severity
+      .+,ERROR,.+,medium
+
+  - name: ExcludeFilter
+    type: csv
+    description: |
+      Exclude messages matching these artifacts, log levels and messages
+    default: |
+      Artifact,Level,Message
+      Generic\.Client\.Stats$,.+,.+
+
+  - name: SeverityField
+    type: str
+    description: |
+      If set, a field with this name will be included in the alert, and the value
+      will be set to the severity in IncludeFilter
+    default: Severity
+
+imports:
+  - Server.Monitor.Errors.Alert
+
+sources:
+  - query: |
+      // Helper function for a nested array loop (just to rename "_value"):
+      LET LabelSpecs(Specs) = SELECT _value AS Spec
+        FROM foreach(row=Specs)
+
+      LET MonitoredArtifacts = SELECT *
+        FROM combine(unlabelled={
+          SELECT NULL AS Label,
+                 _value.artifact AS Artifact
+          FROM foreach(row=get_client_monitoring().artifacts.specs)
+        },
+                     labelled={
+          SELECT *
+          FROM foreach(row=get_client_monitoring().label_events,
+                       query={
+          SELECT _value.label AS Label,
+                 Spec.artifact AS Artifact
+          FROM LabelSpecs(Specs=_value.artifacts.specs)
+        })
+        })
+        WHERE IncludeArtifact(artifact=Artifact, filter=IncludeFilter)
+         AND NOT IncludeArtifact(artifact=Artifact, filter=ExcludeFilter)
+
+      LET _ <= SELECT
+          if(condition=Label,
+             then=log(level='DEBUG',
+                      message='Monitoring event artifact %v for label "%v"',
+                      args=(Artifact, Label),
+                      dedup=-1),
+             else=log(level='DEBUG',
+                      message='Monitoring event artifact %v',
+                      args=Artifact,
+                      dedup=-1))
+        FROM MonitoredArtifacts
+
+      LET LabelIsMonitored(Label, Labels) = log(
+          message="%v in %v",
+          args=(Label, Labels))
+         and if(condition=Label, then=Label IN Labels, else=true)
+
+      // Poll logs for every currently active server monitoring artifact and emit
+      // only entries that match filters:
+      LET EventErrors(StartTime) = SELECT *
+        FROM foreach(row={
+          SELECT client_id AS ClientId,
+                 labels
+          FROM clients()
+        },
+                     query={
+          SELECT *
+          FROM foreach(row=MonitoredArtifacts,
+                       query={
+          SELECT Artifact,
+                 Label,
+                 ClientId,
+                 client_time AS Timestamp,
+                 level AS Level,
+                 message AS Message
+          FROM monitoring_logs(
+            client_id=if(condition=LabelIsMonitored(Label=Label, Labels=labels),
+                         then=ClientId),
+            artifact=Artifact,
+            start_time=StartTime)
+          WHERE IncludeLog(artifact=Artifact,
+                           level=level,
+                           message=message,
+                           filter=IncludeFilter)
+           AND NOT IncludeLog(artifact=Artifact,
+                              level=level,
+                              message=message,
+                              filter=ExcludeFilter)
+        },
+                       async=true,
+                       workers=5)
+        },
+                     async=true,
+                     workers=2)
+
+      // Add an optional severity field to the alert payload:
+      LET SeverityArgs = if(condition=SeverityField,
+                            then=set(item=dict(),
+                                     field=get(field='SeverityField'),
+                                     value=GetSeverity(
+                                       artifact=Artifact,
+                                       level=Level,
+                                       message=Message).Severity[0]),
+                            else=dict())
+
+      // Build the final alert context from the matching log row, including a
+      // human-readable log timestamp:
+      LET AlertArgs = dict(dedup=DedupInterval,
+                           name=format(format='Server event query error in %v',
+                                       args=Artifact),
+                           Level=Level,
+                           Error=Message,
+                           `Log timestamp`=TimestampString(
+                             Timestamp=timestamp(string=Timestamp)),
+                           Artifact=Artifact,
+                           ClientId=ClientId) + SeverityArgs
+
+      // On each interval, inspect only the recent log window and raise alerts for
+      // matching entries:
+      SELECT *
+      FROM foreach(row={
+          SELECT Unix
+          FROM clock(period=Period)
+        },
+                   query={
+          SELECT *, alert(`**`=AlertArgs) AS Alert
+          FROM EventErrors(StartTime=Unix - Period)
+        })

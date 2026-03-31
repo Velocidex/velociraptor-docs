@@ -42,7 +42,7 @@ parameters:
       Do not create a new alert if an identical alert was created within these
       many seconds
     default: 3600
-    
+
   - name: IncludeFilter
     type: csv
     description: |
@@ -58,7 +58,7 @@ parameters:
     default: |
       Artifact,Level,Message
       Server.Monitor.Alerts,.+,.+
-      
+
   - name: SeverityField
     type: str
     description: |
@@ -66,42 +66,71 @@ parameters:
       will be set to the severity in IncludeFilter
     default: Severity
 
+export: |
+  // Combine a timestamp and a duration string:
+  LET TimestampString(Timestamp) = if(
+      condition=Timestamp.Unix,
+      then=format(format='%v (%v)',
+                  args=(Timestamp.String, humanize(time=Timestamp))),
+      else='(never)')
+
+  // Return true if any CSV filter row matches the artifact, level, and message.
+  // This lets both include and exclude tables share the same matching logic.
+  LET IncludeLog(artifact, level, message, filter) =
+      any(items={
+      SELECT artifact =~ Artifact
+              AND (NOT Level OR level =~ Level)
+                   AND (NOT Message OR message =~ Message) AS Result
+      FROM filter
+    },
+          filter='x=>x.Result')
+
+  LET IncludeArtifact(artifact, filter) = any(items={
+      SELECT artifact =~ Artifact AS Result
+      FROM filter
+    },
+                                              filter='x=>x.Result')
+
+  LET GetSeverity(artifact, level, message) = SELECT Severity
+    FROM IncludeFilter
+    WHERE artifact =~ Artifact
+     and level =~ Level
+          and message =~ Message
+    LIMIT 1
+
+  // Add an optional severity field to the alert payload:
+  LET SeverityArgs = if(condition=SeverityField,
+                        then=set(item=dict(),
+                                 field=get(field='SeverityField'),
+                                 value=GetSeverity(
+                                   artifact=Artifact,
+                                   level=Level,
+                                   message=Message).Severity[0]),
+                        else=dict())
+
 sources:
   - query: |
-      // Combine a timestamp and a duration string:
-      LET TimestampString(Timestamp) = if(
-          condition=Timestamp.Unix,
-          then=format(format='%v (%v)',
-                      args=(Timestamp.String, humanize(time=Timestamp))),
-          else='(never)')
-      
-      // Return true if any CSV filter row matches the artifact, level, and message.
-      // This lets both include and exclude tables share the same matching logic.
-      LET IncludeLog(artifact, level, message, filter) =
-          any(items={
-          SELECT artifact =~ Artifact
-                  AND level =~ Level
-                       AND message =~ Message AS Result
-          FROM filter
-        },
-              filter='x=>x.Result')
-      
-      LET GetSeverity(artifact, level, message) = SELECT Severity
-        FROM IncludeFilter
-        WHERE artifact =~ Artifact
-         and level =~ Level
-              and message =~ Message
-        LIMIT 1
-      
+      LET MonitoredArtifacts = SELECT _value.artifact AS Artifact
+        FROM foreach(row=get_server_monitoring().specs)
+        WHERE IncludeArtifact(artifact=Artifact, filter=IncludeFilter)
+         AND NOT IncludeArtifact(artifact=Artifact, filter=ExcludeFilter)
+
+      LET _ <= SELECT
+          log(level='DEBUG',
+              message='Monitoring event artifact %v',
+              args=Artifact,
+              dedup=-1)
+        FROM MonitoredArtifacts
+
       // Poll logs for every currently active server monitoring artifact and emit
       // only entries that match filters:
       LET EventErrors(StartTime) = SELECT *
-        FROM foreach(row=get_server_monitoring().artifacts,
+        FROM foreach(row=MonitoredArtifacts,
                      query={
-          SELECT _value AS Artifact,
+          SELECT Artifact,
                  *
           FROM monitoring_logs(client_id='server',
-                               artifact=_value,
+                               artifact=Artifact,
                                start_time=StartTime)
           WHERE IncludeLog(artifact=Artifact,
                            level=Level,
@@ -113,17 +142,7 @@ sources:
                               filter=ExcludeFilter)
         },
                      async=true)
-      
-      // Add an optional severity field to the alert payload:
-      LET SeverityArgs = if(condition=SeverityField,
-                            then=set(item=dict(),
-                                     field=get(field='SeverityField'),
-                                     value=GetSeverity(
-                                       artifact=Artifact,
-                                       level=Level,
-                                       message=Message).Severity[0]),
-                            else=dict())
-      
+
       // Build the final alert context from the matching log row, including a
       // human-readable log timestamp:
       LET AlertArgs = dict(dedup=DedupInterval,
@@ -134,7 +153,7 @@ sources:
                            `Log timestamp`=TimestampString(
                              Timestamp=timestamp(string=Timestamp)),
                            Artifact=Artifact) + SeverityArgs
-      
+
       // On each interval, inspect only the recent log window and raise alerts for
       // matching entries:
       SELECT *
