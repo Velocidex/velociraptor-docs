@@ -1173,7 +1173,7 @@ sources:
 
       LET Footer = format(format='Sent from Velociraptor by %v',
                           args=ArtifactLinks(
-                            Artifacts='Exchange.Server.Alerts.Mail',
+                            Artifacts='Server.Alerts.Mail',
                             HTML=HTML)[0].Link)
 
       // Filter query results using a CSV containing

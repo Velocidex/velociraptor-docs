@@ -498,7 +498,7 @@ sources:
                                  sep='\n\n')))
 
       LET Footer = format(format='Sent from Velociraptor by %v',
-                          args=ArtifactLinks(Artifacts='Exchange.Monitor.Alerts',
+                          args=ArtifactLinks(Artifacts='Server.Monitor.Alerts',
                                              HTML=HTML)[0].Link)
 
       LET HTMLBody = MailTemplate(Title=Title(IncludeMessage=false),
