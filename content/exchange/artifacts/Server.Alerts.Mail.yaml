@@ -1058,6 +1058,13 @@ export: |
   // case of lists, foo.0.bar, foo.1.bar etc.:
   LET Unnest(Item) = to_dict(item={ SELECT * FROM _Unnest(Item=Item) })
 
+  // Prefix all keys in a dict:
+  LET PrefixDict(Dict, Prefix) = to_dict(item={
+    SELECT MakeKey(Prefix=Prefix, Key=_key) AS _key,
+           _value
+    FROM items(item=Dict)
+  })
+
 sources:
   - query: |
       // Set a sensible max cell length for artifact results being included
