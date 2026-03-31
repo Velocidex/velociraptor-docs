@@ -178,6 +178,13 @@ parameters:
       artifact arguments, when the alert comes from a collection. You may specify
       (override) the flow ID by setting the variable `FlowId` in the context.
 
+  - name: IncludeArtifactDetails
+    type: bool
+    description: |
+      Include details about the artifact the alert comes from. This may be helpful
+      when debugging, but otherwise it will be too noisy.
+    default: false
+
   - name: KeepEmptyRows
     type: bool
     description: |
@@ -473,6 +480,117 @@ sources:
           FROM scope()
         })
 
+      // Convert a list of "key"–"value" dicts into a single key–value dict:
+      LET ParamDict(Env) = to_dict(item={
+          SELECT _value.key AS _key,
+                 _value.value AS _value
+          FROM items(item=Env)
+        }) || NULL
+
+      // Helper function for a nested array loop (ust to rename "_value"):
+      LET LabelSpecs(Specs) = SELECT _value AS Spec
+        FROM foreach(row=Specs)
+
+      LET ClientMonitoring = SELECT *
+        FROM combine(unlabelled={
+          SELECT NULL AS Label,
+                 _value.artifact AS Artifact,
+                 ParamDict(Env=_value.parameters.env) AS Params
+          FROM foreach(row=get_client_monitoring().artifacts.specs)
+        },
+                     labelled={
+          SELECT *
+          FROM foreach(row=get_client_monitoring().label_events,
+                       query={
+          SELECT _value.label AS Label,
+                 Spec.artifact AS Artifact,
+                 ParamDict(Env=Spec.parameters.env) AS Params
+          FROM LabelSpecs(Specs=_value.artifacts.specs)
+        })
+        })
+
+      LET ServerMonitoring = SELECT _value.artifact AS Artifact,
+                                    ParamDict(Env=_value.parameters.env) AS Params
+        FROM foreach(row=get_server_monitoring().specs)
+
+      LET EventArtifactInfo = SELECT *
+        FROM combine(client=ClientMonitoring, server=ServerMonitoring)
+        WHERE Artifact = ArtifactName
+
+      LET ArtifactDefinition = SELECT name,
+                                      type,
+                                      author,
+                                      built_in,
+                                      is_inherited,
+                                      required_permissions,
+                                      implied_permissions,
+                                      metadata
+        FROM artifact_definitions(names=ArtifactName)
+
+      // Spend at most one seconds looking through the audit log for recent
+      // Artifact and event table modifications:
+      LET AuditLog = generate(
+          query={
+          SELECT *
+          FROM query(
+            query={
+          SELECT *
+          FROM monitoring(start_time=now() - 86400,
+                          artifact="Server.Audit.Logs",
+                          client_id="server")
+          WHERE (operation = 'SetArtifactFile'
+             and details.artifact = ArtifactName) OR operation IN ('SetServerMonitoringState', 'SetClientMonitoringState')
+          ORDER BY _ts DESC
+        },
+            timeout=1,
+            inherit=true)
+        })
+
+      LET ArtifactModInfo = SELECT
+          TimestampString(Timestamp=timestamp(epoch=_ts)) AS ModifiedAt,
+          principal AS ModifiedBy
+        FROM AuditLog
+
+      LET EventTableModInfo = SELECT
+          TimestampString(Timestamp=timestamp(epoch=_ts)) AS EventTableModifiedAt,
+          principal AS EventTableModifiedBy
+        FROM AuditLog
+        WHERE (operation = 'SetServerMonitoringState'
+           AND ArtifactType = 'SERVER_MONITORING') OR (operation = 'SetClientMonitoringState'
+           AND ArtifactType = 'CLIENT_EVENT')
+
+      LET ArtifactInfo = Unnest(
+          Item=PrefixDict(Dict=ArtifactDefinition[0] + ArtifactModInfo[0],
+                          Prefix='Definition') + (PrefixDict(
+              Dict=EventArtifactInfo[0] + EventTableModInfo[0],
+              Prefix='Execution') - dict(Artifact=NULL)))
+
+      LET ArtifactDetailsDict = RemoveEmpties(Obj=ArtifactInfo,
+                                              DoIt=NOT KeepEmptyRows)
+
+      LET ArtifactDetailsHTML = FullTable(Rows={
+          SELECT *
+          FROM items(item=FormatDict(Dict=ArtifactDetailsDict,
+                                     KeyLength=MaxKeyLen,
+                                     ValueLength=MaxValLen))
+        },
+                                          Headers=array(),
+                                          MaxRows=MaxRows,
+                                          FormatData=false)
+
+      // Plain-text rendering uses a simple key/value table with the same elision
+      // limits, but without HTML escaping or markup.
+      LET ArtifactDetailsPlain = Table(
+          Values=ElideDict(Dict=ArtifactDetailsDict,
+                           KeyLength=MaxKeyLen,
+                           ValueLength=MaxValLen),
+          HTML=false,
+          KeepEmpty=KeepEmptyRows)
+
+      LET ArtifactDetails = if(condition=HTML,
+                               then=ArtifactDetailsHTML,
+                               else=ArtifactDetailsPlain)
+
       // Assemble the named mail sections, then drop any that ended up empty so
       // the final message only includes relevant context.
       LET Tables(HTML) = RemoveEmpties(
@@ -490,7 +608,10 @@ sources:
                                            then=FlowDetails[0].HTML,
                                            else=FlowDetails[0].PlainText),
                                  HTML=HTML,
-                                 KeepEmpty=KeepEmptyRows)))
+                                 KeepEmpty=KeepEmptyRows),
+            `Artifact details`=if(condition=IncludeArtifactDetails
+                                   AND ArtifactName,
+                                  then=ArtifactDetails)))
 
       LET PlainText = format(format='%v\n\n%v',
                              args=(Summary(HTML=false), join(
