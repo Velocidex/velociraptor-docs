@@ -491,6 +491,7 @@ sources:
       LET LabelSpecs(Specs) = SELECT _value AS Spec
         FROM foreach(row=Specs)
 
+      // linter: invalid_arg:unlabelled|labelled
       LET ClientMonitoring = SELECT *
         FROM combine(unlabelled={
           SELECT NULL AS Label,
@@ -513,6 +514,7 @@ sources:
                                     ParamDict(Env=_value.parameters.env) AS Params
         FROM foreach(row=get_server_monitoring().specs)
 
+      // linter: invalid_arg:client|server
       LET EventArtifactInfo = SELECT *
         FROM combine(client=ClientMonitoring, server=ServerMonitoring)
         WHERE Artifact = ArtifactName
