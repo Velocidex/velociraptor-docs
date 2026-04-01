@@ -44,3 +44,15 @@ secret|Alternatively use a secret from the secrets service. Secret must be of ty
 
 Upload files to S3.
 
+This function can be used to upload to an AWS S3 bucket or to a
+MinIO self hosted bucket.
+
+Read [How To Set Up A MinIO For File
+Uploads](https://docs.velociraptor.app/knowledge_base/tips/dropbox_server)
+
+[This
+presentation](https://training.velociraptor.app//modules/offline_collection/cloud_upload.html#/8)
+shows how to safely configure an AWS bucket for use with this
+plugin.
+
+
