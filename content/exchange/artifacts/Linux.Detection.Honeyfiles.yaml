@@ -28,9 +28,21 @@ parameters:
      description: User name regex that will be used to host honeyfiles.
      type: string
      default: "."
+   - name: Policy
+     description: Tracee Policy
+     default: |
+       metadata:
+         name: file-open-home
+       spec:
+          scope:
+            - global
+          rules:
+            - event: security_file_open
+              filters:
+                - args.pathname=/home/*
 sources:
   - precondition:
-        SELECT OS From info() where OS = 'linux' AND version(plugin="watch_ebpf") >= 0
+        SELECT OS From info() where OS = 'linux' AND version(plugin="watch_ebpf") >= 2
 
     query: |
       LET RandomChars(size) = SELECT
@@ -83,6 +95,8 @@ sources:
                  AND copy(dest=TargetPath,
                           create_directories='y',
                           accessor='data',
+                          permissions="0644",
+                          dir_permissions="0755",
                           filename=unhex(
                             string=MagicBytes + join(
                               array=RandomChars(size=_PaddingSize).HexByte) +
@@ -108,32 +122,20 @@ sources:
           check_exist(path=TargetPath)[0].IsHoneyFile AS IsHoneyFile
         FROM copy_honeyfiles
       
-      LET chmod_honeyfiles = SELECT *
-        FROM foreach(row=add_honeyfiles,
-                     query={
-          SELECT TargetPath,
-                 Enabled,
-                 MagicBytes,
-                 MinSize,
-                 MaxSize,
-                 Size,
-                 IsHoneyFile
-          FROM execve(argv=["chmod", "+r", TargetPath])
-        })
-      
       LET _ <= atexit(query={ SELECT * FROM remove_honeyfiles })
       
       LET WatchFiles <= to_dict(item={
           SELECT TargetPath AS _key,
                  IsHoneyFile AS _value
-          FROM chmod_honeyfiles
+          FROM add_honeyfiles
           WHERE IsHoneyFile
         })
       
       LET CurrentPid <= getpid()
       
+      // Exclude containers by checking process id.
       LET TargetEvents = SELECT *
-        FROM watch_ebpf(events=["security_file_open"])
+        FROM watch_ebpf(events=["security_file_open"], policy=Policy)
         WHERE System.EventName = "security_file_open"
          AND System.ProcessID != CurrentPid
               AND System.HostProcessID = System.ProcessID
