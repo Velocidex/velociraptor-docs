@@ -23,7 +23,7 @@ description: |
 
   If `SeverityField` is set, the alert will also include a severity value taken
   from the matching `IncludeFilter` row. This can be used by
-  `Exchange.Monitor.Alerts` to format, filter, and forward the alert as an
+  `Server.Monitor.Alerts` to format, filter, and forward the alert as an
   e-mail notification.
 
   If you extend IncludeFilter with additional custom columns, these will be
