@@ -1,6 +1,5 @@
 # Encrypt and decrypt an offline collector using PGP public and private keys
 
-
 Velociraptor supports three modes for encrypting Offline Collectors: Password, X.509 Secured, and PGP-secured (as [described here](https://docs.velociraptor.app/docs/deployment/offline_collections/#collection-security)).
 While X.509 is the standard for automatic server imports, using PGP is a great alternative when you need to decrypt collections independently of the Velociraptor Server.
 
@@ -155,3 +154,5 @@ This assumes that the private key is in your gpg vault.
 
 ### Working with the data
 Working with the Offline Collection data is [described here](https://docs.velociraptor.app/docs/deployment/offline_collections/collection_data/)
+
+Tags: #triage  #uploads #collector

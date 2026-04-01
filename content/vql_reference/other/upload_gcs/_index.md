@@ -34,3 +34,9 @@ credentials|The credentials to use|string
 
 Upload files to GCS.
 
+NOTE: This plugin is optional and not included by default from
+Version 0.76 on. Use the `upload_s3()` plugin instead.
+
+You can read how to [How To Set Up A GCS Bucket For File Uploads](https://docs.velociraptor.app/knowledge_base/tips/setup_gcs_storage)
+
+

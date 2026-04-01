@@ -74,18 +74,21 @@ reduce the binary size:
 1.  The Elastic library is now handled via a fork to isolate just the
     Bulk upload API - reducing the binary size by 16mb
 2.  The next largest library is the AWS client library used by
-    `s3_upload()` increasing the binary size by 6mb.
+    `upload_s3()` increasing the binary size by 6mb.
 3.  The Google cloud client library is also huge at around 5mb
 
 For regular release builds:
 
--   Use the MinIO S3 library to connect to AWS - this library is much
-    smaller and easier to use. It supports the most common features
-    and should be mostly compatible.
+-   We now use the MinIO S3 library to connect to AWS - this library
+    is much smaller and easier to use. It supports the most common
+    features and should be mostly compatible.
 -   Remove Google cloud dependencies: `Google pubsub` is a rarely used
     feature, and with Google Cloud Storage (GCS) we can always enable
     S3 compatible mode so there is no real need for specific GCS
-    access.
+    access. See [How to set up a GCS Bucket for file
+    uploads](/knowledge_base/tips/setup_gcs_storage/) to configure
+    your GCS buckets for use with
+    [upload_s3()](/vql_reference/other/upload_s3/)
 
 From this version we've introduced a new build tag `sumo` which
 includes these large libraries if anyone really needs them. By

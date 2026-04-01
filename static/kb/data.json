@@ -19,7 +19,11 @@
     {
         "title": "Encrypt and decrypt an offline collector using PGP public and private keys",
         "link": "/knowledge_base/tips/encrypt_offline_collector_pgp",
-        "tags": [],
+        "tags": [
+            "triage",
+            "uploads",
+            "collector"
+        ],
         "author": "ilostab",
         "author_avatar": "https://avatars.githubusercontent.com/u/92776796?v=4",
         "author_link": "https://github.com/ilostab",
@@ -172,8 +176,8 @@
             "checkip"
         ],
         "author": "mgreen27",
-        "author_link": "https://github.com/mgreen27",
         "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "author_link": "https://github.com/mgreen27",
         "date": "2025-06-18"
     },
     {

@@ -7,7 +7,18 @@ in scenarios where the source system is internet connected and you do not want
 to stand up storage services on the local network.
 
 This is made possible by the
-[upload_gcs]({{< ref "/vql_reference/other/upload_gcs/" >}}) VQL function.
+[upload_s3]({{< ref "/vql_reference/other/upload_s3/" >}}) VQL function.
+
+{{% notice "note" "Deprecation of the upload_gcs() plugin" %}}
+
+Prior to release 0.76, Velociraptor had a dedicated [upload_gcs]({{<
+ref "/vql_reference/other/upload_gcs/" >}}) plugin, however after this
+release that plugin was removed since it increased the binary size
+significantly. Google provides an AWS compatibility mode which allows
+us to use the [upload_s3]({{< ref "/vql_reference/other/upload_s3/"
+>}}) function instead.
+
+{{% /notice %}}
 
 This article explains how to set up a GCS bucket with appropriate security for
 file uploads.
@@ -60,6 +71,22 @@ later.
    misused to compromise collections from other machines.
 
 ![](1__vzszs0OjRzdqMRlXbesuNw.png)
+
+6. Setting up service account HMAC keys. This provides the GCP S3
+   compatibility layer. These keys allow the caller to log into the
+   service account. Note that the keys only provide the same
+   permissions that the service account has above - they are simply an
+   alternative way of logging in.
+
+![Setting up HMAC keys](hmac_keys.png)
+
+Select `Settings -> Interoperability -> Access keys for service accounts`
+
+Use these keys as parameters for the `upload_s3()` plugin:
+
+*  endpoint="https://storage.googleapis.com"
+*  credentials_key="HMAC KEY",
+*  credentials_secret="HMAC KEY SECRET",
 
 
 Tags: #deployment #uploads #triage

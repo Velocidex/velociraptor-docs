@@ -891,7 +891,8 @@ function updateScroll() {
     if(!blockUpdate) {
         // Only update if necessary
         let current_scroll = window.scrollY;
-        let state_scroll = window.history.state.scroll;
+        let state_scroll = window.history.state &&
+            window.history.state.scroll;
         if(current_scroll != state_scroll) {
             window.history.replaceState({
                 scroll: current_scroll,
