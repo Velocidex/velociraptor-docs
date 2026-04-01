@@ -16,11 +16,30 @@ description: |
   Each alert includes useful context such as the artifact name, log level, error
   message, and the original log timestamp. Duplicate alerts may be suppressed for
   a configurable interval to avoid repeated notifications for the same problem.
+  Deduplication is performed on the alert name, which includes the event artifact
+  name. This means that at most one alert is produced per artifact within the
+  deduplication interval. You should check the event query log for errors; there
+  may be more than one.
 
   If `SeverityField` is set, the alert will also include a severity value taken
   from the matching `IncludeFilter` row. This can be used by
   `Exchange.Monitor.Alerts` to format, filter, and forward the alert as an
   e-mail notification.
+
+  If you extend IncludeFilter with additional custom columns, these will be
+  added to the alert as extra data. For instance, if you want to add a helpful
+  description to a particular error, you can use IncludeFilter as follows:
+
+  | Artifact | Level | Message | Severity | Explanation |
+  | -------- | ----- | ------- | -------- | ----------- |
+  | .+ | DEFAULT | fork/exec .+ no such file or directory | high | Executable not found on system |
+  | .+ | ERROR | .+ | medium | |
+
+  With this filter we will pick up any attempt of using `execve` with a non-
+  existent binary. This would normally not produce an error, but it would
+  definitely break important functionality in most artifacts. Remember that the
+  filters are matched from top to bottom, i.e. put your most specific filters
+  at the top.
 
   Note that many errors produced by native VQL functions and plugins are logged
   with the `DEFAULT` level rather than `ERROR`. To alert on these, either add
@@ -46,7 +65,9 @@ parameters:
   - name: IncludeFilter
     type: csv
     description: |
-      Only include messages matching these artifacts, log levels and messages
+      Only include messages matching these artifacts, log levels and messages.
+      Severity defines severity. Any additional columns are added as fields
+      with the same name to the alert. First match is used.
     default: |
       Artifact,Level,Message,Severity
       .+,ERROR,.+,medium
@@ -74,13 +95,22 @@ export: |
                   args=(Timestamp.String, humanize(time=Timestamp))),
       else='(never)')
 
+  LET RemoveEmptyStrs(Item) = to_dict(item={
+      SELECT _key,
+             _value
+      FROM items(item=Item)
+      WHERE _value != ""
+    })
+
+  LET _FilterLogic = (NOT Artifact OR artifact =~ Artifact)
+     AND (NOT Level OR level =~ Level)
+          AND (NOT Message OR message =~ Message)
+
   // Return true if any CSV filter row matches the artifact, level, and message.
   // This lets both include and exclude tables share the same matching logic.
   LET IncludeLog(artifact, level, message, filter) =
       any(items={
-      SELECT artifact =~ Artifact
-              AND (NOT Level OR level =~ Level)
-                   AND (NOT Message OR message =~ Message) AS Result
+      SELECT _FilterLogic AS Result
       FROM filter
     },
           filter='x=>x.Result')
@@ -93,10 +123,17 @@ export: |
 
   LET GetSeverity(artifact, level, message) = SELECT Severity
     FROM IncludeFilter
-    WHERE artifact =~ Artifact
-     and level =~ Level
-          and message =~ Message
+    WHERE _FilterLogic
     LIMIT 1
+
+  LET GetErrorContext(artifact, level, message) = SELECT *
+    FROM column_filter(exclude='^(Artifact|Level|Message|Severity)$',
+                       query={
+      SELECT *
+      FROM IncludeFilter
+      WHERE _FilterLogic
+      LIMIT 1
+    })
 
   // Add an optional severity field to the alert payload:
   LET SeverityArgs = if(condition=SeverityField,
@@ -107,6 +144,10 @@ export: |
                                    level=Level,
                                    message=Message).Severity[0]),
                         else=dict())
+
+  LET ErrorContext = GetErrorContext(artifact=Artifact,
+                                     level=Level,
+                                     message=Message)[0]
 
 sources:
   - query: |
@@ -145,14 +186,14 @@ sources:
 
       // Build the final alert context from the matching log row, including a
       // human-readable log timestamp:
-      LET AlertArgs = dict(dedup=DedupInterval,
-                           name=format(format='Server event query error in %v',
-                                       args=Artifact),
-                           Level=Level,
-                           Error=Message,
-                           `Log timestamp`=TimestampString(
-                             Timestamp=timestamp(string=Timestamp)),
-                           Artifact=Artifact) + SeverityArgs
+      LET AlertArgs = RemoveEmptyStrs(Item=SeverityArgs + ErrorContext) +
+          dict(
+            dedup=DedupInterval,
+            name=format(format='Server event query error in %v', args=Artifact),
+            Level=Level,
+            Error=Message,
+            `Log timestamp`=TimestampString(Timestamp=timestamp(string=Timestamp)),
+            Artifact=Artifact)
 
       // On each interval, inspect only the recent log window and raise alerts for
       // matching entries:
