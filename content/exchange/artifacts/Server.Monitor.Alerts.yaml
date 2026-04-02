@@ -1,0 +1,654 @@
+name: Server.Monitor.Alerts
+author: Andreas Misje – @misje
+description: |
+  Send an e-mail when an alert is created.
+
+  This artifact watches `Server.Internal.Alerts` and forwards matching alerts by
+  e-mail. The notification includes alert metadata such as client, alert time,
+  server time, message, artifact name/type, and any context passed to `alert()`.
+
+  Output can be sent as either HTML or plain text. Nested alert context can be
+  flattened to make complex values easier to read, and per-field and total row
+  limits help keep notifications compact.
+
+  Additional client metadata may be included through `ClientMetadata`, which is
+  useful for adding context such as serial number, owner, or any other custom
+  information.
+
+  By default, context rows with false-like values are omitted from the e-mail.
+  Set `KeepEmptyRows` to keep them.
+
+  `SeverityTransforms` can derive a normalised severity from one or more fields
+  in the alert context. The derived severity is added to the notification title
+  and body and may also be used with `SeverityThreshold` to send only selected
+  severities. If multiple transforms match, the last matching value is used.
+
+  Example:
+
+  SeverityTransforms:
+  ```
+  Member,Regex,Replace
+  level,(?i)warning,medium
+  level,(?i)critical,high
+  ```
+
+  SeverityThreshold:
+  ```
+  ["medium", "high"]
+  ```
+
+  ## Alert context
+
+  When using `alert()`, any free-form arguments passed to the function are
+  available in `event_data`. This is referred to as "context" by this artifact.
+  This context can be used to include any additional information that helps
+  explain the alert. For instance, if you want to create an alert from
+  Sigma.Windows.Hayabusa.Monitoring events, you may want to add fields
+  like Channel, EID, Level, Title, RecordID, Details. If you are creating
+  alerts based on eBPF events, perhaps you want to include filenames, process
+  call chains, ProcInfo etc.
+
+  The more relevant context you add, the more useful the alert and the
+  resulting notification will be. Use `ContextInclude` and `ContextExclude`,
+  as well as the row and value limits to adjust how much information to include.
+
+  Nested dicts and arrays in the context can be flattened for a more readable
+  notification with `FlattenContext`. This will transform something like the
+  following, a nested dict value for the `alert()` argument "Details", from
+
+  | Key | Value |
+  | --- | ----- |
+  | Details | { "EventID": 1, "Image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "Hashes": { "SHA256": "A1B2C3D4E5F60718293A4B5C6D7E8F90123456789ABCDEF0011223344556677" }, "Parent": { "Image": "C:\\Windows\\explorer.exe", "ProcessId": 4120 }, "Connections": [ { "DestinationIp": "198.51.100.42", "DestinationPort": 443 } ] } |
+
+  to
+
+  | Key | Value |
+  | --- | ----- |
+  | Details.EventID | 1 |
+  | Details.Image | C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe |
+  | Details.Hashes.SHA256 | A1B2C3D4E5F60718293A4B5C6D7E8F90123456789ABCDEF0011223344556677 |
+  | Details.Parent.Image | C:\Windows\explorer.exe |
+  | Details.Parent.ProcessId | 4120 |
+  | Details.Connections.0.DestinationIp | 198.51.100.42 |
+  | Details.Connections.0.DestinationPort | 443 |
+
+  ## Client and flow details
+
+  Detailed information about the client and the flow (if relevant) are included
+  in separate tables, if enabled. Use `ClientMetadata` to add additional client
+  information. If you are creating alerts from a server monitoring artifact
+  monitoring client event queries (or flow completions / logs), and want to
+  display client and flow information from the original source, the fields
+
+  - ClientId
+  - FlowId
+  - Artifact
+  - ArtifactType
+
+  can be set to override the information set by the server monitoring artifact.
+  For instance, set ClientId to that of the source client instaed of having
+  client_id reported as "server", or set Artifact and ArtifactType to that of
+  the monitored artifact instead of getting the information about the server
+  event artifact.
+
+type: SERVER_EVENT
+
+parameters:
+  - name: Recipients
+    type: csv
+    description: |
+      E-mail addresses that will receive the message. Required unless
+      NotifyExecutor is true.
+    default: |
+      Address
+
+  - name: NotifyExecutor
+    description: |
+      If the alert originates from a flow and the flow creator can be resolved,
+      send an e-mail to that user (in addition to `Recipients`). If the creator
+      username already looks like an e-mail address, it will be used directly.
+    type: bool
+    default: false
+
+  - name: NotifyExecutorDomains
+    type: csv
+    description: |
+      If `NotifyExecutor` is enabled, but the creator username is not a valid
+      e-mail address, use this transformation table to convert usernames into
+      e-mail addresses, e.g. ".+,example.org"
+    default: |
+      UsernameRegex,Domain
+
+  - name: Sender
+    description: |
+      Sender e-mail address. REQUIRED.
+
+  - name: HTML
+    type: bool
+    description: |
+      Send an HTML-formatted message instead of plain text.
+    default: true
+
+  - name: AlertMsgInclude
+    type: regex
+    description: |
+      Only forward alerts matching this message.
+    default: .+
+
+  - name: AlertMsgExclude
+    type: regex
+    description: |
+      Ignore alerts matching this message.
+
+  - name: ServerSecret
+    description: |
+      Secret used to configure server, port, username, password and skip_verify.
+      Required.
+    default: notify_mail_secret
+
+  - name: SendInterval
+    type: int
+    description: |
+      Required number of seconds that must pass between e-mails (globally on the
+      server), otherwise the e-mail will be dropped. Set to -1 to send an e-mail
+      for every flow completion.
+    default: 10
+
+  - name: IncludeClientDetails
+    type: bool
+    description: |
+      Include details about the client, like FQDN, system, OS etc. The alert must
+      originate from a client collection or monitoring artifact unless `ClientId`
+      is set in the alert context.
+    default: true
+
+  - name: ClientMetadata
+    type: csv
+    description: |
+      Include selected client metadata as additional context in the e-mail. If
+      `Alias` is set, the metadata field is renamed. Requires
+      `IncludeClientDetails`.
+    default: |
+      Field,Alias
+
+  - name: IncludeFlowDetails
+    type: bool
+    description: |
+      Include information about the originating flow, such as the creator and
+      artifact arguments, when the alert comes from a collection. You may specify
+      (override) the flow ID by setting the variable `FlowId` in the context.
+
+  - name: IncludeArtifactDetails
+    type: bool
+    description: |
+      Include details about the artifact the alert comes from. This may be helpful
+      when debugging, but otherwise it will be too noisy.
+    default: false
+
+  - name: KeepEmptyRows
+    type: bool
+    description: |
+      By default, rows with false-like values are removed from the e-mail. Enable
+      this to keep them and preserve a more consistent layout.
+
+  - name: SeverityTransforms
+    type: csv
+    description: |
+      A table of `event_data` members that may be used to derive a severity,
+      optionally with regex replacement. The derived severity is used in the
+      e-mail title/body and by `SeverityThreshold`. If multiple rows match, the
+      last match wins.
+    default: |
+      Member,Regex,Replace
+      level,(?i)warn,medium
+      level,(?i)error,high
+      Level,high,High
+      Level,critical,critical
+      severity,,
+      Severity,,
+
+  - name: SeverityThreshold
+    type: json_array
+    description: |
+      If this list is non-empty, and a severity is derived via
+      `SeverityTransforms`, only alerts whose derived severity is in this list
+      will produce an e-mail.
+    default: "[]"
+
+  - name: FlattenContext
+    type: bool
+    description: |
+      Flatten arguments passed to `alert()` so nested structures are easier to
+      read, e.g. `{a: {b: 42}, c: [{d: foo, e: bar}]}` becomes
+      `{a.b: 42, c.0.d: foo, c.0.e: bar}`.
+    default: true
+
+  - name: ContextInclude
+    type: regex
+    description: |
+      Only include context fields matching this regex. If `FlattenContext` is
+      enabled, the regex is appllied to the unnested field.
+    default: .+
+
+  - name: ContextExclude
+    type: regex
+    description: |
+      Do not include context fields matching this regex. If `FlattenContext` is
+      enabled, the regex is appllied to the unnested field.
+
+  - name: ContextFieldLimit
+    type: int
+    description: |
+      Maximum number of characters to display for each context field. Applied
+      after flattening/unnesting if FlattenContext is set. Too large fields
+      are elided in the middle. Absolute max limit is 1,000.
+    default: 100
+
+  - name: ContextValueLimit
+    type: int
+    description: |
+      Maximum number of characters to display for each context value. Applied
+      after flattening/unnesting if FlattenContext is set. Absolute max limit
+      is 10,000.
+    default: 1000
+
+  - name: ContextRowLimit
+    type: int
+    description: |
+      Maximum number of context rows to include (after flattening/unnesting).
+      Absolute max limit is 100.
+    default: 30
+
+imports:
+  - Server.Alerts.Mail
+
+sources:
+  - query: |
+      LET S = scope()
+
+      LET AbsoluteMaxContextFieldLength <= 1000
+
+      LET AbsoluteMaxContextValueLength <= 10000
+
+      LET AbsoluteMaxContextRows <= 100
+
+      LET MaxKeyLen <= MinVal(A=ContextFieldLimit, B=AbsoluteMaxContextFieldLength)
+
+      LET MaxValLen <= MinVal(A=ContextValueLimit, B=AbsoluteMaxContextValueLength)
+
+      LET MaxRows <= MinVal(A=ContextRowLimit, B=AbsoluteMaxContextRows)
+
+      LET IncludeMsg = NOT AlertMsgInclude OR Message =~
+          AlertMsgInclude
+
+      LET ExcludeMsg = AlertMsgExclude
+         AND Message =~ AlertMsgExclude
+
+      LET MsgMatched = IncludeMsg
+         AND NOT ExcludeMsg
+
+      LET Alerts = SELECT
+          timestamp(epoch=now()) AS ServerTime,
+          timestamp(epoch=timestamp) AS AlertTime,
+          event_data.ClientId || S.client_id AS ClientId,
+          event_data.FlowId || S.flow_id AS FlowId,
+          name AS Message,
+          event_data.Artifact || S.artifact AS ArtifactName,
+          event_data.ArtifactType || S.artifact_type AS ArtifactType,
+          event_data AS Context
+        FROM watch_monitoring(artifact='Server.Internal.Alerts')
+        WHERE MsgMatched
+
+      LET FlattenedContext = if(condition=FlattenContext,
+                                then=Unnest(Item=Context),
+                                else=Context)
+
+      LET UsersAddrs(Username) = SELECT
+          format(format='%v@%v', args=(Username, Domain)) AS Addr
+        FROM NotifyExecutorDomains
+        WHERE Username =~ UsernameRegex
+
+      LET CreatorAddrs(Creator) = if(condition=NotifyExecutor
+                                      AND Creator =~ '[^@]+@.+',
+                                     then=(Creator, ),
+                                     else=UsersAddrs(Username=Creator).Addr)
+
+      LET GetSeverity = get(item=Context, member=Member)
+
+      // Apply severity transforms in order and keep every successful match.
+      // A row may either regex-rewrite the source value, or simply pass through
+      // the original value when the member exists and optionally matches Regex.
+      LET Severities = SELECT Member AS Name,
+                              if(condition=Regex
+                                  AND Replace,
+                                 then=regex_replace(
+                                   source=GetSeverity,
+                                   re=Regex,
+                                   replace=Replace),
+                                 else=if(
+                                   condition=NOT Regex OR
+                                     GetSeverity =~ Regex,
+                                   then=GetSeverity)) AS Level
+        FROM SeverityTransforms
+        WHERE Level
+
+      // The last matching transform wins, allowing later rows to override earlier ones.
+      LET Severity = Severities.Level[-1]
+
+      // Used to remove the original severity field and possibly client/flow/artifact
+      // override fields from the context:
+      LET SeverityDummyDict = to_dict(item={
+          SELECT Member AS _key
+          FROM SeverityTransforms
+        }) + dict(Severity=NULL,
+                  ClientId=NULL,
+                  FlowId=NULL,
+                  Artifact=NULL,
+                  ArtifactType=NULL)
+
+      // Build the mail subject/header text
+      LET Title(IncludeMessage) = template(
+          template='''{{- if .ClientId | eq "server" -}}
+      {{- "Server alert" -}}
+      {{- else -}}
+      {{- "Alert from client " }}{{ .ClientName -}}
+      {{- end -}}
+      {{- if .IncludeMessage -}}
+      {{- if .Severity }} ({{ .Severity }}){{ end -}}
+      {{- ": " }}{{ .Message -}}
+      {{ end }}''',
+          expansion=dict(
+            IncludeMessage=IncludeMessage,
+            ClientId=ClientId,
+            ClientName=client_info(
+              client_id=ClientId).os_info.hostname,
+            Severity=Severity || '',
+            Message=ElideRight(
+              String=Message)))
+
+      LET Boldify(String, HTML) = if(condition=HTML,
+                                     then=format(format='<b>%v</b>', args=String),
+                                     else=String)
+
+      LET EscapeIfHTML(String, HTML) = if(condition=HTML,
+                                          then=SortOfEscapeHTML(String=String),
+                                          else=String)
+
+      // Drop false-like values from a dict when compact output is preferred.
+      // This is used both for context rows and for optional whole sections.
+      LET RemoveEmpties(Obj, DoIt=true) = if(
+          condition=DoIt,
+          then=to_dict(item={
+          SELECT _key,
+                 _value
+          FROM items(item=Obj)
+          WHERE _value
+        }),
+          else=Obj)
+
+      LET Summary(HTML) = format(
+          format='An alert was sent from %v at %v: %v',
+          args=(if(condition=ClientId = 'server',
+                   then='the server',
+                   else=client_info(client_id=ClientId).os_info.hostname),
+              AlertTime, Boldify(String=EscapeIfHTML(String=
+                                                       ElideRight(
+                                                                  String=
+                                                                    Message,
+
+                                                                  Length=1000),
+                                                     HTML=
+                                                       HTML),
+                                 HTML=HTML)))
+
+      LET AlertInfo = dict(`Server time`=if(condition=ServerTime >
+                                              AlertTime,
+                                            then=TimestampString(
+                                              Timestamp=ServerTime)),
+                           `Alert time`=TimestampString(Timestamp=AlertTime),
+                           `Severity`=Severities.Level[-1],
+                           `Message`=if(
+                             condition=HTML,
+                             then=FormatString(String=Message, Length=300),
+                             else=Message),
+                           `Artifact`=if(condition=ArtifactName,
+                                         then=Link(
+                                           URL=link_to(
+                                             artifact=ArtifactName,
+                                             raw=true),
+                                           Name=ArtifactName,
+                                           HTML=HTML)),
+                           `Artifact type`=ArtifactType)
+
+      // Apply include/exclude regexes after optional flattening so nested fields
+      // can be selected by their fully qualified key names.
+      LET FilterContextKeys(Context) = to_dict(item={
+          SELECT *
+          FROM items(item=Context)
+          WHERE _key =~ ContextInclude
+           AND (NOT ContextExclude OR NOT _key =~ ContextExclude)
+        })
+
+      // Start from the alert context, optionally drop empty values, and remove the
+      // original severity members since their derived value is already shown above.
+      LET AlertDetailsDict = FilterContextKeys(
+          Context=RemoveEmpties(Obj=FlattenedContext - SeverityDummyDict,
+                                DoIt=NOT KeepEmptyRows))
+
+      // Render alert context as a headerless two-column HTML table, enforcing
+      // key/value truncation and a hard row cap to keep messages readable.
+      LET AlertDetailsHTML = FullTable(Rows={
+          SELECT *
+          FROM items(item=FormatDict(Dict=AlertDetailsDict,
+                                     KeyLength=MaxKeyLen,
+                                     ValueLength=MaxValLen))
+        },
+                                       Headers=array(),
+                                       MaxRows=MaxRows,
+                                       FormatData=false)
+
+      // Plain-text rendering uses a simple key/value table with the same elision
+      // limits, but without HTML escaping or markup.
+      LET AlertDetailsPlain = Table(
+          Values=ElideDict(Dict=AlertDetailsDict,
+                           KeyLength=MaxKeyLen,
+                           ValueLength=MaxValLen),
+          HTML=false,
+          KeepEmpty=KeepEmptyRows)
+
+      LET AlertDetails = if(condition=HTML,
+                            then=AlertDetailsHTML,
+                            else=AlertDetailsPlain)
+
+      // Remove information that is not available (and will be misprinted):
+      LET AdjustFlowInfo(InfoDict) = InfoDict - dict(`Collection finished`=NULL)
+
+      // FlowInfo() comes from the mail artifact and assumes completed flows.
+      // For monitor alerts we only have partial flow state, so fetch flow data
+      // when possible and strip fields that would otherwise render misleadingly.
+      LET FlowDetails = if(condition=ClientId
+                            AND FlowId
+                                 AND IncludeFlowDetails,
+                           then={
+          SELECT AdjustFlowInfo(InfoDict=FlowInfo(HTML=true)) AS HTML,
+                 AdjustFlowInfo(InfoDict=FlowInfo(HTML=false)) AS PlainText
+          FROM flows(client_id=ClientId, flow_id=FlowId)
+        },
+                           else={
+          SELECT '' AS HTML,
+                 '' AS PlainText
+          FROM scope()
+        })
+
+      // Convert a list of "key"–"value" dicts into a single key–value dict:
+      LET ParamDict(Env) = to_dict(item={
+          SELECT _value.key AS _key,
+                 _value.value AS _value
+          FROM items(item=Env)
+        }) || NULL
+
+      // Helper function for a nested array loop (ust to rename "_value"):
+      LET LabelSpecs(Specs) = SELECT _value AS Spec
+        FROM foreach(row=Specs)
+
+      // linter: invalid_arg:unlabelled|labelled
+      LET ClientMonitoring = SELECT *
+        FROM combine(unlabelled={
+          SELECT NULL AS Label,
+                 _value.artifact AS Artifact,
+                 ParamDict(Env=_value.parameters.env) AS Params
+          FROM foreach(row=get_client_monitoring().artifacts.specs)
+        },
+                     labelled={
+          SELECT *
+          FROM foreach(row=get_client_monitoring().label_events,
+                       query={
+          SELECT _value.label AS Label,
+                 Spec.artifact AS Artifact,
+                 ParamDict(Env=Spec.parameters.env) AS Params
+          FROM LabelSpecs(Specs=_value.artifacts.specs)
+        })
+        })
+
+      LET ServerMonitoring = SELECT _value.artifact AS Artifact,
+                                    ParamDict(Env=_value.parameters.env) AS Params
+        FROM foreach(row=get_server_monitoring().specs)
+
+      // linter: invalid_arg:client|server
+      LET EventArtifactInfo = SELECT *
+        FROM combine(client=ClientMonitoring, server=ServerMonitoring)
+        WHERE Artifact = ArtifactName
+
+      LET ArtifactDefinition = SELECT name,
+                                      type,
+                                      author,
+                                      built_in,
+                                      is_inherited,
+                                      required_permissions,
+                                      implied_permissions,
+                                      metadata
+        FROM artifact_definitions(names=ArtifactName)
+
+      // Spend at most one seconds looking through the audit log for recent
+      // Artifact and event table modifications:
+      LET AuditLog = generate(
+          query={
+          SELECT *
+          FROM query(
+            query={
+          SELECT *
+          FROM monitoring(start_time=now() - 86400,
+                          artifact="Server.Audit.Logs",
+                          client_id="server")
+          WHERE (operation = 'SetArtifactFile'
+             and details.artifact = ArtifactName) OR operation IN ('SetServerMonitoringState', 'SetClientMonitoringState')
+          ORDER BY _ts DESC
+        },
+            timeout=1,
+            inherit=true)
+        })
+
+      LET ArtifactModInfo = SELECT
+          TimestampString(Timestamp=timestamp(epoch=_ts)) AS ModifiedAt,
+          principal AS ModifiedBy
+        FROM AuditLog
+
+      LET EventTableModInfo = SELECT
+          TimestampString(Timestamp=timestamp(epoch=_ts)) AS EventTableModifiedAt,
+          principal AS EventTableModifiedBy
+        FROM AuditLog
+        WHERE (operation = 'SetServerMonitoringState'
+           AND ArtifactType = 'SERVER_MONITORING') OR (operation = 'SetClientMonitoringState'
+           AND ArtifactType = 'CLIENT_EVENT')
+
+      LET ArtifactInfo = Unnest(
+          Item=PrefixDict(Dict=ArtifactDefinition[0] + ArtifactModInfo[0],
+                          Prefix='Definition') + (PrefixDict(
+              Dict=EventArtifactInfo[0] + EventTableModInfo[0],
+              Prefix='Execution') - dict(Artifact=NULL)))
+
+      LET ArtifactDetailsDict = RemoveEmpties(Obj=ArtifactInfo,
+                                              DoIt=NOT KeepEmptyRows)
+
+      LET ArtifactDetailsHTML = FullTable(Rows={
+          SELECT *
+          FROM items(item=FormatDict(Dict=ArtifactDetailsDict,
+                                     KeyLength=MaxKeyLen,
+                                     ValueLength=MaxValLen))
+        },
+                                          Headers=array(),
+                                          MaxRows=MaxRows,
+                                          FormatData=false)
+
+      // Plain-text rendering uses a simple key/value table with the same elision
+      // limits, but without HTML escaping or markup.
+      LET ArtifactDetailsPlain = Table(
+          Values=ElideDict(Dict=ArtifactDetailsDict,
+                           KeyLength=MaxKeyLen,
+                           ValueLength=MaxValLen),
+          HTML=false,
+          KeepEmpty=KeepEmptyRows)
+
+      LET ArtifactDetails = if(condition=HTML,
+                               then=ArtifactDetailsHTML,
+                               else=ArtifactDetailsPlain)
+
+      // Assemble the named mail sections, then drop any that ended up empty so
+      // the final message only includes relevant context.
+      LET Tables(HTML) = RemoveEmpties(
+          Obj=dict(
+            `Alert summary`=Table(Values=AlertInfo,
+                                  HTML=HTML,
+                                  KeepEmpty=KeepEmptyRows),
+            `Alert details`=AlertDetails,
+            `Client details`=if(condition=IncludeClientDetails
+                                 AND ClientId != 'server',
+                                then=Table(Values=ClientInfo(HTML=HTML),
+                                           HTML=HTML,
+                                           KeepEmpty=KeepEmptyRows)),
+            `Flow details`=Table(Values=if(condition=HTML,
+                                           then=FlowDetails[0].HTML,
+                                           else=FlowDetails[0].PlainText),
+                                 HTML=HTML,
+                                 KeepEmpty=KeepEmptyRows),
+            `Artifact details`=if(condition=IncludeArtifactDetails
+                                   AND ArtifactName,
+                                  then=ArtifactDetails)))
+
+      LET PlainText = format(format='%v\n\n%v',
+                             args=(Summary(HTML=false), join(
+                                 array=items(item=Tables(HTML=false))._value,
+                                 sep='\n\n')))
+
+      LET Footer = format(format='Sent from Velociraptor by %v',
+                          args=ArtifactLinks(Artifacts='Server.Monitor.Alerts',
+                                             HTML=HTML)[0].Link)
+
+      LET HTMLBody = MailTemplate(Title=Title(IncludeMessage=false),
+                                  Tables=Tables(HTML=true),
+                                  Summary=Summary(HTML=HTML),
+                                  Footer=Footer,
+                                  Warning=true)
+
+      LET Results = SELECT *
+        FROM Alerts
+        WHERE NOT Severities OR NOT SeverityThreshold OR
+          Severity IN SeverityThreshold
+
+      SELECT *
+      FROM foreach(row=Results,
+                   query={
+          SELECT *
+          FROM Artifact.Generic.Utils.SendEmail(
+            Secret=ServerSecret,
+            Recipients=Unique(
+              Items=Recipients.Address + if(
+                condition=NotifyExecutor,
+                then=CreatorAddrs(Creator=FlowDetails[0].PlainText.Creator),
+                else=array())),
+            Sender=Sender,
+            HTMLMessage=if(condition=HTML, then=HTMLBody),
+            PlainTextMessage=PlainText,
+            Subject=Title(IncludeMessage=true),
+            Period=SendInterval)
+        })
