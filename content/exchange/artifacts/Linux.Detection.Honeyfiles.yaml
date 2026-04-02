@@ -45,6 +45,21 @@ sources:
         SELECT OS From info() where OS = 'linux' AND version(plugin="watch_ebpf") >= 2
 
     query: |
+      // Get detailed process information
+      LET GetProcInfo(EventData, Tracker, pTracker, System) =
+          dict(Image=Tracker.Data.Exe || EventData.cmdpath ||
+                 System.ProcessName,
+               ImageName=System.ProcessName,
+               CommandLine=Tracker.Data.CommandLine,
+               ParentImage=pTracker.Data.Exe,
+               ParentCommandLine=pTracker.Data.CommandLine,
+               CreateTime=timestamp(epoch=EventData.ctime) ||
+                 System.ThreadStartTime,
+               CallChain=join(array=process_tracker_callchain(
+                                id=System.HostProcessID).Data.Name,
+                              sep="->"),
+               TrackerHit=if(condition=Tracker != NULL, then=true, else=false))
+      
       LET RandomChars(size) = SELECT
           format(format="%02x", args=rand(range=256)) AS HexByte
         FROM range(end=size)
@@ -70,13 +85,10 @@ sources:
                                     len(list=unhex(string=MagicBytes)) - 7 AS _PaddingSize
         FROM Honeyfiles
       
-      LET target_users = SELECT User,
-                                Homedir,
-                                Uid
-        FROM Artifact.Linux.Sys.Users()
-        WHERE int(int=Uid) >= 1000
-         AND NOT Homedir = '/nonexistent'
-              AND User =~ HoneyUserRegex
+      LET target_users = SELECT Name AS User,
+                                OSPath AS Homedir
+        FROM glob(globs="/home/*")
+        WHERE User =~ HoneyUserRegex
       
       LET show_honeyfiles = SELECT TargetPath,
                                    Enabled,
@@ -133,12 +145,10 @@ sources:
       
       LET CurrentPid <= getpid()
       
-      // Exclude containers by checking process id.
       LET TargetEvents = SELECT *
         FROM watch_ebpf(events=["security_file_open"], policy=Policy)
         WHERE System.EventName = "security_file_open"
-         AND System.ProcessID != CurrentPid
-              AND System.HostProcessID = System.ProcessID
+         AND System.HostProcessID != CurrentPid
       
       LET AuditEvents = SELECT
           *, timestamp(string=System.Timestamp) AS Timestamp,
@@ -146,25 +156,19 @@ sources:
         FROM TargetEvents
         WHERE IsHoneyFile != NULL
       
-      LET Track = SELECT
-          Timestamp,
-          System.ProcessID AS Pid,
-          EventData.pathname AS FileName,
-          process_tracker_get(id=System.ProcessID).Data AS ProcInfo,
-          join(array=process_tracker_callchain(id=System.ProcessID).Data.Name,
-               sep="->") AS CallChain,
-          (System.ProcessID + EventData.pathname) AS DedupKey
-        FROM AuditEvents
-        WHERE NOT ProcInfo.Exe =~ ProcessExceptionsRegex
+      LET Track = SELECT Timestamp,
+                         EventData.pathname AS FileName,
+                         *,
+                         (System.HostProcessID + EventData.pathname) AS DedupKey
+        FROM delay(query=AuditEvents, delay=30)
       
       SELECT Timestamp,
-             Pid,
+             System.HostProcessID AS Pid,
              FileName,
-             ProcInfo,
-             CallChain
-      FROM dedup(query={
-          SELECT *
-          FROM delay(query=Track, delay=5)
-        },
-                 key="DedupKey",
-                 timeout=2)
+             GetProcInfo(
+               EventData=EventData,
+               Tracker=process_tracker_get(id=System.HostProcessID),
+               pTracker=process_tracker_get(id=System.HostParentProcessID),
+               System=System) AS ProcInfo
+      FROM dedup(query=Track, key="DedupKey", timeout=30)
+      WHERE NOT ProcInfo.Image =~ ProcessExceptionsRegex
