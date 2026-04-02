@@ -45,6 +45,8 @@ sources:
         SELECT OS From info() where OS = 'linux' AND version(plugin="watch_ebpf") >= 2
 
     query: |
+      LET ComputerName <= dict(H={ SELECT Hostname FROM info() }).H[0].Hostname
+      
       // Get detailed process information
       LET GetProcInfo(EventData, Tracker, pTracker, System) =
           dict(Image=Tracker.Data.Exe || EventData.cmdpath ||
@@ -53,6 +55,7 @@ sources:
                CommandLine=Tracker.Data.CommandLine,
                ParentImage=pTracker.Data.Exe,
                ParentCommandLine=pTracker.Data.CommandLine,
+               Username=Tracker.Data.Username,
                CreateTime=timestamp(epoch=EventData.ctime) ||
                  System.ThreadStartTime,
                CallChain=join(array=process_tracker_callchain(
@@ -158,17 +161,20 @@ sources:
       
       LET Track = SELECT Timestamp,
                          EventData.pathname AS FileName,
+                         GetProcInfo(EventData=EventData,
+                                     Tracker=process_tracker_get(
+                                       id=System.HostProcessID),
+                                     pTracker=process_tracker_get(
+                                       id=System.HostParentProcessID),
+                                     System=System) AS ProcInfo,
                          *,
                          (System.HostProcessID + EventData.pathname) AS DedupKey
-        FROM delay(query=AuditEvents, delay=30)
+        FROM delay(query=AuditEvents, delay=3)
       
       SELECT Timestamp,
+             ComputerName,
              System.HostProcessID AS Pid,
              FileName,
-             GetProcInfo(
-               EventData=EventData,
-               Tracker=process_tracker_get(id=System.HostProcessID),
-               pTracker=process_tracker_get(id=System.HostParentProcessID),
-               System=System) AS ProcInfo
-      FROM dedup(query=Track, key="DedupKey", timeout=30)
+             ProcInfo
+      FROM dedup(query=Track, key="DedupKey", timeout=10)
       WHERE NOT ProcInfo.Image =~ ProcessExceptionsRegex
