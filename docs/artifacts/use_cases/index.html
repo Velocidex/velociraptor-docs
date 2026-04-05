@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Other use cases for artifacts :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352328" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352328" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352328" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352328" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352328" rel="stylesheet">
+    <link href="/css/theme.css?1775352328" rel="stylesheet">
+    <link href="/css/tabs.css?1775352328" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352328" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352328" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352328" rel="stylesheet"><link href="/css/syntax.css?1775352328" rel="stylesheet"><link href="/css/light.css?1775352328" rel="stylesheet"><link href="/css/hljs.css?1775352328" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352328" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352328"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/artifacts/use_cases/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/artifacts\/use_cases\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/artifacts/use_cases/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Other use cases for artifacts</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#wrapper-artifacts">Wrapper Artifacts</a></li>
+    <li><a href="#utility-artifacts">Utility Artifacts</a></li>
+    <li><a href="#server-bootstrap-artifacts">Server &ldquo;Bootstrap&rdquo; Artifacts</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#client-startup-artifacts">Client startup artifacts</a></li>
+    <li><a href="#sourceless-artifacts">Sourceless Artifacts</a>
+      <ul>
+        <li><a href="#export-only-artifacts-sharing-vql-via-export-imports">Export-only artifacts (sharing VQL via export-imports)</a></li>
+        <li><a href="#event-queues">Event queues</a></li>
+        <li><a href="#documentation">Documentation</a></li>
+        <li><a href="#standalone-tool-definitions">Standalone Tool definitions</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Other use cases for artifacts
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>While you can learn a lot about what artifacts are usually used for by looking
+through the <a href="/artifact_references/">hundreds of artifacts</a>
+that ship with the Velociraptor binary, there are certainly many more use cases
+&ndash; including ones that nobody has even thought of yet!</p>
+<p>Artifacts are a powerful mechanism for encapsulating information, including but
+not limited to VQL.</p>
+<h2 id="wrapper-artifacts">Wrapper Artifacts</h2>
+<p>Using the <code>Artifact</code> plugin, you can
+<a href="/docs/vql/artifacts/calling/">call other artifacts</a>.
+A common use for this is to create &ldquo;wrapper artifacts&rdquo; which can:</p>
+<ul>
+<li>combine multiple artifacts into a single artifact
+<pre><code class="language-yaml">name: Windows.Packs.Persistence
+description: This artifact pack collects various persistence mechanisms in Windows.
+sources:
+  - name: WMI Event Filters
+    query: SELECT * FROM Artifact.Windows.Persistence.PermanentWMIEvents()
+  - name: Startup Items
+    query: SELECT * FROM Artifact.Windows.Sys.StartupItems()
+  - name: Debug Bootstraping
+    query: SELECT * FROM Artifact.Windows.Persistence.Debug()
+</code></pre>
+</li>
+<li>add additional sources to an existing artifact
+<pre><code class="language-yaml">name: Generic.Client.DiskSpace.Extra
+sources:
+  - name: DiskSpace
+    query: SELECT * FROM Artifact.Generic.Client.DiskSpace()
+  - name: ExtraInfo
+    query: SELECT * FROM ...
+</code></pre>
+</li>
+<li>filter or manipulate results from other artifacts
+<pre><code class="language-yaml">name: Custom.Autoruns.ServicesCompsec
+sources:
+  - query: |
+      SELECT * FROM Artifact.Windows.Sysinternals.Autoruns()
+      WHERE Category =~ &quot;Services&quot; AND `Launch String` =~ &quot;COMSPEC&quot;
+</code></pre>
+</li>
+<li>provide custom parameter defaults (i.e. your own &ldquo;presets&rdquo;) to other
+artifacts
+<pre><code class="language-yaml">name: Find.DotnetStartupHooks
+description: Finds DOTNET_STARTUP_HOOKS using Windows.Search.FileFinder
+parameters:
+  - name: SearchFilesGlobTable
+    type: csv
+    default: |
+      Glob
+      HKEY_USERS\*\Environment\DOTNET_STARTUP_HOOKS\*
+      HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment\DOTNET_STARTUP_HOOKS\*
+  - name: Accessor
+    default: registry
+  - name: Upload_File
+    default: Y
+sources:
+  - precondition: SELECT OS From info() where OS = 'windows'
+    query: |
+      SELECT * FROM Artifact.Windows.Search.FileFinder(SearchFilesGlobTable=SearchFilesGlobTable,
+                                                      Accessor=Accessor,
+                                                      Upload_File=Upload_File)
+</code></pre>
+</li>
+<li>simplify UI parameter choices for users by only presenting them with
+parameters that you want them to change, while hiding and defining preset
+values for parameters that you <em>don&rsquo;t</em> want them to change
+<pre><code class="language-yaml">name: Find.DotnetStartupHooks
+description: Finds DOTNET_STARTUP_HOOKS using Windows.Search.FileFinder
+parameters:
+    # This parameter can be customized by the user
+  - name: SearchFilesGlobTable
+    type: csv
+    default: |
+      Glob
+      HKEY_USERS\*\Environment\DOTNET_STARTUP_HOOKS\*
+      HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment\DOTNET_STARTUP_HOOKS\*
+
+    # This parameter is hidden from the user
+  - name: Accessor
+    default: registry
+    type: hidden
+
+    # This parameter is hidden from the user
+  - name: Upload_File
+    default: Y
+    type: hidden
+sources:
+  - precondition: SELECT OS From info() where OS = 'windows'
+    query: |
+      SELECT * FROM Artifact.Windows.Search.FileFinder(SearchFilesGlobTable=SearchFilesGlobTable,
+                                                      Accessor=Accessor,
+                                                      Upload_File=Upload_File)
+</code></pre>
+</li>
+</ul>
+<p>Wrapper artifacts can be used as a way to limit users&rsquo; access to built-in
+artifact capabilities by using the above methods and then also
+<a href="/docs/artifacts/security/#hidden-artifacts">hiding the called artifact</a>
+from the GUI. In addition you could consider applying the security mechanisms
+described <a href="/docs/artifacts/security/">here</a> which allow
+low-privilege users to only run certain &ldquo;Basic&rdquo; artifacts.</p>
+<h2 id="utility-artifacts">Utility Artifacts</h2>
+<p>The last example showed how to make an artifact that performs a very specific
+task by wrapping the functionality contained in the more general-purpose
+<code>Windows.Search.FileFinder</code> artifact. In that context, the called artifact
+serves as a utility for the calling artifact.</p>
+<p>The calling artifact in the previous example contained much simpler logic than
+the called artifact, however that&rsquo;s not always the case: the
+<code>Windows.KapeFiles.Targets</code> artifact is an example of a relatively complex
+artifact that wraps the much simpler <code>Generic.Collectors.File</code> utility artifact.</p>
+<p>Another utility artifact that you may often encounter is
+<code>Generic.Utils.FetchBinary</code>. This artifact contains VQL which ensures the
+delivery of <a href="/docs/artifacts/tools/">third-party tools</a> to the
+endpoint, so you will see it called in just about every artifact that uses
+tools. These artifacts could easily have implemented the same logic to ensure
+tool delivery, but it is cleaner, more efficient, and more consistent to offload
+the logic to a purpose-built artifact that can be reliably reused.</p>
+<p>Artifacts designed to be used as utilities (sometimes also referred to as
+&ldquo;helper&rdquo; artifacts) might not be intended to be collected directly, and this may
+influence the design of the artifact. For example, the
+<code>Generic.Utils.FetchBinary</code> artifact is not intended to be collected directly
+and therefore doesn&rsquo;t need to be particularly user-friendly. To avoid confusing
+users with such artifacts you could choose to
+<a href="/docs/artifacts/security/#hidden-artifacts">hide these artifacts</a>,
+as mentioned previously. Hidden artifacts can still be called from other
+artifacts.</p>
+<h2 id="server-bootstrap-artifacts">Server &ldquo;Bootstrap&rdquo; Artifacts</h2>
+<h4 id="server-initialization-config-options">Server initialization config options</h4>
+<p>Instead of using the GUI to configure the collection of <code>CLIENT_EVENT</code> and
+<code>SERVER_EVENT</code> artifacts, we can preconfigure these items via the config.</p>
+<p>The config settings which provide this are:</p>
+<ul>
+<li>
+<p><code>Frontend.default_client_monitoring_artifacts</code>: specifies the initial client
+monitoring table that will be created.</p>
+<p>By default, Velociraptor collects endpoint CPU and Memory telemetry from all
+clients using the <code>Generic.Client.Stats</code> artifact. You can remove this, or
+specify a different set of <code>CLIENT_EVENT</code> artifacts to collect.</p>
+</li>
+<li>
+<p><code>Frontend.default_server_monitoring_artifacts</code>: specifies an initial set of
+<code>SERVER_EVENT</code> artifacts that will be set in the server monitoring table and
+thus collected.</p>
+<p>By default, we collect only the <code>Server.Monitor.Health</code> artifact.</p>
+</li>
+</ul>
+<p>The config also allows us to define users and orgs that will be created when the
+server is first run, using the following settings:</p>
+<ul>
+<li>
+<p><code>GUI.initial_users</code></p>
+</li>
+<li>
+<p><code>GUI.initial_orgs</code></p>
+</li>
+</ul>
+<h4 id="going-beyond-the-config-options">Going beyond the config options</h4>
+<p>While the options described above may be sufficient for some server setup
+situations, we may want to automate many other things during setup so that we
+don&rsquo;t have to rely on time-consuming and potentially error-prone manual
+configuration via the GUI.</p>
+<p>One of the limitations of the config settings in the previous section is that
+you can&rsquo;t specify custom parameter values for your default monitoring artifacts.</p>
+<p>To overcome these limitations and allow for almost unlimited flexibility,
+Velociraptor allows us to specify
+<a href="/knowledge_base/tips/startup_artifacts/">startup artifacts</a>
+via the config setting:</p>
+<ul>
+<li><code>Frontend.initial_server_artifacts</code></li>
+</ul>
+<p>This setting allows us to specify one or more <code>SERVER</code> artifacts that will be
+run when the Velociraptor server is started for the very first time. The server
+detects that it is being run for the first time by checking for the presence of
+the file <code>config/install_time.json.db</code> in the datastore: if the file is not
+found then the server assumes it&rsquo;s the first time it is being run.</p>
+<p>Since this setting allows us to run artifacts on the server, this gives us
+access to the full capabilities of VQL in setting up the server. There are many
+VQL functions that can be useful when initializing a new server which don&rsquo;t have
+equivalent config settings.</p>
+<p>We could, for example:</p>
+<ul>
+<li>create users <em>and</em> customize user profiles using the <code>user_create</code> and
+<code>user_options</code> functions.</li>
+<li>create orgs using <code>org_create</code>.</li>
+<li>create and start <a href="/docs/hunting/">hunts</a> using the <code>hunt_add</code>
+function.</li>
+<li>create <a href="/docs/notebooks/">notebooks</a> using the <code>notebook_create</code>
+function (based on custom notebook templates).</li>
+<li>configure client monitoring using the <code>set_client_monitoring</code> function or
+server monitoring using the <code>set_server_monitoring</code> function.</li>
+<li>run <a href="/docs/gui/artifacts/#importing-artifacts-from-velociraptors-specialized-artifact-projects">server artifacts which import other artifacts</a></li>
+<li>run <a href="#standalone-tool-definitions">artifacts which define and download tools</a>
+to the server&rsquo;s tool inventory <br>
+(or we could add/update tools using VQL&rsquo;s <code>inventory_add</code> and <code>inventory_get</code>
+functions).</li>
+<li>run server artifacts which create client installer packages or offline collectors:
+<ul>
+<li><a href="/artifact_references/pages/server.utils.createmsi/"><code>Server.Utils.CreateMSI</code></a></li>
+<li><a href="/artifact_references/pages/server.utils.createlinuxpackages/"><code>Server.Utils.CreateLinuxPackages</code></a></li>
+<li><a href="/artifact_references/pages/server.utils.createcollector/"><code>Server.Utils.CreateCollector</code></a></li>
+</ul>
+</li>
+</ul>
+<p>Because we can specify multiple server artifacts in the
+<code>initial_server_artifacts</code> setting, we might choose to have several artifacts
+where each one addresses a particular aspect of server initialization, or we
+could have one larger &ldquo;bootstrap&rdquo; artifact that does everything we want.</p>
+<p>These artifacts are just normal server artifacts which can be developed and
+tested by running them in the &ldquo;Server Artifacts&rdquo; screen in the GUI (obviously on
+a non-production/development server!).</p>
+<p>These initial server artifacts can also
+<a href="/docs/vql/artifacts/calling/">call other artifacts</a>
+(either built-in or custom) to aid in the setup process.</p>
+<p>Custom artifacts, as well as the &ldquo;bootstrap&rdquo; artifacts themselves, can be
+<a href="/docs/artifacts/#loading-importing-and-saving-artifacts">embedded in the config or loaded from a folder</a>.</p>
+<h2 id="client-startup-artifacts">Client startup artifacts</h2>
+<p>Sometimes we may want the client to do something very early on, as soon as it
+starts and potentially even before client enrollment.</p>
+<p>Such startup tasks could be, for example:</p>
+<ul>
+<li>copying a file from the network</li>
+<li>cleaning up some old files</li>
+<li>setting up or starting a VPN client (perhaps to enable the client to connect
+to the server)</li>
+<li>adding an anti-malware exclusion (see for example
+<a href="/exchange/artifacts/pages/defenderexclusion/">Windows.Utils.DefenderExclusion</a>)</li>
+</ul>
+<p>The <code>Client.additional_event_artifacts</code> configuration item allows us to do this
+by specifying artifacts that should run when the client starts. Although these
+artifacts are run as event artifacts (never expected to terminate), they can
+contain any valid client-side VQL.</p>
+<p>These artifacts will run every time the client starts, even before enrollment.
+Because client artifacts are normally delivered from the server &ndash; and in this
+case the client might not have enrolled with the server yet &ndash; this setting
+generally requires the artifacts to be included in the client config&rsquo;s
+<code>autoexec.artifact_definitions</code> section.</p>
+<p>If these artifacts are run before enrollment then the data produced will be
+queued and delivered to the server after enrollment, as event queries. To ensure
+that the server has a corresponding
+<a href="/docs/artifacts/event_queues/#client-event-queues">event queue</a>
+to receive these events, you&rsquo;ll also need to also add the artifact to the
+server&rsquo;s artifact repository.</p>
+<h2 id="sourceless-artifacts">Sourceless Artifacts</h2>
+<p>Artifacts can have ZERO or more sources. It may seem strange at first to think
+about having artifacts with no sources, however this allows for some interesting
+use cases.</p>
+<p>We have already seen that
+<a href="">notebook templates</a>
+are a special use case for artifact definitions. While notebook templates do
+have sources, these sources contain templates for notebook cells rather than
+just queries. The notebook cell templates themselves may or may not contain
+queries.</p>
+<p>Furthermore, if you&rsquo;ve spent any time looking through the list of built-in
+artifacts, you may have noticed several that have little to nothing but an
+artifact name. The purpose of such artifacts is to establish
+<a href="/docs/artifacts/event_queues/">event queues</a>
+on the server, which intercept and queue messages from clients and from the
+server itself. These artifacts <em>can</em> have sources, which would typically do
+something with the event messages, but they aren&rsquo;t required to have sources; for
+example, other artifacts may be created to act on the event queue&rsquo;s messages.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/artifacts/use_cases/event_queues_01_.svg" alt="Server.Internal.ClientDelete establishes a server event queue"
+         class="inline"
+         height="519"
+         width="1143.452157598499"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="event_queues_01.svg"><i class="fa fa-download"></i></a>
+    Server.Internal.ClientDelete establishes a server event queue
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/artifacts/use_cases/event_queues_02.png"
+         class="inline"
+         alt="That’s all it contains"
+         width="851" height="423">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="event_queues_02.png">
+      <i class="fa fa-download"></i></a>
+    That’s all it contains
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Artifacts without sources cannot be directly launched via the GUI and are also
+filtered out from all the preset
+<a href="/docs/artifacts/managing/#searching-artifacts">filter views</a>
+on the Artifacts screen, except for the filter category &ldquo;Include Empty Sources&rdquo;.
+This filter will show all artifacts including those that don&rsquo;t have sources.
+This aspect is useful because it means you can define sourceless artifacts
+without them being collectible, and therefore such artifacts don&rsquo;t clutter
+artifact selection lists or confuse users.</p>
+<h3 id="export-only-artifacts-sharing-vql-via-export-imports">Export-only artifacts (sharing VQL via export-imports)</h3>
+<p>An artifact with no sources and an
+<a href="/docs/artifacts/export_imports/">export</a> section can be used:</p>
+<ul>
+<li>for defining shared variables or &ldquo;constants&rdquo;</li>
+<li>for defining shared custom functions and plugins</li>
+</ul>
+<p>This can help ensure consistency across artifacts and simplify artifacts that
+have large sections of generically reusable code. In particular, artifacts that
+include binary parser profiles can be difficult to read because you first have
+to scroll past the potentially very long profile definition to get to the VQL.
+Putting such lengthy blocks into a sourceless artifact&rsquo;s export section and
+then importing it when needed makes the latter artifact much more user-friendly.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/artifacts/use_cases/export_reusability_.svg" alt="Reusing VQL can improve artifact legibility"
+         class="inline"
+         height="1801.639598348745"
+         width="1421.742224112358"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="export_reusability.svg"><i class="fa fa-download"></i></a>
+    Reusing VQL can improve artifact legibility
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Ultimately when the <em>importing</em> artifact is collected the imports are resolved
+and the compiled artifact is sent to the client which includes the imported VQL,
+so there is no saving in terms of network bandwidth. It just improves legibility
+and code consistency.</p>
+<h3 id="event-queues">Event queues</h3>
+<p>An artifact with no sources can be used to define server and client
+<a href="/docs/artifacts/event_queues/">event queues</a>.</p>
+<p>These may have sources, but can still be useful without them, as demonstrated by
+the <code>Server.Internal.ClientDelete</code> artifact shown above.</p>
+<h3 id="documentation">Documentation</h3>
+<p>Artifacts with no sources and only
+<a href="/docs/artifacts/basic_fields/#informational-fields">informational fields</a>
+can be used to store internal documentation; particularly since the
+<code>description</code> field <a href="/docs/artifacts/basic_fields/#-description-">supports Markdown</a>
+and is indexed and searchable in the GUI.</p>
+<p>You could perhaps use it to store Velociraptor SOP documentation or other
+DFIR-related information that could be useful to the team working on your
+server.</p>
+<p>As mentioned above, artifacts without sources cannot be directly launched via
+the GUI and are also filtered out from all the preset filter views on the
+Artifacts screen, which means that you can create such artifacts without them
+being collectible, and without them appearing on artifact selection lists where
+they might confuse users.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/artifacts/use_cases/artifact_documentation.png"
+         class="inline"
+         alt="Artifacts-as-documentation"
+         width="1280" height="871">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="artifact_documentation.png">
+      <i class="fa fa-download"></i></a>
+    Artifacts-as-documentation
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="standalone-tool-definitions">Standalone Tool definitions</h3>
+<p>It is possible to use a single sourceless artifact to store all your tool
+definitions, which can then be referred to (using only the name and optionally a
+version number) in other artifacts that use those tools.</p>
+<p>In fact Velociraptor itself takes this approach with the built-in
+<code>Server.Internal.ToolDependencies</code> artifact, which is used to provide tool
+definitions for the other Velociraptor binaries so that they are available for
+tasks such as creating offline collectors.</p>
+<p>If you define such an artifact as a <code>SERVER</code> artifact then running it will
+download the tools from the URLs specified in the tool definitions. This
+provides a quick way to ensure that your server&rsquo;s tools inventory is populated
+with all the tools that your <code>CLIENT</code> artifacts will need <em>before</em> you collect
+those artifacts.</p>
+<p>Manually collecting such an artifact also serves as a way to update all the
+tools defined in the artifact, as it will re-download them when <code>serve_locally</code>
+is set to <code>true</code>.</p>
+<p>You can additionally use such an artifact as one of your
+&ldquo;<a href="/docs/artifacts/use_cases/#server-bootstrap-artifacts">server bootstrap artifacts</a>&rdquo;,
+as described above.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352328"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352328"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352328"></script>
+    <script src="/js/jquery.sticky.js?1775352328"></script>
+    <script src="/js/featherlight.min.js?1775352328"></script>
+    <script src="/js/highlight.min.js?1775352328"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352328"></script>
+    <script src="/js/learn.js?1775352328"></script>
+    <script src="/js/hugo-learn.js?1775352328"></script>
+    
+    
+
+  </body>
+</html>

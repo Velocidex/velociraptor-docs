@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Guidelines for prose (written content) :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352328" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352328" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352328" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352328" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352328" rel="stylesheet">
+    <link href="/css/theme.css?1775352328" rel="stylesheet">
+    <link href="/css/tabs.css?1775352328" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352328" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352328" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352328" rel="stylesheet"><link href="/css/syntax.css?1775352328" rel="stylesheet"><link href="/css/light.css?1775352328" rel="stylesheet"><link href="/css/hljs.css?1775352328" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352328" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352328"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/dev/prose-guidelines/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/dev\/prose-guidelines\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/dev/prose-guidelines/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Guidelines for prose (written content)</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#html-content">HTML content</a></li>
+      </ul>
+    </li>
+    <li><a href="#markdown-content">Markdown content</a>
+      <ul>
+        <li><a href="#inline-code">Inline code</a></li>
+        <li><a href="#block-code">Block code</a></li>
+        <li><a href="#admonitions-notices">Admonitions (notices)</a></li>
+        <li><a href="#unordered-lists">Unordered lists</a></li>
+        <li><a href="#shell-commands">Shell commands</a></li>
+        <li><a href="#page-links">Page links</a></li>
+      </ul>
+    </li>
+    <li><a href="#page-content-structure">Page content structure</a></li>
+    <li><a href="#page-metadata">Page metadata</a>
+      <ul>
+        <li><a href="#kb-articles">KB articles</a></li>
+        <li><a href="#vql-reference-documents">VQL reference documents</a></li>
+        <li><a href="#examples">Examples</a></li>
+        <li><a href="#markdown-links">Markdown Links</a></li>
+        <li><a href="#ui-elements">UI Elements</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Guidelines for prose (written content)
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>This document provides guidance for writing style in the Velociraptor
+documentation. It specifies some informal standards and advice with the goal of
+ensuring as much consistency as possible in our prose content.</p>
+<p>The guidance in this document is intended to:</p>
+<ul>
+<li>allow newcomers to quickly familiarize themselves with the writing style rules
+that have been used in the existing content on the documentation website.</li>
+<li>centralize style-related decisions for written content.</li>
+</ul>
+<p>This document is WIP.</p>
+<h3 id="html-content">HTML content</h3>
+<p>Only use inline HTML when markdown cannot provide the same result, and even so
+try to avoid inline HTML except where absolutely unavoidable. Having as much
+content as possible in markdown form simplifies website style changes, as well
+as automated style checking and content updates.</p>
+<p>When writing content in HTML the same style rules apply as described in the
+Markdown Content section.</p>
+<h2 id="markdown-content">Markdown content</h2>
+<p>Our docs website is compiled by Hugo which interprets markdown based on the
+Commonmark standard. Therefore it&rsquo;s best to avoid using features from any other
+flavors of markdown such as GFM, as they may not be rendered correctly or at
+all by Hugo.</p>
+<h3 id="inline-code">Inline code</h3>
+<p>We try not to overuse <code>inline code</code> or else the prose starts to look like
+patchwork.</p>
+<p>Use <code>inline code</code> only for:</p>
+<ul>
+<li>file paths, file names</li>
+<li>CLI commands, keywords, flags.</li>
+<li>VQL keywords, variable names and snippets</li>
+<li>Artifact names, artifact parameter/key names and values, field names and
+values.</li>
+</ul>
+<p>Do not use it for:</p>
+<ul>
+<li>brand names</li>
+<li>terms that the user will type (use quotes instead)</li>
+<li>defining new terms (use bold text instead)</li>
+<li>names of GUI controls, controls and menu options (use bold text instead)</li>
+</ul>
+<p>For the last 2 cases above it is recommended to use bold text for emphasis the
+first time a term is used. When doing so it is not necessary to use quotes
+around the term.</p>
+<h3 id="block-code">Block code</h3>
+<p>Preferably format VQL code blocks with the VQL formatter, for consistency.</p>
+<h3 id="admonitions-notices">Admonitions (notices)</h3>
+<p>Try not to overuse them. Especially try not to have two or more of them
+together. Try to only use them when the reader&rsquo;s attention need to be drawn to
+something specific.</p>
+<p>Often the content in an admonition can be rewritten as part of the normal text
+body.</p>
+<h3 id="unordered-lists">Unordered lists</h3>
+<p>Use <code>-</code> not <code>*</code>. Just for consistency.</p>
+<h3 id="shell-commands">Shell commands</h3>
+<p>privilege indicator - this will depend on future changes to styling. TBD</p>
+<p>use generic file names. omit version numbers and arch.</p>
+<p>use platform alternatives where applicable</p>
+<p>When providing command examples we should use a consistent order for the
+command components: <code>[binary]</code> <code>[command]</code> <code>[subcommand]</code> <code>[flags]</code> <code>[args]</code></p>
+<h3 id="page-links">Page links</h3>
+<p>Use markdown for page links so that Hugo will do link checking
+automatically. For internal links that are broken, Hugo will fail to
+compile and let you know immediately.</p>
+<h2 id="page-content-structure">Page content structure</h2>
+<h2 id="page-metadata">Page metadata</h2>
+<p>Always try to add a <code>summary</code>. When using the <code>children</code> shortcode it defaults
+to creating a summary if one is not defined, which means it grabs the first few
+paragraphs from the page. Usually this &ldquo;auto-summary&rdquo; is unsightly so it&rsquo;s
+better to carefully craft one rather than relying on &ldquo;auto&rdquo;.</p>
+<h3 id="kb-articles">KB articles</h3>
+<p>Tags are recommended. These help users find related content. Do not use
+meaningless tags such as &ldquo;velociraptor&rdquo; or &ldquo;DFIR&rdquo;.</p>
+<h3 id="vql-reference-documents">VQL reference documents</h3>
+<p>Top level section headings should be level-3.</p>
+<ul>
+<li>Description (heading is autogenerated)
+<ul>
+<li>Lead</li>
+<li>Body</li>
+</ul>
+</li>
+<li>Example (or Examples)
+<ul>
+<li>one or more examples.</li>
+</ul>
+</li>
+<li>Notes
+<ul>
+<li>notes or cautions about common considerations or pitfalls</li>
+</ul>
+</li>
+<li>See also
+<ul>
+<li>links to other functions that are likely to be related or of interest.</li>
+</ul>
+</li>
+</ul>
+<h3 id="examples">Examples</h3>
+<p>Examples should <em>always</em> use Level-6 headings, regardless of their position in
+the heading hierarchy. This ensures a consistent style for all examples and
+allows Hugo to create a hyperlink for each example, which is important for
+community support on forums like Discord.</p>
+<p>For example:</p>
+<pre><code class="language-md">###### Example
+</code></pre>
+<p>L6 headings also won&rsquo;t appear in TOCs, so this prevents that from accidentally
+happening.</p>
+<p>Don&rsquo;t use a colon after the word Example, but use one if it&rsquo;s a lead-in phrase
+such as &ldquo;For example&hellip;:&rdquo;</p>
+<h3 id="markdown-links">Markdown Links</h3>
+<p>Avoid line breaks in links.</p>
+<h3 id="ui-elements">UI Elements</h3>
+<p>Bold all UI elements (buttons, tabs, menu names) to help users scan the page
+quickly.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352328"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352328"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352328"></script>
+    <script src="/js/jquery.sticky.js?1775352328"></script>
+    <script src="/js/featherlight.min.js?1775352328"></script>
+    <script src="/js/highlight.min.js?1775352328"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352328"></script>
+    <script src="/js/learn.js?1775352328"></script>
+    <script src="/js/hugo-learn.js?1775352328"></script>
+    
+    
+
+  </body>
+</html>

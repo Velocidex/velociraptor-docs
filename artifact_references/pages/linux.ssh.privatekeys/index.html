@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Linux.Ssh.PrivateKeys :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352327" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352327" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352327" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352327" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352327" rel="stylesheet">
+    <link href="/css/theme.css?1775352327" rel="stylesheet">
+    <link href="/css/tabs.css?1775352327" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352327" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352327" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352327" rel="stylesheet"><link href="/css/syntax.css?1775352327" rel="stylesheet"><link href="/css/light.css?1775352327" rel="stylesheet"><link href="/css/hljs.css?1775352327" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352327" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352327"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/artifact_references/pages/linux.ssh.privatekeys/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/artifact_references\/pages\/linux.ssh.privatekeys\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/artifact_references/pages/linux.ssh.privatekeys.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Linux.Ssh.PrivateKeys</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents"></nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/client-artifact">Client Artifact</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Linux.Ssh.PrivateKeys
+            </h1>
+            
+          
+
+        
+
+
+<p>SSH Private keys can be either encrypted or unencrypted. Unencrypted
+private keys are more risky because an attacker can use them without
+needing to unlock them with a password.</p>
+<p>In particular, AWS instances are usually accessed by way of an SSH
+key pair generated by the AWS console. This key is not encrypted by
+default and it is possible that administrators simply save the key
+on their systems without encrypting it.</p>
+<p>This artifact searches for private keys in the usual locations and
+also records if they are encrypted or not. Not all key types are
+supported</p>
+<p>NOTE: To encrypt your private key run:</p>
+<pre><code>ssh-keygen -p -f my_private_key
+</code></pre>
+<p>Change the glob to /** if you would like to search the entire filesystem.
+Be aware, this is an expensive operation.</p>
+<pre><code class="language-yaml">
+name: Linux.Ssh.PrivateKeys
+description: |
+  SSH Private keys can be either encrypted or unencrypted. Unencrypted
+  private keys are more risky because an attacker can use them without
+  needing to unlock them with a password.
+
+  In particular, AWS instances are usually accessed by way of an SSH
+  key pair generated by the AWS console. This key is not encrypted by
+  default and it is possible that administrators simply save the key
+  on their systems without encrypting it.
+
+  This artifact searches for private keys in the usual locations and
+  also records if they are encrypted or not. Not all key types are
+  supported
+
+  NOTE: To encrypt your private key run:
+
+  ```
+  ssh-keygen -p -f my_private_key
+  ```
+
+  Change the glob to /** if you would like to search the entire filesystem.
+  Be aware, this is an expensive operation.
+
+reference:
+  - https://attack.mitre.org/techniques/T1145/
+  - https://coolaj86.com/articles/the-openssh-private-key-format/
+  - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
+
+precondition: SELECT OS From info() where OS = 'linux'
+
+parameters:
+  - name: KeyGlobs
+    default: /home/*/.ssh/{*.pem,id_rsa,id_dsa}
+
+  - name: ExcludePathRegex
+    default: "^/(proc|sys|run|snap)"
+    type: regex
+    description: If this regex matches the path of any directory we do not even descend inside of it.
+
+  - name: LocalFilesystemOnly
+    default: Y
+    type: bool
+    description:  |
+      When set, we stay on local attached filesystems including loop, attached
+      disk, cdrom, device mapper, and excluding proc, nfs etc. When set, it can
+      potentially miss keys in some Linux distros. If not sure, or if being run
+      across multiple distros, then we recommend that you not set it.
+
+sources:
+  - query: |
+      -- For new OpenSSH format
+      LET SSHProfile = '''[
+        ["Header", 0, [
+        ["Magic", 0, "String", {
+            "length": 100,
+        }],
+        ["cipher_length", 15, "uint32b"],
+        ["cipher", 19, "String", {
+            "length": "x=&gt;x.cipher_length",
+        }]
+      ]]]
+      '''
+
+      -- Device major numbers considered local. See Linux.Search.FileFinder
+      LET LocalDeviceMajor &lt;= (NULL,
+          253, 7, 8, 9, 11, 65, 66, 67, 68, 69, 70,
+          71, 128, 129, 130, 131, 132, 133, 134, 135, 202, 253, 254, 259)
+
+      -- By default set to 'True', to only search local filesystems.
+      LET RecursionCallback = if(
+       condition=LocalFilesystemOnly,
+         then=if(condition=ExcludePathRegex,
+                 then="x=&gt;x.Data.DevMajor IN LocalDeviceMajor AND NOT x.OSPath =~ ExcludePathRegex",
+                 else="x=&gt;x.Data.DevMajor IN LocalDeviceMajor"),
+         else=if(condition=ExcludePathRegex,
+                 then="x=&gt;NOT x.OSPath =~ ExcludePathRegex",
+                 else=""))
+
+      LET _Hits = SELECT OSPath,
+           read_file(filename=OSPath, length=20240) AS Data
+        FROM glob(globs=KeyGlobs, recursion_callback=RecursionCallback)
+        WHERE Size &lt; 20000
+
+      LET Hits = SELECT OSPath, Data,
+             base64decode(
+                string=parse_string_with_regex(
+                    string=Data,
+                    regex="(?sm)KEY-----(.+)-----END").g1) || "" AS Decoded,
+            parse_string_with_regex(
+               string=Data,
+               regex="(BEGIN.* PRIVATE KEY)").g1 AS Header,
+            read_file(filename=OSPath.Dirname + (OSPath.Basename + ".pub") ) AS PublicKey
+      FROM _Hits
+      WHERE Header
+
+      LET OpenSSHKeyParser(OSPath, Decoded) = SELECT OSPath,
+         parse_binary(accessor="data", filename=Decoded,
+                      profile=SSHProfile, struct="Header") AS Parsed
+         FROM scope()
+
+      -- Support both types of ssh keys dependingg on the header
+      SELECT * FROM foreach(row={SELECT * FROM Hits},
+      query={
+        SELECT * FROM switch(
+          a={
+             -- new format
+             SELECT OSPath,
+                    Parsed.Magic AS KeyType,
+                    Parsed.cipher AS Cipher,
+                    Header, PublicKey
+             FROM OpenSSHKeyParser(OSPath= OSPath, Decoded=Decoded)
+             WHERE Header =~ "BEGIN OPENSSH PRIVATE KEY"
+          },
+          a2={
+             -- encrypted rsa key from e.g. putty
+             SELECT OSPath,
+                    "PKCS8" AS KeyType,
+                    parse_string_with_regex(string=Data,
+                      regex="DEK-Info: ([-a-zA-Z0-9]+)").g1 AS Cipher,
+                    Header, PublicKey
+             FROM scope()
+             WHERE Header =~ "BEGIN RSA PRIVATE KEY"
+               AND "Proc-Type: 4,ENCRYPTED" in Data
+          },
+          b={
+             -- unencrypted rsa key from e.g. AWS
+             SELECT OSPath,
+                    "PKCS8" AS KeyType,
+                    "none" AS Cipher,
+                    Header, PublicKey
+             FROM scope()
+             WHERE Header =~ "BEGIN (RSA )?PRIVATE KEY"
+          },
+          c={
+             -- old format encrypted
+             SELECT OSPath,
+                    "PKCS8" AS KeyType,
+                    "PKCS#5" AS Cipher,
+                    Header, PublicKey
+             FROM scope()
+             WHERE Header =~ "BEGIN ENCRYPTED PRIVATE KEY"
+          },
+          d={
+             -- catch all for unknown keys
+             SELECT OSPath,
+                    "Unknown" AS KeyType,
+                    "Unknown" AS Cipher,
+                    Header, PublicKey
+             FROM scope()
+          })
+      })
+
+</code></pre>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352327"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352327"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352327"></script>
+    <script src="/js/jquery.sticky.js?1775352327"></script>
+    <script src="/js/featherlight.min.js?1775352327"></script>
+    <script src="/js/highlight.min.js?1775352327"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352327"></script>
+    <script src="/js/learn.js?1775352327"></script>
+    <script src="/js/hugo-learn.js?1775352327"></script>
+    
+    
+
+  </body>
+</html>
+

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="Uncovering history with Velociraptor">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Digging into the System Resource Usage Monitor (SRUM) :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352327" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352327" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352327" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352327" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352327" rel="stylesheet">
+    <link href="/css/theme.css?1775352327" rel="stylesheet">
+    <link href="/css/tabs.css?1775352327" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352327" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352327" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352327" rel="stylesheet"><link href="/css/syntax.css?1775352327" rel="stylesheet"><link href="/css/light.css?1775352327" rel="stylesheet"><link href="/css/hljs.css?1775352327" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352327" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352327"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/blog/2019/2019-12-31_digging-into-the-system-resource-usage-monitor-srum-afbadb1a375/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/blog\/2019\/2019-12-31_digging-into-the-system-resource-usage-monitor-srum-afbadb1a375\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/2019/2019-12-31_digging-into-the-system-resource-usage-monitor-srum-afbadb1a375/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Digging into the System Resource Usage Monitor (SRUM)</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#uncovering-history-with-velociraptor">Uncovering history with Velociraptor</a>
+      <ul>
+        <li></li>
+        <li><a href="#the-execution-stats-source">The Execution Stats source</a></li>
+        <li><a href="#application-resource-usage">Application Resource Usage</a></li>
+      </ul>
+    </li>
+    <li><a href="#hunting-the-srum-database">Hunting the SRUM database</a></li>
+    <li><a href="#conclusions">Conclusions</a></li>
+    <li><a href="#training">Training</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Digging into the System Resource Usage Monitor (SRUM)
+            </h1>
+            
+          
+
+        
+
+
+
+	<h2 id="uncovering-history-with-velociraptor">Uncovering history with Velociraptor</h2>
+<h4 id="by-mike-cohen">By Mike Cohen</h4>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/0_yFgW11ar3mogfljd.jpg"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>Commonly in many incident response scenarios we need to gather evidence of program executions. For example, a phishing email delivering malware was sent to a user — did the user click on it? Did the malware run? was the email forwarded to any other users?</p>
+<p>One of the most useful sources of evidence of execution on Windows is the System Resource Usage Monitor (SRUM). It was first described by Yogesh Khatri in the seminal paper “<a href="https://www.sciencedirect.com/science/article/pii/S1742287615000031" target="_blank" >Forensic implications of System Resource Usage Monitor (SRUM) data in Windows 8</a>”.</p>
+<p>SRUM is a feature in modern Windows systems which collect statistics on execution of binaries. The information is stored in an Extensible Storage Engine (ESE) database. ESE is Microsoft’s proprietary single file database format, acting similarly to SQLite, as a default storage engine for many applications — including the SRUM database.</p>
+<p>As from the <a href="https://github.com/Velocidex/velociraptor/releases/tag/v0.3.7" target="_blank" >0.3.7 release of Velociraptor</a>, an ESE parser is built into the client, allowing VQL artifacts to directly query ESE databases. This opens up the exciting possibility of extracting and querying information from the SRUM database directly on the endpoint.</p>
+<p>Although this post will not go into detail on SRUM itself (This is covered in detail <a href="https://www.sans.org/cyber-security-summit/archives/file/summit-archive-1492184583.pdf" target="_blank" >elsewhere</a>), I will describe how Velociraptor’s SRUM artifact can be used to hunt efficiently across many thousands of endpoints to collect evidence relevant to DFIR investigations.</p>
+<p>Have you ever noticed the windows task manager’s “App History” tab?</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1_1t_puy5xiAPvR4XUosSQtg.png"
+         class="inline"
+         alt="The Task Manager App History tab" />
+  </div>
+  <figcaption>
+    The Task Manager App History tab
+  </figcaption>
+</figure>
+
+
+<em>The Task Manager App History tab</em></p>
+<p>This tab shows running counts of many applications, broken by user that ran them, including network traffic, and total CPU time. Where does the information come from?</p>
+<p>It turns out that the SRUM database is stored within tables inside the ESE database at <em>%windir%\System32\sru\SRUDB.dat.</em></p>
+<p>Let’s examine Velociraptor’s <strong>Windows.Forensics.SRUM</strong> artifact</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1_Ajiq0F2RaIoqhj8PnuoCvA.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>The artifact contains several sources — examining a different table within the SRUM ESE database. As can be seen, the ESE database is parsed using Velociraptor’s raw NTFS parser since it is usually locked while the system is running. The artifact allows filtering for a specific application name by regular expression.</p>
+<p>The SRUM database actually contains many tables collecting different runtime telemetry. Some of these tables are not publicly documented but may still contain valuable information. It is worthwhile inspecting the raw database file using an external tool (e.g. <a href="https://www.nirsoft.net/utils/ese_database_view.html" target="_blank" >Nirsoft **ESEDatabaseView</a>**). The <strong>Windows.Forensics.SRUM</strong> artifact will by default upload the raw ESE file to the server as well as parse it.</p>
+<p>To demonstrate the artifact, I am now going to collect it from one of my endpoints.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1_tQOsldVH7wYGPV56wr0xBA.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>I simply search for my endpoint in the GUI, then click* “Collect More Artifacts” *and search for <strong>SRUM</strong> in the search box. I then add this artifact and click “<strong>Next</strong>” to launch it.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1_WimaboQJfGvgXKNY6HeCEQ.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>The above shows that the endpoint took around 80 seconds to collect the entire artifact. This includes uploading the 28MB SRUM database, parsing some of the tables in it, and uploading the parsed results.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1_fG5W7kOMtrmnB3mnGuWyeQ.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>Viewing the logs generated by the executing query give an indication of how the query is progressing.</p>
+<h3 id="the-execution-stats-source">The Execution Stats source</h3>
+<p>Let&rsquo;s inspect a sample from the “Execution Stats” source</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1_3lM3jXI47Z1eDQVjoLSfYQ.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>We get some interesting information, such as the time an application ran (this is determined by the <strong>EndTime</strong> and <strong>DurationMS</strong> — the **Timestamp **column actually refers to when the ESE record was written which may be some time later), the user who ran it, and the duration it was executing. Sometimes the information also includes valid network transfer count which might be useful for some investigations (e.g. exfiltration).</p>
+<h3 id="application-resource-usage">Application Resource Usage</h3>
+<p>This artifact source stores cumulative information about the running executable. Therefore it can not be used to determine exact start time (The Timestamp field corresponds to when the record was written to the ESE database). The advantage here is that the full path is provided, making it easy to search for executables running from unusual locations (e.g. temp folders and network drives).</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1_RLUyUIKBk5VHpHwIlOMAKQ.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<h2 id="hunting-the-srum-database">Hunting the SRUM database</h2>
+<p>Sometimes we need to determine which endpoint in our fleet has run a particular binary — perhaps with a unique name. For example, a phishing campaign might launch a trojan malware with a specific name.</p>
+<p>To simulate this I copied a binary to the user’s temp folder with the unique name <code>sdfjhsdfc.exe</code>. I then ran it for a while.</p>
+<p>Next, I created a hunt, but this time, instead of dumping the entire SRUM table, I filtered the results by the name of the binary.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1_KGdoKsM1v3RcqRhqREVueg.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>Within minutes I was able to determine exactly which user executed the binary, and on which endpoint. If a machine is not online when I first launched the hunt, it will run the hunt when it next connected to the server and deliver its results later.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1_p7m7XfByE0RzuaeCB-GEfw.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<h2 id="conclusions">Conclusions</h2>
+<p>SRUM is an excellent source of evidence of execution of binaries. In practice we often see upwards of 60 days of evidence within the ESE database — so it goes back quite a long time!</p>
+<p>There is a wealth of information available within the SRUM database, but current Velociraptor artifacts have some limitations:</p>
+<ol>
+<li>
+<p>The data written to the SRUM ESE database is first cached in the registry and then flushed to the database periodically (This is why much of the time the <strong>Timestamp</strong> field will be much later than the <strong>EndTime)</strong>. Currently Velociraptor’s artifacts are not able to parse the registry cache so very recent executions will probably be missed.</p>
+</li>
+<li>
+<p>Currently Velociraptor only parses a few tables from the SRUM database, but many additional tables appear to be useful.</p>
+</li>
+</ol>
+<p>These limitations are likely to improve in future as more artifacts are written to fully extract information the SRUM database.</p>
+<h2 id="training">Training</h2>
+<p>If you happen to be in Sydney or Melbourne and would like to learn more about incident response techniques such as the SRUM database and how to apply them with Velociraptor, consider joining us in our <a href="https://www.velocidex.com/training/" target="_blank" >upcoming training events</a>.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352327"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352327"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352327"></script>
+    <script src="/js/jquery.sticky.js?1775352327"></script>
+    <script src="/js/featherlight.min.js?1775352327"></script>
+    <script src="/js/highlight.min.js?1775352327"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352327"></script>
+    <script src="/js/learn.js?1775352327"></script>
+    <script src="/js/hugo-learn.js?1775352327"></script>
+    
+    
+
+  </body>
+</html>

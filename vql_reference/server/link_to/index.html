@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>link_to :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352330" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352330" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352330" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352330" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352330" rel="stylesheet">
+    <link href="/css/theme.css?1775352330" rel="stylesheet">
+    <link href="/css/tabs.css?1775352330" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352330" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352330" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352330" rel="stylesheet"><link href="/css/syntax.css?1775352330" rel="stylesheet"><link href="/css/light.css?1775352330" rel="stylesheet"><link href="/css/hljs.css?1775352330" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352330" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352330"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/vql_reference/server/link_to/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/vql_reference\/server\/link_to\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">link_to</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#link_to">link_to</a>
+      <ul>
+        <li><a href="#description">Description</a></li>
+        <li><a href="#example">Example</a></li>
+        <li><a href="#notes">Notes</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+
+        
+
+
+
+	<div class="vql_item"></div>
+<h2 id="link_to">link_to</h2>
+<p><span class='vql_type label label-warning pull-right page-header'>Function</span></p>
+<div class="vqlargs"></div>
+<table>
+  <thead>
+      <tr>
+          <th>Arg</th>
+          <th>Description</th>
+          <th>Type</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>type</td>
+          <td>The type of link. Currently one of collection, hunt, artifact, event, debug</td>
+          <td>string</td>
+      </tr>
+      <tr>
+          <td>client_id</td>
+          <td></td>
+          <td>string</td>
+      </tr>
+      <tr>
+          <td>flow_id</td>
+          <td></td>
+          <td>string</td>
+      </tr>
+      <tr>
+          <td>upload</td>
+          <td>Upload object for the file to upload (upload object is returned by the upload() function)</td>
+          <td>ordereddict.Dict</td>
+      </tr>
+      <tr>
+          <td>tab</td>
+          <td>The tab to focus - can be overview, request, results, logs, notebook</td>
+          <td>string</td>
+      </tr>
+      <tr>
+          <td>text</td>
+          <td>If specified we emit a markdown style URL with a text</td>
+          <td>string</td>
+      </tr>
+      <tr>
+          <td>hunt_id</td>
+          <td>The hunt id to read.</td>
+          <td>string</td>
+      </tr>
+      <tr>
+          <td>artifact</td>
+          <td>The artifact to retrieve</td>
+          <td>string</td>
+      </tr>
+      <tr>
+          <td>raw</td>
+          <td>When specified we emit a raw URL (without autodetected text)</td>
+          <td>bool</td>
+      </tr>
+      <tr>
+          <td>org</td>
+          <td>If set the link accesses a different org. Otherwise we accesses the current org.</td>
+          <td>string</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="description">Description</h3>
+<p>Create a url linking to a particular part in the Velociraptor GUI.</p>
+<p>This function knows about how Velociraptor web app is routed
+internally and can help you generate a valid URL that links into
+the app. You can then use this URL to share a reference via
+e.g. email, slack or other means.</p>
+<p>The links generated will be in markdown format by default (i.e. of
+the for <code>[Text](url)</code>). If you need a raw link without the text,
+specify the <code>raw</code> parameter as TRUE.</p>
+<p>If a link text is not supplied, this function will create a
+default text message:</p>
+<ul>
+<li>For client links this text will also include the hostname</li>
+<li>For artifact links, this will include the artifact name</li>
+<li>For hunt, flows etc the text will be the hunt id, flow id etc.</li>
+</ul>
+<p>By default the link will refer to the current org but you can
+override this with the org id.</p>
+<p>If you want to display the links in the notebook within the GUI
+table you will need to set the column type to <code>url_internal</code> or
+<code>url</code>.</p>
+<h3 id="example">Example</h3>
+<pre><code class="language-vql">// Setting this in a notebook will tell the GUI to treat this
+// column as URL.
+LET ColumnTypes &lt;= dict(HuntLink=&quot;url_internal&quot;)
+
+SELECT link_to(hunt_id=&quot;H.1234&quot;) AS HuntLink,
+       link_to(client_id=&quot;C.123&quot;, flow_id=&quot;F.123&quot;) AS FlowLink,
+       link_to(client_id=&quot;C.123&quot;) AS ClientLink,
+       link_to(client_id=&quot;C.123&quot;, artifact=&quot;Custom.Artifact.Name&quot;,
+               text='Event link') AS ArtifactLink,
+       link_to(artifact=&quot;Custom.Artifact.Name&quot;),
+       link_to(upload=Upload) AS Download
+FROM scope()
+</code></pre>
+<h3 id="notes">Notes</h3>
+<p>This function makes no effort to check if the link is
+actually valid - i.e. it does not check that the client id refers
+to a real client, flow id to a real flow, etc.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352330"></script>
+    <script src="/js/jquery.sticky.js?1775352330"></script>
+    <script src="/js/featherlight.min.js?1775352330"></script>
+    <script src="/js/highlight.min.js?1775352330"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352330"></script>
+    <script src="/js/learn.js?1775352330"></script>
+    <script src="/js/hugo-learn.js?1775352330"></script>
+    
+    
+
+  </body>
+</html>

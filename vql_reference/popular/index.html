@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Frequently Used ✨ :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352330" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352330" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352330" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352330" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352330" rel="stylesheet">
+    <link href="/css/theme.css?1775352330" rel="stylesheet">
+    <link href="/css/tabs.css?1775352330" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352330" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352330" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352330" rel="stylesheet"><link href="/css/syntax.css?1775352330" rel="stylesheet"><link href="/css/light.css?1775352330" rel="stylesheet"><link href="/css/hljs.css?1775352330" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352330" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352330"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/vql_reference/popular/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/vql_reference\/popular\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Frequently Used ✨</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents"></nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Frequently Used ✨
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>These are the functions and plugins that are the most frequently used in
+<a href="/artifact_references/">Velociraptor&rsquo;s built-in artifacts</a> and the
+<a href="/exchange/">Community Exchange artifacts</a>. So we can infer that these are
+the most &ldquo;popular&rdquo; and therefore probably the most useful ones for everyday
+artifact writing.</p>
+<p>VQL provides a vast array of functions and plugins allowing queries to
+manipulate data and implement logic. Many are suitable for specific use
+cases, however most on this page are considered foundational to the VQL
+language. They are the general purpose VQL &ldquo;workhorses&rdquo;, which is why they
+are frequently used in the existing artifacts.</p>
+<p>If you are new to VQL then this is a good place to start and become
+acquainted with the commonly used functions and plugins.</p>
+<table>
+  <thead>
+      <tr>
+          <th>Plugin/Function</th>
+          <th><span class='vql_type'>Type</span></th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><a href="/vql_reference/popular/atoi/">atoi</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Convert a string to an integer</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/basename/">basename</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Return the basename of the path</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/chain/">chain</a></td>
+          <td><span class='vql_type'>Plugin</span></td>
+          <td>Chain the output of several queries into the same table</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/column_filter/">column_filter</a></td>
+          <td><span class='vql_type'>Plugin</span></td>
+          <td>Select columns from another query using regex</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/count/">count</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Counts the items</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/dict/">dict</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Construct a dict from arbitrary keyword args</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/execve/">execve</a></td>
+          <td><span class='vql_type'>Plugin</span></td>
+          <td>This plugin launches an external command and captures its STDERR,</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/expand/">expand</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Expand the path using the environment</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/filter/">filter</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Filters an array by regex or condition</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/flatten/">flatten</a></td>
+          <td><span class='vql_type'>Plugin</span></td>
+          <td>Flatten the columns in query</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/foreach/">foreach</a></td>
+          <td><span class='vql_type'>Plugin</span></td>
+          <td>Executes &lsquo;query&rsquo; once for each row in the &lsquo;row&rsquo; query</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/format/">format</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Format one or more items according to a format string</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/get/">get</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Gets the member field from the item</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/glob/">glob</a></td>
+          <td><span class='vql_type'>Plugin</span></td>
+          <td>Retrieve files based on a list of glob expressions</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/http_client/">http_client</a></td>
+          <td><span class='vql_type'>Plugin</span></td>
+          <td>Make a http request</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/humanize/">humanize</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Format items in human readable way</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/if/">if</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Conditional execution of query</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/if/">if</a></td>
+          <td><span class='vql_type'>Plugin</span></td>
+          <td>Conditional execution of query</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/info/">info</a></td>
+          <td><span class='vql_type'>Plugin</span></td>
+          <td>Get information about the running host</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/int/">int</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Truncate to an integer</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/items/">items</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Iterate over dict members producing _key and _value columns</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/items/">items</a></td>
+          <td><span class='vql_type'>Plugin</span></td>
+          <td>Enumerate all members of the item (similar to Python&rsquo;s items() method)</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/join/">join</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Join all the args on a separator</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/len/">len</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Returns the length of an object</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/log/">log</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Log a message to the query log stream</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/lowcase/">lowcase</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Returns the lowercase version of a string</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/memoize/">memoize</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Memoize a query into memory</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/netstat/">netstat</a></td>
+          <td><span class='vql_type'>Plugin</span></td>
+          <td>Collect network information</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/now/">now</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Returns the current time in seconds since epoch</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/plist/">plist</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Parse plist file</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/process_tracker_get/">process_tracker_get</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Get a single process from the global tracker</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/process_tracker_pslist/">process_tracker_pslist</a></td>
+          <td><span class='vql_type'>Plugin</span></td>
+          <td>List all processes from the process tracker</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/pslist/">pslist</a></td>
+          <td><span class='vql_type'>Plugin</span></td>
+          <td>Enumerate running processes</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/range/">range</a></td>
+          <td><span class='vql_type'>Plugin</span></td>
+          <td>Iterate over range</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/read_file/">read_file</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Read a file into a string</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/read_file/">read_file</a></td>
+          <td><span class='vql_type'>Plugin</span></td>
+          <td>Read files in chunks</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/regex_transform/">regex_transform</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Search and replace a string with multiple regex</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/scope/">scope</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>return the scope</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/scope/">scope</a></td>
+          <td><span class='vql_type'>Plugin</span></td>
+          <td>The scope plugin returns the current scope as a single row</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/set/">set</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Sets the member field of the item</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/sigma/">sigma</a></td>
+          <td><span class='vql_type'>Plugin</span></td>
+          <td>Evaluate sigma rules</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/split/">split</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Splits a string into an array based on a regexp separator</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/stat/">stat</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Get file information</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/str/">str</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Returns the string representation of the provided data</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/substr/">substr</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Create a substring from a string</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/switch/">switch</a></td>
+          <td><span class='vql_type'>Plugin</span></td>
+          <td>Conditional execution of multiple queries in order</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/tempdir/">tempdir</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Create a temporary directory</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/tempfile/">tempfile</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Create a temporary file and write some data into it</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/timestamp/">timestamp</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Convert from different types to a time</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/to_dict/">to_dict</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Construct a dict from a query</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/unzip/">unzip</a></td>
+          <td><span class='vql_type'>Plugin</span></td>
+          <td>Unzips a file into a directory</td>
+      </tr>
+      <tr>
+          <td><a href="/vql_reference/popular/upload/">upload</a></td>
+          <td><span class='vql_type'>Function</span></td>
+          <td>Upload a file to the upload service</td>
+      </tr>
+  </tbody>
+</table>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352330"></script>
+    <script src="/js/jquery.sticky.js?1775352330"></script>
+    <script src="/js/featherlight.min.js?1775352330"></script>
+    <script src="/js/highlight.min.js?1775352330"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352330"></script>
+    <script src="/js/learn.js?1775352330"></script>
+    <script src="/js/hugo-learn.js?1775352330"></script>
+    
+    
+
+  </body>
+</html>

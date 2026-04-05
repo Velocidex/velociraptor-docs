@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>How do I re-collect a failed artifact in a hunt? :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352330" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352330" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352330" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352330" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352330" rel="stylesheet">
+    <link href="/css/theme.css?1775352330" rel="stylesheet">
+    <link href="/css/tabs.css?1775352330" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352330" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352330" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352330" rel="stylesheet"><link href="/css/syntax.css?1775352330" rel="stylesheet"><link href="/css/light.css?1775352330" rel="stylesheet"><link href="/css/hljs.css?1775352330" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352330" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352330"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/knowledge_base/tips/retry_hunt/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/knowledge_base\/tips\/retry_hunt\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/knowledge_base/tips/retry_hunt.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">How do I re-collect a failed artifact in a hunt?</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#using-vql">Using VQL</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/hunting">hunting</a>
+
+  <a class="tag-link" href="/tags/vql">vql</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+
+        
+
+
+
+	<h1 id="how-do-i-re-collect-a-failed-artifact-in-a-hunt">How do I re-collect a failed artifact in a hunt?</h1>
+<p>Sometimes collecting an artifact in a hunt does not work as
+expected.</p>
+<p>Most commonly the issue is that the timeout or upload limit
+for collecting the artifact is exceeded and Velociraptor cancels the
+collection to prevent placing the endpoint under too much strain.</p>
+<p>How do we work around this? We can recollect the artifact only on that
+failed endpoint with a few button clicks.</p>
+<p>In the following example I will start a collection for the <code>$MFT</code> but
+I will only set the timeout to 10 seconds and <code>100Mb</code> uploaded.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/retry_hunt/hunting_by_label.png"
+         class="inline"
+         alt="Hunting for Files"
+         width="844" height="555">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="hunting_by_label.png">
+      <i class="fa fa-download"></i></a>
+    Hunting for Files
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>In the hunt resources screen I can specify limits for collection from
+any one client. These limits are intended to set reasonable boundaries
+for how much data I am expecting to collect so we do not overload the
+network or the endpoint itself.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/retry_hunt/setting_resources.png"
+         class="inline"
+         alt="Setting resource limits"
+         width="855" height="538">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="setting_resources.png">
+      <i class="fa fa-download"></i></a>
+    Setting resource limits
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Clearly these limits are too small for this client because the
+collection was cancelled after 10 seconds. Normally the default
+timeout of 10 Minutes, but collecting such a lot of data may take
+longer than that.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/retry_hunt/timed_out.png"
+         class="inline"
+         alt="Collection timed out"
+         width="1519" height="763">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="timed_out.png">
+      <i class="fa fa-download"></i></a>
+    Collection timed out
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Although some data was transferred, not all the data was fully
+collected. This might be acceptable but if this machine is really
+compromised how can I recollect the same artifact?</p>
+<p>By inspecting the collections for each client in the <code>Clients</code> tab, I
+can quickly see which one failed.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/retry_hunt/failed_collection.png"
+         class="inline"
+         alt="Inspecting failed collection"
+         width="1833" height="447">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="failed_collection.png">
+      <i class="fa fa-download"></i></a>
+    Inspecting failed collection
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Since a hunt is just a grouping of regular collections, I can navigate
+to the client in the interface (by clicking the client button) and
+find the hunt&rsquo;s collection that failed.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/retry_hunt/copy_collection.png"
+         class="inline"
+         alt="Copying the collection"
+         width="998" height="266">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="copy_collection.png">
+      <i class="fa fa-download"></i></a>
+    Copying the collection
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Now I just copy the collection as normal and here I can update the
+resource limits if needed (or maybe change some of the parameters).</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/retry_hunt/successful_collection.png"
+         class="inline"
+         alt="Successful Collection"
+         width="1884" height="530">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="successful_collection.png">
+      <i class="fa fa-download"></i></a>
+    Successful Collection
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Now that this collection is completed I can just look at the results
+of the collections by itself or download the collection files for
+further analysis.</p>
+<p>However, it is much more useful to keep all related collections in the
+same hunt. This helps when analyzing the hunt results in the notebook
+or exporting all the related files at once.</p>
+
+<div class="mynotices tip">
+  <div heading=" Hunts are a set of collections "><p>It is best to think of a <code>hunt</code> as just a set of related artifact
+collections. You can add/remove collections from this set at will.</p>
+</div>
+</div>
+
+
+<p>I am adding the new collection to the hunt manually by clicking the
+<code>Add to Hunt</code> button.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/retry_hunt/manually_adding_hunt_collection.png"
+         class="inline"
+         alt="Manually Adding the collection to the hunt"
+         width="1280" height="454">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="manually_adding_hunt_collection.png">
+      <i class="fa fa-download"></i></a>
+    Manually Adding the collection to the hunt
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The interface shows me all hunts that collected the same artifact so I
+choose which hunt to add it to.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/retry_hunt/new_hunt_collection.png"
+         class="inline"
+         alt="The new collection is now part of the hunt"
+         width="1876" height="550">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="new_hunt_collection.png">
+      <i class="fa fa-download"></i></a>
+    The new collection is now part of the hunt
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Now the new successful collection is part of the hunt. I can see it as
+a second entry in the client&rsquo;s list.</p>
+
+<div class="mynotices note">
+  <div heading=" Deleting the old collection "><p>Velociraptor does not automatically delete the old failed collection
+because it may still have some useful data (some data <strong>was</strong>
+transferred).</p>
+<p>If you do not want the old data any more, then just click the <code>Delete Flow</code> button once a better collection is available.</p>
+</div>
+</div>
+
+
+<h2 id="using-vql">Using VQL</h2>
+<p>The above discussion was how to manually redo collections in the GUI
+but if there are many collections, it might be easier to use VQL to do
+this.</p>
+<pre><code class="language-vql">LET NewCollections = SELECT ClientId, FlowId,
+    collect_client(client_id=ClientId,
+        artifacts=Flow.request.artifacts,
+        spec=Flow.request.specs,
+        max_bytes=1000000000,
+        timeout=600) AS NewCollection
+FROM hunt_flows(hunt_id=HuntId)
+WHERE Flow.state =~ &quot;ERROR&quot;
+
+SELECT ClientId, NewCollection, hunt_add(
+   client_id=ClientId,
+   hunt_id=HuntId,
+   flow_id=NewCollection.flow_id) AS Hunt
+FROM NewCollections
+</code></pre>
+<ol>
+<li>
+<p>The <code>NewCollections</code> query gets all Flows in the <code>ERROR</code> state
+within a hunt and schedules a new collection using the same
+artifacts but increasing the maximum upload size to 1gb and timeout
+to 600 seconds.</p>
+</li>
+<li>
+<p>The next query adds the new collection to the hunt.</p>
+</li>
+</ol>
+<p>Note this query will only work after <a href="https://github.com/Velocidex/velociraptor/commit/768021225bd617bb279fe424dcdf29c6d7d467b4" target="_blank" >#2067</a></p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352330"></script>
+    <script src="/js/jquery.sticky.js?1775352330"></script>
+    <script src="/js/featherlight.min.js?1775352330"></script>
+    <script src="/js/highlight.min.js?1775352330"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352330"></script>
+    <script src="/js/learn.js?1775352330"></script>
+    <script src="/js/hugo-learn.js?1775352330"></script>
+    
+    
+
+  </body>
+</html>

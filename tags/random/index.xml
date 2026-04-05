@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Random on Velociraptor - Digging deeper!</title>
+    <link>https://docs.velociraptor.app/tags/random/</link>
+    <description>Recent content in Random on Velociraptor - Digging deeper!</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 09 Aug 2023 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://docs.velociraptor.app/tags/random/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How do you generate random characters?</title>
+      <link>https://docs.velociraptor.app/knowledge_base/tips/random/</link>
+      <pubDate>Wed, 09 Aug 2023 00:00:00 +0000</pubDate>
+      <guid>https://docs.velociraptor.app/knowledge_base/tips/random/</guid>
+      <description>&lt;h1 id=&#34;how-do-you-generate-random-characters&#34;&gt;How do you generate random characters?&lt;/h1&gt;&#xA;&lt;p&gt;Using the rand() function we can manipulate the results to output a character set then use the WHERE condition to filter for the characters of interest.&lt;/p&gt;&#xA;&lt;p&gt;For example output 32 random printable characters:&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code&gt;  LET RandomChars = SELECT format(format=&amp;quot;%c&amp;quot;, args=rand(range=255)) AS Character&#xA;  FROM range(end=9999999999)&#xA;  WHERE Character =~ &amp;quot;[ -~]&amp;quot;&#xA;  LIMIT 32&#xA;&#xA;SELECT join(array=RandomChars.Character) as Characters FROM scope()&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&lt;p&gt;Modify the Character WHERE regex and LIMIT for desired results.&lt;/p&gt;&#xA;&lt;p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&lt;figure&gt;&#xA;  &lt;div class=&#34;figure&#34;&gt;&#xA;    &lt;img src=&#34;https://docs.velociraptor.app/knowledge_base/tips/random//knowledge_base/tips/random/259396221-15d5e7f3-f519-4446-bbcb-fb42d97f4197.png&#34;&#xA;         class=&#34;inline&#34;&#xA;         alt=&#34;&#34;&#xA;         width=&#34;1060&#34; height=&#34;274&#34;&gt;&#xA;  &lt;/div&gt;&#xA;  &lt;figcaption&gt;&#xA;    &lt;a class=&#34;image-link&#34;&#xA;       target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&#xA;       href=&#34;259396221-15d5e7f3-f519-4446-bbcb-fb42d97f4197.png&#34;&gt;&#xA;      &lt;i class=&#34;fa fa-download&#34;&gt;&lt;/i&gt;&lt;/a&gt;&#xA;    &#xA;  &lt;/figcaption&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&#xA;&#xA;&#xA;&lt;/p&gt;&#xA;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Windows.NTFS.MFT :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352327" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352327" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352327" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352327" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352327" rel="stylesheet">
+    <link href="/css/theme.css?1775352327" rel="stylesheet">
+    <link href="/css/tabs.css?1775352327" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352327" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352327" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352327" rel="stylesheet"><link href="/css/syntax.css?1775352327" rel="stylesheet"><link href="/css/light.css?1775352327" rel="stylesheet"><link href="/css/hljs.css?1775352327" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352327" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352327"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/artifact_references/pages/windows.ntfs.mft/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/artifact_references\/pages\/windows.ntfs.mft\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/artifact_references/pages/windows.ntfs.mft.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Windows.NTFS.MFT</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/client-artifact">Client Artifact</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Windows.NTFS.MFT
+            </h1>
+            
+          
+
+        
+
+
+<p>Parses $MFT files and returns rows of each in scope MFT record.</p>
+<p>This artifact can be used as the basis for other artifacts where the MFT needs
+to be queried or for deleted file recovery.</p>
+<p>For deleted file recovery: Take the MFT ID of a file of interest and provide
+it to the Windows.NTFS.Recover artifact.</p>
+<p>To query all attached NTFS drives: select the AllDrives option.</p>
+<p>I have added several filters to uplift search capabilities from the original
+MFT artifact. Due to the multi-drive features, the MFTPath will output the MFT
+path of the entry.</p>
+<p>Available filters include:</p>
+<ul>
+<li>PathRegex (OSPath): e.g <code>^C:\\folder\\file\.ext$</code> or partial <code>\\folder\\folder2\\</code> or <code>string|string2|string3</code></li>
+<li>Fileregex: <code>^filename.ext$</code> or partial <code>string1|string2</code></li>
+<li>Time bounds to select files with a timestamp within time ranges</li>
+<li>FileSize bounds</li>
+<li>MFTDrive: drive to target collection and show as source in results during offline processing.</li>
+<li>MFTPath: optional filter for offline MFT processing.</li>
+</ul>
+<h4 id="notes">NOTES</h4>
+<ul>
+<li>It is generally more efficient to filter on filename.</li>
+<li>Multiple filters are cumulative.</li>
+<li>OSPath output now uses expected Windows backslash &ldquo;<code>\</code>&rdquo;.</li>
+</ul>
+<pre><code class="language-yaml">
+name: Windows.NTFS.MFT
+author: "Matt Green - @mgreen27"
+description: |
+  Parses $MFT files and returns rows of each in scope MFT record.
+
+  This artifact can be used as the basis for other artifacts where the MFT needs
+  to be queried or for deleted file recovery.
+
+  For deleted file recovery: Take the MFT ID of a file of interest and provide
+  it to the Windows.NTFS.Recover artifact.
+
+  To query all attached NTFS drives: select the AllDrives option.
+
+  I have added several filters to uplift search capabilities from the original
+  MFT artifact. Due to the multi-drive features, the MFTPath will output the MFT
+  path of the entry.
+
+  Available filters include:
+
+  - PathRegex (OSPath): e.g `^C:\\folder\\file\.ext$` or partial `\\folder\\folder2\\` or `string|string2|string3`
+  - Fileregex: `^filename.ext$` or partial `string1|string2`
+  - Time bounds to select files with a timestamp within time ranges
+  - FileSize bounds
+  - MFTDrive: drive to target collection and show as source in results during offline processing.
+  - MFTPath: optional filter for offline MFT processing.
+
+  #### NOTES
+
+  - It is generally more efficient to filter on filename.
+  - Multiple filters are cumulative.
+  - OSPath output now uses expected Windows backslash "`\`".
+
+parameters:
+  - name: MFTDrive
+    description: |
+      The path to to the drive that holds the MFT file (can be a pathspec). This
+      drive is also used for results for offline processing.
+    default: "C:"
+  - name: MFTPath
+    description: Optional path to MFT file for offline processing.
+    default:
+  - name: Accessor
+    default: ntfs
+  - name: AllNtfs
+    type: bool
+    description: "Return all NTFS metadata with results."
+  - name: PathRegex
+    description: "Regex search over OSPath."
+    default: "."
+    type: regex
+  - name: FileRegex
+    description: "Regex search over File Name"
+    default: "."
+    type: regex
+  - name: DateAfter
+    type: timestamp
+    description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
+  - name: DateBefore
+    type: timestamp
+    description: "search for events before this date. YYYY-MM-DDTmm:hh:ssZ"
+  - name: SizeMax
+    type: int64
+    description: "Entries in the MFT under this size in bytes."
+  - name: SizeMin
+    type: int64
+    description: "Entries in the MFT over this size in bytes."
+  - name: AllDrives
+    type: bool
+    description: "Select MFT search on all attached ntfs drives."
+  - name: NTFS_INCLUDE_SHORT_NAMES
+    description: See all names referencing the file including short names.
+    type: bool
+
+sources:
+  - query: |
+      -- Cater for older clients which do not have the Links column.
+      LET parse_mft_version(filename, accessor, prefix) = SELECT *
+      FROM if(condition=version(plugin="parse_mft") &gt; 1,
+              then={ SELECT *
+                     FROM parse_mft(
+                         filename=filename, accessor=accessor, prefix=prefix)
+              },
+
+              -- Older versions do not have the prefix parameter in
+              -- the plugin and need the prefix prepended to the
+              -- OSPath
+              else={ SELECT *,
+                            prefix + OSPath AS Links,
+                            prefix + OSPath AS OSPath
+                     FROM parse_mft(
+                         filename=filename, accessor=accessor)
+              })
+
+      -- The path to to the drive that holds the MFT file (can be a pathspec)
+      LET Drive &lt;= pathspec(parse=MFTDrive, path_type="ntfs")
+
+      -- time testing
+      LET time_test(stamp) =
+            if(condition= DateBefore AND DateAfter,
+                then= stamp &lt; DateBefore AND stamp &gt; DateAfter,
+                else=
+            if(condition=DateBefore,
+                then= stamp &lt; DateBefore,
+                else=
+            if(condition= DateAfter,
+                then= stamp &gt; DateAfter,
+                else= True
+            )))
+
+      -- find all ntfs drives
+      LET ntfs_drives = SELECT
+        OSPath AS Drive,
+        OSPath + '$MFT' AS MFTFilename
+      FROM glob(globs="/*", accessor="ntfs")
+      WHERE log(message="Processing " + MFTFilename)
+
+      -- function returning MFT entries
+      -- Only check the filename - should be very quick
+      LET mftsearch_with_filename(Drive, MFTPath) =
+        SELECT EntryNumber, InUse, ParentEntryNumber,
+            OSPath,
+            Links AS _Links,
+            FileName, FileSize, ReferenceCount, IsDir,
+            Created0x10, Created0x30,
+            LastModified0x10, LastModified0x30,
+            LastRecordChange0x10, LastRecordChange0x30,
+            LastAccess0x10,LastAccess0x30,
+            HasADS, SI_Lt_FN, USecZeros, Copied,
+            FileNames, FileNameTypes
+        FROM parse_mft_version(filename=MFTPath,
+                       accessor=Accessor, prefix=Drive)
+        WHERE FileName =~ FileRegex
+          AND Links =~ PathRegex
+
+      -- Check only one date bound
+      LET mftsearch_after_date(Drive, MFTPath) =
+        SELECT
+            EntryNumber, InUse, ParentEntryNumber,
+            OSPath,
+            Links AS _Links,
+            FileName, FileSize, ReferenceCount, IsDir,
+            Created0x10, Created0x30,
+            LastModified0x10, LastModified0x30,
+            LastRecordChange0x10, LastRecordChange0x30,
+            LastAccess0x10,LastAccess0x30,
+            HasADS, SI_Lt_FN, USecZeros, Copied,
+            FileNames, FileNameTypes
+        FROM parse_mft_version(filename=MFTPath,
+                       accessor=Accessor, prefix=Drive)
+        WHERE
+             ( Created0x10 &gt; DateAfter
+              OR Created0x30 &gt; DateAfter
+              OR LastModified0x10 &gt; DateAfter
+              OR LastModified0x30 &gt; DateAfter
+              OR LastRecordChange0x10 &gt; DateAfter
+              OR LastRecordChange0x30 &gt; DateAfter)
+            AND FileName =~ FileRegex
+            AND Links =~ PathRegex
+
+      LET mftsearch_before_date(Drive, MFTPath) =
+        SELECT EntryNumber, InUse, ParentEntryNumber,
+            OSPath,
+            Links AS _Links,
+            FileName, FileSize, ReferenceCount, IsDir,
+            Created0x10, Created0x30,
+            LastModified0x10, LastModified0x30,
+            LastRecordChange0x10, LastRecordChange0x30,
+            LastAccess0x10,LastAccess0x30,
+            HasADS, SI_Lt_FN, USecZeros, Copied,
+            FileNames, FileNameTypes
+        FROM parse_mft_version(filename=MFTPath,
+                       accessor=Accessor, prefix=Drive)
+        WHERE
+             ( Created0x10 &lt; DateBefore
+              OR Created0x30 &lt; DateBefore
+              OR LastModified0x10 &lt; DateBefore
+              OR LastModified0x30 &lt; DateBefore
+              OR LastRecordChange0x10 &lt; DateBefore
+              OR LastRecordChange0x30 &lt; DateBefore)
+            AND FileName =~ FileRegex
+            AND Links =~ PathRegex
+
+      -- Check everything can be slow.
+      LET mftsearch_full(Drive, MFTPath) =
+        SELECT EntryNumber, InUse, ParentEntryNumber,
+            OSPath,
+            Links AS _Links,
+            FileName, FileSize, ReferenceCount, IsDir,
+            Created0x10, Created0x30,
+            LastModified0x10, LastModified0x30,
+            LastRecordChange0x10, LastRecordChange0x30,
+            LastAccess0x10,LastAccess0x30,
+            HasADS, SI_Lt_FN, USecZeros, Copied,
+            FileNames, FileNameTypes
+        FROM parse_mft_version(filename=MFTPath,
+                       accessor=Accessor, prefix=Drive)
+        WHERE FileName =~ FileRegex
+            AND Links =~ PathRegex
+            AND if(condition=SizeMax,
+                then=FileSize &lt; atoi(string=SizeMax),
+                else=TRUE)
+            AND if(condition=SizeMin,
+                then=FileSize &gt; atoi(string=SizeMin),
+                else=TRUE)
+            AND
+             ( time_test(stamp=Created0x10)
+            OR time_test(stamp=Created0x30)
+            OR time_test(stamp=LastModified0x10)
+            OR time_test(stamp=LastModified0x30)
+            OR time_test(stamp=LastRecordChange0x10)
+            OR time_test(stamp=LastRecordChange0x30)
+            OR time_test(stamp=LastAccess0x10)
+            OR time_test(stamp=LastAccess0x30))
+
+      -- Choose a query to run depending on the user's choices.
+      LET mftsearch(Drive, MFTPath) = SELECT * FROM if(
+       -- only need to do a filename comparison
+       condition=NOT DateAfter AND NOT DateBefore AND NOT SizeMin AND NOT SizeMax,
+       then={ SELECT *
+              FROM mftsearch_with_filename(Drive=Drive, MFTPath=MFTPath) },
+       else={ SELECT * FROM if(
+
+          -- Only DateAfter is set
+          condition=NOT DateBefore AND NOT SizeMin AND NOT SizeMax,
+          then={ SELECT *
+                 FROM mftsearch_after_date(Drive=Drive, MFTPath=MFTPath)},
+          else={ SELECT * FROM if(
+
+             -- Only Date Before is set
+             condition=NOT DateAfter AND NOT SizeMin AND NOT SizeMax,
+             then={ SELECT *
+                    FROM mftsearch_before_date(Drive=Drive, MFTPath=MFTPath)},
+             else={ SELECT *
+                    FROM mftsearch_full(Drive=Drive, MFTPath=MFTPath)})
+          })
+       })
+
+      -- include all attached drives
+      LET all_drives = SELECT * FROM foreach(row={
+           SELECT * FROM ntfs_drives
+        },
+        query={
+           SELECT *, Drive
+           FROM mftsearch(
+              Drive=Drive,
+              MFTPath=MFTFilename)
+        })
+
+      -- return results
+      LET results = SELECT *
+          FROM if(condition=AllDrives,
+            then={
+              SELECT * FROM all_drives
+            },
+            else={
+              SELECT * FROM mftsearch(Drive=Drive,
+                                MFTPath=if(condition= MFTPath ,
+                                            then= MFTPath,
+                                            else= Drive + "$MFT"))
+            })
+      -- enrich results with NtfsMetadata is requests
+      LET enriched_results = SELECT *,
+            parse_ntfs(mft=EntryNumber, device=Drive ) as NtfsMetadata
+        FROM results
+
+      -- return rows
+      SELECT * FROM if(condition=AllNtfs,
+        then= enriched_results,
+        else= results)
+
+</code></pre>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352327"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352327"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352327"></script>
+    <script src="/js/jquery.sticky.js?1775352327"></script>
+    <script src="/js/featherlight.min.js?1775352327"></script>
+    <script src="/js/highlight.min.js?1775352327"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352327"></script>
+    <script src="/js/learn.js?1775352327"></script>
+    <script src="/js/hugo-learn.js?1775352327"></script>
+    
+    
+
+  </body>
+</html>
+

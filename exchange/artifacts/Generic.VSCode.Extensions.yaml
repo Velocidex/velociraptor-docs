@@ -1,0 +1,294 @@
+name: Generic.VSCode.Extensions
+author: Andreas Misje – @misje
+description: |
+  List all installed Visual Studio code extensions
+
+  This artifact lists all installed VS Code extensions on all supported
+  operating systems. This list can be used to hunt for known malicious
+  extensions by name or ID.
+
+  Since the data from the endpoints do not contain useful information such as
+  detailed publisher information, a description, latest available version
+  and a global install count, a notebook suggestion is provided to enrich
+  the collected data.
+
+  The notebook suggestion pulls info from Microsoft's undocumented marketplace
+  API. Due to the overwhelming number of published extensions (more than 120.000
+  at the time of writing), this query will take a while. Only a few thousand
+  extensions are queried by default. Change this by adjusting the variable
+  `MaxPages`. The returned data can be used to get more detailed information about
+  the extension, revealing outdated extensions and obscure extensions from
+  unknown publishers.
+
+type: CLIENT
+
+parameters:
+  - name: ExtensionGlobs
+    description: |
+      Where to look for extension.json files on various OSes
+    type: csv
+    default: |
+      Glob
+      C:\Users\*\.vscode\extensions\extensions.json
+      /home/*/.vscode/extensions/extensions.json
+      /Users/*/.vscode/extensions/extensions.json
+
+column_types:
+  - name: _ExtensionsFile
+    description: Extentions file name
+  - name: ID
+    description: Extension name
+  - name: _UUID
+    description: Extension unique identifier
+  - name: Version
+    description: Extension version
+  - name: UpToDate
+    description: Whether VSCode considers this version up-to-date (not reliable)
+  - name: Publisher
+    description: The name of the publisher
+  - name: _PublisherID
+    description: Publisher unique identifier
+  - name: InstalledAt
+    type: timestamp
+    description: When the extension was installed
+  - name: _Location
+    description: Local path to extension files
+  - name: _Info
+    description: All available information about the extension
+
+sources:
+  - query: |
+      LET ExtData = SELECT *
+        FROM flatten(query={
+            SELECT OSPath,
+                   parse_json_array(data=read_file(filename=OSPath)) AS Extensions
+            FROM glob(globs=ExtensionGlobs.Glob)
+          })
+      SELECT
+                   OSPath AS _ExtensionsFile,
+                   Extensions.identifier.id AS ID,
+                   Extensions.identifier.uuid AS _UUID,
+                   Extensions.version AS Version,
+                   Extensions.metadata.updated AS UpToDate,
+                   Extensions.metadata.publisherDisplayName AS Publisher,
+                   Extensions.metadata.publisherId AS _PublisherID,
+                   timestamp(epoch=Extensions.metadata.installedTimestamp) AS InstalledAt,
+                   Extensions.location.path AS _Location,
+                   Extensions AS _Info
+            FROM ExtData
+            WHERE Extensions
+
+    notebook:
+      - type: vql_suggestion
+        name: Enrich data with VS Code marketplace information
+        template: |
+          LET ColumnTypes <= dict(_ClientId='client',
+                        _FlowId='flow',
+                        ClientId='client',
+                        FlowId='flow')
+
+          LET PageStart <= 1
+
+          // There are around 120.000 thousands extensions, but they are fetched in order
+          // of popularity (install count(?)), so fetching a few thousands is typically
+          // enough to enrich most installed extensions. Increase as needed:
+          //LET MaxPages <= 200
+          LET MaxPages <= 20
+
+          // There is a maximum page size. The exact size is unknown, but 1000 is a good
+          // default:
+          LET PageSize <= 1000
+
+          // If a single paged query takes more than this amount of seconds, abort:
+          LET FetchTimeout <= 10
+
+          // Results are cached per calendar day unless this is set to true:
+          LET IgnoreCache <= false
+
+          // Only display ratings if at lease these many votes has been cast:
+          LET RatingCountThreshold <= 50
+
+          // Issue a paged query to Microsoft's undocumented VS code marketplace
+          // API. "flags" is a bitwise number of columns that we are interested in:
+          LET _QueryAPI(PageNo) = SELECT *, parse_json(data=Content) AS Content
+            FROM http_client(
+              headers=dict(
+                `Accept`='application/json; charset=utf-8; api-version=7.2-preview.1',
+                `Content-Type`='application/json'),
+              method='POST',
+              url='https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery',
+              data=dict(
+                filters=[dict(
+                  criteria=[dict(
+                    filterType=8,
+                    value='Microsoft.VisualStudio.Code'), ],
+                  pageNumber=PageNo,
+                  pageSize=PageSize,
+                  sortBy=0,
+                  sortOrder=0), ],
+                assetTypes=[],
+                flags=37660))
+
+          LET QueryAPI(PageNo) = SELECT Response,
+                                        if(condition=Response = 200,
+                                          then=Content.results[0].extensions,
+                                          else=[]) AS Extensions,
+                                        if(condition=Response != 200,
+                                          then=Content.message) AS Error
+            FROM _QueryAPI(PageNo=PageNo)
+            WHERE log(
+              level='DEBUG',
+              message='Fetching %v out of %v extensions',
+              dedup=-1,
+              args=(PageNo * PageSize, Content.results[0].resultMetadata[0].metadataItems[0].count, ))
+            AND if(
+                  condition=Response != 200,
+                  then=log(
+                    level='ERROR',
+                    message='Failed to query VS Code marketplace API: %v: %v',
+                    args=(Response, Error, )),
+                  else=true)
+
+          // Helper variable used to "exit" the query loop early:
+          LET FetchMeta <= dict(IsDone=false)
+
+          LET Results = SELECT *
+            FROM query(query={
+              SELECT *
+              FROM foreach(row={
+              SELECT _value
+              FROM range(start=PageStart, end=MaxPages + 1)
+              WHERE NOT FetchMeta.IsDone
+            },
+                          query={
+              SELECT _value AS PageNo,
+                    *
+              FROM QueryAPI(PageNo=_value)
+              WHERE set(item=FetchMeta,
+                        field='IsDone',
+                        value=Response != 200 OR len(list=Extensions) <
+                          PageSize)
+              AND Response = 200
+            })
+            },
+                      inherit=true,
+                      progress_timeout=FetchTimeout)
+
+          LET S = scope()
+
+          LET _LatestVer(Versions) = SELECT version
+            FROM foreach(row=Versions)
+            ORDER BY version DESC
+            LIMIT 1
+
+          LET FloatOrNull(String) = if(condition=String,
+                                      then=format(format="%.1f", args=String))
+
+          // Format the results:
+          LET _MarketplaceList = SELECT *
+            FROM foreach(
+              row=Results.Extensions,
+              query={
+              SELECT publisher AS _PublisherInfo,
+                    publisher.displayName AS Publisher,
+                    extensionId AS _UUID,
+                    lowcase(string=publisher.publisherName + '.' + extensionName) AS ID,
+                    displayName AS DisplayName,
+                    split(
+                      sep=''',\s*''',
+                      string=flags) AS Flags,
+                    timestamp(
+                      string=lastUpdated) AS LastUpdated,
+                    timestamp(
+                      string=publishedDate) AS Published,
+                    timestamp(
+                      string=releaseDate) AS Released,
+                    S.shortDescription AS Description,
+                    categories AS Categories,
+                    filter(
+                      list=S.statistics,
+                      condition='x=>x.statisticName="install"')[0].value AS InstallCount,
+                    FloatOrNull(
+                      String=filter(
+                        list=S.statistics,
+                        condition='x=>x.statisticName="averagerating"')[0].value) AS RatingAvg,
+                    filter(
+                      list=S.statistics,
+                      condition='x=>x.statisticName="ratingcount"')[0].value AS RatingCount,
+                    _LatestVer(
+                      Versions=S.versions).version[0] AS LatestVersion
+              FROM _value
+            })
+
+          // Use this timestamp format to decide the cache duration, e.g. per day, per hour
+          // etc.:
+          LET CacheTS <= timestamp_format(
+              format="DateOnly",
+              time=now())
+
+          // Cache the results to this file on the server:
+          LET CachePath <= expand(path="%TMP%/") + format(
+              format="vscode_marketplace_extensions_%v.jsonl",
+              args=CacheTS)
+
+          LET LoadList(Default) = if(condition=stat(filename=CachePath),
+                                    then={
+              SELECT *
+              FROM parse_jsonl(filename=CachePath)
+            },
+                                    else=Default)
+
+          LET SaveList(List) = SELECT *
+            FROM write_jsonl(filename=CachePath, query=List)
+
+          LET MarketplaceList = if(
+              condition=IgnoreCache,
+              then=SaveList(List=_MarketplaceList),
+              else=LoadList(Default=SaveList(List=_MarketplaceList)))
+
+          // Cache the results for efficient lookup in the following table.
+          // Use ID and not UUID, because not all extensions have this field in
+          // extensions.json, for some reason:
+          LET ExtraInfo <= memoize(key='ID',
+                                  name='VSCodeMarketplaceList',
+                                  query=MarketplaceList)
+
+          /*
+          # Installed extensions
+
+          Installed extensions enriched with information from the marketplace API
+          */
+          LET Enh = get(
+              item=ExtraInfo,
+              field=ID)
+
+          SELECT
+              _ExtensionsFile,
+              Publisher,
+              Enh._PublisherInfo AS _PublisherInfo,
+              ID,
+              _UUID,
+              Enh.DisplayName AS Name,
+              Enh.Description AS Description,
+              Version AS InstalledVersion,
+              Enh.LatestVersion AS MPlaceVersion,
+              InstalledAt,
+              Enh.LastUpdated AS MPlaceUpdateAt,
+              Enh.InstallCount AS MPlaceInstallCount,
+              if(condition=Enh.RatingCount > RatingCountThreshold, then=Enh.RatingAvg) AS MPlaceRating,
+              _Location,
+              _Info,
+              S.ClientId AS _ClientId,
+              S.FlowId AS _FlowId,
+              S.Fqdn AS _Fqdn
+          FROM source()
+
+
+          /*
+          # VS Code marketplace extensions
+
+          All extensions in the marketplace (as per {{ Scope "CacheTS" }})
+          */
+          SELECT
+              *
+          FROM MarketplaceList

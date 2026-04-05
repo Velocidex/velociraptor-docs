@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="Collecting files to the cloud…">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Triage with Velociraptor — Pt 3 :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352327" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352327" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352327" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352327" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352327" rel="stylesheet">
+    <link href="/css/theme.css?1775352327" rel="stylesheet">
+    <link href="/css/tabs.css?1775352327" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352327" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352327" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352327" rel="stylesheet"><link href="/css/syntax.css?1775352327" rel="stylesheet"><link href="/css/light.css?1775352327" rel="stylesheet"><link href="/css/hljs.css?1775352327" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352327" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352327"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/blog/2019/2019-10-08_triage-with-velociraptor-pt-3-d6f63215f579/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/blog\/2019\/2019-10-08_triage-with-velociraptor-pt-3-d6f63215f579\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/2019/2019-10-08_triage-with-velociraptor-pt-3-d6f63215f579/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Triage with Velociraptor — Pt 3</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Triage with Velociraptor — Pt 3
+            </h1>
+            
+          
+
+        
+
+
+
+	<h4 id="by-mike-cohen">By Mike Cohen</h4>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1__AN0KYVpqc581I2OYcKQ0zg.jpeg"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>This is the final part of this three part series of articles
+describing how to use Velociraptor to collect files from an
+endpoint. Our <a href="https://medium.com/@mike_89870/triage-with-velociraptor-pt-1-253f57ce96c0" target="_blank" >first
+part</a>
+shows how we can use the Velociraptor agent in a typical client/server
+setting to collect artifacts from one or many endpoints at the push of
+a button, within seconds.</p>
+<p><a href="https://medium.com/@mike_89870/triage-with-velociraptor-pt-2-d0f79066ca0e" target="_blank" >Part
+two</a>
+examined what to do if Velociraptor is not already installed as an
+agent (or can not be remotely installed). In this case we used an
+accomplice user with administrator privileges (or group policy) on the
+endpoint to run the collector interactively — producing a zip file
+with the triage material within it. We left the task of transporting
+the file back to the investigator up to the user though. Ideally we
+would like to have an automated way in which the files can be
+transported back to us.</p>
+<p>This article continues this theme: we devise a way for the collected
+file to be uploaded to a cloud storage bucket. We will write a new
+Velociraptor artifact with this functionality, leveraging the
+previously described collection artifact. It is a good example of how
+we may customize artifact collection in a flexible way adding
+arbitrary functionality to Velociraptor as we go along.</p>
+<h4 id="setting-up-google-cloud-bucket-for-uploading">Setting up Google Cloud Bucket for uploading.</h4>
+<p>Before we can upload files to a bucket we need to have a project in
+place. For this example I created a new project called
+“velociraptor-demo”:</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1__1DXiwQ4__gqzaYMZKSMxAfg.png"
+         class="inline"
+         alt="Create a new project" />
+  </div>
+  <figcaption>
+    Create a new project
+  </figcaption>
+</figure>
+
+
+
+Create a new project</p>
+<p>Our plan is to distribute to our accomplices the packed binary as
+before, but this time we want Velociraptor to automatically upload
+results for us into our bucket.</p>
+<p>In order to do this we need a service account with credentials
+allowing it to upload to our bucket. Go to <strong>IAM &amp; Admin / Service
+Accounts / Create Service Account:</strong></p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1__ZG9riz0ViCT8PgILXHuU7Q.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>Since the service account will be able to upload by itself (i.e. the
+user does not authenticate on its behalf), we need to identify it with
+a JSON key. The key allows Velociraptor to act as the service account
+on this cloud project. Clicking the Create button will download a JSON
+file to your system with the private key in it.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1__rsKWeCDPrO9AffAuG2k__rA.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1__qGr13ir9qftvzxJUoM5D6A.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>Note the service account’s email address. Currently this account has
+no permissions at all — but we will allow it to write objects into our
+upload bucket later.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1__EhghHAfmjbZFU2vhiPvhYA.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>Next we create a bucket to store our collected zip files I will call
+it “velociraptor-uploads-121”:</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1__ehJ3qfAiaUMNPXoy4mUhEg.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>Selecting the “Permissions” tab, we are able to add the service
+account as a member — we will only give it the ability to write on a
+bucket and create new objects. This is important since is means that
+the service account is unable to read or list objects in this
+bucket. Since we will embed the service account key in our config file
+we need to make sure it can not be misused to compromise collections
+from other machines.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1__vzszs0OjRzdqMRlXbesuNw.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<h4 id="creating-and-embedding-a-customartifact">Creating and embedding a custom artifact</h4>
+<p>Now we are ready to create our custom artifact. Our artifact will
+first collect the <strong>KapeFiles</strong> targets we require into a locally
+written zip file, and then using the above credentials, upload the zip
+file to the cloud. Finally we will delete the temporary file from the
+endpoint. As an added measure of security we specify a password on the
+collected zip file.</p>
+<pre><code class="language-yaml">autoexec:
+  # These parameters are run when the binary is started without args.
+  # It will just collect our custom artifact and quit.
+  argv: [&quot;artifacts&quot;, &quot;collect&quot;, &quot;-v&quot;, &quot;AcquireAndUploadToGCS&quot;]
+  artifact_definitions:
+    - name: AcquireAndUploadToGCS
+      parameters:
+         - name: GCSKey
+           description: JSON Blob you get from GCS when you create a service account.
+           default: |
+              {
+               &quot;type&quot;: &quot;service_account&quot;,
+               &quot;project_id&quot;: &quot;velociraptor-demo&quot;,
+               &quot;private_key_id&quot;: &quot;XXXXXXX&quot;,
+               &quot;private_key&quot;: &quot;XXXXXXX&quot;,
+               &quot;client_email&quot;: &quot;uploader@velociraptor-demo.iam.gserviceaccount.com&quot;,
+               &quot;client_id&quot;: &quot;XXXXXX&quot;,
+               &quot;auth_uri&quot;: &quot;https://accounts.google.com/o/oauth2/auth&quot;,
+               &quot;token_uri&quot;: &quot;https://oauth2.googleapis.com/token&quot;,
+               &quot;auth_provider_x509_cert_url&quot;: &quot;https://www.googleapis.com/oauth2/v1/certs&quot;,
+               &quot;client_x509_cert_url&quot;: &quot;https://www.googleapis.com/robot/v1/metadata/x509/uploader%40velociraptor-demo.iam.gserviceaccount.com&quot;
+              }
+         - name: bucket
+           default: velociraptor-uploads-121
+         - name: project
+           default: velociraptor-demo
+
+      sources:
+         - queries:
+              # This collects the WebBrowsers target from KapeFiles into
+              # a tempfile, then uploads the tempfile to GCS with the
+              # above credentials.
+              - SELECT upload_gcs(
+                   file=Container,
+                   bucket=bucket,
+                   project=project,
+                   name=format(format=&quot;Collection %s.zip&quot;, args=[timestamp(epoch=now())]),
+                   credentials=GCSKey) AS Uploaded
+                FROM collect(
+                   artifacts=&quot;Windows.KapeFiles.Targets&quot;,
+                   args=dict(WebBrowsers=&quot;Y&quot;),
+                   password=&quot;MyPassword&quot;,   // Use this password to encrypt the zip file.
+                   output=tempfile( extension=&quot;.zip&quot;))
+</code></pre>
+<p>The above artifact is fairly easy to read:</p>
+<ol>
+<li>Using the <strong>collect()</strong> plugin we are able to collect one or more artifacts into a local zip file. We use the <strong>tempfile()</strong> function to provide a local filename for us to write on. Note that Velociraptor will clean the temp file at the end of the query automatically. We can also specify a password for encrypting the collection zip file.</li>
+<li>The <strong>collect()</strong> plugin returns a single row with the name of the container (i.e. the Zip file we write on). We then call the <strong>upload_gcs()</strong> function on this file name to upload this file to GCS. We use the credentials we obtained earlier, bucket and project names and finally we rename the uploaded file according to the timestamp.</li>
+</ol>
+<p>Next we simply embed this configuration file in the binary as we did in part 2:</p>
+<pre><code>F:&gt; velociraptor.exe config repack config.yaml my_velo.exe
+</code></pre>
+<p>We can send this file to our accomplice and have them run it as an
+administrator to simply collect everything and upload to the cloud
+automatically. Alternatively we can push this binary out via Group
+Policy Scheduled tasks as well, or even via another EDR tool — it
+really does not matter how we get the code executing on the endpoint.</p>
+<p>The below screenshot shows the debug log from running the
+collector. We can see the container finalized, then uploaded to GCS
+with its hashes calculated. When Velociraptor uploads the container to
+GCS, Google’s server calculate the md5 and return it together with
+other object attributes. Velociraptor then compares this hash to the
+one it calculated before to ensure the file landed properly on the
+cloud bucket.</p>
+<p>Finally, then the temp file is removed and the query is complete.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1__PxNDr9zbvyzf__LgecPp__MQ.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<h4 id="conclusions">Conclusions</h4>
+<p>This concludes our three part series about triaging with
+Velociraptor. Triaging is about collecting files quickly in order to
+preserve as much of the volatile machine state as possible, then
+quickly analyze the data for evidence of compromise.</p>
+<p>Although Velociraptor is normally installed as a client/server so it
+is always available on the endpoint, it does not have to be used in
+this way. The key strength of Velociraptor is its flexibility and
+ability to adapt to any situation through the use of the powerful
+Velociraptor Query Language (VQL).</p>
+<p>Users who feel comfortable writing their own VQL can adapt Velociraptor easily to evolving situations and collect new artifacts quickly. Check out the official <a href="https://www.velocidex.com/docs/vql_reference/" target="_blank" >VQL reference</a>, <a href="https://github.com/Velocidex/velociraptor" target="_blank" >Download the latest version</a> of Velociraptor from GitHub and join the community of power users.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352327"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352327"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352327"></script>
+    <script src="/js/jquery.sticky.js?1775352327"></script>
+    <script src="/js/featherlight.min.js?1775352327"></script>
+    <script src="/js/highlight.min.js?1775352327"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352327"></script>
+    <script src="/js/learn.js?1775352327"></script>
+    <script src="/js/hugo-learn.js?1775352327"></script>
+    
+    
+
+  </body>
+</html>

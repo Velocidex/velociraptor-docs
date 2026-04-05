@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>The &#34;query&#34; command :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352328" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352328" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352328" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352328" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352328" rel="stylesheet">
+    <link href="/css/theme.css?1775352328" rel="stylesheet">
+    <link href="/css/tabs.css?1775352328" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352328" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352328" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352328" rel="stylesheet"><link href="/css/syntax.css?1775352328" rel="stylesheet"><link href="/css/light.css?1775352328" rel="stylesheet"><link href="/css/hljs.css?1775352328" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352328" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352328"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/cli/query/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/cli\/query\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/cli/query/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">The &#34;query&#34; command</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#-query-">[ query ]</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              The &#34;query&#34; command
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>Run VQL queries on the command line.</p>
+<p>The <code>query</code> command is useful for developing and testing VQL queries
+independently of the client-server infrastructure components. While VQL query
+development is typically done in <a href="/docs/notebooks/">notebooks</a>,
+you might sometimes want to test a query directly on a particular system, for
+example when troubleshooting a query-related issue that isn&rsquo;t easily
+reproducible on other machines.</p>
+<p>The <code>query</code> command is also also used when
+<a href="/docs/server_automation/server_api/#using-the-built-in-api-client">running API queries on the command line</a>.
+When used with the <code>--api_config</code> flag, the query is sent to the server and runs
+on the server.</p>
+<hr>
+<h3 id="-query-">[ query ]</h3>
+<pre><code class="language-text">query [&lt;flags&gt;] &lt;queries&gt;...
+    Run a VQL query
+
+    -f, --[no-]from_files  Args are actually file names which will contain the VQL query
+        --timeout=0        Time collection out after this many seconds.
+        --org=&quot;root&quot;       The Org ID to target with this query
+        --cpu_limit=0      A number between 0 to 100 representing maximum CPU utilization.
+        --format=json      Output format to use (text,json,csv,jsonl).
+        --dump_dir=&quot;&quot;      Directory to dump output files.
+        --output=&quot;&quot;        A file to store the output.
+        --env=ENV ...      Environment for the query.
+        --scope_file=&quot;&quot;    Load scope from here. Creates a new file if file not found
+        --[no-]do_not_update_scope_file
+                           Do not update the scope file with the new scope
+
+Args:
+  &lt;queries&gt;  The VQL Query to run.
+</code></pre>
+</br>
+<h4 id="usefulness-as-a-tool-for-local-investigations">Usefulness as a tool for local investigations</h4>
+<p>It&rsquo;s possible to perform ad-hoc local investigations on a small number of
+machines using the <code>query</code> command (and/or the <code>artifacts collect</code> command),
+although this is rarely done due to it not being a scalable approach. For more
+information see
+<a href="/docs/deployment/#command-line-investigation-tool">Deployment &gt; Command line investigation tool</a>.</p>
+<p>For investigating a system locally, if you don&rsquo;t want to use the command line
+you can consider running an
+<a href="/docs/deployment/#instant-velociraptor-as-a-local-investigation-tool">Instant Velociraptor</a>
+instance which gives you access to the local system via an integrated client,
+and the benefit of a local GUI.</p>
+<h4 id="differences-between-the-query-and-artifacts-collect-commands">Differences between the &ldquo;query&rdquo; and &ldquo;artifacts collect&rdquo; commands</h4>
+<p>The purpose of both of these commands is to run VQL queries. So it helps to
+understand the key differences when deciding which one is better suited to your
+goals.</p>
+<table>
+  <thead>
+      <tr>
+          <th><strong>The <code>query</code> command</strong></th>
+          <th></th>
+          <th><strong>The <code>artifacts collect</code> command</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Runs an ad-hoc VQL query.</td>
+          <td></td>
+          <td>Runs one or more predefined artifacts.</td>
+      </tr>
+      <tr>
+          <td>Does not support artifact features (unless calling an artifact<br>in the query).</td>
+          <td></td>
+          <td>Supports all the features offered by Velociraptor artifacts, such as:<br>- multiple sources<br>- preconditions<br>- export and imports</td>
+      </tr>
+      <tr>
+          <td>Can run queries locally or against the server (via the API).</td>
+          <td></td>
+          <td>Queries contained in the specified artifacts are run locally.</td>
+      </tr>
+      <tr>
+          <td>Can include multiple SELECT statements.</td>
+          <td></td>
+          <td>Can include multiple SELECT statements via separate <code>sources</code> but<br>each source can only have one SELECT statement.</td>
+      </tr>
+  </tbody>
+</table>
+<p>Artifacts can actually be run via the <code>query</code> command too by using the
+<code>Artifacts</code> plugin. See below for an example which does this.</p>
+<p>As with the <code>artifacts collect</code> command, if you want to use custom artifacts
+then the location of these artifacts can be specified with the <code>--definitions</code>
+flag.</p>
+<h4 id="specifying-queries-in-a-file">Specifying queries in a file</h4>
+<p>When specifying queries on the command line these need to be in quotes (single
+or double). This can easily lead to quoting issues because most non-trivial
+queries will use quotes within the VQL itself.</p>
+<p>To avoid such quoting difficulties and to allow for more complex queries you can
+store the queries in a text file, and then specify the file with the <code>-f</code> flag.</p>
+<p>For example:</p>
+<pre><code class="language-vql">velociraptor query -f &quot;D:/query.txt&quot;
+</code></pre>
+<p>where <code>query.txt</code> contains your query.</p>
+<p>Note that this can include multiple queries (SELECT statements) as well as LET
+statements, as is also allowed on the command line, but the results will be
+combined which could be confusing.</p>
+<h4 id="event-queries">Event queries</h4>
+<p>Since the <code>query</code> command accepts any query, there is no distinction made
+between non-terminating &ldquo;event queries&rdquo; and ones that do run and complete. This
+means that you can use the command to inspect and test the output from
+Velociraptor&rsquo;s
+<a href="/vql_reference/event/">event plugins</a>.</p>
+<p>For example:</p>
+<pre><code class="language-vql">velociraptor query &quot;SELECT * FROM watch_usn(device='C:\\')&quot;
+</code></pre>
+<p>will allow you to observe/test the output from the <code>watch_usn()</code> plugin in real
+time.</p>
+<h4 id="storing-query-output-and-files">Storing query output and files</h4>
+<p>The <code>--output</code> flag allows you to write the query results to a file. Combine
+this with the <code>--format</code> flag if you want the output in a format other than
+JSONL (which is the default format).</p>
+<p>By default the query output is emitted to Stdout. This means that, as an
+alternative to using the <code>--output</code> flag, you could use the <code>&gt;</code> or <code>&gt;&gt;</code>
+operators to redirect to a file, or you could pipe the output to other CLI tools
+(for example <code>jq</code> to transform or prettify it).</p>
+<p>If your query uses the <code>upload()</code> function to collect files then Velociraptor
+will need to know where to put the &ldquo;uploaded&rdquo; files because there is no server
+that it can upload to. We specify a directory for these files using the
+<code>--dump_dir</code> flag. The parent directory structure of the collected files is
+reproduced relative to the dump directory.</p>
+<p>For example:</p>
+<pre><code class="language-sh">velociraptor -v query &quot;SELECT * FROM Artifact.Generic.Utils.DeadDiskRemapping(ImagePath='/path/to/image.dd', Hostname='Some Host')&quot; --dump_dir .
+</code></pre>
+<p>will generate an &ldquo;upload&rdquo; file named <code>remapping.yaml</code> and dump it to the current working directory (<code>.</code>).</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352328"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352328"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352328"></script>
+    <script src="/js/jquery.sticky.js?1775352328"></script>
+    <script src="/js/featherlight.min.js?1775352328"></script>
+    <script src="/js/highlight.min.js?1775352328"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352328"></script>
+    <script src="/js/learn.js?1775352328"></script>
+    <script src="/js/hugo-learn.js?1775352328"></script>
+    
+    
+
+  </body>
+</html>

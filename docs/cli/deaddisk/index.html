@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>The &#34;deaddisk&#34; command :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352328" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352328" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352328" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352328" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352328" rel="stylesheet">
+    <link href="/css/theme.css?1775352328" rel="stylesheet">
+    <link href="/css/tabs.css?1775352328" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352328" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352328" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352328" rel="stylesheet"><link href="/css/syntax.css?1775352328" rel="stylesheet"><link href="/css/light.css?1775352328" rel="stylesheet"><link href="/css/hljs.css?1775352328" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352328" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352328"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/cli/deaddisk/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/cli\/deaddisk\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/cli/deaddisk/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">The &#34;deaddisk&#34; command</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#-deaddisk-">[ deaddisk ]</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              The &#34;deaddisk&#34; command
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>Create a deaddisk configuration (remapping) file, which can then be used to run
+a virtual client with the <code>--remap</code> flag.</p>
+<hr>
+<h3 id="-deaddisk-">[ deaddisk ]</h3>
+<pre><code class="language-text">deaddisk [&lt;flags&gt;] &lt;output&gt;
+    Create a deaddisk configuration
+
+    --hostname=&quot;Virtual Host&quot;  The hostname to impersonate
+    --add_windows_disk=ADD_WINDOWS_DISK
+                               Add a Windows Hard Disk Image
+    --offset=-1                The offset of the partition inside the disk
+    --add_windows_directory=ADD_WINDOWS_DIRECTORY
+                               Add a Windows mounted directory
+
+Args:
+  &lt;output&gt;  Output file to write config on
+</code></pre>
+<p>For this command, either <code>--add_windows_directory</code> or <code>--add_windows_disk</code> is
+required.</p>
+<h5 id="example">Example</h5>
+<ol>
+<li>Generate the remapping config:</li>
+</ol>
+<pre><code class="language-sh"># a disk image
+velociraptor deaddisk --add_windows_disk ./WinDev2404Eval.vmdk remapping.yaml
+</code></pre>
+<p>or</p>
+<pre><code class="language-sh"># a Windows partition mounted to a directory
+velociraptor deaddisk --add_windows_directory /media/mnt/windows_c_drive/ remapping.yaml
+</code></pre>
+<ol start="2">
+<li>Then run the client with the remapping config file:</li>
+</ol>
+<pre><code class="language-sh">velociraptor client -c ./client.config.yaml --remap ./remapping.yaml
+</code></pre>
+
+<div class="mynotices note">
+  <div heading="note"><p>The <code>deaddisk</code> command, by default, only supports Windows disk/partition images,
+and Windows partitions mounted to folders.</p>
+<p>From version 0.74.4 this CLI command uses the artifact
+<code>Generic.Utils.DeadDiskRemapping</code> internally to generate the remapping
+configuration file. You can use this artifact in the GUI if you prefer - the
+resulting config will be identical since both methods use the same VQL.</p>
+<p>It&rsquo;s therefore essentially equivalent to running the <code>query</code> command:</p>
+<pre><code class="language-sh">velociraptor query &quot;SELECT * FROM Artifact.Generic.Utils.DeadDiskRemapping(ImagePath='/path/to/image.dd', Hostname='Some Host')&quot; --dump_dir .
+</code></pre>
+<p>or the <code>artifacts collect</code> and <code>unzip</code> commands:</p>
+<pre><code class="language-sh">velociraptor artifacts collect Generic.Utils.DeadDiskRemapping --args ImagePath='/path/to/image.dd' --args Hostname='Some Host' --output remapping.zip
+velociraptor unzip remapping.zip /uploads/data/remapping.yaml
+</code></pre>
+<h6 id="non-windows-disk-images">Non-Windows disk images</h6>
+<p>You can define your own customized version of the
+<code>Generic.Utils.DeadDiskRemapping</code> artifact if the default artifact does not suit
+your specific analysis requirements, for example simple (non-LVM) Linux systems
+or non-NTFS disk images.</p>
+<p>If you load your custom artifact definition from a folder using the
+<code>--definitions</code> flag then this will be used by the <code>deaddisk</code> command. Note that
+this approach would only be necessary if you have a strong reason to use the CLI
+(for example in an automated analysis pipeline) rather than the GUI, since it&rsquo;s
+much easier to create and use a custom version of the artifact in the GUI
+without overriding the built-in artifact.</p>
+</div>
+</div>
+
+
+<p>See
+<a href="/docs/forensic/deaddisk/">Dead Disk Analysis</a>
+for more information.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352328"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352328"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352328"></script>
+    <script src="/js/jquery.sticky.js?1775352328"></script>
+    <script src="/js/featherlight.min.js?1775352328"></script>
+    <script src="/js/highlight.min.js?1775352328"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352328"></script>
+    <script src="/js/learn.js?1775352328"></script>
+    <script src="/js/hugo-learn.js?1775352328"></script>
+    
+    
+
+  </body>
+</html>

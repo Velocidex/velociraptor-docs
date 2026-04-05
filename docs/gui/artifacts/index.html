@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Managing Artifacts :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352329" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352329" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352329" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352329" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352329" rel="stylesheet">
+    <link href="/css/theme.css?1775352329" rel="stylesheet">
+    <link href="/css/tabs.css?1775352329" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352329" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352329" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352329" rel="stylesheet"><link href="/css/syntax.css?1775352329" rel="stylesheet"><link href="/css/light.css?1775352329" rel="stylesheet"><link href="/css/hljs.css?1775352329" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352329" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352329"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/gui/artifacts/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/gui\/artifacts\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/gui/artifacts/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Managing Artifacts</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#finding-managing-creating-and-editing-artifacts-in-the-gui">Finding, managing, creating and editing artifacts in the GUI</a>
+      <ul>
+        <li><a href="#searching-artifacts">Searching Artifacts</a></li>
+        <li><a href="#importing-artifact-packs">Importing Artifact Packs</a></li>
+        <li><a href="#importing-artifacts-from-velociraptors-specialized-artifact-projects">Importing Artifacts From Velociraptor&rsquo;s Specialized Artifact Projects</a></li>
+        <li><a href="#creating-and-editing-artifacts">Creating and Editing Artifacts</a></li>
+        <li><a href="#deleting-artifacts">Deleting Artifacts</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Managing Artifacts
+            </h1>
+            
+          
+
+        
+
+
+
+	<h2 id="finding-managing-creating-and-editing-artifacts-in-the-gui">Finding, managing, creating and editing artifacts in the GUI</h2>
+<p>In the GUI, Artifacts are created, edited and managed on the View Artifacts
+screen. Here you can search and view all artifacts known to your server. The GUI
+also includes a feature-rich artifact editor, which you can access on this
+screen.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/gui/artifacts/artifacts_main_screen_.svg" alt="Artifacts screen"
+         class="inline"
+         height="833.25"
+         width="1104.333333333333"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="artifacts_main_screen.svg"><i class="fa fa-download"></i></a>
+    Artifacts screen
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/gui/artifacts/artifacts_toolbar_.svg" alt="Artifacts toolbar"
+         class="inline"
+         height="547.5"
+         width="1052.8139534883721"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="artifacts_toolbar.svg"><i class="fa fa-download"></i></a>
+    Artifacts toolbar
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+
+<div class="mynotices info">
+  <div heading="info"><p>In order to create, modify or delete artifacts your user needs to have the
+<code>ARTIFACT_WRITER</code> permission.</p>
+<p>Users with this permission are generally considered to be &ldquo;admin equivalent&rdquo;
+since it is easy to escalate to full admin by designing artifacts to accomplish
+that goal.</p>
+<p>This permission is not needed to <em>run</em> artifacts, so it is common to have some
+users who can only run artifacts and some other users who can create and manage
+artifacts.</p>
+</div>
+</div>
+
+
+<h3 id="searching-artifacts">Searching Artifacts</h3>
+<p>The search bar on the right side of the Artifacts screen allows you to search by
+any text string, regular expression, and certain category expressions (see table
+below).</p>
+<p>As explained <a href="/docs/artifacts/basic_fields/">here</a> the <code>name</code>,
+<code>aliases</code>, and <code>description</code> fields from all artifacts are indexed and
+searchable.</p>
+<p>When searching, you can also limit the results using predefined Category
+Filters, which are available as a drop-down list next to the search bar.</p>
+<table>
+  <thead>
+      <tr>
+          <th>Category Filter</th>
+          <th>Filter expression</th>
+          <th>Notes</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Client Artifacts</strong></td>
+          <td><code>type:CLIENT</code></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td><strong>Server Artifacts</strong></td>
+          <td><code>type:SERVER</code></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td><strong>Notebook templates</strong></td>
+          <td><code>type:NOTEBOOK</code></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td><strong>All Artifacts</strong></td>
+          <td><code>&lt;none&gt;</code></td>
+          <td>Only includes artifacts with sources.</td>
+      </tr>
+      <tr>
+          <td><strong>Windows Only</strong></td>
+          <td><code>precondition:WINDOWS</code></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td><strong>Linux Only</strong></td>
+          <td><code>precondition:LINUX</code></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td><strong>macOS Only</strong></td>
+          <td><code>precondition:DARWIN</code></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td><strong>Client Monitoring</strong></td>
+          <td><code>type:CLIENT_EVENT</code></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td><strong>Server Monitoring</strong></td>
+          <td><code>type:SERVER_EVENT</code></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td><strong>Using Tools</strong></td>
+          <td><code>tool:.+</code></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td><strong>Exchange</strong></td>
+          <td><code>^exchange.+</code></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td><strong>BuiltIn Only</strong></td>
+          <td><code>builtin:yes</code></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td><strong>Custom Only</strong></td>
+          <td><code>builtin:no</code></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td><strong>Basic Only</strong></td>
+          <td><code>metadata:basic</code></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td><strong>Include Empty sources</strong></td>
+          <td><code>empty:true</code></td>
+          <td>Same as &ldquo;All Artifacts&rdquo; filter but also includes <br>artifacts without sources.**</td>
+      </tr>
+  </tbody>
+</table>
+<p>** For more information about artifacts without sources see
+<a href="/docs/artifacts/use_cases/#sourceless-artifacts">here</a>.</p>
+<p>The above filter expressions can also be used in the search bar directly and
+combined with search strings. Searches are <em>not</em> case-sensitive.</p>
+<p>For example:</p>
+<ul>
+<li><code>process type:client_event</code> will show all client event artifacts that also
+(i.e. <em>and</em> is implied) have the word &ldquo;process&rdquo;.</li>
+<li><code>tool:sysmonbinary</code> will show all artifacts that use the tool named
+&ldquo;SysmonBinary&rdquo;.</li>
+</ul>
+<h4 id="searching-artifacts-by-tag">Searching artifacts by tag</h4>
+
+<div class="mynotices note">
+  <div heading="note"><p>This feature requires version 0.75 or above.</p>
+</div>
+</div>
+
+
+<p>Artifact <a href="/docs/vql/artifacts/managing/#artifact-metadata">Tags</a>
+can be applied to selected artifacts to make finding and managing those
+artifacts easier in the GUI. These tags are stored as metadata in the server&rsquo;s
+internal artifact repository, and are therefore not part of the artifacts&rsquo; YAML.</p>
+<p>Tags applied to a specific artifact are displayed in the Artifact preview in the
+Artifacts screen.</p>
+<p>All tags in the artifact repository are added to the end of the Search dropdown
+list on the Artifacts screen.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/gui/artifacts/search_tags.png"
+         class="inline"
+         alt="filtering artifacts by tag"
+         width="650" height="500">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="search_tags.png">
+      <i class="fa fa-download"></i></a>
+    filtering artifacts by tag
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The <code>tag</code> term can also be used in filter expressions, for example
+<code>tag:exchange defender</code> will match all artifacts tagged with &ldquo;exchange&rdquo; and
+having the term &ldquo;defender&rdquo; in their
+<a href="/docs/artifacts/basic_fields/#summary">searchable fields</a>.</p>
+<h3 id="importing-artifact-packs">Importing Artifact Packs</h3>
+<p>There are
+<a href="/docs/artifacts/#loading-importing-and-saving-artifacts">many ways to add artifact definitions</a>
+to Velociraptor. On the Artifacts screen you can import zip archives containing
+multiple artifacts.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/gui/artifacts/artifacts_import_zip.png"
+         class="inline"
+         alt="Importing an artifact pack"
+         width="1280" height="542">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="artifacts_import_zip.png">
+      <i class="fa fa-download"></i></a>
+    Importing an artifact pack
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>When importing artifact packs you are given the option to add a custom prefix to
+the artifact name (if you want a <code>.</code> then you need to include it to your
+prefix!), and the option to only import artifacts that match a name filter.</p>
+<p>The file structure inside the zip doesn&rsquo;t matter. Velociraptor will search for
+all files in the zip with a <code>.yaml</code> or <code>.yml</code> file extension. The imported
+artifacts will be saved to the server&rsquo;s datastore using the file and folder
+structure described <a href="/docs/artifacts/basic_fields/">here</a>.</p>
+<h3 id="importing-artifacts-from-velociraptors-specialized-artifact-projects">Importing Artifacts From Velociraptor&rsquo;s Specialized Artifact Projects</h3>
+<p>Over time Velociraptor has spawned many sub-projects for curating and
+managing certain larger, more complex artifacts. As some artifacts became more
+complex and powerful, we moved them into separate projects so that they could be
+developed and managed independently of the main Velociraptor project. Splitting
+these off allows for independent release cycles, thus facilitating more rapid
+development and innovation.</p>
+<p>Velociraptor includes several <code>SERVER</code> artifacts which can import additional
+artifacts from these external projects.</p>
+<table>
+  <thead>
+      <tr>
+          <th><strong>Project name</strong></th>
+          <th><strong>Project website</strong></th>
+          <th><strong>Import artifact</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Curated Sigma Rules <br>(Hayabusa/Hayabusa Live/ChopChopGo)</td>
+          <td><a href="https://sigma.velocidex.com/" target="_blank" >https://sigma.velocidex.com/</a></td>
+          <td><code>Server.Import.CuratedSigma</code></td>
+      </tr>
+      <tr>
+          <td>KapeFiles</td>
+          <td><a href="https://triage.velocidex.com/" target="_blank" >https://triage.velocidex.com/</a></td>
+          <td><code>Server.Import.UpdatedBuiltin</code></td>
+      </tr>
+      <tr>
+          <td>Rapid7Labs</td>
+          <td><a href="https://github.com/rapid7/Rapid7-Labs/tree/main/Vql" target="_blank" >https://github.com/rapid7/Rapid7-Labs/tree/main/Vql</a></td>
+          <td><code>Server.Import.Rapid7Labs</code></td>
+      </tr>
+      <tr>
+          <td>RegistryHunter</td>
+          <td><a href="https://registry-hunter.velocidex.com/" target="_blank" >https://registry-hunter.velocidex.com/</a></td>
+          <td><code>Server.Import.RegistryHunter</code></td>
+      </tr>
+      <tr>
+          <td>SQLiteHunter</td>
+          <td><a href="https://sqlitehunter.velocidex.com/" target="_blank" >https://sqlitehunter.velocidex.com/</a></td>
+          <td><code>Server.Import.UpdatedBuiltin</code></td>
+      </tr>
+      <tr>
+          <td>Velociraptor Artifact Exchange</td>
+          <td><a href="/exchange/">https://docs.velociraptor.app/exchange/</a></td>
+          <td><code>Server.Import.ArtifactExchange</code></td>
+      </tr>
+      <tr>
+          <td>Artifacts from previous releases</td>
+          <td><a href="https://github.com/Velocidex/velociraptor/releases" target="_blank" >https://github.com/Velocidex/velociraptor/releases</a></td>
+          <td><code>Server.Import.PreviousReleases</code></td>
+      </tr>
+  </tbody>
+</table>
+
+<div class="mynotices info">
+  <div heading="info"><p>In version 0.75 and above, most of the artifacts listed above are consolidated
+into a single import artifact named <code>Server.Import.Extras</code>, and some
+reorganization within the related projects has been done to make these more
+manageable.</p>
+<p>The following artifacts are no longer included in the binary, and therefore need
+to be imported using <code>Server.Import.Extras</code>:</p>
+<ul>
+<li>The Windows Sigma-related artifacts (including Hayabusa rules)</li>
+<li>The Linux Sigma-related artifacts</li>
+<li><code>Generic.Forensic.SQLiteHunter</code></li>
+<li><code>Generic.Collectors.SQLECmd</code></li>
+<li><code>Windows.Registry.Hunter</code></li>
+<li><code>Windows.KapeFiles.Targets</code> (now named <code>Windows.Triage.Targets</code>)</li>
+</ul>
+<p>The following import artifacts were removed as they are superseded by the new
+import artifact:</p>
+<ul>
+<li><code>Server.Import.UpdatedBuiltin</code></li>
+<li><code>Server.Import.ArtifactExchange</code></li>
+<li><code>Server.Import.RegistryHunter</code></li>
+<li><code>Server.Import.Rapid7Labs</code></li>
+<li><code>Server.Import.CuratedSigma</code></li>
+</ul>
+<p>For more information please see the
+<a href="/blog/2025/2025-08-30-release-notes-0.75/#removal-of-some-large-artifacts">version 0.75 release notes</a>.</p>
+</div>
+</div>
+
+
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/gui/artifacts/artifacts_server_import1.png"
+         class="inline"
+         alt="Running server import artifacts"
+         width="1280" height="960">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="artifacts_server_import1.png">
+      <i class="fa fa-download"></i></a>
+    Running server import artifacts
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/gui/artifacts/artifacts_server_import2.png"
+         class="inline"
+         alt="Customizing server import artifact parameters"
+         width="1280" height="960">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="artifacts_server_import2.png">
+      <i class="fa fa-download"></i></a>
+    Customizing server import artifact parameters
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>We also have a built-in server artifact which updates selected artifacts to
+their latest version, and another which imports all artifacts from a previous
+releases.</p>
+<h4 id="serverimportupdatedbuiltin">Server.Import.UpdatedBuiltin</h4>
+
+<div class="mynotices info">
+  <div heading="info"><p>This artifact is no longer included in version 0.75 and above, since the updates
+can new be done using the new <code>Server.Import.Extras</code> server artifact (see note
+in the previous section).</p>
+</div>
+</div>
+
+
+<p>The purpose of the <code>Server.Import.UpdatedBuiltin</code> artifact is to update either
+of the following 2 artifacts which may be updated between releases:</p>
+<ul>
+<li><code>Windows.KapeFiles.Targets</code></li>
+<li><code>Generic.Forensic.SQLiteHunter</code></li>
+</ul>
+<p>By default, this artifact will add the prefix <code>Updated.</code> to the imported
+artifact.</p>
+<h4 id="serverimportpreviousreleases">Server.Import.PreviousReleases</h4>
+<p>The <code>Server.Import.PreviousReleases</code> artifact allows importing the artifacts
+from older releases. This is to cater for situations where clients cannot be
+easily upgraded, yet need functionality only found in the latest artifacts.</p>
+
+<div class="mynotices warning">
+  <div heading=" Forward compatibility is not guaranteed! "><p>While clients should have no problems running older versions of the
+standard artifacts, <a href="/docs/overview/support/">we cannot guarantee</a> that the latest artifact versions will
+be compatible with older clients. This depends mainly on whether or
+not the latest artifact versions contain VQL that uses new functions
+or plugins which the older client may not have. You should always test
+your particular scenario.</p>
+</div>
+</div>
+
+
+<h3 id="creating-and-editing-artifacts">Creating and Editing Artifacts</h3>
+<p>In the Artifacts page you can create a new artifact by clicking the
+Add Artifact (<i class="fa-solid fa-plus"></i>) button in the artifacts toolbar.</p>
+<p>This brings up the artifact editor, populated with a very basic boilerplate
+artifact to help get you started.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/gui/artifacts/new_artifact.png"
+         class="inline"
+         alt="New artifact"
+         width="2160" height="1056">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="new_artifact.png">
+      <i class="fa fa-download"></i></a>
+    New artifact
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>When you select an existing
+<a href="/docs/artifacts/#built-in-vs-compiled-in-vs-custom-artifacts">built-in artifact</a>
+in the GUI, and then attempt to edit it, you are actually creating a custom
+<em>copy</em> of that artifact.</p>
+<ul>
+<li>
+<p>If the artifact is a <strong>compiled-in</strong> artifact then editing it will result in a
+copy being created with the <code>Custom.</code> prefix added to the name.</p>
+</li>
+<li>
+<p>If the artifact is a <strong>built-in</strong> artifact then editing it will result in a copy
+but you&rsquo;ll need to ensure that you choose a new name for it.</p>
+</li>
+<li>
+<p>If the artifact is <strong>custom</strong> (that is, not built-in) then you can just edit it
+and save it, which will overwrite the previous version.</p>
+</li>
+</ul>
+<p>If you try to use the same name as an existing built-in artifact (or an existing
+alias) then you will receive an error message and the artifact will refuse to be
+saved.</p>
+<p>You cannot delete built-in artifacts through the GUI either; the delete button
+is grayed out when they are selected.</p>
+<h4 id="editor-preferences-and-vql-reformatting">Editor Preferences and VQL Reformatting</h4>
+<p>The editor provides syntax highlighting for YAML and VQL. If you don&rsquo;t like the
+default colors, you can choose a different theme in the editor&rsquo;s preferences
+pane. These preferences are user-specific, that is, they are saved as
+preferences for your Velociraptor user.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/gui/artifacts/artifacts_editor_.svg" alt="The artifact editor"
+         class="inline"
+         height="831.0000000000001"
+         width="1101.333333333333"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="artifacts_editor.svg"><i class="fa fa-download"></i></a>
+    The artifact editor
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>There are many things that you can change in the editor&rsquo;s settings but the most
+common items to tweak are the theme and font size.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/gui/artifacts/editor_preferences.png"
+         class="inline"
+         alt="editor preferences"
+         width="1201" height="799">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="editor_preferences.png">
+      <i class="fa fa-download"></i></a>
+    editor preferences
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The editor preferences you set here will also be used in other places in the
+GUI, for example <a href="/docs/notebooks/">notebooks</a> which use the same
+editor component.</p>
+<p>VQL doesn&rsquo;t care about formatting, but for us humans it&rsquo;s nice to have VQL code
+that is neat and legible. The <strong>Reformat VQL</strong> button will reformat the code in
+all VQL blocks. In general it wraps and aligns the VQL so that it can be easily
+read.</p>
+<p>Note that this action applies to <em>all</em> VQL blocks in the artifact.
+If you reformat the VQL and don&rsquo;t like the result then you can use the
+<code>Crtl</code>+<code>z</code> keyboard shortcut to revert the changes. You can also copy a section
+of reformatted VQL that you do like, revert the changes, and then paste that
+section over the original.</p>
+<h4 id="keyboard-shortcuts">Keyboard Shortcuts</h4>
+<p>The artifact editor is based on the <a href="https://ace.c9.io/" target="_blank" >Ace code editor</a> and
+therefore supports it&rsquo;s extensive list of keyboard shortcuts, shown here:
+<a href="https://ace.c9.io/demo/keyboard_shortcuts.html" target="_blank" >https://ace.c9.io/demo/keyboard_shortcuts.html</a></p>
+<p>Many of these keyboard shortcuts are the same as in other code editors that you
+may already be familiar with.</p>
+<h4 id="autosuggestautocomplete">Autosuggest/Autocomplete</h4>
+<p>The artifact editor offers suggestions and completions, as you type, for VQL
+keywords, functions and plugins, as well as their arguments.</p>
+<p>The suggestions also include previously defined strings in the artifact such as
+parameter names and variable names. This helps you to avoid mistakes when typing
+the names of previously defined parameters and variables in your VQL, since you
+can simply select them from the suggestions list.</p>
+<ol>
+<li>
+<p>When you type <code>?</code>, or start typing a word, the editor presents a dropdown
+list of suggestions.</p>
+</li>
+<li>
+<p>Use your <code>&lt;Up&gt;</code> and <code>&lt;Down&gt;</code> arrow keys to select an item from the
+suggestions list, and <code>&lt;Enter&gt;</code> to complete it. You can also use your mouse
+to hover over the suggestions list and select items, but using only your
+keyboard is much faster.</p>
+</li>
+<li>
+<p>For each item in the suggestions list it also includes the type of each item
+being suggested (keyword, function, plugin, local string).</p>
+</li>
+<li>
+<p>For VQL functions and plugins the suggestions list also provides a preview of
+the help documentation for the function/plugins as you step through them (or
+hover over them with your mouse).</p>
+</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/gui/artifacts/autosuggest01.png"
+         class="inline"
+         alt="autosuggest: functions and plugins"
+         width="1248" height="642">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="autosuggest01.png">
+      <i class="fa fa-download"></i></a>
+    autosuggest: functions and plugins
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/gui/artifacts/autosuggest02.png"
+         class="inline"
+         alt="autosuggest: function and plugin arguments"
+         width="1244" height="649">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="autosuggest02.png">
+      <i class="fa fa-download"></i></a>
+    autosuggest: function and plugin arguments
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/gui/artifacts/autosuggest03.png"
+         class="inline"
+         alt="autosuggest: local strings (e.g. existing variables)"
+         width="1258" height="610">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="autosuggest03.png">
+      <i class="fa fa-download"></i></a>
+    autosuggest: local strings (e.g. existing variables)
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="deleting-artifacts">Deleting Artifacts</h3>
+<p>All artifacts created or imported during runtime, are created in the server&rsquo;s
+datastore and can therefore be deleted.</p>
+<p>This can be done:</p>
+<ul>
+<li>from the toolbar in the Artifacts screen, or</li>
+<li>via VQL (in a notebook or artifact) using the <code>artifact_delete</code> function, or</li>
+<li>if you wish to perform bulk deletion you can use the built-in utility artifact
+<code>Server.Import.DeleteArtifacts</code>.</li>
+</ul>
+<p>Artifacts loaded from these external sources are deemed &ldquo;built-in&rdquo; and cannot be
+deleted during runtime:</p>
+<ul>
+<li>embedded in the config&rsquo;s <code>autoexec.artifact_definitions</code> section</li>
+<li>a directory specified by the <code>Frontend.artifact_definitions_directory</code> config setting</li>
+<li>additional directories specified by the <code>defaults.artifact_definitions_directories</code> config setting</li>
+<li>a directory specified by the <code>--definitions</code> CLI flag</li>
+</ul>
+<p>If you need to delete such artifacts then you should manually remove the
+corresponding YAML documents from their source locations, and then restart the
+server.</p>
+<p>For a more extensive discussion of built-in artifacts please see
+<a href="/docs/artifacts/#built-in-vs-compiled-in-vs-custom-artifacts">Built-in vs. Compiled-in vs. Custom Artifacts</a>.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352329"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352329"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352329"></script>
+    <script src="/js/jquery.sticky.js?1775352329"></script>
+    <script src="/js/featherlight.min.js?1775352329"></script>
+    <script src="/js/highlight.min.js?1775352329"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352329"></script>
+    <script src="/js/learn.js?1775352329"></script>
+    <script src="/js/hugo-learn.js?1775352329"></script>
+    
+    
+
+  </body>
+</html>

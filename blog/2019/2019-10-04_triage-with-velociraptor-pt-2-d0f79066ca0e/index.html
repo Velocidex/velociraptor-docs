@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="Help others to collect files …">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Triage with Velociraptor — Pt 2 :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352327" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352327" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352327" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352327" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352327" rel="stylesheet">
+    <link href="/css/theme.css?1775352327" rel="stylesheet">
+    <link href="/css/tabs.css?1775352327" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352327" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352327" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352327" rel="stylesheet"><link href="/css/syntax.css?1775352327" rel="stylesheet"><link href="/css/light.css?1775352327" rel="stylesheet"><link href="/css/hljs.css?1775352327" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352327" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352327"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/blog/2019/2019-10-04_triage-with-velociraptor-pt-2-d0f79066ca0e/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/blog\/2019\/2019-10-04_triage-with-velociraptor-pt-2-d0f79066ca0e\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/2019/2019-10-04_triage-with-velociraptor-pt-2-d0f79066ca0e/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Triage with Velociraptor — Pt 2</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Triage with Velociraptor — Pt 2
+            </h1>
+            
+          
+
+        
+
+
+
+	<h4 id="by-mike-cohen">By Mike Cohen</h4>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1__mBMHcMkKxXbyuJcMiGJ1LA.jpeg"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>In the <a href="https://medium.com/@mike_89870/triage-with-velociraptor-pt-1-253f57ce96c0" target="_blank" >previous part</a> of this series of articles we saw how Velociraptor can be used to automatically collect and preserve files from a remote system. This is great if you have Velociraptor installed as an agent on the endpoint — but what if you (or your customer) does not?</p>
+<h4 id="interactive-collection">Interactive collection</h4>
+<p>Velociraptor is essentially a query engine. All its operations are controlled by VQL queries normally encapsulated in a YAML files called artifacts. As such it does not really need a server to operate. It is possible to collect those same artifacts interactively on the command line (In this example we collect the KapeFiles artifact as we did in the last part but you can collect any Velociraptor artifact this way):</p>
+<pre><code>F:&gt; velociraptor.exe -v artifacts collect Windows.KapeFiles.Targets --output test.zip --args RegistryHives=Y
+</code></pre>
+<p>Invoking Velociraptor with the <strong>artifacts collect</strong> command specifies that we should collect the artifact interactively. If we also specify the “ <strong>—-output</strong> ” flag we will collect the result into the zip file. We can then specify any argument to the artifact using the “<strong>—-args</strong>” flag (which may be specified more than once). If you can not remember which args the artifact takes then simple provide and incorrect arg for Velociraptor to tell you.</p>
+<p>The example above simply collects all registry hives on the system (Registry hives are typically locked but Velociraptor uses raw NTFS parsing to extract the files from the filesystem — thus bypassing all locks).</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1__80qDOPpgzzmmBOo8Pf4sFQ.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1__A37UEKRaWFP297xls0iEJw.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<h4 id="help-someone-else-collectfiles">Help someone else collect files</h4>
+<p>Sometimes in our DFIR work we need to rely on other’s help — sometimes a system administrator or even an end user with limited command line skills. It is unreasonable to expect all our helpers to be able to type the above command line. We need to make it as easy as possible for our accomplices.</p>
+<p>Velociraptor features a method for packing a configuration file within the binary itself. We can use this feature to have Velociraptor automatically execute the correct artifact collection when started without any parameters (or double clicked).</p>
+<p>Simply create a configuration file with an autoexec field containing all the command line args (let’s call it <strong>myconfig.yaml</strong> ):</p>
+<pre><code>autoexec:
+  argv: \[&quot;artifacts&quot;, &quot;collect&quot;, &quot;-v&quot;, &quot;Windows.KapeFiles.Targets&quot;,
+         &quot;--output&quot;, &quot;collection\_$COMPUTERNAME.zip&quot;,
+         &quot;--args&quot;, &quot;WebBrowsers=Y&quot;,
+         &quot;--args&quot;, &quot;\_BasicCollection=Y&quot;,
+         &quot;--args&quot;, &quot;WBEM=Y&quot;,
+         &quot;--args&quot;, &quot;WER=Y&quot;,
+         &quot;--args&quot;, &quot;WindowsDefender=Y&quot;,
+         &quot;--args&quot;, &quot;TrendMicro=Y&quot;,
+         &quot;--args&quot;, &quot;TeamViewerLogs=Y&quot;,
+         &quot;--args&quot;, &quot;WebBrowsers=Y&quot;,
+         &quot;--args&quot;, &quot;MOF=Y&quot;,
+         &quot;--args&quot;, &quot;VSSAnalysis=Y&quot;\]
+</code></pre>
+<p>Note that this config file invokes Velociraptor with a list of KapeFiles targets and instructs the result to be saved to a zip file named after the computer name.</p>
+<p>Next we simply repack the binary — this effectively copies the config file inside the binary so when the new binary restarts, it automatically loads this config file (and therefore runs the instructions above):</p>
+<pre><code>F:&gt; velociraptor.exe config repack myconfig.yaml my\_velo.exe
+</code></pre>
+<p>This will produce a new binary with our config embedded in it. Now when this binary is run it will immediately begin to collect the targets listed. Note that the collector needs to run as an administrator so typically the user will need to right click, select “Run As Administrator” and click through the UAC dialog:</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1__qfSv52u3RLwpoOBqSz1lCg.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>When complete Velociraptor will leave behind the zip file with all the files in it — ready for sharing with the investigator.</p>
+<h4 id="uploading-the-collection">Uploading the collection</h4>
+<p>All we need to do now is send our trusted user the repacked binary and instruct them to right click on it and run as administrator. The collected zip file can be large (several Gb) and the user would need to somehow transport the file to us. One way is for us to set up a public writable share and have the file written automatically via a UNC path. This method only works when users are on the corporate LAN and have access to the domain and the file share. Otherwise the user may upload the file manually for us.</p>
+<p>In the next part we will see how to write the collected zip file to a cloud server instead so they can automatically upload the collected files from any internet connected network.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352327"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352327"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352327"></script>
+    <script src="/js/jquery.sticky.js?1775352327"></script>
+    <script src="/js/featherlight.min.js?1775352327"></script>
+    <script src="/js/highlight.min.js?1775352327"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352327"></script>
+    <script src="/js/learn.js?1775352327"></script>
+    <script src="/js/hugo-learn.js?1775352327"></script>
+    
+    
+
+  </body>
+</html>

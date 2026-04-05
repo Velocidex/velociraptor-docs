@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="One of the most common tasks in DFIR is searching for files on the endpoint.
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Finding Files :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352330" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352330" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352330" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352330" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352330" rel="stylesheet">
+    <link href="/css/theme.css?1775352330" rel="stylesheet">
+    <link href="/css/tabs.css?1775352330" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352330" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352330" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352330" rel="stylesheet"><link href="/css/syntax.css?1775352330" rel="stylesheet"><link href="/css/light.css?1775352330" rel="stylesheet"><link href="/css/hljs.css?1775352330" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352330" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352330"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/training/playbooks/finding_files/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/training\/playbooks\/finding_files\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/training/playbooks/finding_files/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Finding Files</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#scenario">Scenario</a></li>
+    <li><a href="#main-takeaways">Main takeaways</a></li>
+    <li><a href="#steps-to-take">Steps to take</a></li>
+    <li><a href="#more-details">More details</a>
+      <ul>
+        <li><a href="#example-detect-persistence">Example: Detect persistence</a></li>
+        <li><a href="#example-detect-registry-keys">Example: Detect registry keys</a></li>
+        <li><a href="#example-detect-mark-of-the-web-files">Example: Detect Mark of the Web files</a></li>
+      </ul>
+    </li>
+    <li><a href="#performance">Performance</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/preservation">preservation</a>
+
+  <a class="tag-link" href="/tags/acquisition">acquisition</a>
+
+  <a class="tag-link" href="/tags/searching">searching</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Finding Files
+            </h1>
+            
+          
+
+        
+
+
+
+	<h2 id="scenario">Scenario</h2>
+<p>One of the most common operations in DFIR is searching for files
+efficiently. When searching for a file, we may search by filename,
+file content, size or other properties.</p>
+<h2 id="main-takeaways">Main takeaways</h2>
+<ol>
+<li>This technique can be used to find files on the endpoint.</li>
+<li>Turning this into a hunt can search for a file across the entire fleet in minutes.</li>
+<li>You can transfer the content of the file or just detect its presence.</li>
+</ol>
+<h2 id="steps-to-take">Steps to take</h2>
+<p>The most common artifacts to use are:</p>
+<ol>
+<li><code>Windows.Search.FileFinder</code> or <code>Linux.Search.FileFinder</code></li>
+<li><code>Windows.NTFS.MFT</code></li>
+</ol>
+<h2 id="more-details">More details</h2>
+<p>The <code>Windows.Search.FileFinder</code> is the Swiss army knife of file
+searching.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/training/playbooks/finding_files/file_finder_.svg" alt="The File Finder artifact"
+         class="inline"
+         height="797"
+         width="1496.0949868073878"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="file_finder.svg"><i class="fa fa-download"></i></a>
+    The File Finder artifact
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>You can use the <code>File Finder</code> artifacts to find files by several criteria:</p>
+<ol>
+<li>
+<p>File names: Adding one or more Glob expressions (i.e. expressions
+with wildcards) will search for files by name.</p>
+</li>
+<li>
+<p>In addition to the filename, you can restrict the file by times -
+by adding a time box (before and after times), only files with any
+of their timestamps inside the time box will be selected.</p>
+<p>This allows us to restrict questions to &ldquo;only files added in the past week&rdquo;</p>
+</li>
+<li>
+<p>You can search file content by adding a Yara rule. Yara is a simple
+matching language allowing sophisticated search expressions.</p>
+<p>By pressing <code>?</code> inside the Yara editor, Velociraptor will suggest a
+Yara template you can use to get started.</p>
+</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/training/playbooks/finding_files/yara_rule.png"
+     width="1222"
+     height="196"/>
+
+
+
+
+</p>
+<ol start="4">
+<li>Matching files can be uploaded to the server. NOTE: This may
+generate a lot of traffic so it is only suitable for a small number
+of very targeted matches. Alternatively simply calculate the hash
+of matching files.</li>
+</ol>
+<p>The artifact also supports Windows Volume Shadow Copies, if
+available. Velociraptor will automatically deduplicate VSS so only a
+single file match will be reported, even if the same file exists in
+multiple VSS snapshots - unless the file is changed between them.</p>
+
+<div class="mynotices tip">
+  <div heading=" Searching the registry "><p>Although the artifact is named <code>File Finder</code>, the artifact can also be
+used to search for registry keys and values. This is because
+Velociraptor accesses files by way of an <code>accessor</code>. The accessor
+abstracts access for files and file-like objects.</p>
+<p>In Velociraptor the <code>registry</code> accessor makes the registry appear as a
+filesystem: Registry keys appear as directories and Registry Values
+appear as Files (with binary content).</p>
+<p>This allows the File Finder to search the registry as well - simply
+change the <code>Accessor</code> option from <code>auto</code> to <code>registry</code> to search the
+registry. Remember, top level directory is the registry hive, for
+example <code>HKLM</code>, or <code>HKEY_LOCAL_MACHINE</code></p>
+</div>
+</div>
+
+
+<h3 id="example-detect-persistence">Example: Detect persistence</h3>
+<p>Office executables like <code>WINWORD.exe</code> look for <code>AI.exe</code> under the
+<code>%ProgramFiles%\Microsoft Office\root\&lt;Office Version&gt;</code> and
+<code>%ProgramFiles(x86)%\Microsoft Office\root\&lt;Office Version&gt;</code>
+directories.  An attacker may place a malicious <code>AI.exe</code> there in order
+to have persistence whenever a user interacts with the Microsoft
+Office Suite.  <a href="https://twitter.com/laughing_mantis/status/1645268114966470662" target="_blank" >1</a>, <a href="https://github.com/last-byte/PersistenceSniper/blob/main/PersistenceSniper/PersistenceSniper.psm1" target="_blank" >2</a></p>
+<p>Search for file glob <code>C:\Program File*\Microsoft Office\root\Office*\ai.exe</code> and hash it.</p>
+<h3 id="example-detect-registry-keys">Example: Detect registry keys</h3>
+<p>The .NET DLLs listed in the <code>DOTNET_STARTUP_HOOKS</code> environment variable
+are loaded into .NET processes at runtime.
+<a href="https://persistence-info.github.io/Data/dotnetstartuphooks.html" target="_blank" >1</a>,
+<a href="https://github.com/last-byte/PersistenceSniper/blob/main/PersistenceSniper/PersistenceSniper.psm1" target="_blank" >2</a></p>
+<p>Solution: Change the Accessor to &ldquo;registry&rdquo; and search for the following globs.</p>
+<ol>
+<li><code>HKEY_USERS\*\Environment\DOTNET_STARTUP_HOOKS</code></li>
+<li><code>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment\DOTNET_STARTUP_HOOKS</code></li>
+</ol>
+<p>Select <code>Upload file</code> to view the content of the matching values.</p>
+<h3 id="example-detect-mark-of-the-web-files">Example: Detect Mark of the Web files</h3>
+<p>When files are downloaded from the internet, browsers will add an
+Alternate Data Stream (ADS) to the file called <code>Zone.Identifier</code>. This
+stream will contain additional information about where the file was
+downloaded from.</p>
+<p>Solution:</p>
+<ol>
+<li>Change the accessor to <code>ntfs</code> which will allow us to see
+Alternate Data Streams (ADS).</li>
+<li>Search for files containing the <code>Zone.Identifier</code> (ADS names are
+appended to the filename with a colon): <code>C:\Users\*\Downloads\**\*:Zone.Identifier</code></li>
+<li>Enable uploading to get the data.</li>
+<li>You can preview the data within the GUI in the <code>Uploaded Files</code> tab.</li>
+</ol>
+
+<div class="mynotices tip">
+  <div heading=" Using dedicated artifacts "><p>You can also use <code>Windows.NTFS.ADSHunter</code> or
+<code>Exchange.Windows.Detection.ZoneIdentifier</code> to further parse the
+contents of the <code>Zone.Identifier</code> stream.</p>
+</div>
+</div>
+
+
+<h2 id="performance">Performance</h2>
+<p>Searching for files can be an expensive operation, using a lot of CPU
+and IO resources on the end point. Some rules of thumb:</p>
+<ol>
+<li>
+<p>Searching by filename is fairly cheap.</p>
+</li>
+<li>
+<p>It is better if you can narrow down the number of directories we
+have to scan. For example rather than search
+<code>C:/**/*:Zone.Identifier</code>, limit to search to only user files
+<code>C:/Users/**/*:Zone.Identifier</code></p>
+</li>
+<li>
+<p>It is expensive to search the content of files with a Yara rule.</p>
+<p>For example instead of searching for <code>C:/**</code> then applying a Yara
+rule looking for an executable, it is better to first narrow the
+glob to <code>C:/**/*.exe</code> and even time box it further. The File Finder
+artifact prioritizes cheaper operations like filename or
+modification time checks before attempting to apply a Yara scan.</p>
+</li>
+</ol>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352330"></script>
+    <script src="/js/jquery.sticky.js?1775352330"></script>
+    <script src="/js/featherlight.min.js?1775352330"></script>
+    <script src="/js/highlight.min.js?1775352330"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352330"></script>
+    <script src="/js/learn.js?1775352330"></script>
+    <script src="/js/hugo-learn.js?1775352330"></script>
+    
+    
+
+  </body>
+</html>

@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="This post walks through discovery of malicious files, then data manipulation and decode in VQL.
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Cobalt Strike payload discovery and data manipulation in VQL :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352327" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352327" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352327" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352327" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352327" rel="stylesheet">
+    <link href="/css/theme.css?1775352327" rel="stylesheet">
+    <link href="/css/tabs.css?1775352327" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352327" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352327" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352327" rel="stylesheet"><link href="/css/syntax.css?1775352327" rel="stylesheet"><link href="/css/light.css?1775352327" rel="stylesheet"><link href="/css/hljs.css?1775352327" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352327" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352327"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/blog/2021/2021-11-09-vql-data-manipulation/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/blog\/2021\/2021-11-09-vql-data-manipulation\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/2021/2021-11-09-vql-data-manipulation/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Cobalt Strike payload discovery and data manipulation in VQL</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#background">Background</a></li>
+    <li><a href="#collection">Collection</a></li>
+    <li><a href="#payload-decode">Payload decode</a>
+      <ul>
+        <li><a href="#enumerate-collected-files-and-find-location-on-server">Enumerate collected files and find location on server</a></li>
+        <li><a href="#extract-encoded-payload-and-xor-key">Extract encoded payload and xor key</a></li>
+        <li><a href="#extract-normalisation">Extract normalisation</a></li>
+        <li><a href="#extract-to-bytes">Extract to bytes</a></li>
+        <li><a href="#xor-decode">Xor decode</a></li>
+        <li><a href="#additional-analysis">Additional analysis</a></li>
+      </ul>
+    </li>
+    <li><a href="#conclusions">Conclusions</a></li>
+    <li><a href="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/detection">Detection</a>
+
+  <a class="tag-link" href="/tags/vql">VQL</a>
+
+  <a class="tag-link" href="/tags/cobalt-strike">Cobalt Strike</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Cobalt Strike payload discovery and data manipulation in VQL
+            </h1>
+            
+            <div class="author pull-right">
+              Matthew Green
+              <span class="date">2021-11-09</span>
+            </div>
+            
+          
+
+        
+
+
+
+	<p>Velociraptor’s ability for data manipulation is a core platform capability
+that drives a lot of the great content we have available in terms of data
+parsing for artifacts and live analysis. After a recent engagement with
+less common encoded Cobalt Strike beacons, and finding sharable files on
+VirusTotal,  I thought it would be a good opportunity to walk through some
+workflow around data manipulation with VQL for analysis. In this post I
+will walk though some background, collection at scale, and finally talk
+about processing target files to extract key indicators.</p>
+<h2 id="background">Background</h2>
+<p>The Microsoft Build Engine (MSBuild.exe) is a signed Windows binary that
+can  be used to load C# or Visual Basic code via an inline task project
+file. Legitimately used in Windows software development, it can handle XML
+formatted task files that define requirements for loading and building
+Visual Studio configurations. Adversaries can abuse this mechanism for
+execution as defence evasion and to bypass application whitelisting -
+<a href="https://attack.mitre.org/techniques/T1127/001/" target="_blank" >ATT&amp;CK T1127</a>.</p>
+<p>In this particular engagement, the Rapid7 MDR/IR team responded to an
+intrusion in which during lateral movement, the adversary dropped many
+variants of an MSBuild inline task file to several machines and then
+executed MSBuild via wmi to load an embedded Cobalt Strike beacon.
+Detecting an in memory Cobalt Strike beacon is trivial for active threats
+with our process based yara and carving content.</p>
+<p>The problem in this case was: how do you discover, then decode these encoded
+files on disk quickly to find any additional scope using Velociraptor?</p>
+<h2 id="collection">Collection</h2>
+<p>First task is discovery and collecting our files in scope from the network.
+Typically this task may be slow to deploy or rely on cobbled together
+capabilities from other teams. The Velociraptor hunt is an easy button for
+this use case.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-11-09-vql-data-manipulation/01_new_hunt.png"
+         class="inline"
+         alt="Velociraptor GUI : hunt : add hunt"
+         width="680" height="305">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="01_new_hunt.png">
+      <i class="fa fa-download"></i></a>
+    Velociraptor GUI : hunt : add hunt
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Velociraptor has several valuable artifacts for hunting over Windows file
+systems with yara: <code>Windows.Detection.Yara.NTFS</code> and <code>Generic.Detection.Yara.Glob</code>
+spring to mind readily.  In this instance I am selecting Yara.NTFS. I have
+leveraged this artifact in the field for hunting malware, searching logs or
+any other capability where both metadata and content based discovery is desired.</p>
+
+<div class="mynotices tip">
+  <div heading=" Windows.Detection.Yara.NTFS "><ul>
+<li>This artifact searches the MFT, returns a list of target files then runs Yara over the target list.</li>
+<li>The artifact leverages <code>Windows.NTFS.MFT</code> so similar regex filters can be applied including Path, Size and date.</li>
+<li>The artifact also has an option to search across all attached drives and upload any files with Yara hits.</li>
+</ul>
+<p>Some examples of path regex may include:</p>
+<ul>
+<li>Extension at a path: <code>Windows/System32/.+\\.dll$</code></li>
+<li>More wildcards: <code>Windows/.+/.+\\.dll$</code></li>
+<li>Specific file: <code>Windows/System32/kernel32\.dll$</code></li>
+<li>Multiple extensions: <code>\.(php|aspx|resx|asmx)$</code></li>
+</ul>
+</div>
+</div>
+
+
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-11-09-vql-data-manipulation/02_find_artifact.png"
+         class="inline"
+         alt="Select artifact : Windows.Detection.Yara.NTFS"
+         width="1193" height="765">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="02_find_artifact.png">
+      <i class="fa fa-download"></i></a>
+    Select artifact : Windows.Detection.Yara.NTFS
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The file filter: <code>Windows/Temp/[^/]*\.TMP$</code> will suffice in this case to target
+our adversaries path for payloads before applying our yara rule. Typically when
+running discovery like this, an analyst can also apply additional options like
+file size or time stamp bounds for use at scale and optimal performance.
+The yara rule deployed in this case was simply quick and dirty hex conversion of
+text directly from the project file referencing the unique variable setup that
+was common across acquired samples.</p>
+<pre><code class="language-yara">rule MSBuild_buff {
+   meta:
+      description = &quot;Detect unique variable setup MSBuild inline task project file&quot;
+      author = &quot;Matt Green - @mgreen27&quot;
+      date = &quot;2021-10-22&quot;
+   strings:
+    // byte[] buff = new byte[]
+    $buff = { 62 79 74 65 5b 5d 20 62 75 66 66 20 3d 20 6e 65 77 20 62 79 74 65 5b 5d }
+
+    // byte[] key_code = new byte[]
+    $key_code = { 62 79 74 65 5b 5d 20 6b 65 79 5f 63 6f 64 65 20 3d 20 6e 65 77 20 62 79 74 65 5b 5d }
+
+condition:
+      any of them
+}
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-11-09-vql-data-manipulation/03_configure_artifact.png"
+         class="inline"
+         alt="Windows.Detection.Yara.NTFS hunt configuration"
+         width="843" height="827">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="03_configure_artifact.png">
+      <i class="fa fa-download"></i></a>
+    Windows.Detection.Yara.NTFS hunt configuration
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>After launching the hunt, results become available inside the hunt entry on the
+Velociraptor server for download or additional analysis.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-11-09-vql-data-manipulation/04_hunt_results.png"
+         class="inline"
+         alt="Hunt results"
+         width="1364" height="612">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="04_hunt_results.png">
+      <i class="fa fa-download"></i></a>
+    Hunt results
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="payload-decode">Payload decode</h2>
+<p>The Cobalt Strike payload is a string with represented characters xor encoded
+as a hex formatted buffer and key in embedded C Sharp code as seen below.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-11-09-vql-data-manipulation/05_payload_b.png"
+         class="inline"
+         alt="MSBuild inline task project file with CobaltStrike payload"
+         width="833" height="409">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="05_payload_b.png">
+      <i class="fa fa-download"></i></a>
+    MSBuild inline task project file with CobaltStrike payload
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="enumerate-collected-files-and-find-location-on-server">Enumerate collected files and find location on server</h3>
+<p>So far we have only collected files that have suspicious content. Now we want
+to post process the result and try to extract more information from the payload.</p>
+
+<div class="mynotices tip">
+  <div heading=" Velociraptor notebook "><p>The Velociraptor notebook is a gui component that lets the user run VQL directly
+on the server. In this case we are leveraging the notebook attached to our hunt
+to post process results opposed to downloading the files and processing offline.</p>
+</div>
+</div>
+
+
+<p>Our first step of decode is to examine all the files we collected in the hunt.
+The first query enumerates all the individual collections in the hunt, while the
+second query retrieves the files collected for each job.</p>
+<pre><code class="language-vql">-- find flow ids for each client
+LET hunt_flows = SELECT *, Flow.client_id as ClientId, Flow.session_id as FlowId
+FROM hunt_flows(hunt_id='H.C6508PLOOPD2U')
+
+-- extract uploaded files and path on server
+Let targets = SELECT  * FROM foreach(row=hunt_flows,
+    query={
+        SELECT
+            file_store(path=vfs_path) as SamplePath,
+            file_size as SampleSize
+        FROM uploads(client_id=ClientId,flow_id=FlowId)
+    })
+
+SELECT * FROM targets
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-11-09-vql-data-manipulation/06_notebook_files.png"
+         class="inline"
+         alt="Find the location of all files collected"
+         width="895" height="660">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="06_notebook_files.png">
+      <i class="fa fa-download"></i></a>
+    Find the location of all files collected
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="extract-encoded-payload-and-xor-key">Extract encoded payload and xor key</h3>
+<p>For the second step, to extract target bytes we leverage the <code>parse_records_with_regex()</code>
+plugin to extract the strings of interest (Data and Key) in our target files.
+Note: the buffer_size argument allows VQL to examine a larger buffer than the
+default size in order to capture the typically very large payloads in these build
+files. We have also included a 200 character limitation on the data field initially
+as this will improve performance when working on VQL. We have also specified buffer
+size to be larger than default and just larger than the biggest payload in scope.</p>
+<pre><code class="language-vql">-- regex to extract Data and Key fields
+LET target_regex = 'buff = new byte\\[\\]\\s*{(?P&lt;Data&gt;[^\\n]*)};\\s+byte\\[\\]\\s+key_code = new byte\\[\\]\\s*{(?P&lt;Key&gt;[^\\n]*)};\\n'
+
+SELECT * FROM foreach(row=targets,
+    query={
+        SELECT
+            basename(path=SamplePath) as Sample,
+            SampleSize,
+            Key, --obtained from regex
+            read_file(filename=Data,accessor='data',length=200) as DataExtract -- obtained by regex, only output 200 characters
+        FROM parse_records_with_regex(
+            file=SamplePath,buffer_size=15000000,
+            regex=target_regex)
+    })
+</code></pre>
+
+<div class="mynotices tip">
+  <div heading=" Parse records with regex "><p><code>parse_records_with_regex()</code> is a VQL plugin that parses a file with a set of regexp and yields matches as records. The file is read into a large buffer. Then each regular expression is applied to the buffer, and all matches are emitted as rows.</p>
+<p>The regular expressions are specified in the Go syntax. They are expected to contain capture variables to name the matches extracted.</p>
+<p>The aim of this plugin is to split the file into records which can be further parsed. For example, if the file consists of multiple records, this plugin can be used to extract each record, while <code>parse_string_with_regex()</code> can be used to further split each record into elements. This works better than trying to write a more complex regex which tries to capture a lot of details in one pass.</p>
+</div>
+</div>
+
+
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-11-09-vql-data-manipulation/07_notebook_regex.png"
+         class="inline"
+         alt="VQL: extract data and keys"
+         width="3070" height="709">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="07_notebook_regex.png">
+      <i class="fa fa-download"></i></a>
+    VQL: extract data and keys
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="extract-normalisation">Extract normalisation</h3>
+<p>The third step adds a custom function for hex normalisation and converts the inline
+C Sharp style encoding to a standard hex encoded string which VQL can easily parse.
+In this case, the local normalise function will ensure we have  valid 2 character hex.
+The <code>regex_replace()</code> will strip the leading &lsquo;0x&rsquo; from the hex strings and prepare for
+xor processing.</p>
+<pre><code class="language-vql">-- regex to extract Data and Key fields
+LET target_regex = 'buff = new byte\\[\\]\\s*{(?P&lt;Data&gt;[^\\n]*)};\\s+byte\\[\\]\\s+key_code = new byte\\[\\]\\s*{(?P&lt;Key&gt;[^\\n]*)};\\n'
+
+-- normalise function to fix bad hex strings
+LET normalise_hex(value) = regex_replace(source=value,re='0x(.)[,}]',replace='0x0\$1,')
+
+SELECT * FROM foreach(row=targets,
+    query={
+        SELECT
+            basename(path=SamplePath) as Sample,
+            SampleSize,
+            regex_replace(re=&quot;0x|,&quot;, replace=&quot;&quot;, source=normalise_hex(value=Key)) as KeyNormalised,
+            regex_replace(re=&quot;0x|,&quot;, replace=&quot;&quot;, source=normalise_hex(value=Data)) as DataNormalised
+        FROM parse_records_with_regex(
+            file=SamplePath,buffer_size=15000000,
+            regex=target_regex)
+    })
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-11-09-vql-data-manipulation/08_notebook_normalise.png"
+         class="inline"
+         alt="VQL: hex normalisation"
+         width="2262" height="709">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="08_notebook_normalise.png">
+      <i class="fa fa-download"></i></a>
+    VQL: hex normalisation
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="extract-to-bytes">Extract to bytes</h3>
+<p>The fourth step converts hex to bytes and validates that the next stage is working. In the example VQL below
+we pass the hex text to the <code>unhex()</code> function to produce raw bytes for our variables.</p>
+<pre><code class="language-vql">SELECT * FROM foreach(row=targets,
+    query={
+        SELECT
+            basename(path=SamplePath) as Sample,
+            SampleSize,
+            unhex(string=regex_replace(re=&quot;0x|,&quot;, replace=&quot;&quot;, source=normalise_hex(value=Key))) as KeyBytes,
+            read_file(filename=
+                unhex(string=regex_replace(re=&quot;0x|,&quot;, replace=&quot;&quot;, source=normalise_hex(value=Data))),
+                    accessor='data',length=200) as DataBytesExtracted
+        FROM parse_records_with_regex(
+            file=SamplePath,buffer_size=15000000,
+            regex=target_regex)
+    })
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-11-09-vql-data-manipulation/09_notebook_bytes.png"
+         class="inline"
+         alt="VQL: extract bytes"
+         width="1912" height="850">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="09_notebook_bytes.png">
+      <i class="fa fa-download"></i></a>
+    VQL: extract bytes
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="xor-decode">Xor decode</h3>
+<p>VQL&rsquo;s flexibility comes with its ability to reuse existing artifacts in different ways.
+The fifth step is running Velociraptor’s <code>xor()</code> function and piping the output into our
+the existing <code>Windows.Carving.CobaltStrike()</code> configuration decoder.</p>
+<pre><code class="language-vql">-- extract bytes
+LET bytes &lt;= SELECT * FROM foreach(row=targets,
+    query={
+        SELECT
+            SamplePath, basename(path=SamplePath) as Sample, SampleSize,
+            unhex(string=regex_replace(re=&quot;0x|,&quot;, replace=&quot;&quot;, source=normalise_hex(value=Key))) as KeyBytes,
+            read_file(filename=
+                unhex(string=regex_replace(re=&quot;0x|,&quot;, replace=&quot;&quot;, source=normalise_hex(value=Data))),
+                    accessor='data') as DataBytes
+        FROM parse_records_with_regex(
+            file=SamplePath,buffer_size=15000000,
+            regex=target_regex)
+    })
+
+-- pass bytes to cobalt strike parser and format key indicators im interested in
+SELECT *, FROM foreach(row=bytes,query={
+    SELECT *,
+        basename(path=SamplePath) as Sample,SampleSize
+    FROM Artifact.Windows.Carving.CobaltStrike(TargetBytes=xor(key=KeyBytes,string=DataBytes))
+})
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-11-09-vql-data-manipulation/10_notebook_parse.png"
+         class="inline"
+         alt="VQL: parse config"
+         width="2443" height="709">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="10_notebook_parse.png">
+      <i class="fa fa-download"></i></a>
+    VQL: parse config
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Decoded Cobalt Strike configuration is clearly observed.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-11-09-vql-data-manipulation/11_notebook_config_example.png"
+         class="inline"
+         alt="Cobalt strike configuration example"
+         width="2501" height="992">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="11_notebook_config_example.png">
+      <i class="fa fa-download"></i></a>
+    Cobalt strike configuration example
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The smallest file also includes a Cobalt Strike shellcode stager, which I have recently
+added to the Velociraptor Cobalt Strike parser.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-11-09-vql-data-manipulation/12_notebook_shellcode_example.png"
+         class="inline"
+         alt="Cobalt strike shellcode example"
+         width="1179" height="850">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="12_notebook_shellcode_example.png">
+      <i class="fa fa-download"></i></a>
+    Cobalt strike shellcode example
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="additional-analysis">Additional analysis</h3>
+<p>Finally, we may have a desire to extract specific key indicators and compare across
+samples. A simple data stack on key indicators of interest.</p>
+<pre><code class="language-vql">-- pass bytes to cobalt strike parser and format key indicators im interested in
+LET cobalt = SELECT *, FROM foreach(row=bytes,query={
+    SELECT
+        basename(path=SamplePath) as Sample,SampleSize,
+        Hash as DecodeHash,
+        Rule,Offset,Xor,DecodedConfig
+    FROM Artifact.Custom.Windows.Carving.CobaltStrike(TargetBytes=xor(key=KeyBytes,string=DataBytes))
+})
+
+-- quick data stack on a few things to show sample analysis
+SELECT count() as Total,
+    if(condition= Xor=~'^0x(2e|69)$', then=DecodedConfig.BeaconType, else= 'Shellcode stager') as Type,
+    if(condition= Xor=~'^0x(2e|69)$', then=DecodedConfig.LicenseId, else= DecodedConfig.Licence) as License,
+    if(condition= Xor=~'^0x(2e|69)$', then=dict(SpawnTox86=DecodedConfig.SpawnTox86,SpawnTox64=DecodedConfig.SpawnTox64), else= 'N/A') as SpawnTo,
+    if(condition= Xor=~'^0x(2e|69)$', then=DecodedConfig.Port, else= 'N/A') as Port,
+    if(condition= Xor=~'^0x(2e|69)$', then=DecodedConfig.C2Server, else= DecodedConfig.Server) as Server
+FROM cobalt
+GROUP BY Type, Licence,SpawnTo,Port,Server
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2021/2021-11-09-vql-data-manipulation/13_notebook_example.png"
+         class="inline"
+         alt="VQL results: key indicators of interest"
+         width="2461" height="850">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="13_notebook_example.png">
+      <i class="fa fa-download"></i></a>
+    VQL results: key indicators of interest
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="conclusions">Conclusions</h2>
+<p>In this post we showed discovery, then decode of encoded Cobalt Strike beacons on disk.
+Velociraptor can read, manipulate and enrich data efficiently across a large network
+without the overhead of needing to extract and process manually.</p>
+<p>Whilst most traditional workflows concentrate on collection and offline analysis,
+Velociraptor notebook also enables data manipulation and flexibility in analysis.
+If you would like to try out these features in Velociraptor, It is available on
+<a href="https://github.com/Velocidex/velociraptor" target="_blank" >GitHub</a> under an open source license. As
+always, please file issues on the bug tracker or ask questions on our mailing list
+<a href="mailto:velociraptor-discuss@googlegroups.com" target="_blank" >velociraptor-discuss@googlegroups.com</a>. You can also chat with us directly on discord
+at <a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord</a>.</p>
+<h2 id="references">References</h2>
+<ol>
+<li><a href="https://attack.mitre.org/techniques/T1127/001/" target="_blank" >MITRE ATT&amp;CK T1127.001 - Trusted Developer Utilities Proxy Execution: MSBuild</a></li>
+<li><a href="https://github.com/3gstudent/msbuild-inline-task" target="_blank" >MSBuild Inline Task template</a></li>
+<li><a href="https://www.virustotal.com/gui/file/cf54b9078d63eaeb0300e70d0ef6cf4d3a4d83842fe08cb951f841549663e1e2" target="_blank" >VirusTotal sample - <code>I20xQy.TMP</code></a></li>
+<li><a href="https://www.virustotal.com/gui/file/52ade62a412fed9425b75610620c85d9c143593cd50c2269066b120ac05dc8c3" target="_blank" >VirusTotal sample - <code>CSLHP.TMP</code></a></li>
+<li><a href="https://www.virustotal.com/gui/file/b4ede02ea3c198f5e7d3fbab3cadc1266538d23a43a2825ece7d4c75b7208fa9" target="_blank" >VirusTotal sample - <code>ddppllkm.TMP</code></a></li>
+<li><a href="https://www.virustotal.com/gui/file/152722a89fd87ecdf73fd18558622f22f980bddd6928cad31859453d41f7b8dd" target="_blank" >VirusTotal sample - <code>gujf2z0z.0.cs.TMP</code></a></li>
+<li><a href="https://www.virustotal.com/gui/file/78d2078c4e740aff4a2a289387ba8cfc1de6c02ed48c4c65b53582303192dab2" target="_blank" >VirusTotal sample - <code>Ofeq81u.TMP</code></a></li>
+<li><a href="https://www.virustotal.com/gui/file/507f988ab1f8229e84bb83dcb5a896b1747957b998aad7c7ccdd301096726999" target="_blank" >VirusTotal sample - <code>zzyhukwK.TMP</code></a></li>
+</ol>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352327"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352327"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352327"></script>
+    <script src="/js/jquery.sticky.js?1775352327"></script>
+    <script src="/js/featherlight.min.js?1775352327"></script>
+    <script src="/js/highlight.min.js?1775352327"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352327"></script>
+    <script src="/js/learn.js?1775352327"></script>
+    <script src="/js/hugo-learn.js?1775352327"></script>
+    
+    
+
+  </body>
+</html>

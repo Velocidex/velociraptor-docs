@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>FreeBSD.Sys.Utx :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352330" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352330" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352330" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352330" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352330" rel="stylesheet">
+    <link href="/css/theme.css?1775352330" rel="stylesheet">
+    <link href="/css/tabs.css?1775352330" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352330" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352330" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352330" rel="stylesheet"><link href="/css/syntax.css?1775352330" rel="stylesheet"><link href="/css/light.css?1775352330" rel="stylesheet"><link href="/css/hljs.css?1775352330" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352330" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352330"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/exchange/artifacts/pages/freebsd.sys.utx/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/exchange\/artifacts\/pages\/freebsd.sys.utx\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/exchange/artifacts/FreeBSD.Sys.Utx.yaml" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">FreeBSD.Sys.Utx</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents"></nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              FreeBSD.Sys.Utx
+            </h1>
+            
+          
+
+        
+
+
+<p>Parse the utx file of the system (similar to wtmp on Linux). This covers user sessions, boots, shutdowns and system time changes.
+Because FreeBSD discards fields for the entries of the utx file based on type (see <code>man getutxent</code>), no direct parsing of the file using &ldquo;vtypes&rdquo; is done (too complicated for me to define a structure for parsing), but rather native tools are used for accessing the data.</p>
+<p>Using a value of &ldquo;time&rdquo; with the &ldquo;userRegex&rdquo; Parameter will give you all entries related to boots, shutdowns and system time changes.</p>
+<p>Beware: logout times are given in localtime! Furthermore, that column is not automatically parsed into timestamp values, because the tool output is not consistently a recognizable datetime.</p>
+<pre><code class="language-yaml">
+name: FreeBSD.Sys.Utx
+author: Herbert Bärschneider
+description: |
+  Parse the utx file of the system (similar to wtmp on Linux). This covers user sessions, boots, shutdowns and system time changes.
+  Because FreeBSD discards fields for the entries of the utx file based on type (see `man getutxent`), no direct parsing of the file using "vtypes" is done (too complicated for me to define a structure for parsing), but rather native tools are used for accessing the data.
+  
+  Using a value of "time" with the "userRegex" Parameter will give you all entries related to boots, shutdowns and system time changes.
+  
+  Beware: logout times are given in localtime! Furthermore, that column is not automatically parsed into timestamp values, because the tool output is not consistently a recognizable datetime.
+
+type: CLIENT
+
+parameters:
+  - name: utxGlobs
+    default: /var/log/utx.log*
+    description: |
+      glob for covering the files that should be parsed; default covers the usual location of the utx file on FreeBSD
+  - name: userRegex
+    type: regex
+    default: "."
+    description: |
+      Regex for filtering the users, showing those you are interested in 
+  - name: DateAfter
+    type: timestamp
+    description: |
+      timestamp used for filtering the login time
+  - name: DateBefore
+    type: timestamp
+    description: |
+      timestamp used for filtering the login time
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'freebsd'
+    query: |
+      -- timestamps given by the system command "last" are in local time, so we tell Velociraptor to handle them accordingly when converting with the VQL function "timestamp()"
+      LET PARSE_TZ &lt;= "local"
+      
+      -- time test function (taken from Windows.NTFS.MFT)
+      LET time_test(stamp) =
+            if(condition= DateBefore AND DateAfter,
+                then= stamp &lt; DateBefore AND stamp &gt; DateAfter,
+                else=
+            if(condition=DateBefore,
+                then= stamp &lt; DateBefore,
+                else=
+            if(condition= DateAfter,
+                then= stamp &gt; DateAfter,
+                else= True
+            )))
+      
+      -- expand the glob and get all files that are matched by it
+      LET Files = SELECT OSPath FROM glob(globs=split(string=utxGlobs, sep=","))
+      
+      -- for each targeted file, parse the data out of it using system built-in command 
+      LET UtxParsing = SELECT * FROM foreach(row=Files,
+      query={
+        -- TODO: try the command while setting env variable "TZ" to UTC and check, if the timestamps are changed accordingly
+        SELECT * 
+        FROM execve(argv=["last", "-wy", "--libxo=json", "-f", OSPath])
+        WHERE log(message="stderr: " + Stderr) 
+      })
+      
+      -- parse the output from each file as json
+      LET UtxContent = SELECT parse_json(data=Stdout) as Content FROM UtxParsing
+      
+      -- pull out the interesting information from the nested json content
+      LET s = scope() -- a little helper to suppress "symbol not found error" for elements of the content that are sometimes missing
+      LET FormatedContent = SELECT * FROM foreach(row=UtxContent,
+      query={
+        SELECT user, timestamp(string=`login-time`) AS login_time, s.`logout-time` AS logout_time, s.`session-length` AS session_length, s.tty AS tty, s.`from` AS remote, Content.`last-information`.utxdb AS utx_log FROM foreach(row=Content.`last-information`.last)
+      })
+      
+      SELECT * FROM FormatedContent WHERE
+        user =~ userRegex
+        AND time_test(stamp=login_time)
+
+</code></pre>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352330"></script>
+    <script src="/js/jquery.sticky.js?1775352330"></script>
+    <script src="/js/featherlight.min.js?1775352330"></script>
+    <script src="/js/highlight.min.js?1775352330"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352330"></script>
+    <script src="/js/learn.js?1775352330"></script>
+    <script src="/js/hugo-learn.js?1775352330"></script>
+    
+    
+
+  </body>
+</html>
+

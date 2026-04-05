@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Organizations and Multi-tenancy :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352329" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352329" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352329" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352329" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352329" rel="stylesheet">
+    <link href="/css/theme.css?1775352329" rel="stylesheet">
+    <link href="/css/tabs.css?1775352329" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352329" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352329" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352329" rel="stylesheet"><link href="/css/syntax.css?1775352329" rel="stylesheet"><link href="/css/light.css?1775352329" rel="stylesheet"><link href="/css/hljs.css?1775352329" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352329" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352329"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/deployment/orgs/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/deployment\/orgs\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/deployment/orgs/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Organizations and Multi-tenancy</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#the-root-org">The Root org</a></li>
+        <li><a href="#switching-to-different-orgs">Switching to different orgs</a></li>
+        <li><a href="#creating-a-new-org">Creating a new Org</a></li>
+        <li><a href="#preparing-client-deployment-for-the-new-org">Preparing client deployment for the new Org</a></li>
+        <li><a href="#auditing-user-actions">Auditing User Actions</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Organizations and Multi-tenancy
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>Velociraptor supports multiple orgs in a full multi-tenancy
+configuration. Orgs are lightweight and can be added and removed
+easily with minimal impact on resource requirements.</p>
+<p>This is useful in a number of scenarios:</p>
+<ol>
+<li>
+<p>You are a service provider with many customers of varying size
+networks. Multi-Tenancy configuration allows you to onboard a
+smaller customer (with e.g. less than 1000 endpoints) onto the same
+infrastructure without needing to deploy additional resources.</p>
+</li>
+<li>
+<p>You have multiple organizational units within your own company with
+different access control requirements. For example, some units
+require much more controlled access and different set of
+Velociraptor users.</p>
+</li>
+</ol>
+<p>In Velociraptor, multi-tenancy is implemented by dividing the clients into
+separate <strong>Organizations</strong> or <strong>Orgs</strong>.</p>
+<p>Each org is logically completely separate from other orgs:</p>
+<ul>
+<li>Each org contains a different set of clients. A Client is configured
+to access an org by way of a shared secret in its configuration file
+(<a href="/docs/deployment/references/#Client.nonce"><code>Client.nonce</code></a>).
+It is not possible for a client to connect to a different org
+without knowing this shared secret.</li>
+<li>Storage for each Org is separated within the data-store directory in
+an org specific sub-directory. This means you can backup, restore or
+delete orgs very easily since the data is separate.</li>
+<li>Users have access control lists (ACLs) within the respective
+Org. This means that the same user can have different roles and
+permissions in different orgs. Orgs can have their own administrator
+user who can perform administrative actions on the org without
+affecting other orgs.</li>
+<li>Custom artifacts can be maintained in different Orgs. Users within
+an org can independently create and update custom artifacts without
+affecting other orgs.</li>
+<li>VQL running in notebooks or server artifacts will automatically and
+transparently use the correct org without affecting or being able to
+access other orgs.</li>
+<li>Orgs can be created and destroyed easily at runtime (via VQL).</li>
+</ul>
+<h3 id="the-root-org">The Root org</h3>
+<p>While Velociraptor allows creating multiple orgs it is not mandatory!
+By default when Velociraptor is first installed, the <code>root</code> org is
+created and all clients connect to it.</p>
+<p>If you choose not to create additional Organizations then you can just
+continue using the <code>root</code> org as normal for all your clients.</p>
+<p>Additional orgs are created as Child orgs of the root org. In a
+multi-tenancy deployment the root org has additional privileges that
+other orgs do not have:</p>
+<ol>
+<li>
+<p>A user with the <code>Org Administrator</code> permission within the <code>Root</code>
+Org is allowed to manage orgs (e.g. create new Orgs or delete
+Orgs). The <code>Org Administrator</code> permission is meaningless within a
+non-root org.</p>
+</li>
+<li>
+<p>Custom artifacts from the root org are automatically visible in all
+child orgs. This supports the use case of multi-tenancy as the root
+org can manage a custom set of artifacts for their tenants.</p>
+</li>
+</ol>
+<h3 id="switching-to-different-orgs">Switching to different orgs</h3>
+<p>You can switch to any other orgs your user account has access to using the
+user preferences tile in the GUI.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/orgs/selecting_orgs_.svg" alt="Selecting Org"
+         class="inline"
+         height="496"
+         width="1300"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="selecting_orgs.svg"><i class="fa fa-download"></i></a>
+    Selecting Org
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Normally in order to see an org in the drop down selector, your
+Velociraptor user account needs at least <code>Reader</code> level access to that
+org.</p>
+<p>If your user has the role <code>Org Administrator</code> on the <code>root</code> org, then you can
+see all orgs in listings for the purpose of administering them (for example
+adding users), but in order to switch to an org your user <em>also</em> has to have at
+least the <code>Reader</code> role in that org..</p>
+<h3 id="creating-a-new-org">Creating a new Org</h3>
+
+<div class="mynotices tip">
+  <div heading=" Orgs are always managed from the Root org "><p>Since the <code>Org Administrator</code> permission is only meaningful for the
+root org you should ensure that you are in the root org in the GUI before
+creating or deleting orgs. Attempting to create or delete orgs from a non-root
+org will always fail.</p>
+</div>
+</div>
+
+
+<p>You can use the <code>Server.Orgs.NewOrg</code> server artifact to create a new org</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/orgs/new_org_1_.svg" alt="Creating a new Org"
+         class="inline"
+         height="639"
+         width="948.5"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="new_org_1.svg"><i class="fa fa-download"></i></a>
+    Creating a new Org
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/orgs/new_org_2.png"
+         class="inline"
+         alt="Specifying parameters for new Org"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="new_org_2.png">
+      <i class="fa fa-download"></i></a>
+    Specifying parameters for new Org
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>As a convenience this artifact also allows you to select other server artifacts
+that will be run in the new org after it is created. Typically you would want to
+create a MSI installer for Windows clients, so this is selected by default.
+However you may also create the MSI at a later time (for example after a version
+upgrade) using the procedure <a href="#creating-client-installer-packages">described below</a></p>
+<p>As you can see, the <code>Server.Orgs.NewOrg</code> artifact is just running VQL to create
+the new org. You could alternatively run the same VQL in a global notebook or in
+a &ldquo;bootstrap&rdquo; artifact when setting up new servers.</p>
+<h4 id="assigning-users-to-the-new-org">Assigning users to the new org</h4>
+<p>Once the new org is created you can assign users to the Org using the
+<a href="/docs/deployment/security/#adding-a-new-user">Adding a New User</a> procedure.</p>
+<h3 id="preparing-client-deployment-for-the-new-org">Preparing client deployment for the new Org</h3>
+<p>Clients are configured to connect to one org only. While the
+cryptographic keys (e.g. The internal CA Certificate) of clients from
+all Orgs are the same, the <a href="/docs/deployment/references/#Client.nonce"><code>Client.nonce</code></a> is different for each
+Org. The server uses this nonce to associate the client with the correct
+Org. The nonce is included in the client&rsquo;s configuration file and acts
+as a shared secret between all the Org clients and the server.</p>
+<h4 id="creating-client-installer-packages">Creating client installer packages</h4>
+<p>To create an installation package that connects to the new Org, you
+need to <a href="/docs/deployment/clients/#repacking-the-official-release-msi">build an MSI</a>
+within the target Org:</p>
+<ol>
+<li>First switch to the relevant Org with the GUI selector</li>
+<li>Launch the server artifact <code>Server.Utils.CreateMSI</code> within the context of the target Org.</li>
+</ol>
+<p>The produced MSI will connect to the target Org.</p>
+<p>For non-Windows platforms you will currently need to build the
+installation packages manually with the Org specific client config
+file, as explained in
+<a href="/docs/deployment/clients/#linux">Deploying Clients</a>.
+You can download the correct org-specific configuration file
+from the main dashboard as show below.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/orgs/downloading_org_config_.svg" alt="Downloading the Org Specific Configuration File"
+         class="inline"
+         height="669"
+         width="993.5"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="downloading_org_config.svg"><i class="fa fa-download"></i></a>
+    Downloading the Org Specific Configuration File
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="auditing-user-actions">Auditing User Actions</h3>
+<p>As described in the <a href="/docs/deployment/security/#auditing-user-actions">Auditing User actions</a> section,
+Velociraptor collects auditable events into a central location for
+review by the administrators.</p>
+<p>When running within an Org context, each Org collects its own audit
+log (although you can still forward all logs to a remote syslog
+server). This allows an administrator within the Org to only view
+relevant auditable events to that Org. It is also possible to install
+server monitoring artifacts to automate actions based on auditable
+events within the org.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352329"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352329"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352329"></script>
+    <script src="/js/jquery.sticky.js?1775352329"></script>
+    <script src="/js/featherlight.min.js?1775352329"></script>
+    <script src="/js/highlight.min.js?1775352329"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352329"></script>
+    <script src="/js/learn.js?1775352329"></script>
+    <script src="/js/hugo-learn.js?1775352329"></script>
+    
+    
+
+  </body>
+</html>

@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Exporting Bulk File Collections :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352329" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352329" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352329" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352329" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352329" rel="stylesheet">
+    <link href="/css/theme.css?1775352329" rel="stylesheet">
+    <link href="/css/tabs.css?1775352329" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352329" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352329" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352329" rel="stylesheet"><link href="/css/syntax.css?1775352329" rel="stylesheet"><link href="/css/light.css?1775352329" rel="stylesheet"><link href="/css/hljs.css?1775352329" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352329" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352329"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/file_collection/exporting/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/file_collection\/exporting\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/file_collection/exporting/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Exporting Bulk File Collections</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-export-process">The export process</a>
+      <ul>
+        <li><a href="#keeping-sparse-files-sparse">Keeping sparse files sparse</a></li>
+        <li><a href="#password-protecting-exports">Password-protecting exports</a></li>
+      </ul>
+    </li>
+    <li><a href="#preparing-exports-via-vql">Preparing exports via VQL</a></li>
+    <li><a href="#generating-individual-file-download-links">Generating individual file download links</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Exporting Bulk File Collections
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>As described in the
+<a href="/docs/file_collection/#accessing-file-uploads-on-the-server">accessing file uploads on the server</a>
+section, file uploads can be individually downloaded from the GUI.</p>
+<p>However, <a href="/docs/file_collection/bulk/">bulk file collections</a> that
+upload many files will sometimes need to be exported in bulk for purposes such
+as external analysis or evidence preservation.</p>
+<p>This section explains how to export uploaded files in bulk from a collection or
+a hunt.</p>
+<h2 id="the-export-process">The export process</h2>
+<p>The process of exporting files in bulk involves two steps.</p>
+<ol>
+<li>
+<p>Prepare the download by clicking the <strong>Prepare Download</strong> button.</p>
+<p>This copies all files in the collection or hunt into a single
+<a href="/docs/deployment/offline_collections/collection_data/">collection container</a>,
+which is a specially structured zip file that can be imported on other
+Velociraptor servers. The zip also includes all the JSON collection data -
+not just the file uploads. You can optionally choose to include the
+collection data in CSV format, in addition to the default JSON-formatted
+data.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/exporting/export_prepare.png"
+         class="inline"
+         alt="Preparing a downloadable collection container"
+         width="1280" height="892">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="export_prepare.png">
+      <i class="fa fa-download"></i></a>
+    Preparing a downloadable collection container
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+<li>
+<p>The &ldquo;Prepare Download&rdquo; action creates the zip (which may take some time
+depending on the total size of all the files) and then displays a link for
+the download.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/exporting/export_download.png"
+         class="inline"
+         alt="Resulting FlowId"
+         width="1200" height="666">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="export_download.png">
+      <i class="fa fa-download"></i></a>
+    Resulting FlowId
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>It&rsquo;s possible to prepare multiple downloads, each with different options. In
+that case they will all be listed in the <strong>Available Downloads</strong> section.</p>
+</li>
+</ol>
+<p>For hunts, the process is similar to that described above. The only difference
+is that the exported collection container will contain all the file uploads and
+JSON collection data from all collections linked to the hunt.</p>
+<h3 id="keeping-sparse-files-sparse">Keeping sparse files sparse</h3>
+<p>If you are exporting the files for a reason such as external analysis, and your
+analysis tools can deal with sparse files, then you may choose to keep the files
+in their sparse form. In that case you can toggle the option &ldquo;Sparse files will
+remain sparse in export&rdquo; before preparing the download.</p>
+<p>By default, sparse files will be padded out when preparing the download package.
+This can cause certain files to grow significantly, although the zip compression
+should mostly offset this size increase.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/exporting/export_keep_sparse.png"
+         class="inline"
+         alt="Selecting the option to preserve sparse files"
+         width="771" height="375">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="export_keep_sparse.png">
+      <i class="fa fa-download"></i></a>
+    Selecting the option to preserve sparse files
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="password-protecting-exports">Password-protecting exports</h3>
+<p>For additional safety during file-handling, and to prevent your local antivirus
+from accidentally quarantining potential malware, you can set a password in your
+<a href="/docs/gui/user_preferences/">user preferences</a>.
+This ensures that any files exported from the GUI are automatically packaged in
+a password-protected zip and thereby made safe for transit to your analysis
+environment.</p>
+<p>When a download password is set, all prepared downloads (i.e. bulk exports) and
+also any single-file downloads from the GUI will be have password protection
+applied to the zip. This GUI indicates this with a &ldquo;lock&rdquo; icon button in the
+<strong>Download Results</strong> toolbar.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/exporting/export_protected.png"
+         class="inline"
+         alt="Prepare export"
+         width="582" height="457">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="export_protected.png">
+      <i class="fa fa-download"></i></a>
+    Prepare export
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Password-protected exports have the <code>_locked</code> suffix added to the download file
+name.</p>
+<p>To unset the password protection behavior, clear the download password in your
+user preferences. However, for a particular download you can toggle the &ldquo;lock&rdquo;
+icon button to not apply password protection.</p>
+
+<div class="mynotices note">
+  <div heading=" Default export timeout "><p>It takes time for the server to zip the results, and optionally pad out sparse
+files. If you are preparing exports for collections or hunts that are
+unusually large, then the default timeout (10 minutes) for this process may be
+insufficient.</p>
+<p>In that case, you may need to set a greater timeout value, which you
+can do by preparing the export via a server artifact, with an extended
+timeout value. This approach is demonstrated by the
+<code>Server.Utils.ExportHunt</code> artifact.</p>
+<p>Alternatively, if you persistently need a higher timeout value, you
+can set it globally via the
+<a href="/docs/deployment/references/#defaults.export_max_timeout_sec">defaults.export_max_timeout_sec</a>
+setting in the server config. However, as with all resource limits,
+the default values are intended to protect your server from unusual
+resource consumption, so you should try to avoid changing the global
+defaults unless you&rsquo;ve considered the potential impacts.</p>
+<p>There is also a default limit of 10 concurrent export preparation processes. If
+your server hardware is capable of more then you might need to increase this
+limit, which is done via the
+<a href="/docs/deployment/references/#defaults.export_concurrency">defaults.export_concurrency</a>
+setting in the server config.</p>
+<p>As with any server config change, this will require a restart of the server
+before the changes are in effect.</p>
+</div>
+</div>
+
+
+<h2 id="preparing-exports-via-vql">Preparing exports via VQL</h2>
+<p>You may not like always having to click the &ldquo;Prepare Download&rdquo; button for each
+collection or hunt. As with most things in the Velociraptor GUI, we provide VQL
+functions that perform the equivalent actions. In fact, most of the time your
+actions in the GUI are actually performed by VQL under the hood.</p>
+<p>In VQL, we have two functions that kick off the creation of collection archives:</p>
+<ul>
+<li><a href="/vql_reference/server/create_flow_download/">create_flow_download</a></li>
+<li><a href="/vql_reference/server/create_hunt_download/">create_hunt_download</a></li>
+</ul>
+<p>These functions can be used manually in notebooks, or you could create a
+<a href="/docs/server_automation/server_monitoring/">server monitoring</a>
+artifact that automates the zip creation whenever collections that contain a
+selected artifact complete.</p>
+<p>For example:</p>
+<pre><code class="language-yaml">name: Custom.CreateFlowDownload
+type: SERVER_EVENT
+sources:
+  - query: |
+      SELECT create_flow_download(client_id=ClientId, flow_id=FlowId, expand_sparse=true)
+      FROM watch_monitoring(artifact=&quot;System.Flow.Completion&quot;)
+      WHERE Flow.artifacts_with_results =~ &quot;Windows.Triage.Targets&quot;
+</code></pre>
+<p>Depending on the total size of the export it may take a while to prepare, but
+it will eventually appear under the collection&rsquo;s Available Downloads without
+any manual GUI interaction.</p>
+<h2 id="generating-individual-file-download-links">Generating individual file download links</h2>
+<p>In some circumstances, you might not want to export all the files from a
+collection or a hunt for practical reasons. You might prefer to have a list of
+download links for all the individual files. This list can be given to an
+analyst who might decide to only download a subset of the files. The download of
+these files can then be done using a downloader script or other HTTP download
+tool.</p>
+<p>You can create a list of download links for the file uploads associated with a
+collection in a Velociraptor notebook. Typically you would do this in the
+collection notebook, although it can be done in a hunt notebook of global
+notebook.</p>
+<p>This method uses the <code>uploads()</code> plugin to enumerate all the file uploads in the
+collection, and then the <code>link_to()</code> function to generate a valid download link
+for each file. The link is constructed using the DNS name specified by
+<code>GUI.public_url</code> in the
+<a href="/docs/deployment/references/#GUI.public_url">server config</a>.</p>
+<p>The following example will generate a list of download links in a collection
+notebook. You can add other columns to the query as needed.</p>
+<pre><code class="language-vql">SELECT link_to(raw=true,
+               upload=dict(Components=Upload.Components,
+                           StoredName=Upload.Components[-1])) AS FSLink
+FROM uploads(client_id=ClientId, flow_id=FlowId)
+</code></pre>
+<p>The notebook results can then be exported in CSV format and given to other
+analysts (who perhaps aren&rsquo;t familiar with Velociraptor).</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/exporting/export_links.png"
+         class="inline"
+         alt="Exporting the links to CSV"
+         width="1141" height="435">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="export_links.png">
+      <i class="fa fa-download"></i></a>
+    Exporting the links to CSV
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>It will contain links to the individual files, and these can then be fetched if
+necessary using external HTTP clients (although user authentication will still
+be required to download the files).</p>
+<p>For hunts, you can use the same technique after first enumerating all the flows
+associated with a hunt, and then enumerating the downloads in each flow, as
+demonstrated in <a href="/docs/file_collection/#for-a-hunt">this example</a>.</p>
+<p>If you automate the downloads, say via a script, then you will need to ensure
+that your script saves the file downloads separately for each client and
+possibly also each flow. You can add additional path components to the query and
+then have your external download tool use them to construct appropriate paths
+for the downloads.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352329"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352329"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352329"></script>
+    <script src="/js/jquery.sticky.js?1775352329"></script>
+    <script src="/js/featherlight.min.js?1775352329"></script>
+    <script src="/js/highlight.min.js?1775352329"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352329"></script>
+    <script src="/js/learn.js?1775352329"></script>
+    <script src="/js/hugo-learn.js?1775352329"></script>
+    
+    
+
+  </body>
+</html>

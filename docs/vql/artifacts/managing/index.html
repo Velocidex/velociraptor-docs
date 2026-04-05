@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Managing artifacts from VQL :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352330" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352330" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352330" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352330" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352330" rel="stylesheet">
+    <link href="/css/theme.css?1775352330" rel="stylesheet">
+    <link href="/css/tabs.css?1775352330" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352330" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352330" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352330" rel="stylesheet"><link href="/css/syntax.css?1775352330" rel="stylesheet"><link href="/css/light.css?1775352330" rel="stylesheet"><link href="/css/hljs.css?1775352330" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352330" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352330"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/vql/artifacts/managing/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/vql\/artifacts\/managing\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/vql/artifacts/managing/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Managing artifacts from VQL</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#working-with-the-internal-artifact-repository-in-vql">Working with the internal artifact repository in VQL</a>
+      <ul>
+        <li><a href="#accessing-artifacts-in-other-orgs">Accessing artifacts in other orgs</a></li>
+        <li><a href="#viewing-and-listing-artifacts">Viewing and Listing Artifacts</a></li>
+        <li><a href="#creating-and-modifying-custom-artifacts">Creating and Modifying Custom Artifacts</a></li>
+        <li><a href="#deleting-artifacts">Deleting Artifacts</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Managing artifacts from VQL
+            </h1>
+            
+          
+
+        
+
+
+
+	<h2 id="working-with-the-internal-artifact-repository-in-vql">Working with the internal artifact repository in VQL</h2>
+<p>The Velociraptor server maintains an internal artifact repository that includes
+both built-in and custom artifacts.</p>
+<p>On server startup, all compiled-in artifacts are loaded from the binary and
+additional artifacts are loaded from
+<a href="/docs/artifacts/#loading-importing-and-saving-artifacts">several possible locations</a>.
+Artifacts loaded from these locations are deemed &ldquo;built-in&rdquo; and cannot be
+modified or deleted during runtime. Only custom artifacts loaded from the
+datastore can be modified or deleted.</p>
+<p>Most often artifacts are viewed and managed in the GUI&rsquo;s
+<a href="/docs/gui/artifacts/">&ldquo;View Artifact&rdquo; screen</a>,
+however artifacts can also be managed from VQL using the plugins and functions
+described in this section. Since the artifacts repository is maintained on the
+server, these VQL functions and plugins can only be used on the server - that
+is, in server artifacts or notebooks.</p>
+<h3 id="accessing-artifacts-in-other-orgs">Accessing artifacts in other orgs</h3>
+<p>The artifact-related VQL queries described in this section apply only to the
+<a href="/docs/deployment/orgs/">org</a> that your user is currently working
+in.</p>
+<p>As explained <a href="/docs/artifacts/#orgs-artifact-inheritance-and-masking">here</a>,
+artifacts from the root org are propagated to non-root orgs, while custom
+artifacts created in non-root orgs are only visible within that org, and can
+potentially &ldquo;mask&rdquo; custom artifacts that are inherited from the root org.</p>
+<p>If you wish to work with artifacts in a different org <em>without switching to that
+org</em>, then you can wrap your queries in the
+<a href="/vql_reference/server/query/">query</a> plugin which allows you to
+target a different org using its <code>org_id</code> argument and optionally specify a
+different user using its <code>runas</code> argument.</p>
+<p>For example:</p>
+<pre><code class="language-vql">LET OtherOrgId &lt;= &quot;OCDC0&quot;
+LET OtherUser &lt;= &quot;fred&quot;
+SELECT name
+FROM query(query={ SELECT * FROM artifact_definitions()
+                   WHERE built_in = FALSE },
+           org_id=OtherOrgId,
+           runas=OtherUser)
+</code></pre>
+<h3 id="viewing-and-listing-artifacts">Viewing and Listing Artifacts</h3>
+<p>You can view all known artifacts in the current org using the
+<a href="/vql_reference/server/artifact_definitions/">artifact_definitions</a>
+plugin. This plugin returns artifacts in their parsed form, which means you can
+easily filter the results using WHERE clauses against the many available
+artifact fields.</p>
+<p>For example, with this query we can see all <code>SERVER</code> type artifacts and also see
+whether or not they are considered
+<a href="/docs/artifacts/#built-in-vs-compiled-in-vs-custom-artifacts">built-in</a>:</p>
+<pre><code class="language-vql">SELECT name, description, built_in, compiled_in
+FROM artifact_definitions() WHERE type =~ &quot;server&quot;
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/vql/artifacts/managing/artifact_definitions_01.png"
+         class="inline"
+         alt="artifact_definitions query"
+         width="1136" height="476">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="artifact_definitions_01.png">
+      <i class="fa fa-download"></i></a>
+    artifact_definitions query
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>If an artifact is
+<a href="/docs/vql/artifacts/calling/#artifact-dependency-resolution">dependent</a>
+on other artifacts then you can include those in your results by using the
+<code>deps=TRUE</code> arg.</p>
+<p>For example:</p>
+<pre><code class="language-vql">SELECT * FROM artifact_definitions(names=&quot;Windows.Sysinternals.Autoruns&quot;, deps=TRUE)
+</code></pre>
+<p>will also show the <code>Generic.Utils.FetchBinary</code> artifact.</p>
+<p>Artifacts are available in their original YAML form in the <code>raw</code> field, for
+example:</p>
+<pre><code class="language-vql">LET ColumnTypes&lt;=dict(`raw`='nobreak')
+SELECT name, raw FROM artifact_definitions(names=&quot;Windows.Sysinternals.Autoruns&quot;)
+</code></pre>
+<h3 id="creating-and-modifying-custom-artifacts">Creating and Modifying Custom Artifacts</h3>
+<p>The <a href="/vql_reference/server/artifact_set/">artifact_set</a>
+function is used to create a custom artifact in the artifact repository.</p>
+<p>While the artifact YAML can be read from a file using the <code>read_file</code> function,
+it is preferable to add artifacts from the filesystem using one of the supported
+<a href="/docs/artifacts/#loading-importing-and-saving-artifacts">loading mechanisms</a>.
+These allow you to add artifacts in bulk from specified locations.</p>
+<p>It is therefore more common to see the <code>artifact_set</code> function used with
+artifacts added from network locations, typically using the <code>http_client</code>
+plugin. For example:</p>
+<pre><code class="language-vql">SELECT artifact_set(prefix=&quot;Custom.&quot;, definition=Content) FROM http_client(url=...
+</code></pre>
+<p>It is also commonly used to add multiple artifacts from a zip file that has been
+downloaded to the server using <code>http_client</code>. The artifact
+<a href="/artifact_references/pages/server.import.artifactexchange/"><code>Server.Import.ArtifactExchange</code></a>
+provides a good example utilizing this approach.</p>
+<p>When you add custom artifacts using <code>artifact_set</code> they are written to the
+server&rsquo;s datastore. See
+<a href="/docs/artifacts/basic_fields/#how-artifact-names-translate-to-file-and-folder-structure-on-disk">How artifact names translate to file and folder structure on disk</a>
+for more information.</p>
+<p>If a custom artifact with the same name exists in the datastore then
+<code>artifact_set</code> will overwrite it without warning. This allows you to update
+custom artifacts via VQL.</p>
+<h4 id="artifact-metadata">Artifact Metadata</h4>
+<p>Artifacts in the repository have a <code>metadata</code> field, which currently supports
+three special attributes that provide additional artifact management features
+for server administrators: <code>hidden</code>, <code>basic</code> and <code>tags</code>.</p>
+<p>The <code>hidden</code> attribute controls the artifact&rsquo;s visibility in the GUI. This is
+explained in more detail
+<a href="/docs/artifacts/security/#hidden-artifacts">here</a>.</p>
+<p>The <code>basic</code> attribute is used to designate artifacts that can be collected by
+users who have only the <code>COLLECT_BASIC</code> (Collect Basic Client) permission. Such
+low-privilege users can only collect these specially designated artifacts. This
+is explained in more detail
+<a href="/docs/artifacts/security/#basic-artifacts">here</a>.</p>
+<p>The <code>tags</code> attribute allows grouping artifacts into distinct groups,
+independent of their names. In previous versions we used an artifact name prefix
+to distinguish and group artifacts. This is useful for broad artifacts like
+Windows, Linux etc. but proved to be problematic for imported artifacts such as
+those from the community-contributed <a href="/exchange/">Artifact Exchange</a>,
+particularly when other artifacts need to refer to an artifact by it&rsquo;s original name.</p>
+<p>The artifacts screen supports
+<a href="/docs/gui/artifacts/#searching-artifacts-by-tag">searching for tags</a>.</p>
+<p>The metadata attributes are set for new artifacts using the
+<a href="/vql_reference/server/artifact_set/">artifact_set</a>
+function, or can be updated for existing artifacts using the
+<a href="/vql_reference/server/artifact_set_metadata/">artifact_set_metadata</a>
+function.</p>
+<p>For example:</p>
+<pre><code class="language-vql">SELECT name, metadata AS OldMetadata, artifact_set_metadata(name=name, hidden=TRUE)
+FROM artifact_definitions() WHERE type =~ &quot;internal&quot; OR name =~ &quot;internal&quot;
+</code></pre>
+<p>will hide all &ldquo;internal&rdquo; type artifacts from the GUI.</p>
+<p>The hidden artifacts are of course still there, and you can verify this by
+querying the metadata across all artifacts:</p>
+<pre><code class="language-vql">SELECT name, metadata FROM artifact_definitions() WHERE metadata.hidden
+</code></pre>
+<p>By default all artifacts, including those created during runtime, have the
+<code>hidden</code> and <code>basic</code> attributes set to <code>false</code> That is, they are not hidden and
+not &ldquo;basic&rdquo; by default. New artifacts have no <code>tags</code> set by default.</p>
+<p>Artifact tags can be cleared by using and empty list,
+for example <code>artifact_set_metadata(name=...,tags=[])</code>.</p>
+<p>Note that when applying a single tag to artifacts, you must ensure that you
+include a trailing comma so that VQL doesn&rsquo;t interpret the list as a string, for
+example to apply the single tag &ldquo;Triage&rdquo; you would specify:
+<code>artifact_set_metadata(name=...,tags=[&quot;Triage&quot;,])</code>.</p>
+<h3 id="deleting-artifacts">Deleting Artifacts</h3>
+<p>The
+<a href="/vql_reference/server/artifact_delete/">artifact_delete</a>
+function is used to delete artifacts.
+Only custom artifacts in the server&rsquo;s datastore can be deleted.</p>
+<p>Artifacts loaded during startup, from locations other than the
+<code>artifact_definitions</code> folder in the server&rsquo;s datastore, are considered
+&ldquo;built-in&rdquo; and cannot be deleted. If you need to delete such artifacts then you
+should manually remove the corresponding YAML documents from their source
+locations, and then restart the server.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352330"></script>
+    <script src="/js/jquery.sticky.js?1775352330"></script>
+    <script src="/js/featherlight.min.js?1775352330"></script>
+    <script src="/js/highlight.min.js?1775352330"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352330"></script>
+    <script src="/js/learn.js?1775352330"></script>
+    <script src="/js/hugo-learn.js?1775352330"></script>
+    
+    
+
+  </body>
+</html>

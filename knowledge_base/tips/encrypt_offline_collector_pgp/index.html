@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Encrypt and decrypt an offline collector using PGP public and private keys :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352330" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352330" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352330" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352330" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352330" rel="stylesheet">
+    <link href="/css/theme.css?1775352330" rel="stylesheet">
+    <link href="/css/tabs.css?1775352330" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352330" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352330" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352330" rel="stylesheet"><link href="/css/syntax.css?1775352330" rel="stylesheet"><link href="/css/light.css?1775352330" rel="stylesheet"><link href="/css/hljs.css?1775352330" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352330" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352330"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/knowledge_base/tips/encrypt_offline_collector_pgp/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/knowledge_base\/tips\/encrypt_offline_collector_pgp\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/knowledge_base/tips/encrypt_offline_collector_pgp.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Encrypt and decrypt an offline collector using PGP public and private keys</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#step-1-generate-a-pgp-key-pair">Step 1: Generate a PGP key-pair</a></li>
+        <li><a href="#step-2-configure-the-collector-spec">Step 2: Configure the Collector Spec</a></li>
+        <li><a href="#step-4-decrypt-the-results">Step 4: Decrypt the Results</a></li>
+        <li><a href="#working-with-the-data">Working with the data</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/triage">triage</a>
+
+  <a class="tag-link" href="/tags/uploads">uploads</a>
+
+  <a class="tag-link" href="/tags/collector">collector</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+
+        
+
+
+
+	<h1 id="encrypt-and-decrypt-an-offline-collector-using-pgp-public-and-private-keys">Encrypt and decrypt an offline collector using PGP public and private keys</h1>
+<p>Velociraptor supports three modes for encrypting Offline Collectors: Password, X.509 Secured, and PGP-secured (as <a href="/docs/deployment/offline_collections/">described here</a>).
+While X.509 is the standard for automatic server imports, using PGP is a great alternative when you need to decrypt collections independently of the Velociraptor Server.</p>
+<p><strong>The PGP Encryption Workflow:</strong>
+When using PGP, Velociraptor follows a &ldquo;hybrid&rdquo; encryption approach:</p>
+<ol>
+<li><strong>Generation</strong>: Velociraptor generates a high-entropy random password.</li>
+<li><strong>Encryption</strong>: The collected data is encrypted with this password.</li>
+<li><strong>Envelope</strong>: The password itself is encrypted using your PGP Public Key and stored in the metadata.</li>
+<li><strong>Decryption</strong>: To access the data, you must first decrypt the password using your <strong>PGP Private Key</strong>, then decompress the protected zip using the password.</li>
+</ol>
+<h3 id="step-1-generate-a-pgp-key-pair">Step 1: Generate a PGP key-pair</h3>
+<p>First, generate an RSA key-pair. We will use a batch file for automation, but you can also do this interactively.</p>
+<pre><code class="language-sh">gpg --batch --generate-key &lt;&lt;EOF
+    Key-Type: RSA
+    Key-Length: 3072
+    Subkey-Type: RSA
+    Subkey-Length: 3072
+    Name-Real: Ilo
+    Name-Email: ilo@test.com
+    Expire-Date: 1y
+    %no-protection
+    %commit
+EOF
+
+# Export the public key for use in the collector
+gpg --armor --export ilo@test.com &gt; key.pub
+</code></pre>
+<h3 id="step-2-configure-the-collector-spec">Step 2: Configure the Collector Spec</h3>
+<blockquote>
+<p>The easiest way to build the Offline Collector is in the GUI. This approach will generate a Velociraptor Offline Collector and a spec.yaml.</p>
+</blockquote>
+<p>The following will show how to build the offline collector using CLI:</p>
+<ol>
+<li>Setup a datastore location</li>
+<li>Setup a artifact location (only needed if external artifacts will be used)</li>
+<li>Create a template-spec.yaml</li>
+<li>Create the Velociraptor Offline Collector</li>
+</ol>
+<p><strong>Prepare the CLI environment</strong></p>
+<pre><code class="language-sh">mkdir datastore artifacts
+
+# Download reference artifacts and the Velociraptor binary
+wget https://triage.velocidex.com/artifacts/Velociraptor_Triage_v0.1.zip -P artifacts
+7z x artifacts/Velociraptor_Triage_v0.1.zip -oartifacts
+wget https://github.com/Velocidex/velociraptor/releases/download/v0.75/velociraptor-v0.75.6-linux-amd64
+chmod +x velociraptor-v0.75.6-linux-amd64
+
+# Generate a base template
+./velociraptor-v0.75.6-linux-amd64 collector &gt; template-spec.yaml
+</code></pre>
+<p><strong>Update</strong> <code>template-spec.yaml</code></p>
+<p>Edit your YAML file to include your public key in the field <code>public_key</code>. Ensure the <code>EncryptionScheme</code> is set to <code>PGP</code>.</p>
+<pre><code class="language-yaml">OS: Windows
+Artifacts:
+ Windows.Triage.Targets:
+   HighLevelTargets: '[&quot;_SANS_Triage&quot;, &quot;_KapeTriage&quot;]'
+   Devices: '[&quot;C:&quot;,&quot;D:&quot;,&quot;E:&quot;]'
+Target: ZIP
+EncryptionScheme: PGP
+EncryptionArgs:
+  public_key: |-
+    -----BEGIN PGP PUBLIC KEY BLOCK-----
+
+    REDACTED...
+    -----END PGP PUBLIC KEY BLOCK-----
+  password: &quot;&quot;
+OptVerbose: Y
+OptBanner: Y
+OptPrompt: N
+OptAdmin: Y
+OptTempdir: &quot;&quot;
+OptLevel: 9
+OptConcurrency: 2
+OptFilenameTemplate: &quot;Collection-%Hostname%-%TIMESTAMP%&quot;
+OptCollectorTemplate: &quot;&quot;
+OptFormat: jsonl
+OptOutputDirectory: &quot;&quot;
+OptCpuLimit: 0
+OptProgressTimeout: 1800
+OptTimeout: 0
+OptVersion: &quot;&quot;
+OptDeleteAtExit: N
+</code></pre>
+<p><strong>Step 3: Build the Offline Collector</strong></p>
+<p>Run the following command to &ldquo;repack&rdquo; the Velociraptor binary into a standalone collector based on your spec.</p>
+<pre><code class="language-sh">./velociraptor-v0.75.6-linux-amd64 collector --datastore datastore --definitions artifacts template-spec.yaml
+
+[
+ {
+  &quot;Repacked&quot;: {
+   &quot;Path&quot;: &quot;/REDACTED/datastore/Collector_velociraptor-v0.75.6-windows-amd64.exe&quot;,
+   &quot;Size&quot;: 87421951,
+   &quot;UploadId&quot;: 0,
+   &quot;sha256&quot;: &quot;f1487b5686c9616def5c55cd32266b4726162758456d7f5149ebfde51bc3a582&quot;,
+   &quot;md5&quot;: &quot;d46f704b4014dd7a76fa2847b21f813e&quot;,
+   &quot;Components&quot;: [
+    &quot;Collector_velociraptor-v0.75.6-windows-amd64.exe&quot;
+   ]
+  },
+  &quot;_Source&quot;: &quot;Server.Utils.CreateCollector&quot;
+ }
+]
+</code></pre>
+<h3 id="step-4-decrypt-the-results">Step 4: Decrypt the Results</h3>
+<p>The Velociraptor Offline Collector will generate a Collector.zip
+file. The file structure within the container is documented as
+<a href="/docs/deployment/offline_collections/collection_data/">described
+here</a>:</p>
+<ul>
+<li>data.zip</li>
+<li>metadata.json</li>
+</ul>
+<p>Within the metadata.json file you fill find the encrypted password in the <code>EncryptedPass</code> entry:</p>
+<pre><code class="language-json">[
+ {
+  &quot;EncryptedPass&quot;: &quot;REDACTED&quot;,
+  &quot;Scheme&quot;: &quot;PGP&quot;,
+  &quot;PublicKey&quot;: &quot;-----BEGIN PGP PUBLIC KEY BLOCK-----\n\nREDACTED\n-----END PGP PUBLIC KEY BLOCK-----&quot;
+ }
+]
+</code></pre>
+<p>You can decrypt the password and the data using the following commands:</p>
+<pre><code class="language-sh"># 1. Extract the encrypted pass from metadata
+# 2. Base64 decode it
+# 3. Decrypt with GPG
+# 4. Use the result as the password for the data zip
+PASS=$(7z e -so Collection.zip metadata.json | jq -r '.[].EncryptedPass' | base64 -d | gpg --decrypt)
+7z x Collection.zip &quot;-p$PASS&quot; -y
+</code></pre>
+<p>This assumes that the private key is in your gpg vault.</p>
+<h3 id="working-with-the-data">Working with the data</h3>
+<p>Working with the Offline Collection data is <a href="/docs/deployment/offline_collections/collection_data/">described here</a></p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352330"></script>
+    <script src="/js/jquery.sticky.js?1775352330"></script>
+    <script src="/js/featherlight.min.js?1775352330"></script>
+    <script src="/js/highlight.min.js?1775352330"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352330"></script>
+    <script src="/js/learn.js?1775352330"></script>
+    <script src="/js/hugo-learn.js?1775352330"></script>
+    
+    
+
+  </body>
+</html>

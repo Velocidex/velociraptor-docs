@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="Browsing the client&#39;s filesystem is probably the first thing
+responders do. Both GRR and Velociraptor have a nice VFS abstraction
+that allows users to browse files interactively. However, in order to
+make Velociraptor much faster we made some tradeoffs and improved the
+way that the VFS is stored in the datastore.
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Browsing around the filesystem. :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352328" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352328" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352328" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352328" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352328" rel="stylesheet">
+    <link href="/css/theme.css?1775352328" rel="stylesheet">
+    <link href="/css/tabs.css?1775352328" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352328" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352328" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352328" rel="stylesheet"><link href="/css/syntax.css?1775352328" rel="stylesheet"><link href="/css/light.css?1775352328" rel="stylesheet"><link href="/css/hljs.css?1775352328" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352328" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352328"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/blog/html/2018/08/10/browsing_around_the_filesystem/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/blog\/html\/2018\/08\/10\/browsing_around_the_filesystem\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/html/2018/08/10/browsing_around_the_filesystem/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Browsing around the filesystem.</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents"></nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Browsing around the filesystem.
+            </h1>
+            
+          
+
+        
+
+
+
+	<h1 id="the-virtual-file-system">The Virtual File System</h1>
+<p>Like GRR, Velociraptor also maintains a virtual file system view (VFS)
+of the client's filesystem. GRR's VFS view is generated by adding a
+row for each file into the database. In order to refresh the view of a
+certain directory, GRR issues a ListDirectory request and updates the
+database by storing each newly discovered file in its own row.</p>
+<p>Velociraptor models the client's VFS as a per-directory VQL query. In
+order to refresh the view of a certain directory, a new VQL query is
+issued to the client, essentially collecting the glob information for
+that directory in a single VQL response table. The VQL result is then
+stored in a single database row. Therefore Velociraptor stores a single
+row per directory (as compared to GRR's single row per file approach).
+This leads to a huge reduction in database rows.</p>
+<p>The tradeoff however, is that the Velociraptor VFS view can only show
+the state of the entire directory listing at a single point in time.
+GRR's VFS viewer can show old files (which have been removed) mixed in
+with current files because it can merge the output of different
+ListDirectory operations that occurred in different times. We decided
+this feature was not often useful and sometimes actually led to
+confusion since files that are removed from a directory are shown
+together with files currently present. Velociraptor therefore shows the
+VFS directory at the latest timestamp the entire directory was fetched.</p>
+<h1 id="recursive-vfs-refresh">Recursive VFS refresh</h1>
+<p>Users who are more familiar with traditional forensic tools (or GUI file
+managers like Windows Explorer) usually attempt to browse the client's
+VFS view interactively, searching for files and directories relevant to
+the case. However, since the VFS view is only a cached database view of
+the real client's file system, we need to go to the client to refresh
+the cache whenever we try to view a directory in the VFS which had not
+yet been fetched from the client.</p>
+<p>Since clients are not always online, some users attempt to just
+recursively refresh the entire VFS view (i.e. recursively list all
+client directories from the root). This is however, an expensive
+operation (This is at least as expensive as running a recursive &quot;find /
+-ls&quot; command on the commandline). Due to GRR's extensive data model
+and complex multi-round trip flow model, performing a recursive VFS
+refresh with GRR is unlikely to work in any reasonable time (typically
+the flow will run for a while then hang due to race conditions in the
+frontend).</p>
+<p>On the other hand, Velociraptor issues a single VQL request as a
+recursive directory glob and stores the entire directory content in a
+single VQL response taken at an instance in time. The response is
+streamed back to the server. The server simply splits the response table
+into directory specific tables, and then stores a single VQL response
+table for each directory in the database.</p>
+
+<div class="mynotices note">
+  <div heading="note"><p>The VQL glob() plugin is guaranteed to generate results in breadth first
+order. This means that it emits information about all files in the same
+directory first, before recursing into sub directories. This feature
+makes it simple to split the result table into directory specific
+sub-tables by simply watching the FullPath column and noting when its
+directory changes.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/html/2018/08/10/browsing_around_the_filesystem/image9.png"
+         class="inline"
+         alt=""
+         width="1048" height="934">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="image9.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</div>
+</div>
+
+
+<h1 id="very-large-vql-queries">Very large VQL queries</h1>
+<p>While we claimed above that Velociraptor simply issues a single VQL
+query and stores its result in a single database row, this was an
+oversimplification. If the VQL query generates too many rows, the
+Velociraptor client splits the response into parts (by default 10000
+rows per part). This allows data to be uploaded immediately to the
+server and processed while the query is still executing on the client.</p>
+<p>Consider the VFSListDirectoryflow was issued with a glob of /**10
+(i.e. refresh the entire VFS view from the root directory, recursively
+into a depth of 10 directories). The VQL query executed was:</p>
+<pre><code class="language-{.sourceCode">SELECT FullPath AS _FullPath,
+    Name, Size, Mode,
+    timestamp(epoch=Sys.Mtim.Sec) AS mtime,
+    timestamp(epoch=Sys.Atim.Sec) AS atime,
+    timestamp(epoch=Sys.Ctim.Sec) AS ctime
+FROM glob(globs='/**10')
+</code></pre>
+<p>The query was issued to a Velociraptor client running on a Chromebook.
+This particular system has approximately 500k files in its root
+filesystem, and so the response consists of 500k rows. However, as the
+query executes, the response is split into multiple parts, each being
+10k rows, and uploaded (each part is about 3mb in total).</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/html/2018/08/10/browsing_around_the_filesystem/image3.png"
+         class="inline"
+         alt="image"
+         width="1135" height="1014">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="image3.png">
+      <i class="fa fa-download"></i></a>
+    image
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Total execution time for this query is about 4 minutes and consists of
+about 50 parts (around 2.5mb each). It is still an expensive query, but
+depending on the urgency of the case, it may well be warranted.</p>
+<p>It is very convenient to just take a snapshot of the entire filesystem,
+especially when the client is offline. We can issue the flow and then
+when the client comes back online we can review all the files.</p>
+<h1 id="file-uploads">File uploads</h1>
+<p>The VFS view is just a local cache in the data store of what is really
+going on the client. While we can see the file in each directory we cant
+transfer all the file content. Velociraptor represents downloaded files
+differently from just listed files. Files with the floppy disk next to
+them represent files that we have a local cache for. We can view the
+Hexview or just download them.</p>
+<p>You can always initiate a download of a VFS file by selecting the
+Download tab. Unlike GRR, Velociraptor does not keep previous versions
+of files - a re-download will overwrite the previous file.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352328"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352328"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352328"></script>
+    <script src="/js/jquery.sticky.js?1775352328"></script>
+    <script src="/js/featherlight.min.js?1775352328"></script>
+    <script src="/js/highlight.min.js?1775352328"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352328"></script>
+    <script src="/js/learn.js?1775352328"></script>
+    <script src="/js/hugo-learn.js?1775352328"></script>
+    
+    
+
+  </body>
+</html>

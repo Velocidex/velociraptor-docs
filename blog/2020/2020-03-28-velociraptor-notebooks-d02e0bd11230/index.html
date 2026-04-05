@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="Post processing and reporting inside Velociraptor">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Velociraptor notebooks :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352327" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352327" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352327" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352327" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352327" rel="stylesheet">
+    <link href="/css/theme.css?1775352327" rel="stylesheet">
+    <link href="/css/tabs.css?1775352327" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352327" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352327" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352327" rel="stylesheet"><link href="/css/syntax.css?1775352327" rel="stylesheet"><link href="/css/light.css?1775352327" rel="stylesheet"><link href="/css/hljs.css?1775352327" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352327" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352327"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/blog/2020/2020-03-28-velociraptor-notebooks-d02e0bd11230/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/blog\/2020\/2020-03-28-velociraptor-notebooks-d02e0bd11230\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/2020/2020-03-28-velociraptor-notebooks-d02e0bd11230/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Velociraptor notebooks</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#velociraptors-notebooks">Velociraptor’s notebooks</a>
+      <ul>
+        <li><a href="#what-are-notebooks">What are notebooks?</a></li>
+        <li><a href="#case-study--scheduled-tasks">Case study — scheduled tasks</a></li>
+        <li><a href="#creating-a-new-notebook">Creating a new notebook</a></li>
+        <li><a href="#exporting-the-notebook">Exporting the notebook</a></li>
+      </ul>
+    </li>
+    <li><a href="#conclusions">Conclusions</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Velociraptor notebooks
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/0AgiLbUBbvfxAxu29.jpg?width=600px"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>Velociraptor is a great tool for collecting endpoint state easily and efficiently. It is so efficient, that sometimes we end up with a lot of collected data and are left with the task of making sense of the data, and documenting our investigative process.</p>
+<p>In <a href="/blog/2020/2020-03-06-velociraptor-post-processing-with-jupyter-notebook-and-pandas-8a344d05ee8c/">a previous article</a> we have seen how post-processing of collected data can be done using <a href="https://jupyter.org/" target="_blank" >Jupyter notebooks</a>. The notebook is a living document, allowing us to run analysis code interspersed among documentation which can be updates in real time, as the analyst post-processes and annotates the data.</p>
+<p>Although one can still use Jupyter notebooks to post process Velociraptor collected data, the latest Velociraptor release (0.4.1) added a notebook feature built in. This saves the effort of connecting Jupyter via the API and running python wrappers to manipulate VQL. Velociraptor notebooks are also better integrated into the rest of Velociraptor with native support for VQL, markdown and embedded images. In this article we will explore a typical workflow of using Velociraptor notebooks to investigate a DFIR</p>
+<h2 id="velociraptors-notebooks">Velociraptor’s notebooks</h2>
+<p>In the following article we analyze the same case as in our <a href="/blog/2020/2020-03-06-velociraptor-post-processing-with-jupyter-notebook-and-pandas-8a344d05ee8c/">previous article</a>. After installing the latest <a href="https://github.com/Velocidex/velociraptor/releases" target="_blank" >Velociraptor release</a> (0.4.1) we see a new “Notebooks” menu option on the navigation sidebar.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/13sxd7Sd06lwHjBYfhVI1Sg.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<h3 id="what-are-notebooks">What are notebooks?</h3>
+<p>Notebooks are free form, shared documents built right into the Velociraptor GUI. Multiple analysts can view and edit the same notebook simultaneously.</p>
+<p>Typically in DFIR work, analysts do not necessarily immediately know the root cause of an intrusion. Analysis is often a long process of collecting evidence, post processing it in some way, analysing the results and collecting further evidence based on our findings.</p>
+<p>Notebooks are a way of documenting this process while facilitating collaboration between different team members. During the investigation phase, they are a living document collecting conclusions from multiple artifacts, and coordinating team members. While after the investigation they are a document indicating what was done, and the logical process of reaching the final conclusions.</p>
+<h3 id="case-study--scheduled-tasks">Case study — scheduled tasks</h3>
+<p>This is a typical DFIR investigation. We suspect malware has installed malicious scheduled tasks to restart itself. We previously ran a hunt to collect all scheduled tasks and would like to examine the results (see the previous article for background).</p>
+<h3 id="creating-a-new-notebook">Creating a new notebook</h3>
+<p>We will create a notebook to document our analysis process. Selecting the Notebook menu in the sidebar and then clicking the “New Notebook” toolbar button.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1x9KwMzONb4xzd4zHd_Ps6A.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>We will name our notebook <em>“Scheduled Tasks — Case 1232”,</em> and add a useful description. Clicking the <em>“Add Notebook”</em> button will create the new notebook which will now be visible in the top pane, and we can see an initial notebook created on the bottom pane.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1OlsCPDL8fF7gX13d1l_QzQ.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>A notebook consists of a series of <strong>cells</strong>. Each cell can be of type “Markdown” or “VQL”. In our new notebook, the first cell consists of the name and description we entered earlier. Clicking on the cell shows actions that can be done with that cell.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/15xWh4-EA-eFZcZJaC8Hjsg.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>Let’s edit this cell and add our rationale for this investigations. Clicking the “Edit Cell” button will open an editor and allow us to write cell content in markdown (If you are not familiar with markdown, GitHub has an excellent guide <a href="https://guides.github.com/features/mastering-markdown/" target="_blank" >Mastering Markdown</a>). The cell editor can be either in Markdown mode or VQL mode as selected by the pull down on the right.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1oBMVtWq04ags52tUDZanew.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>Let’s also assume that this investigation was started by an alert we received from our SIEM. We can simply take a screenshot of our SIEM alert and paste it into the cell editor to add context to our notebook. Velociraptor will automatically add the image into the notebook and substitute with the markdown to reference it.</p>
+<p>Once we finish adding relevant background information to our notebook, we can save the cell by pressing the <em>“Save” <em>button (or pressing</em> CTRL-Enter</em>).</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1bWK92yL-TFs5TgCVbB_tzA.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>Velociraptor will render the markdown in the notebook and we can see our screenshot.</p>
+<p>Next we need to post process the scheduled tasks we collected earlier in a hunt. Clicking the “Add Cell” pulldown provides a number of options — in our case, we want to add a cell from an existing hunt.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1iCdRbaZvXc5_lcQeMOJXHg.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>Velociraptor will then ask us which hunt we want to use</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1cpt_3CH1SEF_ThscuTQ0TQ.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>Selecting the hunt and clicking OK will produce a new VQL cell, already populated with the basic query we need to run to see the results of the hunt. Note that we always use the <strong>LIMIT</strong> clause to prevent the GUI from processing too much data. At this stage we only want to see the first 10 rows until we can refine our query.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1ek3xccxhmfontfCA-Fdcyg.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>Clicking “Save” will calculate the query and show us the columns available.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1fYx33fAnUlegODORnrRW0A.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>We can now refine the columns we see by specifying them in the VQL query. In our case we only wish to see <strong>FullPath, Command, Arguments</strong> and <strong>Fqdn</strong> (The hostname of the endpoint). We know that our alert was for executing “cmd.exe” so we narrow our query to only see scheduled tasks with the <strong>cmd.exe</strong> command <em>(WHERE Command =~ “cmd.exe”)</em>.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1GxMuBrebyHtxHh0wLUmflw.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1v7Q9nmHRzfbtydgggYRBWA.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>After more investigation we determine that the <code>silcollector</code> and
+<code>dsregcmd</code> tasks are not malicious so we can exclude them.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/196esqvqOz2HYIKteGdSK3w.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1zYsu9uCe-t9T8UkfHPbt3A.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>We repeat the process as needed until left only with the suspicious commands.</p>
+<p>In practice we can now add more markdown cells to explain our findings, implement remediation hunts to remove the malicious scheduled task etc. We can even include the VQL we ran in the report by using markdown code blocks.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1iaO11t4Zbn63dQQhkcEDrw.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1LyQdC_lK079EUYwwSDT70w.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<h3 id="exporting-the-notebook">Exporting the notebook</h3>
+<p>It is great to have a notebook inside Velociraptor, but we really need to be able to print it or share it with others. Additionally, DFIR cases are typically very fluid and the notebook will evolve through multiple revisions. As new data becomes available, perhaps conclusions reached in previous versions need to be revised. This is why we say a notebook is a <strong>living</strong> document</p>
+<p>For these reasons, Velociraptor allows users to export the notebook into plain HTML. The HTML export is a point-in-time export, as the investigation proceeds and new information becomes available, the same notebook may be exported again and again, each version revealing new findings.</p>
+<p>To export our notebook we select it in the top pane then click on “Export Notebook” button in the toolbar. The dialog box shows us all the existing exports from previous times and also allows us to create a new export.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1-iyUl49fvYJUvwohI5SZNA.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>Clicking on any of the exported files, opens the exported HTML file in another browser window.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1zyFeV0l40eujMCj3OgL4aQ.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1FfLBeDrVEDJH2B9q8gYlJw.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>Although in this view the tables are not interactive as before, the data is all available there.</p>
+<p>Alternatively, we might want to export the result of each post-processed table. To export one table to CSV we can simply click the “Export to CSV” button at the top left of each notebook table</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/10_ZCTqrANgf010xbAMRS0Q.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<h2 id="conclusions">Conclusions</h2>
+<p>The new Velociraptor notebook interface adds to Velociraptor’s capabilities as a one stop shop for DFIR investigations. Not only do we have the ability to quickly and efficiently collect artifacts from endpoints, we can now post-process these artifacts in the tool itself. Being able to document our investigative process and produce a report gives us great flexibility without resorting to clunky file exports and spreadsheets.</p>
+<p>Having notebooks as a built-in feature and usable out of the box removes the need for fiddly setup with API connectivity, and supporting external programs like Jupyter or Python. Simple, powerful, works out of the box!</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352327"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352327"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352327"></script>
+    <script src="/js/jquery.sticky.js?1775352327"></script>
+    <script src="/js/featherlight.min.js?1775352327"></script>
+    <script src="/js/highlight.min.js?1775352327"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352327"></script>
+    <script src="/js/learn.js?1775352327"></script>
+    <script src="/js/hugo-learn.js?1775352327"></script>
+    
+    
+
+  </body>
+</html>

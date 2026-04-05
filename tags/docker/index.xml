@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Docker on Velociraptor - Digging deeper!</title>
+    <link>https://docs.velociraptor.app/tags/docker/</link>
+    <description>Recent content in Docker on Velociraptor - Digging deeper!</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <atom:link href="https://docs.velociraptor.app/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Docker.Image.Export</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/docker.image.export/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/docker.image.export/</guid>
+      <description>&lt;p&gt;Uses the Docker UNIX socket to export a Docker image to a&#xA;tempfile and upload to Velociraptor.&lt;/p&gt;&#xA;&lt;p&gt;Analysis Tips:&lt;br&gt;&#xA;- &lt;a href=&#34;https://jellyparks.com/posts/compromised-container-analysis-primer/&#34; target=&#34;_blank&#34; &gt;https://jellyparks.com/posts/compromised-container-analysis-primer/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;#docker&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;&#xA;name: Docker.Image.Export&#xA;author: Brady Semm - @btsemm / DoppioRistretto&#xA;description: |&#xA;    Uses the Docker UNIX socket to export a Docker image to a&#xA;    tempfile and upload to Velociraptor.&#xA;    &#xA;    Analysis Tips:  &#xA;        - https://jellyparks.com/posts/compromised-container-analysis-primer/&#xA;&#xA;    #docker&#xA;    &#xA;parameters:&#xA;  - name: dockerSocket&#xA;    description: |&#xA;      Docker server socket. You will normally need to be root to connect.&#xA;    default: /var/run/docker.sock&#xA;  - name: ImageNameOrID&#xA;    description: |&#xA;      Docker Image name or ID to export. Can include tag (eg. &#34;image:latest&#34;)&#xA;    default: empty&#xA;&#xA;sources:&#xA;  - precondition: |&#xA;      SELECT OS From info() where OS = &#39;darwin&#39; OR OS = &#39;linux&#39;&#xA;    query: |&#xA;&#xA;        LET EncodedImageNameOrID = regex_replace(source=ImageNameOrID, replace_lambda=&#34;x=&amp;gt;format(format=&#39;%%%02x&#39;,args=x)&#34;, re=&#34;[^a-z0-9\\-_.~?]&#34;)&#xA;        LET docker_api_path = format(format=&#34;%v:unix/images/%v/get&#34;, args=[dockerSocket, EncodedImageNameOrID])&#xA;        LET response &amp;lt;= SELECT Content FROM http_client(url=docker_api_path, tempfile_extension=&#34;.tar&#34;, remove_last=true)&#xA;        &#xA;        SELECT upload(file=response.Content) from scope()&#xA;&#xA;        &#xA;&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;</description>
+    </item>
+  </channel>
+</rss>

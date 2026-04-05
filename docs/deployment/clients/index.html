@@ -1,0 +1,2389 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Deploying Clients :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352329" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352329" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352329" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352329" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352329" rel="stylesheet">
+    <link href="/css/theme.css?1775352329" rel="stylesheet">
+    <link href="/css/tabs.css?1775352329" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352329" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352329" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352329" rel="stylesheet"><link href="/css/syntax.css?1775352329" rel="stylesheet"><link href="/css/light.css?1775352329" rel="stylesheet"><link href="/css/hljs.css?1775352329" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352329" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352329"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/deployment/clients/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/deployment\/clients\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/deployment/clients/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Deploying Clients</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#generating-the-client-configuration-file">Generating the client configuration file</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#running-clients-interactively">Running clients interactively</a></li>
+    <li><a href="#installing-the-client-as-a-service">Installing the client as a service</a>
+      <ul>
+        <li><a href="#windows">Windows</a></li>
+        <li><a href="#macos">macOS</a></li>
+        <li><a href="#linux">Linux</a></li>
+        <li><a href="#other-platforms-and-architectures">Other platforms and architectures</a></li>
+      </ul>
+    </li>
+    <li><a href="#agentless-deployment">Agentless deployment</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#client-upgrades">Client upgrades</a>
+      <ul>
+        <li><a href="#creating-new-installation-packages">Creating new installation packages</a></li>
+        <li><a href="#remotely-upgrading-clients">Remotely upgrading clients</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Deploying Clients
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>We refer to Velociraptor endpoint agents as <strong>clients</strong>.</p>
+<p>Clients connect to the server and wait for instructions, which mostly consist of
+VQL queries. They then run the VQL queries assigned to them by the server and
+return the results to the server.</p>
+<p>On this page we explain how to run, and optionally install, clients on the most
+common platforms. There is no single &ldquo;correct&rdquo; way to deploy and use
+Velociraptor so here we also try to highlight the pros and cons of the most
+common approaches.</p>
+
+<div class="mynotices note">
+  <div heading=" Velociraptor Binaries "><p><strong>Velociraptor only has one binary per operating system and architecture.</strong></p>
+<p>We don&rsquo;t have separate client binaries and server binaries. The command line
+options tell the binary whether to behave as a server or as a client. Therefore
+you can run the client on any platform and architecture that we have a binary
+for.</p>
+<p>For platforms and architectures where we don&rsquo;t have a binary you may still be
+able to compile one yourself from source, provided that Golang supports the
+target platform+architecture combination.</p>
+</div>
+</div>
+
+
+<h2 id="generating-the-client-configuration-file">Generating the client configuration file</h2>
+
+<div class="mynotices tip">
+  <div heading=" There are new easier ways to do this! "><p>This section describes client packaging from a relatively low-level perspective.</p>
+<p>While it&rsquo;s important to understand client installer packaging, in recent
+versions of Velociraptor we have simplified this process by automating it via
+built-in server artifacts. You will find links to run these artifacts on the
+Welcome page.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/welcome_installers.png"
+         class="inline"
+         alt=""
+         width="910" height="575">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="welcome_installers.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Also when you create a new
+<a href="/docs/deployment/orgs/">org</a>
+using the <code>Server.Orgs.NewOrg</code> artifact it will, by default, also create Windows
+and Linux client installers for that org.</p>
+<p>We do recommend that you read this section so that you understand what the
+client config is, as this is a key aspect of all client installer packages.
+However you probably won&rsquo;t want to create client packages this way unless you
+need advanced customization or want to build the installer packages separately
+from your server environment.</p>
+<p>If you&rsquo;ve created client installer packages by running the artifacts linked on
+the Welcome page then you can skip ahead to
+<a href="/docs/deployment/clients/#installing-the-client-as-a-service">Installing the client as a service</a>.</p>
+</div>
+</div>
+
+
+<p>There are several ways to run clients, depending on your needs. Ultimately
+however this amounts to running the Velociraptor binary and providing it with a
+<strong>client configuration file</strong>, which provides the client with cryptographic
+material, connection information and other client-related settings.</p>
+<p>We saw how to generate the server configuration file in the
+<a href="/docs/deployment/server/deployment_example/#1-generate-the-configuration-file">server deployment guide</a>.
+The client configuration is contained within the server configuration.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/client_config_yaml_.svg" alt="Client config is a subset of the full config"
+         class="inline"
+         height="800"
+         width="1140"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="client_config_yaml.svg"><i class="fa fa-download"></i></a>
+    Client config is a subset of the full config
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>When we &ldquo;generate&rdquo; a client config file we are effectively extracting the <code>Client</code>
+section from the full config. If you are using the
+<a href="/docs/deployment/orgs/">orgs</a>
+feature then you will need a separate client config file for each org, since the
+config also contains a <code>nonce</code> value that associates the client with a specific
+org.</p>
+<p>There are two ways to accomplish this task which we explain below:</p>
+<ol>
+<li>Using the Admin GUI (recommended)</li>
+<li>Using the command line</li>
+</ol>
+
+<div class="mynotices tip">
+  <div heading=" MSI repacking "><p>If you are <em>only</em> interested in Windows clients and will <em>only</em> be creating MSI
+installer packages, then the MSI repacking method described
+<a href="/docs/deployment/clients/#option-1-using-the-velociraptor-gui">here</a>
+will use the client config for the current org. In that case you don&rsquo;t actually
+need to download the client config file, although you may still want to read
+this section to understand more about the topic of client config files.</p>
+</div>
+</div>
+
+
+<h4 id="option-1-obtaining-the-client-config-from-the-gui">Option 1: Obtaining the client config from the GUI</h4>
+<p>The simplest way of obtaining the client config file is to download it from the
+GUI.</p>
+<p>Navigate to the <strong>Current Orgs</strong> section on the <strong>Home</strong> screen and then click on
+the file name to download the YAML file.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/home_client_configs_.svg" alt="Downloading client configs from the GUI"
+         class="inline"
+         height="653"
+         width="1174.1880341880342"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="home_client_configs.svg"><i class="fa fa-download"></i></a>
+    Downloading client configs from the GUI
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The config files for each org contain the correct client <code>nonce</code> for connecting
+to that org.</p>
+<h4 id="option-2-obtaining-the-client-config-on-the-command-line">Option 2: Obtaining the client config on the command line</h4>
+<p>The client config can also be obtained using the CLI. Although this is not the
+preferred way, it is useful in some situations such as automated build
+environments.</p>
+
+
+<div class="tab-panel">
+    <div class="tab-nav">
+    
+        <button
+          data-tab-item="Linux"
+          data-tab-group="default"
+          class="tab-nav-button btn active"
+          onclick="switchTab('default','Linux')"
+         >Linux</button>
+    
+        <button
+          data-tab-item="Windows"
+          data-tab-group="default"
+          class="tab-nav-button btn "
+          onclick="switchTab('default','Windows')"
+         >Windows</button>
+    
+        <button
+          data-tab-item="macOS"
+          data-tab-group="default"
+          class="tab-nav-button btn "
+          onclick="switchTab('default','macOS')"
+         >macOS</button>
+    
+    </div>
+    <div class="tab-content">
+        
+        <div data-tab-item="Linux" data-tab-group="default" class="tab-item active">
+            <pre><code class="language-shell">./velociraptor config client --org &quot;root&quot; --config server.config.yaml &gt; client.root.config.yaml
+</code></pre>
+
+        </div>
+        
+        <div data-tab-item="Windows" data-tab-group="default" class="tab-item ">
+            <pre><code class="language-shell">velociraptor.exe config client --org &quot;root&quot; --config server.config.yaml &gt; client.root.config.yaml
+</code></pre>
+<p>NOTE: it is recommended that this be
+done using cmd.exe since PowerShell redirection operators by default create
+files encoded in UTF-16LE (Unicode).</p>
+
+        </div>
+        
+        <div data-tab-item="macOS" data-tab-group="default" class="tab-item ">
+            <pre><code class="language-shell">./velociraptor config client --org &quot;root&quot; --config server.config.yaml &gt; client.root.config.yaml
+</code></pre>
+
+        </div>
+        
+    </div>
+</div>
+
+<p>This command reads the datastore location from the config specified in the
+<code>--config</code> flag, and for non-root orgs these orgs must already exist in the
+datastore.</p>
+<p>Note that the <code>--org</code> flag expects the Org ID, not the org name. If the <code>--org</code>
+flag is not specified then the command will default to the root org, which
+always exists.</p>
+<h2 id="running-clients-interactively">Running clients interactively</h2>
+<p>This method is most suitable for testing prior to deployment, for learning, or
+for troubleshooting.</p>
+<p>The most simple way to run the client is by executing it in a terminal and
+providing it with the client configuration.</p>
+
+
+<div class="tab-panel">
+    <div class="tab-nav">
+    
+        <button
+          data-tab-item="Linux"
+          data-tab-group="default"
+          class="tab-nav-button btn active"
+          onclick="switchTab('default','Linux')"
+         >Linux</button>
+    
+        <button
+          data-tab-item="Windows"
+          data-tab-group="default"
+          class="tab-nav-button btn "
+          onclick="switchTab('default','Windows')"
+         >Windows</button>
+    
+        <button
+          data-tab-item="macOS"
+          data-tab-group="default"
+          class="tab-nav-button btn "
+          onclick="switchTab('default','macOS')"
+         >macOS</button>
+    
+    </div>
+    <div class="tab-content">
+        
+        <div data-tab-item="Linux" data-tab-group="default" class="tab-item active">
+            <pre><code class="language-shell">./velociraptor --config client.config.yaml client -v
+</code></pre>
+
+        </div>
+        
+        <div data-tab-item="Windows" data-tab-group="default" class="tab-item ">
+            <pre><code class="language-shell">velociraptor.exe --config client.config.yaml client -v
+</code></pre>
+
+        </div>
+        
+        <div data-tab-item="macOS" data-tab-group="default" class="tab-item ">
+            <pre><code class="language-shell">./velociraptor --config client.config.yaml client -v
+</code></pre>
+
+        </div>
+        
+    </div>
+</div>
+
+<p>The command line flag <code>-v</code> (verbose) is added so that the client prints it&rsquo;s log
+to the terminal. It&rsquo;s not needed but it&rsquo;s very useful if you want to see what
+the client is doing, especially if you are troubleshooting issues such as
+network connectivity.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/run_client_manual.gif"
+         class="inline"
+         alt=""
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="run_client_manual.gif">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The first time the client connects to the server it will <strong>enroll</strong>. The
+enrollment process requires the client to reveal basic information about itself
+to the server.</p>
+<p>Note that this type of interactive execution will work effectively the same way
+for all versions of the client (Windows, Linux, or Mac). In the sections that
+follow, we show options for more scalable and/or permanent use.</p>
+<p>When installed as a service, the Velociraptor client runs with elevated
+privileges. But when running it manually you may choose to run it as a normal
+user. The choice depends on what data sources you intend to access. For example,
+to access operating system protected files usually requires elevated privileges.</p>
+<p>In some circumstances you may want to automate this deployment method. That is,
+you may want to run hunts across many endpoints without permanently installing
+clients. Any remote management tool that can run executables on the endpoints
+can be used, but in Active Directory environments it is common to use Group
+Policy to accomplish this goal. We explain how to set up such a deployment in
+the section <a href="/docs/deployment/clients/#agentless-deployment">Agentless deployment</a>.</p>
+<h2 id="installing-the-client-as-a-service">Installing the client as a service</h2>
+<h3 id="windows">Windows</h3>
+<p>The recommended way to install the Velociraptor client as a service on Windows
+is via a Microsoft Installer (MSI) package. The benefit of using this
+installer format is that most enterprise system administration tools are capable
+of deploying MSI packages. For example, you can use SCCM or Group Policy to
+deploy the MSI to a target organizational unit.</p>
+<p>An MSI is a standard Windows installer package. The benefit of using this
+installer format is that most enterprise system administration tools are capable
+of deploying MSI packages. For example, you can use SCCM or Group Policy to
+deploy the MSI to a target organizational unit.</p>
+<p>For more information, see
+<a href="https://learn.microsoft.com/en-us/troubleshoot/windows-server/group-policy/use-group-policy-to-install-software" target="_blank" >Use Group Policy to remotely install software</a>.</p>
+<p>There are two approaches to generating the MSI package:</p>
+<ol>
+<li>Repacking the official release MSI to include your client configuration.
+<ul>
+<li>using the GUI</li>
+<li>using the command line</li>
+</ul>
+</li>
+<li>Building your own MSI from scratch using 3rd-party tools.</li>
+</ol>
+<p>The first approach makes use of our official release MSI and inserts your client
+configuration into the file without changing anything else. None of the MSI
+settings are changed when using this method. It is most suitable for users who
+just want to get up and running quickly. Since it is so commonly done we have
+provided a built-in server artifact which allows this to be done via the
+Velociraptor web GUI. However it can also be done on the command line using our
+CLI, similar to how we create installer packages for Linux and macOS. The CLI
+option makes it possible to automate the process using external tools or CI
+pipelines.</p>
+<p>The second option is suitable for users who require advanced customization of
+the MSI package. This is done to change <em>how the MSI install works</em>. Things like
+installation path, file name, service name, service startup options, icons, etc.
+can be changed if needed. Most deployments don&rsquo;t need this kind of customization
+but some do.</p>
+<h4 id="repacking-the-official-release-msi">Repacking the official release MSI</h4>
+<p>Since the Velociraptor client requires <em>your</em> unique configuration file to
+identify the location of <em>your</em> server, we can&rsquo;t package the configuration file
+in the official release. Therefore, the official MSI does not include a valid
+configuration file. You will need to modify the release MSI to include your
+client configuration file. This is done through a process we call &ldquo;repacking&rdquo;.</p>
+<p>The official release installs the Velociraptor executable into
+<code>C:\Program Files\Velociraptor\</code>. It then creates a new Windows service that
+points to this executable. The service starts automatically at boot time (with
+a random delay). If an existing Velociraptor service is already installed, it
+will be upgraded and the client configuration file will be overwritten.</p>
+<h5 id="option-1-using-the-velociraptor-gui">Option 1: Using the Velociraptor GUI</h5>
+<p>The easiest way to repack the MSI package so that it includes your client config
+file is by using the
+<a href="/artifact_references/pages/server.utils.createmsi/"><code>Server.Utils.CreateMSI</code></a>
+server artifact.</p>
+<ol>
+<li>In the Velociraptor web GUI, simply switch to the relevant Organization, then
+select <strong>Server Artifacts</strong> from the sidebar on the left side of the page.</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/create_msi_add_.svg" alt=""
+         class="inline"
+         height="302"
+         width="546"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="create_msi_add.svg"><i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<ol start="2">
+<li>Add a new collection: search for <code>Server.Utils.CreateMSI</code>, select it, and
+then click &ldquo;Launch&rdquo;.</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/create_msi_artifact.png"
+         class="inline"
+         alt=""
+         width="910" height="471">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="create_msi_artifact.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<ol start="3">
+<li>
+<p>It will take a moment to download the latest release MSI files (both 64-bit
+and 32-bit) from GitHub and then repack them with your client config file.</p>
+</li>
+<li>
+<p>The repacked MSI files will then be available in the <strong>Uploaded Files</strong> tab
+of the artifact collection.</p>
+</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/create_msi_uploaded_.svg" alt=""
+         class="inline"
+         height="464"
+         width="820"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="create_msi_uploaded.svg"><i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h5 id="option-2-using-the-command-line">Option 2: Using the command line</h5>
+
+<div class="mynotices note">
+  <div heading="note"><p>In this section we&rsquo;d like to draw your attention to the fact that repacking the
+Windows MSI package can be done on <em>any</em> platform. It does not have to be done
+on Windows.</p>
+<p>Also note that in the commands below we have omitted version numbers
+and architecture tags from the file names to make the commands more concise,
+however it is useful to include the version number and architecture tags in your
+output file names so that you know exactly what they are.</p>
+</div>
+</div>
+
+
+<p>To repack the MSI with a custom config on the command line we use the <code>config</code>
+command with the <code>repack</code> subcommand, along with the <code>--msi</code> flag.</p>
+<p>In all cases we need to tell Velociraptor:</p>
+<ul>
+<li>which MSI we want to repack (usually
+it&rsquo;s the <a href="/downloads/">official release MSI</a> - either 64-bit or
+32-bit - but previous releases can also be found on the
+<a href="https://github.com/Velocidex/velociraptor/releases" target="_blank" >Releases page</a>
+at GitHub if you need them), and</li>
+<li>what the output file should be named.</li>
+</ul>
+
+
+<div class="tab-panel">
+    <div class="tab-nav">
+    
+        <button
+          data-tab-item="Linux"
+          data-tab-group="default"
+          class="tab-nav-button btn active"
+          onclick="switchTab('default','Linux')"
+         >Linux</button>
+    
+        <button
+          data-tab-item="Windows"
+          data-tab-group="default"
+          class="tab-nav-button btn "
+          onclick="switchTab('default','Windows')"
+         >Windows</button>
+    
+        <button
+          data-tab-item="macOS"
+          data-tab-group="default"
+          class="tab-nav-button btn "
+          onclick="switchTab('default','macOS')"
+         >macOS</button>
+    
+    </div>
+    <div class="tab-content">
+        
+        <div data-tab-item="Linux" data-tab-group="default" class="tab-item active">
+            <pre><code class="language-shell">./velociraptor config repack --msi velociraptor-windows.msi client.config.yaml velociraptor-windows-repacked.msi
+</code></pre>
+
+        </div>
+        
+        <div data-tab-item="Windows" data-tab-group="default" class="tab-item ">
+            <pre><code class="language-shell">velociraptor.exe config repack --msi velociraptor-windows.msi client.config.yaml velociraptor-windows-repacked.msi
+</code></pre>
+
+        </div>
+        
+        <div data-tab-item="macOS" data-tab-group="default" class="tab-item ">
+            <pre><code class="language-shell">./velociraptor config repack --msi velociraptor-windows.msi client.config.yaml velociraptor-windows-repacked.msi
+</code></pre>
+
+        </div>
+        
+    </div>
+</div>
+
+<p>If you are using Velociraptor <a href="/docs/deployment/orgs/">organizations</a> (&ldquo;orgs&rdquo;)
+then you can obtain the client configuration file for each org from the Home
+page in the GUI. Ensure that you are in the <code>root</code> org so that the configs for
+all orgs are accessible.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/client_config_orgs_.svg" alt="Where to find the client configs for all orgs"
+         class="inline"
+         height="382"
+         width="1220"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="client_config_orgs.svg"><i class="fa fa-download"></i></a>
+    Where to find the client configs for all orgs
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+
+<div class="mynotices note">
+  <div heading=" Re-signing the repacked MSI "><p>While the Velociraptor binary inside the MSI is officially signed by Rapid7 LLC
+and is unaffected by the MSI repacking process, we recommend that the MSI also
+be signed by a valid code signing certificate after repacking.</p>
+</div>
+</div>
+
+
+
+<div class="mynotices warning">
+  <div heading=" Winget install is not supported - you should pin/denylist Velociraptor in winget "><p>If your Windows environment use winget command line tool (or
+&ldquo;Romanitho/Winget-AutoUpdate&rdquo; for user toasts) for unattended 3rd party
+app auto updates on Windows, this can lead to failed downgrade
+messages and issues (as at 5 Feb 2024). When the winget version numbers
+are fixed this can result in unexpected upgrade toasts and server-client version
+mismatches.</p>
+<p>We strongly recommend getting your admins to pin the Velociraptor version in
+winget and also deny-list any upgrades of Velociraptor via Winget-autoupdate if
+your environment uses it. Please see <a href="https://learn.microsoft.com/en-us/windows/package-manager/winget/pinning" target="_blank" >https://learn.microsoft.com/en-us/windows/package-manager/winget/pinning</a>
+/ <a href="https://github.com/Romanitho/Winget-AutoUpdate" target="_blank" >https://github.com/Romanitho/Winget-AutoUpdate</a> (search for &ldquo;blacklist&rdquo;) for
+more information.</p>
+</div>
+</div>
+
+
+<h4 id="building-a-custom-msi-package-from-scratch">Building a custom MSI package from scratch</h4>
+<p>If you wish to make advanced customizations to the MSI (for example, change the
+name of the service, change install locations, etc.) then you will need to use
+the <a href="https://wixtoolset.org/" target="_blank" >WiX Toolset</a> or similar packaging tool which can
+build a new MSI from scratch. We recommend WiX and describe it&rsquo;s use here
+because it is free and widely used. However there are other tools, mostly
+commercially licensed, which you may decide to use instead, especially if your
+organization already has such tools.</p>
+<p>The Velociraptor repository on GitHub already includes a WiX Toolset
+configuration file that creates a functioning MSI with an included client
+configuration. You can further customize this WiX configuration to specify a
+different service name, destination location, etc.</p>
+<p>More detailed instructions are provided
+<a href="https://github.com/Velocidex/velociraptor/tree/master/docs/wix" target="_blank" >here</a>.</p>
+<p>To summarize the process, you will need to perform the following steps:</p>
+<ol>
+<li>Download or clone the Velociraptor repository to a Windows host.
+Specifically, you may want to copy the
+<a href="https://github.com/Velocidex/velociraptor/tree/master/docs/wix" target="_blank" >docs/wix</a>
+directory into a new working directory on your host. This folder contains the
+necessary WiX configuration (XML) files and other support files that make it
+possible to build your custom MSI directly in this folder. After creating
+your MSI build you may want to keep this build folder and use it for creating
+future builds when new Velociraptor versions are released.</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/image34.png"
+         class="inline"
+         alt="Copy WiX files from Velociraptor repo"
+         width="821" height="507">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="image34.png">
+      <i class="fa fa-download"></i></a>
+    Copy WiX files from Velociraptor repo
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<ol start="2">
+<li>Update the custom XML for your installation. The README file at
+<a href="https://github.com/Velocidex/velociraptor/tree/master/docs/wix" target="_blank" >docs/wix</a>
+walks you through the settings that are most commonly customized.</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/image36.png"
+         class="inline"
+         alt="Modifying the WiX configuration"
+         width="1050" height="736">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="image36.png">
+      <i class="fa fa-download"></i></a>
+    Modifying the WiX configuration
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<ol start="3">
+<li>
+<p>Install the <a href="http://wixtoolset.org/releases/" target="_blank" >WiX Toolset</a> on your
+Windows host.</p>
+</li>
+<li>
+<p>Add your custom <code>client.config.xml</code> file and the appropriate Velociraptor
+executable to a subdirectory of your build directory called <code>output</code>. If you
+have downloaded the executable from our website or GitHub then the file name
+will contain the version and platform information. Ensure that the executable
+in the <code>output</code> folder is named <code>velociraptor.exe</code>.</p>
+</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/image37.png"
+         class="inline"
+         alt="Copy the configuration file into the output directory"
+         width="853" height="394">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="image37.png">
+      <i class="fa fa-download"></i></a>
+    Copy the configuration file into the output directory
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<ol start="5">
+<li>Execute the build batch file to create the new MSI file.</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/wix_build.gif"
+         class="inline"
+         alt="Build the MSI"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="wix_build.gif">
+      <i class="fa fa-download"></i></a>
+    Build the MSI
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h4 id="msi-install">MSI install</h4>
+<p>To install the MSI from the command line (which requires elevated privileges) simply
+run:</p>
+<pre><code class="language-shell">msiexec /i velociraptor_custom.msi
+</code></pre>
+<p>This will install the binary and client configuration file in the
+<code>C:\Program Files\Velociraptor\</code>
+folder, create the service, and start it.</p>
+<p>The Velociraptor service runs using the Local System account. Startup of the
+service is Automatic with a delayed start.</p>
+<p>One way to automate such a deployment by using Active Directory Group Policy.
+The procedure <a href="/docs/deployment/clients/#agentless-deployment">outlined below</a> can easily be adapted to
+run the command <code>msiexec /i \\DC\Deployment\velociraptor_custom.msi</code> instead of
+running the exe, or you can use Package distribution procedure described here:
+<a href="https://learn.microsoft.com/en-us/troubleshoot/windows-server/group-policy/use-group-policy-to-install-software" target="_blank" >Use Group Policy to remotely install software</a>.</p>
+<h4 id="exe-install">Exe install</h4>
+<p>The Velociraptor executable is also capable of installing itself as a Windows
+service without needing an MSI.</p>
+<p>Although Velociraptor supports installing the service directly this is not the
+recommended method. We recommend using the MSI as described above.</p>
+
+<div class="mynotices warning">
+  <div heading=" Self-install is not recommended "><p>This installation method is not recommended because it does not use a proper
+package manager, and that may complicate uninstalls or upgrades that you will
+probably want to do in future.</p>
+<p>A known problem with installing the service in this way is that it cannot
+uninstall completely cleanly since MSI infrastructure would usually be relied on
+to perform post-removal tasks such as cleaning up old files.</p>
+<p>Nevertheless this approach is possible if the situation requires it. You may
+choose to automate such a deployment by using the Group Policy scheduled tasks
+procedure <a href="/docs/deployment/clients/#agentless-deployment">outlined below</a>.</p>
+</div>
+</div>
+
+
+<p>The following command, which requires elevated privileges, will install the
+client as a service:</p>
+<pre><code class="language-shell">velociraptor.exe service install --config client.config.yaml -v
+</code></pre>
+<p>This will install the binary and client configuration file in the
+<code>C:\Program Files\Velociraptor\</code>
+folder, create the service, and start it.</p>
+<p>The binary location is specified in the configuration file under the setting
+<code>Client.windows_installer</code>. You can also change the name of the binary and the
+service name if you wish.</p>
+<p>The Velociraptor service runs using the <code>Local System</code> account. Startup of the
+service is Automatic with a delayed start.</p>
+<p>After installation you can check the service status with the command</p>
+<pre><code class="language-shell">sc query velociraptor
+</code></pre>
+<h3 id="macos">macOS</h3>
+<p>Apple&rsquo;s requirements and processes for software packaging are complex. Therefore
+we don&rsquo;t provide installer packages (.pkg or .dmg) or packaging capabilities for
+macOS. Our binary does have the capability to install itself under macOS though,
+and this is described below. We do provide Apple Developer code-signed binaries
+for all official releases.</p>
+<p>If your organization has the necessary toolsets, skills and other resources for
+creating macOS installation packages then you may choose to do so. The
+Velociraptor client is a single binary, with no package or library dependencies,
+plus a configuration file, which is probably the simplest kind of package that
+any packaging expert will ever have to deal with.</p>
+<h4 id="manual-deployment">Manual Deployment</h4>
+<p>For small deployments we provide a self-installing capability in the
+Velociraptor binary. The <code>service install</code> directive can be used to install
+Velociraptor so that it persists through reboots and starts automatically. The
+following command installs the binary and the config to <code>/usr/local/sbin</code>.
+Persistence and service control is accomplished via launchd.</p>
+<p>First you need to mark the binary as executable.</p>
+<pre><code class="language-shell">chmod +x velociraptor
+</code></pre>
+<p>The following command, run with root privileges, will install the Velociraptor
+client as a service.</p>
+<pre><code class="language-shell">sudo ./velociraptor service install --config client.config.yaml -v
+</code></pre>
+
+<div class="mynotices note">
+  <div heading="note"><p>Depending on your version of macOS you may be prevented from running the
+executable and you will instead see a warning similar to this.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/macos_cant_open.png"
+         class="inline"
+         alt=""
+         width="417" height="212">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="macos_cant_open.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Click &ldquo;OK&rdquo; or &ldquo;Cancel&rdquo; and then from System Preferences, open &ldquo;Security &amp;
+Privacy&rdquo; and from the General tab, click &ldquo;Allow Anyway&rdquo;.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/macos_allow_anyway.png"
+         class="inline"
+         alt=""
+         width="668" height="573">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="macos_allow_anyway.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>If you downloaded the file from the internet or another network location then
+you may also need to remove the quarantine attribute from the file to suppress
+further warning prompts.</p>
+<pre><code class="language-shell">xattr -d com.apple.quarantine velociraptor
+</code></pre>
+</div>
+</div>
+
+
+<p>The client binary will be installed into the path specified in the
+<code>Client.DarwinInstaller.InstallPath</code> key of the client config, and defaults to
+<code>/usr/local/sbin/velociraptor</code>.</p>
+<p>The client config will be written to <code>/usr/local/sbin/velociraptor.config.yaml</code>.</p>
+<p>The client service will be named according to the name set in the
+<code>Client.DarwinInstaller.ServiceName</code> key of the client config, and defaults to
+<code>com.velocidex.velociraptor</code>.</p>
+<p>In addition, for macOS versions &gt;10.14 the client also requires &ldquo;Full Disk
+Access&rdquo; in order to work correctly. Full Disk Access is part of Apple&rsquo;s security
+framework for macOS, and this feature enables an application to access all files
+on the system.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/macos_fda.png"
+         class="inline"
+         alt="Enabling Full Disk Access"
+         width="668" height="572">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="macos_fda.png">
+      <i class="fa fa-download"></i></a>
+    Enabling Full Disk Access
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>After installation you can check the service&rsquo;s status with:</p>
+<ul>
+<li><code>ps -eaf | grep velo</code> or</li>
+<li><code>sudo launchctl print system/com/velocidex.velociraptor</code> or</li>
+<li>Navigate to <strong>Applications &gt; Utilities &gt; Activity Monitor</strong> and search for
+Process Name <code>velociraptor</code>.</li>
+</ul>
+<h4 id="automated-deployment-using-mdm">Automated deployment using MDM</h4>
+<p>Organizations that use macOS at scale usually have their own packaging and
+deployment processes worked out using their preferred toolset and MDM solution.
+For example
+<a href="https://www.jamf.com/" target="_blank" >Jamf</a> or
+<a href="https://learn.microsoft.com/en-us/mem/intune/fundamentals/deployment-guide-platform-macos" target="_blank" >Microsoft Intune</a>
+are commonly used mobile device management (MDM) solutions.</p>
+<p>Below is a community-provided example of the steps required for Jamf Pro.
+Unfortunately we cannot provide detailed instructions for other MDM solutions,
+and we recommend that you consult the documentation for your chosen MDM
+solution.</p>
+<p>Some of the considerations and complexities regarding deployments in macOS
+environments are described in
+<a href="/presentations/2022_velocon/#mac-response--the-good-the-bad-and-the-ugly">this presentation</a>.
+and may be helpful.</p>
+<h5 id="jamf-pro-deployment-example">Jamf Pro deployment example</h5>
+<ol>
+<li>Navigate to <strong>Configuration Profiles &gt; New</strong></li>
+<li>Configure <strong>Privacy Preferences Policy Control</strong></li>
+</ol>
+<ul>
+<li>Identifier: <code>/usr/local/sbin/velociraptor</code></li>
+<li>Identifier Type: <code>Path</code></li>
+<li>Code Requirement:</li>
+</ul>
+<pre><code>identifier &quot;com.velocidex.velociraptor&quot; and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = &quot;UL6CGN7MAL&quot;
+</code></pre>
+<ul>
+<li>Under &ldquo;App or Service&rdquo; Configure <strong>SystemPolicyAllFiles</strong> set to <strong>Allow</strong>, effectively granting &ldquo;Full Disk Access&rdquo;</li>
+<li>Scope: You can select <strong>All Computers</strong> but this is up to you</li>
+</ul>
+<p><em>This configuration would be the same for all MDM solutions for MacOS, just different UI</em>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/jamf_pro_profile_policy.png"
+         class="inline"
+         alt=""
+         width="1589" height="666">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="jamf_pro_profile_policy.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<ol start="3">
+<li>Navigate to <strong>Smart Computer Groups &gt; New</strong></li>
+<li>Configure the group</li>
+</ol>
+<ul>
+<li><strong>Running Services</strong> <code>does not have</code> <strong>com.velocidex.velociraptor</strong></li>
+<li><em>and</em> <strong>Architecture Type</strong> <code>is</code> <strong>arm64</strong></li>
+</ul>
+<p><em>You can also use <strong>x86_64</strong> instead of <strong>arm64</strong> for Intel-based devices</em>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/jamf_pro_smart_group.png"
+         class="inline"
+         alt=""
+         width="1595" height="409">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="jamf_pro_smart_group.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<ol start="5">
+<li>Navigate to <strong>Settings &gt; Scripts &gt; New</strong></li>
+<li>Create your installer script.</li>
+</ol>
+<p><em>This is an example based on <strong>v0.74.1</strong>, you may want to install the client differently</em></p>
+<pre><code>echo &quot;Start script&quot;;
+velociraptor_DIR=&quot;/Users/Shared/velociraptor_install&quot;;
+filename=&quot;velociraptor-v0.74.1-darwin-arm64&quot;;
+mkdir $velociraptor_DIR;
+cd $velociraptor_DIR;
+
+checksum=&quot;e6496519402e139de376c1c964302cc5f9b338c1d88a52b0579c9121d1992fba&quot;;
+
+#Downloading velociraptor
+curl -L -O &quot;https://github.com/Velocidex/velociraptor/releases/download/v0.74/$filename&quot;
+temp_checksum=$(shasum -a 256 $filename | cut -d ' ' -f1);
+if [[ $temp_checksum != $checksum ]]; then
+    echo &quot;Downloaded hash ($temp_checksum) is not matching the check $checksum&quot;;
+    rm -f $filepath;
+    exit;
+fi
+
+chmod a+x $filename;
+
+cat &gt;client.config.yaml &lt;&lt; EOL
+version:
+  name: velociraptor
+  version: 0.74.1
+  commit: 7e3ae67d3
+  build_time: &quot;2025-03-26T02:36:53Z&quot;
+  compiler: go1.23.2
+  system: linux
+  architecture: arm64
+Client:
+.....................
+.....................
+EOL
+
+sudo ./$filename --config client.config.yaml service install;
+</code></pre>
+<ol start="7">
+<li>Navigate to <strong>Policies &gt; New</strong></li>
+<li>Configure installation policy:</li>
+</ol>
+<ul>
+<li>Scope: <code>Smart Group we created in 3.</code> (Make sure that the Profile we created in <strong>1.</strong> is deployed to the same scope OR &ldquo;All Computers&rdquo;</li>
+<li>Scripts: <code>Script we created in 5.</code></li>
+<li>Triggers: Up to you.</li>
+</ul>
+
+<div class="mynotices note">
+  <div heading=" Mac settings may not show FDA is enabled "><p>In <strong>Settings &gt; Privacy &amp; Security &gt; Full Disk Access</strong> <code>velociraptor</code> can still appear as disabled, even when it is correctly configured in the MDM Profile. To ensure the FDA has been enabled, follow the verification steps:</p>
+<ul>
+<li>Run <a href="/artifact_references/pages/macos.system.tcc/">MacOS.System.TCC</a> artifact in Velociraptor</li>
+<li>If return output is empty <strong>&gt; no Full Disk Access (FDA)</strong></li>
+<li>If you see actual data <strong>&gt; Full Disk Access (FDA) is enabled for <code>velociraptor</code>!</strong></li>
+</ul>
+</div>
+</div>
+
+
+<h3 id="linux">Linux</h3>
+<p>There are many variations of Linux in the wild. Many distributions and releases,
+both new and very old. As DFIR practitioners we have to deal with whatever
+systems are put in front of us. Upgrading operating systems is usually not an
+option.</p>
+<p>Most binaries compiled for Linux, including our standard Linux binary, link to a
+specific minimum version of the Glibc library. This version is dictated by the
+compiler, which links the binary to the version present on the system on which
+it is compiled. We obviously prefer to compile our binaries on modern systems,
+so this means that the standard binary will only work on modern systems
+(generally ones from the past few years) and will fail to run on older Linux
+systems that have older Glibc versions. You will see an error similar to
+<em>&ldquo;Version GLIBC_2.xx Not Found&rdquo;</em> when trying to run the standard binary on such
+systems. Typically the version of Glibc cannot be upgraded without upgrading
+the entire operating system.</p>
+<p>If your environment has only relatively modern Linux systems then this shouldn&rsquo;t
+be a problem for you. However to address this problem for environments where old
+Linux systems are an unavoidable fact, we also release a Linux
+<a href="https://musl.libc.org/about.html" target="_blank" >MUSL</a> binary. This binary is linked against a
+static version of the MUSL library which allows Velociraptor to run with zero
+dependencies on the running OS. We find this binary to be completely reliable
+and no issues have been reported with it, so we recommend the MUSL build in all
+cases. The MUSL releases have <code>_musl</code> at the end of the file name.</p>
+<p>The <code>dpkg</code> (Ubuntu/Debian/Mint) or <code>rpm</code> (Red Hat/CentOS/Fedora/SUSE) package
+management tools are used to install Velociraptor on Linux clients after
+creating an appropriate package.</p>
+<p>Both types of installer packages use the same service settings and file
+locations. That is, the binary and client configuration files for Linux will be
+in the same locations regardless of whether you installed using an <code>rpm</code> or a
+<code>deb</code> package.</p>
+<p>Our <code>rpm</code> installer supports both <strong>systemd</strong> and <strong>SysVinit</strong>, since very old
+RPM-based systems are still relatively common, so our installer will
+detect and use the appropriate one. We do not provide installer support for
+other init systems such as Upstart, init.d or OpenRC. If you need to create
+installer packages for platforms that use other init systems then you will have
+to do it manually. However you can probably re-use most of the service
+configuration information that we use for <strong>systemd</strong> and <strong>SysVinit</strong>, which is
+available in our GitHub repo.</p>
+<p>After installation the binary will be located at</p>
+<ul>
+<li><code>/usr/local/bin/velociraptor_client</code></li>
+</ul>
+<p>and the client configuration file will be at</p>
+<ul>
+<li><code>/etc/velociraptor/client.config.yaml</code>.</li>
+</ul>
+<p>The Velociraptor service is named <code>velociraptor_client.service</code> and runs using
+the <code>root</code> account. Startup of the service is automatic.</p>
+<h4 id="debian-package">Debian Package</h4>
+
+<div class="mynotices note">
+  <div heading="note"><p>In this section we&rsquo;d like to draw your attention to the fact that creation of
+Linux installation packages can be done on <em>any</em> platform. It does not have to
+be done on Linux.</p>
+<p>Also note that in the commands below we have omitted version numbers from the
+file names to make the commands more concise, however it is useful to include
+the version number and architecture tags in your output file names so that you
+know exactly what they are.</p>
+</div>
+</div>
+
+
+<ol>
+<li><strong>Create a deb installation package with an embedded client configuration file.</strong></li>
+</ol>
+
+
+<div class="tab-panel">
+    <div class="tab-nav">
+    
+        <button
+          data-tab-item="Linux"
+          data-tab-group="default"
+          class="tab-nav-button btn active"
+          onclick="switchTab('default','Linux')"
+         >Linux</button>
+    
+        <button
+          data-tab-item="Windows"
+          data-tab-group="default"
+          class="tab-nav-button btn "
+          onclick="switchTab('default','Windows')"
+         >Windows</button>
+    
+        <button
+          data-tab-item="macOS"
+          data-tab-group="default"
+          class="tab-nav-button btn "
+          onclick="switchTab('default','macOS')"
+         >macOS</button>
+    
+    </div>
+    <div class="tab-content">
+        
+        <div data-tab-item="Linux" data-tab-group="default" class="tab-item active">
+            <pre><code class="language-shell">./velociraptor debian client --config client.config.yaml
+</code></pre>
+
+        </div>
+        
+        <div data-tab-item="Windows" data-tab-group="default" class="tab-item ">
+            <pre><code class="language-shell">velociraptor.exe debian client --config client.config.yaml --binary velociraptor-linux-musl
+</code></pre>
+<p>Since the Windows binary is being used here to do the packaging work, we also
+need to tell it where to find the Linux binary.</p>
+
+        </div>
+        
+        <div data-tab-item="macOS" data-tab-group="default" class="tab-item ">
+            <pre><code class="language-shell">./velociraptor debian client --config client.config.yaml --binary velociraptor-linux-musl
+</code></pre>
+<p>Since the macOS binary is being used here to do the packaging work, we also
+need to tell it where to find the Linux binary.</p>
+
+        </div>
+        
+    </div>
+</div>
+
+<p>By default, if the <code>--binary</code> flag is not specified, then the installer package
+will be created using the binary that invoked the <code>debian client</code> command. To
+package a binary for a different architecture, for example arm64, you must
+specify the binary in the command.</p>
+<ol start="2">
+<li><strong>Install the package.</strong></li>
+</ol>
+<pre><code class="language-shell">sudo dpkg -i velociraptor_client_amd64.deb
+</code></pre>
+<p>After installation you can check the service status with the command:</p>
+<ul>
+<li><code>systemctl status velociraptor_client</code> - on systems using systemd</li>
+<li><code>service velociraptor_client status</code> - on systems using SysVinit</li>
+</ul>
+<h4 id="red-hat-package">Red Hat Package</h4>
+<ol>
+<li><strong>Create a RPM installation package with an embedded client configuration file.</strong></li>
+</ol>
+
+
+<div class="tab-panel">
+    <div class="tab-nav">
+    
+        <button
+          data-tab-item="Linux"
+          data-tab-group="default"
+          class="tab-nav-button btn active"
+          onclick="switchTab('default','Linux')"
+         >Linux</button>
+    
+        <button
+          data-tab-item="Windows"
+          data-tab-group="default"
+          class="tab-nav-button btn "
+          onclick="switchTab('default','Windows')"
+         >Windows</button>
+    
+        <button
+          data-tab-item="macOS"
+          data-tab-group="default"
+          class="tab-nav-button btn "
+          onclick="switchTab('default','macOS')"
+         >macOS</button>
+    
+    </div>
+    <div class="tab-content">
+        
+        <div data-tab-item="Linux" data-tab-group="default" class="tab-item active">
+            <pre><code class="language-shell">./velociraptor rpm client --config client.config.yaml
+</code></pre>
+
+        </div>
+        
+        <div data-tab-item="Windows" data-tab-group="default" class="tab-item ">
+            <pre><code class="language-shell">velociraptor.exe rpm client --config client.config.yaml --binary velociraptor-linux-musl
+</code></pre>
+<p>Since the Windows binary is being used here to do the packaging work, we also
+need to tell it where to find the Linux binary.</p>
+
+        </div>
+        
+        <div data-tab-item="macOS" data-tab-group="default" class="tab-item ">
+            <pre><code class="language-shell">./velociraptor rpm client --config client.config.yaml --binary velociraptor-linux-musl
+</code></pre>
+<p>Since the macOS binary is being used here to do the packaging work, we also
+need to tell it where to find the Linux binary.</p>
+
+        </div>
+        
+    </div>
+</div>
+
+<p>By default, if the <code>--binary</code> flag is not specified, then the installer package
+will be created using the binary that invoked the <code>rpm client</code> command. To
+package a binary for a different architecture, for example arm64, you must
+specify the binary in the command.</p>
+<ol start="2">
+<li><strong>Install the package.</strong></li>
+</ol>
+<pre><code class="language-shell">sudo rpm -Uvh velociraptor_client_amd64.rpm
+</code></pre>
+<p>After installation you can check the service status with the command:</p>
+<ul>
+<li><code>systemctl status velociraptor_client</code> - on systems using systemd</li>
+<li><code>service velociraptor_client status</code> - on systems using SysVinit</li>
+</ul>
+<h3 id="other-platforms-and-architectures">Other platforms and architectures</h3>
+<p>In our official releases we also provide binaries for FreeBSD.</p>
+<p>Velociraptor is written in Golang, so it is technically possible for you to
+build it on any platform supported by Go. However Go has officially
+<a href="https://github.com/golang/go/issues/57003" target="_blank" >ended support for Windows 7</a> with
+the Go 1.20 release. This means that Windows XP, Windows server 2003, and
+Windows 7/Vista can no longer be built using a supported version of Go. We may
+make occasional (depending on demand for it) builds for Windows 7 using an old
+unsupported version of Go, but these will not be supported and may not be the
+latest version. Please see <a href="/docs/overview/support/">our Support Policy</a>.</p>
+<p>We also distribute 32-bit binaries for Windows but not for Linux. If you need
+32-bit Linux builds you will need to build from source. You can do this easily
+by forking the project on GitHub, enabling GitHub Actions in your fork and
+editing the &ldquo;Linux Build All Arches&rdquo; pipeline.</p>
+<h2 id="agentless-deployment">Agentless deployment</h2>
+<p>There has been a lot of interest in &ldquo;agentless hunting&rdquo; using Velociraptor,
+especially since many people come from backgrounds where PowerShell is used for
+this purpose.</p>
+<p>There are many reasons why agentless hunting is appealing. These are the ones we
+hear most often:</p>
+<ul>
+<li>There are already a ton of endpoint agents and yet another one may not be
+welcome.</li>
+<li>Sometimes we need to deploy endpoint agents as part of a DFIR engagement and
+we may not want to permanently install yet another agent on endpoints.</li>
+</ul>
+<p>In the agentless deployment scenario, we simply run the binary from a network
+share using Group Policy settings. The downside to this approach is that the
+endpoint needs to be on the domain network to receive the Group Policy update
+(and have the network share accessible) before it can run Velociraptor.</p>
+<p>When we run in agentless mode, we are typically interested in collecting a bunch
+of artifacts via hunts and then exiting - the agent will not restart after a
+reboot. So this method is suitable for quick hunts on corporate (non roaming)
+assets.</p>
+<!--
+See this [blog post](/blog/html/2019/03/02/agentless_hunting_with_velociraptor/) for details of how to deploy Velociraptor in agentless mode.
+-->
+<h4 id="create-a-network-share">Create a network share</h4>
+<p>The first step is to create a network share with the Velociraptor binary and its
+configuration file. We will run the binary from the share in this example, but
+for more reliability you may want to copy the binary into e.g. a temp folder on
+the end point in case the system becomes disconnected from the domain. For quick
+hunts though, it should be fine.</p>
+<p>We create a directory on the server. Note that in the below example, we&rsquo;re
+creating on a Domain Controller, but we strongly recommend using another
+location on real deployments.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/1.png"
+         class="inline"
+         alt="Create Share"
+         width="1227" height="523">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="1.png">
+      <i class="fa fa-download"></i></a>
+    Create Share
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>In this example we created a directory called <code>C:\Users\Deployment</code> and ensured
+that it&rsquo;s read-only. We shared the directory as the name <code>Deployment</code>.</p>
+<p>We now place the Velociraptor executable and client config file in that
+directory and verify that it can run the binary from the network share. The
+binary should be accessible via <code>\\DC\Deployment\velociraptor.exe</code>:</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/2.png"
+         class="inline"
+         alt="Testing Client Locally"
+         width="627" height="270">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="2.png">
+      <i class="fa fa-download"></i></a>
+    Testing Client Locally
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h4 id="create-the-group-policy-object">Create the Group Policy object</h4>
+<p>Next we create the Group Policy object, which forces all domain connected
+machines to run the Velociraptor client. We use the Group Policy Management
+Console:</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/3.png"
+         class="inline"
+         alt="Group Policy Object"
+         width="869" height="536">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="3.png">
+      <i class="fa fa-download"></i></a>
+    Group Policy Object
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Select the OU or the entire domain and click &ldquo;Create New GPO&rdquo;:</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/4.png"
+         class="inline"
+         alt="New GPO"
+         width="864" height="533">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="4.png">
+      <i class="fa fa-download"></i></a>
+    New GPO
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Now right click the GPO object and select &ldquo;Edit&rdquo;:</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/5.png"
+         class="inline"
+         alt="Edit GPO"
+         width="873" height="609">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="5.png">
+      <i class="fa fa-download"></i></a>
+    Edit GPO
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>We will create a new scheduled task. Rather than schedule it at a particular
+time, we will select to run it immediately. This will force the command to run
+as soon as the endpoint updates its Group Policy settings, because we don&rsquo;t want
+to wait for the next reboot of the endpoint.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/6.png"
+         class="inline"
+         alt="Scheduled Task"
+         width="1018" height="572">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="6.png">
+      <i class="fa fa-download"></i></a>
+    Scheduled Task
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Next we give the task a name and a description. In order to allow Velociraptor
+to access raw devices (e.g. to collect memory or NTFS artifacts) we can specify
+that the client will run at <code>NT_AUTHORITY\SYSTEM</code> privileges and run without any
+user being logged on.</p>
+<p>It&rsquo;s also worth ticking the &ldquo;hidden&rdquo; checkbox here to prevent a console box from
+appearing.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/7.png"
+         class="inline"
+         alt="Adding a new task"
+         width="742" height="556">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="7.png">
+      <i class="fa fa-download"></i></a>
+    Adding a new task
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Next click the Actions tab and add a new action. This is where we launch the
+Velociraptor client. The program will simply be launched from the share (i.e.
+<code>\\DC\Deployment\velociraptor.exe</code>) and we give it the arguments allowing it to
+read the provided configuration file
+(i.e. <code>--config \\DC\Deployment\client.config.yaml client -v</code>).</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/8.png"
+         class="inline"
+         alt="Specifying task action"
+         width="733" height="548">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="8.png">
+      <i class="fa fa-download"></i></a>
+    Specifying task action
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>In the &ldquo;Setting&rdquo; tab we can control how long we want the client to run. For a
+quick hunt, this may be an hour or two depending on the network size and hunt
+scope. For a more comprehensive DFIR collection, be prepared to wait several
+hours or even days while user machines are naturally disconnected and
+reconnected from the network. The GPO will ensure the client is killed after the
+allotted time.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/9.png"
+         class="inline"
+         alt="Task settings"
+         width="740" height="549">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="9.png">
+      <i class="fa fa-download"></i></a>
+    Task settings
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Once the GPO is installed it becomes active for all domain machines. You can now
+schedule any hunts you wish using the Velociraptor GUI. When a domain machine
+refreshes its Group Policy, it will run the client, which will enroll and
+immediately participate in any outstanding hunts - thus collecting and
+delivering its artifacts to the server.</p>
+<p>After the allotted time has passed, the client will shut down without having
+installed anything on the endpoint.</p>
+<p>You can force a Group Policy update by running the <code>gpupdate</code> program. Now you
+can verify that Velociraptor is running:</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/10.png"
+         class="inline"
+         alt="Task manager output"
+         width="822" height="588">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="10.png">
+      <i class="fa fa-download"></i></a>
+    Task manager output
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+
+<div class="mynotices note">
+  <div heading=" Preventing multiple instances of Velociraptor "><p>In our experience GPO deployments are not very reliable - we often find the
+Velociraptor client will be launched multiple times on the endpoint. It is
+highly recommended that you use the <code>--mutant</code> flag to specify a mutant
+preventing the client from starting multiple times.</p>
+<pre><code class="language-shell">velociraptor.exe --config ... client -v --mutant ArandomString
+</code></pre>
+</div>
+</div>
+
+
+<h2 id="client-upgrades">Client upgrades</h2>
+<p>The client&rsquo;s identity is derived from the client&rsquo;s cryptographic certificate
+which is stored in the <strong>writeback file</strong>, as defined by the key
+<code>Client.writeback_&lt;platform&gt;</code> in the client config.</p>
+<p>For example, by default on Windows this will be
+<code>C:\Program Files\Velociraptor\velociraptor.writeback.yaml</code> and
+<code>/etc/velociraptor.writeback.yaml</code> on Linux or macOS.</p>
+<p>We generally try to allow this file to persist on disk, even after uninstalls,
+in order to ensure that clients do not change their client ID. The
+<a href="https://github.com/Velocidex/velociraptor/tree/master/docs/wix" target="_blank" >default provided WiX script</a>
+ensures the file remains in order to maintain a consistent client id for the
+host.</p>
+
+<div class="mynotices note">
+  <div heading=" Client-Server Backward Compatibility "><p>The Velociraptor server is intended to be
+<a href="/docs/overview/support/#client-and-server-versioning">backwardly-compatible with older clients</a>
+across the previous few releases, which allows you to upgrade the server and
+then upgrade the clients. This backward-compatibility is mainly in terms of
+client-server communication - that is, older clients should be able to continue
+communicating with a newer server version. However, older clients will not be
+able to run artifacts that use newer features and functionality, so ideally you
+should try to upgrade your clients to the same version as the server as soon as
+possible after
+<a href="/docs/deployment/server/upgrades/">upgrading the server</a>.</p>
+<p>Note that you should always upgrade the server first. When creating new
+installer packages, as described below, the server will attempt to download any
+additional Velociraptor binaries from GitHub. The server uses a built-in
+artifact named <code>Server.Internal.ToolDependencies</code> that contains links to the
+binaries <em>that match the server version</em>. So, by default, the server artifacts
+that automate the creation of new client installers will always create ones that
+match the server version.</p>
+</div>
+</div>
+
+
+<h3 id="creating-new-installation-packages">Creating new installation packages</h3>
+<p>If you&rsquo;ve previously installed your clients using the client operating system&rsquo;s
+package manager then the first step in upgrading is to create a new installer
+package, just as you did for your initial deployment.</p>
+<p>For Windows and Linux the appropriate installer packages can be easily created
+using the <code>Server.Utils.CreateMSI</code> and <code>Server.Utils.CreateLinuxPackages</code> server
+artifacts.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/admin_client_repackage1.png"
+         class="inline"
+         alt="Launching the repackaging artifacts from the Welcome screen"
+         width="1038" height="578">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="admin_client_repackage1.png">
+      <i class="fa fa-download"></i></a>
+    Launching the repackaging artifacts from the Welcome screen
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>These artifacts will attempt to download any additional Velociraptor binaries
+from GitHub, as needed. These binaries will correspond to the server&rsquo;s version.
+You can manually override the binary by clicking on the tool name and
+uploading the binary that you want to use, but usually this is not necessary.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/admin_client_repackage2.png"
+         class="inline"
+         alt="Selecting the repackaging artifacts"
+         width="1200" height="629">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="admin_client_repackage2.png">
+      <i class="fa fa-download"></i></a>
+    Selecting the repackaging artifacts
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>When your launch the collection you will see it pause briefly while downloading
+any binaries that are needed. These binaries are stored in the server&rsquo;s
+<a href="/docs/artifacts/tools/">tools inventory</a> and will not be
+downloaded again if these artifact are run subsequently.</p>
+<p>The installer packages can then be downloaded from the collections <strong>Uploaded
+Files</strong> tab.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/uploaded_files.png"
+         class="inline"
+         alt="Repackaged Windows installers"
+         width="1197" height="568">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="uploaded_files.png">
+      <i class="fa fa-download"></i></a>
+    Repackaged Windows installers
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="remotely-upgrading-clients">Remotely upgrading clients</h3>
+<p>The newly created client installer packages can be deployed using your favourite
+enterprise software management tool, or by using the built-in
+<code>Admin.Client.Upgrade.&lt;Platform&gt;</code> artifacts which use the existing client to
+run the installer.</p>
+<p>While it is possible to use the Velociraptor client to upgrade itself, many
+organizations have strict processes and procedures around software management
+and using a standard software management tool might be mandated by the
+organization. You should take this into consideration, especially if you&rsquo;re
+managing Velociraptor in someone else&rsquo;s network environment.</p>
+<p>Regardless of the process you choose, you should always perform a limited
+initial rollout to verify that everything works smoothly and as expected.</p>
+<p>To use the <code>Admin.Client.Upgrade.&lt;Platform&gt;</code> artifacts, you can create a hunt
+which runs the artifact on the targeted endpoints.</p>
+<p>and click the
+tool setup screen.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/remote_upgrade_msi_.svg" alt="Configuring remote upgrade artifact"
+         class="inline"
+         height="1438"
+         width="1903.9999999999998"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="remote_upgrade_msi.svg"><i class="fa fa-download"></i></a>
+    Configuring remote upgrade artifact
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>In the tools setup screen select the MSI from your local machine and upload it
+to the server.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/clients/remote_upgrade_msi_2_.svg" alt="Uploading client MSI to the server"
+         class="inline"
+         height="687.7287145242071"
+         width="862.9283456269758"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="remote_upgrade_msi_2.svg"><i class="fa fa-download"></i></a>
+    Uploading client MSI to the server
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Note that when installing the MSI using Velociraptor, the Velociraptor process
+will be killed part way through collecting the artifact, so it would appear to
+never complete it (in the GUI the flow looks hung). This is OK and part of the
+upgrade process.</p>
+<p>To verify that clients are upgraded we recommend running the
+<code>Generic.Client.Info</code> hunt periodically. This hunt will refresh the server&rsquo;s
+datastore of client details (including reporting the client&rsquo;s version).</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352329"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352329"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352329"></script>
+    <script src="/js/jquery.sticky.js?1775352329"></script>
+    <script src="/js/featherlight.min.js?1775352329"></script>
+    <script src="/js/highlight.min.js?1775352329"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352329"></script>
+    <script src="/js/learn.js?1775352329"></script>
+    <script src="/js/hugo-learn.js?1775352329"></script>
+    
+    
+
+  </body>
+</html>

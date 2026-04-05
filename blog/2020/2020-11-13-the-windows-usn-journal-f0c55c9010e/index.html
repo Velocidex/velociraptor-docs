@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="Digging up Window’s juicy secrets…">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>The Windows USN Journal :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352327" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352327" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352327" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352327" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352327" rel="stylesheet">
+    <link href="/css/theme.css?1775352327" rel="stylesheet">
+    <link href="/css/tabs.css?1775352327" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352327" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352327" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352327" rel="stylesheet"><link href="/css/syntax.css?1775352327" rel="stylesheet"><link href="/css/light.css?1775352327" rel="stylesheet"><link href="/css/hljs.css?1775352327" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352327" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352327"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/blog\/2020\/2020-11-13-the-windows-usn-journal-f0c55c9010e\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">The Windows USN Journal</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#what-is-the-usn-journal">What is the USN Journal?</a></li>
+        <li><a href="#velociraptors-usn-parser">Velociraptor’s USN Parser</a></li>
+        <li><a href="#when-to-use-the-usn-journal">When to use the USN Journal?</a></li>
+        <li><a href="#watching-the-usn-journal">Watching the USN journal</a></li>
+        <li><a href="#event-monitoring-example-hash-database">Event monitoring example: Hash database</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/forensics">Forensics</a>
+
+  <a class="tag-link" href="/tags/windows">Windows</a>
+
+  <a class="tag-link" href="/tags/usn">USN</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              The Windows USN Journal
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1Nv0e89B_XOhBSxpY2v9Z8g.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p><em>Thanks to <a href="https://twitter.com/mgreen27" target="_blank" >Matt Green </a>for discussions, ideas and code….</em></p>
+<p>NTFS is the default filesystem on Windows systems, so it is important for DFIR tools to support extracting as much system state information as possible from it. Velociraptor already has a full featured <a href="https://www.velocidex.com/blog/medium/2019-11-15_recovering-deleted-ntfs-files-with-velociraptor-1fcf09855311/" target="_blank" >NTFS parser</a>, and in a recent release (0.5.2) also added a parser for the <strong>USN Journal</strong> (Update Sequence Number Journal), or <a href="https://en.wikipedia.org/wiki/USN_Journal" target="_blank" >Change Journal</a>.</p>
+<h3 id="what-is-the-usn-journal">What is the USN Journal?</h3>
+<p>By default Windows maintains a journal of filesystem activities in a file called <strong>$Extend$UsnJrnl</strong> in a special data stream called <strong>$J</strong>. This stream contains records of filesystem operations, primarily to allow backup applications visibility into the files that have been changed since the last time a backup was run.</p>
+<p>The <strong>$Extend$UsnJrnl:$J</strong> file begins life when the volume is created as an empty file. As files are modified on the volume, the $J file is extended with additional USN records.</p>
+<p>In order to preserve space, the NTFS creators use an ingenious trick: The beginning of the file is erased and made into a sparse run. Since NTFS can handle sparse files (i.e. files with large runs containing no data) efficiently, the file effectively does not consume any more disk space than needed but does not need to be rotated or truncated and can just seem to grow infinitely.</p>
+<p>This means that in practice we find the <strong>$J</strong> file on a live system reporting a huge size (sometimes many hundreds of gigabytes!), however usually the start of the file is sparse and takes no disk space, so the $J file typically only consumes around 30–40mb of actual disk space. This is illustrated in the diagram below.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1oh4ARro_MayRRUZAJHqhaw.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>USN Records are written back to back within the file. The USN records contain<a href="https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-usn_record_v2" target="_blank" > valuable information</a>:</p>
+<ul>
+<li>
+<p>The USN ID is actually the offset of the record within the file. This is a unique ID of the USN record (since the file is never truncated).</p>
+</li>
+<li>
+<p>A Timestamp — This is a timestamp for the file modification</p>
+</li>
+<li>
+<p>Reason — is the reason of this modification for example DATA_TRUNCATION, DATA_EXTEND, FILE_CREATE, FILE_DELETE etc.</p>
+</li>
+<li>
+<p>Filename is the name of the file that is being affected.</p>
+</li>
+<li>
+<p>Parent MFT ID points to the parent record within the MFT (the changed file’s containing directory).</p>
+</li>
+</ul>
+<p>Using the Filename and Parent MFT ID allows Velociraptor to resolve the full path of the file from the root of the filesystem.</p>
+<h3 id="velociraptors-usn-parser">Velociraptor’s USN Parser</h3>
+<p>Velociraptor provides access to the USN parser via the <strong>parse_usn()</strong> plugin. Let’s see what kind of data this plugin provides by running a simple query in the notebook</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1JkUkNsAJWFjP9uzwf56Jig.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>In the above I hid some of the less interesting fields, but we can immediately see the USN records are shown with their USN ID (which is the offset in the $J file), the timestamp, the full path to the modified file and the reasons for modifications.</p>
+<p>When a program interacts with a file, we typically see a bunch of related filesystem events. For example, I can create a new file called <strong>test.txt</strong> using notepad and write some data into it. I can then query the USN journal for modifications to that file (The <strong>=~</strong> operator is VQL’s regex match)…</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1gB2SCYCpK5xLceNH_OhhZg.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>Notepad seems to interact with the file using a number of separate operations and this adds several events into the USN journal file for the same interaction.</p>
+<p>Previously, Velociraptor was able to only collect the USN journal file and users had to rely on other third party tools to parse it (e.g. <a href="https://tzworks.net/prototype_page.php?proto_id=5" target="_blank" >this</a> or <a href="https://github.com/PoorBillionaire/USN-Journal-Parser" target="_blank" >this</a>). The problem with that approach is that external tools usually have no access to the original $MFT and therefore were unable to resolve the parent MFT id in the USN record to a full path. Parsing the USN records directly on the endpoint allows Velociraptor to immediately resolve the files into a full path making analysis much easier later.</p>
+<h3 id="when-to-use-the-usn-journal">When to use the USN Journal?</h3>
+<p>The USN journal can provide visibility into filesystem activity going back quite a long time. It seems that Windows aims to keep the maximum actual size of the log file around 30–40mb (remember, the file is sparse) so if the machine is not used too heavily, we sometimes find the log goes back a week or two. This gives us visibility on past system activity.</p>
+<p>Practically this can be useful:</p>
+<ul>
+<li>
+<p>When a program is run, typically we can see the prefetch files modified which gives us a timestamp on execution (in the case where the prefetch files themselves were deleted).</p>
+</li>
+<li>
+<p>One can see file modification or creation of a particular file extension (e.g. executables) or within specific directories (e.g. Windows\System32) which might indicate system compromise took place.</p>
+</li>
+<li>
+<p>Many compromises occur after an initial file based malware was run (e.g. office macros, or PDF). The USN journal can provide a time of initial infection.</p>
+</li>
+<li>
+<p>The USN journal can provide evidence of deleted files. With Velociraptor it is possible to efficiently hunt for all machines that had the particular file in the recent past — even if the file was subsequently deleted. This is useful to find evidence of attacker toolkit installation, or initial vectors of compromise.</p>
+</li>
+</ul>
+<h3 id="watching-the-usn-journal">Watching the USN journal</h3>
+<p>In the previous section we saw how Velociraptor can parse the USN journal on a running system, enabling hunting and analysis of past filesystem activity.</p>
+<p>However, Velociraptor is built around VQL — a unique query language allowing for asynchronous and event driven queries. Therefore, Velociraptor also has the unique ability to create event queries — queries that never terminate, but process data as it occurs.</p>
+<p>As such, Velociraptor offers many event driven versions of the standard plugins. For USN Journals, Velociraptor offers the <strong>watch_usn()</strong> plugin as an event driven alternative to the <strong>parse_usn()</strong> plugin. When a query uses <strong>watch_usn()</strong>, Velociraptor will watch the USN log for new entries, and as they appear, the plugin will release the event into the rest of the query.</p>
+<p>This allows Velociraptor to watch for file changes in near real time on the running system. You can easily see this effect by running an event query from the command line:</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1kVFXU7krriNv2m1srYsTWg.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>As filesystem changes occur they are picked up by the <strong>watch_usn()</strong> plugin and reported a short time later. This allows us to write queries that respond to filesystem events in near real time.</p>
+<h3 id="event-monitoring-example-hash-database">Event monitoring example: Hash database</h3>
+<p>Having the ability for Velociraptor to actively watch for filesystem events in near real time opens the door for many potential applications. One very useful application is maintaining a local hash database on endpoints.</p>
+<p>Hunting for a file hash on endpoints can be a very useful technique. While attackers can and do change their tools trivially to make hunting for file hash ineffective, once a specific compromise is detected, being able to rapidly hunt for the same hash across the entire fleet can reveal other compromised hosts.</p>
+<p>Up until now, hunting for hashes on a machine was difficult and resource intensive. This is because trying to determine if any files exist on an endpoint having a given hash requires hashing all the files and comparing their hash to the required hash — so essentially hashing every file on the system!</p>
+<p>Even after reasonable optimizations around file size, modification time ranges, file extensions etc, a hunt for hashes is quite resource intensive, and therefore used sparingly.</p>
+<p>The ability to follow the USN journal changes all that. We can simply watch the filesystem for changes, and when a file is modified, we can hash it immediately and store the hash locally in a database on the endpoint itself. Then later we can simply query that database rapidly for the presence of the hash.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1v8WrntHsWl3XbrDZ1yFuDw.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>As mentioned in the previous section, a single change typically involves several USN log entries. We therefore need to deduplicate these changes. We simply need to know that a particular file may have changed recently (say in the last few minutes) and we can then rehash it and update the database accordingly.</p>
+<p>All this can easily be implemented using a VQL query, which we can store in a VQL artifact. You can see the <strong>Windows.Forensics.LocalHashes.Usn</strong> <a href="https://github.com/Velocidex/velociraptor/blob/master/artifacts/definitions/Windows/Forensics/LocalHashes/Usn.yaml" target="_blank" >full artifact source here</a>.</p>
+<p>In order to get this query to run on the endpoints, we assign the artifact as a client event detection artifact, by clicking the “Client Events” screen and then the “Update Client monitoring table” button. After selecting the label group to apply to (All will apply this to all machines in your deployment), simply add the <strong>Windows.Forensics.LocalHashes.Usn</strong> artifact by searching for it.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1ebbAwSff_9QqhbQqfMThnA.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>The most important configuration parameter is the PathRegex specifying which files we should be watching. For example, you might only be interested in hashes of executables or word documents. Leaving the setting at “.” will match any file, including very frequently used files like event logs and databases — this setting can potentially affect performance. Finally you can suppress the artifact output if you like — this just means that hashes will not be additionally reported to the Velociraptor server. They will just be updating the local database instead.</p>
+<p>Once the query is deployed it will run on all endpoints and start feeding hash information to the server (if required). You can see this information in the client monitoring screen by simply selecting the artifact and choosing a day of interest</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1CIoyTKKFshUGoHFlS4zx5A.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>You can now easily page through the data viewing the hashes and files that were added since the query started. You can also download the entire SQLite database file from the endpoint, or watch the events on the server for specific file types or hashes found across the entire deployment.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/17fRC-jlP_4VxarLtqfhtMQ.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>Let’s test querying this local database. I will just pick a random
+hash and see if my endpoint has this hash. I will simply collect the
+Windows.Forensics.LocalHashes.Query artifact on my endpoint and
+configure it to search for the hash
+<code>f4065c7516d47e6cb5b5f58e1ddd1312</code>. This hash can be entered as a
+table in the GUI or simply as a comma delimited text field.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/17SU9muB1xlvOuwZ-AGxkPQ.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>The artifact returns almost instantly with the file that this hash belongs to</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../../img/1Wprj9Wic03bIg-86ClDBtg.png"
+         class="inline"
+         alt="" />
+  </div>
+  <figcaption>
+    
+  </figcaption>
+</figure>
+
+
+</p>
+<p>The local hash database is simply a SQLite file maintained by the VQL query. As such I can easily collect this file with a hunt if I wanted to archive the hash database periodically from all my endpoints.</p>
+<p>Collecting the <strong>Windows.Forensics.LocalHashes.Glob</strong> artifact will populate the local hash database by simply crawling a directory, hashing all files inside it and populated the database — this is useful to pre-populate the database with hashes of files created before Velociraptor was installed.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>Velociraptor brings unprecedented visibility to endpoint machine states using state of the art forensic capabilities. In this post we saw how parsing the USN Journal allows Velociraptor to gather information about past filesystem activity. We also saw how detection and monitoring queries can be used to respond to file modification or creation in near real time.</p>
+<p>Finally we saw this capability put into practice by maintaining a local hash database which can be queried on demand to quickly answer questions like <em>which machine in my fleet contain this hash?</em></p>
+<p>To play with this new feature yourself, take Velociraptor for a spin! It is a available on <a href="https://github.com/Velocidex/velociraptor" target="_blank" >GitHub</a> under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list <a href="mailto:velociraptor-discuss@googlegroups.com" target="_blank" >velociraptor-discuss@googlegroups.com</a> . You can also chat with us directly on discord <a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord</a></p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352327"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352327"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352327"></script>
+    <script src="/js/jquery.sticky.js?1775352327"></script>
+    <script src="/js/featherlight.min.js?1775352327"></script>
+    <script src="/js/highlight.min.js?1775352327"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352327"></script>
+    <script src="/js/learn.js?1775352327"></script>
+    <script src="/js/hugo-learn.js?1775352327"></script>
+    
+    
+
+  </body>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Encode on Velociraptor - Digging deeper!</title>
+    <link>https://docs.velociraptor.app/tags/encode/</link>
+    <description>Recent content in Encode on Velociraptor - Digging deeper!</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 06 Jun 2022 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://docs.velociraptor.app/tags/encode/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How can I url/percent decode a string?</title>
+      <link>https://docs.velociraptor.app/knowledge_base/tips/urldecode/</link>
+      <pubDate>Mon, 06 Jun 2022 00:00:00 +0000</pubDate>
+      <guid>https://docs.velociraptor.app/knowledge_base/tips/urldecode/</guid>
+      <description>&lt;h1 id=&#34;how-can-i-urlpercent-decode-a-string&#34;&gt;How can I url/percent decode a string?&lt;/h1&gt;&#xA;&lt;p&gt;During investigation you may find logs or other data with percent-encoded strings.&#xA;Since 0.6.5 we have included a lambda function in regex_replace() that enables decode and managing errors to enable analysis.&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-vql&#34;&gt;LET Line = &#39;&#39;&#39;http://target/login.asp?userid=bob%27%3b%20update%20logintable%20set%20passwd%3d%270wn3d%27%3b--%00&#39;&#39;&#39;&#xA;&#xA;SELECT regex_replace(source=Line, replace_lambda=&amp;quot;x=&amp;gt;unhex(string=x[1:]) || x&amp;quot;, re=&amp;quot;%..&amp;quot;) as Decoded FROM scope() &#xA;&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&lt;p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&lt;figure&gt;&#xA;  &lt;div class=&#34;figure&#34;&gt;&#xA;    &lt;img src=&#34;https://docs.velociraptor.app/knowledge_base/tips/urldecode/https://user-images.githubusercontent.com/13081800/172098424-d78c73f9-e7d2-405b-99ca-129eba4350c0.png&#34;&#xA;         class=&#34;inline&#34;&#xA;         alt=&#34;Url Decode: results&#34; /&gt;&#xA;  &lt;/div&gt;&#xA;  &lt;figcaption&gt;&#xA;    Url Decode: results&#xA;  &lt;/figcaption&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&#xA;&lt;/p&gt;&#xA;&lt;p&gt;Similarly, to URL encode we can run a similar function:&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-vql&#34;&gt;LET Line = &#39;&#39;&#39;http://target/login.asp?userid=bob&#39;; update logintable set passwd=&#39;0wn3d&#39;;--&#39;&#39;&#39;&#xA;&#xA;SELECT&#xA;    url(path=Line).String[1:] as URLFunction,&#xA;    regex_replace(source=Line,replace_lambda=&amp;quot;x=&amp;gt;format(format=&#39;%%%02x&#39;,args=x)&amp;quot;, re=&amp;quot;[^a-z0-9\\-_.~:/?]&amp;quot;) as ManualMethod&#xA;FROM scope()&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&lt;p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&lt;figure&gt;&#xA;  &lt;div class=&#34;figure&#34;&gt;&#xA;    &lt;img src=&#34;https://docs.velociraptor.app/knowledge_base/tips/urldecode/https://user-images.githubusercontent.com/13081800/187116187-9347d6be-5566-49b0-98d6-65ce0d2ff0cc.png&#34;&#xA;         class=&#34;inline&#34;&#xA;         alt=&#34;Url Encode: results&#34; /&gt;&#xA;  &lt;/div&gt;&#xA;  &lt;figcaption&gt;&#xA;    Url Encode: results&#xA;  &lt;/figcaption&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&#xA;&lt;/p&gt;&#xA;</description>
+    </item>
+  </channel>
+</rss>

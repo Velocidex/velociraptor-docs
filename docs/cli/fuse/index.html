@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>The &#34;fuse&#34; command :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352328" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352328" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352328" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352328" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352328" rel="stylesheet">
+    <link href="/css/theme.css?1775352328" rel="stylesheet">
+    <link href="/css/tabs.css?1775352328" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352328" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352328" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352328" rel="stylesheet"><link href="/css/syntax.css?1775352328" rel="stylesheet"><link href="/css/light.css?1775352328" rel="stylesheet"><link href="/css/hljs.css?1775352328" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352328" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352328"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/cli/fuse/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/cli\/fuse\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/cli/fuse/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">The &#34;fuse&#34; command</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#-fuse-container-">[ fuse container ]</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              The &#34;fuse&#34; command
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>Mount collection containers on folders using FUSE.</p>
+<p>This command is only available in the Linux binary.</p>
+<h3 id="-fuse-container-">[ fuse container ]</h3>
+<pre><code class="language-text">fuse container [&lt;flags&gt;] &lt;directory&gt; &lt;files&gt;...
+    Mount ZIP containers over fuse
+
+    --accessor=&quot;collector&quot;     The accessor to use (default collector)
+    --prefix=&quot;/&quot;               Export all files below this directory in the zip file
+    --[no-]map_device_names_to_letters
+                               Convert raw device names to drive letters
+    --[no-]strip_colons_on_drive_letters
+                               Remove the : on drive letters
+    --[no-]unix_path_escaping  If set we escape only few characters in file names otherwise escape windows compatible chars
+    --[no-]emulate_timestamps  If set emulate timestamps for common artifacts like Windows.Triage.Targets.
+    --[no-]merge_accessors     If set merge all the accessors into the same directory (implied --map_device_names_to_letters).
+
+Args:
+  &lt;directory&gt;  A directory to mount on
+  &lt;files&gt;      list of zip files to mount
+</code></pre>
+<hr>
+<p>On Linux, a mechanism called
+<a href="https://en.wikipedia.org/wiki/Filesystem_in_Userspace" target="_blank" >FUSE</a> (Filesystem in
+UserSpacE) allows an application to mount a filesystem as a directory on the
+global filesystem. As the name suggests, this does not require root privileges,
+unlike conventional mounts.</p>
+<p>While extracting collection containers is possible, it results in duplicating
+the same data on the analysis system, therefore consuming more disk space and
+taking up valuable investigative time for the extraction. Instead we can use
+Velociraptor to mount the offline collection onto a local directory -
+transparently decompressing the data and restoring timestamps from file metadata
+that&rsquo;s stored separately in the collection container. FUSE provides
+non-sequential access to the data which is important, especially when dealing
+with very large collections.</p>
+<p>Mounting containers via FUSE also has the advantage of being able to represent
+certain filenames and paths more accurately, for example
+<code>C/$Extend/$UsnJrnl:$J</code>, which if extracted would not be allowed on certain
+filesystems and would be represented with their URL-encoded equivalent.</p>
+<h5 id="mount-options">Mount options</h5>
+<p>By default the command applies several transformations to the paths in the
+container to make them easier to post-process with external tools, which is the
+most common use case. However the following options are available to modify the
+default behavior:</p>
+<ul>
+<li>
+<p><code>prefix</code>: exports all files below this directory in the zip file, for example
+<code>&quot;/uploads/auto/C%3A/&quot;</code> will move the mount point to that directory within the
+zip.</p>
+</li>
+<li>
+<p><code>emulate_timestamps</code> (enabled by default): will recreate all timestamps from
+the metadata files stored in the container.</p>
+</li>
+<li>
+<p><code>unix_path_escaping</code> (disabled by default): will allow some characters (e.g.
+<code>:</code>) which are not allowed on windows but are allowed on Unix. If set, all
+path characters will be allowed except <code>/</code> which will be escaped (This is
+correct on Linux). If false, escape Windows // illegal characters in paths.</p>
+</li>
+<li>
+<p><code>map_device_names_to_letters</code> (enabled by default): will replace NTFS-style
+devices like <code>\\.\C:</code> with drive letters <code>C:</code>.</p>
+</li>
+<li>
+<p><code>strip_colons_on_drive_letters</code> (enabled by default): will remove <code>:</code>
+characters completely so <code>C:</code> will become a directory in the output named <code>C</code>.</p>
+</li>
+<li>
+<p><code>merge_accessors</code> (enabled by default): merges all separate
+<a href="/vql_reference/accessors/">accessors</a>
+into the same directory (which will be named <code>files</code>). By default Velociraptor
+stores file uploads under the name of the accessor that was used to collect
+them. This allows you to keep track of which accessor was originally used to
+read the file. However when processing these files with external tools it is
+sometimes convenient or even necessary to merge them into a single root
+directory.</p>
+</li>
+</ul>
+<h5 id="usage-notes">Usage Notes</h5>
+<ul>
+<li>
+<p>The zip files need to be specified with full paths, however wildcards in the
+filename and path components are supported.</p>
+</li>
+<li>
+<p>The mount directory can be specified as a relative path.</p>
+</li>
+<li>
+<p>If multiple zip files are specified then their contents are merged in the
+mount. Note that when 2 or more containers are merged they are layered over
+each other in the order that they were specified on the command line. So if
+there are 2 different files (or 2 different versions of the same file) using
+the same path then in the mount directory you will see the last one in the
+stack. It&rsquo;s important to keep this in mind since the container format uses
+several standard paths for certain common collection files. Merging is
+primarily intended for files in the collection&rsquo;s &ldquo;uploads&rdquo;, i.e. files copied
+from the endpoint, so that you can work with them all together in one tree
+structure. Note that this is also distinct from the <code>merge_accessors</code> option
+which merges accessors, not containers.</p>
+</li>
+<li>
+<p>If the zip files are secured with the server&rsquo;s X.509 certificate then you need
+to provide the config to the command using the <code>--config</code> (or <code>-c</code>) flag so
+that it can access the server&rsquo;s private key. Otherwise you will see the error
+<code>&quot;GetPrivateKeyFromScope: No frontend configuration given&quot;</code> logged in the
+terminal.</p>
+</li>
+</ul>
+<h5 id="example">Example</h5>
+<ol>
+<li>
+<p>Create an empty mount directory.</p>
+<pre><code class="language-sh">$ mkdir -v ~/fuse_mount
+</code></pre>
+</li>
+<li>
+<p>Run the <code>fuse container</code> command. The -v flag is recommended if you want to
+see what&rsquo;s going on.</p>
+<pre><code class="language-sh">$ velociraptor fuse container --map_device_names_to_letters --strip_colons_on_drive_letters --unix_path_escaping \
+--emulate_timestamps ~/fuse_mount /home/user/collections/Collection-*.zip -v
+</code></pre>
+</li>
+<li>
+<p>Work with the files in the mount directory.</p>
+<pre><code class="language-sh">$ tree ~/fuse_mount/
+/home/user/fuse_mount/
+├── client_info.json
+├── collection_context.json
+├── log.json
+├── log.json.index
+├── requests.json
+├── results
+│   ├── Windows.KapeFiles.Targets%2FAll File Metadata.json
+│   ├── Windows.KapeFiles.Targets%2FAll File Metadata.json.index
+│   ├── Windows.KapeFiles.Targets%2FUploads.json
+│   └── Windows.KapeFiles.Targets%2FUploads.json.index
+├── uploads
+│   └── auto
+│       └── C
+│           └── Windows
+│               └── System32
+│                   └── winevt
+│                       └── Logs
+│                           ├── Application.evtx
+│                           ├── HardwareEvents.evtx
+│                           ├── Internet Explorer.evtx
+ ...
+</code></pre>
+</li>
+<li>
+<p>Ctrl+C to terminate the fuse container command when you&rsquo;re done. You should
+always ensure that the mount directory is unmounted, otherwise you will have
+problems if reusing it for the next mount.</p>
+<pre><code class="language-sh">$ umount -v ~/fuse_mount
+umount: /home/user/fuse_mount (rawBridge) unmounted
+</code></pre>
+<blockquote>
+<p><i class="fas fa-triangle-exclamation" style="color:gray"></i>
+If you try to reuse a mount directory without first unmounting it, you will see
+an error like:
+<code>/usr/bin/fusermount3: failed to access mountpoint /home/user/fuse_mount: Permission denied</code>.</p>
+</blockquote>
+</li>
+</ol>
+<h5 id="see-also">See also</h5>
+<ul>
+<li>
+<p><a href="/docs/cli/misc/#-decrypt-">[ decrypt ]</a>, which removes the encryption from collection containers without
+extracting the collection&rsquo;s files.</p>
+</li>
+<li>
+<p><a href="/docs/cli/misc/#-unzip-">[ unzip ]</a>, which works similarly to
+<code>decrypt</code> but lists filenames or extracts the files from a collection
+container.</p>
+</li>
+<li>
+<p><a href="/docs/deployment/offline_collections/collection_data/#mounting-with-the-fuse-container-command">Offline collections &gt; Mounting with the fuse container command</a></p>
+</li>
+</ul>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352328"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352328"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352328"></script>
+    <script src="/js/jquery.sticky.js?1775352328"></script>
+    <script src="/js/featherlight.min.js?1775352328"></script>
+    <script src="/js/highlight.min.js?1775352328"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352328"></script>
+    <script src="/js/learn.js?1775352328"></script>
+    <script src="/js/hugo-learn.js?1775352328"></script>
+    
+    
+
+  </body>
+</html>

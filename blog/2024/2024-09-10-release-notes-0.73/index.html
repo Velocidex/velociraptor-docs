@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="Velociraptor Release 0.73 is available!
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Velociraptor 0.73 Release :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352327" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352327" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352327" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352327" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352327" rel="stylesheet">
+    <link href="/css/theme.css?1775352327" rel="stylesheet">
+    <link href="/css/tabs.css?1775352327" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352327" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352327" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352327" rel="stylesheet"><link href="/css/syntax.css?1775352327" rel="stylesheet"><link href="/css/light.css?1775352327" rel="stylesheet"><link href="/css/hljs.css?1775352327" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352327" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352327"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/blog/2024/2024-09-10-release-notes-0.73/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/blog\/2024\/2024-09-10-release-notes-0.73\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/2024/2024-09-10-release-notes-0.73/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Velociraptor 0.73 Release</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#special-thanks">Special Thanks</a></li>
+    <li><a href="#new-client-functionality">New Client functionality</a>
+      <ul>
+        <li><a href="#built-in-windows-memory-acquisition">Built in Windows memory acquisition</a></li>
+        <li><a href="#added-parse_journald-and-watch_journald-plugins">Added parse_journald() and watch_journald() plugins</a></li>
+        <li><a href="#add-rdp-cache-parser-to-rdp-cache-artifact">Add RDP Cache parser to RDP Cache artifact</a></li>
+        <li><a href="#added-the-ability-to-dump-clear-text-network-traffic-for-debugging">Added the ability to dump clear text network traffic for debugging</a></li>
+      </ul>
+    </li>
+    <li><a href="#new-server-functionality">New Server Functionality</a>
+      <ul>
+        <li><a href="#improve-granularity-of-flow-state-reporting">Improve granularity of flow state reporting.</a></li>
+        <li><a href="#hunts-can-be-tagged-now">Hunts can be tagged now.</a></li>
+        <li><a href="#updated-table-widget">Updated Table widget.</a></li>
+        <li><a href="#password-encrypted-zip-files-for-vfs-downloads">Password encrypted ZIP files for VFS downloads.</a></li>
+        <li><a href="#post-processing-preservation-artifacts">Post-processing preservation artifacts</a></li>
+        <li><a href="#redesigned-timelines">Redesigned timelines</a></li>
+        <li><a href="#added-timesketch-integration-artifacts">Added Timesketch integration artifacts</a></li>
+        <li><a href="#client-metadata-fields-can-now-be-indexed-and-searched">Client metadata fields can now be indexed and searched.</a></li>
+        <li><a href="#enable-a-server-artifact-to-specify-an-impersonation-user">Enable a server artifact to specify an impersonation user.</a></li>
+      </ul>
+    </li>
+    <li><a href="#conclusions">Conclusions</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/release">Release</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Velociraptor 0.73 Release
+            </h1>
+            
+            <div class="author pull-right">
+              Mike Cohen
+              <span class="date">2024-09-10</span>
+            </div>
+            
+          
+
+        
+
+
+
+	<p>I am very excited to announce that the latest Velociraptor release
+0.73 is available for download.</p>
+<p>In this post I will discuss some of the interesting new features.</p>
+<h2 id="special-thanks">Special Thanks</h2>
+<p>We would like to extend our thanks to the entire Velociraptor
+Community, with a special mention for <a href="https://github.com/misje" target="_blank" >Andreas
+Misje</a> and <a href="https://github.com/predictiple" target="_blank" >Justin
+Welgemoed</a> who provided invaluable
+testing, feedback and ideas to make this release awesome!</p>
+<h2 id="new-client-functionality">New Client functionality</h2>
+<h3 id="built-in-windows-memory-acquisition">Built in Windows memory acquisition</h3>
+<p>Previously Velociraptor was able to acquire physical memory on Windows
+using the Winpmem binary as an external tool - which was delivered to
+the endpoint and executed to obtain the memory image.</p>
+<p>In this release, the Winpmem driver is incorporated into the
+Velociraptor binary itself so there is no need to introduce additional
+binaries to the endpoint. The driver is inserted on demand when an
+image is required using the new VQL function
+<a href="/vql_reference/windows/winpmem/">winpmem()</a>. This
+VQL function can compress the memory image, to make it faster to
+acquire (less IO) and deliver over the network (less network bandwidth
+required).</p>
+<p>The ability to access physical memory simply is also leveraged with
+the
+<a href="/vql_reference/accessors/winpmem/">winpmem</a>
+accessor which allows for direct Yara scans with
+<code>Windows.Detection.Yara.PhysicalMemory </code></p>
+<h3 id="added-parse_journald-and-watch_journald-plugins">Added parse_journald() and watch_journald() plugins</h3>
+<p>Journald is Linux&rsquo;s answer to structured logging. Previously
+Velociraptor implemented a simple parser using pure VQL. In this
+release Velociraptor introduces a dedicated <code>journald</code> parser.</p>
+<p>The new parser emulates the windows event log format, with common
+fields grouped under the <code>System</code> column and variable fields in
+<code>EventData</code>.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-10-release-notes-0.73/journald.png"
+         class="inline"
+         alt="Journald parser"
+         width="1280" height="807">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="journald.png">
+      <i class="fa fa-download"></i></a>
+    Journald parser
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>This release also introduces a new VQL plugin <code>watch_journald()</code> which
+follows journald logs and forwards events to the server.</p>
+<h3 id="add-rdp-cache-parser-to-rdp-cache-artifact">Add RDP Cache parser to RDP Cache artifact</h3>
+<p>Attackers commonly use Remote Desktop (RDP) to laterally move between
+systems. The Microsoft RDP client maintains a tile cache with
+fragments of the screen.</p>
+<p>Sometimes the RDP cache holds crucial evidence as to the activity of
+the attacker on systems that ran the RDP client. This information is
+now easily accessible using the new <code>Windows.Forensics.RDPCache</code>
+artifact contributed by <a href="https://github.com/mgreen27" target="_blank" >Matt Green</a>.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-10-release-notes-0.73/rdp_cache.png"
+         class="inline"
+         alt="Viewing the RDP cache tiles"
+         width="1913" height="883">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="rdp_cache.png">
+      <i class="fa fa-download"></i></a>
+    Viewing the RDP cache tiles
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="added-the-ability-to-dump-clear-text-network-traffic-for-debugging">Added the ability to dump clear text network traffic for debugging</h3>
+<p>Velociraptor clients are often deployed in complex networks. It is
+sometimes difficult to debug why network communications fail.</p>
+<p>This release introduces the ability for the client to record the plain
+text communications between the client and server to a local file for
+debugging purposes.</p>
+<p>Network communications are usually wrapped in TLS making network
+captures useless for debugging. Because of the way Velociraptor pins
+the TLS communications it is not easy to insert a MITM interceptor
+proxy either.</p>
+<p>Adding the following to the client&rsquo;s config will write plain text
+communications into the specified file:</p>
+<pre><code class="language-yaml">Client:
+   insecure_network_trace_file: /tmp/trace.txt
+</code></pre>
+<p>Running the client will show the following log message:</p>
+<pre><code>[INFO] 2024-09-19T11:50:07Z Insecure Spying on network connections in /tmp/trace.txt
+</code></pre>
+<p>Make sure to disable this trace in production and only use it for
+debugging communications, as it does weaken the network security.</p>
+
+<div class="mynotices note">
+  <div heading=" Network traffic is still encrypted "><p>Velociraptor uses two layers of encryption - messages between client
+and server are encrypted using Velociraptor&rsquo;s internal PKI scheme, and
+<strong>in addition</strong>, a HTTP over TLS connection is used to exchange those
+messages.</p>
+<p>This means that the trace file is still not really completely in plain
+text - it contains the encrypted messages in among the clear text HTTP
+messages.</p>
+<p>However this should help debug issues around reverse proxies and MITM
+proxies in production.</p>
+</div>
+</div>
+
+
+<h2 id="new-server-functionality">New Server Functionality</h2>
+<h3 id="improve-granularity-of-flow-state-reporting">Improve granularity of flow state reporting.</h3>
+<p>In previous versions, flows could only be in the <code>RUNNING</code>, <code>FINISHED</code>
+or <code>ERROR</code> states. When the user schedules a collection from an
+endpoint, the collection is in the <code>RUNNING</code> state and when it is
+completed it is either in the <code>FINISHED</code> or <code>ERROR</code> state.</p>
+<p>However, this has proved to be insufficient when things go wrong,
+leaving users wondering what is happening in cases where the client
+crashes or reboots, or even if it becomes unresponsive. In such cases
+sometimes flows remained stuck in the <code>RUNNING</code> state indefinitely, so
+it is not easy for users to re-launch them.</p>
+<p>In this release, the Velociraptor client goes through more states:</p>
+<ol>
+<li>When the collection is initially scheduled, it is in the
+<code>Scheduled</code> state and has the icon <i class="fas fa-calendar-plus"></i>.</li>
+<li>When the client checks in, the collection request is sent to the
+client, and the collection moves into the <code>In Progess</code> state <i
+class="fas fa-person-running"></i>.</li>
+<li>The server will periodically check on the progress of the
+collection - if the server in unable to check for a period of time,
+the collection will now be marked as <code>Unresponsive</code> and have the <i
+class="fas fa-question"></i> icon.</li>
+<li>If the client comes back online (for example after a restart), the
+server will query the client about the progress of in flight
+collections. The client can then confirm if these collections are
+not known, the collection will be marked as an <code>Error</code> with icon <i
+class="fas fa-exclamation"></i>.</li>
+</ol>
+<p>Previously, the server sent all outstanding requests to the client at
+the same time. This meant that if there were many hunts scheduled, all
+requests were delivered immediately. If the client subsequently timed
+out, crashed or disappeared from the network during execution, all
+requests were lost leaving flows in the hung <code>RUNNING</code> state
+indefinitely.</p>
+<p>In this release the server only sends 2 requests simultaneously,
+waiting until they complete, before sending further requests. This
+means if the client reboots only the currently executing queries are
+lost, and further queries will continue once the client reconnects.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-10-release-notes-0.73/collection_states_.svg" alt="Collection status show finer granularity"
+         class="inline"
+         height="488"
+         width="930.3951367781156"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="collection_states.svg"><i class="fa fa-download"></i></a>
+    Collection status show finer granularity
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="hunts-can-be-tagged-now">Hunts can be tagged now.</h3>
+<p>Velociraptor enables powerful automation in everyday DFIR work. Some
+users start many hunts automatically via the API or VQL queries.</p>
+<p>Over time there can be many hunts active simultaneously, and they can
+be used for multiple uses. In this release, the GUI&rsquo;s hunt view is
+streamlined by enabling hunts to contains labels.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-10-release-notes-0.73/hunt_tags_.svg" alt="Hunts can now have Tags"
+         class="inline"
+         height="465.96615040684884"
+         width="1422.1643156896557"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="hunt_tags.svg"><i class="fa fa-download"></i></a>
+    Hunts can now have Tags
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Clicking on the hunt label in the table will automatically filter the
+table for that label. Hunt Labels are a way to group large numbers of
+hunts and clean up the display.</p>
+<h3 id="updated-table-widget">Updated Table widget.</h3>
+<p>The Velociraptor GUI presents most data in tabular form. It is
+important that tables are easy to navigate and use.  This release made
+a lot of updates to the table view.</p>
+<h4 id="pagination-changes">Pagination changes</h4>
+<p>The navigation pager is now placed at the top of the table.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-10-release-notes-0.73/table_widget_.svg" alt="Velociraptor tables have been revamped"
+         class="inline"
+         height="443.00000000000006"
+         width="1460"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="table_widget.svg"><i class="fa fa-download"></i></a>
+    Velociraptor tables have been revamped
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h4 id="filtering-columns">Filtering columns</h4>
+<p>If a filter term starts with ! it will now be excluded from the rows
+(i.e. a negative search term).</p>
+<h4 id="resizing-columns">Resizing columns</h4>
+<p>Many tables have varying width columns. By default, Velociraptor will
+try to fit column width automatically to make them more readable, but
+sometimes it is necessary to manually adjust column widths for optimal
+viewing.</p>
+<p>Columns can now be resized by dragging the right edge of a cell or
+header.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-10-release-notes-0.73/resizing_columns_.svg" alt="Columns can be resized by dragging their right edge"
+         class="inline"
+         height="488"
+         width="854.5454545454545"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="resizing_columns.svg"><i class="fa fa-download"></i></a>
+    Columns can be resized by dragging their right edge
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h4 id="column-re-ordering">Column re-ordering</h4>
+<p>Column ordering usually depends on the VQL query that produces the
+table. However it is sometimes easier to reorder columns on an adhoc
+basis.</p>
+<p>You can now reorder columns by dragging the column header and dropping
+it on the new position.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-10-release-notes-0.73/reordering_columns_.svg" alt="Columns can be reordered by drag and drop"
+         class="inline"
+         height="411"
+         width="1460"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="reordering_columns.svg"><i class="fa fa-download"></i></a>
+    Columns can be reordered by drag and drop
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h4 id="compact-table-view">Compact table view</h4>
+<p>Sometimes columns contain a lot of data taking up large vertical
+space. This makes it difficult to quickly review the table because the
+extra row height makes the table unable to fit in the screen
+vertically.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-10-release-notes-0.73/collapsing_columns_.svg" alt="Collapsing columns make the table easier to view"
+         class="inline"
+         height="469"
+         width="1460"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="collapsing_columns.svg"><i class="fa fa-download"></i></a>
+    Collapsing columns make the table easier to view
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="password-encrypted-zip-files-for-vfs-downloads">Password encrypted ZIP files for VFS downloads.</h3>
+<p>Velociraptor is often used to fetch potentially malicious binaries
+from endpoints for further analysis. Users can schedule a collection
+from the endpoint and then download the binaries using the browser.</p>
+<p>However, this can sometimes result in analyst workstations triggering
+virus scanners or other warnings as they download potential malware.</p>
+<p>As in previous versions, the user can set a download password in their
+preferences. However, previously the password only applied to hunt or
+collection exports.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-10-release-notes-0.73/setting_password_.svg" alt="Setting password for downloads globally"
+         class="inline"
+         height="400"
+         width="1002.6262626262628"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="setting_password.svg"><i class="fa fa-download"></i></a>
+    Setting password for downloads globally
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>In this release, the password setting also applies to individual file
+downloads such as the VFS</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-10-release-notes-0.73/encrypted_downloads_.svg" alt="Downloads are password protected"
+         class="inline"
+         height="741.3905168009326"
+         width="978.418829464096"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="encrypted_downloads.svg"><i class="fa fa-download"></i></a>
+    Downloads are password protected
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Or the uploads tab in specific collections.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-10-release-notes-0.73/single_file_downloads_.svg" alt="Individual file downloads can be password protected"
+         class="inline"
+         height="400"
+         width="902.7586206896553"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="single_file_downloads.svg"><i class="fa fa-download"></i></a>
+    Individual file downloads can be password protected
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="post-processing-preservation-artifacts">Post-processing preservation artifacts</h3>
+<p>The <code>Windows.KapeFiles.Targets</code> artifact allows to collect many bulk
+forensic artifacts like registry hives etc. People often use it to
+collect offline collections for preservation of hosts.</p>
+<p>Although best practice is to <strong>also</strong> collect parsing artifacts at the
+same time, sometimes this is left out (See <a href="/training/playbooks/preservation/">Preserving Forensic
+Evidence
+</a> for
+a full discussion. It is particularly problematic when using the
+offline collector to collect the <code>Windows.KapeFiles.Targets</code> artifact,
+because once the collection is imported back into Velociraptor there
+is no possibility or returning to the endpoint to collect other
+artifacts.</p>
+<p>In this case the user needs to parse the collected raw files (for
+example collecting the <code>$MFT</code> then needing to apply <code>Windows.NTFS.MFT</code>
+to parse it).</p>
+<p>In the new release, a notebook suggestion was added to
+<code>Windows.KapeFiles.Targets</code> to apply a remapping on the collection in
+such as way that some regular artifacts designed to run on the live
+system can work to some extent off the raw collection.</p>
+<p>Let&rsquo;s examine a typical workflow. I will begin by preparing an offline
+collector with the <code>Windows.KapeFiles.Targets</code> artifact configured to
+collect all event logs.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-10-release-notes-0.73/building_offline_collector.png"
+         class="inline"
+         alt="Building an offline collector"
+         width="1280" height="960">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="building_offline_collector.png">
+      <i class="fa fa-download"></i></a>
+    Building an offline collector
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Once the collection is complete I receive a ZIP file containing all
+the collected files. I will now import it into Velociraptor.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-10-release-notes-0.73/importing_offline_collection_.svg" alt="Importing the offline collection"
+         class="inline"
+         height="709.75"
+         width="939.6666666666665"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="importing_offline_collection.svg"><i class="fa fa-download"></i></a>
+    Importing the offline collection
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Since this is an offline client and not a real client, Velociraptor
+will create a new client id to contain the collections.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-10-release-notes-0.73/kapefiles_collection_.svg" alt="The imported collection looks just like any other collection"
+         class="inline"
+         height="652"
+         width="1094.3160690571049"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="kapefiles_collection.svg"><i class="fa fa-download"></i></a>
+    The imported collection looks just like any other collection
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Of course we can not schedule new collections for the client because
+it is not a real client, but once imported, the offline collection
+appears as just another collection in the GUI.</p>
+<p>Suppose now I wanted to use the <code>Windows.Hayabusa.Rules</code> artifact to
+triage the system according to the Hayabusa Sigma ruleset. Ordinarily,
+with a connected endpoint, I would just schedule a new collection on
+the endpoint and receive the triaged data in a few minutes.</p>
+<p>However, this is not a real client since I used the offline collector
+to retrieve the event logs. I can not schedule new collections on it
+as easily (without preparing a new offline collector and manually
+running it on the endpoint).</p>
+<p>Instead, the <code>Windows.KapeFiles.Targets</code> artifact now offers a VQL
+snippet as a notebook suggestion to post process the collection. I
+access this from the collection&rsquo;s notebook.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-10-release-notes-0.73/post_process_kapefiles_.svg" alt="Post processing the KapeFiles collection with a notebook suggestion"
+         class="inline"
+         height="473"
+         width="1103.5880398671097"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="post_process_kapefiles.svg"><i class="fa fa-download"></i></a>
+    Post processing the KapeFiles collection with a notebook suggestion
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The new cell contains some template VQL. I can modify it to run other
+artifacts. In this case I will collect the <code>Windows.Hayabusa.Rules</code>
+artifact with all the rules (event noisy ones) and <code>Windows.NTFS.MFT</code>
+artifact.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-10-release-notes-0.73/post_process_kapefiles_2_.svg" alt="Modifying VQL to run other artifacts"
+         class="inline"
+         height="754.7500000000001"
+         width="1014.3333333333333"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="post_process_kapefiles_2.svg"><i class="fa fa-download"></i></a>
+    Modifying VQL to run other artifacts
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The post processing steps added a new distinct collection to the
+offline client, as if we collected it directly from the
+endpoint. However, the artifacts were collected from the triage files
+directly imported from the offline bundle.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-10-release-notes-0.73/post_process_kapefiles_3_.svg" alt="A new distinct collection is added"
+         class="inline"
+         height="685.75"
+         width="912.3333333333333"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="post_process_kapefiles_3.svg"><i class="fa fa-download"></i></a>
+    A new distinct collection is added
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Although this new workflow makes it more convenient to post process
+bulk file triage collections, note that this is not an ideal workflow
+for a number of reasons (for example parsing event logs on systems
+other than where they were written will result in a loss of some log
+messages).</p>
+<p>It is always better to collect and parse the required artifacts
+directly from the endpoint (even in an offline collection) and <strong>not</strong>
+rely on bulk file collections.</p>
+<h3 id="redesigned-timelines">Redesigned timelines</h3>
+<p>Timelines has been part of the Velociraptor GUI for a few releases
+now. In this release we have really expanded their functionality into
+a complete end to end timelining analysis tool.</p>
+<p>The details of the new workflow are described in the <a href="/blog/2024/2024-09-12-timelines/">Timelines in
+Velociraptor</a> blog
+post, but below is a screenshot to illustrate the final product - an
+annotated timeline derived from analysis of multiple artifacts.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../2024-09-12-timelines/supertimeline.svg"
+         class="inline"
+         alt="The complete timeline with annotations" />
+  </div>
+  <figcaption>
+    The complete timeline with annotations
+  </figcaption>
+</figure>
+
+
+</p>
+<h3 id="added-timesketch-integration-artifacts">Added Timesketch integration artifacts</h3>
+<p>In addition to an enhanced built in timelining feature, this release
+also features enhanced integration with <code>Timesketch</code>, a popular open
+source timelining tool. The details of the integration are also
+discussed in the blog post above, but here is a view of Timesketch
+with some Velociraptor timelines exported.</p>
+<p>
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="../2024-09-12-timelines/timesketch_view.svg"
+         class="inline"
+         alt="Viewing timelines in Timesketch" />
+  </div>
+  <figcaption>
+    Viewing timelines in Timesketch
+  </figcaption>
+</figure>
+
+
+</p>
+<h3 id="client-metadata-fields-can-now-be-indexed-and-searched">Client metadata fields can now be indexed and searched.</h3>
+<p>Velociraptor allows arbitrary key/value pairs to be added the Client
+record. We call this the <code>Client Metadata</code>. Previously the metadata
+could be set in the GUI but there was no way to search for it from the
+main search bar.</p>
+<p>In this release client metadata can be searched directly in the search
+box. Additionally, the user can specify custom metadata fields in the
+configuration file to have all clients present this information.</p>
+<p>Consider this example. I wanted to record maintain the department that
+each endpoint belongs to. I will add the following the server&rsquo;s
+configuration file:</p>
+<pre><code class="language-yaml">defaults:
+  indexed_client_metadata:
+    - department
+</code></pre>
+<p>This tells the server to index the client metadata field
+<code>department</code>. This allows the user to search all clients by
+department.</p>
+<p>Indexed metadata fields exist on all clients. Additional non-indexed
+fields can be added by the user.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-10-release-notes-0.73/client_metadata_.svg" alt="Client metadata fields can be indexed or free form"
+         class="inline"
+         height="793.7703293383789"
+         width="1051.6937724511718"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="client_metadata.svg"><i class="fa fa-download"></i></a>
+    Client metadata fields can be indexed or free form
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="enable-a-server-artifact-to-specify-an-impersonation-user">Enable a server artifact to specify an impersonation user.</h3>
+<p>Velociraptor&rsquo;s user permission system ensures that only users that are
+granted certain permissions are able to carry out actions that require
+these permissions. For example, to launch an external binary on the
+server is a highly privileged permission (basically it gives a server
+shell). So the <code>execve()</code> plugin requires a special <code>EXECVE</code>
+permission to run. This is normally only given to administrators on
+the server.</p>
+<p>If a user has a lower role (e.g. <code>investigator</code>) they are not able to
+shell out by calling the <code>execve()</code> VQL plugin in a notebook or a
+server artifact.</p>
+<p>While this is what we want in most cases, sometimes we want to provide
+the low privileged user a mechanism for performing privileged
+operations in a safe manner. For example, say we want to allow the
+<code>investigator</code> user to call the <code>timesketch</code> CLI tool to upload some
+timelines. It clearly would not be appropriate to allow the
+<code>investigator</code> user to call <strong>any</strong> arbitrary programs, but it is
+probably ok to allow them to call the <code>timesketch</code> program
+selectively in a controlled way.</p>
+<p>This idea is very similar to Linux&rsquo;s SUID or Windows&rsquo;s impersonation
+mechanisms - both mechanisms allow a low privileged user to run a
+program as another high privileged user, taking on their privileges
+for the duration of the task. The program itself controls access to
+the privileged commands by suitably filtering user input.</p>
+<p>In the 0.73 release, server artifacts may specify that they will run
+with an impersonated user.</p>
+<p>Consider the following artifact:</p>
+<pre><code class="language-yaml">name: Server.Utils.StartHuntExample
+type: SERVER
+impersonate: admin
+sources:
+  - query: |
+      -- This query will run with admin ACLs.
+      SELECT hunt(
+        description=&quot;A general hunt&quot;,
+        artifacts='Generic.Client.Info')
+      FROM scope()
+</code></pre>
+<p>This artifact launches a new hunt for the <code>Generic.Client.Info</code>
+artifact. Usually a user needs the <code>START_HUNT</code> permission to actually
+create a new hunt.</p>
+<p>Ordinarily, if a user has the <code>COLLECT_SERVER</code> permission allowing
+them to collect server artifacts, they will be able to start this
+server artifact, but unless they <strong>also</strong> have the <code>START_HUNT</code>
+permission they will be unable to schedule the new hunt.</p>
+<p>With the <code>impersonate</code> field, any user that is able to start
+collecting this artifact will be able to schedule a hunt.</p>
+<p>This feature allows an administrator to carefully delegate higher
+privilege tasks to users with lower roles. This makes it easier to
+create users with lower levels of access and improves a least
+privilege permission model.</p>
+<h2 id="conclusions">Conclusions</h2>
+<p>There are many more new features and bug fixes in the latest release.</p>
+<p>If you like the new features, take <a href="https://github.com/Velocidex/velociraptor" target="_blank" >Velociraptor for a
+spin</a>!  It is available
+on GitHub under an open source license. As always please file issues
+on the bug tracker or ask questions on our mailing list
+<a href="mailto:velociraptor-discuss@googlegroups.com" target="_blank" >velociraptor-discuss@googlegroups.com</a>
+. You can also chat with us directly on discord
+<a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord</a>
+.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352328"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352328"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352328"></script>
+    <script src="/js/jquery.sticky.js?1775352328"></script>
+    <script src="/js/featherlight.min.js?1775352328"></script>
+    <script src="/js/highlight.min.js?1775352328"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352328"></script>
+    <script src="/js/learn.js?1775352328"></script>
+    <script src="/js/hugo-learn.js?1775352328"></script>
+    
+    
+
+  </body>
+</html>

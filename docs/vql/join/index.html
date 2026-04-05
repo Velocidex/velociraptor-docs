@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>JOIN in VQL :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352330" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352330" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352330" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352330" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352330" rel="stylesheet">
+    <link href="/css/theme.css?1775352330" rel="stylesheet">
+    <link href="/css/tabs.css?1775352330" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352330" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352330" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352330" rel="stylesheet"><link href="/css/syntax.css?1775352330" rel="stylesheet"><link href="/css/light.css?1775352330" rel="stylesheet"><link href="/css/hljs.css?1775352330" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352330" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352330"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/vql/join/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/vql\/join\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/vql/join/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">JOIN in VQL</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#what-is-sql-join-anyway">What is SQL JOIN anyway?</a></li>
+    <li><a href="#using-join-in-vql">Using JOIN in VQL</a></li>
+    <li><a href="#what-about-indexes">What about indexes?</a></li>
+    <li><a href="#what-about-other-types-of-join">What about other types of JOIN?</a></li>
+    <li><a href="#how-does-this-compare-to-sql">How does this compare to SQL?</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              JOIN in VQL
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>As mentioned previously, VQL does not support the <code>JOIN</code> operator. If
+you are coming from a background in SQL you might be wondering how to
+emulate a <code>JOIN</code> in VQL?</p>
+<h2 id="what-is-sql-join-anyway">What is SQL JOIN anyway?</h2>
+<p>First what are <code>JOIN</code> operations in SQL?</p>
+<p>In <code>SQL</code>, a <code>JOIN</code> is used to combine rows from two or more tables,
+based on a related column between them.</p>
+<p>To better understand SQL JOIN, we can work through an
+<a href="https://www.w3schools.com/sql/sql_join.asp" target="_blank" >example</a> of a <code>JOIN</code> SQL
+query:</p>
+<pre><code class="language-sql">SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate
+FROM Orders
+INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;
+</code></pre>
+<p>The above SQL query selects rows from the <code>Customers</code> table matching
+with rows in the <code>Orders</code> table, where the <code>CustomerID</code> field is the
+same.</p>
+<p>Replicating the example at
+<a href="https://www.w3schools.com/sql/sql_join.asp" target="_blank" >www.w3schools.com</a>,
+assume the <code>Order</code> table is</p>
+<table>
+  <thead>
+      <tr>
+          <th>OrderID</th>
+          <th>CustomerID</th>
+          <th>OrderDate</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>10308</td>
+          <td>2</td>
+          <td>1996-09-18</td>
+      </tr>
+      <tr>
+          <td>10309</td>
+          <td>3</td>
+          <td>1996-09-19</td>
+      </tr>
+      <tr>
+          <td>10310</td>
+          <td>1</td>
+          <td>1996-09-20</td>
+      </tr>
+  </tbody>
+</table>
+<p>And the <code>Customers</code> table is:</p>
+<table>
+  <thead>
+      <tr>
+          <th>CustomerID</th>
+          <th>CustomerName</th>
+          <th>ContactName</th>
+          <th>Country</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>Alfreds Futterkiste</td>
+          <td>Maria Anders</td>
+          <td>Germany</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>Ana Trujillo Emparedados y helados</td>
+          <td>Ana Trujillo</td>
+          <td>Mexico</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>Antonio Moreno Taquería</td>
+          <td>Antonio Moreno</td>
+          <td>Mexico</td>
+      </tr>
+  </tbody>
+</table>
+<p>Let&rsquo;s think about how to calculate our SQL query, which joins the two
+tables on the <code>CustomerID</code> column.</p>
+<p>One very naive approach is:</p>
+<ol>
+<li>Start with the <code>Orders</code> table, taking the first row:</li>
+</ol>
+<table>
+  <thead>
+      <tr>
+          <th>OrderID</th>
+          <th>CustomerID</th>
+          <th>OrderDate</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>10308</td>
+          <td>2</td>
+          <td>1996-09-18</td>
+      </tr>
+  </tbody>
+</table>
+<ol start="2">
+<li>Now scan the <code>Customers</code> table looking for a row where <code>CustomerID</code>
+is equal to 2, giving:</li>
+</ol>
+<table>
+  <thead>
+      <tr>
+          <th>CustomerID</th>
+          <th>CustomerName</th>
+          <th>ContactName</th>
+          <th>Country</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>2</td>
+          <td>Ana Trujillo Emparedados y helados</td>
+          <td>Ana Trujillo</td>
+          <td>Mexico</td>
+      </tr>
+  </tbody>
+</table>
+<ol start="3">
+<li>
+<p>Next we select the <code>OrderID</code> and <code>OrderDate</code> from the first table
+and <code>CustomerName</code> from the second table.</p>
+</li>
+<li>
+<p>We then go back to step 1, choosing the next row in the <code>Orders</code>
+table, scanning the <code>Customers</code> table again etc, until all the
+orders are calculated.</p>
+</li>
+</ol>
+<p>Calculating the <code>JOIN</code> operation using the above algorithm is obvious
+not efficient: If there are <code>N</code> rows in the <code>Orders</code> table, and <code>M</code>
+rows in the <code>Customers</code> table, we will need to scan on the order of <code>N x M</code> rows. As the size of the tables increases this complexity grows
+substantially.</p>
+<p>Usually in <code>SQL</code> tables, we can add an index though. An index allows
+us to find a row very quickly. For example, if there is an index on
+the <code>CustomerID</code> column in the <code>Customers</code> table we can retrieve the
+row with a given <code>CustomerID</code> in constant time. This speeds up the
+operation significantly as we only need to process <code>N</code> rows instead of
+<code>N x M</code>.</p>
+<p>The <code>SQL Query Optimiser</code> is a part of the SQL engine which plans the
+Query execution in such a way as to make best use of all available
+indexes. Therefore in SQL, a JOIN operation allows the database to
+utilize indexes to make the query much faster.</p>
+<h2 id="using-join-in-vql">Using JOIN in VQL</h2>
+<p>In the previous example we saw exactly what a <code>JOIN</code> operation looks
+like in <code>SQL</code> and how the database can utilize indexes to make the
+operation very fast. In VQL, however all data is dynamic because our
+data sources are plugins which calculate rows on the fly. Because we
+dont have a static table, it means that we can not have a permanent
+index on this data.</p>
+<p>Therefore, VQL does not have indexes! As such, there is no benefit in
+a query optimizer because there are no indexes to leverage! In VQL,
+what you see is what you get - the query is executed exactly how it is
+written.</p>
+<p>Let&rsquo;s work through the exact same example as above and see how the
+same <code>JOIN</code> operation can be done in VQL. You should replicate the
+following yourself by copying the VQL into a notebook and getting the
+feel of how these queries operate.</p>
+<p>First we will load the tables as CSV files</p>
+<pre><code class="language-vql">LET OrdersTable = SELECT *
+  FROM parse_csv(accessor=&quot;data&quot;, filename='''
+OrderID,CustomerID,OrderDate
+10308,2,1996-09-18
+10309,3,1996-09-19
+10310,1,1996-09-20
+''')
+
+LET CustomersTable = SELECT *
+  FROM parse_csv(accessor=&quot;data&quot;, filename='''
+CustomerID,CustomerName,ContactName,Country
+1,Alfreds Futterkiste,Maria Anders,Germany
+2,Ana Trujillo Emparedados y helados,Ana Trujillo,Mexico
+3,Antonio Moreno Taquería,Antonio Moreno,Mexico
+''')
+</code></pre>
+<p>Next we implement the naive algorithm as described above: For each
+row in the <code>Orders</code> table we find the row in the <code>Customers</code> table
+with the same <code>CustomerID</code>:</p>
+<pre><code class="language-vql">SELECT * FROM foreach(row={
+  SELECT *, CustomerID AS Orders_CustomerID
+  FROM OrdersTable
+}, query={
+  SELECT OrderID, CustomerName, OrderDate
+  FROM CustomersTable
+  WHERE CustomerID = Orders_CustomerID
+})
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/vql/join/joined_table.png"
+         class="inline"
+         alt="In VQL foreach() is equivalent to the SQL JOIN"
+         width="1849" height="318">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="joined_table.png">
+      <i class="fa fa-download"></i></a>
+    In VQL foreach() is equivalent to the SQL JOIN
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="what-about-indexes">What about indexes?</h2>
+<p>The previous discussion showed how a JOIN in SQL is equivalent to a
+<code>foreach()</code> VQL query, and admittedly even in SQL when there are no
+indexes, the database will resort to a row scan yielding similarly bad
+performance.</p>
+<p>However, the advantage of SQL is in having indexes on tables! When an
+index is present, the JOIN operation will be very fast because step 2
+in the above algorithm can utilize the index to quickly find the row
+with the required CustomerID.</p>
+<p>Although VQL does not have permanent indexes (because the data is
+usually dynamic) it is possible to create an index <strong>for the duration
+of the query</strong>.</p>
+<p>In VQL the index is provided by the <code>memoize()</code> function. This
+function builds an index on the output of a query and retrieves a row
+based on the index very quickly. Currently the index is in memory but
+in future versions it may be file backed if needed.</p>
+<p>Let&rsquo;s use an index to speed up the <code>foreach()</code> query in the example
+above.</p>
+<pre><code class="language-vql">LET CustomerIDLookup &lt;= memoize(
+  key=&quot;CustomerID&quot;,
+  query={
+    SELECT CustomerID, CustomerName
+    FROM Customers
+  }, period=10000)
+</code></pre>
+<p>This builds an index of the <code>Customers</code> table keyed on the <code>CustomerID</code>
+key. Since VQL data can be dynamic, the <code>memoize()</code> function allows to
+define a freshness lifetime. After this period the index is discarded
+and rebuilt. This allows VQL queries to adapt to evolving conditions
+on the endpoint.</p>
+<p>Now we can adapt the above algorithm:</p>
+<ol>
+<li>Scan the <code>Orders</code> table</li>
+<li>Select the <code>OrderID</code> and <code>OrderDate</code> for each order,</li>
+<li>Fetch the row in the <code>Customers</code> table using the <code>CustomerID</code> index</li>
+<li>Add the additional <code>CustomerName</code> column</li>
+</ol>
+<pre><code class="language-vql">SELECT OrderID, OrderDate,
+    get(item=CustomerIDLookup, field=CustomerID).CustomerName AS CustomerName
+FROM OrdersTable
+</code></pre>
+<h2 id="what-about-other-types-of-join">What about other types of JOIN?</h2>
+<p>There are several variations of the <code>JOIN</code> operator but they all
+basically boil down to looking up indexes (this is ultimately what the
+database engine does anyway).</p>
+<p>For example an <code>INNER JOIN</code> returns all the Orders as long as they do
+have a Customer associated with them:</p>
+<pre><code class="language-vql">SELECT OrderID, OrderDate,
+    get(item=CustomerIDLookup, field=CustomerID).CustomerName AS CustomerName
+FROM OrdersTable
+WHERE get(item=CustomerIDLookup, field=CustomerID)
+</code></pre>
+<h2 id="how-does-this-compare-to-sql">How does this compare to SQL?</h2>
+<p>The important takeaway from this article is that the main difference
+between SQL and VQL are not due to the limitations in the languages,
+but because the basic assumptions are different. SQL operates on
+static tables with data that does not change. Therefore it is possible
+to build long lived indexes that can be queried many times.</p>
+<p>With dynamic data this is not possible - indexes need to be rebuilt on
+the fly for the duration of the query. For example if we want to
+lookup a process by PID, we have to <code>memoize()</code> the process listing at
+the start of the query, then query it multiple times during the rest
+of the query. We need to be aware that processes start and stop all
+the time, hence the process listing will become stale so will need to
+be refreshed.</p>
+<p>Building the indexes takes a certain amount of time so it only makes
+sense if they will be frequently queried.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352330"></script>
+    <script src="/js/jquery.sticky.js?1775352330"></script>
+    <script src="/js/featherlight.min.js?1775352330"></script>
+    <script src="/js/highlight.min.js?1775352330"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352330"></script>
+    <script src="/js/learn.js?1775352330"></script>
+    <script src="/js/hugo-learn.js?1775352330"></script>
+    
+    
+
+  </body>
+</html>

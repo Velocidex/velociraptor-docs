@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Windows.Applications.SBECmd :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352327" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352327" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352327" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352327" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352327" rel="stylesheet">
+    <link href="/css/theme.css?1775352327" rel="stylesheet">
+    <link href="/css/tabs.css?1775352327" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352327" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352327" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352327" rel="stylesheet"><link href="/css/syntax.css?1775352327" rel="stylesheet"><link href="/css/light.css?1775352327" rel="stylesheet"><link href="/css/hljs.css?1775352327" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352327" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352327"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/artifact_references/pages/windows.applications.sbecmd/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/artifact_references\/pages\/windows.applications.sbecmd\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/artifact_references/pages/windows.applications.sbecmd.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Windows.Applications.SBECmd</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents"></nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/client-artifact">Client Artifact</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Windows.Applications.SBECmd
+            </h1>
+            
+          
+
+        
+
+
+<p>Execute Eric Zimmerman&rsquo;s SBECmd and return output for analysis.</p>
+<p>SBECmd is a CLI for analyzing Shellbags data.</p>
+<p>Objective:</p>
+<ul>
+<li>Find which folders were accessed on the local machine, the
+network, and/or removable devices. Evidence of previously
+existing folders after deletion/overwrite. When certain folders
+were accessed.</li>
+</ul>
+<p>Interpretation:</p>
+<ul>
+<li>Stores information about which folders were most recently
+browsed by the user.</li>
+</ul>
+<p>NOTE: Velociraptor can now parse Shellbags natively with the
+<code>Windows.Forensics.Shellbags</code> artifact.</p>
+<p>MITRE ATT&amp;CK ID: TA0009 - Collection</p>
+<pre><code class="language-yaml">
+name: Windows.Applications.SBECmd
+description: |
+    Execute Eric Zimmerman's SBECmd and return output for analysis.
+
+    SBECmd is a CLI for analyzing Shellbags data.
+
+    Objective:
+
+    - Find which folders were accessed on the local machine, the
+      network, and/or removable devices. Evidence of previously
+      existing folders after deletion/overwrite. When certain folders
+      were accessed.
+
+    Interpretation:
+
+    - Stores information about which folders were most recently
+      browsed by the user.
+
+    NOTE: Velociraptor can now parse Shellbags natively with the
+    `Windows.Forensics.Shellbags` artifact.
+
+    MITRE ATT&amp;CK ID: TA0009 - Collection
+
+author: Eduardo Mattos - @eduardfir
+
+reference:
+  - https://github.com/EricZimmerman
+
+type: CLIENT
+
+tools:
+  - name: SBECmd
+    url: https://github.com/Velocidex/Tools/raw/main/SBECmd/ShellBagsExplorer/SBECmd.exe
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+implied_permissions:
+  - EXECVE
+  - FILESYSTEM_WRITE
+
+parameters:
+  - name: userRegex
+    default: .
+    type: regex
+
+  - name: UploadFiles
+    description: "Select to Upload SBECmd Output files."
+    type: bool
+
+  - name: RemovePayload
+    description: "Select to Remove Payload after execution."
+    type: bool
+
+
+sources:
+  - query: |
+      -- get context on target binary
+      LET payload &lt;= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
+                    ToolName="SBECmd", IsExecutable=TRUE)
+
+      -- build tempfolder for output
+      LET tempfolder &lt;= tempdir(remove_last=TRUE)
+
+      -- get users with profiles
+      LET UserProfiles = SELECT
+         Uid, Name,
+         expand(path=Directory) AS HomeDirectory, UUID, Mtime
+      FROM Artifact.Windows.Sys.Users()
+      WHERE Name =~ userRegex and HomeDirectory =~ "Users"
+
+      -- execute payload
+      LET deploy &lt;= SELECT * FROM foreach(row=UserProfiles,
+                    query={
+                        SELECT *, Name
+                        FROM execve(argv=[
+                            payload.OSPath[0],
+                            "-d", HomeDirectory,
+                            "--csv", tempfolder + "\\" + Name,
+                            "--dedupe"])
+                    })
+
+      -- parse csvs
+      SELECT * FROM foreach(row=deploy,
+      query={
+        SELECT *, Name as UserName
+        FROM parse_csv(filename=tempfolder + "\\" + Name + "\\Deduplicated.csv")
+      })
+
+  - name: Uploads
+    query: |
+      SELECT * FROM chain(
+      a={
+         SELECT * FROM if(
+           condition=UploadFiles,
+           then={
+             SELECT Name, upload(file=OSPath,
+                                 name=relpath(base=tempfolder, path=OSPath)) as FileDetails
+             FROM glob(globs="/**", root=tempfolder)
+           })
+      },
+      b={
+         SELECT * FROM if(
+           condition=RemovePayload,
+           then={
+             SELECT * FROM execve(argv=['powershell','Remove-Item',
+                                             payload.OSPath[0],'-Force' ])
+           })
+      })
+      WHERE Stdout =~ "SBECmd"
+
+</code></pre>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352327"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352327"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352327"></script>
+    <script src="/js/jquery.sticky.js?1775352327"></script>
+    <script src="/js/featherlight.min.js?1775352327"></script>
+    <script src="/js/highlight.min.js?1775352327"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352327"></script>
+    <script src="/js/learn.js?1775352327"></script>
+    <script src="/js/hugo-learn.js?1775352327"></script>
+    
+    
+
+  </body>
+</html>
+

@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>How to set up OIDC authentication using Keycloak :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352330" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352330" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352330" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352330" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352330" rel="stylesheet">
+    <link href="/css/theme.css?1775352330" rel="stylesheet">
+    <link href="/css/tabs.css?1775352330" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352330" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352330" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352330" rel="stylesheet"><link href="/css/syntax.css?1775352330" rel="stylesheet"><link href="/css/light.css?1775352330" rel="stylesheet"><link href="/css/hljs.css?1775352330" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352330" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352330"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/knowledge_base/tips/setup_keycloak/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/knowledge_base\/tips\/setup_keycloak\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/knowledge_base/tips/setup_keycloak.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">How to set up OIDC authentication using Keycloak</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#create-a-docker-based-keycloak-instance">Create a Docker-based Keycloak instance</a></li>
+    <li><a href="#configure-keycloak">Configure Keycloak</a></li>
+    <li><a href="#configure-velociraptor">Configure Velociraptor</a></li>
+    <li><a href="#add-test-users">Add test users</a></li>
+    <li><a href="#test-authentication-process">Test authentication process</a></li>
+    <li><a href="#what-next">What next?</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/configuration">configuration</a>
+
+  <a class="tag-link" href="/tags/sso">sso</a>
+
+  <a class="tag-link" href="/tags/deployment">deployment</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+
+        
+
+
+
+	<h1 id="how-to-set-up-oidc-authentication-using-keycloak">How to set up OIDC authentication using Keycloak</h1>
+<p>This guide walks you through the configuration of
+<a href="https://www.keycloak.org/" target="_blank" >Keycloak</a> as an OIDC authentication provider for
+Velociraptor.</p>
+<p>Keycloak, as a self-hosted, free, and open source solution, may be an attractive
+choice for Velociraptor deployments where using cloud-based and/or commercial
+providers is not practical or possible. Most of the steps shown here would be
+the same or similar for other self-hosted OIDC solutions (for example Zitadel or
+Authentik), so it may be useful even if you are not using Keycloak.</p>
+
+<div class="mynotices warning">
+  <div heading=" Production deployment of Keycloak "><p>Keycloak is a Java application which can be installed manually or deployed via
+several officially documented container-based methods. This guide partly mirrors Keycloak&rsquo;s
+<a href="https://www.keycloak.org/getting-started/getting-started-docker" target="_blank" >Getting started guide</a>
+which uses Docker to create a <em>&ldquo;development mode&rdquo; instance</em> of Keycloak. This
+method starts a working Keycloak instance but does not create a persistent
+database or a production-ready secured server, since the goal here is only to
+demonstrate the integration with Velociraptor.</p>
+<p>For production-ready deployment guidance we refer you to
+<a href="https://www.keycloak.org/server/configuration-production" target="_blank" >Configuring Keycloak for production</a>
+and the official <a href="https://www.keycloak.org/documentation" target="_blank" >Keycloak documentation</a>.</p>
+</div>
+</div>
+
+
+<p>As mentioned above, the goal of this guide is to demonstrate a working SSO
+configuration for Velociraptor using Keycloak. The basic steps and configuration
+will be very similar or even identical for production deployments however some
+of the steps shown here are deliberately over-simplified for reasons of brevity
+and therefore do not reflect security best practices. Also Keycloak has a vast
+array of options and capabilities, which we recommend you explore later, but the
+intention here is to get up and running with a basic working integration since
+it is better to start simple and be sure that it&rsquo;s working as expected before
+possibly adding complexity to it.</p>
+<p>In this simplified setup we have two hosts, with DNS names <code>keycloak.local</code> and
+<code>velociraptor.local</code>. Substitute your DNS names where applicable. The two hosts
+don&rsquo;t need to be on the same network but the Velociraptor host needs to be able
+to DNS-resolve the name of the Keycloak server and reach it on port 443. It&rsquo;s
+not necessary that the Keycloak server be able to resolve the Velociraptor
+server&rsquo;s DNS name but your server probably already has a DNS name already so
+that clients can connect to it.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_keycloak/network_overview_.svg" alt="Network overview"
+         class="inline"
+         height="380"
+         width="658.5"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="network_overview.svg"><i class="fa fa-download"></i></a>
+    Network overview
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The high-level steps of this setup process are:</p>
+<ol>
+<li>Create a self-hosted Docker-based Keycloak instance.</li>
+<li>Configure an authentication realm, OIDC client and test users in Keycloak.</li>
+<li>Configure the authentication provider in Velociraptor.</li>
+<li>Add test users to Velociraptor.</li>
+<li>Test the authentication process.</li>
+</ol>
+<h2 id="create-a-docker-based-keycloak-instance">Create a Docker-based Keycloak instance</h2>
+<p>We assume that Docker has already been installed and configured on the
+designated Keycloak host. We aren&rsquo;t going to use Docker Compose but for
+production deployment you might prefer to do so, and example configurations can
+be found on the internet.</p>
+<p>Before we install Keycloak we are going to need a certificate for it to use. Here
+we will generate a simple self-signed cert with corresponding private key but ideally in
+production you would have a cert signed by a trusted CA.</p>
+<p><strong>1. Generate a key pair</strong></p>
+<pre><code class="language-sh"># Create keycloak-server.crt.pem and keycloak-server.key.pem
+openssl req -newkey rsa:2048 -nodes -subj &quot;/CN=keycloak.local&quot; \
+-addext &quot;subjectAltName=DNS:keycloak.local,IP:192.168.56.1&quot; \
+-keyout keycloak-server.key.pem -x509 -days 3650 -out keycloak-server.crt.pem
+# Set appropriate permissions on files
+chmod -R 644 keycloak-server*
+</code></pre>
+<p>NOTE: The certificate SAN is required by Velociraptor. If not present you will receive
+this error when trying to start Velociraptor.<br>
+<code>error: gui: starting frontend: Get &quot;https://keycloak.local/.well-known/openid-configuration&quot;: x509: certificate relies on legacy Common Name field, use SANs instead</code><br>
+Putting the IP in the SAN is not really necessary but helpful if you need to
+connect to Keycloak&rsquo;s admin page using it&rsquo;s IP.</p>
+<p>Now that we have the key pair we can run Docker which will pull the latest
+Keycloak image (26.0.7 at the time of writing).</p>
+<p><strong>2. Run the Docker command.</strong></p>
+<pre><code class="language-sh">docker run -p 443:443 -e KC_HOSTNAME=keycloak.local \
+-e KC_BOOTSTRAP_ADMIN_USERNAME=admin -e KC_BOOTSTRAP_ADMIN_PASSWORD=admin \
+-v /root/keycloak-server.crt.pem:/etc/x509/https/keycloak-server.crt.pem \
+-v /root/keycloak-server.key.pem:/etc/x509/https/keycloak-server.key.pem \
+-e KC_HTTPS_CERTIFICATE_FILE=/etc/x509/https/keycloak-server.crt.pem \
+-e KC_HTTPS_CERTIFICATE_KEY_FILE=/etc/x509/https/keycloak-server.key.pem \
+quay.io/keycloak/keycloak:latest start-dev --https-port=443
+</code></pre>
+<p>We set various Keycloak config options as Docker environment variables and
+make the cert and private key available inside the Docker using volume mapping.</p>
+<p>If the Docker fails to start, you should inspect the command output for errors.
+If successful it should report
+<code>Listening on: http://0.0.0.0:8080 and https://0.0.0.0:443</code>.</p>
+<p>The KC_BOOTSTRAP* variables create an initial user <code>admin</code> with password
+<code>admin</code> which we use to configure Keycloak in the next section.</p>
+<h2 id="configure-keycloak">Configure Keycloak</h2>
+<p>Next we go through the steps that are almost the same as described in Keycloak&rsquo;s
+<a href="https://www.keycloak.org/getting-started/getting-started-docker" target="_blank" >Getting started guide</a>.</p>
+<p>Connect to Keycloak&rsquo;s Admin Console (in this case: <a href="https://keycloak.local" target="_blank" >https://keycloak.local</a>) and
+log in with the <code>admin</code> user.</p>
+<p><strong>3. Create an authentication realm</strong></p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_keycloak/keycloak00.png"
+         class="inline"
+         alt=""
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="keycloak00.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>You can use any name for the realm but here we are going to just use <code>myrealm</code>
+for convenience.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_keycloak/keycloak01.png"
+         class="inline"
+         alt=""
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="keycloak01.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Click <strong>Create</strong>.</p>
+<p><strong>4. Create OIDC client configuration for Velociraptor</strong></p>
+<p>In this step we create a new client record and client secret which we will use
+later in the Velociraptor configuration. In the realm selection drop-down ensure
+that you are in the new <code>myrealm</code> realm.</p>
+<p>In the sidebar select <strong>Clients</strong> and then select <strong>Create client</strong>.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_keycloak/keycloak02.png"
+         class="inline"
+         alt=""
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="keycloak02.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>This will start a 3-page configuration wizard. On the first page the <strong>Client
+ID</strong> is all that&rsquo;s required. Enter <code>velociraptor</code> and click <strong>Next</strong>.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_keycloak/keycloak03.png"
+         class="inline"
+         alt=""
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="keycloak03.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>On the second page, choose <strong>Client authentication: ON</strong> and
+<strong>Authentication flow: Standard flow</strong> (only). Then click <strong>Next</strong>.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_keycloak/keycloak04.png"
+         class="inline"
+         alt=""
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="keycloak04.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>On the third page we use the following values (adapt to your DNS names if your
+are replicating the setup in your own environment):</p>
+<ul>
+<li>Valid redirect URIs: <code>https://velociraptor.local:8889/auth/oidc/keycloak/callback</code></li>
+<li>Valid post logout redirect URIs:
+<code>https://velociraptor.local:8889/app/logoff.html</code></li>
+<li>Web origins: <code>https://velociraptor.local</code></li>
+</ul>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_keycloak/keycloak05.png"
+         class="inline"
+         alt=""
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="keycloak05.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Then click <strong>Save</strong>. Your OIDC client configuration is now created.</p>
+<p>On the page that follows, go to the <strong>Credentials</strong> tab. There you will find the
+<strong>Client secret</strong> which you will need for your Velociraptor configuration. It is
+randomly generated and you can regenerate it if desired, but if you do so then
+don&rsquo;t forget to update your Velociraptor server&rsquo;s config with the new secret.
+Typically you would only regenerate it if you suspected a compromised secret.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_keycloak/keycloak06.png"
+         class="inline"
+         alt=""
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="keycloak06.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The next action is to configure email addresses as login usernames. To do that
+navigate via the sidebar to <strong>Realm settings</strong> &gt; <strong>Login</strong> tab. Ensure that
+<strong>Email as username</strong> and <strong>Login with email</strong> are enabled. The additional user
+preferences shown in the following screenshot are optional and in your case
+would be determined by your organizational policies.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_keycloak/keycloak08.png"
+         class="inline"
+         alt=""
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="keycloak08.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The last action in this step is to configure the required actions for
+authentication so that users don&rsquo;t have to enter additional information when
+they first log in.
+Navigate via the sidebar to <strong>Authentication</strong> &gt; <strong>Required actions</strong> tab.
+Disable all options except <strong>Update password</strong>.</p>
+<p><strong>5. Create test users</strong></p>
+<p>We will need at least one user account to test the authentication. From the
+sidebar select <strong>Users</strong> and then click the <strong>Create new user</strong> button.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_keycloak/keycloak07.png"
+         class="inline"
+         alt=""
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="keycloak07.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>For the user account I am going to create one named <code>bob@local</code>. Remember that
+we previously enabled <strong>Email as username</strong> and <strong>Login with email</strong>, so all
+other fields are optional. I also selected <strong>Email verified</strong> to avoid an email
+verification step when logging in.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_keycloak/keycloak09.png"
+         class="inline"
+         alt=""
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="keycloak09.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>After creating the account, go to the Credentials tab and set a password. Note
+that we leave <strong>Temporary:ON</strong> set so that the password must be changed on first
+logon. Note also that this is a simplified demonstration so for that reason
+we&rsquo;re ONLY using password auth while Keycloak easily supports multi-factor
+authentication.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_keycloak/keycloak10.png"
+         class="inline"
+         alt=""
+         width="1200" height="666">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="keycloak10.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Repeat the user creation actions to also create a user account
+<code>fred@local</code>.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_keycloak/keycloak11.png"
+         class="inline"
+         alt=""
+         width="1200" height="538">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="keycloak11.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Now we are ready to move to configuring the Velociraptor side of things.</p>
+<h2 id="configure-velociraptor">Configure Velociraptor</h2>
+
+<div class="mynotices tip">
+  <div heading="tip"><p>While configuring, testing and potentially troubleshooting problems, it&rsquo;s
+easier if you can see Velociraptor&rsquo;s log messages. You can stop the server
+service and then run the server manually on the command line by using the
+following commands:</p>
+<pre><code class="language-bash">sudo systemctl stop velociraptor_server
+sudo -u velociraptor bash
+velociraptor -c /etc/velociraptor/server.config.yaml frontend -v
+</code></pre>
+<p>This will display the log messages in the terminal.</p>
+</div>
+</div>
+
+
+<p><strong>6. Add the authenticator settings to your Velciraptor config</strong></p>
+<p>In the <code>GUI</code> section of your Velociraptor config you should have the following
+authenticator settings by default:</p>
+<pre><code class="language-yaml">  authenticator:
+    type: Basic
+</code></pre>
+<p>We no longer want Basic auth and instead want SSO, so replace that with these
+new settings to match our Keycloak configuration:</p>
+<pre><code class="language-yaml">    type: oidc
+    oidc_issuer: https://keycloak.local/realms/myrealm
+    oidc_name: keycloak
+    avatar: https://www.keycloak.org/resources/images/logo.svg
+    oauth_client_id: velociraptor
+    oauth_client_secret: p4EABoniopnasbrmstDnsHrQcSukNmp2
+</code></pre>
+<p>The <code>oauth_client_secret</code> is the value we obtained at the end of step 4. The
+<code>oauth_client_id</code> is the name we used for the OIDC Client ID in that same
+section.</p>
+<p>The <code>oidc_name</code> can be anything you want but it must exactly match
+(case-sensitive) the substring used in the <strong>Valid redirect URIs</strong> field of the
+client configuration in Keycloak.</p>
+<p>Keycloak requires that the <code>oidc_issuer</code> field specify the path
+<code>/realms/myrealm</code> as this is where is serves the OpenID Endpoint Configuration
+that Velociraptor will need to access. If you have somehow gotten this wrong
+then Velociraptor will log an error such as:
+<code>[ERROR] can not get information from OIDC provider, check https://keycloak.local/.well-known/openid-configuration is correct and accessible from the server.</code></p>
+<p>Before you start Velociraptor, if you are using a self-signed cert for Keycloak
+then also attend to the next step.</p>
+<p><strong>7. Copy the Keycloak server cert to the trusted root store.</strong></p>
+<p>Because the Keycloak server is using a certificate that wasn&rsquo;t issued by a
+trusted CA, we need to add it&rsquo;s certificate to the trusted root store on the
+Velociraptor server. Assuming your server is Ubuntu or similar this means saving
+a copy of the certificate to <code>/etc/ssl/certs</code>.</p>
+<p>Without this step you will see this error in the log when attempting to start
+Velociraptor:
+<code>error: gui: starting frontend: Get &quot;https://keycloak.local/...&quot;: x509: certificate signed by unknown authority (possibly because of &quot;crypto/rsa: verification error&quot; while trying to verify candidate authority certificate &quot;keycloak.local&quot;)</code></p>
+<p><strong>8. Start Velociraptor</strong></p>
+<p>The server should now start cleanly and continue running. In the log messages
+you should see <code>GUI will use the oidc authenticator</code>. That means everything is
+OK with the authenticator config.</p>
+<p>One possible gotcha is if the server&rsquo;s <code>GUI.public_url</code> setting is still using
+an IP address or if <code>GUI.bind_address</code> is not set to <code>0.0.0.0</code> then you may get
+stopped with the error:
+<code>error: gui: starting frontend: Authentication type 'oidc' requires valid public_url parameter</code></p>
+<p>In this case the <code>GUI.public_url</code> is set to <code>https://velociraptor.local:8889/</code>.</p>
+<h2 id="add-test-users">Add test users</h2>
+<p>We have created 2 users in Keycloak but these users don&rsquo;t yet exist in
+Velociraptor. Velociraptor has it&rsquo;s own permissions model and therefore needs to
+know about any users so that once they authenticate the correct permissions can
+be applied.</p>
+<p>Users can be created using VQL in Velociraptor notebooks but since we have now
+switched authentication providers we no longer have access to the GUI. Of course
+we could have added the users before we switched but let&rsquo;s pretend we didn&rsquo;t and
+instead do it from the command line.</p>
+<p>We will make <code>bob@local</code> a server admin and grant <code>fred@local</code> the &ldquo;reader&rdquo;
+role, which provides minimal access to Velociraptor&rsquo;s GUI. The following two
+commands will create these users:</p>
+<p><strong>9. Add users to the datastore</strong></p>
+<pre><code class="language-sh">velociraptor --config server.config.yaml user add --role administrator bob@local
+velociraptor --config server.config.yaml user add --role reader fred@local
+</code></pre>
+<p>NOTE: We provide the <code>--config</code> flag so that this invocation of the velociraptor
+binary knows which datastore to add the new users to. This can be done while the
+server service is running or not running, but either way the service will need
+to be restarted to update itself with the datastore changes.</p>
+<p>Because of our OIDC authenticator config, when adding each user we will receive
+an acknowledgement message saying
+<code>&quot;Authentication will occur via oidc - therefore no password needs to be set.&quot;</code></p>
+<h2 id="test-authentication-process">Test authentication process</h2>
+<p>Test the authentication process by going to <code>https://velociraptor.local:8889/</code></p>
+<p>You will be presented with the choice to log in with Keycloak (multiple
+authentication providers are supported but we only have one configured).</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_keycloak/auth00.png"
+         class="inline"
+         alt=""
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="auth00.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Enter initial credentials (password that was set in Keycloak).</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_keycloak/auth01.png"
+         class="inline"
+         alt="Login page"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="auth01.png">
+      <i class="fa fa-download"></i></a>
+    Login page
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>You will be required to change the password because we configured
+<strong>Temporary:ON</strong> when setting the account&rsquo;s password.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_keycloak/auth02.png"
+         class="inline"
+         alt="Change the password"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="auth02.png">
+      <i class="fa fa-download"></i></a>
+    Change the password
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_keycloak/auth03.png"
+         class="inline"
+         alt="Successful login!"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="auth03.png">
+      <i class="fa fa-download"></i></a>
+    Successful login!
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_keycloak/auth04.png"
+         class="inline"
+         alt="We can verify that the user has the server admin role."
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="auth04.png">
+      <i class="fa fa-download"></i></a>
+    We can verify that the user has the server admin role.
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/setup_keycloak/auth05.png"
+         class="inline"
+         alt="We can sign out… and sign in again."
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="auth05.png">
+      <i class="fa fa-download"></i></a>
+    We can sign out… and sign in again.
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The same process applies to <code>fred@local</code> except that we can verify in
+Velociraptor that the user has the read-only role.</p>
+
+<div class="mynotices tip">
+  <div heading="tip"><p>For testing multiple users in the same web browser you may have trouble
+fully logging a user out because while logged out of Velociraptor the OIDC
+session is still active.</p>
+<p>Logout of the OIDC session can be achieved by
+navigating to the the endpoint
+<code>https://keycloak.local/realms/myrealm/protocol/openid-connect/logout</code>
+from within the same web browser and choosing to log out.</p>
+</div>
+</div>
+
+
+<h2 id="what-next">What next?</h2>
+<p>Once you have the working authentication setup, as per this guide, then you can
+begin experimenting with additional options while knowing that any change which
+causes a negative effect can be reverted back to a known working state. This is
+a much easier approach than diving in with a complex configuration and spending
+hours troubleshooting why it doesn&rsquo;t work.</p>
+<p>Since the Docker installation used in the guide is non-permanent it will reset
+when you restart the docker VM. For testing and experimenting that&rsquo;s a good
+thing as you gain familiarity by going through the process. As mentioned,
+Keycloak supports multifactor authentication, complex authentication flow
+options, themeable login screens, and many other cool features. However for
+permanent configuration you will need to learn how to create a persistent
+Keycloak database, possibly using a different deployment method.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352330"></script>
+    <script src="/js/jquery.sticky.js?1775352330"></script>
+    <script src="/js/featherlight.min.js?1775352330"></script>
+    <script src="/js/highlight.min.js?1775352330"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352330"></script>
+    <script src="/js/learn.js?1775352330"></script>
+    <script src="/js/hugo-learn.js?1775352330"></script>
+    
+    
+
+  </body>
+</html>

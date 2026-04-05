@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Windows.Detection.BinaryRename :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352327" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352327" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352327" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352327" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352327" rel="stylesheet">
+    <link href="/css/theme.css?1775352327" rel="stylesheet">
+    <link href="/css/tabs.css?1775352327" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352327" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352327" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352327" rel="stylesheet"><link href="/css/syntax.css?1775352327" rel="stylesheet"><link href="/css/light.css?1775352327" rel="stylesheet"><link href="/css/hljs.css?1775352327" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352327" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352327"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/artifact_references/pages/windows.detection.binaryrename/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/artifact_references\/pages\/windows.detection.binaryrename\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/artifact_references/pages/windows.detection.binaryrename.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Windows.Detection.BinaryRename</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents"></nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/client-artifact">Client Artifact</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Windows.Detection.BinaryRename
+            </h1>
+            
+          
+
+        
+
+
+<p>This artifact will detect renamed binaries commonly abused by adversaries.</p>
+<p>Binary rename is a defense evasion technique used to bypass brittle process
+name and path based detections. Observed in use across
+all stages of the attack lifecycle it is a technique used by a large
+selection of actors from commodity malware crews through to Nation States.</p>
+<p>Add additional entries to the VersionInfoTable parameter. For straight
+detection on an Internal or Original name, the Filename entry can be set to
+an unlikely value - e.g ANY or left blank.</p>
+<pre><code class="language-yaml">
+name: Windows.Detection.BinaryRename
+author: "Matt Green - @mgreen27"
+description: |
+    This artifact will detect renamed binaries commonly abused by adversaries.
+
+    Binary rename is a defense evasion technique used to bypass brittle process
+    name and path based detections. Observed in use across
+    all stages of the attack lifecycle it is a technique used by a large
+    selection of actors from commodity malware crews through to Nation States.
+
+    Add additional entries to the VersionInfoTable parameter. For straight
+    detection on an Internal or Original name, the Filename entry can be set to
+    an unlikely value - e.g ANY or left blank.
+
+
+reference:
+  - https://mgreen27.github.io/posts/2019/05/12/BinaryRename.html
+  - https://attack.mitre.org/techniques/T1036/003/
+
+type: CLIENT
+
+parameters:
+  - name: TargetGlob
+    default: /**/*.exe
+  - name: VersionInfoTable
+    type: csv
+    default: |
+        Filename,Internal,Original,Description,Note
+        cmd.exe,cmd,Cmd.Exe,Windows Command Processor,cmd.exe
+        7z.exe,7z,7z.exe,7-Zip Console,7z.exe
+        certutil.exe,CertUtil.exe,CertUtil.exe,CertUtil,certutil.exe
+        cmstp.exe,CMSTP,CMSTP.EXE,Microsoft Connection Manager Profile Installer,cmstp.exe
+        cscript.exe,cscript.exe,cscript.exe,Microsoft ® Console Based Script Host,cscript.exe
+        mshta.exe,MSHTA.EXE,MSHTA.EXE,Microsoft ® HTML Application host,mshta.exe
+        msiexec.exe,msiexec,msiexec.exe,Windows® installer,msiexec.exe
+        powershell.exe,POWERSHELL,PowerShell.EXE,Windows PowerShell,powershell.exe
+        psexec.exe,PsExec,psexec.c,Sysinternals PSExec,psexec.exe
+        psexec64.exe,PsExec,psexec.exe,Sysinternals PSExec,psexec64.exe
+        regsvr32.exe,REGSVR32,REGSVR32.EXE,Microsoft© Register Server,regsvr32.exe
+        rundll32.exe,rundll,RUNDLL32.EXE,Windows host process (Rundll32),rundll32.exe
+        winrar.exe,WinRAR,WinRAR.exe,WinRAR archiver,winrar.exe
+        wmic.exe,wmic.exe,wmic.exe,WMI Commandline Utility,wmic.exe
+        wscript.exe,wscript.exe,wscript.exe,Microsoft ® Windows Based Script Host,wscript.exe
+        wevtutil.exe,wevtutil.exe,wevtutil.exe,,wevtutil.exe
+        net.exe,net.exe,net.exe,,net.exe
+        net1.exe,net1.exe,net1.exe,,net1.exe
+        netsh.exe,netsh.exe,netsh.exe,,netsh.exe
+        powershell_ise.exe,powershell_ise.exe,powershell_ise.exe,,powershell_ise.exe
+        dsquery.exe,dsquery.exe,dsquery.exe,Microsoft AD DS/LDS query command line utility,dsquery.exe
+        nbtstat.exe,nbtinfo.exe,nbtinfo.exe,Microsoft TCP/IP NetBios Information,nbtstat.exe
+        nltest.exe,nltestrk.exe,nltestrk.exe,Microsoft® Logon Server Test Utility,nltest.exe
+        qprocess.exe,qprocess,qprocess.exe,Query Process Utility,qprocess.exe
+        qwinsta.exe,qwinsta,qwinsta.exe,Query Session Utility,qwinsta.exe
+        ANY,nc,nc.exe,NetCat for Windows - https://github.com/diegocr/netcat,nc.exe
+        ANY,AdFind.exe,AdFind.exe,Joeware ADFind,AdFind.exe
+        ANY,rclone,rclone.exe,Rsync for cloud storage,rclone.exe
+        ANY,MEGAsync.exe,MEGAsync.exe,MEGAsync,MEGAsync.exe
+        ANY,MEGAcmdShell.exe,MEGAcmdShell,MEGAcmdShell,MEGAcmdShell
+        ANY,pCloud.exe,pCloud.exe,pCloud cloud storage,pCloud.exe
+        ANY,,pCloud Drive.exe,pCloud setup,pCloud Drive.exe
+        ANY,mimikatz,mimikatz.exe,mimikatz for Windows,mimikatz.exe
+        ANY,ProcDump,procdump,Sysinternals process dump utility,procdump.exe
+        ANY,ProcDump,procdump,Sysinternals process dump utility,procdump64.exe
+        ANY,Ammyy Admin,,Ammyy Admin,AA_v3.exe
+        ANY,,,AnyDesk,AnyDesk.exe
+        ANY,PDQDeploySetup.exe,PDQDeploySetup.exe,PDQ Deploy Install,Deploy_19.3.298.0.exe
+        ANY,PDQInventory.exe,PDQInventory.exe,PDQ Inventory Installer,Inventory_19.3.298.0.exe
+        ANY,,,UltraVNC Setup,UltraVNC_1_3_81_X64_Setup.exe
+        ANY,,,File Shredder by PowTools,file_shredder_setup.exe
+        ANY,,pCloud Drive.exe,pCloud Drive,pCloud_Windows_3.11.12_x64.exe
+        plink.exe,Plink,Plink,"Command-line SSH, Telnet, and Rlogin client",plink.exe
+        pscp.exe,PSCP,PSCP,Command-line SCP/SFTP client,pscp.exe
+        psftp.exe,PSFTP,PSFTP,Command-line interactive SFTP client,psftp.exe
+        ANY,,,Total Commander Installer,tcmd1000x32.exe
+        ANY,BulletsPassView,BulletsPassView.exe,BulletsPassView,BulletsPassView.exe
+        ANY,WinLister,WinLister.exe,WinLister,winlister.exe
+        ANY,HRSword,HRSword.exe,Huorong Sword GUI Frontend,HRSword v5.0.47.bin
+        ANY,,,Email Password-Recovery,mailpv.exe
+        ANY,Process Hacker,ProcessHacker.exe,Process Hacker,ProcessHacker.exe
+        ANY,peview,peview.exe,PE Viewer,peview.exe
+        ANY,ChromePass,ChromePass,Chrome Password Recovery,ChromePass.exe
+        ANY,,,Application for scanning networks,netscan.exe
+        ANY,WKV,,Extracts wireless keys stored by Windows,WirelessKeyView.exe
+        ANY,Remote Desktop PassView,rdpv.exe,Password Recovery for Remote Desktop,rdpv.exe
+        ANY,RouterPassView,RouterPassView.exe,Decrypts Router files.,RouterPassView.exe
+        ANY,RemCom,RemCom.exe,Remote Command Executor,RemCom.exe
+        ANY,,,Remote Utilities,host7.1.2.0.exe
+        ANY,,viewer.7.1.2.0.exe,Remote Utilities - Viewer,viewer7.1.2.0.exe
+        ANY,Web Browser Pass View,,Web Browser Password Viewer,WebBrowserPassView.exe
+        ANY,PowerTool.exe,PowerTool.exe,Anti-virus/rootkit/bootkit Tool,PowerTool64.exe
+        ANY,,winscp.com,Console interface for WinSCP,WinSCP.com
+        ANY,winscp,winscp.exe,"WinSCP: SFTP, FTP, WebDAV, S3 and SCP client",WinSCP.exe
+        ANY,iepv,iepv.exe,IE Passwords Viewer,iepv.exe
+        ANY,VNCPassView,VNCPassView.exe,VNCPassView,VNCPassView.exe
+        ANY,PCHunter,PCHunter.exe,Epoolsoft Windows Information View Tools,PCHunter32.exe
+        ANY,Massscan_GUI.exe,Massscan_GUI.exe,Masscan_GUI,Massscan_GUI.exe
+        ANY,ProxyLite.Windows.Console.exe,ProxyLite.Windows.Console.exe,ProxyLite Console Client,ProxyLite
+        ANY,action1_agent.exe,action1_agent.exe,Endpoint Agent,Action1 agent
+        ANY,action1_remote.exe,action1_remote.exe,Endpoint Agent,Action1 agent
+        ANY,Defender Control,Defender Control,Windows Defender Control,Windows Defender Control
+        ANY,NirCmd,NirCmd.exe,Nir Sofer,nircmd.exe
+        ANY,NSudo,NSudo.exe,NSudo for Windows,Nsudo
+        ANY,Python Application,pythonw.exe,Python,Python 3.10.0 packaged with DWAgent - possibly noisy.
+
+
+sources:
+  - query: |
+      LET bins &lt;= SELECT
+            if(condition=Filename='',then='ANY',
+                else=lowcase(string=Filename)) AS Filename,
+            if(condition=Internal='',then='ANY',
+                else=lowcase(string=Internal)) AS Internal,
+            if(condition=Original='',then='ANY',
+                else=lowcase(string=Original)) AS Original
+        FROM VersionInfoTable
+
+      SELECT
+        OSPath, Name, Size,
+        parse_pe(file=OSPath).VersionInformation as VersionInformation,
+        hash(path=OSPath) as Hash,
+        Mtime, Atime, Ctime, Btime
+      FROM glob(globs=TargetGlob)
+      WHERE
+        NOT IsDir AND NOT IsLink
+        AND (
+            (( lowcase(string=VersionInformation.OriginalFilename) in bins.Original
+                OR lowcase(string=VersionInformation.InternalName) in bins.Internal )
+                AND NOT lowcase(string=Name) in bins.Filename )
+        OR OSPath =~ 'C:\\\\Windows\\\\System32\\\\(osk|Magnify|Narrator|DisplaySwitch).exe$'
+            AND NOT VersionInformation.OriginalFilename =~ '^(osk|SR|Narrator|ScreenMagnifier|DisplaySwitch)\.exe$'
+        )
+
+</code></pre>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352327"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352327"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352327"></script>
+    <script src="/js/jquery.sticky.js?1775352327"></script>
+    <script src="/js/featherlight.min.js?1775352327"></script>
+    <script src="/js/highlight.min.js?1775352327"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352327"></script>
+    <script src="/js/learn.js?1775352327"></script>
+    <script src="/js/hugo-learn.js?1775352327"></script>
+    
+    
+
+  </body>
+</html>
+

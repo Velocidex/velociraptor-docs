@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>How to initialize a Velociraptor server with custom artifacts? :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352330" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352330" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352330" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352330" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352330" rel="stylesheet">
+    <link href="/css/theme.css?1775352330" rel="stylesheet">
+    <link href="/css/tabs.css?1775352330" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352330" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352330" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352330" rel="stylesheet"><link href="/css/syntax.css?1775352330" rel="stylesheet"><link href="/css/light.css?1775352330" rel="stylesheet"><link href="/css/hljs.css?1775352330" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352330" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352330"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/knowledge_base/tips/startup_artifacts/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/knowledge_base\/tips\/startup_artifacts\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/knowledge_base/tips/startup_artifacts.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">How to initialize a Velociraptor server with custom artifacts?</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#specifying-a-startup-artifact">Specifying a startup artifact.</a></li>
+    <li><a href="#initializing-the-server-using-a-custom-artifact">Initializing the server using a custom artifact.</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/deployment">deployment</a>
+
+  <a class="tag-link" href="/tags/configuration">configuration</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+
+        
+
+
+
+	<h1 id="how-to-initialize-a-velociraptor-server-with-custom-artifacts">How to initialize a Velociraptor server with custom artifacts?</h1>
+<p>Velociraptor frontend process has a component called the <strong>Artifact
+Repository</strong>. This component knows about all the artifacts that are
+defined.</p>
+<p>When the server starts up, it loads artifacts into the repository from the
+following sources.</p>
+<ol>
+<li>
+<p>Built-in artifacts that are embedded into the binary itself (compiled in).</p>
+</li>
+<li>
+<p>Custom artifacts that are defined inside the configuration file itself.</p>
+</li>
+<li>
+<p>Directories containing artifact YAML files that can be defined in one or more
+of the following ways:</p>
+<ul>
+<li>specified by the <code>--definitions</code> CLI flag: a single directory</li>
+<li>specified by <code>Frontend.artifact_definitions_directory</code> in the config: a
+single directory.</li>
+<li>specified by <code>defaults.artifact_definitions_directories</code> in the config: a
+list of directories.</li>
+</ul>
+<p>Velociraptor will search these directories recursively for artifact YAML
+files.</p>
+</li>
+<li>
+<p>Finally, the server will load artifacts from the configured
+filestore path under <code>&lt;filestore&gt;/artifact_definitions</code>. These are
+usually the custom artifacts defined through the GUI.</p>
+</li>
+</ol>
+<p>The location of where an artifact came from does not matter,
+Velociraptor organizes artifacts internally using the artifact
+name. It is customary to denote custom artifacts with the <code>Custom.</code>
+prefix but this is not mandatory.</p>
+
+<div class="mynotices warning">
+  <div heading="warning"><p>Velociraptor does not allow a custom artifact to override a built in
+artifact (i.e. have the same name). Built in artifacts are protected
+because overriding built in artifacts may break the proper
+functionality of Velociraptor. If you want to customize a built in
+artifact, simply change the name when you save it.</p>
+<p>Velociraptor considers artifacts defined in the config file, or given
+in the <code>--definitions</code> directory as &ldquo;built in&rdquo;.</p>
+</div>
+</div>
+
+
+<h2 id="specifying-a-startup-artifact">Specifying a startup artifact.</h2>
+<p>When the Velociraptor server is run for the very first time, it
+creates an install record in the filestore
+<code>&lt;filestore&gt;/config/install_time.json.db</code>. It can then setup initial
+artifacts to collect as specified by the config file:</p>
+<pre><code class="language-yaml">Frontend:
+  default_client_monitoring_artifacts:
+  - Generic.Client.Stats
+  initial_server_artifacts:
+  - MyServerArtifact
+  default_server_monitoring_artifacts:
+  - MyCustomServerMonitor
+</code></pre>
+<p>In the above snippet, we see the following parameters:</p>
+<ul>
+<li>
+<p><code>default_client_monitoring_artifacts</code> specifies the initial client
+monitoring table that will be created. By default, Velociraptor
+collects endpoint CPU and Memory telemetry from all endpoints. You
+can remove this, or specify a different client artifact to collect.</p>
+</li>
+<li>
+<p><code>default_server_monitoring_artifacts</code> specifies an initial set of
+server event artifacts to collect.</p>
+</li>
+<li>
+<p><code>initial_server_artifacts</code> is a list of server artifacts that will
+be automatically launched on the server on initial startup. You can
+specify the names of any artifacts here (including custom artifacts)
+which can be bootstrapped to perform any kinds of server
+configuration needed. The artifacts are simply scheduled and will
+appear in the usual <code>Server Artifacts</code> screen.</p>
+</li>
+</ul>
+
+<div class="mynotices note">
+  <div heading="note"><p>Currently it is not possible to specify parameters for initial
+artifacts so if you need to tweak the parameters it is best to create
+a custom artifact that in turn launches the needed artifacts with the
+correct parameters. You can find an example below.</p>
+</div>
+</div>
+
+
+<h2 id="initializing-the-server-using-a-custom-artifact">Initializing the server using a custom artifact.</h2>
+<p>For more complex initialization tasks you can write a custom artifact
+that will be collected the first time the server is started. The
+artifact can import any custom artifacts and start monitoring
+queries. The custom artifact should take no arguments. It is most
+reliable to add the custom artifact to the configuration file itself
+to ensure it is loaded and ready when the server initializes.</p>
+<p>For example, the relevant part of the server configuration might be:</p>
+<pre><code class="language-yaml">autoexec:
+  artifact_definitions:
+    - name: InitializeServer
+      description: Setup the server on first run
+      sources:
+        - query: |
+            LET _ &lt;= SELECT *
+                     FROM Artifact.Server.Import.CuratedSigma()
+
+            SELECT add_client_monitoring(
+                      label=&quot;Monitoring&quot;,
+                      artifact=&quot;Windows.Hayabusa.Monitoring&quot;,
+                      parameters=dict(RuleLevel=&quot;Critical, High, and Medium&quot;,
+                                      RuleStatus=&quot;Stable&quot;)) AS Monitoring,
+                  artifact_set_metadata(name=&quot;InitializeServer&quot;, hidden=TRUE)
+            FROM scope()
+
+Frontend:
+  initial_server_artifacts:
+    - InitializeServer
+</code></pre>
+<p>The above parts:</p>
+<ol>
+<li>
+<p>An artifact is defined inline in the config file.</p>
+</li>
+<li>
+<p>The artifact imports the Sigma artifacts from the velociraptor
+sigma projects (you can add your own URLs to import your own set of
+custom artifacts).</p>
+</li>
+<li>
+<p>A client monitoring artifact is added using the <code>Hayabusa</code> Sigma
+artifact targeting the &ldquo;Monitoring&rdquo; label. Parameters to the
+artifact are passed here.</p>
+</li>
+<li>
+<p>Finally the server is configured to collect the <code>InitializeServer</code>
+artifact when first run.</p>
+</li>
+</ol>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352330"></script>
+    <script src="/js/jquery.sticky.js?1775352330"></script>
+    <script src="/js/featherlight.min.js?1775352330"></script>
+    <script src="/js/highlight.min.js?1775352330"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352330"></script>
+    <script src="/js/learn.js?1775352330"></script>
+    <script src="/js/hugo-learn.js?1775352330"></script>
+    
+    
+
+  </body>
+</html>

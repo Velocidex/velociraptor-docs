@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Artifact Parameters :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352328" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352328" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352328" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352328" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352328" rel="stylesheet">
+    <link href="/css/theme.css?1775352328" rel="stylesheet">
+    <link href="/css/tabs.css?1775352328" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352328" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352328" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352328" rel="stylesheet"><link href="/css/syntax.css?1775352328" rel="stylesheet"><link href="/css/light.css?1775352328" rel="stylesheet"><link href="/css/hljs.css?1775352328" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352328" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352328"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/artifacts/parameters/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/artifacts\/parameters\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/artifacts/parameters/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Artifact Parameters</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#parameter-definitions">Parameter definitions</a></li>
+    <li><a href="#parameter-types">Parameter types</a>
+      <ul>
+        <li><a href="#how-parameter-types-are-processed">How parameter types are processed</a></li>
+        <li><a href="#parameter-validation">Parameter validation</a></li>
+        <li><a href="#types">Types</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Artifact Parameters
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>Parameters allow us to customize the collection of artifacts in a
+controlled way, without needing to edit the VQL.</p>
+<p>When the queries contained in artifacts are sent to the endpoint, the
+Velociraptor server populates the VQL scope with the parameters. This allows the
+VQL queries running on the client to directly access those parameters as
+variables.
+The VQL data type of each such variable will correspond to the parameter&rsquo;s
+<a href="#parameter-types">type</a> specification.</p>
+<p>For hunts and individual collections, the GUI presents a <strong>Configure Parameters</strong>
+form that allows the user to update the parameters for all selected artifacts
+prior to launching the collection. The parameter type also determines which form
+element should be used to appropriately render the parameter in the GUI.</p>
+<p>We have a built-in artifact named <code>Demo.Plugins.GUI</code> which demonstrates all the
+parameter UI types. You can use this artifact to familiarize yourself with the
+look and feel of each type.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/artifacts/parameters/demo_plugins_gui.png"
+         class="inline"
+         alt="The Demo.Plugins.GUI artifact demonstrates parameter UI components"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="demo_plugins_gui.png">
+      <i class="fa fa-download"></i></a>
+    The Demo.Plugins.GUI artifact demonstrates parameter UI components
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>While the GUI provides a user-friendly UI component for each parameter type, all
+artifact parameters are sent to the client as strings. The client automatically
+parses them into a VQL data type according to the parameter&rsquo;s <code>type</code>.</p>
+<p>You can see how the parameters are provided to clients by examining the
+<strong>Review</strong> tab for any collection or hunt, prior to launching it, or the
+<strong>Requests</strong> tab, after launching it.</p>
+<h2 id="parameter-definitions">Parameter definitions</h2>
+<p>Each parameter can optionally have additional attributes that specify the
+parameter&rsquo;s data type and additional information which is used by the GUI for
+displaying and editing the parameter.</p>
+<ul>
+<li>
+<p><strong>name</strong>: The parameter&rsquo;s <code>name</code> is the only required field. This is the
+variable name that will be used in VQL queries to access the value of the
+parameter.</p>
+</li>
+<li>
+<p><strong>friendly_name</strong>: An alternative human-friendly display name for the
+parameter when it is presented to users in the GUI. If this field exists then
+it is used in the GUI instead of the <code>name</code> field. This is useful in cases
+where the parameter&rsquo;s name might not be easily understood by the user.</p>
+</li>
+<li>
+<p><strong>description</strong>: A description that is either displayed alongside the form
+control for certain GUI form controls, or displayed as a popup when the user&rsquo;s
+cursor hovers over the form control. This can be a multi-line text string if
+you need to provide a detailed explanation to the user.</p>
+</li>
+<li>
+<p><strong>default</strong>: The default value of the parameter. This is always specified as a
+string, although the GUI provides user-friendly form components that make
+entering values for each type easier.</p>
+</li>
+<li>
+<p><strong>type</strong>: The data type of the parameter.
+See <a href="#parameter-types">Parameter types</a> for more information.
+If <code>type</code> is not specified then it defaults to being a text field; that is a
+simple text string.</p>
+</li>
+<li>
+<p><strong>validating_regex</strong>: For string type parameters, this is used to indicate to
+the user that their entered value is not valid. However this is just a visual
+indicator - it will not prevent users from running the artifact with invalid
+values. There is no way to make a parameter require a value. You should ensure
+that your parameters either have a sensible default value, or else design your
+artifact in such a way that it fails gracefully (for example, by providing a
+helpful log message) if no value or an invalid value is provided. You can also
+implement additional validation in your VQL and have it provide a default
+value if an acceptable value is not found.</p>
+</li>
+</ul>
+<p>With certain parameter types &ndash; namely <code>choices</code>, <code>multichoice</code>, and
+<code>artifactset</code> &ndash; additional fields become available that are necessary to
+support the specific behaviour of those parameter types.</p>
+<h2 id="parameter-types">Parameter types</h2>
+<h3 id="how-parameter-types-are-processed">How parameter types are processed</h3>
+<p>All parameter values are defined as strings. These string values are then
+converted to the corresponding VQL data type according to the parameter&rsquo;s <code>type</code>
+specification when the collection request is compiled.</p>
+<p>For example, consider the following trivial artifact:</p>
+<pre><code class="language-yaml">name: Custom.ParameterTypeDemo
+
+parameters:
+  - name: AnInt
+    type: int64
+    default: &quot;10&quot;
+
+sources:
+  - query: SELECT AnInt, typeof(a=AnInt) FROM scope()
+</code></pre>
+<p>Note that the default value for the parameter is defined as a string, not a YAML
+integer. While this is not strictly necessary, as Velociraptor knows that values
+should be interpreted as strings and will silently convert them for certain YAML
+scalar types, it is good to be aware of this. It is especially important when
+dealing with compound data types such as JSON dicts, JSON arrays, and other
+types of data blobs, which must be enclosed in quotes.</p>
+<p>When sending the artifact to a client, we can see in the Requests tab that a
+conversion function is added to the compiled VQL queries, assigning the result
+to a variable named by the parameter.</p>
+<pre><code class="language-json">&quot;env&quot;: [
+  {
+    &quot;key&quot;: &quot;AnInt&quot;,
+    &quot;value&quot;: &quot;10&quot;
+  }
+],
+&quot;Query&quot;: [
+  {
+    &quot;VQL&quot;: &quot;LET AnInt &lt;= int(int=AnInt)&quot;
+  },
+  {
+    &quot;VQL&quot;: &quot;LET Custom_ParametersTest_0_0 = SELECT AnInt, typeof(a=AnInt) FROM scope()&quot;
+  },
+  {
+    &quot;Name&quot;: &quot;Custom.ParametersTest&quot;,
+    &quot;VQL&quot;: &quot;SELECT * FROM Custom_ParametersTest_0_0&quot;
+  }
+],
+</code></pre>
+<p>As expected, the variable&rsquo;s type in the results corresponds to the parameter&rsquo;s
+type specification, and we can confirm this by using the <a href="/vql_reference/other/typeof/">typeof</a> function.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/artifacts/parameters/parameter_demo.png"
+         class="inline"
+         alt=""
+         width="724" height="254">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="parameter_demo.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="parameter-validation">Parameter validation</h3>
+<p>As mentioned previously, the <code>validating_regex</code> parameter field provides a way
+to give the user visual feedback when they are entering an invalid value for the
+parameter. However this does not prevent the user from proceeding with an
+invalid value.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/docs/artifacts/parameters/validating_regex.png"
+     width="450"
+     height="72"/>
+
+
+
+
+</p>
+<p>Because parameters are ultimately just variables, you can perform additional
+validation on the variable&rsquo;s value in your VQL and potentially override the
+parameter&rsquo;s value using VQL variable assignment, if the user-supplied value is
+unacceptable.</p>
+<p>For example, consider the following artifact which uses the <code>server_metadata</code>
+parameter type:</p>
+<pre><code class="language-yaml">name: GetServerMetadata
+
+parameters:
+  - name: NameOfMetadataKey
+    type: server_metadata
+    default: &quot;600&quot;
+    validating_regex: ^\d{1,5}$
+
+sources:
+  - query: |
+     LET NameOfMetadataKey &lt;= if(condition=NOT NameOfMetadataKey =~ '''^\d{1,5}$''', // recheck the validating regex
+                              then=600, // re-apply the default value
+                              else=int(int=NameOfMetadataKey)) // otherwise just convert it to an int
+     SELECT NameOfMetadataKey, typeof(a=NameOfMetadataKey) FROM scope()
+</code></pre>
+<p>In this artifact we can&rsquo;t be sure that the metadata key actually exists, nor
+that it contains a valid value (we want it to <em>only</em> be a 1-5 digit integer).
+It&rsquo;s also possible for the user to set a different value in the Configure
+Parameters screen of the collection wizard. To guard against invalid or missing
+values in this situation we can implement a few measures including additional
+validation in VQL:</p>
+<ul>
+<li>the <code>validating_regex</code> parameter field will help guide the user towards
+entering a valid value, however this is not enforceable.</li>
+<li>although a <code>default_value</code> is defined for the parameter, this is only used if
+the value stored in the server metadata key is undefined (i.e. the metadata
+key does not exist).</li>
+<li>if the user enters a valid value in the Configure Parameters screen, or if the
+server metadata key exists and contains a valid value, then the VQL converts
+this to an integer. The user-entered value takes precedence over the
+metadata-defined value.</li>
+<li>if the user enters an invalid value in the Configure Parameters screen, or if
+the value defined in the server metadata key is invalid, then the VQL will
+re-apply the default value as an int (no type conversion is necessary because
+it&rsquo;s unquoted and therefore interpreted as an integer).</li>
+</ul>
+<p>While it&rsquo;s rarely necessary to be as guarded about parameter values as the above
+example is, it shows how you might implement stronger validation in your VQL, if
+your artifact requires it.</p>
+<h3 id="types">Types</h3>
+<p>The following parameter types are currently supported.</p>
+<hr>
+<h4 id="-string-">[ string ]</h4>
+<ul>
+<li>
+<p><strong>Description:</strong> The parameter is a string (the default type).</p>
+</li>
+<li>
+<p><strong>VQL conversion function:</strong> not converted</p>
+</li>
+<li>
+<p><strong>UI form component:</strong> <br>
+
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/docs/artifacts/parameters/ui_string.png"
+     width="506"
+     height="90"/>
+
+
+
+
+</p>
+</li>
+</ul>
+<hr>
+<h4 id="-int--integer--int64-">[ int / integer / int64 ]</h4>
+<ul>
+<li>
+<p><strong>Description:</strong> The parameter is an integer (int64 data type).</p>
+<p>When specifying the type, <code>int</code>, <code>integer</code>, and <code>int64</code> are all equivalent.</p>
+<p>Note that a YAML integer as a parameter default, without the <code>int</code> type, will
+be interpreted as a string.</p>
+<pre><code class="language-yaml">parameters:
+- name: AnInt
+  default: 80 # &lt;- will be interpreted as a string!
+</code></pre>
+</li>
+<li>
+<p><strong>VQL conversion function:</strong> <code>LET x &lt;= int(int=x)</code></p>
+</li>
+<li>
+<p><strong>UI form component:</strong> same as <code>string</code> type</p>
+</li>
+</ul>
+<hr>
+<h4 id="-float-">[ float ]</h4>
+<ul>
+<li>
+<p><strong>Description:</strong> The parameter is a float (float64 data type).</p>
+</li>
+<li>
+<p><strong>VQL conversion function:</strong> <code>LET x &lt;= parse_float(string=x)</code></p>
+</li>
+<li>
+<p><strong>UI form component:</strong> same as <code>string</code> type</p>
+</li>
+</ul>
+<hr>
+<h4 id="-bool-">[ bool ]</h4>
+<ul>
+<li>
+<p><strong>Description:</strong> The parameter is a boolean (TRUE/YES/Y/OK).</p>
+<p>A default value of <code>true</code> or <code>yes</code> or <code>y</code> or <code>ok</code> (case-insensitive) will
+evaluate as <code>TRUE</code>. Any other value, including but not limited to <code>false</code>,
+will evaluate as <code>FALSE</code>.</p>
+</li>
+<li>
+<p><strong>VQL conversion function:</strong> <code>LET x &lt;= x =~ '^(Y|TRUE|YES|OK)$'</code></p>
+</li>
+<li>
+<p><strong>UI form component:</strong> <br>
+
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/docs/artifacts/parameters/ui_bool.png"
+     width="407"
+     height="80"/>
+
+
+
+
+</p>
+</li>
+</ul>
+<hr>
+<h4 id="-timestamp-">[ timestamp ]</h4>
+<ul>
+<li>
+<p><strong>Description:</strong> The parameter is a timestamp ( Golang
+<a href="/vql_reference/popular/timestamp/">time.Time object</a>).</p>
+</li>
+<li>
+<p><strong>VQL conversion function:</strong> <code>LET x &lt;= timestamp(epoch=x)</code></p>
+</li>
+<li>
+<p><strong>UI form component:</strong> <br>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/artifacts/parameters/ui_timestamp.png"
+         class="inline"
+         alt=""
+         width="839" height="445">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="ui_timestamp.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+</ul>
+<hr>
+<h4 id="-choices-">[ choices ]</h4>
+<ul>
+<li>
+<p><strong>Description:</strong> Allows a single selection from a list of choices.</p>
+<p>When using this type, the <code>choices</code> field should also be used as it contains
+the list of items that can be chosen from.</p>
+</li>
+<li>
+<p><strong>VQL conversion function:</strong> not converted - the selected item is passed as a
+string.</p>
+</li>
+<li>
+<p><strong>UI form component:</strong> <br>
+
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/docs/artifacts/parameters/ui_choices.png"
+     width="771"
+     height="180"/>
+
+
+
+
+</p>
+</li>
+</ul>
+<hr>
+<h4 id="-multichoice-">[ multichoice ]</h4>
+<ul>
+<li>
+<p><strong>Description:</strong> A selection list allowing multiple selections. This returns
+an array of the selected items.</p>
+<p>When using this type, the <code>choices</code> field should also be used as it contains
+the list of items that can be chosen from.</p>
+<p>The default choices are specified as a list of items, which should be a subset
+of the items in <code>choices</code>. These items will then be pre-selected in the
+multichoice UI component.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-yaml">parameters:
+  - name: Events
+    type: multichoice
+    description: Events to view
+    default: '[&quot;NameCreate&quot;, &quot;NameDelete&quot;, &quot;FileOpen&quot;, &quot;Rename&quot;]'
+    choices:
+      - NameCreate
+      - NameDelete
+      - FileOpen
+      - Rename
+      - RenamePath
+      - CreateNewFile
+</code></pre>
+</li>
+<li>
+<p><strong>VQL conversion function:</strong> <code>LET x &lt;= parse_json_array(data=x)</code></p>
+</li>
+<li>
+<p><strong>UI form component:</strong> <br>
+
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/docs/artifacts/parameters/ui_multichoice.png"
+     width="800"
+     height="180"/>
+
+
+
+
+</p>
+</li>
+</ul>
+<hr>
+<h4 id="-server_metadata-">[ server_metadata ]</h4>
+<ul>
+<li>
+<p><strong>Description:</strong> The server will populate this parameter from the server
+metadata service prior to launching the artifact. It can therefore be used in
+both client and server artifacts.</p>
+<p>Metadata values are always strings, but you can store string representations
+of other data types in metadata fields and then convert them to the required
+data type in your VQL.</p>
+</li>
+<li>
+<p><strong>VQL conversion function:</strong> <code>LET x &lt;= server_metadata().x</code> or <code>LET x &lt;= get(item=server_metadata(), member=&quot;x&quot;)</code></p>
+</li>
+<li>
+<p><strong>UI form component:</strong> same as <code>string</code> type</p>
+</li>
+</ul>
+<hr>
+<h4 id="-regex-">[ regex ]</h4>
+<ul>
+<li>
+<p><strong>Description:</strong> The parameter is a Regular Expression. The GUI will present a
+regular expression editor with regex autosuggestions to help you write it.</p>
+</li>
+<li>
+<p><strong>VQL conversion function:</strong> not converted - passed as a string</p>
+</li>
+<li>
+<p><strong>UI form component:</strong> <br>
+
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/docs/artifacts/parameters/ui_regex.png"
+     width="787"
+     height="189"/>
+
+
+
+
+</p>
+</li>
+</ul>
+<hr>
+<h4 id="-regex_array-">[ regex_array ]</h4>
+<ul>
+<li>
+<p><strong>Description:</strong> Allows for entry of a list of regular expressions, and returns
+an array containing these expressions.</p>
+</li>
+<li>
+<p><strong>VQL conversion function:</strong> <code>LET x &lt;= parse_json_array(data=x)</code></p>
+</li>
+<li>
+<p><strong>UI form component:</strong> <br>
+
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/docs/artifacts/parameters/ui_regex_array.png"
+     width="584"
+     height="135"/>
+
+
+
+
+</p>
+</li>
+</ul>
+<hr>
+<h4 id="-yara-">[ yara ]</h4>
+<ul>
+<li>
+<p><strong>Description:</strong> The parameter is a multiline string consisting of one or more
+Yara rules. The GUI will present an editor with Yara syntax highlighting.</p>
+</li>
+<li>
+<p><strong>VQL conversion function:</strong> not converted - passed as a string</p>
+</li>
+<li>
+<p><strong>UI form component:</strong> <br>
+
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/docs/artifacts/parameters/ui_yara.png"
+     width="783"
+     height="198"/>
+
+
+
+
+</p>
+</li>
+</ul>
+<hr>
+<h4 id="-json-">[ json ]</h4>
+<ul>
+<li>
+<p><strong>Description:</strong> Parameter is a JSON encoded dict and returns an
+ordereddict.Dict object.</p>
+</li>
+<li>
+<p><strong>VQL conversion function:</strong> <code>LET x &lt;= parse_json(data=x)</code></p>
+</li>
+<li>
+<p><strong>UI form component:</strong> same as <code>string</code> type</p>
+</li>
+</ul>
+<hr>
+<h4 id="-json_array-">[ json_array ]</h4>
+<ul>
+<li>
+<p><strong>Description:</strong> The parameter accepts a list of items encoded as a JSON blob
+(similar to csv) and returns an array object.</p>
+</li>
+<li>
+<p><strong>VQL conversion function:</strong> <code>LET x &lt;= parse_json_array(data=x)</code></p>
+</li>
+<li>
+<p><strong>UI form component:</strong> <br>
+
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/docs/artifacts/parameters/ui_json_array_01.png"
+     width="719"
+     height="124"/>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/docs/artifacts/parameters/ui_json_array_02.png"
+     width="719"
+     height="151"/>
+
+
+
+
+</p>
+</li>
+</ul>
+<hr>
+<h4 id="-csv-">[ csv ]</h4>
+<ul>
+<li>
+<p><strong>Description:</strong> Parameter accepts CSV-formatted data, and returns an array of
+dicts.</p>
+<p>The GUI will present a table-based CSV editor, which you can also switch to
+a raw editing mode where you can paste in CSV-formatted data.</p>
+</li>
+<li>
+<p><strong>VQL conversion function:</strong> <code>LET x &lt;= SELECT * FROM parse_csv(filename=x, accessor='data')</code></p>
+</li>
+<li>
+<p><strong>UI form component:</strong> <br>
+
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/docs/artifacts/parameters/ui_csv_01.png"
+     width="840"
+     height="150"/>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/docs/artifacts/parameters/ui_csv_02.png"
+     width="840"
+     height="157"/>
+
+
+
+
+</p>
+</li>
+</ul>
+<hr>
+<h4 id="-hidden-">[ hidden ]</h4>
+<ul>
+<li>
+<p><strong>Description:</strong> String type that is not displayed in the GUI.</p>
+<p>Although this parameter type is hidden, you can still pass values to it from
+other artifacts.</p>
+</li>
+<li>
+<p><strong>VQL conversion function:</strong>  not converted - passed as a string</p>
+</li>
+<li>
+<p><strong>UI form component:</strong> not displayed</p>
+</li>
+</ul>
+<hr>
+<h4 id="-redacted-">[ redacted ]</h4>
+<ul>
+<li>
+<p><strong>Description:</strong> The value of this parameter is redacted in the request or
+other places where it may be logged.</p>
+<p>This should not be considered a security mechanism. For securely passing
+sensitive parameters to client you should use Velociraptor&rsquo;s
+<a href="/blog/2024/2024-03-10-release-notes-0.72/#secret-management">secret management</a>
+feature.</p>
+</li>
+<li>
+<p><strong>VQL conversion function:</strong> not converted</p>
+</li>
+<li>
+<p><strong>UI form component:</strong> same as <code>string</code> type</p>
+</li>
+</ul>
+<hr>
+<h4 id="-upload-">[ upload ]</h4>
+<ul>
+<li>
+<p><strong>Description:</strong> Allows you to upload content from a file. The upload content
+will be available in this variable (as a string) on the client. The GUI will
+present a file upload widget to allow you to upload a file.</p>
+<p>The file is delivered to the client from the server&rsquo;s <code>public</code> directory, with
+the client retrieving it using the <code>http_client</code> plugin. The file content is
+not written to disk on the endpoint.</p>
+<p>Notes:</p>
+<ul>
+<li>The uploaded content is valid for this request only!</li>
+<li>The upload content is limited to 4MB - if you need larger files to the
+endpoint use <code>upload_file</code> instead.</li>
+<li>You cannot set a default value for this type.</li>
+</ul>
+</li>
+<li>
+<p><strong>VQL conversion function:</strong> <code>LET x &lt;= SELECT Content FROM http_client(url=x)</code></p>
+</li>
+<li>
+<p><strong>UI form component:</strong> <br>
+
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/docs/artifacts/parameters/ui_upload.png"
+     width="834"
+     height="82"/>
+
+
+
+
+</p>
+</li>
+</ul>
+<hr>
+<h4 id="-upload_file-">[ upload_file ]</h4>
+<ul>
+<li>
+<p><strong>Description:</strong> The parameter will be the name of a temporary file on the
+endpoint containing a copy of the uploaded file.</p>
+<p>This differs from the <code>upload</code> parameter type in that the file is written to
+disk as a temp file, and the parameter then contains <em>the path to this file</em>.
+This avoids the size limitation, but by writing the file to disk it&rsquo;s slightly
+slower and the file is also susceptible to endpoint anti-malware scanning.</p>
+<p>When using this parameter type your VQL will need to read the contents of the
+file, typically using <code>read_file()</code> or similar functions.</p>
+<p>Notes:</p>
+<ul>
+<li>The uploaded content is valid for this request only, as the temp file is
+removed on the endpoint when the collection completes.</li>
+<li>You cannot set a default value for this type.</li>
+</ul>
+</li>
+<li>
+<p><strong>VQL conversion function:</strong></p>
+<pre><code class="language-vql">LET x_ &lt;= SELECT Content FROM http_client(url=x, tempfile_extension='.tmp')
+LET x &lt;= x_.Content[0]
+</code></pre>
+</li>
+<li>
+<p><strong>UI form component:</strong> <br>
+
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/docs/artifacts/parameters/ui_upload_file.png"
+     width="853"
+     height="86"/>
+
+
+
+
+</p>
+</li>
+</ul>
+<hr>
+<h4 id="-artifactset-">[ artifactset ]</h4>
+<ul>
+<li>
+<p><strong>Description:</strong> Allows selection of one or more artifacts from a set of
+artifacts. Returns an array of artifact names, optionally including named
+sources.</p>
+<p>This parameter type is generally only useful on server artifacts as clients do
+not have access to arbitrary artifacts.</p>
+<p>When using this parameter type you must also include the <code>artifact_type</code> field
+which can be one of <code>CLIENT</code>, <code>SERVER</code>, <code>CLIENT_EVENT</code>, <code>SERVER_EVENT</code>,
+<code>NOTEBOOK</code>. This determines the type of artifacts that the user can select
+from.</p>
+<p>You can optionally include the <code>sources</code> parameter field (a boolean) which
+determines whether or not to include artifact source names in the artifact
+selection list. By default source names are not shown (i.e. <code>sources: False</code>).</p>
+</li>
+<li>
+<p><strong>Example:</strong></p>
+<pre><code class="language-yaml">parameters:
+  - name: ClientArtifactsToWatch
+    type: artifactset
+    artifact_type: CLIENT_EVENT
+    sources: TRUE
+    default: |
+      Artifact
+      Windows.Detection.PsexecService
+      Windows.Events.ProcessCreation
+      Windows.Events.ServiceCreation
+</code></pre>
+</li>
+<li>
+<p><strong>VQL conversion function:</strong> <code>LET x &lt;= SELECT * FROM parse_csv(filename=x, accessor='data')</code></p>
+</li>
+<li>
+<p><strong>UI form component:</strong> <br>
+
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/docs/artifacts/parameters/ui_artifactset.png"
+     width="914"
+     height="185"/>
+
+
+
+
+</p>
+</li>
+</ul>
+<hr>
+<h4 id="-xml-">[ xml ]</h4>
+<ul>
+<li>
+<p><strong>Description:</strong> Accepts an XML document and parses it.</p>
+</li>
+<li>
+<p><strong>VQL conversion function:</strong> <code>LET x &lt;= parse_xml(file=x, accessor=&quot;data&quot;)</code></p>
+</li>
+<li>
+<p><strong>UI form component:</strong> same as <code>string</code> type</p>
+</li>
+</ul>
+<hr>
+<h4 id="-yaml-">[ yaml ]</h4>
+<ul>
+<li>
+<p><strong>Description:</strong> Accepts an YAML document and parses it.</p>
+</li>
+<li>
+<p><strong>VQL conversion function:</strong> <code>LET x &lt;= parse_yaml(filename=x, accessor=&quot;data&quot;)</code></p>
+</li>
+<li>
+<p><strong>UI form component:</strong> same as <code>string</code> type</p>
+</li>
+</ul>
+<hr>
+<h4 id="-starlark-">[ starlark ]</h4>
+<ul>
+<li>
+<p><strong>Description:</strong> Compile a <a href="/vql_reference/parsers/starl/">starlark</a>
+code block. Returns the <code>*tools.StarlModule</code> data type.</p>
+</li>
+<li>
+<p><strong>VQL conversion function:</strong> <code>LET x &lt;= starl(code=x)</code></p>
+</li>
+<li>
+<p><strong>UI form component:</strong> same as <code>string</code> type</p>
+</li>
+</ul>
+<hr>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352328"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352328"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352328"></script>
+    <script src="/js/jquery.sticky.js?1775352328"></script>
+    <script src="/js/featherlight.min.js?1775352328"></script>
+    <script src="/js/highlight.min.js?1775352328"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352328"></script>
+    <script src="/js/learn.js?1775352328"></script>
+    <script src="/js/hugo-learn.js?1775352328"></script>
+    
+    
+
+  </body>
+</html>

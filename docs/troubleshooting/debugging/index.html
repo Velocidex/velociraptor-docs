@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Debugging Velociraptor :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352330" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352330" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352330" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352330" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352330" rel="stylesheet">
+    <link href="/css/theme.css?1775352330" rel="stylesheet">
+    <link href="/css/tabs.css?1775352330" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352330" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352330" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352330" rel="stylesheet"><link href="/css/syntax.css?1775352330" rel="stylesheet"><link href="/css/light.css?1775352330" rel="stylesheet"><link href="/css/hljs.css?1775352330" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352330" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352330"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/troubleshooting/debugging/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/troubleshooting\/debugging\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/troubleshooting/debugging/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Debugging Velociraptor</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#collecting-profiles">Collecting Profiles</a>
+      <ul>
+        <li><a href="#the-debug-console">The Debug Console</a></li>
+        <li><a href="#starting-the-debug-console-on-clients">Starting the Debug Console on clients</a></li>
+        <li><a href="#debugging-the-offline-collector">Debugging the offline collector</a></li>
+        <li><a href="#profile-types">Profile types</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Debugging Velociraptor
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>Like any piece of software, Velociraptor makes a number of engineering
+trade-offs, and may encounter some error conditions or even bugs. When
+faced with the prospect of an unresponsive server or client, or high
+CPU load, users often ask: <em>&ldquo;What is Velociraptor doing right now?&rdquo;</em></p>
+<p>To see the inner workings of Velociraptor we can collect <strong>profiles</strong> of various
+aspects of the program. These profiles exist regardless of whether Velociraptor
+is being run as a client or server or even an offline collector.</p>
+<p>You can read more about profiling in our blog article
+<a href="/blog/2020/2020-08-16-profiling-the-beast-58913437fd16/">Profiling the Beast</a>.</p>
+<h2 id="collecting-profiles">Collecting Profiles</h2>
+<p>Without appropriate ways to ask Velociraptor what is happening
+internally, one would need to attach a debugger to understand what is
+happening. To help users see inside the &lsquo;black box&rsquo; of Velociraptor, we
+have implemented extensive <strong>Debugging Profiles</strong> which allow us to
+inspect the state of the various sub-systems inside the program.</p>
+<p>Making Velociraptor&rsquo;s inner workings transparent helps to explain to
+users how it actually works, what trade-offs are made and why the
+program might not be behaving as expected.</p>
+<p><strong>Profiles</strong> are views into specific aspect of the code. You can collect
+profiles from the local server using the <code>Server.Monitor.Profile</code>
+artifact or from remote clients using <code>Generic.Client.Profile</code>.</p>
+<p>Collecting these artifacts gives a snapshot or a dump of all profiles
+at a specific instant in time.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/troubleshooting/debugging/server_profiles_.svg" alt="Collecting server profiles"
+         class="inline"
+         height="597"
+         width="1570.1492537313436"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="server_profiles.svg"><i class="fa fa-download"></i></a>
+    Collecting server profiles
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+
+<div class="mynotices note">
+  <div heading=" Seeking assistance from the community "><p>If you encounter an issue that requires more thorough inspection, you
+can seek assistance from the community on Discord or the mailing
+list. In this case, you will probably be asked to attach a profile to
+your request. This helps the developers to understand issues within
+the system.</p>
+<p>Simply collect the relevant artifact (either from the server with
+<code>Server.Monitor.Profile</code> or a client with <code>Generic.Client.Profile</code>)
+and export the collection into a zip file from the GUI. You can then
+send us the Zip file for analysis.</p>
+</div>
+</div>
+
+
+<h3 id="the-debug-console">The Debug Console</h3>
+<p>While collecting profiles using an artifact is useful to take a
+snapshot of the current process status, it is not very convenient when
+we want to see how the process evolved over time.</p>
+<p>To help with this, Velociraptor has a <strong>Debug Console</strong> GUI that provides a live
+view of the debugging profiles.</p>
+<p>On the server the Debug Console is always available by default. You can access
+it from the main Welcome page. For clients and offline collectors please see the
+<a href="#starting-the-debug-console-on-clients">sections below</a>
+which explain how to enable it in those modes of operation.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/troubleshooting/debugging/debug_server_gui_.svg" alt="Accessing the Debug Console on the server"
+         class="inline"
+         height="671.943907156673"
+         width="974.8300283286117"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="debug_server_gui.svg"><i class="fa fa-download"></i></a>
+    Accessing the Debug Console on the server
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>This link opens the main page of the Debug Console.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/troubleshooting/debugging/debug_server_main_page_.svg" alt="The Debug Console main page"
+         class="inline"
+         height="896.0930989583334"
+         width="798.299016772701"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="debug_server_main_page.svg"><i class="fa fa-download"></i></a>
+    The Debug Console main page
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="starting-the-debug-console-on-clients">Starting the Debug Console on clients</h3>
+<p>Unlike on the server, on clients the Debug Console is not enabled by default for
+security reasons.</p>
+<p>To allow debugging of a client issue you can start the Debug Console by adding
+the <code>--debug</code> flag to the service&rsquo;s command line. If the client is installed as
+a service then you will need to stop the service first, and then run it manually
+from the command line as follows:</p>
+
+
+<div class="tab-panel">
+    <div class="tab-nav">
+    
+        <button
+          data-tab-item="Linux"
+          data-tab-group="default"
+          class="tab-nav-button btn active"
+          onclick="switchTab('default','Linux')"
+         >Linux</button>
+    
+        <button
+          data-tab-item="Windows"
+          data-tab-group="default"
+          class="tab-nav-button btn "
+          onclick="switchTab('default','Windows')"
+         >Windows</button>
+    
+        <button
+          data-tab-item="macOS"
+          data-tab-group="default"
+          class="tab-nav-button btn "
+          onclick="switchTab('default','macOS')"
+         >macOS</button>
+    
+    </div>
+    <div class="tab-content">
+        
+        <div data-tab-item="Linux" data-tab-group="default" class="tab-item active">
+            <pre><code class="language-sh">sudo systemctl stop velociraptor_client.service
+/usr/local/bin/velociraptor_client --config /etc/velociraptor/client.config.yaml client -v --debug
+</code></pre>
+
+        </div>
+        
+        <div data-tab-item="Windows" data-tab-group="default" class="tab-item ">
+            <pre><code class="language-sh">sc.exe stop velociraptor
+velociraptor.exe client --config &quot;C:/Program Files/Velociraptor/client.config.yaml&quot; -v --debug
+</code></pre>
+
+        </div>
+        
+        <div data-tab-item="macOS" data-tab-group="default" class="tab-item ">
+            <pre><code class="language-sh">sudo launchctl unload /Library/LaunchDaemons/com.velocidex.velociraptor.plist
+sudo /usr/local/sbin/velociraptor client --config /usr/local/sbin/velociraptor.config.yaml -v --debug
+</code></pre>
+
+        </div>
+        
+    </div>
+</div>
+
+<p>When provided with the <code>--debug</code> flag, Velociraptor will start the Debug Console
+on port 6060 (use <code>--debug_port</code> if you need to specify a different port). By
+default the Debug Console will only bind to localhost so you will need to either
+tunnel the port or use a local browser to connect to it.</p>
+<h3 id="debugging-the-offline-collector">Debugging the offline collector</h3>
+<p>The offline collector is a &ldquo;one shot&rdquo; collector which simply runs, collects
+several preconfigured artifacts into a zip file and terminates.</p>
+<p>Sometimes the collector may, for example, take a long time or use too much
+memory. In this case you might want to gain visibility into what it&rsquo;s doing.</p>
+<p>You can start the offline collector by adding the <code>--debug</code> flag to its
+command line.</p>
+<pre><code class="language-sh">Collector_velociraptor-v0.75.2-windows-amd64.exe -- --debug --debug_port 6061
+</code></pre>
+<p>Note that the additional <code>--</code> is required to indicate that the additional
+parameters are not considered part of the command line (the offline collector
+requires running with no parameters).</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/troubleshooting/debugging/debugging_offline_collector.png"
+         class="inline"
+         alt="Debugging the offline collector"
+         width="1122" height="573">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="debugging_offline_collector.png">
+      <i class="fa fa-download"></i></a>
+    Debugging the offline collector
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The above will start the Debug Console on port 6061 which you can access with a
+web browser. You can then download goroutine, heap allocation and other profiles
+from the debug server and forward these to the Velociraptor development team to
+identify and resolve any issues.</p>
+<p>If you have preconfigured the offline collector to close upon completion without
+prompting and it completes before you are finished in the Debug Console, then
+you can add <code>--prompt</code> to the command line to keep the application running. For
+example:</p>
+<pre><code class="language-sh">Collector_velociraptor-v0.75.2-windows-amd64.exe -- --debug --prompt
+</code></pre>
+<h3 id="profile-types">Profile types</h3>
+<p>The following pages provide additional details on each profile type. It is
+instructive to read about each profile item to understand how Velociraptor works
+internally, understand the trade-offs made, and how to get the most out of
+Velociraptor in the real world.</p>
+
+
+
+
+
+
+
+<ul class="children children-li">
+	
+
+	
+		
+			
+		
+	
+
+	
+
+	
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/troubleshooting/debugging/internal/" >Internal</a>
+</li>
+				
+
+				
+					
+<p>Profiles provided by Golang</p>
+					
+				
+			
+			
+
+				
+<ul>
+				
+
+				
+					
+				
+
+				
+
+				
+					
+	
+		
+			
+				
+<li>
+<a href="/docs/troubleshooting/debugging/internal/metrics/" >Metrics</a>
+</li>
+				
+
+				
+					
+<p>Report all the current process running metrics.</p>
+					
+				
+			
+			
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/troubleshooting/debugging/internal/go_profiles/" >Golang</a>
+</li>
+				
+
+				
+					
+<p>Show built in Go Profiles</p>
+					
+				
+			
+			
+		
+	
+
+				
+
+				
+</ul>
+				
+			
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/troubleshooting/debugging/client/" >Client</a>
+</li>
+				
+
+				
+					
+<p>Profiles present only on the client</p>
+					
+				
+			
+			
+
+				
+<ul>
+				
+
+				
+					
+				
+
+				
+
+				
+					
+	
+		
+			
+				
+<li>
+<a href="/docs/troubleshooting/debugging/client/client_monitoring/" >Monitoring</a>
+</li>
+				
+
+				
+					
+<p>Report stats on client monitoring artifacts</p>
+					
+				
+			
+			
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/troubleshooting/debugging/client/client_flows/" >Flows</a>
+</li>
+				
+
+				
+					
+<p>Report the state of the client&#39;s flow manager</p>
+					
+				
+			
+			
+		
+	
+
+				
+
+				
+</ul>
+				
+			
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/troubleshooting/debugging/global/" >Global</a>
+</li>
+				
+
+				
+					
+<p>Profiles present on the server or client</p>
+					
+				
+			
+			
+
+				
+<ul>
+				
+
+				
+					
+				
+
+				
+
+				
+					
+	
+		
+			
+				
+<li>
+<a href="/docs/troubleshooting/debugging/global/datastore/" >Datastore</a>
+</li>
+				
+
+				
+					
+<p>Profiles related to the server&#39;s datastore.</p>
+					
+				
+			
+			
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/troubleshooting/debugging/global/services/" >Services</a>
+</li>
+				
+
+				
+					
+<p>Velociraptor global services</p>
+					
+				
+			
+			
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/troubleshooting/debugging/global/vql/" >VQL</a>
+</li>
+				
+
+				
+					
+<p>Track state of various VQL plugins and queries.</p>
+					
+				
+			
+			
+		
+	
+
+				
+
+				
+</ul>
+				
+			
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/troubleshooting/debugging/org/" >Org</a>
+</li>
+				
+
+				
+					
+<p>Profiles associated with org services.</p>
+					
+				
+			
+			
+
+				
+<ul>
+				
+
+				
+					
+				
+
+				
+
+				
+					
+	
+		
+			
+				
+<li>
+<a href="/docs/troubleshooting/debugging/org/services/" >Services</a>
+</li>
+				
+
+				
+					
+<p><ul class="children children-li">
+	
+
+	
+		
+			
+		
+	
+
+	
+
+	
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/troubleshooting/debugging/org/services/broadcast_service/" >Broadcast</a>
+</li>
+				
+
+				
+					
+<p>Track generators installed via the generator() plugin.</p>
+					
+				
+			
+			
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/troubleshooting/debugging/org/services/queue_manager/" >QueueManager</a>
+</li>
+				
+
+				
+					
+<p>Report the current states of server artifact event queues.</p>
+					
+				
+			
+			
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/troubleshooting/debugging/org/services/vfs_service/" >VFS</a>
+</li>
+				
+
+				
+					
+<p>The VFS service post processes results from VFS operations.</p>
+					
+				
+			
+			
+		
+	
+		
+			
+				
+<li>
+<a href="/docs/troubleshooting/debugging/org/services/notifier/" >Notifier</a>
+</li>
+				
+
+				
+					
+<p>Information about directly connected clients.</p>
+					
+				
+			
+			
+		
+	
+
+	
+</ul></p>
+					
+				
+			
+			
+		
+	
+
+				
+
+				
+</ul>
+				
+			
+		
+	
+
+	
+</ul>
+
+
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352330"></script>
+    <script src="/js/jquery.sticky.js?1775352330"></script>
+    <script src="/js/featherlight.min.js?1775352330"></script>
+    <script src="/js/highlight.min.js?1775352330"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352330"></script>
+    <script src="/js/learn.js?1775352330"></script>
+    <script src="/js/hugo-learn.js?1775352330"></script>
+    
+    
+
+  </body>
+</html>

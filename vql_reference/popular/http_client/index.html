@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>http_client :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352330" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352330" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352330" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352330" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352330" rel="stylesheet">
+    <link href="/css/theme.css?1775352330" rel="stylesheet">
+    <link href="/css/tabs.css?1775352330" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352330" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352330" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352330" rel="stylesheet"><link href="/css/syntax.css?1775352330" rel="stylesheet"><link href="/css/light.css?1775352330" rel="stylesheet"><link href="/css/hljs.css?1775352330" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352330" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352330"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/vql_reference/popular/http_client/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/vql_reference\/popular\/http_client\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">http_client</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#http_client">http_client</a>
+      <ul>
+        <li><a href="#description">Description</a></li>
+        <li><a href="#example">Example</a></li>
+        <li><a href="#example---uploading-files">Example - Uploading files</a></li>
+        <li><a href="#using-multiple-urls">Using multiple URLs</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+
+        
+
+
+
+	<div class="vql_item"></div>
+<h2 id="http_client">http_client</h2>
+<p><span class='vql_type label label-warning pull-right page-header'>Plugin</span></p>
+<div class="vqlargs"></div>
+<table>
+  <thead>
+      <tr>
+          <th>Arg</th>
+          <th>Description</th>
+          <th>Type</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>url</td>
+          <td>The URL to fetch</td>
+          <td>list of string</td>
+      </tr>
+      <tr>
+          <td>params</td>
+          <td>Parameters to encode as POST or GET query strings</td>
+          <td>ordereddict.Dict</td>
+      </tr>
+      <tr>
+          <td>headers</td>
+          <td>A dict of headers to send.</td>
+          <td>ordereddict.Dict</td>
+      </tr>
+      <tr>
+          <td>method</td>
+          <td>HTTP method to use (GET, POST, PUT, PATCH, DELETE)</td>
+          <td>string</td>
+      </tr>
+      <tr>
+          <td>data</td>
+          <td>If specified we write this raw data into a POST request instead of encoding the params above.</td>
+          <td>string</td>
+      </tr>
+      <tr>
+          <td>chunk_size</td>
+          <td>Read input with this chunk size and send each chunk as a row</td>
+          <td>int</td>
+      </tr>
+      <tr>
+          <td>disable_ssl_security</td>
+          <td>Disable ssl certificate verifications (deprecated in favor of SkipVerify).</td>
+          <td>bool</td>
+      </tr>
+      <tr>
+          <td>skip_verify</td>
+          <td>Disable ssl certificate verifications.</td>
+          <td>bool</td>
+      </tr>
+      <tr>
+          <td>tempfile_extension</td>
+          <td>If specified we write to a tempfile. The content field will contain the full path to the tempfile.</td>
+          <td>string</td>
+      </tr>
+      <tr>
+          <td>remove_last</td>
+          <td>If set we delay removal as much as possible.</td>
+          <td>bool</td>
+      </tr>
+      <tr>
+          <td>root_ca</td>
+          <td>As a better alternative to disable_ssl_security, allows root ca certs to be added here.</td>
+          <td>string</td>
+      </tr>
+      <tr>
+          <td>cookie_jar</td>
+          <td>A cookie jar to use if provided. This is a dict of cookie structures.</td>
+          <td>ordereddict.Dict</td>
+      </tr>
+      <tr>
+          <td>user_agent</td>
+          <td>If specified, set a HTTP User-Agent.</td>
+          <td>string</td>
+      </tr>
+      <tr>
+          <td>secret</td>
+          <td>If specified, use this managed secret. The secret should be of type &lsquo;HTTP Secrets&rsquo;. Alternatively specify the Url as secret://name</td>
+          <td>string</td>
+      </tr>
+      <tr>
+          <td>files</td>
+          <td>If specified, upload these files using multipart form upload. For example [dict(file=&ldquo;My filename.txt&rdquo;, path=OSPath, accessor=&ldquo;auto&rdquo;),]</td>
+          <td>list of ordereddict.Dict</td>
+      </tr>
+  </tbody>
+</table>
+<p><span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">NETWORK</span></p>
+<h3 id="description">Description</h3>
+<p>Make a http request.</p>
+<p>This plugin makes a HTTP connection using the specified method. The
+headers and parameters may be specified. The plugin reads the
+specified number of bytes per returned row.</p>
+<p>If <code>disable_ssl_security</code> is specified we do not enforce SSL
+integrity. This is required to connect to self signed ssl web
+sites. For example many API handlers are exposed over such
+connections.</p>
+
+<div class="mynotices note">
+  <div heading="note"><p>When connecting to the Velociraptor frontend itself, even in self
+signed mode, we will ensure certs are properly verified. You can
+therefore safely export files from the Frontend&rsquo;s public directory
+over self signed SSL. When connecting to a self signed Velociraptor
+frontend, we ensure the self signed certificate was issued by the
+Velociraptor internal CA - i.e. we pin the Frontend&rsquo;s certificate in
+the binary.</p>
+</div>
+</div>
+
+
+<p>The <code>http_client()</code> plugin allows us to interact with any web
+services. If the web service returns a json blob, we can parse it
+with the <code>parse_json()</code> function (or <code>parse_xml()</code> for SOAP
+endpoints). Using the parameters with a POST method we may
+actually invoke actions from within VQL (e.g. send an SMS via an
+SMS gateway when a VQL event is received). So this is a very
+powerful plugin - see examples below.</p>
+<p>When the <code>tempfile_extension</code> parameter is provided, the HTTP
+response body will be written to a tempfile with that
+extension. The name of this tempfile will be emitted as the
+<code>Content</code> column.</p>
+<p>This plugin will emit rows with the following columns:</p>
+<ul>
+<li>Url      string: The url we fetched.</li>
+<li>Content  string: The body content for this chunk</li>
+<li>Response int: The HTTP response code (200=success)</li>
+</ul>
+<h3 id="example">Example</h3>
+<p>The following VQL returns the client&rsquo;s external IP as seen by the
+externalip service.</p>
+<pre><code class="language-vql">SELECT Content as IP from http_client(url='http://www.myexternalip.com/raw')
+</code></pre>
+<p>You can use this plugin to download file contents by passing the
+<code>tempfile_extension</code> parameter. In this case this plugin will
+create a new temp file with the specified extension, write the
+content of the HTTP request into it and then emit a row with
+<code>Content</code> being the name of the file. The file will be
+automatically removed when the query ends.</p>
+<h3 id="example---uploading-files">Example - Uploading files</h3>
+<p>Many API handlers support uploading files via POST messages. This
+is supported using the <code>files</code> parameter for this plugin. The
+plugin will automatically switch to <code>multipart/form</code> mode and
+stream the file content. This allows you to upload very large
+files with minimal memory impact. Here is an example:</p>
+<pre><code class="language-vql">SELECT *
+FROM http_client(
+    url='http://localhost:8002/test/',
+    method='POST',
+    files=dict(file='file.txt', key='file', path='/etc/passwd', accessor=&quot;file&quot;)
+)
+</code></pre>
+<p>Here the files can be an array of dicts with the following fields:</p>
+<ul>
+<li>file: The name of the file that will be stored on the server</li>
+<li>key: The name of the form element that will receive the file</li>
+<li>path: This is an OSPath object that we open and stream into the form.</li>
+<li>accessor: Any accessor required for the path.</li>
+</ul>
+<h3 id="using-multiple-urls">Using multiple URLs</h3>
+<p>After version 3 of this plugin it is possible to provide a list of
+URLs to the <code>url</code> parameter. The plugin will attempt to connect to
+each of those in order until a successful connection is made
+(i.e. HTTP status 200). This allows us to provide fallback URLs
+for more resilient connections.</p>
+<p>The correct way to check for this is with the <code>version()</code> plugin:</p>
+<pre><code class="language-vql">LET HTTP_CLIENT(URLs) = SELECT * FROM if(
+ condition=version(plugin=&quot;http_client&quot;)&gt;2,
+ then={
+   SELECT * FROM http_client(url=URLs)
+ }, else={
+   -- Just use the first one for old versions.
+   SELECT * FROM http_client(url=URLs[0])
+ })
+
+ SELECT * FROM HTTP_CLIENT(URLs=[&quot;http://www.google.com&quot;, &quot;http://www.microsoft.com&quot;])
+</code></pre>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352330"></script>
+    <script src="/js/jquery.sticky.js?1775352330"></script>
+    <script src="/js/featherlight.min.js?1775352330"></script>
+    <script src="/js/highlight.min.js?1775352330"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352330"></script>
+    <script src="/js/learn.js?1775352330"></script>
+    <script src="/js/hugo-learn.js?1775352330"></script>
+    
+    
+
+  </body>
+</html>

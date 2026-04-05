@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>How to create and use an offline collector as a tool :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352330" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352330" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352330" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352330" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352330" rel="stylesheet">
+    <link href="/css/theme.css?1775352330" rel="stylesheet">
+    <link href="/css/tabs.css?1775352330" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352330" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352330" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352330" rel="stylesheet"><link href="/css/syntax.css?1775352330" rel="stylesheet"><link href="/css/light.css?1775352330" rel="stylesheet"><link href="/css/hljs.css?1775352330" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352330" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352330"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/knowledge_base/tips/offline_collector_tool/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/knowledge_base\/tips\/offline_collector_tool\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/knowledge_base/tips/offline_collector_tool.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">How to create and use an offline collector as a tool</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#1-set-up-the-garage-s3-server">1. Set up the Garage S3 server</a></li>
+    <li><a href="#2-create-a-generic-collector-and-store-it-in-the-velociraptor-tools-repository">2. Create a generic collector and store it in the Velociraptor tools repository.</a>
+      <ul>
+        <li><a href="#21-create-a-collector-test-build">2.1 Create a collector test build</a></li>
+        <li><a href="#22-create-a-collector-generating-server-artifact">2.2 Create a collector-generating server artifact</a></li>
+        <li><a href="#23-run-the-server-artifact">2.3 Run the server artifact</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-create-a-client-artifact-to-run-the-offline-collector">3. Create a client artifact to run the offline collector</a></li>
+    <li><a href="#4-run-the-client-artifact">4. Run the client artifact</a></li>
+    <li><a href="#5-download-collection-zips-from-the-s3-server">5. Download collection zips from the S3 server.</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/automation">automation</a>
+
+  <a class="tag-link" href="/tags/deployment">deployment</a>
+
+  <a class="tag-link" href="/tags/acquisition">acquisition</a>
+
+  <a class="tag-link" href="/tags/collector">collector</a>
+
+  <a class="tag-link" href="/tags/tools">tools</a>
+
+  <a class="tag-link" href="/tags/s3">s3</a>
+
+  <a class="tag-link" href="/tags/garage">garage</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+
+        
+
+
+
+	<h1 id="how-to-create-and-use-an-offline-collector-as-a-tool">How to create and use an offline collector as a tool</h1>
+<p>This article demonstrates how to create a generic offline collector
+and then use it as a Velociraptor <a href="/docs/artifacts/tools/">tool</a>
+with conventional &ldquo;online&rdquo; clients.</p>
+<p>Velociraptor
+<a href="/docs/deployment/offline_collections/">offline collectors</a>
+are a popular deployment mode in which one or more
+<a href="/docs/artifacts/">artifacts</a>
+are collected from endpoints, the results are packaged inside a zip
+container, and then optionally uploaded to a
+<a href="/docs/file_collection/#remote-upload-destinations">remote storage destination</a>.
+Typically the remote destination is a cloud storage provider such as
+AWS S3, Azure, or Google Cloud Storage, but it can also be a storage
+service set up on the local network.</p>
+<p>Offline collectors provide the same capabilities as normal
+network-connected clients, but perform a one-off collection of
+predefined artifacts rather than being tasked to collect artifacts as
+needed by the server.</p>
+<p>However, you might have Velociraptor clients deployed, and you are
+using these network-connected &ldquo;online&rdquo; clients to run smaller more
+focused queries, but you also occasionally want to do an
+offline-collector-style
+<a href="/docs/file_collection/bulk/">bulk file acquisitions</a>.</p>
+<p>With network-connected clients the results are uploaded to the
+Velociraptor server. File uploads are also done separately rather than
+being bundled into a single zip archive. This might not be desirable
+in certain circumstances, for example:</p>
+<ul>
+<li>if the server&rsquo;s storage is not spec&rsquo;d to handle the total size of
+these bulk collections, which are typically large if they consist
+mostly of copied files. In that case, you might want the collections
+uploaded to an alternative destination where storage space is less
+constrained.</li>
+<li>if you want to post-process these collection zips using other tools,
+then you might already have a process that includes retrieving them
+from the remote storage location. In that case, having the collected
+data in per-endpoint collection zips might also help with the
+retrieval and post-processing.</li>
+</ul>
+<p>Offline collectors are created by the <code>Server.Utils.CreateCollector</code>
+server artifact, which creates a special embeddable configuration with
+the selected client artifacts, tools, and remote upload configuration
+included. Since it&rsquo;s all just VQL you could, in theory, create a
+client artifact that replicates the actions of any offline collector.
+However, in practice the
+<a href="/artifact_references/pages/server.utils.createcollector/"><code>Server.Utils.CreateCollector</code></a>
+artifact is significantly complex. Creating a custom version of it
+that can be run by clients would be a daunting task. It&rsquo;s much easier
+to create the offline collector in the normal way, and then run it via
+a client as a tool. This is the approach taken in this article.</p>
+
+<div class="mynotices tip">
+  <div heading=" Do you really need to use an offline collector? "><p>Offline collectors are sometimes used in situations when they aren&rsquo;t
+really needed, or aren&rsquo;t actually the best option.</p>
+<p>Before deciding to use an offline collector, you should consider the
+following points.</p>
+<ul>
+<li>
+<p>You can collect exactly the same artifacts with online clients that
+you can collect with offline collectors.</p>
+</li>
+<li>
+<p>Offline collectors are not the only available option when you can&rsquo;t
+install clients. If you can&rsquo;t (or don&rsquo;t want to) install clients,
+you still have the option of using clients without installing them,
+as explained in the KB article
+<a href="/knowledge_base/tips/online_collector/">How to create an “online collector” binary</a>.</p>
+</li>
+</ul>
+</div>
+</div>
+
+
+<h2 id="overview">Overview</h2>
+<p>The overall goal here is to have the client download an offline
+collector as a tool from the server and run it. The offline collector
+will in turn create a collection container zip and upload it to a
+remote S3 server.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/offline_collector_tool/overview_.svg" alt="Process overview"
+         class="inline"
+         height="1080"
+         width="2000"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="overview.svg"><i class="fa fa-download"></i></a>
+    Process overview
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>In this case I&rsquo;ll use <a href="https://garagehq.deuxfleurs.fr/" target="_blank" >Garage</a> which
+is an open source S3-compatible server written in Rust, but you could
+use AWS S3, or <a href="/knowledge_base/tips/dropbox_server/">MinIO</a>,
+or any other S3-compatible server, or even
+<a href="/docs/file_collection/#remote-upload-destinations">one the other remote destination options</a>
+that are supported by Velociraptor offline collectors.</p>
+<p>The high-level steps to achieve this goal are:</p>
+<ol>
+<li>Set up an S3-compatible storage server (Garage).</li>
+<li>Create a generic offline collector and store it in the Velociraptor
+tools repository.</li>
+<li>Create a client artifact to run the offline collector on a live
+client, using the collector as a tool.</li>
+<li>Run the collection on a single endpoint or multiple endpoints.</li>
+<li>Download the collection zip files from the S3 bucket and work with
+the results.</li>
+</ol>
+<p>The Velociraptor server and clients are assumed to be set up and
+working correctly. As mentioned previously, the clients don&rsquo;t
+necessarily need to be installed - they could be
+<a href="/docs/deployment/clients/#agentless-deployment">running without installation</a>.</p>
+<h2 id="1-set-up-the-garage-s3-server">1. Set up the Garage S3 server</h2>
+<p>To keep things as simple as possible, I&rsquo;ll use a single-node Garage
+server as the remote destination for the offline collector uploads.
+This is similar to using an SFTP or SMB server running on the local
+network.</p>
+<ol>
+<li>
+<p>Generate a basic configuration file as explained in the
+<a href="https://garagehq.deuxfleurs.fr/documentation/quick-start/" target="_blank" >Garage Quickstart guide</a>.</p>
+</li>
+<li>
+<p>Configure the Garage server&rsquo;s storage and access keys, also as per
+their quickstart guide.</p>
+<p>Here are the commands I used (for brevity, the corresponding output
+is not shown):</p>
+<pre><code class="language-sh"># start the server
+garage -c ./garage.toml server
+
+# check the server status and get the node ID
+garage -c ./garage.toml status
+
+# create a cluster layout
+garage -c ./garage.toml layout assign -z dc1 -c 1G d7d19e6f32edec53
+
+# apply the layout
+garage -c ./garage.toml layout apply --version 1
+
+# create a bucket
+garage -c ./garage.toml bucket create offline-collections
+
+# check that the bucket has been created
+garage -c ./garage.toml bucket list
+
+# view the bucket configuration
+garage -c ./garage.toml bucket info offline-collections
+
+# create an identity for the collector to use
+garage -c ./garage.toml key create offline-collections-key
+
+# assign write-only access to the bucket for this user
+garage -c ./garage.toml bucket allow --write offline-collections --key offline-collections-key
+
+# create a bucket admin user
+garage -c ./garage.toml key create offline-collections-owner
+
+# assign full access to the bucket for this user
+garage -c ./garage.toml bucket allow --write --read --owner offline-collections --key offline-collections-owner
+</code></pre>
+</li>
+<li>
+<p>I&rsquo;ve created one bucket to receive the collection zips, named
+<code>offline-collections</code>, and I&rsquo;ve created 2 keys with access to it.</p>
+<ul>
+<li><code>offline-collections-key</code>: with only write access, that will be
+used by the clients to upload their collection zips</li>
+<li><code>offline-collections-owner</code>: with full access for browsing and
+downloading the collection zips.</li>
+</ul>
+<p>The reason for creating 2 keys is that the write-only key will be
+included in the offline collector for the purpose of uploading the
+collection zips. Because it&rsquo;s possible to extract the key from the
+offline collector I want it to have no greater permissions than are
+necessary. It only needs to be able to upload files to the bucket,
+and cannot list/download/modify/delete other files in the bucket.</p>
+<p>The final bucket and access configuration can be inspected with the
+command: <code>garage -c ./garage.toml bucket info offline-collections</code>.</p>
+<pre><code class="language-shell">==== BUCKET INFORMATION ====
+Bucket:          d5f9982666e004de45114bcfc1e9428755c15d12f55a2dac7bc77dc495343e97
+Created:         2026-03-16 16:28:13.689 +02:00
+
+Size:            0 B (0 B)
+Objects:         0
+
+Website access:  false
+
+Global alias:    offline-collections
+
+==== KEYS FOR THIS BUCKET ====
+Permissions  Access key                                             Local aliases
+W           GKaa23dd92075b4dc6fc9fe54f  offline-collections-key
+RWO          GK08c8137adf22d3b08c6ea088  offline-collections-owner
+</code></pre>
+</li>
+<li>
+<p>I&rsquo;ll access the bucket using the <code>offline-collections-owner</code>
+credentials on the command line using the <code>mc</code> (MinIO client)
+utility available from <a href="https://dl.min.io/client/mc/release/" target="_blank" >https://dl.min.io/client/mc/release/</a>.</p>
+<pre><code class="language-shell"># download the tool and make it executable
+wget https://dl.min.io/client/mc/release/linux-amd64/mc
+chmod +x ./mc
+
+# Save credentials and connection info for the mc tool
+mc alias set \
+garage \
+http://192.168.56.1:3900 \
+GK08c8137adf22d3b08c6ea088 \
+389adafacb2e3b1c96f9216b9a77c89b74b4d64949d1a0e90f3ca88378f2ca4e \
+--api S3v4
+</code></pre>
+<p>With the credentials configured, I&rsquo;ll test access by uploading a
+file to the bucket, then listing the bucket&rsquo;s contents, and finally
+clearing everything from the bucket (command output is omitted).</p>
+<pre><code class="language-shell"># copy a file to the bucket
+mc cp /proc/cpuinfo garage/offline-collections/cpuinfo.txt
+
+# list bucket contents
+mc ls garage/offline-collections
+
+# remove everything from the bucket
+mc rm --force --recursive garage/offline-collections
+</code></pre>
+<p>Looks good. The S3 server is ready, so now we can create the
+offline collector.</p>
+</li>
+</ol>
+<h2 id="2-create-a-generic-collector-and-store-it-in-the-velociraptor-tools-repository">2. Create a generic collector and store it in the Velociraptor tools repository.</h2>
+<p>In this step I am going to create a
+<a href="/docs/deployment/offline_collections/#the-generic-collector">generic collector</a>
+and add it to the server&rsquo;s tools inventory.</p>
+<p>There are several ways that this could be done, but I want to:</p>
+<ol>
+<li>automate the creation of the offline collector via a server
+artifact, and also</li>
+<li>have it also add the tool to the tools inventory.</li>
+</ol>
+<p>To achieve this I&rsquo;ll create a server artifact that runs
+<code>Server.Utils.CreateCollector</code> and stores the resulting offline
+collector file as a tool that other client artifacts can use.</p>
+<p>By having an artifact that performs this step, I&rsquo;ll be able to easily
+create additional collectors with different sets of artifact
+selections as tools. These other collectors could have artifact
+selections for alternative Windows use cases, or they might be
+selections of artifacts chosen to target non-Windows platforms. All I
+need to do is select appropriate artifacts when creating additional
+collectors and give each collector a unique tool name.</p>
+<p>For my first collector I intend to target Windows and have it run the
+following artifacts:</p>
+<ul>
+<li><code>Windows.Triage.Targets</code> (with HighLevelTargets = <code>_Live</code>)</li>
+<li><code>Generic.Forensic.SQLiteHunter</code></li>
+<li><code>Generic.Client.Info</code></li>
+</ul>
+<h3 id="21-create-a-collector-test-build">2.1 Create a collector test build</h3>
+<p>As a test, and to ensure that I get the collector configuration right,
+I&rsquo;ll first create it manually. Then I&rsquo;ll test it on a Windows endpoint
+to ensure that the S3 upload aspect works correctly. To do this I run
+the &ldquo;Build offline collector&rdquo; wizard which is launched from the
+<strong>Server Artifacts</strong> screen.</p>
+<ol>
+<li>
+<p>Choose the artifacts I want to collect, as listed above.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/offline_collector_tool/collector_artifacts.png"
+         class="inline"
+         alt="Artifact selections"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="collector_artifacts.png">
+      <i class="fa fa-download"></i></a>
+    Artifact selections
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+<li>
+<p>Configure the artifact parameters.</p>
+<p>In this case all I did was configure <code>Windows.Triage.Targets</code> with
+the <code>_Live</code> High Level Target.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/offline_collector_tool/collector_parameters.png"
+         class="inline"
+         alt="Artifact parameters"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="collector_parameters.png">
+      <i class="fa fa-download"></i></a>
+    Artifact parameters
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+<li>
+<p>Configure the collector itself.</p>
+<p>The reason I want to create and use a <em>generic collector</em> is because
+the client already has the correct Velociraptor binary - the one from
+which the client itself is running. There&rsquo;s no reason to repack and
+distribute another full binary. The generic collector will be
+significantly smaller and provide exactly the same result.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/offline_collector_tool/collector_configure.png"
+         class="inline"
+         alt="Collector configuration"
+         width="2298" height="1780">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="collector_configure.png">
+      <i class="fa fa-download"></i></a>
+    Collector configuration
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Here I used the following settings, which correspond to my specific
+environment, including the configuration of my Garage S3 server.
+Settings not listed here were left as default.</p>
+<ul>
+<li>Target Operating System: <code>Generic Collector</code></li>
+<li>Encryption Scheme: <code>X509 Certificate/Frontend Certificate</code></li>
+<li>Collection Type: <code>AWS Bucket</code></li>
+<li>S3 Bucket: <code>offline-collections</code></li>
+<li>Credentials Key: [ <em>my Key ID for offline-collections-key</em> ]</li>
+<li>Credentials Secret: [ <em>my Secret Key for offline-collections-key</em> ]</li>
+<li>Region <code>garage</code></li>
+<li>Endpoint: <code>http://192.168.56.1:3900</code> (my garage server IP and <code>S3_api</code> port)</li>
+<li>Skip Cert Verification: <code>Y</code></li>
+<li>Pause For Prompt: <code>Y</code></li>
+<li>Collector Name: <code>collector-windows-triage</code></li>
+<li>Delete Collection at Exit: <code>Y</code></li>
+</ul>
+</li>
+<li>
+<p>Launch the artifact and let it create the collector.</p>
+</li>
+</ol>
+<p>Now I can go download the collector from the artifact&rsquo;s <strong>Uploaded
+Files</strong> tab.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/offline_collector_tool/collector_download.png"
+         class="inline"
+         alt="Download the collector"
+         width="1200" height="610">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="collector_download.png">
+      <i class="fa fa-download"></i></a>
+    Download the collector
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>I copy it over to a Windows machine that already has a Velociraptor
+client installed, and that therefore has the binary with which I can
+run the generic collector (as administrator).</p>
+<pre><code class="language-console">C:\Program Files\Velociraptor&gt;velociraptor -- --embedded_config collector-windows-triage
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/offline_collector_tool/collector_manual_run.png"
+         class="inline"
+         alt="Manually running the generic collector"
+         width="1280" height="802">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="collector_manual_run.png">
+      <i class="fa fa-download"></i></a>
+    Manually running the generic collector
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>At the end of the collection it pauses, and I can see the that it
+reports successfully uploading the results to the Garage S3 server.</p>
+<p>The &ldquo;Delete Collection at Exit&rdquo; setting removed the collection zip
+from the local disk after uploading it to the S3 bucket.</p>
+<p>From my workstation I can connect to the Garage server and confirm
+that the collection zip and the collection log were uploaded:</p>
+<pre><code class="language-shell">$ mc ls garage/offline-collections
+[2026-03-25 11:19:48 SAST] 107KiB STANDARD Collection-WIN-KMODJ1W0CYG-2026-03-25T09_19_03Z.log
+[2026-03-25 11:19:44 SAST] 611MiB STANDARD Collection-WIN-KMODJ1W0CYG-2026-03-25T09_19_03Z.zip
+</code></pre>
+<p>So the manual collection works as expected, which means the collector
+settings are correct. However this was just a test step. The next step
+it to automate the creation of the collector and add it to
+Velociraptor&rsquo;s tools inventory.</p>
+<h3 id="22-create-a-collector-generating-server-artifact">2.2 Create a collector-generating server artifact</h3>
+<p>Now that I&rsquo;m satisfied that my collector configuration works as
+expected, I&rsquo;ll create a server artifact that reproduces the creation
+of that collector.</p>
+<p>I want to make a few of the options configurable so I&rsquo;ll add those as
+artifact parameters.</p>
+<pre><code class="language-yaml">name: Custom.CreateCollectorTool
+description: |
+  Creates a generic offline collector and adds it to the tool inventory.
+
+type: SERVER
+
+parameters:
+  - name: artifacts
+    type: json_array
+    default: '[&quot;Windows.Triage.Targets&quot;, &quot;Generic.Client.Info&quot;, &quot;Generic.Forensic.SQLiteHunter&quot;]'
+
+  - name: artifact_parameters
+    type: json
+    default: |
+      {
+        &quot;Generic.Forensic.SQLiteHunter&quot;: {
+          &quot;DateAfter&quot;: &quot;1970-01-01T00:00:00Z&quot;,
+          &quot;DateBefore&quot;: &quot;2100-01-01T00:00:00Z&quot;
+        },
+        &quot;Windows.Triage.Targets&quot;: {
+          &quot;HighLevelTargets&quot;: &quot;[\&quot;_Live\&quot;]&quot;
+        }
+      }
+
+  - name: collector_target_args
+    type: json
+    default: |
+      {
+       &quot;bucket&quot;: &quot;offline-collections&quot;,
+       &quot;credentialsKey&quot;: &quot;GKaa23dd92075b4dc6fc9fe54f&quot;,
+       &quot;credentialsSecret&quot;: &quot;0bdfb02186ded9c01e0f755661c62e087ea2a280443d138ccaa05948e68faa78&quot;,
+       &quot;region&quot;: &quot;garage&quot;,
+       &quot;endpoint&quot;: &quot;http://192.168.56.1:3900&quot;,
+       &quot;noverifycert&quot;: &quot;Y&quot;
+      }
+
+  - name: collector_tool_name
+    default: 'collector-windows-triage'
+
+  - name: collector_tool_version
+    default: '1'
+
+  - name: collector_target
+    default: 'S3'
+
+sources:
+  - query: |
+      LET collector_spec &lt;= dict(
+          OS=&quot;Generic&quot;,
+          artifacts=artifacts,
+          parameters=artifact_parameters,
+          target=collector_target,
+          target_args=collector_target_args,
+          encryption_scheme=&quot;X509&quot;,
+          opt_verbose=&quot;Y&quot;,
+          opt_banner=&quot;Y&quot;,
+          opt_prompt=&quot;Y&quot;,
+          opt_admin=&quot;Y&quot;,
+          opt_level=5,
+          opt_concurrency=2,
+          opt_format=&quot;jsonl&quot;,
+          opt_filename_template=&quot;Collection-%Hostname%-%TIMESTAMP%&quot;,
+          opt_collector_filename=collector_tool_name,
+          opt_cpu_limit=0,
+          opt_progress_timeout=1800,
+          opt_timeout=1800,
+          opt_delete_at_exit=&quot;Y&quot;)
+
+      SELECT inventory_add(tool=collector_tool_name,
+                                accessor=&quot;fs&quot;,
+                                file=Repacked.Components,
+                                version=collector_tool_version,
+                                serve_locally=true) AS CollectorTool
+      FROM Artifact.Server.Utils.CreateCollector(`**`=collector_spec)
+</code></pre>
+<p>Some things to notice about this artifact:</p>
+<ul>
+<li>
+<p>The <code>Server.Utils.CreateCollector</code> artifact accepts many parameters.
+I&rsquo;ve constructed a dict with key names matching the ones that can be
+seen in the <strong>Requests</strong> tab after running
+<code>Server.Utils.CreateCollector</code> in the previous test build.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/offline_collector_tool/createcollector_requests.png"
+         class="inline"
+         alt="The Server.Utils.CreateCollector Requests tab"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="createcollector_requests.png">
+      <i class="fa fa-download"></i></a>
+    The Server.Utils.CreateCollector Requests tab
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+<li>
+<p>The <code>Server.Utils.CreateCollector</code> has some parameters that I want
+to be able to easily change, so I&rsquo;ve added those as parameters to my
+artifact. Dealing with some of their values is a bit tricky because
+the JSON that you see in the Requests tab is heavily
+backslash-escaped. In my artifact:</p>
+<ul>
+<li>the <code>artifacts</code> parameter needs to be a valid JSON array</li>
+<li>the <code>artifact_parameters</code>and <code>collector_target_args</code> parameters
+need to be a valid JSON objects</li>
+</ul>
+<p>To validate your JSON for these parameters, you can use an online
+tool such as <a href="https://jsonlint.com/" target="_blank" >https://jsonlint.com/</a>, which also allows you to
+prettify it once it&rsquo;s validated.</p>
+</li>
+<li>
+<p>Tool versioning is quite important and useful, so I&rsquo;ve added the
+tool <code>version</code> as an artifact parameter. This allows me to store
+multiple versions of the same tool in the tools inventory, and
+potentially choose a particular version when I run my client
+artifact.</p>
+</li>
+<li>
+<p>In the <code>collector_target_args</code> parameter there are a few child
+fields that are left empty by <code>Server.Utils.CreateCollector</code>, so
+I&rsquo;ve omitted those from the JSON to simplify it. I could have done
+the same with the date filter parameters in
+<code>Generic.Forensic.SQLiteHunter</code>, and it would just use the defaults
+for those parameters, but I deliberately kept those fields to
+highlight the nested JSON structure.</p>
+</li>
+<li>
+<p>When passing the <code>collector_spec</code> dict to
+<code>Server.Utils.CreateCollector</code> I&rsquo;ve used
+<a href="/docs/vql/fundamentals/#argument-unpacking">argument unpacking</a>
+(<code>**=</code> syntax) to make the SELECT clause more succinct.</p>
+</li>
+</ul>
+<h3 id="23-run-the-server-artifact">2.3 Run the server artifact</h3>
+<p>I can now run this artifact on my server to generate the offline
+collector and store it in the tools repository.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/offline_collector_tool/createcollectortool_uploads.png"
+         class="inline"
+         alt="Custom.CreateCollectorTool Uploaded Files"
+         width="1200" height="565">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="createcollectortool_uploads.png">
+      <i class="fa fa-download"></i></a>
+    Custom.CreateCollectorTool Uploaded Files
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The <strong>Uploaded Files</strong> tab of the collection makes the offline collector
+and associated spec file available for download, but I don&rsquo;t need to
+do that because the tool is already stored in the tools inventory.</p>
+<p>On the <strong>Results</strong> tab I can see that the tool has been added to the
+inventory.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/offline_collector_tool/createcollectortool_results.png"
+         class="inline"
+         alt="Custom.CreateCollectorTool Uploaded Files"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="createcollectortool_results.png">
+      <i class="fa fa-download"></i></a>
+    Custom.CreateCollectorTool Uploaded Files
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>I can also verify that the tool is in the inventory by running the
+following query in a notebook:</p>
+<pre><code class="language-vql">SELECT name, hash, version, serve_locally FROM inventory()
+WHERE name =~ &quot;collector-windows-triage&quot;
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/offline_collector_tool/inventory_check.png"
+         class="inline"
+         alt="Querying the inventory in a notebook"
+         width="1111" height="345">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="inventory_check.png">
+      <i class="fa fa-download"></i></a>
+    Querying the inventory in a notebook
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="3-create-a-client-artifact-to-run-the-offline-collector">3. Create a client artifact to run the offline collector</h2>
+<p>With the tool added to the inventory, I can now create my client
+artifact that will use it.</p>
+<p>It&rsquo;s a very simple artifact that leverages the
+<code>Generic.Utils.FetchBinary</code> utility artifact to fetch the generic
+collector file from the tools repository.</p>
+<pre><code class="language-yaml">name: Custom.RunOfflineCollectorTool
+description: |
+  Runs a generic offline collector retrieved from the server's tools repository.
+
+required_permissions:
+  - EXECVE
+
+implied_permissions:
+  - FILESYSTEM_WRITE
+
+tools:
+# All we need here is the tool name and version because it already exists in
+# the tools repository
+  - name: collector-windows-triage
+    version: &quot;1&quot;
+
+parameters:
+# You can have multiple collectors to choose from but they all need to be
+# included under the `tools` top-level key.
+  - name: collector_name
+    type: choices
+    default: collector-windows-triage
+    choices:
+      - collector-windows-triage
+
+sources:
+  - query: |
+      LET collector &lt;= SELECT *
+        FROM Artifact.Generic.Utils.FetchBinary(
+                                          ToolName=collector_name,
+                                          IsExecutable=FALSE,
+                                          SleepDuration=&quot;0&quot;,
+                                          TemporaryOnly=TRUE)
+
+      LET host_info &lt;= SELECT * FROM info()
+
+      LET cmd_args &lt;= (host_info[0].Exe, &quot;--&quot;, &quot;--embedded_config&quot;,
+            collector[0].OSPath)
+
+      SELECT *
+      FROM execve(argv=cmd_args, sep=&quot;\n&quot;)
+</code></pre>
+<p>Some things to notice about this artifact:</p>
+<ul>
+<li>
+<p>It uses the <code>info()</code> plugin to get the full path to the Velociraptor
+client&rsquo;s own binary. It then uses that to run the generic collector.</p>
+</li>
+<li>
+<p>For the <code>Generic.Utils.FetchBinary</code> artifact I&rsquo;ve specified the
+parameter <code>TemporaryOnly=TRUE</code> because it&rsquo;s easy for an adversary to
+print out the collector config and see what I&rsquo;m collecting <em>if</em> the
+file is left lying around on the filesystem. So by avoiding caching
+the file in the local tools cache, there&rsquo;s less chance of some else
+finding it abusing it. It&rsquo;s also very unlikely that I&rsquo;d want to run
+the same offline collector twice, so caching it isn&rsquo;t really useful.</p>
+</li>
+<li>
+<p>The artifact makes provision for adding more offline collectors, but
+I only have one at this stage.</p>
+</li>
+<li>
+<p>in the <code>tools</code> section I have specified a version number. If I
+create subsequent versions of the same tool, then I can switch to a
+specific version if needed by changing this value. If I want it to
+always use the highest version of the tool, I could not specify a
+version and it will automatically choose the highest number (taking
+into account Semantic Versioning if I had chosen to use that
+scheme).</p>
+</li>
+</ul>
+<h2 id="4-run-the-client-artifact">4. Run the client artifact</h2>
+<p>I now collect the <code>Custom.RunOfflineCollectorTool</code> on a client. I&rsquo;m
+doing this for a single client but it could just as easily be run via
+a hunt to target many clients.</p>
+<p>The collection proceeds on the client and I can view the results,
+which will come though in near-realtime as the offline collector is
+running. The collection results are just a line-parsed view the output
+from Stdout and Stderr.</p>
+<p>Near the end of the results I can see that it uploaded the collection
+container zip to the S3 bucket.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/offline_collector_tool/runcollectortool_results.png"
+         class="inline"
+         alt="Collection results"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="runcollectortool_results.png">
+      <i class="fa fa-download"></i></a>
+    Collection results
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>On the collections <strong>Log</strong> tab, I can view the steps taken on the
+client to run the collector, including things like the command that
+was used and post-execution cleanup steps.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/offline_collector_tool/runcollectortool_log.png"
+         class="inline"
+         alt="Collection log"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="runcollectortool_log.png">
+      <i class="fa fa-download"></i></a>
+    Collection log
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The offline collector doesn&rsquo;t know it&rsquo;s being run by a Velociraptor
+client and, as I mentioned in the overview, the collection data is
+therefore independent of the Velociraptor server. The client was just
+being used to run the collector. The collection results and collection
+log only provide information about running the collector.</p>
+<h2 id="5-download-collection-zips-from-the-s3-server">5. Download collection zips from the S3 server.</h2>
+<p>With the collection zips stored in the S3 bucket, any external process
+can take over from there. You may have an automated process that
+monitors the bucket for new arrivals, downloads them, and feeds them
+into a processing pipeline.</p>
+<p>In my case, I&rsquo;m just going to download them manually using the MinIO
+<code>mc</code> utility that I set up previously.</p>
+<p>First I list what&rsquo;s in the bucket:</p>
+<pre><code class="language-shell">mc ls garage/offline-collections
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/offline_collector_tool/mc_ls.png"
+         class="inline"
+         alt="Bucket listing"
+         width="775" height="276">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="mc_ls.png">
+      <i class="fa fa-download"></i></a>
+    Bucket listing
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>I then download the files to my desktop using <code>mc</code>:</p>
+<pre><code class="language-shell">mc cp --recursive garage/offline-collections /tmp/collections/
+</code></pre>
+<p>At this point I have many options regarding how I might want to work
+with the collection container zips.</p>
+<p>For example I could:</p>
+<ul>
+<li>
+<p><a href="/docs/deployment/offline_collections/collection_data/#extracting-or-listing-with-the-velociraptor-unzip-command">extract the collection zips</a>
+and work with their contents using other tools, perhaps also using
+Velociraptor&rsquo;s
+<a href="/docs/deployment/#command-line-investigation-tool">command line analysis</a>
+capabilities alongside the other tools.</p>
+<p>or</p>
+</li>
+<li>
+<p>run an
+<a href="/docs/deployment/#instant-velociraptor">Instant Velociraptor</a>
+instance on my local workstation, or a set up separate Velociraptor
+server dedicated to analysis, and then either:</p>
+<ul>
+<li><a href="/docs/deployment/offline_collections/collection_data/#importing-collections-into-the-velociraptor-server">import the collection container zips</a>
+before working with their contents, or</li>
+<li>work with the collection container contents
+<a href="/docs/deployment/offline_collections/collection_data/#accessing-collection-containers-without-importing">without importing them</a>.</li>
+</ul>
+</li>
+</ul>
+<p>As always, Velociraptor give you many options and you&rsquo;ll need to
+decide which options work best for your situation. Hopefully the steps
+demonstrated here are generic enough that they can be easily adapted
+for similar scenarios.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352330"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352330"></script>
+    <script src="/js/jquery.sticky.js?1775352330"></script>
+    <script src="/js/featherlight.min.js?1775352330"></script>
+    <script src="/js/highlight.min.js?1775352330"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352330"></script>
+    <script src="/js/learn.js?1775352330"></script>
+    <script src="/js/hugo-learn.js?1775352330"></script>
+    
+    
+
+  </body>
+</html>

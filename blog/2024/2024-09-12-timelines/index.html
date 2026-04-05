@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="The latest Velociraptor Release features an improved
+new timeline feature. This post examines the new feature
+by using it to work through a simple response case.
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Timelines in Velociraptor :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352327" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352327" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352327" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352327" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352327" rel="stylesheet">
+    <link href="/css/theme.css?1775352327" rel="stylesheet">
+    <link href="/css/tabs.css?1775352327" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352327" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352327" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352327" rel="stylesheet"><link href="/css/syntax.css?1775352327" rel="stylesheet"><link href="/css/light.css?1775352327" rel="stylesheet"><link href="/css/hljs.css?1775352327" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352327" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352327"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/blog/2024/2024-09-12-timelines/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/blog\/2024\/2024-09-12-timelines\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/2024/2024-09-12-timelines/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Timelines in Velociraptor</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#an-example-timeline-in-an-investigation">An example timeline in an investigation.</a></li>
+    <li><a href="#case-study-ransomware-intrusion">Case study: Ransomware intrusion</a>
+      <ul>
+        <li><a href="#step-1-create-a-global-notebook">Step 1: Create a global notebook</a></li>
+        <li><a href="#step-2-collect-some-artifacts">Step 2: Collect some artifacts!</a></li>
+        <li><a href="#adding-to-the-timeline">Adding to the timeline.</a></li>
+        <li><a href="#the-timeline-viewer">The timeline viewer</a></li>
+        <li><a href="#annotating-an-event">Annotating an Event</a></li>
+        <li><a href="#adding-further-time-series">Adding further time series</a></li>
+        <li><a href="#exporting-the-annotations">Exporting the annotations</a></li>
+        <li><a href="#the-timeline-workflow">The Timeline workflow</a></li>
+      </ul>
+    </li>
+    <li><a href="#integration-with-third-party-timelining-tools">Integration with third party timelining tools</a>
+      <ul>
+        <li><a href="#automatic-timesketch-uploads">Automatic Timesketch uploads</a></li>
+      </ul>
+    </li>
+    <li><a href="#conclusions">Conclusions</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/analysis">Analysis</a>
+
+  <a class="tag-link" href="/tags/timeline">Timeline</a>
+
+  <a class="tag-link" href="/tags/forensics">Forensics</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Timelines in Velociraptor
+            </h1>
+            
+            <div class="author pull-right">
+              Mike Cohen
+              <span class="date">2024-09-12</span>
+            </div>
+            
+          
+
+        
+
+
+
+	
+<div class="mynotices note">
+  <div heading=" New feature "><p>This feature is available in the 0.73 release. You can
+<a href="/downloads/">Download it</a> and provide valuable feedback.</p>
+</div>
+</div>
+
+
+<p>Digital forensics is about reconstructing what happened in the past
+based on available artifacts. When applying Digital Forensics to an
+incident response case, we try to follow the movements of the
+adversary through the network and answer some common questions:</p>
+<ul>
+<li>What happened?</li>
+<li>When did it happen?</li>
+<li>What potential information was compromised?</li>
+<li>How can we harden the system to prevent this from happening again.</li>
+</ul>
+<p>A very useful tool for every incident manager is to build a timeline
+of relevant information. A timeline helps to communicate the sequence
+of actions the adversary took. Additionally timelines help us to
+identify the time period of interest to the specific case, so that we
+can ignore other data that happened either before or after the
+incident. In this way timelining is a useful triaging tool.</p>
+<h2 id="an-example-timeline-in-an-investigation">An example timeline in an investigation.</h2>
+<p>Timelining an incident is an important part of many
+investigations. Before I describe the timeline feature within
+Velociraptor, it is important to understand how timelines are used
+traditionally. After all, Velociraptor is simply a tool that makes the
+workflow simpler, but ultimately the same general process is followed!</p>
+<p>The simplest approach is to manually keep a spreadsheet of events and
+timestamps, sorted by time. This approach does not require any
+additional tools than a simple spreadsheet:</p>
+<ul>
+<li>
+<p><code>Analysis step</code>: The investigator identifies important events to
+annotate by analysing various forensic artifacts or even just
+interviewing people, looking at other sources of evidence like
+security video etc.</p>
+<p>The purpose of this step is to identify and isolate noteworthy
+events from the thousands of time relevant data typically
+encountered in an investigation.</p>
+</li>
+<li>
+<p><code>Annotation step</code>: The investigator then simply writes a timestamp
+in one column, a message in the other column and any additional
+information in a third column.</p>
+<p>The purpose of this step is to assign semantic interpretation of
+noteworthy events to explain how they are relevant to the case.</p>
+</li>
+</ul>
+<p>An example of such a manual approach is</p>
+<table>
+  <thead>
+      <tr>
+          <th>Timestamp</th>
+          <th>Message</th>
+          <th>Information</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>2021-10-12 10:10Z</td>
+          <td>Suspect entered vehicle</td>
+          <td>source=Video surveillance, Vehicle_tag=<code>XYZ</code>, Suspect=Bob</td>
+      </tr>
+      <tr>
+          <td>2021-10-12 11:05Z</td>
+          <td>Call Received</td>
+          <td>source=Call Log, Number=555-1234, Duration: 2min</td>
+      </tr>
+      <tr>
+          <td>2021-10-12 11:06Z</td>
+          <td>Vehicle crashed</td>
+          <td>source=Police Report, Place=I95 South, near exit 175</td>
+      </tr>
+  </tbody>
+</table>
+<p>The above example is a typical investigation timeline:</p>
+<ul>
+<li>
+<p>The timeline contains information from multiple sources. We call
+each entry in the table an <code>event</code>.</p>
+</li>
+<li>
+<p>Each source contains different types of information, but each event
+has some common fields:</p>
+<ul>
+<li><code>Timestamp</code>: This is when the event occurred (usually specified in a
+common timezone).</li>
+<li><code>Message</code>: A generic human readable message to explain what this
+event represents.</li>
+<li><code>Information</code>: This column contains any event specific
+information. Since this information can vary, the data is normally
+stored in the same column in some kind of structured way (e.g. a
+Key/Value format)</li>
+</ul>
+</li>
+</ul>
+<p>The above timeline helps us to explain what happened - we only see
+relevant, annotated events (and a note relating these to the
+case). This timeline adds support to the central theory of what
+actually caused the accident - likely mobile phone use by the driver.</p>
+<p>The important takeaways from this example are:</p>
+<ol>
+<li>I combine events from different sources based on their timestamp.</li>
+<li>Only important events to the case are annotated with a human
+readable note that relates them to the case.</li>
+<li>The timeline helps support a certain theory or conclusion of what
+actually happened.</li>
+</ol>
+<h2 id="case-study-ransomware-intrusion">Case study: Ransomware intrusion</h2>
+<p>To illustrate how a timeline can be used in a typical DFIR
+investigation, let&rsquo;s consider a simple (if contrived) case study:
+Ransomware deployment on an endpoint.</p>
+<h3 id="step-1-create-a-global-notebook">Step 1: Create a global notebook</h3>
+<p>Velociraptor notebooks are interactive documents that can be shared
+between a group of investigators. Each notebook consists of cells,
+while cells can contain markdown text or VQL queries to evaluate.</p>
+<p>I will start off by create a global notebook to hold the timeline.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-12-timelines/new_notebook_timeline_1_.svg" alt="Creating a notebook from a template"
+         class="inline"
+         height="488"
+         width="704.4040404040404"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="new_notebook_timeline_1.svg"><i class="fa fa-download"></i></a>
+    Creating a notebook from a template
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-12-timelines/new_notebook_timeline_2_.svg" alt="An empty timeline notebook"
+         class="inline"
+         height="312.7695309494303"
+         width="668.597114718738"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="new_notebook_timeline_2.svg"><i class="fa fa-download"></i></a>
+    An empty timeline notebook
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="step-2-collect-some-artifacts">Step 2: Collect some artifacts!</h3>
+<p>In this case I will directly collect artifacts from the endpoint in
+question. I search for the hostname and select it for interactive
+triage.</p>
+<p>Usually at the start of an incident I don&rsquo;t really know what happened
+or where to start. I like to start of with some Sigma rules as curated
+by the <code>Windows.Hayabusa.Rules</code> artifact. This artifact is maintained
+by the separate <a href="https://sigma.velocidex.com" target="_blank" >Velociraptor Curated
+Sigma</a> site. The artifact combines many
+rules from the
+<a href="https://github.com/Yamato-Security/hayabusa-rules" target="_blank" >Hayabusa</a> and
+Sigma projects.</p>
+<p>Sigma rules are a good place to start as they can indicate any
+suspicious activity on an endpoint. Normally Sigma rules must balance
+false positives with the probability of missing a detection. However,
+in the triage context, I really want to see all rules - including ones
+that are noisy and produce a lot of false positives.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-12-timelines/hayabusa_parameters_.svg" alt="Configuring the Sigma artifacts"
+         class="inline"
+         height="429.7522281450361"
+         width="667.0010320654768"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="hayabusa_parameters.svg"><i class="fa fa-download"></i></a>
+    Configuring the Sigma artifacts
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Therefore in this case I will choose to evaluate <strong>All</strong> the rules on
+the endpoint. The artifact will then evaluate all rules against each
+local event log file.</p>
+<p>This results in over 18,000 events - too many to manually review! I
+will post process this collection by selecting the collection&rsquo;s
+<code>Notebook</code> tab. This is a notebook that is created inside each
+collection for post processing just that one collection results.</p>
+<p>In this case I don&rsquo;t really want to review every single hit. I just
+want to see what <strong>kind</strong> of rules matched to get an overview of what
+happened. I can then drill down into each hit to identify the
+important ones.</p>
+<p>This type of processing is called <code>Stacking</code>. Velociraptor has an
+inbuilt stacking feature within the GUI - it is available on any
+table!</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-12-timelines/hayabusa_stack_1_.svg" alt="Stacking hits by Title"
+         class="inline"
+         height="312.7695309494303"
+         width="717.9935837204962"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="hayabusa_stack_1.svg"><i class="fa fa-download"></i></a>
+    Stacking hits by Title
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>First I sort by one of the table columns - This will select the column
+I want to stack on. In this case, I will sort by the Rule Title. Once
+the table is sorted, the GUI shows the stacking button. Clicking the
+stacking button shows the stacking overview for this table.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-12-timelines/hayabusa_stack_2_.svg" alt="Inspecting unique rules"
+         class="inline"
+         height="312.7695309494303"
+         width="647.3632806059221"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="hayabusa_stack_2.svg"><i class="fa fa-download"></i></a>
+    Inspecting unique rules
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Stacking is a common technique to view aggregation of data quickly. I
+allows us to see what <strong>kind</strong> of rules matches in this case, and how
+many times they matched. We can then drill down on each of these
+matches to see if they are relevant to the case.</p>
+<p>In the above, I immediately see some interesting rules matched! Lets
+consider the rule <code>Windows Defender Real-time Protection Disabled</code>. This event matched twice in the logs but it is usually a
+strong signal so I want to drill down on it.</p>
+<p>If I click the Link icon in the stacking table, I will be able to
+explore the specific times this rule matched.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-12-timelines/hayabusa_stack_defender_disabled_.svg" alt="Specific instances when Defender was disabled"
+         class="inline"
+         height="257.8377499329176"
+         width="1154.0607943821237"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="hayabusa_stack_defender_disabled.svg"><i class="fa fa-download"></i></a>
+    Specific instances when Defender was disabled
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>I see a match in 2023 and one in 2024. In practice a lot of false
+positives will occur, or even evidence of previous compromise
+unrelated to the current incident! Reviewing these events at this
+stage can help to put a timeline on the incident.</p>
+<p>For our purposes we can narrow the time of interest to shortly before
+<code>2024-09-12</code> and this helps us quickly focus on events after that time
+(in a real case, I will be more exhaustive in checking for possible
+earliest compromise)</p>
+<p>I will then reduce the table to all events after <code>2024-09-12</code> by
+adapting the cell&rsquo;s VQL query. In the initial stage I will only look
+at high and critical level events, and remove rules which usually
+produce too many false positives.</p>
+<p>This reduces the number of events to consider from over 18,000 to
+about 100 high confidence events that I can manually review.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-12-timelines/hayabusa_reduced_.svg" alt="Reducing data"
+         class="inline"
+         height="488"
+         width="1441.7721518987344"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="hayabusa_reduced.svg"><i class="fa fa-download"></i></a>
+    Reducing data
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="adding-to-the-timeline">Adding to the timeline.</h3>
+<p>Velociraptor&rsquo;s timelines implementation streamlines and enables the
+above described manual process. We still mostly follow the same
+general pattern but within the GUI much of the maintainance of
+timelines is made easier and reduces friction for the user.</p>
+<p>First let&rsquo;s define some terms:</p>
+<ol>
+<li>
+<p>An <code>Event</code> represents something that happened at a point in
+time. All events contain the following fields:</p>
+<ul>
+<li>A Timestamp is the time when the event occurred.</li>
+<li>A Message is used to describe what the event is.</li>
+<li>A Data field contains arbitrary data as key/value pairs -
+depending on where the event is coming from, this data will vary.</li>
+</ul>
+</li>
+<li>
+<p>A <code>Timeline</code> is a series of <code>Events</code> with a name.</p>
+</li>
+<li>
+<p>A <code>Supertimeline</code> is a collection of <code>Timelines</code> which allows us to
+interactively inspect all the timelines together. The GUI overlays
+all the events together into one UI and allows the user to enable
+or disable any specific timeline in order to focus on specific
+types of information.</p>
+</li>
+<li>
+<p>An <code>Annotation</code> is a special <code>Timeline</code> within the <code>Supertimeline</code>
+that users can add specific messages to. The annotations can be
+hidden or shown as other timelines but the GUI provides a way to
+add/remove annotations by inspecting other events in other timelines.</p>
+</li>
+</ol>
+<p>The ultimate goal of the <code>Supertimeline</code> is to build a useful set of
+<code>Annotations</code> from all the events in the different timelines so that a
+report may be written from it. The annotations timeline is what we
+refer to as the &ldquo;investigative timeline&rdquo; (Similar to the example
+above).</p>
+<p>Because the Annotations timeline is for user consumption, we only want
+high value and high confidence events and not too many of them. We
+don&rsquo;t expect hundreds or thousands of annotations! Ideally we can
+export the annotations from a timeline analysis and present it as a
+running commentary of what happened.</p>
+<p>Let&rsquo;s add our Sigma analysis to the timeline. Within the Reduced Sigma
+table, click <code>Add to Timeline</code>.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-12-timelines/add_timeline_1_.svg" alt="Adding a table to a super timeline timeline"
+         class="inline"
+         height="406.1937388752685"
+         width="914.0819678141265"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="add_timeline_1.svg"><i class="fa fa-download"></i></a>
+    Adding a table to a super timeline timeline
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The <code>Add Timeline</code> dialog allows us to create a timeline, add it to a
+supertimeline and configure how events are created from the current
+table:</p>
+<ol>
+<li>
+<p>Selecting <code>Local Timeline</code> or <code>Global Timeline</code> allows me to select
+which <code>Supertimeline</code> I want to add this to. Global Timelines exist
+within the <code>Global Notebooks</code> (i.e. those created from a template
+and are visible from the notebook side bar).</p>
+<p>I will select the <code>Supertimeline</code> in the notebook I created
+earlier.</p>
+</li>
+<li>
+<p>Next I will name the new <code>Timeline</code> to remind me where these events
+come from. This name will be used to remind me where the events I
+see come from. I will call this <code>Sigma</code> as this is the result of
+matching the sigma rules.</p>
+</li>
+<li>
+<p>Before the events can be created I need to designate which is the
+Timestamp and Message column - Each event must have a <code>Timestamp</code>
+and a <code>Message</code> field, while the data field will consist of the
+rest of the event specific data.</p>
+</li>
+</ol>
+<h3 id="the-timeline-viewer">The timeline viewer</h3>
+<p>After the reduced Sigma timeline is added, I can see the timeline
+notebook updated.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-12-timelines/timeline_sigma_.svg" alt="The Supertimeline UI"
+         class="inline"
+         height="488"
+         width="1164.176570458404"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="timeline_sigma.svg"><i class="fa fa-download"></i></a>
+    The Supertimeline UI
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Following is a description of the UI:</p>
+<ol>
+<li>The display is divided into a <code>Timeline Visualizer</code> at the top and
+a <code>Time table</code> at the bottom.</li>
+<li>The <code>Timeline Visualizer</code> itself is divided into:
+<ul>
+<li>The <code>time navigator</code> at the top showing event times in UTC. You can
+drag and zoom to change the time scales, or click on the column
+headers to change the time resolution and zoom in and out of the
+time ranges.</li>
+<li>Below the <code>time navigator</code> is the <code>Time Group Visualizer</code>. This
+shows the range of each time series as a color block. This color
+is also matched with the individual events shown in the timeline
+below.</li>
+<li>Each time group represents a distinct time series which can be
+enabled or disabled. Disabling a time series hides it from the
+time table below, making it easier to examine only events from
+the enabled time series.</li>
+<li>The <code>Time Cursor</code> can be moved by clicking within the <code>time navigator</code>. This controls which events are shown in the <code>Time Table</code> below.</li>
+</ul>
+</li>
+<li>The <code>Time Table</code> shows events from all enabled time series that
+occur after the <code>Time Cursor</code>.
+<ul>
+<li>Each event shows the <code>Timestamp</code>, <code>Message</code> and <code>Notes</code> columns
+as an overview row.</li>
+<li>Clicking on the event overview shows all fields in the event.</li>
+<li>Once the event is expanded, the event toolbar allows the user to
+annotate the event.</li>
+</ul>
+</li>
+</ol>
+<h3 id="annotating-an-event">Annotating an Event</h3>
+<p>When an event seems important, it can be annotated. Annotating an
+event will copy it into a special time series within the
+<code>Supertimeline</code> called <code>Annotation</code>.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-12-timelines/timeline_annotation_.svg" alt="Annotating an event"
+         class="inline"
+         height="417.1624946217579"
+         width="1372.0425348825802"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="timeline_annotation.svg"><i class="fa fa-download"></i></a>
+    Annotating an event
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The annotation should contain an explanation as to why this event is
+relevant to the case.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-12-timelines/timeline_annotation_2_.svg" alt="The annotated event"
+         class="inline"
+         height="417.1624946217579"
+         width="1004.3614324532382"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="timeline_annotation_2.svg"><i class="fa fa-download"></i></a>
+    The annotated event
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The annotated event is added to a separate timeline, which may be
+enabled or disabled similarly as the other time series. This allows us
+to concentrate on the annotations separately from other time series.</p>
+<h3 id="adding-further-time-series">Adding further time series</h3>
+<p>As I collect other artifacts, I can get more information about the
+case:</p>
+<ol>
+<li>
+<p>Collecting the <code>Windows.Sys.Users</code> artifact enumerates the local
+users on the system, and estimates the time that the user last
+logged into the system by reporting the Modified time on the User&rsquo;s
+profile registry keys and home directory modification time.</p>
+<p>I reduce the data to show the Home directory modification time
+(Last time the user logged into the account).</p>
+</li>
+</ol>
+<pre><code class="language-vql">SELECT HomedirMtime, Name, Description, Data
+FROM source(artifact=&quot;Windows.Sys.Users&quot;)
+</code></pre>
+<p>I will use the <code>HomedirMtime</code> as the Timestamp column when adding
+this time series.</p>
+<ol start="2">
+<li>
+<p>Collecting the <code>Windows.Forensics.Usn</code> artifact can reveal
+information about files created on the filesystem and their
+creation timestamp. This gives us an idea of what files were
+introduced into the system by the attackers.</p>
+<p>I reduce the data to show only created files in the time range of
+interest which have a full reconstructed path.</p>
+</li>
+</ol>
+<pre><code class="language-vql">SELECT Timestamp, OSPath, Reason
+FROM source(artifact=&quot;Windows.Forensics.Usn&quot;)
+WHERE Timestamp &gt; &quot;2024-09-12&quot;
+  AND NOT OSPath =~ &quot;Err&quot;
+  AND Reason =~ &quot;CREATE&quot;
+</code></pre>
+<ol start="3">
+<li>
+<p>Collecting the <code>Windows.Timeline.Prefetch</code> artifact reveals
+information about when executable files were run.</p>
+<p>I reduce the data to show any execution after the time of interest.</p>
+</li>
+</ol>
+<pre><code class="language-vql">SELECT event_time, message, source
+FROM source(artifact=&quot;Windows.Timeline.Prefetch&quot;)
+WHERE event_time &gt; &quot;2024-09-12&quot;
+</code></pre>
+<ol start="4">
+<li>
+<p>Collecting the <code>Windows.System.TaskScheduler</code> can reveal
+information about new scheduled tasks added to the
+system. Scheduled tasks are a common reinfection mechanism added by
+attackers. Scheduled tasks are defined in XML files in the
+<code>C:/Windows/System32/Tasks/</code> directory. We can use the modification
+time for these files to determine when they were last created or
+updated.</p>
+<p>I reduce the data to show any scheduled tasks with the modification
+times as the timeline&rsquo;s timestamp</p>
+</li>
+</ol>
+<pre><code class="language-vql">SELECT Mtime, OSPath, Command
+FROM source(artifact=&quot;Windows.System.TaskScheduler/Analysis&quot;)
+WHERE Mtime &gt; &quot;2024-09-12&quot;
+</code></pre>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-12-timelines/supertimeline_.svg" alt="The complete timeline with annotations"
+         class="inline"
+         height="417.1624946217579"
+         width="935.0623876085301"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="supertimeline.svg"><i class="fa fa-download"></i></a>
+    The complete timeline with annotations
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="exporting-the-annotations">Exporting the annotations</h3>
+<p>Once we annotated the timeline we can export the annotations in a
+table for reporting purposes. The <code>Timeline</code> notebook template
+provides a second cell that when recalculated exports the <code>Annotation</code>
+time series into a unique table.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-12-timelines/annotations_export_.svg" alt="Exporting the annotations"
+         class="inline"
+         height="417.1624946217579"
+         width="889.8638395136862"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="annotations_export.svg"><i class="fa fa-download"></i></a>
+    Exporting the annotations
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>I now can see what the attackers did. Once they logged in as
+Administrator, they Disabled Windows Defender, Added a second admin
+user account. Then they logged in as that account, created a scheduled
+task for persistence, disabled the Bits client logs and then
+downloaded <code>PsExec.exe</code> renamed to <code>foo.exe</code>. Finally the attackers
+ran <code>whoami</code> and used ping to establish network connectivity.</p>
+<h3 id="the-timeline-workflow">The Timeline workflow</h3>
+<p>To summarize, the general workflow is illustrated below</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-12-timelines/workflow_.svg" alt="The general timeline workflow"
+         class="inline"
+         height="579.3612914230722"
+         width="730.7341650549621"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="workflow.svg"><i class="fa fa-download"></i></a>
+    The general timeline workflow
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>As we collect artifact from a group of hosts in a hunt, or
+individually from specific clients, we post process the results in
+order to identify high value events.</p>
+<p>The aim is to reduce the total number of events that are added to the
+timeline in order to make it easier to review them.</p>
+<p>Ultimately the product of the timeline exercise is to simply obtain
+the <code>Annotation</code> time series. This contains the manually reviewed and
+annotated set of events to explain the progression of the incident.</p>
+<h2 id="integration-with-third-party-timelining-tools">Integration with third party timelining tools</h2>
+<p>Since the timeline workflow is so central to DFIR there are a number
+of popular timelining tools out there. Probably the most popular is
+<a href="#ZgotmplZ" target="_blank" >Timesketch</a> - a collaborative timeline
+analysis tool developed by the DFIR team at Google.</p>
+<p>Many people use Timesketch in conjunction with
+<a href="https://github.com/log2timeline/plaso" target="_blank" >Plaso</a> which is a timeline
+based analysis engine for forensic bulk files (e.g. event logs,
+filesystem metadata etc). The two tools are usually used in a pipeline
+where Plaso extracts many time related events from various triaged
+artifacts, storing them in the Timesketch database. This usually
+results in millions of events - for example each MFT entry contains 16
+distinct timestamps, leading to 16 distinct timeline events.</p>
+<p>In practice most of these events are not relevant and cloud the
+analysis process by bombarding the user with many irrelevant
+events. Users then use Timesketch itself to perform filtering and
+analysis in order to remove the irrelevant data.</p>
+<p>This &ldquo;Kitchen Sink&rdquo; approach means that timeline becomes the main tool
+for filtering and querying large events (with many irrelevant
+fields). Contrast this with Velociraptor&rsquo;s &ldquo;targeted&rdquo; approach as
+descried above, where pre-filtering and data shaping/enriching occurs
+<strong>before</strong> the data is ingested into the timeline.</p>
+<p>We believe that Velociraptor&rsquo;s &ldquo;targeted&rdquo; approach is superior than
+the &ldquo;Kitchen Sink&rdquo; approach, but it does require a mindset shift and
+for investigators to modify their processes.</p>
+<p>Nevertheless, Timesketch is an excellent tool with many users already
+very familiar with it. Timesketch itself does not actually require
+Plaso at all and can also be used in a targeted way. In fact it is
+possible to feed any time series data to Timesketch.</p>
+<p>Velociraptor supports integrating with Timesketch using the
+<code>Server.Utils.TimesketchUpload</code> artifact.  This artifact uploads
+Velociraptor&rsquo;s timelines to Timesketch using the Timesketch client
+library. The artifact assumes the client library is installed and
+configured on the server.</p>
+<p>To install the Timesketch client library:</p>
+<pre><code>pip install timesketch-import-client timesketch-cli-client
+</code></pre>
+<p>To configure the client library to access your Timesketch instance
+see instructions <a href="https://timesketch.org/guides/user/cli-client/" target="_blank" >https://timesketch.org/guides/user/cli-client/</a> and
+<a href="https://timesketch.org/guides/user/upload-data/" target="_blank" >https://timesketch.org/guides/user/upload-data/</a></p>
+<p>This artifact assumes that the timesketch CLI is preconfigured with
+the correct credentials in the <code>.timesketchrc</code> file.</p>
+<p>You can use this artifact to manually upload any Velociraptor timeline
+data to Timeline by simply specifying the <code>notebook_id</code>, the
+<code>supertimeline</code> and the <code>timeline</code> names. The Artifact will prepare
+automatically create a sketch if required with the same name as the
+Supertimeline, and add a timeline to it with the same name as the
+timeline name provided.</p>
+<h3 id="automatic-timesketch-uploads">Automatic Timesketch uploads</h3>
+<p>While <code>Server.Utils.TimesketchUpload</code> allows uploading timeline to
+Timesketch it requires manual intervention. This makes it more complex
+to use and increases friction.</p>
+<p>We can automate timeline exports using the
+<code>Server.Monitoring.TimesketchUpload</code> server monitoring artifact. This
+artifact watches for any timelines added on the server and
+automatically exports them to Timesketch in the background. This means
+that the user does not need to think about it - all timelines created
+within Velociraptor will automatically be added to Timesketch.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-12-timelines/configure_timesketch_export_.svg" alt="Configuring the Server.Monitoring.TimesketchUpload artifact"
+         class="inline"
+         height="683.5000000000001"
+         width="904.6666666666665"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="configure_timesketch_export.svg"><i class="fa fa-download"></i></a>
+    Configuring the Server.Monitoring.TimesketchUpload artifact
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>To install the <code>Server.Monitoring.TimesketchUpload</code> server monitoring
+artifact, select <code>Server Events</code> in the sidebar, then click the
+<code>Update Server Monitoring Table</code> button. Search for
+<code>Server.Monitoring.TimesketchUpload</code> and configure its parameters.</p>
+<p>The artifact allows for finer control over which timelines to are to
+be exported - For example, maybe only timelines with a name that
+starts with <code>Timesketch</code> will be exported.</p>
+<p>Finally the path on the server to the timesketch client library tool
+is required - this is the external binary we call to upload the actual
+data.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-12-timelines/automating_timesketch_import_.svg" alt="Automating Timesketch Import"
+         class="inline"
+         height="683"
+         width="1226.2404371584698"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="automating_timesketch_import.svg"><i class="fa fa-download"></i></a>
+    Automating Timesketch Import
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Once the server monitoring artifact is configured it simply waits
+until a user adds a timeline to a Supertimeline in Velociraptor, as
+described above. When that happens the timeline is automatically added
+to Timesketch into a sketch named the same as the Velociraptor
+Supertimeline.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2024/2024-09-12-timelines/timesketch_view_.svg" alt="Viewing timelines in Timesketch"
+         class="inline"
+         height="589"
+         width="1297.5716486902927"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="timesketch_view.svg"><i class="fa fa-download"></i></a>
+    Viewing timelines in Timesketch
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>As can be seen in the screenshot above, the same targeted timelines
+are exported to Timesketch. This is most useful for existing
+Timesketch users who are wish to continue using their usual timelining
+tool in a more targeted way by pre-processing data in Velociraptor.</p>
+<h2 id="conclusions">Conclusions</h2>
+<p>Timeline analysis is an important part of many investigations. The
+emerging Velociraptor built in timeline feature is a useful tool to
+assist in the analysis and reporting of incident timelines.</p>
+<p>If you like to try this new feature, take <a href="https://github.com/Velocidex/velociraptor" target="_blank" >Velociraptor for a
+spin</a>!  It is available on
+GitHub under an open source license. As always please file issues on
+the bug tracker or ask questions on our mailing list
+<a href="mailto:velociraptor-discuss@googlegroups.com" target="_blank" >velociraptor-discuss@googlegroups.com</a>
+. You can also chat with us directly on discord
+<a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord</a>
+.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352328"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352328"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352328"></script>
+    <script src="/js/jquery.sticky.js?1775352328"></script>
+    <script src="/js/featherlight.min.js?1775352328"></script>
+    <script src="/js/highlight.min.js?1775352328"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352328"></script>
+    <script src="/js/learn.js?1775352328"></script>
+    <script src="/js/hugo-learn.js?1775352328"></script>
+    
+    
+
+  </body>
+</html>

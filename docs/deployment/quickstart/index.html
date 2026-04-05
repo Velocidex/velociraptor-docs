@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Quickstart Guide :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352329" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352329" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352329" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352329" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352329" rel="stylesheet">
+    <link href="/css/theme.css?1775352329" rel="stylesheet">
+    <link href="/css/tabs.css?1775352329" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352329" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352329" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352329" rel="stylesheet"><link href="/css/syntax.css?1775352329" rel="stylesheet"><link href="/css/light.css?1775352329" rel="stylesheet"><link href="/css/hljs.css?1775352329" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352329" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352329"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/deployment/quickstart/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/deployment\/quickstart\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/deployment/quickstart/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Quickstart Guide</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#what-youll-need-before-you-start">What you&rsquo;ll need before you start</a></li>
+    <li><a href="#simplifying-assumptions">Simplifying assumptions</a></li>
+    <li><a href="#deployment-roadmap">Deployment Roadmap</a></li>
+    <li><a href="#step-1-download-the-velociraptor-binaries">Step 1: Download the Velociraptor binaries</a></li>
+    <li><a href="#step-2-create-the-server-configuration-file">Step 2: Create the server configuration file</a></li>
+    <li><a href="#step-3-create-the-server-installation-package">Step 3: Create the server installation package</a></li>
+    <li><a href="#step-4-install-the-server-component">Step 4: Install the server component</a></li>
+    <li><a href="#step-5-log-in-to-the-admin-gui">Step 5: Log in to the Admin GUI</a></li>
+    <li><a href="#step-6-import-artifacts-from-external-projects">Step 6: Import artifacts from external projects</a></li>
+    <li><a href="#step-7-create-an-installation-package-for-windows-clients">Step 7: Create an installation package for Windows clients</a></li>
+    <li><a href="#step-8-install-the-client-on-endpoints">Step 8: Install the client on endpoints</a></li>
+    <li><a href="#whats-next">What&rsquo;s next?</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Quickstart Guide
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>The goal of this guide is to help you get a Velociraptor server deployed with
+one or more clients, as quickly and simply as possible.</p>
+<p>The Velociraptor server will be configured to use self-signed SSL certificates
+and Basic authentication, which is a relatively simple configuration scheme
+suitable for short-term (e.g. testing/evaluation) non-production use, ideally on a
+private network.</p>
+<p>For production deployments, Single Sign-on (SSO) authentication
+is strongly recommended. However it requires a slightly more complicated
+certificate scheme and public DNS configuration. To explore these other options
+please see the <a href="/docs/deployment/">Deployment</a> section.</p>
+
+<div class="mynotices info">
+  <div heading=" Production Use Disclaimer "><p>Please note that in this simple configuration the Velociraptor server should
+not be exposed to the public internet, particularly because Basic
+authentication mode is vulnerable to brute-force attacks.
+<a href="/knowledge_base/tips/setup_google_oauth/">SSO authentication</a>
+is recommended for production deployments, but SSO is rarely configured with
+self-signed certificates (since it goes against the idea of a trusted
+authentication flow), and we intend to use self-signed certificates in this
+guide for expediency.</p>
+<p>If you have chosen to install the server component on a cloud VM then you should
+leave the GUI port bound to the loopback address and use SSH tunneling to
+connect to the local loopback address.</p>
+<p>Self-signed SSL with Basic authentication is most often used when Velociraptor
+is deployed on private networks for temporary situations such as incident
+response. For long-term deployments, the other modes of operation that
+Velociraptor offers should be preferred.</p>
+</div>
+</div>
+
+
+
+<div class="mynotices tip">
+  <div heading=" Need to go even quicker? "><p>If you&rsquo;re really in a hurry you can start a self-contained
+<a href="/docs/deployment/#instant-velociraptor">Instant Velociraptor</a>
+on your local machine which will allow you to experiment and get a feel for how
+Velociraptor works, without having to deal with any of the network complexities.
+One command is all that&rsquo;s needed to get started!</p>
+</div>
+</div>
+
+
+<h2 id="what-youll-need-before-you-start">What you&rsquo;ll need before you start</h2>
+<ul>
+<li>
+<p>A computer running Linux (any modern Debian or RPM-based distro should be
+fine) on which you can install the <strong>Velociraptor server</strong> component.</p>
+<ul>
+<li>
+<p>Ubuntu is commonly used and we use it for testing, so it is generally
+recommended unless you have a strong preference for something else. If you
+choose to use another Linux distro then please note that it needs to be one
+that uses systemd, although most do these days.</p>
+</li>
+<li>
+<p>The sizing of your server depends on the number of endpoints in your
+environment. A small server with 8GB memory should be sufficient for
+at least 1000 clients, so for a limited deployment that should be more than
+sufficient. You will also need enough disk space to hold the data that you
+collect from your endpoints, and that of course depends entirely on what you
+intend to collect, how frequently you collect it, how many endpoints, etc.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>One or more computers running Windows on which you can install the
+<strong>Velociraptor client</strong> component.</p>
+<ul>
+<li>
+<p>This can actually be any supported client operating system, but in this
+guide we describe the process for a Windows client since it is still by far
+the most common target operating system. See
+<a href="/docs/deployment/clients/">Deploying Clients</a>
+for instructions for deploying clients on other platforms.</p>
+</li>
+<li>
+<p>The Windows version should be at least Windows 10. Older versions may
+require a special build of the Velociraptor binary, as noted
+<a href="/downloads/#release-notes">here</a>,
+since earlier versions are not supported by the latest version of Go, nor
+by Microsoft.</p>
+</li>
+<li>
+<p>If you&rsquo;re just testing, you can install the client on the same machine as
+the server if you really want to. It&rsquo;s not commonly done but the server and
+client will not conflict with each other if run on the same machine.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="simplifying-assumptions">Simplifying assumptions</h2>
+<p>To keep things simple in this deployment scenario we are going to assume that:</p>
+<ol>
+<li>
+<p>The server and client(s) are on the same local network, with no proxies,
+firewalls or NAT devices between them.</p>
+</li>
+<li>
+<p>No DNS records have been configured for the server. While it is usually
+preferable for the clients to be able to resolve and connect to the server by
+DNS name, in Self-Signed SSL mode this is not a requirement. Here we will use
+IP addresses in our configuration, but that means you need to ensure that
+your server&rsquo;s IP address will not change for the duration of your deployment.
+Alternatively you should set up an DNS A record for your server and use that
+name instead of an IP address in the steps below.</p>
+<!-- In this article we will use
+`<your_server_ip>` as shorthand for the IP address of the server, but you
+should substitute your server's actual IP in the commands or config settings
+shown, or instead use the server's DNS name if you have added it to your DNS. -->
+</li>
+<li>
+<p>The server will be able to connect to websites on the internet, specifically
+GitHub, in order to download additional files. While this is not an absolute
+requirement, it is necessary to complete the steps in this guide.</p>
+</li>
+<li>
+<p>The Velociraptor Clients will be able to connect to the server on the default
+TCP port <code>8000</code>.</p>
+</li>
+<li>
+<p>Your workstation will be able to connect using a web browser to the
+Velociraptor Admin GUI running on the server on the default TCP port <code>8889</code>.</p>
+</li>
+</ol>
+<p>If you have a more complex environment that cannot satisfy the above
+requirements then you should refer to the
+<a href="/docs/deployment/">Deployment</a> section where more advanced
+deployment scenarios and associated options are discussed.</p>
+<h2 id="deployment-roadmap">Deployment Roadmap</h2>
+<p>Before we dive in, here&rsquo;s a brief overview of the procedure which we will follow.</p>
+<p>In the first 3 steps we will <em>prepare</em> to install the Velociraptor server
+component:</p>
+<ul>
+<li><a href="/docs/deployment/quickstart/#step-1-download-the-velociraptor-binaries">Step 1: Download the Velociraptor binaries</a></li>
+<li><a href="/docs/deployment/quickstart/#step-2-create-the-server-configuration-file">Step 2: Create the server configuration file</a></li>
+<li><a href="/docs/deployment/quickstart/#step-3-create-the-server-installation-package">Step 3: Create the server installation package</a></li>
+</ul>
+<p>Then we install the server component, log in to the user interface, and create a
+client installer package for Windows:</p>
+<ul>
+<li><a href="/docs/deployment/quickstart/#step-4-install-the-server-component">Step 4: Install the server component</a></li>
+<li><a href="/docs/deployment/quickstart/#step-5-log-in-to-the-admin-gui">Step 5: Log in to the Admin GUI</a></li>
+<li><a href="/docs/deployment/quickstart/#step-6-import-artifacts-from-external-projects">Step 6: Import artifacts from external projects</a></li>
+<li><a href="/docs/deployment/quickstart/#step-7-create-an-installation-package-for-windows-clients">Step 7: Create an installation package for Windows clients</a></li>
+</ul>
+<p>Lastly, we will install the client and confirm that it is communicating with the
+server:</p>
+<ul>
+<li><a href="/docs/deployment/quickstart/#step-8-install-the-client-on-endpoints">Step 8: Install the client on endpoints</a></li>
+</ul>
+<p>The first 3 steps can actually be performed on any platform since we are only
+preparing for the installation and not actually installing anything yet, however
+doing so on the server is the quickest way and simultaneously verifies that
+internet access from the server is OK.</p>
+<h2 id="step-1-download-the-velociraptor-binaries">Step 1: Download the Velociraptor binaries</h2>
+<p>Before we start configuring or running anything you&rsquo;ll need to download the
+latest binary. Binaries for the latest version are listed on our
+<a href="/downloads/">Downloads</a> page, with the binaries themselves being
+hosted on GitHub.</p>
+<p>At this point you only need to download one binary (the one that matches your
+server&rsquo;s platform and architecture) because after installation we will use the
+server to download the Windows binary that we will use for the client.</p>
+
+<div class="mynotices note">
+  <div heading=" One binary to rule them all! "><!-- **Velociraptor only has one binary per operating system + architecture combination.** -->
+<p>Velociraptor does not have separate client binaries and server binaries. The
+binary can function in either role, and perform various other utility functions.
+The command line parameters supplied to the binary tell it whether to behave as
+a server or as a client.</p>
+<p>This means that it&rsquo;s technically possible to run the server or the client on any
+platform that we have a binary for. However
+<em>please note that the server is only fully supported on Linux</em>,
+mainly due to performance considerations inherent in other platforms such as
+Windows. For non-production deployments (e.g. development or testing) it might
+be convenient for you to run the server on another platform and that&rsquo;s fine if
+you feel adventurous and confident in your troubleshooting skills. Just keep in
+mind that for production deployments we strongly recommend that the server
+should run on Linux and that issues encountered when running the server on other
+platforms will not be supported. For this reason we only describe deploying the
+server on Linux in this guide.</p>
+</div>
+</div>
+
+
+<p>For these pre-installation steps you may want to create a new working directory:</p>
+<pre><code class="language-sh">mkdir ~/velociraptor_setup &amp;&amp; cd ~/velociraptor_setup
+</code></pre>
+<p>This directory and the files inside it will not be needed <em>after</em> the server is
+installed, but you might want to keep a copy of these files as an off-server
+backup for disaster recovery purposes.</p>
+<p>Copy the download link for the latest version, appropriate to the
+platform and architecture of your server, and then use it in the <code>wget</code> command
+shown below. This will download the binary and save it with the name
+<code>velociraptor</code>:</p>
+<pre><code class="language-sh">wget -O velociraptor https://github.com/Velocidex/velociraptor/releases/download/v0.75/velociraptor-v0.75.6-linux-amd64
+</code></pre>
+<p>Then make the downloaded file executable so that you can run it in subsequent
+steps:</p>
+<pre><code class="language-sh">chmod +x velociraptor
+</code></pre>
+<p>If you run the binary without any command line parameters, or with <code>-h</code>, or with
+<code>--help-long</code>, it will display help for all the command line options.</p>
+<pre><code class="language-sh">./velociraptor --help-long | more
+</code></pre>
+<p>You can also see the help for a specific command by adding <code>-h</code> after the
+command.</p>
+<p>In the next step we are going to use the <code>config generate</code> command.</p>
+<h2 id="step-2-create-the-server-configuration-file">Step 2: Create the server configuration file</h2>
+<p>Central to every Velociraptor deployment is a
+<a href="https://www.tutorialspoint.com/yaml/yaml_basics.htm" target="_blank" >YAML</a>
+<a href="/docs/deployment/references/">configuration file</a>.
+This file contains all the configuration parameters that define how your server
+and clients operate, plus cryptographic material that is used to secure
+several aspects of the deployment, such a client-server communications.</p>
+<p>To generate a new configuration file we use the <code>config generate</code> command. The
+<code>-i</code> flag tells it to run in interactive mode, which means it will launch a
+question/answer dialogue-style &ldquo;wizard&rdquo; that will gather the most important
+details needed to produce your config.</p>
+
+
+<div class="tab-panel">
+    <div class="tab-nav">
+    
+        <button
+          data-tab-item="Linux"
+          data-tab-group="default"
+          class="tab-nav-button btn active"
+          onclick="switchTab('default','Linux')"
+         >Linux</button>
+    
+        <button
+          data-tab-item="Windows"
+          data-tab-group="default"
+          class="tab-nav-button btn "
+          onclick="switchTab('default','Windows')"
+         >Windows</button>
+    
+        <button
+          data-tab-item="macOS"
+          data-tab-group="default"
+          class="tab-nav-button btn "
+          onclick="switchTab('default','macOS')"
+         >macOS</button>
+    
+    </div>
+    <div class="tab-content">
+        
+        <div data-tab-item="Linux" data-tab-group="default" class="tab-item active">
+            <pre><code class="language-shell">./velociraptor config generate -i
+</code></pre>
+
+        </div>
+        
+        <div data-tab-item="Windows" data-tab-group="default" class="tab-item ">
+            <pre><code class="language-shell">velociraptor.exe config generate -i
+</code></pre>
+
+        </div>
+        
+        <div data-tab-item="macOS" data-tab-group="default" class="tab-item ">
+            <pre><code class="language-shell">./velociraptor config generate -i
+</code></pre>
+
+        </div>
+        
+    </div>
+</div>
+
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/quickstart/self-signed-generation.gif"
+         class="inline"
+         alt="Generating a configuration for a self-signed deployment"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="self-signed-generation.gif">
+      <i class="fa fa-download"></i></a>
+    Generating a configuration for a self-signed deployment
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>In the configuration wizard you should choose the options described below. For
+all other questions you should accept the default values.</p>
+<ul>
+<li><strong>Deployment Type</strong>: <code>Self Signed SSL</code></li>
+<li><strong>What is the public DNS name of the Master Frontend?</strong>: Here you should
+enter the IP server address (or DNS name if you created one) that clients will
+use to connect to the server.</li>
+</ul>
+<p>On the 4th screen of the config wizard you will be asked to add Admin users.</p>
+<pre><code class="language-text"> Adding Admin User Number 0
+ Enter an empty username or Ctrl-C to stop
+
+┃ Username
+┃ &gt; admin
+
+┃ Password
+┃ &gt; &lt;your_password&gt;
+</code></pre>
+<p>This user account will be used for initial access to the admin user interface.</p>
+<p>You don&rsquo;t need to add more than one admin user as additional users (admin or
+non-admin) can be added after installation. It is common to only have 1 admin
+user and many non-admin users, with the latter being used for day-to-day DFIR
+work. So after adding one user you can enter a blank username and password which
+will allow you to continue.</p>
+<p>The final step of the config wizard will offer to write the config file to your
+working directory.</p>
+<ul>
+<li><strong>Name of file to write</strong>: <code>server.config.yaml</code></li>
+</ul>
+<p>You can accept the default file name and the wizard will then exit.</p>
+<p>As you saw, the configuration wizard guides you through the key decisions and
+provides sensible defaults for most options. Ultimately it produces a YAML
+configuration file that contains settings that both the Velociraptor server and
+clients will use. The configuration wizard is the recommended way to generate a
+new configuration, although it is common to manually tweak some settings in this
+configuration file, as we will do next.</p>
+<p>By default the configuration binds the GUI and Frontend services to only the
+loopback interface, <code>127.0.0.1</code>. We will need to change this in the
+configuration file to make these service accessible to other network hosts.</p>
+<p>Open the configuration file in a text editor and change:</p>
+<pre><code class="language-yaml">Frontend:
+  bind_address: 127.0.0.1
+</code></pre>
+<p>to:</p>
+<pre><code class="language-yaml">Frontend:
+  bind_address: 0.0.0.0
+</code></pre>
+<p>If you need to access the GUI from a different network host then also change:</p>
+<pre><code class="language-yaml">GUI:
+  bind_address: 127.0.0.1
+</code></pre>
+<p>to:</p>
+<pre><code class="language-yaml">GUI:
+  bind_address: 0.0.0.0
+</code></pre>
+<p>In Self-signed SSL mode, which only supports Basic authentication, you should
+avoid exposing the GUI to untrusted networks (i.e. the public internet). If your
+server needs to be accessible from the internet then you should leave the
+<code>GUI.bind_address</code> set to the loopback interface and use
+<a href="https://iximiuz.com/en/posts/ssh-tunnels/" target="_blank" >SSH Local Port Forwarding</a>
+which can be secured by stronger authentication mechanisms.</p>
+<p>Because the configuration file is a key component to your deployment and
+contains security-sensitive material you should always keep it secure and
+ideally also keep an backup of it in a secure location. The server configuration
+does not change unless you edit it, so remember to update your backup copy
+whenever you make any changes.</p>
+<p>The server installation package that we will create in the next step also
+contains a copy of the server config, so you should handle it with the same
+security considerations as the config file itself.</p>
+<h2 id="step-3-create-the-server-installation-package">Step 3: Create the server installation package</h2>
+<p>The server component will be installed and run as a service on your Linux
+machine. In addition to installing the Velociraptor binary and configuration file, the
+installation also creates a service account (named <code>velociraptor</code>) and
+service configuration so that it can run as a service. The installation package
+takes care of these setup tasks, and we generate it using a single command.</p>
+<p>As mentioned previously, the Velociraptor binary provides several utility
+functions on the command line. One of these is the ability to generate Linux
+installation packages, specifically <code>deb</code> packages for Debian-based systems and
+<code>rpm</code> packages for RPM-based systems.</p>
+<p>To create the server installation package, run the appropriate command below in
+your working directory.</p>
+<p><strong>Debian-based server:</strong></p>
+<pre><code class="language-sh">./velociraptor debian server --config ./server.config.yaml
+</code></pre>
+<p>or</p>
+<p><strong>RPM-based server:</strong></p>
+<pre><code class="language-sh">./velociraptor rpm server --config ./server.config.yaml
+</code></pre>
+<p>The output file will be automatically named to include the version and
+architecture, but you can choose any file name you want and specify it with the
+<code>--output &lt;your_file_name&gt;</code> flag.</p>
+<p>If you did not perform the previous steps on your server then you will need to
+copy the server installation file to your server.</p>
+<h2 id="step-4-install-the-server-component">Step 4: Install the server component</h2>
+<p>Install the server package using the command below according to your server&rsquo;s
+packaging system.</p>
+<p><strong>Debian-based server installation:</strong></p>
+<pre><code>$ sudo dpkg -i velociraptor_server_0.74.1_amd64.deb
+Selecting previously unselected package velociraptor-server.
+(Reading database ... 527396 files and directories currently installed.)
+Preparing to unpack velociraptor_server_0.74.1_amd64.deb ...
+Unpacking velociraptor-server (0.74.1) ...
+Setting up velociraptor-server (0.74.1) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/velociraptor_server.service → /etc/systemd/system/velociraptor_server.service.
+</code></pre>
+<p>or</p>
+<p><strong>RPM-based server installation:</strong></p>
+<pre><code>$ sudo rpm -Uvh velociraptor-server-0.74.1.x86_64.rpm
+Verifying...                          ################################# [100%]
+Preparing...                          ################################# [100%]
+Updating / installing...
+   1:velociraptor-server-0:0.74.1-A   ################################# [100%]
+Created symlink '/etc/systemd/system/multi-user.target.wants/velociraptor_server.service' → '/etc/systemd/system/velociraptor_server.service'.
+</code></pre>
+<p>Now that the service is installed we can check its status in a few ways.</p>
+<p><strong>Check the service status:</strong></p>
+<pre><code>$ systemctl status velociraptor_server.service
+● velociraptor_server.service - Velociraptor server
+     Loaded: loaded (/etc/systemd/system/velociraptor_server.service; enabled; vendor preset: enabled)
+     Active: active (running) since Tue 2025-04-08 12:25:34 SAST; 3min 5s ago
+   Main PID: 3514 (velociraptor.bi)
+      Tasks: 19 (limit: 4537)
+     Memory: 67.2M
+        CPU: 4.249s
+     CGroup: /system.slice/velociraptor_server.service
+             ├─3514 /usr/local/bin/velociraptor.bin --config /etc/velociraptor/server.config.yaml frontend
+             └─3522 /usr/local/bin/velociraptor.bin --config /etc/velociraptor/server.config.yaml frontend
+
+Apr 08 12:25:34 linux64-client systemd[1]: Started Velociraptor server.
+</code></pre>
+<p><strong>Check that the GUI is listening:</strong></p>
+<pre><code class="language-sh">$ nc -vz 127.0.0.1 8889
+Connection to 127.0.0.1 8889 port [tcp/*] succeeded!
+</code></pre>
+<p><strong>Check that the Frontend is listening:</strong></p>
+<pre><code class="language-sh">$ nc -vz 127.0.0.1 8000
+Connection to 127.0.0.1 8000 port [tcp/*] succeeded!
+</code></pre>
+<h2 id="step-5-log-in-to-the-admin-gui">Step 5: Log in to the Admin GUI</h2>
+<p>The Admin GUI should now be accessible with a web browser by connecting to
+<code>https://127.0.0.1:8889</code>, or using your server&rsquo;s IP address if you changed the
+<code>GUI.bind_address</code> setting in Step 2.</p>
+<p>Log in using the admin account that you created in the config wizard. You will
+arrive at the Welcome screen.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/quickstart/welcome.png"
+         class="inline"
+         alt="Welcome to Velociraptor!"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="welcome.png">
+      <i class="fa fa-download"></i></a>
+    Welcome to Velociraptor!
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>You can learn more about the Admin GUI <a href="/docs/gui/">here</a>.</p>
+<h2 id="step-6-import-artifacts-from-external-projects">Step 6: Import artifacts from external projects</h2>
+
+<div class="mynotices note">
+  <div heading="note"><p>This step only applies if you are using version 0.75 or above. For older
+versions you can <a href="/docs/deployment/quickstart/#step-7-create-an-installation-package-for-windows-clients">skip to the next step</a>.</p>
+</div>
+</div>
+
+
+<p>Over time Velociraptor has spawned many sub-projects for curating and
+managing certain larger, more complex <a href="/docs/artifacts/">artifacts</a>.</p>
+<p>As some artifacts became more complex and powerful, we moved them into separate
+projects so that they could be developed and managed independently of the main
+Velociraptor project. Splitting these off allows for independent release cycles,
+thus facilitating more rapid development and innovation.</p>
+<p>Although Velociraptor ships with hundreds of built-in artifacts we recommend
+that you also try these more powerful artifacts, or visit their websites to
+learn more. Generally the built-in artifacts have very specific goals, for
+example extracting specific information from a specific file, while the complex
+artifacts encompass broader goals, for example searching the Windows registry
+for a broad set of indicators of suspicious activity.</p>
+<table>
+  <thead>
+      <tr>
+          <th><strong>Project</strong></th>
+          <th><strong>Description</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><a href="https://sigma.velocidex.com/" target="_blank" >Velociraptor Sigma Project</a></td>
+          <td>Artifacts that implement Sigma-based triage and monitoring rules. Includes curated Sigma Rules (Hayabusa/Hayabusa Live/ChopChopGo)</td>
+      </tr>
+      <tr>
+          <td><a href="https://triage.velocidex.com/" target="_blank" >Velociraptor Triage Project</a></td>
+          <td>This project intends to develop a set of rules that are used for specifying the collection of files from the endpoint.</td>
+      </tr>
+      <tr>
+          <td><a href="https://github.com/rapid7/Rapid7-Labs/tree/main/Vql" target="_blank" >Rapid7Labs</a></td>
+          <td>Artifacts developed and shared by <a href="https://www.rapid7.com/blog/tag/research/" target="_blank" >Rapid7 Labs</a>.</td>
+      </tr>
+      <tr>
+          <td><a href="https://registry-hunter.velocidex.com/" target="_blank" >Velociraptor Registry Hunter Project</a></td>
+          <td>Our project to develop sophisticated registry analysis modules.</td>
+      </tr>
+      <tr>
+          <td><a href="https://sqlitehunter.velocidex.com/" target="_blank" >Velociraptor SQLite Hunter Project</a></td>
+          <td>This project aims to be a one-stop shop for <code>SQLite</code>, <code>ESE</code> and many other database-oriented forensic artifacts.</td>
+      </tr>
+      <tr>
+          <td><a href="/exchange/">The Velociraptor Artifact Exchange</a></td>
+          <td>Our repository of community-contributed artifacts.</td>
+      </tr>
+  </tbody>
+</table>
+<p>To get these external artifacts into your Velociraptor server&rsquo;s artifact
+repository, we have a built-in server artifact which will download them from any
+or all of the external sources. Here&rsquo;s how to do that:</p>
+<ol>
+<li>
+<p>On the Welcome screen, click the link <strong>Import Extra Artifacts</strong>. This will
+start the artifact collection wizard for the server artifact
+<code>Server.Import.Extras</code>.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/quickstart/server_import_extras.png"
+         class="inline"
+         alt=""
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="server_import_extras.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>You don&rsquo;t need to change anything here and can click <strong>Configure Parameters</strong>
+to navigate to that page of the wizard.</p>
+</li>
+<li>
+<p>By default, the artifacts from all sub-projects will be imported by the
+<code>Server.Import.Extras</code> artifact. However you may not want all of them at this
+time and you can repeat this process at any time to import different
+artifacts or to update selected artifacts. To unselect any item, click it&rsquo;s
+bin icon in the list.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/quickstart/server_import_extras_params.png"
+         class="inline"
+         alt=""
+         width="2992" height="1396">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="server_import_extras_params.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Once you&rsquo;re happy with your selection you can click <strong>Launch</strong> to begin the
+import process.</p>
+</li>
+<li>
+<p>Once this artifact collection completes you can inspect the results in the
+collection&rsquo;s <strong>Results</strong> tab. If, for some reason, the import fails then you can
+review the log messages in the <strong>Log</strong> tab.</p>
+</li>
+</ol>
+<p>Our next goal is to create an installation package for our Windows endpoints.</p>
+<h2 id="step-7-create-an-installation-package-for-windows-clients">Step 7: Create an installation package for Windows clients</h2>
+<p>Velociraptor clients are available for many operating systems and architectures.
+The subject of packaging and installing clients is covered in more detail in
+the section <a href="/docs/deployment/clients/">Deploying Clients</a>.</p>
+<p>The most important thing to know is that all Velociraptor clients need a <em>client
+configuration</em>, which is specific to the deployment. This configuration is a
+subset of the full YAML-based configuration. Because the server has access to
+the full configuration it is able to provide the client configuration to us when
+needed
+<a href="/docs/deployment/clients/#option-1-obtaining-the-client-config-from-the-gui">in the form of a YAML file</a>.
+The server can also use it internally, for example when generating a client
+installation package (for Windows clients), as we will show in this guide.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/quickstart/client_config_yaml_.svg" alt="Client config is a subset of the full config"
+         class="inline"
+         height="800"
+         width="1140"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="client_config_yaml.svg"><i class="fa fa-download"></i></a>
+    Client config is a subset of the full config
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The most commonly deployed client by far is 64-bit Windows. The standard
+installer package format for Windows in enterprise environments is still the MSI
+format.</p>
+<p>We publish a prebuilt MSI package on our GitHub Release page, however since the
+Velociraptor client requires <em>your</em> unique configuration file which is linked to
+<em>your</em> server, we don&rsquo;t package a working configuration file in the official
+release MSI. The official MSI contains a placeholder configuration file. You
+will need to modify the official release MSI to include your client
+configuration file, and this is easily done through a process we call
+&ldquo;repacking&rdquo;. We have a streamlined process for generating a custom MSI package
+which can be done entirely in the Admin GUI. This is the quickest and easiest
+way to generate the MSI package, and so it&rsquo;s the one we will use here.</p>
+<ol>
+<li>In the Velociraptor web GUI select <strong>Server Artifacts</strong> from the sidebar on
+the left side of the page.</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/quickstart/server_artifacts.png"
+         class="inline"
+         alt=""
+         width="827" height="553">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="server_artifacts.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/quickstart/create_msi_add_.svg" alt=""
+         class="inline"
+         height="302"
+         width="546"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="create_msi_add.svg"><i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<ol start="2">
+<li>Add a new collection: search for <code>Server.Utils.CreateMSI</code>, select it, and
+then click &ldquo;Launch&rdquo;.</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/quickstart/create_msi_artifact.png"
+         class="inline"
+         alt=""
+         width="910" height="471">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="create_msi_artifact.png">
+      <i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<ol start="3">
+<li>
+<p>It will take a moment to download the latest release MSI files (64-bit and
+optionally 32-bit) from GitHub and then repack them with your client config
+file.</p>
+</li>
+<li>
+<p>The repacked MSI files will then be available in the <strong>Uploaded Files</strong> tab
+of the artifact collection.</p>
+</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/quickstart/create_msi_uploaded_.svg" alt=""
+         class="inline"
+         height="464"
+         width="820"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="create_msi_uploaded.svg"><i class="fa fa-download"></i></a>
+    
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Download the MSI files. You will then need to copy them to a network share, USB
+stick or other medium that allows you to access them from your Windows
+endpoints. In this simplified scenario we will only be installing the client
+manually. For full-scale deployments the MSI is typically rolled out through
+enterprise application management tools.</p>
+<h2 id="step-8-install-the-client-on-endpoints">Step 8: Install the client on endpoints</h2>
+<p>On your Windows endpoints, installation is done by running the MSI that you
+created in the previous step.</p>
+<p>The MSI installs the client as a Windows service, so it requires elevated
+privileges and you may be prompted with the familiar UAC prompt to allow the
+installation to continue.</p>
+<p>After installation you will have the client running as the &ldquo;Velociraptor
+Service&rdquo; which you can see in the Services app.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/quickstart/velociraptor_windows_service.png"
+         class="inline"
+         alt="Velociraptor client service"
+         width="963" height="293">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="velociraptor_windows_service.png">
+      <i class="fa fa-download"></i></a>
+    Velociraptor client service
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Returning to your Velociraptor server, you can find the newly enrolled client by
+clicking the <i class="fas fa-search"></i> button in the &ldquo;Search clients&rdquo; bar at
+the top of the page.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/quickstart/your_first_client.png"
+         class="inline"
+         alt="Your first client!"
+         width="942" height="357">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="your_first_client.png">
+      <i class="fa fa-download"></i></a>
+    Your first client!
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="whats-next">What&rsquo;s next?</h2>
+<p>After installing your first client, here are the next steps you may want to
+consider:</p>
+<ul>
+<li><a href="/docs/clients/">Learn about managing clients</a></li>
+<li><a href="/docs/deployment/clients/">Create non-Windows client installers</a></li>
+<li><a href="/docs/deployment/security/">Explore additional security configuration options</a></li>
+<li><a href="/docs/deployment/orgs/">Consider creating Orgs</a> for managing
+distinct sets of clients.</li>
+<li><a href="/docs/deployment/server/">Plan for a more durable and secure installation</a></li>
+</ul>
+<p>You can also click on the little dinosaur at the top left of the GUI to
+return to the Welcome page. On this page you&rsquo;ll find shortcuts for several
+commonly performed tasks associated setting up a new server.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/quickstart/welcome.png"
+         class="inline"
+         alt="The Welcome page"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="welcome.png">
+      <i class="fa fa-download"></i></a>
+    The Welcome page
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352329"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352329"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352329"></script>
+    <script src="/js/jquery.sticky.js?1775352329"></script>
+    <script src="/js/featherlight.min.js?1775352329"></script>
+    <script src="/js/highlight.min.js?1775352329"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352329"></script>
+    <script src="/js/learn.js?1775352329"></script>
+    <script src="/js/hugo-learn.js?1775352329"></script>
+    
+    
+
+  </body>
+</html>

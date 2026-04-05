@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Running Offline Collectors :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352329" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352329" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352329" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352329" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352329" rel="stylesheet">
+    <link href="/css/theme.css?1775352329" rel="stylesheet">
+    <link href="/css/tabs.css?1775352329" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352329" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352329" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352329" rel="stylesheet"><link href="/css/syntax.css?1775352329" rel="stylesheet"><link href="/css/light.css?1775352329" rel="stylesheet"><link href="/css/hljs.css?1775352329" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352329" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352329"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/deployment/offline_collections/running/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/deployment\/offline_collections\/running\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/deployment/offline_collections/running/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Running Offline Collectors</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#collector-behaviour-when-admin-is-required">Collector behaviour when admin is required</a></li>
+    <li><a href="#running-the-generic-collector">Running the Generic Collector</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#providing-console-feedback-to-the-local-user">Providing console feedback to the local user</a></li>
+    <li><a href="#running-from-a-network-share-or-remote-management-solution">Running from a network share or remote management solution</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Running Offline Collectors
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>Offline collectors can be deployed by automated means, for example via Windows
+Group Policy - similar to the
+<a href="/docs/deployment/clients/#agentless-deployment">agentless deployment</a>
+method - or by other deployment tools (such as PsExec or WinRM), or even other
+EDR solutions. It&rsquo;s also quite common to have local personnel run the collector
+manually on the endpoints, especially during incidents where network access is
+restricted.</p>
+<p>When the collector is run without command line arguments, the collection will
+automatically start. If any <a href="/docs/cli/">command line arguments</a>
+are provided then it behaves as any ordinary Velociraptor binary would, with the
+collector behaviour being bypassed.</p>
+<p>Collectors built using the GUI-based collector builder will require admin-level
+privileges on all platforms (this check gets added by the inclusion of the
+<code>--require_admin</code> flag in the collector config), so they are usually launched
+from an elevated command shell.</p>
+<p>On Windows they can also be launched by right-clicking and choosing &ldquo;Run as
+administrator&rdquo;, although the collector is a console application so it will still
+run in the default terminal. In certain circumstances it is possible to use the
+<code>runas</code> command on Windows, or even <code>sudo</code> (in very recent versions of Windows),
+to launch the collector from an unprivileged command shell.</p>
+<p>On macOS and Linux you can launch the collector in an elevated terminal, but
+it&rsquo;s more often done in a non-elevated terminal using the <code>sudo</code> command. On
+macOS or Linux you should also remember to mark the collector file as executable
+using the <code>chmod</code> command.</p>
+<p>If you use another management solution to deploy your offline collectors then it
+also needs to ensure that they are launched with admin-level privileges.</p>
+<p>The collector creates a zip (collection container) file containing the
+collection results, and optionally also files that you may have requested to be
+copied from the filesystem. It also creates a log file alongside the collection
+container, using the same file basename, which contains a copy of the collector
+activity as displayed in the terminal.</p>
+<h2 id="collector-behaviour-when-admin-is-required">Collector behaviour when admin is required</h2>
+<p>As mentioned above, this requirement is the default for offline collectors. When
+the collector is launched on the endpoint, it first checks if the user running
+it has admin-level privileges.</p>
+<ul>
+<li>
+<p><strong>Insufficient privilege scenarios</strong></p>
+<p>If the user doesn&rsquo;t have admin privilege and tries to launch a collector that
+requires it, the following outcomes should be expected:</p>
+<ul>
+<li>
+<p><strong>Windows</strong></p>
+<ul>
+<li>
+<p>When opened using Explorer via mouse actions it will briefly opens in a
+terminal and then close. This is likely to occur too quickly for the user
+to be able to read the error message.</p>
+</li>
+<li>
+<p>When run in a terminal (Command Prompt or PowerShell), it will display an
+error message telling the user to &ldquo;Run as administrator&rdquo;.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/docs/deployment/offline_collections/running/require_admin_windows.png"
+     width="777"
+     height="149"/>
+
+
+
+
+</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Linux and macOS</strong></p>
+<ul>
+<li>
+<p>Most Linux file managers will prevent execution via mouse clicks, but if
+it does allow it then a terminal windows is likely to open and close too
+quickly for the user to be able read the error message.</p>
+<p>If the user runs it in a terminal (e.g. bash or zsh), they will be able to
+see the error message advising them to run it with <code>sudo</code>.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/docs/deployment/offline_collections/running/require_admin_linux.png"
+     width="718"
+     height="146"/>
+
+
+
+
+</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Sufficient privilege scenarios</strong></p>
+<p>If the user does have admin privilege and launches a collector that requires
+it, then :</p>
+<ul>
+<li>
+<p><strong>Windows</strong></p>
+<ul>
+<li>
+<p>The collector is a console application, so in the Windows desktop
+environments it will open in a new terminal window if run by
+right-clicking. Even if the <strong>Pause For Prompt</strong> option <em>was not selected</em>
+in the collector builder, the collector will detect that it was launched
+outside of a terminal and will therefore present a prompt upon completion
+of the collection. This is intended to give the local person a chance to
+confirm that the collection did actually complete.</p>
+</li>
+<li>
+<p>If launched in an elevated terminal, then it will run within the same
+terminal. In that case the terminal will remain open when the collection
+completes, although the application itself will exit. If run this way then
+the <strong>Pause For Prompt</strong> option isn&rsquo;t really necessary since the collector
+completion status will still be visible.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Linux and macOS</strong></p>
+<p>If launched in an elevated terminal or run with the <code>sudo</code> command, then the
+application will run within the same terminal. In that case the terminal
+will remain open when the collection completes, although the application
+itself will exit. If run this way then the <strong>Pause For Prompt</strong> option isn&rsquo;t
+really necessary since the collector completion status will still be
+visible.</p>
+</li>
+</ul>
+<p>When the collector runs it will look something like this:</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/offline_collections/running/image14.png"
+         class="inline"
+         alt="Running the Offline Collector in the console"
+         width="1279" height="959">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="image14.png">
+      <i class="fa fa-download"></i></a>
+    Running the Offline Collector in the console
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/offline_collections/running/image29.png"
+         class="inline"
+         alt="Viewing the Offline Collector completion status"
+         width="1279" height="393">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="image29.png">
+      <i class="fa fa-download"></i></a>
+    Viewing the Offline Collector completion status
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+</ul>
+<h2 id="running-the-generic-collector">Running the Generic Collector</h2>
+<p>The Generic Collector is run by specifying the <code>--embedded_config</code> flag.
+Normally the Velociraptor binary always expects
+<a href="/docs/cli/#learn-about-the-commands-available-in-the-cli">a command</a>,
+but in this case we want to use the flag on the command line without specifying
+any command.</p>
+<p>To make Velociraptor accept the <code>--embedded_config</code> flag without a command, we
+use the
+<a href="/docs/cli/#autoexec-mode-and-post-args">&ldquo;post args&rdquo; pseudo-flag</a>:
+<code>--</code>. This tells Velociraptor to act as if no arguments were specified and to
+pass the subsequent flag(s) to the autoexec function, which is contained in the
+generic collector file.</p>
+<p>The Generic collector uses any unmodified standard Velociraptor binary, so in
+the following example the same <code>Collector_velociraptor-collector</code> could be used
+on all platforms. However, the artifacts that you selected to pack in the
+generic collector may be targeted to a specific platform, and therefore might
+not be equally applicable to all. You could build a generic collector that
+includes artifacts for all your target platforms with the artifacts themselves
+being conditionally run based on
+<a href="/docs/artifacts/preconditions/">preconditions</a>.</p>
+<h4 id="example">Example</h4>
+
+
+<div class="tab-panel">
+    <div class="tab-nav">
+    
+        <button
+          data-tab-item="macOS"
+          data-tab-group="default"
+          class="tab-nav-button btn active"
+          onclick="switchTab('default','macOS')"
+         >macOS</button>
+    
+        <button
+          data-tab-item="Linux"
+          data-tab-group="default"
+          class="tab-nav-button btn "
+          onclick="switchTab('default','Linux')"
+         >Linux</button>
+    
+        <button
+          data-tab-item="Windows"
+          data-tab-group="default"
+          class="tab-nav-button btn "
+          onclick="switchTab('default','Windows')"
+         >Windows</button>
+    
+    </div>
+    <div class="tab-content">
+        
+        <div data-tab-item="macOS" data-tab-group="default" class="tab-item active">
+            <pre><code class="language-shell">./velociraptor-darwin-amd64 -- --embedded_config Collector_velociraptor-collector
+</code></pre>
+
+        </div>
+        
+        <div data-tab-item="Linux" data-tab-group="default" class="tab-item ">
+            <pre><code class="language-shell">./velociraptor-linux-amd64 -- --embedded_config Collector_velociraptor-collector
+</code></pre>
+
+        </div>
+        
+        <div data-tab-item="Windows" data-tab-group="default" class="tab-item ">
+            <pre><code class="language-shell">velociraptor-windows-amd64.exe -- --embedded_config Collector_velociraptor-collector
+</code></pre>
+
+        </div>
+        
+    </div>
+</div>
+
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/offline_collections/running/generic_collector_running.png"
+         class="inline"
+         alt="Running a generic collector"
+         width="1091" height="256">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="generic_collector_running.png">
+      <i class="fa fa-download"></i></a>
+    Running a generic collector
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Because the generic collector is a data file (not an executable), on Linux or
+macOS it does not need to be marked as executable. However the associated
+Velociraptor binary <em>does</em> need to be executable, as would be required if using
+it any other way.</p>
+<h2 id="providing-console-feedback-to-the-local-user">Providing console feedback to the local user</h2>
+<p>If you decide to have local personnel manually run the offline collector then
+the feedback that they receive via the default console output might be
+sufficient for them to observe the progress or note errors. By default offline
+collectors have console output set to verbose via the <code>-v</code> command line flag.
+This shows all log messages emitted by the artifacts being collected, which is
+usually sufficient.</p>
+<p>However if you are designing custom artifacts for use with your offline
+collectors then you should keep in mind what you want your users to see (or not
+see).</p>
+<p>Your artifacts can emit meaningful human-friendly messages to the console using
+the <a href="/vql_reference/popular/log/">log</a> function. Also keep in mind
+that the <code>log()</code> function deduplicates message by default, limiting the messages
+to 1 per minute per log function message template. In some cases you may want to
+disable this duplication for a specific log function instance.</p>
+<p>In the other hand if you want the local personnel to see <em>less</em> output - for
+whatever reason - then you can
+<a href="/docs/cli/collector/">rebuild the collector on the command line</a>
+using the spec file that the GUI generated and set the <code>OptVerbose</code> option to
+<code>false</code>. The GUI-based collector builder currently does not offer this option
+and it enables verbose output by default.</p>
+<h2 id="running-from-a-network-share-or-remote-management-solution">Running from a network share or remote management solution</h2>
+<p>In the case of a single-file embedded collector, it&rsquo;s easy to run it remotely.
+For the generic collector it&rsquo;s potentially somewhat more complicated because two
+files are required (the Velociraptor executable plus the generic collector
+file) but usually it&rsquo;s still possible.</p>
+<p>As mentioned in the introduction above, we can use another EDR solution that
+allows remote execution if available. Alternatively, we can use Window&rsquo;s own
+remote management mechanisms (such as Group Policy, PsExec or WinRM) to deploy
+our collector binary across the network.</p>
+<h4 id="example-using-wmic">Example: using wmic</h4>
+<ol>
+<li>We authenticate to a network share with <code>net use</code>.</li>
+<li>We copy our collector binary over the network to the <code>C$</code> share on the
+remote system.</li>
+<li>We use <code>wmic</code> to execute the binary on the remote host.</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/offline_collections/running/image45.png"
+         class="inline"
+         alt="Collecting across the network"
+         width="961" height="391">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="image45.png">
+      <i class="fa fa-download"></i></a>
+    Collecting across the network
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352329"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352329"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352329"></script>
+    <script src="/js/jquery.sticky.js?1775352329"></script>
+    <script src="/js/featherlight.min.js?1775352329"></script>
+    <script src="/js/highlight.min.js?1775352329"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352329"></script>
+    <script src="/js/learn.js?1775352329"></script>
+    <script src="/js/hugo-learn.js?1775352329"></script>
+    
+    
+
+  </body>
+</html>

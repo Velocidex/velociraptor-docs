@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="This is a technical post covering practical methodology to extract
+configuration data from recent Qakbot samples.
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Automating Qakbot decode at scale :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352327" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352327" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352327" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352327" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352327" rel="stylesheet">
+    <link href="/css/theme.css?1775352327" rel="stylesheet">
+    <link href="/css/tabs.css?1775352327" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352327" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352327" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352327" rel="stylesheet"><link href="/css/syntax.css?1775352327" rel="stylesheet"><link href="/css/light.css?1775352327" rel="stylesheet"><link href="/css/hljs.css?1775352327" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352327" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352327"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/blog/2023/2023-04-05-qakbot/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/blog\/2023\/2023-04-05-qakbot\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/2023/2023-04-05-qakbot/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Automating Qakbot decode at scale</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#configuration">Configuration</a></li>
+        <li><a href="#encoded-strings">Encoded strings</a></li>
+        <li><a href="#payload">Payload</a></li>
+        <li><a href="#doing-it-at-scale">Doing it at scale</a></li>
+        <li><a href="#research">Research</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
+        <li><a href="#references">References</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/malware">Malware</a>
+
+  <a class="tag-link" href="/tags/detection">Detection</a>
+
+  <a class="tag-link" href="/tags/qakbot">Qakbot</a>
+
+  <a class="tag-link" href="/tags/qbot">QBot</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Automating Qakbot decode at scale
+            </h1>
+            
+            <div class="author pull-right">
+              Matt Green - @mgreen27
+              <span class="date">2023-04-05</span>
+            </div>
+            
+          
+
+        
+
+
+
+	<p>This is a technical post covering practical methodology to extract
+configuration data from recent Qakbot samples. In this blog, I will
+provide some background on Qakbot, then walk through decode themes in
+an easy to visualize manner. I will then share a Velociraptor artifact
+to detect and automate the decode process at scale.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2023/2023-04-05-qakbot/images/01qak.png"
+         class="inline"
+         alt="Qak!"
+         width="542" height="688">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="images/01qak.png">
+      <i class="fa fa-download"></i></a>
+    Qak!
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Qakbot or QBot, is a modular malware first observed in 2007 that has
+been historically known as a banking Trojan. Qbot is used to steal
+credentials, financial, or other endpoint data, and in recent years,
+regularly a loader for other malware leading to hands on keyboard
+ransomware.</p>
+<p>Typical delivery includes malicious emails as a zipped attachment, LNK,
+Javascript, Documents, or an embedded executable. The example shown in
+this post was delivered by an email with an attached pdf file:</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2023/2023-04-05-qakbot/images/02icons.png"
+         class="inline"
+         alt="An example Qakbot infection chain"
+         width="847" height="215">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="images/02icons.png">
+      <i class="fa fa-download"></i></a>
+    An example Qakbot infection chain
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Qakbot has some notable defense evasion capabilities including:</p>
+<ol>
+<li>Checking for Windows Defender sandbox and terminating on discovery.</li>
+<li>Checking for the presence of running anti-virus or analysis tools,
+then modifying its later stage behavior for evasion.</li>
+<li>Dynamic corruption of payload on startup and rewrite on system shutdown.</li>
+</ol>
+<p>Due to the commodity nature of delivery, capabilities and end game,
+it is worth extracting configuration from observed samples to scope
+impact from a given campaign. Hunting enterprise wide and finding a
+previously missed machine or discovering an ineffective control can be
+the difference in preventing a domain wide ransomware event, or a
+similar really bad day.</p>
+<h3 id="configuration">Configuration</h3>
+<p>Qakbot has an RC4 encoded configuration, located inside two resources
+of the unpacked payload binary. The decryption process has not changed
+significantly in recent times, but for some minor key changes. It uses
+a SHA1 of a hard coded key that can typically be extracted as an
+encoded string in the .data section of the payload binary. This key
+often remains static across campaigns, which can speed up analysis with
+the maintainance of a recent key list.</p>
+<p>Current samples undergo two rounds of RC4 decryption with validation
+built in. The validation bytes dropped from the data for the second
+round.</p>
+<p>After the first round:</p>
+<ul>
+<li>The first 20 bytes in hex is for validation and is compared with the
+SHA1 of the remaining decoded data</li>
+<li>Bytes <code>[20:40]</code> is the key used for the second round of decoding</li>
+<li>The Data to decode is byte <code>[40:]</code> onwards</li>
+<li>The same validation process occurs for the second round decoded data
+<ul>
+<li><code>Verification = data[:20]</code></li>
+<li><code>DecodedData = data[20:]</code></li>
+</ul>
+</li>
+</ul>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2023/2023-04-05-qakbot/images/03decodehex.png"
+         class="inline"
+         alt="First round of Qakbot decode and verification"
+         width="1479" height="1417">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="images/03decodehex.png">
+      <i class="fa fa-download"></i></a>
+    First round of Qakbot decode and verification
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Campaign information is located inside the smaller resource where,
+after this decoding and verification process, data is clear text.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/blog/2023/2023-04-05-qakbot/images/04campaign.png"
+     width="128"
+     height="53"/>
+
+
+
+
+</p>
+<p>The larger resource stores Command and Control configuration. This is
+typically stored in <code>netaddress format</code> with varying separators. A
+common technique for finding the correct method is searching for common
+ports and separator patterns in the decoded data.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2023/2023-04-05-qakbot/images/05networkhex.png"
+         class="inline"
+         alt="Easy to spot C2 patterns: port 443"
+         width="1336" height="512">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="images/05networkhex.png">
+      <i class="fa fa-download"></i></a>
+    Easy to spot C2 patterns: port 443
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="encoded-strings">Encoded strings</h3>
+<p>Qakbot stores blobs of xor encoded strings inside the .data section of
+its payload binary. The current methodology is to extract blobs of key
+and data from the referenced key offset which similarly is reused
+across samples.</p>
+<p>Current samples start at offset 0x50, with an xor key, followed by a
+separator of 0x0000 before encoded data. In recent samples I have
+observed more than one string blob and these have occurred in the same
+format after the separator.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2023/2023-04-05-qakbot/images/06hexstrings.png"
+         class="inline"
+         alt="Encoded strings .data"
+         width="848" height="933">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="images/06hexstrings.png">
+      <i class="fa fa-download"></i></a>
+    Encoded strings .data
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Next steps are splitting on separators, decode expected blob pairs and
+drop any non printable. Results are fairly obvious when decoding is
+successful as Qakbot produces clean strings. I typically have seen two
+well defined groups with strings aligning to Qakbot capabilities.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2023/2023-04-05-qakbot/images/07strings.png"
+         class="inline"
+         alt="Decoded strings: RC4 key highlighted"
+         width="941" height="616">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="images/07strings.png">
+      <i class="fa fa-download"></i></a>
+    Decoded strings: RC4 key highlighted
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="payload">Payload</h3>
+<p>Qakbot samples are typically packed and need execution or manual
+unpacking to retrieve the payload for analysis. Its very difficult to
+obtain this payload remotely at scale, in practice the easiest way is
+to execute the sample in a VM or sandbox that enables extracting the
+payload with correct PE offsets.</p>
+<p>When executing locally Qakbot typically injects its payload into a
+Windows process, and can be detected with yara targeting the process
+for an unbacked section with <code>PAGE_EXECUTE_READWRITE</code> protections.</p>
+<p>Below is an example of running PE-Sieve / Hollows Hunter tool
+from Hasherezade. This helpful tool enables detection of several types
+of process injection, and the dumping of injected sections with
+appropriately aligned headers. In this case, the injected process is
+<code>wermgr.exe</code> but it&rsquo;s worth to note, depending on variant and process
+footprint, your injected process may vary.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2023/2023-04-05-qakbot/images/08pe-sieve.png"
+         class="inline"
+         alt="Dumping Qakbot payload using pe-sieve"
+         width="1158" height="699">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="images/08pe-sieve.png">
+      <i class="fa fa-download"></i></a>
+    Dumping Qakbot payload using pe-sieve
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="doing-it-at-scale">Doing it at scale</h3>
+<p>Now I have explained the decode process, time to enable both detection
+and decode automation in Velociraptor.</p>
+<p>I have recently released
+<a href="/exchange/artifacts/pages/qakbot/">Windows.Carving.Qakbot</a>
+which leverages a PE dump capability in Velociraptor 0.6.8 to enable
+live memory analysis. The goal of the artifact was to automate my
+decoding workflow for a generic Qakbot parser and save time for a
+common analysis. I also wanted an easy to update parser to add
+additional keys or decode nuances when changes are discovered.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2023/2023-04-05-qakbot/images/09parameters.png"
+         class="inline"
+         alt="Windows.Carving.Qakbot: parameters"
+         width="626" height="437">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="images/09parameters.png">
+      <i class="fa fa-download"></i></a>
+    Windows.Carving.Qakbot: parameters
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>This artifact uses Yara to detect an injected Qakbot payload, then
+attempts to parse the payload configuration and strings. Some of the
+features in the artifact cover changes observed in the past in the
+decryption process to allow a simplified extraction workflow:</p>
+<ul>
+<li>Automatic PE extraction and offset alignment for memory detections.</li>
+<li><code>StringOffset</code> - the offset of the string xor key and encoded strings
+is reused regularly.</li>
+<li>PE resource type: the RC4 encoded configuration is typically inside
+2 resources, I’ve observed <code>BITMAP</code> and <code>RCDATA</code></li>
+<li>Unescaped key string: this field is typically reused over samples.</li>
+<li>Type of encoding: single or double, double being the more recent.</li>
+<li>Hidden <code>TargetBytes</code> parameter to enable piping payload in for
+analysis.</li>
+<li>Worker threads: for bulk analysis / research use cases.</li>
+</ul>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2023/2023-04-05-qakbot/images/10decode.png"
+         class="inline"
+         alt="Windows.Carving.Qakbot: live decode"
+         width="1732" height="992">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="images/10decode.png">
+      <i class="fa fa-download"></i></a>
+    Windows.Carving.Qakbot: live decode
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="research">Research</h3>
+<p>The Qakbot parser can also be leveraged for research and run bulk
+analysis. One caveat is the content requires payload files that have
+been dumped with offsets intact. This typically requires some post
+collection filtering or PE offset realignment but enables Velociraptor
+notebook to manipulate post processed data.</p>
+<p>Some techniques I have used to bulk collect samples:</p>
+<ul>
+<li>Sandbox with PE dumping features: api based collection</li>
+<li>Virustotal search: <code>crowdsourced_yara_rule:0083a00b09|win_qakbot_auto</code>
+AND <code>tag:pedll</code> AND NOT <code>tag:corrupt</code>
+(note: this will collect some broken
+payloads)</li>
+</ul>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2023/2023-04-05-qakbot/images/11research_ip.png"
+         class="inline"
+         alt="Bulk collection: IPs seen across multiple campaign names and ports"
+         width="893" height="694">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="images/11research_ip.png">
+      <i class="fa fa-download"></i></a>
+    Bulk collection: IPs seen across multiple campaign names and ports
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Some findings from a small data set ~60 samples:</p>
+<ul>
+<li>Named campaigns are typically short and not longer than a few
+samples over a few days.</li>
+<li>IP addresses are regularly reused and shared across campaigns</li>
+<li>Most prevalent campaigns are <code>BB</code> and  <code>obama</code> prefixed</li>
+<li>Minor campaigns observed: <code>azd</code>, <code>tok</code> and <code>rds</code> with only one or
+two observed payload samples each.</li>
+</ul>
+<p>Strings analysis can also provide insights to sample behavior over
+time to assist analysis. A great example is the adding to process name
+list for anti-analysis checks.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2023/2023-04-05-qakbot/images/11research_strings.png"
+         class="inline"
+         alt="Bulk collection: Strings highlighting anti-analysis check additions over time"
+         width="3066" height="754">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="images/11research_strings.png">
+      <i class="fa fa-download"></i></a>
+    Bulk collection: Strings highlighting anti-analysis check additions over time
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>During this post I have explained the Qakbot decoding process and
+introduced an exciting new feature in Velociraptor. PE dumping is a
+useful capability and enables advanced capability at enterprise scale,
+not even available in expensive paid tools. For widespread threats
+like Qakbot, this kind of content can significantly improve response
+for the blue team, or even provide insights into threats when analyzed
+in bulk. In the coming months the Velociraptor team will be publishing
+a series of similar blog posts, offering a sneak peek at some of the
+types of memory analysis enabled by Velociraptor and incorporated into
+our training courses.</p>
+<p>I also would like to thank some of Rapid7’s great analysts - <code>Jakob Denlinger</code>
+and <code>James Dunne</code> for bouncing some ideas when writing this
+post.</p>
+<h3 id="references">References</h3>
+<ol>
+<li><a href="https://malpedia.caad.fkie.fraunhofer.de/details/win.qakbot" target="_blank" >Malpedia, Qakbot</a></li>
+<li><a href="https://www.elastic.co/security-labs/qbot-malware-analysis" target="_blank" >Elastic, QBOT Malware Analysis</a></li>
+<li><a href="https://github.com/hasherezade/hollows_hunter" target="_blank" >Hasherezade, Hollows Hunter</a></li>
+<li><a href="/exchange/artifacts/pages/qakbot/">Windows.Carving.Qakbot</a></li>
+</ol>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352327"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352327"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352327"></script>
+    <script src="/js/jquery.sticky.js?1775352327"></script>
+    <script src="/js/featherlight.min.js?1775352327"></script>
+    <script src="/js/highlight.min.js?1775352327"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352327"></script>
+    <script src="/js/learn.js?1775352327"></script>
+    <script src="/js/hugo-learn.js?1775352327"></script>
+    
+    
+
+  </body>
+</html>

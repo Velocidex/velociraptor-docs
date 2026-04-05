@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Event Logs :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352329" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352329" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352329" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352329" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352329" rel="stylesheet">
+    <link href="/css/theme.css?1775352329" rel="stylesheet">
+    <link href="/css/tabs.css?1775352329" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352329" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352329" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352329" rel="stylesheet"><link href="/css/syntax.css?1775352329" rel="stylesheet"><link href="/css/light.css?1775352329" rel="stylesheet"><link href="/css/hljs.css?1775352329" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352329" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352329"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/forensic/event_logs/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/forensic\/event_logs\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/forensic/event_logs/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Event Logs</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#windows-event-logs">Windows Event Logs</a></li>
+    <li><a href="#event-messages">Event Messages</a>
+      <ul>
+        <li><a href="#deriving-event-messages">Deriving event messages</a></li>
+        <li><a href="#difficulty-with-the-evtx-format">Difficulty with the EVTX format</a></li>
+      </ul>
+    </li>
+    <li><a href="#disabling-event-logs">Disabling event logs</a></li>
+    <li><a href="#event-tracing-for-windows-etw">Event Tracing for Windows (ETW)</a>
+      <ul>
+        <li><a href="#watching-for-events-with-vql">Watching for events with VQL</a></li>
+      </ul>
+    </li>
+    <li><a href="#example---use-etw-to-monitor-to-dns-queries">Example - Use ETW to monitor to DNS queries</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Event Logs
+            </h1>
+            
+          
+
+        
+
+
+
+	<h2 id="windows-event-logs">Windows Event Logs</h2>
+<p>The Windows event logs are stored in files with extension of <code>*.evtx</code>
+typically stored within <code>C:\Windows\System32\WinEVT\Logs\*.evtx</code></p>
+<p>Unlike traditional unix style log files that consist of unstructured
+text, Windows EVTX files are stored in a binary format with several
+advantages:</p>
+<ul>
+<li>Rollover - The EVTX file is divided into chunks and new chunks can
+overwrite older chunks. This allows the file size to be limited, and
+when the event log fills up, events simply rotate into the start of
+the file overwriting older events.</li>
+<li>Binary XML format provides some compression. Although not as much
+compression as gzip or bzip, EVTX files use a binary encoding to
+save some space over plain XML.</li>
+<li>Structured records with strong types - This is perhaps the most
+important difference with Unix style logs. Structured logs allow for
+accurate and fast filtering of log files and obviate the need to
+parse unstructured text.</li>
+</ul>
+
+<div class="mynotices note">
+  <div heading=" EVTX filtering in JSON "><p>While the EVTX file is actually XML based, Velociraptor converts it
+internally into a JSON object to make it easier to filter specific
+fields using VQL constructs.</p>
+</div>
+</div>
+
+
+<p>Velociraptor implements a parser for EVTX files in the <code>parse_evtx()</code>
+plugin. The plugin takes an accessor and a filename to open the EVTX
+file, and produces a single row per event.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/event_logs/image11.png"
+         class="inline"
+         alt="Parsing an EVTX file on the command line"
+         width="1624" height="721">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="image11.png">
+      <i class="fa fa-download"></i></a>
+    Parsing an EVTX file on the command line
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Each event row contains three main columns:</p>
+<ol>
+<li>The <code>System</code> column is a JSON object representing the event
+metadata that is common to all events, such as timestamp.</li>
+<li>The <code>EventData</code> or <code>UserData</code> columns are free form JSON objects
+representing application specific information specific to the event
+type recorded.</li>
+</ol>
+<p>Some of the more interesting event fields include</p>
+<ul>
+<li>Provider, Channel, Computer:  these represents the source of the message (more below).</li>
+<li>Event ID: An index into the message table identifying the type of this event</li>
+<li>EventRecordID: The ID of this message within the evtx file.</li>
+</ul>
+<h2 id="event-messages">Event Messages</h2>
+<p>The Windows Event Logs architecture does <strong>NOT</strong> store the event
+message in the evtx file! Instead, the event log refers to an
+externally provided message, and the viewer application looks up the
+message in a database in order to display it.</p>
+<p>This scheme has a number of advantages:</p>
+<ol>
+<li>Saves some small amount of space in the evtx files
+themselves. Since the bulk of the event message is not stored in
+the file at all, storage is saved - particularly for repetitive
+events with large message strings.</li>
+<li>Probably the main reason for this scheme is that it allows for
+event message internationalization - the message string can be
+tailored for the viewer&rsquo;s language regardless of the language set on
+the system that generated the event.</li>
+</ol>
+<p>The below example shows a familiar event on a Chinese language system.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/event_logs/image9.png"
+         class="inline"
+         alt="Chinese message"
+         width="1129" height="619">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="image9.png">
+      <i class="fa fa-download"></i></a>
+    Chinese message
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The event viewer is able to show a friendly message in the local
+language, however closer inspection of the event data itself indicates
+the message is not found within the <code>EventData</code> field.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/event_logs/image8.png"
+         class="inline"
+         alt="Chinese message event"
+         width="639" height="351">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="image8.png">
+      <i class="fa fa-download"></i></a>
+    Chinese message event
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="deriving-event-messages">Deriving event messages</h3>
+<p>How does the Windows event viewer resolve the messages when displaying an event?</p>
+<p>Using the <code>provider</code>, <code>channel</code> and <code>computer name</code>, the event viewer
+looks up the registry key
+<code>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog\&lt;channel&gt;\&lt;provider&gt;</code>
+and reads the value <code>EventMessageFile</code>.</p>
+<p>The value will point at a path to a DLL. The event viewer will then
+open the DLL and search the resource section of this dll for a
+<code>Message Table</code> resource.</p>
+<p>The <code>Message Table</code> is simply a table of strings. The event viewer
+will then use the Event ID as an index to this message table to
+retrieve the message string for the event.</p>
+<p>The message string is a formatted string with placeholders such as
+<code>%1</code>, <code>%2</code> etc. The event viewer will then Interpolate the UserData
+section into the full string.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/event_logs/image18.png"
+         class="inline"
+         alt="Message lookup"
+         width="960" height="720">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="image18.png">
+      <i class="fa fa-download"></i></a>
+    Message lookup
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="difficulty-with-the-evtx-format">Difficulty with the EVTX format</h3>
+<p>While the EVTX file format does have some advantages is falls short in
+practice on a number of levels. It is important investigator are aware
+of the pitfalls</p>
+<blockquote>
+<p>Grabbing all the EVTX files off the system may result in loss of event messages!</p>
+</blockquote>
+<p>The event description message contains vital context about what the
+event actually means.  Without the message it would be difficult to
+know what each event message represents.</p>
+<p>If we upload the EVTX files themselves from the system, and attempt to
+view them offline chances are that the event message would be missing
+on our analysis system. If we are lucky, we would be able to find some
+information about the message using an internet search for the event
+id.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/event_logs/image21.png"
+         class="inline"
+         alt="Searching the internet for unknown event IDs"
+         width="765" height="807">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="image21.png">
+      <i class="fa fa-download"></i></a>
+    Searching the internet for unknown event IDs
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>If you just collect the EVTX files from one system to another you will
+lose access to message tables, because the messages are in DLL files
+scattered across the entire system.</p>
+<p>Additionally, if an application is uninstalled, its message DLLs will
+be removed and earlier events are not able to be displayed any more.</p>
+
+<div class="mynotices tip">
+  <div heading="tip"><p>In order to improve the state of event log messages, we started
+maintaining a set of Event Message databases in the
+<a href="https://github.com/Velocidex/evtx-data" target="_blank" >https://github.com/Velocidex/evtx-data</a> repository. This repository
+contains sqlite databases of many known message tables collected from
+different systems.</p>
+<p>You can instruct Velociraptor to use one of those databases using the
+<code>message_db</code> parameter to <code>parse_evtx()</code>.</p>
+</div>
+</div>
+
+
+<h2 id="disabling-event-logs">Disabling event logs</h2>
+<p>Event logs can be easily disabled by simply right clicking in event
+viewer and selecting <code>Disable Logs</code>. The below example shows how I am
+disabling the <code>Microsoft-Windows-Bits-Client/Operational</code> log.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/event_logs/image25.png"
+         class="inline"
+         alt="Disabling logs"
+         width="840" height="429">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="image25.png">
+      <i class="fa fa-download"></i></a>
+    Disabling logs
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>To read the full analysis of how to detect such a registry modification, read
+the <a href="/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/">blog post</a>,
+or simply check for modifications using the <code>Windows.EventLogs.Modifications</code>
+artifact.</p>
+<h2 id="event-tracing-for-windows-etw">Event Tracing for Windows (ETW)</h2>
+<p>ETW is the underlying system by which event logs are
+<a href="https://docs.microsoft.com/en-us/windows-hardware/test/weg/instrumenting-your-code-with-etw" target="_blank" >generated and collected</a>.
+The following diagram illustrates an overview of ETW.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/event_logs/image23.png"
+         class="inline"
+         alt="ETW Architecture"
+         width="1283" height="932">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="image23.png">
+      <i class="fa fa-download"></i></a>
+    ETW Architecture
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>ETW is essentially a broker between <code>Providers</code> and <code>Consumers</code>. A
+Provider is registered with the system using a GUID and advertises
+itself as being able to provide ETW events. A Consumer is a routine
+that registers interest in a provider (e.g. Velociraptor is a
+consumer).</p>
+<p>You can enumerate all providers on a system using the <code>logman query providers</code> command which lists all the ETW providers&rsquo; GUIDs.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/event_logs/providers.png"
+         class="inline"
+         alt="Enumerating ETW providers"
+         width="816" height="290">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="providers.png">
+      <i class="fa fa-download"></i></a>
+    Enumerating ETW providers
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="watching-for-events-with-vql">Watching for events with VQL</h3>
+<p>In VQL watch_etw() can be used to watch for ETW events. For example,
+consider the event provider <code>Microsoft-Windows-DNS-Client</code> with the
+GUID <code>{1C95126E-7EEA-49A9-A3FE-A378B03DDB4D}</code></p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/event_logs/image31.png"
+         class="inline"
+         alt="Watching for ETW events in real time"
+         width="1136" height="440">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="image31.png">
+      <i class="fa fa-download"></i></a>
+    Watching for ETW events in real time
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+
+<div class="mynotices tip">
+  <div heading="tip"><p>ETW and event logs are just two sides of the same coin. If it possible
+to listen to events on the ETW layer before they are forwarded to the
+event log service. In this case the events are not susceptible to
+being stopped by disabling the log (as shown previously)</p>
+</div>
+</div>
+
+
+<h2 id="example---use-etw-to-monitor-to-dns-queries">Example - Use ETW to monitor to DNS queries</h2>
+<p>We can query the DNS client ETW provider for all DNS lookup events.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/event_logs/image32.png"
+         class="inline"
+         alt="Monitor DNS queries via ETW"
+         width="1219" height="750">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="image32.png">
+      <i class="fa fa-download"></i></a>
+    Monitor DNS queries via ETW
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Client event monitoring queries automatically forward events to the server.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/forensic/event_logs/image29.png"
+         class="inline"
+         alt="View DNS queries from client monitoring logs"
+         width="1338" height="660">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="image29.png">
+      <i class="fa fa-download"></i></a>
+    View DNS queries from client monitoring logs
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352329"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352329"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352329"></script>
+    <script src="/js/jquery.sticky.js?1775352329"></script>
+    <script src="/js/featherlight.min.js?1775352329"></script>
+    <script src="/js/highlight.min.js?1775352329"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352329"></script>
+    <script src="/js/learn.js?1775352329"></script>
+    <script src="/js/hugo-learn.js?1775352329"></script>
+    
+    
+
+  </body>
+</html>

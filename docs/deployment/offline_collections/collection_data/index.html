@@ -1,0 +1,1864 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Working With Offline Collection Data :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352329" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352329" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352329" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352329" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352329" rel="stylesheet">
+    <link href="/css/theme.css?1775352329" rel="stylesheet">
+    <link href="/css/tabs.css?1775352329" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352329" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352329" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352329" rel="stylesheet"><link href="/css/syntax.css?1775352329" rel="stylesheet"><link href="/css/light.css?1775352329" rel="stylesheet"><link href="/css/hljs.css?1775352329" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352329" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352329"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/deployment/offline_collections/collection_data/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/deployment\/offline_collections\/collection_data\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/deployment/offline_collections/collection_data/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Working With Offline Collection Data</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#verifying-the-integrity-of-collection-containers">Verifying the integrity of collection containers</a></li>
+    <li><a href="#collection-container-internal-structure">Collection container internal structure</a></li>
+    <li><a href="#to-import-or-not-to-import">To import or not to import?</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#importing-collections-into-the-velociraptor-server">Importing collections into the Velociraptor server</a>
+      <ul>
+        <li></li>
+        <li><a href="#importing-using-serverutilsimportcollection">Importing using Server.Utils.ImportCollection</a></li>
+        <li><a href="#importing-via-a-notebook">Importing via a notebook</a></li>
+        <li><a href="#bulk-collection-imports">Bulk collection imports</a></li>
+        <li><a href="#adding-imported-collections-to-a-hunt">Adding imported collections to a hunt</a></li>
+        <li><a href="#working-with-imported-files">Working with imported files</a></li>
+      </ul>
+    </li>
+    <li><a href="#accessing-collection-containers-without-importing">Accessing collection containers without importing</a>
+      <ul>
+        <li><a href="#extraction-with-external-tools">Extraction with external tools</a></li>
+        <li><a href="#extracting-or-listing-with-the-velociraptor-unzip-command">Extracting or listing with the Velociraptor unzip command</a></li>
+        <li><a href="#mounting-with-the-fuse-container-command">Mounting with the fuse container command</a></li>
+        <li><a href="#dead-disk-analysis-on-a-collection-container">Dead disk analysis on a collection container</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Working With Offline Collection Data
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>As described previously, the offline collector writes it&rsquo;s results into a zip
+archive and optionally applies encryption to it. We technically refer to this as
+a <strong>collection container</strong> because the data contained in the zip is structured
+in a particular way that Velociraptor expects, and which includes metadata about
+the collection that Velociraptor understands. This standardized data structure
+allows Velociraptor to import the data from it, while making use of the
+associated metadata when importing.</p>
+
+<div class="mynotices tip">
+  <div heading="tip"><p>Collection containers are also used when exporting collections or hunts from the
+server. So the same data format that the offline collector uses can also be used
+to transfer data from one server to another, for example
+<a href="/knowledge_base/tips/prepopulate_server/">to copy/replicate data in testing or training environment</a>,
+or
+<a href="/artifact_references/pages/server.utils.backupdirectory/">as a storage format for data backups</a>.</p>
+</div>
+</div>
+
+
+<p>As explained in
+<a href="/docs/deployment/offline_collections/#collection-security">Collection Security</a>,
+when collections are secured they are double-zipped. This is done to prevent
+snooping on the collection filenames because the ZIP standard has the
+shortcoming of allowing file listing even for protected zips. So we add an outer
+zip on which we apply the encryption, which means that a file listing only
+allows potential attackers to see the file name of the inner zip - not the names
+of any files in the collection itself.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/docs/deployment/offline_collections/collection_data/zip_cert_secured.png"
+     width="710"
+     height="196"/>
+
+
+
+
+</p>
+<h2 id="verifying-the-integrity-of-collection-containers">Verifying the integrity of collection containers</h2>
+<p>The offline collector creates a log file on the endpoint alongside the
+collection container zip. In the final few lines of this log it records the
+SHA-256 hash for the file with the message <code>Container hash</code>.</p>
+<p>After transporting the container, you can verify this hash using <code>sha256sum</code> (on
+Linux) or many other tools depending on your platform.</p>
+<h2 id="collection-container-internal-structure">Collection container internal structure</h2>
+<p>Here is an example of the internal structure of a typical (unsecured) collection
+container:</p>
+<pre><code class="language-text">$ unzip -l Collection-WIN-SJE0CKQO83P_lan-2024-11-05T17_45_36Z.zip
+Archive:  Collection-WIN-SJE0CKQO83P_lan-2024-11-05T17_45_36Z.zip
+Length      Date    Time    Name
+---------  ---------- -----   ----
+       32  2024-10-15 16:16   uploads/ntfs/%5C%5C.%5CC%3A/$Extend/$UsnJrnl%3A$Max
+     8192  2024-10-15 17:12   uploads/ntfs/%5C%5C.%5CC%3A/$Boot
+  1048576  2024-10-15 17:12   uploads/ntfs/%5C%5C.%5CC%3A/$Extend/$RmMetadata/$TxfLog/$Tops%3A$T
+     1152  2021-05-08 18:15   uploads/auto/C%3A/ProgramData/Microsoft/Windows/Start Menu/Programs/Server Manager.lnk
+     1190  2024-10-15 00:06   uploads/auto/C%3A/ProgramData/Microsoft/Windows/Start Menu/Programs/Azure Arc Setup.lnk
+     2349  2021-05-08 18:15   uploads/auto/C%3A/ProgramData/Microsoft/Windows/Start Menu/Programs/Immersive Control Panel.lnk
+...
+     3256  1980-00-00 00:00   results/Windows.KapeFiles.Targets%2FAll File Metadata.json.index
+   137590  1980-00-00 00:00   results/Windows.KapeFiles.Targets%2FAll File Metadata.json
+     3256  1980-00-00 00:00   results/Windows.KapeFiles.Targets%2FUploads.json.index
+   222960  1980-00-00 00:00   results/Windows.KapeFiles.Targets%2FUploads.json
+     6192  1980-00-00 00:00   log.json.index
+   175374  1980-00-00 00:00   log.json
+      910  2024-11-06 03:46   collection_context.json
+   280433  2024-11-06 03:46   requests.json
+      813  2024-11-06 03:46   client_info.json
+     3448  1980-00-00 00:00   uploads.json.index
+   154136  1980-00-00 00:00   uploads.json
+---------                     -------
+776656838                     442 files
+</code></pre>
+<p>We can observe the following:</p>
+<ol>
+<li>The files collected using the <code>ntfs</code> accessor are stored in the prefix
+<code>uploads/ntfs/</code>.</li>
+<li>Since those NTFS paths contain device names (with backslashes) that can not
+appear in a Windows filename, Velociraptor will escape the backslashes (So
+<code>\\.C:</code> becomes <code>%5C%5C.%5CC%3A</code>). If you also collect files from <code>VSS</code> they
+will be shown with the VSS device name escaped.</li>
+<li>Files acquired using the <code>auto</code> accessor are stored with a prefix is
+<code>uploads/auto/</code>. Those filenames usually start with the drive name e.g. <code>C:</code>
+which has a <code>:</code> character. This is not usually allowed in a windows filename,
+so the character is escaped into <code>C%3A</code>.</li>
+<li>You can see that some of the files do retain the ZIP timestamp - this is done
+on a best effort basis as ZIP can only represent one timestamp with a second
+resolution.</li>
+<li>The preserved file metadata is stored in the <code>results</code> folder.</li>
+</ol>
+<p>Let&rsquo;s examine the metadata from the above example:</p>
+<pre><code class="language-sh">$ unzip -p Collection-WIN-SJE0CKQO83P_lan-2024-11-05T17_45_36Z.zip 'results/Windows.KapeFiles.Targets%2FUploads.json' | head -50 | tail -2
+</code></pre>
+<pre><code class="language-json">{
+    &quot;CopiedOnTimestamp&quot;: 1730828739,
+    &quot;SourceFile&quot;: &quot;C:\\Users\\Default\\NTUSER.DAT&quot;,
+    &quot;DestinationFile&quot;: &quot;C:\\Users\\Default\\NTUSER.DAT&quot;,
+    &quot;FileSize&quot;: 262144,
+    &quot;SourceFileSha256&quot;: &quot;e05793b7ad9bb379514dcb59e778daeb76660cd19a009ee1d8d0dbcd4ed25de0&quot;,
+    &quot;Created&quot;: &quot;2021-05-08T08:06:51.7462883Z&quot;,
+    &quot;Changed&quot;: &quot;2024-10-14T15:32:30.3560316Z&quot;,
+    &quot;Modified&quot;: &quot;2024-10-14T15:32:30.3560316Z&quot;,
+    &quot;LastAccessed&quot;: &quot;2024-10-14T15:32:30.3560316Z&quot;,
+    &quot;_Source&quot;: &quot;Generic.Collectors.File/Uploads&quot;
+}
+{
+    &quot;CopiedOnTimestamp&quot;: 1730828739,
+    &quot;SourceFile&quot;: &quot;C:\\Windows\\System32\\winevt\\Logs\\HardwareEvents.evtx&quot;,
+    &quot;DestinationFile&quot;: &quot;C:\\Windows\\System32\\winevt\\Logs\\HardwareEvents.evtx&quot;,
+    &quot;FileSize&quot;: 69632,
+    &quot;SourceFileSha256&quot;: &quot;f5f9e97a6b1ec8d46a9bd5b9d4ccae96521b85517b0337b248814d2e974a968b&quot;,
+    &quot;Created&quot;: &quot;2024-10-15T06:16:46.6761566Z&quot;,
+    &quot;Changed&quot;: &quot;2024-10-15T06:17:06.4886135Z&quot;,
+    &quot;Modified&quot;: &quot;2024-10-15T06:17:06.4886135Z&quot;,
+    &quot;LastAccessed&quot;: &quot;2024-10-15T06:17:06.4886135Z&quot;,
+    &quot;_Source&quot;: &quot;Generic.Collectors.File/Uploads&quot;
+}
+</code></pre>
+<p>As you can see, the metadata contains the exact filenames as seen on the
+originating system, all the filesystem timestamps and the hashes of the files.</p>
+<p>Because the container format is a ZIP file there are some caveats about the way
+files are stored within it:</p>
+<ol>
+<li>
+<p>To enhance compatibility certain characters are escaped from a filename. For
+example, Velociraptor supports any form of paths but windows paths such as
+<code>\\.\C:</code> representing a device are not supported in a zip file (because they
+can not be extracted properly on windows).</p>
+<p>Therefore Velociraptor will escape these paths inside the ZIP file.</p>
+</li>
+<li>
+<p>Some other programs try to preserve the timestamps of the acquired files
+inside the ZIP file. This is problematic because the ZIP format only supports
+storing one timestamp at a resolution of 1 second.</p>
+<p>Velociraptor instead relies on timestamps being stored in JSON metadata
+files written to the collection container, and does not attempt to use
+timestamps in the ZIP file itself to replicate the timestamps on the
+originating filesystem.</p>
+</li>
+</ol>
+<h2 id="to-import-or-not-to-import">To import or not to import?</h2>
+<p>Velociraptor collections typically consist primarily of JSON-formatted results
+from queries run on the endpoint. Copied files are a secondary option and most
+collections don&rsquo;t copy files from the endpoint unless there is a compelling
+reason to do so. Offline collectors are no different to an online client, other
+than being preconfigured to run certain artifacts and return the results without
+a network connection to the server.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/offline_collections/collection_data/online-offline_.svg" alt="Online vs Offline Collections"
+         class="inline"
+         height="2266.666666666667"
+         width="4173.333333333334"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="online-offline.svg"><i class="fa fa-download"></i></a>
+    Online vs Offline Collections
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p><a href="#importing-collections-into-the-velociraptor-server">Importing</a>
+a collection is the normal process to use when the collection contains the
+results from all the artifacts that you needed to collect on the endpoint.</p>
+<h4 id="what-happens-during-import">What happens during import?</h4>
+<ol>
+<li>Velociraptor creates a &ldquo;virtual&rdquo; client (i.e. a new client in the datastore).</li>
+<li>It copies the collection results from the container to this new client. This
+collection is identical to how it would appear if it was collected by a live
+client.</li>
+<li>File included in the collection are copied into the server’s datastore. These
+files are assumed to be included for preservation purposes – <em>they are
+usually not used as the basis for further analysis</em>.</li>
+</ol>
+<p>File parsing is usually done on the endpoint, so that after importing you would
+have the parsed data imported to your server, which is what we normally work
+with in subsequent server-based VQL queries.</p>
+<p>If the offline collection is planned well then the collection container will
+consist mainly of artifact results (in JSON format), and it may also include
+some files for preservation purposes. In that case importing the collection
+makes perfect sense, since you can then work with the imported data as if it had
+come from a network-connected client.</p>
+<h4 id="what-if-i-collected-files-instead-of-parsing-them-on-the-endpoint">What if I collected files instead of parsing them on the endpoint?</h4>
+<p>Sometimes you might not have run all the artifacts that you needed to run on the
+endpoint. With offline collectors you often don&rsquo;t get the chance to run any
+further collections - and even if you could, this would require building more
+offline collectors and going through a potentially arduous process to run them.</p>
+<p>However, iteratively querying file-based data sources is often necessary during
+an investigation, while offline collectors usually represent a one-shot approach
+to collection. In those circumstances the files copied by the offline collector
+could be all you have to work with, so there are a few alternatives to consider
+for &ldquo;post-processing&rdquo; those files, which we&rsquo;ll explain below.</p>
+<h5 id="emulating-the-source-filesystem-using-remapping">Emulating the source filesystem using remapping</h5>
+<p>If you want to run additional artifacts on files included in an offline
+collection, you can try to make the best of the situation by emulating the
+filesystem of the endpoint using only the files stored in the collection
+container. This allows us to run additional artifacts against the copied files.</p>
+<p>Using Velociraptor&rsquo;s <a href="/docs/forensic/filesystem/remapping/">remapping</a>
+feature, we can emulate the original filesystem after importing the collection
+data, or we could do it without even importing the data.</p>
+<p>However this has inherent limitations. In particular it is not ideal because:</p>
+<ul>
+<li>you only have access to files, whereas on an endpoint you have access to the
+operating system <em>plus</em> the filesystem.</li>
+<li>many Velociraptor artifacts rely on data other than files, so you also need to
+take that into account when selecting which artifacts to run.</li>
+<li>the collection container very likely only contains a subset of the files from
+the original filesystem, so it&rsquo;s possible that some artifacts may not find the
+files that they expect to be present.</li>
+<li>artifacts that use external tools cannot be used on files stored in the
+server&rsquo;s datastore, since the remapping only applies to VQL queries. Tools
+will be unaware of the remapping and will be unable to find the files.</li>
+</ul>
+<p>There are two ways to run artifacts on files copied by an offline collector:</p>
+<ul>
+<li>
+<h6 id="run-artifacts-on-the-collected-files-without-importing-the-collection">Run artifacts on the collected files without importing the collection</h6>
+<p>You can use the method described in
+<a href="#dead-disk-analysis-on-a-collection-container">Dead disk analysis on a collection container</a>.
+This gives you a full client against which you can interactively run further
+collections. There is a bit of setup required so it&rsquo;s not quite as easy as
+importing and then running collections against the imported files, although
+it has the advantage of being more intuitive and familiar because you&rsquo;ll be
+able to run collections interactively against a live client which is
+impersonating the original endpoint.</p>
+</li>
+<li>
+<h6 id="run-artifacts-on-the-collected-files-after-importing-the-collection">Run artifacts on the collected files <em>after</em> importing the collection</h6>
+<p>You can use the method described in
+<a href="#working-with-imported-files">Working with imported files</a>.
+Unlike the previously described option, this doesn&rsquo;t have any setup steps
+other than importing the collection. The remapping is generated and applied
+to a notebook cell&rsquo;s scope using VQL, along with running the chosen
+artifacts. While this is still easy to do, it requires a solid understanding
+of VQL and uses a workflow that&rsquo;s very different from using an interactive
+client in the GUI. So it&rsquo;s generally less intuitive than the previous method,
+especially for novice users. For expert users this method may be preferred
+because it&rsquo;s simpler to automate and doesn&rsquo;t require spinning up any separate
+clients.</p>
+</li>
+</ul>
+<h6 id="why-not-both">Why not both?</h6>
+<p>You could of course use a combination of these methods. Your choice will depend
+on:</p>
+<ul>
+<li>what&rsquo;s contained in your offline collection container (mainly copied files or
+mainly parsed JSON results?),</li>
+<li>the type of analysis you need to run on the copied files (for example, an
+additional query against a single registry hive may not justify running a
+separate client),</li>
+<li>your level of VQL experience and preferred process (for example, if you need
+to post-process files in thousands of collection containers then running a
+separate client might not be as practical as repeating the same VQL in a
+notebook),</li>
+<li>and possibly other factors.</li>
+</ul>
+<h4 id="working-with-external-tools">Working with External Tools</h4>
+<p>External tools cannot directly access files stored in the server’s datastore or
+the collection container when using remapping.</p>
+<p>If you need to run external tools against the collected files then you can
+either:</p>
+<ul>
+<li>
+<p><a href="#accessing-collection-containers-without-importing">Extract the container</a>:
+Use the <code>velociraptor unzip</code> command or external unzip tools to extract the
+files.</p>
+</li>
+<li>
+<p><a href="#mounting-with-the-fuse-container-command">Mount the container with FUSE</a>:
+Use Velociraptor&rsquo;s built-in FUSE utility (on Linux only) to mount the
+container and provide access to it&rsquo;s file contents.</p>
+</li>
+</ul>
+<p>These options are also applicable if you want to work with the collection&rsquo;s JSON
+results in external programs</p>
+<h2 id="importing-collections-into-the-velociraptor-server">Importing collections into the Velociraptor server</h2>
+
+<div class="mynotices note">
+  <div heading=" Copying the collections to the server "><p>Offline collections are typically much larger than web browser uploads will
+allow, which is why we do not have a GUI facility to upload the collection zip
+file into the server. So you will need to use an appropriate transfer mechanism
+(such as SFTP or SCP) to upload the files to the server before importing them.</p>
+</div>
+</div>
+
+
+<p>Most often we use the <code>Server.Utils.ImportCollection</code> artifact to import a
+collection container, but this is essentially just a convenience wrapper around
+the <a href="/vql_reference/server/import_collection/">import_collection</a>
+VQL function. If you need to perform a bulk import of many collections then it&rsquo;s
+easy to
+<a href="#bulk-collection-imports">automate that process</a>
+using VQL in either a notebook or a server artifact.</p>
+<h4 id="auto-decryption-of-containers">Auto-decryption of containers</h4>
+<p>The Velociraptor server can automatically decrypt offline collection containers
+when importing <em>if</em> they were encrypted with the server&rsquo;s certificate. This
+applies when importing via the GUI using the abovementioned artifact, or when
+using your own VQL. The <code>import_collection()</code> function always tries to decrypt
+the zip using the server&rsquo;s key before importing. This auto-decryption is
+possible because the function has access to the corresponding private key (if
+the user running it has the necessary permissions) which it uses to decrypt the
+randomly-generated encrypted password, which in turn is used to access the zip
+contents.</p>
+<h4 id="client-matching-during-import">Client matching during import</h4>
+<p>Offline collectors extract a unique <code>HostID</code> from the operating system and store
+this in the offline collection data. This ID is expected to remain constant over
+the lifetime of the operating system. When offline collections are imported into
+the server, this ID is used to construct the unique Velociraptor <code>client_id</code> -
+if you don&rsquo;t specified one during the import. This means that separate
+collections created on the same endpoint will be automatically associated with
+the same &ldquo;virtual client&rdquo; in the server&rsquo;s datastore (unless you manually specify
+a different <code>client_id</code> for each import for some odd reason).</p>
+<p>If the collection you&rsquo;re importing comes from an existing client (real or
+&ldquo;virtual&rdquo;), then the server tries to match the <code>hostname</code> contained in the
+collection zip with an existing client record. This attempts to match imports to
+existing client records. It&rsquo;s not perfect under all scenarios - for example it&rsquo;s
+possible for separate endpoints to have the same hostname in the real world -
+but most of the time it should work. If you need to be absolutely sure about
+import matching the right <code>client_id</code> then you should specify it instead of
+relying on the &ldquo;auto&rdquo; option.</p>
+<p>To summarize, the import process performs the following actions:</p>
+<ol>
+<li>
+<p>Inspects the zip file from a path specified on the server. Reads
+the <code>metadata.json</code> file, if present, to determine the encryption
+scheme and extract the encrypted password.</p>
+</li>
+<li>
+<p>Decrypts the password if possible and then uses the password to
+unlock the <code>data.zip</code> inner container.</p>
+</li>
+<li>
+<p>Creates a &ldquo;virtual client&rdquo; (that is, a Velociraptor client record)
+if one matching the hostname in the collection data does not exist.</p>
+</li>
+<li>
+<p>Imports the collection data into the server datastore and
+associates it with the client.</p>
+</li>
+</ol>
+<p>In the client&rsquo;s <strong>Collected Artifacts</strong> view, the imported collections
+are indistinguishable from those that were collected from a regular
+&ldquo;online&rdquo; client. The collections and their data will then be available to
+any VQL queries run from <a href="/docs/notebooks/">notebooks</a>,
+<a href="/docs/artifacts/basic_fields/#-type-">server_artifacts</a>
+or <a href="/docs/server_automation/server_api/">API queries</a>,
+the same as with any other clients.</p>
+<h3 id="importing-using-serverutilsimportcollection">Importing using Server.Utils.ImportCollection</h3>
+<p>The <code>Server.Utils.ImportCollection</code> artifact is the most common way to import
+collections. It caters for collection containers that are either protected using
+the server&rsquo;s X.509 certificate or that are unprotected. Currently this artifact
+does not support importing collection containers that are secured by PGP, X.509
+certs <em>other than the server&rsquo;s cert</em>, or fixed passwords. However import of
+collections secured by these other security schemes are supported using
+alternative methods
+<a href="#importing-via-a-notebook">described below</a>.</p>
+<p>Alternatively, if you want to use the <code>Server.Utils.ImportCollection</code> server
+artifact to import a collection container that&rsquo;s been secured using a fixed
+password, a PGP certificate, or an X.509 <em>other than your server&rsquo;s certificate</em>
+then you&rsquo;ll need to first
+<a href="#manual-decryption">manually extract</a>
+the inner zip (<code>data.zip</code>) from the protected outer zip, and then import that.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/offline_collections/collection_data/import01.png"
+         class="inline"
+         alt="Importing a collection container zip"
+         width="2400" height="1200">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="import01.png">
+      <i class="fa fa-download"></i></a>
+    Importing a collection container zip
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/offline_collections/collection_data/import02.png"
+         class="inline"
+         alt="Matching to an existing client is attempted"
+         width="2400" height="1616">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="import02.png">
+      <i class="fa fa-download"></i></a>
+    Matching to an existing client is attempted
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/offline_collections/collection_data/import03.png"
+         class="inline"
+         alt="New virtual client is created"
+         width="2399" height="551">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="import03.png">
+      <i class="fa fa-download"></i></a>
+    New virtual client is created
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>You can then click on the Client ID to go to that client&rsquo;s Collected Artifacts
+screen and there you will find the collections presented exactly as they would
+be for any &ldquo;online&rdquo; client.</p>
+<h3 id="importing-via-a-notebook">Importing via a notebook</h3>
+<p>The <a href="/vql_reference/server/import_collection/">import_collection</a>
+VQL function can be used from a notebook or custom server artifact, if you want
+to implement additional logic relating to the import. For example, you may want
+to
+<a href="#bulk-collection-imports">automate the import of many collection containers</a>.</p>
+<h4 id="x509-encryption-using-the-servers-certificate">X.509 encryption using the server&rsquo;s certificate</h4>
+<p>For collection containers that are secured with the server&rsquo;s X.509 certificate
+or that are unprotected, the import can be done in a notebook without any
+additional steps. This is a straightforward use of the <code>import_collection()</code> VQL
+function.</p>
+<h6 id="example">Example</h6>
+<pre><code class="language-vql">SELECT import_collection(filename=&quot;/path/to/zips/Collection-WIN-KMODJ1W0CYG-2025-11-10T20_11_40Z.zip&quot;)
+FROM scope()
+</code></pre>
+<h4 id="pgp-non-server-x509-cert-or-fixed-password">PGP, non-server X.509 cert, or fixed password</h4>
+<p>For collection containers that use these protection schemes there is an
+additional step required. We can only import these if we also provide the
+<code>import_collection</code> function with the password. So the extra step is obtaining
+that password.</p>
+<h5 id="fixed-password-scheme">Fixed password scheme</h5>
+<p>For the fixed password scheme that&rsquo;s easy because you set the password when
+you created the collector. If you can&rsquo;t remember it, you can go find it in the
+<code>Server.Utils.CreateCollector</code> collection that created the collector, or if you
+have access to the collector binary you can use the <code>config show</code> command since
+the embedded config contains the password in clear text.</p>
+<p>When the <code>import_collection</code> function is run it checks for a variable in the
+scope named <code>ZIP_PASSWORDS</code> which it expects to contain the password as a
+string.</p>
+<h6 id="example-1">Example</h6>
+<p>In this example we set the password to &ldquo;infected&rdquo; when we created the
+collector. Before importing we set the variable in the local scope.</p>
+<pre><code class="language-vql">LET ZIP_PASSWORDS &lt;= &quot;infected&quot;
+SELECT import_collection(filename=&quot;/path/to/zips/Collection-WIN-KMODJ1W0CYG-2025-11-10T18_36_27Z.zip&quot;)
+FROM scope()
+</code></pre>
+<h5 id="pgp-or-x509-non-server-cert-encryption-schemes">PGP or X.509 (non-server cert) encryption schemes</h5>
+<p>If you chose to encrypt the collection container with a PGP certificate or an
+X.509 cert <em>other than the server&rsquo;s cert</em>, then you need to first decrypt the
+encrypted zip password as an additional step. This can be done
+<a href="#extraction-with-external-tools">using external tools</a>,
+or in a Velociraptor notebook, which is the process we describe here.</p>
+<p>The collection container will contain a file at the top level named
+<code>metadata.json</code>. This file contains the encrypted version of the zip password in
+the field named <code>EncryptedPass</code>. To decrypt this string we also need the private
+key that corresponds to the <code>PublicKey</code> which was used to encrypt it. The public
+key is also provided in the <code>metadata.json</code> file, in case you need to be
+reminded which one was used.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/offline_collections/collection_data/encrypted_file_metadata.png"
+         class="inline"
+         alt="example: metadata.json"
+         width="887" height="397">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="encrypted_file_metadata.png">
+      <i class="fa fa-download"></i></a>
+    example: metadata.json
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>In a notebook we can use the
+<a href="/vql_reference/encode/pk_decrypt/">pk_decrypt</a>
+VQL function to decrypt the encrypted zip password.
+Note that Velociraptor does not support passphrase-protected private keys.</p>
+<h6 id="example-2">Example</h6>
+<pre><code class="language-vql">LET PrivKey &lt;= '''
+-----BEGIN RSA PRIVATE KEY-----
+
+...
+
+-----END RSA PRIVATE KEY-----
+'''
+
+LET EncryptedPass &lt;= base64decode(string=&quot;HmvxVDBNdjlC8dn ... pqBvigeqpG5o3Kew==&quot;)
+
+SELECT str(str=pk_decrypt(data=EncryptedPass, private_key=PrivKey, scheme=&quot;rsa&quot;)) AS Password
+FROM scope()
+</code></pre>
+<p>Note that in the above we used <code>scheme=&quot;rsa&quot;</code> for the X509 scheme, but to
+decrypt PGP you would use <code>scheme=&quot;pgp&quot;</code> instead.</p>
+<p>For this example the notebook provides the decrypted password like this:</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/docs/deployment/offline_collections/collection_data/decrypted_pass.png"
+     width="591"
+     height="146"/>
+
+
+
+
+</p>
+<p>Now that we have the decrypted password we can provide it to the
+<code>import_collection</code> function the same way we did for the non-encrypted
+password case:</p>
+<pre><code class="language-vql">LET ZIP_PASSWORDS &lt;= &quot;c7889f8d2292f284c1f703b9fd367c86d618d9b4170af26f65&quot;
+SELECT import_collection(filename=&quot;/path/to/zips/Collection-WIN-KMODJ1W0CYG-2025-11-10T18_36_50Z.zip&quot;)
+FROM scope()
+</code></pre>
+<h3 id="bulk-collection-imports">Bulk collection imports</h3>
+<p>If you have many collection containers to import, you will probably want to
+automate the process by iterating over the zips and importing them one by one.</p>
+<p>This can be done using VQL in a
+<a href="/docs/notebooks/">notebook</a>, a
+<a href="/docs/artifacts/basic_fields/#-type-">server artifact</a>, or
+<a href="/docs/server_automation/server_api/">via an API query</a>.</p>
+<p>Automating this process assumes that the collection containers can be
+automatically decrypted (i.e. X509 using the server&rsquo;s cert), or are unprotected.
+If you used the fixed password scheme, such that all your collection zips are
+secured by the same password, then you can add <code>LET ZIP_PASSWORDS &lt;= ...</code> to
+your VQL so that <code>import_collection</code> has access to it.</p>
+<h6 id="example-bulk-import-of-collections">Example: Bulk import of collections</h6>
+<pre><code class="language-vql">LET ZipsDir &lt;= &quot;/tmp/imports/&quot;
+
+SELECT OSPath, import_collection(filename=OSPath)
+FROM glob(globs=&quot;*.zip&quot;, root=ZipsDir)
+</code></pre>
+<h3 id="adding-imported-collections-to-a-hunt">Adding imported collections to a hunt</h3>
+<p>Offline collectors obviously can&rsquo;t participate directly in hunts, but you can
+add the collection to a hunt after importing it. This will make the virtual
+client and collection data part of the hunt, and you can then run queries across
+the hunt data which will include your offline collections.</p>
+<h6 id="example-importing-a-collection-and-adding-it-to-a-hunt">Example: Importing a collection and adding it to a hunt</h6>
+<pre><code class="language-vql">LET Container &lt;= &quot;/tmp/imports/scheduledtasks-WIN-KMODJ1W0CYG-2025-11-27T17_07_55Z.zip&quot;
+LET HuntId &lt;= &quot;H.D4K897V4QBNLU&quot;
+LET Imported = import_collection(filename=Container)
+
+SELECT hunt_add(client_id=client_id, hunt_id=HuntId, flow_id=session_id)
+FROM Imported
+</code></pre>
+<h6 id="example-bulk-import-and-add-to-a-hunt">Example: Bulk import and add to a hunt</h6>
+<pre><code class="language-vql">LET ZipsDir &lt;= &quot;/tmp/imports/&quot;
+LET HuntId &lt;= &quot;H.D4K897V4QBNLU&quot;
+
+SELECT *
+FROM foreach(row={
+    SELECT import_collection(filename=OSPath) AS Imported
+    FROM glob(globs=&quot;Collection*.zip&quot;, root=ZipsDir)
+  },
+             query={
+    SELECT
+    hunt_add(client_id=Imported.client_id,
+             hunt_id=HuntId,
+             flow_id=Imported.session_id)
+    FROM scope()
+  })
+</code></pre>
+<h3 id="working-with-imported-files">Working with imported files</h3>
+<p>After importing a collection container the associated collection (flow) will be
+available on the client&rsquo;s <strong>Collected</strong> screen - exactly as it would be if the
+collection was done using a network-connected client. The collection results can
+be queried and analyzed in the collection notebook, just as you can do with any
+other collection.</p>
+<p>Any files included in the collection will be available in the <strong>Uploaded Files</strong>
+tab when viewing the collection.</p>
+<p>If you want to perform further analysis on the files collected (for example if
+you forgot to run artifacts to extract the right data from those files), then it
+is possible to perform post-processing on the collection&rsquo;s files. However this
+is not recommended under normal circumstances - it&rsquo;s always far easier to work
+with data that was extracted on the endpoint rather than trying to extract the
+data from files on the server. Please see the section
+<a href="#to-import-or-not-to-import">To import or not to import?</a>
+for a more detailed discussion of the considerations and options when dealing
+with imported files.</p>
+<p>If your offline collections used the <code>Windows.Triage.Targets</code> or
+<code>Windows.KapeFiles.Targets</code> artifacts then these have a notebook cell suggestion
+included for post-processing files.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/offline_collections/collection_data/post_process_suggestion.png"
+         class="inline"
+         alt="Cell suggestion: Post-process collection"
+         width="1200" height="533">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="post_process_suggestion.png">
+      <i class="fa fa-download"></i></a>
+    Cell suggestion: Post-process collection
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>This uses the <code>Windows.KapeFiles.Remapping</code> artifact to generate and apply an
+appropriate remapping configuration. The artifact as well as the cell itself
+contain instructions for use.</p>
+<p>For other artifacts which collected files you can use the same post-processing
+approach in a notebook using the <code>Windows.KapeFiles.Remapping</code> artifact.</p>
+<p>For example:</p>
+<pre><code class="language-vql">LET _ &lt;=
+   SELECT * FROM Artifact.Windows.KapeFiles.Remapping(ClientId=ClientId, FlowId=FlowId)
+
+SELECT * FROM Artifact.Windows.System.TaskScheduler()
+</code></pre>
+<h2 id="accessing-collection-containers-without-importing">Accessing collection containers without importing</h2>
+<p>Sometimes you may want to work with the data external to Velociraptor. For
+example you may want to process the collected data with external tools.</p>
+<p>Below we describe several methods, using either built-in capabilities of the
+Velociraptor binary or external tools.</p>
+<h3 id="extraction-with-external-tools">Extraction with external tools</h3>
+
+<div class="mynotices warning">
+  <div heading=" Preserving file names and timestamps "><p>If you want to extract the collection containers without using Velociraptor at
+all, this is entirely possible. Note however that while you can extract the
+files using an external ZIP program, the program will not take into account the
+various transformations made by the offline collector.</p>
+<p>Some external tools use the acquired file timestamps in the analysis and parsing
+of the file itself (e.g. prefetch parsing). This is based on the assumption that
+the files being parsed are on the originating system, not taking into account
+that they may have been copied. By copying or manipulating files in any way
+those timestamps will change, thus increasing the chances of incorrect analysis.</p>
+<p>Some triage tools attempt to preserve these timestamps at the filesystem level -
+for example by creating a NTFS-based &ldquo;virtual disk&rdquo; container instead of a ZIP
+file. While this helps to preserve some timestamps by essentially timestomping
+the collected files into the correct timestamp, it is a workaround at best.</p>
+<p>Velociraptor instead relies on timestamps being stored separately in JSON
+metadata files written to the collection container, and does not attempt to use
+timestamps in the ZIP file itself to replicate the timestamps on the originating
+filesystem, for various reasons as
+<a href="/docs/deployment/offline_collections/collection_data/#collection-container-internal-structure">explained above</a>.</p>
+<p>If you use external tools to extract files from the container zip, then you
+cannot rely on the timestamps for the extracted files! Depending on your use
+case this may or may not matter, but you should always be aware of this fact.</p>
+<p>If your analysis <em>does</em> need to take filesystem timestamps into account, then
+you can use the
+<a href="/artifact_references/pages/windows.kapefiles.extract/">Windows.KapeFiles.Extract</a>
+artifact to do the extraction. This artifact reads the stored timestamps and
+replicates them on the extracted files, however there are still some limitations
+as stated in the artifact&rsquo;s description.</p>
+<h6 id="example">Example</h6>
+<pre><code class="language-sh">velociraptor artifacts collect Windows.KapeFiles.Extract --args ContainerPath=Collection-DESKTOP-2OR51GL-2021-07-16_06_56_50_-0700_PDT.zip --args OutputDirectory=/tmp/MyOutput/
+</code></pre>
+<p>Note that this approach is really not ideal in most circumstances, and it will
+also be further affected by the filesystem type that you are extracting the
+files to: Windows allows 3 timestamps to be set (MAC times except for Btime),
+while Linux only allows 2 timestamps (Modified and Accessed).</p>
+<p>Since timestamps are usually very important in most types of analysis, it is
+preferable to perform the analysis directly on the source system, or work
+directly with the file metadata that Velociraptor collected from the source
+system.</p>
+<p>The <code>fuse container</code> command, which we describe below, also attempts to emulate
+the original timestamps based on metadata stored in the collection container.</p>
+</div>
+</div>
+
+
+<h4 id="no-encryption-or-password-encryption">No encryption or password encryption</h4>
+<p>Unzipping using external tools is straightforward if you didn&rsquo;t configure the
+collector to apply a certificate-based encryption scheme to the collection zip,
+but we remind you that the certificate-based schemes are strongly recommended in
+all cases.</p>
+<p>If no encryption scheme was used then the container is just an ordinary
+unprotected zip.</p>
+<p>If the fixed password scheme was used then the collection container is simply a
+standard password-protected zip.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/docs/deployment/offline_collections/collection_data/zip_pass_secured.png"
+     width="710"
+     height="196"/>
+
+
+
+
+</p>
+<h4 id="certificate-based-schemes">Certificate-based schemes</h4>
+<p>For the X509 and PGP encryption schemes, the collection container is still just
+a password-protected zip, but the password is encrypted and must therefore be
+recovered first by decrypting it.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/docs/deployment/offline_collections/collection_data/zip_cert_secured.png"
+     width="710"
+     height="196"/>
+
+
+
+
+</p>
+<p>The collection container will contain a file at the top level named
+<code>metadata.json</code>.</p>
+<p>This file contains the encrypted version of the zip password in the field named
+<code>EncryptedPass</code>. To decrypt this string we need the private key that corresponds
+to the <code>PublicKey</code> which was used to encrypt it.</p>
+<p>The public key is also provided in the <code>metadata.json</code> file, in case you need to
+be reminded which one was used.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/offline_collections/collection_data/encrypted_file_metadata.png"
+         class="inline"
+         alt="example: metadata.json"
+         width="887" height="397">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="encrypted_file_metadata.png">
+      <i class="fa fa-download"></i></a>
+    example: metadata.json
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>You can manually copy the encrypted password from that file and decrypt it using
+external tools such a <code>openssl</code> or <code>gpg</code> with the relevant private keys.</p>
+<p>If decrypting the password with external tools then you&rsquo;ll likely also need to
+first decode the encrypted password since the JSON format of <code>metadata.json</code>
+requires that we store it in Base64-encoded form.</p>
+<p>If you are working in a separate environment from your Velociraptor deployment,
+it is still possible to make use of a Velociraptor notebook, as described
+<a href="#pgp-or-x509-non-server-cert-encryption-schemes">here</a>,
+to do the password decryption. Since the notebook only needs the encrypted
+password and the relevant cert, it can be done on an
+<a href="/docs/deployment/#instant-velociraptor">Instant Velociraptor</a>
+instance that is completely separate from your Velociraptor deployment.</p>
+<p>Once you have decrypted the password you can use it with any unzip tool to
+extract the contents of the collection container.</p>
+<h3 id="extracting-or-listing-with-the-velociraptor-unzip-command">Extracting or listing with the Velociraptor unzip command</h3>
+<p>To extract the collection container on the command line you can use
+Velociraptor&rsquo;s built-in
+<a href="/docs/cli/misc/#-unzip-"><code>unzip</code> command</a>.
+This command only supports collections secured with the server&rsquo;s X.509
+certificate and unprotected zips.</p>
+<p>To decrypt an X509-secured container automatically, you will need to provide
+Velociraptor with access to the config file of the server that created the
+collector. Velociraptor will then use the server&rsquo;s private key to decrypt the
+container transparently.</p>
+<p>If you want to extract or list X509-secured collection containers on a machine
+other than your Velociraptor server, you use a copy of the <code>server.config.yaml</code>.
+<em>Just remember that the config should be carefully guarded precisely because it
+contains the server&rsquo;s private key and possibly also the private key of the
+internal CA!</em></p>
+<h6 id="example-listing-with-unzip">Example: Listing with unzip</h6>
+<pre><code class="language-sh">velociraptor --config server.config.yaml unzip Collection-WIN-KMODJ1W0CYG-2025-11-10T18_36_27Z.zip --list
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/offline_collections/collection_data/listing_encrypted_files.png"
+         class="inline"
+         alt="Listing contents of an X509 encrypted container"
+         width="1214" height="657">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="listing_encrypted_files.png">
+      <i class="fa fa-download"></i></a>
+    Listing contents of an X509 encrypted container
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The <code>unzip</code> command used with the <code>-v</code> and  <code>--report_password</code> flags will also
+display the decrypted password. This is useful if you want to provide the
+protected zip and the password to someone else so that they can extract it,
+without needing to give them access to the server&rsquo;s private key.</p>
+<pre><code class="language-sh">velociraptor --config server.config.yaml unzip Collection-WIN-KMODJ1W0CYG-2025-11-10T18_36_27Z.zip --list --report_password -v
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/offline_collections/collection_data/report_password.png"
+         class="inline"
+         alt="Listing and displaying the password"
+         width="1093" height="712">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="report_password.png">
+      <i class="fa fa-download"></i></a>
+    Listing and displaying the password
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>If the <code>--list</code> (or <code>-l</code>) flag is not provided then the <code>unzip</code> command will
+extract the contents of the container into the current directory. If you want to
+specify a different directory then the <code>--dump_dir</code> flag should be used (it will
+create the specified directory if it doesn&rsquo;t exist).</p>
+<h6 id="example-extracting-with-unzip">Example: Extracting with unzip</h6>
+<pre><code class="language-sh">velociraptor --config server.config.yaml unzip Collection-WIN-KMODJ1W0CYG-2025-11-10T18_36_27Z.zip --dump_dir ./output/
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/offline_collections/collection_data/extracting_encrypted_files.png"
+         class="inline"
+         alt="Extracting an encrypted container"
+         width="1214" height="657">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="extracting_encrypted_files.png">
+      <i class="fa fa-download"></i></a>
+    Extracting an encrypted container
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="mounting-with-the-fuse-container-command">Mounting with the fuse container command</h3>
+<p>It&rsquo;s possible to work with the contents of collection containers by mounting
+them with FUSE instead of extracting them. The Velociraptor Linux binary
+provides the <a href="/docs/cli/fuse/"><code>fuse container</code> command</a> which
+allows us to mount collection containers on a directory.</p>
+<p>Using FUSE allows efficient and rapid access because the container does not need
+to be extracted. Non-sequential access is provided by the FUSE driver. This is a
+significant benefit if you&rsquo;re working with a large number of huge collection
+containers. This also means that you don&rsquo;t need to consume disk space by
+extracting the data.</p>
+<p>The <code>fuse container</code> command has many advantages (some enabled by command line
+flags) over simply extracting the contents of the zip container, especially when
+the collection contains files collected from the endpoint that you want to
+inspect with external tools. It can:</p>
+<ul>
+<li>merge file collections from multiple (non-encrypted) containers</li>
+<li>convert raw device names to drive letters, e.g. <code>\\.\C:</code> -&gt; <code>C:</code></li>
+<li>strip the <code>:</code> from drive letters in paths, e.g. <code>C:</code> -&gt; <code>C</code></li>
+<li>escape <code>/</code> characters in Windows path components, e.g. <code>abc/xyz</code> -&gt; <code>abc\/xyz</code>
+because on Linux the <code>/</code> is a path separator and not valid within a path
+component.</li>
+<li>emulate the original timestamps for bulk file collection artifacts such as
+<code>Windows.Triage.Targets</code></li>
+</ul>
+<p>If you want to use a specific external tool to analyze the files, then the above
+options give you the flexibility to adjust the presentation of the file and
+folder structure so that it best suits the requirements of your external tool.</p>
+<h5 id="auto-decryption">Auto-decryption</h5>
+<p>The <code>fuse container</code> command only works with collection containers that can be
+automatically decrypted or accessed without encryption. This means either
+containers that are secured with the server&rsquo;s X.509 cert, or non-encrypted
+containers (see Manual decryption below).</p>
+<h6 id="example-mounting-an-x509-protected-container">Example: Mounting an X509-protected container</h6>
+<pre><code class="language-sh">velociraptor fuse container -c server.config.yaml \
+--map_device_names_to_letters --strip_colons_on_drive_letters \
+--unix_path_escaping --emulate_timestamps /tmp/exports/fuse_mount \
+/tmp/exports/eventlogs-WIN-KMODJ1W0CYG-2025-11-12T10_24_44Z.zip -v
+</code></pre>
+<h5 id="manual-decryption">Manual decryption</h5>
+<p>If you have collection containers secured with other schemes then you can
+<a href="#extraction-with-external-tools">decrypt the password manually</a>,
+extract the inner zip, and then FUSE mount it.</p>
+<p>If you want to FUSE mount multiple zips, you&rsquo;ll also need to decrypt them first
+because the auto-decryption currently only supports one zip (the first one if
+multiple are specified).</p>
+<p>Method:</p>
+<ol>
+<li>
+<p>Obtain the decrypted password using the <code>decrypt</code> CLI command.</p>
+<pre><code class="language-sh">velociraptor --config server.config.yaml decrypt --show_password -v /tmp/eventlogs-WIN-KMODJ1W0CYG-2025-11-12T10_24_44Z.zip data.zip
+</code></pre>
+</li>
+<li>
+<p>Repeat the above step for any additional containers.</p>
+</li>
+<li>
+<p>Mount the decrypted zip (<code>data.zip</code>) - and any additional ones - using the
+<code>fuse container</code> command.</p>
+</li>
+</ol>
+<h6 id="example-merge-mounting-two-manually-extracted-inner-zips">Example: Merge-mounting two manually extracted inner zips</h6>
+<pre><code class="language-sh">velociraptor fuse container /tmp/exports/fuse_mount \
+/tmp/exports/eventlogs-WIN-KMODJ1W0CYG-2025-11-12T10_24_44Z/data.zip \
+/tmp/exports/prefetch-WIN-KMODJ1W0CYG-2025-11-12T10_25_06Z/data.zip -v
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/offline_collections/collection_data/merge_mount.png"
+         class="inline"
+         alt="Merge mount of 2 collection zips"
+         width="1076" height="581">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="merge_mount.png">
+      <i class="fa fa-download"></i></a>
+    Merge mount of 2 collection zips
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/offline_collections/collection_data/fuse_mount_merged.png"
+         class="inline"
+         alt="Merged collection data in mount directory"
+         width="985" height="693">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="fuse_mount_merged.png">
+      <i class="fa fa-download"></i></a>
+    Merged collection data in mount directory
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Note that when 2 or more containers are merged they are layered over each
+other in the order that they were specified on the command line. So if there
+are 2 different files (or 2 different versions of the same file) using the
+same path then in the mount directory you will see the last one in the stack.
+It&rsquo;s important to keep this in mind since the container format uses several
+standard paths for certain common collection files. Merging is primarily
+intended for files in the collection&rsquo;s &ldquo;uploads&rdquo;, i.e. files copied from the
+endpoint, so that you can work with them all together in one tree structure.</p>
+<p>Once the containers are mounted you can then apply other tools to the collection
+data and/or files in the mount directory.</p>
+<p>Reminder: Don&rsquo;t forget to <code>Ctrl+C</code> and <code>umount</code> when you&rsquo;re done!</p>
+<h3 id="dead-disk-analysis-on-a-collection-container">Dead disk analysis on a collection container</h3>
+<p><a href="/docs/forensic/filesystem/remapping/">Remapping</a>
+is one of Velociraptor&rsquo;s most versatile and powerful features. It was originally
+designed to allow Velociraptor to support
+<a href="/docs/forensic/deaddisk/">dead disk analysis</a>,
+but it turned out to be an incredibly useful capability that can be applied to a
+broad range of problems.</p>
+<p>In some sense, a collection container is not that much different from a disk
+image which is also a type of storage container. Velociraptor can remap
+accessors to allow transparent file access to various disk image formats and
+filesystem types. Likewise, the collection container has a well-defined format
+and we have a special <code>collector</code> accessor which we can combine with remapping
+rules to make the collection container emulate the filesystem of the original
+endpoint. The remapping then allows a Velociraptor client to operate on the data
+as if it was running on a live endpoint, but limited to having only file access.
+Because the client is inspecting data that comes from a source other than the
+operating system it is running on, we call it a &ldquo;virtual client&rdquo;. To prevent
+VQL queries from inadvertently accessing the host operating system, the
+remapping disables the VQL functions and plugins that would query the host
+operating system, and redirects filesystem access.</p>
+<p>The
+<a href="/artifact_references/pages/windows.collectors.remapping/">Windows.Collectors.Remapping</a>
+artifact calculates remapping rules to support this disk-like access to a
+collection container, basically treating it the same as a dead disk. This allows
+running further artifacts on the output of the offline collector without needing
+to import the collection.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/offline_collections/collection_data/offline-client-deaddisk_.svg" alt="Working with a collection container from an offline collector"
+         class="inline"
+         height="1220"
+         width="2020"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="offline-client-deaddisk.svg"><i class="fa fa-download"></i></a>
+    Working with a collection container from an offline collector
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Because the virtual client is impersonating the original host and (partially)
+emulating the original filesystem, it does not have to run on the same platform
+as the original host. You can run it on your Velociraptor server, which is
+probably running on Linux, or you can run the virtual client on a separate host
+which could be running Windows or Linux.</p>
+<h4 id="limitations">Limitations</h4>
+<ul>
+<li>
+<p>The virtual client is inherently more limited than a client running on a live
+endpoint, since the original OS is not present and only the copied files will
+be available to any VQL queries. Many standard artifacts will fail if they
+depend on data sources other than the filesystem, but at least they should
+fail gracefully and not produce incorrect data. Artifacts that rely purely on
+files in well-known locations should reliably produce meaningful results.</p>
+</li>
+<li>
+<p>External tools cannot be used on files stored in the server&rsquo;s datastore, since
+the remapping only applies to VQL queries. Tools will be unaware of the
+remapping and will be unable to find the files.</p>
+</li>
+<li>
+<p>Connecting virtual clients to non-root orgs is currently not supported.</p>
+</li>
+</ul>
+
+<div class="mynotices note">
+  <div heading=" Working with exported collection containers "><p>Because collection containers are a standardized format used for both exported
+collections and offline collectors, the <code>Windows.Collectors.Remapping</code> artifact
+can also be used with exported collection containers. For example, let&rsquo;s say
+you&rsquo;ve exported a collection from your server and shared it with someone else
+(perhaps a semi-trusted 3rd-party analyst) so that they can work independently
+with it on their own server. They might just be using an
+<a href="/docs/deployment/#instant-velociraptor">Instant Velociraptor</a>
+instance if they don&rsquo;t have a permanently installed server.
+Or they may choose to run artifacts or queries against the collection containers on the command line,
+as documented in the artifact itself, which doesn&rsquo;t require a Velociraptor
+server at all.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/offline_collections/collection_data/transfer-client-deadisk_.svg" alt="Working with an exported collection container"
+         class="inline"
+         height="1220"
+         width="2020"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="transfer-client-deadisk.svg"><i class="fa fa-download"></i></a>
+    Working with an exported collection container
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Since exported containers cannot be secured with certificates - fixed passwords
+being the only security option available - there is no need for them to require
+anything other than the collection container and the associated password.</p>
+<p><em>You should never share your server keys or config with anyone who isn&rsquo;t already
+an admin on your server!</em></p>
+</div>
+</div>
+
+
+<p>In it&rsquo;s description the <code>Windows.Collectors.Remapping</code> artifact provides
+instructions for it&rsquo;s use on the command line in a standalone server-independent
+manner, but here we will show how it can be used with a dedicated &ldquo;virtual&rdquo;
+client that is connected to the server. From the server&rsquo;s perspective it will
+look and behave like a normal client.</p>
+<ol>
+<li>
+<p>We start with a collection container that contains files collected by the
+<code>Windows.Triage.Targets</code> artifact, created by an offline collector. This file
+needs to be located on the Velociraptor server because we are going to run
+the <code>Windows.Collectors.Remapping</code> server artifact in the GUI to access it
+and generate a remapping config for it.</p>
+<p>Because the collection container is secured with the server&rsquo;s certificate and
+we&rsquo;re running the artifact via the GUI, it will be able to auto-decrypt the
+collection container, as explained in the previous sections. It will then be
+able to generate the remapping config by examining it&rsquo;s file contents.
+However, if you are going to run a virtual client on a machine other than
+your server it won&rsquo;t have access to the server&rsquo;s private key to perform the
+decryption - unless you&rsquo;re willing to use the client with a copy of your
+server config, which is generally not recommended for security reasons. In
+that case it&rsquo;s probably best to first decrypt the collection archive and then
+work with the non-encrypted <code>data.zip</code> container. To do that you can use the
+<a href="/docs/cli/misc/#-decrypt-"><code>decrypt</code> CLI command</a>.</p>
+<p>If you&rsquo;ve used a zip protection scheme other than X.509 using the server&rsquo;s
+certificate, then you need to first extract the inner <code>data.zip</code> from the
+protected outer zip, as explained <a href="#manual-decryption">here</a>,
+and then use that as the file target for the <code>Windows.Collectors.Remapping</code>
+artifact.</p>
+</li>
+<li>
+<p>We generate the remapping file by running the <code>Windows.Collectors.Remapping</code>
+artifact, providing it with the full path to the <code>data.zip</code>, and optionally a
+hostname and a path to write the remapping file to.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/offline_collections/collection_data/collector_create_remapping.png"
+         class="inline"
+         alt="Windows.Collectors.Remapping parameters"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="collector_create_remapping.png">
+      <i class="fa fa-download"></i></a>
+    Windows.Collectors.Remapping parameters
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>After running the artifact we can view it and confirm that it&rsquo;s correct.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/offline_collections/collection_data/collector_view_remapping.png"
+         class="inline"
+         alt="Viewing the remapping file"
+         width="602" height="657">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="collector_view_remapping.png">
+      <i class="fa fa-download"></i></a>
+    Viewing the remapping file
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+<li>
+<p>On the Server Dashboard screen in the GUI we download a client config file.
+Save it in the same folder where you saved the <code>remapping.yaml</code> file.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/offline_collections/collection_data/download_client_config.png"
+         class="inline"
+         alt="Save a client config"
+         width="2400" height="1216">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="download_client_config.png">
+      <i class="fa fa-download"></i></a>
+    Save a client config
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+<li>
+<p>Using the <code>client.root.config.yaml</code> and <code>remapping.yaml</code>, we now start a
+virtual client that will connect to the server.</p>
+<pre><code class="language-sh">velociraptor client -c client.root.config.yaml --remap remapping.yaml
+</code></pre>
+
+<div class="mynotices note">
+  <div heading="note"><p>Since the client will generate a writeback file on disk that contains it&rsquo;s
+unique client ID. This writeback file will persist and cause the client to
+retain the same client ID between runs. If you intend to process further
+collection containers from other hosts then you will either need to delete
+the writeback file before starting a new client, or else add the path to a
+new writeback file for these subsequent clients. For the latter option, this
+can be done by adding the path to a new writeback file to the above command
+line using the appropriate <code>--config.client-writeback-&lt;platform&gt;</code> flag - for
+example, <code>--config.client-writeback-linux=/path/to/writeback.yaml</code> for Linux
+or <code>--config.client-writeback-windows=&quot;C:/path/to/writeback.yaml&quot;</code> for
+Windows.</p>
+</div>
+</div>
+
+
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/offline_collections/collection_data/virtual_client_cli.png"
+         class="inline"
+         alt="Virtual client connecting to the server"
+         width="1285" height="885">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="virtual_client_cli.png">
+      <i class="fa fa-download"></i></a>
+    Virtual client connecting to the server
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+<li>
+<p>In the GUI we can search clients and see our new virtual client.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/offline_collections/collection_data/virtual_client_gui.png"
+         class="inline"
+         alt="Virtual client in the clients list"
+         width="2400" height="685">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="virtual_client_gui.png">
+      <i class="fa fa-download"></i></a>
+    Virtual client in the clients list
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+<li>
+<p>The virtual client is functionally the same as a normal client except that it
+runs collections against the offline collection container rather than the
+host it&rsquo;s running on.</p>
+</li>
+</ol>
+<p>If you are running the virtual client on your server, you may choose to not
+decrypt the collection container because you can instead pass it the server
+config. This contains the server&rsquo;s private key (and the client config) which
+will allow it to transparently access to the protected container.</p>
+<pre><code class="language-sh">velociraptor client -c server.config.yaml --remap remapping.yaml
+</code></pre>
+<p>You should ensure that both the <code>Windows.Collectors.Remapping</code> artifact and the
+client have access to the same collection zip file using exactly the same path.
+The remapping config contains the full path to the zip container, so if you move
+it after generating the remapping then it will not work. If you run
+<code>Windows.Collectors.Remapping</code> to generate the remapping and then choose to run
+the client on a separate system, then you should replicate the path to the
+container on the latter system.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352329"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352329"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352329"></script>
+    <script src="/js/jquery.sticky.js?1775352329"></script>
+    <script src="/js/featherlight.min.js?1775352329"></script>
+    <script src="/js/highlight.min.js?1775352329"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352329"></script>
+    <script src="/js/learn.js?1775352329"></script>
+    <script src="/js/hugo-learn.js?1775352329"></script>
+    
+    
+
+  </body>
+</html>

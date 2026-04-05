@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.160.0">
+    <meta name="description" content="Velociraptor Adaptive Collections
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Adaptive Collections with Velociraptor :: Velociraptor - Digging deeper!</title>
+
+    
+    <link href="/css/nucleus.css?1775352328" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1775352328" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1775352328" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1775352328" rel="stylesheet">
+    <link href="/css/auto-complete.css?1775352328" rel="stylesheet">
+    <link href="/css/theme.css?1775352328" rel="stylesheet">
+    <link href="/css/tabs.css?1775352328" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1775352328" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1775352328" rel="stylesheet">
+    
+    <link href="/css/dark.css?1775352328" rel="stylesheet"><link href="/css/syntax.css?1775352328" rel="stylesheet"><link href="/css/light.css?1775352328" rel="stylesheet"><link href="/css/hljs.css?1775352328" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1775352328" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1775352328"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-QYH72LMYCS"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYH72LMYCS');
+        }
+      </script>
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/blog/2025/2025-09-28-adaptive-collections/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-b2745250.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/blog\/2025\/2025-09-28-adaptive-collections\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/2025/2025-09-28-adaptive-collections/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Adaptive Collections with Velociraptor</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#what-is-triage-collection-anyway">What is Triage collection anyway?</a></li>
+    <li><a href="#current-state-of-the-art">Current state of the art</a>
+      <ul>
+        <li><a href="#why-is-this-not-enough">Why is this not enough?</a></li>
+        <li><a href="#what-is-adaptive-collection">What is Adaptive Collection?</a></li>
+      </ul>
+    </li>
+    <li><a href="#the-windowstriagetargets-artifact">The Windows.Triage.Targets artifact</a></li>
+    <li><a href="#the-registry-hunter">The Registry Hunter</a>
+      <ul>
+        <li><a href="#optimizations">Optimizations</a></li>
+        <li><a href="#guidelines-for-using-adaptive-collections">Guidelines for using adaptive collections</a></li>
+      </ul>
+    </li>
+    <li><a href="#conclusions">Conclusions</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/dfir">DFIR</a>
+
+  <a class="tag-link" href="/tags/registry">Registry</a>
+
+  <a class="tag-link" href="/tags/triage">Triage</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Adaptive Collections with Velociraptor
+            </h1>
+            
+            <div class="author pull-right">
+              Mike Cohen
+              <span class="date">2025-08-30</span>
+            </div>
+            
+          
+
+        
+
+
+
+	<p>I recently joined the great folk at <a href="https://www.cybertriage.com/" target="_blank" >Cyber
+Triage</a> on a webinar to explore the new
+<a href="/exchange/artifacts/pages/cybertriagecollector/">CyberTriage Velociraptor artifact</a>. I was excited
+to be talking with them since I heard great things about Cyber Triage
+and really wanted to learn more about it.</p>
+<p>One of the interesting features they presented was the concept of
+<a href="https://www.cybertriage.com/cyber-triage-dfir-collector/" target="_blank" >Adaptive
+Collection</a>
+which I thought was quite neat.</p>
+<p>In this blog post I will describe what &ldquo;Adaptive Collection&rdquo; means and
+how this really improves the state of the art in DFIR triage. I will
+also show how this is now implemented in Velociraptor and how you can
+use it today to improve your triage and investigation.</p>
+<h2 id="what-is-triage-collection-anyway">What is Triage collection anyway?</h2>
+<p>DFIR is all about trying to quickly determine what happened. In the distant past
+we used to acquire full disk images of systems so we could perform digital
+forensics on them. However, these days this is usually highly impractical:</p>
+<ul>
+<li>Hard disks have become so large that imaging them, copying the images
+elsewhere, storing and working with them is often impractical, especially
+since speed is a critical aspect of every investigation.</li>
+<li>In modern network intrusions we usually need to examine a large number of
+endpoints. Aside from storage constraints, the time required to make full disk
+images of potentially thousands of machines puts this option in the realm of
+the impossible.</li>
+</ul>
+<p>Today&rsquo;s best practice is to actively hunt the network with a tool like
+Velociraptor to quickly gather specific, well-targeted artifacts
+across a large number of endpoints.</p>
+<p>Through efficient distributed hunts the number of systems of interest is
+reduced. We may then perform <em>Triage Acquisition</em> for the purpose of
+<a href="/training/playbooks/preservation/">preservation of evidence</a>.
+We often need to delegate the Triage Acquisition step to others who have
+access to the affected systems (for example Help Desk employees or system
+administrators).</p>
+<p>Triage Acquisition has a number of goals:</p>
+<ol>
+<li>
+<p>To acquire as much relevant information as possible to be able to determine
+what happened on the system. In many cases we only get one chance
+to perform triage acquisition, before the system is rebuilt and evidence is
+destroyed.</p>
+</li>
+<li>
+<p>To perform this collection as quickly as possible. Some critical servers can
+not tolerate prolonged outages or resource-intensive investigative activity.</p>
+</li>
+<li>
+<p>Triage collection should be as automated as possible. Ideally the person
+initiating the collection should not need to provide any input to the
+collection process. They may not be skilled in DFIR techniques nor be
+accustomed to making critical decisions under pressure.</p>
+</li>
+</ol>
+<p>These goals call for a high level of automation.</p>
+<p>Velociraptor&rsquo;s
+<a href="/docs/deployment/offline_collections/">offline collector</a>
+is specifically designed to be fully automated - the operator simply needs to
+run it and a triage collection is made. The collection can be uploaded to the
+cloud or returned to the investigation team some other (potentially out-of-band)
+way.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-09-28-adaptive-collections/offline_process_.svg" alt="The offline triage process"
+         class="inline"
+         height="371.35759383814633"
+         width="821.52153753842"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="offline_process.svg"><i class="fa fa-download"></i></a>
+    The offline triage process
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The main takeaway from this diagram is that it is difficult to iterate
+over the collection with the offline process. Initiating a new
+collection required repeating the entire process again with potential
+manual intervention.</p>
+<p>Therefore it is desirable to collect as much as possible in the first
+place to minimize the need to go back and re-collect more data.</p>
+<p>While it would be nice to collect as much as possible, we need to be
+speedy in our collection. Therefore we need to make some tradeoffs:</p>
+<ul>
+<li>
+<p>The more files we collect the longer it takes and the larger the
+collection gets. This makes it harder to handle more systems and
+transfer more data across the network.</p>
+</li>
+<li>
+<p>However, once the collection is done it is not always possible to go
+back and get more files. Sometimes systems are rebuilt the preservation step,
+which puts pressure on responders to collect all relevant data in a single
+acquisition step. This pressure can also lead to over-collection of data,
+including irrelevant items.</p>
+</li>
+</ul>
+<h2 id="current-state-of-the-art">Current state of the art</h2>
+<p>One of the more popular artifacts to use with the offline collector is
+the <code>Windows.KapeFiles.Targets</code> artifact. This artifact uses target
+definitions from the
+<a href="https://github.com/EricZimmerman/KapeFiles" target="_blank" >KapeFiles</a> project to
+collect files from the system. The project defines targets which are
+essentially search globs finding particular files on the system.</p>
+<p>For example, the Windows Event logs are usually stored in
+<code>C:\Windows\System32\winevt\logs\*.evtx</code>. During a preservation triage
+acquisition, one would usually collect all those files.</p>
+<p>Meta-Targets can also be defined so that when the user chooses to
+collect the
+<a href="https://triage.velocidex.com/docs/windows.triage.targets/rules/#!BasicCollection" target="_blank" >BasicCollection</a>
+target, Velociraptor will automatically collect the Event logs,
+Registry, MFT etc.</p>
+<p>There are many <code>KapeFiles</code> targets collecting files related to many
+products and applications, however they are all essentially static
+globs. The <code>Windows.KapeFiles.Targets</code> artifact looks for files on disk
+from this static list of pre-determined globs.</p>
+
+<div class="mynotices note">
+  <div heading=" The new Windows.Triage.Targets artifact "><p>Since the Velociraptor 0.75 release, the <code>Windows.KapeFiles.Targets</code>
+artifact is no longer built into Velociraptor. Instead it is managed
+in its
+<a href="https://triage.velocidex.com/docs/windows.triage.targets/rules/" target="_blank" >own project</a>.</p>
+<p>The new artifact goes beyond the using simple globs expressions, and
+has therefore been renamed to <code>Windows.Triage.Targets</code> to distinguish it from
+it&rsquo;s predecessor artifact.</p>
+</div>
+</div>
+
+
+<h3 id="why-is-this-not-enough">Why is this not enough?</h3>
+<p>While this is artifact is a great start, it is usually not enough.
+Many of the forensic artifacts collected may point to other files that
+may be found on disk, and those files are not usually collected.</p>
+<p>For example, consider the <a href="/artifact_references/pages/windows.forensics.prefetch/">prefetch artifact</a> in which
+Windows stores paths to previously run executables. While the location
+of the prefetch files themselves is well known
+(i.e. <code>C:\Windows\Prefetch\*.pf</code>), when an analyst examines these
+files, they may discover that they point at a suspicious executable
+located somewhere else on the disk from which file were not acquired.</p>
+<p>During the initial triage acquisition phase there is no way to know if the
+executables they point to are malicious or not. With the standard <code>KapeFiles</code>
+collections, the investigator needs to go back to the original system to get
+those files.</p>
+<p>Another example is the XML files that define Windows Scheduled tasks, which are
+normally located in <code>C:\Windows\System32\Tasks\**</code>. These files point to
+periodically launched executables that could be located anywhere on the disk.</p>
+<h3 id="what-is-adaptive-collection">What is Adaptive Collection?</h3>
+<p>The idea of &ldquo;adaptive collection&rdquo; is that the collector itself performs an
+initial parsing and analysis phase and then decides based on it&rsquo;s results which
+additional files to collect. That is, relevant files should be collected
+automatically even when not explicitly specified as collection targets.</p>
+<p>Applying an adaptive collection strategy to the previous example, the user would
+specify collection of the prefetch files, but the collector would parse each
+prefetch file automatically and check whether the target file exists in the
+target location. For each target, if it is present, the collector will also
+collect it.</p>
+<p>This way, when the analyst later examines the prefetch files, they can
+immediately also inspect the related binary, without needing to
+go back to the original system.</p>
+<p>Of course in the case of prefetch, it is possible that the target executable was
+deleted before the acquisition. In this case the adaptive collector cannot
+acquire it. But this is also an important piece of information as the analyst
+then knows that the executable is actually missing and that there is no point in
+trying to fetch it in a subsequent collection phase.</p>
+<p>The point of adaptive collection is to include files which may be relevant once
+the basic (primary) artifacts are parsed. This avoids needing to go back and
+re-collect additional files after the analysis is performed.</p>
+<p>A useful side-effect of this approach is that forensic artifacts are already
+parsed and analyzed, so there is no need for further post-processing of bulk
+collected files. This simplifies the post-processing pipeline and speeds up
+analysis when dealing with a large number of systems.</p>
+<h2 id="the-windowstriagetargets-artifact">The Windows.Triage.Targets artifact</h2>
+<p>The <code>Windows.Triage.Targets</code> artifact is compiled from many separate
+rules. Each rule specifies one or more targets - basically a single
+type of forensic artifact to acquire.</p>
+<p>You can download the <code>Windows.Triage.Targets</code> artifact from
+<a href="https://triage.velocidex.com/docs/windows.triage.targets/" target="_blank" >https://triage.velocidex.com/docs/windows.triage.targets/</a> or simply
+use the built in <a href="/artifact_references/pages/server.import.extras/">Server.Import.Extras</a> artifact to
+automatically download and import the latest version.</p>
+<p>The artifact contains many adaptive rules, for example some of these
+are:</p>
+<ol>
+<li><code>AdaptiveScheduledTasks</code>: Enumerates all scheduled tasks and
+attempts to acquire the associated binaries run by them.</li>
+<li><code>LnkTargets</code>: Searches for <code>lnk</code> files and attempts to acquire their file
+targets. <code>lnk</code> files are common infection vectors.</li>
+<li><code>PrefetchBinaries</code>: enumerates all prefetch files and captures the associated
+executables.</li>
+<li><code>PsList</code>: enumerates all running processes and captures their respective
+binaries.</li>
+<li><code>Services</code>: enumerates all installed services and captures their binaries.</li>
+</ol>
+<p>All of the adaptive rules are triggered by the meta-target
+<a href="https://triage.velocidex.com/docs/windows.triage.targets/rules/#_Live" target="_blank" >_Live</a>.
+So all a user needs to do is to select the <code>_Live</code> target and collect the
+artifact (Usually the <code>_Live</code> target is selected <em>in addition</em> to more
+traditional/non-adaptive target sets like <code>_SansTriage</code> or <code>_BasicCollection</code>).</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-09-28-adaptive-collections/launching_triage_.svg" alt="Launching the triage collection"
+         class="inline"
+         height="676.3558210073326"
+         width="975.9157257252883"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="launching_triage.svg"><i class="fa fa-download"></i></a>
+    Launching the triage collection
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Adaptive rules may substantially increase the number of files
+collected. However, we rarely care about legitimate binaries which are
+often signed. The way we choose if a file is to be collected is termed
+the <code>Collection Policy</code>.</p>
+<p>There are a few choices:</p>
+<ol>
+<li>
+<p><code>ExcludeSigned</code>: This is the default policy. We collect all
+adaptive targets, except if they are a trusted signed binary. Most
+of the time, signed binaries are trusted already and there is no
+benefit in collecting them. In practice this reduces the collection
+size substantially.</p>
+</li>
+<li>
+<p><code>HashOnly</code> is used to simply take the hash of the file but not to
+collect the file itself. This setting is useful when the client is
+connected and available so interesting files may be fetched at a
+later stage. The hashes and file stats are enough to indicate whether
+the target files are still present on the system or not.</p>
+</li>
+<li>
+<p><code>AllFiles</code> Just collect all files. This is not recommended for
+adaptive collections as it will also collect system files and
+signed/trusted binaries.</p>
+</li>
+</ol>
+
+<div class="mynotices note">
+  <div heading=" Collection optimizations "><p>Adaptive rules will sometimes attempt to collect the same file. For
+example, if there are several <code>notepad</code> processes running, the <code>PsList</code>
+rule will attempt to collect <code>notepad.exe</code> multiple times.</p>
+<p>The triage artifact automatically caches and deduplicates these
+collections so that collecting the same file multiple times is safe
+and fast - only one copy will be acquired and it will be hashed only
+once.</p>
+</div>
+</div>
+
+
+<p>Let&rsquo;s look at the result of collecting the <code>PrefetchBinaries</code> target:</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-09-28-adaptive-collections/prefetch_target_.svg" alt="Viewing the Prefetch target"
+         class="inline"
+         height="569.5454711914062"
+         width="1202.8781442684979"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="prefetch_target.svg"><i class="fa fa-download"></i></a>
+    Viewing the Prefetch target
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Collecting the <code>PrefetchBinaries</code> target will execute the standard
+Velociraptor <code>Windows.Forensics.Prefetch</code> artifact and capture all the usual
+fields that the artifact returns, such as run times and other prefetch
+related fields. Additionally, Velociraptor will attempt to acquire
+each target if possible (if the file still exists on disk at that
+location).</p>
+<p>The <code>Windows.Triage.Targets</code> artifact automatically captures metadata
+such as last modified timestamps, hashes and authenticode status for
+executables.</p>
+<p>In addition to collecting the prefetch binary targets, we also receive
+all the usual output from collecting the <code>Windows.Forensics.Prefetch</code>
+artifact, saving us from having to re-collecting it later.</p>
+<p>Another example is collecting the
+<a href="https://triage.velocidex.com/docs/windows.triage.targets/rules/#LnkTargets" target="_blank" >LnkTargets</a>
+rule. This rule analyzes <code>Lnk</code> files (shortcuts) to extract their targets.</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-09-28-adaptive-collections/lnk_targets_.svg" alt="Extracting the link targets from Lnk files"
+         class="inline"
+         height="1073.3333333333335"
+         width="2283.880597014926"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="lnk_targets.svg"><i class="fa fa-download"></i></a>
+    Extracting the link targets from Lnk files
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Lnk files are often created when the user edits them on the desktop,
+so capturing the targets of <code>Lnk shortcuts</code> can capture strong
+evidence of user activity. In this case we see a number of files that
+were edited with <code>Notepad</code> and were captured (assuming they were still
+present).</p>
+<h2 id="the-registry-hunter">The Registry Hunter</h2>
+<p>Registry analysis is a powerful and critical tool in the Digital
+Forensics arsenal. The Windows registry contains a wealth of
+information about system state, while many persistence techniques
+leave traces in the registry.</p>
+<p>Traditionally, registry analysis is performed on the raw registry
+hives (collected using, for example, the <code>KapeFiles</code> artifact). These
+files are analysed using tools such as <a href="https://github.com/keydet89/RegRipper4.0" target="_blank" >Reg
+Ripper</a> or <a href="https://www.sans.org/tools/registry-explorer" target="_blank" >Registry
+Explorer</a>. These tools
+operate on collected registry hives and contain rules designed to
+extract specific pieces of information from various registry keys.</p>
+<p>Recently, The Velociraptor team has started the <a href="https://registry-hunter.velocidex.com/" target="_blank" >Registry
+Hunter</a> project. This project
+aims to develop a fully featured rule-based registry parser, and
+contains a large (and growing) number of
+<a href="https://registry-hunter.velocidex.com/docs/rules/" target="_blank" >rules</a>. Many of
+the rules in the Registry Hunter also attempt to uncover evidence of
+persistence through various registry artifacts.</p>
+<p>While the Registry Hunter can operate on collected hive files, it can
+also operate on the live system using a mixture of API based registry
+access and raw hive parsing. Therefore, the Registry Hunter running on
+a live system is ideally positioned to perform Adaptive Collection
+as described above.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-09-28-adaptive-collections/registry_hunter.png"
+         class="inline"
+         alt="The Registry Hunter Collection options"
+         width="1469" height="715">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="registry_hunter.png">
+      <i class="fa fa-download"></i></a>
+    The Registry Hunter Collection options
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The Registry Hunter now has a <code>CollectionPolicy</code> parameter for rules
+that implement adaptive rules. By default these rules simply hash the
+binaries uncovered in the registry, but they can collect them as well.</p>
+<p>For example, consider the <a href="https://registry-hunter.velocidex.com/docs/rules/#Scheduled%20Tasks%20%28TaskCache%29" target="_blank" >Scheduled Tasks (TaskCache)
+rule</a>
+from the Registry Hunter. This rule analyses the registry to extract
+the scheduled tasks (as opposed to analysing the XML files in the
+<code>Windows/System32/Tasks</code> directory).</p>
+<p>
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2025/2025-09-28-adaptive-collections/scheduled_tasks_.svg" alt="Registry analysis for the Scheduled Tasks rule"
+         class="inline"
+         height="1051.6666666666667"
+         width="2191.9298245614036"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="scheduled_tasks.svg"><i class="fa fa-download"></i></a>
+    Registry analysis for the Scheduled Tasks rule
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>When the task action launches a binary, the Registry Hunter is able to
+inspect the disk to check on the launched binary.</p>
+<p>For an offline collector, it is recommended to use both the <code>Registry Hunter</code> and the <code>Triage Targets</code> artifacts together.</p>
+<h3 id="optimizations">Optimizations</h3>
+<p>Adaptive collection is more expensive than simple file collection, as
+it requires Velociraptor to parse forensic artifacts on the endpoint
+and attempt to locate the files referred by them on disk.</p>
+<p>While parsing the forensic artifacts on the endpoint is usually very
+quick due to Velociraptor&rsquo;s optimized VQL engine, the act of hashing
+and collecting all the additional files can increase the time and
+storage requirements to collect the triage artifact.</p>
+<p>Most of the time, adaptive collection helps us to answer the following
+questions:</p>
+<ol>
+<li>
+<p>Were the target files present on the endpoint at collection time?</p>
+<p>This information is important as many forensic artifacts record
+evidence of execution for files that were already deleted. In this
+case, it won&rsquo;t help us to go back to the endpoint and re-collect
+the target file - it is deleted already!</p>
+</li>
+<li>
+<p>What were those files?</p>
+<p>Some of the files that were indicated by the forensic artifacts may
+be significant for further investigation - for example, malware
+payloads may need to be collected etc.</p>
+<p>However not all files are unique to the investigation. For example,
+most files that are executed on the endpoint are legitimate
+binaries. We rarely need to collect those, and even if we need them
+later, legitimate binaries can usually be acquired in other ways
+(for example Virus Total).</p>
+</li>
+</ol>
+<p>Adaptive collections need to strike a balance between collecting
+everything and collecting the most useful files.</p>
+<h3 id="guidelines-for-using-adaptive-collections">Guidelines for using adaptive collections</h3>
+<p>For offline collections, it is usually not possible to go back to the
+endpoint to perform a second collection. In this case it might be
+better to err on the side of collecting more than less.</p>
+<ol>
+<li>Use <code>ExcludeSigned</code> Collection Policy</li>
+<li>Consider using the <code>TrustedPathRegex</code> to eliminate system files.</li>
+<li>Set conservative values for <code>MaxFileSize</code> to avoid capturing very
+large adaptively, such as very large executables.</li>
+<li>If you are concerned about endpoint resource load, consider imposing <a href="/docs/clients/artifacts/#specify-resources">CPU limits</a></li>
+</ol>
+<p>For live connected clients, it is useful to run an adaptive collection
+with <code>HashOnly</code> collection policy:</p>
+<ol>
+<li>Bulk adaptive targets are not collected so this reduces needed
+storage and bandwidth, as well as speeding the collection
+significantly.</li>
+<li>The artifact will still attempt to locate and hash the targets
+which tells us if the files are still present on the endpoint. We
+can always issue a new collection for important files.</li>
+<li>If you dont use the hashes, considering setting <code>MaxHashSize</code> to a
+small number. This will speed up the artifact and still record if
+the file itself is present (and its timestamps).</li>
+</ol>
+<h2 id="conclusions">Conclusions</h2>
+<p>The idea behind <code>Adaptive Collection</code> is to automate the analysis as
+much as possible, and make collection decisions based on this
+automated initial analysis pass. We need to weigh up how likely it is
+that the discovered files be useful for further analysis.</p>
+<p>It is not 100% reliable - sometimes there will be interesting binaries
+present inside the Windows directory which the artifact will
+skip. This might necessitate the investigator to go back and retrieve
+it.</p>
+<p>You can think of forensic acquisition as a spectrum: at one extreme a
+bit-for-bit copy of disk and memory, will surely capture most of the
+data we are interested in. However, this is not usually practical due
+to large systems, storage and network bandwidth.</p>
+<p>At the other extreme, a <code>triage collection</code> just captures some
+critical files, like event logs. This is usually insufficient to
+complete a full analysis of a case.</p>
+<p>The <code>Adaptive Collection</code> is a middle ground - not as complete as a
+bit-for-bit copy, but a lot better than just collecting files blindly.
+By reducing the analyse/collect feedback loop, Velociraptor is able to
+speed up investigations and strike a better balance along the
+acquisition spectrum.</p>
+<p>If you like to try these new artifacts, take <a href="https://github.com/Velocidex/velociraptor" target="_blank" >Velociraptor for a
+spin</a>!  It is available on
+GitHub under an open source license. As always please file issues on
+the bug tracker or ask questions on our mailing list
+<a href="mailto:velociraptor-discuss@googlegroups.com" target="_blank" >velociraptor-discuss@googlegroups.com</a>
+. You can also chat with us directly on discord
+<a href="https://www.velocidex.com/discord" target="_blank" >https://www.velocidex.com/discord</a>
+.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1775352328"></script>
+    <script src="/js/perfect-scrollbar.min.js?1775352328"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1775352328"></script>
+    <script src="/js/jquery.sticky.js?1775352328"></script>
+    <script src="/js/featherlight.min.js?1775352328"></script>
+    <script src="/js/highlight.min.js?1775352328"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1775352328"></script>
+    <script src="/js/learn.js?1775352328"></script>
+    <script src="/js/hugo-learn.js?1775352328"></script>
+    
+    
+
+  </body>
+</html>
