@@ -4,7 +4,7 @@ Are you looking for a way to generate user metrics across the entire server (lik
 
 Orgs are separated out so when you run a query you are running that query within the context of the org. Normally the hunts scheduled in an organization can be accessed using the [hunts()](https://docs.velociraptor.app/vql_reference/server/hunts/) plugin, but that normally acts within a single Org.
 
-To run a query in another org, you can switch org contexts using the [query()](https://docs.velociraptor.app/vql_reference/misc/query/) plugin.
+To run a query in another org, you can switch org contexts using the [query()](https://docs.velociraptor.app/vql_reference/server/query/) plugin.
 
 So for example to see all hunts in all orgs:
 

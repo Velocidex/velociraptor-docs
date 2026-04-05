@@ -282,7 +282,7 @@ like `Virus Total`.
 
 Previously plugins that required credentials needed those credentials
 to be passed as arguments to the plugin. For example, the
-[upload_s3()](https://docs.velociraptor.app/vql_reference/plugin/upload_s3/)
+[upload_s3()](https://docs.velociraptor.app/vql_reference/other/upload_s3/)
 plugin requires AWS S3 credentials to be passed in as parameters.
 
 This poses a problem for the Velociraptor artifact writer - how to
