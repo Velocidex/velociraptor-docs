@@ -2086,3 +2086,5 @@ latin
 screenshotting
 subsetted
 unannotated
+
+addClass
