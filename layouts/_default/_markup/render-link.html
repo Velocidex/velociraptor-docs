@@ -1,5 +1,5 @@
 {{- $u := urls.Parse .Destination -}}
-<!- Convert absolute links to the main site to relative links so we can verify them -->
+{{/* Convert absolute links to the main site to relative links so we can verify them */}}
 {{- if eq $u.Host "docs.velociraptor.app" }}{{  $u = urls.Parse $u.Path }}{{ end -}}
 {{- $href := $u.String -}}
 {{- if strings.HasPrefix $u.String "#" -}}
