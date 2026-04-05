@@ -95,7 +95,7 @@ or
 
 ## Repacking a Generic Collector
 
-The [Generic Collector](https://docs.velociraptor.app/docs/offline_triage/#the-generic-offline-collector)
+The [Generic Collector](https://docs.velociraptor.app/docs/deployment/offline_collections/#the-generic-collector)
 is independent of any binary. It's essentially a standalone collector config
 with compression applied. This allows it to be used with any Velociraptor binary
 since it is external to the binary.

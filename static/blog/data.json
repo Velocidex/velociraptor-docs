@@ -6,7 +6,7 @@
   "tags": [
    "Automation"
   ],
-  "date": "2026-03-10"
+  "date": "2026-03-21"
  },
  {
   "title": "Velociraptor 0.76 Release",
@@ -797,13 +797,6 @@
   "link": "/blog/html/2018/12/09/more_on_client_event_collection/",
   "tags": [],
   "date": "2018-12-09"
- },
- {
-  "title": "Velociraptor training at NZITF",
-  "description": "We are very excited to run this full day training workshop at the New\nZealand Internet Engineering Task Force (NZITF) conference.\n",
-  "link": "/blog/html/2018/11/13/velociraptor_training_at_nzitf/",
-  "tags": [],
-  "date": "2018-11-13"
  },
  {
   "title": "Event Queries and Endpoint Monitoring",

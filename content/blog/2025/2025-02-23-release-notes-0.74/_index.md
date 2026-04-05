@@ -107,7 +107,7 @@ primarily for rapid triaging of Windows Events using the `Hayabusa`
 rule set. A Curated set of rules are published on the Velociraptor
 Sigma site at https://sigma.velocidex.com/ - these rules can be
 automatically imported using the
-[Server.Import.CuratedSigma](https://docs.velociraptor.app/artifact_references/pages/server.import.curatedsigma/)
+[Server.Import.Extras](https://docs.velociraptor.app/artifact_references/pages/server.import.extras/)
 artifact.
 
 Previously it was difficult to write and test your own custom Sigma

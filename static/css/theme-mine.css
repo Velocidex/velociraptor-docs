@@ -1217,7 +1217,11 @@ div.search_results {
 #loading {
     text-align: center;
     display: none;
+    position: fixed;
+    width: 50vw;
     opacity: 0.5;
+    margin-top: 25vh;
+    z-index: 1000;
 }
 
 #body-inner.loading #loading {

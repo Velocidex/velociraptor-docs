@@ -4,7 +4,7 @@ date: 2021-06-12T07:11:04Z
 draft: false
 noDisqus: true
 weight: 20
-no_header: true
+no_header: false
 carousel:
  - name: '<div class="logo-btn"><i class="fas fa-laptop"></i> Collect</div>'
    image: collect.png
@@ -46,3 +46,7 @@ Velociraptor is an advanced digital forensic and incident response
 tool that enhances your visibility into your endpoints.
 
 {{% carousel %}}
+
+<script>
+    $("#top-bar").addClass("hidden");
+</script>

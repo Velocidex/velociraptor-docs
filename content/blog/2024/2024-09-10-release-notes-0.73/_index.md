@@ -36,7 +36,7 @@ In this release, the Winpmem driver is incorporated into the
 Velociraptor binary itself so there is no need to introduce additional
 binaries to the endpoint. The driver is inserted on demand when an
 image is required using the new VQL function
-[winpmem()](https://docs.velociraptor.app/vql_reference/misc/winpmem/). This
+[winpmem()](https://docs.velociraptor.app/vql_reference/windows/winpmem/). This
 VQL function can compress the memory image, to make it faster to
 acquire (less IO) and deliver over the network (less network bandwidth
 required).
