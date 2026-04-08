@@ -40,6 +40,17 @@ navs:
 
 {{% navs %}}
 
+{{% notice warning "CVE-2026-5329 published on 2026-04-08" %}}
+
+Velociraptor versions before 0.76.2 improperly validated input in
+client message handler. This could lead to remote code execution on
+the server.
+
+Read the [Full announcement](/announcements/advisories/cve-2026-5329/) and upgrade immediately.
+
+{{% /notice %}}
+
+
 ## Velociraptor - Digging Deeper!
 
 Velociraptor is an advanced digital forensic and incident response

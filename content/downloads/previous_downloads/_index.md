@@ -5,43 +5,50 @@ draft: false
 weight: 25
 no_children: true
 pre: <i class="fas fa-download"></i>
-release: 0.75.6
+release: 0.75.7
 base_release: 0.75
 arches:
   - desc: Windows AMD64 (64-bit) Executable
     name: windows-amd64.exe
     hash: 09e6c312c5003e4326e3f71cb2d06a596826b50a911aabe76925790f95e67c33
     platform: windows
+    release: 0.75.6
 
   - desc: Windows AMD64 (64-bit) MSI
     name: windows-amd64.msi
     hash: 24265847a43dc60e861a3cb9eb7ad0c51b163777b576bddd5f270db84eb522f7
     platform: windows
+    release: 0.75.6
 
   - desc: Windows 32-bit Executable
     name: windows-386.exe
     hash: 3273edf9a3807b88f6dc31148cbc15d4e1b3d7b31032827fc7d19620991162d7
     platform: windows
+    release: 0.75.6
 
   - desc: Windows 32-bit MSI
     name: windows-386.msi
     hash: 3a5c62ebce53caa150505aaf538f62de465e5b6eae68c058313fe4cf027116c7
     platform: windows
+    release: 0.75.6
 
   - desc: Linux Ubuntu 22.04 AMD64 and later. Recommended for servers.
     name: linux-amd64
-    hash: 2f1b1759b376bcaa2f2f3b936580484beb4318d6613e953c124fdc1400c625fb
+    hash: f73ba96e0105a085090dd37902c134212c2d165db0d9df4306f274802795f3fb
     platform: linux
+    release: 0.75.7
 
   - desc: Linux Ubuntu 22.04 ARM and later. Recommended for servers or containers.
     name: linux-arm64
-    hash: 62c26e601925f421d1714c39275b7020fe5f52bdb213c77257cb58a981626d7a
+    hash: 0867711982a4bca1b53325ac82b439a585aa9a8a5af9476f364cf2719a44b84c
     platform: linux
+    release: 0.75.7
 
   - desc: Linux Static Build (Older Releases, e.g. RHEL, Centos) Recommended for clients.
     name: linux-amd64-musl
-    hash: 87a330e5459b0b5295290657705808704a7a3fa10d7fe8b0489e0a44fd1d0283
+    hash: 67756607735a699190a1aa5567d5ea22cd1ed82f22f78b5ff812a9a8646d25b0
     platform: linux
+    release: 0.75.7
 
   - desc: MacOS AMD64
     name: darwin-amd64
