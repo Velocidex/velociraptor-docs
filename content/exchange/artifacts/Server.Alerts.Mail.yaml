@@ -59,14 +59,15 @@ description: |
 
   ### Get notified when a flow completes
 
-  You are investigating a single client. It is not online, and you need to get
-  notified immediately when it is online and the collection is finished. You may
-  even want to include the results as attachments. You are not interested in
-  getting an e-mail if the client is online, so you use the `DelayThreshold` to
-  only get notified when the flow does not complete within a reasonable time (e.g.
-  ten seconds or five minutes). You specify a fixed set of recipients in
-  `Recipients`, or you utilise `NotifyExecutor` (in addition) to send the
-  notification (with results) to the user scheduling the collection.
+  You are investigating a client that is currently offline, and you want to be
+  notified as soon as the scheduled collection finishes once it comes back online.
+  You may also want to include the results as attachments. Since you are only
+  interested in being notified when the client was offline at the time of
+  scheduling — not when it was already reachable and the flow completed
+  immediately — you set `DelayThreshold` to a reasonable value (e.g. ten seconds
+  or five minutes) so that only flows taking longer than expected trigger a
+  notification. You specify fixed recipients in `Recipients`, or use
+  `NotifyExecutor` (in addition) to notify the user who scheduled the collection.
 
   ### Get notified when flows fail
 
