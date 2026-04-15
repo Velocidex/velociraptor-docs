@@ -666,12 +666,17 @@
         "name": "cache",
         "description": "Creates a cache object.",
         "type": "Function",
+        "version": 2,
         "args": [
             {
                 "name": "func",
                 "type": "LazyExpr",
-                "description": "A function to evaluate",
-                "required": true
+                "description": "A function to evaluate (deprecated - use a lambda instead)"
+            },
+            {
+                "name": "lambda",
+                "type": "Lambda",
+                "description": "A VQL lambda to evaluate with the key as parameter. eg. x=>x+1 "
             },
             {
                 "name": "name",
@@ -680,16 +685,28 @@
             },
             {
                 "name": "key",
-                "type": "string",
-                "description": "Cache key to use.",
-                "required": true
+                "type": "Any",
+                "description": "Cache key to use."
             },
             {
                 "name": "period",
                 "type": "int64",
                 "description": "The latest age of the cache."
+            },
+            {
+                "name": "filename",
+                "type": "string",
+                "description": "Filename for a persistent cache."
+            },
+            {
+                "name": "max_size",
+                "type": "uint64",
+                "description": "Maximum size of the LRU (default 10000)."
             }
         ],
+        "metadata": {
+            "permissions": "FILESYSTEM_WRITE"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -1353,7 +1370,8 @@
             "linux_amd64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
-        ]
+        ],
+        "free_form_args": true
     },
     {
         "name": "commandline_split",
@@ -3787,6 +3805,21 @@
         ]
     },
     {
+        "name": "hunt_reindex",
+        "description": "Reindex a hunt. This is mostly useful for debugging and to force an index operation out of band. Hunts will normally be reindexed periodically automatically.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "hunt_id",
+                "type": "string",
+                "description": "The hunt to reindex. If not specified we index all hunts"
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
+    },
+    {
         "name": "hunt_results",
         "description": "Retrieve the results of a hunt.",
         "type": "Plugin",
@@ -5179,11 +5212,11 @@
         "name": "memoize",
         "description": "Memoize a query into memory.",
         "type": "Function",
-        "version": 2,
+        "version": 3,
         "args": [
             {
                 "name": "query",
-                "type": "LazyExpr",
+                "type": "StoredQuery",
                 "description": "Query to expand into memory",
                 "required": true
             },
@@ -5202,6 +5235,11 @@
                 "name": "name",
                 "type": "string",
                 "description": "The name of this cache."
+            },
+            {
+                "name": "filename",
+                "type": "string",
+                "description": "Filename for a persistent cache."
             }
         ],
         "category": "popular",
@@ -9132,12 +9170,18 @@
         "name": "send_event",
         "description": "Sends an event to a server event monitoring queue.",
         "type": "Function",
+        "version": 2,
         "args": [
             {
                 "name": "artifact",
                 "type": "string",
                 "description": "The artifact name to send the event to.",
                 "required": true
+            },
+            {
+                "name": "client_id",
+                "type": "string",
+                "description": "The client_id for this event in case of a client_event artifact."
             },
             {
                 "name": "row",

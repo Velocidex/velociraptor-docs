@@ -40,13 +40,18 @@ navs:
 
 {{% navs %}}
 
-{{% notice warning "CVE-2026-5329 published on 2026-04-08" %}}
 
-Velociraptor versions before 0.76.2 improperly validated input in
-client message handler. This could lead to remote code execution on
-the server.
+{{% notice warning "Current Security Advisories" %}}
 
-Read the [Full announcement](/announcements/advisories/cve-2026-5329/) and upgrade immediately.
+* [Velociraptor versions before
+  0.76.3](/announcements/advisories/cve-2026-6290/) contain a
+  vulnerability in the query() plugin which allows access to all orgs
+  with the user's current ACL token.
+
+* [Velociraptor versions before
+  0.76.2](/announcements/advisories/cve-2026-5329/) improperly
+  validated input in client message handler. This could lead to remote
+  code execution on the server.
 
 {{% /notice %}}
 

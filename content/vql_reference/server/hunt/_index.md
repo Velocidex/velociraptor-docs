@@ -52,9 +52,6 @@ artifacts. The artifacts to collect are provided in the
 
 ### Notes
 
-No caching is currently provided so this may generate a lot
-of load on DNS servers when scanning many rows.
-
 1. In the GUI hunts are always created in the paused
 state. This is not the default state when using this function (all
 hunts are immediately active - if you want the hunt to be created
@@ -74,5 +71,8 @@ SELECT hunt(
     expires=now() + 18000)
 FROM scope()
 ```
+
+3. Hunt conditions are not additive! A hunt can only be targeted
+   to an operating system, or label but not both.
 
 

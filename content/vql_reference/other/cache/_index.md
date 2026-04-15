@@ -21,10 +21,15 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-func|A function to evaluate|LazyExpr (required)
+func|A function to evaluate (deprecated - use a lambda instead)|LazyExpr
+lambda|A VQL lambda to evaluate with the key as parameter. eg. x=>x+1 |Lambda
 name|The global name of this cache (needed when more than one)|string
-key|Cache key to use.|string (required)
+key|Cache key to use.|Any
 period|The latest age of the cache.|int64
+filename|Filename for a persistent cache.|string
+max_size|Maximum size of the LRU (default 10000).|uint64
+
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_WRITE</span>
 
 ### Description
 

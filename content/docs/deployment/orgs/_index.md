@@ -121,6 +121,18 @@ Once the new org is created you can assign users to the Org using the
 [Adding a New User]({{% ref
 "/docs/deployment/security/#adding-a-new-user" %}}) procedure.
 
+#### Org Security
+
+Although users are separated from accessing different orgs using org
+specific ACLs, in most Velociraptor deployments, this is a soft
+separation. There are many available ways in which a malicious user
+may access an org that they have no ACLs to. Generally we recommend
+not providing untrusted users access to the Velociraptor GUI at all,
+even if they should be restricted to a small set of orgs.
+
+See this for a full discussion of [Org
+Security](/docs/deployment/security/#managing-org-access).
+
 ### Preparing client deployment for the new Org
 
 Clients are configured to connect to one org only. While the

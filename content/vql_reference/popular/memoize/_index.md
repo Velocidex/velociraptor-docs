@@ -21,10 +21,11 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-query|Query to expand into memory|LazyExpr (required)
+query|Query to expand into memory|StoredQuery (required)
 key|The name of the column to use as a key.|string (required)
 period|The latest age of the cache.|int64
 name|The name of this cache.|string
+filename|Filename for a persistent cache.|string
 
 ### Description
 

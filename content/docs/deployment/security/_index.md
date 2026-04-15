@@ -823,3 +823,79 @@ by the user that initiates the collection.
 
 
 {{% /notice %}}
+
+
+## Managing org access
+
+Velociraptor provides ACL separation to users based on an org (or
+tenant) model. This means the same user may have different ACLs in
+different orgs - they may only have read access in one org and full
+admin access in another org.
+
+While this is convenient, it is not enough to provide complete
+separation to untrusted users.
+
+If an untrusted user has access to one org but does not have access to
+another, there are multiple ways which allow the user to read/modify
+data in the other org:
+
+### Shelling out
+
+By default, users have access to the `execve()` plugin providing they
+have the `EXECVE` permission (normally given to administrators). This
+allows an administrator in one org to run arbitrary code on the
+server - which may allow them to just read the file store of another
+org.
+
+You may disable the `execve()` plugin using the [configuration
+file](/docs/deployment/references/#security.denied_plugins)
+
+```yaml
+security:
+  denied_plugins:
+      - execve
+```
+
+### Accessing files directly
+
+Velociraptor org data are stored on disk in separate directories. This
+means that users that have access to the `file` accessor can simply
+read the other org's data bypassing the ACLs.
+
+For example, the following query will read all orgs datastore files:
+
+```vql
+SELECT * FROM glob(globs="/opt/velociraptor/orgs/**")
+```
+
+In recent versions of Velociraptor, it is possible to restrict the
+operation of the `file` accessor using the [configuration
+file](/docs/deployment/references/#security.denied_file_accessor_prefix). The
+following stops direct file access to the `/opt/velociraptor/`
+directory. On Linux many files can be read using the `/proc/`
+filesystem too. A more restrictive deployment will have more paths
+here.
+
+```yaml
+security:
+  denied_file_accessor_prefix:
+      - /opt/velociraptor/
+      - /etc/
+      - /proc/
+```
+
+Other accessors may provide access to different orgs in some
+situations. For example when running the server as root, the `ext4` or
+`ntfs` accessors may allow direct reading of the filesystem
+inode. Usually we recommend running the server on Linux as a non-root
+user to prevent these issues.
+
+In summary, although it is possible to restrict user access to
+different orgs this should be considered best effort. Much thought is
+required to truly isolate an untrusted user to some orgs, preventing
+access to other orgs. The recommendation is to avoid giving untrusted
+and potentially malicious users to the Velociraptor GUI at all.
+
+If you require true data isolation between orgs, we recommend to spin
+up a separate Velociraptor instance (Virtual Machine or container) for
+each unique deployment.
