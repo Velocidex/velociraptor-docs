@@ -49,7 +49,7 @@ navs:
   with the user's current ACL token.
 
 * [Velociraptor versions before
-  0.76.2](/announcements/advisories/cve-2026-5329/) improperly
+  0.76.3](/announcements/advisories/cve-2026-5329/) improperly
   validated input in client message handler. This could lead to remote
   code execution on the server.
 
