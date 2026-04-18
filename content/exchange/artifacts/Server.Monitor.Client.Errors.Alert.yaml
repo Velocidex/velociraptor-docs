@@ -32,7 +32,7 @@ description: |
 
   | Artifact | Level | Message | Severity | Explanation |
   | -------- | ----- | ------- | -------- | ----------- |
-  | .+ | DEFAULT | watch_ebpf: flags.PrepareFilterMapsFromPolicies: policy \S+ already exist | medium | eBPF policy conflict (fixed in 0.76.2) |
+  | .+ | DEFAULT | watch_ebpf: flags.PrepareFilterMapsFromPolicies: policy \S+ already exist | medium | eBPF policy conflict (fixed in 0.76.1) |
   | .+ | DEFAULT | fork/exec .+ no such file or directory | high | Executable not found on system |
   | .+ | ERROR | .+ | medium | |
 
@@ -49,11 +49,11 @@ description: |
   Note that many errors produced by native VQL functions and plugins are logged
   with the `DEFAULT` level rather than `ERROR`. To alert on these, either add
   your own checks that log `ERROR`, or match the native log messages with
-  `IncludeFilter`.
+  `IncludeFilter`. See `Server.Monitor.Errors.Alert` for a comprehensive list
+  of errors logged with level `DEFAULT` that you may want to alert on.
 
   Note that this will periodically query **all** clients that have event queries
-  configured for them. Be sure to ignore event artifacts as needed in
-  `ExcludeFilter`.
+  configured for them.
 
 type: SERVER_EVENT
 
@@ -122,7 +122,6 @@ sources:
         })
         })
         WHERE IncludeArtifact(artifact=Artifact, filter=IncludeFilter)
-         AND NOT IncludeArtifact(artifact=Artifact, filter=ExcludeFilter)
 
       LET _ <= SELECT
           if(condition=Label,
@@ -141,7 +140,7 @@ sources:
           then=Label IN Labels,
           else=true)
 
-      // Poll logs for every currently active server monitoring artifact and emit
+      // Poll logs for every currently active client monitoring artifact and emit
       // only entries that match filters:
       LET EventErrors(StartTime) = SELECT *
         FROM foreach(row={
@@ -184,7 +183,7 @@ sources:
       LET AlertArgs = RemoveEmptyStrs(Item=SeverityArgs + ErrorContext) +
           dict(
             dedup=DedupInterval,
-            name=format(format='Server event query error in %v', args=Artifact),
+            name=format(format='Client event query error in %v', args=Artifact),
             Level=Level,
             Error=Message,
             `Log timestamp`=TimestampString(Timestamp=timestamp(string=Timestamp)),
