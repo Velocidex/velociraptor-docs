@@ -1086,7 +1086,7 @@ sources:
 
       LET Cancelled = status =~ '^Cancelled'
 
-      LET IncludeHunts = (Failed
+      LET IncludeHunts = NotifyHunts OR (Failed
            AND 'IncludeHunts' IN ErrorHandling) OR NOT FlowId =~ '\.H$'
 
       LET IncludeArtifact = NOT ArtifactsToAlertOn OR request.artifacts =~
