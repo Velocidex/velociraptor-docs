@@ -1,4 +1,4 @@
-name: Server.Alerts.Mail
+name: Server.Monitor.FlowCompletion
 author: Andreas Misje – @misje
 description: |
   Send an e-mail when a client flow completes (success or failure), with optional
@@ -1180,7 +1180,7 @@ sources:
 
       LET Footer = format(format='Sent from Velociraptor by %v',
                           args=ArtifactLinks(
-                            Artifacts='Server.Alerts.Mail',
+                            Artifacts='Server.Monitor.FlowCompletion',
                             HTML=HTML)[0].Link)
 
       // Filter query results using a CSV containing

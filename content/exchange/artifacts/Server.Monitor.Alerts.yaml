@@ -260,7 +260,7 @@ parameters:
     default: 30
 
 imports:
-  - Server.Alerts.Mail
+  - Server.Monitor.FlowCompletion
 
 sources:
   - query: |
