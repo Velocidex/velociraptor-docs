@@ -4,132 +4,154 @@ description: |
   Send an e-mail when a client flow completes (success or failure), with optional
   HTML formatting, result tables, and file attachments.
 
-  This artifact monitors `System.Flow.Completion` and sends an e-mail when certain
-  conditions are met. You may filter by artifact name, client
-  labels, hunt participation, hunt labels, flow creation–completion delay, flow
-  outcome, artifact permissions, and more. You may also override normal filters
-  with label-based exceptions that notify only when results or uploads are present.
+  This artifact monitors
+  [`System.Flow.Completion`](/artifact_references/pages/system.flow.completion/)
+  and sends an e-mail when certain conditions are met. You may filter
+  by artifact name, client labels, hunt participation, hunt labels,
+  flow creation–completion delay, flow outcome, artifact permissions,
+  and more. You may also override the normal filters with label-based
+  exceptions that notify only when results or uploads are present.
 
   Features:
 
-  - Notify configured recipients, either from a list, or from a client metadata
-    field, and optionally (also) the flow executor
-  - Include client and flow context (metadata, timestamps, duration, arguments)
-  - Include download links directly to uploaded files
+  - Notify configured recipients, either from a list or from a client
+    metadata field, and optionally the flow executor
+  - Include client and flow context (metadata, timestamps, duration,
+    arguments)
+  - Include direct download links to uploaded files
   - Include selected flow results as:
     - Inline HTML tables (with row/column/cell limits)
     - CSV or JSONL attachments
-  - Control failed flow behavior with `ErrorHandling` options
+  - Control failed-flow behaviour with `ErrorHandling` options
   - Support special handling for newly seen clients
   - Support both nicely-formatted HTML and plain-text e-mails
 
   Notes:
 
-  - `SendInterval` throttling is **global across all Velociraptor e-mails** and
-    silently **drops** messages that arrive within the interval. The default of
-    10 seconds is intended for tuning; consider setting it to -1 in production so
-    that bursts (two flows completing close together, a flow completing shortly
-    after an alert e-mail, etc.) are not lost.
-  - The default `DelayThreshold` is 10 seconds, ensuring that notifications are
-    only sent if a flow completes more than 10 seconds after it was scheduled.
-    The idea is to not be informed by e-mail for flows completing "immediately".
-    Adjust to a higher value, or disable completely by setting to 0, as desired.
-  - If you want to be informed about failed collections that are otherwise ignored
-    by your configured filters, use `ErrorHandling` to
-      - Get notified about failed flows part of hunts with "IncludeHunts"
-      - Get notified about failed flows, even if they are ignored by the filters
-        `ArtifactsToAlertOn` and `ArtifactsToIgnore`, with "IgnoreArtifactFilters"
-      - Get notified about failed flows completing/failing within `IgnoreDelay`
-        with "IgnoreDelay"
-  - Cancelled flows are ignored by default (`IgnoreCancelled`). Despite living
-    under `ErrorHandling`, this filter applies to all flows, not only failures.
+  - `SendInterval` throttling is **global across all Velociraptor e-mails**
+    and silently **drops** messages that arrive within the interval. The
+    default of 10 seconds is intended for tuning; consider setting it to -1
+    in production so that bursts (two flows completing close together, a
+    flow completing shortly after an alert e-mail, etc.) are not lost.
+  - The default `DelayThreshold` is 10 seconds, so notifications are only
+    sent when a flow completes more than 10 seconds after it was scheduled.
+    The idea is to avoid being notified about flows that complete
+    "immediately". Adjust to a higher value, or disable completely by
+    setting to 0, as desired.
+  - If you want to be informed about failed collections that would
+    otherwise be ignored by your configured filters, use `ErrorHandling` to:
+      - Get notified about failed flows that are part of hunts, with
+        `IncludeHunts`
+      - Get notified about failed flows even if they are excluded by
+        `ArtifactsToAlertOn` and `ArtifactsToIgnore`, with
+        `IgnoreArtifactFilters`
+      - Get notified about failed flows even if they finish faster than
+        `DelayThreshold`, with `IgnoreDelay`
+  - Cancelled flows are ignored by default (`IgnoreCancelled`). Despite
+    living under `ErrorHandling`, this filter applies to all flows, not
+    only failures.
   - `ArtifactsToIgnore` only applies when a single artifact is collected;
     multi-artifact collections always pass the filter.
   - Empty metadata values are omitted unless `KeepEmptyRows` is true.
   - This artifact requires a configured mail secret (`Secret`).
-  - All configurable limits, like row/column/cell lengths, have a hard-coded
-    absolute maximum limit to avoid huge e-mails. The exception are attachments,
-    which may have unlimited column, row and cell lengths, but their total size
-    must not exceed `AttachmentsMaxMiB`.
+  - All configurable limits, like row/column/cell lengths, have a
+    hard-coded absolute maximum to avoid huge e-mails. The exception is
+    attachments, which may have unlimited column, row and cell lengths, but
+    their total size must not exceed `AttachmentsMaxMiB`.
+
+  ## Configuration
+
+  See [How to send e-mails from Velociraptor](/knowledge_base/tips/sending_email/)
+  for how to create SMTP secrets, and
+  [How to set up e-mail notifications for flow completions](/knowledge_base/tips/email_alerts/)
+  for how to use this artifact.
 
   ## Example use cases
 
-  This artifact may be used in many ways. Some examples are listed below. If you
-  find yourself needing to support several of these scenarios, you may have to
-  create new artifacts calling this one with different parameters.
+  This artifact may be used in many ways. Some examples are listed below. If
+  you find yourself needing to support several of these scenarios, you may
+  have to create new artifacts that call this one with different parameters.
 
   ### Get notified when a flow completes
 
-  You are investigating a single client. It is not online, and you need to get
-  notified immediately when it is online and the collection is finished. You may
-  even want to include the results as attachments. You are not interested in
-  getting an e-mail if the client is online, so you use the `DelayThreshold` to
-  only get notified when the flow does not complete within a reasonable time (e.g.
-  ten seconds or five minutes). You specify a fixed set of recipients in
-  `Recipients`, or you utilise `NotifyExecutor` (in addition) to send the
-  notification (with results) to the user scheduling the collection.
+  You are investigating a single client. It is not online, and you need to
+  be notified immediately when it comes online and the collection is
+  finished. You may even want to include the results as attachments. You are
+  not interested in getting an e-mail if the client is already online, so
+  you use `DelayThreshold` to only get notified when the flow does not
+  complete within a reasonable time (e.g. ten seconds or five minutes). You
+  specify a fixed set of recipients in `Recipients`, or you also use
+  `NotifyExecutor` to send the notification (with results) to the user who
+  scheduled the collection.
 
   ### Get notified when flows fail
 
-  You are hunting, and it is important that you get notified of any clients
-  failing to collect any of the artifacts. Let `NotifyHunts` remain false, but
-  include the option "IncludeHunts" in `ErrorHandling` in order to get notified
-  whenever a collection in the hunt fails. Be sure to test-run the hunt first in
-  order not to produce too many notifications.
+  You are hunting, and it is important that you get notified about any
+  clients failing to collect any of the artifacts. Leave `NotifyHunts` set
+  to false, but include the option `IncludeHunts` in `ErrorHandling` to be
+  notified whenever a collection in the hunt fails. Be sure to test-run the
+  hunt first to avoid producing too many notifications.
 
-  ### Shell/EXECVE artifacts auditing
+  ### Shell/EXECVE artifact auditing
 
-  You are auditing all use of EXECVE artifacts, in particular those allowing raw
-  shell access, and you want e-mails for every completed flow scheduled with these
-  privileged permissions. You set the auditor e-mail address in `Recipients`, you
-  keep `ArtifactsToAlertOn` set to ".+", but limit the artifact filter by setting
-  `ArtifactPermToAlertOn` to "EXECVE". You set `DelayThreshold` to 0. You will now
-  get notified of all finished (and failed) collections including artifacts
-  requiring the EXECVE permission. You may also include such artifacts used in hunts
-  by setting `NotifyHunts` to true (use with great care!), and you may of course
-  limit the EXECVE artifacts with `ArtifactsToAlertOn`/`ArtifactsToIgnore`.
+  You are auditing all use of EXECVE artifacts, in particular those
+  allowing raw shell access, and you want e-mails for every completed flow
+  scheduled with these privileged permissions. Set the auditor e-mail
+  address in `Recipients`, keep `ArtifactsToAlertOn` set to `.+`, but limit
+  the artifact filter by setting `ArtifactPermToAlertOn` to `EXECVE`. Set
+  `DelayThreshold` to 0. You will now get notified of all finished (and
+  failed) collections that include artifacts requiring the EXECVE
+  permission. You may also include such artifacts used in hunts by setting
+  `NotifyHunts` to true (use with great care!), and you may of course
+  narrow the EXECVE artifacts further with
+  `ArtifactsToAlertOn`/`ArtifactsToIgnore`.
 
-  You may include the results from shell artifacts as an HTML in the e-mail body
-  with something à la
+  You may include the results from shell artifacts as HTML in the e-mail
+  body with something like:
 
   | Source | Columns | MaxRows | CellLimit |
   | --- | --- | --- | --- |
-  | bash\|powershell | Stdout\|Stderr | 20 | 1000 |
+  | bash\|powershell | stdout\|stderr | 20 | 1000 |
   | generic\.client\.vql$ | .+ | | 3000 |
 
   ### New client notification
 
-  Use `NewClientArtifacts` to match artifacts that should create a notification, but
-  only for _new_ clients. All other filters are ignored. Use `NewClientThreshold` to
-  determine how many seconds old the client should be in order to be considered new.
+  Use `NewClientArtifacts` to match artifacts that should create a
+  notification only for _new_ clients. All other filters are ignored. Use
+  `NewClientThreshold` to determine how many seconds old the client may be
+  to still be considered new.
 
   ### Notify computer user/owner
 
-  You are in an environment with strict privacy / data protections laws. When
-  collecting data from employees and their devices, the employees need to be notified.
-  Assuming that each client has a metadata field with the computer's owner's e-mail
-  address, this artifact can be configured to notify the employee whenever collections
-  on their endpoint have finished.
+  You are in an environment with strict privacy / data protection laws.
+  When collecting data from employees and their devices, the employees need
+  to be notified. Assuming that each client has a metadata field with the
+  computer owner's e-mail address, this artifact can be configured to
+  notify the employee whenever collections on their endpoint have finished.
 
-  Specify the metadata field in `NotifyMetadataEMail` and adjust filters as needed.
-  You can use `NotifyMetadataEMail` along with `Recipients` and `NotifyExecutor`.
+  Specify the metadata field in `NotifyMetadataEMail` and adjust filters as
+  needed. `NotifyMetadataEMail` can be used alongside `Recipients` and
+  `NotifyExecutor`.
 
   ### Notification based on labels
 
-  You may use labels to only get notified in certain circumstances. These filters
-  are combined with other filters:
+  You may use labels to only get notified in certain circumstances. These
+  filters are combined with other filters:
 
-  - Use ClientLabelsToAlertOn to only get notified if a client has labels matching
-    this regex
-  - Use ClientLabelsToIgnore to ignore clients with labels matching this regex
+  - Use `ClientLabelsToAlertOn` to only get notified if a client has labels
+    matching this regex
+  - Use `ClientLabelsToIgnore` to ignore clients with labels matching this
+    regex
 
-  Regardless of other filters, these special label filters apply if there are results
-  or uploads:
+  Regardless of other filters, these special label filters apply if there
+  are results or uploads:
 
-  - If a client label, or hunt tag, matches the NotifyIfResultsLabels regex, *and*
-    the flow has results, all other filters are ignored and a notification is created
-  - If a client label, or hunt tag, matches the NotifyIfUploadsLabels regex, *and*
-    the flow has uploads, all other filters are ignored and a notification is created
+  - If a client label, or hunt tag, matches the `NotifyIfResultsLabels`
+    regex, *and* the flow has results, all other filters are ignored and a
+    notification is created
+  - If a client label, or hunt tag, matches the `NotifyIfUploadsLabels`
+    regex, *and* the flow has uploads, all other filters are ignored and a
+    notification is created
 
   ## Writing custom notification artifacts
 
@@ -137,7 +159,7 @@ description: |
   custom e-mail notification artifacts. If you only need HTML output and tables,
   `MailTemplate()` and `FullTable()` will cover most use cases. If you also want
   to support plain text, study this artifact's implementation, or look at
-  `Server.Monitor.Alerts` for a slightly simpler example.
+  [`Server.Monitor.Alerts`](/exchange/artifacts/pages/server.monitor.alerts/) for a slightly simpler example.
 
   ### FullTable()
 
@@ -149,9 +171,17 @@ description: |
 
   Use this helper to create an HTML e-mail body.
 
+  #monitoring #notifications #email
+
 type: SERVER_EVENT
 
 parameters:
+  - name: Secret
+    description: |
+      Secret used to configure server, port, username, password and skip_verify.
+      Required.
+    default: notify_mail_secret
+
   - name: Recipients
     type: csv
     description: |
@@ -210,7 +240,7 @@ parameters:
       E-mails will not be sent for finished flows with artifact names matching
       this regex. If several artifacts are collected, this filter is ignored.
     default: >-
-      ^(Custom\.)?Generic.Client.Info
+      ^(Custom\.)?Generic\.Client\.Info$
 
   - name: ClientLabelsToAlertOn
     type: regex
@@ -281,12 +311,6 @@ parameters:
       immediately (typically clients that are already online). Set to 0 to
       disable the filter and notify on every completion.
     default: 10
-
-  - name: Secret
-    description: |
-      Secret used to configure server, port, username, password and skip_verify.
-      Required.
-    default: notify_mail_secret
 
   - name: SendInterval
     type: int
@@ -412,10 +436,10 @@ export: |
   // Shorten a string from the left to a specified limit and add an ellipsis:
   LET ElideLeft(String, Length=30, Marker='…') = if(
       condition=len(list=String) > Length,
-      then=Marker + String[Length:],
+      then=Marker + NegSlice(String=String, Length=Length),
       else=String)
 
-  // Shorted a string in the mdidle to a specified limit and add an ellipsis:
+  // Shorten a string in the middle to a specified limit and add an ellipsis:
   LET ElideMiddle(String, Length=30, Marker='…') =
       if(condition=len(list=String) > Length,
          then=format(format="%v%v%v",
@@ -675,7 +699,7 @@ export: |
   LET FullTable(Rows, Headers=NULL, MaxRows=NULL, MaxCols=100,
   MaxCellLength=NULL, MaxHeaderLength=30, FormatData=true) =
       if(
-        condition=Rows,
+        condition=Rows AND (Headers OR items(item=Rows[0])._key),
         then=template(
           template='''<table>
       {{- if .headers }}
@@ -1142,10 +1166,10 @@ sources:
       LET IncludeCancelled = NOT 'IgnoreCancelled' IN ErrorHandling OR NOT
           Cancelled
 
-      LET MatchesLabelFilters = (NOT ClientLabelsToAlertOn OR
-            ClientLabels =~ ClientLabelsToAlertOn)
-         AND (NOT ClientLabelsToIgnore OR NOT ClientLabelsToIgnore =~
-                 ClientLabels)
+      LET MatchesLabelFilters = (NOT ClientLabelsToAlertOn OR (NOT
+                    ClientLabels OR ClientLabels =~ ClientLabelsToAlertOn))
+              AND (NOT ClientLabelsToIgnore OR NOT ClientLabels =~
+                      ClientLabelsToIgnore)
 
       LET MatchesArtifactPerms = if(condition=ArtifactPermToAlertOn,
                                     then={
@@ -1231,7 +1255,7 @@ sources:
           SELECT *
           FROM flow_results(client_id=ClientId, flow_id=FlowId, artifact=Artifact)
         },
-                             include=Columns)
+                             include='(?i)' + Columns)
         },
                    MaxRows=MinVal(A=MaxRows, B=ArtifactResultsAbsoluteMaxRows),
                    MaxCols=ResultTableMaxColumns,
@@ -1320,7 +1344,7 @@ sources:
           FROM flow_results(client_id=ClientId, flow_id=FlowId, artifact=Artifact)
         })
         },
-                             include=Columns)
+                             include='(?i)' + Columns)
         })
           GROUP BY Path
         })

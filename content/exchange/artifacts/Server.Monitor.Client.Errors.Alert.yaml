@@ -23,8 +23,10 @@ description: |
 
   If `SeverityField` is set, the alert will also include a severity value taken
   from the matching `IncludeFilter` row's `Severity` column. This can be used
-  by `Server.Monitor.Alerts` to format, filter, and forward the alert as an
-  e-mail notification.
+  by [`Server.Monitor.Alerts`](/exchange/artifacts/pages/server.monitor.alerts/)
+  to format, filter, and forward the alert as an e-mail notification, or by
+  [`Server.Monitor.Alerts.UserMessage`](/exchange/artifacts/pages/server.monitor.alerts.usermessage/)
+  to post it as an in-app notification.
 
   Any extra columns added to `IncludeFilter` are passed through to the alert
   under the same name as extra context. For instance, if you want to add a
@@ -33,29 +35,32 @@ description: |
 
   | Artifact | Level | Message | Severity | Explanation |
   | -------- | ----- | ------- | -------- | ----------- |
-  | .+ | DEFAULT | watch_ebpf: flags.PrepareFilterMapsFromPolicies: policy \S+ already exist | medium | eBPF policy conflict (fixed in 0.76.1) |
+  | .+ | DEFAULT | watch_ebpf: flags.PrepareFilterMapsFromPolicies: policy \S+ already exists? | medium | eBPF policy conflict (fixed in 0.76.1) |
   | .+ | DEFAULT | fork/exec .+ no such file or directory | high | Executable not found on system |
   | .+ | ERROR | .+ | medium | |
 
-  With this filter we will pick up any attempt of using `execve` with a non-
-  existent binary. This would normally not produce an error, but it would
-  definitely break important functionality in most artifacts. We also pick up
-  eBPF policy name conflicts, a bug fixed in 0.76.1, but would prevent eBPF
-  monitoring from working in older versions when there is more than one artifact
-  using eBPF monitoring.
+  With this filter we pick up any attempt to use [`execve`](/vql_reference/popular/execve/) with a non-existent
+  binary. This would normally not produce an `ERROR`-level log entry (only a
+  `DEFAULT`-level one), but it would definitely break important functionality
+  in most artifacts. We also pick up eBPF policy name conflicts — a bug fixed
+  in 0.76.1, which prevented eBPF monitoring from working in older versions
+  when more than one eBPF-using artifact was active.
 
-  Remember that the filters are matched from top to bottom, i.e. put your most
+  Remember that the filters are matched from top to bottom, so put your most
   specific filters at the top.
 
-  Note that many errors produced by native VQL functions and plugins are logged
-  with the `DEFAULT` level rather than `ERROR`. To alert on these, either add
-  your own checks that log `ERROR`, or match the native log messages with
-  `IncludeFilter`. See `Server.Monitor.Errors.Alert` for a comprehensive list
-  of errors logged with level `DEFAULT` that you may want to alert on.
+  Note that many errors produced by native VQL functions and plugins
+  are logged with the `DEFAULT` level rather than `ERROR`. To alert on
+  these, either add your own checks that log `ERROR` to artifacts, or
+  match the native log messages with `IncludeFilter`. See [this
+  reference](/knowledge_base/tips/vql_error_catalogue/) for a list of
+  regexes matching `DEFAULT`-level errors worth monitoring.
 
-  Note that this artifact periodically iterates over **all** clients in order
-  to query their monitoring logs. The work is parallelised across clients and
-  artifacts, but can still be expensive on large deployments.
+  Note that this artifact periodically iterates over **all** clients in
+  order to query their monitoring logs. The work is parallelised across
+  clients and artifacts, but can still be expensive on large deployments.
+
+  #monitoring #alerts #notifications #errors
 
 type: SERVER_EVENT
 
@@ -129,7 +134,10 @@ sources:
         })
         })
         WHERE IncludeArtifact(artifact=Artifact, filter=IncludeFilter)
-
+      
+      // NOTE: This is output once at the start of the query and is not going
+      // to be up to date with the actual list of monitored artifacts, which
+      // will be queried for every tick in clock() later:
       LET _ <= SELECT
           if(condition=Label,
              then=log(level='DEBUG',

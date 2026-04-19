@@ -23,9 +23,12 @@ description: |
 
   If `SeverityField` is set, the alert will also include a severity value taken
   from the matching `IncludeFilter` row's `Severity` column. This can be used by
-  `Server.Monitor.Alerts` to format, filter, and forward the alert as an
-  e-mail notification. The severity values can be anything, but
-  `Server.Monitor.Alerts` expects the following unless overridden:
+  [`Server.Monitor.Alerts`](/exchange/artifacts/pages/server.monitor.alerts/)
+  to format, filter, and forward the alert as an e-mail notification, or by
+  [`Server.Monitor.Alerts.UserMessage`](/exchange/artifacts/pages/server.monitor.alerts.usermessage/)
+  to post it as an in-app notification. The severity values can be anything,
+  but [`Server.Monitor.Alerts`](/exchange/artifacts/pages/server.monitor.alerts/) expects the
+  following unless overridden:
 
   - low
   - medium
@@ -42,103 +45,20 @@ description: |
   | .+ | DEFAULT | fork/exec .+ no such file or directory | high | Executable not found on system |
   | .+ | ERROR | .+ | medium | |
 
-  With this filter we will pick up any attempt of using `execve` with a non-
-  existent binary. This would normally not produce an error, but it would
-  definitely break important functionality in most artifacts. Remember that the
-  filters are matched from top to bottom, i.e. put your most specific filters
-  at the top.
+  With this filter we pick up any attempt to use [`execve`](/vql_reference/popular/execve/) with a non-existent
+  binary. This would normally not produce an `ERROR`-level log entry (only a
+  `DEFAULT`-level one), but it would definitely break important functionality
+  in most artifacts. Remember that the filters are matched from top to bottom,
+  so put your most specific filters at the top.
 
-  Note that many errors produced by native VQL functions and plugins are logged
-  with the `DEFAULT` level rather than `ERROR`. To alert on these, either add
-  your own checks that log `ERROR`, or match the native log messages with
-  `IncludeFilter`.
+  Note that many errors produced by native VQL functions and plugins
+  are logged with the `DEFAULT` level rather than `ERROR`. To alert on
+  these, either add your own checks that log `ERROR` to artifacts, or
+  match the native log messages with `IncludeFilter`. See [this
+  reference](/knowledge_base/tips/vql_error_catalogue/) for a list of
+  regexes matching `DEFAULT`-level errors worth monitoring.
 
-  If you want to create alerts for all known errors produced by functions and
-  plugins (which are logged as level DEFAULT), use the following list as a
-  starting point. Adapt as needed and pass to `IncludeFilter`:
-
-  ```csv
-  Artifact,Level,Message,Severity,Explanation
-  .+,ERROR,.+,high,
-  .+,WARN,.+,medium,
-  .+,DEFAULT,ERROR:execve: .+,high,Shell command failed to launch or run.
-  .+,DEFAULT,execve: fork/exec .+: no such file or directory,high,Executable not found.
-  .+,DEFAULT,execve: Not allowed to execve by configuration,high,Shell execution blocked by client config.
-  .+,DEFAULT,ERROR:query: Permission required for runas: .+,high,query() denied: caller lacks the IMPERSONATION ACL required for run-as.
-  .+,DEFAULT,ERROR:query: query should be a string or subquery,high,query() called with wrong argument type: must be a string or stored query.
-  .+,DEFAULT,ERROR:query: .+,medium,query() failed: VQL syntax error or infrastructure failure (GetRepositoryManager unavailable).
-  .+,DEFAULT,ERROR:mail: .+,medium,Email delivery failed.
-  .+,DEFAULT,ERROR:pk_encrypt: .+,high,Public-key encryption failed: output data is not protected.
-  .+,DEFAULT,ERROR:pk_decrypt: .+,medium,Public-key decryption failed: data is unreadable.
-  .+,DEFAULT,ERROR:sqlite: Unable to create temp file: .+,high,SQLite cannot create working temp file: query returns nothing.
-  .+,DEFAULT,ERROR:Unable to open sqlite file .+,medium,SQLite file inaccessible (may legitimately not exist on target).
-  .+,DEFAULT,ERROR:NewSQLCache can not set (?:desctructor|destructor): .+,low,SQLite cache destructor registration failed: temp files may leak.
-  .+,DEFAULT,ERROR:upload_gcs: .+,high,GCS upload failed with no retry: file not uploaded.
-  .+,DEFAULT,ERROR:splunk_upload: all \d+ attempts failed: .+,high,All Splunk upload retries exhausted: data not delivered.
-  .+,DEFAULT,ERROR:client_repack: .+,high,Client repack operation failed.
-  .+,DEFAULT,ERROR:parse_json: .+,medium,parse_json failed to parse a value: result is silently dropped.
-  .+,DEFAULT,ERROR:parse_yaml: .+,medium,parse_yaml failed to parse a value: result is silently dropped.
-  .+,DEFAULT,ERROR:process_tracker: .+,medium,Process tracker hit a fatal error: process ancestry data may be incomplete.
-  .+,DEFAULT,ERROR:alert: .+,medium,alert() or array() function failed.
-  .+,DEFAULT,ERROR:array: .+,medium,array() function failed.
-  .+,DEFAULT,rm: Retry count exceeded - giving up,medium,File deletion permanently failed after all retries (file remains on disk).
-  .+,DEFAULT,RemoveDirectory: Retry count exceeded - giving up,medium,Directory removal permanently failed after all retries.
-  .+,DEFAULT,tempfile: Retry count exceeded - giving up,medium,Temporary file cleanup permanently failed: disk space may leak.
-  .+,DEFAULT,watch_jsonl: unable to get config,high,watch_jsonl watcher cannot read configuration: no events will be produced.
-  .+,DEFAULT,remap: Failed to apply remapping,high,Remapping failed: artifact yields nothing downstream.
-  .+,DEFAULT,copy: Failed to (open|copy|create directories).+,medium,File copy operation failed: destination file will be absent or incomplete.
-  .+,DEFAULT,upload: Unable to open .+,medium,upload() cannot open source file: nothing uploaded to server.
-  .+,DEFAULT,upload_S3: Unable to open .+,medium,S3 upload source file not found: file not uploaded.
-  .+,DEFAULT,upload_S3: operation error .+,high,S3 upload failed with no retry: file not uploaded.
-  .+,DEFAULT,upload_SFTP: Unable to open .+,medium,SFTP upload source file not found: file not archived.
-  .+,DEFAULT,upload_azure: Unable to open .+,medium,Azure Blob upload source file not found.
-  .+,DEFAULT,upload_smb: Unable to open .+,medium,SMB upload source file not found.
-  .+,DEFAULT,upload_webdav: Unable to open .+,medium,WebDAV upload source file not found.
-  .+,DEFAULT,upload_SFTP: Unable to verify size of uploaded file due to insufficient read permissions,medium,SFTP upload integrity check skipped: transfer may be truncated.
-  .+,DEFAULT,splunk_upload: attempt \d+ failed: .+,medium,Splunk upload attempt failed and is retrying. Watch for the all-attempts-failed message.
-  .+,DEFAULT,splunk: cannot get TLS config: .+,medium,Splunk TLS configuration error: upload will likely fail.
-  .+,DEFAULT,elastic: cannot get TLS config: .+,medium,Elastic TLS configuration error: upload will likely fail.
-  .+,DEFAULT,yara: Failed to open .+ with accessor .+: .+,medium,YARA cannot open scan target: file skipped silently.
-  .+,DEFAULT,sigma: Error parsing: .+ in rule '.+',medium,Sigma rule rejected at parse time: rule not evaluated against events.
-  .+,DEFAULT,sigma: Error parsing rule '.+': no title set,medium,Sigma rule missing required title field: rule silently skipped.
-  .+,DEFAULT,sigma: Correlation .+: Error in rule .+,medium,Sigma correlation rule contains an error: correlation not evaluated.
-  .+,DEFAULT,ERROR:sigma_log_sources: .+,high,Sigma log source misconfigured.
-  .+,DEFAULT,GROUP BY: \d+ bins exceeded,low,GROUP BY memory limit exceeded: query will run significantly slower.
-  .+,DEFAULT,import_collection: Error copying .+,high,File copy failed during collection import: some files may be missing.
-  .+,DEFAULT,import_collection: .+,high,import_collection hit an error: collection may be partially imported.
-  .+,DEFAULT,tracker update query error: .+,medium,Process tracker update query failed: process ancestry data may be stale or missing.
-  .+,DEFAULT,hunt: expiry time invalid: .+,medium,Hunt expiry time could not be parsed: hunt may never expire.
-  .+,DEFAULT,hunt: expiry time .+ in the past,medium,Hunt expiry is already in the past: hunt will expire immediately.
-  .+,DEFAULT,hunt: OS condition invalid .+,medium,Hunt OS condition string is invalid: hunt may run on unintended platforms.
-  .+,DEFAULT,interfaces: failed to enumerate interfaces: .+,high,Network interface enumeration failed: interface list will be empty.
-  .+,DEFAULT,parse_usn: Unable to get MFT,medium,USN journal parsed without MFT: FullPath column will be empty for all records.
-  .+,DEFAULT,ERROR:etw: failed to disable provider; .+,medium,Windows ETW provider could not be disabled cleanly: may affect subsequent traces.
-  .+,DEFAULT,parse_ntfs: invalid context,high,NTFS parsing context is invalid: all NTFS results suppressed. Check accessor and image path.
-  .+,DEFAULT,parse_mft: Unable to open file .+,high,MFT file cannot be opened: NTFS file enumeration produces no output.
-  .+,DEFAULT,watch_ebpf: Unable to compile regex_prefilter .+,medium,eBPF event pre-filter regex is invalid: all events pass through unfiltered.
-  .+,DEFAULT,audit: .+,medium,Linux audit socket error: audit events may be lost.
-  .+,DEFAULT,receive failed: .+,medium,Linux audit event receive failed: gap in audit event stream.
-  .+,DEFAULT,Unable to load timezone from PARSE_TZ .+,low,PARSE_TZ timezone string invalid: timestamps silently converted to UTC.
-  .+,DEFAULT,Unable to load timezone from TZ .+,low,TZ timezone string invalid: timestamps silently converted to UTC.
-  .+,DEFAULT,environ: access to env var \S+ is denied,low,Environment variable access blocked by ACL: VQL expression receives an empty string.
-  .+,DEFAULT,.+: Field \S+ is required,high,Required argument missing: function returns no output. Applies to all VQL plugins and functions.
-  .+,DEFAULT,.+: Unexpected arg \S+,high,Unknown argument name passed to function (likely a typo in the artifact): argument is silently ignored.
-  .+,DEFAULT,.+: Field \S+ .+,high,Argument type conversion failed: function returns no output. Applies to all VQL plugins and functions.
-  .+,DEFAULT,upload_gcs: unable to fetch config,high,GCS upload cannot read client config: file not uploaded.
-  .+,DEFAULT,parse_csv: separator can only be one character,medium,parse_csv separator parameter is invalid: no rows produced.
-  .+,DEFAULT,parse_csv: comment can only be one character,medium,parse_csv comment parameter is invalid: no rows produced.
-  .+,DEFAULT,elastic: action must be either index or create,medium,elastic_upload called with invalid action parameter: rows not indexed.
-  .+,DEFAULT,sigma: Correlation .+: References missing rule .+,medium,Sigma correlation references a rule that was not loaded: correlation not evaluated.
-  .+,DEFAULT,netcat: unsupported address type .+,medium,netcat called with unsupported address type: no connection made.
-  .+,DEFAULT,http_client: must use secrets is enforced.+,medium,http_client URL dropped: server policy requires secrets-managed credentials.
-  .+,DEFAULT,user_grant: You must provide either roles or a policy object,medium,user_grant called without roles or policy: no permissions granted.
-  .+,DEFAULT,hunt_delete: '.+' not found,medium,Hunt not found: nothing deleted.
-  .+,DEFAULT,hunt_add: Hunt id not found .+,medium,Hunt not found: client not added.
-  .+,DEFAULT,add_client_monitoring: artifact .+ not found,medium,Client monitoring artifact not found: monitoring not configured.
-  .+,DEFAULT,add_server_monitoring: artifact .+ not found,medium,Server monitoring artifact not found: monitoring not configured.
-  .+,DEFAULT,proc_dump: failed to dump process: .+,medium,Process memory dump failed.
-  ```
-  #alert #notification
+  #monitoring #alerts #notifications #errors
 
 type: SERVER_EVENT
 
@@ -172,13 +92,14 @@ parameters:
     type: csv
     description: |
       Reject log entries matching one of these rows, applied after
-      `IncludeFilter`. The default excludes `Server.Monitor.Alerts` and this
-      artifact itself to avoid alerting loops when the notification pipeline
-      logs its own errors.
+      `IncludeFilter`. The default excludes artifacts that would
+      create alert loops if they fail, so do not remove them from the
+      filter.
     default: |
       Artifact,Level,Message
       Server\.Monitor\.Alerts$,.+,.+
-      Server\.Monitor\.Errors.Alert$,.+,.+
+      Server\.Monitor\.Alerts\.UserMessage$,.+,.+
+      Server\.Monitor\.Errors\.Alert$,.+,.+
 
   - name: SeverityField
     type: str
