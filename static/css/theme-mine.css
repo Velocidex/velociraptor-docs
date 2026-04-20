@@ -880,7 +880,7 @@ figcaption  {
 details > summary:first-of-type {
     display: list-item;
     counter-increment: list-item 0;
-    list-style: inside disclosure-closed;
+
 }
 
 #body-inner table {
@@ -1238,4 +1238,26 @@ div.search_results {
 
 #body-inner.offset {
     margin-top: 80px;
+}
+
+
+
+details {
+  padding: 10px;
+  background: var(--MENU-SECTIONS-BG-color);
+  border-radius: 15px;
+}
+
+details summary {
+    cursor: pointer;
+    color: var(--MAIN-TITLES-TEXT-color);
+}
+
+details[open] > summary {
+  color: var(--MAIN-TEXT-color);
+  opacity: 0.5;
+}
+
+details[open] {
+    background: var(--MENU-SECTIONS-BG-color);
 }
