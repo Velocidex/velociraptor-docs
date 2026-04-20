@@ -1,0 +1,22 @@
+name: Generic.Events.Processes
+author: Herbert Bärschneider, SEC Consult
+description: |
+  This artifact is meant for monitoring processes on clients. It is usable on every operating system supported by Velociraptor.
+  It periodically queries the existing processes and emits lines for differences (new processes and missing/removed ones).
+  Processes are tracked and compared based on the following elements: process ID, parent process ID, SID of the process owner, username, process name, executable associated with the process, commandline of the process
+
+type: CLIENT_EVENT
+
+parameters:
+  - name: Period
+    default: 2
+    type: int
+    description: how many seconds the artifact waits between checking processes for changes
+
+sources:
+   - query: |
+       LET RunningProcesses = SELECT *, format(format="%v %v %v %v %v %v %v", args=[Pid, Ppid, OwnerSid, Username, Name, Exe, CommandLine]) AS DiffKey FROM pslist()
+     
+       LET EventQuery = SELECT * FROM diff(query=RunningProcesses, period=Period, key="DiffKey")
+     
+       SELECT * FROM EventQuery
