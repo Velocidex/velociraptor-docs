@@ -1,0 +1,47 @@
+author: Cornelius
+description: |
+  In case of an incident, it might be neccessary to collect additional auditd-logs in order to monitor attacker activity
+  This artefact is enabling addional logging.
+  
+  CAUTION: The example rules here are meant do disable all logs, so please add your own rules and check them first, in order to not crash you systems.
+
+parameters:
+  - name: additional_auditd_rules
+    default: |
+      -a exit,never -F arch=b64 -S all -k no_rules
+      -a exit,never -F arch=b32 -S all -k no_rules
+    
+  - name: delete_rules
+    type: bool
+ 
+  - name: file_additional_rules
+    default: "/etc/audit/rules.d/new_rules.rules"
+
+sources:
+  - query: |
+        
+        //creates the .rules file, which will be loadeded at the end
+        LET new_rules = SELECT copy(filename=additional_auditd_rules, accessor='data', dest=file_additional_rules) FROM scope()
+        
+        //Checks whether rules can be updated
+        LET check_rules_update_required = SELECT ReturnCode FROM execve(argv=['augenrules','--check']) WHERE ReturnCode = 1 
+        
+        //loads the new rules
+        LET load_new_rules = SELECT ReturnCode FROM execve(argv=['augenrules','--load']) WHERE ReturnCode = 0
+        
+        //deletes additional rules
+        LET delete_additional_rules= SELECT rm(filename=file_additional_rules) FROM scope()
+        
+        //activate new rules
+        LET apply_logging = SELECT log(level="INFO", message= "The Rules you added to the 'additional_rules' parameter will be applied.") FROM chain(
+                                a= new_rules,
+                                b= check_rules_update_required,
+                                c= load_new_rules)
+        
+        LET delete_additional_logging= SELECT log(level="INFO", message= "The additional rules has been deleted") FROM chain(
+                                a=delete_additional_rules,
+                                b=load_new_rules)
+                                                        
+        SELECT * FROM if(condition=delete_rules,
+            then=delete_additional_logging,
+            else=apply_logging)
