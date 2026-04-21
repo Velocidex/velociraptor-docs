@@ -4,10 +4,10 @@ description: |
   Create alerts from errors logged by client event queries.
 
   Client event queries are often used for important monitoring and automation,
-  but failures in those queries may otherwise go unnoticed in the monitoring logs.
+  but failures in these queries may otherwise go unnoticed in the monitoring logs.
   This artifact periodically inspects the monitoring logs for active client event
-  artifacts and creates alerts when log entries match the configured include and
-  exclude filters.
+  artifacts and creates alerts for log entries that match `IncludeFilter` and
+  are not rejected by `ExcludeFilter`.
 
   Matching can be controlled by artifact name, log level, and message content.
   This allows you to alert on all client event query errors, or to focus on a
@@ -22,13 +22,14 @@ description: |
   may be more than one. Several clients may also be affected.
 
   If `SeverityField` is set, the alert will also include a severity value taken
-  from the matching `IncludeFilter` row. This can be used by
-  `Server.Monitor.Alerts` to format, filter, and forward the alert as an
+  from the matching `IncludeFilter` row's `Severity` column. This can be used
+  by `Server.Monitor.Alerts` to format, filter, and forward the alert as an
   e-mail notification.
 
-  If you extend IncludeFilter with additional custom columns, these will be
-  added to the alert as extra data. For instance, if you want to add a helpful
-  description to a particular error, you can use IncludeFilter as follows:
+  Any extra columns added to `IncludeFilter` are passed through to the alert
+  under the same name as extra context. For instance, if you want to add a
+  helpful description to a particular error, you can use `IncludeFilter` as
+  follows:
 
   | Artifact | Level | Message | Severity | Explanation |
   | -------- | ----- | ------- | -------- | ----------- |
@@ -52,8 +53,9 @@ description: |
   `IncludeFilter`. See `Server.Monitor.Errors.Alert` for a comprehensive list
   of errors logged with level `DEFAULT` that you may want to alert on.
 
-  Note that this will periodically query **all** clients that have event queries
-  configured for them.
+  Note that this artifact periodically iterates over **all** clients in order
+  to query their monitoring logs. The work is parallelised across clients and
+  artifacts, but can still be expensive on large deployments.
 
 type: SERVER_EVENT
 
@@ -67,16 +69,19 @@ parameters:
   - name: DedupInterval
     type: int
     description: |
-      Do not create a new alert if an identical alert was created within these
-      many seconds
+      Suppress duplicate alerts from the same artifact within this many
+      seconds. Inspect the event query log directly for the full set of
+      errors, and note that several clients may be affected by the same issue.
     default: 3600
 
   - name: IncludeFilter
     type: csv
     description: |
-      Only include messages matching these artifacts, log levels and messages.
-      Severity defines severity. Any additional columns are added as fields
-      with the same name to the alert. First match is used.
+      Include only log entries matching one of these rows. Each column is a
+      regex; empty means "any". The optional `Severity` column is copied into
+      the alert (see `SeverityField`). Any extra columns are passed through
+      to the alert under the same name. Rows are evaluated top-to-bottom and
+      the first match wins, so place specific rules before broad catch-alls.
     default: |
       Artifact,Level,Message,Severity
       .+,ERROR,.+,medium
@@ -84,7 +89,8 @@ parameters:
   - name: ExcludeFilter
     type: csv
     description: |
-      Exclude messages matching these artifacts, log levels and messages
+      Reject log entries matching one of these rows, applied after
+      `IncludeFilter`
     default: |
       Artifact,Level,Message
       Generic\.Client\.Stats$,.+,.+
@@ -92,8 +98,9 @@ parameters:
   - name: SeverityField
     type: str
     description: |
-      If set, a field with this name will be included in the alert, and the value
-      will be set to the severity in IncludeFilter
+      Name of the alert field that will receive the value from the matching
+      `IncludeFilter` row's `Severity` column. Leave empty to omit severity
+      from alerts entirely.
     default: Severity
 
 imports:

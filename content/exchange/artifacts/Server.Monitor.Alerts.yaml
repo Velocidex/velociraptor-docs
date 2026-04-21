@@ -85,11 +85,12 @@ description: |
   - Artifact
   - ArtifactType
 
-  can be set to override the information set by the server monitoring artifact.
-  For instance, set ClientId to that of the source client instaed of having
-  client_id reported as "server", or set Artifact and ArtifactType to that of
-  the monitored artifact instead of getting the information about the server
-  event artifact.
+  can be set in the alert's context to override the information otherwise
+  inferred from the server monitoring artifact. For example, set `ClientId` to
+  the original client's ID so the notification attributes the alert to that
+  client instead of the server, or set `Artifact` / `ArtifactType` so the
+  notification refers to the monitored artifact rather than the wrapper
+  server event artifact.
 
 type: SERVER_EVENT
 
@@ -97,8 +98,11 @@ parameters:
   - name: Recipients
     type: csv
     description: |
-      E-mail addresses that will receive the message. Required unless
-      NotifyExecutor is true.
+      E-mail addresses that will receive the message. At least one recipient
+      must resolve from either `Recipients` or `NotifyExecutor` (which itself
+      only yields an address when the alert originates from a flow with a
+      resolvable creator). If none resolves, the flow is logged as an error
+      and no e-mail is sent.
     default: |
       Address
 
@@ -121,7 +125,8 @@ parameters:
 
   - name: Sender
     description: |
-      Sender e-mail address. REQUIRED.
+      Sender e-mail address. Required unless set in the mail secret. Overrides
+      the secret's sender address when both are set.
 
   - name: HTML
     type: bool
@@ -132,13 +137,14 @@ parameters:
   - name: AlertMsgInclude
     type: regex
     description: |
-      Only forward alerts matching this message.
+      Only forward alerts whose message matches this regex. See
+      `SeverityThreshold` for severity-based filtering.
     default: .+
 
   - name: AlertMsgExclude
     type: regex
     description: |
-      Ignore alerts matching this message.
+      Ignore alerts whose message matches this regex.
 
   - name: ServerSecret
     description: |
@@ -149,9 +155,11 @@ parameters:
   - name: SendInterval
     type: int
     description: |
-      Required number of seconds that must pass between e-mails (globally on the
-      server), otherwise the e-mail will be dropped. Set to -1 to send an e-mail
-      for every flow completion.
+      Minimum number of seconds that must pass between e-mails sent from this
+      Velociraptor server. E-mails that arrive within the interval are
+      silently dropped. The interval is shared with **all** Velociraptor
+      e-mails, not just those from this artifact. Set to -1 to disable
+      throttling.
     default: 10
 
   - name: IncludeClientDetails
@@ -175,14 +183,15 @@ parameters:
     type: bool
     description: |
       Include information about the originating flow, such as the creator and
-      artifact arguments, when the alert comes from a collection. You may specify
-      (override) the flow ID by setting the variable `FlowId` in the context.
+      artifact arguments, when the alert comes from a collection. The alert
+      context's `FlowId` field may be set to override the flow being looked up.
+    default: true
 
   - name: IncludeArtifactDetails
     type: bool
     description: |
-      Include details about the artifact the alert comes from. This may be helpful
-      when debugging, but otherwise it will be too noisy.
+      Include details about the artifact the alert comes from. Useful when
+      debugging; typically too noisy for routine alerting.
     default: false
 
   - name: KeepEmptyRows
@@ -194,10 +203,10 @@ parameters:
   - name: SeverityTransforms
     type: csv
     description: |
-      A table of `event_data` members that may be used to derive a severity,
-      optionally with regex replacement. The derived severity is used in the
-      e-mail title/body and by `SeverityThreshold`. If multiple rows match, the
-      last match wins.
+      Derive a severity from `event_data` members. Each row inspects a
+      member: `Replace` rewrites its value via `Regex`, `Regex` alone keeps
+      the value when it matches, and leaving both blank passes the value
+      through verbatim. The last matching row wins.
     default: |
       Member,Regex,Replace
       level,(?i)warn,medium
@@ -220,36 +229,39 @@ parameters:
     description: |
       Flatten arguments passed to `alert()` so nested structures are easier to
       read, e.g. `{a: {b: 42}, c: [{d: foo, e: bar}]}` becomes
-      `{a.b: 42, c.0.d: foo, c.0.e: bar}`.
+      `{a.b: 42, c.0.d: foo, c.0.e: bar}`. See the main description for a
+      worked example.
     default: true
 
   - name: ContextInclude
     type: regex
     description: |
-      Only include context fields matching this regex. If `FlattenContext` is
-      enabled, the regex is appllied to the unnested field.
+      Only include context fields whose name matches this regex. If
+      `FlattenContext` is enabled, the regex is applied to the unnested
+      (dotted) field name.
     default: .+
 
   - name: ContextExclude
     type: regex
     description: |
-      Do not include context fields matching this regex. If `FlattenContext` is
-      enabled, the regex is appllied to the unnested field.
+      Exclude context fields whose name matches this regex. If
+      `FlattenContext` is enabled, the regex is applied to the unnested
+      (dotted) field name.
 
   - name: ContextFieldLimit
     type: int
     description: |
-      Maximum number of characters to display for each context field. Applied
-      after flattening/unnesting if FlattenContext is set. Too large fields
-      are elided in the middle. Absolute max limit is 1,000.
+      Maximum number of characters to display for each context field name.
+      Applied after flattening/unnesting if `FlattenContext` is set. Too
+      long names are elided in the middle. Absolute max limit is 1,000.
     default: 100
 
   - name: ContextValueLimit
     type: int
     description: |
-      Maximum number of characters to display for each context value. Applied
-      after flattening/unnesting if FlattenContext is set. Absolute max limit
-      is 10,000.
+      Maximum number of characters to display for each context field value.
+      Applied after flattening/unnesting if `FlattenContext` is set. Absolute
+      max limit is 10,000.
     default: 1000
 
   - name: ContextRowLimit
@@ -487,7 +499,7 @@ sources:
           FROM items(item=Env)
         }) || NULL
 
-      // Helper function for a nested array loop (ust to rename "_value"):
+      // Helper function for a nested array loop (just to rename "_value"):
       LET LabelSpecs(Specs) = SELECT _value AS Spec
         FROM foreach(row=Specs)
 
@@ -529,7 +541,7 @@ sources:
                                       metadata
         FROM artifact_definitions(names=ArtifactName)
 
-      // Spend at most one seconds looking through the audit log for recent
+      // Spend at most one second looking through the audit log for recent
       // Artifact and event table modifications:
       LET AuditLog = generate(
           query={
@@ -641,11 +653,13 @@ sources:
           SELECT *
           FROM Artifact.Generic.Utils.SendEmail(
             Secret=ServerSecret,
-            Recipients=Unique(
-              Items=Recipients.Address + if(
-                condition=NotifyExecutor,
-                then=CreatorAddrs(Creator=FlowDetails[0].PlainText.Creator),
-                else=array())),
+            Recipients=RequireNonEmpty(
+              Value=Unique(
+                Items=Recipients.Address + if(
+                  condition=NotifyExecutor,
+                  then=CreatorAddrs(Creator=FlowDetails[0].PlainText.Creator),
+                  else=array())),
+              Message='No recipients resolved: set Recipients or enable NotifyExecutor.'),
             Sender=Sender,
             HTMLMessage=if(condition=HTML, then=HTMLBody),
             PlainTextMessage=PlainText,
