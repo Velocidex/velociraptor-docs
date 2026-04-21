@@ -1060,10 +1060,10 @@ export: |
 
   // Prefix all keys in a dict:
   LET PrefixDict(Dict, Prefix) = to_dict(item={
-    SELECT MakeKey(Prefix=Prefix, Key=_key) AS _key,
-           _value
-    FROM items(item=Dict)
-  })
+      SELECT MakeKey(Prefix=Prefix, Key=_key) AS _key,
+             _value
+      FROM items(item=Dict)
+    })
 
 sources:
   - query: |
@@ -1122,8 +1122,9 @@ sources:
           Cancelled
 
       LET MatchesLabelFilters = (NOT ClientLabelsToAlertOn OR
-          ClientLabels =~ ClientLabelsToAlertOn) AND (NOT ClientLabelsToIgnore OR NOT
-          ClientLabelsToIgnore =~ ClientLabels)
+            ClientLabels =~ ClientLabelsToAlertOn)
+         AND (NOT ClientLabelsToIgnore OR NOT ClientLabelsToIgnore =~
+                 ClientLabels)
 
       LET MatchesArtifactPerms = if(condition=ArtifactPermToAlertOn,
                                     then={
@@ -1244,12 +1245,9 @@ sources:
           MaxRows=MinVal(A=IncludeUploadsTableRows, B=UploadTableAbsoluteMaxRows),
           FormatData=false)
 
-      // Create a temporary directory only when result attachments are enabled:
-      LET AttachmentsDir <= if(condition=IncludeResultAttachmentFrom, then=tempdir())
-
       // Build a per-artifact attachment path inside the temporary directory:
       LET AttachmentPath(Artifact) = format(format='%s/%s.%s',
-                                            args=(AttachmentsDir,
+                                            args=(tempdir(),
                                                 regex_replace(
                                                   source=
                                                     Artifact,
@@ -1388,7 +1386,7 @@ sources:
               Value=Unique(Items=Recipients.Address + CreatorAddrs(
                              Creator=FlowDict.Creator) +
                              MetadataAddrs),
-              Message='Both Recipients and CreatorAddrs cannot be empty. At least one recipient must be defined.'),
+              Message='Recipients, CreatorAddrs and MetadataAddrs cannot all be empty. At least one recipient must be defined.'),
             Sender=Sender,
             HTMLMessage=if(
               condition=HTML,
