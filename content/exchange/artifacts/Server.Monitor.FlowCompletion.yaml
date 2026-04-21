@@ -1121,9 +1121,9 @@ sources:
       LET IncludeCancelled = NOT 'IgnoreCancelled' IN ErrorHandling OR NOT
           Cancelled
 
-      LET MatchesLabelFilters = NOT ClientLabelsToAlertOn OR
-          ClientLabels =~ ClientLabelsToAlertOn OR NOT ClientLabelsToIgnore OR NOT
-          ClientLabelsToIgnore =~ ClientLabels
+      LET MatchesLabelFilters = (NOT ClientLabelsToAlertOn OR
+          ClientLabels =~ ClientLabelsToAlertOn) AND (NOT ClientLabelsToIgnore OR NOT
+          ClientLabelsToIgnore =~ ClientLabels)
 
       LET MatchesArtifactPerms = if(condition=ArtifactPermToAlertOn,
                                     then={
