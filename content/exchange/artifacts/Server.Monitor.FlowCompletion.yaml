@@ -25,12 +25,11 @@ description: |
 
   Notes:
 
-  - The default `SendInterval` is 10 seconds, but you should consider setting
-    this to -1 after tuning and testing. Otherwise you will drop e-mails sent in
-    quick succession, e.g. if two flows complete in a short period of time, if a
-    flow finishes shortly after an alert is sent (and that is configured to send
-    an e-mail) etc. Remember that this throttling limit **drops** e-mails and
-    every e-mail sent by Velociraptor is considered when throttling.
+  - `SendInterval` throttling is **global across all Velociraptor e-mails** and
+    silently **drops** messages that arrive within the interval. The default of
+    10 seconds is intended for tuning; consider setting it to -1 in production so
+    that bursts (two flows completing close together, a flow completing shortly
+    after an alert e-mail, etc.) are not lost.
   - The default `DelayThreshold` is 10 seconds, ensuring that notifications are
     only sent if a flow completes more than 10 seconds after it was scheduled.
     The idea is to not be informed by e-mail for flows completing "immediately".
@@ -42,8 +41,10 @@ description: |
         `ArtifactsToAlertOn` and `ArtifactsToIgnore`, with "IgnoreArtifactFilters"
       - Get notified about failed flows completing/failing within `IgnoreDelay`
         with "IgnoreDelay"
-  - Cancelled flows are ignored by default (`IgnoreCancelled`).
-  - Multi-artifact collections bypass `ArtifactsToIgnore`.
+  - Cancelled flows are ignored by default (`IgnoreCancelled`). Despite living
+    under `ErrorHandling`, this filter applies to all flows, not only failures.
+  - `ArtifactsToIgnore` only applies when a single artifact is collected;
+    multi-artifact collections always pass the filter.
   - Empty metadata values are omitted unless `KeepEmptyRows` is true.
   - This artifact requires a configured mail secret (`Secret`).
   - All configurable limits, like row/column/cell lengths, have a hard-coded
@@ -108,7 +109,7 @@ description: |
   collecting data from employees and their devices, the employees need to be notified.
   Assuming that each client has a metadata field with the computer's owner's e-mail
   address, this artifact can be configured to notify the employee whenever collections
-  on their endpoint has finished.
+  on their endpoint have finished.
 
   Specify the metadata field in `NotifyMetadataEMail` and adjust filters as needed.
   You can use `NotifyMetadataEMail` along with `Recipients` and `NotifyExecutor`.
@@ -154,16 +155,20 @@ parameters:
   - name: Recipients
     type: csv
     description: |
-      E-mail addresses that will receive the message. Required unless
-      NotifyExecutor is true.
+      E-mail addresses that will receive the message. At least one recipient
+      must be resolvable from `Recipients`, `NotifyExecutor`, or
+      `NotifyMetadataEMail`. If none are, the flow completion is logged as an
+      error and no e-mail is sent.
     default: |
       Address
 
   - name: NotifyExecutor
     type: bool
     description: |
-      Send an e-mail to the user executing this flow (in addition to Recipients)
-      if the username contains an '@' character.
+      Send an e-mail to the user executing this flow, in addition to
+      Recipients. If the username contains an '@', it is used directly as an
+      e-mail address. Otherwise, NotifyExecutorDomains is consulted to
+      synthesise an address from the username.
     default: false
 
   - name: NotifyExecutorDomains
@@ -177,8 +182,9 @@ parameters:
 
   - name: NotifyMetadataEMail
     description: |
-      If this client metadata field is present and contains a '@', send an e-mail
-      to this address
+      Name of a client metadata field whose value is an e-mail address. If
+      the field is present on the client and its value contains a '@', an
+      e-mail is sent to that address (in addition to any other recipients).
 
   - name: Sender
     description: |
@@ -209,20 +215,26 @@ parameters:
   - name: ClientLabelsToAlertOn
     type: regex
     description: |
-      Only send e-mails for clients whose labels match this regex.
+      Only send e-mails for clients that have at least one label matching this
+      regex. The regex is tested against each label individually; any match
+      passes.
     default: .+
 
   - name: ClientLabelsToIgnore
     type: regex
     description: |
-      Ignore clients whose labels match this regex.
+      Ignore clients that have at least one label matching this regex. The
+      regex is tested against each label individually; any match suppresses
+      the notification.
 
   - name: NotifyHunts
     type: bool
     description: |
-      Send e-mails for finished flows that are part of a hunt. This may produce
-      a lot of notifications, depending on the number of clients that will take
-      part in the hunt.
+      Send e-mails for finished flows that are part of a hunt. Hunt flows are
+      excluded by default, since enabling this can produce a large number of
+      notifications (one per client in the hunt). Consider `ErrorHandling`
+      option "IncludeHunts" if you only want to be notified about failures in
+      hunts.
 
   - name: NewClientArtifacts
     type: regex
@@ -249,9 +261,11 @@ parameters:
   - name: ErrorHandling
     type: multichoice
     description: |
-      Select when e-mails should be sent for failed flows. Use to get notifications
-      when flows in hunts fail, regardless of NotifyHunts, or regardless of artifact
-      filters. Ignore flows cancelled by a user by default.
+      Controls when failed flows bypass the normal filters, plus whether
+      user-cancelled flows are suppressed. Use to get notified about hunt
+      failures regardless of `NotifyHunts`, failures regardless of the
+      artifact filters, or failures regardless of `DelayThreshold`. Note that
+      `IgnoreCancelled` applies to all flows, not only failures.
     choices:
       - IncludeHunts
       - IgnoreCancelled
@@ -262,9 +276,10 @@ parameters:
   - name: DelayThreshold
     type: int
     description: |
-      Only create notifications if the flow has not finished within a certain
-      number of seconds since it was created. Setting this to 0 will create an
-      e-mail for every flow completion.
+      Only notify when the elapsed time between flow creation and completion
+      is at least this many seconds. Filters out flows that complete almost
+      immediately (typically clients that are already online). Set to 0 to
+      disable the filter and notify on every completion.
     default: 10
 
   - name: Secret
@@ -276,9 +291,11 @@ parameters:
   - name: SendInterval
     type: int
     description: |
-      Required number of seconds that must pass between e-mails (globally on the
-      server), otherwise the e-mail will be dropped. Set to -1 to send an e-mail
-      for every flow completion.
+      Minimum number of seconds that must pass between e-mails sent from this
+      Velociraptor server. E-mails that arrive within the interval are
+      silently dropped. The interval is shared with **all** Velociraptor
+      e-mails (alerts, other notifications, etc.), not just those from this
+      artifact. Set to -1 to disable throttling.
     default: 10
 
   - name: KeepEmptyRows
@@ -292,9 +309,10 @@ parameters:
   - name: ClientMetadata
     type: csv
     description: |
-      Include the following client metadata as useful context in the e-mail. If
-      Alias is set, the metadata key will be renamed to the alias. The metadata
-      are output as individual rows, e.g. "serial,Computer serial".
+      Client metadata fields to include as context in the e-mail. Each field
+      appears as its own row in the client details table. If `Alias` is set,
+      the metadata key is renamed to the alias in the output, e.g.
+      "serial,Computer serial".
     default: |
       Field,Alias
 
@@ -308,11 +326,12 @@ parameters:
   - name: IncludeResultTableFrom
     type: csv
     description: |
-      Include results from these artifact sources (regex), optionally only selected
-      columns (regex) and a row limit (default/max 100) and cell character limit
-      (default/max 10,000). Tables with many columns will not be displayed correctly.
-      Requires HTML. Prefer IncludeResultAttachmentFrom. See also
-      ResultTableMaxColumns.
+      Include results from these artifact sources (regex) as inline HTML
+      tables, optionally filtered by Columns (regex), with a MaxRows limit
+      (default/max 100) and CellLimit character limit (default/max 10,000).
+      Leave MaxRows/CellLimit blank to use the defaults. Tables with many
+      columns will not be displayed correctly. Requires HTML. Prefer
+      IncludeResultAttachmentFrom. See also ResultTableMaxColumns.
     default: |
       Source,Columns,MaxRows,CellLimit
 
@@ -326,9 +345,10 @@ parameters:
   - name: IncludeResultAttachmentFrom
     type: csv
     description: |
-      Include results from these artifact sources (regex) as attachments, optionally
-      only selected columns (regex). If unset, MaxRows is unlimited. Choose
-      between jsonl and csv format with AttachmentFormat.
+      Include results from these artifact sources (regex) as attachments,
+      optionally filtered by Columns (regex) and capped by MaxRows. Leave
+      MaxRows blank on a row to include all rows for that source. File format
+      is controlled by AttachmentFormat.
     default: |
       Source,Columns,MaxRows
 
@@ -344,8 +364,9 @@ parameters:
   - name: AttachmentsMaxMiB
     type: int
     description: |
-      Maximum total size of all attachments in MiB. If the total size of all
-      attachments is greater than this limit, all attachments are dropped.
+      Per-e-mail cap on the combined size of attachments, in MiB. If the total
+      exceeds this limit, all attachments for that e-mail are dropped (the
+      e-mail itself is still sent).
     default: 100
 
   - name: NotifyIfResultsLabels
