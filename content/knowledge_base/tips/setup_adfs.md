@@ -42,9 +42,13 @@ Select Application Groups and create a new one
 Enter a name and select Server Application accessing a web API
 ![](adfs3.png)
 
-**4. Server application**
-Enter your Redirect URI : https://velociraptor.local:8889/auth/oidc/callback and add it
-Save your client identifier, we will use it on velociraptor config file
+**4. Server application** Enter your Redirect URI :
+https://velociraptor.local:8889/auth/oidc/callback and add it Save
+your client identifier, we will use it on velociraptor config
+file. (Note that if you give the OIDC authenticator a name below, then
+the URL will be:
+https://velociraptor.local:8889/auth/oidc/$name/callback )
+
 ![](adfs4.png)
 
 **5. Configure Application Credentials**
@@ -62,6 +66,28 @@ On next window, Choose Access Control Policy and filter as needed
 **8. Configure Application Permissions**
 Select email, openid, profile
 ![](adfs8.png)
+
+**9. Forward any LDAP properties into the claims.**
+Some ADFS deployments do not automatically forward emails (stored in LDAP) to the OIDC claims object. You will need to configure this according to [this reference](https://learn.microsoft.com/en-us/windows-server/identity/ad-fs/operations/create-a-rule-to-send-ldap-attributes-as-claims)
+
+![Mapping LDAP email to the OIDC claims](ldap2.png)
+
+You may forward any other property (for example the
+User-Principal-Name or UPN) to the claim. In this case you need to
+tell Velociraptor to use a [different
+field](/docs/deployment/references/#GUI.authenticator.claims.username)
+in the claim as the username:
+
+```yaml
+  authenticator:
+    claims:
+      username: upn
+```
+
+Using the [OIDC
+debug](/docs/deployment/references/#GUI.authenticator.oidc_debug) flag
+will show you all the fields that the IDP is returning in the claim so
+you can determine the exact value of this field.
 
 **9. Summary**
 Validate your summary and click Next, then complete.
@@ -83,8 +109,8 @@ new settings to match our Keycloak configuration:
     type: oidc
     oidc_issuer: https://domain.local/adfs
     oidc_name: adfs
-    oauth_client_id: e49d074b-c157-40cd-a1b4-0a863bac99aa
-    oauth_client_secret: scwp-348TOdnNJ7hzP3pKGXcYS4Ohu2q0JMCyDT0
+    oauth_client_id: e49d074b-c157-40cd-XXX-0a863bac99aa
+    oauth_client_secret: scwp-XXXXAAAABBBBCCCCDDDD
     # uncommment below if you want a full debug
     # oidc_debug: true
 ```

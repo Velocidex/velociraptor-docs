@@ -139,6 +139,7 @@ function insertHTML(html, target, opts) {
     var dom = $(html);
     dom.filter('section').each(function(){
         $(this).find("script").each(function() {
+            window.evalContext = true;
             $.globalEval(this.text);
         });
     });

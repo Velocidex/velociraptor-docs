@@ -13,11 +13,10 @@
 <body>
     <section id="body">
         <script>
-            window.open("{{ .Page.Params.target }}", "_blank");
-            {{ $prefixes := slice "/discord" "/youtube" }}
-            {{ if not (in $prefixes (slicestr .Page.Path 0 (len (index $prefixes 0)))) }}
-            history.back();
-            {{ end }}
+          window.open("{{ .Page.Params.target }}", "_blank");
+          if(window.evalContext) {
+              history.back();
+          }
         </script>
     </section>
 </body>
