@@ -11,7 +11,7 @@ via a HTTP header.
 Velociraptor's interface does not have special handling for basic
 authentication when it comes to adding a secret. Instead, Velociraptor
 allows the secret to define a HTTP header. Sometimes the header
-carried a brearer token or other special sensitive data.
+carried a bearer token or other special sensitive data.
 
 To encode a http basic authentication in the GUI's secret interface,
 simply use the console dev tools to calculate the required header

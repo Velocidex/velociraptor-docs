@@ -123,7 +123,7 @@ any user with the `NOTEBOOK_EDITOR` permission (normally given to an
 
 ## Sharing Notebooks
 
-By default, notebooks are visibile only to the user who created them.
+By default, notebooks are visible only to the user who created them.
 When creating or editing a notebook, you can choose to share it with
 all users by clicking the Public check box. You can also share it with
 only certain users by selecting their names in the Collaborators

@@ -904,6 +904,6 @@ each unique deployment.
 
 The root org is more privileged than other orgs. Giving a user access
 to this org allows them to affect other orgs. For example, any custom
-artifact created in the root org will be visibile to all other orgs.
+artifact created in the root org will be visible to all other orgs.
 
 You should only give trusted users access to the root org.
