@@ -89,9 +89,9 @@ other security products that might quarantine the produced ZIP
 file. In this case it is helpful to compress the export with a
 password.
 
-See the Knowledge Base article [How do I enable password protected VFS
-downloads?]({{<ref "/knowledge_base/tips/download_password" >}}) for
-reference on setting the password for export.
+See the Knowledge Base article
+["How do I enable password protected VFS downloads?"](/knowledge_base/tips/download_password/)
+for reference on setting the password for export.
 
 {{% /notice %}}
 
@@ -162,5 +162,5 @@ then click over multiple directories searching for these files.
 To automate collection it is better to write special purpose `VQL
 Artifacts` to identity the information of interest.
 
-The [Artifacts]({{< ref "/docs/artifacts/" >}}) section explores what Velociraptor
+The [Artifacts](/docs/artifacts/) section explores what Velociraptor
 artifacts are and how we collect them.

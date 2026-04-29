@@ -48,7 +48,7 @@ WHERE os_info.hostname =~ "TRAINING"
 
 ### See also
 
-- [client_metadata]({{< ref "/vql_reference/server/client_metadata/" >}}):
+- [client_metadata](/vql_reference/server/client_metadata/):
   Returns client metadata from the datastore.
 
 

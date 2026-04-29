@@ -21,7 +21,12 @@ The first thing I will do is create a Slack channel to receives messages from Ve
 
 I will create a new channel called “alerts”
 
-Next I will create an App which will communicate with the workspace and be able to post messages to the alerts channel. (This [reference ](https://api.slack.com/start/overview#creating)has a lot of details on this step, which I will just skip but you should consult it for your own use). First I visit the slack API page at [https://api.slack.com/apps](../../img/apps)
+Next I will create an App which will communicate with the workspace
+and be able to post messages to the alerts channel. (This [reference
+](https://api.slack.com/start/overview#creating)has a lot of details
+on this step, which I will just skip but you should consult it for
+your own use). First I visit the slack API page at
+[https://api.slack.com/apps](https://api.slack.com/apps)
 
 ![](../../img/14J5S4V0jlkVLvFKI3SaeUA.png)
 
@@ -137,6 +142,6 @@ We saw how VQL can be written to run a continuous monitoring query on the server
 
 Escalating to Slack is suitable for fairly low frequency but high value events. If there are too many events, the channel will be too noisy and not useful (people will just mute it), so consider how frequently the alert will be fired, and how you intend to deal with it.
 
-To play with this feature yourself, take[ Velociraptor for a spin](https://github.com/Velocidex/velociraptor)! It is a available on GitHub under an open source license. If you want to learn more about VQL and Velociraptor consider joining us on one of our [upcoming training sessions](https://www.velocidex.com/training/).
+To play with this feature yourself, take[ Velociraptor for a spin](https://github.com/Velocidex/velociraptor)! It is a available on GitHub under an open source license. If you want to learn more about VQL and Velociraptor consider joining us on one of our [upcoming training sessions](/training/).
 
-As always please file issues on the bug tracker or ask questions on our mailing list [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com) . You can also chat with us directly on discord [https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+As always please file issues on the bug tracker or ask questions on our mailing list [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com) . You can also chat with us directly on [Discord](/discord/)

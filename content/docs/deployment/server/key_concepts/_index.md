@@ -27,7 +27,7 @@ deployments.
 
 Central to every Velociraptor deployment is a
 [YAML](https://www.tutorialspoint.com/yaml/yaml_basics.htm)
-[configuration file]({{< ref "/docs/deployment/references/" >}}).
+[configuration file](/docs/deployment/references/).
 This file contains all the configuration parameters that define how your server
 and clients operate, plus cryptographic material that is used to secure
 several aspects of the deployment, such a client-server communications.
@@ -47,7 +47,7 @@ do this in response to new features or issues encountered after deployment.
 Running the `config generate` command _without_ the interactive flag will
 generate a basic sensible configuration using the self-signed SSL option and
 Basic authentication, similar to the deployment described in our
-[Quickstart Guide]({{< ref "/docs/deployment/quickstart/" >}}).
+[Quickstart Guide](/docs/deployment/quickstart/).
 You can then manually customize the configuration settings in the YAML file to
 your needs. Alternatively you can use this command to create an initial config
 and also use the JSON merge flag (`--merge`) to apply customization. This allows
@@ -133,7 +133,7 @@ The config file is divided into sections. Here is a quick overview:
   settings.
 
 You can see a comprehensive listing of settings in our
-[configuration reference]({{< ref "/docs/deployment/references/" >}}).
+[configuration reference](/docs/deployment/references/).
 
 All Velociraptor clients need a client configuration (file), which is specific
 to the deployment. This configuration is a subset of the full configuration.
@@ -142,7 +142,7 @@ to the deployment. This configuration is a subset of the full configuration.
 
 Because the server has access to the full configuration it is able to provide
 the client configuration to us when needed
-[in the form of a YAML file]({{< ref "/docs/deployment/clients/#option-1-obtaining-the-client-config-from-the-gui" >}}).
+[in the form of a YAML file](/docs/deployment/clients/#option-1-obtaining-the-client-config-from-the-gui).
 The server can also use it internally, for example when generating a client
 installation package.
 
@@ -177,7 +177,7 @@ platforms will not be supported. For this reason we only describe deploying the
 server on Linux.
 
 Binaries for the latest version are listed on our
-[Downloads]({{< ref "/downloads/" >}}) page, with the binaries themselves being
+[Downloads](/downloads/) page, with the binaries themselves being
 hosted on GitHub.
 
 We provide binaries for the most common client platform and architecture
@@ -197,11 +197,11 @@ Every Velociraptor deployments creates an internal PKI which underpins it. The
 configuration wizard creates an internal CA with an X.509 certificate and a
 private key. This CA is used for:
 
-1. Creating [initial server certificates]({{% ref "/docs/deployment/references/#Frontend.certificate" %}})
+1. Creating [initial server certificates](/docs/deployment/references/#Frontend.certificate)
    and for reissuing certificates when they expire.
 
 2. Verifying the server during client-server communications. [The CA public
-   certificate]({{% ref "/docs/deployment/references/#Client.ca_certificate" %}})
+   certificate](/docs/deployment/references/#Client.ca_certificate)
    is embedded in the client’s configuration and is used to verify
    (and therefore trust) the server.
 
@@ -227,9 +227,9 @@ reissued without re-deploying all the clients.
 
 In a secure installation you should remove the `CA.private_key` section from
 the server config and keep it offline. You only need it to
-[create new API keys]({{< ref "/docs/server_automation/server_api/#creating-an-api-client-configuration" >}})
+[create new API keys](/docs/server_automation/server_api/#creating-an-api-client-configuration)
 and when
-[rotating server certificates]({{< ref "/knowledge_base/tips/rolling_certificates/" >}})
+[rotating server certificates](/knowledge_base/tips/rolling_certificates/)
 (typically after 1 year).
 The server does not need it during normal operations.
 
@@ -286,7 +286,7 @@ For CA-issued certificates we prefer Let's Encrypt since these are free and
 Velociraptor has the built-in capability to request and rotate certificates from
 Let's Encrypt. Other CAs are also supported, including private CAs, although
 this requires
-[manual configuration and certificate management]({{< ref "/knowledge_base/tips/ssl/" >}}).
+[manual configuration and certificate management](/knowledge_base/tips/ssl/).
 
 ##### A. Let's Encrypt
 
@@ -309,7 +309,7 @@ It is possible to use a certificate from a public CA or your own private CA, but
 this requires manual configuration and certificate management.
 
 Please see
-[Securing Network Communications]({{< ref "/docs/deployment/security/#securing-network-communications" >}})
+[Securing Network Communications](/docs/deployment/security/#securing-network-communications)
 for a more detailed discussion of this option.
 
 
@@ -337,7 +337,7 @@ Velociraptor supports a number of choices for authentication providers:
    Okta)
 4. SAML - Security Assertion Markup Language, also supported by many public SSO
    providers.
-5. [Multi]({{< ref "/knowledge_base/tips/multiple_oauth/" >}}) - a combination
+5. [Multi](/knowledge_base/tips/multiple_oauth/) - a combination
    of the abovementioned auth methods.
 
 ## Velociraptor’s ACL model
@@ -356,6 +356,6 @@ of a **role** which can be thought of as just a predefined set of
 permissions the user has.
 
 Please see
-[Velociraptor’s ACL model]({{< ref "/blog/2020/2020-03-29-velociraptors-acl-model-7f497575daee/" >}})
-and [Roles and permissions]({{< ref "/docs/deployment/security/#roles-and-permissions" >}})
+[Velociraptor’s ACL model](/blog/2020/2020-03-29-velociraptors-acl-model-7f497575daee/)
+and [Roles and permissions](/docs/deployment/security/#roles-and-permissions)
 for a more detailed discussion of this topic.

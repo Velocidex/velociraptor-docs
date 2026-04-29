@@ -44,7 +44,7 @@ will pass a list in CSV format to the artifact's `SearchFilesGlobTable` paramete
 
 ### See also
 
-- [str]({{< ref "/vql_reference/popular/str/" >}}): Returns the string
+- [str](/vql_reference/popular/str/): Returns the string
   representation of the provided data.
 
 

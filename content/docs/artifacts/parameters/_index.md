@@ -16,7 +16,7 @@ Velociraptor server populates the VQL scope with the parameters. This allows the
 VQL queries running on the client to directly access those parameters as
 variables.
 The VQL data type of each such variable will correspond to the parameter's
-[type]({{< relref "#parameter-types" >}}) specification.
+[type](#parameter-types) specification.
 
 For hunts and individual collections, the GUI presents a **Configure Parameters**
 form that allows the user to update the parameters for all selected artifacts
@@ -63,7 +63,7 @@ displaying and editing the parameter.
   entering values for each type easier.
 
 - **type**: The data type of the parameter.
-  See [Parameter types]({{< relref "#parameter-types" >}}) for more information.
+  See [Parameter types](#parameter-types) for more information.
   If `type` is not specified then it defaults to being a text field; that is a
   simple text string.
 
@@ -138,8 +138,8 @@ to a variable named by the parameter.
 ```
 
 As expected, the variable's type in the results corresponds to the parameter's
-type specification, and we can confirm this by using the [typeof]({{< ref
-"/vql_reference/other/typeof/" >}}) function.
+type specification, and we can confirm this by using the
+[typeof](/vql_reference/other/typeof/) function.
 
 ![](parameter_demo.png)
 
@@ -269,7 +269,7 @@ The following parameter types are currently supported.
 #### [ timestamp ]
 
 - **Description:** The parameter is a timestamp ( Golang
-[time.Time object]({{< ref "/vql_reference/popular/timestamp/" >}})).
+[time.Time object](/vql_reference/popular/timestamp/)).
 
 - **VQL conversion function:** `LET x <= timestamp(epoch=x)`
 
@@ -443,7 +443,7 @@ The following parameter types are currently supported.
 
   This should not be considered a security mechanism. For securely passing
   sensitive parameters to client you should use Velociraptor's
-  [secret management]({{< ref "/blog/2024/2024-03-10-release-notes-0.72/#secret-management" >}})
+  [secret management](/blog/2024/2024-03-10-release-notes-0.72/#secret-management)
   feature.
 
 - **VQL conversion function:** not converted
@@ -566,7 +566,7 @@ The following parameter types are currently supported.
 
 #### [ starlark ]
 
-- **Description:** Compile a [starlark]({{< ref "/vql_reference/parsers/starl/" >}})
+- **Description:** Compile a [starlark](/vql_reference/parsers/starl/)
   code block. Returns the `*tools.StarlModule` data type.
 
 - **VQL conversion function:** `LET x <= starl(code=x)`

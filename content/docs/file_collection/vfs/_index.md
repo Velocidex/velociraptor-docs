@@ -42,7 +42,7 @@ from the client** button within the VFS interface.
 ![Collecting a file from a client](vfs_view.svg)
 
 - Clicking this button initiates a collection on the endpoint using the
-  [`System.VFS.DownloadFile`]({{< ref "/artifact_references/pages/system.vfs.downloadfile/" >}})
+  [`System.VFS.DownloadFile`](/artifact_references/pages/system.vfs.downloadfile/)
   artifact. This artifact uses the `upload()` VQL function to transfer files
   from the client to the server.
 
@@ -119,7 +119,7 @@ space on the server.
 One of the most powerful features of Velociraptor's file collection is its
 ability to automatically bypass operating system file-locking and other
 restrictions on Windows endpoints. This is thanks to Velociraptor's modular
-[accessor]({{< ref "/docs/forensic/filesystem/#filesystem-accessors" >}})
+[accessor](/docs/forensic/filesystem/#filesystem-accessors)
 architecture.
 
 By default, Velociraptor uses the `auto` accessor. On Windows, this accessor
@@ -161,7 +161,7 @@ You can download files individually or export them in bulk.
 
 For additional safety during file-handling, and to prevent your local antivirus
 from accidentally quarantining potential malware, you can set a **downloads
-password** in your [user preferences]({{< ref "/docs/gui/user_preferences/" >}}).
+password** in your [user preferences](/docs/gui/user_preferences/).
 This ensures that any files exported from the VFS or anywhere else in the GUI
 are encrypted and thereby made safe for transit to your analysis environment.
 
@@ -177,7 +177,7 @@ Collected`, or by right-clicking on any table row that has a floppy disk icon.
 The timestamp displayed on the download button serves as a reminder that you
 will be downloading the file _as it was at the time it was collected_. If you
 have reason to think that the file might have changed then you may decide to
-[re-collect it]({{< relref "#re-collecting-files" >}}) so that you have an up to
+[re-collect it](#re-collecting-files) so that you have an up to
 date copy in the VFS cache.
 
 ![Download a single file](vfs_last_collected.png)
@@ -221,7 +221,7 @@ a third step if you want to download all the files at once.
    - or they can all be packaged into a single downloadable zip container using
      the **Download Results** button on the flow's **Artifact Collection** tab.
      This option is explained in more detail in
-     [Exporting Files]({{< ref "/docs/file_collection/exporting/" >}})
+     [Exporting Files](/docs/file_collection/exporting/)
 
      ![Preparing a collection container zip containing all the files](vfs_prepare_download_flow2.png)
 
@@ -239,8 +239,8 @@ collections list and copy the failed collection, but increase the resource
 limits before launching it.
 
 Resource limits are explained in more detail
-[here]({{< ref "/docs/file_collection/#collection-resource-limits" >}}) and
-[here]({{< ref "/docs/artifacts/resources/" >}}).
+[here](/docs/file_collection/#collection-resource-limits) and
+[here](/docs/artifacts/resources/).
 
 ### Enabling resumable uploads for VFS collections
 
@@ -255,6 +255,6 @@ option enabled. To do this:
 3. enable the `UPLOAD_IS_RESUMABLE` parameter on the Configure Parameters screen
 4. (re)launch the collection.
 
-As discussed [here]({{< ref "/docs/file_collection/#resumable-uploads" >}}),
+As discussed [here](/docs/file_collection/#resumable-uploads),
 resumable uploads are only suited to certain situations which is why the feature
 is not enabled by default.

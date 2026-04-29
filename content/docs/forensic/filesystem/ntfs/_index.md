@@ -85,7 +85,7 @@ Velociraptor has a complete NTFS parser able to access files and
 directories by parsing the raw NTFS filesystem from the raw device. To
 make it easy to utilize this parser with VQL, Velociraptor implements
 the `ntfs` accessor (see
-[here]({{< ref "/docs/forensic/filesystem/#filesystem-accessors" >}})
+[here](/docs/forensic/filesystem/#filesystem-accessors)
 for a description of filesystem accessors).
 
 The `ntfs` accessor makes it possible to see and access the normally
@@ -308,7 +308,7 @@ of slack space to potentially hold residual data.
 
 Velociraptor can report on the $I30 streams and carve out headers from
 slack using the `parse_ntfs_i30()` function as discussed in
-[this article](https://www.fireeye.com/blog/threat-research/2012/10/incident-response-ntfs-indx-buffers-part-4-br-internal.html).
+[this article](https://web.archive.org/web/20210724135011/https://www.fireeye.com/blog/threat-research/2012/10/incident-response-ntfs-indx-buffers-part-4-br-internal.html).
 
 An example query:
 
@@ -389,7 +389,7 @@ artifact.
 The USN journal contains so much valuable evidence that it might be worth
 carving for USN records from the raw disk. Although this is a slow process it
 can yield very good results if your are lucky - see
-[this blog post]({{< ref "/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/" >}})
+[this blog post](/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/)
 for more information.
 
 {{% /notice %}}

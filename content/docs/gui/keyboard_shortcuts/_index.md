@@ -69,7 +69,7 @@ results.
 
 ### Artifact Editor
 
-These are available in the [artifact editor]({{< ref "/docs/gui/artifacts/" >}})
+These are available in the [artifact editor](/docs/gui/artifacts/)
 and Sigma editor.
 
 The editor uses the ACE (Ajax.org Cloud9 Editor) under the hood. This means that

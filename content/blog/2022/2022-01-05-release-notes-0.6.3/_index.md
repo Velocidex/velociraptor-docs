@@ -42,8 +42,9 @@ latency of EFS IO was causing unacceptable performance issues.
 
 In this release we employed a number of strategies to improve
 performance on EFS (and potentially other distributed filesystems
-e.g. NFS). You can read all about the [new changes here]({{< ref
-"/docs/deployment/server/multifrontend/" >}}), but the gist of it is
+e.g. NFS). You can read all about the
+[new changes here](/docs/deployment/server/multifrontend/),
+but the gist of it is
 that added caching and delayed writing strategies help to isolate the
 GUI performance from the underlying EFS latency, making the GUI
 snappy and quick even with slow filesystems.
@@ -198,8 +199,7 @@ MITM proxy.
 The `glob` plugin now has a new option: `recursion_callback`. This
 allows much finer control over which directories to visit making file
 searches much more efficient and targeted. To read more about it see
-[Searching for files]({{< ref
-"/blog/2022/2022-01-05-searching-for-files-on-linux/" >}}).
+[Searching for files](/blog/2022/2022-01-05-searching-for-files-on-linux/).
 
 ## Notable new artifacts
 
@@ -220,6 +220,5 @@ spin](https://github.com/Velocidex/velociraptor)!  It is a available
 on GitHub under an open source license. As always please file issues
 on the bug tracker or ask questions on our mailing list
 [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com)
-. You can also chat with us directly on discord
-[https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+. You can also chat with us directly on [Discord](/discord/).
 .

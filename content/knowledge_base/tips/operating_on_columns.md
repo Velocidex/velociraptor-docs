@@ -104,7 +104,7 @@ Now that we have the row as a dict we can perform any operations on
 it. In the following we see two methods for manipulating dicts:
 
 1. **Set operations**: allow us to add, remove or merge dicts based on
-   their keys. See [Set operations]({{< ref "/knowledge_base/tips/set_operations/" >}}).
+   their keys. See [Set operations](/knowledge_base/tips/set_operations/).
 
 2. **Dict reconstruction**: is a more powerful technique for tearing the
    dict apart and reconstructing it again.
@@ -166,7 +166,7 @@ vary but as long as those fields are the same, we consider the rows to
 be duplicates.
 
 We can quickly extract only those fields by using
-[Set intersection]({{< ref "/knowledge_base/tips/set_operations/" >}})
+[Set intersection](/knowledge_base/tips/set_operations/)
 (In VQL this is implemented by dict multiplication):
 
 ```vql

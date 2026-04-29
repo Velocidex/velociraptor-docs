@@ -1,13 +1,13 @@
 # How can I automatically apply labels to clients?
 
-[Labels]({{< ref "/docs/clients/labels/" >}}) are used to target clients in
+[Labels](/docs/clients/labels/) are used to target clients in
 Velociraptor. All clients that share a particular label can be treated as a
 group in common operations such as hunts and client monitoring. Labels can also
 be used to search for and filter clients in the GUI and in VQL queries.
 
 Sometimes it is useful to automatically label clients based on some property of
 the client or the results of a collection. You can do this by running a
-[Server Event]({{< ref "/docs/server_automation/server_monitoring/" >}}) artifact
+[Server Event](/docs/server_automation/server_monitoring/) artifact
 which automatically applies labels based on some criteria that you define.
 
 In this article we demonstrate two use cases: a basic and a more advanced one.
@@ -23,7 +23,7 @@ provides a way to store information *about* each client.
 It's important that you choose the appropriate one for your use case. This
 article is about automating Labels but if you want to do similar automation of
 Metadata then you may find this article more useful:
-[How can I automatically add & update client metadata?]({{< ref "/knowledge_base/tips/automating_metadata/" >}})
+[How can I automatically add & update client metadata?](/knowledge_base/tips/automating_metadata/)
 
 {{% /notice %}}
 
@@ -33,7 +33,7 @@ When a client connects for the first time in a Velociraptor deployment, the
 server instructs the client to enroll and also tells it to run the
 `Generic.Client.Info` artifact. This built-in artifact is designed to collect
 basic information about the endpoint. We refer to this process as
-["interrogation"]({{< ref "/docs/clients/interrogation/" >}}).
+["interrogation"](/docs/clients/interrogation/).
 
 We can watch the system for any new collections of `Generic.Client.Info` and
 apply labels based on the results.
@@ -134,7 +134,7 @@ Let's look at applying a label based on data that *isn't* included in the
 default interrogation artifact, and that is dynamic (i.e. where the outcome will
 change over time).
 Here we will use a Sigma rule from the
-[Hayabusa Rules](https://sigma.velocidex.com/docs/artifacts/velociraptor_hayabusa_ruleset/)
+[Hayabusa Rules](https://sigma.velocidex.com/docs/artifacts/windows.hayabusa.rules/)
 ruleset.
 
 In order for this to work you'll need to have already imported the "Velociraptor

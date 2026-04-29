@@ -33,6 +33,6 @@ If item is omitted sets the scope.
 
 ### See also
 
-- [get]({{< ref "/vql_reference/popular/get/" >}}): Gets the member field from the item.
+- [get](/vql_reference/popular/get/): Gets the member field from the item.
 
 

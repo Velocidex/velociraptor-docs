@@ -322,8 +322,7 @@ Velociraptor notebook also enables data manipulation and flexibility in analysis
 If you would like to try out these features in Velociraptor, It is available on
 [GitHub](https://github.com/Velocidex/velociraptor) under an open source license. As
 always, please file issues on the bug tracker or ask questions on our mailing list
-velociraptor-discuss@googlegroups.com. You can also chat with us directly on discord
-at https://www.velocidex.com/discord.
+velociraptor-discuss@googlegroups.com. You can also chat with us directly on [Discord](/discord/).
 
 
 ## References

@@ -130,7 +130,7 @@ WHERE file_size > 100
 ![screenshot]()
 
 Alternatively, you can
-[disable filestore compression globally]({{< ref "/docs/deployment/references/#Datastore.compression" >}})
+[disable filestore compression globally](/docs/deployment/references/#Datastore.compression)
 which allows external tools to read file in the filestore directly. While this
 is not recommended because of the significant storage benefits that the new
 compression feature provides, it is equivalent to how pre-v0.75 versions
@@ -237,7 +237,7 @@ collection timeout
 
 notebook timeout
 
-The [notebook timeout]({{< ref "" >}})
+The [notebook timeout]()
 can be extended via the server config, but 10 minutes is reasonable for most
 notebook cell operations and the timeout is intended to protect against
 poorly-constructed queries. In general if a cell needs longer than 10 minutes to

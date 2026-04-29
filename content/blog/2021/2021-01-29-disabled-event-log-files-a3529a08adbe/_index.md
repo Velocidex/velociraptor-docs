@@ -9,11 +9,9 @@ date: 2021-01-29
 
 ### Detecting malicious activity with Velociraptor
 
-![Photo by [Jonny Caspari](https://unsplash.com/@jonnysplsh?utm_source=medium&utm_medium=referral) on [Unsplash](https://unsplash.com?utm_source=medium&utm_medium=referral)](https://cdn-images-1.medium.com/max/11520/0*8Z6QxIV2lCx4PYPT)*Photo by [Jonny Caspari](https://unsplash.com/@jonnysplsh?utm_source=medium&utm_medium=referral) on [Unsplash](https://unsplash.com?utm_source=medium&utm_medium=referral)*
-
 Windows information security techniques are heavily reliant on the availability and integrity of event logs. Many state of the art systems use event log forwarding to aggregate information from endpoints and detect malicious behavior across the enterprise.
 
-But how reliable really are event logs? I was playing around with the Windows Event Viewer to understand how event logs can be interfered with in practice. We [previously covered](https://medium.com/velociraptor-ir/windows-event-logs-d8d8e615c9ca) the general structure of the Windows Event Log system, so you might want to have a quick read of [that post](https://medium.com/velociraptor-ir/windows-event-logs-d8d8e615c9ca) before you dive into this one.
+But how reliable really are event logs? I was playing around with the Windows Event Viewer to understand how event logs can be interfered with in practice. We previously covered the general structure of the Windows Event Log system, so you might want to have a quick read of [that post](/blog/2019/2019-11-12_windows-event-logs-d8d8e615c9ca/) before you dive into this one.
 
 ### Example: BITS transfer
 
@@ -115,7 +113,7 @@ This was a fun little exercise in trying to understand event logging in Windows.
 
 Velociraptor’s power is in being able to quickly and easily recover forensic evidence on activity on the endpoint. In most environments disabling log file or providers is not a legitimately common, so hunting for such activity produces high value signals and leads to a better understanding of how attackers are able to hide their tracks.
 
-The above example is just one of the exercises we do in our hands on Velociraptor courses. If you are interested in learning more about Velociraptor, check out our hands on training courses on [https://www.velocidex.com/training/](https://www.velocidex.com/training/) or join us on discord [https://www.velocidex.com/discord](https://www.velocidex.com/discord).
+The above example is just one of the exercises we do in our hands on Velociraptor courses. If you are interested in learning more about Velociraptor, check out our hands on training courses [here](/training/) or join us on [Discord](/discord/).
 
 ### P.S.
 

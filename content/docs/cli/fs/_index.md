@@ -11,7 +11,7 @@ These utility commands allow you to run filesystem commands on the local system,
 including "filesystem-like" formats, or against the Velociraptor server's
 filestore. They do this by exposing some VQL queries as CLI commands.
 
-The commands use Velociraptor's [accessors]({{< ref "/vql_reference/accessors/" >}}).
+The commands use Velociraptor's [accessors](/vql_reference/accessors/).
 
 The supported accessors for the `fs` commands are:
 

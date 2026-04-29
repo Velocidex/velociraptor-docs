@@ -11,8 +11,9 @@ author: "Mike Cohen"
 date: 2021-12-20
 ---
 
-Many people use Velociraptor's [offline collector]({{< ref
-"/docs/deployment/offline_collections/" >}}) feature to collect any artifacts without
+Many people use Velociraptor's
+[offline collector](/docs/deployment/offline_collections/)
+feature to collect any artifacts without
 having the Velociraptor client actually installed on the
 endpoint. While the offline collector feature is great to
 interactively triage a machine, the produced collection zip file is
@@ -33,9 +34,9 @@ account full write access. However, using these credentials should not
 allow anyone to list existing bucket resources, or to download
 critical triage data from other hosts!
 
-I have [previously]({{< ref
-"/blog/2019/2019-10-08_triage-with-velociraptor-pt-3-d6f63215f579/"
->}}) described how to use Google cloud's service accounts to upload to
+I have
+[previously](/blog/2019/2019-10-08_triage-with-velociraptor-pt-3-d6f63215f579/)
+described how to use Google cloud's service accounts to upload to
 a GCP bucket securely.
 
 In this post I describe how to set up Amazon's SFTP transfer service
@@ -306,8 +307,9 @@ in AWS that can safely receive triage data from the Velociraptor
 offline collector.
 
 The sftp uploading functionality is actually implemented by the
-`upload_sftp()` plugin [documented here]({{< ref
-"/vql_reference/other/upload_sftp" >}}). This means that you can use
+`upload_sftp()` plugin
+[documented here](/vql_reference/other/upload_sftp/).
+This means that you can use
 this functionality in any VQL query at all - either on the client side
 or on the server side.
 

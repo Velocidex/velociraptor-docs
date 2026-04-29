@@ -83,7 +83,7 @@ default behavior:
   characters completely so `C:` will become a directory in the output named `C`.
 
 - `merge_accessors` (enabled by default): merges all separate
-  [accessors]({{< ref "/vql_reference/accessors/" >}})
+  [accessors](/vql_reference/accessors/)
   into the same directory (which will be named `files`). By default Velociraptor
   stores file uploads under the name of the accessor that was used to collect
   them. This allows you to keep track of which accessor was originally used to
@@ -177,11 +177,11 @@ default behavior:
 
 ##### See also
 
-- [[ decrypt ]]({{< ref "/docs/cli/misc/#-decrypt-" >}}), which removes the encryption from collection containers without
+- [[ decrypt ]](/docs/cli/misc/#-decrypt-), which removes the encryption from collection containers without
   extracting the collection's files.
 
-- [[ unzip ]]({{< ref "/docs/cli/misc/#-unzip-" >}}), which works similarly to
+- [[ unzip ]](/docs/cli/misc/#-unzip-), which works similarly to
   `decrypt` but lists filenames or extracts the files from a collection
   container.
 
-- [Offline collections > Mounting with the fuse container command]({{< ref "/docs/deployment/offline_collections/collection_data/#mounting-with-the-fuse-container-command" >}})
+- [Offline collections > Mounting with the fuse container command](/docs/deployment/offline_collections/collection_data/#mounting-with-the-fuse-container-command)

@@ -17,7 +17,7 @@ within the application.
 
 {{% notice tip %}}
 You can
-[customize the Welcome screen]({{< ref "/docs/gui/customizing/" >}})
+[customize the Welcome screen](/docs/gui/customizing/)
 by editing the `Server.Internal.Welcome` artifact.
 {{% /notice %}}
 
@@ -32,18 +32,18 @@ artifacts.
 
 Metadata items can be strings or stringified representations of any other data
 type. Artifacts can access server metadata using the
-[server_metadata]({{< ref "/docs/artifacts/parameters/#-server_metadata-" >}})
+[server_metadata](/docs/artifacts/parameters/#-server_metadata-)
 parameter type, and VQL (running on the server, for example in a notebook) can
 set or retrieve items from server metadata using the
-[server_set_metadata]({{< ref "/vql_reference/server/server_set_metadata/" >}})
+[server_set_metadata](/vql_reference/server/server_set_metadata/)
 and
-[server_metadata]({{< ref "/vql_reference/server/server_metadata/" >}})
+[server_metadata](/vql_reference/server/server_metadata/)
 functions, respectively.
 
 ### Server Secrets
 
 The **Manage Server Secrets** link will take you to the page where you can
-define [server secrets]({{< ref "/blog/2024/2024-03-10-release-notes-0.72/#secret-management" >}}),
+define [server secrets](/blog/2024/2024-03-10-release-notes-0.72/#secret-management),
 which are credentials and other parameters for interacting with external systems
 that can be securely provided to certain VQL plugins via artifacts. Placing
 secrets in a centralized location allows artifacts to use them without exposing
@@ -60,7 +60,7 @@ can be adjusted.
 ![Adjusting user preferences](preferences_light.svg)
 
 You can read more about the individual options
-[here]({{< ref "/docs/gui/user_preferences/" >}}).
+[here](/docs/gui/user_preferences/).
 
 
 ## The Server Dashboard
@@ -85,7 +85,7 @@ example disk space and users.
 
 All data shown on the dashboard is driven by VQL queries.
 The dashboard layout and underlying queries can be
-[customized]({{< ref "/docs/gui/customizing/" >}})
+[customized](/docs/gui/customizing/)
 by editing the `Server.Monitor.Health` artifact.
 
 {{% /notice %}}

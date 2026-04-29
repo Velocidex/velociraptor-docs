@@ -10,7 +10,7 @@ weight: 10
 When learning VQL, we recommend practicing in an environment where you can
 easily debug, iterate, and interactively test each query.
 
-You can read more about notebooks [here]({{< ref "/docs/notebooks/" >}}).
+You can read more about notebooks [here](/docs/notebooks/).
 For the purposes of this documentation, we will assume you've created a notebook
 and are typing VQL into the cell.
 
@@ -98,7 +98,7 @@ FROM glob(`**`=args)
 ```
 
 Note that the `**` has to be enclosed in backticks because
-[it is an identifier that uses non-alphanumeric characters]({{< ref "/docs/vql/fundamentals/#identifiers-with-spaces" >}}).
+[it is an identifier that uses non-alphanumeric characters](/docs/vql/fundamentals/#identifiers-with-spaces).
 
 #### Free-form Args
 
@@ -413,7 +413,8 @@ used in the query, VQL does not have table indexes, nor does it have
 any tables. Therefore the `JOIN` operator is meaningless for
 Velociraptor. To keep VQL simple and accessible, we specifically did
 not implement a `JOIN` operator. For a more detailed discussion of the
-`JOIN` operator see [emulating join in VQL]({{% relref "../join" %}})
+`JOIN` operator see
+[emulating join in VQL](/docs/vql/join/).
 
 Instead of a `JOIN` operator, VQL has the `foreach()` plugin, which is
 probably the most commonly used plugin in VQL queries. The `foreach()`

@@ -10,7 +10,7 @@ summary: "Commands for working with the tools inventory."
 
 The following CLI commands are available for working with third-party binaries
 and files in the server's
-[tools inventory]({{< ref "/docs/artifacts/tools/" >}}).
+[tools inventory](/docs/artifacts/tools/).
 
 {{% notice warning %}}
 
@@ -18,8 +18,8 @@ Changes made using this CLI command will not be effective until the server is
 restarted!
 
 To add or modify tools during runtime you should instead use the `inventory`,
-`inventory_add`, or `inventory_get` [VQL functions]({{< ref "/vql_reference/"
->}}).
+`inventory_add`, or `inventory_get`
+[VQL functions](/vql_reference/).
 
 {{% /notice %}}
 

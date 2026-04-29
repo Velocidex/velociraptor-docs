@@ -36,7 +36,7 @@ processes.
 
 ### See also
 
-- [client_set_metadata]({{< ref "/vql_reference/server/client_set_metadata/" >}}):
+- [client_set_metadata](/vql_reference/server/client_set_metadata/):
   Sets client metadata.
 
 

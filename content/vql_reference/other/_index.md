@@ -46,6 +46,7 @@ not yet been categorized.
 |[getpid](getpid)|<span class='vql_type'>Function</span>|Returns the current pid of the Velociraptor process|
 |[help](help)|<span class='vql_type'>Plugin</span>|Dump information about all VQL functions and plugins|
 |[host](host)|<span class='vql_type'>Function</span>|Perform a DNS resolution|
+|[hunt_reindex](hunt_reindex)|<span class='vql_type'>Plugin</span>|Reindex a hunt|
 |[index](index)|<span class='vql_type'>Plugin</span>|Create a local index from a query|
 |[index_search](index_search)|<span class='vql_type'>Plugin</span>|Search a previously created index|
 |[ip](ip)|<span class='vql_type'>Function</span>|Format an IP address|

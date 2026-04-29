@@ -8,7 +8,7 @@ keywords: []
 
 ![](../../img/11fFaw5h0oG_ICHv7Q7Haog.png?width=600px)
 
-Velociraptor is a powerful endpoint visibility tool. The unique strength of the tool is being able to collect endpoint state by using the Velociraptor Query Language (VQL) via custom or curated “[Artifacts](https://www.velocidex.com/docs/user-interface/artifacts/)”. Not only can one collect artifacts from a single host, but one can collect the same artifact from many thousands of hosts within seconds.
+Velociraptor is a powerful endpoint visibility tool. The unique strength of the tool is being able to collect endpoint state by using the Velociraptor Query Language (VQL) via custom or curated Artifacts. Not only can one collect artifacts from a single host, but one can collect the same artifact from many thousands of hosts within seconds.
 
 Being able to collect a lot of data quickly is awesome, but the flip side is that a lot of data makes it harder to review manually. We can always tune artifacts by editing the VQL to be more surgical which helps with reducing the collected data, but we would often still like to be able to post process and understand the data we get back in a convenient way.
 
@@ -16,7 +16,7 @@ Velociraptor allows you to download the results of a hunt into a zip file. In th
 
 ![](../../img/1q6eE6r23LPXwe0BDbEM4fw.png)
 
-In a [previous article](../2020-01-12_hunting-malware-using-mutants-ea08e86dfc19/) we have seen how to forward Velociraptor collected data to Elastic and Kibana for post processing. While this is certainly useful, we often want to quickly analyze the data we have and provide a working document of our findings without needing additional infrastructure.
+In a previous article we have seen how to forward Velociraptor collected data to Elastic and Kibana for post processing. While this is certainly useful, we often want to quickly analyze the data we have and provide a working document of our findings without needing additional infrastructure.
 
 ### Jupyter Notebook
 
@@ -36,7 +36,7 @@ In order for Jupyter to connect to the Velociraptor server, we will use the Velo
 
 By default, the server’s API service is not exposed to the internet. We can modify the server’s configuration to allow this by simply changing the API’s bind port to 0.0.0.0
 
-In our example we have an Ubuntu server running Velociraptor in[ the recommended way](https://www.velocidex.com/docs/getting-started/cloud/#deploying-to-the-cloud). When used in this way, Velociraptor runs under a low privilege user account called “velociraptor”.
+In our example we have an Ubuntu server running Velociraptor in[ the recommended way]. When used in this way, Velociraptor runs under a low privilege user account called “velociraptor”.
 
 We therefore need to change to that user, edit the configuration file and restart the service. Finally we check that the service is listening on all interfaces with port 8001.
 
@@ -120,7 +120,7 @@ In a real investigation, the hunt will collect all the scheduled tasks from thou
 
 ![We can see the hunt id assigned to this hunt. We will need this ID when querying through the API](../../img/1Nu4ZOANqPJYg962prCJtFA.png)*We can see the hunt id assigned to this hunt. We will need this ID when querying through the API*
 
-We start off by exploring the results of the hunt — simply select all columns from the hunt results but limit the result of only a small set for inspection. We will call the [hunt_results](https://www.velocidex.com/docs/vql_reference/server/#hunt-results) VQL plugin and provide it with the hunt id, the artifact we collected and the source in the artifact.
+We start off by exploring the results of the hunt — simply select all columns from the hunt results but limit the result of only a small set for inspection. We will call the [hunt_results](/vql_reference/server/hunt_results/) VQL plugin and provide it with the hunt id, the artifact we collected and the source in the artifact.
 
 ```python
 

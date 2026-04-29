@@ -41,7 +41,7 @@ configuration file in the `version` section of the configuration file.
 {{% notice note "Client-Server Backward Compatibility" %}}
 
 The Velociraptor server is intended to be
-[backwardly-compatible with older clients]({{< ref "/docs/overview/support/#client-and-server-versioning" >}})
+[backwardly-compatible with older clients](/docs/overview/support/#client-and-server-versioning)
 across the previous few releases, which allows you to upgrade the server and
 then upgrade the clients. This backward-compatibility is mainly in terms of
 client-server communication - that is, older clients should be able to continue
@@ -57,7 +57,7 @@ Note that you should always upgrade the server first.
 ## Upgrading a server (in-place upgrade)
 
 To upgrade the Velociraptor server to a new version, first download the
-[latest release binary]({{< ref "/downloads/" >}}),
+[latest release binary](/downloads/),
 appropriate for your server's architecture.
 
 ### Create a new server installation package
@@ -163,7 +163,7 @@ an old server to a new server by using a remote client upgrade.
    notebooks, etc. as on the old server. You can restore the latest daily backup
    from the old server to preserve various server configuration items, as
    described in
-   [Restoring from daily backups]({{< ref "/knowledge_base/tips/backing_up/#restoring-from-daily-backups" >}}).
+   [Restoring from daily backups](/knowledge_base/tips/backing_up/#restoring-from-daily-backups).
 
 3. Export the appropriate client config from the new server. Copy it to the old
    server. Use the `Server.Utils.CreateMSI` or

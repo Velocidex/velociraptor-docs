@@ -15,12 +15,12 @@ button next to the user name at the top-right corner of the screen.
 ![Adjusting user preferences](preferences_dark.svg)
 
 - **Org selector**: The Org selector allows a user to switch to a different org.
-  See the [Organizations]({{% ref "/docs/deployment/orgs/" %}}) section for more
+  See the [Organizations](/docs/deployment/orgs/) section for more
   information on multi-tenancy in Velociraptor.
 
 - **Password**: If the deployment uses `Basic` authentication mode, this allows
   the user to change their own password. See
-  [Basic Authentication]({{% ref "/docs/deployment/security/#basic-authentication" %}}).
+  [Basic Authentication](/docs/deployment/security/#basic-authentication).
 
 - **Theme**: Velociraptor offers a number of themes including several dark mode
   themes, light mode themes and some fun themes too. Find the look that fits you
@@ -48,9 +48,9 @@ button next to the user name at the top-right corner of the screen.
 
 Server administrators can also view and customize the preferences for other
 users using the
-[user_options]({{< ref "/vql_reference/server/user_options/" >}}) VQL function.
+[user_options](/vql_reference/server/user_options/) VQL function.
 
 The `user_options` function is typically used together with the
-[gui_users]({{< ref "/vql_reference/server/gui_users/" >}}) plugin, to enumerate
+[gui_users](/vql_reference/server/gui_users/) plugin, to enumerate
 the user accounts and then update their preferences.
 

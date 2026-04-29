@@ -100,7 +100,7 @@ collection is progressing.
 ## VQL improvement - disk based materialize operator
 
 The VQL `LET ... <= ` operator is called the [materializing LET
-operator]({{% ref "/docs/vql/#materialized-let-expressions" %}})
+operator](/docs/vql/fundamentals/#materialized-let-expressions)
 because it expands the following query into a memory array which can
 be accessed cheaply multiple times.
 
@@ -161,6 +161,5 @@ spin](https://github.com/Velocidex/velociraptor)!  It is a available
 on GitHub under an open source license. As always please file issues
 on the bug tracker or ask questions on our mailing list
 [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com)
-. You can also chat with us directly on discord
-[https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+. You can also chat with us directly on [Discord](/discord/).
 .

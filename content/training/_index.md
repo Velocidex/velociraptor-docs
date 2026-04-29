@@ -27,7 +27,7 @@ on YouTube.
 {{% notice info %}}
 
 Please note that these videos are not up to date with the
-[latest version]({{< ref "/downloads/" >}}).
+[latest version](/downloads/).
 The slide deck above is more recent and contains additional sections which don't
 have corresponding videos.
 

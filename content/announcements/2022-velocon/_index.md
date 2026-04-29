@@ -17,7 +17,7 @@ noTitle: true
 Thank you for joining us for the day-long virtual summit as we DIG
 DEEPER TOGETHER!
 
-[The full conference is now available!]({{< ref "/presentations/2022_velocon/" >}})
+[The full conference is now available!](/presentations/2022_velocon/)
 
 ## Agenda at a glance
 
@@ -248,7 +248,7 @@ methods for reverse engineering software systems. Now, he's heading
 APTA Technologies, a start-up building machine learning tools to
 understand software behavior .
 
-Affiliation: APTA Technologies, https://apta.tech
+Affiliation: APTA Technologies
 
 ### When Dinosaurs Ruled the Blue Team: Retrieving triage images with EDR
 By **Dan Banker**

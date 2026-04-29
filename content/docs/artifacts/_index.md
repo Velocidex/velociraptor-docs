@@ -49,7 +49,7 @@ VQL queries are typically packaged in a type of logical container which we call 
 directly on clients.
 
 The Velociraptor CLI does have the ability to run queries directly using the
-[`query` command]({{< ref "/docs/deployment/#command-line-investigation-tool" >}})
+[`query` command](/docs/deployment/#command-line-investigation-tool)
 however in client-server mode VQL queries are always delivered to the client in the
 form of artifacts.
 
@@ -74,8 +74,8 @@ Here are some of the key benefits of Velociraptor Artifacts:
   Artifacts bundle VQL statements and related configurations into a single,
   reusable unit. Once an artifact is written, the user does not need to remember
   or re-enter the query. Artifacts can be
-  [called from other VQL queries]({{< ref "/docs/vql/artifacts/calling/" >}})
-  as if they were [standard plugins]({{< ref "/vql_reference/" >}}),
+  [called from other VQL queries](/docs/vql/artifacts/calling/)
+  as if they were [standard plugins](/vql_reference/),
   encouraging the development of reusable components that can be combined like
   Lego bricks.
 
@@ -84,10 +84,10 @@ Here are some of the key benefits of Velociraptor Artifacts:
   do not need to understand the query itself in order to use it. This
   facilitates knowledge sharing between users with varying skill
   levels, as well as documenting and sharing knowledge about forensic
-  evidence amongst experts.  Platforms like the [Velociraptor Artifact
-  Exchange]({{< ref "/exchange/">}}) exist for this purpose, promoting
-  knowledge sharing and code reusability within the Velociraptor and
-  broader DFIR community.
+  evidence amongst experts.  Platforms like the
+  [Velociraptor Artifact Exchange](/exchange/) exist for
+  this purpose, promoting knowledge sharing and code reusability
+  within the Velociraptor and broader DFIR community.
 
 - **Extending Velociraptor Functionality**: \
   Artifacts offer a powerful way to extend Velociraptor's capabilities. They can
@@ -229,9 +229,9 @@ Velociraptor ships with hundreds of built-in artifacts which are compiled into
 the binary itself.
 
 You can use the
-[`artifacts` CLI command]({{< ref "/docs/artifacts/managing/" >}}), the
-[Artifacts screen in the GUI]({{< ref "/docs/gui/artifacts/" >}}), or
-[VQL's `artifact_definitions()` plugin]({{< ref "/vql_reference/server/artifact_definitions/" >}})
+[`artifacts` CLI command](/docs/artifacts/managing/), the
+[Artifacts screen in the GUI](/docs/gui/artifacts/), or
+[VQL's `artifact_definitions()` plugin](/vql_reference/server/artifact_definitions/)
 to list and examine these artifacts.
 
 When Velociraptor is run, its built-in artifacts are read directly from the
@@ -243,16 +243,16 @@ datastore.
 
 The default location for custom artifacts is the server's datastore. This is the
 location used when artifacts are
-[imported, created or edited during runtime]({{< ref "/docs/gui/artifacts/" >}}).
+[imported, created or edited during runtime](/docs/gui/artifacts/).
 
 - For the root org's artifact repository this is: `<datastore>/artifact_definitions`
 
-- For [other orgs]({{< ref "/docs/deployment/orgs/" >}}), each org has its own
+- For [other orgs](/docs/deployment/orgs/), each org has its own
 artifact repository: `<datastore>/orgs/<org_id>/artifact_definitions`
 
 The server's datastore location is specified by the
 `Frontend.Datastore.location` key in the
-[config]({{< ref "/docs/deployment/references/" >}}).
+[config](/docs/deployment/references/).
 
 In addition to the default location, other artifact sources can be specified
 that Velociraptor should try to load artifacts from. The following config keys
@@ -347,7 +347,7 @@ wins):
 5. compiled into binary
 
 This is similar to the artifact masking which occurs for orgs, which we describe
-[here]({{< ref "/docs/artifacts/#orgs-artifact-inheritance-and-masking" >}}).
+[here](/docs/artifacts/#orgs-artifact-inheritance-and-masking).
 
 Artifacts which are not assigned the built-in designation are considered
 **custom**. In the GUI's artifact screen these artifacts are shown with the
@@ -359,19 +359,20 @@ Now that you know where artifacts are loaded from when the server starts, you
 might be wondering: how you create new artifacts in Velociraptor? There are
 several ways...
 
-In the GUI, as explained in more detail [here]({{< ref "/docs/gui/artifacts/" >}}),
+In the GUI, as explained in more detail [here](/docs/gui/artifacts/),
 the available methods are:
 
-- creating or editing an artifact [using the artifact editor]({{< ref "/docs/gui/artifacts/#creating-and-editing-artifacts" >}})
+- creating or editing an artifact [using the artifact editor](/docs/gui/artifacts/#creating-and-editing-artifacts)
 
-- importing [artifact packs]({{< ref "/docs/gui/artifacts/#importing-artifact-packs" >}})
+- importing [artifact packs](/docs/gui/artifacts/#importing-artifact-packs)
 
-- importing artifacts [using server import artifacts]({{< ref "/docs/gui/artifacts/#importing-artifacts-using-server-artifacts" >}})
+- importing artifacts
+  [using server import artifacts](/docs/gui/artifacts/#importing-artifacts-from-velociraptors-specialized-artifact-projects)
 
 In VQL we can create artifacts using the
-[artifact_set()]({{< ref "/vql_reference/server/artifact_set/" >}}) function,
+[artifact_set()](/vql_reference/server/artifact_set/) function,
 and delete them using the
-[artifact_delete()]({{< ref "/vql_reference/server/artifact_delete/" >}}) function.
+[artifact_delete()](/vql_reference/server/artifact_delete/) function.
 
 
 All artifacts created during runtime are saved to the `artifact_definitions`
@@ -389,7 +390,7 @@ word "Custom" - it's just a helpful convention to use.
 
 ## Orgs, artifact inheritance, and masking
 
-If you use Velociraptor's [orgs]({{< ref "/docs/deployment/orgs/" >}})
+If you use Velociraptor's [orgs](/docs/deployment/orgs/)
 (multi-tenancy) feature then things can get a little confusing.
 
 The important thing to remember is that the root org serves as a
@@ -447,7 +448,7 @@ for customization.
 
 The built-in artifact `Generic.Client.Info` is used to gather host information
 when a client enrolls or on-demand when clicking the
-[Interrogate]({{< ref "/docs/clients/interrogation/" >}})
+[Interrogate](/docs/clients/interrogation/)
 button on the host Overview page in the GUI. If a custom artifact name
 `Custom.Generic.Client.Info` exists in the artifact repository then it will be
 used instead when clients enroll or are interrogated. This override capability

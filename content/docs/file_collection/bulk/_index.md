@@ -18,11 +18,11 @@ In the previous section we looked at the basic mechanisms that Velociraptor
 provides in support of file acquisition. The VQL `upload()` function allows us
 to copy files from endpoints to the server, which is the default method of file
 acquisition, but several other functions are available for copying files to
-[remote network destinations]({{< ref "/docs/file_collection/#remote-upload-destinations" >}})
+[remote network destinations](/docs/file_collection/#remote-upload-destinations)
 other than the Velociraptor server.
 
 In this section we explain how file acquisition is scaled up via
-[artifacts]({{< ref "/docs/artifacts/" >}}),
+[artifacts](/docs/artifacts/),
 making it easy to target the collection of many files in a single operation.
 
 {{% notice warning "Be careful with large file collections!" %}}
@@ -40,7 +40,7 @@ resource impacts on endpoints. However, many clients collecting many files can
 have significant impacts on your server, or even the network.
 
 See the section
-[Mitigating Network and Server Impacts]({{< ref "/docs/file_collection/#mitigating-network-and-server-impacts" >}})
+[Mitigating Network and Server Impacts](/docs/file_collection/#mitigating-network-and-server-impacts)
 for advice on ways to mitigate potential impacts to your server and network,
 especially when performing bulk file collections.
 
@@ -80,7 +80,7 @@ parameter to tell it to also upload the file to the server.
 The `Generic.Collectors.File` artifact is a utility artifact dedicated to the
 task of uploading files. Usually it's not used on its own, and is instead
 called from other artifacts
-(see [wrapper artifacts]({{< ref "/docs/artifacts/use_cases/#wrapper-artifacts" >}})).
+(see [wrapper artifacts](/docs/artifacts/use_cases/#wrapper-artifacts)).
 The `Windows.Triage.Targets` artifact described below is an example of a more
 sophisticated artifact that wraps this much simpler utility artifact.
 
@@ -126,7 +126,7 @@ updated, you need to add them to your Velociraptor's artifacts repository. You
 can do this by manually downloading and importing the artifacts, but we
 recommend that you use the built-in `Server.Import.Extras` server artifact
 to simplify
-[adding and updating externally maintained artifacts]({{< ref "/docs/deployment/quickstart/#step-6-import-artifacts-from-external-projects" >}}).
+[adding and updating externally maintained artifacts](/docs/deployment/quickstart/#step-6-import-artifacts-from-external-projects).
 
 
 {{% notice note "Triage vs. Bulk File Collection" %}}
@@ -137,7 +137,7 @@ incident, particularly in high-pressure situations where time is critical.
 Usually this is an initial phase of the investigation, and is done for the
 purpose of identifying affected systems and scoping an incident. In other words,
 in Velociraptor terms "triage" is really just
-[hunting]({{< ref "/docs/hunting/" >}}) done with specific constraints and
+[hunting](/docs/hunting/) done with specific constraints and
 objectives in mind. Velociraptor can be used to assess an endpoint without
 copying any files.
 
@@ -153,7 +153,7 @@ familiar process that centralized solutions advocate, but using Velociraptor.
 That is, they use Velociraptor clients and/or Offline Collectors to copy files
 with the intention of analyzing/querying them later. This is not how
 Velociraptor is intended to work, as we
-[explained in the introduction]({{< ref "/docs/file_collection/#why-collect-files" >}}).
+[explained in the introduction](/docs/file_collection/#why-collect-files).
 Even though it is technically possible and supported, it is an inefficient and
 cumbersome approach that isn't aligned with Velociraptor's philosophy and design goals.
 
@@ -206,7 +206,7 @@ conventional client/server mode. Sometimes you might also have to rely on
 external assistance (such as a local administrator) to actually perform the
 collection on your behalf, and usually these assistants are not DFIR experts.
 
-Velociraptor [Offline Collectors]({{< ref "/docs/deployment/offline_collections/" >}})
+Velociraptor [Offline Collectors](/docs/deployment/offline_collections/)
 allow you to perform bulk file collections (and run any other artifacts)
 without installing a Velociraptor client on the endpoint.
 

@@ -88,4 +88,4 @@ We saw how this principle is applied in the **foreach()** plugin to implement a 
 
 In the next part we see how VQL queries themselves may be stored in the scope and reused. We go back to the concept of lazy evaluation we encountered in the first part and see how this applies to sub queries. We then introduce event queries as a way to run fully asynchronous and event driven VQL.
 
-If you want to know more about Velociraptor, VQL and how to use it effectively to hunt across the enterprise, consider enrolling for the next available training course at [https://www.velocidex.com/training/](https://www.velocidex.com/training/).
+

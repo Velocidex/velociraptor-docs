@@ -59,5 +59,5 @@ hits the notebook's 10 Minute timeout or the user clicks the `Stop`
 ![The Clock plugin generates a row every second by default](image65.png)
 
 To learn more about how Velociraptor uses event queries to monitor
-events on endpoints, see [Client Monitoring]({{< ref
-"/docs/clients/monitoring/" >}})
+events on endpoints, see
+[Client Monitoring](/docs/clients/monitoring/).

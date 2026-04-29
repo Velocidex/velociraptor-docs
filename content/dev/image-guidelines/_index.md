@@ -1,4 +1,7 @@
-# Guidelines for creating image content
+---
+title: Guidelines for creating image content
+weight: 10
+---
 
 This document provides guidance for creating image content for the Velociraptor
 documentation. It specifies some informal standards and gives some tool-specific
@@ -42,8 +45,8 @@ The guidance in this document is intended to:
 Image content generally falls into one of these categories:
 
 1. [Screenshots](#screenshots)
-	- unannotated
-	- annotated
+    - unannotated
+    - annotated
 2. [Line diagrams](#line-diagrams) (flow charts, sequence diagrams, etc.)
 3. [GIF animations](#gif-animations) (typically use for short video clips of
    things like terminal sessions)
@@ -90,7 +93,7 @@ Excalidraw has provision for only 3 font variants at a time, so we assign them a
 
 Visually this is how our font allocations compare to the default ones:
 
-![](image-guidelines/excalidraw_default_fonts.png)
+![](excalidraw_default_fonts.png)
 
 In our case the hand-drawn font _is_ our default/normal font. We assign our
 heading font to the provided "normal font" slot because Excalidraw doesn't have
@@ -136,7 +139,7 @@ If you find or create objects that you think will be useful in future drawings
 then please add them to this library, save the changes and commit the updated
 version back to the `velociraptor-docs` repo.
 
-![](image-guidelines/library.png)
+![](library.png)
 
 ## Screenshots
 
@@ -164,7 +167,7 @@ When screenshotting only a part of the screen then it's important to anchor it
 by including some familiar element like part of the header or sidebar. Unless a
 previous screenshot has already provided that spacial/navigational context.
 
-![](image-guidelines/anchors.png)
+![](anchors.png)
 
 Capturing screenshots that show only part of the screen area are relatively
 straightforward and many tools are capable of doing this.
@@ -172,7 +175,7 @@ straightforward and many tools are capable of doing this.
 > [!TIP] A useful trick in Chrome Dev Tools is that you can right-click on a DOM
 > element and capture an image of just that element.
 >
-> ![](image-guidelines/node_screenshot.png)
+> ![](node_screenshot.png)
 
 #### Full screens
 
@@ -187,10 +190,10 @@ For full screenshots use one of the following 2 sizes:
 - 1280x960 (preferred)
 - 1600x1200 (only if needed to show wide table content or some other specific reason)
 
-![](image-guidelines/screen_size.png)
+![](screen_size.png)
 *These particular constrained sizes can be configured as presets in Chrome's"dev tools" for quick access.*
 
-![](image-guidelines/fullscreen.png)
+![](fullscreen.png)
 
 ### Velociraptor theme
 
@@ -198,7 +201,7 @@ For consistency, and to avoid confusing new users, we use a single GUI theme for
 all screenshots: the **Standard Docs** theme which is based on the default
 Velociraptor Light them but with some additional legibility tweaks.
 
-![](image-guidelines/docs-theme.png)
+![](docs-theme.png)
 
 ### Annotations
 
@@ -222,7 +225,7 @@ triangular one.
 To indicate a sequence of actions use numbered callouts. These are available in
 our [Excalidraw object library](#excalidraw-object-library)
 
-![](image-guidelines/excalidraw_annotations.png)
+![](excalidraw_annotations.png)
 *Examples of arrows and numbered callouts*
 
 The above example also shows that a semi-transparent rectangle can be placed
@@ -237,7 +240,7 @@ behind text to make it more legible if it overlays a dark area of background.
   drawing a square or rectangle around the element and placing the number so
   that it touches the shape.. Example below.
 
-![](image-guidelines/screen_partial.png)
+![](screen_partial.png)
 
 #### Excalidraw-specific options
 
@@ -253,7 +256,7 @@ For line thickness ("**stroke width**") we use "**extra bold**" for annotation
 arrows, however this is subjective choice since line thickness is ultimately
 relative to the dimensions of the rendered image.
 
-![](image-guidelines/excalidraw_defaults.png)
+![](excalidraw_defaults.png)
 
 ## Line diagrams
 
@@ -268,7 +271,7 @@ the following differences:
 - stroke width is **Bold** (not Extra Bold)
 - stroke color is black (not blue)
 
-![](image-guidelines/line_diagram_settings.png)
+![](line_diagram_settings.png)
 
 The diagram heading is made bold by choosing the "Normal" font which is the same
 font as our "Hand-drawn" font but a bold variant. This is necessary because
@@ -278,7 +281,7 @@ Excalidraw currently doesn't have any options for bolding or italicizing fonts.
 
 ### Formats and settings
 
-![](image-guidelines/excalidraw_export_settings.png)
+![](excalidraw_export_settings.png)
 
 We export our images from Excalidraw  - that is line diagrams and annotated
 screenshots - to SVG format, and not to PNG. However PNG images are suitable for
@@ -300,7 +303,7 @@ view that the reader will see (without needing to zoom in). When exported the
 SVG image will be sized at the dimensions of a bounding box around the elements
 on your canvas. The line thicknesses and font sizes are relative to your canvas.
 
-![](image-guidelines/embedded-image-scaling.png)
+![](embedded-image-scaling.png)
 
 
 Although it is possible to edit SVG images externally they cannot be imported
@@ -401,10 +404,10 @@ VHS](https://github.com/charmbracelet/vhs).
 
 VHS is an open source application which provides a scripted, styled, terminal
 recording environment. This allows us to create such recordings in a
-reproducible way, and this means that it's easy for us to update the exising
+reproducible way, and this means that it's easy for us to update the existing
 recordings when new versions are released.
 
-![example ](image-guidelines/vhs.gif)
+![example ](vhs.gif)
 
 The environment and scripted steps for each recording are specified in a `.tape`
 file which is a small text file.
@@ -424,5 +427,3 @@ the existing recording.
 > VHS on the Linux machine, and have the VHS omit that part from the recording.
 > See `wix_build.tape` for an example.
 >
-
-

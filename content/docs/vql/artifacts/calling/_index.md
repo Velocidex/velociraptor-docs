@@ -29,26 +29,26 @@ The consolidated result sets from called artifacts could possibly have columns
 which differ per row, due to different queries being run in each of their
 sources. In that case the GUI will likely have trouble detecting and displaying
 all columns, so specifying
-[column_types]({{< ref "/docs/artifacts/advanced_fields/#-column_types-" >}})
+[column_types](/docs/artifacts/advanced_fields/#-column_types-)
 on the top-level artifact is highly recommended in this situation.
 
 {{% /notice %}}
 
 By creating an artifact that calls one or more other artifacts, you are
 essentially creating a
-[wrapper artifact]({{< ref "/docs/artifacts/use_cases/#wrapper-artifacts" >}}).
+[wrapper artifact](/docs/artifacts/use_cases/#wrapper-artifacts).
 When used in this way the called artifacts can be specially designed
-[utility artifacts]({{< ref "/docs/artifacts/use_cases/#utility-artifacts" >}})
+[utility artifacts](/docs/artifacts/use_cases/#utility-artifacts)
 or any other artifacts.
 
 Artifacts can also be called from VQL within
-[notebooks]({{< ref "/docs/notebooks/" >}}).
+[notebooks](/docs/notebooks/).
 However, since notebooks run on the server, this means that any artifacts called
 from notebooks will also run on the server. If you want VQL in a notebook to
 schedule a collection on clients then you should use the
-[collect_client]({{< ref "/vql_reference/server/collect_client/" >}}) plugin,
+[collect_client](/vql_reference/server/collect_client/) plugin,
 or else create and launch a hunt using the
-[hunt]({{< ref "/vql_reference/server/hunt/" >}}) function
+[hunt](/vql_reference/server/hunt/) function
 to target multiple clients.
 
 It's worth noting that while this special plugin allows calling the VQL logic
@@ -97,18 +97,18 @@ these are present on the endpoint.
 
 ## Parameters
 
-[Parameters]({{< ref "/docs/artifacts/parameters/" >}})
+[Parameters](/docs/artifacts/parameters/)
 for the called artifact are passed as keyword arguments to the Artifact plugin,
 for example:
 
 `SELECT * FROM Artifact.ArtifactName(parameter1='value1', parameter2='value2')`
 
-[Argument unpacking]({{< ref "/docs/vql/fundamentals/#argument-unpacking" >}})
+[Argument unpacking](/docs/vql/fundamentals/#argument-unpacking)
 (`` `**`=my_param_dict ``) is also supported for the `Artifact`
 plugin.
 
 Backticks are used for
-[names with spaces or special characters]({{< ref "/docs/vql/fundamentals/#identifiers-with-spaces" >}})
+[names with spaces or special characters](/docs/vql/fundamentals/#identifiers-with-spaces)
 within the dictionary keys.
 
 Artifact parameters are passed to called artifacts while preserving their data
@@ -132,19 +132,19 @@ sources:
 
 Then in the artifact `Custom.Called` the `StartTime` parameter will be a
 timestamp object, even though the parameter does not have the `timestamp`
-[type]({{< ref "/docs/artifacts/parameters/#parameter-types" >}}) defined.
+[type](/docs/artifacts/parameters/#parameter-types) defined.
 
 If the parameter in the called artifact needs to change the data type then you
 can either use the
-[serialize]({{< ref "/vql_reference/other/serialize/" >}}) or
-[str]({{< ref "/vql_reference/popular/str/" >}})
+[serialize](/vql_reference/other/serialize/) or
+[str](/vql_reference/popular/str/)
 functions to convert it to a string representation
 before passing it, or use the `.String` method which many data types have.
 
 ## Sources
 
 If the called artifact contains multiple
-[sources]({{< ref "/docs/artifacts/sources/" >}}),
+[sources](/docs/artifacts/sources/),
 you might need to specify the particular source that you want to access.
 This is done using the `source` argument.
 
@@ -165,7 +165,7 @@ discussed below.
 ## Preconditions
 
 The called artifact may itself have
-[preconditions]({{< ref "/docs/artifacts/preconditions/" >}})
+[preconditions](/docs/artifacts/preconditions/)
 at the artifact-level, or source-level, or both.
 
 By default, preconditions defined within the called artifact aren't evaluated

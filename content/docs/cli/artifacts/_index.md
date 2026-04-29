@@ -11,7 +11,7 @@ summary: "Commands for working with artifacts"
 Artifacts can be managed and used on the command line, using the `artifacts`
 CLI command group. There may be circumstances where you don't have access to the
 GUI, or don't want to or need to use it, such as when
-[performing a local investigation]({{< ref "/docs/deployment/#command-line-investigation-tool" >}})
+[performing a local investigation](/docs/deployment/#command-line-investigation-tool)
 on a machine.
 
 When using the CLI, you can also make custom artifacts available by pointing the
@@ -148,7 +148,7 @@ This is often used for artifact testing, automated collections via scripts, or
 for "server-less" triage operations, potentially from a disk image.
 
 This is essentially a wrapper around the VQL
-[collect() plugin]({{< ref "/vql_reference/other/collect/" >}}),
+[collect() plugin](/vql_reference/other/collect/),
 with the CLI arguments being passed as arguments to this plugin.
 
 ```vql
@@ -305,7 +305,7 @@ With failing artifacts the command sets errorlevel=1, which can be acted on by
 automation scripts.
 
 The same static analysis can be done via VQL using the
-[verify]({{< ref "/vql_reference/other/verify/" >}}) function.
+[verify](/vql_reference/other/verify/) function.
 
 ##### Example
 

@@ -11,7 +11,7 @@ Velociraptor is a powerful endpoint visibility tool. It has plugins
 and parsers for many file formats, such as raw NTFS access, raw
 registry hive, prefetch files etc. One of the strengths of
 Velociraptor is its flexibility afforded by the use of the[
-Velociraptor Query Language (VQL).]({{< ref "/docs/vql/" >}})
+Velociraptor Query Language (VQL).](/docs/vql/)
 
 However, as most DFIR professionals know, there are so many tools out
 there that we would love to use in our IR work. Many of these tools
@@ -295,7 +295,7 @@ us the opportunity to curate the tools that will actually be allowed.
 
 To facilitate this we provide a built-in server artifact that partially
 automates the process:
-[`Server.Utils.UploadTools`]({{< ref "/artifact_references/pages/server.utils.uploadtools/" >}})
+[`Server.Utils.UploadTools`](/artifact_references/pages/server.utils.uploadtools/)
 
 This artifact is designed to be used as follows:
 

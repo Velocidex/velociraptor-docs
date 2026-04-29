@@ -13,12 +13,12 @@ date: 2025-08-30
 noindex: false
 ---
 
-I recently joined the great folk at [Cyber
-Triage](https://www.cybertriage.com/) on a webinar to explore the new
-[CyberTriage Velociraptor artifact]({{< ref
-"/exchange/artifacts/pages/cybertriagecollector/" >}}). I was excited
-to be talking with them since I heard great things about Cyber Triage
-and really wanted to learn more about it.
+I recently joined the great folks at
+[Cyber Triage](https://www.cybertriage.com/)
+on a webinar to explore the new
+[CyberTriage Velociraptor artifact](/exchange/artifacts/pages/cybertriagecollector/).
+I was excited to be talking with them since I heard great things about
+Cyber Triage and really wanted to learn more about it.
 
 One of the interesting features they presented was the concept of
 [Adaptive
@@ -50,7 +50,7 @@ across a large number of endpoints.
 
 Through efficient distributed hunts the number of systems of interest is
 reduced. We may then perform _Triage Acquisition_ for the purpose of
-[preservation of evidence]({{< ref "/training/playbooks/preservation/" >}}).
+[preservation of evidence](/training/playbooks/preservation/).
 We often need to delegate the Triage Acquisition step to others who have
 access to the affected systems (for example Help Desk employees or system
 administrators).
@@ -73,7 +73,7 @@ Triage Acquisition has a number of goals:
 These goals call for a high level of automation.
 
 Velociraptor's
-[offline collector]({{< ref "/docs/deployment/offline_collections/" >}})
+[offline collector](/docs/deployment/offline_collections/)
 is specifically designed to be fully automated - the operator simply needs to
 run it and a triage collection is made. The collection can be uploaded to the
 cloud or returned to the investigation team some other (potentially out-of-band)
@@ -146,13 +146,13 @@ While this is artifact is a great start, it is usually not enough.
 Many of the forensic artifacts collected may point to other files that
 may be found on disk, and those files are not usually collected.
 
-For example, consider the [prefetch artifact]({{< ref
-"/artifact_references/pages/windows.forensics.prefetch/" >}}) in which
-Windows stores paths to previously run executables. While the location
-of the prefetch files themselves is well known
-(i.e. `C:\Windows\Prefetch\*.pf`), when an analyst examines these
-files, they may discover that they point at a suspicious executable
-located somewhere else on the disk from which file were not acquired.
+For example, consider the
+[prefetch artifact](/artifact_references/pages/windows.forensics.prefetch/)
+in which Windows stores paths to previously run executables. While the
+location of the prefetch files themselves is well known (i.e.
+`C:\Windows\Prefetch\*.pf`), when an analyst examines these files,
+they may discover that they point at a suspicious executable located
+somewhere else on the disk from which file were not acquired.
 
 During the initial triage acquisition phase there is no way to know if the
 executables they point to are malicious or not. With the standard `KapeFiles`
@@ -203,9 +203,9 @@ type of forensic artifact to acquire.
 
 You can download the `Windows.Triage.Targets` artifact from
 https://triage.velocidex.com/docs/windows.triage.targets/ or simply
-use the built in [Server.Import.Extras]({{< ref
-"/artifact_references/pages/server.import.extras/" >}}) artifact to
-automatically download and import the latest version.
+use the built in
+[Server.Import.Extras](/artifact_references/pages/server.import.extras/)
+artifact to automatically download and import the latest version.
 
 The artifact contains many adaptive rules, for example some of these
 are:
@@ -390,7 +390,7 @@ better to err on the side of collecting more than less.
 2. Consider using the `TrustedPathRegex` to eliminate system files.
 3. Set conservative values for `MaxFileSize` to avoid capturing very
    large adaptively, such as very large executables.
-4. If you are concerned about endpoint resource load, consider imposing [CPU limits]({{< ref "/docs/clients/artifacts/#specify-resources" >}})
+4. If you are concerned about endpoint resource load, consider imposing [CPU limits](/docs/clients/artifacts/#specify-resources)
 
 For live connected clients, it is useful to run an adaptive collection
 with `HashOnly` collection policy:
@@ -437,6 +437,5 @@ spin](https://github.com/Velocidex/velociraptor)!  It is available on
 GitHub under an open source license. As always please file issues on
 the bug tracker or ask questions on our mailing list
 [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com)
-. You can also chat with us directly on discord
-[https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+. You can also chat with us directly on [Discord](/discord/).
 .

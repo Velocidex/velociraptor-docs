@@ -14,7 +14,7 @@ The steps in this section assume your server has previously been operating
 correctly and is now encountering an unexpected issue.
 
 If you are having problems during server deployment then please see the section
-[Server Deployment Issues]({{< ref "/docs/troubleshooting/deployment/server/" >}})
+[Server Deployment Issues](/docs/troubleshooting/deployment/server/)
 within the Deployment Troubleshooting section.
 
 {{% /notice %}}
@@ -38,14 +38,14 @@ actions might have caused the crash, to our developer team by
 
 If you are experiencing poor server performance, we recommend that you review
 the
-[Deployment > Server Performance and Monitoring]({{< ref "/docs/deployment/resources/" >}})
+[Deployment > Server Performance and Monitoring](/docs/deployment/resources/)
 page to better understand potential causes of performance issues in general.
 
 If your deployment has grown significantly in size since the initial deployment
 then it may simply be a case of inadequate server resources. You could consider
 scaling up your server resources or for very large deployments you may decide to
 scale your system horizontally by turning it into a
-[multi-frontend deployment]({{< ref "/docs/deployment/server/multifrontend/" >}}).
+[multi-frontend deployment](/docs/deployment/server/multifrontend/).
 
 #### Observing basic performance metrics
 
@@ -59,7 +59,7 @@ in the GUI.
 If you encounter issues when collecting artifacts on the server (perhaps via the
 API), you can use the `Server.Monitor.Profile` artifact to collect profile data.
 This is similar to the process described in the section about
-[debugging a remote client]({{< ref "/docs/troubleshooting/operations/remote_clients/#debugging-a-remote-client" >}}).
+[debugging a remote client](/docs/troubleshooting/operations/remote_clients/#debugging-a-remote-client).
 
 ![Server.Monitor.Profile results](server_monitor_profile_results.png)
 
@@ -84,8 +84,8 @@ developed over time. We recommend that such monitoring be implemented for
 production systems.
 
 You can change the port and bind address for the metrics server using the
-[Monitoring.bind_port ]({{< ref "/docs/deployment/references/#Monitoring.bind_port" >}}) and
-[Monitoring.bind_address ]({{< ref "/docs/deployment/references/#Monitoring.bind_address" >}})
+[Monitoring.bind_port ](/docs/deployment/references/#Monitoring.bind_port) and
+[Monitoring.bind_address ](/docs/deployment/references/#Monitoring.bind_address)
 settings.
 
 You can either manually see program metrics using curl or configure an external
@@ -97,7 +97,7 @@ curl http://127.0.0.1:8003/metrics | less
 ```
 
 For more information about setting up Prometheus and Grafana, please see the
-[Deployment > Server Performance and Monitoring]({{< ref "/docs/deployment/resources/" >}})
+[Deployment > Server Performance and Monitoring](/docs/deployment/resources/)
 page.
 
 
@@ -112,12 +112,12 @@ implement systems that allow for monitoring these logs and for searching them
 should the need arise.
 
 Logging is configured via the server configuration file's
-[Logging]({{% ref "/docs/deployment/references/#Logging" %}})
+[Logging](/docs/deployment/references/#Logging)
 section.
 
 #### Debugging
 
 For more complicated issues Velociraptor provides extensive debugging
 capabilities for individual operational aspects. For more information about
-debugging, please see the [Debugging]({{< ref "/docs/troubleshooting/debugging/" >}})
+debugging, please see the [Debugging](/docs/troubleshooting/debugging/)
 section.

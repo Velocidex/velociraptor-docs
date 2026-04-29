@@ -41,7 +41,7 @@ In this case, 46 seconds is not too bad, but if I wanted to hash the entire hard
 
 My query receives its file names from the glob() plugin which is very fast — clearly the performance blockage in my query is the **hash** function which is CPU intensive. I would therefore love to have a hash operation sent to each core in parallel, then all my cores will be recruited and the query will run faster.
 
-Since Velociraptor 0.5.5, the foreach() plugin has an additional “workers” parameter. Readers who use Velociraptor extensively are familiar with the foreach() plugin, as it is probably the most common plugin in use. We also covered it in detail in an earlier blog post, [here](https://medium.com/velociraptor-ir/the-velociraptor-query-language-pt-2-fe92bb7aa150).
+Since Velociraptor 0.5.5, the foreach() plugin has an additional “workers” parameter. Readers who use Velociraptor extensively are familiar with the foreach() plugin, as it is probably the most common plugin in use. We also covered it in detail in an earlier blog post, [here](/blog/2020/2020-06-19-the-velociraptor-query-language-pt-2-fe92bb7aa150/).
 
 In a nutshell, the foreach() plugin takes 2 parameters. The “row” parameter is another query which will be run, taking each row produced by it. The “query” parameter is another query which will be evaluated with a nested scope containing the row obtained (Conceptually, the foreach plugin acts in a similar way to the SQL JOIN operator).
 
@@ -85,6 +85,6 @@ Additionally, extra performance may not always be what you want. If my goal was 
 
 For these reasons parallelism in VQL is opt in — users have to structure their query to take advantage of it. The language remains simple and easy to use with a predictable model for how it works.
 
-To play with this feature yourself, take[ Velociraptor for a spin](https://github.com/Velocidex/velociraptor)! It is a available on GitHub under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com) . You can also chat with us directly on discord [https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+To play with this feature yourself, take[ Velociraptor for a spin](https://github.com/Velocidex/velociraptor)! It is a available on GitHub under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com) . You can also chat with us directly on [Discord](/discord/)
 
-If you want to know more about Velociraptor, VQL and how to use it effectively to hunt across the enterprise, consider enrolling for the next available training course at [https://www.velocidex.com/training/](https://www.velocidex.com/training/).
+

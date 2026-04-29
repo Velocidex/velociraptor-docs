@@ -8,7 +8,7 @@ last reviewed: 2025-04-27
 summary: "How to plan and implement your server deployment"
 ---
 
-In our [Quickstart Guide]({{< ref "/docs/deployment/quickstart/" >}}) we cover the process
+In our [Quickstart Guide](/docs/deployment/quickstart/) we cover the process
 for performing a simplified deployment, secured with Self-signed SSL
 certificates and Basic authentication. This type of deployment is most suited to
 short-term uses such as training environments, temporary on-site incident
@@ -20,7 +20,7 @@ of the deployment.
 
 For longer-term deployments it is essential to plan your installation taking
 into consideration all the
-[security mechanisms]({{< ref "/docs/deployment/security/" >}})
+[security mechanisms](/docs/deployment/security/)
 that Velociraptor offers, such as using publicly verifiable SSL certificates
 (Velociraptor supports automatic enrollment and renewal of free certificates
 from Let's Encrypt). Using proper SSL certificates allows the Velociraptor
@@ -30,4 +30,3 @@ server to be further secured using SSO authentication, and also eliminates the
 ## What's next?
 
 {{% children "description"=true %}}
-

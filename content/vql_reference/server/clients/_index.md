@@ -42,7 +42,7 @@ client then you may want to consider using that instead.
 
 ### See also
 
-- [client_info]({{< ref "/vql_reference/server/client_info/" >}}): Returns
+- [client_info](/vql_reference/server/client_info/): Returns
   client info for a specific client from the datastore.
 
 

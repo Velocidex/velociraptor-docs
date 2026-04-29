@@ -53,7 +53,7 @@ FROM source()
 ```
 ### See also
 
-- [clients]({{< ref "/vql_reference/server/clients/" >}}): Returns client
+- [clients](/vql_reference/server/clients/): Returns client
   info for one or more clients from the datastore.
 
 

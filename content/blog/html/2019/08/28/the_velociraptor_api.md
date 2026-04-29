@@ -13,7 +13,7 @@ categories: ["Blog"]
 {{% notice warning %}}
 
 This page is written about a very old version of Velociraptor and is
-retained for historical purposes. Currently the fuse feature was removed.
+retained for historical purposes. Currently the fuse feature is removed.
 
 {{% /notice %}}
 
@@ -108,9 +108,7 @@ Test will be unable to see the new drive.
 ### Running the FUSE program
 
 On Windows filesystem in userspace is implemented by the `WinFSP`
-project. You will need to
-[download](http://www.secfs.net/winfsp/download/) and install it
-first.
+project. You will need to download and install it first.
 
 We require an API key to use the fuse feature so generate one first on
 the server:

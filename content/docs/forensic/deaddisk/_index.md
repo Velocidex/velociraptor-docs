@@ -36,14 +36,14 @@ example, we might be handed a clone of a cloud VM disk after a compromise and
 have no say in the matter (e.g. the original VM may already have been
 destroyed).
 
-Velociraptor's [remapping]({{< ref "/docs/forensic/filesystem/remapping/" >}})
+Velociraptor's [remapping](/docs/forensic/filesystem/remapping/)
 feature makes it possible to impersonate a live system and provide access to the
 disk image as if it was a real disk attached to the client. While there are
-inherent [limitations]({{< relref "#limitations" >}}) associated with this
-approach, it allows us to use most [Velociraptor artifacts]({{< ref "/docs/artifacts/" >}})
+inherent [limitations](#limitations) associated with this
+approach, it allows us to use most [Velociraptor artifacts](/docs/artifacts/)
 directly without any changes. It allows Velociraptor to be applied to
 more traditional image-based forensic analysis use cases, while leveraging the
-[same artifacts]({{< ref "/artifact_references/" >}}) that are used on live
+[same artifacts](/artifact_references/) that are used on live
 endpoints.
 
 ## How it works
@@ -58,7 +58,7 @@ config using the `--remap` CLI flag.
 {{% notice tip %}}
 
 Velociraptor can use the same accessor remapping & impersonation approach with
-[offline collection containers]({{< ref "/docs/deployment/offline_collections/collection_data/#dead-disk-analysis-on-a-collection-container" >}}).
+[offline collection containers](/docs/deployment/offline_collections/collection_data/#dead-disk-analysis-on-a-collection-container).
 
 {{% /notice %}}
 
@@ -80,10 +80,10 @@ the file paths should be reported exactly as they would have appeared in the
 filesystem on the endpoint.
 
 Velociraptor accesses files using
-[filesystem accessors]({{< ref "/docs/forensic/filesystem/#filesystem-accessors" >}}).
+[filesystem accessors](/docs/forensic/filesystem/#filesystem-accessors).
 You can think of an accessor as simply a driver that provides access to a file
 or directory. Velociraptor actually provides
-[many types of accessors]({{< ref "/vql_reference/accessors/" >}})
+[many types of accessors](/vql_reference/accessors/)
 for filesystems and other data sources.
 
 When accessing a Windows NTFS filesystem the following accessors are commonly
@@ -104,9 +104,9 @@ used:
 - The **ntfs** accessor is used to access files using the built in NTFS parser.
 
 When accessing a disk image that contains an NTFS filesystem, we apply
-[remapping rules]({{< ref "/docs/forensic/deaddisk/remapping/" >}})
+[remapping rules](/docs/forensic/filesystem/remapping/)
 that translate requests to the abovementioned accessors into
-[compound pathspec objects]({{< ref "/docs/forensic/filesystem/paths/#nested-accessors-and-pathspecs" >}})
+[compound pathspec objects](/docs/forensic/filesystem/paths/#nested-accessors-and-pathspecs)
 which include additional (delegate) accessors such as `vmdk` and `raw_ntfs`.
 This mechanism transparently provides access via the filesystem of the local
 host, the disk image, and partitions and filesystems in the image, etc.
@@ -165,16 +165,16 @@ which generates the remapping, and then use it!
 
 <!-- If you're curious, or want to manually create remapping rules for more unusual
 scenarios, we explain accessor remapping in more detail
-[on this page]({{< ref "/docs/forensic/deaddisk/remapping/" >}}). -->
+[on this page](/docs/forensic/deaddisk/remapping/). -->
 
 If you're curious, or want to manually create remapping rules for more unusual
 scenarios, we explain accessor remapping in more detail
-[in this blog post]({{< ref "/blog/2022/2022-03-22-deaddisk/#impersonating-an-operating-system" >}}).
+[in this blog post](/blog/2022/2022-03-22-deaddisk/#impersonating-an-operating-system).
 
 ### Host impersonation
 
 Many artifacts need to examine more than just the filesystem. For example, most
-artifacts have a [precondition]({{< ref "/docs/artifacts/preconditions/" >}})
+artifacts have a [precondition](/docs/artifacts/preconditions/)
 such as `SELECT * FROM info() WHERE OS =~ "windows"`. If we were to run on a
 Linux system these artifacts will not work since they are intended to work on
 windows - despite the accessor remapping rules emulating a Windows filesystem.
@@ -278,7 +278,7 @@ To summarize the above: Analyzing a disk image is usually a 3-step process.
 
    This may require some preparatory steps such as converting or mounting the
    image if it's an unsupported type. The remapping config can be generated
-   either via the CLI's [deaddisk]({{< ref "/docs/cli/deaddisk/" >}}) command,
+   either via the CLI's [deaddisk](/docs/cli/deaddisk/) command,
    or in the GUI using the `Generic.Utils.DeadDiskRemapping` server artifact.
    For non-standard partition layouts you might have to manually craft an
    appropriate remapping config, although you can generate one for a simple disk

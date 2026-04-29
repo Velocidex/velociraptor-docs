@@ -262,7 +262,7 @@ with Velociraptor is by mimicking the adversary activity on a test
 system that is connected to the Velociraptor server. For example, I
 launch a command that the adversary used and I check to see if that
 results in an alert. Another possibility is launching [remote shell
-commands](https://docs.velociraptor.app/docs/gui/clients/#remote-shell-commands)
+commands](https://docs.velociraptor.app/docs/clients/shell)
 via Velociraptor.
 
 

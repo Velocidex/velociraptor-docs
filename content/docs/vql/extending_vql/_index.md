@@ -264,7 +264,7 @@ the tool to be downloaded from a certain URL (e.g. an S3 bucket).
 As an artifact writer you can specify your artifact will use a certain
 tool and provide a hint of where to download it from.
 
-See [Managing External Tools]({{< ref "/docs/artifacts/tools/" >}}) for more
+See [Managing External Tools](/docs/artifacts/tools/) for more
 information.
 
 ##### Example: The Autoruns artifact

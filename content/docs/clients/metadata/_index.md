@@ -11,7 +11,7 @@ Client metadata is an arbitrary key-value store that holds user-defined
 information per client.
 
 Metadata is conceptually similar to
-[client labels]({{< ref "/docs/clients/labels/" >}}) in that they:
+[client labels](/docs/clients/labels/) in that they:
 
 - are data structures which exist on the server only
 - are used to organize and manage clients
@@ -31,7 +31,7 @@ Metadata can be viewed and manually edited on the client overview page.
 
 As with labels, it is often necessary to manipulate metadata in bulk.
 VQL provides us with the
-[client_set_metadata]({{< ref "/vql_reference/server/client_set_metadata/" >}})
+[client_set_metadata](/vql_reference/server/client_set_metadata/)
 VQL function to do that.
 
 Although the function operates on a single client at a time we can iterate over
@@ -49,7 +49,7 @@ WHERE os_info.hostname =~ "TRAINING"
 ## Accessing metadata in VQL
 
 We access client metadata using the
-[client_metadata]({{< ref "/vql_reference/server/client_metadata/" >}})
+[client_metadata](/vql_reference/server/client_metadata/)
 VQL function. Typically this is used in combination with the `clients()` plugin
 which iterates over all client records.
 

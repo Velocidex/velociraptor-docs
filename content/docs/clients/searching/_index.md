@@ -38,7 +38,7 @@ The following **search operators** are available:
 - `recent`: show clients your user has recently interacted with
 
 In addition, if you have configured indexing of selected
-[client metadata]({{< ref "/docs/clients/metadata/" >}}) fields then those field
+[client metadata](/docs/clients/metadata/) fields then those field
 names will also be available as search operators.
 
 The following **search terms** are recognized:
@@ -59,7 +59,7 @@ More complex searches can be done in a notebook using VQL.
 The GUI's search function uses a client info index. This provides performant
 searches even when the server has many thousands of clients. The client info
 index can also be queried via VQL using the
-[clients()]({{< ref "/vql_reference/server/clients/" >}})
+[clients()](/vql_reference/server/clients/)
 plugin which has a `search` argument that accepts the same search syntax as
 the GUI's search bar, for example
 `SELECT client_id FROM clients(search="label:none")`.
@@ -72,7 +72,7 @@ apply more refined filtering using VQL constructs such as `WHERE` clauses.
 {{% notice note "Searching index update frequency" %}}
 
 The recency ("freshness") of the client info data is determined by how often
-[client interrogation]({{< ref "/docs/clients/interrogation/" >}})
+[client interrogation](/docs/clients/interrogation/)
 is run. By default this data is updated daily but the frequency of collection
 can be changed in the client configuration file using the setting
 `Client.client_info_update_time`.
@@ -125,7 +125,7 @@ The table contains seven columns:
 6. The **Operating System version** (OS Version) reported by the client.
 
 7. Any **Labels** applied to the host. Clicking on a label removes the
-   label from this host. [Labels]({{< ref "/docs/clients/labels/" >}}) exist on
+   label from this host. [Labels](/docs/clients/labels/) exist on
    the server only and are used for organizing clients, targeting hunts and
    other client management functions.
 
@@ -171,7 +171,7 @@ hostname, labels, last seen IP, and last seen time. This is shown in the
 **Overview** and **VQL Drilldown** pages. Velociraptor gathers this
 information from the endpoint upon first enrollment and periodically thereafter
 through a process that we refer to as
-[Interrogation]({{< ref "/docs/clients/interrogation/" >}}).
+[Interrogation](/docs/clients/interrogation/).
 You can manually refresh this information at any time by clicking the
 **Interrogate** button.
 
@@ -179,12 +179,12 @@ Hosts may have **labels** attached to them. A label is any name associated with
 a host. Labels are useful when we need to hunt or perform other operations on a
 well defined group of hosts. We can restrict a hunt to one or more labels to
 avoid collecting unnecessary data or to target specific operating systems.
-Labels are explained [here]({{< ref "/docs/clients/labels/" >}})
+Labels are explained [here](/docs/clients/labels/)
 in more detail.
 
 Each client can have associated arbitrary metadata. You can use this
 metadata in VQL, in Notebooks or in server artifacts. **Client metadata** is
-explained [here]({{< ref "/docs/clients/metadata/" >}})
+explained [here](/docs/clients/metadata/)
 in more detail.
 
 The **VQL Drilldown** page shows more information about the client, including
@@ -192,7 +192,7 @@ telemetry of the client's footprint on the endpoint and more information about
 the endpoint.
 
 The **Shell** page allows you to run shell commands on the client. This is
-explained [here]({{< ref "/docs/clients/shell/" >}})
+explained [here](/docs/clients/shell/)
 in more detail.
 
 ![VQL Drilldown](vql_drilldown.png)
@@ -206,13 +206,13 @@ Quarantining a host will reconfigure the
 hosts's network stack to only allow it to communicate with the Velociraptor
 server. This allows you to continue investigating the host remotely while
 preventing the host from making other network connections. Client Quarantine is
-explained [here]({{< ref "/docs/clients/quarantine/" >}}) in more detail.
+explained [here](/docs/clients/quarantine/) in more detail.
 
 ### The VFS
 
 With a client selected we can browse it's filesystem using the Virtual
 FileSystem (VFS) viewer. The VFS is explained
-[here]({{< ref "/docs/clients/vfs/" >}}) in more detail.
+[here](/docs/clients/vfs/) in more detail.
 
 ### Collections
 

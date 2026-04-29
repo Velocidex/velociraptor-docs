@@ -159,7 +159,7 @@ disabling the `Microsoft-Windows-Bits-Client/Operational` log.
 ![Disabling logs](image25.png)
 
 To read the full analysis of how to detect such a registry modification, read
-the [blog post]({{< ref "blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/" >}}),
+the [blog post](blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/),
 or simply check for modifications using the `Windows.EventLogs.Modifications`
 artifact.
 

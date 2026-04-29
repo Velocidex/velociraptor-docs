@@ -8,10 +8,10 @@ weight: 50
 ---
 
 As described in the
-[accessing file uploads on the server]({{< ref "/docs/file_collection/#accessing-file-uploads-on-the-server" >}})
+[accessing file uploads on the server](/docs/file_collection/#accessing-file-uploads-on-the-server)
 section, file uploads can be individually downloaded from the GUI.
 
-However, [bulk file collections]({{< ref "/docs/file_collection/bulk/" >}}) that
+However, [bulk file collections](/docs/file_collection/bulk/) that
 upload many files will sometimes need to be exported in bulk for purposes such
 as external analysis or evidence preservation.
 
@@ -25,7 +25,7 @@ The process of exporting files in bulk involves two steps.
 1. Prepare the download by clicking the **Prepare Download** button.
 
    This copies all files in the collection or hunt into a single
-   [collection container]({{< ref "/docs/deployment/offline_collections/collection_data/" >}}),
+   [collection container](/docs/deployment/offline_collections/collection_data/),
    which is a specially structured zip file that can be imported on other
    Velociraptor servers. The zip also includes all the JSON collection data -
    not just the file uploads. You can optionally choose to include the
@@ -64,7 +64,7 @@ should mostly offset this size increase.
 
 For additional safety during file-handling, and to prevent your local antivirus
 from accidentally quarantining potential malware, you can set a password in your
-[user preferences]({{< ref "/docs/gui/user_preferences/" >}}).
+[user preferences](/docs/gui/user_preferences/).
 This ensures that any files exported from the GUI are automatically packaged in
 a password-protected zip and thereby made safe for transit to your analysis
 environment.
@@ -97,7 +97,7 @@ timeout value. This approach is demonstrated by the
 
 Alternatively, if you persistently need a higher timeout value, you
 can set it globally via the
-[defaults.export_max_timeout_sec]({{< ref "/docs/deployment/references/#defaults.export_max_timeout_sec" >}})
+[defaults.export_max_timeout_sec](/docs/deployment/references/#defaults.export_max_timeout_sec)
 setting in the server config. However, as with all resource limits,
 the default values are intended to protect your server from unusual
 resource consumption, so you should try to avoid changing the global
@@ -106,7 +106,7 @@ defaults unless you've considered the potential impacts.
 There is also a default limit of 10 concurrent export preparation processes. If
 your server hardware is capable of more then you might need to increase this
 limit, which is done via the
-[defaults.export_concurrency]({{< ref "/docs/deployment/references/#defaults.export_concurrency" >}})
+[defaults.export_concurrency](/docs/deployment/references/#defaults.export_concurrency)
 setting in the server config.
 
 As with any server config change, this will require a restart of the server
@@ -122,11 +122,11 @@ functions that perform the equivalent actions. In fact, most of the time your
 actions in the GUI are actually performed by VQL under the hood.
 
 In VQL, we have two functions that kick off the creation of collection archives:
-- [create_flow_download]({{< ref "/vql_reference/server/create_flow_download/" >}})
-- [create_hunt_download]({{< ref "/vql_reference/server/create_hunt_download/" >}})
+- [create_flow_download](/vql_reference/server/create_flow_download/)
+- [create_hunt_download](/vql_reference/server/create_hunt_download/)
 
 These functions can be used manually in notebooks, or you could create a
-[server monitoring]({{< ref "/docs/server_automation/server_monitoring/" >}})
+[server monitoring](/docs/server_automation/server_monitoring/)
 artifact that automates the zip creation whenever collections that contain a
 selected artifact complete.
 
@@ -164,7 +164,7 @@ This method uses the `uploads()` plugin to enumerate all the file uploads in the
 collection, and then the `link_to()` function to generate a valid download link
 for each file. The link is constructed using the DNS name specified by
 `GUI.public_url` in the
-[server config]({{< ref "/docs/deployment/references/#GUI.public_url" >}}).
+[server config](/docs/deployment/references/#GUI.public_url).
 
 The following example will generate a list of download links in a collection
 notebook. You can add other columns to the query as needed.
@@ -187,7 +187,7 @@ be required to download the files).
 
 For hunts, you can use the same technique after first enumerating all the flows
 associated with a hunt, and then enumerating the downloads in each flow, as
-demonstrated in [this example]({{< ref "/docs/file_collection/#for-a-hunt" >}}).
+demonstrated in [this example](/docs/file_collection/#for-a-hunt).
 
 If you automate the downloads, say via a script, then you will need to ensure
 that your script saves the file downloads separately for each client and

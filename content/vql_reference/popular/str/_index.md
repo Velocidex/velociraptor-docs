@@ -34,7 +34,7 @@ the `str()` function.
 
 ### See also
 
-- [serialize]({{< ref "/vql_reference/other/serialize/" >}}): Encode an
+- [serialize](/vql_reference/other/serialize/): Encode an
   object as a string.
 
 

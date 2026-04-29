@@ -23,6 +23,6 @@ Dumps information about potential ebpf_events that can be used by the
 
 ### See also
 
-- [watch_ebpf]({{< ref "/vql_reference/linux/watch_ebpf/" >}})
+- [watch_ebpf](/vql_reference/linux/watch_ebpf/)
 
 

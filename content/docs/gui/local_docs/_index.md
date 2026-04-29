@@ -33,7 +33,7 @@ a bunker, you can prepare it with local documentation before you go.
 
 In other words this feature is intended for convenience or for unusual
 situations, in a similar way to how the
-[`vql list` CLI command]({{< ref "/docs/cli/#how-to-get-vql-help" >}})
+[`vql list` CLI command](/docs/cli/#how-to-get-vql-help)
 allows you to quickly look up VQL-related help when you are working on
 the command line. It does not fully replicate all aspects of the
 documentation website, and it's not intended to replace it.
@@ -55,8 +55,8 @@ In particular, you should be aware of the following differences:
 
 The documentation index is not included in the Velociraptor binary. It
 is technically managed as a
-[tool]({{< ref "/docs/artifacts/tools/" >}}) in the `root`
-[organization]({{< ref "/docs/deployment/orgs/" >}}) (org), and is
+[tool](/docs/artifacts/tools/) in the `root`
+[organization](/docs/deployment/orgs/) (org), and is
 automatically downloaded to the server the first time any user tries
 to search the local docs.
 
@@ -77,7 +77,7 @@ tools in an offline server situation.
 
 If you are pre-populating the tools inventory on a server in advance
 of working offline, the
-[`Server.Utils.UploadTools`]({{< ref "/artifact_references/pages/server.utils.uploadtools/" >}})
+[`Server.Utils.UploadTools`](/artifact_references/pages/server.utils.uploadtools/)
 artifact will include the docs index in the tools package that it
 downloads.
 

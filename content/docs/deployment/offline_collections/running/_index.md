@@ -9,14 +9,14 @@ weight: 20
 
 Offline collectors can be deployed by automated means, for example via Windows
 Group Policy - similar to the
-[agentless deployment]({{< ref "/docs/deployment/clients/#agentless-deployment" >}})
+[agentless deployment](/docs/deployment/clients/#agentless-deployment)
 method - or by other deployment tools (such as PsExec or WinRM), or even other
 EDR solutions. It's also quite common to have local personnel run the collector
 manually on the endpoints, especially during incidents where network access is
 restricted.
 
 When the collector is run without command line arguments, the collection will
-automatically start. If any [command line arguments]({{< ref "/docs/cli/" >}})
+automatically start. If any [command line arguments](/docs/cli/)
 are provided then it behaves as any ordinary Velociraptor binary would, with the
 collector behaviour being bypassed.
 
@@ -120,13 +120,13 @@ it has admin-level privileges.
 
 The Generic Collector is run by specifying the `--embedded_config` flag.
 Normally the Velociraptor binary always expects
-[a command]({{< ref "/docs/cli/#learn-about-the-commands-available-in-the-cli" >}}),
+[a command](/docs/cli/#learn-about-the-commands-available-in-the-cli),
 but in this case we want to use the flag on the command line without specifying
 any command.
 
 To make Velociraptor accept the `--embedded_config` flag without a command, we
 use the
-["post args" pseudo-flag]({{< ref "/docs/cli/#autoexec-mode-and-post-args" >}}):
+["post args" pseudo-flag](/docs/cli/#autoexec-mode-and-post-args):
 `--`. This tells Velociraptor to act as if no arguments were specified and to
 pass the subsequent flag(s) to the autoexec function, which is contained in the
 generic collector file.
@@ -138,7 +138,7 @@ generic collector may be targeted to a specific platform, and therefore might
 not be equally applicable to all. You could build a generic collector that
 includes artifacts for all your target platforms with the artifacts themselves
 being conditionally run based on
-[preconditions]({{< ref "/docs/artifacts/preconditions/" >}}).
+[preconditions](/docs/artifacts/preconditions/).
 
 #### Example
 
@@ -182,14 +182,14 @@ collectors then you should keep in mind what you want your users to see (or not
 see).
 
 Your artifacts can emit meaningful human-friendly messages to the console using
-the [log]({{< ref "/vql_reference/popular/log/" >}}) function. Also keep in mind
+the [log](/vql_reference/popular/log/) function. Also keep in mind
 that the `log()` function deduplicates message by default, limiting the messages
 to 1 per minute per log function message template. In some cases you may want to
 disable this duplication for a specific log function instance.
 
 In the other hand if you want the local personnel to see _less_ output - for
 whatever reason - then you can
-[rebuild the collector on the command line]({{< ref "/docs/cli/collector/" >}})
+[rebuild the collector on the command line](/docs/cli/collector/)
 using the spec file that the GUI generated and set the `OptVerbose` option to
 `false`. The GUI-based collector builder currently does not offer this option
 and it enables verbose output by default.

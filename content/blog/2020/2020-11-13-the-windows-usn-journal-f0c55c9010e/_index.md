@@ -14,7 +14,7 @@ keywords: []
 
 *Thanks to [Matt Green ](https://twitter.com/mgreen27)for discussions, ideas and code….*
 
-NTFS is the default filesystem on Windows systems, so it is important for DFIR tools to support extracting as much system state information as possible from it. Velociraptor already has a full featured [NTFS parser](https://www.velocidex.com/blog/medium/2019-11-15_recovering-deleted-ntfs-files-with-velociraptor-1fcf09855311/), and in a recent release (0.5.2) also added a parser for the **USN Journal** (Update Sequence Number Journal), or [Change Journal](https://en.wikipedia.org/wiki/USN_Journal).
+NTFS is the default filesystem on Windows systems, so it is important for DFIR tools to support extracting as much system state information as possible from it. Velociraptor already has a full featured NTFS parser, and in a recent release (0.5.2) also added a parser for the **USN Journal** (Update Sequence Number Journal), or [Change Journal](https://en.wikipedia.org/wiki/USN_Journal).
 
 ### What is the USN Journal?
 
@@ -56,7 +56,7 @@ When a program interacts with a file, we typically see a bunch of related filesy
 
 Notepad seems to interact with the file using a number of separate operations and this adds several events into the USN journal file for the same interaction.
 
-Previously, Velociraptor was able to only collect the USN journal file and users had to rely on other third party tools to parse it (e.g. [this](https://tzworks.net/prototype_page.php?proto_id=5) or [this](https://github.com/PoorBillionaire/USN-Journal-Parser)). The problem with that approach is that external tools usually have no access to the original $MFT and therefore were unable to resolve the parent MFT id in the USN record to a full path. Parsing the USN records directly on the endpoint allows Velociraptor to immediately resolve the files into a full path making analysis much easier later.
+Previously, Velociraptor was able to only collect the USN journal file and users had to rely on other third party tools to parse it (e.g. [this](https://tzworks.com/download_links.php#ntfs) or [this](https://github.com/PoorBillionaire/USN-Journal-Parser)). The problem with that approach is that external tools usually have no access to the original $MFT and therefore were unable to resolve the parent MFT id in the USN record to a full path. Parsing the USN records directly on the endpoint allows Velociraptor to immediately resolve the files into a full path making analysis much easier later.
 
 ### When to use the USN Journal?
 
@@ -141,4 +141,4 @@ Velociraptor brings unprecedented visibility to endpoint machine states using st
 
 Finally we saw this capability put into practice by maintaining a local hash database which can be queried on demand to quickly answer questions like *which machine in my fleet contain this hash?*
 
-To play with this new feature yourself, take Velociraptor for a spin! It is a available on [GitHub](https://github.com/Velocidex/velociraptor) under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com) . You can also chat with us directly on discord [https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+To play with this new feature yourself, take Velociraptor for a spin! It is a available on [GitHub](https://github.com/Velocidex/velociraptor) under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com) . You can also chat with us directly on [Discord](/discord/)

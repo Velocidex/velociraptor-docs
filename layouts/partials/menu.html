@@ -1,3 +1,5 @@
+<script src="/js/theme.js"></script>
+
 <nav id="sidebar" class="{{if $.Site.Params.showVisitedLinks }}showVisitedLinks{{end}}">
 
 {{- $currentNode := . }}
@@ -34,8 +36,7 @@
       {{ end }}
     {{ end }}
 
-    <script src="/{{ $fn }}" type="text/javascript">
-    </script>
+    <script src="/{{ $fn }}" type="text/javascript"></script>
 
     <div class="highlightable">
       <ul class="sidemenu sidebar hidden"></ul>
@@ -121,9 +122,24 @@
 
   // Scroll the highlighted element into view
   $(window).on('load', function(){
-      $("li.dd-item.active")[0].scrollIntoView();
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
   })
 
-  menu.find("li.dd-item.active")[0].scrollIntoView();
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  // Replace links in the body with ajax links.
+  $(document).ready(function () {
+      decorateLinks();
+  });
 
 </script>

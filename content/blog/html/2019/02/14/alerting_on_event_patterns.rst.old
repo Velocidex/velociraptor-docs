@@ -119,13 +119,13 @@ of failed logons (although that is also good to know).
 
 But how do we write a query to detect this? Essentially the query
 needs to look back in time to see how many failed logon attempts
-preceeded each successful logon.
+preceded each successful logon.
 
 This is a typical problem which may be generalized as followed:
 
 .. admonition:: Goal
 
-   We want to detect an event A preceeded by a specified number of
+   We want to detect an event A preceded by a specified number of
    events B within a defined time window.
 
 This problem may be generalized for example:

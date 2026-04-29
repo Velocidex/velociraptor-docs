@@ -1,6 +1,6 @@
 # How to create an "online collector" binary
 
-Velociraptor [offline collectors]({{< ref "/docs/deployment/offline_collections/" >}})
+Velociraptor [offline collectors](/docs/deployment/offline_collections/)
 are immensely popular with our users. They are an appealing option because of
 the simplicity and convenience of having a single executable file that any
 desktop-support-level person in a remote environment can run. The collector can
@@ -94,7 +94,7 @@ Here's how to create and run such a client binary:
    to repack it on Linux (where my binary is aliased as `velociraptor`).
 
 2. Download the client config from the
-   [server Dashboard]({{< ref "/docs/gui/#the-server-dashboard" >}}) page.
+   [server Dashboard](/docs/gui/#the-server-dashboard) page.
 
 3. Edit the client config and add an autoexec section above the existing config:
 

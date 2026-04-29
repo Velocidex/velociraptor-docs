@@ -17,7 +17,7 @@ date: 2024-09-12
 {{% notice note "New feature" %}}
 
 This feature is available in the 0.73 release. You can
-[Download it]({{% ref "/downloads/" %}}) and provide valuable feedback.
+[Download it](/downloads/) and provide valuable feedback.
 
 {{% /notice %}}
 
@@ -436,7 +436,7 @@ annotated set of events to explain the progression of the incident.
 
 Since the timeline workflow is so central to DFIR there are a number
 of popular timelining tools out there. Probably the most popular is
-[Timesketch](hhttps://timesketch.org/) - a collaborative timeline
+[Timesketch](https://timesketch.org/) - a collaborative timeline
 analysis tool developed by the DFIR team at Google.
 
 Many people use Timesketch in conjunction with
@@ -547,6 +547,5 @@ spin](https://github.com/Velocidex/velociraptor)!  It is available on
 GitHub under an open source license. As always please file issues on
 the bug tracker or ask questions on our mailing list
 [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com)
-. You can also chat with us directly on discord
-[https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+. You can also chat with us directly on [Discord](/discord/).
 .

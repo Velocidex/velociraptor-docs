@@ -90,7 +90,7 @@ NOTES:
 
 ### See also
 
-- [ebpf_events]({{< ref "/vql_reference/linux/ebpf_events/" >}}): Dumps information about
+- [ebpf_events](/vql_reference/linux/ebpf_events/): Dumps information about
   potential ebpf_events.
 
 

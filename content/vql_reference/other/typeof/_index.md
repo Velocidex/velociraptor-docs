@@ -56,6 +56,6 @@ unexpected data type.
 
 ### See also
 
-- [format]({{< ref "/vql_reference/popular/format/" >}})
+- [format](/vql_reference/popular/format/)
 
 

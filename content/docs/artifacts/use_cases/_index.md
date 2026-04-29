@@ -9,7 +9,7 @@ last_reviewed: 2025-04-30
 ---
 
 While you can learn a lot about what artifacts are usually used for by looking
-through the [hundreds of artifacts]({{< ref "/artifact_references/" >}})
+through the [hundreds of artifacts](/artifact_references/)
 that ship with the Velociraptor binary, there are certainly many more use cases
 -- including ones that nobody has even thought of yet!
 
@@ -19,7 +19,7 @@ not limited to VQL.
 ## Wrapper Artifacts
 
 Using the `Artifact` plugin, you can
-[call other artifacts]({{< ref "/docs/vql/artifacts/calling/" >}}).
+[call other artifacts](/docs/vql/artifacts/calling/).
 A common use for this is to create "wrapper artifacts" which can:
 
 - combine multiple artifacts into a single artifact
@@ -108,9 +108,9 @@ A common use for this is to create "wrapper artifacts" which can:
 
 Wrapper artifacts can be used as a way to limit users' access to built-in
 artifact capabilities by using the above methods and then also
-[hiding the called artifact]({{< ref "/docs/artifacts/security/#hidden-artifacts" >}})
+[hiding the called artifact](/docs/artifacts/security/#hidden-artifacts)
 from the GUI. In addition you could consider applying the security mechanisms
-described [here]({{< ref "/docs/artifacts/security/" >}}) which allow
+described [here](/docs/artifacts/security/) which allow
 low-privilege users to only run certain "Basic" artifacts.
 
 ## Utility Artifacts
@@ -127,7 +127,7 @@ artifact that wraps the much simpler `Generic.Collectors.File` utility artifact.
 
 Another utility artifact that you may often encounter is
 `Generic.Utils.FetchBinary`. This artifact contains VQL which ensures the
-delivery of [third-party tools]({{< ref "/docs/artifacts/tools/" >}}) to the
+delivery of [third-party tools](/docs/artifacts/tools/) to the
 endpoint, so you will see it called in just about every artifact that uses
 tools. These artifacts could easily have implemented the same logic to ensure
 tool delivery, but it is cleaner, more efficient, and more consistent to offload
@@ -139,7 +139,7 @@ influence the design of the artifact. For example, the
 `Generic.Utils.FetchBinary` artifact is not intended to be collected directly
 and therefore doesn't need to be particularly user-friendly. To avoid confusing
 users with such artifacts you could choose to
-[hide these artifacts]({{< ref "/docs/artifacts/security/#hidden-artifacts" >}}),
+[hide these artifacts](/docs/artifacts/security/#hidden-artifacts),
 as mentioned previously. Hidden artifacts can still be called from other
 artifacts.
 
@@ -184,7 +184,7 @@ you can't specify custom parameter values for your default monitoring artifacts.
 
 To overcome these limitations and allow for almost unlimited flexibility,
 Velociraptor allows us to specify
-[startup artifacts]({{< ref "/knowledge_base/tips/startup_artifacts/" >}})
+[startup artifacts](/knowledge_base/tips/startup_artifacts/)
 via the config setting:
 
 - `Frontend.initial_server_artifacts`
@@ -205,21 +205,21 @@ We could, for example:
 - create users _and_ customize user profiles using the `user_create` and
   `user_options` functions.
 - create orgs using `org_create`.
-- create and start [hunts]({{< ref "/docs/hunting/" >}}) using the `hunt_add`
+- create and start [hunts](/docs/hunting/) using the `hunt_add`
   function.
-- create [notebooks]({{< ref "/docs/notebooks/" >}}) using the `notebook_create`
+- create [notebooks](/docs/notebooks/) using the `notebook_create`
   function (based on custom notebook templates).
 - configure client monitoring using the `set_client_monitoring` function or
   server monitoring using the `set_server_monitoring` function.
-- run [server artifacts which import other artifacts]({{< ref "/docs/gui/artifacts/#importing-artifacts-using-server-artifacts" >}})
-- run [artifacts which define and download tools]({{< relref "#standalone-tool-definitions" >}})
+- run [server artifacts which import other artifacts](/docs/gui/artifacts/#importing-artifacts-from-velociraptors-specialized-artifact-projects)
+- run [artifacts which define and download tools](#standalone-tool-definitions)
   to the server's tool inventory \
   (or we could add/update tools using VQL's `inventory_add` and `inventory_get`
   functions).
 - run server artifacts which create client installer packages or offline collectors:
-  - [`Server.Utils.CreateMSI`]({{< ref "/artifact_references/pages/server.utils.createmsi/" >}})
-  - [`Server.Utils.CreateLinuxPackages`]({{< ref "/artifact_references/pages/server.utils.createlinuxpackages" >}})
-  - [`Server.Utils.CreateCollector`]({{< ref "/artifact_references/pages/server.utils.createcollector/" >}})
+  - [`Server.Utils.CreateMSI`](/artifact_references/pages/server.utils.createmsi/)
+  - [`Server.Utils.CreateLinuxPackages`](/artifact_references/pages/server.utils.createlinuxpackages/)
+  - [`Server.Utils.CreateCollector`](/artifact_references/pages/server.utils.createcollector/)
 
 Because we can specify multiple server artifacts in the
 `initial_server_artifacts` setting, we might choose to have several artifacts
@@ -231,11 +231,11 @@ tested by running them in the "Server Artifacts" screen in the GUI (obviously on
 a non-production/development server!).
 
 These initial server artifacts can also
-[call other artifacts]({{< ref "/docs/vql/artifacts/calling/" >}})
+[call other artifacts](/docs/vql/artifacts/calling/)
 (either built-in or custom) to aid in the setup process.
 
 Custom artifacts, as well as the "bootstrap" artifacts themselves, can be
-[embedded in the config or loaded from a folder]({{< ref "/docs/artifacts/#loading-importing-and-saving-artifacts" >}}).
+[embedded in the config or loaded from a folder](/docs/artifacts/#loading-importing-and-saving-artifacts).
 
 
 ## Client startup artifacts
@@ -250,7 +250,7 @@ Such startup tasks could be, for example:
 - setting up or starting a VPN client (perhaps to enable the client to connect
   to the server)
 - adding an anti-malware exclusion (see for example
-  [Windows.Utils.DefenderExclusion]({{< ref "/exchange/artifacts/pages/defenderexclusion/" >}}))
+  [Windows.Utils.DefenderExclusion](/exchange/artifacts/pages/defenderexclusion/))
 
 The `Client.additional_event_artifacts` configuration item allows us to do this
 by specifying artifacts that should run when the client starts. Although these
@@ -266,7 +266,7 @@ generally requires the artifacts to be included in the client config's
 If these artifacts are run before enrollment then the data produced will be
 queued and delivered to the server after enrollment, as event queries. To ensure
 that the server has a corresponding
-[event queue]({{< ref "/docs/artifacts/event_queues/#client-event-queues" >}})
+[event queue](/docs/artifacts/event_queues/#client-event-queues)
 to receive these events, you'll also need to also add the artifact to the
 server's artifact repository.
 
@@ -278,7 +278,7 @@ about having artifacts with no sources, however this allows for some interesting
 use cases.
 
 We have already seen that
-[notebook templates]({{< ref "/docs/artifacts/notebook_templates/" >}})
+[notebook templates](/docs/artifacts/notebook_templates/)
 are a special use case for artifact definitions. While notebook templates do
 have sources, these sources contain templates for notebook cells rather than
 just queries. The notebook cell templates themselves may or may not contain
@@ -287,7 +287,7 @@ queries.
 Furthermore, if you've spent any time looking through the list of built-in
 artifacts, you may have noticed several that have little to nothing but an
 artifact name. The purpose of such artifacts is to establish
-[event queues]({{< ref "/docs/artifacts/event_queues/" >}})
+[event queues](/docs/artifacts/event_queues/)
 on the server, which intercept and queue messages from clients and from the
 server itself. These artifacts _can_ have sources, which would typically do
 something with the event messages, but they aren't required to have sources; for
@@ -299,7 +299,7 @@ example, other artifacts may be created to act on the event queue's messages.
 
 Artifacts without sources cannot be directly launched via the GUI and are also
 filtered out from all the preset
-[filter views]({{< ref "/docs/artifacts/managing/#searching-artifacts" >}})
+[filter views](/docs/artifacts/managing/#searching-artifacts)
 on the Artifacts screen, except for the filter category "Include Empty Sources".
 This filter will show all artifacts including those that don't have sources.
 This aspect is useful because it means you can define sourceless artifacts
@@ -309,7 +309,7 @@ artifact selection lists or confuse users.
 ### Export-only artifacts (sharing VQL via export-imports)
 
 An artifact with no sources and an
-[export]({{< ref "/docs/artifacts/export_imports/" >}}) section can be used:
+[export](/docs/artifacts/export_imports/) section can be used:
   - for defining shared variables or "constants"
   - for defining shared custom functions and plugins
 
@@ -330,7 +330,7 @@ and code consistency.
 ### Event queues
 
 An artifact with no sources can be used to define server and client
-[event queues]({{< ref "/docs/artifacts/event_queues/" >}}).
+[event queues](/docs/artifacts/event_queues/).
 
 These may have sources, but can still be useful without them, as demonstrated by
 the `Server.Internal.ClientDelete` artifact shown above.
@@ -338,9 +338,9 @@ the `Server.Internal.ClientDelete` artifact shown above.
 ### Documentation
 
 Artifacts with no sources and only
-[informational fields]({{< ref "/docs/artifacts/basic_fields/#informational-fields" >}})
+[informational fields](/docs/artifacts/basic_fields/#informational-fields)
 can be used to store internal documentation; particularly since the
-`description` field [supports Markdown]({{< ref "/docs/artifacts/basic_fields/#-description-" >}})
+`description` field [supports Markdown](/docs/artifacts/basic_fields/#-description-)
 and is indexed and searchable in the GUI.
 
 You could perhaps use it to store Velociraptor SOP documentation or other
@@ -377,7 +377,7 @@ tools defined in the artifact, as it will re-download them when `serve_locally`
 is set to `true`.
 
 You can additionally use such an artifact as one of your
-"[server bootstrap artifacts]({{< relref "/docs/artifacts/use_cases/#server-bootstrap-artifacts" >}})",
+"[server bootstrap artifacts](#server-bootstrap-artifacts)",
 as described above.
 
 

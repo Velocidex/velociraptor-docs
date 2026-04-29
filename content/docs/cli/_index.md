@@ -14,9 +14,9 @@ several utility functions that are accessible on the command line, which in many
 cases are CLI equivalents of functions that are available in VQL.
 
 You can also do investigation of the local system using the CLI alone, as
-described [here]({{< ref "/docs/deployment/#command-line-investigation-tool" >}}),
-[here]({{< ref "/docs/cli/artifacts/#-artifacts-collect-" >}}) and
-[here]({{< ref "/docs/cli/query/" >}}).
+described [here](/docs/deployment/#command-line-investigation-tool),
+[here](/docs/cli/artifacts/#-artifacts-collect-) and
+[here](/docs/cli/query/).
 
 {{% notice info "Be aware of filesystem permissions when working on the command line" %}}
 
@@ -39,7 +39,7 @@ systems this can be done with the command `sudo -u velociraptor bash`.
 Velociraptor's CLI commands generally consist of a command and optionally a
 subcommand, using a subject-verb syntax. For example `config show`.
 
-There are [global flags]({{< ref "/docs/cli/flags/" >}}) that can be used with
+There are [global flags](/docs/cli/flags/) that can be used with
 any command, and also flags that are specific to each command and
 subcommand.
 
@@ -109,12 +109,12 @@ velociraptor vql export | yq -P '.[] | select(.type == "Function") | select(.nam
 ## Autoexec mode and post args
 
 Velociraptor has the ability to embed config and files in its binary when using
-[the `config repack` command]({{< ref "/docs/cli/config/#-config-repack-" >}}).
+[the `config repack` command](/docs/cli/config/#-config-repack-).
 When the binary is run without any CLI commands it first checks whether it has
 an embedded config and if it does then it loads it. A special section in the
 config, named `autoexec.argv`, tells the binary what command line (including
 flags) to execute. The embedded config can also store custom artifacts.
-This is how [offline collectors]({{< ref "/docs/deployment/offline_collections/" >}})
+This is how [offline collectors](/docs/deployment/offline_collections/)
 work.
 
 - When the binary is run ***with*** CLI commands it executes them, and ignores
@@ -192,7 +192,7 @@ continues according to the embedded spec.
 Autoexec mode can be used in a lot of novel ways besides the usual offline
 collector use case. So this method of tweaking the command line allows you to
 use any of the global or command-specific
-[CLI flags]({{< ref "/docs/cli/flags/" >}})
+[CLI flags](/docs/cli/flags/)
 
 Note that if a flag is specified in `autoexec.argv` then it can't be negated
 or overridden. You can only add flags that have not already been used.

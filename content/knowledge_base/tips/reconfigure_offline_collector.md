@@ -19,7 +19,7 @@ small tweaks to an existing offline collector this method may be quicker.
 
 Also note that you can override or append command line arguments to those
 embedded in and offline collector using
-[post-args]({{< ref "/docs/cli/#autoexec-mode-and-post-args" >}}),
+[post-args](/docs/cli/#autoexec-mode-and-post-args),
 which may be sufficient when you want to change the collector behaviour on a
 once-off basis.
 
@@ -95,7 +95,7 @@ or
 
 ## Repacking a Generic Collector
 
-The [Generic Collector](https://docs.velociraptor.app/docs/offline_triage/#the-generic-offline-collector)
+The [Generic Collector](https://docs.velociraptor.app/docs/deployment/offline_collections/#the-generic-collector)
 is independent of any binary. It's essentially a standalone collector config
 with compression applied. This allows it to be used with any Velociraptor binary
 since it is external to the binary.

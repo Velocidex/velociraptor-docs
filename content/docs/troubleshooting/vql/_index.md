@@ -11,22 +11,22 @@ summary: |
 ## General troubleshooting advice
 
 1. We recommend that you develop your new queries in a
-   [Velociraptor notebook]({{< ref "/docs/notebooks/" >}})
+   [Velociraptor notebook](/docs/notebooks/)
    before testing or deploying them in artifacts. If you need to develop queries
    for a specific operating system then
-   [Instant Velociraptor]({{< ref "/docs/deployment/#instant-velociraptor" >}})
+   [Instant Velociraptor](/docs/deployment/#instant-velociraptor)
    is perfect for this, as it allows you to run notebooks directly on the target
    operating system.
 
    We provide a recommended artifact development workflow
-   [here]({{< ref "/docs/artifacts/tips/" >}}).
+   [here](/docs/artifacts/tips/).
 
 2. If you're having problems or unexpected outcomes then try to reduce your VQL
    to it's simplest form. If possible, try to isolate the problematic part of
    the VQL query and test it in a notebook cell.
 
 3. For issues concerning plugins and functions, always refer to the
-   [VQL Reference]({{< ref "/vql_reference/" >}})
+   [VQL Reference](/vql_reference/)
    and ensure that you're supplying all the required parameters, and that their
    data types are correct (see the section on
    [Inspecting Data types](#inspecting-data-types) below).
@@ -54,13 +54,13 @@ they expected it to be.
 
 To make it easier to identify data types during development, VQL has a special
 `typeof()` function, which you can read about
-[here]({{< ref "/vql_reference/other/typeof/" >}}).
+[here](/vql_reference/other/typeof/).
 
 ![Using the typeof() function](typeof.png)
 
 Notice in the example above that the variables `c` and `d` are different data
 types due to one being defined by a
-[materialized expression]({{< ref "/docs/vql/fundamentals/#materialized-let-expressions" >}})
+[materialized expression](/docs/vql/fundamentals/#materialized-let-expressions)
 and the other not.
 
 ## Add helpful log messages to your VQL
@@ -68,7 +68,7 @@ and the other not.
 In most programming languages developers can add `print` statements to the code
 aid with debugging. In VQL we can do this too using the `log()` function, which
 you can read about
-[here]({{< ref "/vql_reference/popular/log/" >}}).
+[here](/vql_reference/popular/log/).
 
 The `log()` function always evaluates as `TRUE` so it can be added to `WHERE`
 clause without affecting the rows that are emitted by the query.

@@ -58,7 +58,7 @@ If the item parameter is not specified we use the scope. Basically
 
 ### See also
 
-- [set]({{< ref "/vql_reference/popular/set/" >}}): Sets the member field of
+- [set](/vql_reference/popular/set/): Sets the member field of
 the item.
 
 

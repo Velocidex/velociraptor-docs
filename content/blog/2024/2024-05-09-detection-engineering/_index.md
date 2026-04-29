@@ -569,7 +569,7 @@ system. For example, we can directly examine registry keys, search for
 and parse files on the endpoint and much more.
 
 Consider the [following Velociraptor Sigma
-rule](https://github.com/Velocidex/velociraptor-sigma-rules/blob/master/rules/vql/rclone.yml):
+rule](https://github.com/Velocidex/velociraptor-sigma-rules/blob/master/rules/vql/windows/rclone.yml):
 
 ```yaml
 title: Rclone
@@ -626,7 +626,7 @@ collection and analysis of forensic artifacts.
 
 Velociraptor's VQL language is fully asynchronous and can watch for
 changes on the endpoint in real time. In Velociraptor's terminology we
-can write [Event Monitoring Queries]({{% ref "/docs/clients/monitoring/" %}}).
+can write [Event Monitoring Queries](/docs/clients/monitoring/).
 
 Rather than parsing event log files as log sources for Sigma rule
 matching, we can tweak the VQL slightly to feed real time events into
@@ -699,6 +699,5 @@ spin](https://github.com/Velocidex/velociraptor)!  It is available on
 GitHub under an open source license. As always please file issues on
 the bug tracker or ask questions on our mailing list
 [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com)
-. You can also chat with us directly on discord
-[https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+. You can also chat with us directly on [Discord](/discord/).
 .

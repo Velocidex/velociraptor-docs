@@ -4,7 +4,7 @@ menutitle: SANS Summit 2022
 weight: 65
 ---
 
-[Full agenda](https://www.sans.org/webcasts/threat-hunting---part-of-the-dfir-summit---solutions-track/)
+
 
 ## How to unlock achievements in Threat Hunting using Velociraptor
 

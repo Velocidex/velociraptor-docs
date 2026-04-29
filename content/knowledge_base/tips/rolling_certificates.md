@@ -62,18 +62,6 @@ operational purposes, it is considered good security practice to rotate keys and
 certificates periodically, and particularly after a suspected systems
 compromise.
 
-{{% notice info %}}
-
-For server versions older than 0.72.3 please use the following commands instead
-of those shown below:
-
-|                         Goal                         | Command for the current version     | Command for versions <0.72.3      |
-|:----------------------------------------------------:|-------------------------------------|-----------------------------------|
-|             Reissue only the server cert             | `velociraptor config reissue_certs` | `velociraptor config reissue_key` |
-| Reissue the server cert and<br> also the private key | `velociraptor config rotate_keys`   | `velociraptor config rotate_key`  |
-
-{{% /notice %}}
-
 #### Setting a non-standard validity
 
 When reissuing the certificate the `--validity` flag can be used to extend the
@@ -105,10 +93,10 @@ To rotate server certificates, use the following command to generate a new
 configuration file containing rotated certificates:
 
 ```
-$ velociraptor config reissue_certs --config /etc/velociraptor/server.config.yaml > /tmp/new_key.config.yaml
+$ velociraptor config reissue_certs --config /etc/velociraptor/server.config.yaml > /tmp/new_certs.config.yaml
 ```
 
-The `config reissue_key` command updates the following configuration items:
+The `config reissue_certs` command updates the following configuration items:
 - `GUI.gw_certificate`
 - `Frontend.certificate`
 

@@ -39,9 +39,9 @@ DigiCert as your Certificate Authority (CA).
 This guide has been written to provide additional guidance to the
 following official Velociraptor articles.
 
-[How do I use my own SSL certificates?](https://docs.velociraptor.app/knowledge_base/tips/ssl/)
+[How do I use my own SSL certificates?](/knowledge_base/tips/ssl/)
 
-[Velociraptor Security Configuration](https://docs.velociraptor.app/docs/deployment/security/).
+[Velociraptor Security Configuration](/docs/deployment/security/).
 
 ## Prerequisites
 
@@ -263,7 +263,7 @@ openssl [x509|rsa] -in CERT_FILE -text -noout
 If the certificates are in the right format and valid you should use
 curl to confirm connectivity by requesting the `server.pem` file from
 the velociraptor server (as detailed in [Troubleshooting and
-Debugging](https://docs.velociraptor.app/docs/deployment/troubleshooting/)).
+Debugging](https://docs.velociraptor.app/docs/troubleshooting/deployment/client)).
 
 ### Use curl from the server localhost
 
@@ -388,7 +388,7 @@ causing the connection errors, try these solutions:
   problem.
 
 For full details on troubleshooting or for any other debugging issues,
-please see [Troubleshooting and Debugging](https://docs.velociraptor.app/docs/troubleshooting/)
+please see [Troubleshooting and Debugging](/docs/troubleshooting/)
 
 ## About the author
 

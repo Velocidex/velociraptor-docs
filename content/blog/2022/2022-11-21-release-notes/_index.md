@@ -91,10 +91,10 @@ path.
 
 Velociraptor's offline collector is a pre-configured Velociraptor
 binary which is designed to be a single shot acquisition tool. You can
-build an Offline Collector by following the [documentation]({{% ref
-"/docs/deployment/offline_collections/" %}}). The Offline
-Collector does not require access to the server, instead simply
-collecting the specified artifacts into a Zip file (which can
+build an Offline Collector by following
+[the documentation](/docs/deployment/offline_collections/).
+The Offline Collector does not require access to the server, instead
+simply collecting the specified artifacts into a Zip file (which can
 subsequently be uploaded to the cloud, or simply shared with the DFIR
 experts for further analysis).
 
@@ -192,7 +192,7 @@ imported into a different Velociraptor installation seamlessly.
 When collecting files from the endpoint using the NTFS accessor we
 quite often encounter sparse files. These are files with large
 unallocated holes in them. The most extreme sparse file is the [USN
-Journal]({{% ref "/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/" %}}).
+Journal](/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/).
 
 ![Acquiring the USN journal](the_usn_journal.png)
 
@@ -272,6 +272,5 @@ spin](https://github.com/Velocidex/velociraptor)!  It is a available
 on GitHub under an open source license. As always please file issues
 on the bug tracker or ask questions on our mailing list
 [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com)
-. You can also chat with us directly on discord
-[https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+. You can also chat with us directly on [Discord](/discord/).
 .

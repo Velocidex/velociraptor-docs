@@ -9,8 +9,8 @@ last_reviewed: 2025-05-27
 ---
 
 Velociraptor supports stream-based data collection (also referred to as
-[Client Monitoring]({{< ref "/docs/clients/monitoring/">}}) and
-[Server Monitoring]({{< ref "/docs/server_automation/server_monitoring/">}})
+[Client Monitoring](/docs/clients/monitoring/) and
+[Server Monitoring](/docs/server_automation/server_monitoring/)
 ), which means that events are sent in near-realtime rather than being batched,
 as occurs with normal collections, and without waiting for collection
 completion.
@@ -54,7 +54,7 @@ each sent to their own queue.
 Usually `SERVER_EVENT` and `CLIENT_EVENT` artifacts receive events
 from the VQL queries defined in their `sources` section, but this is
 not strictly necessary. Events may be sent from anywhere using the VQL
-[send_event()]({{< ref "/vql_reference/server/send_event/" >}})
+[send_event()](/vql_reference/server/send_event/)
 function, or via the API. This way it is possible to implement push
 notification to inform the server of certain events.
 
@@ -73,7 +73,7 @@ It is still possible to receive events sent to these queues using
 ## Server event queues
 
 An artifact of type `SERVER_EVENT` establish a server event queue on
-the server, using the artifact [name]({{< ref "/docs/artifacts/basic_fields/#-name-" >}}).
+the server, using the artifact [name](/docs/artifacts/basic_fields/#-name-).
 
 The following are some built-in `SERVER_EVENT` artifacts which only establish
 server event queues. You can monitor for events sent to these queues using the
@@ -96,7 +96,7 @@ SELECT name, description FROM artifact_definitions() WHERE NOT sources AND type 
 ### Sending events to server event queues.
 
 To send events to any server event queue you use the
-[send_event]({{< ref "/vql_reference/server/send_event/" >}}) VQL function.
+[send_event](/vql_reference/server/send_event/) VQL function.
 
 For example, if you set up a server event queue with the following artifact:
 
@@ -175,8 +175,9 @@ the `send_event` VQL function.
 ## Viewing active event queues
 
 You can view the current queues on your server by going to the
-[Debug Server](). Client event queues are shown under the section
-[Client -> Client Monitoring Manager]({{< ref "/docs/troubleshooting/debugging/client/client_monitoring/" >}})
+[Debug Server](/docs/troubleshooting/debugging/#starting-the-debug-console-on-clients).
+Client event queues are shown under the section
+[Client -> Client Monitoring Manager](/docs/troubleshooting/debugging/client/client_monitoring/)
 and server event queues under the section
 Org _<org_name>_ > Services -> QueueManager Org (event queues are created and run
 independently for each org).
@@ -209,16 +210,16 @@ type: SERVER_EVENT
 ```
 
 An alert message is technically similar to a
-[log]({{< ref "/vql_reference/popular/log/" >}})
+[log](/vql_reference/popular/log/)
 message with the level set to "ALERT", although this logging level is not
 available in normal logging. Alert messages are intercepted and directed to the
 alerts queue.
 
 Custom alert messages are generated using the
-[alert]({{< ref "/vql_reference/other/alert/" >}}) VQL function.
+[alert](/vql_reference/other/alert/) VQL function.
 
 To act on messages in the alerts queue you need to create a
-[Server Monitoring]({{< ref "/docs/server_automation/server_monitoring/">}})
+[Server Monitoring](/docs/server_automation/server_monitoring/)
 artifact which retrieves events from this queue using the VQL query
 `SELECT * FROM watch_monitoring(artifact='Server.Internal.Alerts')`
 

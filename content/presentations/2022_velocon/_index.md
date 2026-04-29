@@ -104,7 +104,7 @@ methods for reverse engineering software systems. Now, he's heading
 APTA Technologies, a start-up building machine learning tools to
 understand software behavior .
 
-Affiliation: APTA Technologies, https://apta.tech
+Affiliation: APTA Technologies
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/lFfAam4KLuY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 

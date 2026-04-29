@@ -11,13 +11,13 @@ Run VQL queries on the command line.
 
 The `query` command is useful for developing and testing VQL queries
 independently of the client-server infrastructure components. While VQL query
-development is typically done in [notebooks]({{< ref "/docs/notebooks/" >}}),
+development is typically done in [notebooks](/docs/notebooks/),
 you might sometimes want to test a query directly on a particular system, for
 example when troubleshooting a query-related issue that isn't easily
 reproducible on other machines.
 
 The `query` command is also also used when
-[running API queries on the command line]({{< ref "/docs/server_automation/server_api/#using-the-shell-for-automation" >}}).
+[running API queries on the command line](/docs/server_automation/server_api/#using-the-built-in-api-client).
 When used with the `--api_config` flag, the query is sent to the server and runs
 on the server.
 
@@ -53,11 +53,11 @@ It's possible to perform ad-hoc local investigations on a small number of
 machines using the `query` command (and/or the `artifacts collect` command),
 although this is rarely done due to it not being a scalable approach. For more
 information see
-[Deployment > Command line investigation tool]({{< ref "/docs/deployment/#command-line-investigation-tool" >}}).
+[Deployment > Command line investigation tool](/docs/deployment/#command-line-investigation-tool).
 
 For investigating a system locally, if you don't want to use the command line
 you can consider running an
-[Instant Velociraptor]({{< ref "/docs/deployment/#instant-velociraptor-as-a-local-investigation-tool" >}})
+[Instant Velociraptor](/docs/deployment/#instant-velociraptor-as-a-local-investigation-tool)
 instance which gives you access to the local system via an integrated client,
 and the benefit of a local GUI.
 
@@ -107,7 +107,7 @@ Since the `query` command accepts any query, there is no distinction made
 between non-terminating "event queries" and ones that do run and complete. This
 means that you can use the command to inspect and test the output from
 Velociraptor's
-[event plugins]({{< ref "/vql_reference/event/" >}}).
+[event plugins](/vql_reference/event/).
 
 For example:
 

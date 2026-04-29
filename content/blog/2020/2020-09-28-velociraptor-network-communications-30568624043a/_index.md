@@ -12,7 +12,7 @@ keywords: []
 
 You might have heard that Velociraptor allows you to quickly query endpoint state for rapid response and monitoring of many thousands of devices across the internet. Unlike some other tools, Velociraptor’s communication is scalable, secure and instantaneous.
 
-Many people ask me about the client/server communication protocol. The [Velociraptor documentation](https://www.velocidex.com/docs/getting-started/stand_alone/) simply states that communications is encrypted over a TLS connection but there is more to it than that.
+Many people ask me about the client/server communication protocol. The Velociraptor documentation simply states that communications is encrypted over a TLS connection but there is more to it than that.
 
 In this post I would like to delve into the low level details of how clients securely communicate with the server and cover some common deployment scenarios. By understanding exactly how this works we will gain insight into debugging communication problems and enabling more sophisticated deployment scenarios.
 
@@ -270,4 +270,4 @@ In addition, Velociraptor uses standard TLS communications to deliver messages u
 
 By understanding how the communication takes place, we saw how we can debug network problems and even configure a reverse proxy for TLS offloading — an important feature to be able to scale even higher.
 
-If you are interested in learning more about Velociraptor, check out our courses on [https://www.velocidex.com/training/](https://www.velocidex.com/training/) or join us on discord [https://www.velocidex.com/discord](https://www.velocidex.com/discord).
+If you are interested in learning more about Velociraptor, check out our courses [here](/training/) or join us on [Discord](/discord/).

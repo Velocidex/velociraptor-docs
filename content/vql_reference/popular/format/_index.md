@@ -91,12 +91,12 @@ for advanced use cases.
 
 ### See also
 
-- [log]({{< ref "/vql_reference/popular/log/" >}}): a function which uses the same string
+- [log](/vql_reference/popular/log/): a function which uses the same string
   formatting as the `format` function.
-- [timestamp_format]({{< ref "/vql_reference/other/timestamp_format/" >}}): a function
+- [timestamp_format](/vql_reference/other/timestamp_format/): a function
   that simplifies the string formatting of timestamp objects.
-- [ip]({{< ref "/vql_reference/other/ip/" >}}): Format an IP address.
-- [typeof]({{< ref "/vql_reference/other/typeof/" >}}): a dedicated function equivalent
+- [ip](/vql_reference/other/ip/): Format an IP address.
+- [typeof](/vql_reference/other/typeof/): a dedicated function equivalent
   to the special use case: `format(format="%T",args=x)`
 
 

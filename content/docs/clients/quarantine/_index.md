@@ -35,8 +35,8 @@ always check for issues in the logs and outputs for quarantine artifacts.
 
 The quarantine action is implemented by the following artifacts:
 
-- [Windows.Remediation.Quarantine]({{< ref "/artifact_references/pages/windows.remediation.quarantine/" >}})
-- [Linux.Remediation.Quarantine]({{< ref "/artifact_references/pages/linux.remediation.quarantine/" >}})
+- [Windows.Remediation.Quarantine](/artifact_references/pages/windows.remediation.quarantine/)
+- [Linux.Remediation.Quarantine](/artifact_references/pages/linux.remediation.quarantine/)
 
 There is currently no quarantine artifact or capability for macOS.
 
@@ -46,17 +46,17 @@ artifact descriptions included in each of the above artifacts.
 
 A quarantined client will gain the label `Quarantine` so you can easily search
 for all quarantined hosts using the
-[label search]({{< ref "/docs/clients/searching/#search-syntax" >}}) feature.
+[label search](/docs/clients/searching/#search-syntax) feature.
 
 ## Windows-specific quarantine aspects
 
 For Windows clients the quarantine process is label-driven.
 
 A default client event monitoring query (implemented by the artifact
-[Windows.Remediation.QuarantineMonitor]({{< ref "/artifact_references/pages/windows.remediation.quarantinemonitor/" >}}))
+[Windows.Remediation.QuarantineMonitor](/artifact_references/pages/windows.remediation.quarantinemonitor/))
 checks for the presence of the `Quarantine` label on Windows clients. If the
 label is present then it runs the
-[Windows.Remediation.Quarantine]({{< ref "/artifact_references/pages/windows.remediation.quarantine/" >}})
+[Windows.Remediation.Quarantine](/artifact_references/pages/windows.remediation.quarantine/)
 artifact which applies the quarantine (IPSec policy-based network isolation).
 
 The quarantine action is periodically reapplied which means it remains in

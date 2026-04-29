@@ -12,7 +12,7 @@ These commands manipulate the Velociraptor **client service** on Windows and
 macOS. They are only available in the Windows or macOS (Darwin) binaries.
 
 The client can be
-[installed as a service]({{< ref "/docs/deployment/clients/" >}}).
+[installed as a service](/docs/deployment/clients/).
 Usually this is done using installer packaging:
 
 - MSI for Windows

@@ -20,7 +20,7 @@ that you're running the latest version, just in case your issue is one that's
 already been fixed.
 
 The current version is available from our
-[Downloads]({{< ref "/downloads/" >}}) page.
+[Downloads](/downloads/) page.
 
 {{% /notice %}}
 

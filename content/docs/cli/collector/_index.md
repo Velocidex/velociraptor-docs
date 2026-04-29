@@ -8,7 +8,7 @@ weight: 30
 summary: "Build an offline collector"
 ---
 
-Builds an [offline collector]({{< ref "/docs/deployment/offline_collections/" >}}).
+Builds an [offline collector](/docs/deployment/offline_collections/).
 
 ### [ collector ]
 
@@ -25,7 +25,7 @@ Args:
 ---
 
 Typically offline collectors are built using a
-[user-friendly wizard-style workflow]({{< ref "/docs/deployment/offline_collections/building/" >}})
+[user-friendly wizard-style workflow](/docs/deployment/offline_collections/building/)
 in the GUI.
 
 The `collector` command allows you to do the same thing on the command line.
@@ -76,7 +76,7 @@ the same collector - perhaps with a few tweaks - using the CLI. The CLI build
 process can be useful when you intend to periodically rebuild/update a set of
 standardized collectors, possibly in a separate build environment. You might
 also want to set this up as a repeatable process
-[for when new Velociraptor versions are released]({{< ref "/docs/deployment/offline_collections/updating/" >}}).
+[for when new Velociraptor versions are released](/docs/deployment/offline_collections/updating/).
 
 
 ### Spec file formatting
@@ -187,13 +187,14 @@ Also note that the `--config` or `--datastore` flags only connect it to files -
 the status of the Velociraptor server associated with those files is irrelevant
 because the command is not connecting to the server process. The `collector`
 command actually spins up a separate temporary server, which is
-technically similar to an [Instant Velociraptor]({{< ref
-"/docs/deployment/#instant-velociraptor" >}}) instance, just for the purpose of
-creating collectors. In the process it creates a temporary datastore on disk
-with it's own `server.config.yaml`. Unless you specify the `--datastore` flag,
-this temporary datastore will be created in your operating system's temp
-directory. Unless you specify the `--config` flag a new `server.config.yaml`
-will be created in that temporary datastore.
+technically similar to an
+[Instant Velociraptor](/docs/deployment/#instant-velociraptor)
+instance, just for the purpose of creating collectors. In the process
+it creates a temporary datastore on disk with it's own
+`server.config.yaml`. Unless you specify the `--datastore` flag, this
+temporary datastore will be created in your operating system's temp
+directory. Unless you specify the `--config` flag a new
+`server.config.yaml` will be created in that temporary datastore.
 
 
 ### Example workflow
@@ -254,7 +255,7 @@ will be created in that temporary datastore.
 As you can see in the above output, the `collector` command is really just a
 wrapper for the `Server.Utils.CreateCollector` artifact. Therefore it's
 functionality could be replicated using the same VQL
-[query against the API]({{< ref "/docs/server_automation/server_api/#using-the-shell-for-automation" >}}),
+[query against the API](/docs/server_automation/server_api/#using-the-built-in-api-client),
 but that would be far less convenient.
 
 ### Reproducing configurations from previously-created collectors
@@ -305,7 +306,7 @@ created which offline collector. Or you might rebuild your server and
 accidentally lose those collections. Or you might be setting up a new server and
 want to replicate a collector build that was done on another server. Or you
 might want to
-[rebuild your offline collectors periodically]({{< ref "/docs/deployment/offline_collections/updating/" >}}),
+[rebuild your offline collectors periodically](/docs/deployment/offline_collections/updating/),
 particularly after server updates/upgrades or after making changes to your
 custom artifacts.
 

@@ -50,13 +50,3 @@ What can we use this for? Suppose you suspect a compromise. It is imperative to 
 Running the Kape target **BasicCollection** will collect a lot of interesting files, including the **$MFT**, **event logs**, **prefetch**, **amcache** among many other files. This helps us to preserve as much of the state of the system as we think will be relevant for our investigation in future.
 
 Depending on the total amount of data collected we may also issue this collection on one or more machines. Triaging will capture and preserve the evidence. We can then parse it with other tools externally and just keep the snapshot.
-
-#### What if Velociraptor is not installed on our endpoints?
-
-If Velociraptor is not installed on the endpoint, we have a number of options:
-
-1.  [Install it](https://www.velocidex.com/docs/getting-started/deploying_clients/) using group policy
-2.  Temporarily run it using group policy scheduled tasks (so called [Agentless mode](https://www.velocidex.com/docs/getting-started/deploying_clients/#agentless-deployment))
-3.  Interactively collect triaging files by running in interactive mode.
-
-The [next part](https://medium.com/velociraptor-ir/triage-with-velociraptor-pt-2-d0f79066ca0e?source=friends_link&sk=b3b902227634160e0f9703338fb25586) of this series will discuss how to interactively collect triage files while physically (or remotely) logging into the machine.

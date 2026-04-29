@@ -26,7 +26,7 @@ However it turns out that paths are much more complex than they first
 seem. For one thing, paths have an OS dependent separator (usually `/`
 or `\`). Some filesystems support path separators inside a filename
 too! To read about the details check out [Paths And Filesystem
-Accessors]({{< ref "/blog/2022/2022-03-21-paths/" >}}) but one of the
+Accessors](/blog/2022/2022-03-21-paths/) but one of the
 most interesting thing with the new handling is that stacking
 filesystem accessors is now possible, for example it is possible to
 open a docx file inside a zip file inside an ntfs drive inside a
@@ -46,7 +46,7 @@ without having to carefully tailor and modify each artifact. In the
 dead disk images. We can use this feature to run the exact same VQL
 artifacts that we normally do on live systems, but against a dead disk
 image. If you would like to read more about this new feature check out
-[Dead Disk Forensics]({{< ref "/blog/2022/2022-03-22-deaddisk/" >}}).
+[Dead Disk Forensics](/blog/2022/2022-03-22-deaddisk/).
 
 ## Resource control
 
@@ -111,8 +111,9 @@ for a discussion of these limits.
 
 ### The offline collector resource controls
 
-Many people use the [Velociraptor offline collector]({{< ref
-"/docs/deployment/offline_collections/" >}}) to collect artifacts
+Many people use the
+[Velociraptor offline collector](/docs/deployment/offline_collections/)
+to collect artifacts
 from endpoints which they are unable to install a proper client/server
 architecture on. In previous versions there was no resource control or
 time limits imposed on the offline collector because it was assumed
@@ -181,7 +182,7 @@ Many people ask questions on the Discord channel and learn new
 capabilities in Velociraptor. We want to try a similar format to help
 people discover what Velociraptor can do.
 
-The [Velociraptor knowledge base]({{< ref "/knowledge_base/" >}}) is a
+The [Velociraptor knowledge base](/knowledge_base/) is a
 new area on the documentation site that allows anyone to submit small
 (1-2 paragraphs) tip about how to do a particular task. Knowledge base
 tips are phrased as questions to help people search for them. Tips
@@ -221,6 +222,5 @@ spin](https://github.com/Velocidex/velociraptor)!  It is a available
 on GitHub under an open source license. As always please file issues
 on the bug tracker or ask questions on our mailing list
 [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com)
-. You can also chat with us directly on discord
-[https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+. You can also chat with us directly on [Discord](/discord/).
 .

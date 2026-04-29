@@ -5,9 +5,9 @@ weight: 90
 no_menu: true
 ---
 
-This workshop will take place on the 10th May 2023.
+This workshop took place on the 10th May 2023.
 
-[Full agenda](https://conference.auscert.org.au/sessions/incident-response-with-velociraptor/)
+
 
 ## Incident Response with Velociraptor
 

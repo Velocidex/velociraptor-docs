@@ -19,7 +19,7 @@ Artifacts can import the `export` section from other artifacts using the
 ![VQL reuse with export/imports](export_imports.svg)
 
 The VQL compiler automatically inserts all VQL statements in the
-`export` section before each [source]({{< ref "/docs/artifacts/sources/" >}}).
+`export` section before each [source](/docs/artifacts/sources/).
 
 It then inserts the VQL statements in the `export` sections from the artifacts
 listed in the `imports` section before each source.
@@ -33,11 +33,11 @@ these statements are concatenated and then executed is:
 3. VQL from `sources`
 
 If the artifact's sources run in
-[series]({{< ref "/docs/artifacts/preconditions/#serial-vs-parallel-execution" >}})
+[series](/docs/artifacts/preconditions/#serial-vs-parallel-execution)
 then the additional VQL from `export` and `imports` only executes once. If the
 sources run in parallel then the additional VQL is executed for each source.
 The execution mode is determined by the presence or absence of source-level
-[preconditions]({{< ref "/docs/artifacts/preconditions/" >}}).
+[preconditions](/docs/artifacts/preconditions/).
 
 ## Export
 
@@ -71,14 +71,14 @@ which are importing the VQL would need to ensure that they also provided the
 referenced parameter themselves.
 
 An artifact can contain an `export` section but no `sources` and still be
-[imported by other artifacts]({{< ref "/docs/artifacts/use_cases/#export-only-artifacts-sharing-vql-via-export-imports" >}}).
+[imported by other artifacts](/docs/artifacts/use_cases/#export-only-artifacts-sharing-vql-via-export-imports).
 In such a scenario, the artifact serves only as a container for reusable VQL
 since it can't itself be run (because it has no sources).
 
 
 ## Imports
 
-Any [type]({{< ref "/docs/artifacts/basic_fields/#-type-" >}})
+Any [type](/docs/artifacts/basic_fields/#-type-)
 of artifact can import the `export` section from any other type of artifact -
 importing is not constrained by artifact type.
 
@@ -92,7 +92,7 @@ When importing from multiple artifacts, the VQL preserves the order of the
 the importing artifact), but _before_ the VQL from each source.
 
 You can also perform imports in VQL using the
-[import]({{< ref "/vql_reference/server/import/" >}}) function. For example:
+[import](/vql_reference/server/import/) function. For example:
 
 ```vql
 LET _ <= import(artifact="Windows.System.VAD")

@@ -17,15 +17,15 @@ your idea, and then packaging it into an reusable artifact.
 **1. Set up an artifact development environment**
 
 - The first step is to develop the VQL that will achieve your goal by writing
-  the VQL in a [notebook]({{< ref "/docs/notebooks/" >}}) on the target
+  the VQL in a [notebook](/docs/notebooks/) on the target
   operating system itself. You can instantly set up such a VQL development
   environment by running `velociraptor gui` on the target operating system.
-  This will start a [self-contained Velociraptor server]({{< ref "/docs/deployment/#instant-velociraptor" >}})
+  This will start a [self-contained Velociraptor server](/docs/deployment/#instant-velociraptor)
   which includes a single built-in client.
 
 - Velociraptor global notebooks are actually a special kind of artifact where
   each cell corresponds to an artifact source. You can create a
-  [notebook template]({{< ref "/docs/artifacts/notebook_templates/" >}})
+  [notebook template](/docs/artifacts/notebook_templates/)
   that defines your parameters, tools, imports and exports - almost anything
   you would need in a normal artifact. Notebooks also support file "uploads"
   if you need to use that function within your VQL.
@@ -167,5 +167,5 @@ your artifacts.
 
 - Well-structured VQL with helpful inline comments is the ideal way to make your
   artifacts comprehensible to others. Try out the
-  [Reformat VQL]({{< ref "/docs/gui/artifacts/#editor-preferences-and-vql-reformatting" >}})
+  [Reformat VQL](/docs/gui/artifacts/#editor-preferences-and-vql-reformatting)
   button in the artifact editor.

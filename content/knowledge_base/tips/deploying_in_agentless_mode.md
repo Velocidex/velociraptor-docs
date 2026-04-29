@@ -7,7 +7,7 @@ it permanently as a service.
 
 It is possible to deploy the client using Group Policy by using
 `Scheduled task` feature to cause domain connected machines to run the
-client. See details [here]({{< ref "/blog/html/2019/03/02/agentless_hunting_with_velociraptor/" >}}).
+client. See details [here](/blog/html/2019/03/02/agentless_hunting_with_velociraptor/).
 
 1. The first step is to place the client and the generated
    `client.config.yaml` on a public read only windows share.

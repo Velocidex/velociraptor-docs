@@ -1,10 +1,7 @@
-+++
-title = "Vtypes"
-type = "code"
-[sitemap]
-  disable = true
-vanity = "https://github.com/Velocidex/vtypes"
-aliases = [
-
-]
-+++
+---
+title: "Vtypes"
+type: "code"
+sitemap:
+  disable: true
+vanity: "https://github.com/Velocidex/vtypes"
+---

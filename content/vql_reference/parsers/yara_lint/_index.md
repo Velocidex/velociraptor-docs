@@ -45,7 +45,7 @@ large rule sets.
 You can run this function on the server to produce a smaller rule set
 (removing the metadata etc). Alternatively you can modify your yara
 artifacts to prefilter the rules with it before loading into the
-[yara]({{< ref "/vql_reference/parsers/yara/" >}})
+[yara](/vql_reference/parsers/yara/)
 plugin.
 
 ### Example

@@ -34,10 +34,10 @@ capabilities.
 
 ## What is Sigma?
 
-You can read more about Sigma in our [Detection Engineering]({{< ref
-"/blog/2024/2024-05-09-detection-engineering/" >}}) blog post. Since
-that post, Sigma has been adopted as the standard detection mechanism
-within Velociraptor.
+You can read more about Sigma in our
+[Detection Engineering](/blog/2024/2024-05-09-detection-engineering/)
+blog post. Since that post, Sigma has been adopted as the standard
+detection mechanism within Velociraptor.
 
 To begin, let's define some terms.  In Velociraptor an `Event` is
 simply a key/value set (AKA a `Dictionary` or `Row`). The `Event` can
@@ -171,10 +171,11 @@ for triaging event log files on Windows:
 2. The model defines a set of `Field Mappings` to access common fields
    within the event log messages, as extracted by the `Log Sources`.
 
-This model is useful for [rapidly triaging event logs]({{% ref
-"/training/playbooks/triage-logs/" %}}) on an endpoint in order to
-quickly surface relevant events. You can view the details of this
-Sigma Model on the Velociraptor Sigma project's pages
+This model is useful for
+[rapidly triaging event logs](/training/playbooks/triage-logs/)
+on an endpoint in order to quickly surface relevant events. You can
+view the details of this Sigma Model on the Velociraptor Sigma
+project's pages
 
 ![Windows Base Sigma Model triages event logs ](windows_base.svg)
 
@@ -206,7 +207,7 @@ directly consume a large set of rules from another project (For example
 the
 [Windows.Sigma.Base](https://sigma.velocidex.com/docs/models/windows_base/)
 model was written to consume Hayabusa rules for the
-[Windows.Hayabusa.Ruleset](https://sigma.velocidex.com/docs/artifacts/velociraptor_hayabusa_ruleset/)
+[Windows.Hayabusa.Ruleset](https://sigma.velocidex.com/docs/artifacts/windows.hayabusa.rules/)
 artifact), while others are defined to make powerful telemetry events
 available to rule writers (For example the
 [Windows.ETW.Base](https://sigma.velocidex.com/docs/models/windows_etw_base/)

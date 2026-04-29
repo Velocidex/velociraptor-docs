@@ -38,8 +38,8 @@ FROM scope()
 ```
 ### See also
 
-- [ip]({{< ref "/vql_reference/other/ip/" >}}): Format an IP address.
-- [geoip]({{< ref "/vql_reference/other/geoip/" >}}): Lookup an IP Address
+- [ip](/vql_reference/other/ip/): Format an IP address.
+- [geoip](/vql_reference/other/geoip/): Lookup an IP Address
   using the MaxMind GeoIP database.
 
 

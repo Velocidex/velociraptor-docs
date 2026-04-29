@@ -29,7 +29,7 @@ chunk_size|The number of rows to send at the time.|int64
 addresses|A list of Elasticsearch nodes to use.|list of string
 username|Username for HTTP Basic Authentication.|string
 password|Password for HTTP Basic Authentication.|string
-cloud_id|Endpoint for the Elastic Service (https://elastic.co/cloud).|string
+cloud_id|Endpoint for the [Elastic Cloud Service](https://elastic.co/cloud).|string
 api_key|Base64-encoded token for authorization; if set, overrides username and password.|string
 wait_time|Batch elastic upload this long (2 sec).|int64
 pipeline|Pipeline for uploads|string

@@ -85,9 +85,9 @@ in a notebook cell and tweak the arguments to understand their impacts.
 
 ### See also
 
-- [format]({{< ref "/vql_reference/popular/format/" >}}): a function that uses the same
+- [format](/vql_reference/popular/format/): a function that uses the same
   string formatting syntax.
-- [alert]({{< ref "/vql_reference/other/alert/" >}}): alerts are a special type of log
+- [alert](/vql_reference/other/alert/): alerts are a special type of log
   message that are added to a server alerts queue, which can be monitored.
 
 

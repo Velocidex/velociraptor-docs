@@ -139,7 +139,7 @@ Now I have explained the decode process, time to enable both detection
 and decode automation in Velociraptor.
 
 I have recently released
-[Windows.Carving.Qakbot](https://docs.velociraptor.app/exchange/artifacts/pages/qakbot/)
+[Windows.Carving.Qakbot](/exchange/artifacts/pages/qakbot/)
 which leverages a PE dump capability in Velociraptor 0.6.8 to enable
 live memory analysis. The goal of the artifact was to automate my
 decoding workflow for a generic Qakbot parser and save time for a
@@ -225,4 +225,4 @@ post.
 1. [Malpedia, Qakbot](https://malpedia.caad.fkie.fraunhofer.de/details/win.qakbot)
 2. [Elastic, QBOT Malware Analysis](https://www.elastic.co/security-labs/qbot-malware-analysis)
 3. [Hasherezade, Hollows Hunter](https://github.com/hasherezade/hollows_hunter)
-4. [Windows.Carving.Qakbot](https://docs.velociraptor.app/exchange/artifacts/pages/qakbot/)
+4. [Windows.Carving.Qakbot](/exchange/artifacts/pages/qakbot/)

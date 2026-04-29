@@ -137,7 +137,7 @@ If all goes well the Google cloud console will give us a client ID and a
 client secret. We can then copy those into the Velociraptor
 configuration file under the GUI section:
 
-``` {.sourceCode .yaml}
+```.yaml
 GUI:
   google_oauth_client_id: 1234xxxxxx.apps.googleusercontent.com
   google_oauth_client_secret: qsadlkjhdaslkjasd
@@ -155,7 +155,7 @@ Audit related events.
 
 Now we can start the Velociraptor frontend:
 
-``` {.sourceCode .bash}
+```sh
 $ velociraptor --config server.config.yaml frontend
 ```
 

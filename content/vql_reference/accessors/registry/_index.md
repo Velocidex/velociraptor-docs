@@ -75,14 +75,14 @@ FROM read_reg_key(root='HKEY_USERS', globs='*/Environment')
 
 ### See also
 
-- [read_reg_key]({{< ref "/vql_reference/windows/read_reg_key/" >}}):
+- [read_reg_key](/vql_reference/windows/read_reg_key/):
   A convenience plugin which applies the globs to the registry accessor to
   find keys.
-- [reg_rm_key]({{< ref "/vql_reference/windows/reg_rm_key/" >}}):
+- [reg_rm_key](/vql_reference/windows/reg_rm_key/):
   Removes a key and all its values from the registry.
-- [reg_rm_value]({{< ref "/vql_reference/windows/reg_rm_value/" >}}):
+- [reg_rm_value](/vql_reference/windows/reg_rm_value/):
   Removes a value in the registry.
-- [reg_set_value]({{< ref "/vql_reference/windows/reg_set_value/" >}}):
+- [reg_set_value](/vql_reference/windows/reg_set_value/):
   Set a value in the registry.
 
 

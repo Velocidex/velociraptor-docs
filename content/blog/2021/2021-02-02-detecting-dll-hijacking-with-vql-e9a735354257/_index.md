@@ -93,4 +93,4 @@ This quick VQL is only suitable to detect one type of DLL hijack — one using f
 
 In this exercise we went from a blog post and a POC tool to a detection artifact in a short time, and were able to easily deploy and subsequently hunt for these.
 
-The above example is just one of the exercises we do in our hands on Velociraptor courses. If you are interested in learning more about Velociraptor, check out our hands on training courses on [https://www.velocidex.com/training/](https://www.velocidex.com/training/) or check out the code on [GitHub](https://github.com/Velocidex/velociraptor). To chat, please join us on discord [https://www.velocidex.com/discord](https://www.velocidex.com/discord).
+The above example is just one of the exercises we do in our hands on Velociraptor courses. If you are interested in learning more about Velociraptor, check out our hands on training courses [here](/training/) or check out the code on [GitHub](https://github.com/Velocidex/velociraptor). To chat, please join us on [Discord](/discord/).

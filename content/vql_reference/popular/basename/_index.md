@@ -37,6 +37,6 @@ basename(path="/foo/bar") -> "bar"
 
 ### See also
 
-- [dirname]({{< ref "/vql_reference/other/dirname/" >}})
+- [dirname](/vql_reference/other/dirname/)
 
 

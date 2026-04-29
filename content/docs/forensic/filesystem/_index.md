@@ -16,7 +16,7 @@ file content, size or other properties.
 
 ### Glob basics
 
-Velociraptor has the [glob]({{< ref "/vql_reference/popular/glob/" >}})
+Velociraptor has the [glob](/vql_reference/popular/glob/)
 plugin to search for files using a glob expression. Glob expressions use
 wildcards to search the filesystem for matches, and these are the most common
 tool for searching by filename. As you will see below, the `glob()` plugin is
@@ -48,7 +48,7 @@ FROM glob(globs='C:\\Users\\**\\*.exe')
 {{% notice info "String escaping in VQL" %}}
 
 Strings in VQL can include a
-[backslash escape sequence]({{< ref "/docs/vql/fundamentals/#string-constants" >}}).
+[backslash escape sequence](/docs/vql/fundamentals/#string-constants).
 Since Windows paths use backslashes for the path separator you will need to
 escape these backslashes with backslashes, which can be confusing.
 
@@ -88,7 +88,7 @@ also contain path separator characters in which case the component is
 quoted in the path.
 
 For a more in-depth discussion of paths in Velociraptor see
-[Velociraptor Paths]({{< ref "/docs/forensic/filesystem/paths/" >}})
+[Velociraptor Paths](/docs/forensic/filesystem/paths/)
 
 ### The glob root
 
@@ -154,7 +154,7 @@ expression to search the registry?
 
 Velociraptor supports direct access to many different data sources
 with such hierarchical trees via
-[accessors]({{< ref "/vql_reference/accessors/" >}}),
+[accessors](/vql_reference/accessors/),
 which are essentially filesystem access drivers.
 
 Some common accessors are:
@@ -175,7 +175,7 @@ other rules - sometimes found in local security software).
 
 ### Searching the Windows registry
 
-The [`registry` accessor]({{< ref "/vql_reference/accessors/registry/" >}})
+The [`registry` accessor](/vql_reference/accessors/registry/)
 (or `reg` for short) allows any filesystem functions and plugins to also work on
 the registry. For example, here we use the `glob` plugin to list keys:
 
@@ -260,14 +260,14 @@ registry paths as they would appear on a live system when using the registry
 API.
 
 This uses Velociraptor's powerful
-[accessor remapping]({{< ref "/docs/forensic/filesystem/remapping/" >}})
+[accessor remapping](/docs/forensic/filesystem/remapping/)
 feature.
 
 It's a bit more complicated to do this, but generally this is automatically done
 when you're using artifacts such as:
 - [`Generic.Forensic.SQLiteHunter`](https://sqlitehunter.velocidex.com/docs/)
-- [`Windows.KapeFiles.Remapping`]({{< ref "/artifact_references/pages/windows.kapefiles.remapping/" >}})
-- [`Generic.Utils.DeadDiskRemapping`]()
+- [`Windows.KapeFiles.Remapping`](/artifact_references/pages/windows.kapefiles.remapping/)
+- [`Generic.Utils.DeadDiskRemapping`](/artifact_references/pages/generic.utils.deaddiskremapping/)
 
 which already have the necessary remapping logic included.
 
@@ -280,9 +280,9 @@ hive, so if we rely on the Windows API we will miss any settings for users who
 are not currently logged on.
 
 If you're creating your own artifact that need to do this remapping then you can
-[import]({{< ref "/docs/artifacts/export_imports/#imports" >}})
+[import](/docs/artifacts/export_imports/#imports)
 the `export` section from
-[`Windows.Registry.NTUser`]({{< ref "/artifact_references/pages/windows.registry.ntuser/" >}})
+[`Windows.Registry.NTUser`](/artifact_references/pages/windows.registry.ntuser/)
 which contains the necessary VQL remapping logic.
 
 {{% /notice %}}

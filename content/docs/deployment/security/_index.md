@@ -25,10 +25,9 @@ steps to ensure user actions are audited and controlled.
 
 How do Velociraptor clients communicate with the server? You can read
 a lot more details about Velociraptor's encryption scheme and
-communication protocol in our [Velociraptor Communications Blog
-post]({{< ref
-"/blog/2020/2020-09-28-velociraptor-network-communications-30568624043a/_index.md"
->}}), but we will go through the most important aspects here.
+communication protocol in our
+[Velociraptor Communications Blog post](/blog/2020/2020-09-28-velociraptor-network-communications-30568624043a/),
+but we will go through the most important aspects here.
 
 ### Velociraptor’s internal PKI
 
@@ -36,11 +35,11 @@ Every Velociraptor deployment creates an internal PKI which underpins
 it. The configuration wizard create an internal CA with an X.509
 certificate and a private key. This CA is used to
 
-1. Creating [initial server certificates]({{% ref "/docs/deployment/references/#Frontend.certificate" %}})
+1. Creating [initial server certificates](/docs/deployment/references/#Frontend.certificate)
    and any additional certificates for key rotation.
 
 2. Verifying the server during client-server communications. [The CA public
-   certificate]({{% ref "/docs/deployment/references/#Client.ca_certificate" %}})
+   certificate](/docs/deployment/references/#Client.ca_certificate)
    is embedded in the client’s configuration and is used to verify (and therefore trust) the server.
 
 3. Creating API keys for programmatic access. The server is then able to verify
@@ -64,9 +63,9 @@ reissued without re-deploying all the clients.
 
 In a secure installation you should remove the `CA.private_key` section from
 the server config and keep it offline. You only need it to
-[create new API keys]({{< ref "/docs/server_automation/server_api/#creating-an-api-client-configuration" >}})
+[create new API keys](/docs/server_automation/server_api/#creating-an-api-client-configuration)
 and when
-[rotating server certificates]({{< ref "/knowledge_base/tips/rolling_certificates/" >}})
+[rotating server certificates](/knowledge_base/tips/rolling_certificates/)
 (typically after 1 year).
 The server does not need it during normal operations.
 
@@ -292,10 +291,10 @@ In this scenario, the client needs to verify the TLS connections using this cust
 
 If your users normally access the GUI from a predictable
 network IP block you can add a list of network addresses in the
-[GUI.allowed_cidr]({{% ref
-"/docs/deployment/references/#GUI.allowed_cidr" %}}) part of the
-config file. This setting will automatically reject connections to the
-GUI applications from IP addresses outside the allowed range.
+[GUI.allowed_cidr](/docs/deployment/references/#GUI.allowed_cidr)
+part of the config file. This setting will automatically reject
+connections to the GUI applications from IP addresses outside the
+allowed range.
 
 ### Deploying mTLS authentication
 
@@ -355,8 +354,8 @@ _should NOT be followed_.
 Once the key is generated you can see it in the resulting yaml file encoded in
 PEM format. Simply copy the two blocks - `client_private_key` and
 `client_cert` - into the client's config file
-[Client.Crypto.client_certificate]({{% ref "/docs/deployment/references/#Client.Crypto.client_certificate" %}})
-and [Client.Crypto.client_certificate_private_key]({{% ref "/docs/deployment/references/#Client.Crypto.client_certificate_private_key" %}}),
+[Client.Crypto.client_certificate](/docs/deployment/references/#Client.Crypto.client_certificate)
+and [Client.Crypto.client_certificate_private_key](/docs/deployment/references/#Client.Crypto.client_certificate_private_key),
 or into the server config if you intend to use the GUI to repack the MSI or
 generate client configs for multiple orgs (service restart will be required to
 read these new config items).
@@ -392,9 +391,8 @@ config in your client package, for example MSI for Windows clients.
 
 On the server you can require frontend connections to present valid
 client side certificates by setting the
-[Frontend.require_client_certificates]({{% ref
-"/docs/deployment/references/#Frontend.require_client_certificates"
-%}}) to true.
+[Frontend.require_client_certificates](/docs/deployment/references/#Frontend.require_client_certificates)
+config setting to true.
 
 Once this setting is made it will not be possible to connect to the
 frontend without presenting a relevant client side certificate. This
@@ -447,14 +445,14 @@ is visible to administrators)
 
 Velociraptor offers a number of options to authenticate users into the
 GUI. The type of authenticator is specified in the
-[GUI.authenticator.type]({{% ref
-"/docs/deployment/references/#GUI.authenticator.type" %}})
+[GUI.authenticator.type](/docs/deployment/references/#GUI.authenticator.type)
 setting. The config wizard supports some basic authenticators but
 others have to be manually configured.
 
 To make deployment easier the configuration wizard supports creating
 `Initial Users`. These user accounts will be created automatically
-when the server starts upon first installation and be given the administrator role.
+when the server starts upon first installation and be given the
+administrator role.
 
 This provides a way to bootstrap the administrator into the server. If
 the `Basic` authentication method is specified, the password hashes
@@ -555,15 +553,17 @@ report them taking place.
 
 Velociraptor records auditable actions in two ways:
 1. The Audit log is written to the audit directory
-2. The Audit event is written to the `Server.Audit.Logs` event artifact.
+2. The Audit event is written to the `Server.Audit.Logs` event
+   artifact.
 
 This allows events to be recorded and **also** be automatically acted
 upon with a server event query using the `watch_monitoring()` plugin.
 
 You can forward server event logs to a remote syslog server by setting
-the value in the [Logging.remote_syslog_server]({{% ref
-"/docs/deployment/references/#Logging.remote_syslog_server" %}}) part
-of the config. We recommend this be done to archive audit logs.
+the value in the
+[Logging.remote_syslog_server](/docs/deployment/references/#Logging.remote_syslog_server)
+setting in the config. We recommend this be done to archive audit
+logs.
 
 However, much more interestingly, Velociraptor treats server audit
 events as simply another event query called
@@ -625,7 +625,7 @@ authentication service (e.g. OIDC)
 A number of public identity providers are directly supported in
 Velociraptor and based on OAuth2 protocol.
 
-You can read more about setting up [GitHub, Azure and Google]({{% ref "/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/" %}}) as an OAuth2 provider.
+You can read more about setting up [GitHub, Azure and Google](/blog/2020/2020-08-17-velociraptor-sso-authentication-6dd68d46dccf/) as an OAuth2 provider.
 
 
 ### Lock down mode
@@ -689,7 +689,7 @@ intention is benign or not - it could just be that you want to ensure that the
 IT department doesn't accidentally deploy new clients beyond a certain point.
 
 To ensure that no new clients can enroll, you can set the value of the
-[`Frontend.resources.enrollments_per_second`]({{< ref "/docs/deployment/references/#Frontend.resources.enrollments_per_second" >}})
+[`Frontend.resources.enrollments_per_second`](/docs/deployment/references/#Frontend.resources.enrollments_per_second)
 configuration key to `-1`.
 
 As with all server config changes, this will require a service restart. To
@@ -709,12 +709,17 @@ plugins, even those that might compromise the server (e.g. the
 For shared server environments it is better to prevent these plugins
 from running at all - even for administrators.
 
-Velociraptor allows the configuration file to specify which VQL plugins are allowed using the [defaults.allowed_plugins]({{% ref "/docs/deployment/references/#defaults.allowed_plugins" %}}), [defaults.allowed_functions]({{% ref "/docs/deployment/references/#defaults.allowed_functions" %}}) and [defaults.allowed_accessors]({{% ref "/docs/deployment/references/#defaults.allowed_accessors" %}})
+Velociraptor allows the configuration file to specify which VQL
+plugins are allowed using the
+[security.allowed_plugins](/docs/deployment/references/#security.allowed_plugins),
+[security.allowed_functions](/docs/deployment/references/#security.allowed_functions)
+and
+[security.allowed_accessors](/docs/deployment/references/#security.allowed_accessors)
 
 The easiest way to populate these is to answer Yes to `Do you want to
 restrict VQL functionality on the server?` in the configuration
 wizard. This will implement the [default allow
-list](https://github.com/Velocidex/velociraptor/blob/master/bin/allowlist.go)
+list](https://github.com/Velocidex/velociraptor/blob/master/tools/survey/allowlist.go)
 (which you can tweak later as required).
 
 If these lists are populated, only the plugins mentioned are allowed
@@ -730,17 +735,17 @@ depend on a plugin which is not in the allow list will fail).
 
 ## Securing VQL
 
-Velociraptor uses VQL extensively in the form of [artifacts]({{% ref
-"/docs/artifacts/" %}}) and [notebooks]({{% ref
-"/docs/notebooks" %}}). Since a VQL query can do many potentially
-dangerous actions, it is important to restrict the type of actions the
-query can perform based on the user's ACL token. When the VQL query is
-started, the user's ACL token is loaded into the query environment. As
-the query continues executing, various VQL plugins and functions are
-evaluated by the VQL engine. VQL plugins and functions may have
-requirements as to the type of permission required to run. You can see
-the required permission for each plugin in the [VQL reference]({{% ref
-"/vql_reference" %}}) page.
+Velociraptor uses VQL extensively in the form of
+[artifacts](/docs/artifacts/) and
+[notebooks](/docs/notebooks/).
+Since a VQL query can do many potentially dangerous actions, it is
+important to restrict the type of actions the query can perform based
+on the user's ACL token. When the VQL query is started, the user's ACL
+token is loaded into the query environment. As the query continues
+executing, various VQL plugins and functions are evaluated by the VQL
+engine. VQL plugins and functions may have requirements as to the type
+of permission required to run. You can see the required permission for
+each plugin in the [VQL reference](/vql_reference/) page.
 
 ![Example VQL reference showing required permissions](vql_reference.png)
 
@@ -765,7 +770,7 @@ way regardless of who launched the collection in the first place.
 
 However this may give lower privilege users a lot of power over the
 entire network. For example the artifact
-[Windows.System.PowerShell]({{< ref "/artifact_references/pages/windows.system.powershell/" >}}) allows
+[Windows.System.PowerShell](/artifact_references/pages/windows.system.powershell/) allows
 running arbitrary shell commands on the endpoint. While this is a
 useful capability in limited situations it may lead to severe
 compromise if misused!
@@ -818,3 +823,87 @@ by the user that initiates the collection.
 
 
 {{% /notice %}}
+
+
+## Managing org access
+
+Velociraptor provides ACL separation to users based on an org (or
+tenant) model. This means the same user may have different ACLs in
+different orgs - they may only have read access in one org and full
+admin access in another org.
+
+While this is convenient, it is not enough to provide complete
+separation to untrusted users.
+
+If an untrusted user has access to one org but does not have access to
+another, there are multiple ways which allow the user to read/modify
+data in the other org:
+
+### Shelling out
+
+By default, users have access to the `execve()` plugin providing they
+have the `EXECVE` permission (normally given to administrators). This
+allows an administrator in one org to run arbitrary code on the
+server - which may allow them to just read the file store of another
+org.
+
+You may disable the `execve()` plugin using the [configuration
+file](/docs/deployment/references/#security.denied_plugins)
+
+```yaml
+security:
+  denied_plugins:
+      - execve
+```
+
+### Accessing files directly
+
+Velociraptor org data are stored on disk in separate directories. This
+means that users that have access to the `file` accessor can simply
+read the other org's data bypassing the ACLs.
+
+For example, the following query will read all orgs datastore files:
+
+```vql
+SELECT * FROM glob(globs="/opt/velociraptor/orgs/**")
+```
+
+In recent versions of Velociraptor, it is possible to restrict the
+operation of the `file` accessor using the [configuration
+file](/docs/deployment/references/#security.denied_file_accessor_prefix). The
+following stops direct file access to the `/opt/velociraptor/`
+directory. On Linux many files can be read using the `/proc/`
+filesystem too. A more restrictive deployment will have more paths
+here.
+
+```yaml
+security:
+  denied_file_accessor_prefix:
+      - /opt/velociraptor/
+      - /etc/
+      - /proc/
+```
+
+Other accessors may provide access to different orgs in some
+situations. For example when running the server as root, the `ext4` or
+`ntfs` accessors may allow direct reading of the filesystem
+inode. Usually we recommend running the server on Linux as a non-root
+user to prevent these issues.
+
+In summary, although it is possible to restrict user access to
+different orgs this should be considered best effort. Much thought is
+required to truly isolate an untrusted user to some orgs, preventing
+access to other orgs. The recommendation is to avoid giving untrusted
+and potentially malicious users to the Velociraptor GUI at all.
+
+If you require true data isolation between orgs, we recommend to spin
+up a separate Velociraptor instance (Virtual Machine or container) for
+each unique deployment.
+
+### The root org
+
+The root org is more privileged than other orgs. Giving a user access
+to this org allows them to affect other orgs. For example, any custom
+artifact created in the root org will be visible to all other orgs.
+
+You should only give trusted users access to the root org.

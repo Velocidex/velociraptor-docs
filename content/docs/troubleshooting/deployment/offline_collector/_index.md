@@ -21,7 +21,7 @@ In that case the offline collector creation process will fail and log the error:
 > `client_repack: config file is too large to embed.`
 
 To cater for configs of unlimited size we provide the
-[Generic Collector]({{< ref "/docs/deployment/offline_collections/#the-generic-collector" >}}).
+[Generic Collector](/docs/deployment/offline_collections/#the-generic-collector).
 
 ![Generic collector option](too_large_to_embed.png)
 
@@ -49,7 +49,7 @@ or something similar, then there are a few possibilities:
   upgraded to benefit from new features, improvements and bugfixes, but also to
   maintain full compatibility with the server for the purpose of importing
   collections. See
-  [here]({{< ref "/docs/deployment/offline_collections/updating/" >}})
+  [here](/docs/deployment/offline_collections/updating/)
   for more info.
 
 - `import_collection: unable to load collection_context: Unable to extract zip password: crypto/rsa: decryption error`
@@ -70,4 +70,4 @@ or something similar, then there are a few possibilities:
 For debugging more advanced issues, the offline collector also provides the same
 Debug Console that is available on the server and clients.
 To learn how to enable and access it please see
-[Debugging the offline collector]({{< ref "/docs/troubleshooting/debugging/#debugging-the-offline-collector" >}}).
+[Debugging the offline collector](/docs/troubleshooting/debugging/#debugging-the-offline-collector).

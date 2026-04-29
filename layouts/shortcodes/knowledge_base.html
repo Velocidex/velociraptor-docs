@@ -4,7 +4,7 @@
 
 <div class="row searchbar">
   <div class="input-group col-lg-8 pull-left">
-    <input type="text" id="myInput" onkeyup="doSearch()" class="form-control"
+    <input type="text" id="myInput" onkeyup="doSearchKB()" class="form-control"
            placeholder="Search the knowledge base" aria-describedby="basic-addon2">
     <span class="input-group-addon" id="basic-addon2"><i class="fas fa-search"></i></span>
   </div>
@@ -81,79 +81,5 @@ Once you finish writing the article, simply save it to a local branch and send a
 <div class="row search_results"></div>
 
 <script>
-let all_data = [];
-
-$.ajax({
-  url: "/kb/data.json",
-}).done(function( data ) {
-  all_data = data;
-  DrawResults(data);
-});
-
-$(document).ready(function () {
-    $('#myInput').focus();
-});
-
-function doSearch() {
-  // Declare variables
-  let input = document.getElementById('myInput');
-  let filter = input.value.toUpperCase();
-
-  let result = [];
-  for(let i=0;i<all_data.length; i++) {
-    let item = all_data[i];
-
-    if (item.title.toUpperCase().includes(filter)) {
-      result.push(item);
-    }
-  };
-  DrawResults(result);
-}
-
-function DrawResults(data) {
-  $(".search_results").empty();
-
-  for(let i=0;i<data.length; i++) {
-    let item = data[i];
-    let template = $(`
-<div class="well well-sm color container-fluid">
-  <div class="row">
-    <div class="col-md-10">
-      <div class="row">
-         <div class="col-md-12">
-           <a class="title" href=""><h3 class="panel-title color " ></h3></a>
-         </div>
-      </div>
-      <div class="row">
-         <div class="col-md-12 kb-tag">
-           <div class="idea-tag"/>
-         </div>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <span class="user-name" href=""></span>
-      <span class="date"></span>
-      <a class="user-name-link"></a>
-      <img class="user-avatar inline">
-    </div>
-  </div>
-</div>`);
-
-    template.find(".title").append(item.title);
-    template.find(".user-name-link").append(item.author);
-    template.find(".description").append(item.description);
-    template.find(".user-name-link").attr("href", item.author_link);
-    template.find(".user-avatar").attr("src", item.author_avatar);
-    template.find(".title").attr("href", item.link);
-    template.find(".date").append(item.date)
-
-    for (let j=0; j<item.tags.length; j++) {
-        let tag = item.tags[j];
-        template.find(".idea-tag").
-            append($(`<a class="tag">`).attr("href", "/tags/" + tag).
-                   append(`<i class="linkcolour tag label label-success">` + tag + `</i>&nbsp;`));
-    }
-    let new_item = $(".search_results").append(template);
-  }
-};
+  initKB();
 </script>

@@ -14,9 +14,9 @@ outputs:
 
 The following CVEs have been noted.
 
-Please upgrade to [the current release]({{< ref "/downloads" >}}).
+Please upgrade to [the current release](/downloads/).
 
 {{% children description=true style="h4" %}}
 
-Please consider subscribing to our [Security Advisories RSS feed]({{<
-ref "/rss" >}}) to receive timely notifications.
+Please consider subscribing to our
+[Security Advisories RSS feed](/rss/) to receive timely notifications.

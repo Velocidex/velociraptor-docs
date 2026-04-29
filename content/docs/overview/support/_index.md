@@ -111,7 +111,8 @@ initially.
 The Velociraptor server may be upgraded by keeping the same server
 configuration file, and data store as the previous version. We
 generally ensure that suitable migration code is run on upgrades on a
-best effort basis. See [server upgrades documentation]({{<ref "/docs/deployment/server/#server-upgrades" >}}).
+best effort basis. See
+[server upgrades documentation](/docs/deployment/server/upgrades/).
 
 The release notes may indicate additional caveats or steps that need
 to be taken during the upgrade.
@@ -173,7 +174,7 @@ issue tracker](https://github.com/Velocidex/velociraptor/issues).
 
 As an open source project, the community is our greatest resource!
 Many of us hang on the [discord
-channel](https://docs.velociraptor.app/discord/), and are all too
+channel](/discord/), and are all too
 happy to help.
 
 We also have a mailing list velociraptor-discuss@googlegroups.com that

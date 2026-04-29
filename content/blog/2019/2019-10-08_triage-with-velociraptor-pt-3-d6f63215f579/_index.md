@@ -13,13 +13,13 @@ keywords: []
 This is the final part of this three part series of articles
 describing how to use Velociraptor to collect files from an
 endpoint. Our [first
-part](https://medium.com/@mike_89870/triage-with-velociraptor-pt-1-253f57ce96c0)
+part](/blog/2019/2019-10-02_triage-with-velociraptor-pt-1-253f57ce96c0/)
 shows how we can use the Velociraptor agent in a typical client/server
 setting to collect artifacts from one or many endpoints at the push of
 a button, within seconds.
 
 [Part
-two](https://medium.com/@mike_89870/triage-with-velociraptor-pt-2-d0f79066ca0e)
+two](/blog/2019/2019-10-04_triage-with-velociraptor-pt-2-d0f79066ca0e/)
 examined what to do if Velociraptor is not already installed as an
 agent (or can not be remotely installed). In this case we used an
 accomplice user with administrator privileges (or group policy) on the
@@ -182,4 +182,4 @@ this way. The key strength of Velociraptor is its flexibility and
 ability to adapt to any situation through the use of the powerful
 Velociraptor Query Language (VQL).
 
-Users who feel comfortable writing their own VQL can adapt Velociraptor easily to evolving situations and collect new artifacts quickly. Check out the official [VQL reference](https://www.velocidex.com/docs/vql_reference/), [Download the latest version](https://github.com/Velocidex/velociraptor) of Velociraptor from GitHub and join the community of power users.
+Users who feel comfortable writing their own VQL can adapt Velociraptor easily to evolving situations and collect new artifacts quickly. Check out the official [VQL reference](/vql_reference/), [Download the latest version](https://github.com/Velocidex/velociraptor) of Velociraptor from GitHub and join the community of power users.

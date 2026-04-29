@@ -37,6 +37,6 @@ dirname(path="/usr/bin/ls") -> "/usr/bin"
 
 ### See also
 
-- [basename]({{< ref "/vql_reference/popular/basename/" >}})
+- [basename](/vql_reference/popular/basename/)
 
 

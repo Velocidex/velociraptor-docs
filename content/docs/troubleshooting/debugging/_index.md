@@ -22,7 +22,7 @@ aspects of the program. These profiles exist regardless of whether Velociraptor
 is being run as a client or server or even an offline collector.
 
 You can read more about profiling in our blog article
-[Profiling the Beast]({{% ref "/blog/2020/2020-08-16-profiling-the-beast-58913437fd16/" %}}).
+[Profiling the Beast](/blog/2020/2020-08-16-profiling-the-beast-58913437fd16/).
 
 ## Collecting Profiles
 
@@ -72,7 +72,7 @@ view of the debugging profiles.
 
 On the server the Debug Console is always available by default. You can access
 it from the main Welcome page. For clients and offline collectors please see the
-[sections below]({{< relref "#starting-the-debug-console-on-clients" >}})
+[sections below](#starting-the-debug-console-on-clients)
 which explain how to enable it in those modes of operation.
 
 ![Accessing the Debug Console on the server](debug_server_gui.svg)

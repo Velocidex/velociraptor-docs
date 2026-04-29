@@ -29,7 +29,7 @@ of the Velociraptor community!
 
 Certain pages in the GUI allow for customization. The layout and content of
 these pages are defined in corresponding Velociraptor
-[artifacts]({{< ref "/docs/artifacts/" >}}).
+[artifacts](/docs/artifacts/).
 
 These artifacts contain templates written in
 [Go's templating language](https://pkg.go.dev/text/template)
@@ -43,7 +43,7 @@ and display the results in tabular or various graphical formats.
 Customization of these artifacts and the corresponding pages they
 produce are global changes. That is, the customizations are visible to
 all users on the server, unlike
-[user preferences]({{< ref "/docs/gui/user_preferences/" >}})
+[user preferences](/docs/gui/user_preferences/)
 which are per-user.
 
 {{% notice info "Some web development experience is required" %}}
@@ -104,7 +104,7 @@ options to consider:
    as static assets.
 
 3. The config allows for serving static files from a disk location using the
-   [GUI.reverse_proxy.url]({{< ref "/docs/deployment/references/#GUI.reverse_proxy.url" >}})
+   [GUI.reverse_proxy.url](/docs/deployment/references/#GUI.reverse_proxy.url)
    setting. For example, to serve the image located at `/opt/www/foo.png` so
    that it's available using `<img src="/images/foo.png">` you can add the
    following to your server config:
@@ -171,7 +171,7 @@ to `Disabled`.
 
 Custom links can be specified globally (for all users) via the server config.
 These are defined in the
-[GUI.links]({{< ref "/docs/deployment/references/#GUI.links" >}})
+[GUI.links](/docs/deployment/references/#GUI.links)
 config section.
 
 The config reference explains what fields and values can be used when creating a
@@ -210,10 +210,10 @@ GUI:
 #### Adding links for specific users
 
 Links are added for individual users using the
-[user_options]({{< ref "/vql_reference/server/user_options/" >}}) VQL function.
+[user_options](/vql_reference/server/user_options/) VQL function.
 
 The `user_options` function is typically used together with the
-[gui_users]({{< ref "/vql_reference/server/gui_users/" >}}) plugin, to enumerate
+[gui_users](/vql_reference/server/gui_users/) plugin, to enumerate
 the user accounts and then (possibly conditionally) update their preferences.
 The account used to update preferences for other users needs to be a server
 administrator.
@@ -257,7 +257,7 @@ relatively easily in a modular way.
 
 Each user is able to independently select
 their preferred language in their
-[user preferences]({{< ref "/docs/gui/user_preferences/" >}}),
+[user preferences](/docs/gui/user_preferences/),
 amongst other preferences such as theme and their local time zone.
 
 We already support English, German, Spanish, Portuguese, French, Japanese, and

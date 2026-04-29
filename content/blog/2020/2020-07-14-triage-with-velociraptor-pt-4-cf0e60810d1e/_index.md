@@ -9,11 +9,9 @@ categories: []
 keywords: []
 ---
 
-![[Woman vector created by vectorpouch ](https://www.freepik.com/free-photos-vectors/woman)— [www.freepik.com](http://www.freepik.com)](https://cdn-images-1.medium.com/max/2560/1*M5dVyBt08NsIIsxq32V3uQ.jpeg)*[Woman vector created by vectorpouch ](https://www.freepik.com/free-photos-vectors/woman)— [www.freepik.com](http://www.freepik.com)*
-
 Velociraptor is a great tool for collecting Artifacts such as files and other state information from endpoints. Artifacts are simply VQL queries wrapped inside a YAML file providing the query with sufficient context to operate. Typically the triage phase of the DFIR process involves collecting and preserving evidence as quickly as possible, performing quick analysis in order to identify machines of interest for further analysis.
 
-The previous parts in this triage article series covered various scenarios where Velociraptor can help with triage. [Part 1](https://medium.com/velociraptor-ir/triage-with-velociraptor-pt-1-253f57ce96c0) explored the **Windows.KapeFiles.Targets** artifact — an artifact primarily focused on collecting and preserving files. [Part 2](https://medium.com/velociraptor-ir/triage-with-velociraptor-pt-2-d0f79066ca0e) explained how artifacts can be added to a configuration file embedded inside the binary producing an automated collector — as soon as the binary is run, it will simply collect the artifacts it was pre-programmed with. [Part 3](https://medium.com/velociraptor-ir/triage-with-velociraptor-pt-3-d6f63215f579) levels up our capabilities and shows how to automatically upload the collected files to a cloud bucket.
+The previous parts in this triage article series covered various scenarios where Velociraptor can help with triage. [Part 1](/blog/2019/2019-10-02_triage-with-velociraptor-pt-1-253f57ce96c0/) explored the **Windows.KapeFiles.Targets** artifact — an artifact primarily focused on collecting and preserving files. [Part 2](/blog/2019/2019-10-04_triage-with-velociraptor-pt-2-d0f79066ca0e/) explained how artifacts can be added to a configuration file embedded inside the binary producing an automated collector — as soon as the binary is run, it will simply collect the artifacts it was pre-programmed with. [Part 3](/blog/2019/2019-10-08_triage-with-velociraptor-pt-3-d6f63215f579/) levels up our capabilities and shows how to automatically upload the collected files to a cloud bucket.
 
 We have received a lot of feedback from users about the processes described in these articles and to be honest it is a bit fiddly — one needed to edit YAML config files and call a sequence of commands to make it work.
 
@@ -43,7 +41,7 @@ Now I can start the frontend using:
 
 ![](../../img/1MneJxbjF5TmYUxzmCaOrWw.png)
 
-The GUI will be listening on [https://127.0.0.1:8889/](https://127.0.0.1:8889/) by default. So let's visit it with our browser
+The GUI will be listening on `https://127.0.0.1:8889/` by default. So let's visit it with our browser
 
 ![](../../img/1vcBHvISTTRm_B0NlBanD2Q.png)
 
@@ -89,7 +87,7 @@ Simply running the binary will begin to collect all the artifacts we specified �
 
 ### Including external tools
 
-Since release 0.4.6, Velociraptor has built in support for external tools. This means that artifacts that declare tools that they need will receive those binaries on the endpoint when they are being collected. We previously described[ this process](https://medium.com/velociraptor-ir/velociraptor-in-the-tool-age-d896dfe71b9?source=friends_link&sk=20178bda3d9accc46d343b1c825c75a6) using the client/server model.
+Since release 0.4.6, Velociraptor has built in support for external tools. This means that artifacts that declare tools that they need will receive those binaries on the endpoint when they are being collected. We previously described[ this process](/blog/2020/2020-07-13-velociraptor-in-the-tool-age-d896dfe71b9/) using the client/server model.
 
 When building an Offline collector, Velociraptor will also embed the external tools directly into the binary without needing to do anything different with the artifact. Note that the offline collector **does not download** the tool from an external URL — the tool is already packaged in the collector binary itself.
 
@@ -162,4 +160,4 @@ Velociraptor is simply a VQL evaluation engine. Although it works best in client
 
 Remember that the offline collector is not limited to simply collecting files! It has the full power of Velociraptor at its disposal so it can collect any volatile machine state that can be collected by Velociraptor — including process memory scanning and dumping, file yara scans, MFT analysis and more.
 
-To play with this new feature yourself, take Velociraptor for a spin! It is a available on [GitHub](https://github.com/Velocidex/velociraptor) under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com) . You can also chat with us directly on discord [https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+To play with this new feature yourself, take Velociraptor for a spin! It is a available on [GitHub](https://github.com/Velocidex/velociraptor) under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com) . You can also chat with us directly on [Discord](/discord/)

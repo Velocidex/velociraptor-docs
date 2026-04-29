@@ -14,7 +14,7 @@ artifacts. These are the ones you really need to know about. This page outlines
 the most commonly used top-level artifact fields and explains how to use them.
 
 Less frequently used fields that deal with more advanced functionality are
-described separately [here]({{< ref "" >}}).
+described separately [here]().
 
 ### Summary
 
@@ -22,14 +22,14 @@ These fields are the basic building blocks of most artifacts.
 
 | Field Name         | Description                               | GUI Searchable? | YAML Data Type |
 |--------------------|-------------------------------------------|:---------------:|:--------------:|
-| [name]({{< relref "#-name-" >}}) | Artifact's unique identifier. _Required_ | Yes | string |
-| [aliases]({{< relref "#-aliases-" >}}) | Allows for multiple names to be used for the same artifact. | Yes | sequence |
-| [type]({{< relref "#-type-" >}}) | Artifact category (e.g. CLIENT or SERVER). | Filterable | string |
-| [description]({{< relref "#-description-" >}}) | Prose describing the artifact’s purpose and usage. | Yes | string |
-| [author]({{< relref "#-author-" >}}) | Records the artifact's author(s). | No | string |
-| [reference]({{< relref "#-reference-" >}}) | Links to external resources or further information. | No | sequence |
-| [parameters]({{< relref "#-parameters-" >}}) | User-definable parameters to be provided to the artifact. | No | sequence |
-| [sources]({{< relref "#-sources-" >}}) | Defines how the artifact produces data. | No | sequence |
+| [name](#-name-) | Artifact's unique identifier. _Required_ | Yes | string |
+| [aliases](#-aliases-) | Allows for multiple names to be used for the same artifact. | Yes | sequence |
+| [type](#-type-) | Artifact category (e.g. CLIENT or SERVER). | Filterable | string |
+| [description](#-description-) | Prose describing the artifact’s purpose and usage. | Yes | string |
+| [author](#-author-) | Records the artifact's author(s). | No | string |
+| [reference](#-reference-) | Links to external resources or further information. | No | sequence |
+| [parameters](#-parameters-) | User-definable parameters to be provided to the artifact. | No | sequence |
+| [sources](#-sources-) | Defines how the artifact produces data. | No | sequence |
 
 
 {{% notice info "Field names are case-sensitive!" %}}
@@ -50,11 +50,11 @@ These fields identify and characterize the artifact.
 
 The only field that is required for an artifact is its `name`. Of course we will
 usually want our artifacts to have more than just a name, although there are
-[special cases]({{< ref "/docs/artifacts/event_queues/" >}})
+[special cases](/docs/artifacts/event_queues/)
 where not much else is required.
 
 Artifact names must be unique within the org's
-[artifact namespace]({{< ref "/docs/artifacts/#orgs-artifact-inheritance-and-masking" >}}).
+[artifact namespace](/docs/artifacts/#orgs-artifact-inheritance-and-masking).
 
 #### Naming rules
 
@@ -72,15 +72,16 @@ As you'll see, most of the current artifacts tend to use CamelCase, although
 this is just a convention that has developed organically. You are free to use
 your own naming convention for your own artifacts.
 
-By default when you create a new artifact in the [artifact editor](), it will
-add the prefix `Custom.` to the name. This convention is usually helpful, but
-if you choose not to use it then that's fine too.
-If you [filter for custom artifacts]({{< ref "/docs/artifacts/managing/" >}})
-on the Artifacts screen, then you will still see all the custom ones regardless
-of their name.
+By default when you create a new artifact in the
+[artifact editor](/docs/gui/artifacts/#creating-and-editing-artifacts),
+it will add the prefix `Custom.` to the name. This convention is
+usually helpful, but if you choose not to use it then that's fine too.
+If you [filter for custom artifacts](/docs/artifacts/managing/)
+on the Artifacts screen, then you will still see all the custom ones
+regardless of their name.
 
-Artifacts imported from the [Artifact Exchange]({{< ref "/exchange/" >}}) or
-[other sources]({{< ref "/docs/artifacts/managing/#importing-artifacts-using-server-artifacts" >}})
+Artifacts imported from the [Artifact Exchange](/exchange/) or
+[other sources](/docs/artifacts/managing/#importing-artifacts-from-velociraptors-specialized-artifact-projects)
 may, by default, have a prefix added to their names. But again this is
 completely optional (it's implemented through the import artifact's VQL actually
 and configurable by an artifact parameter), and all imported artifacts are
@@ -176,10 +177,11 @@ This field categorizes the artifact into one of the six available types:
 - The `CLIENT` type is the most commonly used. This is also the default type if
   the field is not specified. Artifacts of this type can be collected on clients.
 
-- The `CLIENT_EVENT` type establishes client [event queues]({{< ref
-  "/docs/artifacts/event_queues/" >}}) on the server, and then also includes VQL
-  which is sent to the client to generate data that will be sent to the
-  associated client event queue.
+- The `CLIENT_EVENT` type establishes client
+  [event queues](/docs/artifacts/event_queues/) on the
+  server, and then also includes VQL which is sent to the client to
+  generate data that will be sent to the associated client event
+  queue.
 
 - The `SERVER` type is mainly used for server-side administrative tasks, for
   example:
@@ -189,7 +191,7 @@ This field categorizes the artifact into one of the six available types:
     on disk.
 
 - The `SERVER_EVENT` type establishes server
-  [event queues]({{< ref "/docs/artifacts/event_queues/" >}})
+  [event queues](/docs/artifacts/event_queues/)
   Typically artifacts of this type also contain VQL to process and act upon
   events arriving in the associated event queue.
 
@@ -201,11 +203,11 @@ This field categorizes the artifact into one of the six available types:
   situations where there's a need to monitor the associated queues and the
   visibility of the associated artifacts advertises their existence. Most such
   artifacts have the word
-  "Internal" [in their name]({{< ref "/tags/internal-artifact/" >}}).
+  "Internal" [in their name](/tags/internal-artifact/).
 
 - The `NOTEBOOK` type is used when creating new global notebooks. Artifacts of
   this type are also called
-  [Notebook Templates]({{< ref "/docs/artifacts/notebook_templates/" >}}),
+  [Notebook Templates](/docs/artifacts/notebook_templates/),
   As with the other artifact types, these also support parameters, imports,
   exports, tools, etc.
 
@@ -214,11 +216,11 @@ reasons most artifacts use uppercase for the field's value, but this is not
 a requirement.
 
 All artifact types (with the exception of the `INTERNAL` type) are available as
-[search filter]({{< ref "/docs/gui/artifacts/#searching-artifacts" >}})
+[search filter](/docs/gui/artifacts/#searching-artifacts)
 presets on the Artifacts screen.
 
 Artifacts are hidden from the artifact selection lists in the GUI if they have
-[no `sources`]({{< ref "/docs/artifacts/use_cases/#sourceless-artifacts" >}}).
+[no `sources`](/docs/artifacts/use_cases/#sourceless-artifacts).
 This is to prevent users from running artifacts that will not return any data,
 and avoid the confusion which might arise if these were selectable in the
 artifact selection lists.
@@ -250,7 +252,7 @@ so it's possible that not all markdown elements will be rendered in the GUI.
 The `description` field _is_ searched when using the search filter on the
 Artifacts screen.
 
-See [Artifact Writing Tips]({{< ref "/docs/artifacts/tips/#artifact-descriptions" >}})
+See [Artifact Writing Tips](/docs/artifacts/tips/#tips-for-creating-better-artifacts)
 for some suggestions on writing good descriptions for your artifacts.
 
 ---
@@ -310,7 +312,7 @@ Artifacts screen.
 ## Parameters and Sources
 
 Parameters and sources (and less frequently also
-[imports & exports]({{< ref "/docs/artifacts/export_imports/" >}})),
+[imports & exports](/docs/artifacts/export_imports/)),
 are the main components in most artifacts, since these contain the VQL that
 produces the data we're interested in.
 
@@ -327,14 +329,14 @@ The `parameters` field is _not_ searched when using the search filter on the
 Artifacts screen.
 
 Since parameters are a relatively large topic, we cover them separately in more
-detail [here]({{< ref "/docs/artifacts/parameters/" >}}).
+detail [here](/docs/artifacts/parameters/).
 
 ---
 
 ### [ sources ]
 
 An artifact may contain one source, several sources, or
-[no sources]({{< ref "" >}}).
+[no sources]().
 
 Each source represents a single SELECT statement and potentially multiple LET
 statements. Ultimately each source returns a single table of results. If an
@@ -344,6 +346,6 @@ The `sources` field is _not_ searched when using the search filter on the
 Artifacts screen.
 
 For a more detailed discussion of `sources` see the
-[Sources]({{< ref "/docs/artifacts/sources/" >}}) section.
+[Sources](/docs/artifacts/sources/) section.
 
 

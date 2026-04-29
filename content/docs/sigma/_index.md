@@ -52,7 +52,7 @@ rules effectively:
 
 ## Real-Time Alerting & Continuous Monitoring
 
-Velociraptor's [VQL language]({{< ref "/docs/vql/" >}}) is fully asynchronous
+Velociraptor's [VQL language](/docs/vql/) is fully asynchronous
 and can watch for changes on the endpoint in real-time. By tweaking VQL slightly
 to feed real-time events into Sigma rule matching, Velociraptor effectively
 creates real-time detection rules.

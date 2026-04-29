@@ -95,6 +95,6 @@ without overriding the built-in artifact.
 {{% /notice %}}
 
 See
-[Dead Disk Analysis]({{< ref "/docs/forensic/deaddisk/" >}})
+[Dead Disk Analysis](/docs/forensic/deaddisk/)
 for more information.
 

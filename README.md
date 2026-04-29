@@ -27,8 +27,10 @@ To develop on the site:
 
    This will bring up a local web server where you can see your changes.
 
-In future sessions, you might need to run one or more of the Python scripts listed in the [Makefile](Makefile).  Rebuilding the
- reference indices with these scripts should clear `REF_NOT_FOUND` errors during Hugo server startup.  Scripts require `pyyaml`.
+In future sessions, you might need to run one or more of the Python
+ scripts listed in the [Makefile](Makefile).  Rebuilding the reference
+ indices with these scripts should clear `REF_NOT_FOUND` errors during
+ Hugo server startup.  Scripts require `pyyaml`.
 
 Shield: [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
 

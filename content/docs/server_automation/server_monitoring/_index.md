@@ -7,11 +7,12 @@ weight: 60
 
 ## Server Monitoring
 
-We have previously seen the VQL [Event Queries]({{< ref
-"/docs/vql/events/" >}}) are simply VQL queries that never terminate,
+We have previously seen the VQL
+[Event Queries](/docs/vql/events/)
+are simply VQL queries that never terminate,
 generating a row for each event that occurs. We also saw how these
 event queries can be used to collect real time telemetry from endpoint
-with [Client Monitoring]({{< ref "/docs/clients/monitoring/" >}}).
+with [Client Monitoring](/docs/clients/monitoring/).
 
 In this section we describe how event queries can be used to
 monitoring server events and perform real time post processing on
@@ -30,7 +31,7 @@ case:
 
 The full description of how to set up slack to receive messages from
 Velociraptor can be found in our blog post
-[Slack and Velociraptor]({{< ref "/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/" >}}),
+[Slack and Velociraptor](/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/),
 but here we cover the high level details.
 
 ### Step 1: Checking a group of clients for online status
@@ -133,11 +134,11 @@ plugin) or push rows to Elastic or Splunk (using the
 ## Responding to client events
 
 I previously described how client event queries can be used to collect
-real time telemetry from endpoint with [Client Monitoring]({{< ref
-"/docs/clients/monitoring/" >}}). However, we also saw that
-Velociraptor simply writes the resulting events to storage. How can we
-post process or escalate based on client events that occur on the
-endpoint?
+real time telemetry from endpoint with
+[Client Monitoring](/docs/clients/monitoring/). However,
+we also saw that Velociraptor simply writes the resulting events to
+storage. How can we post process or escalate based on client events
+that occur on the endpoint?
 
 Server monitoring artifacts can also be written to respond to client
 events using the `watch_monitoring()` plugin.

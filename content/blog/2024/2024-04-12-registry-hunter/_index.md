@@ -47,16 +47,16 @@ information from the registry. However, the problem is challenging:
 Velociraptor has been used to extract values from the windows registry
 for a long time. In Velociraptor the registry is accessible via the
 `registry` accessor (to access the registry via the APIs) and the
-`raw_reg` accessor to parse raw registry hives. See [The Registry
-Accessor]({{% ref "/docs/forensic/filesystem/#the-registry-accessor"
-%}}) to read more about how Velociraptor accesses the registry.
+`raw_reg` accessor to parse raw registry hives. See
+[The Registry Accessor](/docs/forensic/filesystem/#searching-the-windows-registry)
+to read more about how Velociraptor accesses the registry.
 
 This allows Velociraptor to use simple `glob()` expressions to find
 keys and values in the registry. For example in the
-[Windows.Registry.Sysinternals.EulaCheck]({{% ref
-"artifact_references/pages/windows.registry.sysinternals.eulacheck.html"
-%}}) artifact we can search for evidence of running `Sysinternal
-tools`. The following is a simplified query:
+[Windows.Registry.Sysinternals.EulaCheck](artifact_references/pages/windows.registry.sysinternals.eulacheck/)
+artifact we can search for evidence of running `Sysinternal tools`.
+
+The following is a simplified query:
 
 ```vql
 SELECT OSPath[-2] as ProgramName,
@@ -198,7 +198,7 @@ available.
 
 In recent versions, Velociraptor implements a powerful mechanism to
 `remap` accessors within the name space. You can read about [Remapping
-Accessors]({{% ref "/docs/forensic/filesystem/remapping/" %}}) to
+Accessors](/docs/forensic/filesystem/remapping/) to
 understand how this is done.
 
 The Registry Hunter artifact will map the relevant hives into the
@@ -295,9 +295,10 @@ root directory looking for values (the filter `x=>NOT IsDir` captures
 values and rejects keys).
 
 Matching values will cause the `Details` function to be evaluated. The
-`Details` field contains a VQL [lambda function]({{% ref
-"/docs/vql/#vql-lambda-functions" %}}) that will be evaluated on the
-found keys or values. The following values will be available:
+`Details` field contains a
+VQL [lambda function](/docs/vql/fundamentals/#vql-lambda-functions)
+that will be evaluated on the found keys or values. The following
+values will be available:
 
 - `x.OSPath` contains the OSPath of the matching registry key or value
 - `x.Mtime` contains the Modification time of the key

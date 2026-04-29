@@ -19,7 +19,7 @@ weight: 20
 
 Velociraptor is an advanced open source endpoint visibility framework
 based on a flexible query language called
-[VQL](https://docs.velociraptor.app/docs/vql/). What makes
+[VQL](/docs/vql/). What makes
 Velociraptor unique from other endpoint tools is the flexibility to
 develop new queries to address emerging threats.
 
@@ -146,7 +146,7 @@ exploitation.
 The Mimikatz POC loaded a signed component, but many other exploits
 will load an unsigned binary. A binary with an untrusted Authenticode
 signature is a valuable data point in detecting malicious code. See
-[this previous post](https://docs.velociraptor.app/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/) for information on Authenticode. Below we see the
+[this previous post](/blog/2021/2021-06-09-verifying-executables-on-windows-1b3518122d3c/) for information on Authenticode. Below we see the
 dll loaded by the second exploit POC we tried, based on powershell.
 
 
@@ -191,7 +191,7 @@ We can collect this information from the entire Velociraptor fleet in
 minutes by simply running a “hunt” over the deployment.
 
 We have uploaded our query and a version to monitor print driver creation in the form of a VQL artifact to the
-Velociraptor [“Artifact Exchange”](https://docs.velociraptor.app/exchange/) - a central place for the community
+Velociraptor [“Artifact Exchange”](/exchange/) - a central place for the community
 to share Velociraptor artifacts. This saves time for other
 Velociraptor users, who can simply reuse our work and quickly hunt the
 artifact across their entire deployment to determine if they were
@@ -201,4 +201,4 @@ If you would like to try hunting for this indicator, take Velociraptor
 for a spin! It is available on [GitHub](https://github.com/Velocidex/velociraptor) under an open source license. As
 always, please file issues on the bug tracker or ask questions on our
 mailing list velociraptor-discuss@googlegroups.com. You can also chat
-with us directly on discord at https://www.velocidex.com/discord
+with us directly on [Discord](/discord/).

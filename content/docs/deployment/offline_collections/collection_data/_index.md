@@ -20,14 +20,14 @@ associated metadata when importing.
 Collection containers are also used when exporting collections or hunts from the
 server. So the same data format that the offline collector uses can also be used
 to transfer data from one server to another, for example
-[to copy/replicate data in testing or training environment]({{< ref "/knowledge_base/tips/prepopulate_server/" >}}),
+[to copy/replicate data in testing or training environment](/knowledge_base/tips/prepopulate_server/),
 or
-[as a storage format for data backups]({{< ref "/artifact_references/pages/server.utils.backupdirectory/" >}}).
+[as a storage format for data backups](/artifact_references/pages/server.utils.backupdirectory/).
 
 {{% /notice %}}
 
 As explained in
-[Collection Security]({{< ref "/docs/deployment/offline_collections/#collection-security" >}}),
+[Collection Security](/docs/deployment/offline_collections/#collection-security),
 when collections are secured they are double-zipped. This is done to prevent
 snooping on the collection filenames because the ZIP standard has the
 shortcoming of allowing file listing even for protected zips. So we add an outer
@@ -163,7 +163,7 @@ a network connection to the server.
 
 ![Online vs Offline Collections](online-offline.svg)
 
-[Importing]({{< relref "#importing-collections-into-the-velociraptor-server" >}})
+[Importing](#importing-collections-into-the-velociraptor-server)
 a collection is the normal process to use when the collection contains the
 results from all the artifacts that you needed to collect on the endpoint.
 
@@ -207,7 +207,7 @@ collection, you can try to make the best of the situation by emulating the
 filesystem of the endpoint using only the files stored in the collection
 container. This allows us to run additional artifacts against the copied files.
 
-Using Velociraptor's [remapping]({{< ref "/docs/forensic/filesystem/remapping/" >}})
+Using Velociraptor's [remapping](/docs/forensic/filesystem/remapping/)
 feature, we can emulate the original filesystem after importing the collection
 data, or we could do it without even importing the data.
 
@@ -229,7 +229,7 @@ There are two ways to run artifacts on files copied by an offline collector:
 - ###### Run artifacts on the collected files without importing the collection
 
    You can use the method described in
-   [Dead disk analysis on a collection container]({{< relref "#dead-disk-analysis-on-a-collection-container" >}}).
+   [Dead disk analysis on a collection container](#dead-disk-analysis-on-a-collection-container).
    This gives you a full client against which you can interactively run further
    collections. There is a bit of setup required so it's not quite as easy as
    importing and then running collections against the imported files, although
@@ -240,7 +240,7 @@ There are two ways to run artifacts on files copied by an offline collector:
 - ###### Run artifacts on the collected files _after_ importing the collection
 
    You can use the method described in
-   [Working with imported files]({{< relref "#working-with-imported-files" >}}).
+   [Working with imported files](#working-with-imported-files).
    Unlike the previously described option, this doesn't have any setup steps
    other than importing the collection. The remapping is generated and applied
    to a notebook cell's scope using VQL, along with running the chosen
@@ -275,11 +275,11 @@ the collection container when using remapping.
 If you need to run external tools against the collected files then you can
 either:
 
-- [Extract the container]({{< relref "#accessing-collection-containers-without-importing" >}}):
+- [Extract the container](#accessing-collection-containers-without-importing):
   Use the `velociraptor unzip` command or external unzip tools to extract the
   files.
 
-- [Mount the container with FUSE]({{< relref "#mounting-with-the-fuse-container-command" >}}):
+- [Mount the container with FUSE](#mounting-with-the-fuse-container-command):
   Use Velociraptor's built-in FUSE utility (on Linux only) to mount the
   container and provide access to it's file contents.
 
@@ -300,10 +300,10 @@ file into the server. So you will need to use an appropriate transfer mechanism
 
 Most often we use the `Server.Utils.ImportCollection` artifact to import a
 collection container, but this is essentially just a convenience wrapper around
-the [import_collection]({{< ref "/vql_reference/server/import_collection/" >}})
+the [import_collection](/vql_reference/server/import_collection/)
 VQL function. If you need to perform a bulk import of many collections then it's
 easy to
-[automate that process]({{< relref "#bulk-collection-imports" >}})
+[automate that process](#bulk-collection-imports)
 using VQL in either a notebook or a server artifact.
 
 #### Auto-decryption of containers
@@ -356,9 +356,9 @@ To summarize, the import process performs the following actions:
 In the client's **Collected Artifacts** view, the imported collections
 are indistinguishable from those that were collected from a regular
 "online" client. The collections and their data will then be available to
-any VQL queries run from [notebooks]({{< ref "/docs/notebooks/" >}}),
-[server_artifacts]({{< ref "/docs/artifacts/basic_fields/#-type-" >}})
-or [API queries]({{< ref "/docs/server_automation/server_api/" >}}),
+any VQL queries run from [notebooks](/docs/notebooks/),
+[server_artifacts](/docs/artifacts/basic_fields/#-type-)
+or [API queries](/docs/server_automation/server_api/),
 the same as with any other clients.
 
 ### Importing using Server.Utils.ImportCollection
@@ -370,13 +370,13 @@ does not support importing collection containers that are secured by PGP, X.509
 certs _other than the server's cert_, or fixed passwords. However import of
 collections secured by these other security schemes are supported using
 alternative methods
-[described below]({{< relref "/#importing-via-a-notebook" >}}).
+[described below](#importing-via-a-notebook).
 
 Alternatively, if you want to use the `Server.Utils.ImportCollection` server
 artifact to import a collection container that's been secured using a fixed
 password, a PGP certificate, or an X.509 _other than your server's certificate_
 then you'll need to first
-[manually extract]({{< relref "#manual-decryption" >}})
+[manually extract](#manual-decryption)
 the inner zip (`data.zip`) from the protected outer zip, and then import that.
 
 ![Importing a collection container zip](import01.png)
@@ -391,11 +391,11 @@ be for any "online" client.
 
 ### Importing via a notebook
 
-The [import_collection]({{< ref "/vql_reference/server/import_collection/" >}})
+The [import_collection](/vql_reference/server/import_collection/)
 VQL function can be used from a notebook or custom server artifact, if you want
 to implement additional logic relating to the import. For example, you may want
 to
-[automate the import of many collection containers]({{< relref "#bulk-collection-imports" >}}).
+[automate the import of many collection containers](#bulk-collection-imports).
 
 #### X.509 encryption using the server's certificate
 
@@ -447,7 +447,7 @@ FROM scope()
 If you chose to encrypt the collection container with a PGP certificate or an
 X.509 cert _other than the server's cert_, then you need to first decrypt the
 encrypted zip password as an additional step. This can be done
-[using external tools]({{< relref "#extraction-with-external-tools" >}}),
+[using external tools](#extraction-with-external-tools),
 or in a Velociraptor notebook, which is the process we describe here.
 
 The collection container will contain a file at the top level named
@@ -460,7 +460,7 @@ reminded which one was used.
 ![example: metadata.json](encrypted_file_metadata.png)
 
 In a notebook we can use the
-[pk_decrypt]({{< ref "/vql_reference/encode/pk_decrypt/" >}})
+[pk_decrypt](/vql_reference/encode/pk_decrypt/)
 VQL function to decrypt the encrypted zip password.
 Note that Velociraptor does not support passphrase-protected private keys.
 
@@ -503,9 +503,9 @@ If you have many collection containers to import, you will probably want to
 automate the process by iterating over the zips and importing them one by one.
 
 This can be done using VQL in a
-[notebook]({{< ref "/docs/notebooks/" >}}), a
-[server artifact]({{< ref "/docs/artifacts/basic_fields/#-type-" >}}), or
-[via an API query]({{< ref "/docs/server_automation/server_api/" >}}).
+[notebook](/docs/notebooks/), a
+[server artifact](/docs/artifacts/basic_fields/#-type-), or
+[via an API query](/docs/server_automation/server_api/).
 
 Automating this process assumes that the collection containers can be
 automatically decrypted (i.e. X509 using the server's cert), or are unprotected.
@@ -579,7 +579,7 @@ is possible to perform post-processing on the collection's files. However this
 is not recommended under normal circumstances - it's always far easier to work
 with data that was extracted on the endpoint rather than trying to extract the
 data from files on the server. Please see the section
-[To import or not to import?]({{< relref "#to-import-or-not-to-import" >}})
+[To import or not to import?](#to-import-or-not-to-import)
 for a more detailed discussion of the considerations and options when dealing
 with imported files.
 
@@ -640,7 +640,7 @@ Velociraptor instead relies on timestamps being stored separately in JSON
 metadata files written to the collection container, and does not attempt to use
 timestamps in the ZIP file itself to replicate the timestamps on the originating
 filesystem, for various reasons as
-[explained above]({{< relref "#collection-container-internal-structure" >}}).
+[explained above](#collection-container-internal-structure).
 
 If you use external tools to extract files from the container zip, then you
 cannot rely on the timestamps for the extracted files! Depending on your use
@@ -648,7 +648,7 @@ case this may or may not matter, but you should always be aware of this fact.
 
 If your analysis _does_ need to take filesystem timestamps into account, then
 you can use the
-[Windows.KapeFiles.Extract](https://docs.velociraptor.app/artifact_references/pages/windows.kapefiles.extract/)
+[Windows.KapeFiles.Extract](/artifact_references/pages/windows.kapefiles.extract/)
 artifact to do the extraction. This artifact reads the stored timestamps and
 replicates them on the extracted files, however there are still some limitations
 as stated in the artifact's description.
@@ -720,10 +720,10 @@ requires that we store it in Base64-encoded form.
 
 If you are working in a separate environment from your Velociraptor deployment,
 it is still possible to make use of a Velociraptor notebook, as described
-[here]({{< relref "/docs/deployment/offline_collections/collection_data/#pgp-x509-non-server-cert-encryption-schemes" >}}),
+[here](#pgp-or-x509-non-server-cert-encryption-schemes),
 to do the password decryption. Since the notebook only needs the encrypted
 password and the relevant cert, it can be done on an
-[Instant Velociraptor]({{< ref "/docs/deployment/#instant-velociraptor" >}})
+[Instant Velociraptor](/docs/deployment/#instant-velociraptor)
 instance that is completely separate from your Velociraptor deployment.
 
 Once you have decrypted the password you can use it with any unzip tool to
@@ -733,7 +733,7 @@ extract the contents of the collection container.
 
 To extract the collection container on the command line you can use
 Velociraptor's built-in
-[`unzip` command]({{< ref "/docs/cli/misc/#-unzip-" >}}).
+[`unzip` command](/docs/cli/misc/#-unzip-).
 This command only supports collections secured with the server's X.509
 certificate and unprotected zips.
 
@@ -786,7 +786,7 @@ velociraptor --config server.config.yaml unzip Collection-WIN-KMODJ1W0CYG-2025-1
 
 It's possible to work with the contents of collection containers by mounting
 them with FUSE instead of extracting them. The Velociraptor Linux binary
-provides the [`fuse container` command]({{< ref "/docs/cli/fuse/" >}}) which
+provides the [`fuse container` command](/docs/cli/fuse/) which
 allows us to mount collection containers on a directory.
 
 Using FUSE allows efficient and rapid access because the container does not need
@@ -832,7 +832,7 @@ velociraptor fuse container -c server.config.yaml \
 ##### Manual decryption
 
 If you have collection containers secured with other schemes then you can
-[decrypt the password manually]({{< relref "#extraction-with-external-tools" >}}),
+[decrypt the password manually](#extraction-with-external-tools),
 extract the inner zip, and then FUSE mount it.
 
 If you want to FUSE mount multiple zips, you'll also need to decrypt them first
@@ -881,10 +881,10 @@ Reminder: Don't forget to `Ctrl+C` and `umount` when you're done!
 
 ### Dead disk analysis on a collection container
 
-[Remapping]({{< ref "/docs/forensic/filesystem/remapping/" >}})
+[Remapping](/docs/forensic/filesystem/remapping/)
 is one of Velociraptor's most versatile and powerful features. It was originally
 designed to allow Velociraptor to support
-[dead disk analysis]({{< ref "/docs/forensic/deaddisk/" >}}),
+[dead disk analysis](/docs/forensic/deaddisk/),
 but it turned out to be an incredibly useful capability that can be applied to a
 broad range of problems.
 
@@ -903,7 +903,7 @@ remapping disables the VQL functions and plugins that would query the host
 operating system, and redirects filesystem access.
 
 The
-[Windows.Collectors.Remapping]({{< ref "/artifact_references/pages/windows.collectors.remapping/" >}})
+[Windows.Collectors.Remapping](/artifact_references/pages/windows.collectors.remapping/)
 artifact calculates remapping rules to support this disk-like access to a
 collection container, basically treating it the same as a dead disk. This allows
 running further artifacts on the output of the offline collector without needing
@@ -940,7 +940,7 @@ can also be used with exported collection containers. For example, let's say
 you've exported a collection from your server and shared it with someone else
 (perhaps a semi-trusted 3rd-party analyst) so that they can work independently
 with it on their own server. They might just be using an
-[Instant Velociraptor]({{< ref "/docs/deployment/#instant-velociraptor" >}})
+[Instant Velociraptor](/docs/deployment/#instant-velociraptor)
 instance if they don't have a permanently installed server.
 Or they may choose to run artifacts or queries against the collection containers on the command line,
 as documented in the artifact itself, which doesn't require a Velociraptor
@@ -980,11 +980,11 @@ look and behave like a normal client.
    server config, which is generally not recommended for security reasons. In
    that case it's probably best to first decrypt the collection archive and then
    work with the non-encrypted `data.zip` container. To do that you can use the
-   [`decrypt` CLI command]({{< ref "/docs/cli/misc/#-decrypt-" >}}).
+   [`decrypt` CLI command](/docs/cli/misc/#-decrypt-).
 
    If you've used a zip protection scheme other than X.509 using the server's
    certificate, then you need to first extract the inner `data.zip` from the
-   protected outer zip, as explained [here]({{< relref "#manual-decryption" >}}),
+   protected outer zip, as explained [here](#manual-decryption),
    and then use that as the file target for the `Windows.Collectors.Remapping`
    artifact.
 

@@ -1,5 +1,23 @@
 [
  {
+  "title": "Velociraptor CLI",
+  "description": "The Velociraptor CLI is a powerful interface for using\nand automating Velociraptor\n",
+  "link": "/blog/2026/2026-03-21-cli/",
+  "tags": [
+   "Automation"
+  ],
+  "date": "2026-03-21"
+ },
+ {
+  "title": "Velociraptor 0.76 Release",
+  "description": "Velociraptor Release 0.76 is now available\n",
+  "link": "/blog/2026/2026-03-10-release-notes-0.76/",
+  "tags": [
+   "Release"
+  ],
+  "date": "2026-03-10"
+ },
+ {
   "title": "Memory Analysis with Velociraptor - Part 2",
   "description": "This blog is the second part of the memory analysis series.\nWe will dive into how to detect fileless malware with Velociraptor\nlive in RAM (i.e. without dumping the RAM).\n",
   "link": "/blog/2025/2025-12-22-memory-analysis-pt2/",
@@ -779,13 +797,6 @@
   "link": "/blog/html/2018/12/09/more_on_client_event_collection/",
   "tags": [],
   "date": "2018-12-09"
- },
- {
-  "title": "Velociraptor training at NZITF",
-  "description": "We are very excited to run this full day training workshop at the New\nZealand Internet Engineering Task Force (NZITF) conference.\n",
-  "link": "/blog/html/2018/11/13/velociraptor_training_at_nzitf/",
-  "tags": [],
-  "date": "2018-11-13"
  },
  {
   "title": "Event Queries and Endpoint Monitoring",

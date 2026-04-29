@@ -31,7 +31,7 @@ Each org is logically completely separate from other orgs:
 
 * Each org contains a different set of clients. A Client is configured
   to access an org by way of a shared secret in its configuration file
-  ([`Client.nonce`]({{% ref "/docs/deployment/references/#Client.nonce" %}})).
+  ([`Client.nonce`](/docs/deployment/references/#Client.nonce)).
   It is not possible for a client to connect to a different org
   without knowing this shared secret.
 * Storage for each Org is separated within the data-store directory in
@@ -109,7 +109,7 @@ As a convenience this artifact also allows you to select other server artifacts
 that will be run in the new org after it is created. Typically you would want to
 create a MSI installer for Windows clients, so this is selected by default.
 However you may also create the MSI at a later time (for example after a version
-upgrade) using the procedure [described below]({{< relref "#creating-client-installer-packages" >}})
+upgrade) using the procedure [described below](#creating-client-installer-packages)
 
 As you can see, the `Server.Orgs.NewOrg` artifact is just running VQL to create
 the new org. You could alternatively run the same VQL in a global notebook or in
@@ -118,23 +118,35 @@ a "bootstrap" artifact when setting up new servers.
 #### Assigning users to the new org
 
 Once the new org is created you can assign users to the Org using the
-[Adding a New User]({{% ref
-"/docs/deployment/security/#adding-a-new-user" %}}) procedure.
+[Adding a New User](/docs/deployment/security/#adding-a-new-user)
+procedure.
+
+#### Org Security
+
+Although users are separated from accessing different orgs using org
+specific ACLs, in most Velociraptor deployments, this is a soft
+separation. There are many available ways in which a malicious user
+may access an org that they have no ACLs to. Generally we recommend
+not providing untrusted users access to the Velociraptor GUI at all,
+even if they should be restricted to a small set of orgs.
+
+See this for a full discussion of [Org
+Security](/docs/deployment/security/#managing-org-access).
 
 ### Preparing client deployment for the new Org
 
 Clients are configured to connect to one org only. While the
-cryptographic keys (e.g. The internal CA Certificate) of clients from
-all Orgs are the same, the [`Client.nonce`]({{% ref
-"/docs/deployment/references/#Client.nonce" %}}) is different for each
-Org. The server uses this nonce to associate the client with the correct
-Org. The nonce is included in the client's configuration file and acts
-as a shared secret between all the Org clients and the server.
+cryptographic keys (e.g. The internal CA Certificate) of clients from all Orgs are the same, the
+[`Client.nonce`](/docs/deployment/references/#Client.nonce)
+is different for each Org. The server uses this nonce to associate the
+client with the correct Org. The nonce is included in the client's
+configuration file and acts as a shared secret between all the Org
+clients and the server.
 
 #### Creating client installer packages
 
 To create an installation package that connects to the new Org, you
-need to [build an MSI]({{% ref "/docs/deployment/clients/#official-release-msi" %}})
+need to [build an MSI](/docs/deployment/clients/#repacking-the-official-release-msi)
 within the target Org:
 
 1. First switch to the relevant Org with the GUI selector
@@ -145,7 +157,7 @@ The produced MSI will connect to the target Org.
 For non-Windows platforms you will currently need to build the
 installation packages manually with the Org specific client config
 file, as explained in
-[Deploying Clients]({{< ref "https://docs.velociraptor.app/docs/deployment/clients/#linux" >}}).
+[Deploying Clients](https://docs.velociraptor.app/docs/deployment/clients/#linux).
 You can download the correct org-specific configuration file
 from the main dashboard as show below.
 
@@ -154,10 +166,10 @@ from the main dashboard as show below.
 
 ### Auditing User Actions
 
-As described in the [Auditing User actions]({{% ref
-"/docs/deployment/security/#auditing-user-actions" %}}) section,
-Velociraptor collects auditable events into a central location for
-review by the administrators.
+As described in the
+[Auditing User actions](/docs/deployment/security/#auditing-user-actions)
+section, Velociraptor collects auditable events into a central
+location for review by the administrators.
 
 When running within an Org context, each Org collects its own audit
 log (although you can still forward all logs to a remote syslog

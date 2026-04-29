@@ -19,13 +19,13 @@ Windows.
 
 Some of the information collected by this artifact is added to the client info
 database and specific fields are also indexed so that we can perform
-[fast searches for clients]({{< ref "/docs/clients/searching/" >}}).
+[fast searches for clients](/docs/clients/searching/).
 
 ## Client information updates
 
 In old versions of Velociraptor this information was not kept up to date unless
 users explicitly created periodic hunts for `Generic.Client.Info`
-(see [Server.Monitoring.ScheduleHunt]({{< ref "/artifact_references/pages/server.monitoring.schedulehunt/" >}}) for an example).
+(see [Server.Monitoring.ScheduleHunt](/artifact_references/pages/server.monitoring.schedulehunt/) for an example).
 However this information is now re-collected automatically on a recurring basis
 in the background.
 

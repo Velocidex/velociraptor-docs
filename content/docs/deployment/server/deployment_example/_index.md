@@ -70,7 +70,7 @@ happened and you can't afford to wait, then you will need to change to a new
 DNS name and start again.
 
 Several Velociraptor features do require outbound access from the server to GitHub,
-although [it is possible]({{< ref "/artifact_references/pages/server.utils.uploadtools/" >}})
+although [it is possible](/artifact_references/pages/server.utils.uploadtools/)
 for the server to operate without any internet access.
 
 {{% /notice %}}
@@ -116,7 +116,7 @@ These pre-installation steps can be done on any platform.
 
 Central to every Velociraptor deployment is a
 [YAML](https://www.tutorialspoint.com/yaml/yaml_basics.htm)
-[configuration file]({{< ref "/docs/deployment/references/" >}}).
+[configuration file](/docs/deployment/references/).
 This file contains all the configuration parameters that define how your server
 and clients operate, plus cryptographic material that is used to secure
 several aspects of the deployment, such a client-server communications.
@@ -193,7 +193,7 @@ via Let's Encrypt.
 > is deployed on private networks for temporary situations such as incident
 > response. For long-term deployments, the other modes of operation that
 > Velociraptor offers should be preferred. We describe the process of deploying
-> in this mode in our [Quickstart Guide]({{< ref "/docs/deployment/quickstart/" >}}).
+> in this mode in our [Quickstart Guide](/docs/deployment/quickstart/).
 > Self-signed mode is incompatible with SSO authentication.
 
 Also on the first page you will be asked:
@@ -295,13 +295,13 @@ Since this step also requires that you set up SSO at your provider, we refer you
 to the following Knowledge Base articles which explain the provider-specific
 steps for an OAuth2 provider and an OIDC provider:
 
-* [How to set up authentication using Google OAuth SSO]({{< ref "/knowledge_base/tips/setup_google_oauth/" >}})
-* [How to set up OIDC authentication using Keycloak]({{< ref "/knowledge_base/tips/setup_keycloak/" >}})
+* [How to set up authentication using Google OAuth SSO](/knowledge_base/tips/setup_google_oauth/)
+* [How to set up OIDC authentication using Keycloak](/knowledge_base/tips/setup_keycloak/)
 
 The config wizard only presents the most commonly-used providers and options,
 but we support several others as explained
-[here]({{< ref "/docs/deployment/server/key_concepts/#authentication-providers" >}}).
-It is even possible to add [multiple authentication providers]({{< ref "/knowledge_base/tips/multiple_oauth/" >}}).
+[here](/docs/deployment/server/key_concepts/#authentication-providers).
+It is even possible to add [multiple authentication providers](/knowledge_base/tips/multiple_oauth/).
 
 Once you have completed the SSO configuration you can proceed to the final
 step in the configuration wizard...
@@ -346,7 +346,7 @@ setting.)
 
 If you do decide to expose the GUI to public networks then we recommend you also
 restrict access to specific IP ranges using the
-[GUI.allowed_cidr]({{<  ref "/docs/deployment/security/#restricting-access-to-the-gui-from-ip-blocks" >}})
+[GUI.allowed_cidr](/docs/deployment/security/#restricting-access-to-the-gui-from-ip-blocks)
 setting.
 
 ### 3. Create the server installation package
@@ -487,20 +487,13 @@ You will then arrive at the Welcome screen.
 
 ![Welcome to Velociraptor!](welcome.png)
 
-You can learn more about the Admin GUI [here]({{< ref "/docs/gui/" >}}).
+You can learn more about the Admin GUI [here](/docs/gui/).
 
 
 ## Import artifacts from external projects
 
-{{% notice note %}}
-
-This step only applies if you are using version 0.75 or above. For older
-versions you can [skip to the next step](#step-7-create-an-installation-package-for-windows-clients).
-
-{{% /notice %}}
-
 Over time Velociraptor has spawned many sub-projects for curating and
-managing certain larger, more complex [artifacts]({{< ref "/docs/artifacts/" >}}).
+managing certain larger, more complex [artifacts](/docs/artifacts/).
 
 As some artifacts became more complex and powerful, we moved them into separate
 projects so that they could be developed and managed independently of the main
@@ -521,7 +514,7 @@ for a broad set of indicators of suspicious activity.
 | [Rapid7Labs](https://github.com/rapid7/Rapid7-Labs/tree/main/Vql) | Artifacts developed and shared by [Rapid7 Labs](https://www.rapid7.com/blog/tag/research/). |
 | [Velociraptor Registry Hunter Project](https://registry-hunter.velocidex.com/) | Our project to develop sophisticated registry analysis modules. |
 | [Velociraptor SQLite Hunter Project](https://sqlitehunter.velocidex.com/) | This project aims to be a one-stop shop for `SQLite`, `ESE` and many other database-oriented forensic artifacts. |
-| [The Velociraptor Artifact Exchange](https://docs.velociraptor.app/exchange/) | Our repository of community-contributed artifacts. |
+| [The Velociraptor Artifact Exchange](/exchange/) | Our repository of community-contributed artifacts. |
 
 To get these external artifacts into your Velociraptor server's artifact
 repository, we have a built-in server artifact which will download them from any
@@ -560,23 +553,23 @@ associated setting up a new server.
 ![The Welcome page](welcome.png)
 
 Typically the next step after installing a new server is to create a new
-[org]({{< ref "/docs/deployment/orgs/" >}})
+[org](/docs/deployment/orgs/)
 (if you want to manage separate sets of clients) or create installer packages
 for Windows or Linux clients for the (default) `root` org. There are links on
 the Welcome page to help you with these tasks.
 If you create a new org using the `Server.Orgs.NewOrg` artifact it will, by
 default, also create Windows and Linux client installers for that org.
 
-Then see the [Deploying Clients]({{< ref "/docs/deployment/clients/" >}}) page
+Then see the [Deploying Clients](/docs/deployment/clients/) page
 for guidance on how to install the client packages.
 
 After installing your first client, here are the next steps you may want to
 consider:
 
-- [Learn about managing clients]({{< ref "/docs/clients/" >}})
-- [Create non-Windows client installers]({{< ref "/docs/deployment/clients/" >}})
-- [Explore additional security configuration options]({{< ref "/docs/deployment/security/" >}})
-- [Consider creating Orgs]({{< ref "/docs/deployment/orgs/" >}}) for managing
+- [Learn about managing clients](/docs/clients/)
+- [Create non-Windows client installers](/docs/deployment/clients/)
+- [Explore additional security configuration options](/docs/deployment/security/)
+- [Consider creating Orgs](/docs/deployment/orgs/) for managing
   distinct sets of clients.
-- [Plan for a more durable and secure installation]({{< ref "/docs/deployment/server/" >}})
+- [Plan for a more durable and secure installation](/docs/deployment/server/)
 

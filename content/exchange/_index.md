@@ -8,7 +8,7 @@ pre: <i class="fas fa-code"></i>
 no_edit: true
 sitemap:
  disable: true
-disableToc: true
+disableToc: false
 no_children: true
 rss_data_file: static/exchange/data.json
 rss_title: Velociraptor Artifact Exchange

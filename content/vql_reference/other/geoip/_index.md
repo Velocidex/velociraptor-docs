@@ -35,9 +35,9 @@ only on the server.
 
 ### See also
 
-- [cidr_contains]({{< ref "/vql_reference/other/cidr_contains/" >}}):
+- [cidr_contains](/vql_reference/other/cidr_contains/):
   Calculates if an IP address falls within a range of CIDR specified
   networks.
-- [ip]({{< ref "/vql_reference/other/ip/" >}}): Format an IP address.
+- [ip](/vql_reference/other/ip/): Format an IP address.
 
 

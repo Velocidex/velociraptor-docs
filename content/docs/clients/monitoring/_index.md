@@ -7,9 +7,10 @@ weight: 60
 last_reviewed: 2024-12-30
 ---
 
-We have previously seen how VQL [Event Queries]({{< ref
-"/docs/vql/events/" >}}) are simply VQL queries that never terminate,
-generating a row for each event that occurs.
+We have previously seen how VQL
+[Event Queries](/docs/vql/events/) are simply VQL
+queries that never terminate, generating a row for each event that
+occurs.
 
 We can use this property to monitor for events on the endpoint. In
 order to build an effective client monitoring framework we need three
@@ -42,9 +43,9 @@ terminate, while `parse_evtx()` is a non-event plugin which simply parses the
 evtx files from beginning to end.
 
 You can search for all available plugins in the
-[VQL Reference]({{< ref "/vql_reference/" >}}),
+[VQL Reference](/vql_reference/),
 or browse the event plugins listed
-[here]({{< ref "/vql_reference/event/" >}}).
+[here](/vql_reference/event/).
 
 {{% /notice %}}
 
@@ -109,7 +110,7 @@ removing the label when done.
 
 ### Selecting event artifacts to apply
 
-Velociraptor uses [Artifacts]({{< ref "/docs/artifacts/" >}}) which package
+Velociraptor uses [Artifacts](/docs/artifacts/) which package
 VQL queries in a structured YAML file, and this applies to event queries too.
 Event artifacts are identified by `type: CLIENT_EVENT` in the definition YAML.
 
@@ -200,6 +201,7 @@ the server. The event queries generally fall into two categories:
    detection.
 
 In either case, the Velociraptor server does not do anything with the
-events collected by default, other than write them to storage. If you want the
-server to perform additional actions with the incoming events then you should
-use [server side event queries]({{<ref "/docs/server_automation/server_monitoring/" >}}).
+events collected by default, other than write them to storage. If you
+want the server to perform additional actions with the incoming events
+then you should use
+[server side event queries](/docs/server_automation/server_monitoring/).

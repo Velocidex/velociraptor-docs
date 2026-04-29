@@ -11,7 +11,9 @@ no_edit: true
 
 ## The Contest is now closed!
 
-Check out the [submissions]({{< ref "/blog/2021/2021-10-08-contributor-contest/_index.md" >}}) and watch the winning presentation at the [SANS Threat Hunting Summit](https://www.sans.org/cyber-security-training-events/threat-hunting-and-incident-response-summit-2021/#agenda)
+Check out the [submissions](/blog/2021/2021-10-08-contributor-contest/)
+and watch the winning presentation at the
+[SANS Threat Hunting Summit](https://www.sans.org/cyber-security-training-events/threat-hunting-and-incident-response-summit-2021/#agenda).
 
 ## Goals
 

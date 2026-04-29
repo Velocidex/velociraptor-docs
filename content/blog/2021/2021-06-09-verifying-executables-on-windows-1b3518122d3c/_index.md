@@ -35,7 +35,7 @@ For example, let’s inspect the Velociraptor binary itself which is signed.
 
 Obviously we can not use this method to verify thousands of binaries found on remote systems, so we need to understand how Authenticode is implemented under the covers.
 
-Authenticode uses a number of file format standards to actually embed the signature information into the binary file itself, as illustrated in the [diagram below](http://download.microsoft.com/download/9/c/5/9c5b2167-8017-4bae-9fde-d599bac8184a/Authenticode_PE.docx):
+Authenticode uses a number of file format standards to actually embed the signature information into the binary file itself, as illustrated in the [diagram below](https://download.microsoft.com/download/9/c/5/9c5b2167-8017-4bae-9fde-d599bac8184a/Authenticode_PE.docx):
 
 ![](../../img/0aJlEkIX3M0d8aKnI.png)
 
@@ -159,4 +159,4 @@ Ultimately we simply need to know if a particular binary file is trusted or not.
 
 The above screenshot shows both our examples — The velociraptor binary was signed via embedded signature on the right and Notepad.exe was signed via catalog. In both cases Velociraptor is showing the signer and their issuers and if the file is trusted. We additionally get the catalog file that is used to verify the file if applicable.
 
-If you would like to quickly verify your windows executables at scale, take[ Velociraptor for a spin](https://github.com/Velocidex/velociraptor)! It is available on GitHub under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com) . You can also chat with us directly on discord [https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+If you would like to quickly verify your windows executables at scale, take[ Velociraptor for a spin](https://github.com/Velocidex/velociraptor)! It is available on GitHub under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com) . You can also chat with us directly on [Discord](/discord/)

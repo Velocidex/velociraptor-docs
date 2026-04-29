@@ -13,9 +13,9 @@ variety of challenging environments that realworld DFIR throws our way.
 ## How do offline collections work?
 
 At it's core, the Velociraptor is just a VQL engine! We give it VQL to run, in
-the form of [artifacts]({{< ref "/docs/artifacts/" >}}), and it gives us back
+the form of [artifacts](/docs/artifacts/), and it gives us back
 data (which may or may not
-[include files]({{< ref "/docs/file_collection/" >}})).
+[include files](/docs/file_collection/)).
 Normally the Velociraptor server gives the client the VQL to run, the client
 runs ("collects") it, and the server receives the results from the client. Note
 that the collection step occurs independently of the server, with the server
@@ -53,11 +53,11 @@ The term "offline" in this context refers to the fact that the collection is
 done without the use of an online client - that is, without the client-server
 network connectivity that is required for normal collections. The endpoint needs
 to have a running operating system, just as it would if an
-[installed]({{< ref "/docs/deployment/clients/#installing-the-client-as-a-service" >}})
+[installed](/docs/deployment/clients/#installing-the-client-as-a-service)
 or
-[non-installed]({{< ref "/docs/deployment/clients/#running-clients-interactively" >}})
+[non-installed](/docs/deployment/clients/#running-clients-interactively)
 client was used. Do not confuse the term with
-[deaddisk analysis]({{< ref "/docs/forensic/deaddisk/" >}}), which deals with
+[deaddisk analysis](/docs/forensic/deaddisk/), which deals with
 data from computers that don't have a running operating system.
 
 It may be better to think of offline collections as _out-of-band collections_,
@@ -101,7 +101,7 @@ example:
 
 The **offline collector** is a full-featured Velociraptor binary that has a
 custom configuration and selected artifacts embedded in it. If the embedded
-artifacts require any 3rd-party [tools]({{< ref "/docs/artifacts/tools/" >}})
+artifacts require any 3rd-party [tools](/docs/artifacts/tools/)
 then these will also be repackaged into the offline collector binary.
 
 The process of embedding the config - and optionally bundling other tools - does
@@ -110,7 +110,7 @@ Velociraptor binary and produces a modified version of it. So you can still use
 the collector binary to perform any operations that an unmodified Velociraptor
 binary is capable of. The offline collector behaviour is only invoked when the
 binary is launched without any
-[command line arguments]({{< ref "/docs/cli/" >}}).
+[command line arguments](/docs/cli/).
 
 ![Standard binary vs. offline collector binary](offline-collector-repacking.svg)
 
@@ -162,7 +162,7 @@ think about.
   digitally signed. Repacking the binary invalidates those digital signatures.
   For Windows this is rarely an issue, but macOS will refuse to execute binaries
   with invalid signatures. So on macOS we use the
-  [Generic collector]({{< ref "/docs/deployment/offline_collections/#the-generic-collector" >}})
+  [Generic collector](/docs/deployment/offline_collections/#the-generic-collector)
   option, which is the offline collector config plus tools packaged into a
   separate file.
 
@@ -206,7 +206,7 @@ In general, don't use offline collectors:
   interactive online client.
 
   - Velociraptor clients can operate
-    [without being installed]({{< ref "/docs/deployment/clients/#running-clients-interactively" >}}).
+    [without being installed](/docs/deployment/clients/#running-clients-interactively).
 
   - Clients can immediately join hunts upon enrollment, which allows them to
     immediately begin collecting exactly the same pre-defined set of artifacts
@@ -217,14 +217,14 @@ In general, don't use offline collectors:
     get answers without delays.
 
   - The client config can be
-    [repacked]({{< ref "/docs/cli/config/#-config-repack-" >}})
+    [repacked](/docs/cli/config/#-config-repack-)
     into the binary, and made to
-    [auto execute]({{< ref "/docs/cli/#autoexec-mode-and-post-args">}})
+    [auto execute](/docs/cli/#autoexec-mode-and-post-args)
     in `client` mode. That is, the convenience of a single autoexec binary can
     be replicated for non-installable clients using the same embedding
     mechanism that offline collectors use. In certain scenarios this may be
     preferable to offline collectors, as explained
-    [here]({{< ref "/knowledge_base/tips/online_collector/" >}}).
+    [here](/knowledge_base/tips/online_collector/).
 
 
 {{% /notice %}}
@@ -277,7 +277,7 @@ cross-platform, although your selection of artifacts would need to take that
 into account.
 
 Learn how to run generic offline collectors
-[here]({{< ref "/docs/deployment/offline_collections/running/#running-the-generic-collector" >}}).
+[here](/docs/deployment/offline_collections/running/#running-the-generic-collector).
 
 {{% notice note %}}
 
@@ -310,7 +310,7 @@ normal client record and associated collections. The data can then be queried on
 the server as with any other client collections.
 
 See the section
-[Working With Offline Collection Data]({{< ref "/docs/deployment/offline_collections/collection_data/" >}})
+[Working With Offline Collection Data](/docs/deployment/offline_collections/collection_data/)
 for more information about importing collection containers, as well as other ways
 to work with the data without importing it.
 
@@ -419,7 +419,7 @@ By default the offline collector will collect 2 artifacts at the same time
 (concurrency = 2). This can be overridden in the GUI collector builder or by
 specifying the `OptConcurrency` setting in the spec file if building the
 collector
-[on the command line]({{< ref "/docs/cli/collector/" >}}).
+[on the command line](/docs/cli/collector/).
 
 Because offline collectors run without resource limits (by default), increasing
 the collection concurrency will not necessarily lead to faster collections, and

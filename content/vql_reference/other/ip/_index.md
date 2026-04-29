@@ -70,9 +70,9 @@ Returns "true" since this is a private address block.
 
 ### See also
 
-- [cidr_contains]({{< ref "/vql_reference/other/cidr_contains/" >}}):
+- [cidr_contains](/vql_reference/other/cidr_contains/):
   Calculates if an IP address falls within a range of CIDR specified networks.
-- [geoip]({{< ref "/vql_reference/other/geoip/" >}}): Lookup an IP Address
+- [geoip](/vql_reference/other/geoip/): Lookup an IP Address
   using the MaxMind GeoIP database.
 
 

@@ -77,7 +77,7 @@ F:\>velociraptor.exe query "SELECT EventData, System.TimeCreated.SystemTime from
 
 The query specifically looks at the 7045 event [\"A service was
 installed in the
-system\"](http://www.eventid.net/display.asp?eventid=7045&source=service+control+manager)
+system\"](https://github.com/Psmths/windows-forensic-artifacts/blob/main/persistence/evtx-7045-service-install.md)
 
 Lets turn this query into an event query:
 
