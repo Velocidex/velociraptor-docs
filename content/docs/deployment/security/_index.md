@@ -899,3 +899,11 @@ and potentially malicious users to the Velociraptor GUI at all.
 If you require true data isolation between orgs, we recommend to spin
 up a separate Velociraptor instance (Virtual Machine or container) for
 each unique deployment.
+
+### The root org
+
+The root org is more privileged than other orgs. Giving a user access
+to this org allows them to affect other orgs. For example, any custom
+artifact created in the root org will be visible to all other orgs.
+
+You should only give trusted users access to the root org.

@@ -2099,3 +2099,28 @@ yml
 Rewrap
 VSCode
 shortcodes
+
+
+<url-free> content/announcements/advisories/CVE-2026-6863/_index.md
+--------------------------------------------------------------------------------
+Alhumaid
+CAPEC
+CVSS
+CWE
+attackComplexity
+attackVector
+availabilityImpact
+confidentialityImpact
+integrityImpact
+privilegesRequired
+userInteraction
+Jarvinen
+Mika
+OOM
+
+<url-free> content/knowledge_base/tips/setup_adfs.md
+--------------------------------------------------------------------------------
+IDP
+LDAP
+UPN
+securable

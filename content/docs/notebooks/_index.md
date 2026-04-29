@@ -116,13 +116,18 @@ view it's results in the collection (flow) notebook.
 
 ![Example: flow notebook](timeline_prefetch.png)
 
+These automated notebooks are always public and can be accessed by any
+user that can log on to the application. They can also be modified by
+any user with the `NOTEBOOK_EDITOR` permission (normally given to an
+`investigator` role and above.
 
 ## Sharing Notebooks
 
-By default, notebooks are private to the user who created them.
+By default, notebooks are visible only to the user who created them.
 When creating or editing a notebook, you can choose to share it with
 all users by clicking the Public check box. You can also share it with
-only certain users by selecting their names in the Collaborators field.
+only certain users by selecting their names in the Collaborators
+field.
 
 ![Sharing a notebook](notebook_sharing.png)
 
@@ -131,15 +136,23 @@ Notebook** (<i class="fa-solid fa-wrench"></i>) button in the notebooks toolbar.
 
 {{% notice note "Accessing Data in Private Notebooks" %}}
 
-Users can only view notebooks that they own or share.
-Other notebooks cannot be accessed from the list view
-or via direct link.
+Users can only view notebooks that they own or share via the GUI.
+Other notebooks cannot be accessed from the list view or via direct
+link.
 
-However, the data within notebooks is still available
-to all users. For example, any notebook editor can build or view a
-[timeline](/blog/2021/2021-09-07-release-notes-0.6.1/#timelines)
-from private notebook cells if they know the notebook and cell IDs. This can
-be useful for providing your team with data views that are sourced from more
-complex queries maintained in a private notebook.
+However, the data within notebooks is still available to all
+users. For example, any notebook editor can build or view a
+[timeline]({{< ref
+"/blog/2021/2021-09-07-release-notes-0.6.1/#timelines" >}}) from
+private notebook cells if they know the notebook and cell IDs. This
+can be useful for providing your team with data views that are sourced
+from more complex queries maintained in a private notebook.
+
+Additionally, the data from all notebooks is available for reading
+using the VFS APIs and other VQL plugins.
+
+We do not consider notebooks to be securable from other users - the
+private/public setting is merely a convenience in controlling
+visibility of notebooks within the GUI.
 
 {{% /notice %}}
