@@ -46,11 +46,11 @@ sources:
 
   query: |
 
-    LET SummaryRule = '''
-      rule onenote_and_images {
-        strings:
-          $onenote={E4 52 5C 7B 8C D8 A7 4D AE B1 53 78 D0 29 96 D3}
+    LET OneNoteMagic = 'e4 52 5c 7b 8c d8 a7 4d ae b1 53 78 d0 29 96 d3'
 
+    LET ImageRule = '''
+      rule embedded_images {
+        strings:
           $png={89 50 4E 47 0D 0A 1A 0A}
           $jpg={FF D8 FF}
           $gif1="GIF87a"
@@ -59,110 +59,39 @@ sources:
           $tif1={49 49 2A 00}
           $tif2={4D 4D 00 2A}
           $webp="WEBP"
-
         condition:
-          $onenote at 0 or any of ($png,$jpg,$gif1,$gif2,$bmp,$tif1,$tif2,$webp)
+          any of them
       }
     '''
 
-    LET onenote_files = SELECT OSPath, Name, Size, Mtime, Btime, Ctime, Atime
+    LET CombinedRegex = SearchRegexAscii + '|' + SearchRegexUtf16
+
+    LET onenote_files = SELECT OSPath, Name, Size, Mtime, Btime, Ctime, Atime,
+      read_file(filename=OSPath, length=MaxRegexReadBytes) =~ CombinedRegex AS RegexMatched
     FROM glob(globs=TargetGlob)
     WHERE NOT IsDir
       AND Size <= MaxFileSize
       AND format(
         format='% x',
         args=[read_file(filename=OSPath, length=16)]
-      ) = 'e4 52 5c 7b 8c d8 a7 4d ae b1 53 78 d0 29 96 d3'
+      ) = OneNoteMagic
 
-    LET target_files = SELECT
-      OSPath,
-      Name,
-      Size,
-      Mtime,
-      Btime,
-      Ctime,
-      Atime,
-      hash(path=OSPath).SHA256 AS SHA256,
-
-      read_file(
-        filename=OSPath,
-        length=MaxRegexReadBytes
-      ) =~ SearchRegexAscii AS RegexAsciiMatched,
-
-      read_file(
-        filename=OSPath,
-        length=MaxRegexReadBytes
-      ) =~ SearchRegexUtf16 AS RegexUtf16Matched
-
+    LET checked_files = SELECT *,
+      len(list={
+        SELECT String.Name
+        FROM yara(files=OSPath, rules=ImageRule, number=9999)
+      }) AS ImageSignatureCount
     FROM onenote_files
 
+    LET filtered = SELECT *,
+      ImageSignatureCount > 0 AS ImageSignaturesFound
+    FROM checked_files
+    WHERE IncludeNoHitFiles OR RegexMatched OR ImageSignatureCount > 0
 
-    LET grouped <= SELECT
-      OSPath,
-      Name,
-      Size,
-      Mtime,
-      Btime,
-      Ctime,
-      Atime,
-      SHA256,
-
-      RegexAsciiMatched,
-      RegexUtf16Matched,
-      RegexAsciiMatched OR RegexUtf16Matched AS RegexMatched,
-
-      sum(item=if(condition=String.Name != '$onenote', then=1, else=0)) AS ImageSignatureCount,
-      sum(item=if(condition=String.Name != '$onenote', then=1, else=0)) > 0 AS ImageSignaturesFound
-
-    FROM foreach(
-      row=target_files,
-
-      query={
-        SELECT
-          OSPath,
-          Name,
-          Size,
-          Mtime,
-          Btime,
-          Ctime,
-          Atime,
-          SHA256,
-          RegexAsciiMatched,
-          RegexUtf16Matched,
-          String
-        FROM yara(
-          files=OSPath,
-          rules=SummaryRule,
-          number=9999
-        )
-      })
-
-    GROUP BY
-      OSPath,
-      Name,
-      Size,
-      Mtime,
-      Btime,
-      Ctime,
-      Atime,
-      SHA256,
-      RegexAsciiMatched,
-      RegexUtf16Matched
-
-
-    SELECT
-      *,
-      if(
-        condition=UploadOriginal,
-        then=upload(file=OSPath),
-        else=NULL
-      ) AS OneNoteUpload
-
-    FROM grouped
-
-    WHERE IncludeNoHitFiles
-      OR RegexMatched
-      OR ImageSignaturesFound
+    SELECT *,
+      hash(path=OSPath).SHA256 AS SHA256,
+      UploadOriginal && upload(file=OSPath) AS OneNoteUpload
+    FROM filtered
 
 
 - name: ImageSignatureHits
@@ -188,6 +117,8 @@ sources:
       }
     '''
 
+    LET OneNoteMagic = 'e4 52 5c 7b 8c d8 a7 4d ae b1 53 78 d0 29 96 d3'
+
     LET onenote_files = SELECT OSPath, Name, Size
     FROM glob(globs=TargetGlob)
     WHERE NOT IsDir
@@ -195,7 +126,7 @@ sources:
       AND format(
         format='% x',
         args=[read_file(filename=OSPath, length=16)]
-      ) = 'e4 52 5c 7b 8c d8 a7 4d ae b1 53 78 d0 29 96 d3'
+      ) = OneNoteMagic
 
     SELECT
       OSPath,
@@ -246,6 +177,8 @@ sources:
       }
     '''
 
+    LET OneNoteMagic = 'e4 52 5c 7b 8c d8 a7 4d ae b1 53 78 d0 29 96 d3'
+
     LET onenote_files = SELECT OSPath, Name, Size
     FROM glob(globs=TargetGlob)
     WHERE NOT IsDir
@@ -253,7 +186,7 @@ sources:
       AND format(
         format='% x',
         args=[read_file(filename=OSPath, length=16)]
-      ) = 'e4 52 5c 7b 8c d8 a7 4d ae b1 53 78 d0 29 96 d3'
+      ) = OneNoteMagic
 
     SELECT
       OSPath,
