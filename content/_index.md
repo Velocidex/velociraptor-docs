@@ -36,6 +36,8 @@ navs:
    description: Troubleshooting deployments
    link: /docs/troubleshooting/
 
+description: |
+  {{% navs %}}
 ---
 
 {{% navs %}}
@@ -43,15 +45,17 @@ navs:
 
 {{% notice warning "Current Security Advisories" %}}
 
-* [Velociraptor versions before
-  0.76.3](/announcements/advisories/cve-2026-6290/) contain a
-  vulnerability in the query() plugin which allows access to all orgs
-  with the user's current ACL token.
+Please update to the latest release [0.76.5](/downloads/) to address
+the following CVEs:
 
-* [Velociraptor versions before
-  0.76.3](/announcements/advisories/cve-2026-5329/) improperly
-  validated input in client message handler. This could lead to remote
+* [CVE-2026-5329](/announcements/advisories/cve-2026-5329/) Velociraptor improper input validation in client message handler. This could lead to remote
   code execution on the server.
+
+* [CVE-2026-6290](/announcements/advisories/cve-2026-6290/)  Velociraptor query() plugin misapplies permissions to orgs.
+
+* [CVE-2026-6863](/announcements/advisories/cve-2026-6863/)  HTTP Filestore Endpoints Misapply Permissions Across Organizations
+
+* [CVE-2026-6948](/announcements/advisories/cve-2026-6948/)  Unbounded Memory Allocation in VQLResponse Result-Set Writer. This could lead to a DoS attack against the server.
 
 {{% /notice %}}
 
