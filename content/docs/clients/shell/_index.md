@@ -5,6 +5,11 @@ date: 2024-12-19
 draft: false
 weight: 60
 last_reviewed: 2024-12-30
+description: |
+  Velociraptor's collects data from endpoints using
+  [Artifacts](/docs/artifacts/)
+  which are logical containers for curated VQL queries. In fact all VQL queries
+  run on clients must be delivered to the client as artifacts.
 ---
 
 Velociraptor's collects data from endpoints using

@@ -4,6 +4,9 @@ date: 2023-10-15T00:14:44+10:00
 tags:
 - Sigma
 - Detection
+description: |
+  This page discusses how Sigma is implemented and used within
+  Velociraptor.
 ---
 
 This page discusses how Sigma is implemented and used within

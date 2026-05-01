@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Maps the MITRE Att&ck framework process executions into artifacts.
 ---
 
 Maps the MITRE Att&ck framework process executions into artifacts.

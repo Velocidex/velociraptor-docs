@@ -5,6 +5,9 @@ date: 2025-11-01
 last_reviewed: 2026-02-26
 draft: true
 weight: 40
+description: |
+  As we mentioned in previous sections, file collections are usually done for two
+  distinct reasons:
 ---
 
 As we mentioned in previous sections, file collections are usually done for two

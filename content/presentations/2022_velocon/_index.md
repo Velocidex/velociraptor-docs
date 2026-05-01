@@ -2,6 +2,9 @@
 title: Velocon 2022
 menutitle: Velocon 2022
 weight: 75
+description: |
+  On Sept 15, 2022 We held our first VeloCon - a day-long virtual summit
+  as we DIG DEEPER TOGETHER!
 ---
 
 On Sept 15, 2022 We held our first VeloCon - a day-long virtual summit

@@ -5,6 +5,43 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Identify a file using magic rules.
+
+  Magic rules are designed to identify a file based on a sequence of
+  tests. They are a great way of quickly triaging a file type based
+  on its content, not its name.
+
+  Detection is facilitated via libmagic - a common library powering
+  the unix "file" utility. Velociraptor comes with all of "file"
+  basic magic signatures.
+
+  You can also write your own signatures using the magic syntax (see
+  https://man7.org/linux/man-pages/man4/magic.4.html )
+
+  ### Example
+
+  The following will check all files in /var/lib applying a custom
+  magic rule.
+
+  ```vql
+  LET Magic = '''
+  0 search/1024 "GET Apache Logs
+  !:strength + 100
+  '''
+
+  SELECT FullPath, Size, magic(path=FullPath, magic=Magic)
+  FROM glob(globs="/var/lib/*")
+  ```
+
+  ### Notes
+
+  `magic()` requires reading the headers of each file which
+  causes the file to be opened. If you have on-access scanning such
+  as Windows Defender "Realtime monitoring", applying magic() on
+  many files (e.g. in a glob) may result in substantial load on the
+  endpoint.
+
 ---
 
 

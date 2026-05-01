@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Searches the Windows Security event log for explicit logon events, that is
+  Event ID 4648: "A logon was attempted using explicit credentials".
 ---
 
 Searches the Windows Security event log for explicit logon events, that is

@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact collects AMCache entries with a SHA1 hash to enable threat
+  detection.
 ---
 
 This artifact collects AMCache entries with a SHA1 hash to enable threat

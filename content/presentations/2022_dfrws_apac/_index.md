@@ -2,6 +2,9 @@
 title: DFRWS APAC 2022
 menutitle: DFRWS APAC 2022
 weight: 80
+description: |
+  At DFRWS APAC 2022, Mike gave a 4 hour workshop. Below you will find the
+  slides.
 ---
 
 At DFRWS APAC 2022, Mike gave a 4 hour workshop. Below you will find the

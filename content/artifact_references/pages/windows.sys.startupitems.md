@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Applications that will be started up from the various run key
+  locations.
 ---
 
 Applications that will be started up from the various run key

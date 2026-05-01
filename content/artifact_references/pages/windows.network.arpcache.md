@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Address resolution cache, both static and dynamic (from ARP, NDP).
 ---
 
 Address resolution cache, both static and dynamic (from ARP, NDP).

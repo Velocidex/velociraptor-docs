@@ -4,6 +4,9 @@ date: 2024-12-18
 draft: false
 weight: 10
 last_reviewed: 2024-12-29
+description: |
+  To work with a specific client, search for it using the search bar at the top of
+  the Admin GUI.
 ---
 
 To work with a specific client, search for it using the search bar at the top of

@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Splits a string into an array based on a regexp separator.
 ---
 
 

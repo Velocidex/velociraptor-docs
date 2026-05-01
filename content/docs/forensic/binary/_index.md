@@ -6,6 +6,10 @@ summary: |
     data. Sometimes we need to parse binary data to answer these
     questions.
 weight: 50
+description: |
+  Parsing binary is a very important capability for forensic analysis and
+  DFIR - we encounter binary data in many contexts, such as file
+  formats, network traffic and more.
 ---
 
 Parsing binary is a very important capability for forensic analysis and

@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Add a DNS record to the cache..
 ---
 
 

@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Calculates shannon scale entropy of a string.
 ---
 
 
@@ -22,8 +24,4 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 string||string (required)
-
-### Description
-
-Calculates shannon scale entropy of a string.
 

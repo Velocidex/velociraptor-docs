@@ -5,6 +5,21 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Lookup an IP Address using the MaxMind GeoIP database.
+
+  You can get a copy of the database from https://www.maxmind.com/.
+
+  The database must be locally accessible so geoip lookup is typically done
+  only on the server.
+
+  ### See also
+
+  - [cidr_contains]({{< ref "/vql_reference/other/cidr_contains/" >}}):
+    Calculates if an IP address falls within a range of CIDR specified
+    networks.
+  - [ip]({{< ref "/vql_reference/other/ip/" >}}): Format an IP address.
+
 ---
 
 
@@ -35,9 +50,9 @@ only on the server.
 
 ### See also
 
-- [cidr_contains](/vql_reference/other/cidr_contains/):
+- [cidr_contains]({{< ref "/vql_reference/other/cidr_contains/" >}}):
   Calculates if an IP address falls within a range of CIDR specified
   networks.
-- [ip](/vql_reference/other/ip/): Format an IP address.
+- [ip]({{< ref "/vql_reference/other/ip/" >}}): Format an IP address.
 
 

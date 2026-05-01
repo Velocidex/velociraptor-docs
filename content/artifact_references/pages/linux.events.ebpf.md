@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+description: |
+  This artifact forwards EBPF events generated on the endpoint.
 ---
 
 This artifact forwards EBPF events generated on the endpoint.

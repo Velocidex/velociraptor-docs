@@ -5,6 +5,39 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Create and launch a hunt.
+
+  This function will create a new hunt to collect the specified
+  artifacts. The artifacts to collect are provided in the
+  `artifacts` parameter. Artifact parameters are provided in the
+  `spec` parameter (see example below).
+
+  ### Notes
+
+  1. In the GUI hunts are always created in the paused
+  state. This is not the default state when using this function (all
+  hunts are immediately active - if you want the hunt to be created
+  in the paused state provide the `pause=TRUE` parameter).
+
+  2. The expiry time is specified in any of the usual time
+  specification ways (seconds since epoch, or ISO format like
+  "2021-10-02"). If the expiry time is in the past, the hunt will
+  not be created.
+
+  ```vql
+  SELECT hunt(
+      description="A general hunt",
+      artifacts='Windows.KapeFiles.Targets',
+      spec=dict(`Windows.KapeFiles.Targets`=dict(
+          Device ='C:', VSSAnalysis='Y', KapeTriage='Y')),
+      expires=now() + 18000)
+  FROM scope()
+  ```
+
+  3. Hunt conditions are not additive! A hunt can only be targeted
+     to an operating system, or label but not both.
+
 ---
 
 

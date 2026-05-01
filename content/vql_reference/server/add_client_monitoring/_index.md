@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Adds a new artifact to the client monitoring table.
 ---
 
 

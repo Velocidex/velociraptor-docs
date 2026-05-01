@@ -5,6 +5,13 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Returns the length of an object.
+
+  For strings, this is the number of bytes.
+  For arrays, this is the number of entries.
+  For dicts, this is the number of key/value pairs.
+
 ---
 
 

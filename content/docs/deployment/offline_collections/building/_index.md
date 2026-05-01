@@ -5,6 +5,8 @@ date: 2025-11-03
 last_reviewed: 2025-11-03
 draft: false
 weight: 10
+description: |
+  Offline collectors can be created in the GUI or using the CLI.
 ---
 
 Offline collectors can be created in the GUI or using the CLI.

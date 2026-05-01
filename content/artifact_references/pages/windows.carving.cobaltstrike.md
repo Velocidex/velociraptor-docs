@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact extracts Cobalt Strike configuration from a byte stream, process
+  or file on disk such as a process dump. Best used as a triage step against a
+  detection of a Cobalt Strike beacon via a YARA process scan.
 ---
 
 This artifact extracts Cobalt Strike configuration from a byte stream, process

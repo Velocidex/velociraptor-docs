@@ -6,6 +6,8 @@ last_reviewed: 2025-07-06
 draft: false
 weight: 100
 summary: "Commands for working with users"
+description: |
+  Manage Velociraptor users.
 ---
 
 Manage Velociraptor users.

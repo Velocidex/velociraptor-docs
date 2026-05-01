@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact allows running arbitrary commands through the system
+  shell cmd.exe.
 ---
 
 This artifact allows running arbitrary commands through the system

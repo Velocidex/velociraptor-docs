@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Represents products as they are installed by Windows Installer. A product generally
+  correlates to one installation package on Windows. Some fields may be blank as Windows
+  installation details are left to the discretion of the product author.
 ---
 
 Represents products as they are installed by Windows Installer. A product generally

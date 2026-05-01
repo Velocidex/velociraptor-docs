@@ -6,6 +6,8 @@ draft: false
 weight: 160
 summary: "Advice for writing and testing artifacts"
 last_reviewed: 2025-04-30
+description: |
+  ## Development and testing workflow
 ---
 
 ## Development and testing workflow

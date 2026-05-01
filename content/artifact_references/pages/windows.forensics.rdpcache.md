@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact parses, views and enables simplified upload of RDP
+  cache files.
 ---
 
 This artifact parses, views and enables simplified upload of RDP

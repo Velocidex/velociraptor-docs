@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Queries the Microsoft-Windows-DotNETRuntimeRundown provider to
+  collect a list of DotNet modules loaded into a process. This can be
+  useful when responding to reflectively loaded DotNet malware.
 ---
 
 Queries the Microsoft-Windows-DotNETRuntimeRundown provider to

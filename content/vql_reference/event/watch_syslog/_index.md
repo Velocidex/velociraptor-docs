@@ -5,6 +5,46 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Watch a syslog file and stream events from it.
+
+  When the plugin starts watching, it seeks to the end of the file
+  and forwards any new lines from it.
+
+  This plugin will tail a line delimited text file and emit rows for
+  each new line that appears in the file (It does not have to be a
+  syslog file, as many programs log into a line delimited text
+  file).
+
+  You can specify a set of non-existent files in the `filename` arg
+  and the plugin will wait for the files to appear, then stream
+  their content. When new files appear, the plugin will also dump
+  their entire file content to ensure no lines are missed.
+
+  Sometimes it is not known in advance what the filename is, so in
+  this case you can specify the query parameter to search for new
+  files to watch periodically. If a new file appears, this plugin
+  will dump all its existing lines then seek to the end of the file
+  and continue dumping any new lines (So no lines should be missed).
+
+  ## Example (Dynamic watcher):
+
+  ```vql
+  SELECT OSPath, Line
+  FROM watch_syslog(query={
+      SELECT OSPath FROM glob(globs='/var/log/logfile*.log')
+  })
+  ```
+
+  ## Example:
+
+  The following will watch a static file (this can not be a glob).
+
+  ```vql
+  SELECT OSPath, Line
+  FROM watch_syslog(filename='/var/log/logfile.log')
+  ```
+
 ---
 
 

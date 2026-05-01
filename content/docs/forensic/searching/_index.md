@@ -7,6 +7,9 @@ summary: |
 date: 2021-06-17T02:30:41Z
 draft: false
 weight: 30
+description: |
+  A powerful DFIR technique is searching bulk data for patterns. Some
+  examples include:
 ---
 
 A powerful DFIR technique is searching bulk data for patterns. Some

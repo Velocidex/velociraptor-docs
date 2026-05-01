@@ -3,6 +3,10 @@ title: "Server Automation"
 date: 2021-06-30T12:31:08Z
 draft: false
 weight: 70
+description: |
+  Velociraptor's unprecedented flexibility arises from the power of
+  VQL. We have seen how VQL can be used to collect artifacts on the
+  endpoint, but VQL can be used on the server too.
 ---
 
 Velociraptor's unprecedented flexibility arises from the power of

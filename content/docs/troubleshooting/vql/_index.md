@@ -6,6 +6,8 @@ draft: false
 weight: 50
 summary: |
   * Advice for basic troubleshooting of VQL queries.
+description: |
+  ## General troubleshooting advice
 ---
 
 ## General troubleshooting advice

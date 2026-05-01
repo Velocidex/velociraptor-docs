@@ -7,6 +7,8 @@ draft: false
 weight: 20
 summary: |
   * Troubleshooting problems with getting clients running.
+description: |
+  {{% notice note %}}
 ---
 
 {{% notice note %}}

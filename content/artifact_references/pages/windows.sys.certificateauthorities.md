@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Certificate Authorities installed in Keychains/ca-bundles.
 ---
 
 Certificate Authorities installed in Keychains/ca-bundles.

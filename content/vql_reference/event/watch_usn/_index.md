@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Watch the USN journal from a device.
 ---
 
 

@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  This server artifact will create a new org and assign the current user as an
+  admin to it.
 ---
 
 This server artifact will create a new org and assign the current user as an

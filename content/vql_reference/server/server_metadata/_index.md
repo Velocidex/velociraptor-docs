@@ -5,6 +5,10 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Returns server metadata from the datastore. Server metadata is a
+  set of free form key/value data
+
 ---
 
 

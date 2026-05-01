@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Read all User's chrome history.
 ---
 
 Read all User's chrome history.

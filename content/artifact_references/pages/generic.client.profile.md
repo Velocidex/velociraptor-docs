@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact collects profiling information about the running
+  client. This is useful when you notice a high CPU load in the client
+  and want to know why.
 ---
 
 This artifact collects profiling information about the running

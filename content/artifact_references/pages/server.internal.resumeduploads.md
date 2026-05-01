@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  An internal artifact that display all resumed uploads
 ---
 
 An internal artifact that display all resumed uploads

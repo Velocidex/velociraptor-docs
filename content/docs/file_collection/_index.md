@@ -4,6 +4,10 @@ date: 2021-06-27T04:31:24Z
 last_reviewed: 2026-01-29
 draft: false
 weight: 50
+description: |
+  Traditional DFIR tools focus on file acquisition and often rely on file _copies_
+  as their primary data source. These tools typically perform subsequent analysis
+  on a centralized server or network-isolated system.
 ---
 
 Traditional DFIR tools focus on file acquisition and often rely on file _copies_

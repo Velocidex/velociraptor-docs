@@ -5,6 +5,27 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Generate a timestamp periodically. This is mostly useful for event
+  queries.
+
+  This plugin generates events periodically. The periodicity can be
+  controlled either via the `period` or the `ms` parameter. Each row
+  will be a go [time.Time](https://golang.org/pkg/time/#Time)
+  object. You can access its unix epoch time with the Sec column.
+
+  ### Example
+
+  The following will generate an event every 10 seconds.
+
+  ```vql
+  SELECT Second FROM clock(period=10)
+  ```
+
+  The `start` parameter can be used to schedule the plugin to start
+  at a particular time. This can be an integer (which will be
+  interpreted as seconds since the epoch), a string or a time value.
+
 ---
 
 

@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+description: |
+  This server side event monitoring artifact will watch a selection of client
+  monitoring artifacts for new events and push those to a LogScale (formerly
+  Humio) ingestion endpoint
 ---
 
 This server side event monitoring artifact will watch a selection of client

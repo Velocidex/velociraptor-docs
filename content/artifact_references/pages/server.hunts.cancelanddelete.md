@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  Velociraptor Hunts are a way of running the same flow on
+  many endpoints at once. Hunts issue very quickly and wait
+  until each endpoint returns results.
 ---
 
 Velociraptor Hunts are a way of running the same flow on
@@ -64,14 +68,31 @@ parameters:
 sources:
   - name: CancelFlows
     query: |
-      SELECT * FROM Artifact.Server.Utils.CancelHunt(Hunts=Hunts)
+      LET all_flows(HuntId) = SELECT Flow.client_id AS client_id, Flow.session_id AS flow_id
+      FROM hunt_flows(hunt_id=HuntId)
+      WHERE NOT Flow.state =~ "ERROR|FINISHED"
+
+      LET cancellations(HuntId) = SELECT HuntId, client_id, flow_id,
+             cancel_flow(client_id=client_id, flow_id=flow_id) AS Cancellation
+      FROM all_flows(HuntId=HuntId)
+
+      LET AllHunts &lt;= if(condition=HuntId, then=Hunts + HuntId, else=Hunts)
+
+      SELECT * FROM foreach(row={
+        SELECT _value AS HuntId
+        FROM items(item=AllHunts)
+        WHERE hunt_update(hunt_id=HuntId, add_labels="Deleting...")
+      }, query={
+        SELECT * FROM cancellations(HuntId=HuntId)
+      }, workers=2)
 
   - name: HuntFiles
     query: |
       LET AllHunts &lt;= if(condition=HuntId, then=Hunts + HuntId, else=Hunts)
 
       SELECT * FROM foreach(row={
-        SELECT _value as HuntId FROM items(item=AllHunts)
+        SELECT _value as HuntId
+        FROM items(item=AllHunts)
       }, query={
         SELECT *
         FROM hunt_delete(hunt_id=HuntId, really_do_it=DeleteAllFiles)

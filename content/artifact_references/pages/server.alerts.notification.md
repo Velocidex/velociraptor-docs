@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+description: |
+  This artifact forwards alerts from Server.Internal.Alerts to a Slack/Teams/Discord via a Webhook.
 ---
 
 This artifact forwards alerts from Server.Internal.Alerts to a Slack/Teams/Discord via a Webhook.

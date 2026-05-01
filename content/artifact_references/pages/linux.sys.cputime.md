@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Displays information from /proc/stat file about the time the cpu
+  cores spent in different parts of the system.
 ---
 
 Displays information from /proc/stat file about the time the cpu

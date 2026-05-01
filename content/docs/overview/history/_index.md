@@ -3,6 +3,8 @@ title: "History"
 date: 2021-06-09T03:51:18Z
 draft: false
 weight: 1
+description: |
+  Velociraptor draws its inspiration from two major open source projects:
 ---
 
 Velociraptor draws its inspiration from two major open source projects:

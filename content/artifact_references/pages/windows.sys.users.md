@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  List User accounts by inspecting registry keys. This method is a
+  reliable indicator for users who have physically logged into the
+  system and thereby created local profiles.
 ---
 
 List User accounts by inspecting registry keys. This method is a

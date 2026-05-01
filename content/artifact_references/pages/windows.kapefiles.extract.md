@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  Extracts file collected by the `Windows.KapeFiles.Targets` or
+  `Windows.Triage.Targets` artifacts. and restores the original
+  timestamps on the extracted files.
 ---
 
 Extracts file collected by the `Windows.KapeFiles.Targets` or

@@ -5,6 +5,11 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Iterate over a list.
+
+  DEPRECATED - use foreach() instead.
+
 ---
 
 

@@ -4,6 +4,12 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Windows allows specific configuration of various executables via a
+  registry key. Some keys allow defining a debugger to attach to a
+  program as it is run. If this debugger is launched for commonly used
+  programs (e.g. notepad) then another program can be launched at the
+  same time (with the same privileges).
 ---
 
 Windows allows specific configuration of various executables via a

@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Enables querying the MFT with advanced filters such as time, path or other
+  NTFS attributes.
 ---
 
 Enables querying the MFT with advanced filters such as time, path or other

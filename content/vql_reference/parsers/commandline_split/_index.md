@@ -5,6 +5,19 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Split a commandline into separate components following the windows
+  conventions.
+
+  ### Example
+
+  ```vql
+  SELECT
+    commandline_split(command='''"C:\Program Files\Velociraptor\Velociraptor.exe" service run'''),
+    commandline_split(command="/usr/bin/ls -l 'file with space.txt'", bash_style=TRUE)
+  FROM scope()
+  ```
+
 ---
 
 

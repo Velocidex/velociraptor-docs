@@ -3,6 +3,8 @@ title: "VQL Fundamentals"
 date: 2025-01-24
 draft: false
 weight: 10
+description: |
+  {{% notice tip "Running VQL queries in Notebooks" %}}
 ---
 
 {{% notice tip "Running VQL queries in Notebooks" %}}

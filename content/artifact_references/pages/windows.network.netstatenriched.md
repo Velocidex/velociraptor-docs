@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  NetstatEnhanced adds additional data points to the Netstat artifact and
+  enables verbose search options.
 ---
 
 NetstatEnhanced adds additional data points to the Netstat artifact and

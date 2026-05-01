@@ -7,6 +7,9 @@ date: 2024-04-11T23:25:17Z
 draft: false
 weight: 30
 last_reviewed: 2025-11-15
+description: |
+  In DFIR we often talk about paths and filesystems. However, these are
+  actually more complex than they appear at first glance.
 ---
 
 In DFIR we often talk about paths and filesystems. However, these are

@@ -5,6 +5,15 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Scan the $I30 stream from an NTFS MFT entry.
+
+  This is similar in use to the parse_ntfs() function but parses the
+  $I30 stream.
+
+  Note: You can also use a raw $MFT file to operate on - see
+  `parse_ntfs()` for a full description.
+
 ---
 
 

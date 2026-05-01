@@ -5,6 +5,32 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Parses events from an EVTX file.
+
+  This plugin parses windows events from the Windows Event log files (EVTX).
+
+  A windows event typically contains two columns. The `EventData`
+  contains event specific structured data while the `System` column
+  contains common data for all events - including the Event ID.
+
+  You should probably almost always filter by one or more event ids
+  (using the `System.EventID.Value` field).
+
+  ### Example
+
+  ```vql
+  SELECT System.TimeCreated.SystemTime as Timestamp,
+         System.EventID.Value as EventID,
+         EventData.ImagePath as ImagePath,
+         EventData.ServiceName as ServiceName,
+         EventData.ServiceType as Type,
+         System.Security.UserID as UserSID,
+         EventData as _EventData,
+         System as _System
+  FROM watch_evtx(filename=systemLogFile) WHERE EventID = 7045
+  ```
+
 ---
 
 

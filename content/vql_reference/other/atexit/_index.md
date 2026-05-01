@@ -5,6 +5,18 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Install a query to run when the query is unwound. This is used to
+  clean up when the query ends.
+
+  ### Example
+
+  ```vql
+  LET _ <= atexit(query={
+    SELECT rm(filename="Foobar.txt") FROM scope()
+  })
+  ```
+
 ---
 
 

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Gets the interactive users from a Linux host.
 ---
 
 Gets the interactive users from a Linux host.

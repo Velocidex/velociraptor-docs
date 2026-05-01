@@ -5,6 +5,10 @@ date: 2025-11-06
 last_reviewed: 2026-02-05
 draft: false
 weight: 50
+description: |
+  As described in the
+  [accessing file uploads on the server](/docs/file_collection/#accessing-file-uploads-on-the-server)
+  section, file uploads can be individually downloaded from the GUI.
 ---
 
 As described in the

@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+description: |
+  Velociraptor can get an interactive shell on the endpoint by using
+  the shell command. To use it, the user must be directly
+  logged on the server.
 ---
 
 Velociraptor can get an interactive shell on the endpoint by using

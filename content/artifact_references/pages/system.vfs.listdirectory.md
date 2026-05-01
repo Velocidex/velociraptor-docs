@@ -4,6 +4,11 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This is an internal artifact used by the GUI to populate the
+  VFS. You may run it manually if you like, but typically it is
+  launched by the GUI when a user clicks the "Refresh this directory"
+  button.
 ---
 
 This is an internal artifact used by the GUI to populate the

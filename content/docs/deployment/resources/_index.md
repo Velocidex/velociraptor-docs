@@ -6,6 +6,11 @@ summary: |
   In this page we discuss some of the performance limitations of the platform.
   It is important to understand how performance affects the framework and how
   Velociraptor manages finite resources to scale up efficiently.
+description: |
+  With the present architecture, Velociraptor only supports a file based
+  data store. This makes it easy to deploy as you don't need to set up
+  an elaborate database backend, but this is inherently limited to a
+  single machine.
 ---
 
 With the present architecture, Velociraptor only supports a file based

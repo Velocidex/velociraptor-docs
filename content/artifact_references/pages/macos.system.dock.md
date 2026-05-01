@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact examines the contents of the user's dock.  The
+  property list entry for each application represented within the dock
+  can be modified to point to a malicious application.
 ---
 
 This artifact examines the contents of the user's dock.  The

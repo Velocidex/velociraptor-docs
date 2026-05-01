@@ -5,6 +5,11 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  AMSI is an interface on windows to scan a string for malware. This
+  function submits the string to the AMSI system and receives a
+  determination if it is malware.
+
 ---
 
 

@@ -5,6 +5,9 @@ date: 2024-12-29
 draft: false
 weight: 20
 last_reviewed: 2024-12-29
+description: |
+  Interrogation is the term we use to describe the process of querying a host for
+  it's basic host information.
 ---
 
 Interrogation is the term we use to describe the process of querying a host for

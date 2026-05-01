@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Microsoft Office documents among other document format (such as
+  LibraOffice) are actually stored in zip files. The zip file contains
+  the document encoded as XML in several zip members.
 ---
 
 Microsoft Office documents among other document format (such as

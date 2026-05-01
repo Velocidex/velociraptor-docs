@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Enumerate the root certificates in the Windows Root store.
 ---
 
 Enumerate the root certificates in the Windows Root store.

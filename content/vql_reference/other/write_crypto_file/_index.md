@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Write a query into an encrypted local storage file.
 ---
 
 

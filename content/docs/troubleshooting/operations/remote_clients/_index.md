@@ -9,6 +9,8 @@ summary: |
   * How to troubleshoot client issues when you don't have local access to the client.
 aliases:
   - "/docs/troubleshooting/clients/"
+description: |
+  {{% notice note %}}
 ---
 
 {{% notice note %}}

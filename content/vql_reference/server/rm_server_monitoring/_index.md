@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Remove an artifact from the server monitoring table.
 ---
 
 

@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Split a path into components. Note this is more complex than just split() because it takes into account path escaping.
 ---
 
 

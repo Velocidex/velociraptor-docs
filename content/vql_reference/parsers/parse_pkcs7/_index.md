@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Parse a DER encoded pkcs7 string into an object.
 ---
 
 

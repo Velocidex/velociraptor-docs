@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Apply rot13 deobfuscation to the string.
 ---
 
 
@@ -22,8 +24,4 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 string||string
-
-### Description
-
-Apply rot13 deobfuscation to the string.
 

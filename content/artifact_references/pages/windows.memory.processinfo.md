@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact returns process information obtained by parsing the PEB directly.
 ---
 
 This artifact returns process information obtained by parsing the PEB directly.

@@ -5,6 +5,11 @@ date: 2021-06-30T12:31:08Z
 draft: false
 weight: 60
 last_reviewed: 2024-12-30
+description: |
+  We have previously seen how VQL
+  [Event Queries](/docs/vql/events/) are simply VQL
+  queries that never terminate, generating a row for each event that
+  occurs.
 ---
 
 We have previously seen how VQL

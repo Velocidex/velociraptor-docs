@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact will find all relevant files in the VSS. Typically
+  used to out deduplicated paths for processing by other artifacts.
 ---
 
 This artifact will find all relevant files in the VSS. Typically

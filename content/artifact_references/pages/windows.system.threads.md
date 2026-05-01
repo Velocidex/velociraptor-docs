@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Enumerates all threads in selected processes.
 ---
 
 Enumerates all threads in selected processes.

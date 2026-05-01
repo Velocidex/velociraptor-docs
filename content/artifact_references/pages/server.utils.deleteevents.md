@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  This artifact permanently deletes Event files for client or
+  monitoring events.
 ---
 
 This artifact permanently deletes Event files for client or

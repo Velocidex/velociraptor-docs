@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
+description: |
+  An internal artifact used to track new labeling events.
 ---
 
 An internal artifact used to track new labeling events.

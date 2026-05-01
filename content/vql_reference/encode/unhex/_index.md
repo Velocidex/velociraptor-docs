@@ -5,6 +5,21 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Apply hex decoding to the string.
+
+  A hex encoded string consists of two hex digits per byte -
+  therefore valid hex encoded strings have an even length.
+
+  For example: "01230F0a"
+
+  Note: If you need to encode a string as hex encoded string you can
+  use the format function:
+
+  ```vql
+  format(format="%02x", args="Hello") -> "48656c6c6f"
+  ```
+
 ---
 
 

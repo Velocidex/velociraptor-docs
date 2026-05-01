@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Automates the creation of remapping rules to enable post-processing file
+  uploads collected by the `Windows.KapeFiles.Targets` or
+  `Windows.Triage.Targets` artifacts.
 ---
 
 Automates the creation of remapping rules to enable post-processing file

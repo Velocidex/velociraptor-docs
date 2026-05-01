@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Send an RFC5424 compliant remote syslog message.
 ---
 
 

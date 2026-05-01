@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Repack and upload a repacked binary or MSI to the server.
 ---
 
 

@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact enables zgrep-like searching of Linux logs, including gzipped
+  log files.
 ---
 
 This artifact enables zgrep-like searching of Linux logs, including gzipped

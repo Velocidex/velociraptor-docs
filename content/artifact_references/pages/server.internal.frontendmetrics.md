@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
+description: |
+  An internal queue that receives metrics from all frontends. The
+  master Frontend manager service will aggregate these into a combined
+  metric stream.
 ---
 
 An internal queue that receives metrics from all frontends. The

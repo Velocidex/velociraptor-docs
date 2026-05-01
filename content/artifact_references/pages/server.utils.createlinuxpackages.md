@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  Build Deb and RPM packages ready for deployment in the current org.
 ---
 
 Build Deb and RPM packages ready for deployment in the current org.

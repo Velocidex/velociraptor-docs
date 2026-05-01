@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Calculate the tlsh hash of a file.
 ---
 
 

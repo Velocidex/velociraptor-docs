@@ -5,6 +5,8 @@ date: 2025-07-05
 draft: false
 weight: 70
 summary: Run VQL queries on the command line.
+description: |
+  Run VQL queries on the command line.
 ---
 
 Run VQL queries on the command line.

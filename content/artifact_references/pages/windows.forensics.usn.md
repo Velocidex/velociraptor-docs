@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact parses the NTFS USN journal and allows filters to
+  assist investigative workflow.
 ---
 
 This artifact parses the NTFS USN journal and allows filters to

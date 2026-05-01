@@ -5,6 +5,11 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Causes the client to rekey and regenerate a new client ID. DANGEROUS! This
+  will change the client's identity and it will appear as a new client in the
+  GUI.
+
 ---
 
 

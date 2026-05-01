@@ -4,6 +4,11 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact will return any items in the Windows PortProxy service
+  registry path. The most common configuration of this service is via the
+  LOLBin `netsh.exe`. Metaspoit and other common attack tools also have
+  configuration modules.
 ---
 
 This artifact will return any items in the Windows PortProxy service

@@ -5,6 +5,15 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  This is a convenience plugin which applies the globs to the registry
+  accessor to find keys. For each key the plugin then lists all the
+  values within it, and returns a row which has the value names as
+  columns, while the cells contain the value's stat info (and data
+  content available in the `Data` field).
+
+  This makes it easier to access a bunch of related values at once.
+
 ---
 
 

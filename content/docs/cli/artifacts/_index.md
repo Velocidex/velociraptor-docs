@@ -6,6 +6,12 @@ last_reviewed: 2025-07-06
 draft: false
 weight: 20
 summary: "Commands for working with artifacts"
+description: |
+  Artifacts can be managed and used on the command line, using the `artifacts`
+  CLI command group. There may be circumstances where you don't have access to the
+  GUI, or don't want to or need to use it, such as when
+  [performing a local investigation](/docs/deployment/#command-line-investigation-tool)
+  on a machine.
 ---
 
 Artifacts can be managed and used on the command line, using the `artifacts`

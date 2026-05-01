@@ -4,6 +4,13 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  An access token is an object that describes the security context of
+  a process or thread. The information in a token includes the
+  identity and privileges of the user account associated with the
+  process or thread. When a user logs on, the system verifies the
+  user's password by comparing it with information stored in a
+  security database.
 ---
 
 An access token is an object that describes the security context of

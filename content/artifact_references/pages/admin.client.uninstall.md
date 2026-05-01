@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Uninstall Velociraptor from the endpoint.
 ---
 
 Uninstall Velociraptor from the endpoint.

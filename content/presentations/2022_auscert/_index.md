@@ -2,6 +2,9 @@
 title: Auscert Workshop 2022
 menutitle: Auscert 2022
 weight: 35
+description: |
+  At Auscert 2022, The Velociraptor team gave a 4 hour workshop and a
+  Presentation. Below you will find the slides.
 ---
 
 At Auscert 2022, The Velociraptor team gave a 4 hour workshop and a

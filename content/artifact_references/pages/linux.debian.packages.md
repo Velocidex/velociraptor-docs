@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  List all packages installed on the system, both deb packages and "snaps".
 ---
 
 List all packages installed on the system, both deb packages and "snaps".

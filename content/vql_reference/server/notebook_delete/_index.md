@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Delete a notebook with all its cells. 
 ---
 
 
@@ -25,8 +27,4 @@ notebook_id||string (required)
 really_do_it||bool
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">SERVER_ADMIN</span>
-
-### Description
-
-Delete a notebook with all its cells. 
 

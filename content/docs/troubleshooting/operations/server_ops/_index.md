@@ -6,6 +6,8 @@ draft: false
 weight: 20
 summary: |
   * Troubleshooting issues occurring on an operational server.
+description: |
+  {{% notice note %}}
 ---
 
 {{% notice note %}}

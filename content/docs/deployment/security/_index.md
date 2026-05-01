@@ -6,6 +6,10 @@ summary: |
   Velociraptor is a highly privileged service with elevated access to thousands
   of endpoints across the enterprise. It is therefore crucial to secure the
   deployment as much as possible.
+description: |
+  Velociraptor is a highly privileged service with elevated access to
+  thousands of endpoints across the enterprise. It is therefore crucial
+  to secure the deployment as much as possible.
 ---
 
 Velociraptor is a highly privileged service with elevated access to

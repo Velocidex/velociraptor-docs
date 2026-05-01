@@ -5,6 +5,36 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Send Email to a remote server.
+
+  This function will send an email to a remote SMTP server. The mail
+  will be sent using SMTP with TLS and authentication.
+
+  Mails will be globally rate limited (among all queries) to the
+  specified period (default 60 seconds) to prevent overloading the
+  SMTP server. For this reason it is not suitable as a way to send
+  high number of events - use it sparingly to notify on some rare
+  events.
+
+  You can either fill in the auth_username and auth_password
+  parameters directly or use the secrets service to encapsulate
+  secrets in a managed way.
+
+  You can set any headers needed - for example to send HTML email
+  set the `Content-Type` to "text/html"
+
+  ### Example
+
+  ```vql
+  SELECT mail(secret="gmail",
+              subject="Hello from Velociraptor",
+              to="user@example.com",
+              headers=dict(`Content-Type`="text/html"),
+              body="<h1>Good morning</h1><p>From Velociraptor")
+  FROM scope()
+  ```
+
 ---
 
 

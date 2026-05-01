@@ -5,6 +5,11 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Calculate the hash of a file.
+
+  This function calculates the MD5, SHA1 and SHA256 hashes of the file.
+
 ---
 
 

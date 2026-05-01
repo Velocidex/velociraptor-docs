@@ -6,6 +6,10 @@ draft: false
 weight: 20
 summary: |
   Velociraptor supports multiple orgs in a full multi-tenancy configuration.
+description: |
+  Velociraptor supports multiple orgs in a full multi-tenancy
+  configuration. Orgs are lightweight and can be added and removed
+  easily with minimal impact on resource requirements.
 ---
 
 Velociraptor supports multiple orgs in a full multi-tenancy

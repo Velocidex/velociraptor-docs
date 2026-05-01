@@ -16,6 +16,11 @@ noDisqus: true
 outputs:
 - html
 - RSS
+description: |
+  The artifact exchange is a place for sharing community contributed
+  artifacts. Simply search below for an artifact that might address
+  your need. If you wish to contribute to the exchange, please click the
+  button to the right.
 ---
 
 The artifact exchange is a place for sharing community contributed

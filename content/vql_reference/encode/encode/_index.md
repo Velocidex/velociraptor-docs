@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Encodes a string as as different type. Currently supported types include 'hex', 'base64'.
 ---
 
 
@@ -23,8 +25,4 @@ Arg | Description | Type
 ----|-------------|-----
 string||Any (required)
 type||string (required)
-
-### Description
-
-Encodes a string as as different type. Currently supported types include 'hex', 'base64'.
 

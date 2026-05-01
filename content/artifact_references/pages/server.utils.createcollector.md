@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  A utility artifact to create a stand alone collector.
 ---
 
 A utility artifact to create a stand alone collector.

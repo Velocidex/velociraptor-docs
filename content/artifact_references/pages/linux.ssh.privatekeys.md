@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  SSH Private keys can be either encrypted or unencrypted. Unencrypted
+  private keys are more risky because an attacker can use them without
+  needing to unlock them with a password.
 ---
 
 SSH Private keys can be either encrypted or unencrypted. Unencrypted

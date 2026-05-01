@@ -4,6 +4,11 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This is an internal artifact used by the GUI to populate the
+  VFS. You may run it manually if you like, but typically it is
+  launched by the GUI when the user clicks the "Collect from client"
+  button at the file "Stats" tab.
 ---
 
 This is an internal artifact used by the GUI to populate the

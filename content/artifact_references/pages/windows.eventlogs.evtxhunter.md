@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This Artifact will hunt the Event Log message field for a regex value.
+  For example and IP, username or string.
 ---
 
 This Artifact will hunt the Event Log message field for a regex value.

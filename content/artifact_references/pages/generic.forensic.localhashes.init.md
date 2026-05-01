@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact creates an SQLite database on the endpoint to hold
+  local file hashes. These hashes can then be queried quickly.
 ---
 
 This artifact creates an SQLite database on the endpoint to hold

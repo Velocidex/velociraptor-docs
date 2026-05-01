@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+description: |
+  Logs DNS queries on DNS servers.
 ---
 
 Logs DNS queries on DNS servers.

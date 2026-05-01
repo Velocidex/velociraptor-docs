@@ -5,6 +5,15 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Retrieve the hunt information.
+
+  This function is a convenience function to the full hunts()
+  plugin, and can retrieve the hunt information for a specific hunt
+  id. As a convenience, the function will also accept a flow id for
+  flows which were launched by the hunt. These flow IDs have a
+  specific format indicating they were launched from a hunt.
+
 ---
 
 

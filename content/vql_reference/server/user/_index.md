@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Retrieves information about the Velociraptor user.
 ---
 
 

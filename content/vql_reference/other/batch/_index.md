@@ -5,6 +5,21 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Batches query rows into multiple arrays.
+
+  This is useful for batching multiple rows from a query into
+  another query, such as sending results to an API endpoint.
+
+  ### Example
+
+  ```vql
+  SELECT * FROM batch(query={
+    SELECT _value
+    FROM range(start=0, end=10, step=1)
+  }, batch_size=3)
+  ```
+
 ---
 
 

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Remotely push new client updates to Debian hosts.
 ---
 
 Remotely push new client updates to Debian hosts.

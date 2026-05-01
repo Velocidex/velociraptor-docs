@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Carve URN Journal records from the disk.
 ---
 
 Carve URN Journal records from the disk.

@@ -2,6 +2,8 @@
 title: Linux Conf Au 2022
 linktitle: Linux Conf Au 2022
 weight: 20
+description: |
+  This talk was given at the Linux Conference 2022 remotely https://lca2022.linux.org.au/schedule/presentation/58/
 ---
 
 This talk was given at the Linux Conference 2022 remotely https://lca2022.linux.org.au/schedule/presentation/58/

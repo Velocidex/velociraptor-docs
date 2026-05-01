@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  This artifact defines a set of security policies.
 ---
 
 This artifact defines a set of security policies.

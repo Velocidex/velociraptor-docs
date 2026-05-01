@@ -53,7 +53,7 @@ def process(md_filename):
 def scan(contents):
     for root, dirs, files in os.walk(contents):
         for name in files:
-            if (not name.endswith(".md") or name != '_index.md'):
+            if not name.endswith(".md"):
                 continue
             md_filename = os.path.join(root, name)
             process(md_filename)

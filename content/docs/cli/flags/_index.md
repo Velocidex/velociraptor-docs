@@ -5,6 +5,8 @@ date: 2025-05-20
 draft: false
 weight: 130
 Summary: CLI flags that are available for all commands.
+description: |
+  These CLI flags are available for all commands (but may not be relevant to all).
 ---
 
 These CLI flags are available for all commands (but may not be relevant to all).

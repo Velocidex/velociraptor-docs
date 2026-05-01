@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Create a deployable RPM package for client or server.
 ---
 
 

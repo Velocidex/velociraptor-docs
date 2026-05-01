@@ -7,6 +7,9 @@ sitemap:
   disable: true
 no_edit: true
 no_children: true
+description: |
+  VQL Event plugins are plugins which never terminate - but instead generate
+  rows based on events.
 ---
 
 VQL Event plugins are plugins which never terminate - but instead generate

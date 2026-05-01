@@ -3,6 +3,10 @@ title: "JOIN in VQL"
 date: 2021-06-11T05:55:46Z
 draft: false
 weight: 30
+description: |
+  As mentioned previously, VQL does not support the `JOIN` operator. If
+  you are coming from a background in SQL you might be wondering how to
+  emulate a `JOIN` in VQL?
 ---
 
 As mentioned previously, VQL does not support the `JOIN` operator. If

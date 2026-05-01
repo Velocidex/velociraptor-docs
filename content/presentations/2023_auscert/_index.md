@@ -3,6 +3,8 @@ title: Auscert Workshop 2023
 menutitle: Auscert 2023
 weight: 90
 no_menu: true
+description: |
+  This workshop took place on the 10th May 2023.
 ---
 
 This workshop took place on the 10th May 2023.

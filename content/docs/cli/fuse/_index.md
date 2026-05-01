@@ -8,6 +8,8 @@ weight: 65
 summary: Mount collection containers on folders.
 aliases:
   - "/knowledge_base/tips/fuse_mount/"
+description: |
+  Mount collection containers on folders using FUSE.
 ---
 
 Mount collection containers on folders using FUSE.

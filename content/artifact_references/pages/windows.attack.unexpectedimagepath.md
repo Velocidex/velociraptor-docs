@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Some malware are hiding in plain text by masquerading a legitimate
+  executable name.
 ---
 
 Some malware are hiding in plain text by masquerading a legitimate

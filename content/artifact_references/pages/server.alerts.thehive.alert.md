@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+description: |
+  Creates a TheHive alert when monitored artifacts complete with results.
 ---
 
 Creates a TheHive alert when monitored artifacts complete with results.

@@ -4,6 +4,11 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+description: |
+  Users inserting Thumb drives or other Removable drive pose a
+  constant security risk. The external drive may contain malware or
+  other undesirable content. Additionally thumb drives are an easy way
+  for users to exfiltrate documents.
 ---
 
 Users inserting Thumb drives or other Removable drive pose a

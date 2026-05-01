@@ -7,6 +7,9 @@ draft: false
 weight: 5
 aliases:
   - "/docs/deployment/self-signed/"
+description: |
+  The goal of this guide is to help you get a Velociraptor server deployed with
+  one or more clients, as quickly and simply as possible.
 ---
 
 The goal of this guide is to help you get a Velociraptor server deployed with

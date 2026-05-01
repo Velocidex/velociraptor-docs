@@ -1,0 +1,108 @@
+---
+title: Server.Monitoring.RSSFeeds
+hidden: true
+sitemap:
+  disable: true
+tags: [Server Event Artifact]
+description: |
+  Monitor RSS feeds for changes.
+---
+
+Monitor RSS feeds for changes.
+
+By default this artifact will monitor the Velociraptor RSS feeds to
+inform users of critical CVEs or blog posts.
+
+
+<pre><code class="language-yaml">
+name: Server.Monitoring.RSSFeeds
+description: |
+  Monitor RSS feeds for changes.
+
+  By default this artifact will monitor the Velociraptor RSS feeds to
+  inform users of critical CVEs or blog posts.
+
+type: SERVER_EVENT
+parameters:
+- name: FeedURLs
+  type: csv
+  default: |
+    URL
+    https://docs.velociraptor.app/blog/index.xml
+    https://docs.velociraptor.app/announcements/advisories/index.xml
+- name: Period
+  type: int
+  default: "600"
+  description: How often to check for changes.
+- name: UserRegex
+  default: .
+  description: Send message to all users matching this regex
+- name: AgeDays
+  description: The age in days we report a change
+  type: int
+  default: 7
+
+export: |
+  LET _Send(Message) =
+    SELECT user_message(user=name, message=Message) AS User
+    FROM gui_users()
+    WHERE name =~ UserRegex
+
+  LET Send(Message) =  _Send(Message=Message).User
+
+  // URLs - an array of URLs
+  LET RSS(URLs) = SELECT * FROM foreach(row=URLs,
+    query={
+      SELECT parse_xml(accessor="data", file=Content) AS XML
+      FROM http_client(url=_value)
+      WHERE Response = 200
+    })
+
+  LET AgeSeconds &lt;= AgeDays * 24 * 60 * 60
+
+  LET GetRSS(URLs) = SELECT *
+      FROM foreach(row={
+        SELECT * FROM RSS(URLs=URLs)
+      },
+                   query={
+        SELECT guid,
+               title,
+               link,
+               timestamp(string=pubDate) AS pubDate
+        FROM foreach(row=XML.rss.channel.item, column="_value")
+        WHERE now() - AgeSeconds &lt; pubDate.Unix
+      })
+
+sources:
+- query: |
+    LET URLs &lt;= FeedURLs.URL
+
+    // Create the initial cache and watch for changes.
+    LET m &lt;= to_dict(item={
+        SELECT guid AS _key,
+               dict(title=title, link=link, pubDate=pubDate) AS _value
+        FROM GetRSS(URLs=URLs)
+      })
+
+    SELECT *
+    FROM foreach(row={
+        SELECT *
+        FROM clock(period=Period)
+      },
+                 query={
+        SELECT *,
+               Send(Message=dict(title=title, link=link, date=pubDate)) AS Users
+        FROM GetRSS(URLs=URLs)
+        WHERE NOT get(item=m, field=guid)
+          AND set(item=m,
+                  field=guid,
+                  value=dict(title=title, link=link, pubDate=pubDate))
+          AND log(message="Sending message to %v", args=[Users,])
+      })
+
+column_types:
+- name: link
+  type: url
+
+</code></pre>
+

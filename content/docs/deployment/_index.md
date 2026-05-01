@@ -5,6 +5,9 @@ date: 2021-06-09T03:52:24Z
 last_reviewed: 2025-02-27
 draft: false
 weight: 10
+description: |
+  Velociraptor offers many deployment options that allow us to operate in all
+  kinds of environments.
 ---
 
 Velociraptor offers many deployment options that allow us to operate in all

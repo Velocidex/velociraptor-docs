@@ -4,6 +4,11 @@ title: The Velociraptor API
 date: 2021-06-30T12:31:08Z
 draft: false
 weight: 10
+description: |
+  Velociraptor can be fully controlled by external programs using the
+  Velociraptor API. In this page you will learn how to connect to the
+  server using the API and control it using a Python script to schedule
+  collections on hosts and retrieve the results of those collections.
 ---
 
 Velociraptor can be fully controlled by external programs using the

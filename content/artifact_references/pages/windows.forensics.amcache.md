@@ -4,6 +4,12 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  The Amcache.hve is a registry artifact that stores metadata
+  used by the OS’s application compatibility infrastructure to 
+  record metadata about binaries present on the system. This 
+  includes file paths, hashes, timestamps, and install/interaction 
+  information for executables and drivers.
 ---
 
 The Amcache.hve is a registry artifact that stores metadata

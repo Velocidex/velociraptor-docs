@@ -9,6 +9,10 @@ summary: |
   * Troubleshooting problems with getting the server or clients running.
 aliases:
   - "/docs/deployment/troubleshooting/"
+description: |
+  This page will go through the most common issues people encounter when deploying
+  the Velociraptor server and clients, and the recommended steps to troubleshoot
+  them.
 ---
 
 This page will go through the most common issues people encounter when deploying

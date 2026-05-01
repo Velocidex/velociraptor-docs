@@ -5,6 +5,20 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Parse the USN journal from a device, image file or USN file.
+
+  This plugin calculates the full path of a USN entry by tracing its
+  parent MFT entries through the MFT file. The MFT can be found in
+  the same device or image that the USN is read from, or provided
+  separately using a different file.
+
+  The plugin also considers information from the USN itself in
+  resolving the full path. This technique is described here
+  https://cybercx.com.au/blog/ntfs-usnjrnl-rewind/ in detail but it
+  can result in more accurate path resolution when the directories
+  have also been removed.
+
 ---
 
 

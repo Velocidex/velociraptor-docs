@@ -5,6 +5,12 @@ date: 2025-01-25
 weight: 120
 summary: "Defining and adding tools in artifacts"
 last_reviewed: 2025-04-30
+description: |
+  Velociraptor is a powerful endpoint visibility tool. It has plugins
+  and parsers for many file formats, such as raw NTFS access, raw
+  registry hive, prefetch files etc. One of the strengths of
+  Velociraptor is its flexibility afforded by the use of the[
+  Velociraptor Query Language (VQL).](/docs/vql/)
 ---
 
 Velociraptor is a powerful endpoint visibility tool. It has plugins

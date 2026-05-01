@@ -6,6 +6,8 @@ weight: 100
 draft: true
 summary: "Impersonation"
 last_reviewed: 2025-05-24
+description: |
+  ## Server Artifacts and Impersonation
 ---
 ## Server Artifacts and Impersonation
 

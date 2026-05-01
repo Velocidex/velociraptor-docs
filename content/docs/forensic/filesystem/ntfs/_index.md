@@ -9,6 +9,13 @@ draft: false
 weight: 50
 aliases:
   - "/docs/forensic/ntfs/"
+description: |
+  NTFS is the standard Windows filesystem.  Velociraptor contains
+  powerful NTFS analysis capabilities. This section describes
+  Velociraptor's NTFS capabilities and does not aim to be a complete
+  description of NTFS itself. We will only introduce the basic and most
+  relevant concepts of NTFS and examine how these can be used in a
+  number of DFIR contexts.
 ---
 
 NTFS is the standard Windows filesystem.  Velociraptor contains

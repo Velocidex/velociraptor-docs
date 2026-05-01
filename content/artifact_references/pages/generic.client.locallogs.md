@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+description: |
+  Write client logs locally in an encrypted container. This helps when
+  we need to access what the client was doing in the past.
 ---
 
 Write client logs locally in an encrypted container. This helps when

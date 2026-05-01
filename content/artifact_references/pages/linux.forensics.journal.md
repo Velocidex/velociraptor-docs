@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Parses the binary journal logs. Systemd uses a binary log format to
+  store logs.
 ---
 
 Parses the binary journal logs. Systemd uses a binary log format to

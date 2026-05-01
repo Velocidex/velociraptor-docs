@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  List mounted filesystems by reading /proc/mounts
 ---
 
 List mounted filesystems by reading /proc/mounts

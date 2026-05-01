@@ -8,6 +8,13 @@ date: 2024-04-11T23:25:17Z
 last_reviewed: 2025-11-16
 draft: false
 weight: 40
+description: |
+  In the previous section we learned how the Velociraptor's path
+  handling allows for precise and correct path manipulations. The OSPath
+  abstraction allows VQL plugins and functions to open files in a
+  consistent way using different accessors. For example we have seen how
+  files can be read inside a zip file easily, while still using the
+  familiar `glob()` plugin.
 ---
 
 In the previous section we learned how the Velociraptor's path

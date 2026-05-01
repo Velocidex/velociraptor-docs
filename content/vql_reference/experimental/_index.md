@@ -7,6 +7,10 @@ sitemap:
   disable: true
 no_edit: true
 no_children: true
+description: |
+  Velociraptor is evolving quickly. We sometimes implement functionality which
+  may not be broadly useful and therefore might not remain in Velociraptor for
+  the long-term. This page lists such 'experimental' features.
 ---
 
 Velociraptor is evolving quickly. We sometimes implement functionality which

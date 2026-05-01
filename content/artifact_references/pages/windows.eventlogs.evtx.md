@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Parses and returns events from Windows evtx logs.
 ---
 
 Parses and returns events from Windows evtx logs.

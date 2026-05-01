@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Get the process tracker update events from the global process tracker.
 ---
 
 

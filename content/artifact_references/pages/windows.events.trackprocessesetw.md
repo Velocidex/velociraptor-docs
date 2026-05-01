@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+description: |
+  This artifact uses ETW to track process execution using the
+  Velociraptor Process Tracker.
 ---
 
 This artifact uses ETW to track process execution using the

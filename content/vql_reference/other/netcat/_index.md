@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Make a tcp connection and read data from a socket.
 ---
 
 

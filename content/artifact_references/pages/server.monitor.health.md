@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+description: |
+  This is the main server health dashboard. It is shown on the
+  homescreen and enabled by default on all new installs.
 ---
 
 This is the main server health dashboard. It is shown on the

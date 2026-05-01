@@ -6,6 +6,14 @@ weight: 100
 draft: true
 summary: "Controlling artifact visibility"
 last_reviewed: 2025-05-24
+description: |
+  The first goal is to clean up the vast number of artifacts that are
+  presented through the GUI. Because Velociraptor allows artifacts to be
+  customized, new artifacts to be added to large number of artifacts
+  imported from external sources (i.e. `Artifact Packs`), there could be
+  hundreds or thousands of artifacts loaded in the system. Many have
+  similar but different functionality. This can overwhelm a user with
+  too much choice and be confusing.
 ---
 
 The first goal is to clean up the vast number of artifacts that are

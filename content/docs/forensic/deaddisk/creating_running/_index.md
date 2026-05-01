@@ -6,6 +6,10 @@ last_reviewed: 2025-12-04
 draft: false
 weight: 20
 summary: "Creating a remapping config and running a dead disk client"
+description: |
+  In this section we explain the various way to create remapping configs for a
+  disk image, how to apply the remapping, and show how the dead disk client can be
+  used in the GUI.
 ---
 
 In this section we explain the various way to create remapping configs for a

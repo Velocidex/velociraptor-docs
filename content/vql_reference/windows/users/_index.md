@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Display information about workstation local users. This is obtained through the NetUserEnum() API.
 ---
 
 

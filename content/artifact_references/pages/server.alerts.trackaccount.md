@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+description: |
+  This artifact alerts when account usage of a monitored account is detected. This is a server-side artifact, please note that it requires the client_event artifact 'Windows.Events.Trackaccount' to be enabled.
 ---
 
 This artifact alerts when account usage of a monitored account is detected. This is a server-side artifact, please note that it requires the client_event artifact 'Windows.Events.Trackaccount' to be enabled.

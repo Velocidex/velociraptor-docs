@@ -4,6 +4,11 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+description: |
+  This is a demo of the fifo() plugin. The Fifo plugin collects and
+  caches rows from its inner query. Every subsequent execution of the
+  query then reads from the cache. The plugin will expire old rows
+  depending on its expiration policy - so we always see recent rows.
 ---
 
 This is a demo of the fifo() plugin. The Fifo plugin collects and

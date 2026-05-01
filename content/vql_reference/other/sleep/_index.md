@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Sleep for the specified number of seconds. Always returns true.
 ---
 
 

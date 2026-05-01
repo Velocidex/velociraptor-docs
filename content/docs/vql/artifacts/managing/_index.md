@@ -6,6 +6,8 @@ draft: false
 weight: 50
 summary: "How to manage artifacts from VQL"
 last_reviewed: 2025-06-04
+description: |
+  ## Working with the internal artifact repository in VQL
 ---
 
 ## Working with the internal artifact repository in VQL

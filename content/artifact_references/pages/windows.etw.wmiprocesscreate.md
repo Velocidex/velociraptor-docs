@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+description: |
+  This artifact the endpoints for process creation through WMI
+  events. This is a common attacker lateral movement technique.
 ---
 
 This artifact the endpoints for process creation through WMI

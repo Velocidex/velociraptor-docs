@@ -5,6 +5,28 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Scan files using yara rules (Using the new yarax engine).
+
+  This is an experimental new functionality to use the
+  [YaraX](https://github.com/VirusTotal/yara-x) project instead of
+  the more traditional C based Yara engine.
+
+  One of the biggest issues for Velociraptor integration is the very
+  large size of the `YaraX` library (which is written in
+  Rust). Including `YaraX` in Velociraptor will increase our binary
+  size by a third (about 25Mb) for a single experimental plugin.
+
+  Therefore, we have decided to distribute `YaraX` as a [third party
+  tool](https://docs.velociraptor.app/docs/artifacts/tools/) and
+  load the DLL at runtime.
+
+  You must specify a lambda function to the `dll_path` parameter
+  which will be evaluated only if needed. The function should return
+  the absolute path to the YaraX DLL on disk. Once the dll is
+  loaded, it is not unloaded again. This way you can avoid having to
+  download or hash the dll until actually needed.
+
 ---
 
 

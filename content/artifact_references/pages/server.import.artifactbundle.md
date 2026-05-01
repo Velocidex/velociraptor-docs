@@ -1,0 +1,120 @@
+---
+title: Server.Import.ArtifactBundle
+hidden: true
+sitemap:
+  disable: true
+tags: [Server Artifact]
+description: |
+  Imports a zipped package containing Velociraptor artifacts from a
+  remote web server.
+---
+
+Imports a zipped package containing Velociraptor artifacts from a
+remote web server.
+
+By default this artifact will automatically import the latest
+artifact exchange bundle into the server's artifact repository.
+
+#### Security of community-contributed exchange artifacts
+
+The artifact exchange is not tested or officially supported by the
+Velociraptor team and contains contributions from the community.
+The quality, security and stability of artifacts from the exchange
+are not guaranteed. Some artifacts from the exchange will fetch
+external binaries and run them on your endpoints! These binaries
+are not reviewed or endorsed by the Velociraptor team or Rapid7!
+
+Contributions to the exchange must meet a lower quality bar than
+built-in artifacts (for example lacking CI tests), which means that
+they may break at any time or not function as described!
+
+All artifacts in the exchange are used purely at your own risk,
+should you choose to do so! We strongly suggest that you review
+exchange artifacts carefully before deploying them on your
+network!
+
+
+<pre><code class="language-yaml">
+name: Server.Import.ArtifactBundle
+aliases:
+- Server.Import.ArtifactExchange
+description: |
+   Imports a zipped package containing Velociraptor artifacts from a
+   remote web server.
+
+   By default this artifact will automatically import the latest
+   artifact exchange bundle into the server's artifact repository.
+
+   #### Security of community-contributed exchange artifacts
+
+   The artifact exchange is not tested or officially supported by the
+   Velociraptor team and contains contributions from the community.
+   The quality, security and stability of artifacts from the exchange
+   are not guaranteed. Some artifacts from the exchange will fetch
+   external binaries and run them on your endpoints! These binaries
+   are not reviewed or endorsed by the Velociraptor team or Rapid7!
+
+   Contributions to the exchange must meet a lower quality bar than
+   built-in artifacts (for example lacking CI tests), which means that
+   they may break at any time or not function as described!
+
+   All artifacts in the exchange are used purely at your own risk,
+   should you choose to do so! We strongly suggest that you review
+   exchange artifacts carefully before deploying them on your
+   network!
+
+type: SERVER
+
+required_permissions:
+- SERVER_ADMIN
+
+parameters:
+   - name: URL
+     default: https://github.com/Velocidex/velociraptor-docs/raw/gh-pages/exchange/artifact_exchange_v2.zip
+   - name: ArchiveGlob
+     default: "/**/*.{yaml,yml}"
+   - name: Tag
+     description: |
+       Tag artifacts with this tag.
+
+       This applied in addition to any tags contained in the artifact
+       description.
+     default: "Exchange"
+
+export: |
+  LET _Tags(Data) = SELECT * FROM foreach(row={
+    SELECT * FROM parse_lines(accessor="data", filename=Data, buffer_size=10000000)
+    WHERE Line =~ '''^\s*tags:'''
+  }, query={
+    SELECT * FROM parse_records_with_regex(
+       accessor="data", file=Line, regex="#(?P&lt;Tag&gt;[^ ]+)")
+  })
+
+  LET Tags(Data) = _Tags(Data=Data).Tag
+
+sources:
+  - query: |
+        LET X = SELECT artifact_set(
+          definition=Definition,
+          tags=(Tag,) + Tags(Data=Definition) ) AS Definition
+        FROM foreach(row={
+          SELECT Content FROM http_client(
+             remove_last=TRUE,
+             tempfile_extension=".zip", url=URL)
+        }, query={
+          SELECT read_file(accessor="zip", filename=OSPath) AS Definition
+          FROM glob(
+             globs=ArchiveGlob,
+             root=pathspec(
+                DelegateAccessor="auto",
+                DelegatePath=Content),
+             accessor="zip")
+        })
+
+        SELECT Definition.name AS Name,
+               Definition.description AS Description,
+               Definition.author AS Author
+        FROM X
+
+</code></pre>
+

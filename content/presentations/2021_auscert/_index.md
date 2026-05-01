@@ -3,6 +3,9 @@ title: Auscert Workshop 2021
 menutitle: Auscert 2021
 weight: 5
 no_menu: true
+description: |
+  This talk was given at the Annual Auscert conference as a long form (4h) workshop
+  https://2021.conference.auscert.org.au/index.html
 ---
 
 This talk was given at the Annual Auscert conference as a long form (4h) workshop

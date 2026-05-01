@@ -5,6 +5,21 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Scan processes using yara rules.
+
+  This plugin uses yara's own engine to scan process memory for the
+  signatures.
+
+  {{% notice note %}}
+
+  Process memory access depends on having the
+  [SeDebugPrivilege](https://mskb.pkisolutions.com/kb/131065) which
+  depends on how Velociraptor was started. Even when running as
+  System, some processes are not accessible.
+
+  {{% /notice %}}
+
 ---
 
 

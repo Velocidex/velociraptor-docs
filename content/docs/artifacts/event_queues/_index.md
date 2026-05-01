@@ -6,6 +6,13 @@ draft: false
 weight: 120
 summary: "Artifacts that create event queues"
 last_reviewed: 2025-05-27
+description: |
+  Velociraptor supports stream-based data collection (also referred to as
+  [Client Monitoring](/docs/clients/monitoring/) and
+  [Server Monitoring](/docs/server_automation/server_monitoring/)
+  ), which means that events are sent in near-realtime rather than being batched,
+  as occurs with normal collections, and without waiting for collection
+  completion.
 ---
 
 Velociraptor supports stream-based data collection (also referred to as

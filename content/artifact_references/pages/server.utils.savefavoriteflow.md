@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  Users may collect various artifacts from hosts. Sometimes it might
+  take a bit of effort to setup and configure just the perfect
+  combination of parameters and artifacts to collect.
 ---
 
 Users may collect various artifacts from hosts. Sometimes it might

@@ -5,6 +5,15 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Uncompress a gzip-compressed block of data.
+
+  ### Example
+
+  ```vql
+  gunzip(string=base64decode(string="H4sIAAAAAAACA3N0pC4AAKAb0QxQAAAA")) -> "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+  ```
+
 ---
 
 

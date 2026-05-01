@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Did a specific file exist on this machine in the past or does it
+  still exist on this machine?
 ---
 
 Did a specific file exist on this machine in the past or does it

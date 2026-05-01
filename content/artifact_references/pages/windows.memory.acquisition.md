@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Acquires a full memory image by using the built-in WinPmem driver.
 ---
 
 Acquires a full memory image by using the built-in WinPmem driver.

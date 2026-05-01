@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Install a deb package and configure it with debconf answers.
 ---
 
 Install a deb package and configure it with debconf answers.

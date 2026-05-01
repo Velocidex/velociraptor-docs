@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+description: |
+  Windows Registry access is a great source of visibility into system
+  activity.
 ---
 
 Windows Registry access is a great source of visibility into system

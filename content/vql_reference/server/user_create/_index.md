@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Creates a new user from the server, or updates their permissions or reset their password.
 ---
 
 

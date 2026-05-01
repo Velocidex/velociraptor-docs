@@ -4,6 +4,12 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This content will execute bulk_extractor with record carving plugins from
+  4n6ist. Initially developed to carve EventLogs from physical disk and
+  unallocated space, this content may also be used for other
+  bulk extractor capability. Best use case is for remote targeted machine
+  collection to remove the need for a disk image.
 ---
 
 This content will execute bulk_extractor with record carving plugins from

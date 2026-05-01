@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Checks for Outlook EnableUnsafeClientMailRules = 1 (turned on).
+  This registry key enables execution from Outlook inbox rules which can be used as a persistence mechanism.
+  Microsoft has released a patch to disable execution but attackers can reenable by changing this value to 1.
 ---
 
 Checks for Outlook EnableUnsafeClientMailRules = 1 (turned on).

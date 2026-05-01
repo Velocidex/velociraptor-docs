@@ -13,6 +13,10 @@ rss_title: Velociraptor Knowledge Base
 outputs:
 - html
 - RSS
+description: |
+  Velociraptor is a powerful but very flexible tool. Sometimes getting
+  up to speed with Velociraptor is challenging and sometimes it can do
+  things that you have never even imagined was possible!
 ---
 
 Velociraptor is a powerful but very flexible tool. Sometimes getting

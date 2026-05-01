@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  The system hosts file maps hostnames to IP addresses. In some cases,
+  entries in this file take precedence and overrides the results from
+  the system DNS service.
 ---
 
 The system hosts file maps hostnames to IP addresses. In some cases,

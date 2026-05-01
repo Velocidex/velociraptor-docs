@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Applies network quarantine to a Linux system using nftables.
 ---
 
 Applies network quarantine to a Linux system using nftables.

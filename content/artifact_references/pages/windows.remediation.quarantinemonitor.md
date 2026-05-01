@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+description: |
+  An event query that will ensure the client is quarantined.
 ---
 
 An event query that will ensure the client is quarantined.

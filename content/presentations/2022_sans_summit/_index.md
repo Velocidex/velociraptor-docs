@@ -2,6 +2,8 @@
 title: SANS Threat Hunting Summit 2022
 menutitle: SANS Summit 2022
 weight: 65
+description: |
+  ## How to unlock achievements in Threat Hunting using Velociraptor
 ---
 
 

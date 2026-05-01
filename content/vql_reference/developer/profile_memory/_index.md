@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Enumerates all in use memory within the runtime.
 ---
 
 

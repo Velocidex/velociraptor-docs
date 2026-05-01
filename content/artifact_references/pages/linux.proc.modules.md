@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Module listing via /proc/modules.
 ---
 
 Module listing via /proc/modules.

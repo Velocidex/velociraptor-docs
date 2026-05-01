@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  This artifact can use the MaxMind database to Geo resolve an IP
+  address. You will need to provide a valid GeoIP database.
 ---
 
 This artifact can use the MaxMind database to Geo resolve an IP

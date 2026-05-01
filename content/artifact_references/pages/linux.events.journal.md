@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+description: |
+  Watches the binary journal logs. Systemd uses a binary log format to
+  store logs.
 ---
 
 Watches the binary journal logs. Systemd uses a binary log format to

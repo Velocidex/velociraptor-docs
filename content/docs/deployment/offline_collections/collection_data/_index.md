@@ -5,6 +5,14 @@ date: 2025-11-03
 last_reviewed: 2025-11-26
 draft: false
 weight: 30
+description: |
+  As described previously, the offline collector writes it's results into a zip
+  archive and optionally applies encryption to it. We technically refer to this as
+  a **collection container** because the data contained in the zip is structured
+  in a particular way that Velociraptor expects, and which includes metadata about
+  the collection that Velociraptor understands. This standardized data structure
+  allows Velociraptor to import the data from it, while making use of the
+  associated metadata when importing.
 ---
 
 As described previously, the offline collector writes it's results into a zip

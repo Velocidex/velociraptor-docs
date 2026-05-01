@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+description: |
+  Uses Sysmon and pslist to keep track of running processes by using the
+  Velociraptor Process Tracker.
 ---
 
 Uses Sysmon and pslist to keep track of running processes by using the

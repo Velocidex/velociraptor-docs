@@ -12,6 +12,11 @@ noDisqus: true
 outputs:
 - html
 - RSS
+description: |
+  Velociraptor is an incredibly powerful tool, but sometimes it is hard
+  to know where to start. This page aims to help newcomers to
+  Velociraptor by presenting a set of playbooks to use when faced with
+  certain tasks.
 ---
 
 Velociraptor is an incredibly powerful tool, but sometimes it is hard

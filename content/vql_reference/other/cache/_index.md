@@ -5,6 +5,30 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Creates a cache object.
+
+  A Cache is a data structure which is used to speed up calculating
+  data by keeping its value in memory. A cache is essentially a key
+  value store - when the key is accessed, the function will be
+  calculated producing a value. If the key is accessed again, the
+  value is returned from the cache without calculating it again.
+
+  For example consider the following:
+
+  ```vql
+  LET get_pid_query(Lpid) =
+    SELECT Pid, Ppid, Name FROM pslist(pid=Lpid)
+
+  LET _ <= cache(lambda='x=>get_pid_query(Lpid=x)[0]')
+
+  SELECT cache(key=getpid())
+  FROM scope()
+  ```
+
+  The cache will ensure that `get_pid_query()` is only called once per
+  unique Pid by comparing the key against the internal memory store.
+
 ---
 
 

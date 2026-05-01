@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  A running binary may link other binaries into its address
+  space. These shared objects contain exported functions which may be
+  used by the binary.
 ---
 
 A running binary may link other binaries into its address

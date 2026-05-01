@@ -6,6 +6,9 @@ last_reviewed: 2025-09-04
 draft: false
 weight: 80
 summary: Learn about keyboard shortcuts in the GUI
+description: |
+  The Velociraptor GUI supports many keyboard shortcuts to navigate around
+  quicker. So you don't have to be slowed down by mouse clicks!
 ---
 
 The Velociraptor GUI supports many keyboard shortcuts to navigate around

@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
+description: |
+  The master will advertise to the minions the events it is interested
+  in.
 ---
 
 The master will advertise to the minions the events it is interested

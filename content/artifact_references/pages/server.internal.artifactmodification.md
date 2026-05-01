@@ -4,6 +4,11 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+description: |
+  This event artifact is an internal event stream over which
+  notifications of artifact modifications are sent. Interested parties
+  can watch for new artifact modification events and rebuild caches
+  etc.
 ---
 
 This event artifact is an internal event stream over which

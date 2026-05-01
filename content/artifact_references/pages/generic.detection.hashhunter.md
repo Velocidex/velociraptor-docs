@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact enables searching for hashes.
 ---
 
 This artifact enables searching for hashes.

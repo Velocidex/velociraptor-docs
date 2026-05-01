@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+description: |
+  Send an email if execution of the PsExec service was detected on
+  any client. This is a server side artifact.
 ---
 
 Send an email if execution of the PsExec service was detected on

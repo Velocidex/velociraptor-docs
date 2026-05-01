@@ -8,6 +8,8 @@ weight: 50
 summary: "Working with disk images"
 aliases:
   - "/knowledge_base/tips/image_analysis/"
+description: |
+  {{% notice tip %}}
 ---
 
 {{% notice tip %}}

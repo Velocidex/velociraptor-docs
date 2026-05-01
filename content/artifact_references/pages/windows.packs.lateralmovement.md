@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Detect evidence of lateral movement.
 ---
 
 Detect evidence of lateral movement.

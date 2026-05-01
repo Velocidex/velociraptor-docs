@@ -5,6 +5,27 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Select columns from another query using regex.
+
+  Sometimes a query produces a large number of columns or
+  unpredictable column names (eg. the `read_reg_key()` plugin
+  produces a column per value name).
+
+  You can use the `column_filter()` plugin to select a subset of the
+  columns to include or exclude from an underlying query. For example:
+
+  ```vql
+  SELECT * FROM column_filter(
+  query={
+     SELECT 1 AS A, 2 AS B, 3 AS AB, 4 AS AA
+     FROM scope()
+  }, include="A", exclude="B")
+  ```
+
+  will include columns with the letter A in their name and remove
+  columns with the letter B (so it will have A and AA above).
+
 ---
 
 

@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+description: |
+  An internal event queue for alerts. All alerts sent from clients are
+  collected in this event queue.
 ---
 
 An internal event queue for alerts. All alerts sent from clients are
@@ -11,6 +14,10 @@ collected in this event queue.
 
 Alerts are expected to be low frequency and high value and may be
 generated client or server side.
+
+You can monitor this queue using the `watch_monitoring()`
+plugin. This can be used as a building block in implementing more
+complex escalation workflows.
 
 
 <pre><code class="language-yaml">
@@ -21,6 +28,10 @@ description: |
 
   Alerts are expected to be low frequency and high value and may be
   generated client or server side.
+
+  You can monitor this queue using the `watch_monitoring()`
+  plugin. This can be used as a building block in implementing more
+  complex escalation workflows.
 
 type: SERVER_EVENT
 

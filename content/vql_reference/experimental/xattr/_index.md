@@ -5,6 +5,17 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Query a file for the specified extended attribute.
+
+  If no attributes are provided, this function will return all extended attributes
+  for the file.
+
+  Please note: this API is not reliable, so please provided extended attributes
+  where possible.
+
+  Note: This function only works on Mac and Linux.
+
 ---
 
 

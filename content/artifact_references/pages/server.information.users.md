@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  List the user names and SIDs on each machine. We get this
+  information from the last time we collected Windows.Sys.Users. If we
+  never collected it for this machine, there will be no results.
 ---
 
 List the user names and SIDs on each machine. We get this

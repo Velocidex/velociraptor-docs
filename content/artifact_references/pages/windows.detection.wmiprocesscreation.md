@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+description: |
+  WMI Process creation is a common lateral movement technique. The
+  attacker simply uses WMI to call the Create() method on the
+  Win32_Process WMI object.
 ---
 
 WMI Process creation is a common lateral movement technique. The

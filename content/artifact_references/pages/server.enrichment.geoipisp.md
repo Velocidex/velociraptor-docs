@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  Look up geo-information for an IP address using the MaxMind "GeoIP ISP"
+  database.
 ---
 
 Look up geo-information for an IP address using the MaxMind "GeoIP ISP"

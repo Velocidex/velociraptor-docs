@@ -10,6 +10,9 @@ aliases:
 summary: |
   In this example we will walk through the process of deploying the server using
   Let's Encrypt certificates, and optionally an SSO authentication provider.
+description: |
+  In this example we will walk through the process of deploying the server using
+  Let's Encrypt certificates, and optionally an SSO authentication provider.
 ---
 
 In this example we will walk through the process of deploying the server using

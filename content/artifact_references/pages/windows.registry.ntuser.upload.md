@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact collects all the user's NTUser.dat registry hives.
 ---
 
 This artifact collects all the user's NTUser.dat registry hives.

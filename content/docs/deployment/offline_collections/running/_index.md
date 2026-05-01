@@ -5,6 +5,14 @@ date: 2025-11-03
 last_reviewed: 2025-11-03
 draft: false
 weight: 20
+description: |
+  Offline collectors can be deployed by automated means, for example via Windows
+  Group Policy - similar to the
+  [agentless deployment](/docs/deployment/clients/#agentless-deployment)
+  method - or by other deployment tools (such as PsExec or WinRM), or even other
+  EDR solutions. It's also quite common to have local personnel run the collector
+  manually on the endpoints, especially during incidents where network access is
+  restricted.
 ---
 
 Offline collectors can be deployed by automated means, for example via Windows

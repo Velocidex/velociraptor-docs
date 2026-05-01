@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  This artifact completely removes a client from the data store.
 ---
 
 This artifact completely removes a client from the data store.

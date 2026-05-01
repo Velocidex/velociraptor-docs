@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  Completely removes a notebook from the server including all its cells, attachments etc.
 ---
 
 Completely removes a notebook from the server including all its cells, attachments etc.

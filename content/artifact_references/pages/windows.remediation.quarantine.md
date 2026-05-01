@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Applies quarantine via Windows local IPsec policy.
 ---
 
 Applies quarantine via Windows local IPsec policy.

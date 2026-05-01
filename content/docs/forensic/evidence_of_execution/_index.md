@@ -7,6 +7,11 @@ summary: |
     of execution artifacts.
 draft: false
 weight: 60
+description: |
+  Sometimes we need to find out when (or if) a particular binary was run
+  on the endpoint. This question can come up in a number of contexts,
+  such as running malware by a user, lateral movement from a threat
+  actor etc.
 ---
 
 Sometimes we need to find out when (or if) a particular binary was run

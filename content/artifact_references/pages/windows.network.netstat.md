@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Show information about open sockets. On windows the time when the
+  socket was first bound is also shown.
 ---
 
 Show information about open sockets. On windows the time when the

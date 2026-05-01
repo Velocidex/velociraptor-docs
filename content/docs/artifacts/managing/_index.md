@@ -9,6 +9,8 @@ no_edit: true
 disableToc: false
 chapter: false
 summary: "How to create and manage artifacts"
+description: |
+  In this section we look at managing artifacts using the GUI, via VQL, and the CLI.
 ---
 
 In this section we look at managing artifacts using the GUI, via VQL, and the CLI.

@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Lookup a SRUM id.
 ---
 
 
@@ -24,8 +26,4 @@ Arg | Description | Type
 file||OSPath (required)
 accessor|The accessor to use.|string
 id||int64 (required)
-
-### Description
-
-Lookup a SRUM id.
 

@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  Timesketch is an interactive collaborative timeline analysis tool
+  that can be found at https://timesketch.org/
 ---
 
 Timesketch is an interactive collaborative timeline analysis tool

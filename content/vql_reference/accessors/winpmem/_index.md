@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Access physical memory like a file. Any filename will result in a sparse view of physical memory.
 ---
 
 

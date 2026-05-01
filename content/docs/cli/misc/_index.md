@@ -6,6 +6,8 @@ last_reviewed: 2025-07-06
 draft: false
 weight: 120
 summary: All other commands not previously covered.
+description: |
+  All other commands not previously covered.
 ---
 
 All other commands not previously covered.

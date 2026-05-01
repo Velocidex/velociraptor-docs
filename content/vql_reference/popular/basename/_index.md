@@ -5,6 +5,19 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Return the basename of the path.
+
+  ### Example
+
+  ```vql
+  basename(path="/foo/bar") -> "bar"
+  ```
+
+  ### See also
+
+  - [dirname]({{< ref "/vql_reference/other/dirname/" >}})
+
 ---
 
 
@@ -37,6 +50,6 @@ basename(path="/foo/bar") -> "bar"
 
 ### See also
 
-- [dirname](/vql_reference/other/dirname/)
+- [dirname]({{< ref "/vql_reference/other/dirname/" >}})
 
 

@@ -5,6 +5,13 @@ date: 2024-12-24
 draft: false
 weight: 50
 last_reviewed: 2024-12-30
+description: |
+  For Windows and Linux clients you can quarantine the host using the
+  **Quarantine Host** (<i class="fas fa-briefcase-medical"></i>) button.
+  Quarantining a host will reconfigure the hosts's network stack to only allow it
+  to communicate with the Velociraptor server. This allows you to continue
+  investigating the host remotely while preventing the host from making other
+  network connections.
 ---
 For Windows and Linux clients you can quarantine the host using the
 **Quarantine Host** (<i class="fas fa-briefcase-medical"></i>) button.

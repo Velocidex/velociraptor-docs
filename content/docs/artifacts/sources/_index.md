@@ -6,6 +6,8 @@ draft: false
 weight: 30
 summary: "Sources describe how the artifact produces data"
 last_reviewed: 2025-06-13
+description: |
+  Sources describe how the artifact produces data.
 ---
 
 Sources describe how the artifact produces data.

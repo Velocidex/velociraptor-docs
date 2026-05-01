@@ -5,6 +5,10 @@ date: 2021-06-09T04:12:50Z
 draft: false
 weight: 50
 last_reviewed: 2024-12-30
+description: |
+  Velociraptor provides an interface to interact with the client's filesystem
+  which we call the Virtual File System or VFS. The VFS GUI is a convenient tool
+  to interactively inspect the client's filesystem and fetch files if necessary.
 ---
 
 Velociraptor provides an interface to interact with the client's filesystem

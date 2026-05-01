@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
+description: |
+  Endpoints may participate in hunts. This artifact collects which
+  hunt each system participated in.
 ---
 
 Endpoints may participate in hunts. This artifact collects which

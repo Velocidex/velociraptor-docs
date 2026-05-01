@@ -7,6 +7,8 @@ draft: false
 weight: 60
 summary: |
   * Troubleshooting issues when creating or running a Velociraptor offline collector.
+description: |
+  ### Common Issues
 ---
 
 ### Common Issues

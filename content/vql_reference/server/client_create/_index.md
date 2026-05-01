@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Create a new client in the data store.
 ---
 
 
@@ -30,8 +32,4 @@ client_id|if set we use this client id otherwise we make a new one|string
 mac_addresses||list of string
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">SERVER_ADMIN</span>
-
-### Description
-
-Create a new client in the data store.
 

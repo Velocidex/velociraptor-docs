@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  List User accounts. We combine two data sources - the output from
+  the `NetUserEnum` API (termed `local` users) and the list of SIDs in
+  the registry (termed `remote` users).
 ---
 
 List User accounts. We combine two data sources - the output from

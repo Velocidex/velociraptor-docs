@@ -6,6 +6,9 @@ last_reviewed: 2026-03-14
 draft: false
 weight: 50
 summary: Learn how to access and search local documentation in the GUI
+description: |
+  From version 0.76, the Velociraptor documentation can be searched and
+  previewed in the GUI.
 ---
 
 From version 0.76, the Velociraptor documentation can be searched and

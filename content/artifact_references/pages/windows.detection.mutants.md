@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Enumerate the mutants from selected processes.
 ---
 
 Enumerate the mutants from selected processes.
