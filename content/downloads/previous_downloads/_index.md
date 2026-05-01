@@ -80,6 +80,8 @@ arches:
     platform: windows
     release: 0.75.5
 
+description: |
+  This is an old release - check out the [current release](/downloads/)
 ---
 
 This is an old release - check out the [current release](/downloads/)

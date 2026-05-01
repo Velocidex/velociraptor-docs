@@ -5,52 +5,57 @@ draft: false
 weight: 25
 no_children: true
 pre: <i class="fas fa-download"></i>
-release: 0.76.4
+release: 0.76.5
 base_release: 0.76
 arches:
   - desc: Windows AMD64 (64-bit) Executable
     name: windows-amd64.exe
-    hash: de6f54071e9b3da93b0b5f8d41e5de8dd16c86bbb75db0d9cefc4efc991e86f2
+    hash: 4813e753f6f9bfa5c5de0edbb8dd3cc7f1fa51714097d3144d44e5e89dbd33ef
     platform: windows
 
   - desc: Windows AMD64 (64-bit) MSI
     name: windows-amd64.msi
-    hash: e7126636e742071f52e83f313518cff4499b517ab589640419fd61550bddf5b7
+    hash: a35a220a58360bbe501b5f9cb4ccf4eda188c6e68e770bf0a79bea75d3b2b899
     platform: windows
 
   - desc: Windows 32-bit Executable
     name: windows-386.exe
-    hash: 26a795298531fe8abada6b0f239e727db52d6fd6150f01ab4c4845ad739b6052
+    hash: 402e7968257bb8b3d85864517c452dde04d0c997ddfdbf161908bc377987521b
     platform: windows
 
   - desc: Windows 32-bit MSI
     name: windows-386.msi
-    hash: 5b34a1d55dfecc963bee5f785a8bb0d3197821d41dcabe6b5fe0074c4b2ed9b6
+    hash: fe407135b9f0e7fa149533b42119814afdb036b3489f26637ba6243841c68aff
     platform: windows
 
   - desc: Linux Ubuntu 22.04 AMD64 and later. Recommended for servers.
     name: linux-amd64
-    hash: 82f952da3baedcfcebd65777316cdb2a410792782ce3d166b959c0ed4d939147
+    hash: e6b2b379c90aaddf549a200dea108fe34e397994d45d2fc3b68f53b2f5277b51
     platform: linux
 
   - desc: Linux Ubuntu 22.04 ARM and later. Recommended for servers or containers.
     name: linux-arm64
-    hash: 930e6a394e9afe4d7edc0dc56a86ecadd578b750710ba283b8552544fb77f0bb
+    hash: 5e38969f199823535f1bd8611e1ab95e45c2cc4a4522d0c2a68474cdbe098214
     platform: linux
 
   - desc: Linux Static Build (Older Releases, e.g. RHEL, Centos) Recommended for clients.
     name: linux-amd64-musl
-    hash: 7c874c42591a88309f15a4f6b517e66785aa4529cbfad8a92d3bd34d8e57f5f0
+    hash: e7e43975f4855e03aba0e7d9ef2a8ed32c58112718074ddcf3535bebf90e1f2f
+    platform: linux
+
+  - desc: Linux Sumo build. Recommended for servers.
+    name: linux-amd64-sumo-musl
+    hash: 8b2d1e8cd74ea58a56ce0ed0c052c2e66ad45980f0b35bab6afe566363cae745
     platform: linux
 
   - desc: MacOS AMD64
     name: darwin-amd64
-    hash: d921a6bddc52d82843b0bc3eba3e54aa3084682067314332187c6124dca8730b
+    hash:
     platform: apple
 
   - desc: MacOS ARM (M1, M2 chipsets)
     name: darwin-arm64
-    hash: 57485e3723695db75f4b821a2d6f6dd701eeab13b638284c6e0bf12b7617fc74
+    hash:
     platform: apple
 
   - desc: FreeBSD AMD64
@@ -70,12 +75,15 @@ arches:
     hash: 3a66986c3a4a9e0d4dacd3131ee55d65ff37b0093373048cb05afa1572a800c6
     platform: windows
     release: 0.76.1
+description: |
+  Velociraptor is open source software and is free for anyone to use under the
+  [AGPL License](https://github.com/Velocidex/velociraptor?tab=License-1-ov-file#readme).
 ---
 
 Velociraptor is open source software and is free for anyone to use under the
 [AGPL License](https://github.com/Velocidex/velociraptor?tab=License-1-ov-file#readme).
 
-This page is for the current release. [The previous Release is 0.75.6](/downloads/previous_downloads/)
+This page is for the current release. [The previous Release is 0.75.7](/downloads/previous_downloads/)
 
 {{< release_download >}}
 
