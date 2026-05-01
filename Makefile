@@ -1,6 +1,7 @@
 # Rebuild the reference index.
 references:
 	python3 scripts/vql_reference.py --config scripts/vql_reference_config.yaml ~/projects/velociraptor/docs/references/vql.yaml --reference_data static/reference/data.json
+	python3 scripts/descriptions.py content/vql_reference/
 
 config_references:
 	cd ./scripts/config_reference/ && go run . ~/projects/velociraptor/docs/references/server.config.yaml > ../../content/docs/deployment/references/_reference.html
@@ -44,3 +45,6 @@ index:
 
 comparisons:
 	python scripts/comparisons.py
+
+descriptions:
+	python scripts/descriptions.py content/

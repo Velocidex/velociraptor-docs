@@ -12,7 +12,7 @@ description: |
   incorrect. This plugin will walk all hunt flows and re-tally all
   the stats to reset the hunt overview into the correct values.
 
-  On some installtions this is a very expensive operation as it
+  On some installations this is a very expensive operation as it
   generates a lot of IO.
 
 ---
@@ -41,7 +41,7 @@ This is sometimes necessary if hunt overview stats are
 incorrect. This plugin will walk all hunt flows and re-tally all
 the stats to reset the hunt overview into the correct values.
 
-On some installtions this is a very expensive operation as it
+On some installations this is a very expensive operation as it
 generates a lot of IO.
 
 
