@@ -1,0 +1,459 @@
+name: Windows.Install.Wazuh.Agent
+description: |
+  Installs the Wazuh Windows agent and configures it to use the supplied
+  Wazuh manager IP address or hostname.
+
+  By default this artifact asks the GitHub releases API for the latest Wazuh
+  release. If that release exposes a Windows MSI asset, the artifact downloads
+  it directly. If not, it derives the official Wazuh packages URL from the
+  latest GitHub tag. Set WazuhVersion to pin to a manager-compatible agent
+  version, or set MsiUrl when you need to override the MSI download URL.
+
+  NOTE: Requires administrative privileges on the endpoint.
+
+author: Julian Hill - @julianghill
+type: CLIENT
+
+required_permissions:
+  - EXECVE
+  - FILESYSTEM_WRITE
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+parameters:
+  - name: ManagerIP
+    description: Wazuh manager IP address or hostname. This is required.
+    default: ""
+  - name: RegistrationServer
+    description: Optional Wazuh registration server. If empty, the first ManagerIP address is used.
+    default: ""
+  - name: RegistrationPassword
+    description: Optional Wazuh enrollment password. If empty, WAZUH_REGISTRATION_PASSWORD is not passed to the installer.
+    default: ""
+  - name: AgentName
+    description: Optional Wazuh agent name. If empty, Wazuh uses its default agent naming behavior.
+    default: ""
+  - name: AgentGroup
+    description: Optional Wazuh agent group or comma-separated groups.
+    default: ""
+  - name: MsiUrl
+    description: Optional MSI URL override. If set, this takes precedence over WazuhVersion.
+    default: ""
+  - name: WazuhVersion
+    description: Optional Wazuh agent version to install, without the package release suffix. If empty, the artifact resolves the latest Wazuh release.
+    default: ""
+  - name: ExpectedSha256
+    description: Optional SHA256 expected hash for the downloaded MSI.
+    default: ""
+  - name: GithubReleaseApiUrl
+    description: GitHub API URL used to resolve the latest Wazuh release.
+    default: https://api.github.com/repos/wazuh/wazuh/releases/latest
+  - name: UpdateExistingConfig
+    type: bool
+    description: Update ossec.conf with ManagerIP after installation when possible. Supports comma-separated managers.
+    default: N
+  - name: WazuhConfigPath
+    description: Path to the Wazuh agent ossec.conf file.
+    default: C:\Program Files (x86)\ossec-agent\ossec.conf
+  - name: StartService
+    type: bool
+    description: Start or restart WazuhSvc after installation and configuration.
+    default: Y
+  - name: UploadInstallLog
+    type: bool
+    description: Upload the msiexec install log.
+    default: Y
+  - name: DownloadTimeoutSec
+    type: int
+    description: Download timeout in seconds.
+    default: 300
+
+sources:
+  - name: Install
+    query: |
+      LET TempDir <= tempdir()
+      LET MsiPath <= TempDir + "\\wazuh-agent.msi"
+      LET LogPath <= TempDir + "\\wazuh-agent-install.log"
+
+      LET EnvVars <= dict(
+        WAZUH_MANAGER=ManagerIP,
+        WAZUH_REGISTRATION_SERVER=RegistrationServer,
+        WAZUH_REGISTRATION_PASSWORD=RegistrationPassword,
+        WAZUH_AGENT_NAME=AgentName,
+        WAZUH_AGENT_GROUP=AgentGroup,
+        WAZUH_MSI_URL=MsiUrl,
+        WAZUH_VERSION=WazuhVersion,
+        WAZUH_EXPECTED_SHA256=ExpectedSha256,
+        WAZUH_GITHUB_RELEASE_API=GithubReleaseApiUrl,
+        WAZUH_UPDATE_EXISTING_CONFIG=if(condition=UpdateExistingConfig, then="true", else="false"),
+        WAZUH_CONFIG_PATH=WazuhConfigPath,
+        WAZUH_START_SERVICE=if(condition=StartService, then="true", else="false"),
+        WAZUH_DOWNLOAD_TIMEOUT_SEC=str(str=DownloadTimeoutSec),
+        WAZUH_MSI_PATH=MsiPath,
+        WAZUH_INSTALL_LOG=LogPath,
+        TEMP=TempDir,
+        TMP=TempDir
+      )
+
+      LET PowershellScript = '''
+      $ErrorActionPreference = "Stop"
+      $ProgressPreference = "SilentlyContinue"
+      [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+      function Assert-RequiredValue {
+        param(
+          [string] $Name,
+          [string] $Value
+        )
+
+        if ([string]::IsNullOrWhiteSpace($Value)) {
+          throw "$Name is required."
+        }
+      }
+
+      function Assert-SafeArgument {
+        param(
+          [string] $Name,
+          [string] $Value,
+          [bool] $Required = $false
+        )
+
+        if ($Required) {
+          Assert-RequiredValue -Name $Name -Value $Value
+        }
+
+        if (-not [string]::IsNullOrEmpty($Value) -and $Value -match "[`r`n`"]") {
+          throw "$Name contains an unsupported character."
+        }
+      }
+
+      function Quote-ProcessArgument {
+        param([string] $Value)
+
+        '"' + ($Value -replace '"', '\"') + '"'
+      }
+
+      function New-MsiPropertyArgument {
+        param(
+          [string] $Name,
+          [string] $Value
+        )
+
+        $Name + "=" + (Quote-ProcessArgument -Value $Value)
+      }
+
+      function Get-WazuhMsiUrlFromVersion {
+        param([string] $Version)
+
+        $normalizedVersion = $Version -replace "^v", ""
+        if ($normalizedVersion -notmatch "^\d+\.\d+\.\d+$") {
+          throw "WazuhVersion '$Version' must be a semantic version such as 4.x.y. Set MsiUrl explicitly for other package names."
+        }
+
+        $major = $normalizedVersion.Split(".")[0]
+        [pscustomobject]@{
+          Version = $normalizedVersion
+          Url = "https://packages.wazuh.com/$major.x/windows/wazuh-agent-$normalizedVersion-1.msi"
+        }
+      }
+
+      function Get-CommaSeparatedValues {
+        param(
+          [string] $Name,
+          [string] $Value
+        )
+
+        $values = @($Value -split "," |
+          ForEach-Object { $_.Trim() } |
+          Where-Object { $_.Length -gt 0 })
+
+        if ($values.Count -eq 0) {
+          throw "$Name did not contain a usable value."
+        }
+
+        $values
+      }
+
+      function Get-ManagerAddresses {
+        param([string] $ManagerList)
+
+        $addresses = @(Get-CommaSeparatedValues -Name "ManagerIP" -Value $ManagerList)
+        if ($addresses.Count -eq 0) {
+          throw "ManagerIP did not contain a usable manager address."
+        }
+
+        $addresses
+      }
+
+      $manager = $env:WAZUH_MANAGER
+      $registrationServer = $env:WAZUH_REGISTRATION_SERVER
+      $registrationPassword = $env:WAZUH_REGISTRATION_PASSWORD
+      $agentName = $env:WAZUH_AGENT_NAME
+      $agentGroup = $env:WAZUH_AGENT_GROUP
+      $manualMsiUrl = $env:WAZUH_MSI_URL
+      $requestedVersion = $env:WAZUH_VERSION
+      $githubReleaseApi = $env:WAZUH_GITHUB_RELEASE_API
+      $expectedSha256 = $env:WAZUH_EXPECTED_SHA256
+      $msiPath = $env:WAZUH_MSI_PATH
+      $installLog = $env:WAZUH_INSTALL_LOG
+      $downloadTimeoutSec = [int]$env:WAZUH_DOWNLOAD_TIMEOUT_SEC
+      $configPath = $env:WAZUH_CONFIG_PATH
+      $updateExistingConfig = $env:WAZUH_UPDATE_EXISTING_CONFIG -eq "true"
+      $startService = $env:WAZUH_START_SERVICE -eq "true"
+
+      Assert-SafeArgument -Name "ManagerIP" -Value $manager -Required $true
+      Assert-SafeArgument -Name "RegistrationServer" -Value $registrationServer
+      Assert-SafeArgument -Name "RegistrationPassword" -Value $registrationPassword
+      Assert-SafeArgument -Name "AgentName" -Value $agentName
+      Assert-SafeArgument -Name "AgentGroup" -Value $agentGroup
+      Assert-SafeArgument -Name "MsiUrl" -Value $manualMsiUrl
+      Assert-SafeArgument -Name "WazuhVersion" -Value $requestedVersion
+      Assert-SafeArgument -Name "ExpectedSha256" -Value $expectedSha256
+      Assert-SafeArgument -Name "GithubReleaseApiUrl" -Value $githubReleaseApi -Required $true
+      Assert-SafeArgument -Name "WazuhConfigPath" -Value $configPath -Required $true
+
+      $managerAddresses = @(Get-ManagerAddresses -ManagerList $manager)
+      $manager = $managerAddresses -join ","
+
+      if ([string]::IsNullOrWhiteSpace($registrationServer)) {
+        $registrationServer = $managerAddresses[0]
+      } else {
+        $registrationServerAddresses = @(Get-CommaSeparatedValues -Name "RegistrationServer" -Value $registrationServer)
+        if ($registrationServerAddresses.Count -gt 1) {
+          throw "RegistrationServer must contain a single address. Use ManagerIP for comma-separated manager addresses."
+        }
+
+        $registrationServer = $registrationServerAddresses[0]
+      }
+
+      if (-not [string]::IsNullOrWhiteSpace($agentGroup)) {
+        $agentGroup = (@(Get-CommaSeparatedValues -Name "AgentGroup" -Value $agentGroup) -join ",")
+      }
+
+      $releaseTag = $null
+      $resolvedVersion = $null
+      $downloadSource = "manual"
+      $downloadUrl = $manualMsiUrl
+
+      if ([string]::IsNullOrWhiteSpace($downloadUrl)) {
+        if (-not [string]::IsNullOrWhiteSpace($requestedVersion)) {
+          $versionDetails = Get-WazuhMsiUrlFromVersion -Version $requestedVersion
+          $resolvedVersion = $versionDetails.Version
+          $downloadUrl = $versionDetails.Url
+          $downloadSource = "packages_wazuh_from_version"
+        } else {
+          $release = Invoke-RestMethod `
+            -Uri $githubReleaseApi `
+            -Headers @{ "User-Agent" = "Velociraptor-Wazuh-Installer" } `
+            -TimeoutSec $downloadTimeoutSec
+
+          $releaseTag = [string]$release.tag_name
+          Assert-RequiredValue -Name "GitHub release tag" -Value $releaseTag
+
+          $asset = @($release.assets) |
+            Where-Object { $_.name -match "^wazuh-agent-.+-1\.msi$" } |
+            Select-Object -First 1
+
+          if ($asset) {
+            $downloadUrl = [string]$asset.browser_download_url
+            $downloadSource = "github_release_asset"
+          } else {
+            $versionDetails = Get-WazuhMsiUrlFromVersion -Version $releaseTag
+            $resolvedVersion = $versionDetails.Version
+            $downloadUrl = $versionDetails.Url
+            $downloadSource = "packages_wazuh_from_github_tag"
+          }
+
+        }
+      }
+
+      Assert-RequiredValue -Name "MSI download URL" -Value $downloadUrl
+
+      $parent = Split-Path -Parent $msiPath
+      if (-not (Test-Path -LiteralPath $parent)) {
+        New-Item -ItemType Directory -Path $parent -Force | Out-Null
+      }
+
+      Invoke-WebRequest `
+        -Uri $downloadUrl `
+        -OutFile $msiPath `
+        -UseBasicParsing `
+        -TimeoutSec $downloadTimeoutSec
+
+      $actualSha256 = (Get-FileHash -Algorithm SHA256 -LiteralPath $msiPath).Hash.ToLowerInvariant()
+      if (-not [string]::IsNullOrWhiteSpace($expectedSha256) -and
+          $actualSha256 -ne $expectedSha256.ToLowerInvariant()) {
+        throw "Downloaded MSI SHA256 '$actualSha256' did not match ExpectedSha256 '$expectedSha256'."
+      }
+
+      $msiArguments = @(
+        "/i",
+        (Quote-ProcessArgument -Value $msiPath),
+        "/qn",
+        "/norestart",
+        "/l*v",
+        (Quote-ProcessArgument -Value $installLog),
+        (New-MsiPropertyArgument -Name "WAZUH_MANAGER" -Value $manager),
+        (New-MsiPropertyArgument -Name "WAZUH_REGISTRATION_SERVER" -Value $registrationServer)
+      )
+
+      if (-not [string]::IsNullOrWhiteSpace($registrationPassword)) {
+        $msiArguments += (New-MsiPropertyArgument -Name "WAZUH_REGISTRATION_PASSWORD" -Value $registrationPassword)
+      }
+
+      if (-not [string]::IsNullOrWhiteSpace($agentName)) {
+        $msiArguments += (New-MsiPropertyArgument -Name "WAZUH_AGENT_NAME" -Value $agentName)
+      }
+
+      if (-not [string]::IsNullOrWhiteSpace($agentGroup)) {
+        $msiArguments += (New-MsiPropertyArgument -Name "WAZUH_AGENT_GROUP" -Value $agentGroup)
+      }
+
+      $process = Start-Process `
+        -FilePath "msiexec.exe" `
+        -ArgumentList $msiArguments `
+        -Wait `
+        -PassThru
+
+      if ($process.ExitCode -ne 0) {
+        throw "msiexec.exe failed with exit code $($process.ExitCode)."
+      }
+
+      $configUpdated = $false
+      $configUpdateStatus = "not_requested"
+      if ($updateExistingConfig -and (Test-Path -LiteralPath $configPath)) {
+        [xml]$config = Get-Content -LiteralPath $configPath
+        $root = $config.SelectSingleNode("/ossec_config")
+        if ($null -eq $root) {
+          throw "Unable to update '$configPath': missing /ossec_config root element."
+        }
+
+        $client = $config.SelectSingleNode("/ossec_config/client")
+        if ($null -eq $client) {
+          $client = $config.CreateElement("client")
+          [void]$root.AppendChild($client)
+          $configUpdated = $true
+        }
+
+        $servers = @($client.SelectNodes("server"))
+        if ($servers.Count -eq 0) {
+          $server = $config.CreateElement("server")
+          [void]$client.AppendChild($server)
+          $servers = @($server)
+          $configUpdated = $true
+        }
+
+        $template = $servers[0]
+        for ($i = 0; $i -lt $managerAddresses.Count; $i++) {
+          if ($i -lt $servers.Count) {
+            $server = $servers[$i]
+          } else {
+            $server = $template.CloneNode($true)
+            [void]$client.AppendChild($server)
+            $configUpdated = $true
+          }
+
+          $address = $server.SelectSingleNode("address")
+          if ($null -eq $address) {
+            $address = $config.CreateElement("address")
+            if ($server.HasChildNodes) {
+              [void]$server.InsertBefore($address, $server.FirstChild)
+            } else {
+              [void]$server.AppendChild($address)
+            }
+            $configUpdated = $true
+          }
+
+          if ($address.InnerText -ne $managerAddresses[$i]) {
+            $address.InnerText = $managerAddresses[$i]
+            $configUpdated = $true
+          }
+        }
+
+        if ($servers.Count -gt $managerAddresses.Count) {
+          for ($i = $servers.Count - 1; $i -ge $managerAddresses.Count; $i--) {
+            [void]$client.RemoveChild($servers[$i])
+            $configUpdated = $true
+          }
+        }
+
+        if ($configUpdated) {
+          $config.Save($configPath)
+          $configUpdateStatus = "updated"
+        } else {
+          $configUpdateStatus = "already_current"
+        }
+      } elseif ($updateExistingConfig) {
+        $configUpdateStatus = "missing_config"
+      }
+
+      $serviceStatus = "not_requested"
+      if ($startService) {
+        $service = Get-Service -Name "WazuhSvc" -ErrorAction Stop
+        if ($service.Status -eq "Running") {
+          Restart-Service -Name "WazuhSvc" -Force -ErrorAction Stop
+        } else {
+          Start-Service -Name "WazuhSvc" -ErrorAction Stop
+        }
+
+        $serviceStatus = (Get-Service -Name "WazuhSvc" -ErrorAction Stop).Status.ToString()
+      }
+
+      [ordered]@{
+        Status = "Installed"
+        ManagerIP = $manager
+        RegistrationServer = $registrationServer
+        RegistrationPasswordSupplied = -not [string]::IsNullOrWhiteSpace($registrationPassword)
+        AgentName = $agentName
+        AgentGroup = $agentGroup
+        RequestedVersion = $requestedVersion
+        ResolvedVersion = $resolvedVersion
+        ReleaseTag = $releaseTag
+        DownloadSource = $downloadSource
+        MsiUrl = $downloadUrl
+        MsiPath = $msiPath
+        MsiSha256 = $actualSha256
+        MsiExitCode = $process.ExitCode
+        ConfigPath = $configPath
+        ConfigUpdated = $configUpdated
+        ConfigUpdateStatus = $configUpdateStatus
+        ServiceStatus = $serviceStatus
+        InstallLog = $installLog
+      } | ConvertTo-Json -Compress
+      '''
+
+      LET Run <= SELECT Stdout, Stderr, ReturnCode, Complete
+      FROM execve(
+        argv=[
+          "powershell.exe",
+          "-NoProfile",
+          "-NonInteractive",
+          "-ExecutionPolicy", "Bypass",
+          "-Command", PowershellScript
+        ],
+        env=EnvVars,
+        length=1000000
+      )
+
+      LET LogUpload <= SELECT upload(file=OSPath) AS Upload
+      FROM glob(globs=LogPath)
+      WHERE UploadInstallLog
+
+      SELECT Stdout, Stderr, ReturnCode, Complete,
+        LogUpload.Upload[0] AS InstallLog,
+        dict(
+          ManagerIP=ManagerIP,
+          RegistrationServer=RegistrationServer,
+          RegistrationPasswordSupplied=if(condition=RegistrationPassword, then=true, else=false),
+          AgentName=AgentName,
+          AgentGroup=AgentGroup,
+          MsiUrl=MsiUrl,
+          WazuhVersion=WazuhVersion,
+          GithubReleaseApiUrl=GithubReleaseApiUrl,
+          ExpectedSha256=ExpectedSha256,
+          UpdateExistingConfig=UpdateExistingConfig,
+          WazuhConfigPath=WazuhConfigPath,
+          StartService=StartService,
+          DownloadTimeoutSec=DownloadTimeoutSec
+        ) AS RequestedSettings
+      FROM Run
