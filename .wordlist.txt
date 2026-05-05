@@ -2128,3 +2128,9 @@ securable
 ADX
 adx
 DoS
+
+
+Dickenson
+GetUserRoles
+
+ConsumeUnit

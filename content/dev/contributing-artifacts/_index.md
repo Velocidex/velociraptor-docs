@@ -83,7 +83,7 @@ produce a set of such triage artifacts based on
 The advantages of centralizing registry analysis include:
 
 * Handling the registry correctly is very challenging and there are
-  many edge cases. For example, when accessing the HKEY_USERS hive,
+  many edge cases. For example, when accessing the `HKEY_USERS` hive,
   only currently logged in users will have their hive mounted
   there. The Registry Hunter automatically handles these cases by
   mounting the raw hives into the a remapping configuration.
