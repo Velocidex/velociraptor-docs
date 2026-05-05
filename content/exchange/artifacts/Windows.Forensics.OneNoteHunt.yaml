@@ -46,7 +46,7 @@ sources:
 
   query: |
 
-    LET OneNoteMagic = 'e4 52 5c 7b 8c d8 a7 4d ae b1 53 78 d0 29 96 d3'
+    LET OneNoteMagic <= unhex(string='e4525c7b8cd8a74daeb15378d02996d3')
 
     LET ImageRule = '''
       rule embedded_images {
@@ -71,10 +71,7 @@ sources:
     FROM glob(globs=TargetGlob)
     WHERE NOT IsDir
       AND Size <= MaxFileSize
-      AND format(
-        format='% x',
-        args=[read_file(filename=OSPath, length=16)]
-      ) = OneNoteMagic
+      AND read_file(filename=OSPath, length=16) = OneNoteMagic
 
     LET checked_files = SELECT *,
       len(list={
@@ -117,16 +114,13 @@ sources:
       }
     '''
 
-    LET OneNoteMagic = 'e4 52 5c 7b 8c d8 a7 4d ae b1 53 78 d0 29 96 d3'
+    LET OneNoteMagic <= unhex(string='e4525c7b8cd8a74daeb15378d02996d3')
 
     LET onenote_files = SELECT OSPath, Name, Size
     FROM glob(globs=TargetGlob)
     WHERE NOT IsDir
       AND Size <= MaxFileSize
-      AND format(
-        format='% x',
-        args=[read_file(filename=OSPath, length=16)]
-      ) = OneNoteMagic
+      AND read_file(filename=OSPath, length=16) = OneNoteMagic
 
     SELECT
       OSPath,
@@ -177,16 +171,13 @@ sources:
       }
     '''
 
-    LET OneNoteMagic = 'e4 52 5c 7b 8c d8 a7 4d ae b1 53 78 d0 29 96 d3'
+    LET OneNoteMagic <= unhex(string='e4525c7b8cd8a74daeb15378d02996d3')
 
     LET onenote_files = SELECT OSPath, Name, Size
     FROM glob(globs=TargetGlob)
     WHERE NOT IsDir
       AND Size <= MaxFileSize
-      AND format(
-        format='% x',
-        args=[read_file(filename=OSPath, length=16)]
-      ) = OneNoteMagic
+      AND read_file(filename=OSPath, length=16) = OneNoteMagic
 
     SELECT
       OSPath,
