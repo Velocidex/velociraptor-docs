@@ -40,13 +40,10 @@ parameters:
   - name: AgentGroup
     description: Optional Wazuh agent group or comma-separated groups.
     default: ""
-  - name: UpdateExistingConfig
+  - name: ReinstallExistingAgent
     type: bool
-    description: Update ossec.conf with ManagerIP after installation when possible. Supports comma-separated managers.
-    default: Y
-  - name: WazuhConfigPath
-    description: Path to the Wazuh agent ossec.conf file.
-    default: C:\Program Files (x86)\ossec-agent\ossec.conf
+    description: Reapply MSI properties when the Wazuh agent is already installed.
+    default: N
   - name: StartService
     type: bool
     description: Start or restart WazuhSvc after installation and configuration.
@@ -68,282 +65,103 @@ sources:
         IsExecutable=FALSE
       )
 
-      LET EnvVars <= dict(
-        WAZUH_MANAGER=ManagerIP,
-        WAZUH_REGISTRATION_SERVER=RegistrationServer,
-        WAZUH_REGISTRATION_PASSWORD=RegistrationPassword,
-        WAZUH_AGENT_NAME=AgentName,
-        WAZUH_AGENT_GROUP=AgentGroup,
-        WAZUH_UPDATE_EXISTING_CONFIG=if(condition=UpdateExistingConfig, then="true", else="false"),
-        WAZUH_CONFIG_PATH=WazuhConfigPath,
-        WAZUH_START_SERVICE=if(condition=StartService, then="true", else="false"),
-        WAZUH_MSI_PATH=str(str=WazuhMSI.FullPath[0]),
-        WAZUH_INSTALL_LOG=LogPath,
-        TEMP=TempDir,
-        TMP=TempDir
-      )
+      LET Trim(Value) = regex_replace(
+        source=Value,
+        re="^\\s+|\\s+$",
+        replace="")
 
-      LET PowershellScript = '''
-      $ErrorActionPreference = "Stop"
-      $ProgressPreference = "SilentlyContinue"
-      [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+      LET ManagerAddresses <= SELECT Trim(Value=_value) AS Address
+      FROM foreach(row=split(string=ManagerIP, sep=","))
+      WHERE Address
 
-      function Assert-RequiredValue {
-        param(
-          [string] $Name,
-          [string] $Value
-        )
+      LET RegistrationServerAddresses <= SELECT Trim(Value=_value) AS Address
+      FROM foreach(row=split(string=RegistrationServer, sep=","))
+      WHERE Address
 
-        if ([string]::IsNullOrWhiteSpace($Value)) {
-          throw "$Name is required."
-        }
-      }
+      LET AgentGroups <= SELECT Trim(Value=_value) AS GroupName
+      FROM foreach(row=split(string=AgentGroup, sep=","))
+      WHERE GroupName
 
-      function Assert-SafeArgument {
-        param(
-          [string] $Name,
-          [string] $Value,
-          [bool] $Required = $false
-        )
+      LET ManagerFinal <= join(array=ManagerAddresses.Address, sep=",")
+      LET RegistrationServerFinal <= if(
+        condition=RegistrationServerAddresses.Address[0],
+        then=RegistrationServerAddresses.Address[0],
+        else=ManagerAddresses.Address[0])
+      LET AgentGroupFinal <= join(array=AgentGroups.GroupName, sep=",")
 
-        if ($Required) {
-          Assert-RequiredValue -Name $Name -Value $Value
-        }
+      LET ValidationError <= if(
+        condition=NOT ManagerFinal,
+        then="ManagerIP is required.",
+        else=if(
+          condition=len(list=RegistrationServerAddresses.Address) > 1,
+          then="RegistrationServer must contain a single address. Use ManagerIP for comma-separated manager addresses.",
+          else=if(
+            condition=NOT WazuhMSI.FullPath[0],
+            then="WazuhAgentMSI tool was not fetched.")))
 
-        if (-not [string]::IsNullOrEmpty($Value) -and $Value -match "[`r`n`"]") {
-          throw "$Name contains an unsupported character."
-        }
-      }
-
-      function Quote-ProcessArgument {
-        param([string] $Value)
-
-        '"' + ($Value -replace '"', '\"') + '"'
-      }
-
-      function New-MsiPropertyArgument {
-        param(
-          [string] $Name,
-          [string] $Value
-        )
-
-        $Name + "=" + (Quote-ProcessArgument -Value $Value)
-      }
-
-      function Get-CommaSeparatedValues {
-        param(
-          [string] $Name,
-          [string] $Value
-        )
-
-        $values = @($Value -split "," |
-          ForEach-Object { $_.Trim() } |
-          Where-Object { $_.Length -gt 0 })
-
-        if ($values.Count -eq 0) {
-          throw "$Name did not contain a usable value."
-        }
-
-        $values
-      }
-
-      function Get-ManagerAddresses {
-        param([string] $ManagerList)
-
-        $addresses = @(Get-CommaSeparatedValues -Name "ManagerIP" -Value $ManagerList)
-        if ($addresses.Count -eq 0) {
-          throw "ManagerIP did not contain a usable manager address."
-        }
-
-        $addresses
-      }
-
-      $manager = $env:WAZUH_MANAGER
-      $registrationServer = $env:WAZUH_REGISTRATION_SERVER
-      $registrationPassword = $env:WAZUH_REGISTRATION_PASSWORD
-      $agentName = $env:WAZUH_AGENT_NAME
-      $agentGroup = $env:WAZUH_AGENT_GROUP
-      $msiPath = $env:WAZUH_MSI_PATH
-      $installLog = $env:WAZUH_INSTALL_LOG
-      $configPath = $env:WAZUH_CONFIG_PATH
-      $updateExistingConfig = $env:WAZUH_UPDATE_EXISTING_CONFIG -eq "true"
-      $startService = $env:WAZUH_START_SERVICE -eq "true"
-
-      Assert-SafeArgument -Name "ManagerIP" -Value $manager -Required $true
-      Assert-SafeArgument -Name "RegistrationServer" -Value $registrationServer
-      Assert-SafeArgument -Name "RegistrationPassword" -Value $registrationPassword
-      Assert-SafeArgument -Name "AgentName" -Value $agentName
-      Assert-SafeArgument -Name "AgentGroup" -Value $agentGroup
-      Assert-SafeArgument -Name "WazuhAgentMSI path" -Value $msiPath -Required $true
-      Assert-SafeArgument -Name "WazuhConfigPath" -Value $configPath -Required $true
-
-      $managerAddresses = @(Get-ManagerAddresses -ManagerList $manager)
-      $manager = $managerAddresses -join ","
-
-      if ([string]::IsNullOrWhiteSpace($registrationServer)) {
-        $registrationServer = $managerAddresses[0]
-      } else {
-        $registrationServerAddresses = @(Get-CommaSeparatedValues -Name "RegistrationServer" -Value $registrationServer)
-        if ($registrationServerAddresses.Count -gt 1) {
-          throw "RegistrationServer must contain a single address. Use ManagerIP for comma-separated manager addresses."
-        }
-
-        $registrationServer = $registrationServerAddresses[0]
-      }
-
-      if (-not [string]::IsNullOrWhiteSpace($agentGroup)) {
-        $agentGroup = (@(Get-CommaSeparatedValues -Name "AgentGroup" -Value $agentGroup) -join ",")
-      }
-
-      if (-not (Test-Path -LiteralPath $msiPath)) {
-        throw "WazuhAgentMSI tool was not fetched to '$msiPath'."
-      }
-
-      $actualSha256 = (Get-FileHash -Algorithm SHA256 -LiteralPath $msiPath).Hash.ToLowerInvariant()
-
-      $msiArguments = @(
+      LET MsiArgs <= filter(list=(
+        "msiexec.exe",
         "/i",
-        (Quote-ProcessArgument -Value $msiPath),
+        WazuhMSI.FullPath[0],
         "/qn",
         "/norestart",
         "/l*v",
-        (Quote-ProcessArgument -Value $installLog),
-        (New-MsiPropertyArgument -Name "WAZUH_MANAGER" -Value $manager),
-        (New-MsiPropertyArgument -Name "WAZUH_REGISTRATION_SERVER" -Value $registrationServer)
-      )
+        LogPath,
+        "WAZUH_MANAGER=" + ManagerFinal,
+        "WAZUH_REGISTRATION_SERVER=" + RegistrationServerFinal,
+        if(condition=ReinstallExistingAgent, then="REINSTALL=ALL"),
+        if(condition=ReinstallExistingAgent, then="REINSTALLMODE=vomus"),
+        if(condition=RegistrationPassword, then="WAZUH_REGISTRATION_PASSWORD=" + RegistrationPassword),
+        if(condition=AgentName, then="WAZUH_AGENT_NAME=" + AgentName),
+        if(condition=AgentGroupFinal, then="WAZUH_AGENT_GROUP=" + AgentGroupFinal)
+      ), regex=".+")
 
-      if (-not [string]::IsNullOrWhiteSpace($registrationPassword)) {
-        $msiArguments += (New-MsiPropertyArgument -Name "WAZUH_REGISTRATION_PASSWORD" -Value $registrationPassword)
-      }
+      LET Run <= SELECT *
+      FROM if(
+        condition=ValidationError,
+        then={
+          SELECT "" AS Stdout,
+            ValidationError AS Stderr,
+            1 AS ReturnCode,
+            true AS Complete
+          FROM scope()
+        },
+        else={
+          SELECT *
+          FROM execve(argv=MsiArgs, length=1000000)
+        })
 
-      if (-not [string]::IsNullOrWhiteSpace($agentName)) {
-        $msiArguments += (New-MsiPropertyArgument -Name "WAZUH_AGENT_NAME" -Value $agentName)
-      }
+      LET ServiceActions <= SELECT *
+      FROM if(
+        condition=StartService AND Run.ReturnCode[0] = 0,
+        then={
+          SELECT *
+          FROM chain(
+            stop={
+              SELECT "stop" AS Action, Stdout, Stderr, ReturnCode, Complete
+              FROM execve(argv=["sc.exe", "stop", "WazuhSvc"], length=100000)
+            },
+            wait={
+              SELECT "wait" AS Action, Stdout, Stderr, ReturnCode, Complete
+              FROM execve(argv=["ping.exe", "-n", "6", "127.0.0.1"], length=100000)
+            },
+            start={
+              SELECT "start" AS Action, Stdout, Stderr, ReturnCode, Complete
+              FROM execve(argv=["sc.exe", "start", "WazuhSvc"], length=100000)
+            },
+            query={
+              SELECT "query" AS Action, Stdout, Stderr, ReturnCode, Complete
+              FROM execve(argv=["sc.exe", "query", "WazuhSvc"], length=100000)
+            })
+        })
 
-      if (-not [string]::IsNullOrWhiteSpace($agentGroup)) {
-        $msiArguments += (New-MsiPropertyArgument -Name "WAZUH_AGENT_GROUP" -Value $agentGroup)
-      }
+      LET ServiceSummary <= SELECT *
+      FROM foreach(row=ServiceActions)
 
-      $process = Start-Process `
-        -FilePath "msiexec.exe" `
-        -ArgumentList $msiArguments `
-        -Wait `
-        -PassThru
-
-      if ($process.ExitCode -ne 0) {
-        throw "msiexec.exe failed with exit code $($process.ExitCode)."
-      }
-
-      $configUpdated = $false
-      $configUpdateStatus = "not_requested"
-      if ($updateExistingConfig -and (Test-Path -LiteralPath $configPath)) {
-        [xml]$config = Get-Content -LiteralPath $configPath
-        $root = $config.SelectSingleNode("/ossec_config")
-        if ($null -eq $root) {
-          throw "Unable to update '$configPath': missing /ossec_config root element."
-        }
-
-        $client = $config.SelectSingleNode("/ossec_config/client")
-        if ($null -eq $client) {
-          $client = $config.CreateElement("client")
-          [void]$root.AppendChild($client)
-          $configUpdated = $true
-        }
-
-        $servers = @($client.SelectNodes("server"))
-        if ($servers.Count -eq 0) {
-          $server = $config.CreateElement("server")
-          [void]$client.AppendChild($server)
-          $servers = @($server)
-          $configUpdated = $true
-        }
-
-        $template = $servers[0]
-        for ($i = 0; $i -lt $managerAddresses.Count; $i++) {
-          if ($i -lt $servers.Count) {
-            $server = $servers[$i]
-          } else {
-            $server = $template.CloneNode($true)
-            [void]$client.AppendChild($server)
-            $configUpdated = $true
-          }
-
-          $address = $server.SelectSingleNode("address")
-          if ($null -eq $address) {
-            $address = $config.CreateElement("address")
-            if ($server.HasChildNodes) {
-              [void]$server.InsertBefore($address, $server.FirstChild)
-            } else {
-              [void]$server.AppendChild($address)
-            }
-            $configUpdated = $true
-          }
-
-          if ($address.InnerText -ne $managerAddresses[$i]) {
-            $address.InnerText = $managerAddresses[$i]
-            $configUpdated = $true
-          }
-        }
-
-        if ($servers.Count -gt $managerAddresses.Count) {
-          for ($i = $servers.Count - 1; $i -ge $managerAddresses.Count; $i--) {
-            [void]$client.RemoveChild($servers[$i])
-            $configUpdated = $true
-          }
-        }
-
-        if ($configUpdated) {
-          $config.Save($configPath)
-          $configUpdateStatus = "updated"
-        } else {
-          $configUpdateStatus = "already_current"
-        }
-      } elseif ($updateExistingConfig) {
-        $configUpdateStatus = "missing_config"
-      }
-
-      $serviceStatus = "not_requested"
-      if ($startService) {
-        $service = Get-Service -Name "WazuhSvc" -ErrorAction Stop
-        if ($service.Status -eq "Running") {
-          Restart-Service -Name "WazuhSvc" -Force -ErrorAction Stop
-        } else {
-          Start-Service -Name "WazuhSvc" -ErrorAction Stop
-        }
-
-        $serviceStatus = (Get-Service -Name "WazuhSvc" -ErrorAction Stop).Status.ToString()
-      }
-
-      [ordered]@{
-        Status = "Installed"
-        ManagerIP = $manager
-        RegistrationServer = $registrationServer
-        RegistrationPasswordSupplied = -not [string]::IsNullOrWhiteSpace($registrationPassword)
-        AgentName = $agentName
-        AgentGroup = $agentGroup
-        MsiPath = $msiPath
-        MsiSha256 = $actualSha256
-        MsiExitCode = $process.ExitCode
-        ConfigPath = $configPath
-        ConfigUpdated = $configUpdated
-        ConfigUpdateStatus = $configUpdateStatus
-        ServiceStatus = $serviceStatus
-        InstallLog = $installLog
-      } | ConvertTo-Json -Compress
-      '''
-
-      LET Run <= SELECT Stdout, Stderr, ReturnCode, Complete
-      FROM execve(
-        argv=[
-          "powershell.exe",
-          "-NoProfile",
-          "-NonInteractive",
-          "-ExecutionPolicy", "Bypass",
-          "-Command", PowershellScript
-        ],
-        env=EnvVars,
-        length=1000000
-      )
+      LET ServiceStatus <= if(
+        condition=StartService AND Run.ReturnCode[0] = 0,
+        then=ServiceSummary.Stdout[-1],
+        else="not_requested")
 
       LET LogUpload <= SELECT upload(file=OSPath) AS Upload
       FROM glob(globs=LogPath)
@@ -351,19 +169,20 @@ sources:
 
       SELECT Stdout, Stderr, ReturnCode, Complete,
         LogUpload.Upload[0] AS InstallLog,
+        ServiceSummary AS ServiceActions,
         dict(
-          ManagerIP=ManagerIP,
-          RegistrationServer=RegistrationServer,
+          ManagerIP=ManagerFinal,
+          RegistrationServer=RegistrationServerFinal,
           RegistrationPasswordSupplied=if(condition=RegistrationPassword, then=true, else=false),
           AgentName=AgentName,
-          AgentGroup=AgentGroup,
+          AgentGroup=AgentGroupFinal,
           WazuhAgentMSI=dict(
             Name=WazuhMSI.Name[0],
             DownloadStatus=WazuhMSI.DownloadStatus[0],
             Sha256=WazuhMSI.Hash[0].SHA256
           ),
-          UpdateExistingConfig=UpdateExistingConfig,
-          WazuhConfigPath=WazuhConfigPath,
-          StartService=StartService
+          ReinstallExistingAgent=ReinstallExistingAgent,
+          StartService=StartService,
+          ServiceStatus=ServiceStatus
         ) AS RequestedSettings
       FROM Run
