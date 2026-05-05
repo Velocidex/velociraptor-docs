@@ -1,5 +1,6 @@
 {{ $src := .Page.Resources.GetMatch (printf "%s" (.Destination | safeURL)) }}
 {{ $caption := .PlainText }}
+{{ if not $caption }}{{ $caption = "image" }}{{ end }}
 
 <!-- Not a page resource must be an external link -->
 {{ if not $src }}

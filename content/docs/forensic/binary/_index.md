@@ -335,9 +335,9 @@ underlying type is, its count etc.
 Parsing a field as an array produces an ArrayObject which has the
 following properties:
 
-1. `Size`, `Start`, `End` properties represent the size of the
+1. `SizeOf`, `StartOf`, `EndOf` properties represent the size of the
    array in bytes, the start and end offset of the array.
-2. `Contents` property accesses the underlying array.
+2. `ContentsOf` property accesses the underlying array.
 
 You can iterate over an ArrayObject with the `foreach()` plugin:
 
