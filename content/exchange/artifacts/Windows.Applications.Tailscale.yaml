@@ -1,6 +1,6 @@
 name: Windows.Applications.Tailscale
 description: |
-  Decodes the configuration file and pulls log files for Tailscale.
+  Decodes the configuration file, pulls log files, and uploads any partial file transfers for Tailscale.
   
   ### History 
   
@@ -59,3 +59,16 @@ sources:
                 FROM parse_lines(filename=OSPath)
             }
         )
+  - name: Partial File Transfers
+    description: Partial File Transfers to this machine
+    query: |
+      LET pFiles = SELECT OSPath
+               FROM glob(globs=tailscaleProgramDataLocation + "files\\*\\*.partial")
+  
+      SELECT *
+      FROM foreach(
+          row=pFiles,
+          query={
+              SELECT upload(file=OSPath) as Upload FROM scope()
+          }
+      )
