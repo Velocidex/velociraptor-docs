@@ -24,15 +24,16 @@ sources:
     query: |
         SELECT
             _key AS Key,
-            base64decode(string=_value) AS Decoded_Value
+            base64decode(string=_value) AS Decoded_Value,
+            _value AS OriginalValue
         FROM foreach(
             row={
-                SELECT *
-                FROM read_file(filenames=tailscaleProgramDataLocation + "server-state.conf")
+                SELECT read_file(filename=OSPath) as Data
+                FROM glob(globs="server-state.conf", root=tailscaleProgramDataLocation)
             },
             query={
                 SELECT
-                    _key,
+                    _key, 
                     _value
                 FROM items(
                     item=parse_json(data=Data)
