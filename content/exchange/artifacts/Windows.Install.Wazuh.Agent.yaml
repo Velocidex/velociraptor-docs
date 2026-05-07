@@ -80,30 +80,24 @@ sources:
       FROM ManagerIP
       WHERE IP
 
-      LET RegistrationServerAddresses = SELECT Trim(Value=_value) AS Address
-      FROM foreach(row=split(string=RegistrationServer, sep=","))
-      WHERE Address
+      LET RegistrationServerFinal = if(
+        condition=Trim(Value=RegistrationServer),
+        then=Trim(Value=RegistrationServer),
+        else=ManagerAddresses.IP[0])
 
       LET AgentGroups = SELECT Trim(Value=Group) AS Group
       FROM AgentGroup
       WHERE Group
 
       LET ManagerFinal = join(array=ManagerAddresses.IP, sep=",")
-      LET RegistrationServerFinal = if(
-        condition=RegistrationServerAddresses.Address[0],
-        then=RegistrationServerAddresses.Address[0],
-        else=ManagerAddresses.IP[0])
       LET AgentGroupFinal = join(array=AgentGroups.Group, sep=",")
 
       LET ValidationError = if(
         condition=NOT ManagerFinal,
         then="ManagerIP is required.",
         else=if(
-          condition=len(list=RegistrationServerAddresses.Address) > 1,
-          then="RegistrationServer must contain a single address. Use ManagerIP for comma-separated manager addresses.",
-          else=if(
-            condition=NOT WazuhMSI.FullPath[0],
-            then="WazuhAgentMSI tool was not fetched.")))
+          condition=NOT WazuhMSI.FullPath[0],
+          then="WazuhAgentMSI tool was not fetched."))
 
       LET MsiArgs = filter(list=(
         "msiexec.exe",
