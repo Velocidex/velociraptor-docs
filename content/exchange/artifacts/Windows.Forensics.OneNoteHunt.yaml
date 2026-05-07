@@ -76,7 +76,7 @@ sources:
     LET checked_files = SELECT *,
       len(list={
         SELECT String.Name
-        FROM yara(files=OSPath, rules=ImageRule, number=9999)
+        FROM yara(files=OSPath, rules=ImageRule, number=1)
       }) AS ImageSignatureCount
     FROM onenote_files
 
