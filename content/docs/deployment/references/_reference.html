@@ -5061,10 +5061,13 @@ to the suggestion button. Also can be vql or markdown.</div>
    <div class="reference-value-mapping">linux</div>
 </li>
 
-<div class="item-comment">This is used to obfuscate artifact names when sending to the
-client. NOTE: This is currently not very robust - i.e. it does not
-hide the artifact names very well - you should not name artifacts
-in a sensitive way.</div>
+<div class="item-comment">This setting influences how artifact identifiers are camouflaged before
+traffic reaches endpoints. Conceptually Velociraptor maps obfuscated names back to canonical
+identifiers server-side without client interaction, therefore the camouflage scheme is keyed by
+<code>obfuscation_nonce</code>. Residual plaintext still exists inside VQL, parameters,
+notebooks, and supporting artifacts—so treat this knob as descriptive privacy rather than a secrecy
+boundary. Sensitive collection names belong on tightly controlled consoles, not obscure query
+identifiers alone.</div>
 <li id="obfuscation_nonce">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
@@ -5825,8 +5828,11 @@ e.g. /nonexistent/ .</div>
 </div>
 </li>
 
-<div class="item-comment">A list of prefixes allowed for the fs accessor. All other
-prefixes will be rejected.</div>
+<div class="item-comment">A list of prefixes allowed for the Velociraptor logical <code>fs</code>
+accessor. All logical paths outside those prefixes—after deny processing—are rejected. This is
+orthogonal to <code>allowed_file_accessor_prefix</code>, which only constrains OS paths served by
+the <code>file</code> accessor. Most operators tighten coverage with explicit denies
+(<code>denied_fs_accessor_prefix</code>) instead of brittle allowlists.</div>
 <li id="security.allowed_fs_accessor_prefix">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
@@ -6139,11 +6145,12 @@ its own but if this is set, we prevent any external access.</div>
 
 <div class="item-comment">The Data Encryptions Key to use for protecting the secrets in
 storage. This can take a number of forms:
-1. If it starts with "env://<VAR>" the secret will be taken from an
+1. If it starts with "env://&lt;VAR&gt;" the secret will be taken from an
 Environment variable.
 2. If empty the secret is taken from obfuscation_nonce (which
 by default is the hash of the private key).
 In future further methods may be implemented (e.g. EKMS).
+<<<<<<< HEAD
 Operational caution: Leaving this empty derives the DEK solely
 from secrets that are normally present in plain-text configuration
 files beside the ciphertext. Operators protecting forensic
@@ -6151,6 +6158,14 @@ infrastructure should provision an external entropy source (for
 example "env://" referencing a guarded environment variable
 injected by systemd, Kubernetes Secrets, Vault, Windows Credential
 Manager, etc.).</div>
+=======
+
+Operational caution: Leaving this empty derives the DEK solely from secrets that are
+normally present in plain-text configuration files beside the ciphertext. Operators
+protecting forensic infrastructure should provision an external entropy source (for example
+<code>env://</code> referencing a guarded environment variable injected by systemd,
+Kubernetes Secrets, Vault, Windows Credential Manager, etc.).</div>
+>>>>>>> 30fe408c (docs: expand security guidance for accessors, secrets, and VQL footguns)
 <li id="security.secrets_dek">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">

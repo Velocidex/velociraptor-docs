@@ -138,6 +138,19 @@ when a MITM proxy is able to decode the HTTPS connections, there is no
 visible plain text due to the included messages being encrypted again
 by the internal server certificate.
 
+{{% notice warning "Debugging clients and TLS verification" %}}
+
+The client-only setting
+[`Client.insecure_network_trace_file`](/docs/deployment/references/#Client.insecure_network_trace_file)
+is only for diagnosing connectivity issues. Any non-empty value writes
+cleartext protocol traces **and disables TLS certificate verification**
+for outbound client connections—so intermediaries could strip the TLS
+tunnel even though Velociraptor’s inner protobuf encryption layer may
+remain. Never ship golden images or repacked clients that leave this flag
+configured.
+
+{{% /notice %}}
+
 ## Securing Network communications
 
 The following are some common network deployment scenarios. Simple
@@ -624,6 +637,14 @@ Note that password management is supposed to be very simplistic
 because for production servers we recommend to use an external
 authentication service (e.g. OIDC)
 
+Passwords enforced through `Basic` auth are salted and hashed with
+SHA‑256 once per HTTP request for speed. Treat this as adequate only for
+lab or short-lived evaluation systems; attackers who steal the hashed
+credentials from backing storage can bruteforce common passwords offline
+much faster than with dedicated password hashing. Production deployments,
+especially internet-exposed fronts, belong behind OIDC/OAuth2/SAML
+or another enterprise IdP described under [OAuth2 services](#oauth2-services).
+
 #### OAuth2 services
 
 A number of public identity providers are directly supported in
@@ -700,6 +721,28 @@ As with all server config changes, this will require a service restart. To
 reverse this policy you can either remove the config key or comment it out to
 resume accepting client enrollments.
 
+### Protecting stored secrets (`security.secrets_dek`)
+
+Server-side [secret management](/blog/2024/2024-03-10-release-notes-0.72/#secret-management) keeps
+API tokens, credentials, and webhook material out of raw artifacts. At rest the material is
+encrypted using the key described by
+[`security.secrets_dek`](/docs/deployment/references/#security.secrets_dek).
+
+If you leave `secrets_dek` empty, the server falls back to deriving keying material from the
+[`obfuscation_nonce`](/docs/deployment/references/#obfuscation_nonce) (which itself defaults to
+data tied to the frontend private key material). **Attackers who steal the configuration file
+alongside the ciphertext can therefore recover the encryption key** because both live in the same
+configuration bundle. Treat that default as a convenience for ephemeral labs only.
+
+For hardened deployments:
+
+* Supply `secrets_dek` through an indirection such as `env://SENSITIVE_DEK` and inject that
+  environment variable from your init system, container orchestrator, or secret manager.
+* Consider bootstrapping the daemon with the YAML itself provided through a process environment
+  (for example `VELOCIRAPTOR_CONFIG`), then use
+  [`security.shadowed_env_vars`](/docs/deployment/references/#security.shadowed_env_vars) to strip
+  privileged variables from VQL's view.
+
 ### Removing plugins from a shared server
 
 While Velociraptor allows user to run arbitrary VQL in notebooks it
@@ -763,6 +806,21 @@ and server artifacts. A user with the `Analyst`role, has no
 `glob()` based query in a notebook they will be denied.
 
 ![Permission denied error in the notebook](notebook_permission_denied.png)
+
+### Artifact name obfuscation (limitations)
+
+`obfuscation_nonce` controls only how **artifact names** are camouflaged when
+traffic is observable on endpoints (see [`obfuscation_nonce`](/docs/deployment/references/#obfuscation_nonce)).
+Velociraptor must map obfuscated identifiers back server-side without client
+interaction, therefore the naming transform is deterministic for a given nonce.
+
+Residual VQL—including parameters, accessors, literals, helper artifacts, or
+queries embedded in notebooks—typically reveals far more than the artifact
+identifier alone can hide. Repeated collections fingerprintable from the wire
+(or from restored backups sharing the nonce) undermine any expectation of secrecy.
+**Do not treat name obfuscation as a confidential layer**; reserve sensitive
+identifiers for privileged interfaces and assume endpoint observers can infer
+much of what is scheduled.
 
 ### Controlling access to artifacts
 
@@ -860,25 +918,40 @@ security:
       - execve
 ```
 
-### Accessing files directly
+### Accessing files directly (`file` versus `fs` accessors)
 
-Velociraptor org data are stored on disk in separate directories. This
-means that users that have access to the `file` accessor can simply
-read the other org's data bypassing the ACLs.
+Org data ultimately lives beneath your datastore directories on disk,
+but notebooks and server artifacts can reach it via two different mechanisms:
 
-For example, the following query will read all orgs datastore files:
+| Accessor | Typical use | Controlled by |
+|---|---|---|
+| `file` | Native OS paths on the server host | [`security.denied_file_accessor_prefix`](/docs/deployment/references/#security.denied_file_accessor_prefix), [`security.allowed_file_accessor_prefix`](/docs/deployment/references/#security.allowed_file_accessor_prefix) |
+| `fs` | Logical Velociraptor paths (notebooks, flows, hunts, uploads, secrets area, …) | [`security.denied_fs_accessor_prefix`](/docs/deployment/references/#security.denied_fs_accessor_prefix), [`security.allowed_fs_accessor_prefix`](/docs/deployment/references/#security.allowed_fs_accessor_prefix) |
+
+Prefixes for one accessor never apply to the other: use the **`_file_accessor_`** keys for `file:///…` workloads and **`_fs_accessor_`** keys for `accessor="fs"`.
+
+Administrators probing the datastore from a notebook can attempt:
 
 ```vql
-SELECT * FROM glob(globs="/opt/velociraptor/orgs/**")
+SELECT * FROM glob(globs="/**", accessor="file")
+SELECT * FROM glob(globs="/*", accessor="fs")
 ```
 
-In recent versions of Velociraptor, it is possible to restrict the
-operation of the `file` accessor using the [configuration
-file](/docs/deployment/references/#security.denied_file_accessor_prefix). The
-following stops direct file access to the `/opt/velociraptor/`
-directory. On Linux many files can be read using the `/proc/`
-filesystem too. A more restrictive deployment will have more paths
-here.
+Reaching arbitrary `fs` paths through the **`fs`** accessor additionally
+requires **`SERVER_ADMIN`**. Principals lacking that permission encounter a
+permission error while lower-privilege users may still misuse other accessors
+according to their roles.
+
+Because org directories sit on filesystem paths, whoever has unrestricted
+access to `file()` can pivot around GUI ACL boundaries. Example:
+
+```vql
+SELECT * FROM glob(globs="/opt/velociraptor/orgs/**", accessor="file")
+```
+
+Tune [`security.denied_file_accessor_prefix`](/docs/deployment/references/#security.denied_file_accessor_prefix)
+for your mounting layout—for example blocking the datastore root plus global
+pseudo filesystems (`/proc/`, `/sys/`).
 
 ```yaml
 security:
@@ -888,11 +961,43 @@ security:
       - /proc/
 ```
 
-Other accessors may provide access to different orgs in some
-situations. For example when running the server as root, the `ext4` or
-`ntfs` accessors may allow direct reading of the filesystem
-inode. Usually we recommend running the server on Linux as a non-root
-user to prevent these issues.
+**Managing the Velociraptor logical filestore** is usually simpler with denies
+than with allowlists. When `security.denied_fs_accessor_prefix` is omitted, the
+server applies sensible defaults denying logical prefixes including `acl`,
+`backups`, `config`, `orgs`, `secrets`, and `users`. Extend that list whenever
+specific directories must remain invisible even from administrators examining
+cold storage snapshots.
+
+[`security.allowed_fs_accessor_prefix`](/docs/deployment/references/#security.allowed_fs_accessor_prefix)
+is optional: when non-empty every logical path outside the enumerated prefixes is
+blocked (after deny precedence—see [`security.denied_fs_accessor_prefix`](/docs/deployment/references/#security.denied_fs_accessor_prefix)).
+Because misconfiguring allowlists silently locks out benign artifacts, reserve
+them for narrowly scoped installs and rely on denies for general hardening.
+
+Other accessors (`ext4`, `ntfs`, raw disk plugins, archive mounts, …) might still expose
+underlying blocks when the daemon runs privileged. Continuing to run Velociraptor on
+Linux as a dedicated low-privilege user remains foundational.
+
+{{% notice tip "`http_client()`, Unix sockets, and server ACLs" %}}
+
+On server-side VQL environments the `http_client()` plugin understands URLs like
+`/var/run/docker.sock:unix/v1/version`, which relays HTTP-ish traffic over local
+Unix domain sockets. Administrators who can run unrestricted notebook queries
+(and hold the **`NETWORK`** permission the plugin declares) therefore interact
+directly with anything listening on a socket—for example orchestration APIs
+commonly reachable through `/run/docker.sock`, `/run/podman/podman.sock`, or
+`/run/containerd/containerd.sock`. Combine **[artifact curated permissions](#controlling-access-to-artifacts)**,
+**[removing plugins](#removing-plugins-from-a-shared-server)**,
+[`security.denied_plugins`](/docs/deployment/references/#security.denied_plugins),
+[`security.vql_must_use_secrets`](/docs/deployment/references/#security.vql_must_use_secrets),
+and tight role hygiene so only trusted principals ever obtain those capabilities.
+
+The same caveat does **not** apply on endpoints: Velociraptor clients execute flows
+without per-plugin ACL mediation, meaning any hostile artifact authored into a hunt
+inherits full client privileges—defense there leans on code review of artifacts,
+endpoint controls, and client package integrity rather than ACL gating alone.
+
+{{% /notice %}}
 
 In summary, although it is possible to restrict user access to
 different orgs this should be considered best effort. Much thought is
