@@ -43,13 +43,13 @@ sources:
     description: Log lines
     query: |
         LET files = SELECT OSPath
-            FROM glob(globs=tailscaleProgramDataLocation + "Logs\\tailscale-service*.txt")
+            FROM glob(globs="Logs\\tailscale-service*.txt", root=tailscaleProgramDataLocation)
 
         SELECT
             OSPath,
+            Line as OriginalLine
             parse_string_with_regex(string=Line, regex='^([0-9]{4}-(?:(?:02)-(?:0[1-9])|(?:[12][0-9])|(?:(?:0[469]|11)-(?:0[1-9]|[12][0-9]|30))|(?:(?:0[13578]|1[02])-(?:0[1-9]|[12][0-9]|3[01]))T(?:[01][0-9]|2[0-3]):?(?:[0-5][0-9]):?(?:[0-5][0-9])(?:\.[0-9]+)?)(?:[zZ]|(?:[+-][01][0-9]|2[0-3]):?(?:[0-5][0-9])?))(?:\s*:\s*)(.+)').g1 AS Timestamp,
-            parse_string_with_regex(string=Line, regex='^([0-9]{4}-(?:(?:02)-(?:0[1-9])|(?:[12][0-9])|(?:(?:0[469]|11)-(?:0[1-9]|[12][0-9]|30))|(?:(?:0[13578]|1[02])-(?:0[1-9]|[12][0-9]|3[01]))T(?:[01][0-9]|2[0-3]):?(?:[0-5][0-9]):?(?:[0-5][0-9])(?:\.[0-9]+)?)(?:[zZ]|(?:[+-][01][0-9]|2[0-3]):?(?:[0-5][0-9])?))(?:\s*:\s*)(.+)').g2 as log,
-            Line
+            parse_string_with_regex(string=Line, regex='^([0-9]{4}-(?:(?:02)-(?:0[1-9])|(?:[12][0-9])|(?:(?:0[469]|11)-(?:0[1-9]|[12][0-9]|30))|(?:(?:0[13578]|1[02])-(?:0[1-9]|[12][0-9]|3[01]))T(?:[01][0-9]|2[0-3]):?(?:[0-5][0-9]):?(?:[0-5][0-9])(?:\.[0-9]+)?)(?:[zZ]|(?:[+-][01][0-9]|2[0-3]):?(?:[0-5][0-9])?))(?:\s*:\s*)(.+)').g2 as ParsedLog
         FROM foreach(
             row=files,
             query={
@@ -63,7 +63,7 @@ sources:
     description: Partial File Transfers to this machine
     query: |
       LET pFiles = SELECT OSPath
-               FROM glob(globs=tailscaleProgramDataLocation + "files\\*\\*.partial")
+               FROM glob(globs="files\\*\\*.partial", root=tailscaleProgramDataLocation)
   
       SELECT *
       FROM foreach(
