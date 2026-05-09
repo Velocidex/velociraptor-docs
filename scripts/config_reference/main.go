@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"html"
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 	"regexp"
@@ -16,10 +16,21 @@ import (
 
 const (
 	repository_link = "https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L%d"
+
+	header = `---
+title: Configuration file Reference
+menutitle: Config Reference
+no_children: true
+weight: 120
+pre: <i class="fas fa-book"></i>
+summary: |
+  This is an annotated server.config.yaml with complete explanations for all
+  options currently available.
+---`
 )
 
 var (
-	comment_regex = regexp.MustCompile(`(?sm)^\s*#*\s*`)
+	comment_regex = regexp.MustCompile(`(?sm)^\s*#+`)
 )
 
 func strip_comments(in string) string {
@@ -57,10 +68,8 @@ func print_node(node *yaml.Node, breadcrumb []string) string {
 	case yaml.ScalarNode:
 		if strings.Contains(node.Value, "\n") {
 			result += fmt.Sprintf(`
-<div class="multiline-value">
-%s
-</div>
-`, escape(node.Value))
+<div class="multiline-value">%s</div>
+`, strings.TrimSpace(escape(node.Value)))
 		} else {
 			result += escape(node.Value)
 		}
@@ -77,10 +86,15 @@ func print_node(node *yaml.Node, breadcrumb []string) string {
 			}
 
 			result += fmt.Sprintf(`
-<div class="item-comment">%s</div>
+<div class="item-comment">
+
+%s
+
+</div>
 <li>
-   %s
-   <div class="reference-value-sequence">%s</div>
+   <span class="item-name">%s
+     <div class="reference-value-sequence">%s</div>
+   </span>
 </li>
 `, strip_comments(c.HeadComment), bullet,
 				print_node(c, breadcrumb))
@@ -101,9 +115,13 @@ func print_node(node *yaml.Node, breadcrumb []string) string {
 			}
 
 			result += fmt.Sprintf(`
-<div class="item-comment">%s</div>
+<div class="item-comment">
+
+%s
+
+</div>
 <li id="%s">
-   %s
+ <span class="item-name">%s
    <div class="reference-key">
      <a target="_blank" href="%s">
        %s
@@ -112,7 +130,8 @@ func print_node(node *yaml.Node, breadcrumb []string) string {
    <a href="#%s" class="anchorlink">
       <i class="fa fa-copy fa-sm category-icon"></i>
    </a>
-   <div class="reference-value-mapping">%s</div>
+  </span>
+  <div class="reference-value-mapping">%s</div>
 </li>
 `, strip_comments(key.HeadComment),
 				make_id(next_breadcrumb),
@@ -130,7 +149,11 @@ func print_node(node *yaml.Node, breadcrumb []string) string {
 
 func print_document(node *yaml.Node) string {
 	result := fmt.Sprintf(`
-<div class="document-comment">%s</div>
+<div class="document-comment">
+
+%s
+
+</div>
 <div class="reference-document">
 `,
 		strip_comments(node.HeadComment))
@@ -159,7 +182,7 @@ func main() {
 	}
 	defer fd.Close()
 
-	data, err := ioutil.ReadAll(fd)
+	data, err := io.ReadAll(fd)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 		return
@@ -169,5 +192,6 @@ func main() {
 		log.Fatalf("Unmarshalling failed %s", err)
 	}
 
+	fmt.Println(header)
 	fmt.Println(print_document(&node))
 }

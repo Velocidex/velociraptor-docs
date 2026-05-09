@@ -4,7 +4,7 @@ references:
 	python3 scripts/descriptions.py content/vql_reference/
 
 config_references:
-	cd ./scripts/config_reference/ && go run . ~/projects/velociraptor/docs/references/server.config.yaml > ../../content/docs/deployment/references/_reference.html
+	cd ./scripts/config_reference/ && go run . ~/projects/velociraptor/docs/references/server.config.yaml > ../../content/docs/deployment/references/_index.md
 
 artifact_references:
 	python3 scripts/artifact_reference_index.py ~/projects/velociraptor/
