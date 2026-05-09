@@ -29,7 +29,7 @@ Some examples of path glob may include:
 * More wildcards: `/var/www/**/*.jar`
 * Windows: `C:/**/*.zip`
 
-NOTE: this artifact runs the glob plugin with the nosymlink switch
+NOTE: this artifact runs the glob plugin with the `nosymlink` switch
 turned on.  This will NOT follow any symlinks and may cause
 unexpected results if unknowingly targeting a folder with
 symlinks. YARA is not applied to the containers, only contained contents
@@ -61,7 +61,7 @@ description: |
     * More wildcards: `/var/www/**/*.jar`
     * Windows: `C:/**/*.zip`
 
-    NOTE: this artifact runs the glob plugin with the nosymlink switch
+    NOTE: this artifact runs the glob plugin with the `nosymlink` switch
     turned on.  This will NOT follow any symlinks and may cause
     unexpected results if unknowingly targeting a folder with
     symlinks. YARA is not applied to the containers, only contained contents

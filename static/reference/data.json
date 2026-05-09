@@ -750,7 +750,7 @@
             {
                 "name": "lambda",
                 "type": "Lambda",
-                "description": "A VQL lambda to evaluate with the key as parameter. eg. x=>x+1 "
+                "description": "A VQL lambda to evaluate with the key as parameter. e.g.. x=>x+1 "
             },
             {
                 "name": "name",
@@ -6250,6 +6250,7 @@
         "name": "parse_binary",
         "description": "Parse a binary file into a data structure using a profile.",
         "type": "Function",
+        "version": 2,
         "args": [
             {
                 "name": "filename",
@@ -6277,6 +6278,11 @@
                 "name": "offset",
                 "type": "int64",
                 "description": "Start parsing from this offset"
+            },
+            {
+                "name": "env",
+                "type": "ordereddict.Dict",
+                "description": "Additional environment variables to make available to the profile"
             }
         ],
         "category": "parsers",
@@ -7649,7 +7655,7 @@
             {
                 "name": "namespace",
                 "type": "string",
-                "description": "The Yara namespece to use."
+                "description": "The Yara namespace to use."
             },
             {
                 "name": "vars",
@@ -12656,7 +12662,7 @@
             {
                 "name": "namespace",
                 "type": "string",
-                "description": "The Yara namespece to use."
+                "description": "The Yara namespace to use."
             },
             {
                 "name": "vars",
@@ -12763,7 +12769,7 @@
             {
                 "name": "namespace",
                 "type": "string",
-                "description": "The Yara namespece to use."
+                "description": "The Yara namespace to use."
             },
             {
                 "name": "vars",

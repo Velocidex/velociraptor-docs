@@ -52,7 +52,7 @@ end|End scanning at this offset (100mb)|uint64
 number|Stop after this many hits (1).|int64
 blocksize|Blocksize for scanning (10mb).|uint64
 key|If set use this key to cache the  yara rules.|string
-namespace|The Yara namespece to use.|string
+namespace|The Yara namespace to use.|string
 vars|The Yara variables to use.|ordereddict.Dict
 dll_path|Function to resolve path to the yarax DLL|Lambda (required)
 force_buffers|Force buffer scan in all cases.|bool

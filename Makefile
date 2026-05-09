@@ -8,6 +8,7 @@ config_references:
 
 artifact_references:
 	python3 scripts/artifact_reference_index.py ~/projects/velociraptor/
+	python scripts/descriptions.py content/
 
 exchange:
 	python3 scripts/exchange_index.py
@@ -44,7 +45,7 @@ index:
 	mv /tmp/index.zip ./static/docs_index/docs_index_v1.zip
 
 comparisons:
-	python scripts/comparisons.py
+	python3 scripts/comparisons.py
 
 descriptions:
-	python scripts/descriptions.py content/
+	python3 scripts/descriptions.py content/

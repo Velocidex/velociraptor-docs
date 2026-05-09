@@ -6,17 +6,17 @@ sitemap:
 tags: [Client Artifact]
 description: |
   The Amcache.hve is a registry artifact that stores metadata
-  used by the OS’s application compatibility infrastructure to 
-  record metadata about binaries present on the system. This 
-  includes file paths, hashes, timestamps, and install/interaction 
+  used by the OS’s application compatibility infrastructure to
+  record metadata about binaries present on the system. This
+  includes file paths, hashes, timestamps, and install/interaction
   information for executables and drivers.
 ---
 
 The Amcache.hve is a registry artifact that stores metadata
-used by the OS’s application compatibility infrastructure to 
-record metadata about binaries present on the system. This 
-includes file paths, hashes, timestamps, and install/interaction 
-information for executables and drivers. 
+used by the OS’s application compatibility infrastructure to
+record metadata about binaries present on the system. This
+includes file paths, hashes, timestamps, and install/interaction
+information for executables and drivers.
 
 NOTE: execution must be corroborated with additional artifacts.
 
@@ -26,13 +26,13 @@ name: Windows.Forensics.Amcache
 author: Matthieu Chatelan, Yann Malherbe
 description: |
   The Amcache.hve is a registry artifact that stores metadata
-  used by the OS’s application compatibility infrastructure to 
-  record metadata about binaries present on the system. This 
-  includes file paths, hashes, timestamps, and install/interaction 
-  information for executables and drivers. 
-  
+  used by the OS’s application compatibility infrastructure to
+  record metadata about binaries present on the system. This
+  includes file paths, hashes, timestamps, and install/interaction
+  information for executables and drivers.
+
   NOTE: execution must be corroborated with additional artifacts.
-  
+
 reference:
     - https://www.ssi.gouv.fr/uploads/2019/01/anssi-coriin_2019-analysis_amcache.pdf
     - https://github.com/libyal/dtformats/blob/main/documentation/AMCache%20file%20(AMCache.hve)%20format.asciidoc
@@ -49,55 +49,55 @@ parameters:
     default: 1000
 
   - name: File
-    description: Version `From Windows 8/2012 to Windows 10 1709`. This key is constituted of several subkeys where each representing a volume GUID that contains subkeys looking like `Root\File\&lt;GUID&gt;\&lt;MFTId&gt;` 
+    description: Version `From Windows 8/2012 to Windows 10 1709`. This key is constituted of several subkeys where each representing a volume GUID that contains subkeys looking like `Root\File\&lt;GUID&gt;\&lt;MFTId&gt;`
     type: bool
     default: Y
-    
+
   - name: Programs
     description: Version `From Windows 8/2012 to Windows 10 1709`, This key contains installed programs only in subkeys like `Root\Programs\&lt;AppID&gt;` which contains information about the PE in subkeys.
     type: bool
     default: Y
-    
+
   - name: Generic
     description: Version `From Windows 8 to Windows 10 1507`, The Generic key contains one subkey named 0, which in turn contains one subkey per driver installed on the system. Each of these subkeys is actually named as the SHA-1 of the driver it represents, preceded by ’0000’ like `\Root\Generic\0\0000&lt;SHA1&gt;`
     type: bool
     default: Y
-    
+
   - name: InventoryDriverBinary
     description: Version `From Windows 10 1607`, n this key, each entry is named after the SHA-1 of the driver, preceded by ’0000’, and the subkey representing the drivers.
     type: bool
     default: N
-    
+
   - name: InventoryApplication
     description: Version `From Windows 10 1607`, This key contains the installation of a program and also programs installed via an AppXPackage.
     type: bool
     default: Y
-    
+
   - name: InventoryDeviceContainer
-    description: Version `From Windows 10 1607`, records OS devices such as bluetooth, printers, etc. Has links to DevicePnps
+    description: Version `From Windows 10 1607`, records OS devices such as Bluetooth, printers, etc. Has links to DevicePnps
     type: bool
     default: N
-    
+
   - name: InventoryDriverPackage
     description: Version `From Windows 10 1607`, records Package information that links to both DeviceContainers and DevicePnPs
     type: bool
     default: N
-    
+
   - name: InventoryApplicationFile
     description: Version `From Windows 10 1607`, records EXE files that are part of a program.
     type: bool
     default: Y
-    
+
   - name: InventoryDevicePnp
-    description: Version `From Windows 10 1607`, records Plug and Play (PnP) devices such as bluetooth, USB, etc. More verbose details than those contained in DeviceContainers
+    description: Version `From Windows 10 1607`, records Plug and Play (PnP) devices such as Bluetooth, USB, etc. More verbose details than those contained in DeviceContainers
     type: bool
     default: N
-    
+
   - name: InventoryApplicationShortcut
     description: Version `From Windows 10 1709`, contains information about LNK files found on the computer in the Start Menu directory
     type: bool
-    default: Y  
-    
+    default: Y
+
 sources:
  - name: File
    query: |
@@ -107,7 +107,7 @@ sources:
           SELECT * FROM foreach(
               row={
                 SELECT FullPath from glob(globs=expand(path=amCacheGlob))
-              }, 
+              },
               query={
                 SELECT get(item=scope(), member="100") As ProductId,
                        get(item=scope(), member="101") As SHA1,
@@ -123,8 +123,8 @@ sources:
               }
             )
         }
-      ) 
-      
+      )
+
  - name: Programs
    query: |
       SELECT * FROM if(
@@ -147,8 +147,8 @@ sources:
                 )
             })
         }
-      ) 
-      
+      )
+
  - name: Generic
    query: |
       SELECT * FROM if(
@@ -167,7 +167,7 @@ sources:
                 )
             })
         }
-      ) 
+      )
 
  - name: InventoryDriverBinary
    query: |
@@ -187,7 +187,7 @@ sources:
                        Service,
                        DriverType,
                        DriverTimeStamp,
-                       ImageSize, 
+                       ImageSize,
                        substr(str=DriverId, start=4, end=44) AS SHA1,
                        split(string=Key.OSPath.Path,sep='"')[1] as FullPath
                 FROM read_reg_key(
@@ -197,7 +197,7 @@ sources:
                 )
             })
         }
-      ) 
+      )
 
  - name: InventoryApplication
    query: |
@@ -220,7 +220,7 @@ sources:
                        InstallDate,
                        Language,
                        UninstallString
-                       
+
                 FROM read_reg_key(
                    root=pathspec(DelegatePath=FullPath),
                    globs='/Root/InventoryApplication/*',
@@ -229,7 +229,7 @@ sources:
             })
         }
       )
-      
+
  - name: InventoryDeviceContainer
    query: |
       SELECT * FROM if(
@@ -311,7 +311,7 @@ sources:
             })
         }
       )
-      
+
  - name: InventoryDevicePnp
    query: |
       SELECT * FROM if(
@@ -338,7 +338,7 @@ sources:
             })
         }
       )
-      
+
  - name: InventoryApplicationShortcut
    query: |
       SELECT * FROM if(

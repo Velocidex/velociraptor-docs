@@ -61,7 +61,7 @@ export: |
 sources:
 - query: |
     // Sample usage
-    SELECT HexEncode(X=HMac(Key="Secret", Message="My Message")),
+    SELECT HexEncode(X=HMac(Key="Secret", Message="My Message"))
     FROM scope()
 
 </code></pre>

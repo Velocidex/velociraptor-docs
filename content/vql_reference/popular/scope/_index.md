@@ -9,7 +9,7 @@ description: |
   The scope plugin returns the current scope as a single row.
 
   The main use for this plugin is as a NOOP plugin in those cases we
-  dont want to actually run anything.
+  don't want to actually run anything.
 
   ### Example
 
@@ -46,7 +46,7 @@ return the scope.
 The scope plugin returns the current scope as a single row.
 
 The main use for this plugin is as a NOOP plugin in those cases we
-dont want to actually run anything.
+don't want to actually run anything.
 
 ### Example
 

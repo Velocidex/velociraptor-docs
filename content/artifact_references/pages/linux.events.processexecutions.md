@@ -40,7 +40,7 @@ required_permissions:
 parameters:
   - name: pathToAuditctl
     default: /sbin/auditctl
-    description: We depend on auditctl to install the correct process execution rules.
+    description: We depend on `auditctl` to install the correct process execution rules.
 
 sources:
   - query: |

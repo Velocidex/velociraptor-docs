@@ -33,7 +33,7 @@ Some examples of path glob may include:
 * Windows: `C:/Users/**/*.{exe,dll,ps1,bat}`
 * Windows: `C:\Users\**\*.{exe,dll,ps1,bat}`
 
-NOTE: this artifact runs the glob plugin with the nosymlink switch turned on.
+NOTE: this artifact runs the glob plugin with the `nosymlink` switch turned on.
 This will NOT follow any symlinks and may cause unexpected results if
 unknowingly targeting a folder with symlinks.
 If upload is selected NumberOfHits is redundant and not advised as hits are
@@ -68,7 +68,7 @@ description: |
   * Windows: `C:/Users/**/*.{exe,dll,ps1,bat}`
   * Windows: `C:\Users\**\*.{exe,dll,ps1,bat}`
 
-  NOTE: this artifact runs the glob plugin with the nosymlink switch turned on.
+  NOTE: this artifact runs the glob plugin with the `nosymlink` switch turned on.
   This will NOT follow any symlinks and may cause unexpected results if
   unknowingly targeting a folder with symlinks.
   If upload is selected NumberOfHits is redundant and not advised as hits are

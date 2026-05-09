@@ -31,12 +31,12 @@ parameters:
   - name: HostsFile
     default: C:\Windows\System32\drivers\etc\hosts
   - name: HostnameRegex
-    description: "Hostname target Regex in Hostsfile"
+    description: "Hostname target regex in Hostsfile"
     default: .
     type: regex
 
   - name: ResolutionRegex
-    description: "Resolution target Regex in Hostsfile"
+    description: "Resolution target regex in Hostsfile"
     default: .
     type: regex
 

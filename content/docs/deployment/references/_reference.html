@@ -6143,11 +6143,18 @@ storage. This can take a number of forms:
 Environment variable.
 2. If empty the secret is taken from obfuscation_nonce (which
 by default is the hash of the private key).
-In future further methods may be implemented (e.g. EKMS).</div>
+In future further methods may be implemented (e.g. EKMS).
+Operational caution: Leaving this empty derives the DEK solely
+from secrets that are normally present in plain-text configuration
+files beside the ciphertext. Operators protecting forensic
+infrastructure should provision an external entropy source (for
+example "env://" referencing a guarded environment variable
+injected by systemd, Kubernetes Secrets, Vault, Windows Credential
+Manager, etc.).</div>
 <li id="security.secrets_dek">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1585">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1593">
        secrets_dek
      </a>
    </div>
@@ -6165,7 +6172,7 @@ plugins work without disabling them completely.</div>
 <li id="security.vql_must_use_secrets">
    <i class="bullet-placeholder"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1592">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1600">
        vql_must_use_secrets
      </a>
    </div>
@@ -6181,7 +6188,7 @@ confidential information.</div>
 <li id="security.shadowed_env_vars">
    <i class="fa fa-angle-right fa-sm category-icon"></i>
    <div class="reference-key">
-     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1598">
+     <a target="_blank" href="https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L1606">
        shadowed_env_vars
      </a>
    </div>

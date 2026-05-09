@@ -57,7 +57,7 @@ required_permissions:
 parameters:
   - name: pathToNFT
     default: /usr/sbin/nft
-    description: We depend on nft to manage the tables, chains, and rules.
+    description: We depend on `nft` to manage the tables, chains, and rules.
 
   - name: TableName
     default: vrr_quarantine_table

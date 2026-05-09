@@ -5,26 +5,34 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Represents products as they are installed by Windows Installer. A product generally
-  correlates to one installation package on Windows. Some fields may be blank as Windows
-  installation details are left to the discretion of the product author.
+  Represents products as they are installed by Windows Installer.
 ---
 
-Represents products as they are installed by Windows Installer. A product generally
-correlates to one installation package on Windows. Some fields may be blank as Windows
-installation details are left to the discretion of the product author.
+Represents products as they are installed by Windows Installer.
 
-Limitations: This key parses the live registry hives - if a user is not logged in then their data will not be resident in HKU and therefore you should parse the hives on disk (including within VSS/Regback).
+A product generally correlates to one installation package on
+Windows. Some fields may be blank as Windows installation details
+are left to the discretion of the product author.
+
+Limitations: This key parses the live registry hives - if a user is
+not logged in then their data will not be resident in HKU and
+therefore you should parse the hives on disk (including within
+VSS/`Regback`).
 
 
 <pre><code class="language-yaml">
 name: Windows.Sys.Programs
 description: |
-  Represents products as they are installed by Windows Installer. A product generally
-  correlates to one installation package on Windows. Some fields may be blank as Windows
-  installation details are left to the discretion of the product author.
+  Represents products as they are installed by Windows Installer.
 
-  Limitations: This key parses the live registry hives - if a user is not logged in then their data will not be resident in HKU and therefore you should parse the hives on disk (including within VSS/Regback).
+  A product generally correlates to one installation package on
+  Windows. Some fields may be blank as Windows installation details
+  are left to the discretion of the product author.
+
+  Limitations: This key parses the live registry hives - if a user is
+  not logged in then their data will not be resident in HKU and
+  therefore you should parse the hives on disk (including within
+  VSS/`Regback`).
 
 reference:
   - https://github.com/facebook/osquery/blob/master/specs/windows/programs.table

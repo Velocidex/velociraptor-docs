@@ -53,7 +53,7 @@ parameters:
     description: Exclude binaries with Trusted Authenticode certificates.
     type: bool
   - name: AuthenticodeRegex
-    description: Regex to search through all authenrticode data.
+    description: Regex to search through all authenticode data.
     default: .
     type: regex
   - name: AuthenticodeWhitelistRegex
@@ -178,11 +178,11 @@ sources:
                  OR if(condition= SHA256List,
                         then= Hash.SHA256 in SHA256Array)
             ), else = True )
-      
+
       LET upload_files= SELECT *,
             upload(file=File.OSPath) as UploadFile
       FROM results
-      
+
       SELECT * FROM if(condition= UploadFiles,
                         then= upload_files,
                         else= results)

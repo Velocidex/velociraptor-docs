@@ -169,7 +169,7 @@ parameters:
     description: A regex to filter on all fields
   - name: IgnoreRegex
     type: regex
-    description: A regex to ignore ilter all fields
+    description: A regex for fields to ignore
   - name: UploadLnk
     description: Also upload the link files themselves.
     type: bool
@@ -188,15 +188,15 @@ parameters:
     description: Any lnk with Argument strings over this size is suspicious.
     type: int
   - name: SusArgRegex
-    description: Regex for suspicious strings in Argumetns.
+    description: Regex for suspicious strings in arguments.
     type: regex
     default: \\AppData\\|\\Users\\Public\\|\\Temp\\|comspec|&amp;cd&amp;echo| -NoP | -W Hidden | [-/]decode | -e.* (JAB|SUVYI|SQBFAFgA|aWV4I|aQBlAHgA)|start\s*[\\/]b|\.downloadstring\(|\.downloadfile\(|iex
   - name: SusHostnameRegex
-    description: Regex for suspicious TrackerData Hastname.
+    description: Regex for suspicious TrackerData hostnames.
     type: regex
     default: ^(Win-|Desktop-|Commando$)
   - name: VmPrefixMAC
-    description: VM MacAddress prefix regex to compate to LNK TrackerData.
+    description: VM MacAddress prefix regex to compare to LNK TrackerData.
     type: regex
     default: ^(00:50:56|00:0C:29|00:05:69|00:1C:14|08:00:27|52:54:00|00:21:F6|00:14:4F|00:0F:4B|00:15:5D)
   - name: RiskyExe
