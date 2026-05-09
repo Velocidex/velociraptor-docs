@@ -143,11 +143,11 @@ by the internal server certificate.
 The client-only setting
 [`Client.insecure_network_trace_file`](/docs/deployment/references/#Client.insecure_network_trace_file)
 is only for diagnosing connectivity issues. Any non-empty value writes
-cleartext protocol traces **and disables TLS certificate verification**
-for outbound client connections—so intermediaries could strip the TLS
-tunnel even though Velociraptor’s inner protobuf encryption layer may
-remain. Never ship golden images or repacked clients that leave this flag
-configured.
+clear text protocol traces **and disables TLS certificate
+verification** for outbound client connections — so intermediaries
+could strip the TLS tunnel even though Velociraptor’s inner protobuf
+encryption layer may remain. Never ship golden images or repacked
+clients that leave this flag configured.
 
 {{% /notice %}}
 
@@ -560,7 +560,7 @@ permission), can read any notebook within the org.
 
 This underlines Velociraptor's collaborative philosophy - all users
 assigned to the org are considered trusted. Velociraptor's threat
-model does not assume untrusted or rogue users. You should alway
+model does not assume untrusted or rogue users. You should always
 ensure that user access is protected via SSO, two factor and other
 best practice tools to ensure that account takeover is unlikely.
 
@@ -595,7 +595,7 @@ Velociraptor clients execute VQL queries without per-plugin ACL
 control, since they have no concept of users or ACLs.
 
 This means that once an artifact is scheduled, it can do anything on
-the client side. ACL Permissions only apply to the **abiity to
+the client side. ACL Permissions only apply to the **ability to
 schedule** the artifact in the first place.
 
 Any hostile artifact authored into a hunt inherits full client
@@ -681,12 +681,13 @@ because for production servers we recommend to use an external
 authentication service (e.g. OIDC)
 
 Passwords enforced through `Basic` auth are salted and hashed with
-SHA‑256 once per HTTP request for speed. Treat this as adequate only for
-lab or short-lived evaluation systems; attackers who steal the hashed
-credentials from backing storage can bruteforce common passwords offline
-much faster than with dedicated password hashing. Production deployments,
-especially internet-exposed fronts, belong behind OIDC/OAuth2/SAML
-or another enterprise IdP described under [OAuth2 services](#oauth2-services).
+SHA‑256 once per HTTP request for speed. Treat this as adequate only
+for lab or short-lived evaluation systems; attackers who steal the
+hashed credentials from backing storage can brute force common
+passwords offline much faster than with dedicated password
+hashing. Production deployments, especially internet-exposed fronts,
+belong behind `OIDC/OAuth2/SAML` or another enterprise `IdP` described
+under [OAuth2 services](#oauth2-services).
 
 #### OAuth2 services
 
@@ -782,7 +783,7 @@ keying material from the
 [`obfuscation_nonce`](/docs/deployment/references/#obfuscation_nonce)
 (which itself defaults to data tied to the frontend private key
 material). **Attackers who steal the configuration file alongside the
-ciphertext can therefore recover the encryption key** because both
+cipher text can therefore recover the encryption key** because both
 live in the same configuration bundle. Treat that default as a
 convenience for ephemeral labs only.
 
@@ -861,21 +862,6 @@ and server artifacts. A user with the `Analyst`role, has no
 `glob()` based query in a notebook they will be denied.
 
 ![Permission denied error in the notebook](notebook_permission_denied.png)
-
-### Artifact name obfuscation (limitations)
-
-`obfuscation_nonce` controls only how **artifact names** are camouflaged when
-traffic is observable on endpoints (see [`obfuscation_nonce`](/docs/deployment/references/#obfuscation_nonce)).
-Velociraptor must map obfuscated identifiers back server-side without client
-interaction, therefore the naming transform is deterministic for a given nonce.
-
-Residual VQL—including parameters, accessors, literals, helper artifacts, or
-queries embedded in notebooks—typically reveals far more than the artifact
-identifier alone can hide. Repeated collections fingerprintable from the wire
-(or from restored backups sharing the nonce) undermine any expectation of secrecy.
-**Do not treat name obfuscation as a confidential layer**; reserve sensitive
-identifiers for privileged interfaces and assume endpoint observers can infer
-much of what is scheduled.
 
 ### Controlling access to artifacts
 
@@ -1060,7 +1046,7 @@ accessing the disk directly to bypass ACLs and denied paths.
 {{% notice warn "`http_client()`, Unix sockets, and server ACLs" %}}
 
 The VQL `http_client()` plugin understands URLs like
-`/var/run/docker.sock:unix/v1/version`, which relays HTTP-ish traffic
+`/var/run/docker.sock:unix/v1/version`, which relays HTTP traffic
 over local Unix domain sockets. This is useful to communicate with some servers (e.g. Docker).
 
 However, this may also pose a risk on shared
@@ -1099,7 +1085,7 @@ strings. In many environments these contains sensitive secrets. For
 example, Velociraptor's configuration file (which contains private
 keys) may be injected via the `VELOCIRAPTOR_CONFIG` environment
 variable into a container. In some deployments, environment variables
-may also conatin sensitive information like S3 access token and other
+may also contain sensitive information like S3 access token and other
 API tokens.
 
 To access environment variables, the calling user needs the

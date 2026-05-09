@@ -416,13 +416,13 @@ This is exactly the same as the Linux `suid` mechanism or the windows
 ## Artifact Obfuscation
 
 When an artifact is collected, it is compiled into a set of basic VQL
-statements and sent to the cliet in a `Collection Request`. You can
+statements and sent to the client in a `Collection Request`. You can
 see the raw request in the `Request` tab in the GUI.
 
 While the request is executed by the client, the client is able to see
 what the original query was. This represents a risk for sensitive
 artifacts - for example consider a custom artifact searching for a
-sensitive IOC pattern. A rogue client (for example, a compromized
+sensitive IOC pattern. A rogue client (for example, a compromised
 endpoint running an attacker controlled Velociraptor client) may
 receive the request in a hunt and gain insight into the current threat
 intel.
@@ -440,7 +440,7 @@ collecting artifacts targeting specific IOCs:
   to upload data directly to a service provider. Artifact parameters
   can be easily intercepted by rogue clients.
 
-* If you are searchig for a very specific, but sensitive IOC (for
+* If you are searching for a very specific, but sensitive IOC (for
   example a specific name which is very unique), consider reworking
   the artifact to search for a less sensitive and more generic IOC,
   and simply post process on the server to remove false positives.
