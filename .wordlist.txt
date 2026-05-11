@@ -2135,9 +2135,23 @@ GetUserRoles
 ConsumeUnit
 orchestrator
 
+<url-free> content/blog/2026/2026-04-19-alerts-and-email/_index.md
+--------------------------------------------------------------------------------
+CSVs
+DiskSpace
+IoC
+IoCs
+PagerDuty
+Wazuh's
+alls
+parallelised
+
 <url-free> content/knowledge_base/tips/email_alerts.md
 --------------------------------------------------------------------------------
 Mailpit
+DiskSpace
+ProcessName
+RemoteAddr
 
 <url-free> content/knowledge_base/tips/sending_email.md
 --------------------------------------------------------------------------------
@@ -2147,5 +2161,5 @@ VelociraptorServer
 
 <url-free> content/knowledge_base/tips/vql_error_catalogue.md
 --------------------------------------------------------------------------------
-catch-alls
+alls
 severities

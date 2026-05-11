@@ -228,7 +228,7 @@ condition. If you do not want to modify the existing artifact, or
 want full control over when the alert fires and with what context,
 create a small server event artifact:
 
-###### Server monitoring for client honeyfile access
+###### Server monitoring for client honey file access
 
 ```yaml
 name: Server.Monitor.HoneyfileAccess
@@ -313,7 +313,7 @@ the notification when they open the message panel from the bell icon
 in the lower-left corner of the web app. The bell turns red when there
 are unread messages, and the list can be cleared from the panel.
 
-![The in-app message panel showing an alert posted by Server.Monitor.Alerts.UserMessage](/knowledge_base/tips/vql_alerts/global_messages.svg)
+![The in-app message panel showing an alert posted by `Server.Monitor.Alerts.UserMessage`](/knowledge_base/tips/vql_alerts/global_messages.svg)
 
 User messages have no formatting and only show a nested dict. However,
 since you are already in the Velociraptor web app, the additional
