@@ -2134,3 +2134,18 @@ GetUserRoles
 
 ConsumeUnit
 orchestrator
+
+<url-free> content/knowledge_base/tips/email_alerts.md
+--------------------------------------------------------------------------------
+Mailpit
+
+<url-free> content/knowledge_base/tips/sending_email.md
+--------------------------------------------------------------------------------
+Mailpit
+SendEmail
+VelociraptorServer
+
+<url-free> content/knowledge_base/tips/vql_error_catalogue.md
+--------------------------------------------------------------------------------
+catch-alls
+severities

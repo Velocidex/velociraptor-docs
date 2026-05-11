@@ -48,10 +48,10 @@ The parameter `ErrorHandling` lets failed flows bypass filters:
 
 | Choice | Description |
 | ------ | ----------- |
-| IncludeHunts | Create notifications for failed flows part of hunts (may be noisy!) |
-| IgnoreCancelled | Do not consider a cancelled flow a failure (enabled by default) |
-| IgnoreArtifactFilters | Ignore `ArtifactsToAlertOn` and `ArtifactsToIgnore` for failed flows |
-| IgnoreDelay | Ignore `DelayThreshold` for failed flows |
+| `IncludeHunts` | Create notifications for failed flows part of hunts (may be noisy!) |
+| `IgnoreCancelled` | Do not consider a cancelled flow a failure (enabled by default) |
+| `IgnoreArtifactFilters` | Ignore `ArtifactsToAlertOn` and `ArtifactsToIgnore` for failed flows |
+| `IgnoreDelay` | Ignore `DelayThreshold` for failed flows |
 
 ## Throttling
 
@@ -88,7 +88,7 @@ to select only the fields you need.
 For example, to include shell command output, a compact network
 connection summary and results from querying disk usage:
 
-| Source | Columns | MaxRows | CellLimit |
+| `Source` | `Columns` | `MaxRows` | `CellLimit` |
 | ------ | ------- | ------- | --------- |
 | bash\|powershell | Stdout\|Stderr | 20 | 1000 |
 | Windows\.Network\.Netstat | RemoteAddr\|ProcessName\|Pid | 30 | 200 |
@@ -96,7 +96,7 @@ connection summary and results from querying disk usage:
 
 All regexes are case-insensitive.
 
-![Results from the DiskSpace artifact, including a JSONL attachment, in Mailpit](ds_results.png)
+![Results from the `DiskSpace` artifact, including a JSONL attachment, in Mailpit](ds_results.png)
 
 `IncludeResultAttachmentFrom` has no row or column limits, but if the
 total size of all attachments exceeds `AttachmentsMaxMiB` (default 100
@@ -169,7 +169,7 @@ artifact requiring shell access.
 To include the command output directly in the e-mail body, configure
 `IncludeResultTableFrom`:
 
-| Source | Columns | MaxRows | CellLimit |
+| `Source` | `Columns` | `MaxRows` | `CellLimit` |
 | ------ | ------- | ------- | --------- |
 | bash\|powershell | Stdout\|Stderr | 20 | 1000 |
 | generic\.client\.vql$ | .+ | | 3000 |
