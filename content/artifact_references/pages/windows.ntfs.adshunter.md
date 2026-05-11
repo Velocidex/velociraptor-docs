@@ -79,7 +79,7 @@ parameters:
    description: Optional - only include alternate data streams below this size in bytes.
    type: int
  - name: UploadDataStream
-   description: If selected wil upload non-resident data streams.
+   description: If selected will upload non-resident data streams.
    type: bool
 
 sources:

@@ -53,7 +53,7 @@ parameters:
   type: bool
   description: |
     Disable server plugins which allow connecting to external
-    resources over the network. These include for exaxmple:
+    resources over the network. These include for example:
     1. http_client()
     2. upload_elastic()
     3. upload_s3()

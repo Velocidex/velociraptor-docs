@@ -74,20 +74,20 @@ parameters:
     default: '%SystemRoot%\System32\Winevt\Logs\*.evtx'
   - name: IocRegex
     type: regex
-    description: "IOC Regex"
+    description: "IOC regex"
     default:
   - name: WhitelistRegex
-    description: "Regex of string to witelist"
+    description: "Regex of string to whitelist"
     type: regex
   - name: PathRegex
-    description: "Event log Regex to enable filtering on path"
+    description: "Event log regex to enable filtering on path"
     default: .
     type: regex
   - name: ChannelRegex
-    description: "Channel Regex to enable filtering on path"
+    description: "Channel regex to enable filtering on path"
     default: .
   - name: ProviderRegex
-    description: "Provider Regex to enable filtering on provider"
+    description: "Provider regex to enable filtering on provider"
     default: .
     type: regex
   - name: IdRegex

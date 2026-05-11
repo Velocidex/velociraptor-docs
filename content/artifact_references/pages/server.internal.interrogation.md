@@ -31,7 +31,7 @@ artifact there are some subtle differences:
 2. The `System.Flow.Completion` will fire whenever the
   `Generic.Client.Info` is finished, even if that was collected
   manually or with a hunt. If you only want automation to run the
-  first time a client is seen (on enrollement) then use
+  first time a client is seen (on enrollment) then use
   `Server.Internal.Interrogation`
 
 
@@ -59,7 +59,7 @@ description: |
   2. The `System.Flow.Completion` will fire whenever the
     `Generic.Client.Info` is finished, even if that was collected
     manually or with a hunt. If you only want automation to run the
-    first time a client is seen (on enrollement) then use
+    first time a client is seen (on enrollment) then use
     `Server.Internal.Interrogation`
 
 type: INTERNAL

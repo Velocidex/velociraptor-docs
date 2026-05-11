@@ -5,16 +5,16 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Retrives the locally written logs.
+  Retrieves the locally written logs.
 ---
 
-Retrives the locally written logs.
+Retrieves the locally written logs.
 
 
 <pre><code class="language-yaml">
 name: Generic.Client.LocalLogsRetrieve
 description: |
-  Retrives the locally written logs.
+  Retrieves the locally written logs.
 
 type: CLIENT
 

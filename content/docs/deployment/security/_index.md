@@ -138,6 +138,19 @@ when a MITM proxy is able to decode the HTTPS connections, there is no
 visible plain text due to the included messages being encrypted again
 by the internal server certificate.
 
+{{% notice warning "Debugging clients and TLS verification" %}}
+
+The client-only setting
+[`Client.insecure_network_trace_file`](/docs/deployment/references/#Client.insecure_network_trace_file)
+is only for diagnosing connectivity issues. Any non-empty value writes
+clear text protocol traces **and disables TLS certificate
+verification** for outbound client connections — so intermediaries
+could strip the TLS tunnel even though Velociraptor’s inner protobuf
+encryption layer may remain. Never ship golden images or repacked
+clients that leave this flag configured.
+
+{{% /notice %}}
+
 ## Securing Network communications
 
 The following are some common network deployment scenarios. Simple
@@ -343,26 +356,28 @@ No role added to user Client. You will need to do this later using the 'acl gran
 
 {{% notice warning "API User permissions" %}}
 
-This will create an API configuration file for an API user called "Client",
-containing the key pair that we need. However the `config api_client` command
-shown above will not actually create a user on the Velociraptor server since we
-deliberately didn't specify the `--role` flag.
+This will create an API configuration file for an API user called
+"Client", containing the key pair that we need. However the `config
+api_client` command shown above will not actually create a user on the
+Velociraptor server since we deliberately didn't specify the `--role`
+flag.
 
-It is critical that the user has no roles or permissions on the server to
-prevent this key from being used to connect to the API ports. Therefore the
-message concerning the use the `acl_grant` command shown above
-_should NOT be followed_.
+It is critical that the user has no roles or permissions on the server
+to prevent this key from being used to connect to the API
+ports. Therefore the message concerning the use the `acl_grant`
+command shown above _should NOT be followed_.
 
 {{% /notice %}}
 
-Once the key is generated you can see it in the resulting yaml file encoded in
-PEM format. Simply copy the two blocks - `client_private_key` and
-`client_cert` - into the client's config file
+Once the key is generated you can see it in the resulting yaml file
+encoded in PEM format. Simply copy the two blocks -
+`client_private_key` and `client_cert` - into the client's config file
 [Client.Crypto.client_certificate](/docs/deployment/references/#Client.Crypto.client_certificate)
-and [Client.Crypto.client_certificate_private_key](/docs/deployment/references/#Client.Crypto.client_certificate_private_key),
-or into the server config if you intend to use the GUI to repack the MSI or
-generate client configs for multiple orgs (service restart will be required to
-read these new config items).
+and
+[Client.Crypto.client_certificate_private_key](/docs/deployment/references/#Client.Crypto.client_certificate_private_key),
+or into the server config if you intend to use the GUI to repack the
+MSI or generate client configs for multiple orgs (service restart will
+be required to read these new config items).
 
 ```yaml
 Client:
@@ -527,6 +542,30 @@ plugin to inspect results (because the user has the read permission).
 You can check which permission each plugin requires in the reference
 site's `VQL Reference` section.
 
+{{% notice info "Velociraptor's User Access Control" %}}
+
+Velociraptor's security model is org scoped. This means that ACLs are
+applied at the org level and are not granular to the client/flow
+level - if a user has the `READ_RESUTS` permission (given to any user
+who can log into the GUI), then they can read any file within the org,
+including all client's collections, hunts, exports and notebooks.
+
+Similarly, while notebooks can be shared with other users (or marked
+private) - **this is not a security measure** it is just for
+convenience and to clean up the interface, so each user can see only
+relevant notebooks to them.
+
+Any user that can log into the org (i.e. they have the `READ_RESUTS`
+permission), can read any notebook within the org.
+
+This underlines Velociraptor's collaborative philosophy - all users
+assigned to the org are considered trusted. Velociraptor's threat
+model does not assume untrusted or rogue users. You should always
+ensure that user access is protected via SSO, two factor and other
+best practice tools to ensure that account takeover is unlikely.
+
+{{% /notice %}}
+
 ![Inspecting VQL plugin permissions](VQL_permissions_reference.png)
 
 {{% notice warning "Selecting User permissions" %}}
@@ -548,6 +587,23 @@ roles. Typically we try to limit access to trusted users anyway and
 not rely too much on the user roles.
 
 {{% /notice %}}
+
+
+{{% notice warning "User permissions do not apply on endpoints" %}}
+
+Velociraptor clients execute VQL queries without per-plugin ACL
+control, since they have no concept of users or ACLs.
+
+This means that once an artifact is scheduled, it can do anything on
+the client side. ACL Permissions only apply to the **ability to
+schedule** the artifact in the first place.
+
+Any hostile artifact authored into a hunt inherits full client
+privileges — defense there leans on [code review of
+artifacts](/docs/artifacts/security/).
+
+{{% /notice %}}
+
 
 ### Auditing User actions
 
@@ -624,6 +680,15 @@ Note that password management is supposed to be very simplistic
 because for production servers we recommend to use an external
 authentication service (e.g. OIDC)
 
+Passwords enforced through `Basic` auth are salted and hashed with
+SHA‑256 once per HTTP request for speed. Treat this as adequate only
+for lab or short-lived evaluation systems; attackers who steal the
+hashed credentials from backing storage can brute force common
+passwords offline much faster than with dedicated password
+hashing. Production deployments, especially internet-exposed fronts,
+belong behind `OIDC/OAuth2/SAML` or another enterprise `IdP` described
+under [OAuth2 services](#oauth2-services).
+
 #### OAuth2 services
 
 A number of public identity providers are directly supported in
@@ -679,18 +744,22 @@ vehicle.
 
 ### Preventing new client enrollments
 
-By default, new clients can enroll at any time if they have a valid client
-configuration file. Normally this is what you'd want because you may be using a
-client distribution method that provides ongoing deployment of new clients.
+By default, new clients can enroll at any time if they have a valid
+client configuration file. Normally this is what you'd want because
+you may be using a client distribution method that provides ongoing
+deployment of new clients.
 
-In some circumstances you may wish to suspend client deployment. For example, if
-you have decided that all intended clients are deployed and that your deployment
-phase is over then you may choose to switch to a more strict deployment process
-to ensure that rogue clients cannot be enrolled. This is unusual but in
-high-security environments it may be a requirement. By "rogue client" we mean
-any client deployed outside of an approved process, regardless of whether the
-intention is benign or not - it could just be that you want to ensure that the
-IT department doesn't accidentally deploy new clients beyond a certain point.
+In some circumstances you may wish to suspend client deployment. For
+example, if you have decided that all intended clients are deployed
+and that your deployment phase is over then you may choose to switch
+to a more strict deployment process to ensure that rogue clients
+cannot be enrolled. This is unusual but in high-security environments
+it may be a requirement.
+
+By "rogue client" we mean any client deployed outside of an approved
+process, regardless of whether the intention is benign or not - it
+could just be that you want to ensure that the IT department doesn't
+accidentally deploy new clients beyond a certain point.
 
 To ensure that no new clients can enroll, you can set the value of the
 [`Frontend.resources.enrollments_per_second`](/docs/deployment/references/#Frontend.resources.enrollments_per_second)
@@ -699,6 +768,36 @@ configuration key to `-1`.
 As with all server config changes, this will require a service restart. To
 reverse this policy you can either remove the config key or comment it out to
 resume accepting client enrollments.
+
+### Protecting stored secrets
+
+Server-side [secret
+management](/blog/2024/2024-03-10-release-notes-0.72/#secret-management)
+keeps API tokens, credentials, and webhook material out of raw
+artifacts. At rest the material is encrypted using the key described
+by
+[`security.secrets_dek`](/docs/deployment/references/#security.secrets_dek).
+
+If you leave `secrets_dek` empty, the server falls back to deriving
+keying material from the
+[`obfuscation_nonce`](/docs/deployment/references/#obfuscation_nonce)
+(which itself defaults to data tied to the frontend private key
+material). **Attackers who steal the configuration file alongside the
+cipher text can therefore recover the encryption key** because both
+live in the same configuration bundle. Treat that default as a
+convenience for ephemeral labs only.
+
+For hardened deployments:
+
+* Supply `secrets_dek` through an indirection such as
+  `env://SENSITIVE_DEK` and inject that environment variable from your
+  init system, container orchestrator, or secret manager.
+
+* Consider bootstrapping the daemon with the YAML itself provided
+  through a process environment (for example `VELOCIRAPTOR_CONFIG`),
+  then use
+  [`security.shadowed_env_vars`](/docs/deployment/references/#security.shadowed_env_vars)
+  to strip privileged variables from VQL's view.
 
 ### Removing plugins from a shared server
 
@@ -860,25 +959,63 @@ security:
       - execve
 ```
 
-### Accessing files directly
+### Accessing files from VQL
 
-Velociraptor org data are stored on disk in separate directories. This
-means that users that have access to the `file` accessor can simply
-read the other org's data bypassing the ACLs.
+Velociraptor's data ultimately lives within the datastore directory
+on disk. Although Velociraptor's ACL system controls access to high
+level objects like flows, secrets and client, VQL queries may simply
+bypass these controls entirely by reading the data directly from disk.
 
-For example, the following query will read all orgs datastore files:
+Users may run queries in notebooks or server artifacts, that can reach
+these files via two different
+[accessors](/docs/forensic/filesystem/#filesystem-accessors):
+
+| Accessor | Typical use | Controlled by |
+|---|---|---|
+| `file` | Native OS paths on the server host | [`security.denied_file_accessor_prefix`](/docs/deployment/references/#security.denied_file_accessor_prefix), [`security.allowed_file_accessor_prefix`](/docs/deployment/references/#security.allowed_file_accessor_prefix) |
+| `fs` | Logical Velociraptor paths (notebooks, flows, hunts, uploads, secrets area, …) | [`security.denied_fs_accessor_prefix`](/docs/deployment/references/#security.denied_fs_accessor_prefix), [`security.allowed_fs_accessor_prefix`](/docs/deployment/references/#security.allowed_fs_accessor_prefix) |
+
+Prefixes for one accessor never apply to the other: use the
+**`_file_accessor_`** keys to control access via the `file` accessor and
+**`_fs_accessor_`** keys to control access via the `fs` accessor.
+
+To test your settings, an Administrator can probe the datastore from a
+notebook via these queries:
 
 ```vql
-SELECT * FROM glob(globs="/opt/velociraptor/orgs/**")
+SELECT * FROM glob(globs="/**", accessor="file")
+SELECT * FROM glob(globs="/*", accessor="fs")
 ```
 
-In recent versions of Velociraptor, it is possible to restrict the
-operation of the `file` accessor using the [configuration
-file](/docs/deployment/references/#security.denied_file_accessor_prefix). The
-following stops direct file access to the `/opt/velociraptor/`
-directory. On Linux many files can be read using the `/proc/`
-filesystem too. A more restrictive deployment will have more paths
-here.
+The prefixes which are filtered out will be removed from the
+output. Note that using the `fs` accessor additionally requires
+**`SERVER_ADMIN`** - the above filtering occurs in addition to this
+requirement.
+
+By default, the `fs` accessor is denied access to [some filestore
+prefixes](https://github.com/Velocidex/velociraptor/blob/bb0fb04b128f791e2fb74b1008b9b7700f952e0b/services/sanity/security.go#L76),
+which are considered sensitive.
+
+However, Velociraptor's ACL policies are such that any user with the
+`READ_RESULTS` permission, is able to real **any** client's data
+within the same org (See the discussion [above](#gui-users) ).
+
+Because org directories sit on filesystem paths, whoever has
+unrestricted access to `file()` can pivot around GUI ACL
+boundaries. Example:
+
+```vql
+SELECT * FROM glob(globs="/opt/velociraptor/orgs/**", accessor="file")
+```
+
+In the default configuration, no restrictions are imposed on the
+`file` accessor to allow users to access any file on the server's
+filesystem (for example for post processing, run external tools etc).
+
+Tune
+[`security.denied_file_accessor_prefix`](/docs/deployment/references/#security.denied_file_accessor_prefix)
+for your mounting layout—for example blocking the datastore root plus
+global pseudo filesystems (`/proc/`, `/sys/`).
 
 ```yaml
 security:
@@ -888,11 +1025,48 @@ security:
       - /proc/
 ```
 
-Other accessors may provide access to different orgs in some
-situations. For example when running the server as root, the `ext4` or
-`ntfs` accessors may allow direct reading of the filesystem
-inode. Usually we recommend running the server on Linux as a non-root
-user to prevent these issues.
+{{% notice tip "How do the denied and allowed sets in the above parameters interact?" %}}
+
+* If only the allowed set is specified, Velociraptor denies any prefix
+  outside the allowed set
+* If only the denied set is specified, Velociraptor denies any prefix
+  within the denied set, but allow other prefixes.
+* If both are specified, then Velociraptor will deny any files within
+  the denied set, unless they also match the allowed set.
+
+Other accessors (`ext4`, `ntfs`, raw disk plugins, archive mounts, …)
+might still expose underlying blocks when the daemon runs with root
+privileges. Continuing to run Velociraptor on Linux as a dedicated
+low-privilege user is the recommended setting to avoid risks in
+accessing the disk directly to bypass ACLs and denied paths.
+
+{{% /notice %}}
+
+
+{{% notice warn "`http_client()`, Unix sockets, and server ACLs" %}}
+
+The VQL `http_client()` plugin understands URLs like
+`/var/run/docker.sock:unix/v1/version`, which relays HTTP traffic
+over local Unix domain sockets. This is useful to communicate with some servers (e.g. Docker).
+
+However, this may also pose a risk on shared
+environments. Administrators who can run unrestricted notebook queries
+(and hold the required **`NETWORK`** permission) therefore interact
+directly with anything listening on a socket—for example orchestration
+APIs commonly reachable through `/run/docker.sock`,
+`/run/podman/podman.sock`, or
+`/run/containerd/containerd.sock`.
+
+To harden access to the `http_client()` plugin, consider the
+approaches described above: **[artifact curated
+permissions](#controlling-access-to-artifacts)**, **[removing
+plugins](#removing-plugins-from-a-shared-server)**,
+[`security.denied_plugins`](/docs/deployment/references/#security.denied_plugins),
+[`security.vql_must_use_secrets`](/docs/deployment/references/#security.vql_must_use_secrets),
+and tight role hygiene so only trusted principals ever obtain those
+capabilities.
+
+{{% /notice %}}
 
 In summary, although it is possible to restrict user access to
 different orgs this should be considered best effort. Much thought is
@@ -903,6 +1077,26 @@ and potentially malicious users to the Velociraptor GUI at all.
 If you require true data isolation between orgs, we recommend to spin
 up a separate Velociraptor instance (Virtual Machine or container) for
 each unique deployment.
+
+### Accessing process Environment from VQL
+
+The VQL `environ()` plugin provides access to server's environment
+strings. In many environments these contains sensitive secrets. For
+example, Velociraptor's configuration file (which contains private
+keys) may be injected via the `VELOCIRAPTOR_CONFIG` environment
+variable into a container. In some deployments, environment variables
+may also contain sensitive information like S3 access token and other
+API tokens.
+
+To access environment variables, the calling user needs the
+`MACHINE_STATE` permission (normally only given to the `administrator`
+role).
+
+For secure deployments you should also add other sensitive environment
+variables to the
+[`security.shadowed_env_vars`](/docs/deployment/references/#security.shadowed_env_vars)
+configuration (Velociraptor's own environment variables are
+automatically added already).
 
 ### The root org
 

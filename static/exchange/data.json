@@ -1,5 +1,45 @@
 [
     {
+        "title": "Windows.Install.Wazuh.Agent",
+        "author": "julianghill",
+        "description": "Installs the Wazuh Windows agent and configures it to use the supplied\nWazuh manager IP address or hostname.",
+        "link": "/exchange/artifacts/pages/windows.install.wazuh.agent",
+        "tags": [],
+        "author_link": "https://github.com/julianghill",
+        "author_avatar": "https://avatars.githubusercontent.com/u/54985583?v=4",
+        "date": "2026-05-07"
+    },
+    {
+        "title": "Linux.Detection.CopyFail.Exploitation",
+        "author": "yanivg-dfir",
+        "description": "Hunts for signs of successful Copy Fail (CVE-2026-31431) exploitation.\nTargets kernel log messages regarding 'null argv' shells and suspicious 'PF_ALG' registration.\n",
+        "link": "/exchange/artifacts/pages/detection.copyfail.cve-2026-31431.exploitation",
+        "tags": [],
+        "author_link": "https://github.com/yanivg-dfir",
+        "author_avatar": "https://avatars.githubusercontent.com/u/227440820?v=4",
+        "date": "2026-05-04"
+    },
+    {
+        "title": "Custom.MacOS.Detection.DylibHijacking",
+        "author": "flarman-r7",
+        "description": "This artifact is intended to alert on executables susceptible to dylib injection and highjacking. This includes checking the executable for library validation issues such as `com.apple.security.cs.disable-library-validation` and `com.apple.security.cs.allow-dyld-environment-variables`, multiple (relative) `@executable_path`'s and `LC_LOAD_WEAK_DYLIB` entries. The artifact `TargetPath` looks at the default installation path for MacOS binaries (MachO). To run the artifact against a binary in a non-standard location, add it to the csv `TargetPath` parameter. Results will be displayed in two parts, `dylibloads` and `libraryvalidation`. Only duplicate entries will be displayed for `dylibloads`.",
+        "link": "/exchange/artifacts/pages/custom.macos.detection.dylibhijacking",
+        "tags": [],
+        "author_link": "https://github.com/flarman-r7",
+        "author_avatar": "https://avatars.githubusercontent.com/u/100401399?v=4",
+        "date": "2026-04-29"
+    },
+    {
+        "title": "Windows.System.AppCompatPCAExtend",
+        "author": "Kaitoramac",
+        "description": "Parse the Program Compatibility Assistant (PCA) databases for executable\nlaunch history and abnormal exit events.",
+        "link": "/exchange/artifacts/pages/windows.system.appcompatpca.extended",
+        "tags": [],
+        "author_link": "https://github.com/Kaitoramac",
+        "author_avatar": "https://avatars.githubusercontent.com/u/150393432?v=4",
+        "date": "2026-04-29"
+    },
+    {
         "title": "Generic.VSCode.Extensions",
         "author": "misje",
         "description": "List all installed Visual Studio code extensions",

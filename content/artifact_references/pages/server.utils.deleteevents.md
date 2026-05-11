@@ -41,10 +41,10 @@ parameters:
     default:
   - name: StartTime
     type: timestamp
-    description: The begining time range to delete
+    description: The beginning of the time range to delete
   - name: EndTime
     type: timestamp
-    description: The ending time range to delete
+    description: The end of the time range to delete
   - name: ReallyDoIt
     description: If you really want to delete the collection, check this.
     type: bool

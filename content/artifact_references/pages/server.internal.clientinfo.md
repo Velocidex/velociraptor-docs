@@ -14,7 +14,7 @@ An internal artifact collecting client information. This is used to
 update the client info indexes. Clients send this automatically at
 startup and then every day.
 
-You do not need to enable this in the clien montoring table - it is
+You do not need to enable this in the client monitoring table - it is
 client initiated.
 
 
@@ -26,7 +26,7 @@ description: |
   update the client info indexes. Clients send this automatically at
   startup and then every day.
 
-  You do not need to enable this in the clien montoring table - it is
+  You do not need to enable this in the client monitoring table - it is
   client initiated.
 
 </code></pre>

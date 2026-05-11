@@ -181,7 +181,7 @@
     },
     {
         "title": "Generic.Client.LocalLogsRetrieve",
-        "description": "Retrives the locally written logs.\n",
+        "description": "Retrieves the locally written logs.\n",
         "link": "/artifact_references/pages/generic.client.locallogsretrieve",
         "type": "client",
         "tags": [
@@ -703,7 +703,7 @@
     },
     {
         "title": "Linux.SuSE.Packages",
-        "description": "Parse list of installed packages from zypper output\n",
+        "description": "Parse list of installed packages from `zypper` output\n",
         "link": "/artifact_references/pages/linux.suse.packages",
         "type": "client",
         "tags": [
@@ -2818,7 +2818,7 @@
     },
     {
         "title": "Windows.Forensics.Amcache",
-        "description": "The Amcache.hve is a registry artifact that stores metadata\nused by the OS\u2019s application compatibility infrastructure to \nrecord metadata about binaries present on the system. This \nincludes file paths, hashes, timestamps, and install/interaction \ninformation for executables and drivers. ",
+        "description": "The Amcache.hve is a registry artifact that stores metadata\nused by the OS\u2019s application compatibility infrastructure to\nrecord metadata about binaries present on the system. This\nincludes file paths, hashes, timestamps, and install/interaction\ninformation for executables and drivers.",
         "link": "/artifact_references/pages/windows.forensics.amcache",
         "type": "client",
         "tags": [
@@ -3322,7 +3322,7 @@
     },
     {
         "title": "Windows.Registry.PortProxy",
-        "description": "This artifact will return any items in the Windows PortProxy service\nregistry path. The most common configuration of this service is via the\nLOLBin `netsh.exe`. Metaspoit and other common attack tools also have\nconfiguration modules.\n",
+        "description": "This artifact will return any items in the Windows PortProxy service\nregistry path. The most common configuration of this service is via the\nLOLBin `netsh.exe`. Metasploit and other common attack tools also have\nconfiguration modules.\n",
         "link": "/artifact_references/pages/windows.registry.portproxy",
         "type": "client",
         "tags": [
@@ -3547,7 +3547,7 @@
     },
     {
         "title": "Windows.Sys.Programs",
-        "description": "Represents products as they are installed by Windows Installer. A product generally\ncorrelates to one installation package on Windows. Some fields may be blank as Windows\ninstallation details are left to the discretion of the product author.",
+        "description": "Represents products as they are installed by Windows Installer.",
         "link": "/artifact_references/pages/windows.sys.programs",
         "type": "client",
         "tags": [

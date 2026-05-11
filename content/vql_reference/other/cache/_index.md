@@ -46,7 +46,7 @@ description: |
 Arg | Description | Type
 ----|-------------|-----
 func|A function to evaluate (deprecated - use a lambda instead)|LazyExpr
-lambda|A VQL lambda to evaluate with the key as parameter. eg. x=>x+1 |Lambda
+lambda|A VQL lambda to evaluate with the key as parameter. e.g.. x=>x+1 |Lambda
 name|The global name of this cache (needed when more than one)|string
 key|Cache key to use.|Any
 period|The latest age of the cache.|int64

@@ -41,10 +41,10 @@ description: |
   usually fairly expensive to calculate (as they need to hash the
   file and compare signatures etc).
 
-  If you dont need that field you can remove it or select only some
-  fields using [set
-  operations](https://docs.velociraptor.app/knowledge_base/tips/set_operations/). This
-  will make the operations a lot faster.
+  If you don't need that field you can remove it or select only some
+  fields using
+  [set operations](https://docs.velociraptor.app/knowledge_base/tips/set_operations/).
+  This will make the operations a lot faster.
 
   ```vql
   LET FieldMask <= dict(VersionInformation=TRUE, Imports=TRUE)
@@ -143,10 +143,10 @@ For example, the `Authenticode` and `AuthenticodeHash` fields are
 usually fairly expensive to calculate (as they need to hash the
 file and compare signatures etc).
 
-If you dont need that field you can remove it or select only some
-fields using [set
-operations](https://docs.velociraptor.app/knowledge_base/tips/set_operations/). This
-will make the operations a lot faster.
+If you don't need that field you can remove it or select only some
+fields using
+[set operations](https://docs.velociraptor.app/knowledge_base/tips/set_operations/).
+This will make the operations a lot faster.
 
 ```vql
 LET FieldMask <= dict(VersionInformation=TRUE, Imports=TRUE)

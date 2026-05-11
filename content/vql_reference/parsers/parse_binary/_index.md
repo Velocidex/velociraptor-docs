@@ -55,6 +55,7 @@ accessor|The accessor to use|string
 profile|Profile to use (see [vfilter](https://github.com/Velocidex/vtypes)).|string
 struct|Name of the struct in the profile to instantiate.|string (required)
 offset|Start parsing from this offset|int64
+env|Additional environment variables to make available to the profile|ordereddict.Dict
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 

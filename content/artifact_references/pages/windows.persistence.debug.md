@@ -24,7 +24,7 @@ Execution Options\*` however this is kept inline with the x64 key and
 therefore does not need to be processed.
 
 Limitations: This queries the live registry and therefore does not
-parse data in Windows.old or Regback folders, or VSS.
+parse data in `Windows.old` or `Regback` folders, or VSS.
 
 
 <pre><code class="language-yaml">
@@ -42,7 +42,7 @@ description: |
   therefore does not need to be processed.
 
   Limitations: This queries the live registry and therefore does not
-  parse data in Windows.old or Regback folders, or VSS.
+  parse data in `Windows.old` or `Regback` folders, or VSS.
 
 reference:
   - https://attack.mitre.org/techniques/T1183/

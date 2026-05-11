@@ -49,11 +49,11 @@ parameters:
   - name: EvtxGlob
     default: '%SystemRoot%\System32\Winevt\Logs\Security.evtx'
   - name: UsernameRegex
-    description: "Target username Regex"
+    description: "Target username regex"
     default: .
     type: regex
   - name: UsernameWhitelist
-    description: "Target username witelist Regex"
+    description: "Target username whitelist regex"
     default: '\\$$'
     type: regex
   - name: ServerRegex
@@ -65,10 +65,10 @@ parameters:
     default: 'localhost'
     type: regex
   - name: ProcessNameRegex
-    description: "Target process Regex"
+    description: "Target process regex"
     default: .
   - name: ProcessNameWhitelist
-    description: "Target process whitelist Regex"
+    description: "Target process whitelist regex"
     type: regex
 
   - name: VSSAnalysisAge

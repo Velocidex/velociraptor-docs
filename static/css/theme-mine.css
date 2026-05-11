@@ -823,6 +823,14 @@ figcaption  {
     margin-top: 20px;
     padding-left: 20px;
     color: var(--MAIN-TEXT-color);
+    background: var(--CODE-SECTION-BG-color);
+}
+
+.item-comment + li {
+    margin-top: -5px;
+}
+
+.item-name {
 }
 
 .reference-key {

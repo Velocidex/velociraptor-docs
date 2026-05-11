@@ -31,9 +31,9 @@ all are set):
     specific version, architecture, or even install and remove packages in
     the same go:
 
-    - "foo": installs foo
-    - "foo bar- baz=1.0.0-1 qux:arm64": installs foo, removes bar, installs
-      a specific version of baz and a specific architecture of qux
+    - "foo": installs `foo`
+    - "foo bar- baz=1.0.0-1 qux:arm64": installs `foo`, removes `bar`, installs
+      a specific version of `baz` and a specific architecture of `qux`.
 
 
 <pre><code class="language-yaml">
@@ -63,9 +63,9 @@ description: |
        specific version, architecture, or even install and remove packages in
        the same go:
 
-       - "foo": installs foo
-       - "foo bar- baz=1.0.0-1 qux:arm64": installs foo, removes bar, installs
-         a specific version of baz and a specific architecture of qux
+       - "foo": installs `foo`
+       - "foo bar- baz=1.0.0-1 qux:arm64": installs `foo`, removes `bar`, installs
+         a specific version of `baz` and a specific architecture of `qux`.
 
 type: CLIENT
 

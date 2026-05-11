@@ -9,7 +9,7 @@ description: |
   Select columns from another query using regex.
 
   Sometimes a query produces a large number of columns or
-  unpredictable column names (eg. the `read_reg_key()` plugin
+  unpredictable column names (e.g. the `read_reg_key()` plugin
   produces a column per value name).
 
   You can use the `column_filter()` plugin to select a subset of the
@@ -51,7 +51,7 @@ include|One of more regular expressions that will include columns.|list of strin
 Select columns from another query using regex.
 
 Sometimes a query produces a large number of columns or
-unpredictable column names (eg. the `read_reg_key()` plugin
+unpredictable column names (e.g. the `read_reg_key()` plugin
 produces a column per value name).
 
 You can use the `column_filter()` plugin to select a subset of the

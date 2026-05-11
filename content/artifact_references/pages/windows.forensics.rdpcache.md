@@ -48,7 +48,7 @@ parameters:
    - name: RDPCacheGlob
      default: C:\{{Users,Windows.old\Users}\*\AppData\Local,Documents and Settings\*\Local Settings\Application Data}\Microsoft\Terminal Server Client\Cache\*
    - name: Accessor
-     description: Set accessor to use. blank is default, file for api, ntfs for raw, ntfs_vss for vss
+     description: Set accessor to use. Blank is default, file for api, ntfs for raw, ntfs_vss for VSS
    - name: UserRegex
      default: .
      description: Regex filter of user to target. StartOf(^) and EndOf($)) regex may behave unexpectedly.
@@ -79,7 +79,7 @@ sources:
         then=DateAfter, else=timestamp(epoch="1600-01-01"))
       LET DateBeforeTime &lt;= if(condition=DateBefore,
         then=DateBefore, else=timestamp(epoch="2200-01-01"))
-            
+
       LET results = SELECT OSPath, Size, Mtime, Atime, Ctime, Btime
         FROM glob(globs=RDPCacheGlob,accessor=Accessor)
         WHERE OSPath =~ UserRegex

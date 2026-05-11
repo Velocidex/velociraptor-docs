@@ -29,7 +29,7 @@ parameters:
   description: "Regex of event source e.g sshd or kernel"
 - name: IocRegex
   type: regex
-  description: "IOC Regex in event data"
+  description: "IOC regex in event data"
 - name: DateAfter
   type: timestamp
   description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
@@ -64,7 +64,7 @@ sources:
                              start_time=DateAfter,
                              end_time=DateBefore)
        })
-     
+
      LET identifier_only = SELECT *
        FROM foreach(row={
          SELECT OSPath
@@ -77,7 +77,7 @@ sources:
                              end_time=DateBefore)
          WHERE EventData.SYSLOG_IDENTIFIER =~ IdentifierRegex
        })
-     
+
      LET all_regex = SELECT *
        FROM foreach(row={
          SELECT OSPath
@@ -93,7 +93,7 @@ sources:
                      args=[EventData, System._CMDLINE, System._EXE]) =~
                 IocRegex
        })
-     
+
      LET ioc_only = SELECT *
        FROM foreach(row={
          SELECT OSPath
@@ -108,7 +108,7 @@ sources:
                       args=[EventData, System._CMDLINE,
                         System._EXE]) =~ IocRegex
        })
-     
+
      SELECT *
      FROM if(condition=IdentifierRegex
               AND IocRegex,
