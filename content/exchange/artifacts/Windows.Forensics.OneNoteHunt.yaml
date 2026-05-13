@@ -79,16 +79,14 @@ sources:
         FROM yara(files=OSPath, rules=ImageRule, number=1)
       }) AS ImageSignatureCount
     FROM onenote_files
-
-    LET filtered = SELECT *,
-      ImageSignatureCount > 0 AS ImageSignaturesFound
-    FROM checked_files
-    WHERE IncludeNoHitFiles OR RegexMatched OR ImageSignatureCount > 0
+    WHERE IncludeNoHitFiles OR RegexMatched
 
     SELECT *,
+      ImageSignatureCount > 0 AS ImageSignaturesFound,
       hash(path=OSPath).SHA256 AS SHA256,
       UploadOriginal && upload(file=OSPath) AS OneNoteUpload
-    FROM filtered
+    FROM checked_files
+    WHERE IncludeNoHitFiles OR RegexMatched OR ImageSignatureCount > 0
 
 
 - name: ImageSignatureHits
