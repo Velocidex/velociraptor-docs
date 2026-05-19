@@ -86,19 +86,28 @@ The following are some built-in `SERVER_EVENT` artifacts which only establish
 server event queues. You can monitor for events sent to these queues using the
 `watch_monitoring()` plugin.
 
+| **name** | **description** |
+|---|---|
+| Server.Audit.Logs | This internal event artifact collects relevant audit events from the<br>server. Audit events are significant auditable actions that a user<br>takes, for example, starting a new collection, creating a new hunt,<br>updating an artifact definition etc. |
+| Server.Internal.Alerts | An internal event queue for alerts. All alerts sent from clients are<br>collected in this event queue.<br><br>Alerts are expected to be low frequency and high value and may be<br>generated client or server side.<br><br>You can monitor this queue using the `watch_monitoring()`<br>plugin. This can be used as a building block in implementing more<br>complex escalation workflows. |
+| Server.Internal.ArtifactModification | This event artifact is an internal event stream over which<br>notifications of artifact modifications are sent. Interested parties<br>can watch for new artifact modification events and rebuild caches<br>etc.<br><br>Note: This is an automated system artifact. You do not need to start it. |
+| Server.Internal.ClientDelete | An internal queue that receives events when a client is deleted. |
+| Server.Internal.MetadataModifications | This event artifact is an internal event stream over which<br>notifications of server metadata modifications are sent.<br><br>Note: This is an automated system artifact. You do not need to start it. |
+| Server.Internal.TimelineAdd | Internal Artifact - Do not use |
+| System.Hunt.Creation | An event artifact that fires when a user schedules a new hunt. |
+
+{{% notice note %}}
+
+In the current version, most of these "internal" artifacts are
+[hidden](/docs/artifacts/security/#hidden-artifacts) from the GUI by
+default.
+
+But you can still view them in a notebook by running the VQL query:
 ```vql
 SELECT name, description FROM artifact_definitions() WHERE NOT sources AND type =~ "server_event"
 ```
 
-| name | description |
-|---|---|
-| `Server.Audit.Logs` | This internal event artifact collects relevant audit events from the server. Audit events are significant auditable actions that a user takes, for example, starting a new collection, creating a new hunt, updating an artifact definition etc. |
-| `Server.Internal.Alerts` | An internal event queue for alerts. All alerts sent from clients are collected in this event queue. |
-| `Server.Internal.ArtifactModification` | This event artifact is an internal event stream over which notifications of artifact modifications are sent. Interested parties can watch for new artifact modification events and rebuild caches etc. |
-| `Server.Internal.ClientDelete` | An internal queue that receives events when a client is deleted. |
-| `Server.Internal.MetadataModifications` | This event artifact is an internal event stream over which notifications of server metadata modifications are sent. |
-| `Server.Internal.TimelineAdd` | This artifact will fire whenever a timeline is added to a super timeline. You can use this to monitor for users adding timelines and forward them to an external timeline system (e.g. TimeSketch) |
-| `System.Hunt.Creation` | An event artifact that fires when a user schedules a new hunt. |
+{{% /notice %}}
 
 ### Sending events to server event queues.
 

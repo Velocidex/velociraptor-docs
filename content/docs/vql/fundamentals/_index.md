@@ -746,10 +746,11 @@ Hand Side (`RHS`) and `+` is the operator.
 | Operator | Meaning |
 |---|---|
 | `+` `-` `*` `/` | These are the usual arithmetic operators. |
-| `=~` | This is the [regex operator](#regex-in-vql), reads like "matches".<br>For example `X =~ "Windows"` will return `TRUE` if X matches the regex "Windows" |
+| `=~` | This is the [regex operator](#regex-in-vql), reads like "matches".<br>For example `X =~ "Windows"` will return `TRUE` if X matches the regex "Windows". |
 | `!=` `=` `<` `<=` `>` `>=` | The usual comparison operators. |
 | `in` | The membership operator. Returns TRUE if the LHS is present in the RHS.<br>Note that `in` is an exact case sensitive match. |
 | `.` | The `.` operator is called the Associative Operator.<br>It dereferences a field from the LHS named by the RHS.<br>For example `X.Y` extracts the field `Y` from the dict `X` |
+| `||` `&&` | Logical operators that perform logical AND and OR operations on boolean expressions.
 
 ### Protocols
 
@@ -860,6 +861,52 @@ an actual value first.
 
 ##### Truthiness
 
+Truthiness is a programming concept where non-boolean values are
+implicitly converted to true or false when evaluated in a boolean
+context, such as in
+[`if` statements](#conditional-if-plugin-and-function) or
+[logical operators](#logical-operators).
+
+This is a key concept for implementing flow control logic in VQL.
+
+Truthiness is distinct from strict boolean equality. Sometimes people
+like to use the words "truthy" or "falsy" rather than "true" or
+"false" to emphasize the difference, but we still use the latter for
+simplicity.
+
+In general, empty objects (storedQuery objects, strings, dicts,
+arrays, etc.) or `NULL` are considered `false` in VQL. This means that
+a query that returns zero rows is considered `false`. Artifact
+[preconditions](/docs/artifacts/preconditions/), for example, rely on
+this principle to determine whether or not the artifact's sources
+should run.
+
+The truthiness of VQL data types generally corresponds to their
+analogous data types in other languages such as Python. The Go
+language, in which Velociraptor is written, does not itself have the
+concept of truthiness. So in VQL, truthiness is defined by the
+[protocols](#protocols) mentioned previously.
+
+In particular:
+
+- `nil` / `Null` is false.
+- `int`: Negative ints and 0 are false. Positive ints are true.
+- `float`: Negative ints and 0 are false. Positive ints are true.
+- `string`: The empty string (`""`) is false. Non-empty strings are
+  true.
+- `array` and `dict`: Empty arrays and dicts are false. Non-empty ones
+  are true.
+- VQL `StoredQuery` object: That is, the result of a VQL query, is false
+  if it returns zero rows and true if it returns any rows.
+
+In addition, any Go types that aren't coerced to their analogous VQL
+types are considered false. For example `time.Time` objects are always
+false, and you should do explicit comparisons if you need to evaluate
+timestamps in a boolean context.
+
+Turthiness is also central to understanding VQL's
+[logical operators](#logical-operators), which can be used to control
+execution flow or provide conditional fallback values for data fields.
 
 
 ### Regex comparisons
@@ -962,7 +1009,7 @@ The `(?g)` modifier, also known as the "global" flag, is not supported
 and is further meaningless in comparisons since they either match or
 don't match.
 
-#### Special cases
+#### Regex special cases
 
 In VQL the regex "match all" operator (`.`) matches _anything_ if it's
 used on its own. In other words it always returns true regardless of
@@ -1006,6 +1053,78 @@ of always using raw strings for regex unless it's a very simple
 expression.
 
 {{% /notice %}}
+
+### Logical operators
+
+You might already be familiar with `||` and `&&` from scripting
+environments like Bash. In VQL they work similarly and are most often
+used to provide conditional fallback values.
+
+These operators can be chained, so they are not limited to comparing
+only two values.
+
+To understand how the operands are evaluated as true/false for various
+data types, please see the section about [Truthiness](#truthiness).
+
+**`||` (Logical OR)**
+
+This operator returns the first true value encountered, or the last
+value if all are false. This behaviour is know as "short-circuiting"
+where it evaluates from left to right and stops as soon as it
+encounters the first true value, returning that value immediately.
+This is a common pattern used to provide fallback values for Null or
+empty fields, or invalid values.
+
+###### Examples
+
+```vql
+SELECT
+    (timestamp(epoch=now()).Weekday.String = "Friday" || "Not Friday") AS IsItFriday
+FROM scope()
+```
+will return either "Friday" or "Not Friday" depending on which day of
+the week today is.
+
+```vql
+SELECT ( 0 || 1 || FALSE) FROM scope()
+```
+will return 1 since positive ints are considered true, and this is the
+first true value encountered when evaluating from left to right.
+
+
+**`&&` (Logical AND)**
+
+This operator returns the last value if all are true. So it either
+returns false or it returns the last operand - it never returns any
+operands other than the last one.
+
+As with the OR operator, this also implements "short-circuiting": it
+evaluates from left to right and stops as soon as it encounters the
+first false value, returning that value immediately without evaluating
+the rest.
+
+###### Examples
+
+```vql
+SELECT
+    (timestamp(epoch=now()).Weekday.String = "Friday" && "It is Friday!") AS IsItFriday
+FROM scope()
+```
+will return "It is Friday!" if today is Friday, otherwise it will
+return false.
+
+```vql
+SELECT ( 1 && 0 && TRUE) FROM scope()
+```
+will return false when it encounters the second operand 0 since the
+number zero is considered false, and this is the first false value
+encountered when evaluating from left to right.
+
+Notice that the AND operator only returns the last value if **all**
+the preceding operands are true. Otherwise it returns false. This is
+different from OR which will return the value of the first operand
+that's true in the chain regardless of it's position in the chain.
+
 
 ## VQL control structures
 
