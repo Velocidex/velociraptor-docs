@@ -8,9 +8,6 @@ description: A page for testing and previewing the presentation of common conten
 A page for testing and previewing the presentation of common content
 components.
 
-Right-click [here](_index.text) and open in a new tab to see the
-source.
-
 ---
 
 * [Admonitions](#admonitions)
@@ -28,7 +25,7 @@ source.
         * [Level 5 Heading](#level-5-heading)
             * [Level 6 Heading](#level-6-heading)
 * [Emphasis (Bold and Italic)](#emphasis-bold-and-italic)
-* [3. Lists](#3-lists)
+* [Lists](#lists)
   * [Unordered:](#unordered)
   * [Ordered:](#ordered)
 * [Blockquotes](#blockquotes)
@@ -137,7 +134,7 @@ You can wrap text in asterisks or underscores to add style.
 
 
 
-## 3. Lists
+## Lists
 
 CommonMark supports both ordered (numbered) and unordered (bulleted)
 lists.

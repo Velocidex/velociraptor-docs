@@ -193,7 +193,7 @@ maintainability:
 We do also plan on reviewing the artifacts in the Exchange
 periodically and removing outdated artifacts. Very useful Exchange
 artifacts may be graduated to become built-ins if suitable tests can
-be devised that can assure their operational quality.
+be devised that can assure their ongoing reliability.
 
 ## Artifact Exchange Contributions
 
@@ -222,4 +222,4 @@ so you don't need Hugo or any of the steps related to that.
   needing to understand the VQL. We provide some advice
   [here](/docs/artifacts/tips/#tips-for-creating-better-artifacts) on
   aspects to consider that can make your artifact description more
-  helpful.
+  helpful to other users.
