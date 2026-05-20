@@ -217,6 +217,18 @@ so you don't need Hugo or any of the steps related to that.
   pipeline will run the verifier on your artifact automatically and
   fail if the artifact does not pass.
 
+  The verifier can also be run via the `Server.Utils.ArtifactVerifier`
+  server artifact, if you prefer using the GUI.
+
+* We recommend that you author artifacts using the built-in editor to
+  benefit from it's VQL-aware tools and automatic validation. If you
+  prefer to write your artifact in an external editor then it's
+  worthwhile to also paste it into the GUI's artifact editor and save
+  it to trigger the validation step. The built-in editor also provides
+  a VQL formatter (via the "Reformat VQL" button at the lower right of
+  the screen while editing an artifact) and we recommend you use it as
+  it ensures that the VQL is formatted consistently across artifacts.
+
 * Good artifact descriptions are essential so that others can
   understand exactly what it does and how to use it, without them
   needing to understand the VQL. We provide some advice
