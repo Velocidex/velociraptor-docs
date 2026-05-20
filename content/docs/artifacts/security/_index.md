@@ -416,23 +416,23 @@ This is exactly the same as the Linux `suid` mechanism or the windows
 ## Artifact Obfuscation
 
 When an artifact is collected, it is compiled into a set of basic VQL
-statements and sent to the client in a `Collection Request`. You can
-see the raw request in the `Request` tab in the GUI.
+statements and sent to the client in a **Collection Request**. You can
+see the raw request in the **Request** tab in the GUI.
 
 While the request is executed by the client, the client is able to see
 what the original query was. This represents a risk for sensitive
 artifacts - for example consider a custom artifact searching for a
 sensitive IOC pattern. A rogue client (for example, a compromised
-endpoint running an attacker controlled Velociraptor client) may
+endpoint running an attacker-controlled Velociraptor client) may
 receive the request in a hunt and gain insight into the current threat
-intel.
+intel or threat-hunting methodology.
 
 This risk has to be considered when crafting custom artifacts, or
 collecting artifacts targeting specific IOCs:
 
-* Never add sensitive information to the artifact definition. The client's
-  request will strip out the artifact description, comments and some
-  non-essential parts but variable names remain unaltered.
+* Never add sensitive information to the artifact definition. The
+  client's request will strip out the artifact description, comments
+  and some non-essential parts but variable names remain unaltered.
 
 * Treat artifact parameters as public information. Never send
   sensitive IOCs directly as artifact parameters. This also goes for
@@ -443,18 +443,20 @@ collecting artifacts targeting specific IOCs:
 * If you are searching for a very specific, but sensitive IOC (for
   example a specific name which is very unique), consider reworking
   the artifact to search for a less sensitive and more generic IOC,
-  and simply post process on the server to remove false positives.
+  and post-process the results on the server to remove false
+  positives.
 
   For example, if the IOC is searching for the string `ThreatActorXYZ`
   it is very specific and the threat actor may know they are being
   specifically targeted. Instead search for the regular expression
-  `Theat[^ ]+`, and post process by filtering down the false positives
+  `Theat[^ ]+`, and post-process by filtering down the false positives
   on the server.
 
-  This is obviously a trade-off between being very specific and
-  getting few, very high value, results, vs being less specific and
-  potentially increasing the false positive rate, but making it hard to
-  know what you are searching for.
+  There is obviously a trade-off between being very specific and
+  getting few, very high-value, results, vs being less specific and
+  potentially increasing the false positive rate, while making it
+  harder for an adversary to know what you are searching for.
 
 Velociraptor implements an experimental form of obfuscation for
-artifact names but this can not be relied on.
+artifact names but this should not be regarded as a security
+mechanism.

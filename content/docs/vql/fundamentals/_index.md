@@ -904,7 +904,7 @@ types are considered false. For example `time.Time` objects are always
 false, and you should do explicit comparisons if you need to evaluate
 timestamps in a boolean context.
 
-Turthiness is also central to understanding VQL's
+Truthiness is also central to understanding VQL's
 [logical operators](#logical-operators), which can be used to control
 execution flow or provide conditional fallback values for data fields.
 

@@ -49,7 +49,7 @@ you may also hit the limit there.
 If the artifact you've collected did something such as reading the
 contents of a file without parsing it, this can result in a row that
 is extraordinarily large. Even with parsed data you may hit this
-limit, for example when parsinge an entire 15MB plist or log file into
+limit, for example when parsing an entire 15MB plist or log file into
 a single JSON row.
 
 Such abnormally large row/values will likely also cause problems in
