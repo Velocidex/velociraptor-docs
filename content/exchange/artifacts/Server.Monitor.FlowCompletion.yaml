@@ -1071,6 +1071,12 @@ export: |
   // Return the smallest of two non-NULL values:
   LET MinVal(A, B) = if(condition=A < B, then=A, else=B)
 
+  // Log an error if a value is NULL:
+  LET RequireNonEmpty(Value, Message='Value cannot be empty') =
+      if(condition=Value,
+         then=Value,
+         else=NOT log(message=Message, level='ERROR', dedup=-1) || NULL)
+
   LET MakeKey(Prefix, Key) = if(condition=Prefix,
                                 then=format(format="%v.%v", args=(Prefix, Key)),
                                 else=Key)
