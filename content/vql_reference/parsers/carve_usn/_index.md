@@ -5,6 +5,25 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Carve for the USN journal entries from a device.
+
+  In practice the USN journal is set to roll over fairly quickly
+  (default size is usually 32Mb). On busy systems this will lead to
+  loss of valuable information.
+
+  This plugin carves the raw device for USN entries. Usual caveats
+  apply for all carved data, however this will often recover entries
+  from a long time before the roll over.
+
+  This plugin can take a long time!
+
+  ### Example
+
+  ```vql
+  SELECT * FROM carve_usn(device='''\\.\C:''')
+  ```
+
 ---
 
 

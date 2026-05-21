@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  Submit a file hash or IP to VirusTotal for details.
 ---
 
 Submit a file hash or IP to VirusTotal for details.

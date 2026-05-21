@@ -3,7 +3,7 @@ author: Blake McDermott & Ford Larman
 description: |
    This artifact is intended to alert on executables susceptible to dylib injection and highjacking. This includes checking the executable for library validation issues such as `com.apple.security.cs.disable-library-validation` and `com.apple.security.cs.allow-dyld-environment-variables`, multiple (relative) `@executable_path`'s and `LC_LOAD_WEAK_DYLIB` entries. The artifact `TargetPath` looks at the default installation path for MacOS binaries (MachO). To run the artifact against a binary in a non-standard location, add it to the csv `TargetPath` parameter. Results will be displayed in two parts, `dylibloads` and `libraryvalidation`. Only duplicate entries will be displayed for `dylibloads`.
    
-   NOTE: This artifact runs best against targeted endpoints rather than an entire network. It is also recommended to increase the deafult `Timeout` period to 6000 seconds or more as performance is quite slow.
+   NOTE: This artifact runs best against targeted endpoints rather than an entire network. It is also recommended to increase the default `Timeout` period to 6000 seconds or more as performance is quite slow.
 
 # Can be CLIENT, CLIENT_EVENT, SERVER, SERVER_EVENT or NOTEBOOK
 type: CLIENT

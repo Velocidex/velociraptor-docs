@@ -5,6 +5,8 @@ date: 2025-05-20
 draft: false
 weight: 40
 summary: "Commands for working with the config"
+description: |
+  View and manipulate the configuration.
 ---
 
 View and manipulate the configuration.

@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Collects files using a set of globs. All globs must be on the same
+  device. The globs will be searched in one pass - so you can provide
+  many globs at the same time.
 ---
 
 Collects files using a set of globs. All globs must be on the same

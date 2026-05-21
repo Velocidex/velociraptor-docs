@@ -1,5 +1,5 @@
 ---
-title: "Postprocessing Collections"
+title: "Post-processing Collections"
 description: |
    Sometimes we have a need to post process a collection on the server. This blog post covers this use case and possible approaches.
 tags:
@@ -91,7 +91,7 @@ that were transferred are visible in the `Uploaded Files` tab.
 
 ![Collecting KapeFiles Uploads](kapefiles_collection_uploads.png)
 
-### Postprocessing downloaded files
+### Post-processing downloaded files
 
 Our first example is to parse the prefetch files with the
 `Windows.Timeline.Prefetch` artifact.

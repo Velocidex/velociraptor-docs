@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Sometimes we wish to move a client from one org ID to another. This
+  requires updating the config on the client and rekeying the client.
 ---
 
 Sometimes we wish to move a client from one org ID to another. This

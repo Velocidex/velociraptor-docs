@@ -5,6 +5,8 @@ date: 2021-06-12T14:03:59Z
 draft: false
 weight: 90
 pre: <i class="fas fa-graduation-cap"></i>
+description: |
+  ## Scheduled courses
 ---
 
 ## Scheduled courses

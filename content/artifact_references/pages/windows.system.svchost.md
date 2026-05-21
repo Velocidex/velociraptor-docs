@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Typically a windows system will have many svchost.exe
+  processes. Sometimes attackers name their processes svchost.exe to
+  try to hide. Typically svchost.exe is spawned by services.exe.
 ---
 
 Typically a windows system will have many svchost.exe

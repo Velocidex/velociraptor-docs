@@ -213,7 +213,7 @@ about 100 high confidence events that I can manually review.
 
 Velociraptor's timelines implementation streamlines and enables the
 above described manual process. We still mostly follow the same
-general pattern but within the GUI much of the maintainance of
+general pattern but within the GUI much of the maintenance of
 timelines is made easier and reduces friction for the user.
 
 First let's define some terms:
@@ -254,7 +254,7 @@ running commentary of what happened.
 Let's add our Sigma analysis to the timeline. Within the Reduced Sigma
 table, click `Add to Timeline`.
 
-![Adding a table to a super timeline timeline](add_timeline_1.svg)
+![Adding a table to a supertimeline timeline](add_timeline_1.svg)
 
 The `Add Timeline` dialog allows us to create a timeline, add it to a
 supertimeline and configure how events are created from the current

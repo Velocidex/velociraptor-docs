@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact parses the NTFS USN journal and allows filters to
+  assist investigative workflow.
 ---
 
 This artifact parses the NTFS USN journal and allows filters to
@@ -22,7 +25,7 @@ Use this artifact to determine the times when a file was
 modified/added from the journal. This will be present even if the
 file was later removed.
 
-Availible filters are Filename, OSPath, MFT/Parent ID and time bounds.
+Available filters are Filename, OSPath, MFT/Parent ID and time bounds.
 
 
 <pre><code class="language-yaml">
@@ -44,7 +47,7 @@ description: |
   modified/added from the journal. This will be present even if the
   file was later removed.
 
-  Availible filters are Filename, OSPath, MFT/Parent ID and time bounds.
+  Available filters are Filename, OSPath, MFT/Parent ID and time bounds.
 
 type: CLIENT
 

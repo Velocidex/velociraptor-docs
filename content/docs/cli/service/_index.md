@@ -6,6 +6,9 @@ last_reviewed: 2025-07-06
 draft: false
 weight: 80
 summary: Manipulate the Velociraptor client service on Windows and macOS.
+description: |
+  These commands manipulate the Velociraptor **client service** on Windows and
+  macOS. They are only available in the Windows or macOS (Darwin) binaries.
 ---
 
 These commands manipulate the Velociraptor **client service** on Windows and

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Detects anomalous files in a Linux filesystem.
 ---
 
 Detects anomalous files in a Linux filesystem.

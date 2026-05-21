@@ -6,6 +6,9 @@ draft: false
 weight: 20
 summary: "Artifacts parameters and how they work"
 last_reviewed: 2025-05-13
+description: |
+  Parameters allow us to customize the collection of artifacts in a
+  controlled way, without needing to edit the VQL.
 ---
 
 Parameters allow us to customize the collection of artifacts in a

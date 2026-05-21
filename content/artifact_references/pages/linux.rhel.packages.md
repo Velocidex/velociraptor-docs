@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Parse packages installed from dnf or yum
 ---
 
 Parse packages installed from dnf or yum

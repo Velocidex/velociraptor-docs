@@ -5,6 +5,16 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Install a global process tracker.
+
+  The process tracker is an in-memory cache. It has a limited size with older
+  records being expired. This LRU cache size is controlled by the `max_size`
+  argument. The default is 10k records.
+
+  The tracker has two queries: a sync_query and an update_query. The update
+  query resets the internal database.
+
 ---
 
 

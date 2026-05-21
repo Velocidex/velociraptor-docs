@@ -6,6 +6,10 @@ draft: false
 weight: 40
 summary: "Preconditions and how they work"
 last_reviewed: 2025-04-30
+description: |
+  A **precondition** is a query that is run to determine whether the artifact, or
+  a particular [source](/docs/artifacts/sources/)
+  within the artifact, should be collected.
 ---
 
 A **precondition** is a query that is run to determine whether the artifact, or

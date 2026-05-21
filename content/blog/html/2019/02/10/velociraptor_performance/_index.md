@@ -33,7 +33,7 @@ The Server
 ==========
 
 Since this is a smallish deployment we used a single VM with 32Gb of RAM
-and 8 cores. This was definitely over speced for this job as most of the
+and 8 cores. This was definitely over-specced for this job as most of the
 time the server consumed less than 10% of one core:
 
 ``` {.sourceCode .console}

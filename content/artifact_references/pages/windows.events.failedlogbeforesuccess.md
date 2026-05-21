@@ -4,6 +4,11 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+description: |
+  Sometimes attackers will brute force an local user's account's
+  password. If the account password is strong, brute force attacks are
+  not effective and might not represent a high value event in
+  themselves.
 ---
 
 Sometimes attackers will brute force an local user's account's

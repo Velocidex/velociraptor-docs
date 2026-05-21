@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact allows running arbitrary commands through the system
+  PowerShell.
 ---
 
 This artifact allows running arbitrary commands through the system

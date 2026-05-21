@@ -4,6 +4,12 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+description: |
+  PsExec works by installing a new service in the system. The service
+  can be renamed by using the `-r` flag and therefore it is not enough to
+  just watch for a new service called `psexecsvc.exe`. This artifact
+  improves on this by scanning the service binary to detect the
+  original PsExec binary.
 ---
 
 PsExec works by installing a new service in the system. The service

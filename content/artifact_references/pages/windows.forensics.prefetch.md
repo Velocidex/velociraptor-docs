@@ -4,6 +4,12 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Windows keeps a cache of prefetch files. When an executable is run,
+  the system records properties about the executable to make it faster
+  to run next time. By parsing this information we are able to
+  determine when binaries are run in the past. On Windows10 we can see
+  the last 8 execution times and creation time (9 potential executions).
 ---
 
 Windows keeps a cache of prefetch files. When an executable is run,

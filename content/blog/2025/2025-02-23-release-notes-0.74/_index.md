@@ -216,7 +216,7 @@ Currently the command employs the following checks:
   artifacts define the parameters that are being called.
 
 This command is intended to run inside a Continuous integration (CI)
-pipeline as a presumbit check for artifact correctness.
+pipeline as a pre-submit check for artifact correctness.
 
 
 ## Conclusions

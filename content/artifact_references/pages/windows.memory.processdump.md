@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Dump process memory and upload to the server.
 ---
 
 Dump process memory and upload to the server.

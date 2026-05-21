@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Retrieve the list of orgs on this server.
 ---
 
 

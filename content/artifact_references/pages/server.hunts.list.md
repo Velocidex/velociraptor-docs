@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  List Hunts currently scheduled on the server.
 ---
 
 List Hunts currently scheduled on the server.

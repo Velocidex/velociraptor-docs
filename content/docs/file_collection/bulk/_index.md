@@ -7,6 +7,11 @@ draft: false
 weight: 10
 aliases:
   - "/docs/offline_triage/"
+description: |
+  Being able to quickly and efficiently collect and preserve file-based evidence
+  _at scale_ is an important aspect of most DFIR investigations. You may also want
+  to analyze these collected files with other forensic tools that provide
+  specialized analysis capabilities for certain file formats.
 ---
 
 Being able to quickly and efficiently collect and preserve file-based evidence

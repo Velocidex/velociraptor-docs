@@ -54,7 +54,7 @@ to read more about how Velociraptor accesses the registry.
 This allows Velociraptor to use simple `glob()` expressions to find
 keys and values in the registry. For example in the
 [Windows.Registry.Sysinternals.EulaCheck](artifact_references/pages/windows.registry.sysinternals.eulacheck/)
-artifact we can search for evidence of running `Sysinternal tools`.
+artifact we can search for evidence of running Sysinternals tools.
 
 The following is a simplified query:
 
@@ -72,7 +72,7 @@ This artifact works pretty well:
 
 1. The artifact zeros in on the relevant values in the registry
    without user intervention - the investigator does not have to know
-   or care where the relevant `Sysinternal Eula` values are.
+   or care where the relevant Sysinternals EULA values are.
 2. The artifact decodes the values to interpret the user action (did
    the user accept the EULA?) and also maps the SID back to a
    username.
@@ -306,7 +306,7 @@ values will be available:
 The above example returns a dictionary documenting the program and
 the modification time.
 
-![Sysinternal hunt output](sysinternals_reg.png)
+![Sysinternals hunt output](sysinternals_reg.png)
 
 A more complex rule is the following which assembles the `Most
 Recently Used` values in the `Run Box`:

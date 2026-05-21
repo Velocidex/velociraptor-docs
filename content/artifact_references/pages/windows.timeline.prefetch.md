@@ -4,6 +4,12 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Windows keeps a cache of prefetch files. When an executable is run,
+  the system records properties about the executable to make it faster
+  to run next time. By parsing this information we are able to
+  determine when binaries are run in the past. On Windows10 we can see
+  the last 8 execution times and creation time (9 potential executions).
 ---
 
 Windows keeps a cache of prefetch files. When an executable is run,
@@ -68,6 +74,7 @@ sources:
               message,
               OSPath as source,
               Executable as file_name,
+              ExecutablePath,
               CreationTime as prefetch_ctime,
               ModificationTime as prefetch_mtime,
               FileSize as prefetch_size,
@@ -95,14 +102,15 @@ sources:
                    Hash,
                    Version,
                    LastRunTimes,
-                   "Evidence of Execution: " + Executable + format(
+                   "Evidence of Execution: " + ExecutablePath + format(
                       format=" Prefetch run count %v", args=RunCount) as message,
                    RunCount,
                    OSPath,
                    PrefetchFileName,
                    CreationTime,
                    ModificationTime,
-                   Binary
+                   Binary,
+                   ExecutablePath
             FROM scope()
           })
         }, b1={
@@ -112,14 +120,15 @@ sources:
                    Hash,
                    Version,
                    CreationTime AS LastRunTimes,
-                   "Evidence of Execution (Btime): " + Executable + format(
+                   "Evidence of Execution (Btime): " + ExecutablePath + format(
                       format=" Prefetch run count %v", args=RunCount) as message,
                    RunCount,
                    OSPath,
                    PrefetchFileName,
                    CreationTime,
                    ModificationTime,
-                   Binary
+                   Binary,
+                   ExecutablePath
             FROM scope()
         })
         -- This group by applies on only a single prefetch file to

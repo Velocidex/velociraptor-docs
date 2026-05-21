@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  The system hosts file maps hostnames to IP addresses. In some cases,
+  entries in this file take precedence and overrides the results from
+  the system DNS service.
 ---
 
 The system hosts file maps hostnames to IP addresses. In some cases,
@@ -12,7 +16,7 @@ the system DNS service.
 
 The file is a simple text file, with one line per IP address. Each
 whitespace-separated word following the IP address is a hostname.
-The Linux man page refers to the the first hostname as *canonical_hostname*,
+The Linux man page refers to the first hostname as *canonical_hostname*,
 and any following words as *aliases*. They are treated the same by this
 artifact.
 
@@ -46,7 +50,7 @@ description: |
 
   The file is a simple text file, with one line per IP address. Each
   whitespace-separated word following the IP address is a hostname.
-  The Linux man page refers to the the first hostname as *canonical_hostname*,
+  The Linux man page refers to the first hostname as *canonical_hostname*,
   and any following words as *aliases*. They are treated the same by this
   artifact.
 

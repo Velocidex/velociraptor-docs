@@ -9,10 +9,10 @@ description: |
   and sent in bytes per second.
 
   Note that the tool/package "nethogs" needs to be installed before calling this
-  artifact. Set the paramater InstallNethogs to true in order to automatically
+  artifact. Set the parameter `InstallNethogs` to true in order to automatically
   install the package and its dependencies (Debian-based systems only).
 
-  Using techniques like stacking, rare occurances of processes contacting the
+  Using techniques like stacking, rare occurrences of processes contacting the
   Internet can be spotted. Notebook suggestions give you total traffic overview,
   as well as boilerplate code to plot the traffic for a selected process.
 
@@ -94,7 +94,7 @@ sources:
                SELECT *
                FROM foreach(
                  row={
-                   SELECT 
+                   SELECT
                           dict(
                             Timestamp=Timestamp,
                             Process=Process,
@@ -152,8 +152,8 @@ sources:
             */
             LET ColumnTypes = dict(
                 _ChildrenTree='tree')
-            
-            SELECT 
+
+            SELECT
                    Timestamp,
                    PID,
                    ProcInfo.Name || Process AS Name,
@@ -189,7 +189,7 @@ sources:
             This is a **rough estimate** of the total bytes sent and received between
             {{ Get $TimeRange "0.StartTime" }} and {{ Get $TimeRange "0.EndTime" }}.
             */
-            LET Summary = SELECT 
+            LET Summary = SELECT
                      PID,
                      ProcInfo.Name || Process AS Name,
                      ProcInfo.CommandLine AS CommandLine,
@@ -204,7 +204,7 @@ sources:
               FROM source(start_time=StartTime,
                           end_time=EndTime)
               GROUP BY PID, Name
-            
+
             SELECT *,
                    humanize(
                      bytes=Sent) AS Sent,
@@ -231,7 +231,7 @@ sources:
             Network traffic (in bytes per second) between {{ Get $Vars "0.StartTime" }}
             and {{ Get $Vars "0.EndTime" }}
             */
-            LET SinglePSStats = SELECT 
+            LET SinglePSStats = SELECT
                                        Timestamp.Unix AS Timestamp,
                                        Sent * 1024 AS Sent,
                                        Recv * 1024 AS Recv

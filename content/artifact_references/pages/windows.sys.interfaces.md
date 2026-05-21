@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Report information about the systems interfaces. This artifact
+  simply parses the output from `ipconfig /all`.
 ---
 
 Report information about the systems interfaces. This artifact

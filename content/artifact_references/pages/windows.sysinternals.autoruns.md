@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Uses Sysinternals autoruns to scan the host.
 ---
 
 Uses Sysinternals autoruns to scan the host.

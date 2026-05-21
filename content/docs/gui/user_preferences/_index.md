@@ -6,6 +6,10 @@ last_reviewed: 2025-09-29
 draft: false
 weight: 30
 summary: Personalize your GUI experience
+description: |
+  Users can set their own preferences for several GUI aspects. These are set in the
+  User Preferences panel, which is accessed by clicking the <i class="fas fa-wrench"></i>
+  button next to the user name at the top-right corner of the screen.
 ---
 
 Users can set their own preferences for several GUI aspects. These are set in the

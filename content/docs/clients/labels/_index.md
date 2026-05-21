@@ -5,6 +5,13 @@ date: 2024-12-18
 draft: false
 weight: 30
 last_reviewed: 2024-12-30
+description: |
+  Clients can have one or more **labels** attached to them. In some software
+  applications the same concept is called "tags" but we just happen to call them
+  labels. Labels are useful when we need to hunt or perform other operations on a
+  well-defined group of hosts. For example, we can restrict a hunt to one or more
+  labels to avoid collecting unnecessary data, or to target specific hosts, or to
+  avoid specific hosts.
 ---
 
 Clients can have one or more **labels** attached to them. In some software

@@ -1,17 +1,17 @@
 name: Windows.Registry.DefenderConfig
 author: Matt Green - @mgreen27
 description: |
-    Thit artifact enables extracting Windows Defender configuration from 
+    This artifact enables extracting Windows Defender configuration from
     SOFTWARE registry hive.
-    
-    Availible parameters enable filtering on RegKey, KeyName or KeyValue.
-    
-    1. KeyRegex - Regex for string in registry key. For example we could use 
+
+    Available parameters enable filtering on RegKey, KeyName or KeyValue.
+
+    1. KeyRegex - Regex for string in registry key. For example we could use
     Exclusions\\Process for process exclusions
-    2. NameRegex - Regex for KeyName. For example we could use process.exe 
+    2. NameRegex - Regex for KeyName. For example we could use process.exe
     for a process in exclusions or specific setting name of interest.
     3. ValueRegex - Regex for KeyValue.
-    
+
 type: CLIENT
 
 parameters:
@@ -35,7 +35,7 @@ sources:
       SELECT OS From info() where OS = 'windows'
 
     query: |
-      SELECT 
+      SELECT
         Mtime as LastWriteTime,
         OSPath.dirname as RegKey,
         OSPath.basename as KeyName,

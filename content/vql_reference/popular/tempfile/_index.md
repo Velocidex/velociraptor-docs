@@ -5,6 +5,11 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Create a temporary file and write some data into it.
+
+  The file will be automatically removed when the query completes.
+
 ---
 
 

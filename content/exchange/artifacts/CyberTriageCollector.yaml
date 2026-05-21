@@ -1,5 +1,5 @@
 name: CyberTriage.Collector
-description:
+description: |
      Runs the Cyber Triage (https://cybertriage.com) Collector to copy
      forensic artifacts for automated analysis. The Dynamic collection
      will include EXEs, DLLs, and other files referenced by artifacts.
@@ -30,7 +30,7 @@ parameters:
    - name: PowerShellExe
      default: "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
      description: Where the PowerShell executable is located, this should not be changed unless you are using
-       a newer verison of PowerShell
+       a newer version of PowerShell
 
    - name: script_temp_location
      default: "C:\\Windows\\temp\\deploy_cyber_triage_collector.ps1"

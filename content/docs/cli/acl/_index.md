@@ -5,6 +5,8 @@ date: 2025-05-20
 draft: false
 weight: 10
 summary: Manipulate ACLs (access control lists).
+description: |
+  Manipulate ACLs (access control lists).
 ---
 
 Manipulate ACLs (access control lists).

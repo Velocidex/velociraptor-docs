@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  Build an MSI ready for deployment in the current org.
 ---
 
 Build an MSI ready for deployment in the current org.
@@ -56,9 +58,11 @@ sources:
         config=serialize(format='yaml', item=client_config))
 
     SELECT * FROM chain(a={
-       SELECT Build(Target="VelociraptorWindowsMSI") FROM scope()
+       SELECT Build(Target="VelociraptorWindowsMSI") AS VelociraptorWindowsMSI
+       FROM scope()
     }, b={
-       SELECT Build(Target="VelociraptorWindows_x86MSI") FROM scope()
+       SELECT Build(Target="VelociraptorWindows_x86MSI") AS VelociraptorWindows_x86MSI
+       FROM scope()
        WHERE AlsoBuild_x86
     })
 

@@ -5,6 +5,13 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Extracts VBA Macros from Office documents.
+
+  This plugin parses the provided files as OLE documents in order to
+  recover VB macro code. A single document can have multiple code
+  objects, and each such code object is emitted as a row.
+
 ---
 
 

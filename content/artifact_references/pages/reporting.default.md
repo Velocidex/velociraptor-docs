@@ -4,6 +4,11 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  A default template for HTML export.  This template will be used to
+  host HTML exports such as the notebook and the reporting
+  templates. Velociraptor will evaluate this template on the following
+  dict:
 ---
 
 A default template for HTML export.  This template will be used to

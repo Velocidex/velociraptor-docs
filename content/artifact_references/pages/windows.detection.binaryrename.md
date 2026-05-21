@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact will detect renamed binaries commonly abused by adversaries.
 ---
 
 This artifact will detect renamed binaries commonly abused by adversaries.

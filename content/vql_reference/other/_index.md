@@ -13,6 +13,7 @@ Functions and plugins that do not fall into a specific category or that have
 not yet been categorized.
 |Plugin/Function|<span class='vql_type'>Type</span>|Description|
 |-|-|-|
+|[adx_upload](adx_upload)|<span class='vql_type'>Plugin</span>|Upload rows to Azure Data Explorer (ADX)|
 |[alert](alert)|<span class='vql_type'>Function</span>|Generate an alert message|
 |[all](all)|<span class='vql_type'>Function</span>|Returns TRUE if all items are true|
 |[any](any)|<span class='vql_type'>Function</span>|Returns TRUE if any items are true|
@@ -103,6 +104,8 @@ not yet been categorized.
 |[upload_transactions](upload_transactions)|<span class='vql_type'>Plugin</span>|View the outstanding transactions for uploads|
 |[upload_webdav](upload_webdav)|<span class='vql_type'>Function</span>|Upload files to a WebDAV server|
 |[url](url)|<span class='vql_type'>Function</span>|Construct a URL or parse one|
+|[user_message](user_message)|<span class='vql_type'>Function</span>|Send the user a message which will appear in the user notification view|
+|[user_messages](user_messages)|<span class='vql_type'>Plugin</span>|Emit the user's console messages|
 |[uuid](uuid)|<span class='vql_type'>Function</span>|Generate a UUID|
 |[verify](verify)|<span class='vql_type'>Function</span>|verify an artifact|
 |[version](version)|<span class='vql_type'>Function</span>|Gets the version of a VQL plugin or function|

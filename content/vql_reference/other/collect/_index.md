@@ -5,6 +5,13 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Collect artifacts into a local file.
+
+  This plugin is essentially the same as the `velociraptor artifacts
+  collect --output file.zip` command. It will collect the artifacts
+  into a zip file.
+
 ---
 
 

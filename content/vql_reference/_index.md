@@ -13,6 +13,8 @@ noTitle: true
 chapter: false
 pre: <i class="fas fa-book"></i>
 head: <hr>
+description: |
+  {{% expand "This page lists all the plugins, functions and accessors which are available in Velociraptor." %}}
 ---
 
 {{% expand "This page lists all the plugins, functions and accessors which are available in Velociraptor." %}}

@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+description: |
+  NTFS is a journal filesystem. This means that it maintains a journal
+  file where intended filesystem changes are written first, then the
+  filesystem is changed. This journal is called the USN journal in NTFS.
 ---
 
 NTFS is a journal filesystem. This means that it maintains a journal

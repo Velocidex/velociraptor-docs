@@ -2,6 +2,10 @@
 title: "The Admin GUI"
 last_reviewed: 2025-09-29
 weight: 15
+description: |
+  The Admin GUI is a web application that can be used to interact and
+  manage Velociraptor. The GUI allows users to schedule new collections,
+  edit existing artifacts or write new ones and launch hunts.
 ---
 
 The Admin GUI is a web application that can be used to interact and

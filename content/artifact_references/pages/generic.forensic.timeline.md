@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact generates a timeline of a file glob in bodyfile
+  format. We currently do not calculate the md5 because it is quite
+  expensive.
 ---
 
 This artifact generates a timeline of a file glob in bodyfile

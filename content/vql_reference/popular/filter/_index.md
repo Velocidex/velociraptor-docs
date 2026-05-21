@@ -5,6 +5,22 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Filters an array by regex or condition.
+
+  Note that if a condition is specified as well as a regex then only
+  the condition is applied.
+
+  ### Examples
+
+  ```vql
+  filter(list=["AA", "AB", "BA", "BB"], regex="^A") -> ["AA", "AB"]
+  ```
+
+  ```vql
+  filter(list=[1, 2, 3, 4, 5, 6], condition="x=>x > 3") -> [4, 5, 6]
+  ```
+
 ---
 
 

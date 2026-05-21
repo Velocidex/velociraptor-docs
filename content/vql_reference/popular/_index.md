@@ -7,6 +7,12 @@ sitemap:
   disable: true
 no_edit: true
 no_children: true
+description: |
+  These are the functions and plugins that are the most frequently used in
+  [Velociraptor's built-in artifacts](/artifact_references/) and the
+  [Community Exchange artifacts](/exchange/). So we can infer that these are
+  the most "popular" and therefore probably the most useful ones for everyday
+  artifact writing.
 ---
 
 These are the functions and plugins that are the most frequently used in

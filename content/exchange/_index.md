@@ -13,15 +13,24 @@ no_children: true
 rss_data_file: static/exchange/data.json
 rss_title: Velociraptor Artifact Exchange
 noDisqus: true
+noTitle: true
 outputs:
 - html
 - RSS
+description: |
+  The artifact exchange is a place for sharing community contributed
+  artifacts. Simply search below for an artifact that might address
+  your need. If you wish to contribute to the exchange, please click the
+  button to the right.
 ---
 
+<div style="padding-top: 50px;"></div>
+
 The artifact exchange is a place for sharing community contributed
-artifacts. Simply search below for an artifact that might address
-your need. If you wish to contribute to the exchange, please click the
-button to the right.
+artifacts. Simply search below for an artifact that might address your
+need. If you wish to contribute to the exchange, please read the
+[Guidelines for artifact contributions](/dev/contributing-artifacts/)
+and click the button to the right.
 
 {{% notice tip "Importing the artifact exchange" %}}
 

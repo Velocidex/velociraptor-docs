@@ -5,6 +5,8 @@ date: 2025-05-14
 last_reviewed: 2025-07-14
 draft: false
 weight: 80
+description: |
+  Velociraptor offers many features via it's command line interface (CLI).
 ---
 
 Velociraptor offers many features via it's command line interface (CLI).

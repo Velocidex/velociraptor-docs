@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  A common method of persistence is to install a hook into a user profile
+  registry hive, using PowerShell. When the user logs in, the PowerShell script
+  downloads a payload and executes it.
 ---
 
 A common method of persistence is to install a hook into a user profile

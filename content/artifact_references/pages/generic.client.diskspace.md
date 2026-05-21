@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact reports the amount of free disk space. It is designed
+  to work equally on all architectures:
 ---
 
 This artifact reports the amount of free disk space. It is designed

@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Sysmon is a kernel level system monitor written by Sysinternals. While we are
+  not able to distribute Sysmon ourselves, Velociraptor can help you manage its
+  deployment and installation.
 ---
 
 Sysmon is a kernel level system monitor written by Sysinternals. While we are
@@ -55,9 +59,13 @@ sources:
        ToolName="SysmonBinary")
     })
 
-    LET existing_hash = SELECT lowcase(
-       string=parse_string_with_regex(
-          string=Stdout, regex="hash:.+SHA256=([^\\n\\r]+)").g1) AS Hash
+    LET ParseHash(string) = lowcase(
+        string=parse_string_with_regex(
+            string=string, regex="hash:.+SHA256=([^\\n\\r]+)").g1
+    )
+
+    LET existing_hash = SELECT
+        ParseHash(string=utf16(string=Stdout)) || ParseHash(string=Stdout) AS Hash
     FROM execve(argv=[bin[0].OSPath, "-c"])
 
     LET sysmon_config = SELECT * FROM Artifact.Generic.Utils.FetchBinary(

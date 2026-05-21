@@ -5,6 +5,11 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  The row returned will have all environment variables as
+  columns. If the var parameter is provided, only those variables
+  will be provided.
+
 ---
 
 

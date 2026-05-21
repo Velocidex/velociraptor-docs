@@ -4,6 +4,11 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  The Windows task scheduler is a common mechanism that malware uses
+  for persistence. It can be used to run arbitrary programs at a later
+  time. Commonly malware installs a scheduled task to run itself
+  periodically to achieve persistence.
 ---
 
 The Windows task scheduler is a common mechanism that malware uses

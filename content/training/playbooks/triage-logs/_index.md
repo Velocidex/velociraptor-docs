@@ -1,7 +1,11 @@
 ---
 title: "Triaging Logs"
+summary: |
+    An endpoint is suspected of being compromised but you don't know
+    exactly what happened. You want to get an initial idea by examining
+    the logs on the actual endpoint.
 description: |
-    An endpoint is suspected of being compromised but you dont know
+    An endpoint is suspected of being compromised but you don't know
     exactly what happened. You want to get an initial idea by examining
     the logs on the actual endpoint.
 
@@ -12,7 +16,7 @@ tags:
 
 ## Scenario
 
-An endpoint is suspected of being compromised but you dont know
+An endpoint is suspected of being compromised but you don't know
 exactly what happened. You want to get an initial idea by examining
 the logs on the actual endpoint.
 
@@ -78,7 +82,7 @@ in the GUI:
 
 Using this technique it is possible to quickly identify the types or
 categories of activity on the endpoint and see the most suspicious
-rules. Due to the stacking we dont need to review each individual hit,
+rules. Due to the stacking we don't need to review each individual hit,
 but only the different types of rules.
 
 For example, say we see a rule description a `PsExec` lateral

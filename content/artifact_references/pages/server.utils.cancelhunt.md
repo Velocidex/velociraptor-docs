@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  Sometimes a hunt is issued which is no longer useful. While stopping
+  the hunt from the GUI prevents new clients from receiving the hunt,
+  it does not actively cancel collections currently in flight.
 ---
 
 Sometimes a hunt is issued which is no longer useful. While stopping
@@ -46,7 +50,8 @@ sources:
       LET AllHunts &lt;= if(condition=HuntId, then=Hunts + HuntId, else=Hunts)
 
       SELECT * FROM foreach(row={
-        SELECT _value as HuntId FROM items(item=AllHunts)
+        SELECT _value AS HuntId
+        FROM items(item=AllHunts)
       }, query={
         SELECT * FROM cancellations(HuntId=HuntId)
       }, workers=50

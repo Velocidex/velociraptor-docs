@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
+description: |
+  An internal artifact that fires when the master node writes a new
+  snapshot. Minion use this to trigger a refresh of their client info
+  snapshots.
 ---
 
 An internal artifact that fires when the master node writes a new

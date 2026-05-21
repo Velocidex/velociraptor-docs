@@ -7,6 +7,9 @@ sitemap:
   disable: true
 no_edit: true
 no_children: true
+description: |
+  These functions and plugins are only used during development, for automated
+  testing, and occasionally for troubleshooting.
 ---
 
 These functions and plugins are only used during development, for automated

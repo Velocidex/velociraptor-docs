@@ -5,6 +5,16 @@ date: 2025-11-03
 last_reviewed: 2025-11-03
 draft: false
 weight: 50
+description: |
+  Because offline collector binaries are usually stored separately from the
+  server, they often get overlooked when the time comes to do server and client
+  upgrades. This can lead to the collector binaries inadvertently becoming
+  seriously out of date, and which might produce offline collections that are
+  inconsistent with the equivalent collections produced by online clients. In the
+  worst case scenario it can result in offline collections that are incompatible
+  with the server's
+  [import_collection](/vql_reference/server/import_collection/)
+  function.
 ---
 
 Because offline collector binaries are usually stored separately from the

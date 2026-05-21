@@ -5,6 +5,11 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Writes a string onto a file.
+
+  This VQL function is a convenience wrapper to the copy() function.
+
 ---
 
 

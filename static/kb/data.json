@@ -1,5 +1,17 @@
 [
     {
+        "title": "Adding basic authentication to the HTTP secret",
+        "link": "/knowledge_base/tips/basic_auth_in_http_client",
+        "tags": [
+            "secrets",
+            "configuration"
+        ],
+        "author": "scudette",
+        "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
+        "author_link": "https://github.com/scudette",
+        "date": "2026-04-28"
+    },
+    {
         "title": "How to create and use an offline collector as a tool",
         "link": "/knowledge_base/tips/offline_collector_tool",
         "tags": [
@@ -628,17 +640,5 @@
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
         "date": "2022-03-21"
-    },
-    {
-        "title": "Adding basic authentication to the HTTP secret",
-        "link": "/knowledge_base/tips/basic_auth_in_http_client",
-        "tags": [
-            "secrets",
-            "configuration"
-        ],
-        "author": "",
-        "author_link": "",
-        "author_avatar": "",
-        "date": ""
     }
 ]

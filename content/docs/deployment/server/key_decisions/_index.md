@@ -6,6 +6,9 @@ weight: 20
 date: 2025-04-27
 last reviewed: 2025-04-27
 summary: "Guidance on selecting the right options for your deployment."
+description: |
+  With a wide array of deployment options available, it is sometimes difficult to
+  decide which are the best choices for your deployment.
 ---
 
 With a wide array of deployment options available, it is sometimes difficult to

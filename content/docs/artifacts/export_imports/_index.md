@@ -6,6 +6,11 @@ draft: false
 weight: 50
 summary: "Sharing VQL across sources and artifacts"
 last_reviewed: 2025-06-20
+description: |
+  `export` (notice the singular) and `imports` (notice the plural) work together
+  to allow artifacts to share VQL with each other. This allows us to write more
+  concise and more consistent artifacts with reusable VQL that can be shared by
+  multiple artifacts.
 ---
 
 `export` (notice the singular) and `imports` (notice the plural) work together

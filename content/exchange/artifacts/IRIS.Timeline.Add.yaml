@@ -76,9 +76,9 @@ parameters:
   - name: clientId
     description: Client Id of the client that should be synced to DFIR-IRIS
   - name: AdditionalAssetId
-    description: Comma seperated list of IRIS AssetIds of additional assets beside the client to link in this event.
+    description: Comma separated list of IRIS AssetIds of additional assets beside the client to link in this event.
   - name: IocId
-    description: Comma seperated list of IRIS IocIds to link IOCs in this event.
+    description: Comma separated list of IRIS IocIds to link IOCs in this event.
   - name: Timestamp
     description: Timestamp of the event as a time.Time object. This can be a field in the source data containing a timestamp object.
   - name: Title
@@ -86,7 +86,7 @@ parameters:
   - name: FlowId
     description: FlowId or HuntId of the event source. This is needed to allow detection of duplicates!
   - name: Tags
-    description: List of comma seperated tags to be added to the event.
+    description: List of comma separated tags to be added to the event.
   - name: Description
     description: Description of the event. Very important to actually understand what this entry is all about :)
   - name: AddToSummary

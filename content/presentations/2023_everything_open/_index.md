@@ -2,6 +2,8 @@
 title: Everything Open Conference 2023
 menutitle: EverythingOpen 2023
 weight: 85
+description: |
+  [Full agenda](https://2023.everythingopen.au/schedule/presentation/22/)
 ---
 
 [Full agenda](https://2023.everythingopen.au/schedule/presentation/22/)

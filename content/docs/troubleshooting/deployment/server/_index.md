@@ -7,6 +7,8 @@ draft: false
 weight: 10
 summary: |
   * Troubleshooting problems with getting the server running.
+description: |
+  ### Server fails to start
 ---
 
 ### Server fails to start

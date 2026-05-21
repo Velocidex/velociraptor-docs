@@ -54,7 +54,7 @@ The previous section covered the query scope in what seems like a rather theoret
 
 Consider the example of the foreach() plugin. Unlike SQL, VQL does not support joins. Instead, VQL provides a plugin to enable data from two different data sources to be combined.
 
-In VQL plugins accept named arguments, but the arguments do not have to be simple types like integers or strings. It is also possible to provide a subquery as an argument to a plugin. The foreach() plugin takes advantage of this property by accepting a **row** query and a **query** query. For each row emitted by the **row** query, the foreach() plugin executes the query provided in the **query** argument. This is illustrated in the diagram below.
+In VQL plugins accept named arguments, but the arguments do not have to be simple types like integers or strings. It is also possible to provide a subquery as an argument to a plugin. The foreach() plugin takes advantage of this property by accepting a `row` query and a `query` query. For each row emitted by the `row` query, the foreach() plugin executes the query provided in the `query` argument. This is illustrated in the diagram below.
 
 ![](../../img/1EMA7RdO2bH0ZBoS3EPTP9A.png)
 
@@ -62,11 +62,11 @@ How can we use this in practice? Consider the following example…
 
 ![](../../img/1XgdBwQdDL4VHhJAWJGsFEw.png)
 
-In this example, we select all columns from the foreach() plugin, providing the **row** argument a query which lists all the running processes and extract their binary path. For each binary path, we run the stat() plugin returning filesystem information (like timestamps, size etc).
+In this example, we select all columns from the foreach() plugin, providing the `row` argument a query which lists all the running processes and extract their binary path. For each binary path, we run the stat() plugin returning filesystem information (like timestamps, size etc).
 
 While this query is obviously useful from a DFIR perspective (it tells us when the binary of each process was modified), it also shows how scope is used within VQL.
 
-You might notice that we refer to a symbol Exe within the **query** query — where does this get resolved from? The foreach plugin creates a sub-scope in which to run the **query** query, and appends the row to it. In this way, it is possible to access symbols from the iterated row from the inner loop, and therefore stat a new file each time. Information flows from the **row** query into the **query** query by way of the nested scope that is shared between them.
+You might notice that we refer to a symbol Exe within the `query` query — where does this get resolved from? The foreach plugin creates a sub-scope in which to run the `query` query, and appends the row to it. In this way, it is possible to access symbols from the iterated row from the inner loop, and therefore stat a new file each time. Information flows from the `row` query into the `query` query by way of the nested scope that is shared between them.
 
 ### More foreach examples
 

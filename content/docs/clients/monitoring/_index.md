@@ -5,6 +5,11 @@ date: 2021-06-30T12:31:08Z
 draft: false
 weight: 60
 last_reviewed: 2024-12-30
+description: |
+  We have previously seen how VQL
+  [Event Queries](/docs/vql/events/) are simply VQL
+  queries that never terminate, generating a row for each event that
+  occurs.
 ---
 
 We have previously seen how VQL
@@ -85,7 +90,7 @@ Client monitoring queries can apply to all clients or be targeted based on
 client labels. We refer to the set of all clients having a specific label as a
 **label group**.
 
-- Event Artifacts assigned to the the label group "All" apply to all clients
+- Event Artifacts assigned to the label group "All" apply to all clients
   regardless of label or OS type (although artifact preconditions are
   still honored).
 

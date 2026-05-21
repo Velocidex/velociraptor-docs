@@ -7,6 +7,9 @@ weight: 11
 summary: |
   Artifact fields that provide more advanced functionality.
 last_reviewed: 2025-05-26
+description: |
+  These are less frequently used fields which deal with more advanced artifact
+  functionality.
 ---
 
 These are less frequently used fields which deal with more advanced artifact

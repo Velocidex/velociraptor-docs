@@ -1,6 +1,8 @@
 ---
 menutitle: "Security Advisories"
 title: "Security Advisories"
+summary: |
+    CVEs and other security advisories.
 description: |
     CVEs and other security advisories.
 weight: 10

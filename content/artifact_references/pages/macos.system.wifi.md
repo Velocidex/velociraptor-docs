@@ -4,6 +4,11 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact looks for all Wifi networks to which a host has
+  joined.  This can be useful in determining where a machine has
+  been, or if a user has joined an illegitimate or unauthorized
+  wireless network.
 ---
 
 This artifact looks for all Wifi networks to which a host has

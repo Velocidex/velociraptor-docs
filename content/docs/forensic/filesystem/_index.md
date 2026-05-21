@@ -8,6 +8,10 @@ date: 2021-06-12
 last_reviewed: 2025-11-16
 draft: false
 weight: 20
+description: |
+  One of the most common operations in DFIR is searching for files
+  efficiently. When searching for a file, we may search by filename,
+  file content, size or other properties.
 ---
 
 One of the most common operations in DFIR is searching for files

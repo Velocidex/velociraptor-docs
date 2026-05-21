@@ -5,6 +5,12 @@ date: 2021-06-09T04:03:42Z
 last_reviewed: 2025-12-29
 draft: false
 weight: 25
+description: |
+  Velociraptor's superpower is a powerful query language termed
+  **VQL**. You might be surprised to learn that you have already been
+  using VQL all this time. When clicking in the VFS interface to sync a
+  directory listing or download files, the GUI was collecting artifacts
+  behind the scenes.
 ---
 
 Velociraptor's superpower is a powerful query language termed

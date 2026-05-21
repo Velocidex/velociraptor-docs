@@ -4,6 +4,9 @@ date: 2021-06-12
 draft: false
 weight: 45
 last_reviewed: 2025-06-21
+description: |
+  In previous sections we learned the syntax of VQL. But VQL is not useful without
+  a good set of plugins that make DFIR work possible.
 ---
 
 In previous sections we learned the syntax of VQL. But VQL is not useful without

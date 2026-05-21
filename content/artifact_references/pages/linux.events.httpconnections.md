@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+description: |
+  This artifact uses eBPF to track HTTP and parse connections from
+  various processes.
 ---
 
 This artifact uses eBPF to track HTTP and parse connections from

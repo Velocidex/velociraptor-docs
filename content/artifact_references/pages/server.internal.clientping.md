@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
+description: |
+  An internal event channel for notifying about client pings.
 ---
 
 An internal event channel for notifying about client pings.

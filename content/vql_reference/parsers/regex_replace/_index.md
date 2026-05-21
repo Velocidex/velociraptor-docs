@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Search and replace a string with a regexp. Note you can use $1 to replace the capture string.
 ---
 
 

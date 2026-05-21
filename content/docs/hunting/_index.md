@@ -6,6 +6,9 @@ draft: false
 weight: 40
 aliases:
   - "/docs/gui/hunting/"
+description: |
+  With Velociraptor, you can collect the same artifact from multiple
+  endpoints at the same time using a **Hunt**.
 ---
 
 With Velociraptor, you can collect the same artifact from multiple

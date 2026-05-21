@@ -1,5 +1,7 @@
 ---
 title: Test
+description: |
+  ![Client config](client_config_yaml.svg)
 ---
 
 ![Client config](client_config_yaml.svg)

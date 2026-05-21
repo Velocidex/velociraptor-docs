@@ -6,6 +6,11 @@ draft: false
 weight: 35
 aliases:
   - "/docs/vql/notebooks/"
+description: |
+  Notebooks are interactive collaborative documents which can interleave
+  markdown and VQL queries in to create an interactive report. Notebooks
+  are typically used to track and post process one or more hunts or
+  collaborate on an investigation.
 ---
 
 Notebooks are interactive collaborative documents which can interleave

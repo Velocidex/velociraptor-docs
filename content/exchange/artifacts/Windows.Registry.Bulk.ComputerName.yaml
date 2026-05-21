@@ -8,14 +8,14 @@ precondition: SELECT OS From info() where OS = 'windows'
 parameters:
   - name: TargetDrive
     description: |
-      The path to to the drive that holds the SYSTEM registry hive. 
+      The path to the drive that holds the SYSTEM registry hive.
     default: "C:"
   - name: HiveLocation
     default: '\\windows\\system32\\config\\system'
-    description: "Loction of target hive"
+    description: "Location of target hive"
   - name: KeyValue
     default: "/*/Control/ComputerName/ComputerName/ComputerName"
-    description: "Loction of target key"
+    description: "Location of target key"
   - name: AllDrives
     description: Search all drives?
     type: bool
@@ -24,15 +24,15 @@ parameters:
 sources:
  - query: |
     LET Drive <= pathspec(parse=TargetDrive, path_type="ntfs")
-    
+
     -- get all drives
     LET ntfs_drives = SELECT
     OSPath AS Drive,
     OSPath + HiveLocation AS SystemHive
     FROM glob(globs="/*", accessor="ntfs")
     WHERE log(message="Processing " + SystemHive)
-    
-    LET RegParse(Drive,SysHivePth) = 
+
+    LET RegParse(Drive,SysHivePth) =
     SELECT Drive, Name, FullPath, url(parse=FullPath).Fragment AS Value, Mtime, Data.value AS Key FROM foreach(
             row={
                 SELECT * FROM Drive

@@ -5,6 +5,28 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Update and read the user GUI options
+
+  ### Example
+
+  The following will set the user language to French, dark
+  theme and add a sidebar link named Foobar. The default password
+  for zip exports will also be set to `foobar`.
+
+  ```vql
+  SELECT user_options(user=whoami(),
+         lang="fr",
+         theme="veloci-dark",
+         links=[dict(
+            text="Foobar",
+            url="https://www.google.com",
+            type="sidebar",
+            new_tab=TRUE), ],
+          default_password="foobar")
+  FROM scope()
+  ```
+
 ---
 
 

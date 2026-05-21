@@ -5,6 +5,7 @@ import os
 import json
 import re
 import yaml
+import textwrap
 
 pararegex = re.compile(r"^(.+?)\n\n", re.I | re.M | re.S)
 parser = argparse.ArgumentParser(description='Generate artifact documentation.')
@@ -29,7 +30,7 @@ def EnsureDirExists(dirname):
         os.mkdir(dirname)
     except: pass
 
-def SaveDefinitions(filename, name, texts):
+def SaveDefinitions(filename, name, description, texts):
     with open(filename, "w") as fd:
         fd.write("""---
 title: %s
@@ -38,9 +39,11 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+%s
 ---
 
-""" % name)
+""" % (name, textwrap.indent(description, "  ")))
         for text in texts:
             fd.write(text)
 
@@ -51,6 +54,8 @@ def BuildDefinition(filename, item):
     EnsureDirExists(dirname)
 
     filename =  os.path.join(dirname, "_index.md")
+    description = item.get("description", "")
+
     result = "\n\n<div class=\"vql_item\"></div>\n\n"
     result += ("\n## %s\n<span class='vql_type label label-warning pull-right page-header'>%s</span>\n\n" % (item["name"], item["type"]))
 
@@ -81,7 +86,7 @@ def BuildDefinition(filename, item):
 
     result+=("\n")
 
-    if item.get("description", ""):
+    if description:
         result+= ("### Description\n\n%s\n\n" % item.get("description", ""))
 
     return filename, result
@@ -138,19 +143,25 @@ no_children: true
             # Maps filenames and data
             files = dict()
             filenames = dict()
+            def_map = dict()
 
             for definition in definitions:
+                name = definition["name"]
+
                 category = definition.get("category", "")
                 if category == file_config["category"]:
                     item_filename, text = BuildDefinition(filename, definition)
                     old = files.get(item_filename, [])
                     old.append(text)
                     files[item_filename] = old
-                    filenames[item_filename] = definition["name"]
+                    filenames[item_filename] = name
+                    def_map[item_filename] = definition
+
                     children.append(definition)
 
             for filename, texts in files.items():
-                SaveDefinitions(filename, filenames.get(filename), texts)
+                desc = def_map[filename].get("description", "")
+                SaveDefinitions(filename, filenames.get(filename), desc, texts)
 
             fd.write("|Plugin/Function|<span class='vql_type'>Type</span>|Description|\n|-|-|-|\n")
             for definition in sorted(children, key=lambda x: x.get("name")):

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Parse the MRU from MacOS users
 ---
 
 Parse the MRU from MacOS users

@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact will extract Event Logs related to ScheduledTasks and provide
+  a nice format for simplified review.
 ---
 
 This artifact will extract Event Logs related to ScheduledTasks and provide
@@ -19,7 +22,7 @@ all modified scheduled tasks (EID 140) then run frequency analysis and chase
 down any abnormalities for the environment. Similarly task execution (EID 129)
 and registration (EID 106) can be a good collection hunting for unusual paths.
 
-Pivoting can be via either: TaskSchedulerEventRegex, TaskName or IOC Regex
+Pivoting can be via either: TaskSchedulerEventRegex, TaskName or IOC regex
 (e.g taskname|delete|created|update)
 
 Note: Audit Other Object Access Events is required to be implemented to record
@@ -44,7 +47,7 @@ description: |
   down any abnormalities for the environment. Similarly task execution (EID 129)
   and registration (EID 106) can be a good collection hunting for unusual paths.
 
-  Pivoting can be via either: TaskSchedulerEventRegex, TaskName or IOC Regex
+  Pivoting can be via either: TaskSchedulerEventRegex, TaskName or IOC regex
   (e.g taskname|delete|created|update)
 
   Note: Audit Other Object Access Events is required to be implemented to record

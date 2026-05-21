@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+description: |
+  An internal artifact that receives events when a hunt is archived.
 ---
 
 An internal artifact that receives events when a hunt is archived.

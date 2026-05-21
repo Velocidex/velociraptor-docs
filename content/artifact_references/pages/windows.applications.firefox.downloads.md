@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Enumerate the users Firefox downloads.
 ---
 
 Enumerate the users Firefox downloads.

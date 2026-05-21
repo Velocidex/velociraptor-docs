@@ -3,6 +3,10 @@ menutitle: "Security"
 title: "Velociraptor Security"
 date: 2025-01-25
 weight: 40
+description: |
+  Velociraptor is a very powerful platform running with very high
+  privilege and access on many endpoints. We take the security of
+  Velociraptor very seriously.
 ---
 
 Velociraptor is a very powerful platform running with very high

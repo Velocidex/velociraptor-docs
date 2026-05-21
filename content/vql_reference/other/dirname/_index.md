@@ -5,6 +5,19 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Return the directory path.
+
+  ### Example
+
+  ```vql
+  dirname(path="/usr/bin/ls") -> "/usr/bin"
+  ```
+
+  ### See also
+
+  - [basename]({{< ref "/vql_reference/popular/basename/" >}})
+
 ---
 
 
@@ -37,6 +50,6 @@ dirname(path="/usr/bin/ls") -> "/usr/bin"
 
 ### See also
 
-- [basename](/vql_reference/popular/basename/)
+- [basename]({{< ref "/vql_reference/popular/basename/" >}})
 
 

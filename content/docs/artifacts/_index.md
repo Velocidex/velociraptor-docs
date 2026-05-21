@@ -5,6 +5,12 @@ date: 2021-06-12
 draft: false
 weight: 30
 last_reviewed: 2025-06-21
+summary: |
+  Velociraptor Artifacts are structured YAML files that encapsulate
+  VQL queries to streamline digital forensics and incident response tasks
+description: |
+  Velociraptor Artifacts are a key component of the platform, providing numerous
+  benefits for digital forensics and incident response workflows.
 ---
 
 Velociraptor Artifacts are a key component of the platform, providing numerous

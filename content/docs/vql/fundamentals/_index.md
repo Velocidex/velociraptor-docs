@@ -3,6 +3,8 @@ title: "VQL Fundamentals"
 date: 2025-01-24
 draft: false
 weight: 10
+description: |
+  {{% notice tip "Running VQL queries in Notebooks" %}}
 ---
 
 {{% notice tip "Running VQL queries in Notebooks" %}}
@@ -154,7 +156,7 @@ In order to understand how VQL works, let's follow a single row through the quer
 
 ### Lazy Evaluation
 
-In the previous example, the VQL engine goes through signficant effort to postpone the evaluation as much as
+In the previous example, the VQL engine goes through significant effort to postpone the evaluation as much as
 possible. Delaying an evaluation is a recurring theme in VQL and it saves Velociraptor from performing unnecessary work, like evaluating a
 column value if the entire row will be filtered out.
 
@@ -385,7 +387,7 @@ The dict has a number of very useful attributes:
 ### The scope() plugin
 
 VQL is strict about the syntax of a VQL statement. Each statement must
-have a plugin specified, however sometimes we dont really want to
+have a plugin specified, however sometimes we don't really want to
 select from any plugin at all.
 
 The default noop plugin is called `scope()` and simply returns the

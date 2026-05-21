@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  # Output all available RunMRU registry keys in timeline format.
 ---
 
 # Output all available RunMRU registry keys in timeline format.

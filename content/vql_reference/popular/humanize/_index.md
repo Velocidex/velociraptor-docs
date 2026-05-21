@@ -5,6 +5,11 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Format items in human readable way.
+
+  Formats a byte count in human readable way (e.g. Mb, Gb etc).
+
 ---
 
 

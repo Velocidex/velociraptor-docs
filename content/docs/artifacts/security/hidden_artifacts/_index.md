@@ -6,6 +6,7 @@ weight: 100
 draft: true
 summary: "Controlling artifact visibility"
 last_reviewed: 2025-05-24
+description: "Controlling artifact visibility"
 ---
 
 The first goal is to clean up the vast number of artifacts that are

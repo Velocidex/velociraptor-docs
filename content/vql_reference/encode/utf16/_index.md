@@ -5,6 +5,15 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Parse input from utf16.
+
+  ### Example
+
+  ```vql
+  utf16(string='A\x00B\x00C\x00D\x00') -> "ABCD"
+  ```
+
 ---
 
 

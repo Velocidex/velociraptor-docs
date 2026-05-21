@@ -5,6 +5,9 @@ date: 2024-12-30
 draft: false
 weight: 40
 last_reviewed: 2024-12-30
+description: |
+  Client metadata is an arbitrary key-value store that holds user-defined
+  information per client.
 ---
 
 Client metadata is an arbitrary key-value store that holds user-defined

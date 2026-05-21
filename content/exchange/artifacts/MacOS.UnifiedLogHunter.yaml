@@ -8,7 +8,7 @@ description: |
 
         The `Predicate` parameter can be used to filter logs. Example filters are included as artifact parameters.
 
-        Users may need to adjust the `Length` parameter to accomodate a large number of events being returned.
+        Users may need to adjust the `Length` parameter to accommodate a large number of events being returned.
 
         If you would like to perform an offline collection, or only care about collecting the raw files associated with this data, consider using [Exchange.MacOS.UnifiedLogParser](https://docs.velociraptor.app/exchange/artifacts/pages/macos.unifiedlogparser/).
 reference:
@@ -36,7 +36,7 @@ parameters:
     description: Look for manual install of a configuration profile
     type: bool
   - name: Configuration Profile - Manual Removal
-    description: Look for anual removal of a configuration profile
+    description: Look for manual removal of a configuration profile
     type: bool
   - name: DNS configuration changes
     description: Look for modifications made to host DNS settings
@@ -72,7 +72,7 @@ parameters:
     description: Look for keychain database unlock attempts
     type: bool
   - name: Permissions and Access Violations
-    description: Looks for TCC permisssions and access violations
+    description: Looks for TCC permissions and access violations
     type: bool
   - name: Session Creation and Destruction
     description: Looks for session creation and Destruction

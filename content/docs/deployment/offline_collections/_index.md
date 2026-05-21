@@ -4,6 +4,10 @@ date: 2025-10-21
 last_reviewed: 2025-10-31
 draft: false
 weight: 30
+description: |
+  In this section we look at a less conventional method of collecting data from
+  endpoints. One of Velociraptor's many strengths is its ability to deal with the
+  variety of challenging environments that realworld DFIR throws our way.
 ---
 
 In this section we look at a less conventional method of collecting data from

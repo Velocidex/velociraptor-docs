@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
+description: |
+  An internal queue for Ping requests. The queue is watched by the
+  replication service on the slave nodes which will notify the target
+  specified.
 ---
 
 An internal queue for Ping requests. The queue is watched by the

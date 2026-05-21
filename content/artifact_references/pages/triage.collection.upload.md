@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  A Generic uploader used by triaging artifacts.
 ---
 
 A Generic uploader used by triaging artifacts.

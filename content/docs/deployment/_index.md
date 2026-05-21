@@ -5,6 +5,9 @@ date: 2021-06-09T03:52:24Z
 last_reviewed: 2025-02-27
 draft: false
 weight: 10
+description: |
+  Velociraptor offers many deployment options that allow us to operate in all
+  kinds of environments.
 ---
 
 Velociraptor offers many deployment options that allow us to operate in all
@@ -100,7 +103,7 @@ server on a different platform, and you may decide to do so, but please keep in
 mind that for production deployments the server should run on Linux. Issues with
 other platforms will receive limited support.
 
-Binaries for the the most common platforms and architectures are available on
+Binaries for the most common platforms and architectures are available on
 our [Downloads](/downloads/) page.
 
 ## Deployment Milestones

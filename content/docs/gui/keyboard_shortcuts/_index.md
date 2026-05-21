@@ -6,6 +6,9 @@ last_reviewed: 2025-09-04
 draft: false
 weight: 80
 summary: Learn about keyboard shortcuts in the GUI
+description: |
+  The Velociraptor GUI supports many keyboard shortcuts to navigate around
+  quicker. So you don't have to be slowed down by mouse clicks!
 ---
 
 The Velociraptor GUI supports many keyboard shortcuts to navigate around
@@ -23,8 +26,8 @@ These are available on any screen in the GUI.
 
 |                                |   |                                                         |
 |--------------------------------|---|---------------------------------------------------------|
-| `<Alt>` + `d`                  | : | Goto dashboard                                          |
-| `<Alt>` + `n`                  | : | Goto notebooks                                          |
+| `<Alt>` + `d`                  | : | Go to dashboard                                          |
+| `<Alt>` + `n`                  | : | Go to notebooks                                          |
 | `<Alt>` + `c`                  | : | Collected artifacts (for the currently selected client) |
 | `<Ctrl>` + `/`                 | : | Show/Hide keyboard hotkeys help                         |
 | `<Ctrl>` + ( `<Shift>` ) + `?` | : | Move focus to the client search box                     |

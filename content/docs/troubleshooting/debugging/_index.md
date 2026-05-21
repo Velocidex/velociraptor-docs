@@ -10,6 +10,11 @@ summary: |
   troubleshooting a broad range of issues.
 aliases:
   - "/docs/gui/debugging/"
+description: |
+  Like any piece of software, Velociraptor makes a number of engineering
+  trade-offs, and may encounter some error conditions or even bugs. When
+  faced with the prospect of an unresponsive server or client, or high
+  CPU load, users often ask: *"What is Velociraptor doing right now?"*
 ---
 
 Like any piece of software, Velociraptor makes a number of engineering

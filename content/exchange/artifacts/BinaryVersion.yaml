@@ -2,8 +2,8 @@ name: Windows.System.BinaryVersion
 author: "Matt Green - @mgreen27"
 description: |
    This artifact will search the MFT for any matching filenames and return
-   binary details. This artifact can be used to find all instances of a 
-   binary on disk so its great for scoping both legititimate and illegitimate 
+   binary details. This artifact can be used to find all instances of a
+   binary on disk so its great for scoping both legitimate and illegitimate
    files.
 
 parameters:
@@ -14,7 +14,7 @@ parameters:
      default: 'C:\'
    - name: TargetAllDrives
      type: bool
-     
+
 sources:
   - precondition:
       SELECT OS From info() where OS = 'windows'

@@ -7,6 +7,10 @@ weight: 10
 summary: |
   The most commonly used artifact fields and how to use them.
 last_reviewed: 2025-04-30
+description: |
+  Understanding the most commonly used artifact fields is crucial for working with
+  artifacts. These are the ones you really need to know about. This page outlines
+  the most commonly used top-level artifact fields and explains how to use them.
 ---
 
 Understanding the most commonly used artifact fields is crucial for working with

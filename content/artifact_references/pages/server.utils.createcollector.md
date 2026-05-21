@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  A utility artifact to create a stand alone collector.
 ---
 
 A utility artifact to create a stand alone collector.
@@ -158,7 +160,7 @@ parameters:
     description: |
       If specified the collection will be packed with the specified
       version of the binary. NOTE: This is rarely what you want
-      because the packed builtin artifacts are only compatible with
+      because the packed built-in artifacts are only compatible with
       the current release version.
 
   - name: opt_delete_at_exit

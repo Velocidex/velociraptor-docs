@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Chocolatey packages installed in a system.
 ---
 
 Chocolatey packages installed in a system.

@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  This is the welcome screen in the Velociraptor GUI. You can
+  customize this screen by editing this artifact.
 ---
 
 This is the welcome screen in the Velociraptor GUI. You can

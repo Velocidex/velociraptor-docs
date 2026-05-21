@@ -3,6 +3,12 @@ title: "Event Queries"
 date: 2021-06-12T20:57:18Z
 draft: false
 weight: 20
+description: |
+  Normally a VQL query returns a result set and then terminates. For
+  example, consider the `glob()` plugin which searches the filesystem
+  for files matching a pattern. While it may take a few minutes to fully
+  traverse the entire filesystem, as soon as a matching file is found,
+  the row is emitted from the plugin asynchronously.
 ---
 
 Normally a VQL query returns a result set and then terminates. For

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Carve the $I30 index stream for a directory.
 ---
 
 Carve the $I30 index stream for a directory.

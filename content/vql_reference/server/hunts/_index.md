@@ -5,6 +5,9 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Retrieve the list of hunts.
+
 ---
 
 

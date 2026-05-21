@@ -9,6 +9,10 @@ disqusShortname: velocidex-velociraptor
 
 enableGitInfo: true
 
+privacy:
+  googleAnalytics:
+    disable: true
+
 params:
   searchURL: https://search.velociraptor-docs.org/query
   noDisqus: true

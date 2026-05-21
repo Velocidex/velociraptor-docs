@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  A demo plugin showing some GUI features.
 ---
 
 A demo plugin showing some GUI features.

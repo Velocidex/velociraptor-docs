@@ -3,6 +3,9 @@ menutitle: "Support Policy"
 title: "The Velociraptor Support Policy"
 weight: 10
 draft: false
+description: |
+  While Velociraptor is an open source project, we do take the security
+  and stability of the project very seriously.
 ---
 
 While Velociraptor is an open source project, we do take the security

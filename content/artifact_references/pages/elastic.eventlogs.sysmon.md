@@ -4,9 +4,11 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Ships the Sysmon event log in ECS schema.
 ---
 
-Ships the the Sysmon event log in ECS schema.
+Ships the Sysmon event log in ECS schema.
 
 The Elastic Common Schema (ECS) is an open source specification,
 developed with support from the Elastic user community. ECS defines
@@ -28,7 +30,7 @@ board.
 <pre><code class="language-yaml">
 name: Elastic.EventLogs.Sysmon
 description: |
-  Ships the the Sysmon event log in ECS schema.
+  Ships the Sysmon event log in ECS schema.
 
   The Elastic Common Schema (ECS) is an open source specification,
   developed with support from the Elastic user community. ECS defines

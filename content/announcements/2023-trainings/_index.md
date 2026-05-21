@@ -239,7 +239,7 @@ and ideas along as well!
   * Using External Tools
      * Velociraptor Third Party Tools
      * Exercise: Detect malicious scheduled task with autoruns
-     * Exercise - Package Sysinternal DU
+     * Exercise - Package Sysinternals DU
      * Serving tools from an SMB server
   * Server Artifacts
      * Exercise: Write artifact for Client version distribution

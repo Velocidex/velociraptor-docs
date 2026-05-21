@@ -171,7 +171,7 @@ recursing through that.
 
 ![Recursing through the /proc filesystem](glob_proc.png)
 
-We can disable following symlinks using the nosymlink option to
+We can disable following symlinks using the `nosymlink` option to
 glob. However this query will also take a very long time on this
 system:
 

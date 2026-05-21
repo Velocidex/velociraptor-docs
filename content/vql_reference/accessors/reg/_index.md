@@ -5,6 +5,13 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  An alias for the `registry` accessor, which accesses the registry using the
+  OS APIs.
+
+  Please see [the registry accessor]({{< ref "/vql_reference/accessors/registry/" >}})
+  for more information.
+
 ---
 
 
@@ -23,7 +30,7 @@ no_edit: true
 An alias for the `registry` accessor, which accesses the registry using the
 OS APIs.
 
-Please see [the registry accessor](/vql_reference/accessors/registry/)
+Please see [the registry accessor]({{< ref "/vql_reference/accessors/registry/" >}})
 for more information.
 
 

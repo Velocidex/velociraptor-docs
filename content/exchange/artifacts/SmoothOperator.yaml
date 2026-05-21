@@ -1,28 +1,28 @@
 name: Windows.Detection.SmoothOperator
 author: "Matt Green - @mgreen27"
 description: |
-   This artifact searches for evidence of trojanised 3CXDesktopApp.
-   
-   Currently Windows specific, Yara glob can be repurposed for MacOS. 
-   Targeting /Contents/Frameworks/Electron Framework.framework/Versions/A/Libraries/libffmpeg.dylib  
-   
+   This artifact searches for evidence of trojanized 3CXDesktopApp.
+
+   Currently Windows specific, Yara glob can be repurposed for MacOS.
+   Targeting /Contents/Frameworks/Electron Framework.framework/Versions/A/Libraries/libffmpeg.dylib
+
    There are three methods of detection:
-   
+
    1. Yara glob - searches known install paths and applies yara looking for binary attributes.
    2. Process Memory - Searches for compromised 3CXDesktopApp running using Windows.System.VAD.
    3. AMCache - Searches for compromised 3CXDesktopApp.exe versions in AMCache.
-   
+
    Impacted 3CXDesktopApp:
-   
+
    - Windows: 18.12.407 & 18.12.416
    - MacOS: 18.11.1213, 18.12.402, 18.12.407 & 18.12.416
-   
-   NOTE: artifact tested on 0.6.8 - should also work on on 0.6.7.  
+
+   NOTE: artifact tested on 0.6.8 - should also work on 0.6.7.
    Be aware that the YARA rules are intentionally written in a way that is less strict & may
 
     1. detect other malicious samples created in the time frame in which the known malicious samples were created
     2. lead to some FPs
-    
+
    Thank you to @cyb3rops for sharing rules.
 
 reference:
@@ -42,7 +42,7 @@ parameters:
    - name: TargetYara
      default: |
          import "pe"
-         
+
          rule APT_MAL_NK_3CX_Malicious_Samples_Mar23_1 {
             meta:
                description = "Detects malicious DLLs related to 3CX compromise"
@@ -59,7 +59,7 @@ parameters:
                $op4 = { 44 0F B6 CD 46 8A 8C 0C ?? ?? ?? ?? 45 30 0C 0E 48 FF C1} /* xor part in RC4 decryption*/
              condition:
                uint16(0) == 0x5a4d
-               and filesize < 3MB 
+               and filesize < 3MB
                and pe.characteristics & pe.DLL
                and 2 of them
          }
@@ -121,7 +121,7 @@ parameters:
                hash1 = "7986bbaee8940da11ce089383521ab420c443ab7b15ed42aed91fd31ce833896"
                hash2 = "c485674ee63ec8d4e8fde9800788175a8b02d3f9416d0e763360fff7f8eb4e02"
             strings:
-               $opx1 = { 41 80 7C 00 FD FE 75 ?? 41 80 7C 00 FE ED 75 ?? 41 80 7C 00 FF FA 75 ?? 41 80 3C 00 CE } 
+               $opx1 = { 41 80 7C 00 FD FE 75 ?? 41 80 7C 00 FE ED 75 ?? 41 80 7C 00 FF FA 75 ?? 41 80 3C 00 CE }
             condition:
                $opx1
          }
@@ -159,7 +159,7 @@ parameters:
                $sc1 = { 1B 66 11 DF 9C 9A 4D 6E CC 8E D5 0C 9B 91 78 73 } // Known compromised cert
             condition:
                uint16(0) == 0x5a4d
-               and pe.timestamp > 1669680000 // 29.11.2022 earliest known malicious sample 
+               and pe.timestamp > 1669680000 // 29.11.2022 earliest known malicious sample
                and pe.timestamp < 1680108505 // 29.03.2023 date of the report
                and all of ($sa*)
                and $sc1 // serial number of known compromised certificate
@@ -180,11 +180,11 @@ parameters:
                $sc1 = { 1B 66 11 DF 9C 9A 4D 6E CC 8E D5 0C 9B 91 78 73 } // Known compromised cert
 
                $s1 = "3CX Ltd1"
-               $s2 = "202303" // in 
+               $s2 = "202303" // in
             condition:
                uint16(0) == 0xcfd0
-               and $a1 
-               and $sc1 
+               and $a1
+               and $sc1
                and (
                   $s1 in (filesize-20000..filesize)
                   and $s2 in (filesize-20000..filesize)
@@ -221,7 +221,7 @@ parameters:
                hash2 = "fee4f9dabc094df24d83ec1a8c4e4ff573e5d9973caa676f58086c99561382d7"
             strings:
                /* XORed UA 0x7a */
-               $xc1 = { 37 15 00 13 16 16 1B 55 4F 54 4A 5A 52 2D 13 14 
+               $xc1 = { 37 15 00 13 16 16 1B 55 4F 54 4A 5A 52 2D 13 14
                         1E 15 0D 09 5A 34 2E 5A 4B 4A 54 4A 41 5A 2D 13
                         14 4C 4E 41 5A 02 4C 4E 53 5A 3B 0A 0A 16 1F 2D
                         1F 18 31 13 0E 55 4F 49 4D 54 49 4C 5A 52 31 32
@@ -260,13 +260,13 @@ parameters:
                  reference = "https://twitter.com/WhichbufferArda/status/1641404343323688964?s=20"
                  description = "Detects decrypted payload loaded inside 3CXDesktopApp.exe which downloads info stealer"
                  date = "2023-03-29"
-                 hash = "851c2c99ebafd4e5e9e140cfe3f2d03533846ca16f8151ae8ee0e83c692884b7" 
+                 hash = "851c2c99ebafd4e5e9e140cfe3f2d03533846ca16f8151ae8ee0e83c692884b7"
                  score = 80
              strings:
                  $op1 = {41 69 D0 [4] 8B C8 C1 E9 ?? 33 C1 8B C8 C1 E1 ?? 81 C2 [4] 33 C1 43 8D 0C 02 02 C8 49 C1 EA ?? 41 88 0B 8B C8 C1 E1 ?? 33 C1 44 69 C2 [4] 8B C8 C1 E9 ?? 33 C1 8B C8 C1 E1 ?? 41 81 C0 [4] 33 C1 4C 0F AF CF 4D 03 CA 45 8B D1 4C 0F AF D7 41 8D 0C 11 49 C1 E9 ?? 02 C8} // // xor with mul operation
                  $op2 = {4D 0F AF CC 44 69 C2 [4] 4C 03 C9 45 8B D1 4D 0F AF D4 41 8D 0C 11 41 81 C0 [4] 02 C8 49 C1 E9 ?? 41 88 4B ?? 4D 03 D1 8B C8 45 8B CA C1 E1 ?? 33 C1} // xor with mul operation
                  $op3 = {33 C1 4C 0F AF C7 8B C8 C1 E1 ?? 4D 03 C2 33 C1} // shift operation
-             condition: 
+             condition:
                  2 of them
          }
 
@@ -296,7 +296,7 @@ parameters:
          }
 
    - name: VersionRegex
-     description: Known comromised 3CXDesktopApp.exe Windows versions to search AMCache.
+     description: Known compromised 3CXDesktopApp.exe Windows versions to search AMCache.
      default: ^(18\.12\.407\.0|18\.12\.416)$
 
 sources:
@@ -343,7 +343,7 @@ sources:
         WHERE Name = '3cxdesktopapp.exe'
             AND ( Version =~ VersionRegex
                 OR BinVersion =~ VersionRegex )
-        
+
 column_types:
   - name: HitContext
     type: preview_upload

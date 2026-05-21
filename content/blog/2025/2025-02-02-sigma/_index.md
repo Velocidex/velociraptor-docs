@@ -138,7 +138,7 @@ precisely and only evaluating rules within that well defined model. We
 end up with various "flavors" of Sigma rules.
 
 Velociraptor separates the implementation of the `Sigma Model` from
-the maintainance of the `Sigma Rules` themselves. This makes it easier
+the maintenance of the `Sigma Rules` themselves. This makes it easier
 to maintain a set of rules separately from the model itself.
 
 For example, the [Velociraptor Sigma Project](https://sigma.velocidex.com/) maintains

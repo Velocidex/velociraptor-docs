@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact collects evidence of autoruns. We also capture the files and upload them.
 ---
 
 This artifact collects evidence of autoruns. We also capture the files and upload them.

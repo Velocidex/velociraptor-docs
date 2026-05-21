@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+description: |
+  A monitoring artifact which detects a successful SSH login preceded by some
+  failed attempts within the last hour.
 ---
 
 A monitoring artifact which detects a successful SSH login preceded by some

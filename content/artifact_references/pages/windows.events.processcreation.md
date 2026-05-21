@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+description: |
+  Collect all process creation events.
 ---
 
 Collect all process creation events.

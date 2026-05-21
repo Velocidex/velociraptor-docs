@@ -5,6 +5,29 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Sets client metadata.
+
+  Client metadata is a set of free form key-value pairs, i.e. a dict.
+
+  When updating metadata the result is the same as adding 2 dicts.
+  For existing keys, the value is overwritten.
+
+  Setting a metadata key with a `NULL` value deletes that entry.
+
+  ### Example
+
+  ```vql
+  SELECT client_set_metadata(client_id=client_id, metadata=dict(department="Lab02"))
+  FROM clients()
+  WHERE os_info.hostname =~ "TRAINING"
+  ```
+
+  ### See also
+
+  - [client_metadata]({{< ref "/vql_reference/server/client_metadata/" >}}):
+    Returns client metadata from the datastore.
+
 ---
 
 
@@ -48,7 +71,7 @@ WHERE os_info.hostname =~ "TRAINING"
 
 ### See also
 
-- [client_metadata](/vql_reference/server/client_metadata/):
+- [client_metadata]({{< ref "/vql_reference/server/client_metadata/" >}}):
   Returns client metadata from the datastore.
 
 

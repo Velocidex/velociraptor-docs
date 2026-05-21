@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  The Windows Certutil binary is capable of downloading arbitrary files.
+  Attackers typically use it to fetch tools undetected when using "Living off
+  the Land" (LOL) techniques.
 ---
 
 The Windows Certutil binary is capable of downloading arbitrary files.

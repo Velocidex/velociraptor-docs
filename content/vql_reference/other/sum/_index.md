@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Sums the items.
 ---
 
 
@@ -22,8 +24,4 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 item||int64 (required)
-
-### Description
-
-Sums the items.
 

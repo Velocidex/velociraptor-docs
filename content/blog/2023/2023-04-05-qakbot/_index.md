@@ -56,7 +56,7 @@ significantly in recent times, but for some minor key changes. It uses
 a SHA1 of a hard coded key that can typically be extracted as an
 encoded string in the .data section of the payload binary. This key
 often remains static across campaigns, which can speed up analysis with
-the maintainance of a recent key list.
+the maintenance of a recent key list.
 
 Current samples undergo two rounds of RC4 decryption with validation
 built in. The validation bytes dropped from the data for the second

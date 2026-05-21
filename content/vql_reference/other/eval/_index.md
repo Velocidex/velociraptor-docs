@@ -5,6 +5,26 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Evaluate a vql lambda function on the current scope.
+
+  This allows you to use a string as a VQL function - the string
+  will be parsed at runtime as a VQL expression and then evaluated.
+
+  You can access previously defined variables or functions within
+  the scope.
+
+  Note that when eval calls the function, the current scope will be
+  passed as the first parameter to the lambda.
+
+  ### Example
+
+  ```vql
+  LET AddTwo(x) = x + 2
+
+  SELECT eval(func="x=>AddTwo(x=1)") AS Three FROM scope()
+  ```
+
 ---
 
 

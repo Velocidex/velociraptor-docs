@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Parse a string with a set of regex and extract fields. Returns a dict with fields populated from all regex capture variables.
 ---
 
 

@@ -8,6 +8,8 @@ disableToc: false
 no_children: true
 noDisqus: true
 hidden: true
+description: |
+  This site has a the following RSS feeds that you can follow.
 ---
 
 

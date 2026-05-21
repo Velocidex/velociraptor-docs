@@ -6,6 +6,11 @@ draft: false
 weight: 150
 summary: "Interesting use cases for artifacts"
 last_reviewed: 2025-04-30
+description: |
+  While you can learn a lot about what artifacts are usually used for by looking
+  through the [hundreds of artifacts](/artifact_references/)
+  that ship with the Velociraptor binary, there are certainly many more use cases
+  -- including ones that nobody has even thought of yet!
 ---
 
 While you can learn a lot about what artifacts are usually used for by looking

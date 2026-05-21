@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This Artifact will hunt for evidence of Telerik exploitation in the Application
+  Event Log.
 ---
 
 This Artifact will hunt for evidence of Telerik exploitation in the Application
@@ -50,11 +53,11 @@ parameters:
   - name: EvtxGlob
     default: '%SystemRoot%\System32\Winevt\Logs\Application.evtx'
   - name: IocRegex
-    description: "IOC Regex"
+    description: "IOC regex"
     default: telerik.*\\?type=rau
     type: regex
   - name: WhitelistRegex
-    description: "Regex of string to witelist"
+    description: "Regex of string to whitelist"
     type: regex
   - name: VSSAnalysisAge
     type: int

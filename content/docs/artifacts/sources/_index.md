@@ -4,11 +4,13 @@ title: "Artifact Sources"
 date: 2025-01-25
 draft: false
 weight: 30
-summary: "Sources describe how the artifact produces data"
+summary: "Sources define how an artifact produces data"
 last_reviewed: 2025-06-13
+description: |
+  Sources describe how the artifact produces data.
 ---
 
-Sources describe how the artifact produces data.
+Sources define how an artifact produces data.
 
 An artifact may contain several sources. Each source represents a single
 `SELECT` query and potentially multiple `LET` queries. Ultimately each source

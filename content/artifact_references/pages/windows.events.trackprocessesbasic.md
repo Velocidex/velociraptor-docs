@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+description: |
+  A basic process tracker which uses a simple polled pslist().
 ---
 
 A basic process tracker which uses a simple polled pslist().

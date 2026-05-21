@@ -91,7 +91,7 @@ Therefore it is desirable to collect as much as possible in the first
 place to minimize the need to go back and re-collect more data.
 
 While it would be nice to collect as much as possible, we need to be
-speedy in our collection. Therefore we need to make some tradeoffs:
+speedy in our collection. Therefore we need to make some trade-offs:
 
 * The more files we collect the longer it takes and the larger the
   collection gets. This makes it harder to handle more systems and
@@ -401,7 +401,7 @@ with `HashOnly` collection policy:
 2. The artifact will still attempt to locate and hash the targets
    which tells us if the files are still present on the endpoint. We
    can always issue a new collection for important files.
-3. If you dont use the hashes, considering setting `MaxHashSize` to a
+3. If you don't use the hashes, considering setting `MaxHashSize` to a
    small number. This will speed up the artifact and still record if
    the file itself is present (and its timestamps).
 

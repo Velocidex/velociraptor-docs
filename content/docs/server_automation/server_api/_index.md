@@ -4,6 +4,11 @@ title: The Velociraptor API
 date: 2021-06-30T12:31:08Z
 draft: false
 weight: 10
+description: |
+  Velociraptor can be fully controlled by external programs using the
+  Velociraptor API. In this page you will learn how to connect to the
+  server using the API and control it using a Python script to schedule
+  collections on hosts and retrieve the results of those collections.
 ---
 
 Velociraptor can be fully controlled by external programs using the
@@ -227,7 +232,7 @@ command _replaces_ the existing roles - it does not add to them.
 $ velociraptor --config server.config.yaml acl grant Mike --role investigator,api
 ```
 
-Note that role role changes made from the CLI require a service restart. You
+Note that role changes made from the CLI require a service restart. You
 will see a message recommending this after running the `acl grant` command.
 Changes made in the GUI or VQL do not require a service restart.
 

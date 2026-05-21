@@ -38,7 +38,7 @@ velociraptor --config config.yaml config show --json
 Since YAML is a superset of JSON you can also provide this JSON blob
 to Velociraptor as the actual configuration (no need to convert it
 back to YAML). This helps to prepare the JSON merge patch - simply
-remove the fields you dont want to change and change the fields you do
+remove the fields you don't want to change and change the fields you do
 want to change.
 
 {{% /notice %}}

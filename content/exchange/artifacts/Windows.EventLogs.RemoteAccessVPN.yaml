@@ -7,7 +7,7 @@ description: |
   are using Microsoft VPN service. It targets both server and client side logs.
 
   This artifact parses EvtxHunter output and returns a set of fields in results.
-  An unparsed data field is availible in the hidden _RawData field.
+  An unparsed data field is available in the hidden `_RawData` field.
 
   There are several parameter's available for search leveraging regex.
 

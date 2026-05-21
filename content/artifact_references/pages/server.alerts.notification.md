@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+description: |
+  This artifact forwards alerts from Server.Internal.Alerts to a Slack/Teams/Discord via a Webhook.
 ---
 
 This artifact forwards alerts from Server.Internal.Alerts to a Slack/Teams/Discord via a Webhook.
@@ -21,7 +23,7 @@ type: SERVER_EVENT
 parameters:
   - name: SlackToken
     description: |
-      The token URL obtained from Slack/Teams/Discord (or basicly any communication-service that supports webhooks).
+      The token URL obtained from Slack/Teams/Discord (or basically any communication-service that supports webhooks).
       Leave blank to use server metadata. e.g. https://hooks.slack.com/services/XXXX/YYYY/ZZZZ
 
 sources:

@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact enables running YARA over a Physical device and offset
+  specific targeting.
 ---
 
 This artifact enables running YARA over a Physical device and offset

@@ -9,6 +9,10 @@ summary: |
   Before we dive in to server deployment specifics it will be helpful to
   familiarize yourself with a few important concepts, which are central to all
   Velociraptor deployments.
+description: |
+  Before we dive in to server deployment specifics it will be helpful to
+  familiarize yourself with a few important concepts, which are central to all Velociraptor
+  deployments.
 ---
 
 Before we dive in to server deployment specifics it will be helpful to

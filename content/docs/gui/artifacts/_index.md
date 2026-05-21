@@ -6,6 +6,8 @@ last_reviewed: 2025-05-18
 draft: false
 weight: 60
 summary: How to find, manage, create and edit artifacts in the GUI
+description: |
+  ## Finding, managing, creating and editing artifacts in the GUI
 ---
 
 ## Finding, managing, creating and editing artifacts in the GUI

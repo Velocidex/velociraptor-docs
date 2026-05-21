@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  **Apply a Sinkhole via Windows hosts file modification**
+  This content will modify the Windows hosts file by a configurable
+  lookup table.
 ---
 
 **Apply a Sinkhole via Windows hosts file modification**

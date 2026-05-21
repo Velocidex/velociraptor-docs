@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  List all packages installed on the system, both deb packages and "snaps".
 ---
 
 List all packages installed on the system, both deb packages and "snaps".
@@ -88,7 +90,7 @@ parameters:
 
   - name: snapdSocket
     description: |
-     The location of the snap deamon UNIX socket, used for fetching the snap
+     The location of the snap daemon UNIX socket, used for fetching the snap
      list through a HTTP API call. If snap is not used, the failed query
      response will simply be ignored.
     default: /run/snapd.socket

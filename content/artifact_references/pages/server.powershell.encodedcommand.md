@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+description: |
+  It is possible to pass PowerShell an encoded script. This artifact
+  decodes such scripts.
 ---
 
 It is possible to pass PowerShell an encoded script. This artifact

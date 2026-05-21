@@ -7,6 +7,8 @@ draft: true
 weight: 40
 summary: |
   * Troubleshooting Collections and Hunts.
+description: |
+  ## Collection status
 ---
 
 ## Collection status

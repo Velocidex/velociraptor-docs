@@ -7,6 +7,11 @@ sitemap:
   disable: true
 no_edit: true
 no_children: true
+description: |
+  Velociraptor provides complete control of the server within VQL queries. On
+  the server the VQL engine contains the following plugins and functions
+  which you can use to manage and automate the server via VQL queries. Such
+  server-side VQL can be run via Server Artifacts, Notebooks, or the API.
 ---
 
 Velociraptor provides complete control of the server within VQL queries. On

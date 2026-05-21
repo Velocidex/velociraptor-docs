@@ -5,6 +5,13 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Cancels the flow.
+
+  This sends the client an immediate cancellation message and stops
+  the flow. It also removes any outstanding requests for the client
+  if there are any.
+
 ---
 
 
@@ -26,13 +33,4 @@ flow_id||string
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">COLLECT_SERVER</span>
 <span class="permission_list linkcolour label label-important">COLLECT_CLIENT</span>
-
-### Description
-
-Cancels the flow.
-
-This sends the client an immediate cancellation message and stops
-the flow. It also removes any outstanding requests for the client
-if there are any.
-
 

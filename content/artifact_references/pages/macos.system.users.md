@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact collects information about the local users on the
+  system. The information is stored in plist files.
 ---
 
 This artifact collects information about the local users on the

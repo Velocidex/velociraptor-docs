@@ -6,6 +6,8 @@ last_reviewed: 2025-11-26
 draft: false
 weight: 30
 summary: "Build an offline collector"
+description: |
+  Builds an [offline collector](/docs/deployment/offline_collections/).
 ---
 
 Builds an [offline collector](/docs/deployment/offline_collections/).

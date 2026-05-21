@@ -4,6 +4,11 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This Artifact will return all successful Kerberos TGS Ticket events for
+  Service Accounts (SPN attribute) implemented with weak encryption. These
+  tickets are vulnerable to brute force attack and this event is an indicator
+  of a Kerberoasting attack.
 ---
 
 This Artifact will return all successful Kerberos TGS Ticket events for

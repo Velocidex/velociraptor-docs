@@ -5,6 +5,27 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Format a timestamp into a string.
+
+  This uses the same type of format string as described
+  https://pkg.go.dev/time#Time.Format . You can also use any of the
+  constants described in https://pkg.go.dev/time#pkg-constants as a
+  shorthand to common time formatting directives.
+
+  The output timezone is UTC by default but can be changed using the
+  `TZ` VQL variable.
+
+  ### Example
+
+  ```vql
+  LET TZ="Europe/Berlin"
+
+  SELECT timestamp_format(time=now(), format="RFC3339") FROM scope()
+
+  > "2024-08-29T02:05:23+02:00"
+  ```
+
 ---
 
 

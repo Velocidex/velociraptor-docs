@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Upload all users chrome extension.
 ---
 
 Upload all users chrome extension.

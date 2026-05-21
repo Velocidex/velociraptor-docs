@@ -5,6 +5,16 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Creates a download pack for a hunt.
+
+  This function initiates the download creation process for a
+  hunt. It is equivalent to the GUI functionality allowing to
+  "Download Results" from the Hunts Overview page.
+
+  Using the `wait` parameter you can wait for the download to
+  complete or just kick it off asynchronously.
+
 ---
 
 

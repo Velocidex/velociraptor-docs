@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Create a temporary directory. The directory will be removed when the query ends.
 ---
 
 

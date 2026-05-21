@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Remotely push new client updates.
 ---
 
 Remotely push new client updates.
@@ -63,7 +65,7 @@ sources:
       // If we fail to download the binary we do not run the command.
 
       // msiexec needs some random set of commands to really force a
-      // reinstall. We dont know which one will be correct at runtime so
+      // reinstall. We don't know which one will be correct at runtime so
       // we just try them all. If we succeed then the client will get
       // killed and restarted.
       SELECT * FROM foreach(row=bin,

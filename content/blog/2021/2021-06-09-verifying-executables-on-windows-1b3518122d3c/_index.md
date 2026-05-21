@@ -86,7 +86,7 @@ Armed with our new understanding of Authenticode, we may run VQL queries to coll
 
 ![](../../img/156Eq-sGsBkzTnREg7ymsFA.png)
 
-The example above shows that notepad.exe, does not typically contain embedded signing information. Similarly, if one clicks on the the notepad.exe binary in the GUI no digital signature information is shown
+The example above shows that notepad.exe, does not typically contain embedded signing information. Similarly, if one clicks on the notepad.exe binary in the GUI no digital signature information is shown
 
 ![](../../img/1nVs1beihcqM5MefgsK3d9g.png)
 

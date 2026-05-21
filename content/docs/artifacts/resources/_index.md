@@ -6,6 +6,12 @@ draft: false
 weight: 130
 summary: "How to limit an artifact's resource usage"
 last_reviewed: 2025-05-18
+description: |
+  Velociraptor often runs on performance sensitive endpoints, like
+  servers and laptops, as well as low resource machines like cloud
+  virtual machines. It is critical to ensure that Velociraptor does not
+  generate undue load on the endpoint, leading to performance
+  degradation.
 ---
 
 Velociraptor often runs on performance sensitive endpoints, like

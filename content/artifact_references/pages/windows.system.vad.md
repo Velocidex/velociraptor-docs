@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact enables enumeration of process memory sections via the Virtual
+  Address Descriptor (VAD). The VAD is used by the Windows memory manager to
+  describe allocated process memory ranges.
 ---
 
 This artifact enables enumeration of process memory sections via the Virtual

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Remove malicious task from the Windows scheduled task list.
 ---
 
 Remove malicious task from the Windows scheduled task list.

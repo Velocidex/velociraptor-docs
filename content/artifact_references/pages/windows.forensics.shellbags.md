@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Windows uses the Shellbag keys to store user preferences for GUI
+  folder display within Windows Explorer.
 ---
 
 Windows uses the Shellbag keys to store user preferences for GUI

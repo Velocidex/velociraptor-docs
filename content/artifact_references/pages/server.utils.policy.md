@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  This artifact defines a set of security policies.
 ---
 
 This artifact defines a set of security policies.
@@ -51,7 +53,7 @@ parameters:
   type: bool
   description: |
     Disable server plugins which allow connecting to external
-    resources over the network. These include for exaxmple:
+    resources over the network. These include for example:
     1. http_client()
     2. upload_elastic()
     3. upload_s3()

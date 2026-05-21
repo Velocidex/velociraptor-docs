@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  A utility artifact which fetches a binary from a URL and caches it on disk.
+  We verify the hash of the binary on disk and if it does not match we fetch it again
+  from the source URL.
 ---
 
 A utility artifact which fetches a binary from a URL and caches it on disk.

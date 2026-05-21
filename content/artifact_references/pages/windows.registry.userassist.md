@@ -4,6 +4,11 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Windows systems maintain a set of keys in the registry database
+  (UserAssist keys) to keep track of programs that executed. The
+  number of executions and last execution date and time are available
+  in these keys.
 ---
 
 Windows systems maintain a set of keys in the registry database

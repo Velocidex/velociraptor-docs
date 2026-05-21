@@ -5,6 +5,13 @@ date: 2025-11-01
 last_reviewed: 2026-01-31
 draft: false
 weight: 20
+description: |
+  In Velociraptor, the Virtual File System (VFS) browser provides a server-side
+  cached view of an endpoint's filesystem. Unlike a traditional network mount, the
+  VFS is actually a server-side cache that presents a snapshot of the files and
+  directories collected from the client. Because it is a cache, you can browse
+  previously collected directory structures and files even when the endpoint is
+  offline.
 ---
 
 In Velociraptor, the Virtual File System (VFS) browser provides a server-side

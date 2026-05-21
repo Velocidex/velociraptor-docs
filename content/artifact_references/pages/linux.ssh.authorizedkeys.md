@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Finds and parses SSH authorized keys files.
 ---
 
 Finds and parses SSH authorized keys files.

@@ -1,23 +1,23 @@
 name: Server.Enrichment.AI.Ollama
 author: Matt Green - @mgreen27
 description: |
-  This artifact allows enrichment using Ollama AI. 
-  
-  Paramaters:
-  
-  * `PrePrompt` - Is initial prompt default is: "You are a Cyber Incident 
-  Responder and need to analyze data. You have an eye for detail and like to use 
-  short precise technical language. Analyze the following data and provide 
-  summary analysis:"  
-  * `Prompt` - Is secondary prompt, good practice is add some strings related to 
+  This artifact allows enrichment using Ollama AI.
+
+  Parameters:
+
+  * `PrePrompt` - Is initial prompt default is: "You are a Cyber Incident
+  Responder and need to analyze data. You have an eye for detail and like to use
+  short precise technical language. Analyze the following data and provide
+  summary analysis:"
+  * `Prompt` - Is secondary prompt, good practice is add some strings related to
   the type of data for analysis or artifact name to provide context.
   * `PromptData` - add object to be serialized and added to the prompt.
   * `Model` - Model to use for your request.
   * `TargetUri` - Ollama target URI
-  * `MaxPromptSize` - If set will cut the final prompt to this size in bytes to 
+  * `MaxPromptSize` - If set will cut the final prompt to this size in bytes to
   assist maintaining context limits
-  
-  This artifact can be called from within another artifact (such as one looking 
+
+  This artifact can be called from within another artifact (such as one looking
   for files) to enrich the data made available by that artifact.
 
 type: SERVER
@@ -49,11 +49,11 @@ parameters:
 
 sources:
   - query: |
-        LET FinalPrompt = if(condition= MaxPromptSize, 
+        LET FinalPrompt = if(condition= MaxPromptSize,
             then = (PrePrompt + " " + Prompt + " " + serialize(item=PromptData))[:MaxPromptSize],
             else= PrePrompt + " " + Prompt + " " + serialize(item=PromptData) )
-        
-        SELECT FinalPrompt AS Prompt, 
+
+        SELECT FinalPrompt AS Prompt,
             parse_json(data=Content).response AS ResponseText,
             parse_json(data=Content) AS ResponseDetails
         FROM http_client(

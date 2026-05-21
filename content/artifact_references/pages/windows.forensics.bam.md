@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  The Background Activity Moderator (BAM) is a Windows service that
+  Controls activity of background applications.  This service exists
+  in Windows 10 only after Fall Creators update – version 1709.
 ---
 
 The Background Activity Moderator (BAM) is a Windows service that

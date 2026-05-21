@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
+description: |
+  An internal artifact to listen to inventory (tools) changes.
 ---
 
 An internal artifact to listen to inventory (tools) changes.

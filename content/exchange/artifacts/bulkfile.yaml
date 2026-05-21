@@ -5,11 +5,11 @@ description: |
     Typical upload workflow may be to firstly search, then if returned
     rows match expectations rerun query with upload tickbox selected.
 
-    NOTE: strings with comma "," requre quotes.
+    NOTE: strings with comma "," require quotes.
 
     IocLookupTable csv details:
 
-    Glob - "Quote" items with { glob } barckets.
+    Glob - "Quote" items with { glob } brackets.
     Whitelist - Velociraptor regex to whitelist FullPath field.
     Description - Free text
 

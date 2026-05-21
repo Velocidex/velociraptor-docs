@@ -4,6 +4,16 @@ title: "Sigma rules"
 date: 2025-05-12
 draft: true
 weight: 80
+summary: |
+  Detection engineering is an essential discipline for any security team wanting
+  to maximize their detection capabilities. It involves taking a scientific
+  approach, examining how we detect threats in our environment and continuously
+  improving upon it.
+description: |
+  Detection engineering is an essential discipline for any security team wanting
+  to maximize their detection capabilities. It involves taking a scientific
+  approach, examining how we detect threats in our environment and continuously
+  improving upon it.
 ---
 
 

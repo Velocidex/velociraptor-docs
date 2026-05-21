@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
+description: |
+  This event will be fired when a client was sent flows to process.
 ---
 
 This event will be fired when a client was sent flows to process.

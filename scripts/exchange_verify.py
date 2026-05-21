@@ -1,5 +1,6 @@
 import urllib.request
 import os.path
+import re
 import subprocess
 import json
 import sys
@@ -27,9 +28,32 @@ Datastore:
 VELO_CONFIG_FILENAME = "/tmp/velo.config.yaml"
 
 VELO_FILENAME = "/tmp/velociraptor"
-VELO_URL = "https://github.com/Velocidex/velociraptor/releases/download/v0.76/velociraptor-v0.76.1-linux-amd64-musl"
+VELO_API = "https://api.github.com/repos/Velocidex/velociraptor/releases/latest"
+VELO_ASSET_RE = re.compile(r"^velociraptor-v(\d+)\.(\d+)\.(\d+)-linux-amd64-musl$")
 EXCHANGE_PATH = os.path.abspath("./content/exchange/artifacts/")
 VELO_LOGFILE = "/tmp/velo.log"
+
+# Velociraptor is released on GitHub only for changes to its minor version number.
+# The same release (e.g. releases/tag/v0.76) is (re-)used for patch releases.
+# Retrieve the latest patch release for the latest release:
+def resolve_velo_url():
+    with urllib.request.urlopen(VELO_API) as r:
+        release = json.load(r)
+
+    candidates = []
+    for asset in release["assets"]:
+        m = VELO_ASSET_RE.match(asset["name"])
+        if m:
+            version = tuple(int(x) for x in m.groups())
+            candidates.append((version, asset["browser_download_url"]))
+
+    if not candidates:
+        raise RuntimeError(
+            "No velociraptor-vX.Y.Z-linux-amd64-musl asset found in latest release")
+
+    return max(candidates)[1]
+
+VELO_URL = resolve_velo_url()
 
 # Verify artifact contains correct file extension
 # Skip other specific file types

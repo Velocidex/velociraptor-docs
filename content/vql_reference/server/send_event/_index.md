@@ -5,6 +5,13 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Sends an event to a server event monitoring queue.
+
+  This is used to send an event to a waiting server event monitoring
+  artifact (either as a VQL query running on the server or perhaps
+  an external program waiting for this event via the API.
+
 ---
 
 

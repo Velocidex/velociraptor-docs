@@ -18,7 +18,7 @@ parameters:
     default: .
     type: regex
   - name: UsernameWhitelist
-    description: "Target username witelist Regex"
+    description: "Target username whitelist Regex"
     default: '\\$$'
     type: regex
   - name: ServerRegex

@@ -4,6 +4,9 @@ date: 2024-12-18
 draft: false
 weight: 10
 last_reviewed: 2024-12-29
+description: |
+  To work with a specific client, search for it using the search bar at the top of
+  the Admin GUI.
 ---
 
 To work with a specific client, search for it using the search bar at the top of
@@ -203,7 +206,7 @@ You can quarantine a host using the **Quarantine Host** (<i class="fas
 fa-briefcase-medical"></i>) button.
 
 Quarantining a host will reconfigure the
-hosts's network stack to only allow it to communicate with the Velociraptor
+host's network stack to only allow it to communicate with the Velociraptor
 server. This allows you to continue investigating the host remotely while
 preventing the host from making other network connections. Client Quarantine is
 explained [here](/docs/clients/quarantine/) in more detail.

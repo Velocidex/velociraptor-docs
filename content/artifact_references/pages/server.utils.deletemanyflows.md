@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  Sometimes the Velociraptor server accumulates a lot of data that is
+  no longer needed.
 ---
 
 Sometimes the Velociraptor server accumulates a lot of data that is

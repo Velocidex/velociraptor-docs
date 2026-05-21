@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  Remove a child timeline from a super timeline.
 ---
 
 Remove a child timeline from a super timeline.

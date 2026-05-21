@@ -6,6 +6,10 @@ weight: 50
 date: 2025-02-27
 last reviewed: 2025-04-27
 summary: "How to upgrade your server."
+description: |
+  Upgrading the server component is usually a simple matter of creating a new
+  server installation package using the latest version and your existing
+  configuration file, and then applying it to your server.
 ---
 
 Upgrading the server component is usually a simple matter of creating a new

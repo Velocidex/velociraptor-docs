@@ -5,6 +5,15 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Execute simple WMI queries synchronously.
+
+  This plugin issues a WMI query and returns its rows directly. The
+  exact format of the returned row depends on the WMI query issued.
+
+  This plugin creates a bridge between WMI and VQL and it is a very
+  commonly used plugin for inspecting the state of windows systems.
+
 ---
 
 

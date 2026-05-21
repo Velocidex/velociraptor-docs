@@ -1,6 +1,10 @@
 ---
 title: "Finding Files"
 weight: 50
+summary: |
+    One of the most common operations in DFIR is searching for files
+    efficiently. When searching for a file, we may search by filename,
+    file content, size or other properties.
 description: |
     One of the most common tasks in DFIR is searching for files on the endpoint.
 

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Find files on a remote filesystem using the filename or content.
 ---
 
 Find files on a remote filesystem using the filename or content.
@@ -12,7 +14,7 @@ Find files on a remote filesystem using the filename or content.
 
 To access a remote share we require the credentials of a
 domain user. Currently only username/password are supported (i.e. no
-Kerberose). You should use Group Policy to create a user with read
+Kerberos). You should use Group Policy to create a user with read
 only access to the remote share.
 
 ## Performance Note
@@ -33,7 +35,7 @@ description: |
 
   To access a remote share we require the credentials of a
   domain user. Currently only username/password are supported (i.e. no
-  Kerberose). You should use Group Policy to create a user with read
+  Kerberos). You should use Group Policy to create a user with read
   only access to the remote share.
 
   ## Performance Note

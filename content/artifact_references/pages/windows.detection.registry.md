@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+description: |
+  This artifact detects registry changes and triggers an alert.
 ---
 
 This artifact detects registry changes and triggers an alert.

@@ -2,12 +2,12 @@ name: Windows.Applications.FreeFileSync
 author: Nathanaël Ndong, Synacktiv
 description: |
    This artefact can be used to retrieve and parse some FreeFileSync file in order to:
-   - Identify the latest account used to transfer data and the remote ip adresse destination in the case of SFTP protocol with the qeury GlobalInfo
-   - Identify the latest transfered files with Latest Data Transfer
+   - Identify the latest account used to transfer data and the remote ip adresse destination in the case of SFTP protocol with the query GlobalInfo
+   - Identify the latest transferred files with Latest Data Transfer
    - Identify the presence of others interesting logs about previous or attempt of files transfer
 
    In the case of logs files, only the html version has been parsed
-   
+
    These query were made in the context of the use of legitimate data transfer tools by an attacker.
    You can read more about it on https://www.synacktiv.com/publications/legitimate-exfiltration-tools-summary-and-detection-for-incident-response-and-threat
 
@@ -16,24 +16,24 @@ type: CLIENT
 parameters:
    - name: FreeFileInfoGlob
      default: \AppData\Roaming\FreeFileSync\
-     description: Use to retreive lastest global information including userID and remote destination for SFTP from GlobalSettings.xml file
+     description: Use to retrieve latest global information including userID and remote destination for SFTP from GlobalSettings.xml file
 
    - name: userRegex
      default: .
-     type: regex 
-     
+     type: regex
+
    - name: SearchFreeFileSyncLogs
      default: C:\Users\*\AppData\Roaming\FreeFileSync\Logs\*
      description:  Use a glob to define the files that will be searched
 
    - name: FreeFileSyncGlob
      default: C:\Users\*\AppData\Roaming\FreeFileSync\Logs\*Last*.html
-     description: Use to retreive and parse lastest html log file
-    
+     description: Use to retrieve and parse latest html log file
+
 sources:
     - name: GlobalInfo
       query: |
-        
+
         LET GlobalSettings_xml = SELECT * FROM foreach(
             row={
                 SELECT Uid, Name As User,
@@ -48,7 +48,7 @@ sources:
                     Mtime
                 FROM glob(globs=FreeFileInfoGlob + 'GlobalSettings.xml', root=HomeDirectory)
             })
-        
+
         LET Value = SELECT * FROM foreach(
             row=GlobalSettings_xml,
             query={
@@ -57,13 +57,13 @@ sources:
                     SELECT * FROM _value
                 })
             })
-        
+
         SELECT Item AS Last_Session_GlobalInfo FROM Value
 
     - name: Latest Data Transfer
       query: |
         LET InputLogPath = SELECT OSPath FROM glob(globs=FreeFileSyncGlob)
-        
+
         LET extract_file(message)= parse_string_with_regex(string=message,
             regex=
                 '''<.+?>(?P<Copy>.+?\s.+?)\s''' +
@@ -74,30 +74,30 @@ sources:
                 '''(?P<Message>.+?)'''+
                 '''&.*?</.+?>'''
         )
-        
+
         LET last_date(message) = parse_string_with_regex(string=message,
             regex=
                 '''(?P<Directory>.+?)''' +
                 '''(?P<Date>\[.+?).html'''
         )
-        
+
         LET parsed_line = SELECT * FROM foreach(row=InputLogPath,
             query={
                 SELECT Line, FullPath FROM parse_lines(filename=InputLogPath.FullPath)
                 WHERE Line =~ "Creating"
         })
-                
+
         SELECT extract_file(message=Line).Copy AS Operation,
             extract_file(message=Line).Provider AS Protocol,
-            extract_file(message=Line).Connexion AS Identifer, 
+            extract_file(message=Line).Connexion AS Identifer,
             extract_file(message=Line).Message AS File_Destination,
             last_date(message=FullPath).Date AS Last_Session_Date
         FROM parsed_line
-        
-        
+
+
     - name: FileUpload
       query: |
-        LET logs_search = SELECT 
+        LET logs_search = SELECT
             OSPath,
             get(item=Data, field="mft") as Inode,
             Mode.String AS Mode,
@@ -108,7 +108,7 @@ sources:
             Atime AS ATime,
             IsDir, Data
         FROM glob(globs=SearchFreeFileSyncLogs)
-      
+
         SELECT OSPath, Size,
             BTime, MTime, ATime,
             upload(file=OSPath) AS Upload

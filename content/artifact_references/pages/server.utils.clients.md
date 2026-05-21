@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [notebook]
+description: |
+  View detailed client informations
 ---
 
 View detailed client informations

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Attempt to recover deleted files.
 ---
 
 Attempt to recover deleted files.

@@ -5,6 +5,15 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Retrieve the results of a hunt.
+
+  This plugin essentially iterates over all flows in the hunt and
+  reads out all collected rows for each client in the same table.
+
+  It is equivalent to the source() plugin in the hunt notebook
+  context.
+
 ---
 
 

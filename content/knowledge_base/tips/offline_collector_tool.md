@@ -30,7 +30,7 @@ With network-connected clients the results are uploaded to the
 Velociraptor server. File uploads are also done separately rather than
 being bundled into a single zip archive. This might not be desirable
 in certain circumstances, for example:
-- if the server's storage is not spec'd to handle the total size of
+- if the server's storage is not specced to handle the total size of
   these bulk collections, which are typically large if they consist
   mostly of copied files. In that case, you might want the collections
   uploaded to an alternative destination where storage space is less

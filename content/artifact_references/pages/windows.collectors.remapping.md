@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  Calculates a remapping config for a collection container (zip).
 ---
 
 Calculates a remapping config for a collection container (zip).

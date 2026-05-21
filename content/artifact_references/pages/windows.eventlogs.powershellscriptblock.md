@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This Artifact will search and extract ScriptBlock events (Event ID 4104) from
+  Powershell-Operational Event Logs.
 ---
 
 This Artifact will search and extract ScriptBlock events (Event ID 4104) from

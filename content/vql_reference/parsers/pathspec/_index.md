@@ -5,6 +5,8 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Create a structured path spec to pass to certain accessors.
 ---
 
 

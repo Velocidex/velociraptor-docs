@@ -5,6 +5,11 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  verify an artifact
+
+  This function will verify the artifact and flag any potential errors or warnings.
+
 ---
 
 

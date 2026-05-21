@@ -26,7 +26,7 @@ modify the query by adding a `WHERE` statement.
 ![Filtering rows with VQL](vql_filter.png)
 
 In our experience this type of quickly filtering/sorting a table is
-very common and sometimes we dont really need the full power of
+very common and sometimes we don't really need the full power of
 VQL. In 0.6.5 we introduced `table transformations` - simple
 filtering/sorting operations on every table in the GUI.
 

@@ -5,6 +5,15 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Retrieve the flows launched by a hunt.
+
+  A Velociraptor hunt is just a collection of related flows. This
+  plugin simply enumerates all the flows as part of this hunt.
+
+  You can use this to figure out if all the collections were
+  successful by looking at the result of each flow object.
+
 ---
 
 

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
+description: |
+  This event will be fired when a client has new tasks scheduled.
 ---
 
 This event will be fired when a client has new tasks scheduled.

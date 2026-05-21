@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  Calculate a remapping configuration from a dead disk image.
 ---
 
 Calculate a remapping configuration from a dead disk image.
@@ -125,6 +127,16 @@ parameters:
           accessor: raw_reg
         "on":
           accessor: raw_reg
+      - type: shadow
+        from:
+          accessor: raw_reg
+        "on":
+          accessor: raw_registry
+      - type: shadow
+        from:
+          accessor: raw_ntfs
+        "on":
+          accessor: ntfs
       - type: shadow
         from:
           accessor: data

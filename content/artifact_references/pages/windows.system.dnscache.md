@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Collects DNS cache entries using the WMI class `MSFT_DNSClientCache`.
 ---
 
 Collects DNS cache entries using the WMI class `MSFT_DNSClientCache`.

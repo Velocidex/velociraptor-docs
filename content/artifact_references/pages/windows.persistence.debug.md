@@ -4,6 +4,12 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Windows allows specific configuration of various executables via a
+  registry key. Some keys allow defining a debugger to attach to a
+  program as it is run. If this debugger is launched for commonly used
+  programs (e.g. notepad) then another program can be launched at the
+  same time (with the same privileges).
 ---
 
 Windows allows specific configuration of various executables via a
@@ -18,7 +24,7 @@ Execution Options\*` however this is kept inline with the x64 key and
 therefore does not need to be processed.
 
 Limitations: This queries the live registry and therefore does not
-parse data in Windows.old or Regback folders, or VSS.
+parse data in `Windows.old` or `Regback` folders, or VSS.
 
 
 <pre><code class="language-yaml">
@@ -36,7 +42,7 @@ description: |
   therefore does not need to be processed.
 
   Limitations: This queries the live registry and therefore does not
-  parse data in Windows.old or Regback folders, or VSS.
+  parse data in `Windows.old` or `Regback` folders, or VSS.
 
 reference:
   - https://attack.mitre.org/techniques/T1183/

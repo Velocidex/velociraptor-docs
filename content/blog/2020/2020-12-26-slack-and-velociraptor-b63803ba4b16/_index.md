@@ -11,7 +11,7 @@ date: "2020-12-26"
 
 ![Photo by [Joan Gamell](https://unsplash.com/@gamell?utm_source=medium&utm_medium=referral) on [Unsplash](https://unsplash.com?utm_source=medium&utm_medium=referral)](https://cdn-images-1.medium.com/max/12030/0*bkglpXK2FLycHuia?width=600px)*Photo by [Joan Gamell](https://unsplash.com/@gamell?utm_source=medium&utm_medium=referral) on [Unsplash](https://unsplash.com?utm_source=medium&utm_medium=referral)*
 
-You might have heard of [Slack](https://slack.com/) — a chatting app that has grown in popularity over the past few years. Slack allows for API access to the the workspaces, which opens the door to novel applications and automation.
+You might have heard of [Slack](https://slack.com/) — a chatting app that has grown in popularity over the past few years. Slack allows for API access to the workspaces, which opens the door to novel applications and automation.
 
 In this blog post I will demonstrate how to connect Slack to Velociraptor, and be notified within a Slack channel of various events that happen on your Velociraptor deployment.
 

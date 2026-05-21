@@ -6,6 +6,11 @@ draft: false
 weight: 45
 summary: "How to call artifacts from VQL"
 last_reviewed: 2025-05-28
+description: |
+  In Velociraptor, artifacts encapsulate VQL queries, making them reusable and
+  shareable. A key feature is the ability to call one artifact from within the VQL
+  of another artifact. This allows for building modular and composable
+  collections.
 ---
 
 In Velociraptor, artifacts encapsulate VQL queries, making them reusable and

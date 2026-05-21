@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+description: |
+  This server monitoring artifact will automatically zip and backup
+  any collected artifacts to s3.
 ---
 
 This server monitoring artifact will automatically zip and backup

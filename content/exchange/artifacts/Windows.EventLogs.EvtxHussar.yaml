@@ -96,7 +96,7 @@ parameters:
     type: bool
   - name: Processes
     description: |
-      Include events related to creation/termination of processess (Security.evtx, Microsoft-Windows-Sysmon%4Operational.evtxx)
+      Include events related to creation/termination of processes (Security.evtx, Microsoft-Windows-Sysmon%4Operational.evtxx)
     default: Y
     type: bool
   - name: RDP

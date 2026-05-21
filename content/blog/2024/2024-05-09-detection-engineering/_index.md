@@ -496,7 +496,7 @@ sources such as:
 
 ## Using on-endpoint detection for Incident Response Triage
 
-Traditional SIEM based detection has to balance a number of tradeoffs
+Traditional SIEM based detection has to balance a number of trade-offs
 like volume of logs collected, and number of false positives to reduce
 SIEM analyst's churn.
 

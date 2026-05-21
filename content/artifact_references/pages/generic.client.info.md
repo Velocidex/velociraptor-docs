@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  Collect basic information about the client.
 ---
 
 Collect basic information about the client.

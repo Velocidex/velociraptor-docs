@@ -4,6 +4,13 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  Velociraptor can use external tools to deploy binaries on the
+  endpoint for some artifacts that require it. Usually these binaries
+  are automatically downloaded by the server when required. However,
+  sometimes a server is deployed on an air-gapped network, or has
+  egress filtering implemented such that the server is unable to
+  download binaries on demand.
 ---
 
 Velociraptor can use external tools to deploy binaries on the

@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+description: |
+  This artifact logs specific process creation events to
+  Velociraptor. It auto-installs Sysmon and it watches the Sysmon ETW
+  provider for new events.
 ---
 
 This artifact logs specific process creation events to

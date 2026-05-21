@@ -2124,3 +2124,45 @@ IDP
 LDAP
 UPN
 securable
+
+ADX
+adx
+DoS
+
+Dickenson
+GetUserRoles
+
+ConsumeUnit
+
+specced
+datacenter
+orchestrator
+
+<url-free> content/blog/2026/2026-04-19-alerts-and-email/_index.md
+--------------------------------------------------------------------------------
+CSVs
+DiskSpace
+IoC
+IoCs
+PagerDuty
+Wazuh's
+alls
+parallelised
+
+<url-free> content/knowledge_base/tips/email_alerts.md
+--------------------------------------------------------------------------------
+Mailpit
+DiskSpace
+ProcessName
+RemoteAddr
+
+<url-free> content/knowledge_base/tips/sending_email.md
+--------------------------------------------------------------------------------
+Mailpit
+SendEmail
+VelociraptorServer
+
+<url-free> content/knowledge_base/tips/vql_error_catalogue.md
+--------------------------------------------------------------------------------
+alls
+severities

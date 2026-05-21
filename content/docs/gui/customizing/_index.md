@@ -6,6 +6,9 @@ last_reviewed: 2026-03-10
 draft: false
 weight: 40
 summary: Customize the GUI experience
+description: |
+  Several aspects of the GUI can be customized to suit your
+  organizational needs:
 ---
 
 Several aspects of the GUI can be customized to suit your

@@ -5,6 +5,13 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Add or reconfigure a tool into the inventory.
+
+  Note that if you provide a file to override the tool it must be
+  readable by the server (so the file must reside on the server or
+  be accessible over a network share).
+
 ---
 
 

@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  This artifact imports additional artifacts maintained outside the
+  Velociraptor tree.
 ---
 
 This artifact imports additional artifacts maintained outside the
@@ -51,7 +54,7 @@ sources:
   - query: |
       SELECT * FROM foreach(row=Details,
       query={
-        SELECT * FROM Artifact.Server.Import.ArtifactExchange(ExchangeURL=URL, Tag=Tag)
+        SELECT * FROM Artifact.Server.Import.ArtifactBundle(URL=URL, Tag=Tag)
       })
 
 </code></pre>

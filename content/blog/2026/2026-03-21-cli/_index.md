@@ -52,7 +52,7 @@ tools becoming unmaintained over time.
 This blog post specifically focuses on using Velociraptor's extensive
 [Command Line Interface mode](/docs/cli/) as a single
 use tool. This allows users to replace a large number of scripts, and
-adhoc tools with varying levels of maintainance and different
+adhoc tools with varying levels of maintenance and different
 installation dependencies, with a single well maintained and
 dependable solution.
 
@@ -271,7 +271,7 @@ artifact to perform a triage acquisition.
 related project to develop an effective triage acquisition and
 preservation solution using VQL.
 
-Files are collected based on `Targets` which are heirarchical. Some
+Files are collected based on `Targets` which are hierarchical. Some
 high level targets include `_KapeTriage` or `_Live` which collect a
 large number of files for preservation purposes.
 

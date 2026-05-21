@@ -5,6 +5,20 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Sets server metadata. Server metadata is a set of free form
+  key/value data, usually used for configuration of artifacts.
+
+  For existing keys, the value is overwritten. Setting a metadata
+  key with a `NULL` value deletes that entry.
+
+  ### Example
+
+  ```vql
+  SELECT server_set_metadata(`Slack Token`="X12233")
+  FROM scope()
+  ```
+
 ---
 
 

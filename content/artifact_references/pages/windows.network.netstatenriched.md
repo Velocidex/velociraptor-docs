@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  NetstatEnhanced adds additional data points to the Netstat artifact and
+  enables verbose search options.
 ---
 
 NetstatEnhanced adds additional data points to the Netstat artifact and
@@ -13,7 +16,7 @@ Examples include: Process name and path, Authenticode information or
 network connection details.
 
 WARNING:
-KillProcess - attempts to use Taskill to kill the processes returned.
+KillProcess - attempts to kill the processes returned.
 DumpProcess - dumps the process as a sparse file for post-processing.
 
 Please only use these switches after scoping as there are no guardrails on
@@ -31,7 +34,7 @@ description: |
   network connection details.
 
   WARNING:
-  KillProcess - attempts to use Taskill to kill the processes returned.
+  KillProcess - attempts to kill the processes returned.
   DumpProcess - dumps the process as a sparse file for post-processing.
 
   Please only use these switches after scoping as there are no guardrails on
@@ -130,7 +133,7 @@ parameters:
     default: .
     type: regex
   - name: AuthenticodeVerified
-    description: "Authenticode signiture selection"
+    description: "Authenticode signature selection"
     type: choices
     default: ALL
     choices:

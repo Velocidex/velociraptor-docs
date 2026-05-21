@@ -3,6 +3,8 @@ title: "History"
 date: 2021-06-09T03:51:18Z
 draft: false
 weight: 1
+description: |
+  Velociraptor draws its inspiration from two major open source projects:
 ---
 
 Velociraptor draws its inspiration from two major open source projects:
@@ -58,7 +60,7 @@ unnecessary parsing on the server.
 ### Velociraptor vs OSQuery
 
 OSQuery was really the first popular example of an open source tool
-that provided a query langauge to allow querying the endpoints. This
+that provided a query language to allow querying the endpoints. This
 capability allows users to target specific queries in a flexible way
 to address new threats or find new IOCs, making it a popular choice
 among defenders.

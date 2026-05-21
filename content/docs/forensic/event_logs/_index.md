@@ -7,6 +7,8 @@ summary: |
 date: 2021-06-27T04:34:03Z
 draft: false
 weight: 80
+description: |
+  ## Windows Event Logs
 ---
 
 ## Windows Event Logs

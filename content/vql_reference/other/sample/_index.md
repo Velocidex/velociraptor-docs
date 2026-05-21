@@ -5,6 +5,12 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Executes 'query' and samples every n'th row.
+
+  This is most useful on the server in order to downsample event
+  artifact results.
+
 ---
 
 

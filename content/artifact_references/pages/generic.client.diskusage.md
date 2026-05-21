@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact reports the amount of space used by each directory
+  recursively (Similar to the `du` command).
 ---
 
 This artifact reports the amount of space used by each directory

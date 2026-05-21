@@ -1,0 +1,1444 @@
+name: Server.Monitor.FlowCompletion
+author: Andreas Misje – @misje
+description: |
+  Send an e-mail when a client flow completes (success or failure), with optional
+  HTML formatting, result tables, and file attachments.
+
+  This artifact monitors
+  [`System.Flow.Completion`](/artifact_references/pages/system.flow.completion/)
+  and sends an e-mail when certain conditions are met. You may filter
+  by artifact name, client labels, hunt participation, hunt labels,
+  flow creation–completion delay, flow outcome, artifact permissions,
+  and more. You may also override the normal filters with label-based
+  exceptions that notify only when results or uploads are present.
+
+  Features:
+
+  - Notify configured recipients, either from a list or from a client
+    metadata field, and optionally the flow executor
+  - Include client and flow context (metadata, timestamps, duration,
+    arguments)
+  - Include direct download links to uploaded files
+  - Include selected flow results as:
+    - Inline HTML tables (with row/column/cell limits)
+    - CSV or JSONL attachments
+  - Control failed-flow behaviour with `ErrorHandling` options
+  - Support special handling for newly seen clients
+  - Support both nicely-formatted HTML and plain-text e-mails
+
+  Notes:
+
+  - `SendInterval` throttling is **global across all Velociraptor e-mails**
+    and silently **drops** messages that arrive within the interval. The
+    default of 10 seconds is intended for tuning; consider setting it to -1
+    in production so that bursts (two flows completing close together, a
+    flow completing shortly after an alert e-mail, etc.) are not lost.
+  - The default `DelayThreshold` is 10 seconds, so notifications are only
+    sent when a flow completes more than 10 seconds after it was scheduled.
+    The idea is to avoid being notified about flows that complete
+    "immediately". Adjust to a higher value, or disable completely by
+    setting to 0, as desired.
+  - If you want to be informed about failed collections that would
+    otherwise be ignored by your configured filters, use `ErrorHandling` to:
+      - Get notified about failed flows that are part of hunts, with
+        `IncludeHunts`
+      - Get notified about failed flows even if they are excluded by
+        `ArtifactsToAlertOn` and `ArtifactsToIgnore`, with
+        `IgnoreArtifactFilters`
+      - Get notified about failed flows even if they finish faster than
+        `DelayThreshold`, with `IgnoreDelay`
+  - Cancelled flows are ignored by default (`IgnoreCancelled`). Despite
+    living under `ErrorHandling`, this filter applies to all flows, not
+    only failures.
+  - `ArtifactsToIgnore` only applies when a single artifact is collected;
+    multi-artifact collections always pass the filter.
+  - Empty metadata values are omitted unless `KeepEmptyRows` is true.
+  - This artifact requires a configured mail secret (`Secret`).
+  - All configurable limits, like row/column/cell lengths, have a
+    hard-coded absolute maximum to avoid huge e-mails. The exception is
+    attachments, which may have unlimited column, row and cell lengths, but
+    their total size must not exceed `AttachmentsMaxMiB`.
+
+  ## Configuration
+
+  See [How to send e-mails from Velociraptor](/knowledge_base/tips/sending_email/)
+  for how to create SMTP secrets, and
+  [How to set up e-mail notifications for flow completions](/knowledge_base/tips/email_alerts/)
+  for how to use this artifact.
+
+  ## Example use cases
+
+  This artifact may be used in many ways. Some examples are listed below. If
+  you find yourself needing to support several of these scenarios, you may
+  have to create new artifacts that call this one with different parameters.
+
+  ### Get notified when a flow completes
+
+  You are investigating a single client. It is not online, and you need to
+  be notified immediately when it comes online and the collection is
+  finished. You may even want to include the results as attachments. You are
+  not interested in getting an e-mail if the client is already online, so
+  you use `DelayThreshold` to only get notified when the flow does not
+  complete within a reasonable time (e.g. ten seconds or five minutes). You
+  specify a fixed set of recipients in `Recipients`, or you also use
+  `NotifyExecutor` to send the notification (with results) to the user who
+  scheduled the collection.
+
+  ### Get notified when flows fail
+
+  You are hunting, and it is important that you get notified about any
+  clients failing to collect any of the artifacts. Leave `NotifyHunts` set
+  to false, but include the option `IncludeHunts` in `ErrorHandling` to be
+  notified whenever a collection in the hunt fails. Be sure to test-run the
+  hunt first to avoid producing too many notifications.
+
+  ### Shell/EXECVE artifact auditing
+
+  You are auditing all use of EXECVE artifacts, in particular those
+  allowing raw shell access, and you want e-mails for every completed flow
+  scheduled with these privileged permissions. Set the auditor e-mail
+  address in `Recipients`, keep `ArtifactsToAlertOn` set to `.+`, but limit
+  the artifact filter by setting `ArtifactPermToAlertOn` to `EXECVE`. Set
+  `DelayThreshold` to 0. You will now get notified of all finished (and
+  failed) collections that include artifacts requiring the EXECVE
+  permission. You may also include such artifacts used in hunts by setting
+  `NotifyHunts` to true (use with great care!), and you may of course
+  narrow the EXECVE artifacts further with
+  `ArtifactsToAlertOn`/`ArtifactsToIgnore`.
+
+  You may include the results from shell artifacts as HTML in the e-mail
+  body with something like:
+
+  | Source | Columns | MaxRows | CellLimit |
+  | --- | --- | --- | --- |
+  | bash\|powershell | stdout\|stderr | 20 | 1000 |
+  | generic\.client\.vql$ | .+ | | 3000 |
+
+  ### New client notification
+
+  Use `NewClientArtifacts` to match artifacts that should create a
+  notification only for _new_ clients. All other filters are ignored. Use
+  `NewClientThreshold` to determine how many seconds old the client may be
+  to still be considered new.
+
+  ### Notify computer user/owner
+
+  You are in an environment with strict privacy / data protection laws.
+  When collecting data from employees and their devices, the employees need
+  to be notified. Assuming that each client has a metadata field with the
+  computer owner's e-mail address, this artifact can be configured to
+  notify the employee whenever collections on their endpoint have finished.
+
+  Specify the metadata field in `NotifyMetadataEMail` and adjust filters as
+  needed. `NotifyMetadataEMail` can be used alongside `Recipients` and
+  `NotifyExecutor`.
+
+  ### Notification based on labels
+
+  You may use labels to only get notified in certain circumstances. These
+  filters are combined with other filters:
+
+  - Use `ClientLabelsToAlertOn` to only get notified if a client has labels
+    matching this regex
+  - Use `ClientLabelsToIgnore` to ignore clients with labels matching this
+    regex
+
+  Regardless of other filters, these special label filters apply if there
+  are results or uploads:
+
+  - If a client label, or hunt tag, matches the `NotifyIfResultsLabels`
+    regex, *and* the flow has results, all other filters are ignored and a
+    notification is created
+  - If a client label, or hunt tag, matches the `NotifyIfUploadsLabels`
+    regex, *and* the flow has uploads, all other filters are ignored and a
+    notification is created
+
+  ## Writing custom notification artifacts
+
+  This artifact exports many helper functions that make it easier to create
+  custom e-mail notification artifacts. If you only need HTML output and tables,
+  `MailTemplate()` and `FullTable()` will cover most use cases. If you also want
+  to support plain text, study this artifact's implementation, or look at
+  [`Server.Monitor.Alerts`](/exchange/artifacts/pages/server.monitor.alerts/) for a slightly simpler example.
+
+  ### FullTable()
+
+  This helper function produces an HTML table from a query. Cell values are
+  HTML-escaped and may be elided. Rows and columns can be limited, and any
+  truncation is indicated in the rendered table.
+
+  ### MailTemplate()
+
+  Use this helper to create an HTML e-mail body.
+
+  #monitoring #notifications #email
+
+type: SERVER_EVENT
+
+parameters:
+  - name: Secret
+    description: |
+      Secret used to configure server, port, username, password and skip_verify.
+      Required.
+    default: notify_mail_secret
+
+  - name: Recipients
+    type: csv
+    description: |
+      E-mail addresses that will receive the message. At least one recipient
+      must be resolvable from `Recipients`, `NotifyExecutor`, or
+      `NotifyMetadataEMail`. If none are, the flow completion is logged as an
+      error and no e-mail is sent.
+    default: |
+      Address
+
+  - name: NotifyExecutor
+    type: bool
+    description: |
+      Send an e-mail to the user executing this flow, in addition to
+      Recipients. If the username contains an '@', it is used directly as an
+      e-mail address. Otherwise, NotifyExecutorDomains is consulted to
+      synthesise an address from the username.
+    default: false
+
+  - name: NotifyExecutorDomains
+    type: csv
+    description: |
+      If NotifyExecutor is used, but the executor's username is not a valid e-mail
+      address, use this transformation table to convert usernames into e-mails,
+      e.g. ".+,example.org"
+    default: |
+      UsernameRegex,Domain
+
+  - name: NotifyMetadataEMail
+    description: |
+      Name of a client metadata field whose value is an e-mail address. If
+      the field is present on the client and its value contains a '@', an
+      e-mail is sent to that address (in addition to any other recipients).
+
+  - name: Sender
+    description: |
+      Sender e-mail address. Required unless set in secret. Overrides secret
+      sender address.
+
+  - name: HTML
+    type: bool
+    description: |
+      Send an HTML-formatted message instead of just plain-text.
+    default: true
+
+  - name: ArtifactsToAlertOn
+    type: regex
+    description: |
+      E-mails will only be sent for finished flows with artifact names
+      matching this regex. See also ArtifactsToIgnore.
+    default: .+
+
+  - name: ArtifactsToIgnore
+    type: regex
+    description: |
+      E-mails will not be sent for finished flows with artifact names matching
+      this regex. If several artifacts are collected, this filter is ignored.
+    default: >-
+      ^(Custom\.)?Generic\.Client\.Info$
+
+  - name: ClientLabelsToAlertOn
+    type: regex
+    description: |
+      Only send e-mails for clients that have at least one label matching this
+      regex. The regex is tested against each label individually; any match
+      passes.
+    default: .+
+
+  - name: ClientLabelsToIgnore
+    type: regex
+    description: |
+      Ignore clients that have at least one label matching this regex. The
+      regex is tested against each label individually; any match suppresses
+      the notification.
+
+  - name: NotifyHunts
+    type: bool
+    description: |
+      Send e-mails for finished flows that are part of a hunt. Hunt flows are
+      excluded by default, since enabling this can produce a large number of
+      notifications (one per client in the hunt). Consider `ErrorHandling`
+      option "IncludeHunts" if you only want to be notified about failures in
+      hunts.
+
+  - name: NewClientArtifacts
+    type: regex
+    description: |
+      If the flow is completed by a new client and this regex is non-empty,
+      ignore all other filters and instead include all artifacts matching this
+      regex within NewClientThreshold seconds.
+
+  - name: ArtifactPermToAlertOn
+    type: regex
+    description: |
+      Only send e-mails for flow completions where requested artifacts require
+      permissions matching this regex, e.g. "EXECVE". Applied in addition to
+      ArtifactsToAlertOn and ArtifactsToIgnore.
+
+  - name: NewClientThreshold
+    type: int
+    description: |
+      If a client's `first_seen` is no older than this many seconds, the client
+      is considered new. This is set as a metadata field in the e-mail, and it is
+      also used by the NewClientArtifacts option.
+    default: 300
+
+  - name: ErrorHandling
+    type: multichoice
+    description: |
+      Controls when failed flows bypass the normal filters, plus whether
+      user-cancelled flows are suppressed. Use to get notified about hunt
+      failures regardless of `NotifyHunts`, failures regardless of the
+      artifact filters, or failures regardless of `DelayThreshold`. Note that
+      `IgnoreCancelled` applies to all flows, not only failures.
+    choices:
+      - IncludeHunts
+      - IgnoreCancelled
+      - IgnoreArtifactFilters
+      - IgnoreDelay
+    default: '["IgnoreCancelled"]'
+
+  - name: DelayThreshold
+    type: int
+    description: |
+      Only notify when the elapsed time between flow creation and completion
+      is at least this many seconds. Filters out flows that complete almost
+      immediately (typically clients that are already online). Set to 0 to
+      disable the filter and notify on every completion.
+    default: 10
+
+  - name: SendInterval
+    type: int
+    description: |
+      Minimum number of seconds that must pass between e-mails sent from this
+      Velociraptor server. E-mails that arrive within the interval are
+      silently dropped. The interval is shared with **all** Velociraptor
+      e-mails (alerts, other notifications, etc.), not just those from this
+      artifact. Set to -1 to disable throttling.
+    default: 10
+
+  - name: KeepEmptyRows
+    type: bool
+    description: |
+      By default, fields with empty values are removed from the e-mail. In order
+      to keep the structure of e-mails consistent, empty fields may be kept by
+      setting this setting to true. Result table, uploads and attachments are
+      not affected.
+
+  - name: ClientMetadata
+    type: csv
+    description: |
+      Client metadata fields to include as context in the e-mail. Each field
+      appears as its own row in the client details table. If `Alias` is set,
+      the metadata key is renamed to the alias in the output, e.g.
+      "serial,Computer serial".
+    default: |
+      Field,Alias
+
+  - name: IncludeUploadsTableRows
+    type: int
+    description: |
+      Provide direct download links to uploads from the flow in an HTML table
+      limited to these many rows. Requires HTML.
+    default: 10
+
+  - name: IncludeResultTableFrom
+    type: csv
+    description: |
+      Include results from these artifact sources (regex) as inline HTML
+      tables, optionally filtered by Columns (regex), with a MaxRows limit
+      (default/max 100) and CellLimit character limit (default/max 10,000).
+      Leave MaxRows/CellLimit blank to use the defaults. Tables with many
+      columns will not be displayed correctly. Requires HTML. Prefer
+      IncludeResultAttachmentFrom. See also ResultTableMaxColumns.
+    default: |
+      Source,Columns,MaxRows,CellLimit
+
+  - name: ResultTableMaxColumns
+    type: int
+    description: |
+      Maximum number of columns to include in the results HTML table. The limit
+      is applied after the Columns regex in IncludeResultTableFrom.
+    default: 4
+
+  - name: IncludeResultAttachmentFrom
+    type: csv
+    description: |
+      Include results from these artifact sources (regex) as attachments,
+      optionally filtered by Columns (regex) and capped by MaxRows. Leave
+      MaxRows blank on a row to include all rows for that source. File format
+      is controlled by AttachmentFormat.
+    default: |
+      Source,Columns,MaxRows
+
+  - name: AttachmentFormat
+    type: choices
+    description: |
+      Whether to include attachments in CSV (may be difficult to parse) or JSONL.
+    choices:
+      - csv
+      - jsonl
+    default: jsonl
+
+  - name: AttachmentsMaxMiB
+    type: int
+    description: |
+      Per-e-mail cap on the combined size of attachments, in MiB. If the total
+      exceeds this limit, all attachments for that e-mail are dropped (the
+      e-mail itself is still sent).
+    default: 100
+
+  - name: NotifyIfResultsLabels
+    type: regex
+    description: |
+      Flows (including hunts) matching this client label or hunt tag will always
+      notify (i.e. ignoring all other filters) on completion if there are any
+      results (rows).
+    default: "^notify_results$"
+
+  - name: NotifyIfUploadsLabels
+    type: regex
+    description: |
+      Flows (including hunts) matching this client label or hunt tag will always
+      notify (i.e. ignoring all other filters) on completion if there are any
+      uploads.
+    default: "^notify_uploads$"
+
+export: |
+  // If string is NULL, return an empty string instead:
+  LET NullStr(String) = if(condition=String = NULL, then='', else=String)
+
+  LET IsDict(Var) = typeof(x=Var) = '*ordereddict.Dict'
+
+  // Rename dict keys:
+  LET RenameDictKeys(Object, Aliases) = to_dict(item={
+      SELECT _value || _key AS _key,
+             get(item=Object, field=_key) AS _value
+      FROM items(item=Aliases)
+    })
+
+  // The formatter will mangle negative slice expression (e.g. "[-Foo:]" will
+  // become "[Foo:]", so use this help to avoid that:
+  LET NegSlice(String, Length) = String[(len(list=Length) -
+        Length):]
+
+  // Shorten a string to a specified limit and add an ellipsis:
+  LET ElideRight(String, Length=30, Marker='…') = if(
+      condition=len(list=String) > Length,
+      then=String[:Length] + Marker,
+      else=String)
+
+  // Shorten a string from the left to a specified limit and add an ellipsis:
+  LET ElideLeft(String, Length=30, Marker='…') = if(
+      condition=len(list=String) > Length,
+      then=Marker + NegSlice(String=String, Length=Length),
+      else=String)
+
+  // Shorten a string in the middle to a specified limit and add an ellipsis:
+  LET ElideMiddle(String, Length=30, Marker='…') =
+      if(condition=len(list=String) > Length,
+         then=format(format="%v%v%v",
+                     args=(String[:(Length / 2)], Marker,
+                         NegSlice(String=String, Length=Length / 2))),
+         else=String)
+
+  // Middle-elide keys and right-elide values in a dict:
+  LET ElideDict(Dict, KeyLength, ValueLength, Marker='…',
+  DoIt=true) = if(condition=DoIt,
+                  then=to_dict(item={
+      SELECT ElideMiddle(String=_key, Length=KeyLength) AS _key,
+             ElideRight(String=_value, Length=ValueLength) AS _value
+      FROM items(item=Dict)
+    }),
+                  else=Dict)
+
+  // A very rudimentary search–replace-based HTML escaper. Better than nothing:
+  LET SortOfEscapeHTML(String) = regex_transform(
+      source=String,
+      map=dict(`&`="&amp;",
+               `<`="&lt;",
+               `>`="&gt;",
+               `"`="&quot;",
+               `'`="&#39;",
+               `\\\\`="&#92;"))
+
+  // Format certain strings, like newlines, to appropriate HTML tags:
+  LET FormatHTML(String) = regex_transform(source=String,
+                                           map=dict(`(\\r)?\\n`='<br>'))
+
+  LET FormatString(String, Length) = FormatHTML(
+      String=SortOfEscapeHTML(String=ElideRight(
+                                String=str(str=String),
+                                Length=Length)))
+
+  LET FormatOrElideString(String, Length, HTML) = if(
+      condition=HTML,
+      then=FormatString(String=String, Length=Length),
+      else=ElideRight(String=String, Length=Length))
+
+  // Helper function used to elide, HTML-escape and format each list value:
+  LET FormatList(List, Length, DoIt=true) = if(
+      condition=DoIt
+       AND List,
+      then=array(_={
+      SELECT FormatString(String=_value, Length=Length) AS _value
+      FROM foreach(row=List)
+    })._value,
+      else=List)
+
+  // Helper function used to elide, HTML-escape and format each dict value:
+  LET FormatDictValues(Dict, Length, DoIt=true) = if(
+      condition=DoIt,
+      then=to_dict(item={
+      SELECT _key,
+             FormatString(String=_value, Length=Length) AS _value
+      FROM items(item=Dict)
+    }),
+      else=Dict)
+
+  // Helper function to middle-elide and HTML-escape each list key. As opposed
+  // to FormatDictValues, FormatHTML() is not called on the keys:
+  LET FormatDictKeys(Dict, Length, DoIt=true) = if(
+      condition=DoIt,
+      then=to_dict(item={
+      SELECT
+      SortOfEscapeHTML(String=ElideMiddle(String=_key, Length=Length)) AS _key,
+      _value
+      FROM items(item=Dict)
+    }),
+      else=Dict)
+
+  // A convenience function combining FormatDictKeys() and FormatDictValues():
+  LET FormatDict(Dict, KeyLength, ValueLength, DoIt=true) =
+      if(
+        condition=DoIt,
+        then=to_dict(
+          item={
+      SELECT
+      SortOfEscapeHTML(String=ElideMiddle(String=_key, Length=KeyLength)) AS _key,
+      FormatString(
+        String=_value,
+        Length=ValueLength) AS _value
+      FROM items(
+        item=Dict)
+    }),
+        else=Dict)
+
+  // Elide, HTML-escape and format each string cell in a query:
+  LET FormatCells(Query, Length, DoIt=true) = SELECT *
+    FROM if(condition=DoIt,
+            then={
+      SELECT *
+      FROM foreach(row={
+      SELECT FormatDictValues(Dict=_value, Length=Length) AS _value
+      FROM items(item=Query)
+    },
+                   column='_value')
+    },
+            else=Query)
+
+  // Create either HTML list items or plain-text "  - Value" strings for each
+  // item in Items. If Items is a dict and not an array, the plain-text
+  // will be of the form "  - Key: Value".
+  LET _BulletListQuery(Items, HTML, KeepEmpty) = SELECT
+      format(format=if(condition=HTML,
+                       then='<li>%[1]s</li>',
+                       else=if(condition=IsDict(Var=Items),
+                               then='  - %[2]s: %[1]s',
+                               else='  - %[1]s')),
+             args=(NullStr(String=_value), _key)) AS Row
+    FROM items(item=Items)
+    WHERE _value OR KeepEmpty
+
+  // Produce a HTML or simple plain-text list from an array. If the array
+  // contains only one element, the HTML result will not be a list:
+  LET BulletList(Items, HTML, KeepEmpty) = if(
+      condition=HTML,
+      then=if(condition=len(list=Items) > 1,
+              then=format(format='<ul>%v</ul>',
+                          args=join(array=_BulletListQuery(
+                                      Items=Items,
+                                      HTML=HTML,
+                                      KeepEmpty=KeepEmpty).Row)),
+              else=Items[0]),
+      else=if(condition=Items,
+              then='\n' + join(
+                array=_BulletListQuery(Items=Items,
+                                       HTML=HTML,
+                                       KeepEmpty=KeepEmpty).Row,
+                sep='\n')))
+
+  // Combine a timestamp and a duration string:
+  LET TimestampString(Timestamp) = if(
+      condition=Timestamp.Unix,
+      then=format(format='%v (%v)',
+                  args=(Timestamp.String, humanize(time=Timestamp))),
+      else='(never)')
+
+  // Join an array with ', ', and if it exceeds MaxLength, drop the remaining
+  // items and add "( + N more)" instead:
+  LET ShortenStringList(List, MaxLength) = if(
+      condition=len(list=List) > MaxLength,
+      then=join(array=List[:MaxLength], sep=', ') + format(
+        format=' (+ %v more)',
+        args=len(list=List) - MaxLength),
+      else=join(array=List, sep=', '))
+
+  // Return unique values from a list:
+  LET Unique(Items) = items(item=to_dict(item={
+      SELECT _value AS _key
+      FROM foreach(row=Items)
+    }))._key
+
+  // Convert a dict to HTML table rows, alternatively just plain-text with
+  // "Key: Value":
+  LET TableRows(Values, HTML, KeepEmpty) = SELECT
+      format(format=if(condition=HTML,
+                       then='<tr><td>%v</td><td>%v</td></tr>',
+                       else='%v: %v'),
+             args=(_key, NullStr(String=_value))) AS Row
+    FROM items(item=Values)
+    WHERE _value OR KeepEmpty
+
+  // Wrap HTML in "table" tags:
+  LET HTMLTable(Values, KeepEmpty) = if(
+      condition=Values OR KeepEmpty,
+      then=format(format='<table>%v</table>',
+                  args=join(array=TableRows(
+                              Values=Values,
+                              HTML=true,
+                              KeepEmpty=KeepEmpty).Row)))
+
+  // Create either an HTML table, or alternatively newline-separated
+  // key–value plain-text strings:
+  LET Table(Values, HTML, KeepEmpty) = if(condition=HTML,
+                                          then=HTMLTable(
+                                            Values=Values,
+                                            KeepEmpty=
+                                              KeepEmpty),
+                                          else=join(
+                                            array=TableRows(
+                                              Values=
+                                                Values,
+                                              HTML=HTML,
+                                              KeepEmpty=
+                                                KeepEmpty).Row,
+                                            sep='\n'))
+
+  // Create a more readable dict with artifact parameters arguments,
+  // using the artifact name as key, and as value, a dict with parameter
+  // name and values):
+  LET ArtifactArguments(Specs, HTML) = to_dict(item={
+      SELECT artifact AS _key,
+             to_dict(item={
+      SELECT key AS _key,
+             if(condition=HTML,
+                then=FormatString(String=value, Length=100),
+                else=ElideRight(String=value, Length=100)) AS _value
+      FROM foreach(row=parameters.env)
+    }) AS _value
+      FROM foreach(row=Specs)
+    })
+
+  // Prepend artifact name to each parameter name. This is useful when
+  // more than one artifact is called, so that we know to which artifact
+  // the argument belongs to:
+  LET ArgumentsGrouped(Specs, HTML) = to_dict(item={
+      SELECT *
+      FROM foreach(row={
+      SELECT _key AS ArtifactName,
+             _value AS Params
+      FROM items(item=ArtifactArguments(Specs=Specs, HTML=HTML))
+    },
+                   query={
+      SELECT ArtifactName + '/' + _key AS _key,
+             _value
+      FROM items(item=Params)
+    })
+    })
+
+  // When there is just one artifact, we do not have to group arguments by
+  // artifact, so drop it and create a dict of arguments from the single value
+  // in the artifact–arguments dict:
+  LET Arguments(Specs, HTML) = to_dict(item={
+      SELECT *
+      FROM foreach(row={
+      SELECT _value AS Params
+      FROM items(item=ArtifactArguments(Specs=Specs, HTML=HTML))
+    },
+                   query={
+      SELECT *
+      FROM items(item=Params)
+    })
+    })
+
+  // Create either an HTML table or a plain-text bullet list:
+  LET TableOrBulletList(Values, HTML, KeepEmpty) = if(
+      condition=Values,
+      then=if(condition=HTML,
+              then=Table(Values=Values, HTML=HTML, KeepEmpty=KeepEmpty),
+              else=BulletList(Items=Values, HTML=HTML, KeepEmpty=KeepEmpty)))
+
+  // Get the number of rows from a query:
+  LET RowCount(Query) = SELECT count() AS Count
+    FROM Query
+    GROUP BY 1
+
+  // Create a multi-column (i.e. not just a two-column KV) table with headers.
+  // Headers may be customised, otherwise the original column names are used.
+  // Set Headers to an empty array in order to disable headers.
+  // MaxRows, if set, will limit the number of rows. A last row will indicate
+  // that the number of rows have been limited, and from what total value.
+  // MaxCols, unless set to NULL, limits the number of columns. A single-cell
+  // column will indicate that columns are missing:
+  LET FullTable(Rows, Headers=NULL, MaxRows=NULL, MaxCols=100,
+  MaxCellLength=NULL, MaxHeaderLength=30, FormatData=true) =
+      if(
+        condition=Rows AND (Headers OR items(item=Rows[0])._key),
+        then=template(
+          template='''<table>
+      {{- if .headers }}
+      <tr>
+        {{- range $i, $header := .headers }}
+        {{- if ge $i $.max_cols }}
+          {{- break }}
+        {{- end }}
+        <th>{{ $header }}</th>
+        {{- end }}
+        {{- if and .max_cols (gt .total_cols .max_cols) }}
+        <th></th>
+        {{- end }}
+      </tr>
+      {{- end }}
+
+      {{- range $row_i, $row := .rows }}
+      <tr>
+        {{- range $i, $key := $row.Keys }}
+        {{- if and $.max_cols (ge $i $.max_cols) }}
+          {{- break }}
+        {{- end }}
+        <td>{{ Get $row $key }}</td>
+        {{- end }}
+        {{- if and $.max_cols (and (gt $.total_cols $.max_cols) (eq $row_i 0)) }}
+        <td rowspan="{{ len $.rows }}" style="text-align: center; vertical-align: middle;">…</td>
+        {{- end }}
+      </tr>
+      {{- end }}
+
+      {{- if and .max_rows (gt .total_rows .max_rows) }}
+      <tr>
+        <td colspan="{{ .total_cols }}" style="text-align: center;">(Showing {{ .max_rows }} of {{ .total_rows }} rows)</td>
+      </tr>
+      {{- end }}
+    </table>''',
+          expansion=dict(
+            headers=FormatList(
+              List=if(
+                condition=Headers != NULL,
+                then=Headers,
+                else=items(
+                  item=Rows[0])._key)[:MaxCols],
+              Length=MaxHeaderLength,
+              DoIt=FormatData),
+            rows=FormatCells(
+              Query=if(
+                condition=MaxRows,
+                then={
+      SELECT
+      *
+      FROM query(
+        query=Rows,
+        inherit=true,
+        exit='x=>count() > MaxRows')
+    },
+                else=Rows),
+              Length=MaxCellLength,
+              DoIt=FormatData),
+            max_cols=MaxCols || 0,
+            total_cols=len(
+              list=Rows[0]),
+            max_rows=MaxRows || 0,
+            total_rows=if(
+              condition=MaxRows,
+              then=RowCount(
+                Query=Rows)[0].Count,
+              else=0))))
+
+  // Create an HTML table or a plain-text bullet list of arguments:
+  LET ArgumentTable(Specs, HTML, KeepEmpty) = TableOrBulletList(
+      Values=if(condition=len(list=Specs) = 1,
+                then=Arguments(Specs=Specs, HTML=HTML),
+                else=ArgumentsGrouped(Specs=Specs, HTML=HTML)),
+      HTML=HTML,
+      KeepEmpty=KeepEmpty)
+
+  // Create an HTML / plain-text link:
+  LET Link(URL, Name, HTML) = format(
+      format=if(condition=HTML,
+                then='<a href="%[1]s">%[2]s</a>',
+                else='%[2]s (%[1]s)'),
+      args=(URL, Name))
+
+  // Get useful information from a hunt:
+  LET HuntInfo(flow_id, client_id) = SELECT *
+    FROM foreach(row={
+      SELECT hunt_id,
+             hunt_description,
+             tags
+      FROM hunts()
+    },
+                 query={
+      SELECT hunt_id AS HuntId,
+             hunt_description AS HuntDesc,
+             tags AS HuntTags
+      FROM hunt_flows(hunt_id=hunt_id)
+      WHERE FlowId = flow_id
+       AND ClientId = client_id
+    })
+
+  // Produce rows of links to artifact definitions:
+  LET ArtifactLinks(Artifacts, HTML) = SELECT Link(
+                                                URL=link_to(
+                                                  artifact=
+                                                    _value,
+                                                  raw=true),
+                                                Name=
+                                                  _value,
+                                                HTML=
+                                                  HTML) AS Link
+    FROM foreach(row=Artifacts)
+
+  // Create an CSS-styled HTML e-mail body with table support
+  //
+  // Render the final HTML e-mail wrapper around one or more already-formatted
+  // content sections. Caller must pass a Title, a short Summary paragraph, a Footer,
+  // and either a single HTML fragment or a dict of section name – HTML fragment
+  // in Tables. When Tables is a dict, each key is shown as a section header and
+  // each value is inserted as-is below it; when a single fragment is provided, it
+  // is rendered without an extra heading. Warning controls the banner colour only,
+  // allowing failed flows to stand out without changing the content.
+  //
+  // See FullTable() for how to create tables. Tables should look like this:
+  // dict(`Section foo`=FullTable(…), `Section bar`=FullTable(…))
+  // or just a single table, in which case no headers are used:
+  // FullTable(…)
+  LET MailTemplate(Title, Tables, Summary, Footer, Warning) =
+      template(
+        template='''<!DOCTYPE html>
+       <html lang="en">
+       <head>
+         <meta charset="UTF-8">
+         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <style>
+           body {
+             font-family: Arial, sans-serif;
+             background-color: #f6f6f6;
+             color: #333333;
+             margin: 0;
+           }
+           .email-container {
+             max-width: 750px;
+             margin: 20px auto;
+             background-color: #ffffff;
+             padding: 20px;
+             border-radius: 8px;
+             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+           }
+           .header {
+             background-color: {{ .bgcolor }};
+             color: #ffffff;
+             text-align: center;
+             padding: 20px;
+             border-radius: 8px 8px 0 0;
+             font-size: 24px;
+             margin: 0;
+             font-weight: normal;
+           }
+           .content {
+             padding: 0 20px;
+           }
+           h2 {
+             font-size: 18px;
+             font-weight: 600;
+             color: #555555;
+             margin-top: 0;
+             margin-bottom: 10px;
+           }
+           .table-container {
+             margin-top: 5px;
+             margin-bottom: 20px;
+           }
+           table {
+             width: 100%;
+             border-collapse: collapse;
+           }
+           td, th {
+             padding: 12px;
+             border: 1px solid #dddddd;
+           }
+           th {
+             background-color: #f4f4f4;
+           }
+           table table {
+             border-collapse: separate;
+             border-spacing: 10px 0;
+           }
+           table table td {
+             border: none;
+             padding: 0;
+           }
+           .footer {
+             text-align: center;
+             margin-top: 20px;
+             font-size: 12px;
+             color: #777777;
+           }
+           ul {
+             padding: 0;
+             margin: 0;
+           }
+         </style>
+       </head>
+       <body>
+         <div class="email-container">
+           <h1 class="header">
+             {{ .title }}
+           </h1>
+           <div class="content">
+             <p>{{ .summary }}</p>
+             {{ range $item := .tables.Items }}
+             {{ if $.includeTableHeaders }}<h2>{{ $item.Key }}</h2>{{ end }}
+             <div class="table-container">{{ $item.Value }}</div>
+             {{ end }}
+           </div>
+           <div class="footer">
+             {{ .footer }}
+           </div>
+         </div>
+       </body>
+       </html>''',
+        expansion=dict(
+          bgcolor=if(
+            condition=Warning,
+            then='#DF0B0B',
+            else='#4CAF50'),
+          title=Title,
+          tables=if(
+            condition=IsDict(
+              Var=Tables),
+            then=Tables,
+            else=dict(
+              t=Tables)),
+          includeTableHeaders=IsDict(
+            Var=Tables),
+          footer=Footer,
+          summary=Summary))
+
+  // Print a human-readable duration string in seconds, including a NULL guard:
+  LET Duration = if(
+      condition=execution_duration,
+      then=format(format='%.1f s', args=[execution_duration / 1000000000.0]))
+
+  // Upload byte count, including a NULL guard:
+  LET UploadedBytes = if(condition=total_uploaded_bytes,
+                         then=humanize(bytes=total_uploaded_bytes),
+                         else=0)
+
+  LET IsHunt = FlowId =~ '\\.H$'
+
+  // Get the hunt (if any) this flow is part of:
+  LET OurHunt = SELECT *
+    FROM HuntInfo(flow_id=FlowId, client_id=ClientId)
+
+  LET HuntTags = if(condition=IsHunt, then=OurHunt[0].HuntTags, else=[])
+
+  LET OrgInfo <= org()
+
+  // Look up more details about the flows using flows(), since the data
+  // returned by watch_monitoring() may be incomplete (like the create_time field):
+  LET FlowInfo(HTML) = dict(
+      `Flow`=Link(
+        URL=link_to(
+          client_id=ClientId,
+          flow_id=FlowId,
+          tab='logs',
+          raw=true),
+        Name=FlowId,
+        HTML=HTML),
+      `Collection created`=TimestampString(
+        Timestamp=timestamp(
+          epoch=create_time)),
+      `Collection started`=if(
+        condition=scope().start_time,
+        then=TimestampString(
+          Timestamp=timestamp(
+            epoch=start_time))),
+      `Collection finished`=TimestampString(
+        Timestamp=scope().FlowFinished),
+      `Duration`=Duration,
+      `Creator`=request.creator,
+      `Requested`=BulletList(
+        Items=ArtifactLinks(
+          Artifacts=request.artifacts,
+          HTML=HTML).Link,
+        HTML=HTML,
+        KeepEmpty=KeepEmptyRows),
+      `Arguments`=ArgumentTable(
+        Specs=request.specs,
+        HTML=HTML,
+        KeepEmpty=KeepEmptyRows),
+      `With results`=BulletList(
+        Items=artifacts_with_results,
+        HTML=HTML,
+        KeepEmpty=KeepEmptyRows),
+      `Error`=if(
+        condition=status,
+        then=status),
+      `Urgent`=request.urgent,
+      `Hunt`=if(
+        condition=IsHunt,
+        then=Link(
+          URL=link_to(
+            hunt_id=OurHunt[0].HuntId,
+            raw=true),
+          Name=FormatOrElideString(
+            String=OurHunt[0].HuntDesc || OurHunt[0].HuntId,
+            Length=300,
+            HTML=HTML),
+          HTML=HTML)),
+      `Collected rows`=total_collected_rows,
+      `Uploaded files`=total_uploaded_files,
+      `Uploaded bytes`=UploadedBytes)
+
+  // NOTE: Implicitly depends on a ClientMetadata CSV param:
+  LET MetadataFieldAliases <= to_dict(item={
+      SELECT Field AS _key,
+             Alias AS _value
+      FROM ClientMetadata
+    })
+
+  // NOTE: Implicitly depends on ClientMetadata CSV param and KeepEmptyRows:
+  LET ClientMetadata = to_dict(item={
+      SELECT _key,
+             _value
+      FROM items(item=RenameDictKeys(Object=client_metadata(client_id=ClientId),
+                                     Aliases=MetadataFieldAliases))
+      WHERE _value OR KeepEmptyRows
+    })
+
+  LET _ClientInfo = client_info(client_id=ClientId)
+
+  LET ClientLabels = _ClientInfo.labels
+
+  LET OSInfo = _ClientInfo.os_info
+
+  LET FQDN = OSInfo.fqdn
+
+  // Determine whether a client is new based on its "first seen" timestamp and a
+  // threshold:
+  LET NewClient = timestamp(epoch=(scope().start_time || scope().create_time)).Unix -
+      timestamp(
+        epoch=_ClientInfo.first_seen_at).Unix < get(
+      field='NewClientThreshold',
+      default=300)
+
+  LET ClientInfo(HTML) = dict(`Organisation`=if(
+                                condition=OrgInfo.id != 'root',
+                                then=OrgInfo.name),
+                              `ID`=Link(
+                                URL=link_to(client_id=ClientId, raw=true),
+                                Name=ClientId,
+                                HTML=HTML),
+                              `FQDN`=FQDN,
+                              `System`=OSInfo.system,
+                              `OS`=OSInfo.release,
+                              `Architecture`=OSInfo.machine,
+                              `New client`=NewClient,
+                              `Labels`=BulletList(
+                                Items=ClientLabels,
+                                HTML=HTML,
+                                KeepEmpty=false)) + if(
+      condition=HTML,
+      then=FormatDictValues(Dict=ClientMetadata, Length=100),
+      else=ClientMetadata)
+
+  // Return the smallest of two non-NULL values:
+  LET MinVal(A, B) = if(condition=A < B, then=A, else=B)
+
+  // Log an error if a value is NULL:
+  LET RequireNonEmpty(Value, Message='Value cannot be empty') =
+      if(condition=Value,
+         then=Value,
+         else=NOT log(message=Message, level='ERROR', dedup=-1) || NULL)
+
+  LET MakeKey(Prefix, Key) = if(condition=Prefix,
+                                then=format(format="%v.%v", args=(Prefix, Key)),
+                                else=Key)
+
+  LET _Unnest(Item, _Prefix="") = SELECT *
+    FROM foreach(row={
+      SELECT *
+      FROM items(item=Item)
+    },
+                 query={
+      SELECT *
+      FROM if(condition=typeof(a=_value) =~ '''dict|^\[\]''',
+              then={
+      SELECT *
+      FROM _Unnest(Item=_value, _Prefix=MakeKey(Prefix=_Prefix, Key=_key))
+    },
+              else={
+      SELECT MakeKey(Prefix=_Prefix, Key=_key) AS _key,
+             _value
+      FROM scope()
+    })
+    })
+
+  // "Unnest" a nested dict to a flat dict with keys like foo.bar.baz, or in the
+  // case of lists, foo.0.bar, foo.1.bar etc.:
+  LET Unnest(Item) = to_dict(item={ SELECT * FROM _Unnest(Item=Item) })
+
+  // Prefix all keys in a dict:
+  LET PrefixDict(Dict, Prefix) = to_dict(item={
+      SELECT MakeKey(Prefix=Prefix, Key=_key) AS _key,
+             _value
+      FROM items(item=Dict)
+    })
+
+sources:
+  - query: |
+      // Set a sensible max cell length for artifact results being included
+      // in HTML:
+      LET ArtifactResultsAbsoluteMaxCellLength <= 10000
+
+      LET ArtifactResultsAbsoluteMaxRows <= 100
+
+      LET UploadTableAbsoluteMaxRows <= 100
+
+      // Get basic information about completed flows:
+      LET CompletedFlows = SELECT timestamp(epoch=Timestamp) AS FlowFinished,
+                                  ClientId,
+                                  FlowId
+        FROM watch_monitoring(artifact='System.Flow.Completion')
+        WHERE ClientId != 'server'
+
+      LET Failed = state != 'FINISHED'
+
+      LET Cancelled = status =~ '^Cancelled'
+
+      LET IncludeHunts = NotifyHunts OR (Failed
+           AND 'IncludeHunts' IN ErrorHandling) OR NOT FlowId =~ '\.H$'
+
+      LET IncludeArtifact = NOT ArtifactsToAlertOn OR request.artifacts =~
+          ArtifactsToAlertOn
+
+      LET ExcludeArtifact = ArtifactsToIgnore
+         AND len(list=request.artifacts) = 1
+              AND request.artifacts =~ ArtifactsToIgnore
+
+      LET IncludeNewClientArtifact = NewClient
+         AND request.artifacts =~ NewClientArtifacts
+
+      LET IncludeResultsLabel = NotifyIfResultsLabels
+         AND (ClientLabels =~ NotifyIfResultsLabels OR HuntTags =~
+                 NotifyIfResultsLabels)
+              AND any(items=query_stats.result_rows, filter='x=>x > 0')
+
+      LET IncludeUploadsLabel = NotifyIfUploadsLabels
+         AND (ClientLabels =~ NotifyIfUploadsLabels OR HuntTags =~
+                 NotifyIfUploadsLabels)
+              AND any(items=query_stats.uploaded_files, filter='x=>x > 0')
+
+      LET MatchesFilters = (Failed
+           AND 'IgnoreArtifactFilters' IN ErrorHandling) OR (
+            IncludeArtifact
+           AND NOT ExcludeArtifact)
+
+      LET AboveDelayThreshold = (Failed
+           AND 'IgnoreDelay' IN ErrorHandling) OR FlowFinished.Unix -
+          timestamp(epoch=create_time).Unix >= atoi(string=DelayThreshold)
+
+      LET IncludeCancelled = NOT 'IgnoreCancelled' IN ErrorHandling OR NOT
+          Cancelled
+
+      LET MatchesLabelFilters = (NOT ClientLabelsToAlertOn OR (NOT
+                    ClientLabels OR ClientLabels =~ ClientLabelsToAlertOn))
+              AND (NOT ClientLabelsToIgnore OR NOT ClientLabels =~
+                      ClientLabelsToIgnore)
+
+      LET MatchesArtifactPerms = if(condition=ArtifactPermToAlertOn,
+                                    then={
+          SELECT true
+          FROM artifact_definitions(names=request.artifacts)
+          WHERE required_permissions =~ ArtifactPermToAlertOn
+        },
+                                    else=true)
+
+      LET MatchesCriteria = (MatchesFilters
+           AND AboveDelayThreshold
+                AND IncludeHunts
+                     AND IncludeCancelled
+                          AND MatchesLabelFilters
+                               AND MatchesArtifactPerms) OR
+          IncludeNewClientArtifact OR IncludeResultsLabel OR
+          IncludeUploadsLabel
+
+      LET FlowDetails = SELECT ClientId,
+                               FlowId,
+                               *,
+                               FlowInfo(HTML=true) AS FlowHTMLDict,
+                               FlowInfo(HTML=false) AS FlowDict,
+                               ClientInfo(HTML=true) AS ClientHTMLDict,
+                               ClientInfo(HTML=false) AS ClientDict
+        FROM flows(client_id=ClientId, flow_id=FlowId)
+        WHERE MatchesCriteria
+         AND log(message='Flow %v (%v) completed',
+                 args=(FlowId, join(array=request.artifacts, sep=', ')))
+
+      LET ResultWord = if(condition=state = 'FINISHED',
+                          then='finished',
+                          else='FAILED')
+
+      LET ResultString = if(condition=state = 'FINISHED',
+                            then='finished collecting',
+                            else='FAILED to collect')
+
+      LET Summary = format(
+          format='Client %v (%v) has %v %v. It took %v and returned %v row(s). %v file(s) were uploaded, totalling %v.',
+          args=(ClientId, FQDN, ResultString, join(
+              array=request.artifacts,
+              sep=', '), Duration, total_collected_rows,
+              total_uploaded_files, humanize(
+              bytes=total_uploaded_bytes)))
+
+      LET Title = format(format='Client collection %v', args=ResultWord)
+
+      LET PlainText = format(format='%v\n\n%v\n\n%v',
+                             args=(Title, Summary, Table(
+                                 Values=ClientDict + FlowDict,
+                                 HTML=false,
+                                 KeepEmpty=KeepEmptyRows), ))
+
+      LET Footer = format(format='Sent from Velociraptor by %v',
+                          args=ArtifactLinks(
+                            Artifacts='Server.Monitor.FlowCompletion',
+                            HTML=HTML)[0].Link)
+
+      // Filter query results using a CSV containing
+      // - Source: A regex matching the source (artifact name + '/' + query name)
+      // - Columns: A regex matching column names to include (".+" if unset)
+      // - MaxRows: Maximum number of rows, or unlimited if unset
+      // - CellLimit: Maximum number of bytes to include from each cell, if set.
+      LET WithResults(Filter) = SELECT *
+        FROM foreach(row=Filter,
+                     query={
+          SELECT _value AS Artifact,
+                 Columns || '.+' AS Columns,
+                 MaxRows,
+                 scope().CellLimit AS CellLimit
+          FROM foreach(row=artifacts_with_results)
+          WHERE Artifact =~ Source
+        })
+
+      LET FlowResults = to_dict(
+          item={
+          SELECT Artifact + ' results' AS _key,
+                 FullTable(
+                   Rows={
+          SELECT *
+          FROM column_filter(query={
+          SELECT *
+          FROM flow_results(client_id=ClientId, flow_id=FlowId, artifact=Artifact)
+        },
+                             include='(?i)' + Columns)
+        },
+                   MaxRows=MinVal(A=MaxRows, B=ArtifactResultsAbsoluteMaxRows),
+                   MaxCols=ResultTableMaxColumns,
+                   MaxCellLength=MinVal(A=CellLimit,
+                                        B=ArtifactResultsAbsoluteMaxCellLength)) AS _value
+          FROM WithResults(
+            Filter=IncludeResultTableFrom)
+          WHERE _value
+        })
+
+      LET UploadsList = SELECT SortOfEscapeHTML(String=ElideLeft(
+                                                  String=
+                                                    Upload.Path,
+                                                  Length=50)) AS `File name`,
+                               humanize(bytes=uploaded_size) AS Size,
+                               Link(URL=link_to(
+                                      upload=dict(
+                                        Components=Upload.Components,
+                                        StoredName=Upload.Path),
+                                      raw=true),
+                                    Name=SortOfEscapeHTML(
+                                      String=ElideLeft(
+                                        String=Upload.Components[-1],
+                                        Length=30)),
+                                    HTML=true) AS `URL`
+        FROM uploads(client_id=ClientId, flow_id=FlowId)
+
+      // Do not format data, since that would escape the HTML links. The file names
+      // are formatted manually in UploadsList:
+      LET UploadsTable = FullTable(
+          Rows=UploadsList,
+          MaxRows=MinVal(A=IncludeUploadsTableRows, B=UploadTableAbsoluteMaxRows),
+          FormatData=false)
+
+      // Build a per-artifact attachment path inside the temporary directory:
+      LET AttachmentPath(Artifact) = format(format='%s/%s.%s',
+                                            args=(tempdir(),
+                                                regex_replace(
+                                                  source=
+                                                    Artifact,
+                                                  re='/+',
+                                                  replace='.'),
+                                                AttachmentFormat))
+
+      // Write an artifact's filtered results as either JSONL or CSV:
+      LET CreateAttachment(Artifact, Query) = SELECT *
+        FROM if(condition=AttachmentFormat = 'jsonl',
+                then={
+          SELECT AttachmentPath(Artifact=Artifact) AS Path
+          FROM write_jsonl(filename=AttachmentPath(Artifact=Artifact), query=Query)
+        },
+                else={
+          SELECT AttachmentPath(Artifact=Artifact) AS Path
+          FROM write_csv(filename=AttachmentPath(Artifact=Artifact), query=Query)
+        })
+
+      // Generate attachment files for each matching artifact result set:
+      LET FlowResultsAttachments = SELECT
+          dict(Path=Path,
+               Filename=regex_replace(source=basename(path=Path),
+                                      re='/+',
+                                      replace='.')) AS Path
+        FROM foreach(row={
+          SELECT *
+          FROM WithResults(Filter=IncludeResultAttachmentFrom)
+        },
+                     query={
+          SELECT *
+          FROM CreateAttachment(Artifact=Artifact,
+                                Query={
+          SELECT *
+          FROM column_filter(query={
+          SELECT *
+          FROM if(condition=MaxRows,
+                  then={
+          SELECT *
+          FROM query(query={
+          SELECT *
+          FROM flow_results(client_id=ClientId, flow_id=FlowId, artifact=Artifact)
+        },
+                     inherit=true,
+                     exit='x=>count() > MaxRows')
+        },
+                  else={
+          SELECT *
+          FROM flow_results(client_id=ClientId, flow_id=FlowId, artifact=Artifact)
+        })
+        },
+                             include='(?i)' + Columns)
+        })
+          GROUP BY Path
+        })
+
+      // Calculate the total size of all generated attachment files:
+      LET AttachmentsSize(Attachments) = SELECT
+          sum(item=stat(filename=Path).Size) AS Size
+        FROM foreach(row=Attachments)
+        GROUP BY 1
+
+      // Drop all attachments if their combined size exceeds the configured cap:
+      LET AttachmentsWithinLimit(Attachments) = if(
+          condition=AttachmentsSize(Attachments=Attachments).Size[0] <=
+            AttachmentsMaxMiB * 1048576,
+          then=Attachments)
+
+      // Assemble the HTML sections to render in the final message body:
+      LET Tables = dict(
+          `Client details`=Table(Values=ClientHTMLDict,
+                                 HTML=true,
+                                 KeepEmpty=KeepEmptyRows),
+          `Flow details`=Table(Values=FlowHTMLDict,
+                               HTML=true,
+                               KeepEmpty=KeepEmptyRows)) +
+          if(condition=HTML
+              AND IncludeUploadsTableRows
+                   AND FlowDict.`Uploaded files`,
+             then=dict(`Uploads`=UploadsTable),
+             else=dict()) + if(condition=HTML, then=FlowResults, else=dict())
+
+      // Render the complete HTML e-mail body from the prepared sections:
+      LET HTMLBody = MailTemplate(Title=Title,
+                                  Tables=Tables,
+                                  Summary=Summary,
+                                  Footer=Footer,
+                                  Warning=state != 'FINISHED')
+
+      // Evaluate matching completed flows and materialise their derived data:
+      LET Results = SELECT *
+        FROM foreach(row=CompletedFlows, query=FlowDetails)
+
+      // Convert a username to one or more e-mail addresses using the mapping table:
+      LET UsersAddrs(Username) = SELECT
+          format(format='%v@%v', args=(Username, Domain)) AS Addr
+        FROM NotifyExecutorDomains
+        WHERE Username =~ UsernameRegex
+
+      // Resolve executor notification addresses from the creator field:
+      LET CreatorAddrs(Creator) = if(condition=NotifyExecutor
+                                      AND Creator =~ '[^@]+@.+',
+                                     then=(Creator, ),
+                                     else=UsersAddrs(Username=Creator).Addr)
+
+      // Return a single-item address list if the string looks like an e-mail,
+      // otherwise return an empty list:
+      LET AddrOrEmptyList(String) = if(condition=String =~ '[^@]+@.+',
+                                       then=(String, ),
+                                       else=[])
+
+      // Resolve an optional recipient address from the configured client metadata field:
+      LET MetadataAddrs = if(
+          condition=NotifyMetadataEMail,
+          then=AddrOrEmptyList(
+            String=get(
+              item=client_metadata(
+                client_id=ClientId),
+              field=NotifyMetadataEMail)),
+          else=[])
+
+      LET Subject = format(
+          format='%v %v %v',
+          args=(FQDN || "Client", ResultString, ShortenStringList(
+              List=request.artifacts,
+              MaxLength=1)))
+
+      SELECT *
+      FROM foreach(
+        row=Results,
+        query={
+          SELECT *
+          FROM Artifact.Generic.Utils.SendEmail(
+            Secret=Secret,
+            Recipients=RequireNonEmpty(
+              Value=Unique(Items=Recipients.Address + CreatorAddrs(
+                             Creator=FlowDict.Creator) +
+                             MetadataAddrs),
+              Message='Recipients, CreatorAddrs and MetadataAddrs cannot all be empty. At least one recipient must be defined.'),
+            Sender=Sender,
+            HTMLMessage=if(
+              condition=HTML,
+              then=HTMLBody),
+            PlainTextMessage=PlainText,
+            FilesToUpload=AttachmentsWithinLimit(
+              Attachments=FlowResultsAttachments.Path),
+            Subject=Subject,
+            Period=SendInterval)
+        })

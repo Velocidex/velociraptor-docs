@@ -5,6 +5,11 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Truncate to an integer.
+
+  If provided a string, the function will try to parse it into an integer.
+
 ---
 
 

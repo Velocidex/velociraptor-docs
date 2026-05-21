@@ -5,6 +5,28 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Encode an object as a string.
+
+  Several serialization formats are supported. The default format, if not
+  specified, is "json".
+
+  ### Notes
+
+  This function is often useful when you need to pass a data structure to an
+  artifact parameter when the parameter expects a specific format. For
+  example:
+
+  ```vql
+  SELECT * FROM Artifact.Linux.Search.FileFinder(SearchFilesGlobTable=serialize(format="csv",item=tlist),...)
+  ```
+  will pass a list in CSV format to the artifact's `SearchFilesGlobTable` parameter.
+
+  ### See also
+
+  - [str]({{< ref "/vql_reference/popular/str/" >}}): Returns the string
+    representation of the provided data.
+
 ---
 
 
@@ -44,7 +66,7 @@ will pass a list in CSV format to the artifact's `SearchFilesGlobTable` paramete
 
 ### See also
 
-- [str](/vql_reference/popular/str/): Returns the string
+- [str]({{< ref "/vql_reference/popular/str/" >}}): Returns the string
   representation of the provided data.
 
 

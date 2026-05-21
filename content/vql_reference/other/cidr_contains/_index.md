@@ -5,6 +5,23 @@ noTitle: true
 sitemap:
    disable: true
 no_edit: true
+description: |
+  Calculates if an IP address falls within a range of CIDR specified
+  networks.
+
+  ### Example
+
+  ```vql
+  SELECT cidr_contains(ip="192.168.0.132",
+                       ranges=["192.168.0.0/24", "127.0.0.1/8"])
+  FROM scope()
+  ```
+  ### See also
+
+  - [ip]({{< ref "/vql_reference/other/ip/" >}}): Format an IP address.
+  - [geoip]({{< ref "/vql_reference/other/geoip/" >}}): Lookup an IP Address
+    using the MaxMind GeoIP database.
+
 ---
 
 
@@ -38,8 +55,8 @@ FROM scope()
 ```
 ### See also
 
-- [ip](/vql_reference/other/ip/): Format an IP address.
-- [geoip](/vql_reference/other/geoip/): Lookup an IP Address
+- [ip]({{< ref "/vql_reference/other/ip/" >}}): Format an IP address.
+- [geoip]({{< ref "/vql_reference/other/geoip/" >}}): Lookup an IP Address
   using the MaxMind GeoIP database.
 
 

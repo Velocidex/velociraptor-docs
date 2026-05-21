@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  This artifact simplifies collecting from a specific client by
+  performing all steps automatically:
 ---
 
 This artifact simplifies collecting from a specific client by

@@ -4,6 +4,9 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+description: |
+  This artifact will remove clients that have not checked in for a
+  while.  All data for these clients will be removed.
 ---
 
 This artifact will remove clients that have not checked in for a

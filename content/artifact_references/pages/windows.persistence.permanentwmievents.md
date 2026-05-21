@@ -4,6 +4,10 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+description: |
+  This artifact reports currently deployed permanent WMI Event Consumers. The
+  artifact collects Binding information, then presents associated Filters
+  and Consumers.
 ---
 
 This artifact reports currently deployed permanent WMI Event Consumers. The
