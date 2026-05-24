@@ -91,6 +91,20 @@ This page is for the current release. [The previous Release is 0.75.7](/download
 
 Full release notes are published in our [release blog post](/blog/2026/2026-03-10-release-notes-0.76/)
 
+## The Sumo build
+
+In recent releases, the build was split into two:
+
+1. The regular build is suitable for both clients and servers. It
+   reduces binary size by removing some large dependencies.
+2. The Sumo build includes additional dependencies which inflate the
+   size of the binary.
+
+In particular, the Sumo build uses the official AWS SDK, while the
+regular build uses the light weight Minio client library. If your
+server needs AWS integration (particularly around credentials) you
+will probably need to use the Sumo build.
+
 {{% notice note "Support for Windows 7" %}}
 
 Golang has officially [ended support for Windows

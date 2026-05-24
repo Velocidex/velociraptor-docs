@@ -70,6 +70,14 @@ Arg | Description | Type
 ----|-------------|-----
 item||Any
 
+### Description
+
+Iterate over dict members producing _key and _value columns
+
+This can be used to filter dict items by feeding the results to
+`to_dict()`
+
+
 
 
 <div class="vql_item"></div>

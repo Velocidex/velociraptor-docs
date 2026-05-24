@@ -38,6 +38,8 @@ description: |
   })
   ```
 
+  NOTE: An alternative to this plugin is a `Sigma Correlation rule`
+
 ---
 
 
@@ -90,5 +92,7 @@ query={
   WHERE DNSInfo AND Name
 })
 ```
+
+NOTE: An alternative to this plugin is a `Sigma Correlation rule`
 
 

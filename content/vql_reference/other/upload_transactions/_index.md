@@ -28,3 +28,7 @@ flow_id||string
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
 
+### Description
+
+View the outstanding transactions for uploads.
+

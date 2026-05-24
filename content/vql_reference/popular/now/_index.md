@@ -50,6 +50,13 @@ description: |
 <span class='vql_type label label-warning pull-right page-header'>Function</span>
 
 
+
+<div class="vqlargs"></div>
+
+Arg | Description | Type
+----|-------------|-----
+ns|Return the time in ns|bool
+
 ### Description
 
 Returns the current time in seconds since epoch.
