@@ -29,3 +29,8 @@ really_do_it||bool
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">DELETE_RESULTS</span>
 
+### Description
+
+Delete all information related to a client from the filestore.
+
+

@@ -32,6 +32,19 @@ Arg | Description | Type
 ----|-------------|-----
 client_id||string (required)
 flow_id||string
+full_request|If specified we include the full request in the output. This can be very large.|bool
+downloads|If specified we include the flow exports in the output.|bool
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
+
+### Description
+
+Enumerate all the files that make up a flow.
+
+This includes the uploaded files, the result sets and the various
+metadata files that result flow state information.
+
+This plugin is mostly used for archiving or deleting a flow from
+the filestore.
+
 

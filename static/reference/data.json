@@ -816,6 +816,7 @@
         "name": "cancel_flow",
         "description": "Cancels the flow.",
         "type": "Function",
+        "version": 2,
         "args": [
             {
                 "name": "client_id",
@@ -825,6 +826,16 @@
             {
                 "name": "flow_id",
                 "type": "string"
+            },
+            {
+                "name": "full_request",
+                "type": "bool",
+                "description": "If specified we include the full request in the output. This can be very large."
+            },
+            {
+                "name": "downloads",
+                "type": "bool",
+                "description": "If specified we include the flow exports in the output."
             }
         ],
         "category": "server",
@@ -1299,13 +1310,18 @@
         "name": "collect_client",
         "description": "Launch an artifact collection against a client. If the client_id\nis \"server\" then the collection occurs on the server itself. In\nthat case the caller needs the SERVER_ADMIN permission.",
         "type": "Function",
-        "version": 2,
+        "version": 3,
         "args": [
             {
                 "name": "client_id",
                 "type": "string",
                 "description": "The client id to schedule a collection on",
                 "required": true
+            },
+            {
+                "name": "flow_id",
+                "type": "string",
+                "description": "If a flow id is specified we do not create a new flow, but instead add the collection to this flow."
             },
             {
                 "name": "artifacts",
@@ -2252,17 +2268,20 @@
     },
     {
         "name": "encode",
-        "description": "Encodes a string as a different type. Currently supported types include 'hex', 'base64'.",
+        "description": "Encode an object as a string.",
         "type": "Function",
+        "version": 3,
         "args": [
             {
                 "name": "string",
                 "type": "Any",
+                "description": "The item to encode",
                 "required": true
             },
             {
                 "name": "type",
                 "type": "string",
+                "description": "Encoding format (csv,json,yaml,hex,base64)",
                 "required": true
             }
         ],
@@ -2318,6 +2337,7 @@
         "name": "enumerate_flow",
         "description": "Enumerate all the files that make up a flow.",
         "type": "Plugin",
+        "version": 2,
         "args": [
             {
                 "name": "client_id",
@@ -2327,6 +2347,16 @@
             {
                 "name": "flow_id",
                 "type": "string"
+            },
+            {
+                "name": "full_request",
+                "type": "bool",
+                "description": "If specified we include the full request in the output. This can be very large."
+            },
+            {
+                "name": "downloads",
+                "type": "bool",
+                "description": "If specified we include the flow exports in the output."
             }
         ],
         "category": "server",
@@ -2873,6 +2903,7 @@
         "name": "flows",
         "description": "Retrieve the flows launched on each client.",
         "type": "Plugin",
+        "version": 2,
         "args": [
             {
                 "name": "client_id",
@@ -2882,6 +2913,16 @@
             {
                 "name": "flow_id",
                 "type": "string"
+            },
+            {
+                "name": "full_request",
+                "type": "bool",
+                "description": "If specified we include the full request in the output. This can be very large."
+            },
+            {
+                "name": "downloads",
+                "type": "bool",
+                "description": "If specified we include the flow exports in the output."
             }
         ],
         "category": "server",
@@ -3187,6 +3228,7 @@
         "name": "get_flow",
         "description": "Gets flow details.",
         "type": "Function",
+        "version": 2,
         "args": [
             {
                 "name": "client_id",
@@ -3196,6 +3238,16 @@
             {
                 "name": "flow_id",
                 "type": "string"
+            },
+            {
+                "name": "full_request",
+                "type": "bool",
+                "description": "If specified we include the full request in the output. This can be very large."
+            },
+            {
+                "name": "downloads",
+                "type": "bool",
+                "description": "If specified we include the flow exports in the output."
             }
         ],
         "category": "server",
@@ -4236,6 +4288,17 @@
         ],
         "metadata": {
             "permissions": "FILESYSTEM_READ"
+        },
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
+    },
+    {
+        "name": "info",
+        "description": "Get information about the running host. This is the function version of the info() plugin",
+        "type": "Function",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
         },
         "platforms": [
             "linux_amd64_cgo"
@@ -5930,6 +5993,14 @@
         "name": "now",
         "description": "Returns the current time in seconds since epoch.",
         "type": "Function",
+        "version": 2,
+        "args": [
+            {
+                "name": "ns",
+                "type": "bool",
+                "description": "Return the time in ns"
+            }
+        ],
         "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
@@ -6124,7 +6195,7 @@
         "type": "Plugin",
         "category": "developer",
         "metadata": {
-            "permissions": "MACHINE_STATE"
+            "permissions": "SERVER_ADMIN"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -9463,6 +9534,81 @@
             "linux_amd64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "shell_session",
+        "description": "Recreate or retrieve a shell session handle.",
+        "type": "Function",
+        "version": 1,
+        "args": [
+            {
+                "name": "argv",
+                "type": "string",
+                "description": "Argv to run the command with.",
+                "repeated": true,
+                "required": true
+            },
+            {
+                "name": "env",
+                "type": "ordereddict.Dict",
+                "description": "Environment variables to launch with."
+            },
+            {
+                "name": "cwd",
+                "type": "string",
+                "description": "If specified we change to this working directory first."
+            },
+            {
+                "name": "secret",
+                "type": "string",
+                "description": "The name of a secret to use."
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "description": "The name of the shell session. If the session already exists, we just return a handle to it."
+            }
+        ],
+        "metadata": {
+            "permissions": "EXECVE"
+        },
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
+    },
+    {
+        "name": "shell_session_control",
+        "description": "Control a previously created shell session.",
+        "type": "Function",
+        "version": 1,
+        "args": [
+            {
+                "name": "name",
+                "type": "string",
+                "description": "The name of the shell session."
+            },
+            {
+                "name": "stdin",
+                "type": "string",
+                "description": "Write this string to the session stdin."
+            },
+            {
+                "name": "close_stdin",
+                "type": "bool",
+                "description": "If specified we close the stdin of the session. This will usually terminate the session gracefully."
+            },
+            {
+                "name": "kill",
+                "type": "bool",
+                "description": "If specified we kill the session."
+            }
+        ],
+        "metadata": {
+            "permissions": "EXECVE"
+        },
+        "platforms": [
+            "linux_amd64_cgo"
         ]
     },
     {

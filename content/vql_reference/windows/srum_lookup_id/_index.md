@@ -27,3 +27,7 @@ file||OSPath (required)
 accessor|The accessor to use.|string
 id||int64 (required)
 
+### Description
+
+Lookup a SRUM id.
+
