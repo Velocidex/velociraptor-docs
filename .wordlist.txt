@@ -2166,3 +2166,6 @@ VelociraptorServer
 --------------------------------------------------------------------------------
 alls
 severities
+Minio
+SDK
+stdin
