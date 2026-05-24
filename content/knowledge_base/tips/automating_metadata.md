@@ -131,6 +131,11 @@ expected results:
 
 ![Linux BIOS info](biosinfo_linux.png)
 
+The exchange artifact
+[Generic.Client.HW.Identification](/exchange/artifacts/pages/generic.client.hw.identification/)
+can be used to extract hardware information like
+`Generic.Client.BiosInfo` and more, with support for all three
+operating systems.
 
 #### Add an artifact to collect the last logged on user
 
@@ -274,6 +279,18 @@ At this point we have configured the collection of the required data. The next
 step is to create a server event artifact and add it to server monitoring. This
 will monitor for incoming results and then populate the metadata fields with
 data from these results.
+
+{{% notice info %}}
+You do not have to create your own monitoring artifacts. There are two
+artifacts in the [exchange](/exchange/) that will likely cover most of
+your needs:
+
+- [`Server.Monitor.StoreClientHWInfo`](/exchange/artifacts/pages/server.monitor.storeclienthwinfo/):
+  Store hardware information, with special logic to pick a suitable computer serial
+- [`Server.Monitor.StoreClientInfo`](/exchange/artifacts/pages/server.monitor.storeclientinfo/):
+  Store any kind of interrogation data as client metadata.
+
+{{% /notice %}}
 
 #### Add a Server Event Monitoring artifact
 
@@ -444,4 +461,4 @@ WHERE LastUser = "Mary"
 
 ![Running a search in a notebook](vql_search.png)
 
-Tags: #configuration #vql #deployment
+Tags: #configuration #vql #deployment #automation #metadata

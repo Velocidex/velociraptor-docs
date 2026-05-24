@@ -3,10 +3,33 @@ author: Andreas Misje – @misje
 description: |
    Extract product serial and other identification strings from the system.
 
-   One column is returned, SystemInfo, a dict with all available information.
-   On MacOS, only manufacturer, model and serial is available. Example values:
+   One column `SystemInfo` is returned: a dict with all available fields.
+   Sources vary by platform:
 
-   Lenovo T14 Gen 2i:
+   - **Linux**: reads DMI tables from `/sys/class/dmi/id/*`, plus
+     `/sys/firmware/devicetree/base/*` to catch single-board computers
+     (Raspberry Pi etc.) where DMI is absent.
+   - **Windows**: uses WMI: `Win32_ComputerSystem`,
+     `Win32_ComputerSystemProduct`, `Win32_BaseBoard`,
+     `Win32_SystemEnclosure`.
+   - **macOS**: uses `ioreg -c IOPlatformExpertDevice`. Only
+     `product_manufacturer`, `product_name` and `product_serial` are
+     available.
+
+   A second column `virtual` is added, a best-effort boolean derived
+   from `product_name` that recognises common hypervisors and cloud
+   providers (VirtualBox, VMware, KVM/QEMU, Hyper-V, Xen, Parallels,
+   EC2, Azure, GCE etc.). The check is informational; systems can
+   easily evade this check, and some VMs does not provide any HW
+   information at all. `true` likely means that a host is virtual, but
+   `false` should not be trusted.
+
+   On hosts without DMI tables, the `firmware_*` fields provide an
+   alternative to identify the system.
+
+   {{% expand "Example values across platforms" %}}
+
+   Lenovo T14 Gen 2i (Linux):
 
    | Key | Example value |
    | --- | ------------- |
@@ -26,7 +49,10 @@ description: |
    | chassis_manufacturer | LENOVO |
    | chassis_version | None |
 
-   Dell Latitude 7420:
+   Dell Latitude 7420 (Linux). Note empty `product_manufacturer`/
+   `product_version` — Dell ships those blank on some models, so always
+   verify the source field is populated before relying on it for
+   metadata:
 
    | Key | Example value |
    | --- | ------------- |
@@ -46,20 +72,40 @@ description: |
    | chassis_manufacturer | Dell Inc. |
    | chassis_version | |
 
-   Raspberry Pi:
+   Raspberry Pi (Linux, no DMI — firmware fields only):
 
    | Key | Example value |
    | --- | ------------- |
    | firmware_version | Raspberry Pi 4 Model B Rev 1.2 |
    | firmware_serial | xxxxxxxxxxxxxxxx |
 
-   MacBook Pro:
+   MacBook Pro (macOS):
 
    | Key | Example value |
    | --- | ------------- |
    | product_name | Mac15,6 |
    | product_serial | xxxxxxxxxx |
    | product_manufacturer | Apple Inc. |
+
+   Some manufacturers, like MSI, will refer to a serial number that is
+   not obtainable anywhere on the host.
+
+   {{% /expand %}}
+
+   ## Use as part of client interrogation
+
+   This artifact is designed to be called from a custom override of
+   [`Generic.Client.Info`](/artifact_references/pages/generic.client.info/)
+   so that hardware identification is collected on every interrogation.
+   Combined with
+   [`Server.Monitor.StoreClientHWInfo`](/exchange/artifacts/pages/server.monitor.storeclienthwinfo/),
+   you can store key hardware information, like serial, as client
+   metadata. See
+   [How can I automatically add & update client metadata?](/knowledge_base/tips/automating_metadata/)
+   for an in-depth walkthrough about how to save interrogation data as
+   client metadata.
+
+   #metadata
 
 type: CLIENT
 

@@ -1,38 +1,39 @@
 name: Generic.Client.ADStatus
 author: Andreas Misje – @misje
 description: |
-  Get Active Directory join status from a computer. The information returned
-  depends on the operating system, but DomainJoined (boolean) and Domain is
-  returned for all. DomainJoined is always set. Domain is always uppercase.
+  Get Active Directory join status from a computer.
 
-  On Linux, realm/sssd is used to query AD status/configuration. The following
-  columns are returned:
+  `DomainJoined` (boolean) and `Domain` (uppercase) are returned on all
+  operating systems. Additional columns depend on the OS:
 
-    - _RealmType (e.g. "kerberos")
-    - _RealmName (e.g. "AD.EXAMPLE.ORG")
-    - Domain (e.g. "AD.EXAMPLE.ORG)
-    - AllowedUsers (e.g. ["bob"])
-    - AllowedGroups (e.g. ["it"])
-    - DomainJoined (boolean)
+  - **Linux**: uses `realm list` (realm/sssd). Adds `_RealmType`,
+    `_RealmName`, `AllowedUsers`, `AllowedGroups`.
+  - **Windows**: uses `dsregcmd /status`. Adds `AzureAdJoined`,
+    `EnterpriseJoined`, `NetBIOS`, `DeviceName`.
+  - **macOS**: uses `dsconfigad -show`. Adds `DeviceName`, `AdminGroups`.
 
-  On Windows, `dsregcmd` is used to return AD status/configuration. Only a small
-  part of its output is returned:
+  On Linux hosts without realm/sssd installed, `realm list` is absent and
+  the artifact returns `DomainJoined: false`. Treat that as "unknown" if
+  the deployment mixes hosts that may not have realm at all.
 
-    - AzureAdJoined (boolean)
-    - EnterpriseJoined (boolean)
-    - DomainJoined (boolean)
-    - NetBIOS (e.g. "EXAMPLE")
-    - Domain (e.g. "AD.EXAMPLE.ORG)
-    - DeviceName (e.g. "DESKTOP-FOO")
+  ## Use as part of client interrogation
 
-  On macOS, `dsconfigad` is used to return AD status/configuration:
+  This artifact is designed to be called from a custom override of
+  [`Generic.Client.Info`](/artifact_references/pages/generic.client.info/)
+  so that AD status is collected on every interrogation. Combined with
+  [`Server.Monitor.StoreClientInfo`](/exchange/artifacts/pages/server.monitor.storeclientinfo/),
+  the result can be saved as searchable client metadata such as
+  `ad_joined: true` or `ad_domain: AD.EXAMPLE.ORG`. See
+  [How can I automatically add & update client metadata?](/knowledge_base/tips/automating_metadata/)
+  for an in-depth walkthrough about how to save interrogation data as
+  client metadata.
 
-    - Domain (e.g. "AD.EXAMPLE.ORG")
-    - DeviceName (e.g. "DESKTOP-FOO")
-    - AdminGroups (e.g. ["it"])
-    - DomainJoined (boolean)
+  #metadata #activedirectory
 
 type: CLIENT
+
+implied_permissions:
+  - EXECVE
 
 sources:
   - query: |

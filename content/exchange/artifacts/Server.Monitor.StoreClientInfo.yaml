@@ -3,18 +3,42 @@ author: Andreas Misje – @misje
 description: |
   Save data from client interrogation as client metadata.
 
-  This artifact listens for flow completions, typically Custom.Generic.Client.Info,
-  your own override of the interrogation artifact, and extracts any information
-  gathered in the interrogation.
+  This artifact listens for completions of an interrogation artifact —
+  typically `Custom.Generic.Client.Info`, your own override of
+  [`Generic.Client.Info`](/artifact_references/pages/generic.client.info/)
+  — and stores selected fields from the result as client metadata, so
+  they can be indexed and searched.
 
-  The primary use case for this artifact is to any useful information about the
-  client as metadata so that it can be indexed and search for, e.g. "OS: windows",
-  "arch: amd64", "dual_boot: true", "ad_joined: false" etc.
+  Field selection is controlled by `InfoMetadata`, a CSV parameter
+  mapping `Source` (the artifact source name, e.g. `BasicInformation`)
+  and `Field` (the column to read) to an `Alias` used as the metadata
+  key. If `Alias` is empty, the original `Field` is used. Example:
 
-  NOTE: The sources referred to in InfoMetadata should only return a single line.
-  If more lines are returned, only the first line is used.
+  | Source | Field | Alias |
+  | ------ | ----- | ----- |
+  | `BasicInformation` | `OS`  | `os` |
+  | `BasicInformation` | `Architecture` | `arch` |
+  | `ADStatus` | `DomainJoined` | `ad_joined` |
+  | `MDATPHealth` | `MDATPHealth.edrMachineId` | `defender_id` |
 
-  See also Server.Monitor.StoreClientHWInfo.
+  `Field` can refer to a nested field, including arrays. This means
+  that field names containing a period (".") are not supported.
+
+  {{% notice info %}}
+  The sources referred to in `InfoMetadata` should only return a
+  single row. If more rows are returned, only the first is used.
+  {{% /notice %}}
+
+  ## See also
+
+  - [`Server.Monitor.StoreClientHWInfo`](/exchange/artifacts/pages/server.monitor.storeclienthwinfo/):
+    sibling artifact tailored for hardware identification (extracting
+    serial number as primary purpose)
+  - [How can I automatically add & update client metadata?](/knowledge_base/tips/automating_metadata/):
+    in-depth walkthrough about how to save interrogation data as
+    client metadata
+
+  #metadata #automation
 
 type: SERVER_EVENT
 

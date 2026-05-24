@@ -1,29 +1,78 @@
 name: Server.Monitor.StoreClientHWInfo
 author: Andreas Misje – @misje
 description: |
-  Save HW identification data from client interrogation as client metadata.
+  Save hardware identification data from client interrogation as
+  client metadata.
 
-  This artifact listens to flow completions, typically Custom.Generic.Client.Info,
-  your own override of the interrogation artifact, and extracts hardware information
-  gathered in the interrogation. The artifact used to provide this information
-  is expected to be Generic.Client.HW.Identification, provided as a source by
-  the customisable name HWIdentificationSource. In other words, you have to add
-  a new source to your Custom.Generic.Client.Info artifact and call
-  Generic.Client.HW.Identification for this server event artifact to be useful.
-  However, since this artifact is highly customisable, you may use it to set
-  any kind of metadata provided by a interrogation artifact source. Simply
-  adjust the parameters to your needs, ignore the serial settings, and adjust
-  HWInfoMetadata as needed.
+  The primary use case is to store a stable device serial number as
+  the `serial` metadata field. Indexing `serial` makes clients quickly
+  searchable from the GUI by their hardware identity. Additional
+  hardware fields, like manufacturer, product name and model, may also
+  be set as metadata for non-indexed lookup.
 
-  The primary use case for this artifact is to store the serial number of the
-  client as client metadata. This allows you to quickly look up clients by their
-  serial number if you add "serial" as an indexed field. Additional hardware info,
-  like the manufacturer, product name or model, may also be added as metadata.
-  Only unique, relevant metadata is useful for indexed searching, but additional
-  hardware identification could be handy anyway.
+  ## Setup requirement
 
-  See also Server.Monitor.StoreClientInfo for a similar artifact for storing
-  any metadata from any source in the interrogation artifact.
+  This artifact reads from a source named `HWIdentification` (override
+  via `HWIdentificationSource`) inside the interrogation artifact named
+  by `InterrogationArtifact` (default `Custom.Generic.Client.Info`).
+  You need to add a source by that name to your
+  [`Generic.Client.Info`](/artifact_references/pages/generic.client.info/)
+  override that calls
+  [`Generic.Client.HW.Identification`](/exchange/artifacts/pages/generic.client.hw.identification/):
+
+  ```yaml
+  - name: HWIdentification
+    query: SELECT * FROM Artifact.Generic.Client.HW.Identification()
+  ```
+
+  ## Stable serial selection
+
+  Hardware serials are reported under several names depending on the
+  vendor and platform: `product_serial`, `board_serial`,
+  `chassis_serial`, `firmware_serial`. Some are reliable; others are
+  blank or contain BIOS placeholders such as `Default string` or
+  `System Serial Number`. `SerialColumn` lets you declare a fallback
+  order: the first candidate with a non-empty, non-ignored (by
+  `SerialIgnore`) value is picked. `SerialIgnore` is a regex that filters
+  out known placeholder values.
+
+
+  ## Customisation
+
+  Use `HWInfoMetadata` to select which hardware information to store,
+  and under what name, e.g.
+
+  | Field | Alias |
+  | ----- | ----- |
+  | `board_manufacturer` | `manufacturer`
+  | `product_name` | |
+  | `virtual` | |
+  | `chassis_asset_tag` | `asset_tag` |
+
+  If you modify/extend
+  [`Generic.Client.HW.Identification`](/exchange/artifacts/pages/generic.client.hw.identification/),
+  remember to still produce a single row, and simply add new columns
+  to refer to in `HWInfoMetadata`.
+
+  If you need to store results from collections other than hardware
+  information like
+  [`Generic.Client.HW.Identification`](/exchange/artifacts/pages/generic.client.hw.identification/),
+  use
+  [`Server.Monitor.StoreClientInfo`](/exchange/artifacts/pages/server.monitor.storeclientinfo/)
+  instead.
+
+  ## See also
+
+  - [`Server.Monitor.StoreClientInfo`](/exchange/artifacts/pages/server.monitor.storeclientinfo/):
+    sibling artifact for storing arbitrary metadata from any
+    interrogation source (no serial-specific behaviour)
+  - [`Generic.Client.HW.Identification`](/exchange/artifacts/pages/generic.client.hw.identification/):
+    the producing artifact this one expects to consume
+  - [How can I automatically add & update client metadata?](/knowledge_base/tips/automating_metadata/):
+    in-depth walkthrough about how to save interrogation data as
+    client metadata
+
+  #metadata #automation
 
 type: SERVER_EVENT
 
@@ -107,10 +156,17 @@ sources:
                               _value - dict(ClientId=NULL, _Source=NULL) AS Data
         FROM items(item={ SELECT * FROM HWInfo })
 
-      LET SerialValue(Data) = SELECT _value
-        FROM items(item=Data)
-        WHERE _key IN SerialColumn
-         AND NOT _value =~ SerialIgnore
+      // Walk SerialColumn in declared priority order and return the first
+      // candidate field in Data with a non-empty, non-ignored value.
+      LET SerialValue(Data) = SELECT Value
+        FROM foreach(row=SerialColumn,
+                     query={
+          SELECT get(item=Data, field=_value) AS Value
+          FROM scope()
+        })
+        WHERE Value
+         AND NOT str(str=Value) =~ SerialIgnore
+        LIMIT 1
 
       LET NullOrEmpty(Value) = Value = NULL OR Value = ""
 
@@ -128,15 +184,23 @@ sources:
           WHERE KeepEmptyValues OR (_value != NULL
              AND len(list=str(str=_value)))
         })
-        }) + if(condition=NOT NullOrEmpty(Value=SerialValue(Data=Data)[0]._value),
+        }) + if(condition=NOT NullOrEmpty(Value=SerialValue(Data=Data)[0].Value),
                 then=set(item=dict(),
                          field=SerialMetadataField,
-                         value=SerialValue(Data=Data)[0]._value),
+                         value=SerialValue(Data=Data)[0].Value),
                 else=dict()) AS Metadata
           FROM scope()
         })
 
-      // Set the metadata and return the dict of data, as well as the the
+      // Set the metadata and return the dict of data, as well as the
       // client_set_metadata() result:
-      SELECT *, client_set_metadata(client_id=ClientId, metadata=Metadata) AS Updated
-      FROM SelectedMetadata
+      // Do not store an empty dict. This has proved to cause issues:
+      LET SetMetadata = SELECT *, if(condition=Metadata,
+                                     then=client_set_metadata(
+                                       client_id=ClientId,
+                                       metadata=Metadata),
+                                     else=false) AS Updated
+        FROM SelectedMetadata
+
+      SELECT *
+      FROM SetMetadata

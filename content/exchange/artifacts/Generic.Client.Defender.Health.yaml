@@ -1,34 +1,54 @@
 name: Generic.Client.Defender.Health
 author: Andreas Misje – @misje
 description: |
-  Get MDATP health
+  Get Microsoft Defender for Endpoint (MDATP) health and configuration.
 
-  Microsoft Defender for Endpoint Advanced Threat Protection is an EDR solution
-  for Windows, Darwin and Linux. This artifact retrieves all available information
-  about the agents's status and configuration. The artifact will fail if MDATP is
-  not installed on the endpoint.
+  MDATP is Microsoft's EDR product for Windows, macOS and Linux. This
+  artifact retrieves all available agent status and configuration via the
+  platform-native interface: `mdatp health --output json` on Linux and
+  macOS, `Get-MpComputerStatus` through
+  [`Windows.System.PowerShell`](/artifact_references/pages/windows.system.powershell/)
+  on Windows.
 
-  The output from the MDATP status commands vary significantly between Windows
-  and Linux/Darwin. The output on Linux and Darwin are almost identical, with a
-  few exceptions:
+  A single row is returned with a dict called `MDATPHealth` whose
+  shape differs across platforms. Linux and macOS are nearly
+  identical; Windows differs significantly. Platform-specific extras:
 
-  Linux has these additional fields:
+  Linux:
 
-    - behaviorMonitoring
-    - supplementaryEventsSubsystem
+  - `behaviorMonitoring`
+  - `supplementaryEventsSubsystem`
 
-  Darwin has these additional fields:
+  macOS:
 
-    - deviceControlEnforcementLevel
-    - ecsConfigurationIds
-    - fullDiskAccessEnabled
-    - networkEventsSubsystem
-    - tamperProtection
-    - troubleshootingMode
+  - `deviceControlEnforcementLevel`
+  - `ecsConfigurationIds`
+  - `fullDiskAccessEnabled`
+  - `networkEventsSubsystem`
+  - `tamperProtection`
+  - `troubleshootingMode`
 
-  The notebook suggestion "Common MDATP health information" provides a nice
-  summary of information of fields present in at least Windows and one of Linux
-  and Darwin.
+  Windows values are parsed from text output and arrive as strings
+  (e.g. the literal `'True'`, not the boolean `true`). Linux and macOS
+  values are properly typed JSON. The notebook suggestion **Common
+  MDATP health information** normalises a useful subset across all
+  three platforms.
+
+  ## Use as part of client interrogation
+
+  Although useful on its own to gather MDATP status from hosts, this
+  artifact can also be called from a custom override of
+  [`Generic.Client.Info`](/artifact_references/pages/generic.client.info/).
+  Combined with
+  [`Server.Monitor.StoreClientInfo`](/exchange/artifacts/pages/server.monitor.storeclientinfo/),
+  selected fields can be saved as client metadata. In particular,
+  `edrMachineId` can be used to identify the client in MDATP, and tie
+  the client ID to machines in Microsoft Graph API queries. See
+  [How can I automatically add & update client metadata?](/knowledge_base/tips/automating_metadata/)
+  for an in-depth walkthrough about how to save interrogation data as
+  client metadata.
+
+  #mdatp #metadata
 
 type: CLIENT
 
