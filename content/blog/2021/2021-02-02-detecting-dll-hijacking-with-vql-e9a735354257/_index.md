@@ -22,7 +22,7 @@ One of the simplest technique, is to simply create a DLL with a bunch of forward
 
 In this case, the export table contains a forward entry — i.e. it forwards the loader into another DLL. Nick Landers published a tool to help build such a dll [https://github.com/monoxgas/Koppeling](https://github.com/monoxgas/Koppeling)
 
-### Example Injection
+###### Example: Injection
 
 I will use the Koppeling tool above to build a simple DLL forwarder as per the example in the repository.
 

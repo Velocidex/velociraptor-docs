@@ -44,7 +44,7 @@ Args:
   [<file>]  Tool name to show
 ```
 
-##### Examples
+###### Examples
 
 ```text
 velociraptor --config server.config.yaml tools show

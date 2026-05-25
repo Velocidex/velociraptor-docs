@@ -177,7 +177,7 @@ requiring manual movement of files after recovery.
 
 The command can be run while the server is running or stopped.
 
-##### Example
+###### Example
 
 ```sh
 # first change to the velociraptor user to avoid messing up the datastore's filesystem ACLs

@@ -265,10 +265,10 @@ root certs embedded in its config file (Just add all the certs in PEM format
 under the `Client.Crypto.root_certs` key in the config file). This helps
 deployments that must use a MITM proxy or traffic inspection proxies.
 
-For the outer TLS, Velociraptor supports self-signed and certs issued by trusted
-CAs.
+For the outer TLS, Velociraptor supports self-signed certs or certs
+issued by external CAs.
 
-#### Self-signed Certificates
+#### Option 1. Self-signed Certificates
 
 In self-signed SSL mode, Velociraptor issues its own server certificate using
 its internal CA. This means the Admin GUI and front end also use a self-signed
@@ -284,7 +284,7 @@ possibility of a MITM attack.
 Velociraptor doesn't support other self-signed SSL certificates, and we don't
 recommend attempting to add your own self-signed certificates to Velociraptor.
 
-#### CA-issued Certificates
+#### Option 2. CA-issued Certificates
 
 For CA-issued certificates we prefer Let's Encrypt since these are free and
 Velociraptor has the built-in capability to request and rotate certificates from

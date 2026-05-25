@@ -13,7 +13,7 @@ Windows information security techniques are heavily reliant on the availability 
 
 But how reliable really are event logs? I was playing around with the Windows Event Viewer to understand how event logs can be interfered with in practice. We previously covered the general structure of the Windows Event Log system, so you might want to have a quick read of [that post](/blog/2019/2019-11-12_windows-event-logs-d8d8e615c9ca/) before you dive into this one.
 
-### Example: BITS transfer
+###### Example: BITS transfer
 
 For this post I will use the example of a BITS transfer using bitsadmin.exe. BITS is a transfer service built into the Windows operating system, normally used to fetch windows (or application) updates. However, is it also commonly used by threat actors to deliver malicious payloads because BITS is typically trusted by endpoint tools (since it is a standard windows service). See [Mitre Att&ck T1197](https://attack.mitre.org/techniques/T1197/).
 

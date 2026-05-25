@@ -44,7 +44,7 @@ A collection of artifacts can return rows or upload
 files. This is because an artifact is simply a VQL query and all
 queries return a sequence of rows.
 
-## Example: collect scheduled tasks from endpoint.
+###### Example: collect scheduled tasks from endpoint.
 
 To illustrate how artifacts can be used, let's collect a common
 forensic artifact from our Windows endpoint. Windows allows commands

@@ -70,7 +70,7 @@ As we can see in the above screenshot, the authenticode standard provides an exp
 
 None of the calculated hashes is the same as the “ExpectedHash” provided in the Authenticode signature! This is because Authenticode hashes do not cover the entire PE file, as regular hashes do. Authenticode hashes only cover specific PE sections, in a specific order. They specifically allow PE sections to be reordered, and some regions in the file to be modified.
 
-{{% notice warning %}}
+{{% notice info %}}
 Many people find it surprising that signed PE files can be modified without invalidating the signature.
 {{% /notice %}}
 

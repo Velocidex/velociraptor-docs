@@ -45,7 +45,7 @@ You can examine the client monitoring queries assigned from the server.
 The above example shows some poorly thought out queries as an example:
 
 
-#### Example `Windows.Sysinternals.SysmonLogForward`
+###### Example `Windows.Sysinternals.SysmonLogForward`
 
 We see that this client is collecting the
 `Windows.Sysinternals.SysmonLogForward` artifact. This artifact simply
@@ -62,7 +62,7 @@ process this data? What do you do with this data? Is it useful?
 You will have to make a call if the value gained is worth the storage
 and network costs in your specific deployment.
 
-#### Example `Windows.Hayabusa.Monitoring`
+###### Example `Windows.Hayabusa.Monitoring`
 
 We see also in this example that we are collecting the
 `Windows.Hayabusa.Monitoring` artifact. This artifact applies a set of
@@ -83,7 +83,7 @@ many to be considered useful for detection. A better tuned set of
 rules will be more effective and transfer less data.
 
 
-#### Example `Windows.Detection.Honeyfiles`
+###### Example `Windows.Detection.Honeyfiles`
 
 The final example is the `Windows.Detection.Honeyfiles` artifact that
 places a number of juicy sounding files on the system (e.g. AWS keys,

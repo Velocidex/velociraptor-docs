@@ -42,7 +42,7 @@ With the recent Velociraptor release, we can deploy monitoring VQL artifacts whi
 
 Because the file buffer allows the VQL engine to operate even when the client is not online, VQL event monitoring queries are not interrupted and continue to work autonomously without involvement from the server.
 
-#### Example: Office macros on thumb drive
+###### Example: Office macros on thumb drive
 
 An example of an event monitoring artifact is the **Windows.Detection.Thumbdrives.List** artifact. This artifact watches for any newly inserted USB thumb drive and simply lists the files on it. In some environments it is interesting to see any newly added files on a USB removable drive.
 

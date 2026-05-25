@@ -4,7 +4,7 @@ title: Server Upgrades
 draft: false
 weight: 50
 date: 2025-02-27
-last reviewed: 2025-04-27
+last_reviewed: 2026-04-24
 summary: "How to upgrade your server."
 description: |
   Upgrading the server component is usually a simple matter of creating a new
@@ -12,64 +12,92 @@ description: |
   configuration file, and then applying it to your server.
 ---
 
-Upgrading the server component is usually a simple matter of creating a new
-server installation package using the latest version and your existing
-configuration file, and then applying it to your server.
+Upgrading the server component is usually a simple matter of creating
+a new server installation package (deb or rpm) using the latest binary
+version along with your existing configuration file. You then apply
+the new package to your server using the appropriate package
+management tool.
 
-{{% notice tip "Backing up your configuration file" %}}
+{{% notice info "Backing up your configuration file" %}}
 
-The configuration file contains cryptographic keys that allow clients
-and server to communicate. Each time the configuration is regenerated
-(e.g. using `velociraptor config generate`), new keys are created.
+When the config is generated (typically using the `velociraptor config
+generate` command), new cryptographic keys are created and stored in
+the config. These keys allow the clients and server to establish trust
+and communicate.
 
-It is imperative to backup the configuration file somewhere safe
-(perhaps offline) and re-use the same file when upgrading to a new
-version of Velociraptor in order to preserve the key material and
-maintain client communication.
+When upgrading to a new version, you must re-use your existing config
+file to preserve the key material and maintain client communication.
 
-Remember to always make a backup copy of your config file before upgrading and
-after upgrading, just in case changes are made by the upgrade!
+It is good practice to always make a backup copy of your config file
+both before upgrading and after upgrading, just in case changes are
+made during the upgrade. As with all config backups, these should be
+stored somewhere safe - preferably kept offline and under version
+control.
 
 {{% /notice %}}
 
-From time to time, the schema of the configuration file may evolve with newer
-versions. When a newer version of Velociraptor encounters an older configuration
-file, it attempts to upgrade the configuration file to the latest version. This
-happens automatically and is usually a seamless process.
 
-During the installation package preparation the upgraded config file is embedded
-into the server package so you will receive an upgraded configuration file
-installed to the `/etc/` directory. You can see the version that wrote the
-configuration file in the `version` section of the configuration file.
+{{% notice tip "Server cert expiring soon?" %}}
+
+Before upgrading, if you're using the self-signed SSL certificate
+option, then you may also want to also consider
+[rotating your server certificate](/knowledge_base/tips/rolling_certificates/)
+if it is due to expire in the near future. This is a good time to do
+so because you can then bundle the config with the reissued cert into
+your upgrade package.
+
+If you're using Let's Encrypt certificates, these are auto-renewed in
+the background and do not require manual maintenance.
+
+If you're using an externally issued server certificate then this may
+also be a good opportunity to check if the cert needs renewing.
+
+{{% /notice %}}
+
+From time to time, the schema of the configuration file may evolve
+with newer versions. For example, a new config key may be added to
+support a new feature. When a newer version of Velociraptor encounters
+an older configuration file, it attempts to upgrade the configuration
+file to be compatible with the latest version. This happens
+automatically and is usually a seamless process.
+
+During the installation package preparation step, the upgraded config
+file is bundled into the server package. So after upgrading you will
+have an upgraded configuration file located to the
+`/etc/velociraptor/` directory.
+
+You can identify the version that wrote the configuration file by
+looking at the `version` section of the configuration file.
 
 {{% notice note "Client-Server Backward Compatibility" %}}
 
 The Velociraptor server is intended to be
 [backwardly-compatible with older clients](/docs/overview/support/#client-and-server-versioning)
-across the previous few releases, which allows you to upgrade the server and
-then upgrade the clients. This backward-compatibility is mainly in terms of
-client-server communication - that is, older clients should be able to continue
-communicating with a newer server version. However, older clients will not be
-able to run artifacts that use newer features and functionality, so ideally you
-should try to upgrade your clients to the same version as the server as soon as
+across the previous few releases, which allows you to upgrade the
+server and then upgrade the clients. This backward-compatibility is
+mainly in terms of client-server communication: that is, older
+clients should be able to continue communicating with a newer server
+version. However, older clients will not be able to run artifacts that
+use newer features and functionality, so ideally you should try to
+upgrade your clients to the same version as the server as soon as
 possible after upgrading the server.
 
-Note that you should always upgrade the server first.
+For this reason, you should always upgrade the server first.
 
 {{% /notice %}}
 
 ## Upgrading a server (in-place upgrade)
 
-To upgrade the Velociraptor server to a new version, first download the
-[latest release binary](/downloads/),
-appropriate for your server's architecture.
+To upgrade the Velociraptor server to a new version, first download
+the [latest release binary](/downloads/), appropriate to your
+server's architecture.
 
-### Create a new server installation package
+### 1. Create a new server installation package
 
-On your server, create a new server installation package using the new binary
-(which we've renamed 'velociraptor' in the commands below) and your existing
-config file (which will be `/etc/velociraptor/server.config.yaml` on an existing
-server):
+On your server, create a new server installation package using the new
+binary (which we've renamed `velociraptor` in the commands below) and
+your existing config file (which will be
+`/etc/velociraptor/server.config.yaml` on an existing server):
 
 **Debian-based server:**
 
@@ -86,13 +114,14 @@ or
 ```
 
 The output file will be automatically named to reflect the version and
-architecture of the new Velociraptor version, but you can choose any file name
-you want and specify it with the `--output <your_file_name>` flag.
+architecture of the new Velociraptor version, but you can choose any
+file name you want and specify it with the `--output <your_file_name>`
+flag.
 
-### Run the upgrade
+### 2. Run the upgrade
 
-Then upgrade by installing the new server package using the relevant command
-below, according to your server's packaging system.
+Then upgrade by installing the new server package using the relevant
+command below, according to your server's packaging system.
 
 **Debian-based server installation:**
 
@@ -119,8 +148,8 @@ Updating / installing...
 Created symlink '/etc/systemd/system/multi-user.target.wants/velociraptor_server.service' → '/etc/systemd/system/velociraptor_server.service'.
 ```
 
-The upgrade should proceed smoothly. After upgrading you can check that the
-service is running:
+The upgrade should proceed smoothly. After upgrading you can check
+that the service is running:
 
 ```
 $ systemctl status velociraptor_server.service
@@ -140,54 +169,73 @@ Apr 08 12:25:34 linux64-client systemd[1]: Started Velociraptor server.
 
 ## Reverting versions
 
-It is generally ok to revert from later versions to earlier versions since the
-migration process is generally non destructive.
+It is generally possible to revert to an earlier version since the
+upgrade process is generally non-destructive.
 
-The process is identical to the one for in-place upgrades described above,
-except that you would create the installer package using the earlier version of
-the Velociraptor binary.
+The server's datastore also doesn't usually change much, but if there
+are datastore incompatibilities introduced by the later version that
+you are reverting from, then you can delete the datastore and the
+server will recreate it using the correct structure when restarting.
+You can also restore some key information from
+[automated server backups](/knowledge_base/tips/backing_up/).
+
+Although in the worst-case scenario you may lose collection data,
+clients will continue reporting to the server. In all cases, if you
+consider your collection data valuable then you should be backing up
+the server datastore too, and this should be done externally and
+independently of the Velociraptor application.
+
+The process to revert to an earlier version is identical to the one
+for in-place upgrades described above, except that you would create
+the installer package using the earlier version of the Velociraptor
+binary.
 
 ## Migrating clients to a new server
 
-If you wanted to completely change the way the server is configured, for example
-if you need to switch from self- signed to Let's Encrypt certificates, you can
-stand up a completely new server (with a different DNS name, certificates, keys
-etc.) and then migrate existing clients to it. Of course there are many other
-reasons why you might want to start with a new server and migrate existing
-clients to it.
+There can be situations where you might want to start with a new
+server and migrate existing clients to it.
 
-This method allows the orderly migration of Velociraptor clients from
+You might want to completely change the way the server is configured,
+for example if you need to switch from self-signed to Let's Encrypt
+certificates, and in that case it can be easiest to stand up a
+completely new server (with a different DNS name, certificates, keys
+etc.) and then migrate existing clients to it.
+
+This process allows the orderly migration of Velociraptor clients from
 an old server to a new server by using a remote client upgrade.
 
-1. Set up the new server. Ideally using the same server version as the old
-   server. Preferably also deploy a few clients just to test that they can
-   connect and be managed before you start migrating existing clients to it.
+1. Set up the new server. Ideally using the same server version as the
+   old server. Preferably also deploy a few clients just to test that
+   they can connect and be managed before you start migrating existing
+   clients to it.
 
-2. (Optional) On the new server you may want the same labels, hunts, global
-   notebooks, etc. as on the old server. You can restore the latest daily backup
-   from the old server to preserve various server configuration items, as
-   described in
+2. (Optional) On the new server you may want the same labels, hunts,
+   global notebooks, etc. as on the old server. You can restore the
+   latest daily backup from the old server to preserve various server
+   configuration items, as described in
    [Restoring from daily backups](/knowledge_base/tips/backing_up/#restoring-from-daily-backups).
 
-3. Export the appropriate client config from the new server. Copy it to the old
-   server. Use the `Server.Utils.CreateMSI` or
-   `Server.Utils.CreateLinuxPackages` artifacts to create installer packages for
-   your target platforms. Use the client config from the new server in the
-   artifact parameter `CustomConfig` so that installer packages will contain the
-   config pointing the clients to the new server.
+3. Export the appropriate client config from the new server. Copy it
+   to the old server. Use the `Server.Utils.CreateMSI` or
+   `Server.Utils.CreateLinuxPackages` artifacts to create installer
+   packages for your target platforms. Use the client config from the
+   new server in the artifact parameter `CustomConfig` so that
+   installer packages will contain the config pointing the clients to
+   the new server.
 
-4. Use the old server to push the new installer packages to existing clients
-   using the `Admin.Client.Upgrade.<platform>` artifact in a hunt. Alternatively
-   you could use an external package management solution to deploy the new
-   installer packages.
+4. Use the old server to push the new installer packages to existing
+   clients using the `Admin.Client.Upgrade.<platform>` artifact in a
+   hunt. Alternatively you could use an external package management
+   solution to deploy the new installer packages.
 
-   The "upgrade" will replace the old client config with the new one. These
-   clients will then connect to the new server. If you've use the same writeback
-   file location in both the old and new configs then the clients will re-enroll
-   using their existing client ID (which is stored in the writeback file).
+   The "upgrade" will replace the old client config with the new one.
+   These clients will then connect to the new server. If you've use
+   the same writeback file location in both the old and new configs
+   then the clients will re-enroll using their existing client ID
+   (which is stored in the writeback file).
 
-As always, you should test the process on a limited scale before applying it to
-all your clients.
+You should ALWAYS test any upgrade/downgrade/migration process on a
+limited scale before applying it broadly to all your clients.
 
 
 

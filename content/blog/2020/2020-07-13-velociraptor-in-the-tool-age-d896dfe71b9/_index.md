@@ -33,7 +33,7 @@ external tools in your artifacts transparently — Velociraptor will
 ensure the tool is downloaded to the endpoint if needed and is
 available for use in your VQL.
 
-### Example: Hollows hunter
+###### Example: Hollows hunter
 
 To illustrate the process, we will use the [hollows hunter
 tool](https://github.com/hasherezade/hollows_hunter) as an

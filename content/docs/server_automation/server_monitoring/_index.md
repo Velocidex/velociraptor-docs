@@ -145,7 +145,7 @@ that occur on the endpoint?
 Server monitoring artifacts can also be written to respond to client
 events using the `watch_monitoring()` plugin.
 
-### Example - enrich encoded powershell process execution logs
+###### Example: enrich encoded powershell process execution logs
 
 Powershell is a commonly used offensive tool in the wild. Powershell
 has a feature that allows a script to be passed to it using an

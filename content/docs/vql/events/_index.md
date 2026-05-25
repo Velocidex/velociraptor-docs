@@ -47,7 +47,7 @@ minimize frequent communicating with the server, the client will batch
 rows into partial results sets which will be forwarded periodically to
 the server.
 
-## Example
+###### Example
 
 You can get the feel of event queries by typing the following query
 into a notebook

@@ -286,7 +286,7 @@ The workflow is illustrated above:
    production the proper log sources are used to feed live events from
    the system to the `Sigma Engine` with the validated `Sigma Rules`
 
-### Example Workflow: Detecting BITS Client Activity
+###### Example Workflow: Detecting BITS Client Activity
 
 To illustrate the process I will develop a Sigma rule to detect suspicious BITS client activity. BITS is a windows service which is often misused to download malware onto the endpoint.
 

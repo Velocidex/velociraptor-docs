@@ -89,7 +89,7 @@ example `HKLM`, or `HKEY_LOCAL_MACHINE`
 {{% /notice %}}
 
 
-### Example: Detect persistence
+###### Example: Detect persistence
 
 Office executables like `WINWORD.exe` look for `AI.exe` under the
 `%ProgramFiles%\Microsoft Office\root\<Office Version>` and
@@ -100,7 +100,7 @@ Office Suite.  [1](https://twitter.com/laughing_mantis/status/164526811496647066
 
 Search for file glob `C:\Program File*\Microsoft Office\root\Office*\ai.exe` and hash it.
 
-### Example: Detect registry keys
+###### Example: Detect registry keys
 
 The .NET DLLs listed in the `DOTNET_STARTUP_HOOKS` environment variable
 are loaded into .NET processes at runtime.
@@ -115,7 +115,7 @@ Solution: Change the Accessor to "registry" and search for the following globs.
 Select `Upload file` to view the content of the matching values.
 
 
-### Example: Detect Mark of the Web files
+###### Example: Detect Mark of the Web files
 
 When files are downloaded from the internet, browsers will add an
 Alternate Data Stream (ADS) to the file called `Zone.Identifier`. This

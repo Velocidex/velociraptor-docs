@@ -198,7 +198,7 @@ hunt everywhere.
 
 {{% /notice %}}
 
-### Example: Remediate scheduled tasks
+###### Example: Remediate scheduled tasks
 
 For this example we will schedule a task to run daily. This emulates a
 common persistence used by malware to re-infect the machine daily,
@@ -272,7 +272,7 @@ tool and provide a hint of where to download it from.
 See [Managing External Tools](/docs/artifacts/tools/) for more
 information.
 
-##### Example: The Autoruns artifact
+###### Example: The Autoruns artifact
 
 We will go through an example to understand this process. Let's
 consider the `Windows.Sysinternals.Autoruns` artifact. This is a

@@ -18,7 +18,7 @@ engagements when the deployed Endpoint Detection and Response (EDR)
 solution lacked certain detection capabilities, or when it was not
 deployed.
 
-## Example 1: Track commands
+###### Example 1: Track commands
 
 Adversaries often use commands to conduct their malicious
 activity. Receiving an alert when these commands are launched is very
@@ -111,7 +111,7 @@ Because I wanted reliable detection I chose Sysmon instead of directly
 consuming the process events from the aforementioned ETW provider.
 
 
-## Example 2: Track compromised accounts
+###### Example 2: Track compromised accounts
 
 The Windows Event Log is a great log source that enables you to track
 adversary activity in real-time. Due to the Event Log tracker of

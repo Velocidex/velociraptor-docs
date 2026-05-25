@@ -100,7 +100,7 @@ reusable VQL in different contexts.
 
 Let’s try to collect the same artifact we did previously — the **hollows hunter** artifact. Just to recap the artifact is shown below
 
-```vql
+```yaml
 name: Custom.Windows.Detection.ProcessHollowing
 description: |
    Use hollows_hunter to detect suspicious process injections.

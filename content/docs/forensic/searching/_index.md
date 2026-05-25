@@ -78,7 +78,7 @@ plugin if you just need to scan files on disk.
 
 {{% /notice %}}
 
-### Example: drive by download
+###### Example: drive by download
 
 You suspect a user was compromised by a drive by download (i.e. they
 clicked and downloaded malware delivered by mail, ads etc).
@@ -142,7 +142,7 @@ read the file out, and the file is uploaded to the server
 automatically. Optionally the function may also take a `name`
 parameter which renames the file as sent to the server.
 
-### Example: Collect all executables in users’ home directory
+###### Example: Collect all executables in users’ home directory
 
 This is a common use of combining a `glob()` plugin with an
 `upload()` function:

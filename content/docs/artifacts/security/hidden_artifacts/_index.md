@@ -27,7 +27,7 @@ The visibility of an artifact is controlled by `artifact metadata` - a
 field attached to each artifact in the system. You can hide or show
 each artifact using the `artifact_set_metadata()` function.
 
-### Example: Making only certain artifacts visible.
+###### Example: Making only certain artifacts visible.
 
 The following VQL can be run in a notebook to hide all artifacts other
 than a selected set:

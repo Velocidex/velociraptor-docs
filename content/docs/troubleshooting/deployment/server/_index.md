@@ -74,19 +74,27 @@ velociraptor: error: frontend: loading config file: failed to acquire target io.
 
 In this case, Velociraptor could not start because it cannot write to the
 configured logs directory. This can be corrected by reapplying ownership for the
-`velociraptor` user to the files in the `/opt/velociraptor` directory.
+`velociraptor` user to the files in the `/opt/velociraptor/` directory.
 
 {{% notice info "Incorrect permissions in the filestore" %}}
 
-Because Velociraptor normally runs as a low privileged user, it needs to
-maintain file ownership as the `velociraptor` user. Sometimes permissions change
-by accident (usually this happens by running velociraptor as root and
-interacting with the file store - you should **always** change to the
-`velociraptor` user before interacting with the server).
+This is a frequently encountered issue.
 
-It is worth checking file permissions (using `ls -l`) and recursively returning
-file ownership back to the `velociraptor` user
-(using the command `sudo chown -R velociraptor:velociraptor /path/to/filestore/`)
+Because Velociraptor normally runs as a low privileged user named
+`velociraptor`, this user needs to have file ownership over all the
+files in the datastore directory (typically `/opt/velociraptor/`).
+
+Sometimes the permissions get changed by accident - usually this
+happens when you inadvertently run the Velociraptor server on the
+command line as `root` and it interacts with the datastore, creating
+new files owned by `root`. For this reason, you should **always**
+change to the `velociraptor` user first before running the server on
+the command line.
+
+If you think this might be the case, you can check the file
+permissions (using `ls -l`) and if necessary recursively set file
+ownership back to the `velociraptor` user using the command
+`sudo chown -R velociraptor:velociraptor /path/to/filestore/`.
 
 {{% /notice %}}
 

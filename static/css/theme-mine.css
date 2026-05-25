@@ -126,6 +126,19 @@ a:hover {
     color: var(--MAIN-LINK-HOVER-color);
 }
 
+a:focus:not(#sidebar *) {
+    outline-style: dashed !important;
+    outline-width: medium !important;
+    outline-offset: 2px !important;
+    outline-color: gray !important;
+    text-decoration: none !important;
+}
+
+#sidebar a:focus, #sidebar a {
+    outline: none;
+    text-decoration: none;
+}
+
 #sidebar ul li.visited > a .read-icon {
     color: var(--MENU-VISITED-color);
 }

@@ -1,22 +1,22 @@
 ---
-title: "Notebooks"
+title: Notebooks
 date: 2021-06-11T15:32:04Z
-last_reviewed: 2025-12-30
+last_reviewed: 2026-05-20
 draft: false
 weight: 35
 aliases:
   - "/docs/vql/notebooks/"
 description: |
   Notebooks are interactive collaborative documents which can interleave
-  markdown and VQL queries in to create an interactive report. Notebooks
+  markdown and VQL queries to create an interactive report. Notebooks
   are typically used to track and post process one or more hunts or
   collaborate on an investigation.
 ---
 
-Notebooks are interactive collaborative documents which can interleave
-markdown and VQL queries in to create an interactive report. Notebooks
-are typically used to track and post process one or more hunts or
-collaborate on an investigation.
+Notebooks are interactive collaborative workspaces which can
+interleave markdown and VQL queries to create an interactive document.
+Notebooks are typically used to track and post-process one or more
+hunts or collaborate on an investigation.
 
 Let's create a notebook to see the feature at work.
 
@@ -49,7 +49,7 @@ see it's controls.
 {{% /notice %}}
 
 4. Click on the cell to give it focus and the cell control toolbar
-   will be shown, from here click the `Edit Cell` <i class="fas
+   will be shown, from here click the **Edit Cell** <i class="fas
    fa-pencil-alt"></i> button to edit the cell contents.
 
    ![Editing a cell](image13.png)
@@ -59,34 +59,35 @@ and renders HTML while a `VQL` cell can receive VQL queries. The cell
 type is shown on the right hand side of the cell toolbar. You may
 change cells from one type to the other at any time.
 
-5. Let's add a new cell to the notebook. Click the `Add Cell` button <i
-   class="fas fa-plus"></i> and a pull down menu appears offering the
-   type of Cell that can be added. For now, select a `VQL` cell.
+5. Let's add a new cell to the notebook. Click the **Add Cell** button
+   <i class="fas fa-plus"></i> and a pull down menu appears offering
+   the type of Cell that can be added. For now, select a `VQL` cell.
 
    ![New cell](new_cell.png)
 
    ![Edit cell](new_cell2.png)
 
-After clicking the `Edit Cell` button, you can type VQL directory into
-the cell. As you type, the GUI offers context sensitive suggestions
-about what possible completions can appear at the cursor.
+After clicking the **Edit Cell** button, you can type VQL directory
+into the cell. As you type, the GUI offers context sensitive
+suggestions about what possible completions can appear at the cursor.
 
 ![VQL auto-suggestions](autosuggest.png)
 
-Use your up and down arrow keys to navigate the suggestions, and Enter or Tab to
-select a suggestion. Typing "?" will show all possible suggestions.
+Use your up and down arrow keys to navigate the suggestions, and Enter
+or Tab to select a suggestion. Typing "?" will show all possible
+suggestions.
 
-{{% notice note "VQL suggestions are context-sensitive" %}}
+{{% notice tip "VQL suggestions are context-sensitive" %}}
 
 Suggestions are context-sensitive, so VQL plugins which can only
 appear after a `FROM` clause will only be suggested when the cursor
-appears after a `FROM`.
+is positioned after a `FROM`.
 
 {{% /notice %}}
 
 Let's type the following VQL query into the VQL cell:
 
-```sql
+```vql
 SELECT * FROM info()
 ```
 
@@ -106,6 +107,9 @@ top right of the screen.
 
 {{% /notice %}}
 
+Notebooks like the one we just created are sometimes referred to as
+**Global Notebooks** to distinguish them from the notebooks attached
+to hunts and flows, described below.
 
 ## Hunt and Flow Notebooks
 
@@ -121,43 +125,9 @@ view it's results in the collection (flow) notebook.
 
 ![Example: flow notebook](timeline_prefetch.png)
 
-These automated notebooks are always public and can be accessed by any
-user that can log on to the application. They can also be modified by
-any user with the `NOTEBOOK_EDITOR` permission (normally given to an
-`investigator` role and above.
-
-## Sharing Notebooks
-
-By default, notebooks are visible only to the user who created them.
-When creating or editing a notebook, you can choose to share it with
-all users by clicking the Public check box. You can also share it with
-only certain users by selecting their names in the Collaborators
-field.
-
-![Sharing a notebook](notebook_sharing.png)
-
-You can edit the sharing and other properties of a notebook via the **Edit
-Notebook** (<i class="fa-solid fa-wrench"></i>) button in the notebooks toolbar.
-
-{{% notice note "Accessing Data in Private Notebooks" %}}
-
-Users can only view notebooks that they own or share via the GUI.
-Other notebooks cannot be accessed from the list view or via direct
-link.
-
-However, the data within notebooks is still available to all
-users. For example, any notebook editor can build or view a
-[timeline]({{< ref
-"/blog/2021/2021-09-07-release-notes-0.6.1/#timelines" >}}) from
-private notebook cells if they know the notebook and cell IDs. This
-can be useful for providing your team with data views that are sourced
-from more complex queries maintained in a private notebook.
-
-Additionally, the data from all notebooks is available for reading
-using the VFS APIs and other VQL plugins.
-
-We do not consider notebooks to be securable from other users - the
-private/public setting is merely a convenience in controlling
-visibility of notebooks within the GUI.
-
-{{% /notice %}}
+These automatically-created notebooks are always visible to all users
+in the org (i.e. there is no explicit
+[sharing](/docs/notebooks/sharing/) required, unlike Global Notebooks)
+and they can be accessed by any user who can log into the GUI. They
+can also be modified by any user who has the `NOTEBOOK_EDITOR`
+permission (included in the `investigator` role and above).

@@ -109,7 +109,7 @@ it. In the following we see two methods for manipulating dicts:
 2. **Dict reconstruction**: is a more powerful technique for tearing the
    dict apart and reconstructing it again.
 
-### Example: Select only columns that match a regular expression.
+###### Example: Select only columns that match a regular expression.
 
 For this example, let's assume we don't know all the exact columns in advance
 but want to match certain columns based on some regular expression.
@@ -152,7 +152,7 @@ only keys matching the regular expression:
 ]
 ```
 
-### Example: Hash a subset of columns
+###### Example: Hash a subset of columns
 
 For this example, suppose we have a set of columns that we consider to
 be a representative of the row and we want to generate a hash based on

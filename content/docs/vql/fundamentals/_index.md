@@ -3,28 +3,137 @@ title: "VQL Fundamentals"
 date: 2025-01-24
 draft: false
 weight: 10
+last_reviewed: 2026-04-30
 description: |
-  {{% notice tip "Running VQL queries in Notebooks" %}}
+  Velociraptor Query Language (VQL) is the query language used across all of
+  Velociraptor's features — from artifact collections and client monitoring to
+  notebook investigations and API automation.
 ---
+
+Velociraptor Query Language (VQL) is the query language used across
+all of Velociraptor's features - from artifact collections and client
+monitoring to notebook investigations and API automation. This page
+covers the core concepts you need to write and understand VQL queries.
 
 {{% notice tip "Running VQL queries in Notebooks" %}}
 
-When learning VQL, we recommend practicing in an environment where you can
-easily debug, iterate, and interactively test each query.
+When learning VQL, we recommend practicing in an environment where you
+can easily debug, iterate, and interactively test each query.
+Velociraptor notebooks provide a perfect playpen for learning and
+experimenting with VQL. You can read more about notebooks
+[here](/docs/notebooks/).
 
-You can read more about notebooks [here](/docs/notebooks/).
-For the purposes of this documentation, we will assume you've created a notebook
-and are typing VQL into the cell.
+For the purposes of this documentation, we will assume you've created
+a notebook and are typing VQL into a notebook cell.
 
 {{% /notice %}}
 
 ## Basic Syntax
 
 VQL's syntax is heavily inspired by SQL. It uses the same basic
-`SELECT .. FROM .. WHERE` sentence structure, but does not include the
+`SELECT .. FROM .. WHERE` semantic structure, but does not include the
 more complex SQL syntax, such as `JOIN` or `HAVING`. In VQL, similar
 functionality is provided through plugins, which keeps the syntax
 simple and concise.
+
+### Variables
+
+In VQL, variables are assigned using `LET` statements, for example:
+
+```vql
+LET my_variable <= SELECT * FROM info()
+```
+
+In the above example the assignment is using `<=` which is a
+[materialized LET expression](#materialized-let-expressions), meaning
+that the value is immediately assigned to the variable. However
+assignment can be "lazy" which means that the assignment only happens
+when the variable is subsequently referenced and therefore evaluated
+only if an when it's needed.
+See [LET expressions](#let-expressions) for more information about
+lazy evaluation.
+
+Variable names can only consist of alphanumeric characters,
+underscores (`_`), and dashes (`-`), and cannot begin with a numeric
+or a dash character. They are also case-sensitive.
+
+{{% notice tip "Throwaway variables" %}}
+
+In artifacts you might sometimes see just a `_` used as a variable
+name. This is a naming convention (not a language-enforced rule) for
+an anonymous or "throwaway" variable, where we don't care about the
+name because we don't intend to use the actual value in subsequent
+VQL, and therefore also don't care is the variable name is later
+reassigned another value.
+
+For example:
+```vql
+LET _ <= log(message="Start time %v", args=start_time)
+```
+would be used just to generate a log message and we don't intend to do
+anything with the result.
+It uses a [materialized LET expression](#materialized-let-expressions)
+so that the evaluation happens immediately.
+
+{{% /notice %}}
+
+A convention of using CamelCase for variable names has evolved in our
+artifacts. But you are free to use any naming convention that you
+prefer in your VQL.
+
+Any supported data type can be assigned to a variable, including VQL
+queries.
+
+In VQL, variables can also perform double-duty as local function
+names. For example:
+
+```vql
+LET CheckTime(Time, Default) = if(condition={
+                                  SELECT *
+                                  FROM info()
+                                  WHERE OS =~ "windows"
+                                },
+                                then=Time,
+                                else=Default)
+```
+defines a local VQL function that can be called from subsequent VQL
+queries and passed arguments.
+
+See [Local Functions](/docs/vql/fundamentals/#local-functions) for
+more information.
+
+The assignment of variables can be immediate or "lazy" (when
+required).
+See [LET expressions](/docs/vql/fundamentals/#let-expressions)
+to learn about lazy evaluation/assignment.
+
+
+
+#### Artifact parameters are externally-defined variables
+
+[Artifact parameters](/docs/artifacts/parameters/) are converted to
+variables using the parameter name as the variable name and the
+parameter type as the data type. So artifact parameters are really
+just a convenient way to define variables outside of the VQL itself.
+
+#### Built-in Variables
+
+The behaviour of certain VQL plugins are determined by a set of
+[built-in variables](https://github.com/Velocidex/velociraptor/blob/e851953bd5bcff06a6e026ae6bb7a2cbd6de1cab/constants/constants.go#L80).
+
+In general, you should not need to modify these, but if for some
+reason you need to override the default behavior of these plugins you
+can do so by setting the relevant variables within the same VQL scope
+as the plugin call. In a sense, these can be considered "hidden
+arguments" for certain plugins.
+
+Some default variables are also used to define certain aspects of GUI
+behaviour, for example `column_types` is a variable that the GUI uses
+to configure user-defined display formatting for specific columns. If
+you're working in a notebook and use the **Format Columns** GUI
+option, you will see that it adds a variable `ColumnTypes` to the VQL.
+You could define this special variable in artifacts too, but for that
+we have the equivalent `column_types` YAML key.
 
 ### Whitespace
 
@@ -156,9 +265,11 @@ In order to understand how VQL works, let's follow a single row through the quer
 
 ### Lazy Evaluation
 
-In the previous example, the VQL engine goes through significant effort to postpone the evaluation as much as
-possible. Delaying an evaluation is a recurring theme in VQL and it saves Velociraptor from performing unnecessary work, like evaluating a
-column value if the entire row will be filtered out.
+In the previous example, the VQL engine goes through significant
+effort to postpone the evaluation as much as possible. Delaying an
+evaluation is a recurring theme in VQL and it saves Velociraptor from
+performing unnecessary work, like evaluating a column value if the
+entire row will be filtered out.
 
 Understanding lazy evaluation is critical to writing efficient VQL
 queries. Let's examine how this work using a series of
@@ -186,7 +297,8 @@ FROM info()
 WHERE OS = "Unknown" AND Log
 ```
 
-In Case 1, a single row will be emitted by the query and the associated log function will be evaluated, producing a log message.
+In Case 1, a single row will be emitted by the query and the
+associated log function will be evaluated, producing a log message.
 
 Case 2 adds a condition which should eliminate the row. **Because the
 row is eliminated VQL can skip evaluation of the log()
@@ -255,16 +367,36 @@ words, the parent's name.
 
 ### String constants
 
-Strings denoted by `"` or `'` can escape special characters using the
-`\`. For example, `"\n"` means a new line. This is useful but it
-also means that backslashes need to be escaped. This is sometimes
-inconvenient, especially when dealing with Windows paths (that
-contains a lot of backslashes).
+Strings in VQL are denoted by `"` or `'`, and can include
+backslash-escaped special characters, for example, `"\n"` means a new
+line.
 
-Therefore, Velociraptor also offers a multi-line raw string which is
+Allowing backslash escapes is useful but it also means that literal
+backslashes also need to be escaped. This is sometimes inconvenient,
+especially when dealing with Windows paths (that often contain a lot
+of backslashes) or [regexes](#regex-in-vql) where `\` is used for
+shorthand character classes and for escaping special characters.
+
+Therefore, Velociraptor also offers a raw string syntax which is
 denoted by `'''` (three single quotes). Within this type of string no
-escaping is possible, and the all characters are treated literally -
-including new lines. You can use `'''` to denote multi line strings.
+escaping is possible and _all_ characters are treated literally,
+including new lines.
+
+Because the raw string syntax preserves newline it can also be used
+for specifying multi-line strings. For example:
+
+```vql
+SELECT *
+FROM parse_csv(accessor="data", filename='''
+X,Y,Z
+1,2,3
+2,4,6
+''')
+```
+
+If you come from a Python or C# background, note that multi-line
+strings do not use triple double-quotes. Only triple single-quotes
+facilitate multi-line strings in VQL.
 
 ### Identifiers with spaces
 
@@ -538,7 +670,7 @@ SELECT * FROM foreach(row=myprocess, query=mystat)
 
 {{% notice note %}}
 
-A Stored Query is simply a query that is stored into a variable. It is
+A **Stored Query** is simply a query that is stored into a variable. It is
 not actually evaluated at the point of definition. At the point where
 the query is referred, that is where evaluation occurs. The scope at
 which the query is evaluated is derived from the point of reference.
@@ -589,7 +721,7 @@ which takes a few seconds to run, but its output is not expected to
 change quickly. In that case, we actually want to cache the results of
 the query in memory and simply access it as an array.
 
-Expanding a query into an array in memory is termed `Materializing`
+Expanding a query into an array in memory is termed **Materializing**
 the query.
 
 For example, consider the following query that lists all sockets on
@@ -687,28 +819,35 @@ preferring to use VQL functions over introducing new operators.
 
 The following operators are available. Most operators apply to two
 operands, one on the left and one on the right (so in the expression
-`1 + 2` we say that `1` is the Left Hand Side (`LHS`), `2` is the Right
-Hand Side (`RHS`) and `+` is the operator.
+`1 + 2` we say that `1` is the Left Hand Side (LHS) operand, `2` is
+the Right Hand Side (RHS) operand, and `+` is the operator.
 
-|Operator|Meaning|
-|--------|-------|
-|`+ - * /`| These are the usual arithmetic operators |
-|`=~` | This is the regex operator, reads like "matches". For example `X =~ "Windows"` will return `TRUE` if X matches the regex "Windows"|
-|`!= = < <= > >=` | The usual comparison operators. |
-|`in` | The membership operator. Returns TRUE if the LHS is present in the RHS. Note that `in` is an exact case sensitive match|
-|`.`| The `.` operator is called the Associative operator. It dereferences a field from the LHS named by the RHS. For example `X.Y` extracts the field `Y` from the dict `X`|
+| Operator | Meaning |
+|---|---|
+| `+` `-` `*` `/` | These are the usual arithmetic operators. |
+| `=~` | This is the regex operator, which reads like "matches".<br>For example `X =~ "Windows"` will return `TRUE` if X matches the regex `Windows`. |
+| `!=` `=` `<` `<=` `>` `>=` | These are usual equality and ordering comparison operators. |
+| `in` | The membership operator. Returns TRUE if the LHS is present in the RHS.<br>Note that `in` is an exact case sensitive match. |
+| `.` | The `.` operator is called the Associative Operator.<br>It dereferences a field from the LHS named by the RHS.<br>For example `X.Y` extracts the field `Y` from the dict `X` |
+| `\|\|` `&&` | Logical operators that perform logical `AND` and `OR` operations on boolean expressions. |
 
 ### Protocols
 
 When VQL encounters an operator it needs to decide how to actually
 evaluate the operator. This depends on what types the LHS and RHS
 operands actually are. The way in which operators interact with the
-types of operands is called a `protocol`.
+types of operands is called a "protocol".
 
-Generally VQL does the expected thing but it is valuable to understand
-which protocol will be chosen in specific cases.
+Certain comparison operators would normally make no sense for
+disparate data types. For example, comparing a string with an int is
+normally nonsensical. However VQL implements some special handling for
+comparisons that would otherwise not make sense. In general, if one of
+the operands can be coerced so that it can be meaningfully compared
+with the other operand then VQL does so. VQL generally does the
+expected/intuitive thing but it is valuable to understand which
+protocol will be chosen in specific cases.
 
-### Example - Regex operator
+###### Example: Regex operator
 
 For example consider the following query
 
@@ -717,22 +856,27 @@ LET MyArray = ("X", "XY", "Y")
 LET MyValue = "X"
 LET MyInteger = 5
 
-SELECT MyArray =~ "X", MyValue =~ "X", MyInteger =~ "5"
+SELECT MyArray =~ "X",
+       MyValue =~ "X",
+       MyInteger =~ "5"
 FROM scope()
 ```
 
 In the first case the regex operator is applied to an array so the
-expression is true if **any** member of the array matches the regular
+expression is TRUE if _any_ member of the array matches the regular
 expression.
 
-The second case applied the regex to a string, so it is true if the
-string matches.
+The second case applies the regex to a string, so it is TRUE because
+the string matches. In most languages this is normally the only valid
+regex comparison, i.e. string vs. string.
 
-Finally in the last case, the regex is applied to an integer. It makes
-no sense to apply a regular expression to an integer and so VQL
-returns FALSE.
+Finally in the last case, the regex is applied to an integer. Normally
+it would make no sense to apply a regular expression to an integer,
+but VQL is smart enough to automatically coerce the int to a string
+for the purpose of the comparison. The result is therefore also TRUE.
 
-### Example - Associative operator applied on a stored query
+
+###### Example: Associative operator applied on a stored query
 
 The Associative operator is denoted by `.` and accesses a field from
 an object or dict. One of the interesting protocols of the `.`
@@ -758,18 +902,17 @@ member is extracted for example `binary.FullPath` is
 `["C:\Windows\Temp\binary.exe"]`. To access the name of the binary we
 can then index the first element from the array.
 
-
 ```vql
 SELECT * FROM execve(argv=[binary.FullPath[0], "-flag"])
 ```
 
 {{% notice warning "Expanding queries using the associative operator" %}}
 
-While using the `.` operator is useful to apply to a stored query, care
-must be taken that the query is not too large. In VQL stored queries
-are lazy and do not actually execute until needed because they can
-generate thousands of rows! The `.` operator expands the query into an
-array and may exhaust memory doing so.
+While using the `.` operator is useful to apply to a stored query,
+care must be taken that the query is not too large. In VQL, stored
+queries are lazy and do not actually execute until needed because they
+can generate thousands of rows! The `.` operator expands the query
+into an array and may exhaust memory while doing so.
 
 The following query may be disastrous:
 
@@ -784,17 +927,486 @@ and `MFT.FullPath` will expand them all into memory!
 
 {{% /notice %}}
 
+#### Comparison and Evaluation Logic
+
+Before any comparison or operation, the system checks if a value or
+referenced object (e.g. Stored Query) is "lazy", for example:
+
+```vql
+LET Past24hours = timestamp(epoch=now() - 86400)
+
+SELECT *
+FROM source()
+WHERE Mtime > Past24hours
+```
+
+If it is lazily-defined, then it's resolved to an actual
+value first. In other words, the comparison triggers evaluation
+because it's needed for the comparison.
+
+`Null` compared to anything is false.
+
+##### Truthiness
+
+Truthiness is a programming concept where non-boolean values are
+implicitly converted to true or false when evaluated in a boolean
+context, such as in
+[`if` statements](#conditional-if-plugin-and-function) or
+[logical operators](#logical-operators).
+This is a key concept for implementing flow control logic in VQL.
+
+Truthiness is distinct from strict boolean equality. Sometimes people
+like to use the words "truthy" or "falsy" rather than "true" or
+"false" to emphasize the difference, but we still use the latter for
+simplicity.
+
+In general, empty objects (storedQuery objects, strings, dicts,
+arrays, etc.) or `NULL` are considered `false` in VQL. This means that
+a query that returns zero rows is considered `false`. Artifact
+[preconditions](/docs/artifacts/preconditions/), for example, rely on
+this principle to determine whether or not the artifact's sources
+should run.
+
+The truthiness of VQL data types generally corresponds to their
+analogous data types in other languages such as Python. The Go
+language, in which Velociraptor is written, does not itself have the
+concept of truthiness. So in VQL, truthiness is defined by the
+[protocols](#protocols) mentioned previously.
+
+In particular:
+
+- `nil` / `Null` is false.
+- `int`: Negative ints and 0 are false. Positive ints are true.
+- `float`: Negative ints and 0 are false. Positive ints are true.
+- `string`: The empty string (`""`) is false. Non-empty strings are
+  true.
+- `array` and `dict`: Empty arrays and dicts are false. Non-empty ones
+  are true.
+- VQL `StoredQuery` object: That is, the result of a VQL query, is
+  false if it returns zero rows and true if it returns any rows.
+
+- `timestamp` (date/time value): A timestamp representing a real point
+  in time after January 1, 1970 (the Unix epoch) is true. An unset or
+  zero timestamp is false.
+
+Truthiness is also central to understanding VQL's
+[logical operators](#logical-operators), which can be used to control
+execution flow or provide conditional fallback values for data fields.
+
+
+##### Equality comparisons
+
+The VQL equality operators are `=` (equals) and `!=` (not equals).
+
+VQL compares values in a way that usually does what you'd expect, even
+when the two values are different types. Here is how it works:
+
+1. **No value (Null)**: something with no value is only equal to
+   another thing with no value. Comparing anything to nothing is
+   always false.
+
+2. **Text (strings)**: two pieces of text are equal only if they are
+   exactly the same, including upper/lower case. Text is never equal
+   to a number or other type.
+
+   ```vql
+   SELECT "hello" = "hello" AS Result    -- TRUE
+   FROM scope()
+
+   SELECT "hello" = "world" AS Result    -- FALSE
+   FROM scope()
+   ```
+
+3. **Integers**: all integers are treated the same
+   regardless of size. So `1` always equals `1`, whether it came from
+   a small or large number.
+
+   ```vql
+   SELECT 100 = 100 AS Result FROM scope()   -- TRUE
+   SELECT 100 = 101 AS Result FROM scope()   -- FALSE
+   ```
+
+4. **True/false (booleans)**: a true/false value is usually only equal
+   to another true/false value. However, VQL also accepts common text
+   representations: `"Y"`, `"y"`, `"true"`, and `"True"` are treated
+   the same as `TRUE`. Any other text is treated as `FALSE`. Notice
+   that in VQL the true/false values are not case sensitive, unlike
+   many other languages.
+
+5. **Decimal numbers**: decimal numbers are compared as decimals. A
+   integer and a decimal can still be equal if they represent the
+   same value.
+
+6. **Dates and times (timestamps)**: timestamps are compared precisely
+   down to the nanosecond. You can compare a timestamp against a
+   number, and VQL will interpret that number as seconds since January
+   1, 1970 (Unix time).
+
+   ```vql
+   SELECT now() = 1710000000 AS Result FROM scope()
+   ```
+
+7. **Mixed number types**: if one value is a integer and the
+   other is a decimal, VQL converts both to decimals before comparing.
+
+8. **Arrays (lists)**: two arrays are equal only if they have the same
+   number of items and each matching position contains an equal value.
+
+9. **Dictionaries**: two dictionaries are equal if they have the same
+   keys and each key holds an equal value.
+
+##### Ordering comparisons
+
+The VQL ordering operators are `<` (less than), `<=` (less than or
+equal), `>` (greater than), and `>=` (greater than or equal).
+
+1. **No value**: any ordering comparison with a missing value (`Null`)
+   returns FALSE.
+
+2. **Text vs Text**: text is compared alphabetically. For example
+   `"apple" < "banana"` is true because "apple" comes before "banana"
+   in the alphabet.
+
+   ```vql
+   SELECT "apple" < "banana" AS Result FROM scope()   -- TRUE
+   ```
+
+3. **Integers**: all integers are converted to a common form
+   and compared.
+
+   ```vql
+   SELECT 5 > 3 AS Result FROM scope()     -- TRUE
+   SELECT 5 > 10 AS Result FROM scope()    -- FALSE
+   ```
+
+4. **Integer vs Decimal**: the integer is treated as a
+   decimal for comparison. So `3 < 3.5` is true.
+
+5. **Decimal vs Decimal**: compared directly as decimals.
+
+6. **Dates and times (timestamps)**: timestamps are compared by their
+   point in time. You can compare:
+   - a timestamp against another timestamp
+   - a timestamp against a number (interpreted as seconds since 1970)
+   - a timestamp against a decimal (seconds with fractional nanoseconds)
+
+   ```vql
+   SELECT now() > timestamp(epoch=0) AS Result FROM scope()   -- TRUE
+   ```
+
+7. **Text vs Timestamp**: if you compare text against a timestamp, VQL
+   tries to interpret that text as a number of seconds since 1970.
+
+8. **Fallback for mixed types**: if VQL cannot figure out the types
+   directly, it tries converting both sides to numbers. This handles
+   cases like comparing a number against text that looks like a
+   number.
+
+The numeric comparison rules in short:
+
+| Left side | Right side | How VQL compares |
+|---|---|---|
+| Integer | Integer | Convert both, then compare |
+| Integer | Decimal | Treat integer as decimal, then compare |
+| Decimal | Integer | Treat integer as decimal, then compare |
+| Decimal | Decimal | Compare directly |
+
+9. **Dictionaries**: when comparing two dictionaries with `<` or `>`,
+   VQL compares by the number of keys (the dictionary's length). A
+   dictionary with fewer keys is considered smaller.
+
+   ```vql
+   SELECT dict(a=1) < dict(a=1, b=2) AS Result FROM scope()   -- TRUE (1 key < 2 keys)
+   ```
+
+10. **Arrays (lists)**: when comparing two arrays, VQL compares by
+    their first element. An empty list is smaller than any non-empty
+    list.
+
+    ```vql
+    SELECT (1, 2, 3) < (4, 5, 6) AS Result FROM scope()   -- TRUE (1 < 4)
+    ```
+
+##### Membership comparisons
+
+The `in` operator checks whether a value belongs to a group. Think of
+it as asking "is this thing _in_ that collection?"
+
+1. **No value (Null)**: returns false. You cannot find something in
+   nothing!
+
+2. **Dictionary**: if the right side is a dictionary, the left side
+   must be text. VQL checks whether the dictionary has a key with that
+   name.
+
+   ```vql
+   SELECT "Name" in dict(Name="Alice", Age=30) AS Result FROM scope()   -- TRUE
+   SELECT "Phone" in dict(Name="Alice", Age=30) AS Result FROM scope()  -- FALSE
+   ```
+
+3. **Text**: if the right side is a piece of text, VQL checks whether
+   the left side text appears anywhere inside it (a substring check).
+
+   ```vql
+   SELECT "he" in "hello" AS Result FROM scope()     -- TRUE ("he" is inside "hello")
+   SELECT "xyz" in "hello" AS Result FROM scope()    -- FALSE
+   ```
+
+4. **List**: if the right side is a list, VQL checks each item in the
+   list. If any item equals the left side, the result is true.
+
+   ```vql
+   SELECT "admin" in ("admin", "user", "guest") AS Result FROM scope()   -- TRUE
+   SELECT "root" in ("admin", "user", "guest") AS Result FROM scope()    -- FALSE
+   ```
+
+5. **All other collections**: VQL falls back to checking each element
+   one by one using the same equality rules described above.
+
+
+
+##### Regex comparisons
+
+Velociraptor has several
+[functions and plugins](/vql_reference/?query=regex)
+that provide regex-based matching.
+
+In VQL syntax itself, regex matching is provided by the `=~` operator.
+In contrast to the functions/plugins mentioned above, this is used
+purely for logical comparisons with the result always being a boolean
+(`TRUE/FALSE`) value.
+
+Internally we use Go’s [regexp](https://pkg.go.dev/regexp/syntax)
+package, so the expression syntax (RE2) and capabilities are generally
+the same as in Go, with a few VQL-specific exceptions that are
+described below. This regex engine allows faster and safer matching
+than more complex implementations such as PCRE. However, this means
+that some PCRE regex constructs that you may be familiar with are not
+supported, in particular:
+- Lookarounds: positive lookahead (`(?=re)`), negative lookahead
+  (`(?!re)`), positive lookbehind (`(?<=re)`), and negative lookbehind
+  (`(?<!re)`) are not supported.
+- Backreferences (e.g. `([a-z])\1`) are not supported.
+
+Regex comparisons are most commonly used in VQL `WHERE` clauses, but
+can be used anywhere that value comparisons are supported.
+
+For example, in a `WHERE` clause:
+```vql
+SELECT _value AS count FROM range(end=40) WHERE count =~ "3$"
+```
+which will return rows containing `3`, `13`, `23`, and `33`.
+
+Or a regex comparison can be used in a field value, such as:
+```vql
+SELECT (timestamp(epoch=now()).Weekday.String =~ "Friday") AS IsItFriday
+FROM scope()
+```
+which will return `true` if today is Friday and `false` if it's not.
+
+
+###### Negative regex matching
+
+VQL does not have a regex "not like" (`!~`) comparator. Instead, to
+achieve negative matching you can either:
+- implement the inverse matching directly in your regex, although this
+  may be tricky given that we don't support lookaheads, as mentioned
+  previously, but it may be viable for trivial inverse matches.
+or
+- use the `NOT` keyword. This is the preferred way and provides the
+  best readability for the comparison. For example:
+
+  `SELECT _value AS count FROM range(end=5) WHERE NOT count =~ "3$"`
+
+
+###### Regex modifiers
+
+Expressions are treated as **case-insensitive** by default. If you
+require case-sensitive matching, you can prefix the `(?-i)` modifier
+to your expression. You can apply the `(?i)` and `(?-i)` modifiers to
+enable/disable case sensitivity in different parts of your regex. This
+case-insensitive default also applies to standard character classes
+such as `[A-Z]`.
+
+By default we don't match across lines. If you need to match across
+multi-line input, you can prefix the single-line "s" modifier `(?s)`
+to your regex, for example:
+
+```vql
+LET message <= '''one
+two
+three
+'''
+
+SELECT (message =~ '''(?s)wo.th''') FROM scope()
+```
+
+Similarly, for multi-line values you can apply the "m" (`(?m)`)
+modifier to match the `^` and `$` anchors within the text.
+
+```vql
+LET message <= '''one
+two three
+four
+'''
+
+SELECT (message =~ '''(?m)^tw.+ee$''') FROM scope()
+```
+
+Modifiers can be combined, for example `(?sm-i)`, and you can apply
+any set of modifiers to any subexpression of the regex using "scoped
+modifiers" where the  subexpression is enclosed in the parenthesis
+along with the modifier. For example, `(?-i:F)riday` will match
+`Friday` or `FRIDAY` but not `friday`, although you could
+alternatively use character classes which are inherently
+case-sensitive, for example `[F]riday`.
+
+The `(?g)` modifier, also known as the "global" flag, is not supported
+and is further meaningless in comparisons since they either match or
+don't match.
+
+###### Regex special cases
+
+In VQL the regex "match all" operator (`.`) matches _anything_ if it's
+used on its own. In other words it always returns true regardless of
+what it's being compared to, including non-string data types.
+
+However, when used as part of an expression along with other
+characters it retains it's normal regex meaning.
+
+So in this example, `y` will evaluate to FALSE because there is no
+character ahead of the string `test`.
+```vql
+LET x <= "testing"
+SELECT (x =~ ".test") AS y FROM scope()
+```
+
+While in this case, `y` will evaluate as TRUE regardless of what
+string value, or even which data type, `x` is set to.
+```vql
+LET x <= "testing"
+SELECT (x =~ ".") AS y FROM scope()
+```
+
+The main use case for this special behavior is to allow artifact
+parameters to accept empty strings and have these interpreted as a
+"match all" in the VQL rather than requiring `.*` as the parameter
+input.
+
+###### Regex on other data types
+
+VQL's `=~` operator also works on data types other than plain text:
+
+- **Numbers and timestamps**: VQL automatically converts them to text before matching. For example, `5 =~ "5"` returns TRUE because `5` is formatted as `"5"` and then compared.
+
+- **Dictionaries**: a dictionary is converted to its JSON representation and the regex is matched against that JSON string.
+
+  ```vql
+  SELECT dict(Name="Alice", Age=30) =~ "Alice" AS Result FROM scope()   -- TRUE
+  SELECT dict(Name="Alice", Age=30) =~ "999" AS Result FROM scope()     -- FALSE
+  ```
+
+{{% notice tip "Raw strings vs. character escaping" %}}
+
+VQL allows you to specify [raw (literal) strings](#string-constants)
+using the `'''` (triple single quotes) syntax. For regex expressions
+this is the preferred way of specifying them since the expression is
+passed uninterpreted to the regex parser.
+
+It's OK to use standard string syntax (with single or double quotes)
+for simple expressions, but if your expression itself requires regex
+escaping (`\`) then you'd also have to escape that escape character,
+which leads to inelegant expressions, for example `C:\\\\Windows`,
+which is also prone to typo mistakes. It's best to develop the habit
+of always using raw strings for regex unless it's a very simple
+expression.
+
+{{% /notice %}}
+
+### Logical operators
+
+You might already be familiar with `||` and `&&` from scripting
+environments like Bash. In VQL they work similarly and are most often
+used to provide conditional fallback values.
+
+These operators can be chained, so they are not limited to comparing
+only two values.
+
+To understand how the operands are evaluated as true/false for various
+data types, please see the section about [Truthiness](#truthiness).
+
+**`||` (Logical OR)**
+
+This operator returns the first true value encountered, or the last
+value if all are false. This behaviour is know as "short-circuiting"
+where it evaluates from left to right and stops as soon as it
+encounters the first true value, returning that value immediately.
+This is a common pattern used to provide fallback values for Null or
+empty fields, or invalid values.
+
+###### Examples
+
+```vql
+SELECT
+    (timestamp(epoch=now()).Weekday.String = "Friday" || "Not Friday") AS IsItFriday
+FROM scope()
+```
+will return either "Friday" or "Not Friday" depending on which day of
+the week today is.
+
+```vql
+SELECT ( 0 || 1 || FALSE) FROM scope()
+```
+will return 1 since positive ints are considered true, and this is the
+first true value encountered when evaluating from left to right.
+
+
+**`&&` (Logical AND)**
+
+This operator returns the last value if all are true. So it either
+returns false or it returns the last operand - it never returns any
+operands other than the last one.
+
+As with the OR operator, this also implements "short-circuiting": it
+evaluates from left to right and stops as soon as it encounters the
+first false value, returning that value immediately without evaluating
+the rest.
+
+###### Examples
+
+```vql
+SELECT
+    (timestamp(epoch=now()).Weekday.String = "Friday" && "It is Friday!") AS IsItFriday
+FROM scope()
+```
+will return "It is Friday!" if today is Friday, otherwise it will
+return false.
+
+```vql
+SELECT ( 1 && 0 && TRUE) FROM scope()
+```
+will return false when it encounters the second operand 0 since the
+number zero is considered false, and this is the first false value
+encountered when evaluating from left to right.
+
+Notice that the AND operator only returns the last value if **all**
+the preceding operands are true. Otherwise it returns false. This is
+different from OR which will return the value of the first operand
+that's true in the chain regardless of it's position in the chain.
+
+
 ## VQL control structures
 
-Let's summarizes some of the more frequent VQL control structures.
+Let's summarize some of the more frequent VQL control structures.
 
 We already met with the `foreach()` plugin before. The `row` parameter
-can also receive any iterable type (like an array).
+can also receive any iterable type (like an array or a dict).
 
 ### Looping over rows
 
-VQL does not have a JOIN operator - we use the foreach plugin to
-iterate over the results of one query and apply a second query on it.
+VQL [does not have a JOIN operator](/docs/vql/join/) - we use the
+`foreach` plugin to iterate over the results of one query and apply a
+second query on it.
 
 ```sql
 SELECT * FROM foreach(
@@ -967,7 +1579,7 @@ LET AddTwo(x) = x + 2
 SELECT eval(func="x=>AddTwo(x=1)") AS Three FROM scope()
 ```
 
-### VQL Error handling
+## VQL Error handling
 
 VQL queries may encounter errors during their execution. For example,
 we might try to open a file, but fail due to insufficient permissions.

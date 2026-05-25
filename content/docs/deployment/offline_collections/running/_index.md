@@ -148,7 +148,7 @@ includes artifacts for all your target platforms with the artifacts themselves
 being conditionally run based on
 [preconditions](/docs/artifacts/preconditions/).
 
-#### Example
+###### Example
 
 {{< tabs >}}
 {{% tab name="macOS" %}}
@@ -214,7 +214,7 @@ allows remote execution if available. Alternatively, we can use Window's own
 remote management mechanisms (such as Group Policy, PsExec or WinRM) to deploy
 our collector binary across the network.
 
-#### Example: using wmic
+###### Example: using wmic
 
 1. We authenticate to a network share with `net use`.
 2. We copy our collector binary over the network to the `C$` share on the

@@ -199,7 +199,7 @@ directory. Unless you specify the `--config` flag a new
 `server.config.yaml` will be created in that temporary datastore.
 
 
-### Example workflow
+###### Example workflow
 
 1. Create a temporary datastore location and obtain an initial spec file
    template:

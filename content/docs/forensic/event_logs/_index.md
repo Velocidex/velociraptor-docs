@@ -201,7 +201,7 @@ being stopped by disabling the log (as shown previously)
 
 {{% /notice %}}
 
-## Example - Use ETW to monitor to DNS queries
+###### Example: Use ETW to monitor to DNS queries
 
 We can query the DNS client ETW provider for all DNS lookup events.
 

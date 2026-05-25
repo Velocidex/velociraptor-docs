@@ -36,7 +36,7 @@ Args:
 For this command, either `--add_windows_directory` or `--add_windows_disk` is
 required.
 
-##### Example
+###### Example
 
 1. Generate the remapping config:
 
