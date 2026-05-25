@@ -1,8 +1,12 @@
 ---
 title: Guidelines for creating image content
-weight: 40
 last_reviewed: 2026-04-29
-weight: 10
+weight: 40
+summary: |
+  This document provides guidance for creating image content for the Velociraptor
+  documentation. It specifies some informal standards and gives some tool-specific
+  advice with the goal of ensuring as much consistency as possible in our image
+  content.
 description: |
   This document provides guidance for creating image content for the Velociraptor
   documentation. It specifies some informal standards and gives some tool-specific

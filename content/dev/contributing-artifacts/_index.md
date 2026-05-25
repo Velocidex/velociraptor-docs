@@ -2,8 +2,12 @@
 title: Guidelines for artifact contributions
 weight: 10
 last_reviewed: 2026-05-09
+summary: |
+  This document provides guidance for contributing artifacts to the
+  main Velociraptor project and related projects.
 description: |
-  This document provides guidance for contributing artifacts to the main Velociraptor project and related projects.
+  This document provides guidance for contributing artifacts to the
+  main Velociraptor project and related projects.
 ---
 
 Velociraptor is an open source community-driven project, and as such

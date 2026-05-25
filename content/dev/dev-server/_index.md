@@ -2,6 +2,14 @@
 title: Setting up a Hugo development server
 weight: 20
 last_reviewed: 2026-04-29
+summary: |
+  This guide will help you get your local development environment up and
+  running with Hugo, which is the open-source static site generator that
+  we use.
+description: |
+  This guide will help you get your local development environment up and
+  running with Hugo, which is the open-source static site generator that
+  we use.
 ---
 
 This guide will help you get your local development environment up and
