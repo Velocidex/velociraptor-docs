@@ -34,7 +34,7 @@ during the collection.
 
 ## Common issues
 
-#### Error: grpc: received message larger than max (xxxxxxx vs. 4194304)
+#### Error: grpc: received message larger than max (<size> vs. 4194304)
 
 The gRPC error is caused by the GUI/API not being able to retrieve a
 row containing such a large amount of data. This is an intentional

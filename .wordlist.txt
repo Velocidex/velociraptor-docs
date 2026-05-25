@@ -2165,10 +2165,24 @@ VelociraptorServer
 <url-free> content/knowledge_base/tips/vql_error_catalogue.md
 --------------------------------------------------------------------------------
 alls
-severities
 
-zcat
 severities
 Minio
 SDK
 stdin
+
+zcat
+LLMs
+workably
+Backreferences
+CamelCase
+Lookarounds
+PCRE
+comparator
+falsy
+lookahead
+lookaheads
+lookbehind
+storedQuery
+subexpression
+truthy
