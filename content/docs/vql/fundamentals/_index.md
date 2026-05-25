@@ -829,7 +829,7 @@ the Right Hand Side (RHS) operand, and `+` is the operator.
 | `!=` `=` `<` `<=` `>` `>=` | These are usual equality and ordering comparison operators. |
 | `in` | The membership operator. Returns TRUE if the LHS is present in the RHS.<br>Note that `in` is an exact case sensitive match. |
 | `.` | The `.` operator is called the Associative Operator.<br>It dereferences a field from the LHS named by the RHS.<br>For example `X.Y` extracts the field `Y` from the dict `X` |
-| `\|\|` `&&` | Logical operators that perform logical AND and OR operations on boolean expressions. |
+| `\|\|` `&&` | Logical operators that perform logical `AND` and `OR` operations on boolean expressions. |
 
 ### Protocols
 

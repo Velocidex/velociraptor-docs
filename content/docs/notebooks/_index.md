@@ -126,7 +126,7 @@ view it's results in the collection (flow) notebook.
 ![Example: flow notebook](timeline_prefetch.png)
 
 These automatically-created notebooks are always visible to all users
-in the og (i.e. there is no explicit
+in the org (i.e. there is no explicit
 [sharing](/docs/notebooks/sharing/) required, unlike Global Notebooks)
 and they can be accessed by any user who can log into the GUI. They
 can also be modified by any user who has the `NOTEBOOK_EDITOR`
