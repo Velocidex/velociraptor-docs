@@ -28,16 +28,56 @@ The supported accessors for the `fs` commands are:
 - `file_links`
 - `fs` (a Velociraptor filestore)
 
-Paths must be specified as absolute paths. Glob patterns can be used.
+Glob patterns can be used.
 
 The default output format is jsonl.
 
-When using the `fs` accessor, it needs to connect to the server's datastore and
-therefore needs the server.config.yaml so that it knows where to find the
-datastore. This means that such commands need to be run with the `--config`
-(or `-c`) flag.
+#### Server filestore access
+
+When using the `fs` accessor, it needs to connect to the server's
+filestore and therefore needs the `server.config.yaml` so that it
+knows where to find the filestore. This means that such commands need
+to be run with the `--config` (or `-c`) flag. The server does not need
+to be running since this command reads the filestore directly.
+
+
+
+###### Example: List filestore files and directories:
+
+```text
+velociraptor fs ls -c server.config.yaml --accessor fs "clients/*"
+```
+
+
+{{% notice note "Handling filestore compression" %}}
+
+Since version 0.75, the default configuration instructs clients to
+compress data before sending it to the server. The server stores the
+data in compressed form, thus greatly reducing server storage
+requirements. However, this means that files read directly from the
+server's disk by external tools will still have this compression
+applied.
+
+The `fs zcat` subcommand is designed to cater for the new filestore
+compression feature. It decompresses files read from the filestore, so
+if external tools need to work with results or uploaded files then
+they should call `velociraptor fs zcat` and read it's output via a
+pipe.
+
+While all the `fs` commands can use the `fs` accessor, although it's
+only really useful for listing files and directories due to the
+compression.
+
+If you don't want the space-saving benefits of compression it can be
+disabled via the
+[`Datastore.compression`](/docs/deployment/references/#Datastore.compression)
+config setting.
+
+{{% /notice %}}
 
 ---
+
+
 
 ### [ fs ls ]
 
@@ -106,13 +146,17 @@ Args:
 ###### Example
 
 ```text
-velociraptor --config ./server.config.yaml fs cp -l --accessor=fs "/**/*.msi" ../MSI
+velociraptor --config ./server.config.yaml fs cp -l --accessor=fs "/**/*.msi" ./MSI
 ```
-will copy msi files from the server filestore to a folder named MSI.
+will copy all `.msi` files from the server filestore to a folder named `MSI`.
 
 ---
 
 ### [ fs cat ]
+
+The `cat` subcommand does a normal file read and is unaware of
+filestore compression (see note above). To handle the compression you
+should use the `fs zcat` command described below.
 
 ```text
 fs cat <path>
@@ -126,6 +170,32 @@ Args:
   <path>  The path to cat
 ```
 
+---
+
+### [ fs zcat ]
+
+```text
+fs zcat <chunk_path> <file_path>
+    Dump a compressed filestore file
+
+      --accessor="file"          The FS accessor to use
+  -l, --[no-]details             Show more verbose info
+      --format=jsonl             Output format to use (text,json,jsonl,csv).
+
+Args:
+  <chunk_path>  The path to the .chunk index file
+  <file_path>   The path to the compressed file to dump
+```
+
+Because this command is designed for handling filestore compression,
+it defaults to the `fs` accessor and you therefore do not need to
+specify it.
+
+###### Example: read a compressed results file
+
+```text
+velociraptor fs zcat /data/clients/C.d828d0c753eb0ccd/artifacts/Linux.Sys.BashShell/F.D85A6JHNTSER4.{chunk,json}
+```
 
 ---
 
@@ -134,6 +204,7 @@ Args:
 ```text
 fs rm <path>
     Remove file (only filestore supported)
+
       --accessor="file"          The FS accessor to use
   -l, --[no-]details             Show more verbose info
       --format=jsonl             Output format to use (text,json,jsonl,csv).

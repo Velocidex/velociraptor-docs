@@ -1,5 +1,5 @@
 ---
-title: Configuration file Reference
+title: Configuration File Reference
 menutitle: Config Reference
 no_children: true
 weight: 120

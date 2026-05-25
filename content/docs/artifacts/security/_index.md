@@ -449,8 +449,8 @@ collecting artifacts targeting specific IOCs:
   For example, if the IOC is searching for the string `ThreatActorXYZ`
   it is very specific and the threat actor may know they are being
   specifically targeted. Instead search for the regular expression
-  `Theat[^ ]+`, and post-process by filtering down the false positives
-  on the server.
+  `Threat[^ ]+`, and post-process by filtering down the false
+  positives on the server.
 
   There is obviously a trade-off between being very specific and
   getting few, very high-value, results, vs being less specific and

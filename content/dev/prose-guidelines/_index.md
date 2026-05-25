@@ -60,9 +60,9 @@ not be rendered correctly or at all by Hugo.
 
 ## Text wrapping
 
-Hard wrap paragraph text at ~70 characters. This makes it easier to
-review GitHub pull requests, which display changes side-by-side in two
-columns.
+Hard wrap paragraph text at 70 or 80 characters. This makes it easier
+to review GitHub pull requests, which display changes side-by-side in
+two columns.
 
 Your code editor may provide an auto-wrap option or an extension that
 makes this easy. For example, in VSCode you can use

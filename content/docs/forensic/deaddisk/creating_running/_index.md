@@ -156,7 +156,7 @@ However the simplest option is usually to rely on an external tool (such as
 `guestmount`, as mentioned above) to mount the target filesystem as a directory
 so that Velociraptor can access it.
 
-## Generating the remapping config
+## Auto-generating the remapping config (Windows only)
 
 The following process will work in most simple cases - namely a disk or
 partition image of a Windows system, where we assume the partition containing a
