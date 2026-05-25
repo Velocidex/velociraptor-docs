@@ -29,6 +29,16 @@ Arg | Description | Type
 ----|-------------|-----
 client_id||string (required)
 flow_id||string
+full_request|If specified we include the full request in the output. This can be very large.|bool
+downloads|If specified we include the flow exports in the output.|bool
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
+
+### Description
+
+Retrieve the flows launched on each client.
+
+Each flow record will include the creator of the flow, the request
+and metadata about the collection.
+
 

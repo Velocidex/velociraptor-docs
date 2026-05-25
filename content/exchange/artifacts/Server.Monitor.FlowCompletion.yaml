@@ -699,7 +699,8 @@ export: |
   LET FullTable(Rows, Headers=NULL, MaxRows=NULL, MaxCols=100,
   MaxCellLength=NULL, MaxHeaderLength=30, FormatData=true) =
       if(
-        condition=Rows AND (Headers OR items(item=Rows[0])._key),
+        condition=Rows
+         AND (Headers OR items(item=Rows[0])._key),
         then=template(
           template='''<table>
       {{- if .headers }}
@@ -1167,9 +1168,9 @@ sources:
           Cancelled
 
       LET MatchesLabelFilters = (NOT ClientLabelsToAlertOn OR (NOT
-                    ClientLabels OR ClientLabels =~ ClientLabelsToAlertOn))
-              AND (NOT ClientLabelsToIgnore OR NOT ClientLabels =~
-                      ClientLabelsToIgnore)
+              ClientLabels OR ClientLabels =~ ClientLabelsToAlertOn))
+         AND (NOT ClientLabelsToIgnore OR NOT ClientLabels =~
+                 ClientLabelsToIgnore)
 
       LET MatchesArtifactPerms = if(condition=ArtifactPermToAlertOn,
                                     then={
@@ -1394,7 +1395,8 @@ sources:
 
       // Resolve executor notification addresses from the creator field:
       LET CreatorAddrs(Creator) = if(condition=NotifyExecutor
-                                      AND Creator =~ '[^@]+@.+',
+                                      AND Creator =~ '[^@]+@.+'
+                                           AND Creator != 'InterrogationService',
                                      then=(Creator, ),
                                      else=UsersAddrs(Username=Creator).Addr)
 
@@ -1420,25 +1422,26 @@ sources:
               List=request.artifacts,
               MaxLength=1)))
 
+      LET AllRecipients = Unique(Items=Recipients.Address +
+                                   CreatorAddrs(Creator=FlowDict.Creator) +
+                                   MetadataAddrs)
+
       SELECT *
-      FROM foreach(
-        row=Results,
-        query={
+      FROM foreach(row=Results,
+                   query={
+          SELECT *
+          FROM if(condition=AllRecipients,
+                  then={
           SELECT *
           FROM Artifact.Generic.Utils.SendEmail(
             Secret=Secret,
-            Recipients=RequireNonEmpty(
-              Value=Unique(Items=Recipients.Address + CreatorAddrs(
-                             Creator=FlowDict.Creator) +
-                             MetadataAddrs),
-              Message='Recipients, CreatorAddrs and MetadataAddrs cannot all be empty. At least one recipient must be defined.'),
+            Recipients=AllRecipients,
             Sender=Sender,
-            HTMLMessage=if(
-              condition=HTML,
-              then=HTMLBody),
+            HTMLMessage=if(condition=HTML, then=HTMLBody),
             PlainTextMessage=PlainText,
             FilesToUpload=AttachmentsWithinLimit(
               Attachments=FlowResultsAttachments.Path),
             Subject=Subject,
             Period=SendInterval)
+        })
         })

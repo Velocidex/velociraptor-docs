@@ -18,9 +18,12 @@ description: |
   example:
 
   ```vql
-  SELECT * FROM Artifact.Linux.Search.FileFinder(SearchFilesGlobTable=serialize(format="csv",item=tlist),...)
+  SELECT * FROM Artifact.Linux.Search.FileFinder(
+     SearchFilesGlobTable=serialize(format="csv",item=tlist),...)
   ```
-  will pass a list in CSV format to the artifact's `SearchFilesGlobTable` parameter.
+
+  will pass a list in CSV format to the artifact's
+  `SearchFilesGlobTable` parameter.
 
   ### See also
 
@@ -60,9 +63,12 @@ artifact parameter when the parameter expects a specific format. For
 example:
 
 ```vql
-SELECT * FROM Artifact.Linux.Search.FileFinder(SearchFilesGlobTable=serialize(format="csv",item=tlist),...)
+SELECT * FROM Artifact.Linux.Search.FileFinder(
+   SearchFilesGlobTable=serialize(format="csv",item=tlist),...)
 ```
-will pass a list in CSV format to the artifact's `SearchFilesGlobTable` parameter.
+
+will pass a list in CSV format to the artifact's
+`SearchFilesGlobTable` parameter.
 
 ### See also
 

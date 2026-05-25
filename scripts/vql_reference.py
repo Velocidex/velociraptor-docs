@@ -64,7 +64,7 @@ def BuildDefinition(filename, item):
         result += ("Arg | Description | Type\n----|-------------|-----\n")
         for arg in item["args"]:
             name = arg["name"]
-            description = arg.get("description", "")
+            arg_description = arg.get("description", "")
             type = arg["type"]
             if type == "":
                 type = "string"
@@ -73,7 +73,7 @@ def BuildDefinition(filename, item):
             if arg.get("required"):
                 type = type + " (required)"
 
-            result+=("%s|%s|%s\n" % (name, description, type))
+            result+=("%s|%s|%s\n" % (name, arg_description, type))
 
         if item.get("free_form_args"):
             result+="`**`|Free Form Args|\n"

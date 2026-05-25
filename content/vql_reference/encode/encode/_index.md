@@ -6,7 +6,10 @@ sitemap:
    disable: true
 no_edit: true
 description: |
-  Encodes a string as a different type. Currently supported types include 'hex', 'base64'.
+  Encode an object as a string.
+
+  This function is an alias to `serialize()`
+
 ---
 
 
@@ -23,6 +26,13 @@ description: |
 
 Arg | Description | Type
 ----|-------------|-----
-string||Any (required)
-type||string (required)
+string|The item to encode|Any (required)
+type|Encoding format (csv,json,yaml,hex,base64)|string (required)
+
+### Description
+
+Encode an object as a string.
+
+This function is an alias to `serialize()`
+
 

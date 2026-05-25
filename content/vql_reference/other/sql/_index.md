@@ -32,3 +32,7 @@ args||Any
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 
+### Description
+
+Run queries against sqlite, mysql, and postgres databases
+

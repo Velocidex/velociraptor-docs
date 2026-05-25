@@ -154,6 +154,9 @@ Artifact,Level,Message,Severity,Explanation
 .+,DEFAULT,unzip: .+,medium,unzip() failed (open/read/walk error): archive contents not produced.
 .+,DEFAULT,js(?:_call|_set|_get)?: .+,medium,JavaScript runtime error: js() returned nothing.
 .+,DEFAULT,yara_lint: .+,medium,yara_lint() failed to compile/inspect rule: lint output missing.
+.+,DEFAULT,http_client: Permission Denied accessing secret .+,medium,VelociraptorServer does not have access to HTTP secret.
+.+,DEFAULT,http_client: http_client: HTTP Secret excludes all URLs,medium,URL does not match configured secret URL (regex).
+.+,DEFAULT,http_client: Secret Not Found,high,HTTP secret not found.
 ```
 
 ## See also
