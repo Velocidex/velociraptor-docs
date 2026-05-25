@@ -4,24 +4,34 @@ date: 2025-01-24
 draft: false
 weight: 10
 last_reviewed: 2026-04-30
-description: Running VQL queries in Notebooks
+description: |
+  Velociraptor Query Language (VQL) is the query language used across all of
+  Velociraptor's features — from artifact collections and client monitoring to
+  notebook investigations and API automation.
 ---
+
+Velociraptor Query Language (VQL) is the query language used across
+all of Velociraptor's features - from artifact collections and client
+monitoring to notebook investigations and API automation. This page
+covers the core concepts you need to write and understand VQL queries.
 
 {{% notice tip "Running VQL queries in Notebooks" %}}
 
-When learning VQL, we recommend practicing in an environment where you can
-easily debug, iterate, and interactively test each query.
+When learning VQL, we recommend practicing in an environment where you
+can easily debug, iterate, and interactively test each query.
+Velociraptor notebooks provide a perfect playpen for learning and
+experimenting with VQL. You can read more about notebooks
+[here](/docs/notebooks/).
 
-You can read more about notebooks [here](/docs/notebooks/).
-For the purposes of this documentation, we will assume you've created a notebook
-and are typing VQL into the cell.
+For the purposes of this documentation, we will assume you've created
+a notebook and are typing VQL into a notebook cell.
 
 {{% /notice %}}
 
 ## Basic Syntax
 
 VQL's syntax is heavily inspired by SQL. It uses the same basic
-`SELECT .. FROM .. WHERE` sentence structure, but does not include the
+`SELECT .. FROM .. WHERE` semantic structure, but does not include the
 more complex SQL syntax, such as `JOIN` or `HAVING`. In VQL, similar
 functionality is provided through plugins, which keeps the syntax
 simple and concise.
