@@ -48,7 +48,8 @@ In the above example the assignment is using `<=` which is a
 [materialized LET expression](#materialized-let-expressions), meaning
 that the value is immediately assigned to the variable. However
 assignment can be "lazy" which means that the assignment only happens
-when the variable is subsequently referenced and therefore evaluated.
+when the variable is subsequently referenced and therefore evaluated
+only if an when it's needed.
 See [LET expressions](#let-expressions) for more information about
 lazy evaluation.
 
@@ -59,11 +60,11 @@ or a dash character. They are also case-sensitive.
 {{% notice tip "Throwaway variables" %}}
 
 In artifacts you might sometimes see just a `_` used as a variable
-name. This is a naming convention (not an enforced rule) for an
-anonymous or "throwaway" variable, where we don't care about the name
-because we don't intend to use the actual value in subsequent VQL, and
-therefore also don't care is the variable name is later reassigned
-another value.
+name. This is a naming convention (not a language-enforced rule) for
+an anonymous or "throwaway" variable, where we don't care about the
+name because we don't intend to use the actual value in subsequent
+VQL, and therefore also don't care is the variable name is later
+reassigned another value.
 
 For example:
 ```vql
@@ -264,9 +265,11 @@ In order to understand how VQL works, let's follow a single row through the quer
 
 ### Lazy Evaluation
 
-In the previous example, the VQL engine goes through significant effort to postpone the evaluation as much as
-possible. Delaying an evaluation is a recurring theme in VQL and it saves Velociraptor from performing unnecessary work, like evaluating a
-column value if the entire row will be filtered out.
+In the previous example, the VQL engine goes through significant
+effort to postpone the evaluation as much as possible. Delaying an
+evaluation is a recurring theme in VQL and it saves Velociraptor from
+performing unnecessary work, like evaluating a column value if the
+entire row will be filtered out.
 
 Understanding lazy evaluation is critical to writing efficient VQL
 queries. Let's examine how this work using a series of
@@ -294,7 +297,8 @@ FROM info()
 WHERE OS = "Unknown" AND Log
 ```
 
-In Case 1, a single row will be emitted by the query and the associated log function will be evaluated, producing a log message.
+In Case 1, a single row will be emitted by the query and the
+associated log function will be evaluated, producing a log message.
 
 Case 2 adds a condition which should eliminate the row. **Because the
 row is eliminated VQL can skip evaluation of the log()
@@ -717,7 +721,7 @@ which takes a few seconds to run, but its output is not expected to
 change quickly. In that case, we actually want to cache the results of
 the query in memory and simply access it as an array.
 
-Expanding a query into an array in memory is termed `Materializing`
+Expanding a query into an array in memory is termed **Materializing**
 the query.
 
 For example, consider the following query that lists all sockets on
@@ -936,7 +940,7 @@ FROM source()
 WHERE Mtime > Past24hours
 ```
 
-If it is, then it's resolved to an actual
+If it is lazily-defined, then it's resolved to an actual
 value first. In other words, the comparison triggers evaluation
 because it's needed for the comparison.
 
@@ -949,7 +953,6 @@ implicitly converted to true or false when evaluated in a boolean
 context, such as in
 [`if` statements](#conditional-if-plugin-and-function) or
 [logical operators](#logical-operators).
-
 This is a key concept for implementing flow control logic in VQL.
 
 Truthiness is distinct from strict boolean equality. Sometimes people
@@ -1014,7 +1017,7 @@ when the two values are different types. Here is how it works:
    FROM scope()
    ```
 
-3. **Whole numbers**: all whole numbers are treated the same
+3. **Integers**: all integers are treated the same
    regardless of size. So `1` always equals `1`, whether it came from
    a small or large number.
 
@@ -1025,11 +1028,13 @@ when the two values are different types. Here is how it works:
 
 4. **True/false (booleans)**: a true/false value is usually only equal
    to another true/false value. However, VQL also accepts common text
-   representations: `"Y"`, `"y"`, `"TRUE"`, and `"True"` are treated
-   the same as `TRUE`. Any other text is treated as `FALSE`.
+   representations: `"Y"`, `"y"`, `"true"`, and `"True"` are treated
+   the same as `TRUE`. Any other text is treated as `FALSE`. Notice
+   that in VQL the true/false values are not case sensitive, unlike
+   many other languages.
 
 5. **Decimal numbers**: decimal numbers are compared as decimals. A
-   whole number and a decimal can still be equal if they represent the
+   integer and a decimal can still be equal if they represent the
    same value.
 
 6. **Dates and times (timestamps)**: timestamps are compared precisely
@@ -1041,10 +1046,10 @@ when the two values are different types. Here is how it works:
    SELECT now() = 1710000000 AS Result FROM scope()
    ```
 
-7. **Mixed number types**: if one value is a whole number and the
+7. **Mixed number types**: if one value is a integer and the
    other is a decimal, VQL converts both to decimals before comparing.
 
-8. **Lists (arrays)**: two lists are equal only if they have the same
+8. **Arrays (lists)**: two arrays are equal only if they have the same
    number of items and each matching position contains an equal value.
 
 9. **Dictionaries**: two dictionaries are equal if they have the same
@@ -1066,7 +1071,7 @@ equal), `>` (greater than), and `>=` (greater than or equal).
    SELECT "apple" < "banana" AS Result FROM scope()   -- TRUE
    ```
 
-3. **Whole numbers**: all whole numbers are converted to a common form
+3. **Integers**: all integers are converted to a common form
    and compared.
 
    ```vql
@@ -1074,7 +1079,7 @@ equal), `>` (greater than), and `>=` (greater than or equal).
    SELECT 5 > 10 AS Result FROM scope()    -- FALSE
    ```
 
-4. **Whole number vs Decimal**: the whole number is treated as a
+4. **Integer vs Decimal**: the integer is treated as a
    decimal for comparison. So `3 < 3.5` is true.
 
 5. **Decimal vs Decimal**: compared directly as decimals.
@@ -1101,9 +1106,9 @@ The numeric comparison rules in short:
 
 | Left side | Right side | How VQL compares |
 |---|---|---|
-| Whole number | Whole number | Convert both, then compare |
-| Whole number | Decimal | Treat whole number as decimal, then compare |
-| Decimal | Whole number | Treat whole number as decimal, then compare |
+| Integer | Integer | Convert both, then compare |
+| Integer | Decimal | Treat integer as decimal, then compare |
+| Decimal | Integer | Treat integer as decimal, then compare |
 | Decimal | Decimal | Compare directly |
 
 9. **Dictionaries**: when comparing two dictionaries with `<` or `>`,
@@ -1114,8 +1119,9 @@ The numeric comparison rules in short:
    SELECT dict(a=1) < dict(a=1, b=2) AS Result FROM scope()   -- TRUE (1 key < 2 keys)
    ```
 
-10. **Lists**: when comparing two lists, VQL compares by their first
-    element. An empty list is smaller than any non-empty list.
+10. **Arrays (lists)**: when comparing two arrays, VQL compares by
+    their first element. An empty list is smaller than any non-empty
+    list.
 
     ```vql
     SELECT (1, 2, 3) < (4, 5, 6) AS Result FROM scope()   -- TRUE (1 < 4)
