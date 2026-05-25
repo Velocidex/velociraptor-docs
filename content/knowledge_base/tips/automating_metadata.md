@@ -132,7 +132,7 @@ expected results:
 ![Linux BIOS info](biosinfo_linux.png)
 
 The exchange artifact
-[Generic.Client.HW.Identification](/exchange/artifacts/pages/generic.client.hw.identification/)
+[`Generic.Client.HW.Identification`](/exchange/artifacts/pages/generic.client.hw.identification/)
 can be used to extract hardware information like
 `Generic.Client.BiosInfo` and more, with support for all three
 operating systems.
