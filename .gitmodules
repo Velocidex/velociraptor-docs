@@ -3,4 +3,4 @@
 	url = https://github.com/Velocidex/velociraptor-site-search.git
 [submodule ".github/vale"]
 	path = .github/vale
-	url = https://github.com/predictiple/velociraptor-vale
+	url = https://github.com/Velocidex/velociraptor-vale
