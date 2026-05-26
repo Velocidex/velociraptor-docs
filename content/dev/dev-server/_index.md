@@ -103,9 +103,9 @@ And review those changes in the local dev server.
 To check your content against our writing standards you can
 [use Vale](/dev/vale_linting/) which also includes a spellcheck.
 
-This is optional though because any serious errors will get picked
+This is optional though because any serious issues will get picked
 up in our GitHub Actions CI pipeline, and you will be informed about
-them there.
+them there in the PR.
 
 ## 6. Stop the dev server
 
