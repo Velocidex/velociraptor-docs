@@ -485,6 +485,18 @@ sources:
       // Remove information that is not available (and will be misprinted):
       LET AdjustFlowInfo(InfoDict) = InfoDict - dict(`Collection finished`=NULL)
 
+      // linter: invalid_arg:full_request
+      LET ListFlows(client_id, flow_id) = SELECT *
+        FROM if(condition=version(plugin='flows') >= 2,
+                then={
+          SELECT *
+          FROM flows(client_id=client_id, flow_id=flow_id, full_request=true)
+        },
+                else={
+          SELECT *
+          FROM flows(client_id=client_id, flow_id=flow_id)
+        })
+
       // FlowInfo() comes from the mail artifact and assumes completed flows.
       // For monitor alerts we only have partial flow state, so fetch flow data
       // when possible and strip fields that would otherwise render misleadingly.
@@ -494,7 +506,7 @@ sources:
                            then={
           SELECT AdjustFlowInfo(InfoDict=FlowInfo(HTML=true)) AS HTML,
                  AdjustFlowInfo(InfoDict=FlowInfo(HTML=false)) AS PlainText
-          FROM flows(client_id=ClientId, flow_id=FlowId)
+          FROM ListFlows(client_id=ClientId, flow_id=FlowId)
         },
                            else={
           SELECT '' AS HTML,

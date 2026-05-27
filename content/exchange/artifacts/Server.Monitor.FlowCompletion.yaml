@@ -1189,6 +1189,18 @@ sources:
           IncludeNewClientArtifact OR IncludeResultsLabel OR
           IncludeUploadsLabel
 
+      // linter: invalid_arg:full_request
+      LET ListFlows(client_id, flow_id) = SELECT *
+        FROM if(condition=version(plugin='flows') >= 2,
+                then={
+          SELECT *
+          FROM flows(client_id=client_id, flow_id=flow_id, full_request=true)
+        },
+                else={
+          SELECT *
+          FROM flows(client_id=client_id, flow_id=flow_id)
+        })
+
       LET FlowDetails = SELECT ClientId,
                                FlowId,
                                *,
@@ -1196,7 +1208,7 @@ sources:
                                FlowInfo(HTML=false) AS FlowDict,
                                ClientInfo(HTML=true) AS ClientHTMLDict,
                                ClientInfo(HTML=false) AS ClientDict
-        FROM flows(client_id=ClientId, flow_id=FlowId)
+        FROM ListFlows(client_id=ClientId, flow_id=FlowId)
         WHERE MatchesCriteria
          AND log(message='Flow %v (%v) completed',
                  args=(FlowId, join(array=request.artifacts, sep=', ')))
