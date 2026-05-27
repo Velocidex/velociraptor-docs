@@ -19,12 +19,15 @@ tools:
   - name: DotNetDumper
     url: https://github.com/mgreen27/DotnetDumper/raw/refs/heads/main/bin/DotnetDumper.exe
     serve_locally: true
+    expected_hash: 6199d07ad48b64b6ffbcd9bdb043489307c6a4a92938ba8431fbb4de7bf8141c
   - name: DotNetDumper_x86
     url: https://github.com/mgreen27/DotnetDumper/raw/refs/heads/main/bin/DotnetDumper_x86.exe
     serve_locally: true
+    expected_hash: 56ab0412aa386b38b0f4c1f81aff019ed5e20e996f5ae426b29be81847b9fc16
   - name: DotNetDumper_arm64
     url: https://github.com/mgreen27/DotnetDumper/raw/refs/heads/main/bin/DotnetDumper_arm64.exe
     serve_locally: true
+    expected_hash: 99cbd89c04918aa9474c75f976bfeb978dccebbee77dd13a039f50d287256d61
 
 implied_permissions:
   - EXECVE
