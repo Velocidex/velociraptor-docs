@@ -1,0 +1,183 @@
+name: Windows.Memory.DotnetDumper
+author: Matt Green - @mgreen27
+description: |
+  Response artifact to triage Windows .NET processes and collect .NET assemblies from 
+  memory using DotnetDumper.
+
+  Collected output includes recovered .NET assemblies, suspicious managed strings, 
+  full managed string listings, loaded module details, and patch detection findings. 
+  These results support DFIR workflows focused on inspecting potentially malicious 
+  or tampered managed code executing in memory.
+
+  The original process dump can optionally be uploaded.
+
+  NOTE: this artifact writes a process dump to the Velociraptor temporary directory 
+  before analysis. Dump files may be large, similar to standard Velociraptor process 
+  dump collection.
+  
+tools:
+  - name: DotNetDumper
+    url: https://github.com/mgreen27/DotnetDumper/releases/download/continuous/DotnetDumper.exe
+    serve_locally: true
+    expected_hash: c7cfb900675e5394548ee3c1da39c0d3a365235b40d5566b26d89f22cc4ca3bd
+  - name: DotNetDumper_x86
+    url: https://github.com/mgreen27/DotnetDumper/releases/download/continuous/DotnetDumper_x86.exe
+    serve_locally: true
+    expected_hash: 1b7d6fabd150eda572522e3fce351452517abff071d1bbf6346790b5e032fd48
+  - name: DotNetDumper_arm64
+    url: https://github.com/mgreen27/DotnetDumper/releases/download/continuous/DotnetDumper_arm64.exe
+    serve_locally: true
+    expected_hash: 4b4f9f4bf42ad4758d4c51e62c7be92267c7f0612ee2f9b6608bc847634eb68e
+
+implied_permissions:
+  - EXECVE
+  - FILESYSTEM_WRITE
+  
+precondition: SELECT OS From info() where OS = 'windows'
+
+parameters:
+  - name: ProcessRegex
+    default: notepad
+    type: regex
+  - name: PidRegex
+    default: .
+    type: regex
+  - name: EncodeKey
+    default: infected
+  - name: UploadDmp
+    type: bool
+    description: |
+      If specified we upload process dump in addition to Dotnetdumper triage results
+
+sources:
+  - query: |
+      LET tempfolder <= str(str=tempdir())
+      
+      LET processes <= SELECT
+          Name AS ProcessName,
+          ImagePathName AS Exe,
+          CommandLine,
+          Pid,
+          Env.PROCESSOR_ARCHITECTURE AS Type,
+          path_join(components=[tempfolder, str(str=Pid)]) AS OutPath,
+          parse_pe(file=ImagePathName) AS __PEInfo
+        FROM Artifact.Windows.Memory.ProcessInfo(
+          ProcessNameRegex=ProcessRegex,
+          PidRegex=PidRegex)
+        WHERE __PEInfo.Imports =~ 'mscoree' OR __PEInfo.Directories.DotNet_Directory
+      
+      LET fetch_x64 <= SELECT *
+        FROM if(condition=processes.Type =~ "AMD64",
+                then={
+          SELECT *
+          FROM Artifact.Generic.Utils.FetchBinary(ToolName="DotNetDumper")
+        },
+                else=FALSE)
+      
+      LET fetch_x86 <= SELECT *
+        FROM if(condition=processes.Type =~ "x86",
+                then={
+          SELECT *
+          FROM Artifact.Generic.Utils.FetchBinary(ToolName="DotNetDumper_x86")
+        },
+                else=FALSE)
+      
+      LET fetch_arm64 <= SELECT *
+        FROM if(condition=processes.Type =~ "ARM64",
+                then={
+          SELECT *
+          FROM Artifact.Generic.Utils.FetchBinary(ToolName="DotNetDumper_arm64")
+        },
+                else=FALSE)
+      
+      LET find_arch(type) = get(member=type,
+                                item=dict(AMD64=fetch_x64[0].OSPath,
+                                          x86=fetch_x86[0].OSPath,
+                                          ARM64=fetch_arm64[0].OSPath))
+      
+      LET collection <= SELECT *
+        FROM foreach(row=processes,
+                     query={
+          SELECT *, Type,
+                 ProcessName,
+                 Pid,
+                 Exe,
+                 CommandLine,
+                 OutPath
+          FROM execve(argv=[find_arch(type=Type), "--pid",
+                        Pid, OutPath, "--json", "--encode",EncodeKey],
+                      length=999999999)
+        })
+      
+      LET find_dmp(path) = SELECT * FROM glob(globs="*.dmp",root=path)
+      
+      LET results <= SELECT
+          *, parse_json(data=read_file(filename=path_join(
+                                         components=[OutPath, "modules.json"]))) AS Modules,
+          parse_json(
+            data=read_file(
+              filename=path_join(
+                components=[OutPath, "patch_detection.json"]))) AS PatchDetection
+        FROM collection
+      
+      LET list_assemblies(path) = SELECT
+          Name,
+          upload(
+            accessor='data',
+            file=crypto_rc4(key=EncodeKey, string=read_file(filename=OSPath)),
+            name=Name ) as Assembly
+        FROM glob(globs="assemblies/*", root=path)
+      
+      LET final = SELECT
+          Pid,
+          ProcessName,
+          CommandLine,
+          Type,
+          list_assemblies(path=OutPath).Assembly AS Assemblies,
+          upload(name="managed_strings_suspicious.txt",
+                 file=path_join(
+                   components=[OutPath, "managed_strings_suspicious.txt"])) AS SuspiciousManagedStrings,
+          upload(
+            name="managed_strings_all.txt",
+            file=path_join(
+              components=[OutPath, "managed_strings_all.txt"])) AS AllManagedStrings,
+          OutPath as __Outpath
+      FROM results
+      
+      LET upload_dmp = SELECT *, upload(file=find_dmp(path=__Outpath)[0].OSPath) as Dmp 
+        FROM final
+        
+      SELECT * FROM if(condition= UploadDmp,
+                            then= upload_dmp,
+                            else= final )
+
+  - name: Modules
+    query: |
+      SELECT *
+      FROM foreach(row=results,
+                   query={
+          SELECT Pid,
+                 ProcessName,
+                 *
+          FROM Modules.modules
+        })
+  - name: PatchDetection
+    query: |
+      LET lookup <= SELECT *
+        FROM results
+      
+      SELECT *
+      FROM foreach(row=results,
+                   query={
+          SELECT Pid,
+                 ProcessName,
+                 *
+          FROM PatchDetection.findings
+        })
+column_types:
+  - name: SuspiciousManagedStrings
+    type: preview_upload
+  - name: AllManagedStrings
+    type: preview_upload
+  - name: Dmp
+    type: preview_upload
