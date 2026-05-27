@@ -18,7 +18,7 @@ jobs:
         uses: vale-cli/vale-action@reviewdog
         with:
           # Set to true when we want to start having errors fail the pipeline.
-          fail_on_error: false
+          fail_on_error: true
           # Only check lines touched by the PR to avoid reviewdog's "too many annotations" failures on full-corpus scans.
           filter_mode: added
           reporter: github-pr-check
