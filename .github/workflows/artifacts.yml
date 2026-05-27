@@ -1,0 +1,40 @@
+name: Artifacts
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build:
+    name: Verify
+    runs-on: ubuntu-latest
+    steps:
+      # The checkout step
+      - uses: actions/checkout@master
+
+      - name: Download Latest Velociraptor
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Velociraptor is released on GitHub only for changes to its
+          # minor version number. The same release (e.g.
+          # releases/tag/v0.76) is (re-)used for patch releases.
+          # Retrieve the latest patch release for the latest release:
+          mkdir -p tests
+          url=$(gh api repos/Velocidex/velociraptor/releases/latest \
+            --jq '[.assets[] | select(.name | test("^velociraptor-v\\d+\\.\\d+\\.\\d+-linux-amd64-musl$"))]
+                  | sort_by(.name | capture("v(?<maj>\\d+)\\.(?<min>\\d+)\\.(?<patch>\\d+)")
+                  | [.maj, .min, .patch] | map(tonumber))
+                  | last.browser_download_url')
+          if [ -z "$url" ] || [ "$url" = "null" ]; then
+            echo "No matching velociraptor-vX.Y.Z-linux-amd64-musl asset in latest release" >&2
+            exit 1
+          fi
+          echo "Downloading $url"
+          curl -fsSL "$url" -o tests/velociraptor
+          chmod +x tests/velociraptor
+
+      - name: Verify Exchange Artifacts
+        run: ./tests/velociraptor -v artifacts verify ./content/exchange/artifacts/*.yaml
+
