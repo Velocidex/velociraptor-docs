@@ -1,0 +1,170 @@
+name: Generic.Client.Defender.Health
+author: Andreas Misje – @misje
+description: |
+  Get Microsoft Defender for Endpoint (MDATP) health and configuration.
+
+  MDATP is Microsoft's EDR product for Windows, macOS and Linux. This
+  artifact retrieves all available agent status and configuration via the
+  platform-native interface: `mdatp health --output json` on Linux and
+  macOS, `Get-MpComputerStatus` through
+  [`Windows.System.PowerShell`](/artifact_references/pages/windows.system.powershell/)
+  on Windows.
+
+  A single row is returned with a dict called `MDATPHealth` whose
+  shape differs across platforms. Linux and macOS are nearly
+  identical; Windows differs significantly. Platform-specific extras:
+
+  Linux:
+
+  - `behaviorMonitoring`
+  - `supplementaryEventsSubsystem`
+
+  macOS:
+
+  - `deviceControlEnforcementLevel`
+  - `ecsConfigurationIds`
+  - `fullDiskAccessEnabled`
+  - `networkEventsSubsystem`
+  - `tamperProtection`
+  - `troubleshootingMode`
+
+  Windows values are parsed from text output and arrive as strings
+  (e.g. the literal `'True'`, not the boolean `true`). Linux and macOS
+  values are properly typed JSON. The notebook suggestion **Common
+  MDATP health information** normalises a useful subset across all
+  three platforms.
+
+  ## Use as part of client interrogation
+
+  Although useful on its own to gather MDATP status from hosts, this
+  artifact can also be called from a custom override of
+  [`Generic.Client.Info`](/artifact_references/pages/generic.client.info/).
+  Combined with
+  [`Server.Monitor.StoreClientInfo`](/exchange/artifacts/pages/server.monitor.storeclientinfo/),
+  selected fields can be saved as client metadata. In particular,
+  `edrMachineId` can be used to identify the client in MDATP, and tie
+  the client ID to machines in Microsoft Graph API queries. See
+  [How can I automatically add & update client metadata?](/knowledge_base/tips/automating_metadata/)
+  for an in-depth walkthrough about how to save interrogation data as
+  client metadata.
+
+  #mdatp #metadata
+
+type: CLIENT
+
+implied_permissions:
+  - EXECVE
+
+sources:
+  - query: |
+      LET Info <= SELECT OS
+        FROM info()
+
+      SELECT *
+      FROM if(
+        condition=Info[0].OS = 'linux',
+        then={
+          SELECT parse_json(data=Stdout) AS MDATPHealth
+          FROM execve(argv=['/usr/bin/mdatp', 'health', '--output', 'json'])
+        },
+        else=if(
+          condition=Info[0].OS = 'darwin',
+          then={
+          SELECT parse_json(data=Stdout) AS MDATPHealth
+          FROM execve(argv=['/usr/local/bin/mdatp', 'health', '--output', 'json'])
+        },
+          else=if(
+            condition=Info[0].OS = 'windows',
+            then={
+          SELECT
+          to_dict(item={
+          SELECT _key,
+                 _value
+          FROM parse_records_with_regex(
+            file=Stdout,
+            accessor='data',
+            regex='''^\s*(?P<_key>\S+)\s+:\s+(?P<_value>[^\r\n]+)''')
+        }) + dict(
+            edrMachineId=read_file(
+              accessor='reg',
+              filename='''HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Advanced Threat Protection\senseId''')) AS MDATPHealth
+          FROM Artifact.Windows.System.PowerShell(
+            Command='Get-MpComputerStatus')
+        })))
+
+    notebook:
+      - name: Common MDATP health information
+        type: vql_suggestion
+        template: |
+          /*
+          # Common MDATP health information
+          */
+          LET ColumnTypes <= dict(`ClientId`='client')
+
+          LET S = scope()
+
+          LET Result <= SELECT
+              ClientId,
+              S.Fqdn || client_info(client_id=ClientId).os_info.fqdn AS Fqdn,
+              S.MDATPHealth || dict() AS D
+            FROM source()
+
+          SELECT *
+          FROM foreach(
+            row=Result,
+            query={
+              SELECT *
+              FROM if(
+                condition='AMEngineVersion' IN D,
+                then={
+              SELECT
+              ClientId,
+              Fqdn,
+              D.edrMachineId AS edrMachineId,
+              D.AMProductVersion AS appVersion,
+              D.AMEngineVersion AS engineVersion,
+              D.AntivirusSignatureVersion AS definitionsVersion,
+              timestamp(string=D.AntivirusSignatureLastUpdated) AS definitionsUpdated,
+              if(condition=D.DefenderSignaturesOutOfDate = NULL,
+                  then=NULL,
+                  else=D.DefenderSignaturesOutOfDate != 'False') AS definitionsUpToDate,
+              if(condition=D.BehaviorMonitorEnabled = NULL,
+                  then=NULL,
+                  else=D.BehaviorMonitorEnabled = 'True') AS behaviorMonitoringEnabled,
+              if(condition=D.RealTimeProtectionEnabled = NULL,
+                  then=NULL,
+                  else=D.RealTimeProtectionEnabled = 'True') AS realTimeProtectionEnabled,
+              if(
+                condition=D.IsTamperProtected = NULL,
+                then=NULL,
+                else=D.IsTamperProtected = 'True') AS tamperProtectionEnabled,
+              if(
+                condition=D.TroubleShootingMode = NULL,
+                then=NULL,
+                else=D.TroubleShootingMode != 'Disabled') AS troubleshootingModeEnabled
+              FROM scope()
+            },
+                else={
+              SELECT
+              ClientId,
+              Fqdn,
+              D.edrMachineId AS edrMachineId,
+              D.appVersion AS appVersion,
+              D.engineVersion AS engineVersion,
+              D.definitionsVersion AS definitionsVersion,
+              timestamp(
+                epoch=D.definitionsUpdated) AS definitionsUpdated,
+              if(
+                condition=D.definitionsStatus.`$type` = NULL,
+                then=NULL,
+                else=D.definitionsStatus.`$type` = 'upToDate') AS definitionsUpToDate,
+              // Not available in Darwin:
+              D.behaviorMonitoring.displayValue AS behaviorMonitoringEnabled,
+              D.realTimeProtectionEnabled.value AS realTimeProtectionEnabled,
+              // Not available in Linux:
+              D.tamperProtection.displayValue AS tamperProtectionEnabled,
+              // Not available in Linux:
+              D.troubleshootingMode AS troubleshootingModeEnabled
+              FROM scope()
+            })
+            })
