@@ -6,4 +6,3 @@ public/
 .hugo_build.lock
 .idea
 static/docs_index/
-.opencode/

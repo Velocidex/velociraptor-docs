@@ -2,12 +2,10 @@
 title: "Velociraptor 0.77 Release"
 description: |
    Velociraptor Release 0.77 is now available
-
 tags:
  - Release
-
 author: "Mike Cohen"
-date: 2026-05-26
+date: 2026-05-31
 draft: false
 ---
 
@@ -28,12 +26,6 @@ this release.
   management have also been added. Flow requests are now stored in a
   separate data store file.
 
-- **Improved artifact descriptions.** Every built-in artifact has been
-  reviewed to ensure a clear, concise lead sentence that summarizes
-  its purpose. Self-referential "This artifact..." phrases have been
-  removed, making it much easier to scan and understand artifacts at a
-  glance in the GUI or in listings.
-
 - **User messaging.** Messages can now be sent to GUI users via the
   `user_message()` VQL function, which means they can be packaged into
   server artifacts and set up by server operators. A new
@@ -49,9 +41,9 @@ this release.
   the existing Splunk and Elastic upload integrations, and has been
   tested in production engagements.
 
-- **Artifact verifier linter.** The artifact verifier now emits structured
-  errors and warnings that can be selectively disabled on a per-
-  artifact basis. To suppress a specific linter error, add a `//
+- **Artifact verifier overrides.** The artifact verifier now emits
+  structured errors and warnings that can be selectively disabled on a
+  per- artifact basis. To suppress a specific linter error, add a `//
   linter:` comment to the VQL snippet with the error name and an
   optional subject regex.
 
@@ -65,66 +57,10 @@ this release.
   a minimum floor). Custom claims from Azure ID tokens can also be
   used for more granular role mapping.
 
-- **Velociraptor container.** An initial Docker-based container
-  implementation is now available, including a Dockerfile,
+- **Velociraptor Docker container.** An officially supported
+  Docker-based container is now available, and a Dockerfile,
   compose.yaml, and supporting configuration files. This makes it
   easier to deploy Velociraptor in containerized environments.
-
-### Performance and operational improvements
-
-- **Memory allocation limits.** Velociraptor now places limits on memory
-  allocations to prevent out of memory errors during large collections
-  or data processing tasks.
-
-- **EVTX preferred message language.** The EVTX parser has been updated to
-  support a preferred message language, allowing Windows event log
-  messages to be rendered in the specified language when available.
-
-- **Refactored hunt dispatcher.** The hunt dispatcher internals have been
-  reworked for improved tracking and reliability of hunt state
-  management.
-
-- **Refactored journal service.** The journal service has been updated
-  with more efficient artifact type discovery and stricter validation
-  of forwarded messages, ensuring messages reach only the artifact
-  types they are authorized for.
-
-- **Removed hunt dispatcher housekeeping thread.** The periodic
-  housekeeping thread that tallied hunt stats has been removed,
-  reducing IO overhead. The same functionality can now be triggered on
-  demand via a VQL query when needed.
-
-- **Removed old client API support.** Support for legacy client API
-  versions has been removed, simplifying the server codebase. The
-  server now falls back to `Frontend.Hostname` when `API.Hostname` is
-  not specified.
-
-- **Email client compatibility.** The `SendEmail` artifact now supports an
-  alphanumeric-only MIME boundary mode. Some email clients (such as
-  Evolution) struggle with the standard boundary characters prescribed
-  by RFC 2045, so this option improves compatibility when sending
-  multipart emails from Velociraptor.
-
-- **Background dispatcher startup.** The dispatcher now starts in the
-  background, avoiding pauses at server startup and making the
-  initialization sequence faster and more responsive.
-
-## Security improvements
-
-- **Refactored event queues with caller tagging.** Each event is now
-  tagged with the caller's ID, enabling listeners to verify the sender
-  and reject messages from untrusted sources. This prevents users from
-  sending events to privileged queues intended only for server-
-  originated messages.
-
-- **Zip directory traversal prevention.** The `unzip()` plugin has
-  been hardened against directory traversal attacks, preventing
-  malicious zip files from writing files outside the intended
-  extraction directory.
-
-- **YAML field validation for Secrets.** The secrets service now
-  validates YAML fields more rigorously when creating or updating
-  secrets, catching misconfigurations earlier.
 
 ## GUI Improvements
 
@@ -165,7 +101,66 @@ This release improves a number of GUI features.
   packs.
 
 
-## New Artifacts
+### Performance and operational improvements
+
+- **Memory allocation limits.** Velociraptor now places limits on memory
+  allocations to prevent out of memory errors during large collections
+  or data processing tasks.
+
+- **EVTX preferred message language.** The EVTX parser has been updated to
+  support a preferred message language, allowing Windows event log
+  messages to be rendered in the specified language when available.
+
+- **Refactored hunt dispatcher.** The hunt dispatcher internals have
+  been reworked for improved tracking and reliability of hunt state
+  management.
+
+- **Refactored journal service.** The journal service has been updated
+  with more efficient artifact type discovery and stricter validation
+  of forwarded messages, ensuring messages reach only the artifact
+  types they are authorized for.
+
+- **Removed hunt dispatcher housekeeping thread.** The periodic
+  housekeeping thread that tallied hunt stats has been removed,
+  reducing IO overhead. The same functionality can now be triggered on
+  demand via a VQL query when needed.
+
+- **Removed old client API support.** Support for legacy client API
+  versions has been removed, simplifying the server codebase. The
+  server now falls back to `Frontend.Hostname` when `API.Hostname` is
+  not specified.
+
+- **Email client compatibility.** The `SendEmail` artifact now supports an
+  alphanumeric-only MIME boundary mode. Some email clients (such as
+  Evolution) struggle with the standard boundary characters prescribed
+  by RFC 2045, so this option improves compatibility when sending
+  multipart emails from Velociraptor.
+
+- **Background dispatcher startup.** The dispatcher now starts in the
+  background, avoiding pauses at server startup and making the
+  initialization sequence faster and more responsive.
+
+
+## Security improvements
+
+- **Refactored event queues with caller tagging.** Each event is now
+  tagged with the caller's ID, enabling listeners to verify the sender
+  and reject messages from untrusted sources. This prevents users from
+  sending events to privileged queues intended only for server-
+  originated messages.
+
+- **Zip directory traversal prevention.** The `unzip()` plugin has
+  been hardened against directory traversal attacks, preventing
+  malicious zip files from writing files outside the intended
+  extraction directory.
+
+- **YAML field validation for Secrets.** The secrets service now
+  validates YAML fields more rigorously when creating or updating
+  secrets, catching misconfigurations earlier.
+
+## Artifact changes
+
+### New Artifacts
 
 - **`Server.Monitoring.RSSFeeds`.** Polls RSS feeds at a configurable
   interval and alerts users about new items via GUI messages.
@@ -176,7 +171,12 @@ This release improves a number of GUI features.
 - **`Generic.Utils.Crypto`.** Utility artifact providing HMAC-SHA256 and
   other custom hash functions.
 
-## Removed Artifacts
+### Improved Artifacts
+
+Aside from the new artifacts, which others has significant
+improvements? TO be checked.
+
+### Removed Artifacts
 
 - **`Server.Internal.Enrollment`, `Server.Internal.FrontendMetrics`,
   `Server.Internal.Label`, `Server.Internal.Notifications`,
@@ -188,7 +188,7 @@ This release improves a number of GUI features.
   `Server.Import.ArtifactBundle` (old name aliased for backward
   compatibility).
 
-## VQL Plugins and Functions
+## Changes to VQL Plugins, Functions, and Accessors
 
 ### New
 
@@ -211,10 +211,6 @@ This release improves a number of GUI features.
 - **`index()`.** Changed to batch mode, providing much faster indexing
   performance.
 
-## Removed
-
-- **Support for old client APIs removed, including several internal
-  communication protocols.**
 
 ## Conclusions
 
