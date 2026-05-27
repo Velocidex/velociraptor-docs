@@ -1,10 +1,13 @@
 baseURL: https://docs.velociraptor.app/
-languageCode: en-us
+locale: en-us
 title: "Velociraptor - Digging deeper!"
 
 theme: "hugo-theme-learn"
 disqusShortname: velocidex-velociraptor
-#security:
+security:
+  allowContent:
+    - text/html
+    - text/markdown
 #  enableInlineShortcodes: true
 
 enableGitInfo: true
