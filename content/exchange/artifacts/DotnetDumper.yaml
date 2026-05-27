@@ -17,17 +17,17 @@ description: |
   
 tools:
   - name: DotNetDumper
-    url: https://github.com/mgreen27/DotnetDumper/raw/refs/heads/main/bin/DotnetDumper.exe
+    url: https://github.com/mgreen27/DotnetDumper/releases/download/continuous/DotnetDumper.exe
     serve_locally: true
-    expected_hash: 6199d07ad48b64b6ffbcd9bdb043489307c6a4a92938ba8431fbb4de7bf8141c
+    expected_hash: c7cfb900675e5394548ee3c1da39c0d3a365235b40d5566b26d89f22cc4ca3bd
   - name: DotNetDumper_x86
-    url: https://github.com/mgreen27/DotnetDumper/raw/refs/heads/main/bin/DotnetDumper_x86.exe
+    url: https://github.com/mgreen27/DotnetDumper/releases/download/continuous/DotnetDumper_x86.exe
     serve_locally: true
-    expected_hash: 56ab0412aa386b38b0f4c1f81aff019ed5e20e996f5ae426b29be81847b9fc16
+    expected_hash: 1b7d6fabd150eda572522e3fce351452517abff071d1bbf6346790b5e032fd48
   - name: DotNetDumper_arm64
-    url: https://github.com/mgreen27/DotnetDumper/raw/refs/heads/main/bin/DotnetDumper_arm64.exe
+    url: https://github.com/mgreen27/DotnetDumper/releases/download/continuous/DotnetDumper_arm64.exe
     serve_locally: true
-    expected_hash: 99cbd89c04918aa9474c75f976bfeb978dccebbee77dd13a039f50d287256d61
+    expected_hash: 4b4f9f4bf42ad4758d4c51e62c7be92267c7f0612ee2f9b6608bc847634eb68e
 
 implied_permissions:
   - EXECVE
