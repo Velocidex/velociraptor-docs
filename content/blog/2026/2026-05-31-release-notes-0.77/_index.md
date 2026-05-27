@@ -8,8 +8,6 @@ tags:
   - Release
 ---
 
-cachebust: postcss.config.js
-
 I am very excited to announce that the latest Velociraptor release
 0.77 is now available.
 
