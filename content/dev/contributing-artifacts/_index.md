@@ -209,7 +209,7 @@ Pull Request without leaving their website. This is the most common
 workflow for contributing a single artifact and doesn't require much
 knowledge of git or version control.
 
-For more advanced submissions, you shold follow basically the
+For more advanced submissions, you should follow basically the
 same process as for a documentation contribution, as described
 [here](/dev/dev-server/#2-create-a-fork-of-the-velociraptor-docs-repo-and-clone-it-locally)
 except that for artifacts you're just adding your YAML file into
