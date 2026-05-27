@@ -1,4 +1,4 @@
-name: Spellcheck Action
+name: Artifacts
 on:
   push:
     branches:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: Spellcheck
+    name: Verify
     runs-on: ubuntu-latest
     steps:
       # The checkout step
