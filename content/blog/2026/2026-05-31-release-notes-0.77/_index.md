@@ -1,13 +1,14 @@
 ---
 title: "Velociraptor 0.77 Release"
-description: |
-   Velociraptor Release 0.77 is now available
-tags:
- - Release
+description: Velociraptor Release 0.77 is now available
 author: "Mike Cohen"
 date: 2026-05-31
-draft: false
+draft: true
+tags:
+  - Release
 ---
+
+cachebust: postcss.config.js
 
 I am very excited to announce that the latest Velociraptor release
 0.77 is now available.
@@ -44,7 +45,7 @@ this release.
 - **Artifact verifier overrides.** The artifact verifier now emits
   structured errors and warnings that can be selectively disabled on a
   per- artifact basis. To suppress a specific linter error, add a `//
-  linter:` comment to the VQL snippet with the error name and an
+linter:` comment to the VQL snippet with the error name and an
   optional subject regex.
 
 - **Loading artifact packs from zips.** Zip files can now be imported
@@ -84,7 +85,6 @@ This release improves a number of GUI features.
 - **Filters added to the user management screen** for easier user
   lookup.
 
-
 ## CLI Improvements
 
 - **New CLI run syntax** with reworked command line parser.
@@ -99,7 +99,6 @@ This release improves a number of GUI features.
 
 - **Zip file import with the `--definitions` flag** for loading artifact
   packs.
-
 
 ### Performance and operational improvements
 
@@ -139,7 +138,6 @@ This release improves a number of GUI features.
 - **Background dispatcher startup.** The dispatcher now starts in the
   background, avoiding pauses at server startup and making the
   initialization sequence faster and more responsive.
-
 
 ## Security improvements
 
@@ -210,7 +208,6 @@ improvements? TO be checked.
 
 - **`index()`.** Changed to batch mode, providing much faster indexing
   performance.
-
 
 ## Conclusions
 
