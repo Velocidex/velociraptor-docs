@@ -8,6 +8,7 @@ security:
   enableInlineShortcodes: true
   allowContent:
     - "text/html"
+    - "text/markdown"
 
 enableGitInfo: true
 
