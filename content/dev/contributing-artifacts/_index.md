@@ -204,7 +204,7 @@ be devised that can assure their ongoing reliability.
 Exchange artifacts are currently stored in our
 [documentation repo](https://github.com/Velocidex/velociraptor-docs).
 
-Github allows you to create a fork, add a single file, and then make a
+GitHub allows you to create a fork, add a single file, and then make a
 Pull Request without leaving their website. This is the most common
 workflow for contributing a single artifact and doesn't require much
 knowledge of git or version control.
