@@ -6,9 +6,8 @@ theme: "hugo-theme-learn"
 disqusShortname: velocidex-velociraptor
 security:
   allowContent:
-    - text/html
-    - text/markdown
-#  enableInlineShortcodes: true
+    - "text/html"
+    - "text/markdown"
 
 enableGitInfo: true
 

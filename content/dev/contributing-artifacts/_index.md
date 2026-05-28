@@ -204,13 +204,26 @@ be devised that can assure their ongoing reliability.
 Exchange artifacts are currently stored in our
 [documentation repo](https://github.com/Velocidex/velociraptor-docs).
 
-To submit your artifact for consideration, you follow basically the
+GitHub allows you to create a fork, add a single file, and then make a
+Pull Request without leaving their website. This is the most common
+workflow for contributing a single artifact and doesn't require much
+knowledge of git or version control.
+
+For more advanced submissions, you should follow basically the
 same process as for a documentation contribution, as described
 [here](/dev/dev-server/#2-create-a-fork-of-the-velociraptor-docs-repo-and-clone-it-locally)
-except that you're just adding your YAML file into
+except that for artifacts you're just adding your YAML file into
 `velociraptor-docs/content/exchange/artifacts`
 so you don't need Hugo or any of the steps related to that.
 
+We'll review your contribution and give you feedback in the Pull
+Request if anything needs changing.
+
+_Note that we don't guarantee that all artifact submissions will be
+accepted_. So if you're considering making a contribution and you're
+not sure about it, then please chat to us on [Discord](/discord/)
+first, and we'll do our best to advise you and avoid wasting your
+efforts.
 
 ## Tips for writing better artifacts
 
