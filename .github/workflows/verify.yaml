@@ -52,4 +52,4 @@ jobs:
           chmod +x tests/velociraptor
 
       - name: Verify Exchange Artifacts
-        run: ./tests/velociraptor -v artifacts verify ./content/exchange/artifacts/*
+        run: ./tests/velociraptor -v artifacts verify ./content/exchange/artifacts/*yaml
