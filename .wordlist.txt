@@ -2185,7 +2185,6 @@ lookaheads
 lookbehind
 storedQuery
 subexpression
-truthy
 
 Dockerfile
 HMAC
