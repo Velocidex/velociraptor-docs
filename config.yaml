@@ -5,10 +5,10 @@ title: "Velociraptor - Digging deeper!"
 theme: "hugo-theme-learn"
 disqusShortname: velocidex-velociraptor
 security:
+  enableInlineShortcodes: true
   allowContent:
-    - text/html
-    - text/markdown
-#  enableInlineShortcodes: true
+    - "text/html"
+    - "text/markdown"
 
 enableGitInfo: true
 
