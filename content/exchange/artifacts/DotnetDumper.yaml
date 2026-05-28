@@ -44,6 +44,8 @@ parameters:
     type: regex
   - name: EncodeKey
     default: infected
+    description: password used when dumping assemblies to bypass AV detection
+    type: hidden
   - name: UploadDmp
     type: bool
     description: |
@@ -64,7 +66,7 @@ sources:
         FROM Artifact.Windows.Memory.ProcessInfo(
           ProcessNameRegex=ProcessRegex,
           PidRegex=PidRegex)
-        WHERE __PEInfo.Imports =~ 'mscoree' OR __PEInfo.Directories.DotNet_Directory
+        WHERE __PEInfo.Imports =~ 'mscoree|iisutil|mscorwks|clr\.dll' OR __PEInfo.Directories.DotNet_Directory
       
       LET fetch_x64 <= SELECT *
         FROM if(condition=processes.Type =~ "AMD64",
