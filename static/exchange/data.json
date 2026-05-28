@@ -1,5 +1,171 @@
 [
     {
+        "title": "Windows.Memory.DotnetDumper",
+        "author": "mgreen27",
+        "description": "Response artifact to triage Windows .NET processes and collect .NET assemblies from \nmemory using DotnetDumper.",
+        "link": "/exchange/artifacts/pages/dotnetdumper",
+        "tags": [],
+        "author_link": "https://github.com/mgreen27",
+        "author_avatar": "https://avatars.githubusercontent.com/u/13081800?v=4",
+        "date": "2026-05-27"
+    },
+    {
+        "title": "Generic.Client.ADStatus",
+        "author": "misje",
+        "description": "Get Active Directory join status from a computer.",
+        "link": "/exchange/artifacts/pages/generic.client.adstatus",
+        "tags": [
+            "metadata",
+            "activedirectory"
+        ],
+        "author_link": "https://github.com/misje",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4006538?v=4",
+        "date": "2026-05-27"
+    },
+    {
+        "title": "Generic.Client.Defender.Health",
+        "author": "misje",
+        "description": "Get Microsoft Defender for Endpoint (MDATP) health and configuration.",
+        "link": "/exchange/artifacts/pages/generic.client.defender.health",
+        "tags": [
+            "mdatp",
+            "metadata"
+        ],
+        "author_link": "https://github.com/misje",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4006538?v=4",
+        "date": "2026-05-27"
+    },
+    {
+        "title": "Generic.Client.HW.Identification",
+        "author": "misje",
+        "description": "Extract product serial and other identification strings from the system.",
+        "link": "/exchange/artifacts/pages/generic.client.hw.identification",
+        "tags": [
+            "metadata"
+        ],
+        "author_link": "https://github.com/misje",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4006538?v=4",
+        "date": "2026-05-27"
+    },
+    {
+        "title": "Server.Monitor.StoreClientHWInfo",
+        "author": "misje",
+        "description": "Save hardware identification data from client interrogation as\nclient metadata.",
+        "link": "/exchange/artifacts/pages/server.monitor.storeclienthwinfo",
+        "tags": [
+            "metadata",
+            "automation"
+        ],
+        "author_link": "https://github.com/misje",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4006538?v=4",
+        "date": "2026-05-27"
+    },
+    {
+        "title": "Server.Monitor.StoreClientInfo",
+        "author": "misje",
+        "description": "Save data from client interrogation as client metadata.",
+        "link": "/exchange/artifacts/pages/server.monitor.storeclientinfo",
+        "tags": [
+            "metadata",
+            "automation"
+        ],
+        "author_link": "https://github.com/misje",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4006538?v=4",
+        "date": "2026-05-27"
+    },
+    {
+        "title": "Windows.Applications.Tailscale",
+        "author": "ogmini",
+        "description": "Decodes the configuration file, pulls log files, and uploads any partial file transfers for Tailscale.",
+        "link": "/exchange/artifacts/pages/windows.applications.tailscale",
+        "tags": [],
+        "author_link": "https://github.com/ogmini",
+        "author_avatar": "https://avatars.githubusercontent.com/u/112595633?v=4",
+        "date": "2026-05-22"
+    },
+    {
+        "title": "Windows.Forensics.OneNoteHunt",
+        "author": "SwiftSecur",
+        "description": "Hunt OneNote files, search ASCII and UTF-16LE content,\ndetect embedded image signatures, report keyword hits,\nand optionally upload files.\nNote: the BMP signature uses a 10-byte header pattern to reduce false positives.\n",
+        "link": "/exchange/artifacts/pages/windows.forensics.onenotehunt",
+        "tags": [],
+        "author_link": "https://github.com/SwiftSecur",
+        "author_avatar": "https://avatars.githubusercontent.com/u/177733389?v=4",
+        "date": "2026-05-22"
+    },
+    {
+        "title": "Server.Monitor.Alerts.UserMessage",
+        "author": "misje",
+        "description": "Send an in-app user notification when an alert is created.",
+        "link": "/exchange/artifacts/pages/server.monitor.alerts.usermessage",
+        "tags": [
+            "monitoring",
+            "alerts",
+            "notifications"
+        ],
+        "author_link": "https://github.com/misje",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4006538?v=4",
+        "date": "2026-05-12"
+    },
+    {
+        "title": "Server.Monitor.Alerts",
+        "author": "misje",
+        "description": "Send an e-mail when an alert is created.",
+        "link": "/exchange/artifacts/pages/server.monitor.alerts",
+        "tags": [
+            "monitoring",
+            "alerts",
+            "notifications"
+        ],
+        "author_link": "https://github.com/misje",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4006538?v=4",
+        "date": "2026-05-12"
+    },
+    {
+        "title": "Server.Monitor.Client.Errors.Alert",
+        "author": "misje",
+        "description": "Create alerts from errors logged by client event queries.",
+        "link": "/exchange/artifacts/pages/server.monitor.client.errors.alert",
+        "tags": [
+            "monitoring",
+            "alerts",
+            "notifications",
+            "errors"
+        ],
+        "author_link": "https://github.com/misje",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4006538?v=4",
+        "date": "2026-05-12"
+    },
+    {
+        "title": "Server.Monitor.Errors.Alert",
+        "author": "misje",
+        "description": "Create alerts from errors logged by server event queries.",
+        "link": "/exchange/artifacts/pages/server.monitor.errors.alert",
+        "tags": [
+            "monitoring",
+            "alerts",
+            "notifications",
+            "errors"
+        ],
+        "author_link": "https://github.com/misje",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4006538?v=4",
+        "date": "2026-05-12"
+    },
+    {
+        "title": "Server.Monitor.FlowCompletion",
+        "author": "misje",
+        "description": "Send an e-mail when a client flow completes (success or failure), with optional\nHTML formatting, result tables, and file attachments.",
+        "link": "/exchange/artifacts/pages/server.monitor.flowcompletion",
+        "tags": [
+            "monitoring",
+            "notifications",
+            "email"
+        ],
+        "author_link": "https://github.com/misje",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4006538?v=4",
+        "date": "2026-05-12"
+    },
+    {
         "title": "Windows.Install.Wazuh.Agent",
         "author": "julianghill",
         "description": "Installs the Wazuh Windows agent and configures it to use the supplied\nWazuh manager IP address or hostname.",
