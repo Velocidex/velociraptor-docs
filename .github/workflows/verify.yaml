@@ -1,4 +1,4 @@
-name: Spellcheck Action
+name: Verify Repo
 on:
   push:
     branches:
@@ -6,12 +6,28 @@ on:
   pull_request:
 
 jobs:
-  build:
-    name: Spellcheck
+  verify:
+    name: Verify
     runs-on: ubuntu-latest
     steps:
-      # The checkout step
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v6
+      - name: Update submodules
+        run: |
+          git submodule update --init --recursive --remote
+      - name: Run Vale
+        uses: vale-cli/vale-action@reviewdog
+        with:
+          # Set to true when we want to start having errors fail the pipeline.
+          fail_on_error: true
+
+          # Only check lines touched by the PR to avoid reviewdog's
+          # "too many annotations" failures on full-corpus scans.
+          filter_mode: added
+          reporter: github-pr-check
+
+          # Run vale locally to see all alert levels. In CI we only
+          # care about errors.
+          vale_flags: "--minAlertLevel=error"
 
       - name: Download Latest Velociraptor
         env:
@@ -34,3 +50,6 @@ jobs:
           echo "Downloading $url"
           curl -fsSL "$url" -o tests/velociraptor
           chmod +x tests/velociraptor
+
+      - name: Verify Exchange Artifacts
+        run: ./tests/velociraptor -v artifacts verify ./content/exchange/artifacts/*
