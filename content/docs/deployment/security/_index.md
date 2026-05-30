@@ -746,7 +746,7 @@ vehicle.
 
 Because the API allows external programs to run powerful Velociraptor
 Query Language (VQL) queries directly on your server, a poorly
-configured API client is a major security risk.
+configured or compromised API client is a major security risk.
 
 #### Authentication
 
