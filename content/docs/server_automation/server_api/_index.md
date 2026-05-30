@@ -28,6 +28,8 @@ with the permissions given to the key.
 
 Please, be aware of the implications of allowing automated collection on
 endpoints and review the information in
+[API client security](/docs/deployment/security/#api-client-security)
+and
 [Artifact Security](/docs/artifacts/security/) carefully.
 
 {{% /notice %}}
