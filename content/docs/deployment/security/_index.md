@@ -748,6 +748,18 @@ Because the API allows external programs to run powerful Velociraptor
 Query Language (VQL) queries directly on your server, a poorly
 configured or compromised API client is a major security risk.
 
+#### IP-based Access Control
+
+By default the API server only listens on 127.0.0.1 - this allows
+scripts on the local machine to call into the API, but if you want to
+use an external caller you can change the server’s configuration file
+by setting the bind_address field under the API section to 0.0.0.0
+allowing the API to bind on all interfaces.
+
+See
+[Protecting the API](/docs/server_automation/server_api/#protecting-the-api)
+for more information.
+
 #### Authentication
 
 API clients authenticate using mTLS and their own key, which is issued
