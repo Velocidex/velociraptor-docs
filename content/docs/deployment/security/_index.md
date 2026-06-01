@@ -774,14 +774,24 @@ must reissue them before they expire to avoid breaking your automation
 pipelines.
 
 **Encrypt Private Keys**: When generating an API config using
-`velociraptor config api_client`, use a password/passphrase to encrypt
-the private key. This ensures that if the config file is stolen, it
-cannot be used without the passphrase.
+`velociraptor config api_client` it is possible to set a
+password/passphrase to encrypt the private key. This ensures that if
+the config file is stolen, it cannot be used without the passphrase.
+However, this is not useful for credentials used by automated API
+clients because unlocking the key is a user-interactive process. For
+interactive API access (for example when using the API client that's
+included in the Velociraptor binary) where the API config might reside
+on a laptop, we recommend that you secure the key this way.
 
 **Offline CA**: For high-security environments, keep your CA private
-key offline. Only bring it online to sign new API certificates,
-preventing an attacker who gains root on the Velociraptor server from
-minting their own valid API keys.
+key offline, which usually means keeping an offline copy of the full
+config with the CA key included in it, while removing the CA key from
+the config on your production server. This prevents an attacker who
+gains root on the Velociraptor server from being able to mint their
+own valid API keys. You can issue new API keys if you have the full
+offline config - access to the production server is not required,
+although you will also need to provision the new user on the server
+and grant it access.
 
 ##### Instant Revocation
 
@@ -791,14 +801,25 @@ don't need to struggle with complex certificate revocation lists
 that principal.
 
 ```sh
-velociraptor acl grant --name "CompromisedKey" --role ""`
+velociraptor acl grant --name "CompromisedKey" --role ""
 ```
 
-This immediately strips all permissions, rendering the certificate
-useless for future API calls
+This immediately strips all permissions, thus denying that user the
+ability to make an API calls. Any applications using that API user
+will need to be configured to use a new account with a new key. 
 
-API client accounts can also have their roles and permissions revoked
-via the User Management screen in the GUI.
+API client accounts can alternatively have their roles and permissions
+revoked via the User Management screen in the GUI.
+
+Be aware that allowing the user account to exist with no roles
+assigned is still a risky situation as someone could accidentally
+grant permissions to it.
+
+To permanently delete the user you can run the
+[user_delete()](/vql_reference/server/user_delete/)
+function in a notebook. There is currently no GUI option to delete a
+user.
+
 
 #### Authorization
 
@@ -833,8 +854,10 @@ they provide a path to full server control:
   definitions. Since VQL runs unrestricted on endpoints, an artifact
   writer effectively has root access to every client on your network.
 - `EXECVE`: This permission allows the execution of arbitrary shell
-  commands on clients. It is typically reserved for administrators
-  because it can be easily misused.
+  commands on clients or the server (subject to
+  [additional restrictions](/docs/deployment/security/#accessing-files-from-vql)
+  that are in place by default). It is typically reserved for
+  administrators because it can be easily misused.
 - `FILESYSTEM_WRITE`: On the server side, this allows creating files,
   which can be used to overwrite ACL objects and escalate privileges.
 
