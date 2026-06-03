@@ -5,57 +5,57 @@ draft: false
 weight: 25
 no_children: true
 pre: <i class="fas fa-download"></i>
-release: 0.76.5
+release: 0.76.6
 base_release: 0.76
 arches:
   - desc: Windows AMD64 (64-bit) Executable
     name: windows-amd64.exe
-    hash: 4813e753f6f9bfa5c5de0edbb8dd3cc7f1fa51714097d3144d44e5e89dbd33ef
+    hash: 1e82175822aa9ffdfd7bc177599642f3db55159d0a2f38bb0fcc6722f15573cd
     platform: windows
 
   - desc: Windows AMD64 (64-bit) MSI
     name: windows-amd64.msi
-    hash: a35a220a58360bbe501b5f9cb4ccf4eda188c6e68e770bf0a79bea75d3b2b899
+    hash: e5fc16e7d4aea87f70edb9ce09112f1c92808b9e4547a544769d433545ff3ee3
     platform: windows
 
   - desc: Windows 32-bit Executable
     name: windows-386.exe
-    hash: 402e7968257bb8b3d85864517c452dde04d0c997ddfdbf161908bc377987521b
+    hash: 4c329cb5b1d881ef7681e4faea9dc8f8e081bb579739d557ca0dc5bc57a8ef12
     platform: windows
 
   - desc: Windows 32-bit MSI
     name: windows-386.msi
-    hash: fe407135b9f0e7fa149533b42119814afdb036b3489f26637ba6243841c68aff
+    hash: 9fb535710bba977f28761b387c3e90095ac02022cb1f3765b7067de9fdda3ce1
     platform: windows
 
   - desc: Linux Ubuntu 22.04 AMD64 and later. Recommended for servers.
     name: linux-amd64
-    hash: e6b2b379c90aaddf549a200dea108fe34e397994d45d2fc3b68f53b2f5277b51
+    hash: 9b1c439834a562a96cbef886f26a93521d16b020fd96777fb30e01f88947af18
     platform: linux
 
   - desc: Linux Ubuntu 22.04 ARM and later. Recommended for servers or containers.
     name: linux-arm64
-    hash: 5e38969f199823535f1bd8611e1ab95e45c2cc4a4522d0c2a68474cdbe098214
+    hash: d19218d37d76b6988d25d21d2cdb349658fa12b355d44c90f44b5cdd975b7616
     platform: linux
 
   - desc: Linux Static Build (Older Releases, e.g. RHEL, Centos) Recommended for clients.
     name: linux-amd64-musl
-    hash: e7e43975f4855e03aba0e7d9ef2a8ed32c58112718074ddcf3535bebf90e1f2f
+    hash: 84ad1652ff6e79694441a06a6af4040aae6a982080d2ef583a31bda52f58e299
     platform: linux
 
   - desc: Linux Sumo build. Recommended for servers.
     name: linux-amd64-sumo-musl
-    hash: 8b2d1e8cd74ea58a56ce0ed0c052c2e66ad45980f0b35bab6afe566363cae745
+    hash: f39269d2c1858497c0f244caefc603c9061ef4d837201aa28c18831967cc6343
     platform: linux
 
   - desc: MacOS AMD64
     name: darwin-amd64
-    hash:
+    hash: 6308ea8c7f7dbacad791977caefe387c61daaebf4f94cde2e1c39d89968091a3
     platform: apple
 
   - desc: MacOS ARM (M1, M2 chipsets)
     name: darwin-arm64
-    hash:
+    hash: 4518998f95de31d4ee5734dfbcdd60f834c43a1b9fc6f9a1f372d8099172a496
     platform: apple
 
   - desc: FreeBSD AMD64

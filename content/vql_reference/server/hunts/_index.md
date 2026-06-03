@@ -25,6 +25,7 @@ description: |
 Arg | Description | Type
 ----|-------------|-----
 hunt_id|A hunt id to read, if not specified we list all of them.|string
+summary|If specified we fetch just the basic summary of the flow. This is a bit faster.|bool
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
 

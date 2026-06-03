@@ -31,6 +31,7 @@ If you are new to VQL then this is a good place to start and become
 acquainted with the commonly used functions and plugins.
 |Plugin/Function|<span class='vql_type'>Type</span>|Description|
 |-|-|-|
+|[Artifact](artifact)|<span class='vql_type'>Plugin</span>|This is the special plugin which automatically runs other|
 |[atoi](atoi)|<span class='vql_type'>Function</span>|Convert a string to an integer|
 |[basename](basename)|<span class='vql_type'>Function</span>|Return the basename of the path|
 |[chain](chain)|<span class='vql_type'>Plugin</span>|Chain the output of several queries into the same table|
