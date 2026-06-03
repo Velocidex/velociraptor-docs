@@ -49,3 +49,6 @@ comparisons:
 
 descriptions:
 	python3 scripts/descriptions.py content/
+
+vale:
+	vale --output line .

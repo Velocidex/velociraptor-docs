@@ -1,5 +1,76 @@
 [
     {
+        "title": "How to set up e-mail notifications for flow completions",
+        "link": "/knowledge_base/tips/email_alerts",
+        "tags": [
+            "email",
+            "notifications",
+            "flows",
+            "configuration"
+        ],
+        "author": "misje",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4006538?v=4",
+        "author_link": "https://github.com/misje",
+        "date": "2026-05-12"
+    },
+    {
+        "title": "How to monitor event artifact errors",
+        "link": "/knowledge_base/tips/monitoring_artifact_errors",
+        "tags": [
+            "alerts",
+            "monitoring",
+            "notifications",
+            "configuration"
+        ],
+        "author": "misje",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4006538?v=4",
+        "author_link": "https://github.com/misje",
+        "date": "2026-05-12"
+    },
+    {
+        "title": "How to send e-mails from Velociraptor",
+        "link": "/knowledge_base/tips/sending_email",
+        "tags": [
+            "notifications",
+            "smtp",
+            "email",
+            "configuration"
+        ],
+        "author": "misje",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4006538?v=4",
+        "author_link": "https://github.com/misje",
+        "date": "2026-05-12"
+    },
+    {
+        "title": "Using alerts in Velociraptor",
+        "link": "/knowledge_base/tips/vql_alerts",
+        "tags": [
+            "monitoring",
+            "notifications",
+            "alerts",
+            "detection"
+        ],
+        "author": "misje",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4006538?v=4",
+        "author_link": "https://github.com/misje",
+        "date": "2026-05-12"
+    },
+    {
+        "title": "Reference list of known VQL DEFAULT-level errors",
+        "link": "/knowledge_base/tips/vql_error_catalogue",
+        "tags": [
+            "alerts",
+            "monitoring",
+            "notifications",
+            "errors",
+            "troubleshooting"
+        ],
+        "author": "misje",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4006538?v=4",
+        "author_link": "https://github.com/misje",
+        "date": "2026-05-12"
+    },
+    {
         "title": "Adding basic authentication to the HTTP secret",
         "link": "/knowledge_base/tips/basic_auth_in_http_client",
         "tags": [
@@ -236,7 +307,9 @@
         "tags": [
             "configuration",
             "vql",
-            "deployment"
+            "deployment",
+            "automation",
+            "metadata"
         ],
         "author": "predictiple",
         "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
@@ -640,5 +713,14 @@
         "author_avatar": "https://avatars.githubusercontent.com/u/3856546?v=4",
         "author_link": "https://github.com/scudette",
         "date": "2022-03-21"
+    },
+    {
+        "title": "GRPC error, received message larger than max",
+        "link": "/knowledge_base/tips/grpc_errors",
+        "tags": [],
+        "author": "",
+        "author_link": "",
+        "author_avatar": "",
+        "date": ""
     }
 ]

@@ -119,6 +119,8 @@ if __name__ == "__main__" :
     if args.reference_data:
         SaveDataJson(definitions)
 
+    all_definitions = {}
+
     config = yaml.safe_load(open(args.config).read())
     for filename, file_config in config.items():
         EnsureDirExists(os.path.dirname(filename))
@@ -158,6 +160,7 @@ no_children: true
                     def_map[item_filename] = definition
 
                     children.append(definition)
+                    all_definitions[name] = True
 
             for filename, texts in files.items():
                 desc = def_map[filename].get("description", "")
@@ -173,3 +176,8 @@ no_children: true
                     convertNameToLURL(definition.get("name")),
                     definition.get("type", ""),
                     first_description))
+
+    for item in definitions:
+        name = item["name"]
+        if not all_definitions.get(name):
+            print("No category for definition %s" % name)

@@ -25,6 +25,47 @@ deployment methods to ensure it can be secured on the network. We then
 discuss the Velociraptor permission model and suggest some further
 steps to ensure user actions are audited and controlled.
 
+## Client verification
+
+From the outset we need to highlight a fundamental limitation of agent
+based security software.
+
+> Because the agent (The Velociraptor `Client`) is running on a
+> potentially compromised platform, We can never fully trust what the
+> client is telling us.
+
+There is no guarantee that the client will work correctly - it may be
+subverted by an attacker (who has full control of the endpoint) to:
+
+1. Disable the client completely - it will not report to the server.
+2. The client may omit reporting some information - For example, the
+   client may hide sensitive files or artifacts that the attacker
+   wants to hide.
+3. The client may report incorrect information (for example fake
+   processes, files etc).
+
+This is a fundamental limitation in the server/client model and can
+not be mitigated. Typically the Velociraptor client is running at an
+elevated permissions level which makes it harder to interact with by
+low privileged users, this reduces the risk somewhat. If you have an
+EDR installed on the endpoint, you may add anti-tamper rules to the
+EDR to reduce the risk of client interference even further - however
+there is always a residual risk of interference when the platform may
+be compromised.
+
+We refer to a compromised client as a `Rogue Client`. This type of
+client can send malformed responses or fake data.
+
+You should always keep this limitation in mind when interpreting
+results from Velociraptor. The results may be missing or incorrect, or
+a client may be completely disabled by an attacker.
+
+The main concern for Velociraptor is to ensure that one client can not
+impersonate another client. This mitigates the risk of a compromised
+client injecting fake information about another client. Velociraptor
+mitigates this risk using cryptographic keys as described in the next
+section.
+
 ## Velociraptor communications
 
 How do Velociraptor clients communicate with the server? You can read
@@ -1179,7 +1220,7 @@ accessing the disk directly to bypass ACLs and denied paths.
 {{% /notice %}}
 
 
-{{% notice warn "`http_client()`, Unix sockets, and server ACLs" %}}
+{{% notice warning "`http_client()`, Unix sockets, and server ACLs" %}}
 
 The VQL `http_client()` plugin understands URLs like
 `/var/run/docker.sock:unix/v1/version`, which relays HTTP traffic
