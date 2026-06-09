@@ -5,14 +5,20 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Address resolution cache, both static and dynamic (from ARP, NDP).
+  Enumerates the Windows network neighbor cache (ARP/NDP) showing
+  resolved IP and MAC address pairs.
 ---
 
-Address resolution cache, both static and dynamic (from ARP, NDP).
+Enumerates the Windows network neighbor cache (ARP/NDP) showing
+resolved IP and MAC address pairs.
+
 
 <pre><code class="language-yaml">
 name: Windows.Network.ArpCache
-description: Address resolution cache, both static and dynamic (from ARP, NDP).
+description: |
+  Enumerates the Windows network neighbor cache (ARP/NDP) showing
+  resolved IP and MAC address pairs.
+
 parameters:
   - name: wmiQuery
     default: |

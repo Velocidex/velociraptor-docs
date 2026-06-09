@@ -5,16 +5,19 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  List Service details.
+  Enumerates Windows services via WMI, with optional filtering
+  criteria, and enriches with hashes and authenticode signatures.
 ---
 
-List Service details.
+Enumerates Windows services via WMI, with optional filtering
+criteria, and enriches with hashes and authenticode signatures.
 
 
 <pre><code class="language-yaml">
 name: Windows.System.Services
 description: |
-  List Service details.
+  Enumerates Windows services via WMI, with optional filtering
+  criteria, and enriches with hashes and authenticode signatures.
 
 parameters:
   - name: servicesKeyGlob

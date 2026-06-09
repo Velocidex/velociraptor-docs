@@ -5,12 +5,14 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Read all User's chrome history.
+  Enumerates visited URLs, titles, and visit timestamps from Chrome
+  history databases on macOS.
 ---
 
-Read all User's chrome history.
+Enumerates visited URLs, titles, and visit timestamps from Chrome
+history databases on macOS.
 
-## NOTES:
+**NOTES:**
 
 This artifact is deprecated in favor of
 Generic.Forensic.SQLiteHunter and will be removed in future
@@ -19,13 +21,13 @@ Generic.Forensic.SQLiteHunter and will be removed in future
 <pre><code class="language-yaml">
 name: MacOS.Applications.Chrome.History
 description: |
-  Read all User's chrome history.
+  Enumerates visited URLs, titles, and visit timestamps from Chrome
+  history databases on macOS.
 
-  ## NOTES:
+  **NOTES:**
 
   This artifact is deprecated in favor of
   Generic.Forensic.SQLiteHunter and will be removed in future
-
 
 parameters:
   - name: historyGlobs

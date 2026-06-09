@@ -5,12 +5,12 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  This artifact parses, views and enables simplified upload of RDP
-  cache files.
+  Parses RDP Bitmap Cache (.BIN) files to extract and reconstruct
+  cached remote desktop screen images.
 ---
 
-This artifact parses, views and enables simplified upload of RDP
-cache files.
+Parses RDP Bitmap Cache (.BIN) files to extract and reconstruct
+cached remote desktop screen images.
 
 By default the artifact will parse .BIN RDPcache files.
 
@@ -19,26 +19,26 @@ VSS via ntfs_vss.
 
 Best combined with:
 
-   - Windows.EventLogs.RDPAuth to collect RDP focused event logs.
-   - Windows.Registry.RDP to collect user RDP MRU and server info
+- `Windows.EventLogs.RDPAuth` to collect RDP focused event logs.
+- `Windows.Registry.RDP` to collect user RDP MRU and server info.
 
 
 <pre><code class="language-yaml">
 name: Windows.Forensics.RDPCache
 author: Matt Green - @mgreen27
 description: |
-    This artifact parses, views and enables simplified upload of RDP
-    cache files.
+  Parses RDP Bitmap Cache (.BIN) files to extract and reconstruct
+  cached remote desktop screen images.
 
-    By default the artifact will parse .BIN RDPcache files.
+  By default the artifact will parse .BIN RDPcache files.
 
-    Filters include `UserRegex` to target a user and `Accessor` to target
-    VSS via ntfs_vss.
+  Filters include `UserRegex` to target a user and `Accessor` to target
+  VSS via ntfs_vss.
 
-    Best combined with:
+  Best combined with:
 
-       - Windows.EventLogs.RDPAuth to collect RDP focused event logs.
-       - Windows.Registry.RDP to collect user RDP MRU and server info
+  - `Windows.EventLogs.RDPAuth` to collect RDP focused event logs.
+  - `Windows.Registry.RDP` to collect user RDP MRU and server info.
 
 reference:
    - https://github.com/ANSSI-FR/bmc-tools
@@ -96,6 +96,12 @@ sources:
   - name: Parsed
     description: Parsed RDP BitmapCache files.
     query: |
+      -- Scope parsing to the requested DateAfter/DateBefore window.
+      LET DateAfterTime &lt;= if(condition=DateAfter,
+        then=DateAfter, else=timestamp(epoch="1600-01-01"))
+      LET DateBeforeTime &lt;= if(condition=DateBefore,
+        then=DateBefore, else=timestamp(epoch="2200-01-01"))
+
       LET PROFILE = '''[
         ["BIN_CONTAINER", 0, [
             [Magic, 0, String, {length: 8, term_hex : "FFFFFF" }],
@@ -140,6 +146,8 @@ sources:
             WHERE OSPath =~ '\.bin$'
                 AND OSPath =~ UserRegex
                 AND NOT IsDir
+                AND Mtime &gt; DateAfterTime
+                AND Mtime &lt; DateBeforeTime
         })
 
       LET find_index_differential = SELECT *, 0 - Parsed.CachedFiles.Index[0] as IndexDif

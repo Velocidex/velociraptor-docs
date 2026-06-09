@@ -5,13 +5,14 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Windows stores many hashes in .cat files. These catalog files
-  contain a set of trusted hashes for drivers and other binaries,
-  even if the PE files do not themselves contain Authenticode
-  signatures.
+  Parses Windows `.cat` catalog files and extracts certificate trust
+  list hashes with signer information.
 ---
 
-Windows stores many hashes in .cat files. These catalog files
+Parses Windows `.cat` catalog files and extracts certificate trust
+list hashes with signer information.
+
+Windows stores many hashes in `.cat` files. These catalog files
 contain a set of trusted hashes for drivers and other binaries,
 even if the PE files do not themselves contain Authenticode
 signatures.
@@ -23,13 +24,16 @@ parsing all the cat files.
 <pre><code class="language-yaml">
 name: Windows.System.CatFiles
 description: |
-   Windows stores many hashes in .cat files. These catalog files
-   contain a set of trusted hashes for drivers and other binaries,
-   even if the PE files do not themselves contain Authenticode
-   signatures.
+  Parses Windows `.cat` catalog files and extracts certificate trust
+  list hashes with signer information.
+  
+  Windows stores many hashes in `.cat` files. These catalog files
+  contain a set of trusted hashes for drivers and other binaries,
+  even if the PE files do not themselves contain Authenticode
+  signatures.
 
-   This artifact extracts all the trusted hashes from a system by
-   parsing all the cat files.
+  This artifact extracts all the trusted hashes from a system by
+  parsing all the cat files.
 
 parameters:
    - name: CatGlobs

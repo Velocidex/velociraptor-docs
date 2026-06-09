@@ -5,14 +5,16 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Parse services from systemctl
+  Parses services output from `systemctl`.
 ---
 
-Parse services from systemctl
+Parses services output from `systemctl`.
+
 
 <pre><code class="language-yaml">
 name: Linux.Sys.Services
-description: Parse services from systemctl
+description: |
+  Parses services output from `systemctl`.
 
 implied_permissions:
   - EXECVE

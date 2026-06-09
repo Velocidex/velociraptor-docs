@@ -5,19 +5,23 @@ sitemap:
   disable: true
 tags: [Internal Artifact]
 description: |
-  The master will advertise to the minions the events it is interested
-  in.
+  Advertises event subscriptions from the master node to all minions
+  in a multi-frontend deployment.
 ---
 
-The master will advertise to the minions the events it is interested
-in.
+Advertises event subscriptions from the master node to all minions
+in a multi-frontend deployment.
+
+The master will advertise to the minions the events it is interested in.
 
 
 <pre><code class="language-yaml">
 name: Server.Internal.MasterRegistrations
 description: |
-  The master will advertise to the minions the events it is interested
-  in.
+  Advertises event subscriptions from the master node to all minions
+  in a multi-frontend deployment.
+  
+  The master will advertise to the minions the events it is interested in.
 
 type: INTERNAL
 column_types:

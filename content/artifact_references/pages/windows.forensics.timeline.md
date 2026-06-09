@@ -5,32 +5,37 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Win10 records recently used applications and files in a “timeline”
-  accessible via the “WIN+TAB” key. The data is recorded in a SQLite
-  database.
+  Queries the Windows 10 Timeline ActivitiesCache.db SQLite database
+  to extract recently used applications.
 ---
 
-Win10 records recently used applications and files in a “timeline”
-accessible via the “WIN+TAB” key. The data is recorded in a SQLite
+Queries the Windows 10 Timeline ActivitiesCache.db SQLite database
+to extract recently used applications.
+
+Win10 records recently used applications and files in a "timeline"
+accessible via the "WIN+TAB" key. The data is recorded in a SQLite
 database.
 
-## NOTES:
+**NOTES:**
 
 This artifact is deprecated in favor of
-Generic.Forensic.SQLiteHunter and will be removed in future
+`Generic.Forensic.SQLiteHunter` and will be removed in future.
 
 
 <pre><code class="language-yaml">
 name: Windows.Forensics.Timeline
 description: |
-  Win10 records recently used applications and files in a “timeline”
-  accessible via the “WIN+TAB” key. The data is recorded in a SQLite
+  Queries the Windows 10 Timeline ActivitiesCache.db SQLite database
+  to extract recently used applications.
+  
+  Win10 records recently used applications and files in a "timeline"
+  accessible via the "WIN+TAB" key. The data is recorded in a SQLite
   database.
 
-  ## NOTES:
+  **NOTES:**
 
   This artifact is deprecated in favor of
-  Generic.Forensic.SQLiteHunter and will be removed in future
+  `Generic.Forensic.SQLiteHunter` and will be removed in future.
 
 parameters:
   - name: UserFilter

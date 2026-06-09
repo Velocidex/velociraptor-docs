@@ -5,14 +5,19 @@ sitemap:
   disable: true
 tags: [Internal Artifact]
 description: |
-  <pre><code class="language-yaml">
-  name: Server.Internal.ArtifactDescription
+  Renders a formatted view of any artifact's metadata, parameters,
+  sources, exports, etc.
 ---
 
+Renders a formatted view of any artifact's metadata, parameters,
+sources, exports, etc.
 
 
 <pre><code class="language-yaml">
 name: Server.Internal.ArtifactDescription
+description: |
+  Renders a formatted view of any artifact's metadata, parameters,
+  sources, exports, etc.
 
 type: INTERNAL
 

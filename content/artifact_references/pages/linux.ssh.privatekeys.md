@@ -5,10 +5,12 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  SSH Private keys can be either encrypted or unencrypted. Unencrypted
-  private keys are more risky because an attacker can use them without
-  needing to unlock them with a password.
+  Searches filesystem for SSH private keys and detects encryption
+  status.
 ---
+
+Searches filesystem for SSH private keys and detects encryption
+status.
 
 SSH Private keys can be either encrypted or unencrypted. Unencrypted
 private keys are more risky because an attacker can use them without
@@ -36,6 +38,9 @@ Be aware, this is an expensive operation.
 <pre><code class="language-yaml">
 name: Linux.Ssh.PrivateKeys
 description: |
+  Searches filesystem for SSH private keys and detects encryption
+  status.
+
   SSH Private keys can be either encrypted or unencrypted. Unencrypted
   private keys are more risky because an attacker can use them without
   needing to unlock them with a password.

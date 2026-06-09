@@ -78,7 +78,7 @@ column_types:
 
 Some artifacts accept parameters which can potentially be very
 large. For example, consider the
-[Generic.Detection.Yara.Glob[(/artifact_references/pages/generic.detection.yara.glob)
+[Generic.Detection.Yara.Glob](/artifact_references/pages/generic.detection.yara.glob)
 artifact. This artifact accepts Yara rules as a parameters.
 
 If you have very large rule set (potentially over 4mb) then the
@@ -92,5 +92,23 @@ tool](/docs/artifacts/tools/) or specify the parameter type as an
 these methods. External tools or uploads are fetched separately by the
 endpoint over HTTP. The resulting request is kept small and the server
 is more efficient.
+
+{{% notice warning "Hard size limit imposed" %}}
+
+From version 0.77, Velociraptor imposes a hard size limit on flow,
+hunt or client request objects. This means that launching collections
+with very large parameters will be rejected.
+
+Although it is possible to adjust this limit using the
+[Datastore.max_object_size](/docs/deployment/references/#Datastore.max_object_size)
+parameter, it is better to identify the reason why datastore objects
+are too large.
+
+By rejecting the scheduling of very large collections, we remove
+performance issues before they even occur.
+
+{{% /notice %}}
+
+
 
 Tags: #debugging #vql

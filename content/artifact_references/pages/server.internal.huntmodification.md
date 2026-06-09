@@ -5,14 +5,15 @@ sitemap:
   disable: true
 tags: [Internal Artifact]
 description: |
-  An internal queue to watch modifications of hunts. The hunt
-  dispatcher from all nodes sends this mutation to the hunt manager
-  which applies it.
+  Provides an internal event queue for hunt modification notifications
+  including stop and start events.
 ---
 
-An internal queue to watch modifications of hunts. The hunt
-dispatcher from all nodes sends this mutation to the hunt manager
-which applies it.
+Provides an internal event queue for hunt modification notifications
+including stop and start events.
+
+The hunt dispatcher from all nodes sends this mutation to the hunt
+manager which applies it.
 
 Users can also watch this queue to be notified when hunts are
 modified (e.g. stopped, started etc).
@@ -21,9 +22,11 @@ modified (e.g. stopped, started etc).
 <pre><code class="language-yaml">
 name: Server.Internal.HuntModification
 description: |
-  An internal queue to watch modifications of hunts. The hunt
-  dispatcher from all nodes sends this mutation to the hunt manager
-  which applies it.
+  Provides an internal event queue for hunt modification notifications
+  including stop and start events.
+  
+  The hunt dispatcher from all nodes sends this mutation to the hunt
+  manager which applies it.
 
   Users can also watch this queue to be notified when hunts are
   modified (e.g. stopped, started etc).

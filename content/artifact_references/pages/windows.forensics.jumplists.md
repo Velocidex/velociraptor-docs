@@ -5,19 +5,25 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  The automaticdestinations jumplist is an OLE2 container containing LNK files
-  as individual streams
+  Parses Windows AutomaticDestinations JumpList files to extract LNK
+  entries with application IDs and target paths.
 ---
 
-The automaticdestinations jumplist is an OLE2 container containing LNK files
-as individual streams
+Parses Windows AutomaticDestinations JumpList files to extract LNK
+entries with application IDs and target paths.
+
+The automaticdestinations jumplist is an OLE2 container containing
+LNK files as individual streams.
 
 
 <pre><code class="language-yaml">
 name: Windows.Forensics.JumpLists
 description: |
-  The automaticdestinations jumplist is an OLE2 container containing LNK files
-  as individual streams
+  Parses Windows AutomaticDestinations JumpList files to extract LNK
+  entries with application IDs and target paths.
+
+  The automaticdestinations jumplist is an OLE2 container containing
+  LNK files as individual streams.
 
 imports:
   - Windows.Forensics.Lnk

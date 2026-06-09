@@ -5,16 +5,27 @@ sitemap:
   disable: true
 tags: [Server Event Artifact]
 description: |
-  This artifact alerts when a process was detected with the artifact 'Windows.Detection.ProcessCreation' (which is a client_event artifact that needs to be enabled first).
+  Forwards process creation detections to Slack, Teams, or Discord via
+  webhook.
 ---
 
-This artifact alerts when a process was detected with the artifact 'Windows.Detection.ProcessCreation' (which is a client_event artifact that needs to be enabled first).
+Forwards process creation detections to Slack, Teams, or Discord via
+webhook.
+
+This artifact alerts when a process was detected with the artifact
+`Windows.Detection.ProcessCreation` (which is a client_event
+artifact that needs to be enabled first).
 
 
 <pre><code class="language-yaml">
 name: Server.Alerts.ProcessCreation
 description: |
-   This artifact alerts when a process was detected with the artifact 'Windows.Detection.ProcessCreation' (which is a client_event artifact that needs to be enabled first).
+  Forwards process creation detections to Slack, Teams, or Discord via
+  webhook.
+
+  This artifact alerts when a process was detected with the artifact
+  `Windows.Detection.ProcessCreation` (which is a client_event
+  artifact that needs to be enabled first).
 
 author: Jos Clephas - @DfirJos
 

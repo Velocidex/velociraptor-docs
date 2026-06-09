@@ -5,10 +5,12 @@ sitemap:
   disable: true
 tags: [Server Event Artifact]
 description: |
-  Monitor RSS feeds for changes.
+  Polls RSS feeds at a configurable interval and alerts users about
+  new items.
 ---
 
-Monitor RSS feeds for changes.
+Polls RSS feeds at a configurable interval and alerts users about
+new items.
 
 By default this artifact will monitor the Velociraptor RSS feeds to
 inform users of critical CVEs or blog posts.
@@ -17,7 +19,8 @@ inform users of critical CVEs or blog posts.
 <pre><code class="language-yaml">
 name: Server.Monitoring.RSSFeeds
 description: |
-  Monitor RSS feeds for changes.
+  Polls RSS feeds at a configurable interval and alerts users about
+  new items.
 
   By default this artifact will monitor the Velociraptor RSS feeds to
   inform users of critical CVEs or blog posts.

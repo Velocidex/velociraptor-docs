@@ -5,12 +5,12 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Uses auditpol to retrieve the logging settings defined in the Windows Audit
-  Policy.
+  Collects Windows Audit Policy configuration data from Windows
+  systems via auditpol.
 ---
 
-Uses auditpol to retrieve the logging settings defined in the Windows Audit
-Policy.
+Collects Windows Audit Policy configuration data from Windows
+systems via auditpol.
 
 Use this artifact to determine which Windows event logs are audited and
 identify audit configuration discrepancies across the environment.
@@ -20,11 +20,11 @@ identify audit configuration discrepancies across the environment.
 name: Windows.System.AuditPolicy
 
 description: |
-   Uses auditpol to retrieve the logging settings defined in the Windows Audit
-   Policy.
+  Collects Windows Audit Policy configuration data from Windows
+  systems via auditpol.
 
-   Use this artifact to determine which Windows event logs are audited and
-   identify audit configuration discrepancies across the environment.
+  Use this artifact to determine which Windows event logs are audited and
+  identify audit configuration discrepancies across the environment.
 
 type: CLIENT
 

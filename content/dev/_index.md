@@ -1,6 +1,9 @@
 ---
 title: Documentation Development Guidelines
 no_menu: true
+description: |
+  If you are new to contributing content to the Velociraptor project
+  then this section will help you with getting started.
 ---
 
 If you are new to contributing content to the Velociraptor project

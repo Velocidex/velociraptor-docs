@@ -14,7 +14,7 @@ description: |
   e.g. email, slack or other means.
 
   The links generated will be in markdown format by default (i.e. of
-  the for `[Text](url)`). If you need a raw link without the text,
+  the form `[Text](url)`). If you need a raw link without the text,
   specify the `raw` parameter as TRUE.
 
   If a link text is not supplied, this function will create a
@@ -47,6 +47,29 @@ description: |
          link_to(upload=Upload) AS Download
   FROM scope()
   ```
+
+  ### Creating a link to a new collection
+
+  A useful feature is to embed collection parameters inside the
+  link. This allows you to build a list of links where users can
+  click to initiate pre-determined pre-canned colletions.
+
+  For example, the following will create a link to launch the
+  `Demo.Plugins.GUI` artifact with a pre-set parameter of
+  `YaraRule`. The link can be inserted into a markdown VQL cell:
+
+  ```markdown
+  [Click to collect]({{ Expand "\
+    x=>link_to(client_id=ClientId, raw=TRUE, \
+               flow_id='new', artifact='Demo.Plugins.GUI', \
+               parameters=dict(YaraRule='rule X {....}')) \
+    " }})
+  ```
+
+  Note that the produced URL is usually limited to about 500
+  characters by most browsers. If you find you need to include very
+  large rules, you should create some custom artifacts and have the
+  user launch them instead.
 
   ### Notes
 
@@ -91,7 +114,7 @@ the app. You can then use this URL to share a reference via
 e.g. email, slack or other means.
 
 The links generated will be in markdown format by default (i.e. of
-the for `[Text](url)`). If you need a raw link without the text,
+the form `[Text](url)`). If you need a raw link without the text,
 specify the `raw` parameter as TRUE.
 
 If a link text is not supplied, this function will create a
@@ -124,6 +147,29 @@ SELECT link_to(hunt_id="H.1234") AS HuntLink,
        link_to(upload=Upload) AS Download
 FROM scope()
 ```
+
+### Creating a link to a new collection
+
+A useful feature is to embed collection parameters inside the
+link. This allows you to build a list of links where users can
+click to initiate pre-determined pre-canned colletions.
+
+For example, the following will create a link to launch the
+`Demo.Plugins.GUI` artifact with a pre-set parameter of
+`YaraRule`. The link can be inserted into a markdown VQL cell:
+
+```markdown
+[Click to collect]({{ Expand "\
+  x=>link_to(client_id=ClientId, raw=TRUE, \
+             flow_id='new', artifact='Demo.Plugins.GUI', \
+             parameters=dict(YaraRule='rule X {....}')) \
+  " }})
+```
+
+Note that the produced URL is usually limited to about 500
+characters by most browsers. If you find you need to include very
+large rules, you should create some custom artifacts and have the
+user launch them instead.
 
 ### Notes
 

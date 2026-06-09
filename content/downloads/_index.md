@@ -6,7 +6,7 @@ weight: 25
 no_children: true
 pre: <i class="fas fa-download"></i>
 release: 0.76.6
-base_release: 0.76
+base_release: 0.76.6
 arches:
   - desc: Windows AMD64 (64-bit) Executable
     name: windows-amd64.exe
@@ -63,18 +63,22 @@ arches:
     hash: ebc5722094eea312873cc725c214715da541a71a46a13ce0acb80db0a015a411
     platform: freebsd
     release: 0.76.1
+    base_release: 0.76
 
   - desc: Windows AMD64 (64 bits) Executable For Windows 7 Only
     name: windows-amd64-legacy.exe
     hash: a15f8b9bdfcf1fe5b4e73eafcb9c3091eb347b9c7f32ae7e94ab5de41c8c434e
     platform: windows
     release: 0.76.1
+    base_release: 0.76
 
   - desc: Windows 32 bits Executable For Windows 7 Only
     name: windows-386-legacy.exe
     hash: 3a66986c3a4a9e0d4dacd3131ee55d65ff37b0093373048cb05afa1572a800c6
     platform: windows
     release: 0.76.1
+    base_release: 0.76
+
 description: |
   Velociraptor is open source software and is free for anyone to use under the
   [AGPL License](https://github.com/Velocidex/velociraptor?tab=License-1-ov-file#readme).
@@ -83,7 +87,7 @@ description: |
 Velociraptor is open source software and is free for anyone to use under the
 [AGPL License](https://github.com/Velocidex/velociraptor?tab=License-1-ov-file#readme).
 
-This page is for the current release. [The previous Release is 0.75.7](/downloads/previous_downloads/)
+This page is for the current release. [The previous Release is 0.75.7](/downloads/previous_downloads/). The next release candidate is [available for testing now](/downloads/rc_downloads/)
 
 {{< release_download >}}
 

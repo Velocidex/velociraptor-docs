@@ -5,12 +5,12 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Windows allows specific configuration of various executables via a
-  registry key. Some keys allow defining a debugger to attach to a
-  program as it is run. If this debugger is launched for commonly used
-  programs (e.g. notepad) then another program can be launched at the
-  same time (with the same privileges).
+  Detects programs with a debugger configured in Image File Execution
+  Options registry keys.
 ---
+
+Detects programs with a debugger configured in Image File Execution
+Options registry keys.
 
 Windows allows specific configuration of various executables via a
 registry key. Some keys allow defining a debugger to attach to a
@@ -30,6 +30,9 @@ parse data in `Windows.old` or `Regback` folders, or VSS.
 <pre><code class="language-yaml">
 name: Windows.Persistence.Debug
 description: |
+  Detects programs with a debugger configured in Image File Execution
+  Options registry keys.
+
   Windows allows specific configuration of various executables via a
   registry key. Some keys allow defining a debugger to attach to a
   program as it is run. If this debugger is launched for commonly used

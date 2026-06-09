@@ -5,13 +5,12 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  This artifact parses the Windows DHCP event log looking for evidence
-  of IP address assignments.
+  Parses Windows DHCP client event logs (admin and operational) to
+  extract IP address lease assignments and rejections.
 ---
 
-
-This artifact parses the Windows DHCP event log looking for evidence
-of IP address assignments.
+Parses Windows DHCP client event logs (admin and operational) to
+extract IP address lease assignments and rejections.
 
 In some investigations it is important to be able to identify the
 machine which was assigned a particular IP address at a point in
@@ -22,24 +21,23 @@ wireless router with no log retention).
 
 On windows, there are two types of logs:
 
-  1. The first type is the admin log
-     (`Microsoft-Windows-Dhcp-Client%4Admin.evt`). These only contain
-     errors such as an endpoint trying to continue its lease, but
-     the lease is rejected by the server.
+1. The first type is the admin log
+   (`Microsoft-Windows-Dhcp-Client%4Admin.evt`). These only
+   contain errors such as an endpoint trying to continue its
+   lease, but the lease is rejected by the server.
 
-  2. The operational log
-     (`Microsoft-Windows-Dhcp-Client%4Operational.evtx`) contains
-     the full log of each lease. Unfortunately this log is disabled
-     by default. If it is available we can rely on the information.
+2. The operational log
+   (`Microsoft-Windows-Dhcp-Client%4Operational.evtx`) contains
+   the full log of each lease. Unfortunately this log is disabled
+   by default. If it is available we can rely on the information.
 
 
 <pre><code class="language-yaml">
 name: Windows.EventLogs.DHCP
 description: |
-
-  This artifact parses the Windows DHCP event log looking for evidence
-  of IP address assignments.
-
+  Parses Windows DHCP client event logs (admin and operational) to
+  extract IP address lease assignments and rejections.
+  
   In some investigations it is important to be able to identify the
   machine which was assigned a particular IP address at a point in
   time. Usually these logs are available from the DHCP server, but in
@@ -49,15 +47,15 @@ description: |
 
   On windows, there are two types of logs:
 
-    1. The first type is the admin log
-       (`Microsoft-Windows-Dhcp-Client%4Admin.evt`). These only contain
-       errors such as an endpoint trying to continue its lease, but
-       the lease is rejected by the server.
+  1. The first type is the admin log
+     (`Microsoft-Windows-Dhcp-Client%4Admin.evt`). These only
+     contain errors such as an endpoint trying to continue its
+     lease, but the lease is rejected by the server.
 
-    2. The operational log
-       (`Microsoft-Windows-Dhcp-Client%4Operational.evtx`) contains
-       the full log of each lease. Unfortunately this log is disabled
-       by default. If it is available we can rely on the information.
+  2. The operational log
+     (`Microsoft-Windows-Dhcp-Client%4Operational.evtx`) contains
+     the full log of each lease. Unfortunately this log is disabled
+     by default. If it is available we can rely on the information.
 
 parameters:
   - name: eventDirGlob

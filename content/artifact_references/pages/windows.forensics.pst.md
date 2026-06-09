@@ -5,16 +5,19 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Parses PST files.
+  Parses Outlook PST files to extract email messages, attachments, and
+  metadata with regex-based targeting.
 ---
 
-Parses PST files.
+Parses Outlook PST files to extract email messages, attachments, and
+metadata with regex-based targeting.
 
 
 <pre><code class="language-yaml">
 name: Windows.Forensics.Pst
 description: |
-  Parses PST files.
+  Parses Outlook PST files to extract email messages, attachments, and
+  metadata with regex-based targeting.
 
 parameters:
   - name: PSTGlob

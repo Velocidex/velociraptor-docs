@@ -5,20 +5,23 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Parses user account information from the SAM hive.
+  Parses the Windows SAM registry hive to extract user account
+  details, RIDs, and password hashes.
 ---
 
-Parses user account information from the SAM hive.
+Parses the Windows SAM registry hive to extract user account
+details, RIDs, and password hashes.
 
-Based on Omer Yampel's parser
+Based on Omer Yampel's parser.
 
 
 <pre><code class="language-yaml">
 name: Windows.Forensics.SAM
 description: |
-   Parses user account information from the SAM hive.
-
-   Based on Omer Yampel's parser
+  Parses the Windows SAM registry hive to extract user account
+  details, RIDs, and password hashes.
+  
+  Based on Omer Yampel's parser.
 
 reference:
   - https://github.com/yampelo/samparser/blob/master/samparser.py

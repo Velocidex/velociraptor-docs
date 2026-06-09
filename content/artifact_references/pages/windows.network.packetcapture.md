@@ -5,14 +5,12 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Run this artifact twice, the first time, set the StartTrace flag to
-  True to start the PCAP collection, this will have the VQL return a
-  single row (the TraceFile generated) When you want to stop
-  collecting, and transform this TraceFile to a PCAP, re-run this
-  artifact with StartTrace as false, and put path of the .etl file
-  created in the previous step in the TraceFile. This will then
-  convert the .etl to a PCAP and upload it.
+  Captures network packets on Windows using netsh trace and then
+  converts these ETL traces to PCAP format.
 ---
+
+Captures network packets on Windows using netsh trace and then
+converts these ETL traces to PCAP format.
 
 Run this artifact twice, the first time, set the StartTrace flag to
 True to start the PCAP collection, this will have the VQL return a
@@ -27,6 +25,9 @@ convert the .etl to a PCAP and upload it.
 name: Windows.Network.PacketCapture
 author: Cybereason &lt;omer.yampel@cybereason.com&gt;
 description: |
+  Captures network packets on Windows using netsh trace and then
+  converts these ETL traces to PCAP format.
+  
   Run this artifact twice, the first time, set the StartTrace flag to
   True to start the PCAP collection, this will have the VQL return a
   single row (the TraceFile generated) When you want to stop

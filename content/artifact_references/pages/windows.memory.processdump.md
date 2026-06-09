@@ -5,20 +5,25 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Dump process memory and upload to the server.
+  Captures process memory for selected processes via crash dump or
+  Velociraptor-compatible sparse upload.
 ---
 
-Dump process memory and upload to the server.
+Captures process memory for selected processes via crash dump or
+Velociraptor-compatible sparse upload.
 
-Previously named Windows.Triage.ProcessMemory
+NOTE: This artifact was previously named
+`Windows.Triage.ProcessMemory`
 
 
 <pre><code class="language-yaml">
 name: Windows.Memory.ProcessDump
 description: |
-  Dump process memory and upload to the server.
-
-  Previously named Windows.Triage.ProcessMemory
+  Captures process memory for selected processes via crash dump or
+  Velociraptor-compatible sparse upload.
+  
+  NOTE: This artifact was previously named
+  `Windows.Triage.ProcessMemory`
 
 precondition: SELECT OS From info() where OS = 'windows'
 

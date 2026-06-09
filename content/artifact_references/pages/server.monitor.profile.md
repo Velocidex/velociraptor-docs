@@ -5,14 +5,15 @@ sitemap:
   disable: true
 tags: [Server Artifact]
 description: |
-  This artifact collects profiling information from the running
-  server. This is useful when you notice a high CPU load in the server
-  and want to know why.
+  Collects server profiling data including goroutine traces, memory
+  heap, CPU profiles, and metrics.
 ---
 
-This artifact collects profiling information from the running
-server. This is useful when you notice a high CPU load in the server
-and want to know why.
+Collects server profiling data including goroutine traces, memory
+heap, CPU profiles, and metrics.
+
+This is useful when you notice a high CPU load in the server
+and want to understand why it's happening.
 
 The following options are most useful:
 
@@ -41,9 +42,11 @@ way.
 <pre><code class="language-yaml">
 name: Server.Monitor.Profile
 description: |
-  This artifact collects profiling information from the running
-  server. This is useful when you notice a high CPU load in the server
-  and want to know why.
+  Collects server profiling data including goroutine traces, memory
+  heap, CPU profiles, and metrics.
+  
+  This is useful when you notice a high CPU load in the server
+  and want to understand why it's happening.
 
   The following options are most useful:
 

@@ -5,28 +5,35 @@ sitemap:
   disable: true
 tags: [Server Artifact]
 description: |
-  Export a hunt to a Zip download.
+  Exports an entire hunt's results to a downloadable zip archive with
+  configurable data formatting options.
 ---
 
-Export a hunt to a Zip download.
+Exports an entire hunt's results to a downloadable zip archive with
+configurable data formatting options.
 
 Sometimes exporting a hunt through the GUI takes longer than the 10
-Min limit. If you need more time, you can use this artifact.
+minute default time limit. If your hunt exports need more time, you
+can use this artifact instead of the GUI's "prepare download"
+feature.
 
-Once this artifact is done you should be able to download the export
-from the hunt's overview page.
+Once this artifact is done you should see that the export is
+available as a new download item on the hunt's overview tab.
 
 
 <pre><code class="language-yaml">
 name: Server.Utils.ExportHunt
 description: |
-  Export a hunt to a Zip download.
+  Exports an entire hunt's results to a downloadable zip archive with
+  configurable data formatting options.
 
   Sometimes exporting a hunt through the GUI takes longer than the 10
-  Min limit. If you need more time, you can use this artifact.
+  minute default time limit. If your hunt exports need more time, you
+  can use this artifact instead of the GUI's "prepare download"
+  feature.
 
-  Once this artifact is done you should be able to download the export
-  from the hunt's overview page.
+  Once this artifact is done you should see that the export is
+  available as a new download item on the hunt's overview tab.
 
 type: SERVER
 parameters:

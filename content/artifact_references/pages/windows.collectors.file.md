@@ -5,22 +5,25 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Collects files using a set of globs. All globs must be on the same
-  device. The globs will be searched in one pass - so you can provide
-  many globs at the same time.
+  Searches a filesystem using a set of glob patterns and uploads
+  matching files to the server.
 ---
 
-Collects files using a set of globs. All globs must be on the same
-device. The globs will be searched in one pass - so you can provide
-many globs at the same time.
+Searches a filesystem using a set of glob patterns and uploads
+matching files to the server.
+
+All globs must be on the same device. The globs will be searched in
+one pass - so you can provide many globs at the same time.
 
 
 <pre><code class="language-yaml">
 name: Generic.Collectors.File
 description: |
-   Collects files using a set of globs. All globs must be on the same
-   device. The globs will be searched in one pass - so you can provide
-   many globs at the same time.
+   Searches a filesystem using a set of glob patterns and uploads
+   matching files to the server.
+
+   All globs must be on the same device. The globs will be searched in
+   one pass - so you can provide many globs at the same time.
 
 aliases:
   - Windows.Collectors.File

@@ -5,10 +5,12 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Parse Debian apt sources.
+  Extracts package repository configuration from Debian-based systems
+  by parsing apt sources.
 ---
 
-Parse Debian apt sources.
+Extracts package repository configuration from Debian-based systems
+by parsing apt sources.
 
 This Artifact searches for all apt sources files and parses all
 fields in both one–line `*.list` files and `*.sources` files
@@ -88,7 +90,8 @@ lists where last updated.
 <pre><code class="language-yaml">
 name: Linux.Debian.AptSources
 description: |
-  Parse Debian apt sources.
+  Extracts package repository configuration from Debian-based systems
+  by parsing apt sources.
 
   This Artifact searches for all apt sources files and parses all
   fields in both one–line `*.list` files and `*.sources` files

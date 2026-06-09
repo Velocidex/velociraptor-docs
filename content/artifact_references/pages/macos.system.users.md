@@ -5,19 +5,20 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  This artifact collects information about the local users on the
-  system. The information is stored in plist files.
+  Collects information about the local users on the system.
 ---
 
-This artifact collects information about the local users on the
-system. The information is stored in plist files.
+Collects information about the local users on the system.
+
+On macOS this information is stored in plist files.
 
 
 <pre><code class="language-yaml">
 name: MacOS.System.Users
 description: |
-  This artifact collects information about the local users on the
-  system. The information is stored in plist files.
+  Collects information about the local users on the system.
+  
+  On macOS this information is stored in plist files.
 
 parameters:
   - name: UserPlistGlob

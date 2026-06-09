@@ -5,23 +5,28 @@ sitemap:
   disable: true
 tags: [Client Event Artifact]
 description: |
-  Monitors DNS queries using ETW.
+  Watches real-time DNS queries via ETW and reports query names,
+  types, and answers.
 ---
 
-Monitors DNS queries using ETW.
+Watches real-time DNS queries via ETW and reports query names,
+types, and answers.
 
-There are several filters available to filter out and/or target using regular
-expressions. By default duplicate DNSCache requests are filtered out.
+There are several filters available to filter out and/or target
+using regular expressions. By default duplicate DNSCache requests
+are filtered out.
 
 
 <pre><code class="language-yaml">
 name: Windows.ETW.DNS
 author: Matt Green - @mgreen27
 description: |
-  Monitors DNS queries using ETW.
+  Watches real-time DNS queries via ETW and reports query names,
+  types, and answers.
 
-  There are several filters available to filter out and/or target using regular
-  expressions. By default duplicate DNSCache requests are filtered out.
+  There are several filters available to filter out and/or target
+  using regular expressions. By default duplicate DNSCache requests
+  are filtered out.
 
 type: CLIENT_EVENT
 

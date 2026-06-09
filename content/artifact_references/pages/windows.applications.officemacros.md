@@ -5,31 +5,31 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Scans through a given directory glob for common office files. Then tries to
-  extract any embedded macros by parsing the OLE file structure.
+  Scans directories for Office documents (xls, xlsm, doc, docx, ppt,
+  pptm) and extracts embedded VBA macros via OLE parsing.
 ---
 
-Scans through a given directory glob for common office files. Then tries to
-extract any embedded macros by parsing the OLE file structure.
+Scans directories for Office documents (xls, xlsm, doc, docx, ppt,
+pptm) and extracts embedded VBA macros via OLE parsing.
 
-Office macros are a prominent initial infection vector. Many users click
-through the warning dialogs, thus leading to infection.
+Office macros are a prominent initial infection vector. Many users
+click through the warning dialogs, thus leading to infection.
 
-If a macro calls an external program (e.g. PowerShell) this is very
-suspicious!
+If you find that any macro calls an external program (e.g.
+PowerShell) that is very suspicious!
 
 
 <pre><code class="language-yaml">
 name: Windows.Applications.OfficeMacros
 description: |
-  Scans through a given directory glob for common office files. Then tries to
-  extract any embedded macros by parsing the OLE file structure.
+  Scans directories for Office documents (xls, xlsm, doc, docx, ppt,
+  pptm) and extracts embedded VBA macros via OLE parsing.
+  
+  Office macros are a prominent initial infection vector. Many users
+  click through the warning dialogs, thus leading to infection.
 
-  Office macros are a prominent initial infection vector. Many users click
-  through the warning dialogs, thus leading to infection.
-
-  If a macro calls an external program (e.g. PowerShell) this is very
-  suspicious!
+  If you find that any macro calls an external program (e.g.
+  PowerShell) that is very suspicious!
 
 parameters:
   - name: officeExtensions

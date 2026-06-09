@@ -5,9 +5,12 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Windows uses the Shellbag keys to store user preferences for GUI
-  folder display within Windows Explorer.
+  Extracts Shellbag data from NTUSER.DAT and UsrClass.dat to recover
+  folder navigation history.
 ---
+
+Extracts Shellbag data from NTUSER.DAT and UsrClass.dat to recover
+folder navigation history.
 
 Windows uses the Shellbag keys to store user preferences for GUI
 folder display within Windows Explorer.
@@ -20,6 +23,9 @@ versions may have slightly different locations for the MRU keys.
 <pre><code class="language-yaml">
 name: Windows.Forensics.Shellbags
 description: |
+  Extracts Shellbag data from NTUSER.DAT and UsrClass.dat to recover
+  folder navigation history.
+  
   Windows uses the Shellbag keys to store user preferences for GUI
   folder display within Windows Explorer.
 

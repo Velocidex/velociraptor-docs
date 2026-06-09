@@ -15,6 +15,7 @@ Displays parsed information from crontab.
 name: Linux.Sys.Crontab
 description: |
   Displays parsed information from crontab.
+
 parameters:
   - name: cronTabGlob
     default: /etc/crontab,/etc/cron.d/**,/var/at/tabs/**,/var/spool/cron/**,/var/spool/cron/crontabs/**

@@ -5,9 +5,12 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  OSQuery is an excellent tool for querying system state across the
-  three supported Velociraptor platform (Windows/Linux/MacOS).
+  Deploys the osquery binary and runs a user-specified SQL query,
+  returning parsed JSON results.
 ---
+
+Deploys the osquery binary and runs a user-specified SQL query,
+returning parsed JSON results.
 
 OSQuery is an excellent tool for querying system state across the
 three supported Velociraptor platform (Windows/Linux/MacOS).
@@ -18,6 +21,9 @@ You can read more about OSQuery on https://osquery.io/
 <pre><code class="language-yaml">
 name: MacOS.OSQuery.Generic
 description: |
+  Deploys the osquery binary and runs a user-specified SQL query,
+  returning parsed JSON results.
+  
   OSQuery is an excellent tool for querying system state across the
   three supported Velociraptor platform (Windows/Linux/MacOS).
 

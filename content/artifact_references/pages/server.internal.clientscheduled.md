@@ -5,16 +5,16 @@ sitemap:
   disable: true
 tags: [Internal Artifact]
 description: |
-  This event will be fired when a client was sent flows to process.
+  Fires an event when new flows are scheduled for a client to process.
 ---
 
-This event will be fired when a client was sent flows to process.
+Fires an event when new flows are scheduled for a client to process.
 
 
 <pre><code class="language-yaml">
 name: Server.Internal.ClientScheduled
 description: |
-  This event will be fired when a client was sent flows to process.
+  Fires an event when new flows are scheduled for a client to process.
 
 type: INTERNAL
 column_types:

@@ -5,16 +5,19 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  This artifact collects information about MacOS Time Machine backups.
+  Collects Time Machine backup settings including volume, auto-backup
+  status, and destinations.
 ---
 
-This artifact collects information about MacOS Time Machine backups.
+Collects Time Machine backup settings including volume, auto-backup
+status, and destinations.
 
 
 <pre><code class="language-yaml">
 name: MacOS.System.TimeMachine
 description: |
-  This artifact collects information about MacOS Time Machine backups.
+  Collects Time Machine backup settings including volume, auto-backup
+  status, and destinations.
 
 type: CLIENT
 

@@ -5,10 +5,12 @@ sitemap:
   disable: true
 tags: [Client Event Artifact]
 description: |
-  Psexec can launch a service remotely. This artifact implements a
-  client side response plan whereby all the child processes of the
-  service are killed.
+  Kills all child processes of a detected PsExec service using
+  taskkill.
 ---
+
+Kills all child processes of a detected PsExec service using
+taskkill.
 
 Psexec can launch a service remotely. This artifact implements a
 client side response plan whereby all the child processes of the
@@ -21,12 +23,15 @@ the PsExec is very quick we will miss it.
 <pre><code class="language-yaml">
 name: Windows.Detection.PsexecService.Kill
 description: |
-    Psexec can launch a service remotely. This artifact implements a
-    client side response plan whereby all the child processes of the
-    service are killed.
+  Kills all child processes of a detected PsExec service using
+  taskkill.
 
-    NOTE: There is an inherent race between detection and response. If
-    the PsExec is very quick we will miss it.
+  Psexec can launch a service remotely. This artifact implements a
+  client side response plan whereby all the child processes of the
+  service are killed.
+
+  NOTE: There is an inherent race between detection and response. If
+  the PsExec is very quick we will miss it.
 
 type: CLIENT_EVENT
 

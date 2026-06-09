@@ -5,6 +5,8 @@ date: 2026-05-01
 draft: false
 weight: 60
 last_reviewed: 2026-05-26
+description: |
+  ### What is Vale?
 ---
 
 ### What is Vale?

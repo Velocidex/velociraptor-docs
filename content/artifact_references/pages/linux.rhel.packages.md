@@ -5,16 +5,16 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Parse packages installed from dnf or yum
+  Parses packages installed from `dnf` or `yum`.
 ---
 
-Parse packages installed from dnf or yum
+Parses packages installed from `dnf` or `yum`.
 
 
 <pre><code class="language-yaml">
 name: Linux.RHEL.Packages
 description: |
-  Parse packages installed from dnf or yum
+  Parses packages installed from `dnf` or `yum`.
 
 implied_permissions:
   - EXECVE
