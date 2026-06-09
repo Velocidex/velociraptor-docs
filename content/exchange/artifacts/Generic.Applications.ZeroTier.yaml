@@ -1,0 +1,1005 @@
+name: Generic.Applications.ZeroTier
+author: "Andreas Misje – @misje"
+description: |
+  Collects ZeroTier installation artefacts from the client file system without
+  requiring the ZeroTier service to be running.
+
+  ZeroTier creates encrypted peer-to-peer overlay networks over any Internet
+  connection. It is used legitimately for remote access and VPN replacement,
+  but like any VPN service, its tunnels traverse NAT and firewalls
+  without inbound ports, which makes it worth checking when
+  investigating unauthorised remote access or exfiltration.
+
+  ## Key concepts
+
+  ### Worlds, planets and moons
+
+  ZeroTier nodes locate each other through *root servers* listed in a signed
+  binary structure called a *world*. ZeroTier ships with a built-in *planet*
+  (Earth, ID `149604618`) maintained by ZeroTier Inc. Organisations may
+  replace it with a custom planet or add supplementary *moons*. A non-default
+  planet or any moon means the node is using private root infrastructure.
+
+  ### Networks
+
+  A *network* is a ZeroTier virtual LAN with a 16-hex-digit ID. Networks can
+  be private (members require controller authorisation) or public. When a node
+  joins a private network, the controller issues a *Certificate of Membership*
+  (COM) — a signed, time-stamped credential recording when this node's
+  membership was last authorised and by whom.
+
+  ### Peers
+
+  ZeroTier caches peer identities and last-known direct paths in `peers.d/`.
+  Files are written on clean shutdown and when an inactive peer is dropped from
+  memory, not per-packet, and ZeroTier removes any it has not updated in 30
+  days. A peer reached only through a root-server relay never establishes a
+  direct path, so its file records no endpoints.
+
+  ### Identity
+
+  Each node has a globally unique 10-hex-digit address derived from an
+  elliptic-curve keypair generated on first run. The address appears
+  permanently in any network controller's member list once the node has
+  joined. By default this artifact redacts private key material (see
+  `RedactPrivateKeys`).
+
+  ## Sources
+
+  - **Identities**: the node's public identity and, if present, private key
+  - **Networks**: configuration for each joined network — assigned addresses,
+    pushed routes, DNS, and the certificate of membership
+  - **LocalNetworks**: per-network policy overrides controlling which routes
+    and DNS the host accepts from the controller
+  - **Peers**: cached peer identities and last-known direct paths
+  - **Worlds**: the planet and any moons the node is configured to use
+
+  #vpn #network #zerotier #forensics
+
+references:
+  - https://github.com/zerotier/ZeroTierOne/tree/main/node
+
+type: CLIENT
+
+parameters:
+  - name: NetworkFilesGlob
+    description: |
+      Glob patterns for ZeroTier per-network configuration files; `*.local.conf` files are collected by `LocalNetworkFilesGlob` (see description).
+    type: json_array
+    default: >-
+      [
+      "/var/lib/zerotier-one/networks.d/*.conf",
+      "C:/ProgramData/ZeroTier/One/networks.d/*.conf",
+      "/Library/Application Support/ZeroTier/One/networks.d/*.conf"
+      ]
+
+  - name: LocalNetworkFilesGlob
+    description: |
+      Glob patterns for per-network local policy override files (`*.local.conf`; see description).
+    type: json_array
+    default: >-
+      [
+      "/var/lib/zerotier-one/networks.d/*.local.conf",
+      "C:/ProgramData/ZeroTier/One/networks.d/*.local.conf",
+      "/Library/Application Support/ZeroTier/One/networks.d/*.local.conf"
+      ]
+
+  - name: IdentityFilesGlob
+    description: |
+      Glob patterns for the node's `identity.public`/`identity.secret` files; private keys are redacted by default (see `RedactPrivateKeys`).
+    type: json_array
+    default: >-
+      [
+      "/var/lib/zerotier-one/identity.{public,secret}",
+      "C:/ProgramData/ZeroTier/One/identity.{public,secret}",
+      "/Library/Application Support/ZeroTier/One/identity.{public,secret}"
+      ]
+
+  - name: PeerFilesGlob
+    description: |
+      Glob patterns for cached `.peer` files, one per known peer (see description).
+    type: json_array
+    default: >-
+      [
+      "/var/lib/zerotier-one/peers.d/*.peer",
+      "C:/ProgramData/ZeroTier/One/peers.d/*.peer",
+      "/Library/Application Support/ZeroTier/One/peers.d/*.peer"
+      ]
+
+  - name: WorldFilesGlob
+    description: |
+      Glob patterns for the `planet` file and any `moons.d/*.moon` files (see description).
+    type: json_array
+    default: >-
+      [
+      "/var/lib/zerotier-one/planet",
+      "/var/lib/zerotier-one/moons.d/*.moon",
+      "C:/ProgramData/ZeroTier/One/planet",
+      "C:/ProgramData/ZeroTier/One/moons.d/*.moon",
+      "/Library/Application Support/ZeroTier/One/planet",
+      "/Library/Application Support/ZeroTier/One/moons.d/*.moon"
+      ]
+
+  - name: RedactPrivateKeys
+    description: |
+      String substituted for the private key in `identity.secret`; set empty to collect it in full (see description).
+    default: "<REDACTED>"
+
+implied_permissions:
+  - READ_RESULTS
+
+export: |
+  // Redact Field in Obj with RedactPrivateKeys if the field is non-empty:
+  LET RedactField(Obj, Field) = if(
+      condition=RedactPrivateKeys
+       AND get(item=Obj, field=Field),
+      then=set(item=Obj, field=Field, value=RedactPrivateKeys),
+      else=Obj)
+
+  // Normalise a dict parsed from text: strip empty string values, cast keys
+  // matching Booleans (regex) to bool, and keys matching Ints (regex) to int:
+  LET ConvertDict(Obj, Booleans=NULL, Ints=NULL) = to_dict(
+      item={
+      SELECT _key,
+             if(condition=_value != "", then=_value) AS _value
+      FROM items(item=Obj)
+    }) + to_dict(item={
+      SELECT _key,
+             NOT NOT _value AS _value
+      FROM items(item=Obj)
+      WHERE _key =~ Booleans
+    }) + to_dict(item={
+      SELECT _key,
+             atoi(string=_value) AS _value
+      FROM items(item=Obj)
+      WHERE _key =~ Ints
+    })
+
+  // Decode ZeroTier Dictionary escape sequences in a string value:
+  // \n → newline, \r → CR, \e → "=", \0 → NUL, \\ → backslash.
+  // ZeroTier uses a key–value format for most of its files, including
+  // binary data. Binary data is escaped.
+  LET Unescape(Data) = if(
+      condition=Data,
+      then=regex_transform(source=Data,
+                           map=dict(`\\\\n`='\x0A',
+                                    `\\\\r`='\x0D',
+                                    `\\\\e`='=',
+                                    `\\\\0`='\x00',
+                                    `\\\\{2}`='''\''')))
+
+  // Format a 16-byte binary string as a colon-grouped IPv6 address:
+  LET ToIPv6(Data) = ip(
+      parse=regex_replace(source=format(format="%x", args=Data),
+                          re="(.{4})",
+                          replace="$1:")[:-1])
+
+  // Binary structure profile covering all ZeroTier on-disk formats.
+  // Used by every Parse* helper below via parse_binary():
+  LET ZTProfile = '''[
+    ["AddrList", 0, [
+      ["_Addrs", 0, "Array", {
+        type: "_Addr",
+        count: 1000,
+        max_count: 1000,
+        sentinel: "x=>x.Type = 'Empty'"
+      }]
+    ]],
+    ["RouteList", 0, [
+      ["_Routes", 0, "Array", {
+        type: "Route",
+        count: 1000,
+        max_count: 1000,
+        sentinel: "x=>x.Target.Type = 'Empty'"
+      }]
+    ]],
+    ["Route", "x=>(x.Via.EndOf - x.StartOf) + 4", [
+      ["Target", 0, "_Addr"],
+      ["Via", "x=>x.Target.EndOf - x.StartOf", "_Addr"],
+      ["Flags", "x=>x.Via.EndOf - x.StartOf", "uint16be"],
+      ["Metric", "x=>(x.Via.EndOf - x.StartOf) + 2", "uint16be"]
+    ]],
+    ["DNS", 0, [
+      ["FQDN", 0, "String", {
+        length: 128
+      }],
+      ["Addrs", 128, "AddrList"]
+    ]],
+
+    ["Peer", 0, [
+      ["Version", 0, "uint8"],
+      ["Identity", 1, "Identity"],
+      ["VProto", "x=>x.Identity.EndOf - x.StartOf", "uint16be"],
+      ["VMajor", "x=>(x.Identity.EndOf - x.StartOf) + 2", "uint16be"],
+      ["VMinor", "x=>(x.Identity.EndOf - x.StartOf) + 4", "uint16be"],
+      ["VRevision", "x=>(x.Identity.EndOf - x.StartOf) + 6", "uint16be"],
+      ["PathCount", "x=>(x.Identity.EndOf - x.StartOf) + 8", "uint16be"],
+      ["Paths", "x=>(x.Identity.EndOf - x.StartOf) + 10", "Array", {
+        type: "_Addr",
+        count: "x=>x.PathCount"
+      }]
+    ]],
+
+    ["World", 0, [
+      ["Type", 0, "Enumeration", {
+        type: "uint8",
+        map: {
+          "Null": 0,
+          "Planet": 1,
+          "Moon": 127
+        }
+      }],
+      ["ID", 1, "uint64be"],
+      ["Timestamp", 9, "uint64be"],
+      ["_UpdatesSignedBy", 17, "String", {
+        term: "",
+        length: 64
+      }],
+      ["_Signature", 81, "String", {
+        term: "",
+        length: 96
+      }],
+      ["RootCount", 177, "uint8"],
+      ["Roots", 178, "Array", {
+        type: "Root",
+        count: "x=>x.RootCount"
+      }]
+    ]],
+    ["Root", "x=>x.Endpoints.EndOf - x.StartOf", [
+      ["Identity", 0, "Identity"],
+      ["EndpointCount", "x=>x.Identity.EndOf - x.StartOf", "uint8"],
+      ["Endpoints", "x=>(x.Identity.EndOf - x.StartOf) + 1", "Array", {
+        type: "_Addr",
+        count: "x=>x.EndpointCount"
+      }]
+    ]],
+
+    ["Identity", "x=>71 + x.PrivLen", [
+      ["_Address", 0, "String", {
+        term: "",
+        length: 5
+      }],
+      ["Address", 0, "Value", {
+        value: "x=>format(format='%02x', args=x._Address)"
+      }],
+      ["Type", 5, "uint8"],
+      ["_PubKey", 6, "String", {
+        term: "",
+        length: 64
+      }],
+      ["PubKey", 0, "Value", {
+        value: "x=>format(format='%02x', args=x._PubKey)"
+      }],
+      ["PrivLen", 70, "uint8"]
+    ]],
+
+    ["_Addr", "x=>x.Addr.EndOf - x.StartOf", [
+      ["Type", 0, "Enumeration", {
+        type: "uint8",
+        map: {
+          "IPv4": 0x04,
+          "IPv6": 0x06,
+          "Empty": 0x00
+        }
+      }],
+      ["Addr", 1, "Union", {
+        selector: "x=>x.Type",
+        choices: {
+          "IPv4": "IPv4Addr",
+          "IPv6": "IPv6Addr",
+          "Empty": "Empty"
+        }
+      }]
+    ]],
+    ["IPv4Addr", 6, [
+      ["_Value", 0, "uint32"],
+      ["Value", 0, "Value", {
+        value: "x=>ip(netaddr4_le=x._Value)"
+      }],
+      ["Prefix", 4, "uint16be"]
+    ]],
+    ["IPv6Addr", 18, [
+      ["_Value", 0, "String", {
+        term: "",
+        length: 16
+      }],
+      ["Value", 0, "Value", {
+        value: "x=>ToIPv6(Data=x._Value)"
+      }],
+      ["Prefix", 16, "uint16be"]
+    ]],
+    ["Empty", 0, []],
+
+    ["COM", 0, [
+      ["Version", 0, "uint8"],
+      ["QualifierCount", 1, "uint16be"],
+      ["Qualifiers", 3, "Array", {
+        type: "Qualifier",
+        count: "x=>x.QualifierCount"
+      }],
+      ["_SignedByBytes", "x=>3 + (x.QualifierCount * 24)", "String", {
+        term: "",
+        length: 5
+      }],
+      ["SignedBy", 0, "Value", {
+        value: "x=>format(format='%02x', args=x._SignedByBytes)"
+      }]
+    ]],
+    ["Qualifier", 24, [
+      ["_ID", 0, "uint64be"],
+      ["ID", 0, "Enumeration", {
+        type: "uint64be",
+        map: {
+          "Timestamp":  0,
+          "NetworkID":  1,
+          "IssuedTo":   2,
+          "IdHash0":    3,
+          "IdHash1":    4,
+          "IdHash2":    5,
+          "IdHash3":    6
+        }
+      }],
+      ["_Value", 8, "uint64be"],
+      ["MaxDelta", 16, "uint64be"],
+      ["Value", 0, "Value", {
+        value: "x=>if(condition=x._ID = 0, then=timestamp(epoch=x._Value), else=if(condition=x._ID IN (1, 2), then=format(format='%x', args=x._Value), else=x._Value))"
+      }]
+    ]]
+    ]'''
+
+  // Parse binary AddrList blob: returns list of _Addr structs:
+  LET ParseIPs(Data) = if(
+      condition=Data,
+      then=parse_binary(accessor='data',
+                        filename=Data,
+                        profile=ZTProfile,
+                        struct='AddrList')._Addrs)
+
+  // Parse binary RouteList blob: returns list of Route structs:
+  LET ParseRoutes(Data) = if(
+      condition=Data,
+      then=parse_binary(accessor='data',
+                        filename=Data,
+                        profile=ZTProfile,
+                        struct='RouteList')._Routes)
+
+  // Parse binary DNS blob:
+  LET ParseDNS(Data) = if(
+      condition=Data,
+      then=parse_binary(accessor='data',
+                        filename=Data,
+                        profile=ZTProfile,
+                        struct='DNS'))
+
+  // Format a parsed _Addrs list into human-readable "address/prefix" strings:
+  LET FormatIPs(Addrs) = array(_={
+      SELECT if(condition=Addr.Prefix,
+                then=format(format="%v/%v", args=(Addr.Value, Addr.Prefix)),
+                else=Addr.Value) AS Addr
+      FROM foreach(row=Addrs)
+    }).Addr
+
+  // Format a parsed _Routes list into dicts with From (CIDR) and Via keys:
+  LET FormatRoutes(Routes) = array(_={
+      SELECT dict(`From`=if(condition=Target.Addr.Prefix,
+                            then=format(format="%v/%v",
+                                        args=(Target.Addr.Value,
+                                            Target.Addr.Prefix)),
+                            else=Target.Addr.Value),
+                  Via=Via.Addr.Value) AS Route
+      FROM foreach(row=Routes)
+    }).Route
+
+  // Format a parsed DNS struct into a dict with FQDN and Addrs; NULL if no FQDN:
+  LET FormatDNS(DNS) = if(
+      condition=DNS.FQDN,
+      then=dict(FQDN=DNS.FQDN || NULL, Addrs=FormatIPs(Addrs=DNS.Addrs._Addrs)))
+
+  // Parse a binary COM blob. The JSON conversion is done to convert the parsed
+  // typose to true dicts, necessary for further processing:
+  LET ParseCOM(Data) = if(
+      condition=Data,
+      then=parse_json(
+        data=serialize(format='json',
+                       item=parse_binary(accessor='data',
+                                         filename=Data,
+                                         profile=ZTProfile,
+                                         struct='COM'))))
+
+  // Extract IssuedTo node ID, signing authority and issuance timestamp from a
+  // parsed COM. Returns NULL for version 0 (unsigned/empty) certificates:
+  LET FormatCOM(COM) = if(
+      condition=COM.Version >= 1,
+      then=dict(IssuedTo=filter(list=COM.Qualifiers,
+                                condition='x=>x.ID = "IssuedTo"')[0].Value,
+                SignedBy=COM.SignedBy,
+                Timestamp=filter(list=COM.Qualifiers,
+                                 condition='x=>x.ID = "Timestamp"')[0].Value))
+
+  // Parse a binary .peer cache file:
+  LET ParsePeer(Data) = if(
+      condition=Data,
+      then=parse_binary(accessor='data',
+                        filename=Data,
+                        profile=ZTProfile,
+                        struct='Peer'))
+
+  // Format a parsed Peer into a dict with Address, Version string and Endpoints list:
+  LET FormatPeer(Peer) = if(
+      condition=Peer.Version,
+      then=dict(
+        Address=Peer.Identity.Address,
+        Version=format(
+          format="%v.%v.%v",
+          args=(Peer.VMajor, Peer.VMinor, Peer.VRevision)),
+        Endpoints=array(
+          _={
+      SELECT
+      format(
+        format="%v:%v",
+        args=(Addr.Value, Addr.Prefix)) AS EP
+      FROM foreach(
+        row=Peer.Paths)
+    }).EP))
+
+  // Parse a binary planet or moon world file:
+  LET ParseWorld(Data) = if(
+      condition=Data,
+      then=parse_binary(accessor='data',
+                        filename=Data,
+                        profile=ZTProfile,
+                        struct='World'))
+
+  // Format a parsed World into a dict. IsDefaultPlanet is true for the
+  // built-in ZeroTier Earth planet (ID 149604618):
+  LET FormatWorld(World) = if(
+      condition=World.Type,
+      then=dict(Type=World.Type,
+                ID=World.ID,
+                Timestamp=timestamp(epoch=World.Timestamp / 1000),
+                Roots=array(_={
+      SELECT dict(Address=Identity.Address,
+                  Endpoints=array(_={
+      SELECT format(format="%v:%v", args=(Addr.Value, Addr.Prefix)) AS EP
+      FROM foreach(row=Endpoints)
+    }).EP) AS R
+      FROM foreach(row=World.Roots)
+    }).R,
+                IsDefaultPlanet=(World.ID = 149604618
+                   AND World.Type = "Planet")))
+
+  // NULL-guard atoi — returns NULL for empty input rather than 0:
+  LET StrToInt(String) = if(condition=String, then=atoi(string=String))
+
+  // NULL-guard hex-string-to-int (prepends "0x"); returns NULL for empty input:
+  LET HEXToInt(String) = if(condition=String, then=atoi(string='0x' + String))
+
+  // Convert a hex epoch string to a timestamp; returns NULL for empty input:
+  LET HEXToTimestamp(Data) = if(condition=Data,
+                                then=timestamp(epoch=atoi(string='0x' + Data)))
+
+  // Helper to produce `Fqdn` that would normally be present in the notebook
+  // (which we override):
+  LET _FQDN = scope().Fqdn || client_info(client_id=ClientId).os_info.fqdn
+
+sources:
+  - name: Identities
+    precondition: SELECT true FROM scope()
+    query: |
+      LET Results = SELECT
+          OSPath,
+          Mtime || NULL AS Mtime,
+          Atime || NULL AS Atime,
+          Ctime || NULL AS Ctime,
+          Btime || NULL AS Btime,
+          parse_string_with_regex(
+            string=read_file(filename=OSPath),
+            regex='''^(?P<ID>[^:]+):(?P<Type>\d+):(?P<PublicKey>[^:]+)(?::(?P<PrivateKey>.+))?$''') AS Identity
+        FROM glob(
+          globs=IdentityFilesGlob)
+
+      SELECT *, RedactField(Obj=ConvertDict(Obj=Identity, Ints='^Type$'),
+                            Field='PrivateKey') AS Identity
+      FROM Results
+
+    notebook:
+      - type: vql
+        template: |
+          /*
+          ## Node identity
+
+          The ZeroTier node address is a globally unique 10-hex-digit identifier
+          derived from the keypair in `identity.public`/`identity.secret`. It
+          is the same address that appears in every network controller's member
+          list for networks this host has joined.
+
+          The presence of `identity.secret` (containing the private key) is
+          expected on a functioning ZeroTier node. Its file timestamps record
+          when ZeroTier was first installed on this host (`Btime`) and last
+          active (`Mtime`).
+
+          `KeyType` is always `0` (C25519/Ed25519 key pair); no other type
+          is defined in the currently known versions of ZeroTier.
+          */
+          LET ColumnTypes<=dict(`_ClientID`='client')
+
+          SELECT ClientId AS _ClientID,
+                 _FQDN,
+                 OSPath,
+                 Mtime,
+                 Btime,
+                 Identity.ID AS NodeID,
+                 Identity.Type AS KeyType,
+                 if(condition=Identity.PrivateKey,
+                    then="present") AS PrivateKey
+          FROM source(source="Identities")
+
+  - name: Networks
+    query: |
+      LET S = scope()
+
+      LET Networks = SELECT
+          OSPath,
+          MACB,
+          Unescape(Data=S.NetworkID) AS NetworkID,
+          Unescape(Data=S.Name) AS Name,
+          Unescape(Data=S.IssuedTo) AS NodeID,
+          HEXToInt(String=S.`Version`) AS `Version`,
+          HEXToInt(String=S.Revision) AS Revision,
+          if(condition=S.NetType
+              AND atoi(string='0x' + NetType),
+             then='public',
+             else='private') AS NetType,
+          ParseCOM(Data=Unescape(Data=S.COM)) AS COM,
+          HEXToTimestamp(Data=Unescape(Data=S.Timestamp)) AS Timestamp,
+          HEXToInt(String=Unescape(Data=S.MTU)) AS MTU,
+          ParseIPs(Data=Unescape(Data=S.IPs)) AS Addrs,
+          ParseRoutes(Data=Unescape(Data=S.Routes)) AS Routes,
+          ParseDNS(Data=Unescape(Data=S.DNS)) AS DNS,
+          if(condition=S.SSOIssuer,
+             then=dict(Issuer=S.SSOIssuer, Provider=S.SSOProvider)) AS SSO
+        FROM foreach(
+          row={
+          SELECT
+          dict(OSPath=OSPath,
+               MACB=dict(Mtime=Mtime || NULL,
+                         Atime=Atime || NULL,
+                         Ctime=Ctime || NULL,
+                         Btime=Btime || NULL)) + parse_string_with_regex(
+            string=read_file(filename=OSPath),
+            regex=('(?m)^nwid=(?P<NetworkID>.+)$', '(?m)^n=(?P<Name>.+)$', '(?m)^mtu=(?P<MTU>.+)$', '''(?m)^I=(?P<IPs>[^\n]+)$''', '(?m)^RT=(?P<Routes>.+)$', '(?m)^DNS=(?P<DNS>.+)$', '(?m)^v=(?P<Version>.+)$', '(?m)^ts=(?P<Timestamp>.+)$', '(?m)^r=(?P<Revision>.+)$', '(?m)^id=(?P<IssuedTo>.+)$', '(?m)^t=(?P<NetType>.+)$', '(?m)^C=(?P<COM>[^\n]+)$', '(?m)^iurl=(?P<SSOIssuer>.+)$', '(?m)^ssop=(?P<SSOProvider>.+)$', )) AS Info
+          FROM glob(
+            globs=NetworkFilesGlob)
+          WHERE NOT OSPath =~ '''\.local.conf$'''
+        },
+          column='Info')
+
+      SELECT OSPath,
+             MACB,
+             NetworkID,
+             Name,
+             NodeID AS _NodeID,
+             `Version` AS _Version,
+             Revision AS _Revision,
+             NetType,
+             Timestamp,
+             COM AS _COM,
+             FormatCOM(COM=COM) AS CertOfMembership,
+             SSO AS _SSO,
+             MTU AS _MTU,
+             FormatIPs(Addrs=Addrs) AS Addrs,
+             FormatRoutes(Routes=Routes) AS Routes,
+             FormatDNS(DNS=DNS) AS DNS
+      FROM Networks
+
+    notebook:
+      - type: vql
+        template: |
+          /*
+          ## Network memberships
+
+          The Certificate of Membership (COM) is issued by the network controller
+          each time it approves this node's membership. `LastAuthenticated` is the
+          most recent time the controller validated this node on each network.
+          A timestamp within the incident window indicates the node was an active,
+          authenticated member at that time.
+
+          `SignedByNodeID` is the ZeroTier address of the controller that issued
+          the certificate. On hosted (zerotier.com) networks this will be
+          ZeroTier Inc.'s controller. On self-hosted networks it is the
+          organisation's own.
+          */
+          LET ColumnTypes<=dict(`_ClientID`='client')
+
+          SELECT ClientId AS _ClientID,
+                 _FQDN,
+                 NetworkID,
+                 Name,
+                 NetType,
+                 CertOfMembership.Timestamp AS LastAuthenticated,
+                 CertOfMembership.IssuedTo AS IssuedToNodeID,
+                 CertOfMembership.SignedBy AS SignedByNodeID,
+                 MACB.Mtime AS FileModified,
+                 Addrs,
+                 Routes,
+                 DNS
+          FROM source(source="Networks")
+          ORDER BY LastAuthenticated DESC
+
+      - type: vql
+        template: |
+          /*
+          ## Gateway routes
+
+          Routes with a `Via` address are pushed by the controller to forward
+          traffic for a given subnet through a specific ZeroTier peer acting as
+          a gateway. These are distinct from directly-connected routes (no `Via`),
+          which simply define the overlay's own address space.
+
+          `0.0.0.0/0` with a `Via` routes all host traffic through that peer.
+          RFC-1918 entries give the host access to internal subnets via the
+          overlay. The `Via` address is the ZeroTier IP of the peer acting as
+          the gateway.
+          */
+          LET ColumnTypes<=dict(`_ClientID`='client')
+
+          SELECT ClientId AS _ClientID,
+                 _FQDN,
+                 NetworkID,
+                 Name,
+                 _NodeID AS NodeID,
+                 NetType,
+                 Addrs,
+                 filter(list=Routes,
+                        condition='x => x.Via') AS GatewayRoutes
+          FROM source(source="Networks")
+          WHERE filter(list=Routes,
+                       condition='x => x.Via')
+
+      - type: vql
+        template: |
+          /*
+          ## All routes (flat)
+
+          One row per route entry across all joined networks.
+          */
+          LET ColumnTypes<=dict(`_ClientID`='client')
+
+          SELECT ClientId AS _ClientID,
+                 _FQDN,
+                 NetworkID,
+                 Name,
+                 NodeID,
+                 Route.`From` AS Target,
+                 Route.Via AS Via
+          FROM flatten(query={
+              SELECT ClientId,
+                     NetworkID,
+                     Name,
+                     _NodeID AS NodeID,
+                     Routes AS Route
+              FROM source(source="Networks")
+              WHERE Routes
+            })
+
+      - type: vql
+        template: |
+          /*
+          ## DNS configuration
+
+          Networks with DNS pushed by the controller. `Domain` is the
+          search domain. `Resolvers` are the DNS server addresses.
+          */
+          LET ColumnTypes<=dict(`_ClientID`='client')
+
+          SELECT ClientId AS _ClientID,
+                 _FQDN,
+                 NetworkID,
+                 Name,
+                 _NodeID AS NodeID,
+                 DNS.FQDN AS Domain,
+                 DNS.Addrs AS Resolvers
+          FROM source(source="Networks")
+          WHERE DNS
+
+      - type: vql
+        template: |
+          /*
+          ## SSO-configured networks
+
+          Networks where a single sign-on issuer has been configured.
+          */
+          LET ColumnTypes<=dict(`_ClientID`='client')
+
+          SELECT ClientId AS _ClientID,
+                 _FQDN,
+                 NetworkID,
+                 Name,
+                 _NodeID AS NodeID,
+                 _SSO.Issuer AS SSOIssuer,
+                 _SSO.Provider AS SSOProvider
+          FROM source(source="Networks")
+          WHERE _SSO
+
+      - type: vql
+        template: |
+          /*
+          ## Assigned addresses (flat)
+
+          One row per IP address assigned to this host on each network.
+          */
+          LET ColumnTypes<=dict(`_ClientID`='client')
+
+          SELECT *
+          FROM flatten(query={
+              SELECT ClientId AS _ClientID,
+                     _FQDN,
+                     NetworkID,
+                     Name,
+                     _NodeID AS NodeID,
+                     Addrs AS Addr
+              FROM source(source="Networks")
+              WHERE Addrs
+            })
+          GROUP BY NetworkID, Addr
+
+  - name: LocalNetworks
+    query: |
+      SELECT OSPath,
+             regex_replace(source=basename(path=OSPath),
+                           re='''\.local\.conf$''',
+                           replace='') AS NetworkID,
+             Mtime || NULL AS Mtime,
+             Atime || NULL AS Atime,
+             Ctime || NULL AS Ctime,
+             Btime || NULL AS Btime,
+             ConvertDict(Obj=to_dict(item={
+          SELECT Key AS _key,
+                 Value AS _value
+          FROM parse_records_with_regex(
+            file=OSPath,
+            regex='''(?P<Key>[^\n=]+)=(?P<Value>[^\n]+)''')
+        }),
+                         Booleans='^allow') AS Conf
+      FROM glob(globs=LocalNetworkFilesGlob)
+
+    notebook:
+      - type: vql
+        template: |
+          /*
+          ## Local network policy
+
+          These per-network files control which routes the host actually accepts
+          from the network controller, regardless of what the controller pushes:
+
+          - `AllowManaged`: accept routes to private/internal subnets.
+          - `AllowGlobal`: accept routes to public (non-RFC-1918) IP space.
+          - `AllowDefault`: accept a default gateway route (`0.0.0.0/0`),
+            redirecting **all** host traffic through the ZeroTier overlay.
+          - `AllowDNS`: apply DNS configuration pushed by the controller.
+
+          Either means the host accepted routes beyond its own overlay subnet,
+          which is worth checking in any investigation.
+          */
+          LET ColumnTypes<=dict(`_ClientID`='client')
+
+          SELECT ClientId AS _ClientID,
+                 _FQDN,
+                 OSPath,
+                 NetworkID,
+                 Mtime,
+                 Conf.allowManaged AS AllowManaged,
+                 Conf.allowGlobal AS AllowGlobal,
+                 Conf.allowDefault AS AllowDefault,
+                 Conf.allowDNS AS AllowDNS
+          FROM source(source="LocalNetworks")
+
+      - type: vql
+        template: |
+          /*
+          ## Accepted routes along with policy
+
+          Routes pushed by the controller joined with the local policy
+          that controls whether the host actually accepts them.
+          */
+          LET ColumnTypes<=dict(`_ClientID`='client')
+
+          LET PolicyByNetwork <= to_dict(item={
+              SELECT NetworkID AS _key,
+                     Conf AS _value
+              FROM source(source="LocalNetworks")
+            })
+
+          SELECT ClientId AS _ClientID,
+                 _FQDN,
+                 NetworkID,
+                 Name,
+                 _NodeID AS NodeID,
+                 Routes,
+                 DNS,
+                 get(item=PolicyByNetwork,
+                     field=NetworkID).allowManaged AS AllowManaged,
+                 get(item=PolicyByNetwork,
+                     field=NetworkID).allowGlobal AS AllowGlobal,
+                 get(item=PolicyByNetwork,
+                     field=NetworkID).allowDefault AS AllowDefault,
+                 get(item=PolicyByNetwork,
+                     field=NetworkID).allowDNS AS AllowDNS
+          FROM source(source="Networks")
+
+  - name: Peers
+    query: |
+      LET Results = SELECT
+          OSPath,
+          Mtime || NULL AS Mtime,
+          Atime || NULL AS Atime,
+          Ctime || NULL AS Ctime,
+          Btime || NULL AS Btime,
+          FormatPeer(Peer=ParsePeer(Data=read_file(filename=OSPath))) AS Peer
+        FROM glob(globs=PeerFilesGlob)
+
+      SELECT OSPath,
+             Mtime,
+             Atime,
+             Ctime,
+             Btime,
+             Peer.Address AS PeerID,
+             Peer.Version AS Version,
+             Peer.Endpoints AS Endpoints
+      FROM Results
+
+    notebook:
+      - type: vql
+        template: |
+          /*
+          ## Peer cache
+
+          Peer cache files are written on clean ZeroTier shutdown and
+          periodically when a peer expires from the in-memory peer table after
+          becoming inactive. If the service was killed or crashed, files may be
+          absent or not reflect recent activity.
+
+          `LastSeen` is the file modification time, written at shutdown or peer
+          eviction, not when the peer was last contacted. The gap between last
+          contact and last write is unknown.
+          `FirstSeen` (birth/creation time, where the filesystem supports it)
+          approximates when this peer's entry was first persisted to disk.
+          Treat both as rough indicators, not precise timestamps.
+
+          `Endpoints` are the direct IP:port paths known at the time of the
+          last file write, and may not cover every address the peer has used.
+          Each is a real Internet address: the remote node's own, or that of a
+          NAT or relay in front of it. They can help locate a peer or identify
+          which host it connects through.
+          */
+          LET ColumnTypes<=dict(`_ClientID`='client')
+
+          SELECT ClientId AS _ClientID,
+                 _FQDN,
+                 Mtime AS LastSeen,
+                 Btime AS FirstSeen,
+                 PeerID,
+                 Version AS ZTVersion,
+                 Endpoints
+          FROM source(source="Peers")
+          ORDER BY LastSeen DESC
+
+      - type: vql
+        template: |
+          /*
+          ## Peer endpoints (flat)
+
+          One row per endpoint across all cached peers, deduplicated by
+          address. Useful for searching a specific IP across all known
+          peers.
+          */
+          LET ColumnTypes <= dict(
+              `_ClientID`='client')
+
+          LET SplitEndpoint(Endpoint) = parse_string_with_regex(
+              string=Endpoint,
+              regex='''(?P<IP>.+):(?P<Port>\d+)''')
+
+          LET Endpoints = SELECT *, SplitEndpoint(Endpoint=Endpoint) AS Endpoint
+            FROM flatten(query={
+              SELECT ClientId AS _ClientID,
+                    _FQDN,
+                    Mtime AS LastSeen,
+                    Btime AS FirstSeen,
+                    PeerID,
+                    Version AS ZTVersion,
+                    Endpoints AS Endpoint
+              FROM source(source="Peers")
+              WHERE Endpoint
+              ORDER BY LastSeen DESC
+            })
+            GROUP BY Endpoint
+
+          SELECT _ClientID,
+                _FQDN,
+                LastSeen,
+                FirstSeen,
+                PeerID,
+                ZTVersion,
+                Endpoint.IP AS IP,
+                Endpoint.Port AS Port
+          FROM Endpoints
+
+  - name: Worlds
+    query: |
+      SELECT OSPath,
+             Mtime || NULL AS Mtime,
+             Atime || NULL AS Atime,
+             Ctime || NULL AS Ctime,
+             Btime || NULL AS Btime,
+             FormatWorld(World=ParseWorld(Data=read_file(filename=OSPath))) AS World
+      FROM glob(globs=WorldFilesGlob)
+
+    notebook:
+      - type: vql
+        template: |
+          /*
+          ## Worlds (planet and moons)
+
+          ZeroTier ships with a single built-in planet (Earth, ID `149604618`)
+          maintained by ZeroTier Inc. Its root servers handle initial peer
+          discovery for the global ZeroTier network.
+
+          **Non-default planet** (`IsDefaultPlanet = false`): the node uses a
+          custom planet, routing all peer discovery through privately controlled
+          root servers. Normal in enterprise deployments, and also a way to run
+          an overlay outside ZeroTier's public infrastructure.
+
+          **Moons** (`WorldType = "Moon"`): supplementary root servers orbited in
+          addition to the planet. The presence of moons always indicates custom
+          infrastructure. Check `Roots` for the root server addresses.
+
+          `WorldTimestamp` is the creation/update timestamp embedded in the world
+          definition itself, not when it was installed. Use the file `Mtime` for
+          the latter.
+          */
+          LET ColumnTypes<=dict(`_ClientID`='client')
+
+          SELECT ClientId AS _ClientID,
+                 _FQDN,
+                 OSPath,
+                 Mtime,
+                 World.Type AS WorldType,
+                 World.ID AS WorldID,
+                 World.Timestamp AS WorldTimestamp,
+                 World.IsDefaultPlanet AS IsDefaultPlanet,
+                 World.Roots AS Roots
+          FROM source(source="Worlds")
+
+      - type: vql
+        template: |
+          /*
+          ## Custom root server endpoints
+
+          One row per endpoint for any non-default planet or moon. The
+          built-in Earth planet (ID `149604618`) is excluded. These are
+          the actual network addresses of the root infrastructure this
+          node is configured to use.
+          */
+          LET ColumnTypes<=dict(`_ClientID`='client')
+
+          SELECT ClientId AS _ClientID,
+                 _FQDN,
+                 *
+          FROM flatten(query={
+              SELECT ClientId,
+                     WorldID,
+                     WorldType,
+                     WorldTimestamp,
+                     Roots.Address AS Address,
+                     Roots.Endpoints AS Endpoint
+              FROM flatten(query={
+                  SELECT ClientId,
+                         World.ID AS WorldID,
+                         World.Type AS WorldType,
+                         World.Timestamp AS WorldTimestamp,
+                         World.Roots AS Roots
+                  FROM source(source="Worlds")
+                  WHERE NOT World.IsDefaultPlanet
+                })
+            })
