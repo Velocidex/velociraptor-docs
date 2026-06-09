@@ -5,16 +5,19 @@ sitemap:
   disable: true
 tags: [Client Event Artifact]
 description: |
-  WMI Process creation is a common lateral movement technique. The
-  attacker simply uses WMI to call the Create() method on the
-  Win32_Process WMI object.
+  Captures WMI calls to the Win32_Process.Create method as a lateral
+  movement indicator.
 ---
+
+Captures WMI calls to the Win32_Process.Create method as a lateral
+movement indicator.
 
 WMI Process creation is a common lateral movement technique. The
 attacker simply uses WMI to call the Create() method on the
 Win32_Process WMI object.
 
-This can be easily done via the `wmic.exe` command or via PowerShell:
+This can be easily done via the `wmic.exe` command or via
+PowerShell:
 
 ```bash
 wmic process call create cmd.exe
@@ -24,11 +27,15 @@ wmic process call create cmd.exe
 <pre><code class="language-yaml">
 name: Windows.Detection.WMIProcessCreation
 description: |
+  Captures WMI calls to the Win32_Process.Create method as a lateral
+  movement indicator.
+
   WMI Process creation is a common lateral movement technique. The
   attacker simply uses WMI to call the Create() method on the
   Win32_Process WMI object.
 
-  This can be easily done via the `wmic.exe` command or via PowerShell:
+  This can be easily done via the `wmic.exe` command or via
+  PowerShell:
 
   ```bash
   wmic process call create cmd.exe

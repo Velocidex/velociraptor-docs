@@ -5,17 +5,20 @@ sitemap:
   disable: true
 tags: [notebook]
 description: |
-  A notebook demonstrating features of notebooks
+  Demonstrates notebook functionality with sample VQL and tool
+  references.
 ---
 
-A notebook demonstrating features of notebooks
+Demonstrates notebook functionality with sample VQL and tool
+references.
 
 
 <pre><code class="language-yaml">
 
 name: Notebooks.Demo
 description: |
-  A notebook demonstrating features of notebooks
+  Demonstrates notebook functionality with sample VQL and tool
+  references.
 
 type: NOTEBOOK
 

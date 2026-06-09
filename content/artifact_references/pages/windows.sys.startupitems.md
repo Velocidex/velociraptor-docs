@@ -5,19 +5,19 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Applications that will be started up from the various run key
-  locations.
+  Enumerates startup applications from registry Run keys and Startup
+  folder locations.
 ---
 
-Applications that will be started up from the various run key
-locations.
+Enumerates startup applications from registry Run keys and Startup
+folder locations.
 
 
 <pre><code class="language-yaml">
 name: Windows.Sys.StartupItems
 description: |
-    Applications that will be started up from the various run key
-    locations.
+  Enumerates startup applications from registry Run keys and Startup
+  folder locations.
 
 reference:
   - https://docs.microsoft.com/en-us/windows/desktop/setupapi/run-and-runonce-registry-keys

@@ -5,16 +5,19 @@ sitemap:
   disable: true
 tags: [Server Event Artifact]
 description: |
-  This artifact forwards alerts from Server.Internal.Alerts to a Slack/Teams/Discord via a Webhook.
+  Sends alert notifications from the `Server.Internal.Alerts` queue to
+  a webhook-compatible chat service such as Slack/Teams/Discord.
 ---
 
-This artifact forwards alerts from Server.Internal.Alerts to a Slack/Teams/Discord via a Webhook.
+Sends alert notifications from the `Server.Internal.Alerts` queue to
+a webhook-compatible chat service such as Slack/Teams/Discord.
 
 
 <pre><code class="language-yaml">
 name: Server.Alerts.Notification
 description: |
-   This artifact forwards alerts from Server.Internal.Alerts to a Slack/Teams/Discord via a Webhook.
+  Sends alert notifications from the `Server.Internal.Alerts` queue to
+  a webhook-compatible chat service such as Slack/Teams/Discord.
 
 author: Jos Clephas - @DfirJos
 

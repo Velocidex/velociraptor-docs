@@ -5,13 +5,13 @@ sitemap:
   disable: true
 tags: [Internal Artifact]
 description: |
-  An internal queue to notify hunt dispatchers on all minions that a
-  certain hunt has changed and should be updated from the internal
+  Notifies hunt dispatchers across all minions when a hunt's status or
+  configuration changes, and should be updated from the internal
   cache.
 ---
 
-An internal queue to notify hunt dispatchers on all minions that a
-certain hunt has changed and should be updated from the internal
+Notifies hunt dispatchers across all minions when a hunt's status or
+configuration changes, and should be updated from the internal
 cache.
 
 Users can also watch this queue to be notified when hunts are
@@ -21,8 +21,8 @@ modified (e.g. stopped, started etc).
 <pre><code class="language-yaml">
 name: Server.Internal.HuntUpdate
 description: |
-  An internal queue to notify hunt dispatchers on all minions that a
-  certain hunt has changed and should be updated from the internal
+  Notifies hunt dispatchers across all minions when a hunt's status or
+  configuration changes, and should be updated from the internal
   cache.
 
   Users can also watch this queue to be notified when hunts are

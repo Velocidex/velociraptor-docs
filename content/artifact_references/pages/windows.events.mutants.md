@@ -5,16 +5,19 @@ sitemap:
   disable: true
 tags: [Client Event Artifact]
 description: |
-  This artifact detects creation of Mutants and triggers an alert.
+  Watches for new Mutants in the Windows object manager namespace and
+  alerts on detections.
 ---
 
-This artifact detects creation of Mutants and triggers an alert.
+Watches for new Mutants in the Windows object manager namespace and
+alerts on detections.
 
 
 <pre><code class="language-yaml">
 name: Windows.Events.Mutants
 description: |
-  This artifact detects creation of Mutants and triggers an alert.
+  Watches for new Mutants in the Windows object manager namespace and
+  alerts on detections.
 
 author: Jos Clephas - @DfirJos
 

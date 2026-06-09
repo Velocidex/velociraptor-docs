@@ -5,16 +5,19 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Parse the MRU from MacOS users
+  Parses Finder's `FXRecentFolders` plist entries to extract recently
+  accessed items.
 ---
 
-Parse the MRU from MacOS users
+Parses Finder's `FXRecentFolders` plist entries to extract recently
+accessed items.
 
 
 <pre><code class="language-yaml">
 name: MacOS.Applications.MRU
 description: |
-   Parse the MRU from MacOS users
+  Parses Finder's `FXRecentFolders` plist entries to extract recently
+  accessed items.
 
 reference:
   - https://mac-alias.readthedocs.io/en/latest/bookmark_fmt.html

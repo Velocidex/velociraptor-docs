@@ -5,14 +5,16 @@ sitemap:
   disable: true
 tags: [Server Artifact]
 description: |
-  This example artifact shows how to create a utility artifact to
-  provide low privileged users with a controlled ability to perform
-  high privileged operations.
+  A template artifact, providing an example of how to grant controlled
+  high-privilege operations to users with limited permissions.
 ---
 
-This example artifact shows how to create a utility artifact to
-provide low privileged users with a controlled ability to perform
-high privileged operations.
+A template artifact, providing an example of how to grant controlled
+high-privilege operations to users with limited permissions.
+
+It shows how to create a utility artifact that provides low
+privileged users with a controlled ability to perform high
+privileged operations.
 
 This server artifact launches a new `Generic.Client.Info` hunt, but
 the parameters for the hunt are not determined by the initiating
@@ -51,9 +53,12 @@ hunts or collections.
 <pre><code class="language-yaml">
 name: Server.Utils.StartHuntExample
 description: |
-  This example artifact shows how to create a utility artifact to
-  provide low privileged users with a controlled ability to perform
-  high privileged operations.
+  A template artifact, providing an example of how to grant controlled
+  high-privilege operations to users with limited permissions.
+  
+  It shows how to create a utility artifact that provides low
+  privileged users with a controlled ability to perform high
+  privileged operations.
 
   This server artifact launches a new `Generic.Client.Info` hunt, but
   the parameters for the hunt are not determined by the initiating

@@ -5,16 +5,22 @@ sitemap:
   disable: true
 tags: [Server Artifact]
 description: |
-  This artifact defines a set of security policies.
+  Automates the configuration of Velociraptor server security policies
+  including IP-based GUI access control, plugin restrictions, secrets
+  enforcement, and lockdown mode.
 ---
 
-This artifact defines a set of security policies.
+Automates the configuration of Velociraptor server security policies
+including IP-based GUI access control, plugin restrictions, secrets
+enforcement, and lockdown mode.
 
 
 <pre><code class="language-yaml">
 name: Server.Utils.Policy
 description: |
-  This artifact defines a set of security policies.
+  Automates the configuration of Velociraptor server security policies
+  including IP-based GUI access control, plugin restrictions, secrets
+  enforcement, and lockdown mode.
 
 type: SERVER
 

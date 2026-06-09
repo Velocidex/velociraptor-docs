@@ -5,25 +5,29 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  This detection will collect any items in the MountPoints2 registry key.
-  With a "$" in the share path. This key will store all remotely mapped
-  drives unless removed so is a great hunt for simple admin $ mapping based
-  lateral movement.
+  Extracts MountPoints2 registry entries with ADMIN$ share paths to
+  identify lateral movement via mapped drives.
 ---
 
-This detection will collect any items in the MountPoints2 registry key.
-With a "$" in the share path. This key will store all remotely mapped
-drives unless removed so is a great hunt for simple admin $ mapping based
-lateral movement.
+Extracts MountPoints2 registry entries with ADMIN$ share paths to
+identify lateral movement via mapped drives.
+
+This detection will collect any items in the MountPoints2 registry
+key. With a "$" in the share path. This key will store all
+remotely mapped drives unless removed so it's a great hunt for
+simple admin$ mapping-based lateral movement.
 
 
 <pre><code class="language-yaml">
 name: Windows.Registry.MountPoints2
 description: |
-    This detection will collect any items in the MountPoints2 registry key.
-    With a "$" in the share path. This key will store all remotely mapped
-    drives unless removed so is a great hunt for simple admin $ mapping based
-    lateral movement.
+  Extracts MountPoints2 registry entries with ADMIN$ share paths to
+  identify lateral movement via mapped drives.
+  
+  This detection will collect any items in the MountPoints2 registry
+  key. With a "$" in the share path. This key will store all
+  remotely mapped drives unless removed so it's a great hunt for
+  simple admin$ mapping-based lateral movement.
 
 author: Matt Green - @mgreen27
 

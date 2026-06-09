@@ -5,23 +5,23 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  This artifact will parse /proc and reveal information
-  about current network connections.
+  Reads Linux `/proc/net` files to display socket connection states
+  and processes.
 ---
 
-This artifact will parse /proc and reveal information
-about current network connections.
+Reads Linux `/proc/net` files to display socket connection states
+and processes.
 
-We also extract corresponding process information.
+Also extracts corresponding process information.
 
 
 <pre><code class="language-yaml">
 name: Linux.Network.Netstat
 description: |
-   This artifact will parse /proc and reveal information
-   about current network connections.
+  Reads Linux `/proc/net` files to display socket connection states
+  and processes.
 
-   We also extract corresponding process information.
+  Also extracts corresponding process information.
 
 type: CLIENT
 

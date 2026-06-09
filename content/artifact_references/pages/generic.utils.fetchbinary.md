@@ -5,14 +5,15 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  A utility artifact which fetches a binary from a URL and caches it on disk.
-  We verify the hash of the binary on disk and if it does not match we fetch it again
-  from the source URL.
+  A utility artifact which fetches a binary (or data file) from a URL
+  and caches it on disk.
 ---
 
-A utility artifact which fetches a binary from a URL and caches it on disk.
-We verify the hash of the binary on disk and if it does not match we fetch it again
-from the source URL.
+A utility artifact which fetches a binary (or data file) from a URL
+and caches it on disk.
+
+It verifies the hash of the binary on disk, and if it does not
+match fetches it again from the source URL.
 
 This artifact is designed to be called from other artifacts. The
 binary path will be emitted in the OSPath column.
@@ -33,9 +34,11 @@ versions send a set of URLs to try in order.
 <pre><code class="language-yaml">
 name: Generic.Utils.FetchBinary
 description: |
-   A utility artifact which fetches a binary from a URL and caches it on disk.
-   We verify the hash of the binary on disk and if it does not match we fetch it again
-   from the source URL.
+   A utility artifact which fetches a binary (or data file) from a URL
+   and caches it on disk.
+   
+   It verifies the hash of the binary on disk, and if it does not
+   match fetches it again from the source URL.
 
    This artifact is designed to be called from other artifacts. The
    binary path will be emitted in the OSPath column.

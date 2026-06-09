@@ -5,16 +5,19 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Enumerate the users chrome history.
+  Enumerates Edge browsing history (URLs, visit times, titles) from
+  user profiles.
 ---
 
-Enumerate the users chrome history.
+Enumerates Edge browsing history (URLs, visit times, titles) from
+user profiles.
 
 
 <pre><code class="language-yaml">
 name: Windows.Applications.Edge.History
 description: |
-  Enumerate the users chrome history.
+  Enumerates Edge browsing history (URLs, visit times, titles) from
+  user profiles.
 
 parameters:
   - name: historyGlobs

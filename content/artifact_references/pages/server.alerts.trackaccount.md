@@ -5,16 +5,25 @@ sitemap:
   disable: true
 tags: [Server Event Artifact]
 description: |
-  This artifact alerts when account usage of a monitored account is detected. This is a server-side artifact, please note that it requires the client_event artifact 'Windows.Events.Trackaccount' to be enabled.
+  Forwards account tracking events from `Windows.Events.Trackaccount`
+  as an alert to a Slack/Teams/Discord webhook.
 ---
 
-This artifact alerts when account usage of a monitored account is detected. This is a server-side artifact, please note that it requires the client_event artifact 'Windows.Events.Trackaccount' to be enabled.
+Forwards account tracking events from `Windows.Events.Trackaccount`
+as an alert to a Slack/Teams/Discord webhook.
+
+Note that it requires that the client event artifact
+`Windows.Events.Trackaccount` is being collected on clients.
 
 
 <pre><code class="language-yaml">
 name: Server.Alerts.Trackaccount
 description: |
-   This artifact alerts when account usage of a monitored account is detected. This is a server-side artifact, please note that it requires the client_event artifact 'Windows.Events.Trackaccount' to be enabled.
+  Forwards account tracking events from `Windows.Events.Trackaccount`
+  as an alert to a Slack/Teams/Discord webhook.
+
+  Note that it requires that the client event artifact
+  `Windows.Events.Trackaccount` is being collected on clients.
 
 author: Jos Clephas - @DfirJos
 

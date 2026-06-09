@@ -5,16 +5,16 @@ sitemap:
   disable: true
 tags: [Server Artifact]
 description: |
-  List Hunts currently scheduled on the server.
+  Enumerates scheduled hunts showing hunt IDs, artifacts, and status.
 ---
 
-List Hunts currently scheduled on the server.
+Enumerates scheduled hunts showing hunt IDs, artifacts, and status.
 
 
 <pre><code class="language-yaml">
 name: Server.Hunts.List
 description: |
-  List Hunts currently scheduled on the server.
+  Enumerates scheduled hunts showing hunt IDs, artifacts, and status.
 
 type: SERVER
 

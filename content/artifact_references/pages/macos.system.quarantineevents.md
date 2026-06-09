@@ -5,21 +5,19 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  This artifact parses the QuarantineEventsV2 database, which provides
-  information on when a file was downloaded from the internet.
+  Parses the QuarantineEventsV2 database, which provides information
+  on when a file was downloaded from the internet.
 ---
 
-
-This artifact parses the QuarantineEventsV2 database, which provides
-information on when a file was downloaded from the internet.
+Parses the QuarantineEventsV2 database, which provides information
+on when a file was downloaded from the internet.
 
 
 <pre><code class="language-yaml">
 name: MacOS.System.QuarantineEvents
 description: |
-
-  This artifact parses the QuarantineEventsV2 database, which provides
-  information on when a file was downloaded from the internet.
+  Parses the QuarantineEventsV2 database, which provides information
+  on when a file was downloaded from the internet.
 
 type: CLIENT
 

@@ -5,20 +5,23 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  This artifact returns process information obtained by parsing the PEB directly.
+  Extracts process information by parsing the Process Environment
+  Block (PEB) directly for each running process.
 ---
 
-This artifact returns process information obtained by parsing the PEB directly.
+Extracts process information by parsing the Process Environment
+Block (PEB) directly for each running process.
 
-Renamed Windows.Forensics.ProcessInfo
+This artifact was previously named `Windows.Forensics.ProcessInfo`.
 
 
 <pre><code class="language-yaml">
 name: Windows.Memory.ProcessInfo
 description: |
-   This artifact returns process information obtained by parsing the PEB directly.
-
-   Renamed Windows.Forensics.ProcessInfo
+  Extracts process information by parsing the Process Environment
+  Block (PEB) directly for each running process.
+  
+  This artifact was previously named `Windows.Forensics.ProcessInfo`.
 
 parameters:
   - name: ProcessNameRegex

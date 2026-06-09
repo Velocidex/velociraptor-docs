@@ -5,10 +5,12 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Enumerate the users chrome cookies.
+  Enumerates Chrome browser cookies including host key, name,
+  timestamps, and encrypted values.
 ---
 
-Enumerate the users chrome cookies.
+Enumerates Chrome browser cookies including host key, name,
+timestamps, and encrypted values.
 
 The cookies are typically encrypted by the DPAPI using the user's
 credentials. Since Velociraptor is typically not running in the user
@@ -19,16 +21,17 @@ The pertinent information from a forensic point of view are the
 user's Created and LastAccess timestamps, and the fact that the user
 has actually visited the site and obtained a cookie.
 
-## NOTES:
+**NOTES**
 
 This artifact is deprecated in favor of
-`Generic.Forensic.SQLiteHunter` and will be removed in future
+`Generic.Forensic.SQLiteHunter` and will be removed in future.
 
 
 <pre><code class="language-yaml">
 name: Windows.Applications.Chrome.Cookies
 description: |
-  Enumerate the users chrome cookies.
+  Enumerates Chrome browser cookies including host key, name,
+  timestamps, and encrypted values.
 
   The cookies are typically encrypted by the DPAPI using the user's
   credentials. Since Velociraptor is typically not running in the user
@@ -39,10 +42,10 @@ description: |
   user's Created and LastAccess timestamps, and the fact that the user
   has actually visited the site and obtained a cookie.
 
-  ## NOTES:
+  **NOTES**
 
   This artifact is deprecated in favor of
-  `Generic.Forensic.SQLiteHunter` and will be removed in future
+  `Generic.Forensic.SQLiteHunter` and will be removed in future.
 
 parameters:
   - name: cookieGlobs

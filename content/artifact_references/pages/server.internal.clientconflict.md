@@ -5,12 +5,12 @@ sitemap:
   disable: true
 tags: [Internal Artifact]
 description: |
-  This event artifact is an internal event stream receiving events
-  about client conflict.
+  Emits events when the server detects a client ID conflict between
+  duplicate clients.
 ---
 
-This event artifact is an internal event stream receiving events
-about client conflict.
+Emits events when the server detects a client ID conflict between
+duplicate clients.
 
 When two clients attempt to connect to the server with the same
 client id, the server rejects one of these with a 409 Conflict HTTP
@@ -28,8 +28,8 @@ if the duplicated clients connect to separate nodes.
 <pre><code class="language-yaml">
 name: Server.Internal.ClientConflict
 description: |
-  This event artifact is an internal event stream receiving events
-  about client conflict.
+  Emits events when the server detects a client ID conflict between
+  duplicate clients.
 
   When two clients attempt to connect to the server with the same
   client id, the server rejects one of these with a 409 Conflict HTTP

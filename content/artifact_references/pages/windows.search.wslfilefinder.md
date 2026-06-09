@@ -5,19 +5,22 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Find files within the VHDX containers of the Windows Subsystem for
-  Linux (WSL) images.
+  Searches for files inside Windows Subsystem for Linux (WSL) VHDX
+  disk images. Supports glob filtering, file content inspection using
+  Yara, and provides optional file hash calculation and upload.
 ---
 
-Find files within the VHDX containers of the Windows Subsystem for
-Linux (WSL) images.
+Searches for files inside Windows Subsystem for Linux (WSL) VHDX
+disk images. Supports glob filtering, file content inspection using
+Yara, and provides optional file hash calculation and upload.
 
 
 <pre><code class="language-yaml">
 name: Windows.Search.WSLFileFinder
 description: |
-  Find files within the VHDX containers of the Windows Subsystem for
-  Linux (WSL) images.
+  Searches for files inside Windows Subsystem for Linux (WSL) VHDX
+  disk images. Supports glob filtering, file content inspection using
+  Yara, and provides optional file hash calculation and upload.
 
 precondition:
   SELECT * FROM info() where OS = 'windows'

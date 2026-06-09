@@ -5,11 +5,12 @@ sitemap:
   disable: true
 tags: [Client Event Artifact]
 description: |
-  Users inserting Thumb drives or other Removable drive pose a
-  constant security risk. The external drive may contain malware or
-  other undesirable content. Additionally thumb drives are an easy way
-  for users to exfiltrate documents.
+  Detects potentially-sensitive content exfiltration by
+  keyword-scanning Office documents on USB drives.
 ---
+
+Detects potentially-sensitive content exfiltration by
+keyword-scanning Office documents on USB drives.
 
 Users inserting Thumb drives or other Removable drive pose a
 constant security risk. The external drive may contain malware or
@@ -27,6 +28,9 @@ many files.
 <pre><code class="language-yaml">
 name: Windows.Detection.Thumbdrives.OfficeKeywords
 description: |
+  Detects potentially-sensitive content exfiltration by
+  keyword-scanning Office documents on USB drives.
+
   Users inserting Thumb drives or other Removable drive pose a
   constant security risk. The external drive may contain malware or
   other undesirable content. Additionally thumb drives are an easy way

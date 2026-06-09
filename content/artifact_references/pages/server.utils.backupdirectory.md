@@ -5,19 +5,19 @@ sitemap:
   disable: true
 tags: [Server Event Artifact]
 description: |
-  This server monitoring artifact will automatically export and
-  backup selected collected artifacts to a directory on the server.
+  Automatically exports and backs up completed flow results to a
+  specified directory on the server.
 ---
 
-This server monitoring artifact will automatically export and
-backup selected collected artifacts to a directory on the server.
+Automatically exports and backs up completed flow results to a
+specified directory on the server.
 
 
 <pre><code class="language-yaml">
 name: Server.Utils.BackupDirectory
 description: |
-   This server monitoring artifact will automatically export and
-   backup selected collected artifacts to a directory on the server.
+  Automatically exports and backs up completed flow results to a
+  specified directory on the server.
 
 type: SERVER_EVENT
 

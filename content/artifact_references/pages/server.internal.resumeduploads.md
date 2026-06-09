@@ -5,16 +5,19 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  An internal artifact that display all resumed uploads
+  Displays the status and details of all resumable upload operations
+  on the server.
 ---
 
-An internal artifact that display all resumed uploads
+Displays the status and details of all resumable upload operations
+on the server.
 
 
 <pre><code class="language-yaml">
 name: Server.Internal.ResumedUploads
 description: |
-  An internal artifact that display all resumed uploads
+  Displays the status and details of all resumable upload operations
+  on the server.
 
 column_types:
 - name: mtime

@@ -5,25 +5,28 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Parses the binary journal logs. Systemd uses a binary log format to
-  store logs.
+  Extracts records from systemd journal files for forensic analysis.
 ---
 
-Parses the binary journal logs. Systemd uses a binary log format to
-store logs.
+Extracts records from systemd journal files for forensic analysis.
+
+Systemd uses a binary log format to store logs. This parses the
+binary journal logs. 
 
 
 <pre><code class="language-yaml">
 name: Linux.Forensics.Journal
 description: |
-  Parses the binary journal logs. Systemd uses a binary log format to
-  store logs.
+  Extracts records from systemd journal files for forensic analysis.
+
+  Systemd uses a binary log format to store logs. This parses the
+  binary journal logs. 
 
 parameters:
 - name: JournalGlob
   type: glob
   description: A Glob expression for finding journal files.
-  default: /{run,var}/log/journal/*/*.journal
+  default: /{run,var}/log/journal/*/*.journal{,~}
 - name: IdentifierRegex
   type: regex
   description: "Regex of event source e.g sshd or kernel"

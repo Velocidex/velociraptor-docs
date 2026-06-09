@@ -5,14 +5,20 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Processes with listening (bound) network sockets/ports.
+  Reports processes that have open listening ports with address,
+  protocol, and PID details.
 ---
 
-Processes with listening (bound) network sockets/ports.
+Reports processes that have open listening ports with address,
+protocol, and PID details.
+
 
 <pre><code class="language-yaml">
 name: Windows.Network.ListeningPorts
-description: Processes with listening (bound) network sockets/ports.
+description: |
+  Reports processes that have open listening ports with address,
+  protocol, and PID details.
+
 sources:
   - precondition:
       SELECT OS From info() where OS = 'windows'

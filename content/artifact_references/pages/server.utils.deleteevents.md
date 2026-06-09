@@ -5,27 +5,27 @@ sitemap:
   disable: true
 tags: [Server Artifact]
 description: |
-  This artifact permanently deletes Event files for client or
-  monitoring events.
+  Permanently deletes client event or monitoring event data within a
+  specified time range.
 ---
 
-This artifact permanently deletes Event files for client or
-monitoring events.
+Permanently deletes client event or monitoring event data within a
+specified time range.
 
 NOTE: This action cannot be undone! The event files are deleted
-permanently. Since this is a sensitive operation, typically only
-users with the administrator role can run it.
+permanently. Since this is a sensitive operation, only users with
+the administrator role can run it.
 
 
 <pre><code class="language-yaml">
 name: Server.Utils.DeleteEvents
 description: |
-  This artifact permanently deletes Event files for client or
-  monitoring events.
+  Permanently deletes client event or monitoring event data within a
+  specified time range.
 
   NOTE: This action cannot be undone! The event files are deleted
-  permanently. Since this is a sensitive operation, typically only
-  users with the administrator role can run it.
+  permanently. Since this is a sensitive operation, only users with
+  the administrator role can run it.
 
 type: SERVER
 

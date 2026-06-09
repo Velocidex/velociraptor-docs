@@ -5,10 +5,12 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Carve URN Journal records from the disk.
+  Recovers USN journal entries from raw disk by carving NTFS update
+  sequence number records.
 ---
 
-Carve URN Journal records from the disk.
+Recovers USN journal entries from raw disk by carving NTFS update
+sequence number records.
 
 The USN journal is a very important source of information about when
 and how files were manipulated on the filesystem. However, typically
@@ -18,7 +20,7 @@ This artifact carves out USN journal entries from the raw disk. This
 might recover older entries which have since been rotated from the
 journal file.
 
-## Notes
+**Notes**
 
 1. Like all carving, USN carving is not very reliable. You
    would tend to use it to corroborate an existing theory or to
@@ -40,7 +42,8 @@ journal file.
 <pre><code class="language-yaml">
 name: Windows.Carving.USN
 description: |
-  Carve URN Journal records from the disk.
+  Recovers USN journal entries from raw disk by carving NTFS update
+  sequence number records.
 
   The USN journal is a very important source of information about when
   and how files were manipulated on the filesystem. However, typically
@@ -50,7 +53,7 @@ description: |
   might recover older entries which have since been rotated from the
   journal file.
 
-  ## Notes
+  **Notes**
 
   1. Like all carving, USN carving is not very reliable. You
      would tend to use it to corroborate an existing theory or to

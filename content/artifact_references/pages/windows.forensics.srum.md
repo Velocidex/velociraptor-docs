@@ -5,16 +5,19 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Process the SRUM database.
+  Parses the Windows SRUM database (srudb.dat) to extract execution
+  stats, resource usage, and network activity.
 ---
 
-Process the SRUM database.
+Parses the Windows SRUM database (srudb.dat) to extract execution
+stats, resource usage, and network activity.
 
 
 <pre><code class="language-yaml">
 name: Windows.Forensics.SRUM
 description: |
-  Process the SRUM database.
+  Parses the Windows SRUM database (srudb.dat) to extract execution
+  stats, resource usage, and network activity.
 
 reference:
   - https://medium.com/@cyberengage.org/making-sense-of-srum-data-with-srum-dump-tool-67b90402df41
@@ -44,6 +47,9 @@ parameters:
   - name: Upload
     description: Select to Upload the SRUM database file 'srudb.dat'
     type: bool
+
+implied_permissions:
+  - FILESYSTEM_WRITE
 
 export: |
   LET ResolveESEId(OSPath, Accessor, Id) = cache(

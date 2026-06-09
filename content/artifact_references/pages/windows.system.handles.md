@@ -5,10 +5,12 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Enumerate the handles from selected processes.
+  Lists open handles (files, registry keys, etc.) for processes
+  matching a regex pattern.
 ---
 
-Enumerate the handles from selected processes.
+Lists open handles (files, registry keys, etc.) for processes
+matching a regex pattern.
 
 Uncheck all the handle types below to fetch all handle types.
 
@@ -16,7 +18,8 @@ Uncheck all the handle types below to fetch all handle types.
 <pre><code class="language-yaml">
 name: Windows.System.Handles
 description: |
-  Enumerate the handles from selected processes.
+  Lists open handles (files, registry keys, etc.) for processes
+  matching a regex pattern.
 
   Uncheck all the handle types below to fetch all handle types.
 

@@ -5,16 +5,20 @@ sitemap:
   disable: true
 tags: [Server Artifact]
 description: |
-  Show the results from each artifact collection hunt.
+  Returns the collected data rows for a specified artifact within a
+  hunt.
 ---
 
-Show the results from each artifact collection hunt.
+Returns the collected data rows for a specified artifact within a
+hunt.
 
 
 <pre><code class="language-yaml">
 name: Server.Hunts.Results
 description: |
-  Show the results from each artifact collection hunt.
+  Returns the collected data rows for a specified artifact within a
+  hunt.
+
 parameters:
   - name: huntId
     default: H.d05b2482

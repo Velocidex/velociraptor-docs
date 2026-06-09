@@ -3,13 +3,13 @@ title: "Velociraptor 0.77 Release"
 description: Velociraptor Release 0.77 is now available
 author: "Mike Cohen"
 date: 2026-05-31
-draft: true
+draft: false
 tags:
   - Release
 ---
 
 I am very excited to announce that the latest Velociraptor release
-0.77 is now available.
+0.77 RC1 is now available for testing.
 
 In this post I will discuss some of the new features introduced by
 this release.
@@ -22,8 +22,32 @@ this release.
   scrollable view. Each command appends to the same flow, replacing
   the previous approach where each interaction ran as a separate flow.
   Graceful timeouts, CSS improvements, and proper stdin lifecycle
-  management have also been added. Flow requests are now stored in a
-  separate data store file.
+  management have also been added.
+
+- **Datastore object limits** Flow requests are now stored in a
+  separate data store file making flow and hunt objects a lot
+  smaller. Additionally, limits were placed on the size of frequently
+  accessed datastore files, such as hunt objects, flow objects and
+  client tasks.
+
+  This limit is essential to maintain performance and stability but it
+  might affect the following two use cases:
+
+  1. Artifacts that contain a lot of data internally for example
+    `Windows.Hayabusa.Rules` contains all the Sigma rules inside the
+    artifact.
+  2. Artifacts that can accept very large parameters, for example
+    `Generic.Detection.Yara.Glob` can include large yara rules as a
+    parameter when launched.
+
+  Going forward, such collections can be refactored:
+  * For artifacts that include large data blobs internally, they can be
+    compressed or extracted into a tool (see [Managing external tools](
+    https://docs.velociraptor.app/docs/artifacts/tools/) ).
+  * Artifacts that include large parameters (e.g. Yara rulesets) can be
+    changed to include a URL to the ruleset which can be fetched by the
+    client (for example `Generic.Detection.Yara.Glob` has the `YaraUrl`
+    parameter instead of the `YaraRules` parameter).
 
 - **User messaging.** Messages can now be sent to GUI users via the
   `user_message()` VQL function, which means they can be packaged into
@@ -31,6 +55,23 @@ this release.
   `Server.Monitoring.RSSFeeds` artifact is provided as an example: it
   polls RSS feeds (such as Velociraptor's own CVE and blog feeds) and
   automatically emits user notifications when new items appear.
+
+  This means users will be notified inside the application about new
+  releases and important announcements (like CVE reports). Users can
+  also use the same mechanism to distribute custom messages to their
+  users. For example via the VQL
+
+  ```vql
+  SELECT user_message(user="admin",
+                      Message="Hello user",
+                      Date=timestamp(epoch=now()))
+  FROM scope()
+  ```
+
+  ![User notifications contain arbitrary key/value pairs](user_notifications.png)
+
+  User notifications accumulate in the GUI and can all be cleared when
+  acknowledged.
 
 - **Azure Data Explorer (ADX) upload.** A new `adx_upload()` VQL plugin
   uploads rows to Azure Data Explorer for KQL-based analysis, along
@@ -42,8 +83,8 @@ this release.
 
 - **Artifact verifier overrides.** The artifact verifier now emits
   structured errors and warnings that can be selectively disabled on a
-  per- artifact basis. To suppress a specific linter error, add a `//
-linter:` comment to the VQL snippet with the error name and an
+  per-artifact basis. To suppress a specific linter error, add a `//
+  linter:` comment to the VQL snippet with the error name and an
   optional subject regex.
 
 - **Loading artifact packs from zips.** Zip files can now be imported
@@ -164,13 +205,8 @@ This release improves a number of GUI features.
 - **`ADX.Flows.Upload`.** Forwards flow results to Azure Data Explorer
   (ADX) for analysis using KQL queries.
 
-- **`Generic.Utils.Crypto`.** Utility artifact providing HMAC-SHA256 and
-  other custom hash functions.
-
-### Improved Artifacts
-
-Aside from the new artifacts, which others has significant
-improvements? TO be checked.
+- **`Generic.Utils.Crypto`.** Utility artifact providing HMAC-SHA256
+  and other custom hash functions.
 
 ### Removed Artifacts
 
