@@ -5,18 +5,18 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  A Generic uploader used by triaging artifacts. This is similar to
+  A generic uploader used by triaging artifacts. This is similar to
   `Triage.Collection.Upload` but uses a CSV table to drive it.
 ---
 
-A Generic uploader used by triaging artifacts. This is similar to
+A generic uploader used by triaging artifacts. This is similar to
 `Triage.Collection.Upload` but uses a CSV table to drive it.
 
 
 <pre><code class="language-yaml">
 name: Triage.Collection.UploadTable
 description: |
-  A Generic uploader used by triaging artifacts. This is similar to
+  A generic uploader used by triaging artifacts. This is similar to
   `Triage.Collection.Upload` but uses a CSV table to drive it.
 
 parameters:

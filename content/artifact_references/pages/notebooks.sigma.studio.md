@@ -5,16 +5,19 @@ sitemap:
   disable: true
 tags: [notebook]
 description: |
-  A notebook to help develop Sigma rules.
+  Sets up a Sigma rule development workspace with live testing against
+  sample events.
 ---
 
-A notebook to help develop Sigma rules.
+Sets up a Sigma rule development workspace with live testing against
+sample events.
 
 
 <pre><code class="language-yaml">
 name: Notebooks.Sigma.Studio
 description: |
-  A notebook to help develop Sigma rules.
+  Sets up a Sigma rule development workspace with live testing against
+  sample events.
 
 type: NOTEBOOK
 

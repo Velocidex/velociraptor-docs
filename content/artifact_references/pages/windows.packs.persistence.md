@@ -5,16 +5,19 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  This artifact pack collects various persistence mechanisms in Windows.
+  Aggregates results from multiple persistence-related artifacts into
+  a single artifact "pack".
 ---
 
-This artifact pack collects various persistence mechanisms in Windows.
+Aggregates results from multiple persistence-related artifacts into
+a single artifact "pack".
 
 
 <pre><code class="language-yaml">
 name: Windows.Packs.Persistence
 description: |
-  This artifact pack collects various persistence mechanisms in Windows.
+  Aggregates results from multiple persistence-related artifacts into
+  a single artifact "pack".
 
 precondition:
   SELECT OS from info() where OS = "windows"

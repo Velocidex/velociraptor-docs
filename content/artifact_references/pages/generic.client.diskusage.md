@@ -5,32 +5,32 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  This artifact reports the amount of space used by each directory
-  recursively (Similar to the `du` command).
+  Computes disk usage per directory recursively, similar to the `du`
+  command.
 ---
 
-This artifact reports the amount of space used by each directory
-recursively (Similar to the `du` command).
+Computes disk usage per directory recursively, similar to the `du`
+command.
 
-Unlike the `du` command, this artifact can filter only certain file
-name patterns.
+Unlike the `du` command, this artifact can filter targets using glob
+patterns.
 
 If you change the `TopLevelDirectory` to the drive letter
-(e.g. `C:\\`) it may take a while to complete as it will need to
+(e.g. `C:\\`) it may take a long time to complete as it will need to
 examine every file on the drive.
 
 
 <pre><code class="language-yaml">
 name: Generic.Client.DiskUsage
 description: |
-  This artifact reports the amount of space used by each directory
-  recursively (Similar to the `du` command).
+  Computes disk usage per directory recursively, similar to the `du`
+  command.
 
-  Unlike the `du` command, this artifact can filter only certain file
-  name patterns.
+  Unlike the `du` command, this artifact can filter targets using glob
+  patterns.
 
   If you change the `TopLevelDirectory` to the drive letter
-  (e.g. `C:\\`) it may take a while to complete as it will need to
+  (e.g. `C:\\`) it may take a long time to complete as it will need to
   examine every file on the drive.
 
 parameters:

@@ -5,16 +5,16 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  List processes and their running binaries.
+  Lists processes and their associated binaries.
 ---
 
-List processes and their running binaries.
+Lists processes and their associated binaries.
 
 
 <pre><code class="language-yaml">
 name: Linux.Sys.Pslist
 description: |
-  List processes and their running binaries.
+  Lists processes and their associated binaries.
 
 aliases:
   - MacOS.Sys.Pslist

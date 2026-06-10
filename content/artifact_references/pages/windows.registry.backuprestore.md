@@ -5,25 +5,28 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  This artifact will return BackupRestore configuration.
+  Enumerates Windows BackupRestore registry keys showing
+  applications configured for backup and restore operations.
 ---
 
-This artifact will return BackupRestore configuration.
+Enumerates Windows BackupRestore registry keys showing
+applications configured for backup and restore operations.
 
-Applications that request or perform backup and restore operations can use
-these keys to communicate with each other or with features such as the
-Volume Shadow Copy Service (VSS) and Windows Backup.
+Applications that request or perform backup and restore operations
+can use these keys to communicate with each other or with features
+such as the Volume Shadow Copy Service (VSS) and Windows Backup.
 
 
 <pre><code class="language-yaml">
 name: Windows.Registry.BackupRestore
 author: Matt Green - @mgreen27
 description: |
-    This artifact will return BackupRestore configuration.
+  Enumerates Windows BackupRestore registry keys showing
+  applications configured for backup and restore operations.
 
-    Applications that request or perform backup and restore operations can use
-    these keys to communicate with each other or with features such as the
-    Volume Shadow Copy Service (VSS) and Windows Backup.
+  Applications that request or perform backup and restore operations
+  can use these keys to communicate with each other or with features
+  such as the Volume Shadow Copy Service (VSS) and Windows Backup.
 
 reference:
   - https://andreafortuna.org/2017/10/02/volume-shadow-copies-in-forensic-analysis/

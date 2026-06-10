@@ -3,7 +3,7 @@
         "name": "Artifact",
         "description": "This is the special plugin which automatically runs other\nartifacts inline.",
         "type": "Plugin",
-        "category": "basic"
+        "category": "popular"
     },
     {
         "name": "add_client_monitoring",
@@ -816,7 +816,7 @@
         "name": "cancel_flow",
         "description": "Cancels the flow.",
         "type": "Function",
-        "version": 2,
+        "version": 3,
         "args": [
             {
                 "name": "client_id",
@@ -826,16 +826,6 @@
             {
                 "name": "flow_id",
                 "type": "string"
-            },
-            {
-                "name": "full_request",
-                "type": "bool",
-                "description": "If specified we include the full request in the output. This can be very large."
-            },
-            {
-                "name": "downloads",
-                "type": "bool",
-                "description": "If specified we include the flow exports in the output."
             }
         ],
         "category": "server",
@@ -2337,7 +2327,7 @@
         "name": "enumerate_flow",
         "description": "Enumerate all the files that make up a flow.",
         "type": "Plugin",
-        "version": 2,
+        "version": 3,
         "args": [
             {
                 "name": "client_id",
@@ -2347,16 +2337,6 @@
             {
                 "name": "flow_id",
                 "type": "string"
-            },
-            {
-                "name": "full_request",
-                "type": "bool",
-                "description": "If specified we include the full request in the output. This can be very large."
-            },
-            {
-                "name": "downloads",
-                "type": "bool",
-                "description": "If specified we include the flow exports in the output."
             }
         ],
         "category": "server",
@@ -2903,7 +2883,7 @@
         "name": "flows",
         "description": "Retrieve the flows launched on each client.",
         "type": "Plugin",
-        "version": 2,
+        "version": 3,
         "args": [
             {
                 "name": "client_id",
@@ -2915,14 +2895,9 @@
                 "type": "string"
             },
             {
-                "name": "full_request",
+                "name": "summary",
                 "type": "bool",
-                "description": "If specified we include the full request in the output. This can be very large."
-            },
-            {
-                "name": "downloads",
-                "type": "bool",
-                "description": "If specified we include the flow exports in the output."
+                "description": "If specified we fetch just the basic summary of the flow. This is a bit faster."
             }
         ],
         "category": "server",
@@ -3228,7 +3203,7 @@
         "name": "get_flow",
         "description": "Gets flow details.",
         "type": "Function",
-        "version": 2,
+        "version": 3,
         "args": [
             {
                 "name": "client_id",
@@ -3240,14 +3215,9 @@
                 "type": "string"
             },
             {
-                "name": "full_request",
+                "name": "summary",
                 "type": "bool",
-                "description": "If specified we include the full request in the output. This can be very large."
-            },
-            {
-                "name": "downloads",
-                "type": "bool",
-                "description": "If specified we include the flow exports in the output."
+                "description": "If specified we fetch just the basic summary of the flow. This is a bit faster."
             }
         ],
         "category": "server",
@@ -4052,11 +4022,17 @@
         "name": "hunts",
         "description": "Retrieve the list of hunts.\n",
         "type": "Plugin",
+        "version": 2,
         "args": [
             {
                 "name": "hunt_id",
                 "type": "string",
                 "description": "A hunt id to read, if not specified we list all of them."
+            },
+            {
+                "name": "summary",
+                "type": "bool",
+                "description": "If specified we fetch just the basic summary of the flow. This is a bit faster."
             }
         ],
         "category": "server",

@@ -5,28 +5,28 @@ sitemap:
   disable: true
 tags: [Server Event Artifact]
 description: |
-  This is the main server health dashboard. It is shown on the
-  homescreen and enabled by default on all new installs.
+  Provides the server overview dashboard showing performance metrics,
+  disk space, and user permissions.
 ---
 
-This is the main server health dashboard. It is shown on the
-homescreen and enabled by default on all new installs.
+Provides the server overview dashboard showing performance metrics,
+disk space, and user permissions.
 
 You may edit this artifact to customize your server dashboard.
 
-Alternatively, edit the Welcome screen at the
+Alternatively, customize the Welcome screen by editing the
 `Server.Internal.Welcome` artifact.
 
 
 <pre><code class="language-yaml">
 name: Server.Monitor.Health
 description: |
-  This is the main server health dashboard. It is shown on the
-  homescreen and enabled by default on all new installs.
+  Provides the server overview dashboard showing performance metrics,
+  disk space, and user permissions.
 
   You may edit this artifact to customize your server dashboard.
 
-  Alternatively, edit the Welcome screen at the
+  Alternatively, customize the Welcome screen by editing the
   `Server.Internal.Welcome` artifact.
 
 type: SERVER_EVENT

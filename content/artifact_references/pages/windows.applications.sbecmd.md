@@ -5,12 +5,12 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Execute Eric Zimmerman's SBECmd and return output for analysis.
+  Executes Eric Zimmerman's SBECmd tool to parse Shellbags and capture
+  the results.
 ---
 
-Execute Eric Zimmerman's SBECmd and return output for analysis.
-
-SBECmd is a CLI for analyzing Shellbags data.
+Executes Eric Zimmerman's SBECmd tool to parse Shellbags and capture
+the results.
 
 Objective:
 
@@ -24,40 +24,38 @@ Interpretation:
 - Stores information about which folders were most recently
   browsed by the user.
 
-NOTE: Velociraptor can now parse Shellbags natively with the
+NOTE: This artifact is deprecated and will be removed in future
+since Velociraptor can now parse Shellbags natively with the
 `Windows.Forensics.Shellbags` artifact.
-
-MITRE ATT&CK ID: TA0009 - Collection
 
 
 <pre><code class="language-yaml">
 name: Windows.Applications.SBECmd
 description: |
-    Execute Eric Zimmerman's SBECmd and return output for analysis.
+  Executes Eric Zimmerman's SBECmd tool to parse Shellbags and capture
+  the results.
 
-    SBECmd is a CLI for analyzing Shellbags data.
+  Objective:
 
-    Objective:
+  - Find which folders were accessed on the local machine, the
+    network, and/or removable devices. Evidence of previously
+    existing folders after deletion/overwrite. When certain folders
+    were accessed.
 
-    - Find which folders were accessed on the local machine, the
-      network, and/or removable devices. Evidence of previously
-      existing folders after deletion/overwrite. When certain folders
-      were accessed.
+  Interpretation:
 
-    Interpretation:
+  - Stores information about which folders were most recently
+    browsed by the user.
 
-    - Stores information about which folders were most recently
-      browsed by the user.
-
-    NOTE: Velociraptor can now parse Shellbags natively with the
-    `Windows.Forensics.Shellbags` artifact.
-
-    MITRE ATT&amp;CK ID: TA0009 - Collection
+  NOTE: This artifact is deprecated and will be removed in future
+  since Velociraptor can now parse Shellbags natively with the
+  `Windows.Forensics.Shellbags` artifact.
 
 author: Eduardo Mattos - @eduardfir
 
 reference:
   - https://github.com/EricZimmerman
+  - "MITRE ATT&amp;CK ID: TA0009 - Collection"
 
 type: CLIENT
 

@@ -5,10 +5,12 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Enumerate the mutants from selected processes.
+  Searches for named Mutant objects used by selected processes for
+  malware persistence detection.
 ---
 
-Enumerate the mutants from selected processes.
+Searches for named Mutant objects used by selected processes for
+malware persistence detection.
 
 Mutants are often used by malware to prevent re-infection.
 
@@ -16,7 +18,8 @@ Mutants are often used by malware to prevent re-infection.
 <pre><code class="language-yaml">
 name: Windows.Detection.Mutants
 description: |
-  Enumerate the mutants from selected processes.
+  Searches for named Mutant objects used by selected processes for
+  malware persistence detection.
 
   Mutants are often used by malware to prevent re-infection.
 

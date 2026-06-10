@@ -5,10 +5,16 @@ sitemap:
   disable: true
 tags: [Server Artifact]
 description: |
-  Automates the analysis of dead disk images in Velociraptor
+  Automates the preparatory steps for dead disk analysis by inspecting
+  the disk image, building an appropriate remapping config, and then
+  launching a virtual Velociraptor client which uses that remapping
+  config.
 ---
 
-Automates the analysis of dead disk images in Velociraptor
+Automates the preparatory steps for dead disk analysis by inspecting
+the disk image, building an appropriate remapping config, and then
+launching a virtual Velociraptor client which uses that remapping
+config.
 
 Velociraptor can analyze dead disk images by using accessor
 remapping. The process involves detecting a suitable remapping
@@ -30,7 +36,10 @@ artifact using the resources tab.
 <pre><code class="language-yaml">
 name: Server.Utils.DeadDiskClient
 description: |
-  Automates the analysis of dead disk images in Velociraptor
+  Automates the preparatory steps for dead disk analysis by inspecting
+  the disk image, building an appropriate remapping config, and then
+  launching a virtual Velociraptor client which uses that remapping
+  config.
 
   Velociraptor can analyze dead disk images by using accessor
   remapping. The process involves detecting a suitable remapping

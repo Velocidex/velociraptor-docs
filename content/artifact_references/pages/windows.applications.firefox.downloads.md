@@ -5,26 +5,29 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Enumerate the users Firefox downloads.
+  Enumerates Firefox download records (file names, URLs, timestamps)
+  from the `places.sqlite` database.
 ---
 
-Enumerate the users Firefox downloads.
+Enumerates Firefox download records (file names, URLs, timestamps)
+from the `places.sqlite` database.
 
-#### NOTES
+**NOTES**
 
-This artifact is deprecated in favor of `Generic.Forensic.SQLiteHunter` and
-will be removed in future
+This artifact is deprecated in favor of `Generic.Forensic.SQLiteHunter`
+and will be removed in future
 
 
 <pre><code class="language-yaml">
 name: Windows.Applications.Firefox.Downloads
 description: |
-  Enumerate the users Firefox downloads.
+  Enumerates Firefox download records (file names, URLs, timestamps)
+  from the `places.sqlite` database.
 
-  #### NOTES
+  **NOTES**
 
-  This artifact is deprecated in favor of `Generic.Forensic.SQLiteHunter` and
-  will be removed in future
+  This artifact is deprecated in favor of `Generic.Forensic.SQLiteHunter`
+  and will be removed in future
 
 author: |
   Angry-Bender @angry-bender, based on

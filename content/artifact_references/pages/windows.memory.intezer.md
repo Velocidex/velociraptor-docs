@@ -5,36 +5,45 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Runs an Intezer agent scan on the endpoint.
+  Runs the Intezer memory scanner to collect running code for malware
+  analysis via Intezer Analyze.
 ---
 
-Runs an Intezer agent scan on the endpoint.
+Runs the Intezer memory scanner to collect running code for malware
+analysis via Intezer Analyze.
 
-- Scan: The scanner collects running code from memory and sends it to Intezer Analyze.
-  Scans take approximately five to ten minutes. The first scan may take additional time.
+- Scan: The scanner collects running code from memory and sends it
+  to Intezer Analyze. Scans take approximately five to ten minutes.
+  The first scan may take additional time.
 
-Please note: The scanner only collects executable code, not documents or any other
-data that is not binary code.
+Please note: The scanner only collects executable code, not
+documents or any other data that is not binary code.
 
-- Analyze: The collected modules are analyzed using Genetic Malware Analysis technology.
+- Analyze: The collected modules are analyzed using Genetic Malware
+  Analysis technology.
 
-- View results: https://analyze.intezer.com/ endpoint analysis report.
+- View results: https://analyze.intezer.com/ endpoint analysis
+  report.
 
 
 <pre><code class="language-yaml">
 name: Windows.Memory.Intezer
 description: |
-   Runs an Intezer agent scan on the endpoint.
+  Runs the Intezer memory scanner to collect running code for malware
+  analysis via Intezer Analyze.
 
-   - Scan: The scanner collects running code from memory and sends it to Intezer Analyze.
-     Scans take approximately five to ten minutes. The first scan may take additional time.
+  - Scan: The scanner collects running code from memory and sends it
+    to Intezer Analyze. Scans take approximately five to ten minutes.
+    The first scan may take additional time.
 
-   Please note: The scanner only collects executable code, not documents or any other
-   data that is not binary code.
+  Please note: The scanner only collects executable code, not
+  documents or any other data that is not binary code.
 
-   - Analyze: The collected modules are analyzed using Genetic Malware Analysis technology.
+  - Analyze: The collected modules are analyzed using Genetic Malware
+    Analysis technology.
 
-   - View results: https://analyze.intezer.com/ endpoint analysis report.
+  - View results: https://analyze.intezer.com/ endpoint analysis
+    report.
 
 author: Matt Green - @mgreen27
 

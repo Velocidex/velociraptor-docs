@@ -5,19 +5,19 @@ sitemap:
   disable: true
 tags: [Client Event Artifact]
 description: |
-  An internal artifact that produces events for every flow completion
-  in the system.
+  Emits an event when a flow is archived, enabling post-archival
+  processing workflows.
 ---
 
-An internal artifact that produces events for every flow completion
-in the system.
+Emits an event when a flow is archived, enabling post-archival
+processing workflows.
 
 
 <pre><code class="language-yaml">
 name: System.Flow.Archive
 description: |
-  An internal artifact that produces events for every flow completion
-  in the system.
+  Emits an event when a flow is archived, enabling post-archival
+  processing workflows.
 
 type: CLIENT_EVENT
 

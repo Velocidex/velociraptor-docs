@@ -5,14 +5,20 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Module listing via /proc/modules.
+  Parses `/proc/modules` to enumerate loaded kernel modules with their
+  details.
 ---
 
-Module listing via /proc/modules.
+Parses `/proc/modules` to enumerate loaded kernel modules with their
+details.
+
 
 <pre><code class="language-yaml">
 name: Linux.Proc.Modules
-description: Module listing via /proc/modules.
+description: |
+  Parses `/proc/modules` to enumerate loaded kernel modules with their
+  details.
+
 parameters:
   - name: ProcModules
     default: /proc/modules

@@ -5,10 +5,12 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Ships the Sysmon event log in ECS schema.
+  Converts Windows Sysmon event logs to ECS schema-compliant output
+  for Elasticsearch ingestion.
 ---
 
-Ships the Sysmon event log in ECS schema.
+Converts Windows Sysmon event logs to ECS schema-compliant output
+for Elasticsearch ingestion.
 
 The Elastic Common Schema (ECS) is an open source specification,
 developed with support from the Elastic user community. ECS defines
@@ -30,7 +32,8 @@ board.
 <pre><code class="language-yaml">
 name: Elastic.EventLogs.Sysmon
 description: |
-  Ships the Sysmon event log in ECS schema.
+  Converts Windows Sysmon event logs to ECS schema-compliant output
+  for Elasticsearch ingestion.
 
   The Elastic Common Schema (ECS) is an open source specification,
   developed with support from the Elastic user community. ECS defines

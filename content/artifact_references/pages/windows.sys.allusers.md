@@ -5,14 +5,16 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  List User accounts. We combine two data sources - the output from
-  the `NetUserEnum` API (termed `local` users) and the list of SIDs in
-  the registry (termed `remote` users).
+  Lists all user accounts on a Windows system including domain users
+  with cached profiles.
 ---
 
-List User accounts. We combine two data sources - the output from
-the `NetUserEnum` API (termed `local` users) and the list of SIDs in
-the registry (termed `remote` users).
+Lists all user accounts on a Windows system including domain users
+with cached profiles.
+
+Combines data from two data sources - the output from the
+`NetUserEnum` API (termed `local` users) and the list of SIDs in the
+registry (termed `remote` users).
 
 In this artifact, 'remote' means that user profile was cached in the
 registry, but the user does not appear in the output of the
@@ -30,9 +32,12 @@ artifact.
 <pre><code class="language-yaml">
 name: Windows.Sys.AllUsers
 description: |
-  List User accounts. We combine two data sources - the output from
-  the `NetUserEnum` API (termed `local` users) and the list of SIDs in
-  the registry (termed `remote` users).
+  Lists all user accounts on a Windows system including domain users
+  with cached profiles.
+
+  Combines data from two data sources - the output from the
+  `NetUserEnum` API (termed `local` users) and the list of SIDs in the
+  registry (termed `remote` users).
 
   In this artifact, 'remote' means that user profile was cached in the
   registry, but the user does not appear in the output of the
@@ -49,6 +54,9 @@ description: |
 parameters:
   - name: remoteRegKey
     default: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\*
+
+implied_permissions:
+  - FILESYSTEM_WRITE
 
 export: |
   -- Cache function for lookupSID

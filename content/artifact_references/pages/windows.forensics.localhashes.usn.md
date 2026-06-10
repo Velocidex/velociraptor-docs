@@ -5,10 +5,12 @@ sitemap:
   disable: true
 tags: [Client Event Artifact]
 description: |
-  This artifact maintains a local (client side) database of file
-  hashes. It is then possible to query this database by using the
-  `Generic.Forensic.LocalHashes.Query` artifact
+  Watches the NTFS USN journal for file modifications and records file
+  hashes in a local database.
 ---
+
+Watches the NTFS USN journal for file modifications and records file
+hashes in a local database.
 
 This artifact maintains a local (client side) database of file
 hashes. It is then possible to query this database by using the
@@ -18,6 +20,9 @@ hashes. It is then possible to query this database by using the
 <pre><code class="language-yaml">
 name: Windows.Forensics.LocalHashes.Usn
 description: |
+  Watches the NTFS USN journal for file modifications and records file
+  hashes in a local database.
+
   This artifact maintains a local (client side) database of file
   hashes. It is then possible to query this database by using the
   `Generic.Forensic.LocalHashes.Query` artifact

@@ -5,14 +5,19 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Get Dockers version by connecting to its socket.
+  Connects to the Docker socket and retrieves daemon version details
+  including API and kernel versions.
 ---
 
-Get Dockers version by connecting to its socket.
+Connects to the Docker socket and retrieves daemon version details
+including API and kernel versions.
+
 
 <pre><code class="language-yaml">
 name: Linux.Applications.Docker.Version
-description: Get Dockers version by connecting to its socket.
+description: |
+  Connects to the Docker socket and retrieves daemon version details
+  including API and kernel versions.
 
 parameters:
   - name: dockerSocket

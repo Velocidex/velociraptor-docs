@@ -5,16 +5,19 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Enumerate the root certificates in the Windows Root store.
+  Enumerates root CA certificates from the Windows System Certificate
+  store.
 ---
 
-Enumerate the root certificates in the Windows Root store.
+Enumerates root CA certificates from the Windows System Certificate
+store.
 
 
 <pre><code class="language-yaml">
 name: Windows.System.RootCAStore
 description: |
-   Enumerate the root certificates in the Windows Root store.
+  Enumerates root CA certificates from the Windows System Certificate
+  store.
 
 reference:
    - "ATT&amp;CK: T1553"

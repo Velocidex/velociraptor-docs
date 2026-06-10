@@ -5,19 +5,20 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Report information about the systems interfaces. This artifact
-  simply parses the output from `ipconfig /all`.
+  Report information about the system's network interfaces.
 ---
 
-Report information about the systems interfaces. This artifact
-simply parses the output from `ipconfig /all`.
+Report information about the system's network interfaces.
+
+This artifact simply parses the output from `ipconfig /all`.
 
 
 <pre><code class="language-yaml">
 name: Windows.Sys.Interfaces
 description: |
-  Report information about the systems interfaces. This artifact
-  simply parses the output from `ipconfig /all`.
+  Report information about the system's network interfaces.
+  
+  This artifact simply parses the output from `ipconfig /all`.
 
 implied_permissions:
   - EXECVE

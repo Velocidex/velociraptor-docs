@@ -25,6 +25,47 @@ deployment methods to ensure it can be secured on the network. We then
 discuss the Velociraptor permission model and suggest some further
 steps to ensure user actions are audited and controlled.
 
+## Client verification
+
+From the outset we need to highlight a fundamental limitation of agent
+based security software.
+
+> Because the agent (The Velociraptor `Client`) is running on a
+> potentially compromised platform, We can never fully trust what the
+> client is telling us.
+
+There is no guarantee that the client will work correctly - it may be
+subverted by an attacker (who has full control of the endpoint) to:
+
+1. Disable the client completely - it will not report to the server.
+2. The client may omit reporting some information - For example, the
+   client may hide sensitive files or artifacts that the attacker
+   wants to hide.
+3. The client may report incorrect information (for example fake
+   processes, files etc).
+
+This is a fundamental limitation in the server/client model and can
+not be mitigated. Typically the Velociraptor client is running at an
+elevated permissions level which makes it harder to interact with by
+low privileged users, this reduces the risk somewhat. If you have an
+EDR installed on the endpoint, you may add anti-tamper rules to the
+EDR to reduce the risk of client interference even further - however
+there is always a residual risk of interference when the platform may
+be compromised.
+
+We refer to a compromised client as a `Rogue Client`. This type of
+client can send malformed responses or fake data.
+
+You should always keep this limitation in mind when interpreting
+results from Velociraptor. The results may be missing or incorrect, or
+a client may be completely disabled by an attacker.
+
+The main concern for Velociraptor is to ensure that one client can not
+impersonate another client. This mitigates the risk of a compromised
+client injecting fake information about another client. Velociraptor
+mitigates this risk using cryptographic keys as described in the next
+section.
+
 ## Velociraptor communications
 
 How do Velociraptor clients communicate with the server? You can read
@@ -742,6 +783,142 @@ difficult for a compromised Velociraptor administrator account to
 remove the lockdown and use Velociraptor as a lateral movement
 vehicle.
 
+### API client security
+
+Because the API allows external programs to run powerful Velociraptor
+Query Language (VQL) queries directly on your server, a poorly
+configured or compromised API client is a major security risk.
+
+#### IP-based Access Control
+
+By default the API server only listens on 127.0.0.1 - this allows
+scripts on the local machine to call into the API, but if you want to
+use an external caller you can change the server’s configuration file
+by setting the bind_address field under the API section to 0.0.0.0
+allowing the API to bind on all interfaces.
+
+See
+[Protecting the API](/docs/server_automation/server_api/#protecting-the-api)
+for more information.
+
+#### Authentication
+
+API clients authenticate using mTLS and their own key, which is issued
+to them by the built-in CA. This operates independently of the
+authentication methods you have set up for your users. The API
+client's authentication credentials are stored in a plain text file
+which needs to be tightly guarded, however the keys in such files can
+be passphrase-secured.
+
+API client certificates are **valid for one year**, by default. You
+must reissue them before they expire to avoid breaking your automation
+pipelines.
+
+**Encrypt Private Keys**: When generating an API config using
+`velociraptor config api_client` it is possible to set a
+password/passphrase to encrypt the private key. This ensures that if
+the config file is stolen, it cannot be used without the passphrase.
+However, this is not useful for credentials used by automated API
+clients because unlocking the key is a user-interactive process. For
+interactive API access (for example when using the API client that's
+included in the Velociraptor binary) where the API config might reside
+on a laptop, we recommend that you secure the key this way.
+
+**Offline CA**: For high-security environments, keep your CA private
+key offline, which usually means keeping an offline copy of the full
+config with the CA key included in it, while removing the CA key from
+the config on your production server. This prevents an attacker who
+gains root on the Velociraptor server from being able to mint their
+own valid API keys. You can issue new API keys if you have the full
+offline config - access to the production server is not required,
+although you will also need to provision the new user on the server
+and grant it access.
+
+##### Instant Revocation
+
+If an API key is compromised, or suspected to be compromised, you
+don't need to struggle with complex certificate revocation lists
+(CRLs). Simply use the `acl grant` command to set an empty policy for
+that principal.
+
+```sh
+velociraptor acl grant --name "CompromisedKey" --role ""
+```
+
+This immediately strips all permissions, thus denying that user the
+ability to make an API calls. Any applications using that API user
+will need to be configured to use a new account with a new key. 
+
+API client accounts can alternatively have their roles and permissions
+revoked via the User Management screen in the GUI.
+
+Be aware that allowing the user account to exist with no roles
+assigned is still a risky situation as someone could accidentally
+grant permissions to it.
+
+To permanently delete the user you can run the
+[user_delete()](/vql_reference/server/user_delete/)
+function in a notebook. There is currently no GUI option to delete a
+user.
+
+
+#### Authorization
+
+The "API Client" (`api`) role is mandatory for API access. Every
+programmatic connection requires the "API Client" role as a baseline .
+Without it, even a user with full administrator privileges will be met
+with a "permission denied" error when trying to connect via the API
+port. Think of it as the "passport" that gets you through the front
+door of the API .
+
+In addition, the client also needs permissions (usually assigned via
+the predefined Roles) to do the things you need it to do.
+
+ ##### Apply the Principle of Least Privilege
+
+It is tempting to grant your API clients the `administrator` role to
+"just make it work," but this is a dangerous shortcut. An API key
+with admin rights is effectively `root` on your entire server.
+
+Instead, evaluate exactly what the script needs to do and choose the
+appropriate "least privilege" role or permissions set:
+- Need to read results for a dashboard? Use the `reader` role.
+- Need to perform data analysis or post-processing? Use the `analyst`
+  role.
+- Need to trigger specific collections? Use the `investigator` role.
+
+##### Beware of "Admin-Equivalent" Permissions
+
+Some permissions are more dangerous than they might appear because
+they provide a path to full server control:
+- `ARTIFACT_WRITER`: This role allows a user to edit artifact
+  definitions. Since VQL runs unrestricted on endpoints, an artifact
+  writer effectively has root access to every client on your network.
+- `EXECVE`: This permission allows the execution of arbitrary shell
+  commands on clients or the server (subject to
+  [additional restrictions](/docs/deployment/security/#accessing-files-from-vql)
+  that are in place by default). It is typically reserved for
+  administrators because it can be easily misused.
+- `FILESYSTEM_WRITE`: On the server side, this allows creating files,
+  which can be used to overwrite ACL objects and escalate privileges.
+
+##### Use Wrapper Artifacts and Impersonation
+
+One of the most elegant ways to manage security is to avoid giving
+raw, dangerous permissions to users or API clients. Instead, create a
+wrapper artifact. For example, instead of giving a an artifact
+`EXECVE` access to run any command, write a custom artifact
+[that only runs a specific, safe command](/docs/artifacts/security/#controlling-access-to-client-artifacts)
+(like `ipconfig`) with hard-coded
+arguments. You can then
+[mark this artifact as "basic"](/docs/artifacts/security/#basic-artifacts)
+and allow a lower-privilege API client to run it.
+
+You can use [the impersonation field](https://docs.velociraptor.app/docs/artifacts/security/#server-artifacts-and-impersonation).
+This allows an artifact to run with the privileges of a different user
+(like a "sudo" for VQL), letting a low-privilege API client perform a
+specific high-privilege task in a controlled, audited environment.
+
 ### Preventing new client enrollments
 
 By default, new clients can enroll at any time if they have a valid
@@ -1043,7 +1220,7 @@ accessing the disk directly to bypass ACLs and denied paths.
 {{% /notice %}}
 
 
-{{% notice warn "`http_client()`, Unix sockets, and server ACLs" %}}
+{{% notice warning "`http_client()`, Unix sockets, and server ACLs" %}}
 
 The VQL `http_client()` plugin understands URLs like
 `/var/run/docker.sock:unix/v1/version`, which relays HTTP traffic

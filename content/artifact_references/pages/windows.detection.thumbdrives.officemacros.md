@@ -5,11 +5,12 @@ sitemap:
   disable: true
 tags: [Client Event Artifact]
 description: |
-  Users inserting Thumb drives or other Removable drive pose a
-  constant security risk. The external drive may contain malware or
-  other undesirable content. Additionally thumb drives are an easy way
-  for users to exfiltrate documents.
+  Watches for removable drives and extracts VBA macros from newly
+  added Office files.
 ---
+
+Watches for removable drives and extracts VBA macros from newly
+added Office files.
 
 Users inserting Thumb drives or other Removable drive pose a
 constant security risk. The external drive may contain malware or
@@ -26,6 +27,9 @@ many files.
 <pre><code class="language-yaml">
 name: Windows.Detection.Thumbdrives.OfficeMacros
 description: |
+  Watches for removable drives and extracts VBA macros from newly
+  added Office files.
+
   Users inserting Thumb drives or other Removable drive pose a
   constant security risk. The external drive may contain malware or
   other undesirable content. Additionally thumb drives are an easy way

@@ -5,19 +5,16 @@ sitemap:
   disable: true
 tags: [Client Event Artifact]
 description: |
-  Watches the binary journal logs. Systemd uses a binary log format to
-  store logs.
+  Forwards events from the Systemd binary journal logs.
 ---
 
-Watches the binary journal logs. Systemd uses a binary log format to
-store logs.
+Forwards events from the Systemd binary journal logs.
 
 
 <pre><code class="language-yaml">
 name: Linux.Events.Journal
 description: |
-  Watches the binary journal logs. Systemd uses a binary log format to
-  store logs.
+  Forwards events from the Systemd binary journal logs.
 
 type: CLIENT_EVENT
 

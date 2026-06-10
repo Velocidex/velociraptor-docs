@@ -5,17 +5,19 @@ sitemap:
   disable: true
 tags: [Server Event Artifact]
 description: |
-  This artifact will automatically upload any Velociraptor timelines to Timesketch.
+  Watches for creation of new Velociraptor timelines and
+  automatically uploads matching ones to Timesketch.
 ---
 
-This artifact will automatically upload any Velociraptor timelines to Timesketch.
+Watches for creation of new Velociraptor timelines and
+automatically uploads matching ones to Timesketch.
 
 
 <pre><code class="language-yaml">
 name: Server.Monitoring.TimesketchUpload
 description: |
-  This artifact will automatically upload any Velociraptor timelines to Timesketch.
-
+   Watches for creation of new Velociraptor timelines and
+   automatically uploads matching ones to Timesketch.
 
 type: SERVER_EVENT
 

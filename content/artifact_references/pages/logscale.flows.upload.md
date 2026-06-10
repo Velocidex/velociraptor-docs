@@ -5,22 +5,19 @@ sitemap:
   disable: true
 tags: [Server Event Artifact]
 description: |
-  This server side event monitoring artifact waits for new artifacts
-  to be collected from endpoints and automatically posts those to a
-  LogScale (formerly Humio) ingestion endpoint.
+  Forwards completed flow results to LogScale with configurable
+  batching and artifact filtering.
 ---
 
-This server side event monitoring artifact waits for new artifacts
-to be collected from endpoints and automatically posts those to a
-LogScale (formerly Humio) ingestion endpoint.
+Forwards completed flow results to LogScale with configurable
+batching and artifact filtering.
 
 
 <pre><code class="language-yaml">
 name: LogScale.Flows.Upload
 description: |
-  This server side event monitoring artifact waits for new artifacts
-  to be collected from endpoints and automatically posts those to a
-  LogScale (formerly Humio) ingestion endpoint.
+  Forwards completed flow results to LogScale with configurable
+  batching and artifact filtering.
 
 type: SERVER_EVENT
 

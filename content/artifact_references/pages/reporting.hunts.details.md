@@ -5,19 +5,19 @@ sitemap:
   disable: true
 tags: [Server Artifact]
 description: |
-  Report details about which client ran each hunt, how long it took
-  and if it has completed.
+  Reports hunt execution details including client participation,
+  duration, and completion status.
 ---
 
-Report details about which client ran each hunt, how long it took
-and if it has completed.
+Reports hunt execution details including client participation,
+duration, and completion status.
 
 
 <pre><code class="language-yaml">
 name: Reporting.Hunts.Details
 description: |
-  Report details about which client ran each hunt, how long it took
-  and if it has completed.
+  Reports hunt execution details including client participation,
+  duration, and completion status.
 
 type: SERVER
 

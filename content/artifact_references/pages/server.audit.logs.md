@@ -5,25 +5,22 @@ sitemap:
   disable: true
 tags: [Server Event Artifact]
 description: |
-  This internal event artifact collects relevant audit events from the
-  server. Audit events are significant auditable actions that a user
-  takes, for example, starting a new collection, creating a new hunt,
-  updating an artifact definition etc.
+  Collects server audit events for significant user actions such as
+  starting a new collection, creating a new hunt, updating an artifact
+  definition etc.
 ---
 
-This internal event artifact collects relevant audit events from the
-server. Audit events are significant auditable actions that a user
-takes, for example, starting a new collection, creating a new hunt,
-updating an artifact definition etc.
+Collects server audit events for significant user actions such as
+starting a new collection, creating a new hunt, updating an artifact
+definition etc.
 
 
 <pre><code class="language-yaml">
 name: Server.Audit.Logs
 description: |
-  This internal event artifact collects relevant audit events from the
-  server. Audit events are significant auditable actions that a user
-  takes, for example, starting a new collection, creating a new hunt,
-  updating an artifact definition etc.
+  Collects server audit events for significant user actions such as
+  starting a new collection, creating a new hunt, updating an artifact
+  definition etc.
 
 type: SERVER_EVENT
 

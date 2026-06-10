@@ -5,16 +5,19 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  This artifact cleans up the temp folder in the Velociraptor client.
+  Removes old temporary files from the Velociraptor client's temp
+  directory.
 ---
 
-This artifact cleans up the temp folder in the Velociraptor client.
+Removes old temporary files from the Velociraptor client's temp
+directory.
 
 
 <pre><code class="language-yaml">
 name: Generic.Client.CleanupTemp
 description: |
-  This artifact cleans up the temp folder in the Velociraptor client.
+  Removes old temporary files from the Velociraptor client's temp
+  directory.
 
 parameters:
   - name: TempGlob

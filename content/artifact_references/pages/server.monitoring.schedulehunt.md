@@ -5,22 +5,36 @@ sitemap:
   disable: true
 tags: [Server Event Artifact]
 description: |
-  Run client interrogation periodically. This is a sample event
-  artifact to schedule a hunt periodically. You can change it to
-  launch other artifacts.
+  Runs client interrogation periodically.
 ---
 
-Run client interrogation periodically. This is a sample event
-artifact to schedule a hunt periodically. You can change it to
-launch other artifacts.
+Runs client interrogation periodically.
+
+This is an example server event artifact that shows how to schedule
+a hunt periodically. You can change it to do the same for other
+artifacts.
+
+NOTE: Hunting for client info is not needed in the current version
+as it now happens automatically, but you may still need to do it if
+you have customized interrogation artifacts, since the automatic
+collection mechanism only collects basic information from the
+clients.
 
 
 <pre><code class="language-yaml">
 name: Server.Monitoring.ScheduleHunt
 description: |
-     Run client interrogation periodically. This is a sample event
-     artifact to schedule a hunt periodically. You can change it to
-     launch other artifacts.
+  Runs client interrogation periodically.
+  
+  This is an example server event artifact that shows how to schedule
+  a hunt periodically. You can change it to do the same for other
+  artifacts.
+
+  NOTE: Hunting for client info is not needed in the current version
+  as it now happens automatically, but you may still need to do it if
+  you have customized interrogation artifacts, since the automatic
+  collection mechanism only collects basic information from the
+  clients.
 
 type: SERVER_EVENT
 

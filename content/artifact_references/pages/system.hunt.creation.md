@@ -5,16 +5,19 @@ sitemap:
   disable: true
 tags: [Server Event Artifact]
 description: |
-  An event artifact that fires when a user schedules a new hunt.
+  Fires an event whenever a new hunt is created on the Velociraptor
+  server.
 ---
 
-An event artifact that fires when a user schedules a new hunt.
+Fires an event whenever a new hunt is created on the Velociraptor
+server.
 
 
 <pre><code class="language-yaml">
 name: System.Hunt.Creation
 description: |
-  An event artifact that fires when a user schedules a new hunt.
+  Fires an event whenever a new hunt is created on the Velociraptor
+  server.
 
 type: SERVER_EVENT
 

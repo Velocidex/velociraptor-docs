@@ -5,16 +5,20 @@ sitemap:
   disable: true
 tags: [Client Event Artifact]
 description: |
-  A basic process tracker which uses a simple polled pslist().
+  Tracks running and exited processes by polling pslist() at a
+  configurable interval.
 ---
 
-A basic process tracker which uses a simple polled pslist().
+Tracks running and exited processes by polling pslist() at a
+configurable interval.
 
-The Process Tracker keeps track of exited processes, and resolves process call
-chains from it in memory cache.
+This is a basic process tracker which uses a simple polled pslist().
+It keeps track of exited processes, and resolves process call
+chains from its in-memory cache.
 
-This event artifact enables the global process tracker and makes it possible
-to run many other artifacts that depend on the process tracker.
+Using this event artifact enables the global process tracker which
+makes it possible to run many other artifacts that depend on the
+process tracker.
 
 This tracker DOES NOT require Sysmon and is **incompatible** with
 `Windows.Events.TrackProcesses` and
@@ -24,13 +28,16 @@ This tracker DOES NOT require Sysmon and is **incompatible** with
 <pre><code class="language-yaml">
 name: Windows.Events.TrackProcessesBasic
 description: |
-  A basic process tracker which uses a simple polled pslist().
+  Tracks running and exited processes by polling pslist() at a
+  configurable interval.
 
-  The Process Tracker keeps track of exited processes, and resolves process call
-  chains from it in memory cache.
+  This is a basic process tracker which uses a simple polled pslist().
+  It keeps track of exited processes, and resolves process call
+  chains from its in-memory cache.
 
-  This event artifact enables the global process tracker and makes it possible
-  to run many other artifacts that depend on the process tracker.
+  Using this event artifact enables the global process tracker which
+  makes it possible to run many other artifacts that depend on the
+  process tracker.
 
   This tracker DOES NOT require Sysmon and is **incompatible** with
   `Windows.Events.TrackProcesses` and

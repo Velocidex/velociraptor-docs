@@ -5,16 +5,19 @@ sitemap:
   disable: true
 tags: [Server Artifact]
 description: |
-  Adds a new timeline to a super timeline.
+  Adds a new timeline entry to a notebook super-timeline with results
+  from a provided VQL query.
 ---
 
-Adds a new timeline to a super timeline.
+Adds a new timeline entry to a notebook super-timeline with results
+from a provided VQL query.
 
 
 <pre><code class="language-yaml">
 name: Server.Utils.AddTimeline
 description: |
-  Adds a new timeline to a super timeline.
+  Adds a new timeline entry to a notebook super-timeline with results
+  from a provided VQL query.
 
 type: SERVER
 
