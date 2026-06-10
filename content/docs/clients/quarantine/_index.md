@@ -5,10 +5,17 @@ date: 2024-12-24
 draft: false
 weight: 50
 last_reviewed: 2024-12-30
+description: |
+  For Windows and Linux clients you can quarantine the host using the
+  **Quarantine Host** (<i class="fas fa-briefcase-medical"></i>) button.
+  Quarantining a host will reconfigure the host's network stack to only allow it
+  to communicate with the Velociraptor server. This allows you to continue
+  investigating the host remotely while preventing the host from making other
+  network connections.
 ---
 For Windows and Linux clients you can quarantine the host using the
 **Quarantine Host** (<i class="fas fa-briefcase-medical"></i>) button.
-Quarantining a host will reconfigure the hosts's network stack to only allow it
+Quarantining a host will reconfigure the host's network stack to only allow it
 to communicate with the Velociraptor server. This allows you to continue
 investigating the host remotely while preventing the host from making other
 network connections.
@@ -35,8 +42,8 @@ always check for issues in the logs and outputs for quarantine artifacts.
 
 The quarantine action is implemented by the following artifacts:
 
-- [Windows.Remediation.Quarantine]({{< ref "/artifact_references/pages/windows.remediation.quarantine/" >}})
-- [Linux.Remediation.Quarantine]({{< ref "/artifact_references/pages/linux.remediation.quarantine/" >}})
+- [Windows.Remediation.Quarantine](/artifact_references/pages/windows.remediation.quarantine/)
+- [Linux.Remediation.Quarantine](/artifact_references/pages/linux.remediation.quarantine/)
 
 There is currently no quarantine artifact or capability for macOS.
 
@@ -46,17 +53,17 @@ artifact descriptions included in each of the above artifacts.
 
 A quarantined client will gain the label `Quarantine` so you can easily search
 for all quarantined hosts using the
-[label search]({{< ref "/docs/clients/searching/#search-syntax" >}}) feature.
+[label search](/docs/clients/searching/#search-syntax) feature.
 
 ## Windows-specific quarantine aspects
 
 For Windows clients the quarantine process is label-driven.
 
 A default client event monitoring query (implemented by the artifact
-[Windows.Remediation.QuarantineMonitor]({{< ref "/artifact_references/pages/windows.remediation.quarantinemonitor/" >}}))
+[Windows.Remediation.QuarantineMonitor](/artifact_references/pages/windows.remediation.quarantinemonitor/))
 checks for the presence of the `Quarantine` label on Windows clients. If the
 label is present then it runs the
-[Windows.Remediation.Quarantine]({{< ref "/artifact_references/pages/windows.remediation.quarantine/" >}})
+[Windows.Remediation.Quarantine](/artifact_references/pages/windows.remediation.quarantine/)
 artifact which applies the quarantine (IPSec policy-based network isolation).
 
 The quarantine action is periodically reapplied which means it remains in

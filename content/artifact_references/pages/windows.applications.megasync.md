@@ -1,7 +1,12 @@
 ---
 title: Windows.Applications.MegaSync
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Parses MEGASync logs and allows using regular expressions to search for
+  entries of interest.
 ---
 
 Parses MEGASync logs and allows using regular expressions to search for

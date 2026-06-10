@@ -1,34 +1,39 @@
 ---
 title: Server.Utils.AddUser
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+description: |
+  Creates a new Velociraptor GUI user with a specified role and a
+  randomly generated password.
 ---
 
-This server artifact is used to add new user to the Velociraptor
-GUI.
+Creates a new Velociraptor GUI user with a specified role and a
+randomly generated password.
 
-A new random password is generated for the user and stored in the
-server metadata object (to ensure it cannot be seen in the output
-of the artifact itself). The Administrator can share this password
-with the user later.
+The new randomly-generated password is stored in the server metadata
+object, to ensure it cannot be seen in the output of the artifact
+itself. The Administrator can share this password with the user
+later.
 
 When using SSO (e.g. oauth) this password is not used and can be
-ignored (Becuase the SSO provider will do the authentication).
+ignored, because the SSO provider will do the authentication.
 
 
 <pre><code class="language-yaml">
 name: Server.Utils.AddUser
 description: |
-  This server artifact is used to add new user to the Velociraptor
-  GUI.
+  Creates a new Velociraptor GUI user with a specified role and a
+  randomly generated password.
 
-  A new random password is generated for the user and stored in the
-  server metadata object (to ensure it cannot be seen in the output
-  of the artifact itself). The Administrator can share this password
-  with the user later.
+  The new randomly-generated password is stored in the server metadata
+  object, to ensure it cannot be seen in the output of the artifact
+  itself. The Administrator can share this password with the user
+  later.
 
   When using SSO (e.g. oauth) this password is not used and can be
-  ignored (Becuase the SSO provider will do the authentication).
+  ignored, because the SSO provider will do the authentication.
 
 type: SERVER
 

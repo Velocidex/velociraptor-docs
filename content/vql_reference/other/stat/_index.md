@@ -2,7 +2,11 @@
 title: stat
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Get file information. Unlike glob() this does not support wildcards.
 ---
 
 

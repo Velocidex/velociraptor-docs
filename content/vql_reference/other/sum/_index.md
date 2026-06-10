@@ -2,7 +2,11 @@
 title: sum
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Sums the items.
 ---
 
 

@@ -1,28 +1,39 @@
 ---
 title: Windows.Forensics.CertUtil
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Extracts download metadata from the Windows Certutil
+  CryptnetUrlCache to reveal LOLBin downloads.
 ---
 
-The Windows Certutil binary is capable of downloading arbitrary files.
-Attackers typically use it to fetch tools undetected when using "Living off
-the Land" (LOL) techniques.
+Extracts download metadata from the Windows Certutil
+CryptnetUrlCache to reveal LOLBin downloads.
 
-Certutil maintains a cache of the downloaded files and this contains valuable
-metadata. The artifact parses this metadata to establish what was downloaded
-and when.
+The Windows Certutil binary is capable of downloading arbitrary
+files. Attackers typically use it to fetch tools undetected when
+using "Living off the Land" (LOL) techniques.
+
+Certutil maintains a cache of the downloaded files and this contains
+valuable metadata. The artifact parses this metadata to establish
+what was downloaded and when.
 
 
 <pre><code class="language-yaml">
 name: Windows.Forensics.CertUtil
 description: |
-  The Windows Certutil binary is capable of downloading arbitrary files.
-  Attackers typically use it to fetch tools undetected when using "Living off
-  the Land" (LOL) techniques.
+  Extracts download metadata from the Windows Certutil
+  CryptnetUrlCache to reveal LOLBin downloads.
 
-  Certutil maintains a cache of the downloaded files and this contains valuable
-  metadata. The artifact parses this metadata to establish what was downloaded
-  and when.
+  The Windows Certutil binary is capable of downloading arbitrary
+  files. Attackers typically use it to fetch tools undetected when
+  using "Living off the Land" (LOL) techniques.
+
+  Certutil maintains a cache of the downloaded files and this contains
+  valuable metadata. The artifact parses this metadata to establish
+  what was downloaded and when.
 
 reference:
   - https://u0041.co/blog/post/3

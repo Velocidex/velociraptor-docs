@@ -7,6 +7,11 @@ summary: |
     of execution artifacts.
 draft: false
 weight: 60
+description: |
+  Sometimes we need to find out when (or if) a particular binary was run
+  on the endpoint. This question can come up in a number of contexts,
+  such as running malware by a user, lateral movement from a threat
+  actor etc.
 ---
 
 Sometimes we need to find out when (or if) a particular binary was run
@@ -20,7 +25,7 @@ of execution artifacts.
 
 ## Prefetch files
 
-Prefetch files are used to [keep track of executions](http://web.archive.org/web/20130315214654/http://windows.microsoft.com:80/en-US/windows7/What-is-the-prefetch-folder)
+Prefetch files are used to [keep track of executions](https://web.archive.org/web/20130315214654/http://windows.microsoft.com:80/en-US/windows7/What-is-the-prefetch-folder)
 
 > What is the prefetch folder?
 >
@@ -47,7 +52,7 @@ Prefetch files contain the following data (In recent Windows 10)
 
 You can try to establish the original path of the executable by [brute forcing the hash](https://hiddenillusion.github.io/2016/05/10/go-prefetch-yourself/). Typically the full path of the binary is also encoded as one of the linked PE files.
 
-Look for particularly suspicious binaries, eg sc.exe, xcopy.exe,
+Look for particularly suspicious binaries, e.g. sc.exe, xcopy.exe,
 psexec.exe, bitsadmin.exe and particularly random looking binary
 names.  Typically lower execution counts are more interesting
 
@@ -78,7 +83,7 @@ timestamps.
 
 BAM is a Windows service that Controls activity of background
 applications.  This service exists in Windows 10 only after Fall
-Creators update – [version 1709](https://www.andreafortuna.org/dfir/forensic-artifacts-evidences-of-program-execution-on-windows-systems/).
+Creators update – [version 1709](https://andreafortuna.org/2018/05/23/forensic-artifacts-evidences-of-program-execution-on-windows-systems/).
 
 The service maintains binary data in the registry which keeps track on
 the execution of different programs by the user. Velociraptor can
@@ -102,7 +107,12 @@ compatibility database stored in the registry key
 
 `HKLM\SYSTEM\CurrentControlSet\Control\SessionManager\AppCompatibility\AppCompatCache`
 
-You can read more about the Shim cache [here](https://www.fireeye.com/content/dam/fireeye-www/services/freeware/shimcache-whitepaper.pdf) or [here](http://www.alex-ionescu.com/?p=39) or [here](https://www.andreafortuna.org/2017/10/16/amcache-and-shimcache-in-forensic-analysis/).
+You can read more about the Shim cache
+[here](https://web.archive.org/web/20210727184134/https://www.fireeye.com/content/dam/fireeye-www/services/freeware/shimcache-whitepaper.pdf)
+or
+[here](https://www.alex-ionescu.com/secrets-of-the-application-compatilibity-database-sdb-part-1/)
+or
+[here](https://andreafortuna.org/2017/10/16/amcache-and-shimcache-in-forensic-analysis/).
 
 The Shim cache database tracks the executables’ file name, file size and last modified time of the binary.
 
@@ -131,9 +141,10 @@ accessor.
 {{% notice note %}}
 
 Note the key location is a URL - Velociraptor uses URL notation to
-access raw registry hives as described [here]({{< ref "/docs/forensic/filesystem#raw-registry-parsing" >}}). This one uses
-the ntfs file accessor to access the raw hive data since it is usually
-locked at runtime.
+access raw registry hives as described
+[here](/docs/forensic/filesystem/#raw-registry-file-parsing).
+This uses the ntfs file accessor to access the raw hive data since it
+is usually locked at runtime.
 
 {{% /notice %}}
 
@@ -144,7 +155,7 @@ order to power the "App history" tab in the task manager.
 
 ![SRUM](image12.png)
 
-Metrics are stored in an ESE database at the location `%windir%\System32\sru\SRUDB.dat`. You can read more about the SRUM [here](https://www.velocidex.com/blog/medium/2019-12-31_digging-into-the-system-resource-usage-monitor-srum-afbadb1a375/).
+Metrics are stored in an ESE database at the location `%windir%\System32\sru\SRUDB.dat`. You can read more about the SRUM [here](/blog/2019/2019-12-31_digging-into-the-system-resource-usage-monitor-srum-afbadb1a375/).
 
 You can examine the ESE database manually using Nirsoft [ESEDatabaseViewer](https://www.nirsoft.net/utils/ese_database_view.html).
 

@@ -1,10 +1,16 @@
 ---
 title: Windows.Forensics.NotepadParser
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Parses Windows 11 Notepad TabState and WindowState files to recover
+  edited file paths, timestamps, and content.
 ---
 
-Parse the Windows 11 Notepad state files.
+Parses Windows 11 Notepad TabState and WindowState files to recover
+edited file paths, timestamps, and content.
 
 Based on the research work published by ogmini. This artifact parses
 the TabState and WindowState files and also uploads them for
@@ -14,7 +20,8 @@ preservation.
 <pre><code class="language-yaml">
 name: Windows.Forensics.NotepadParser
 description: |
-  Parse the Windows 11 Notepad state files.
+  Parses Windows 11 Notepad TabState and WindowState files to recover
+  edited file paths, timestamps, and content.
 
   Based on the research work published by ogmini. This artifact parses
   the TabState and WindowState files and also uploads them for

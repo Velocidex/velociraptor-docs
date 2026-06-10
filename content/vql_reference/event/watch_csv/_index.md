@@ -2,7 +2,16 @@
 title: watch_csv
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Watch a CSV file and stream events from it. Note: This is an event
+  plugin which does not complete.
+
+  This plugin is the event version of `parse_csv()`. When the CSV file
+  grows this plugin will emit the new rows.
+
 ---
 
 

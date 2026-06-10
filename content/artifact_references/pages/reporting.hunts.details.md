@@ -1,18 +1,23 @@
 ---
 title: Reporting.Hunts.Details
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+description: |
+  Reports hunt execution details including client participation,
+  duration, and completion status.
 ---
 
-Report details about which client ran each hunt, how long it took
-and if it has completed.
+Reports hunt execution details including client participation,
+duration, and completion status.
 
 
 <pre><code class="language-yaml">
 name: Reporting.Hunts.Details
 description: |
-  Report details about which client ran each hunt, how long it took
-  and if it has completed.
+  Reports hunt execution details including client participation,
+  duration, and completion status.
 
 type: SERVER
 
@@ -29,14 +34,14 @@ parameters:
 
 sources:
   - query: |
-      LET hunts = SELECT hunt_id,
+      LET Hunts = SELECT hunt_id,
                          create_time,
                          hunt_description
         FROM hunts()
         WHERE artifacts =~ ArtifactRegex AND hunt_description =~ DescriptionRegex
         ORDER BY create_time DESC
 
-      LET flows = SELECT hunt_id,
+      LET Flows = SELECT hunt_id,
                          hunt_description,
                          client_info(client_id=ClientId).os_info.fqdn AS FQDN,
                          ClientId,
@@ -50,7 +55,7 @@ sources:
         FROM hunt_flows(hunt_id=hunt_id)
         ORDER BY create_time DESC
 
-      SELECT * FROM foreach(row=hunts, query=flows)
+      SELECT * FROM foreach(row=Hunts, query=Flows)
 
 </code></pre>
 

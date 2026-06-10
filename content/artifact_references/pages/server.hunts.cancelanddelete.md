@@ -1,23 +1,30 @@
 ---
 title: Server.Hunts.CancelAndDelete
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+description: |
+  Cancels all in-flight flows in a hunt, deletes the hunt, and
+  optionally removes collected data.
 ---
 
-Velociraptor Hunts are a way of running the same flow on
-many endpoints at once. Hunts issue very quickly and wait
-until each endpoint returns results.
+Cancels all in-flight flows in a hunt, deletes the hunt, and
+optionally removes collected data.
 
-Sometimes, the artifacts collected might take a long time and
-have unacceptable performance impact on the endpoint.
-In some cases the artifacts end up retrieving too much data
-that is not needed.
+Velociraptor Hunts are a way of running the same flow on many
+endpoints at once. Hunts issue very quickly and wait until each
+endpoint returns results.
 
-For those cases you might want to run the following server
-artifact. It cancels all currently in-flight collections.
+Sometimes, the artifacts collected might take a long time and have
+unacceptable performance impact on the endpoint. In some cases the
+artifacts end up retrieving too much data that is not needed.
 
-Optionally you can also remove any files already collected if you
-do not need them.
+For those cases you might want to run the following server artifact.
+It cancels all currently in-flight collections.
+
+Optionally you can also remove any files already collected if you do
+not need them.
 
 This artifact is implicitly collected by the GUI when pressing the
 "Delete Hunt" Button.
@@ -26,23 +33,25 @@ This artifact is implicitly collected by the GUI when pressing the
 <pre><code class="language-yaml">
 name: Server.Hunts.CancelAndDelete
 description: |
-   Velociraptor Hunts are a way of running the same flow on
-   many endpoints at once. Hunts issue very quickly and wait
-   until each endpoint returns results.
+  Cancels all in-flight flows in a hunt, deletes the hunt, and
+  optionally removes collected data.
 
-   Sometimes, the artifacts collected might take a long time and
-   have unacceptable performance impact on the endpoint.
-   In some cases the artifacts end up retrieving too much data
-   that is not needed.
+  Velociraptor Hunts are a way of running the same flow on many
+  endpoints at once. Hunts issue very quickly and wait until each
+  endpoint returns results.
 
-   For those cases you might want to run the following server
-   artifact. It cancels all currently in-flight collections.
+  Sometimes, the artifacts collected might take a long time and have
+  unacceptable performance impact on the endpoint. In some cases the
+  artifacts end up retrieving too much data that is not needed.
 
-   Optionally you can also remove any files already collected if you
-   do not need them.
+  For those cases you might want to run the following server artifact.
+  It cancels all currently in-flight collections.
 
-   This artifact is implicitly collected by the GUI when pressing the
-   "Delete Hunt" Button.
+  Optionally you can also remove any files already collected if you do
+  not need them.
+
+  This artifact is implicitly collected by the GUI when pressing the
+  "Delete Hunt" Button.
 
 type: SERVER
 
@@ -62,14 +71,34 @@ parameters:
 sources:
   - name: CancelFlows
     query: |
-      SELECT * FROM Artifact.Server.Utils.CancelHunt(Hunts=Hunts)
+      LET all_flows(HuntId) = SELECT Flow.client_id AS client_id, Flow.session_id AS flow_id
+      FROM hunt_flows(hunt_id=HuntId)
+      WHERE NOT Flow.state =~ "ERROR|FINISHED"
+
+      LET cancellations(HuntId) = SELECT HuntId, client_id, flow_id,
+             cancel_flow(client_id=client_id, flow_id=flow_id) AS Cancellation
+      FROM all_flows(HuntId=HuntId)
+
+      LET AllHunts &lt;= if(condition=HuntId, then=Hunts + HuntId, else=Hunts)
+
+      SELECT * FROM foreach(row={
+        SELECT _value AS HuntId
+        FROM items(item=AllHunts)
+        WHERE hunt_update(hunt_id=HuntId, add_labels="Deleting...")
+      }, query={
+        SELECT * FROM cancellations(HuntId=HuntId)
+      }, workers=2)
 
   - name: HuntFiles
     query: |
       LET AllHunts &lt;= if(condition=HuntId, then=Hunts + HuntId, else=Hunts)
 
       SELECT * FROM foreach(row={
-        SELECT _value as HuntId FROM items(item=AllHunts)
+        SELECT _value as HuntId
+        FROM items(item=AllHunts)
+        WHERE if(condition=DeleteAllFiles,
+                 then=hunt_update(hunt_id=HuntId, add_labels="Deleting..."),
+                 else=TRUE)
       }, query={
         SELECT *
         FROM hunt_delete(hunt_id=HuntId, really_do_it=DeleteAllFiles)

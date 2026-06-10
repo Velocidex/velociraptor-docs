@@ -1,28 +1,37 @@
 ---
 title: System.VFS.DownloadFile
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Uploads a single file or recursively uploads directory contents from
+  a client to populate information in the VFS screen.
 ---
 
-This is an internal artifact used by the GUI to populate the
-VFS. You may run it manually if you like, but typically it is
-launched by the GUI when the user clicks the "Collect from client"
-button at the file "Stats" tab.
+Uploads a single file or recursively uploads directory contents from
+a client to populate information in the VFS screen.
+
+You may run it manually if you like, but typically it is launched by
+the GUI when the user clicks the "Collect from client" button at the
+file "Stats" tab.
 
 If you run it yourself (or via the API) the results will also be
-shown in the VFS view.
+visible in the VFS view.
 
 
 <pre><code class="language-yaml">
 name: System.VFS.DownloadFile
 description: |
-  This is an internal artifact used by the GUI to populate the
-  VFS. You may run it manually if you like, but typically it is
-  launched by the GUI when the user clicks the "Collect from client"
-  button at the file "Stats" tab.
+  Uploads a single file or recursively uploads directory contents from
+  a client to populate information in the VFS screen.
+
+  You may run it manually if you like, but typically it is launched by
+  the GUI when the user clicks the "Collect from client" button at the
+  file "Stats" tab.
 
   If you run it yourself (or via the API) the results will also be
-  shown in the VFS view.
+  visible in the VFS view.
 
 parameters:
   - name: Path
@@ -40,7 +49,7 @@ parameters:
       we download all files below it.
   - name: UPLOAD_IS_RESUMABLE
     type: bool
-    default: Y
+    default: N
     description: If set the uploads can be resumed if the flow times out or errors.
 
 sources:

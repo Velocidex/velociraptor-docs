@@ -42,7 +42,7 @@ description: |
     When using mode strings (NumericMode unchecked), modes take the format
     "-rwx-r-x-r-x". Regex comparison is used, and an implicit '$' anchor
     is inserted at the end of the string. String modes allows for verifying only
-    certain bits of permissions, like ensuring that only the owner has write 
+    certain bits of permissions, like ensuring that only the owner has write
     access, no one has permission to execute, but read access is not important:
     "r.-.--.--". Or ensuring that SUID/GUID is not set. For finding files
     specifically with SUID set, look at Linux.Sys.SUID.
@@ -102,7 +102,7 @@ parameters:
     description: Include directories
   - name: FollowLinks
     type: bool
-    description: Inlcude all symlinks, even though they may interfere with the results
+    description: Include all symlinks, even though they may interfere with the results
 
 precondition: |
     SELECT OS From info() WHERE OS = 'linux'

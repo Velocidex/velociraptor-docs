@@ -5,7 +5,10 @@ date: 2025-05-16
 last_reviewed: 2025-09-04
 draft: false
 weight: 80
-summary: "Learn about keyboard shortcuts in the GUI"
+summary: Learn about keyboard shortcuts in the GUI
+description: |
+  The Velociraptor GUI supports many keyboard shortcuts to navigate around
+  quicker. So you don't have to be slowed down by mouse clicks!
 ---
 
 The Velociraptor GUI supports many keyboard shortcuts to navigate around
@@ -23,8 +26,8 @@ These are available on any screen in the GUI.
 
 |                                |   |                                                         |
 |--------------------------------|---|---------------------------------------------------------|
-| `<Alt>` + `d`                  | : | Goto dashboard                                          |
-| `<Alt>` + `n`                  | : | Goto notebooks                                          |
+| `<Alt>` + `d`                  | : | Go to dashboard                                          |
+| `<Alt>` + `n`                  | : | Go to notebooks                                          |
 | `<Alt>` + `c`                  | : | Collected artifacts (for the currently selected client) |
 | `<Ctrl>` + `/`                 | : | Show/Hide keyboard hotkeys help                         |
 | `<Ctrl>` + ( `<Shift>` ) + `?` | : | Move focus to the client search box                     |
@@ -69,7 +72,7 @@ results.
 
 ### Artifact Editor
 
-These are available in the [artifact editor]({{< ref "/docs/gui/artifacts/" >}})
+These are available in the [artifact editor](/docs/gui/artifacts/)
 and Sigma editor.
 
 The editor uses the ACE (Ajax.org Cloud9 Editor) under the hood. This means that
@@ -84,3 +87,16 @@ In addition, the following shortcuts are available in the editor.
 |----------------------|:-:|---------------------------------------|
 | `<Ctrl>` + `,`       | : | Popup the editor configuration dialog |
 | `<Ctrl>` + `<Enter>` | : | Save editor contents                  |
+
+### Multi-select deletion
+
+Multiple items can be selected for deletion by clicking the first item in the
+range, then pressing `SHIFT`, and then clicking the last in the range.
+
+This allows deleting many items at once from the GUI. The same process works for
+deleting multiple clients, multiple artifacts in the artifacts viewer, multiple
+notebooks, and multiple collections from a client.
+
+![Selecting multiple flows for deletion](multi-select.svg)
+
+![Deleting multiple flows](multi-delete.png)

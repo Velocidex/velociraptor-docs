@@ -20,7 +20,7 @@ SRUM is a feature in modern Windows systems which collect statistics on executio
 
 As from the [0.3.7 release of Velociraptor](https://github.com/Velocidex/velociraptor/releases/tag/v0.3.7), an ESE parser is built into the client, allowing VQL artifacts to directly query ESE databases. This opens up the exciting possibility of extracting and querying information from the SRUM database directly on the endpoint.
 
-Although this post will not go into detail on SRUM itself (This is covered in detail [elsewhere](https://www.sans.org/cyber-security-summit/archives/file/summit-archive-1492184583.pdf)), I will describe how Velociraptor’s SRUM artifact can be used to hunt efficiently across many thousands of endpoints to collect evidence relevant to DFIR investigations.
+Although this post will not go into detail on SRUM itself, as this is covered in detail elsewhere, I will describe how Velociraptor’s SRUM artifact can be used to hunt efficiently across many thousands of endpoints to collect evidence relevant to DFIR investigations.
 
 Have you ever noticed the windows task manager’s “App History” tab?
 
@@ -94,4 +94,4 @@ These limitations are likely to improve in future as more artifacts are written 
 
 ## Training
 
-If you happen to be in Sydney or Melbourne and would like to learn more about incident response techniques such as the SRUM database and how to apply them with Velociraptor, consider joining us in our [upcoming training events](https://www.velocidex.com/training/).
+If you happen to be in Sydney or Melbourne and would like to learn more about incident response techniques such as the SRUM database and how to apply them with Velociraptor, consider joining us in our [upcoming training events](/training/).

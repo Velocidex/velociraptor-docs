@@ -4,8 +4,10 @@ menutitle: Managing Artifacts
 date: 2025-05-03
 last_reviewed: 2025-05-18
 draft: false
-weight: 10
-summary: "How to find, manage, create and edit artifacts in the GUI"
+weight: 60
+summary: How to find, manage, create and edit artifacts in the GUI
+description: |
+  ## Finding, managing, creating and editing artifacts in the GUI
 ---
 
 ## Finding, managing, creating and editing artifacts in the GUI
@@ -41,7 +43,7 @@ The search bar on the right side of the Artifacts screen allows you to search by
 any text string, regular expression, and certain category expressions (see table
 below).
 
-As explained [here]({{< ref "/docs/artifacts/basic_fields/" >}}) the `name`,
+As explained [here](/docs/artifacts/basic_fields/) the `name`,
 `aliases`, and `description` fields from all artifacts are indexed and
 searchable.
 
@@ -67,7 +69,7 @@ Filters, which are available as a drop-down list next to the search bar.
 | **Include Empty sources** | `empty:true`           | Same as "All Artifacts" filter but also includes <br>artifacts without sources.\*\* |
 
 \*\* For more information about artifacts without sources see
-[here]({{< ref "/docs/artifacts/use_cases/#source-free-artifacts" >}}).
+[here](/docs/artifacts/use_cases/#sourceless-artifacts).
 
 The above filter expressions can also be used in the search bar directly and
 combined with search strings. Searches are _not_ case-sensitive.
@@ -87,7 +89,7 @@ This feature requires version 0.75 or above.
 
 {{% /notice %}}
 
-Artifact [Tags]({{< ref "/docs/vql/artifacts/managing/#artifact-metadata" >}})
+Artifact [Tags](/docs/vql/artifacts/managing/#artifact-metadata)
 can be applied to selected artifacts to make finding and managing those
 artifacts easier in the GUI. These tags are stored as metadata in the server's
 internal artifact repository, and are therefore not part of the artifacts' YAML.
@@ -103,12 +105,12 @@ list on the Artifacts screen.
 The `tag` term can also be used in filter expressions, for example
 `tag:exchange defender` will match all artifacts tagged with "exchange" and
 having the term "defender" in their
-[searchable fields]({{< ref "/docs/artifacts/basic_fields/#summary" >}}).
+[searchable fields](/docs/artifacts/basic_fields/#summary).
 
 ### Importing Artifact Packs
 
 There are
-[many ways to add artifact definitions]({{< ref "/docs/artifacts/#loading-importing-and-saving-artifacts" >}})
+[many ways to add artifact definitions](/docs/artifacts/#loading-importing-and-saving-artifacts)
 to Velociraptor. On the Artifacts screen you can import zip archives containing
 multiple artifacts.
 
@@ -121,8 +123,7 @@ prefix!), and the option to only import artifacts that match a name filter.
 The file structure inside the zip doesn't matter. Velociraptor will search for
 all files in the zip with a `.yaml` or `.yml` file extension. The imported
 artifacts will be saved to the server's datastore using the file and folder
-structure described
-[here]({{< ref "/docs/artifacts/basic_fields/#basic-fields" >}}).
+structure described [here](/docs/artifacts/basic_fields/).
 
 ### Importing Artifacts From Velociraptor's Specialized Artifact Projects
 
@@ -173,7 +174,7 @@ import artifact:
 - `Server.Import.CuratedSigma`
 
 For more information please see the
-[version 0.75 release notes]({{< ref "/blog/2025/2025-08-30-release-notes-0.75/#removing-some-large-artifacts" >}}).
+[version 0.75 release notes](/blog/2025/2025-08-30-release-notes-0.75/#removal-of-some-large-artifacts).
 
 {{% /notice %}}
 
@@ -214,12 +215,13 @@ easily upgraded, yet need functionality only found in the latest artifacts.
 {{% notice warning "Forward compatibility is not guaranteed!" %}}
 
 While clients should have no problems running older versions of the
-standard artifacts, [we cannot guarantee]({{< ref
-"/docs/overview/support/" >}}) that the latest artifact versions will
-be compatible with older clients. This depends mainly on whether or
-not the latest artifact versions contain VQL that uses new functions
-or plugins which the older client may not have. You should always test
-your particular scenario.
+standard artifacts,
+[we cannot guarantee](/docs/overview/support/)
+that the latest artifact versions will be compatible with older
+clients. This depends mainly on whether or not the latest artifact
+versions contain VQL that uses new functions or plugins which the
+older client may not have. You should always test your particular
+scenario.
 
 {{% /notice %}}
 
@@ -235,7 +237,7 @@ artifact to help get you started.
 ![New artifact](new_artifact.png)
 
 When you select an existing
-[built-in artifact]({{< ref "/docs/artifacts/#built-in-vs-compiled-in-vs-custom-artifacts" >}})
+[built-in artifact](/docs/artifacts/#built-in-vs-compiled-in-vs-custom-artifacts)
 in the GUI, and then attempt to edit it, you are actually creating a custom
 _copy_ of that artifact.
 
@@ -271,7 +273,7 @@ common items to tweak are the theme and font size.
 ![editor preferences](editor_preferences.png)
 
 The editor preferences you set here will also be used in other places in the
-GUI, for example [notebooks]({{< ref "/docs/notebooks/" >}}) which use the same
+GUI, for example [notebooks](/docs/notebooks/) which use the same
 editor component.
 
 VQL doesn't care about formatting, but for us humans it's nice to have VQL code
@@ -351,4 +353,4 @@ corresponding YAML documents from their source locations, and then restart the
 server.
 
 For a more extensive discussion of built-in artifacts please see
-[Built-in vs. Compiled-in vs. Custom Artifacts]({{< ref "/docs/artifacts/#built-in-vs-compiled-in-vs-custom-artifacts" >}}).
+[Built-in vs. Compiled-in vs. Custom Artifacts](/docs/artifacts/#built-in-vs-compiled-in-vs-custom-artifacts).

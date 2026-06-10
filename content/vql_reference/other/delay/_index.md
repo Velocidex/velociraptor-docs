@@ -2,7 +2,11 @@
 title: delay
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Executes 'query' and delays relaying the rows by the specified number of seconds.
 ---
 
 

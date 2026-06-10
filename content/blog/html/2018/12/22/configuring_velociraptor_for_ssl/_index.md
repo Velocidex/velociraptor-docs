@@ -102,7 +102,7 @@ Next configure the service to start:
 #
 # /etc/default/ddclient
 
-# Set to "true" if ddclient should be run every time DHCP client ('dhclient'
+# Set to "true" if ddclient should be run every time DHCP client (`dhclient`
 # from package isc-dhcp-client) updates the systems IP address.
 run_dhclient="false"
 
@@ -119,7 +119,7 @@ run_daemon="true"
 daemon_interval="300"
 ```
 
-Run dhclient and check that it updates the address correctly.
+Run `dhclient` and check that it updates the address correctly.
 
 Configuring Velociraptor for SSL
 ================================

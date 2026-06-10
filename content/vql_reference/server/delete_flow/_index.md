@@ -2,7 +2,11 @@
 title: delete_flow
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Delete all the files that make up a flow.
 ---
 
 

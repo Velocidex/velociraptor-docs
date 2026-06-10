@@ -1,11 +1,11 @@
 
 @font-face {
-    font-family: Excalifont;
+    font-family: "Excalifont";
     src: url("/fonts/playpen-sans-v13-latin-500.woff2");
 }
 
 @font-face {
-    font-family: Nunito;
+    font-family: "Nunito";
     src: url("/fonts/playpen-sans-v13-latin-800.woff2");
 }
 
@@ -124,6 +124,19 @@ body a:hover {
 
 a:hover {
     color: var(--MAIN-LINK-HOVER-color);
+}
+
+a:focus:not(#sidebar *) {
+    outline-style: dashed !important;
+    outline-width: medium !important;
+    outline-offset: 2px !important;
+    outline-color: gray !important;
+    text-decoration: none !important;
+}
+
+#sidebar a:focus, #sidebar a {
+    outline: none;
+    text-decoration: none;
 }
 
 #sidebar ul li.visited > a .read-icon {
@@ -273,7 +286,14 @@ blockquote h1 {
 
 .input-group .form-control {
     font-size: 20px !important;
-    padding: 1.5em !important;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+#contribute-button {
+    margin-top: 0;
 }
 
 .input-group-addon .fas.fa-search {
@@ -816,6 +836,14 @@ figcaption  {
     margin-top: 20px;
     padding-left: 20px;
     color: var(--MAIN-TEXT-color);
+    background: var(--CODE-SECTION-BG-color);
+}
+
+.item-comment + li {
+    margin-top: -5px;
+}
+
+.item-name {
 }
 
 .reference-key {
@@ -873,7 +901,7 @@ figcaption  {
 details > summary:first-of-type {
     display: list-item;
     counter-increment: list-item 0;
-    list-style: inside disclosure-closed;
+
 }
 
 #body-inner table {
@@ -933,36 +961,39 @@ td.signature {
 }
 
 
-.featherlight-content {
-    width: 90%;
+.modal figure {
+    width: 90vw;
+    max-width: 100vw;
 }
 
-.featherlight-content .figure {
+.modal figure div.figure {
+    width: 90vw;
     max-width: none;
+    max-height: none;
 }
 
-.featherlight-content svg {
-    max-height: 80vh;
+.modal figure img {
+    width: 3000px;
 }
 
 figure div.figure {
     cursor: pointer;
     margin: 0 auto;
-    max-width: 80%;
+    max-width: 60%;
     text-align: center;
 }
 
 figure div.figure svg,
 figure div.figure img {
-    max-width: 80%;
+    max-width: 100%;
     box-shadow: 0 10px 30px rgb(0 0 0 / 50%);
     height: auto;
     margin: 1rem auto 0rem auto;
     text-align: center;
 }
 
-.featherlight .featherlight-content img {
-    margin: 0 auto !important;
+figure img {
+    margin: 0 auto;
 }
 
 .image-link {
@@ -1125,4 +1156,129 @@ body.light img.logo.dark {
 
 body.dark img.logo.dark {
     display: inherit;
+}
+
+
+table tr th {
+    padding-right: 20px;
+}
+
+.search_frame {
+    width: 100%;
+    height: 100vh;
+}
+
+.category-icon {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.sidemenu.hidden {
+    display: none;
+}
+
+li.dd-item {
+    width: max-content;
+}
+
+body #sidebar ul li li {
+    overflow: hidden;
+}
+
+ul.sidebar {
+    width: max-content;
+}
+
+* {
+    scroll-margin-top: 80px;
+}
+
+div.search-breadcrumb {
+    margin: 0;
+    padding: 0;
+}
+
+div.search-breadcrumb a {
+    font-size: small;
+    padding-right: 10px;
+    color: var(--MAIN-TEXT-color);
+}
+
+div.error {
+    color: var(--mynotice-warning-border);
+}
+
+div.search-box {
+    position: fixed;
+    padding-top: 30px;
+    padding-right: 40px;
+    padding-left: 35px;
+    margin-left: -30px;
+    top: 0px;
+    z-index: 1000;
+    padding-bottom: 0px;
+    background-color: var(--MAIN-TEXT-background-color);
+    width: -moz-available;
+}
+
+@media only all and (max-width: 47.938em) {
+    div.search-box {
+        margin-left: 40px;
+    }
+
+    div#top-bar.hidden {
+        display: inherit !important;
+    }
+}
+
+div.search-pad {
+    padding-top: 100px;
+}
+
+#loading {
+    text-align: center;
+    display: none;
+    position: fixed;
+    width: 50vw;
+    opacity: 0.5;
+    margin-top: 25vh;
+    z-index: 1000;
+}
+
+#body-inner.loading #loading {
+    display: inherit;
+}
+
+#body-inner.loading .search_results {
+    display: none;
+}
+
+.search_box .input-group input#myInput.form-control {
+    padding-bottom: 3px;
+}
+
+#body-inner.offset {
+    margin-top: 80px;
+}
+
+
+
+details {
+  padding: 10px;
+  background: var(--MENU-SECTIONS-BG-color);
+  border-radius: 15px;
+}
+
+details summary {
+    cursor: pointer;
+    color: var(--MAIN-TITLES-TEXT-color);
+}
+
+details[open] > summary {
+  color: var(--MAIN-TEXT-color);
+  opacity: 0.5;
+}
+
+details[open] {
+    background: var(--MENU-SECTIONS-BG-color);
 }

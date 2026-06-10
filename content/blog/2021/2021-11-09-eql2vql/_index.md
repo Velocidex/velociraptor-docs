@@ -20,10 +20,11 @@ date: 2021-11-09
 {{% notice warning "Outdated content" %}}
 
 This article describes a threat detection approach that has since been
-superseded by Velociraptor's [built-in Sigma
-functionality]({{<ref "/blog/2023/2023-11-15-sigma_in_velociraptor" >}}),
-however it is retained here for historical and instructive purposes since it
-also demonstrates how the flexibility of VQL makes novel solutions possible.
+superseded by Velociraptor's
+[built-in Sigma functionality](/blog/2023/2023-11-15-sigma_in_velociraptor/),
+however it is retained here for historical and instructive purposes
+since it also demonstrates how the flexibility of VQL makes novel
+solutions possible.
 
 {{% /notice %}}
 
@@ -140,7 +141,7 @@ works on.
 
 All the details of how the original Sysmon event fields are
 transformed to ECS fields can be found coded in
-[winlogbeat-sysmon.js](https://github.com/elastic/beats/blob/master/x-pack/winlogbeat/module/sysmon/config/winlogbeat-sysmon.js)
+[winlogbeat's sysmon.yml](https://github.com/elastic/beats/blob/main/x-pack/winlogbeat/module/sysmon/ingest/sysmon.yml)
 
 ## How can we use EQL detection queries?
 
@@ -274,14 +275,15 @@ searching for signed of past compromise on endpoints. However what
 about real time alerting? It would be nice to receive immediate
 notification when a detection rule is triggered.
 
-Velociraptor supports real time [client monitoring]({{< ref
-"/docs/client_monitoring/_index.md" >}}) via event queries. Event queries run
-constantly on the endpoint receiving rows from events.
+Velociraptor supports real time
+[client monitoring](/docs/clients/monitoring/)
+via event queries. Event queries run constantly on the endpoint
+receiving rows from events.
 
 We have previously explored how Event Queries can be used for real
-time monitoring and in particular how VQL can leverage [Event Tracing
-for Windows]({{< ref
-"/blog/2021/2021-08-18-velociraptor-and-etw/_index.md" >}}) (ETW).
+time monitoring and in particular how VQL can leverage
+[Event Tracing for Windows](/blog/2021/2021-08-18-velociraptor-and-etw/)
+(ETW).
 
 ### Using EQL detections with real time monitoring
 
@@ -331,10 +333,9 @@ single row and send it to the server.
 
 
 We can escalate such detections, through a number of mechanisms,
-such as [Slack alerts]({{< ref
-"/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/_index.md"
->}}), or escalate to an external case management tool like [The Hive
-](https://wlambertts.medium.com/zero-dollar-detection-and-response-orchestration-with-n8n-security-onion-thehive-and-10b5e685e2a1). See [Server Monitoring]({{< ref "/docs/server_automation/server_monitoring/" >}}) for more information.
+such as
+[Slack alerts](/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/), or escalate to an external case management tool like [The Hive
+](https://wlambertts.medium.com/zero-dollar-detection-and-response-orchestration-with-n8n-security-onion-thehive-and-10b5e685e2a1). See [Server Monitoring](/docs/server_automation/server_monitoring/) for more information.
 
 We can even use the resulting VQL artifact as a base for other queries
 to provide further enrichment and response capabilities.
@@ -388,4 +389,4 @@ detection technology, take Velociraptor for a spin! It is available on
 source license. As always, please file issues on the bug tracker or
 ask questions on our mailing list
 velociraptor-discuss@googlegroups.com. You can also chat with us
-directly on discord at https://www.velocidex.com/discord
+directly on [Discord](/discord/).

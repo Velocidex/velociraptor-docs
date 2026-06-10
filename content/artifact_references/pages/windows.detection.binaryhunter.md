@@ -1,39 +1,55 @@
 ---
 title: Windows.Detection.BinaryHunter
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  This artifact enables hunting for binary attributes.
 ---
 
 This artifact enables hunting for binary attributes.
 
-The artifact takes a glob targeting input, then checks each file in scope for an MZ header.
-The artifact also queries Authenticode details and parses out PE attributes.
+The artifact takes a glob targeting input, then checks each file in
+scope for an MZ header. The artifact also queries Authenticode
+details and parses out PE attributes.
 
-Both PE and Authenticode output can be queried for relevant strings by using a regex filter and whitelist to hunt with.
-This enables unique capability to hunt for specific things such as PE imports, exports or other attributes.
+Both PE and Authenticode output can be queried for relevant strings
+by using a regex filter and whitelist to hunt with. This enables
+unique capability to hunt for specific things such as PE imports,
+exports or other attributes.
 
-Note: this artifacts filters are cumulative so a hash based hit will return
-no results if the file is filtered out by other filters.
-For most performant searches use path, size and and date filters. By default
-the artifact uses the 'auto' data accessor but can also be changed as desired.
+Note:
+
+This artifacts filters are cumulative so a hash based hit will
+return no results if the file is filtered out by other filters. For
+most performant searches use path, size and date filters. By default
+the artifact uses the 'auto' data accessor but can also be changed
+as desired.
 
 
 <pre><code class="language-yaml">
 name: Windows.Detection.BinaryHunter
 author: "Matt Green - @mgreen27"
 description: |
-    This artifact enables hunting for binary attributes.
+  This artifact enables hunting for binary attributes.
 
-    The artifact takes a glob targeting input, then checks each file in scope for an MZ header.
-    The artifact also queries Authenticode details and parses out PE attributes.
+  The artifact takes a glob targeting input, then checks each file in
+  scope for an MZ header. The artifact also queries Authenticode
+  details and parses out PE attributes.
 
-    Both PE and Authenticode output can be queried for relevant strings by using a regex filter and whitelist to hunt with.
-    This enables unique capability to hunt for specific things such as PE imports, exports or other attributes.
+  Both PE and Authenticode output can be queried for relevant strings
+  by using a regex filter and whitelist to hunt with. This enables
+  unique capability to hunt for specific things such as PE imports,
+  exports or other attributes.
 
-    Note: this artifacts filters are cumulative so a hash based hit will return
-    no results if the file is filtered out by other filters.
-    For most performant searches use path, size and and date filters. By default
-    the artifact uses the 'auto' data accessor but can also be changed as desired.
+  Note:
+  
+  This artifacts filters are cumulative so a hash based hit will
+  return no results if the file is filtered out by other filters. For
+  most performant searches use path, size and date filters. By default
+  the artifact uses the 'auto' data accessor but can also be changed
+  as desired.
 
 parameters:
   - name: TargetGlob
@@ -49,7 +65,7 @@ parameters:
     description: Exclude binaries with Trusted Authenticode certificates.
     type: bool
   - name: AuthenticodeRegex
-    description: Regex to search through all authenrticode data.
+    description: Regex to search through all authenticode data.
     default: .
     type: regex
   - name: AuthenticodeWhitelistRegex
@@ -174,11 +190,11 @@ sources:
                  OR if(condition= SHA256List,
                         then= Hash.SHA256 in SHA256Array)
             ), else = True )
-      
+
       LET upload_files= SELECT *,
             upload(file=File.OSPath) as UploadFile
       FROM results
-      
+
       SELECT * FROM if(condition= UploadFiles,
                         then= upload_files,
                         else= results)

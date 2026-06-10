@@ -2,7 +2,14 @@
 title: verify
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  verify an artifact
+
+  This function will verify the artifact and flag any potential errors or warnings.
+
 ---
 
 
@@ -20,6 +27,8 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 artifact|The artifact to verify. This can be an artifact source in yaml or json or the name of an artifact|string (required)
+repository|The repository to use for verification, if not set, we default to the global repository.|string
+disable_override|If set, we do not allow override of built-in artifacts (allowed by default)|bool
 
 ### Description
 

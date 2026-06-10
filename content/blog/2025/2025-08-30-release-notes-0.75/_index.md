@@ -54,7 +54,7 @@ artifact. Tags are kept separately from the artifact itself, and can
 be considered part of the artifact metadata.
 
 You can add tags using the
-[artifact_set_metadata]({{< ref "/vql_reference/server/artifact_set_metadata/" >}})
+[artifact_set_metadata](/vql_reference/server/artifact_set_metadata/)
 VQL function, which is used in certain import artifacts.
 This allows grouping of similar artifacts.
 
@@ -125,16 +125,18 @@ is highly compressible.
 
 The downside of this change is that the files on the server storage
 are no longer readable by external tools, and so any post processing
-artifacts that use the [file_store()]({{< ref
-"/vql_reference/server/file_store/" >}}) to obtain the underlying file
+artifacts that use the
+[file_store()](/vql_reference/server/file_store/)
+to obtain the underlying file
 are unlikely to work. If you need to get the uncompressed data you may
-use the [copy()]({{< ref "/vql_reference/other/copy/" >}}) function to
+use the [copy()](/vql_reference/other/copy/) function to
 copy the file to a temporary file thereby uncompressing it.
 
 Since the new compression scheme requires client support it will only
 work with 0.75 clients. If you do not want to enable compression you
-may change [the configuration setting]({{< ref
-"/docs/deployment/references/#Datastore.compression" >}}) to "none".
+may change
+[the configuration setting](/docs/deployment/references/#Datastore.compression)
+to "none".
 
 ### Resumable uploads
 
@@ -202,9 +204,8 @@ but we still do not want to allow users to be able to read the entire
 server filesystem.
 
 In this release it is possible to restrict the directories that VQL is
-allowed to read on the server using [a configuration option]({{< ref
-"/docs/deployment/references/#security.allowed_file_accessor_prefix"
->}}).
+allowed to read on the server using
+[a configuration option](/docs/deployment/references/#security.allowed_file_accessor_prefix).
 
 ## Client improvements
 
@@ -258,8 +259,10 @@ available to download using the `Server.Import.Extras` server artifact:
 4. [Velociraptor Registry Hunter Project](https://registry-hunter.velocidex.com/)
    is our project to develop sophisticated registry analysis modules.
 
-5. [The Velociraptor Artifact Exchange]({{< ref "/exchange/" >}}) is our
+5. [The Velociraptor Artifact Exchange](/exchange/) is our
    repository of community-contributed artifacts.
+
+![New links on the welcome screen include one to run Server.Import.Extras](import_extras.png)
 
 The following artifacts were permanently removed:
 
@@ -267,7 +270,7 @@ The following artifacts were permanently removed:
 
 2. `Server.Import.DeleteArtifacts`: Obsolete since custom artifacts can now be
    filtered by tag and then bulk deleted using
-   [multi-select deletion]({{< relref "#multi-select-deletion" >}})
+   [multi-select deletion](#multi-select-deletion)
    as described above.
 
 3. `Server.Import.UpdatedBuiltin`: Superseded by `Server.Import.Extras`.
@@ -289,6 +292,5 @@ spin](https://github.com/Velocidex/velociraptor)!  It is available
 on GitHub under an open source license. As always please file issues
 on the bug tracker or ask questions on our mailing list
 [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com)
-. You can also chat with us directly on discord
-[https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+. You can also chat with us directly on [Discord](/discord/).
 .

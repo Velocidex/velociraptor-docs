@@ -2,7 +2,11 @@
 title: lazy_dict
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Construct a dict from arbitrary keyword args - does not materialize args so it is suitable for building args via `**` expansion.
 ---
 
 

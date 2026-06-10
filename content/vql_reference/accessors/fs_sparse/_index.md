@@ -2,7 +2,15 @@
 title: fs_sparse
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Provide access to the server's filestore and datastore.
+
+  This accessor expands sparse files. Reading from a sparse region
+  will result in zeros being returned.
+
 ---
 
 

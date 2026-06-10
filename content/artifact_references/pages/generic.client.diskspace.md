@@ -1,11 +1,18 @@
 ---
 title: Generic.Client.DiskSpace
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Reports disk usage and free disk space on Linux, macOS, and Windows
+  using platform-specific commands.
 ---
 
-This artifact reports the amount of free disk space. It is designed
-to work equally on all architectures:
+Reports disk usage and free disk space on Linux, macOS, and Windows
+using platform-specific commands.
+
+It is designed to work equally on all architectures:
 
   1. On Linux and MacOS we call `df -h`.
   2. On Windows we use WMI
@@ -14,8 +21,10 @@ to work equally on all architectures:
 <pre><code class="language-yaml">
 name: Generic.Client.DiskSpace
 description: |
-  This artifact reports the amount of free disk space. It is designed
-  to work equally on all architectures:
+  Reports disk usage and free disk space on Linux, macOS, and Windows
+  using platform-specific commands.
+
+  It is designed to work equally on all architectures:
 
     1. On Linux and MacOS we call `df -h`.
     2. On Windows we use WMI

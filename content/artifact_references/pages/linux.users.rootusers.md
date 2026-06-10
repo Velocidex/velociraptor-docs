@@ -1,7 +1,11 @@
 ---
 title: Linux.Users.RootUsers
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Detects users added in the `sudo` group.
 ---
 
 Detects users added in the `sudo` group.

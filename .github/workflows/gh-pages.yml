@@ -9,16 +9,27 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: true  # Fetch Hugo themes (true OR recursive)
           fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
 
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
+      - uses: actions/setup-go@93397bea11091df50f3d7e59dc26a7711a8bcfbe
         with:
-          hugo-version: '0.139.4'
+          go-version: '^1.25'
+
+          # Caching seems to really slow down the build due to the time
+          # taken to save the cache.
+          cache: false
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: 'latest'
           # extended: true
 
       - name: Prepare
@@ -28,8 +39,11 @@ jobs:
           python scripts/blog_index.py
           python scripts/knowledge_base.py
 
+      - name: BuildIndex
+        run: make index
+
       - name: Build
-        run: hugo --minify
+        run: hugo
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4

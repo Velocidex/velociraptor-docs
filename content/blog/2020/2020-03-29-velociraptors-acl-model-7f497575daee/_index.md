@@ -74,7 +74,7 @@ Is clearly a malicious query and should be blocked from the notebook (It can res
 
 Velociraptor solves this by introducing a permission system. Each VQL plugin requires the caller to possess a particular permission. For example, the execve() plugin required the EXECVE permission (i.e. being allowed to run arbitrary shell commands). If the user does not have the permission, the plugin fails with an error.
 
-Let’s look at this example more closely. I will create a user called “analystbob” and assign them the **analyst** role:
+Let’s look at this example more closely. I will create a user called `analystbob` and assign them the **analyst** role:
 
 ![](../../img/1KzOsl3TZ2oztzDQF-c4APw.png)
 
@@ -96,7 +96,7 @@ Let’s see Bob browsing the Virtual Filesystem of an endpoint
 
 The rest of the GUI does not allow Bob to actually collect any new data — for example the VFS view does not allow collecting new directory listing or new files (but Bob can still navigate already collected directories).
 
-If Bob wants to collect new artifacts or perform new hunts, he will need to ask **investigatoralice** who has the **investigator** role to actually collect those. Similarly, if Bob wants to modify or implement a new artifact they will need to ask the user **sue** who has the **artifact_writer** role to be able to add the artifacts for him (Once the artifact is added, Alice can now collect it — she just can’t add it herself).
+If Bob wants to collect new artifacts or perform new hunts, he will need to ask `investigatoralice` who has the **investigator** role to actually collect those. Similarly, if Bob wants to modify or implement a new artifact they will need to ask the user **sue** who has the **artifact_writer** role to be able to add the artifacts for him (Once the artifact is added, Alice can now collect it — she just can’t add it herself).
 
 ### Artifact permissions
 
@@ -108,7 +108,7 @@ If we allowed an investigator role to run this artifact, they could easily escal
 
 ![](../../img/1L4zxgkz0Mh4OevcR70ppBg.png)
 
-The artifact definition itself specifies that this artifact requires the EXECVE permission. Let’s see what happens when **investigatoralice** attempt to collect that artifact.
+The artifact definition itself specifies that this artifact requires the EXECVE permission. Let’s see what happens when `investigatoralice` attempt to collect that artifact.
 
 ![](../../img/1zDpPBEoNCb34H9Vql8dEBQ.png)
 

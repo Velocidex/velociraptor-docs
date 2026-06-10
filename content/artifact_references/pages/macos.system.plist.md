@@ -1,22 +1,30 @@
 ---
 title: MacOS.System.Plist
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Parses and optionally uploads macOS `.plist` files.
 ---
 
-This artifact collects and/or parses MacOS .plist files.  While simple,
-this artifact allows users to specify a .plist glob, and have those plist files
-returned for quick review.  If more advanced parsing is desired, the artifact can be copied
-and modified.
+Parses and optionally uploads macOS `.plist` files. 
+
+While simple, this artifact allows users to specify a `.plist` glob
+and have those plist files returned for quick review.  If more
+advanced parsing is desired, the artifact can be copied and
+modified.
 
 
 <pre><code class="language-yaml">
 name: MacOS.System.Plist
 description: |
-  This artifact collects and/or parses MacOS .plist files.  While simple,
-  this artifact allows users to specify a .plist glob, and have those plist files
-  returned for quick review.  If more advanced parsing is desired, the artifact can be copied
-  and modified.
+  Parses and optionally uploads macOS `.plist` files. 
+  
+  While simple, this artifact allows users to specify a `.plist` glob
+  and have those plist files returned for quick review.  If more
+  advanced parsing is desired, the artifact can be copied and
+  modified.
 
 type: CLIENT
 

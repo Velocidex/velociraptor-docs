@@ -1,16 +1,23 @@
 ---
 title: Windows.Detection.Service.Upload
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+description: |
+  Uploads the service binary to the server when a new service is
+  installed.
 ---
 
-When a new service is installed, upload the service binary to the server
+Uploads the service binary to the server when a new service is
+installed.
 
 
 <pre><code class="language-yaml">
 name: Windows.Detection.Service.Upload
 description: |
-  When a new service is installed, upload the service binary to the server
+  Uploads the service binary to the server when a new service is
+  installed.
 
 type: CLIENT_EVENT
 

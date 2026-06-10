@@ -20,7 +20,7 @@ Many new Velociraptor users have existing OSQuery queries and
 installations and are migrating to Velociraptor for powerful and
 efficient endpoint visibility. I have written [previously about
 Velociraptor’s OSQuery
-integration](https://medium.com/velociraptor-ir/velociraptor-and-osquery-2a4306dd23c),
+integration](/blog/2020/2020-12-13-velociraptor-and-osquery-2a4306dd23c/),
 allowing OSQuery queries to run directly inside Velociraptor.
 
 This integration, however, is simply a stopgap measure during
@@ -238,7 +238,7 @@ left join, right join, cross join, inner join and outer join?).
 Since VQL can provide parameters to plugins, we can create a plugin
 which takes another query as a parameter. This is the fundamental idea
 behind the foreach() plugin (I wrote about it[
-previously](https://medium.com/velociraptor-ir/the-velociraptor-query-language-pt-2-fe92bb7aa150)). The
+previously](/blog/2020/2020-06-19-the-velociraptor-query-language-pt-2-fe92bb7aa150/)). The
 foreach plugin accepts the “rows” parameter and the “query”
 parameter. It simply runs the “rows” query and for each row it
 produces, the plugin evaluates the “query” query and emits the
@@ -313,9 +313,8 @@ Velociraptor offers.
 
 The above example is just one of the exercises we do in our hands on
 Velociraptor courses. If you are interested in learning more about
-Velociraptor, check out our hands on training courses on
-[https://www.velocidex.com/training/](https://www.velocidex.com/training/)
+Velociraptor, check out our hands on training courses
+[here](/training/)
 or check out the code on
 [GitHub](https://github.com/Velocidex/velociraptor). To chat, please
-join us on discord
-[https://www.velocidex.com/discord](https://www.velocidex.com/discord).
+join us on [Discord](/discord/).

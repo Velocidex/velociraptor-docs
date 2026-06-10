@@ -3,23 +3,23 @@ author: "Matt Green - @mgreen27"
 description: |
    This artifact runs Get-InjetedThreadEx to detect process injection and hooking.
 
-    The artifact uses environment variables to configure the scan and outputs 
-    parsed fields, as well as a raw section. Some of the scanning options include: 
+    The artifact uses environment variables to configure the scan and outputs
+    parsed fields, as well as a raw section. Some of the scanning options include:
     Default, Brief and Aggressive. The User can also target a specific ProcessId.
 
-    For all process scanning the recommendation would be first run in brief mode, 
-    then add more aggressive scanning as required. The default timeout has been 
-    increased significantly to cover aggressive scanning mode.  
+    For all process scanning the recommendation would be first run in brief mode,
+    then add more aggressive scanning as required. The default timeout has been
+    increased significantly to cover aggressive scanning mode.
 
     IMPORTANT NOTES::
-    
-    - this query is complex powershell. Run it after a scriptblock hunt as it 
+
+    - this query is complex powershell. Run it after a scriptblock hunt as it
     will generate scriptblock logs, even if not configured.
-    - Some EPP/EDR tools may block the scriptblock execution, please ensure 
-    exclusions are made for velociraptor child powershell processes.  
-    - The default output for Default and Aggressive scan excludes Thread User 
-    information, however this can be confired by the field IsUniqueThreadToken 
-    and if 'True' checked in raw data in the Windows.Memory.InjectedThreadEx/RawResults 
+    - Some EPP/EDR tools may block the scriptblock execution, please ensure
+    exclusions are made for velociraptor child powershell processes.
+    - The default output for Default and Aggressive scan excludes Thread User
+    information, however this can be confirmed by the field `IsUniqueThreadToken`
+    and if 'True' checked in raw data in the Windows.Memory.InjectedThreadEx/RawResults
     namespace.
 
 reference:
@@ -57,7 +57,7 @@ sources:
                 ToolName="Get-InjectedThreadEx",
                 IsExecutable='N'
                 )
-      LET scan_type = if(condition= ScanType='Default', 
+      LET scan_type = if(condition= ScanType='Default',
                         then= '',
                         else= ScanType)
       LET target_pid = if(condition= TargetPid=0, then='', else= TargetPid)
@@ -107,26 +107,26 @@ sources:
                     '''\s+TailBytes\s+:\s+(?P<TailBytes>[0-9A-F]*)\s+''',
                     '''\s+StartBytes\s+:\s+(?P<StartBytes>[0-9A-F]*)''',
                     '''\s+Detections\s+:\s+(?P<Detections>.*)$'''
-                    ]) as Parsed  
+                    ]) as Parsed
         FROM execve(argv=['powershell','-ExecutionPolicy','Unrestricted','-NoProfile','-File',script.FullPath[0]],
             env=dict(
                 `GetInjectedThreadScan` = scan_type,
                 `GetInjectedThreadTarget` = str(str=target_pid) ),
             sep='\r\n\r\n')
         WHERE Stdout
-            
+
 
       -- output rows
       --SELECT * FROM foreach(row=results.Parsed) WHERE NOT Stdout =~ '^WARNING'
       SELECT * FROM column_filter(
-            query={ 
-                    SELECT * FROM foreach(row=results.Parsed) 
+            query={
+                    SELECT * FROM foreach(row=results.Parsed)
                     WHERE NOT Stdout =~ '^WARNING'
             },
             exclude=['ThreadIntegrity','AdditionalThreadPrivilege','ThreadLogonId','ThreadSecurityIdentifier',
             'ThreadUserName','ThreadLogonSessionStartTime','ThreadLogonType','ThreadAuthenticationPackage']
         )
-      
+
   - name: RawResults
     queries:
       - |
@@ -134,8 +134,8 @@ sources:
             dict(   ScanType = scan_type,
                     PidTarget = str(str=target_pid) ) as ScanSettings
         FROM results
-        
-        
+
+
 column_types:
   - name: ProcessLogonSessionStartTime
     type: timestamp

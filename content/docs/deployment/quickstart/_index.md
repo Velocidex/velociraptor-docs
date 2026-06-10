@@ -7,6 +7,9 @@ draft: false
 weight: 5
 aliases:
   - "/docs/deployment/self-signed/"
+description: |
+  The goal of this guide is to help you get a Velociraptor server deployed with
+  one or more clients, as quickly and simply as possible.
 ---
 
 The goal of this guide is to help you get a Velociraptor server deployed with
@@ -20,7 +23,7 @@ private network.
 For production deployments, Single Sign-on (SSO) authentication
 is strongly recommended. However it requires a slightly more complicated
 certificate scheme and public DNS configuration. To explore these other options
-please see the [Deployment]({{< ref "/docs/deployment/" >}}) section.
+please see the [Deployment](/docs/deployment/) section.
 
 
 {{% notice info "Production Use Disclaimer" %}}
@@ -28,7 +31,7 @@ please see the [Deployment]({{< ref "/docs/deployment/" >}}) section.
 Please note that in this simple configuration the Velociraptor server should
 not be exposed to the public internet, particularly because Basic
 authentication mode is vulnerable to brute-force attacks.
-[SSO authentication]({{< ref "/knowledge_base/tips/setup_google_oauth/" >}})
+[SSO authentication](/knowledge_base/tips/setup_google_oauth/)
 is recommended for production deployments, but SSO is rarely configured with
 self-signed certificates (since it goes against the idea of a trusted
 authentication flow), and we intend to use self-signed certificates in this
@@ -48,7 +51,7 @@ Velociraptor offers should be preferred.
 {{% notice tip "Need to go even quicker?" %}}
 
 If you're really in a hurry you can start a self-contained
-[Instant Velociraptor]({{< ref "/docs/deployment/#instant-velociraptor" >}})
+[Instant Velociraptor](/docs/deployment/#instant-velociraptor)
 on your local machine which will allow you to experiment and get a feel for how
 Velociraptor works, without having to deal with any of the network complexities.
 One command is all that's needed to get started!
@@ -78,12 +81,12 @@ One command is all that's needed to get started!
   - This can actually be any supported client operating system, but in this
     guide we describe the process for a Windows client since it is still by far
     the most common target operating system. See
-    [Deploying Clients]({{< ref "/docs/deployment/clients/" >}})
+    [Deploying Clients](/docs/deployment/clients/)
     for instructions for deploying clients on other platforms.
 
   - The Windows version should be at least Windows 10. Older versions may
     require a special build of the Velociraptor binary, as noted
-    [here]({{< ref "/downloads/#release-notes" >}}),
+    [here](/downloads/#release-notes),
     since earlier versions are not supported by the latest version of Go, nor
     by Microsoft.
 
@@ -124,7 +127,7 @@ To keep things simple in this deployment scenario we are going to assume that:
 
 If you have a more complex environment that cannot satisfy the above
 requirements then you should refer to the
-[Deployment]({{< ref "/docs/deployment/" >}}) section where more advanced
+[Deployment](/docs/deployment/) section where more advanced
 deployment scenarios and associated options are discussed.
 
 ## Deployment Roadmap
@@ -161,8 +164,8 @@ internet access from the server is OK.
 
 Before we start configuring or running anything you'll need to download the
 latest binary. Binaries for the latest version are listed on our
-[Downloads]({{< ref "/downloads/" >}}) page, with the binaries themselves being
-hosted on Github.
+[Downloads](/downloads/) page, with the binaries themselves being
+hosted on GitHub.
 
 At this point you only need to download one binary (the one that matches your
 server's platform and architecture) because after installation we will use the
@@ -207,7 +210,7 @@ shown below. This will download the binary and save it with the name
 `velociraptor`:
 
 ```sh
-wget -O velociraptor https://github.com/Velocidex/velociraptor/releases/download/v0.74/velociraptor-v0.74.1-linux-amd64
+wget -O velociraptor https://github.com/Velocidex/velociraptor/releases/download/v0.75/velociraptor-v0.75.6-linux-amd64
 ```
 
 Then make the downloaded file executable so that you can run it in subsequent
@@ -233,7 +236,7 @@ In the next step we are going to use the `config generate` command.
 
 Central to every Velociraptor deployment is a
 [YAML](https://www.tutorialspoint.com/yaml/yaml_basics.htm)
-[configuration file]({{< ref "/docs/deployment/references/" >}}).
+[configuration file](/docs/deployment/references/).
 This file contains all the configuration parameters that define how your server
 and clients operate, plus cryptographic material that is used to secure
 several aspects of the deployment, such a client-server communications.
@@ -467,7 +470,7 @@ arrive at the Welcome screen.
 
 ![Welcome to Velociraptor!](welcome.png)
 
-You can learn more about the Admin GUI [here]({{< ref "/docs/gui/" >}}).
+You can learn more about the Admin GUI [here](/docs/gui/).
 
 ## Step 6: Import artifacts from external projects
 
@@ -479,7 +482,7 @@ versions you can [skip to the next step](#step-7-create-an-installation-package-
 {{% /notice %}}
 
 Over time Velociraptor has spawned many sub-projects for curating and
-managing certain larger, more complex [artifacts]({{< ref "/docs/artifacts/" >}}).
+managing certain larger, more complex [artifacts](/docs/artifacts/).
 
 As some artifacts became more complex and powerful, we moved them into separate
 projects so that they could be developed and managed independently of the main
@@ -500,7 +503,7 @@ for a broad set of indicators of suspicious activity.
 | [Rapid7Labs](https://github.com/rapid7/Rapid7-Labs/tree/main/Vql) | Artifacts developed and shared by [Rapid7 Labs](https://www.rapid7.com/blog/tag/research/). |
 | [Velociraptor Registry Hunter Project](https://registry-hunter.velocidex.com/) | Our project to develop sophisticated registry analysis modules. |
 | [Velociraptor SQLite Hunter Project](https://sqlitehunter.velocidex.com/) | This project aims to be a one-stop shop for `SQLite`, `ESE` and many other database-oriented forensic artifacts. |
-| [The Velociraptor Artifact Exchange](https://docs.velociraptor.app/exchange/) | Our repository of community-contributed artifacts. |
+| [The Velociraptor Artifact Exchange](/exchange/) | Our repository of community-contributed artifacts. |
 
 To get these external artifacts into your Velociraptor server's artifact
 repository, we have a built-in server artifact which will download them from any
@@ -536,14 +539,14 @@ Our next goal is to create an installation package for our Windows endpoints.
 
 Velociraptor clients are available for many operating systems and architectures.
 The subject of packaging and installing clients is covered in more detail in
-the section [Deploying Clients]({{< ref "/docs/deployment/clients/" >}}).
+the section [Deploying Clients](/docs/deployment/clients/).
 
 The most important thing to know is that all Velociraptor clients need a _client
 configuration_, which is specific to the deployment. This configuration is a
 subset of the full YAML-based configuration. Because the server has access to
 the full configuration it is able to provide the client configuration to us when
 needed
-[in the form of a YAML file]({{< ref "/docs/deployment/clients/#option-1-obtaining-the-client-config-from-the-gui" >}}).
+[in the form of a YAML file](/docs/deployment/clients/#option-1-obtaining-the-client-config-from-the-gui).
 The server can also use it internally, for example when generating a client
 installation package (for Windows clients), as we will show in this guide.
 
@@ -615,12 +618,12 @@ the top of the page.
 After installing your first client, here are the next steps you may want to
 consider:
 
-- [Learn about managing clients]({{< ref "/docs/clients/" >}})
-- [Create non-Windows client installers]({{< ref "/docs/deployment/clients/" >}})
-- [Explore additional security configuration options]({{< ref "/docs/deployment/security/" >}})
-- [Consider creating Orgs]({{< ref "/docs/deployment/orgs/" >}}) for managing
+- [Learn about managing clients](/docs/clients/)
+- [Create non-Windows client installers](/docs/deployment/clients/)
+- [Explore additional security configuration options](/docs/deployment/security/)
+- [Consider creating Orgs](/docs/deployment/orgs/) for managing
   distinct sets of clients.
-- [Plan for a more durable and secure installation]({{< ref "/docs/deployment/server/" >}})
+- [Plan for a more durable and secure installation](/docs/deployment/server/)
 
 You can also click on the little dinosaur at the top left of the GUI to
 return to the Welcome page. On this page you'll find shortcuts for several

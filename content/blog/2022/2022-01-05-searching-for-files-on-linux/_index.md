@@ -171,7 +171,7 @@ recursing through that.
 
 ![Recursing through the /proc filesystem](glob_proc.png)
 
-We can disable following symlinks using the nosymlink option to
+We can disable following symlinks using the `nosymlink` option to
 glob. However this query will also take a very long time on this
 system:
 
@@ -195,11 +195,11 @@ WHERE NOT FullPath =~ "^/(proc|shared)"
 
 This query uses a WHERE clause to filter out any paths starting with
 `/proc` or `/shared`. While this seems reasonable it does not work!
-Thinking back to how VQL works (See [Life of a Query]({{< ref
-"/docs/vql/#life-of-a-query" >}}) ), the `glob()` plugin will expand
-the full glob into the query, and the WHERE clause simply filters out
-non-matching rows. Therefore `glob()` will still get stuck in proc or
-shared as before!
+Thinking back to how VQL works (See
+[Life of a Query](/docs/vql/fundamentals/#life-of-a-query)
+), the `glob()` plugin will expand the full glob into the query, and
+the WHERE clause simply filters out non-matching rows. Therefore
+`glob()` will still get stuck in proc or shared as before!
 
 We need a way to tell the glob plugin itself **not** to recurse into
 certain directories at all to save the unnecessary work. Since 0.6.3

@@ -2,7 +2,12 @@
 title: filesystems
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Enumerates mounted filesystems.
+
 ---
 
 

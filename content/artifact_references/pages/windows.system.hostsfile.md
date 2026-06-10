@@ -1,10 +1,16 @@
 ---
 title: Windows.System.HostsFile
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Reads and parses the Windows hosts file, reporting resolution
+  entries, hostnames, and comments.
 ---
 
-Parses the Windows Hostsfile.
+Reads and parses the Windows hosts file, reporting resolution
+entries, hostnames, and comments.
 
 Regex searching for Hostname and resolution is enabled over output.
 NOTE: For Hostname search is on the hostfile line and regex ^ or $
@@ -15,11 +21,12 @@ is not recommended.
 name: Windows.System.HostsFile
 author: Matt Green - @mgreen27
 description: |
-   Parses the Windows Hostsfile.
+  Reads and parses the Windows hosts file, reporting resolution
+  entries, hostnames, and comments.
 
-   Regex searching for Hostname and resolution is enabled over output.
-   NOTE: For Hostname search is on the hostfile line and regex ^ or $
-   is not recommended.
+  Regex searching for Hostname and resolution is enabled over output.
+  NOTE: For Hostname search is on the hostfile line and regex ^ or $
+  is not recommended.
 
 type: CLIENT
 
@@ -27,12 +34,12 @@ parameters:
   - name: HostsFile
     default: C:\Windows\System32\drivers\etc\hosts
   - name: HostnameRegex
-    description: "Hostname target Regex in Hostsfile"
+    description: "Hostname target regex in Hostsfile"
     default: .
     type: regex
 
   - name: ResolutionRegex
-    description: "Resolution target Regex in Hostsfile"
+    description: "Resolution target regex in Hostsfile"
     default: .
     type: regex
 

@@ -2,7 +2,11 @@
 title: parse_pst
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Parse a PST file and extract email data.
 ---
 
 

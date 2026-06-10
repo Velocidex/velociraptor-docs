@@ -4,6 +4,9 @@ date: 2023-10-15T00:14:44+10:00
 tags:
 - Sigma
 - Detection
+description: |
+  This page discusses how Sigma is implemented and used within
+  Velociraptor.
 ---
 
 This page discusses how Sigma is implemented and used within
@@ -202,7 +205,7 @@ systems all the time.
 Velociraptor is not a traditional SIEM and does not rely on a scalable
 large backend data mining engine for querying collected data. Instead,
 Velociraptor's power lies in its [Velociraptor Query
-Language](https://docs.velociraptor.app/docs/vql/) which allows the
+Language](/docs/vql/) which allows the
 endpoint agent itself to query data directly on the endpoint.
 
 This means that Velociraptor has access to all information available
@@ -284,8 +287,8 @@ based on the event itself - including more complex enrichment
 operators (more on that later!).
 
 After defining the log sources and field mapping, we are ready to
-match Sigma rules using the `sigma()` [VQL
-plugin](http://docs.velociraptor.app/vql_reference/misc/sigma/).
+match Sigma rules using the `sigma()`
+[VQL plugin](/vql_reference/popular/sigma/).
 
 This plugin receives a number of arguments:
 
@@ -457,7 +460,7 @@ Velociraptor's VQL queries are streaming queries. This means they
 deliver rows as soon as they become available, while the query itself
 does not have to terminate. This facility is called [`Client
 Monitoring` or `Event`
-queries](https://docs.velociraptor.app/docs/client_monitoring/).
+queries](/docs/clients/monitoring/).
 
 Since the built-in Sigma matching engine is also streaming and
 asynchronous, it is also possible to use event queries for log

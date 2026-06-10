@@ -1,16 +1,23 @@
 ---
 title: Server.Alerts.Notification
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
+description: |
+  Sends alert notifications from the `Server.Internal.Alerts` queue to
+  a webhook-compatible chat service such as Slack/Teams/Discord.
 ---
 
-This artifact forwards alerts from Server.Internal.Alerts to a Slack/Teams/Discord via a Webhook.
+Sends alert notifications from the `Server.Internal.Alerts` queue to
+a webhook-compatible chat service such as Slack/Teams/Discord.
 
 
 <pre><code class="language-yaml">
 name: Server.Alerts.Notification
 description: |
-   This artifact forwards alerts from Server.Internal.Alerts to a Slack/Teams/Discord via a Webhook.
+  Sends alert notifications from the `Server.Internal.Alerts` queue to
+  a webhook-compatible chat service such as Slack/Teams/Discord.
 
 author: Jos Clephas - @DfirJos
 
@@ -18,10 +25,14 @@ type: SERVER_EVENT
 
 parameters:
   - name: SlackToken
-    description: The token URL obtained from Slack/Teams/Discord (or basicly any communication-service that supports webhooks). Leave blank to use server metadata. e.g. https://hooks.slack.com/services/XXXX/YYYY/ZZZZ
+    description: |
+      The token URL obtained from Slack/Teams/Discord (or basically any communication-service that supports webhooks).
+      Leave blank to use server metadata. e.g. https://hooks.slack.com/services/XXXX/YYYY/ZZZZ
 
 sources:
   - query: |
+        // linter: symbol_mask_warn:timestamp
+
         LET token_url = if(
            condition=SlackToken,
            then=SlackToken,

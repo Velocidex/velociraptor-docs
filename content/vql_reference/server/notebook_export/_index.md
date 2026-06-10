@@ -2,7 +2,11 @@
 title: notebook_export
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Exports a notebook to a zip file or HTML.
 ---
 
 

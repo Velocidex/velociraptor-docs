@@ -5,6 +5,7 @@ import os
 import json
 import re
 import yaml
+import textwrap
 
 pararegex = re.compile(r"^(.+?)\n\n", re.I | re.M | re.S)
 parser = argparse.ArgumentParser(description='Generate artifact documentation.')
@@ -29,9 +30,20 @@ def EnsureDirExists(dirname):
         os.mkdir(dirname)
     except: pass
 
-def SaveDefinitions(filename, name, texts):
+def SaveDefinitions(filename, name, description, texts):
     with open(filename, "w") as fd:
-        fd.write("---\ntitle: %s\nindex: true\nnoTitle: true\nno_edit: true\n---\n\n" % name)
+        fd.write("""---
+title: %s
+index: true
+noTitle: true
+sitemap:
+   disable: true
+no_edit: true
+description: |
+%s
+---
+
+""" % (name, textwrap.indent(description, "  ")))
         for text in texts:
             fd.write(text)
 
@@ -42,6 +54,8 @@ def BuildDefinition(filename, item):
     EnsureDirExists(dirname)
 
     filename =  os.path.join(dirname, "_index.md")
+    description = item.get("description", "")
+
     result = "\n\n<div class=\"vql_item\"></div>\n\n"
     result += ("\n## %s\n<span class='vql_type label label-warning pull-right page-header'>%s</span>\n\n" % (item["name"], item["type"]))
 
@@ -50,7 +64,7 @@ def BuildDefinition(filename, item):
         result += ("Arg | Description | Type\n----|-------------|-----\n")
         for arg in item["args"]:
             name = arg["name"]
-            description = arg.get("description", "")
+            arg_description = arg.get("description", "")
             type = arg["type"]
             if type == "":
                 type = "string"
@@ -59,7 +73,10 @@ def BuildDefinition(filename, item):
             if arg.get("required"):
                 type = type + " (required)"
 
-            result+=("%s|%s|%s\n" % (name, description, type))
+            result+=("%s|%s|%s\n" % (name, arg_description, type))
+
+        if item.get("free_form_args"):
+            result+="`**`|Free Form Args|\n"
 
     permissions = item.get("metadata", {}).get("permissions")
     if permissions:
@@ -69,7 +86,7 @@ def BuildDefinition(filename, item):
 
     result+=("\n")
 
-    if item.get("description", ""):
+    if description:
         result+= ("### Description\n\n%s\n\n" % item.get("description", ""))
 
     return filename, result
@@ -90,6 +107,9 @@ def SaveDataJson(definitions):
         fd.write(json.dumps(summary, indent=4))
         print("Writing data.json in %s" % args.reference_data)
 
+def convertNameToLURL(name):
+    return name.lower()
+
 if __name__ == "__main__" :
     args = parser.parse_args()
 
@@ -99,33 +119,52 @@ if __name__ == "__main__" :
     if args.reference_data:
         SaveDataJson(definitions)
 
+    all_definitions = {}
+
     config = yaml.safe_load(open(args.config).read())
     for filename, file_config in config.items():
         EnsureDirExists(os.path.dirname(filename))
         with open(filename, "w") as fd:
-            fd.write("---\ntitle: %s\nweight: %s\nlinktitle: %s\nindex: true\nno_edit: true\nno_children: true\n---\n\n%s" % (
-                file_config["title"], file_config["weight"],
-                file_config.get("linktitle", file_config["title"]),
-                file_config["description"]))
+            fd.write("""---
+title: %s
+weight: %s
+linktitle: %s
+index: true
+sitemap:
+  disable: true
+no_edit: true
+no_children: true
+---
+
+%s""" % (file_config["title"], file_config["weight"],
+         file_config.get("linktitle", file_config["title"]),
+         file_config["description"]))
 
             children = []
 
             # Maps filenames and data
             files = dict()
             filenames = dict()
+            def_map = dict()
 
             for definition in definitions:
+                name = definition["name"]
+
                 category = definition.get("category", "")
                 if category == file_config["category"]:
                     item_filename, text = BuildDefinition(filename, definition)
                     old = files.get(item_filename, [])
                     old.append(text)
                     files[item_filename] = old
-                    filenames[item_filename] = definition["name"]
+                    filenames[item_filename] = name
+                    def_map[item_filename] = definition
+
                     children.append(definition)
+                    all_definitions[name] = True
 
             for filename, texts in files.items():
-                SaveDefinitions(filename, filenames.get(filename), texts)
+                desc = def_map[filename].get("description", "")
+                SaveDefinitions(filename, filenames.get(filename), desc, texts)
 
             fd.write("|Plugin/Function|<span class='vql_type'>Type</span>|Description|\n|-|-|-|\n")
             for definition in sorted(children, key=lambda x: x.get("name")):
@@ -134,6 +173,11 @@ if __name__ == "__main__" :
                     first_description = first_description[0]
                 fd.write("|[%s](%s)|<span class='vql_type'>%s</span>|%s|\n" % (
                     definition.get("name"),
-                    definition.get("name"),
+                    convertNameToLURL(definition.get("name")),
                     definition.get("type", ""),
                     first_description))
+
+    for item in definitions:
+        name = item["name"]
+        if not all_definitions.get(name):
+            print("No category for definition %s" % name)

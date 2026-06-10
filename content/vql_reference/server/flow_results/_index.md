@@ -2,7 +2,19 @@
 title: flow_results
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Retrieve the results of a flow.
+
+  This is similar to the source() plugin.
+
+  ### Notes
+
+  Since a collection can collect multiple artifacts you must
+  specify the artifact you are interested in.
+
 ---
 
 

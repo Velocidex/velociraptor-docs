@@ -1,18 +1,23 @@
 ---
 title: Linux.Events.SSHLogin
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+description: |
+  Watches the `auth.log` file for new successful SSH login events and
+  forwards them to the server.
 ---
 
-This monitoring artifact watches the auth.log file for new
-successful SSH login events and relays them back to the server.
+Watches the `auth.log` file for new successful SSH login events and
+forwards them to the server.
 
 
 <pre><code class="language-yaml">
 name: Linux.Events.SSHLogin
 description: |
-  This monitoring artifact watches the auth.log file for new
-  successful SSH login events and relays them back to the server.
+  Watches the `auth.log` file for new successful SSH login events and
+  forwards them to the server.
 
 reference:
   - https://www.elastic.co/blog/grokking-the-linux-authorization-logs

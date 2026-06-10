@@ -11,4 +11,4 @@ chapter: false
 summary: "Notebook artifacts are templates for creating notebooks"
 ---
 
-{{% include-content "/docs/notebooks/templates/" %}}
+{{% include-page "/docs/notebooks/templates/" %}}

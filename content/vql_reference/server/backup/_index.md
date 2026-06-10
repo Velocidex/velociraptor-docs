@@ -2,7 +2,11 @@
 title: backup
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Generates a backup file.
 ---
 
 
@@ -20,6 +24,8 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 name|The name of the backup file.|string (required)
+
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">SERVER_ADMIN</span>
 
 ### Description
 

@@ -2,7 +2,11 @@
 title: js_call
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Compile and run javascript code.
 ---
 
 

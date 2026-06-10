@@ -1,16 +1,31 @@
 ---
 title: Server.Alerts.ProcessCreation
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
+description: |
+  Forwards process creation detections to Slack, Teams, or Discord via
+  webhook.
 ---
 
-This artifact alerts when a process was detected with the artifact 'Windows.Detection.ProcessCreation' (which is a client_event artifact that needs to be enabled first).
+Forwards process creation detections to Slack, Teams, or Discord via
+webhook.
+
+This artifact alerts when a process was detected with the artifact
+`Windows.Detection.ProcessCreation` (which is a client_event
+artifact that needs to be enabled first).
 
 
 <pre><code class="language-yaml">
 name: Server.Alerts.ProcessCreation
 description: |
-   This artifact alerts when a process was detected with the artifact 'Windows.Detection.ProcessCreation' (which is a client_event artifact that needs to be enabled first).
+  Forwards process creation detections to Slack, Teams, or Discord via
+  webhook.
+
+  This artifact alerts when a process was detected with the artifact
+  `Windows.Detection.ProcessCreation` (which is a client_event
+  artifact that needs to be enabled first).
 
 author: Jos Clephas - @DfirJos
 
@@ -18,7 +33,7 @@ type: SERVER_EVENT
 
 parameters:
   - name: SlackToken
-    description: The token URL obtained from Slack/Teams/Discord (or basicly any communication-service that supports webhooks). Leave blank to use server metadata. e.g. https://hooks.slack.com/services/XXXX/YYYY/ZZZZ
+    description: The token URL obtained from Slack/Teams/Discord (or basically any communication-service that supports webhooks). Leave blank to use server metadata. e.g. https://hooks.slack.com/services/XXXX/YYYY/ZZZZ
 
 sources:
   - query: |

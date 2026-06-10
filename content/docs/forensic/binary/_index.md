@@ -6,6 +6,10 @@ summary: |
     data. Sometimes we need to parse binary data to answer these
     questions.
 weight: 50
+description: |
+  Parsing binary is a very important capability for forensic analysis and
+  DFIR - we encounter binary data in many contexts, such as file
+  formats, network traffic and more.
 ---
 
 Parsing binary is a very important capability for forensic analysis and
@@ -331,9 +335,9 @@ underlying type is, its count etc.
 Parsing a field as an array produces an ArrayObject which has the
 following properties:
 
-1. `Size`, `Start`, `End` properties represent the size of the
+1. `SizeOf`, `StartOf`, `EndOf` properties represent the size of the
    array in bytes, the start and end offset of the array.
-2. `Contents` property accesses the underlying array.
+2. `ContentsOf` property accesses the underlying array.
 
 You can iterate over an ArrayObject with the `foreach()` plugin:
 
@@ -469,7 +473,7 @@ strings. That is why there is a `map` parameter that has names mapped
 to ints because it looks a bit more natural with JSON.
 
 
-Example:
+###### Example
 
 ```json
   ["NetworkProviderType", 16, "Enumeration", {
@@ -521,7 +525,7 @@ string value, while Flag may set multiple values at the same time.
 | type    | The type of the underlying object (usually an integer)                                                                      |
 |bitmap | A mapping between bit number and the name of the flag |
 
-Example:
+###### Example
 
 ```json
 ["FlagsField", 12, "Flags", {

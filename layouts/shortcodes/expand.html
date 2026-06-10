@@ -1,0 +1,5 @@
+{{ $_hugo_config := `{ "version": 1 }` }}
+<details>
+  <summary>{{ .Get 0 }}</summary>
+  {{.Inner | safeHTML}}
+</details>

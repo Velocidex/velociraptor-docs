@@ -8,11 +8,15 @@ keywords: []
 
 ![](../../img/0iyK-hcG9nhlPHVOE.jpg?width=600px)
 
-Velociraptor is a unique endpoint visibility tool because it provides the ability for users to write custom, tailored queries using the [Velociraptor Query Language](https://www.velocidex.com/docs/vql_reference/) (VQL). Having a powerful query language right at the endpoint gives our responders unprecedented flexibility, and the ability to leverage the experience of other analysts within the vibrant Velociraptor community.
+Velociraptor is a unique endpoint visibility tool because it provides the ability for users to write custom, tailored queries using the [Velociraptor Query Language](/vql_reference/) (VQL). Having a powerful query language right at the endpoint gives our responders unprecedented flexibility, and the ability to leverage the experience of other analysts within the vibrant Velociraptor community.
 
 VQL is a powerful language but was never designed to be a full featured programming language — it is deliberately kept simple and easy to use. VQL is essentially a glue language that allows more complete capabilities provided by VQL plugins to be strung together into a more functional query.
 
-For example, raw MFT parsing is provided by the parse_mft() plugin which emits a row for each parsed mft entry. A VQL query can then filter out relevant MFT entries and potentially get a copy of the file, or attempt to recover deleted files (as described in our [previous article](../2019-11-15_recovering-deleted-ntfs-files-with-velociraptor-1fcf09855311/).
+For example, raw MFT parsing is provided by the parse_mft() plugin
+which emits a row for each parsed mft entry. A VQL query can then
+filter out relevant MFT entries and potentially get a copy of the
+file, or attempt to recover deleted files (as described in our
+[previous article](/blog/2019/2019-11-15_recovering-deleted-ntfs-files-with-velociraptor-1fcf09855311/).
 
 ### VQL Basics
 
@@ -28,7 +32,7 @@ The simplicity of this language allows analysts to pick up Velociraptor in a sho
 
 ### Extending VQL via Artifacts
 
-One way to extend VQL is through defining [Artifacts](https://www.velocidex.com/docs/user-interface/artifacts/). Artifacts are a way to encapsulate other VQL queries in YAML files which can then be shared and added to Velociraptor at any time. Artifacts have a name by which they can be accessed in other queries. For example
+One way to extend VQL is through defining Artifacts. Artifacts are a way to encapsulate other VQL queries in YAML files which can then be shared and added to Velociraptor at any time. Artifacts have a name by which they can be accessed in other queries. For example
 
 ```
  SELECT Name, SID FROM Artifact.Windows.Sys.Users()
@@ -42,7 +46,7 @@ While the above method is useful, it can only really wrap existing capabilities 
 
 Although VQL already comes with a lot of built in plugins, sometimes what we actually want is not built into Velociraptor itself. This might be because we never thought of the need (please file [a bug for feature requests](https://github.com/Velocidex/velociraptor)!) or because it simply would not make sense to include the functionality directly inside Velociraptor.
 
-### Example — List Local Administrator Group Users
+###### Example: List Local Administrator Group Users
 
 For example, suppose we wanted to list all the users that belong to the local administrator group on Windows. This information is obviously important because local administrators are extremely powerful accounts, and are sometimes granted to users who need administrator access to their local workstation. Often this access is not recorded or tracked properly. Even worse, sometimes local user accounts are created with local administrator group membership allowing those accounts to be logged into without AD oversight or controls. See [this](https://docs.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/implementing-least-privilege-administrative-models#on-workstations), and [this](https://docs.microsoft.com/en-us/windows/security/identity-protection/access-control/local-accounts) for more information.
 
@@ -98,7 +102,7 @@ The whole VQL query and included powershell are now wrapped in an artifact, whic
 
 We effectively just extended the capabilities of the endpoint tool without needing to rebuild or deploy a new version of Velociraptor! This allows for unprecedented flexibility in our DFIR work.
 
-### Example — remediation
+###### Example: Remediation
 
 For the next example, suppose we discovered a widespread infection within our network. Typically, the malware installs various methods of re-infecting a host, and a common way is to install a malicious service ([See Att&ck Matrix 1035](https://attack.mitre.org/techniques/T1035/)). The Atomic Red Team has an example [simulation](https://github.com/redcanaryco/atomic-red-team/blob/8881bdb0029f186e7e06994e45ab1fb49e7adfa8/atomics/T1035/T1035.md):
 

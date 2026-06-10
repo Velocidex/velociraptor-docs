@@ -1,18 +1,18 @@
 name: Windows.Detection.Malfind
 author: Matt Green - @mgreen27
 description: |
-    This artifact checks the VAD for executable sections that are not maped to disk 
+    This artifact checks the VAD for executable sections that are not mapped to disk
     and has suspicious content which may indicate process injection.
-    
-    User options allow targetting process, modifying suspicious content yara, or 
+
+    User options allow targeting process, modifying suspicious content yara, or
     upload of suspicious section.
-    
-    Default suspicious content includes headers: MZ, default cobalt strike stomped, 
+
+    Default suspicious content includes headers: MZ, default cobalt strike stomped,
     or well known suspicious strings, meterpreter and Cobalt Strike.
-    
-    Note: Add additional yara as desired.  
-    Expect some false positives and triage accordingly.  
-    
+
+    Note: Add additional yara as desired.
+    Expect some false positives and triage accordingly.
+
 parameters:
   - name: ProcessRegex
     description: A regex applied to process names.
@@ -23,8 +23,8 @@ parameters:
     type: regex
   - name: ProtectionRegex
     description: |
-        Protection of section. Default is Executable but can customise for other usecases.  
-        Examples: x for executable, r for read, w for write.  
+        Protection of section. Default is Executable but can customise for other use cases.
+        Examples: x for executable, r for read, w for write.
         (x|r|w) or xrw for multiple.
         x-w for strict.
     default: xrw
@@ -34,7 +34,7 @@ parameters:
     default: 10000
     type: int
   - name: SuspiciousContent
-    description: A yara rule of suspicious section content 
+    description: A yara rule of suspicious section content
     type: yara
     default: |
         rule win_cobalt_strike_auto {
@@ -111,12 +111,12 @@ parameters:
                 $header1 = "MZ"
                 $header2 = { 00 00 41 52 55 48 } // cobalt strike stomped dll
 
-                $body1 = "This program cannot be run in DOS mode" 
+                $body1 = "This program cannot be run in DOS mode"
                 $body2 = { FC E8 8? 00 00 00 60 }     // shellcode prologe in metasploit
 
             condition:
                 $header1 at 0 or $header2
-                    or any of ($body*) 
+                    or any of ($body*)
         }
         rule shellcode_get_eip
         {
@@ -202,7 +202,7 @@ parameters:
             condition:
                 any of them
         }
-        
+
   - name: NumberOfHits
     description: THis artifact will stop by default at one hit. This setting allows additional hits
     default: 1
@@ -239,7 +239,7 @@ sources:
             WHERE NOT MappingName
                 AND Protection =~ ProtectionRegex
           })
-          
+
       LET results <= SELECT *,
             format(format='% x',args=read_file(
                      accessor='offset',
@@ -266,33 +266,33 @@ sources:
                     _PathSpec
                 FROM yara(
                             accessor='offset',
-                            files=_PathSpec, 
+                            files=_PathSpec,
                             rules=SuspiciousContent,
-                            end=SectionSize,  key='X', 
+                            end=SectionSize,  key='X',
                             number=NumberOfHits,
                             context=ContextBytes
                         )
                 GROUP BY CreateTime,Pid, Name, AddressRange
             })
-        
-        
+
+
       LET upload_section = SELECT *,
-                upload(accessor='sparse', 
+                upload(accessor='sparse',
                   file=pathspec(
                     DelegateAccessor="process",
                     DelegatePath=Pid,
-                    Path=[dict(Offset=_Address, Length=SectionSize),]), 
+                    Path=[dict(Offset=_Address, Length=SectionSize),]),
                     name=format(format='%v-%v_%v.bin',args= [ Name, Pid, AddressRange ])
                     ) as SectionDump
             FROM results
             GROUP BY CreateTime,Pid, Name,_Address, AddressRange
-      
+
       SELECT *,
         process_tracker_callchain(id=Pid).Data as ProcessChain
       FROM if(condition= UploadSection,
                 then= upload_section,
                 else= results)
-        
+
 column_types:
   - name: SectionData
     type: base64hex

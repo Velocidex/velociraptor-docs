@@ -1,26 +1,35 @@
 ---
 title: Generic.Applications.Chrome.SessionStorage
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Extracts key-value session storage entries from Chrome, Brave, and
+  Edge browsers.
 ---
 
-Session storage allows a web site to store permanent data in the
-user's browser.
+Extracts key-value session storage entries from Chrome, Brave, and
+Edge browsers.
 
-This artifact parses this data from the browser cache. Each website
-has maintains a mapping between keys and values. The data is stored
-per website and can vary.
+Session storage allows a web site to store permanent data in the
+user's browser. This artifact parses this data from the browser
+cache. For each website the browser maintains a mapping between keys
+and values. The data is stored per website and can vary in
+structure.
 
 
 <pre><code class="language-yaml">
 name: Generic.Applications.Chrome.SessionStorage
 description: |
-  Session storage allows a web site to store permanent data in the
-  user's browser.
+  Extracts key-value session storage entries from Chrome, Brave, and
+  Edge browsers.
 
-  This artifact parses this data from the browser cache. Each website
-  has maintains a mapping between keys and values. The data is stored
-  per website and can vary.
+  Session storage allows a web site to store permanent data in the
+  user's browser. This artifact parses this data from the browser
+  cache. For each website the browser maintains a mapping between keys
+  and values. The data is stored per website and can vary in
+  structure.
 
 parameters:
 - name: SessionGlobs

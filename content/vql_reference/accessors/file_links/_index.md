@@ -2,7 +2,17 @@
 title: file_links
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Access the filesystem using the OS APIs.
+
+  Note: Take care with this accessor because there may be circular
+  links. In particular this is dangerous on Linux when accidentally
+  entering the `/proc` part of the filesystem because it contains
+  circular links to everywhere.
+
 ---
 
 
@@ -13,6 +23,8 @@ no_edit: true
 ## file_links
 <span class='vql_type label label-warning pull-right page-header'>Accessor</span>
 
+
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
 
 ### Description
 

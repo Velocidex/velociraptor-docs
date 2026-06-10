@@ -1,0 +1,6 @@
+{{/* https://discourse.gohugo.io/t/readfile-does-not-parse-shortcodes/16667/8 */}}
+{{ $file := .Get 0 }}
+{{ $page := .Site.GetPage $file }}
+{{ with $page }}
+  {{ .RenderShortcodes }}
+{{ end }}

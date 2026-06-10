@@ -1,16 +1,23 @@
 ---
 title: Windows.Forensics.Lnk
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Parses Windows LNK shortcut files to extract target paths,
+  arguments, timestamps, and metadata.
 ---
 
-This artifact parses LNK shortcut files.
+Parses Windows LNK shortcut files to extract target paths,
+arguments, timestamps, and metadata.
 
-A LNK file is a type of Shell Item that serves as a shortcut or reference to a
-specific file, folder, or application. It contains metadata and information
-about the accessed file or location and is a valuable forensic artifact.
-LNK files can be automatically created by the Windows operating system when a
-user accesses a file from a supported application or manually created by the user.
+A LNK file is a type of Shell Item that serves as a shortcut or
+reference to a specific file, folder, or application. It contains
+metadata and information about the accessed file or location and is
+a valuable forensic artifact. LNK files can be automatically created
+by the Windows operating system when a user accesses a file from a
+supported application or manually created by the user.
 
 This artifact has several configurable options:
 
@@ -26,8 +33,85 @@ This artifact has several configurable options:
 - VmPrefixMAC: Regex to match known Virtual Machine MacAddress prefix in TrackerData.
 - RiskyExe: Regex target exe to flag as risky.
 
-
 List of fields targeted by filter regex:
+
+- StringData.TargetPath
+- StringData.Name
+- StringData.RelativePath
+- StringData.WorkingDir
+- StringData.Arguments
+- StringData.IconLocation
+- LinkTarget.LinkTarget
+- PropertyStore
+- TrackerData.MachineID
+- TrackerData.MacAddress
+
+NOTE: regex startof (^) and endof ($) line modifiers will not work.
+
+
+Windows.Forensics.Lnk also will highlight suspicious lnk attributes in a Suspicious field.
+
+* Large Size - Check for large size, default over 20000 bytes
+* Startup Path - Path with \Startup\
+* Zeroed Headers - Check for ShellHeader items zeroed.
+* Hidden window - Check for ShellLinkHeader.ShowCommand as SHOWMINNOACTIVE
+* Target Changed path - Check LNK TargetPath different from PropertyStore path.
+* Target Changed size - Check LNK ShellLinkHeader.FileSize different from PropertyStore size.
+* Risky target - Checks several LNK target paths to the RiskyExe regex.
+* WebDAV - Checks for NetworkProviderType = WNNC_NET_DAV
+* Line break in StringData.Name
+* Suspicious argument size - large sized arguments over 250 characters as default
+* Environment variable script - environment variable with a common script configured (bat|cmd|ps1|js|vbs|vbe|py)
+* No Target with environment variable - environment variable only execution
+* Suspicious hostname - some common malicious hostnames
+* Created in VM - Check TrackerData MacAddress for known VM prefix
+* Local Admin- check PropertyStore for indications LNK created by local admin UID 500
+* Cyrillic Language - check PropertyStore for Cyrillic strings
+* Chinese Language - check PropertyStore for Chinese strings
+* Korean Language - check PropertyStore for Korean strings
+* Persian Language - check PropertyStore for Persian strings
+* Vietnamese Language - check PropertyStore for Vietnamese strings
+* CodePage - checks for existence of a ExtraData code page setting. Rare enough to report on - 936:Simplified Chinese, 949:Korean, 950:Traditional Chinese
+* Has Overlay - check for overlay and extra data attached to LNK
+* Long Base64 - check for a long base64 blog over 20 decoded characters
+* Arguments have ticks - ticks are common in malicious LNK files
+* Arguments have environment variables - environment variables (%|\$env:) are common in malicious LNKs
+* Arguments have rare characters - looks for specific rare characters that may indicate obfuscation (\?|\!|\~|\@)
+* Arguments have leading space - malicious LNK files may have a many leading spaces to obfuscate some tools
+* Arguments have http strings - LNKs are regularly used as a download cradle - https?://
+* Arguments have UNC strings
+* Suspicious arguments - some common malicious arguments observed in field (with mind to False positive)
+
+
+<pre><code class="language-yaml">
+name: Windows.Forensics.Lnk
+author: Matt Green - @mgreen27
+description: |
+  Parses Windows LNK shortcut files to extract target paths,
+  arguments, timestamps, and metadata.
+
+  A LNK file is a type of Shell Item that serves as a shortcut or
+  reference to a specific file, folder, or application. It contains
+  metadata and information about the accessed file or location and is
+  a valuable forensic artifact. LNK files can be automatically created
+  by the Windows operating system when a user accesses a file from a
+  supported application or manually created by the user.
+
+  This artifact has several configurable options:
+
+  - TargetGlob: glob targeting. Default targets *.lnk files in Startup and Recent paths.
+  - IOCRegex: Regex search on key fields: StringData, TrackerData and PropertyStore.
+  - IgnoreRegex: Ignore regex filter on key fields.
+  - UploadLnk: uploads lnk hits.
+  - SuspiciousOnly: only returns LNK files reporting a suspicious attribute.
+  - SusSize: Any lnk over this size in bytes is suspicious.
+  - SusArgSize: Any lnk with Argument strings over this size is suspicious.
+  - SusArgRegex: Regex for suspicious strings in Arguments.
+  - SusHostnameRegex: Regex for suspicious TrackerData Hostname.
+  - VmPrefixMAC: Regex to match known Virtual Machine MacAddress prefix in TrackerData.
+  - RiskyExe: Regex target exe to flag as risky.
+
+  List of fields targeted by filter regex:
 
   - StringData.TargetPath
   - StringData.Name
@@ -76,84 +160,6 @@ List of fields targeted by filter regex:
   * Arguments have UNC strings
   * Suspicious arguments - some common malicious arguments observed in field (with mind to False positive)
 
-
-<pre><code class="language-yaml">
-name: Windows.Forensics.Lnk
-author: Matt Green - @mgreen27
-description: |
-  This artifact parses LNK shortcut files.
-
-  A LNK file is a type of Shell Item that serves as a shortcut or reference to a
-  specific file, folder, or application. It contains metadata and information
-  about the accessed file or location and is a valuable forensic artifact.
-  LNK files can be automatically created by the Windows operating system when a
-  user accesses a file from a supported application or manually created by the user.
-
-  This artifact has several configurable options:
-
-  - TargetGlob: glob targeting. Default targets *.lnk files in Startup and Recent paths.
-  - IOCRegex: Regex search on key fields: StringData, TrackerData and PropertyStore.
-  - IgnoreRegex: Ignore regex filter on key fields.
-  - UploadLnk: uploads lnk hits.
-  - SuspiciousOnly: only returns LNK files reporting a suspicious attribute.
-  - SusSize: Any lnk over this size in bytes is suspicious.
-  - SusArgSize: Any lnk with Argument strings over this size is suspicious.
-  - SusArgRegex: Regex for suspicious strings in Arguments.
-  - SusHostnameRegex: Regex for suspicious TrackerData Hostname.
-  - VmPrefixMAC: Regex to match known Virtual Machine MacAddress prefix in TrackerData.
-  - RiskyExe: Regex target exe to flag as risky.
-
-
-  List of fields targeted by filter regex:
-
-    - StringData.TargetPath
-    - StringData.Name
-    - StringData.RelativePath
-    - StringData.WorkingDir
-    - StringData.Arguments
-    - StringData.IconLocation
-    - LinkTarget.LinkTarget
-    - PropertyStore
-    - TrackerData.MachineID
-    - TrackerData.MacAddress
-
-    NOTE: regex startof (^) and endof ($) line modifiers will not work.
-
-
-    Windows.Forensics.Lnk also will highlight suspicious lnk attributes in a Suspicious field.
-
-    * Large Size - Check for large size, default over 20000 bytes
-    * Startup Path - Path with \Startup\
-    * Zeroed Headers - Check for ShellHeader items zeroed.
-    * Hidden window - Check for ShellLinkHeader.ShowCommand as SHOWMINNOACTIVE
-    * Target Changed path - Check LNK TargetPath different from PropertyStore path.
-    * Target Changed size - Check LNK ShellLinkHeader.FileSize different from PropertyStore size.
-    * Risky target - Checks several LNK target paths to the RiskyExe regex.
-    * WebDAV - Checks for NetworkProviderType = WNNC_NET_DAV
-    * Line break in StringData.Name
-    * Suspicious argument size - large sized arguments over 250 characters as default
-    * Environment variable script - environment variable with a common script configured (bat|cmd|ps1|js|vbs|vbe|py)
-    * No Target with environment variable - environment variable only execution
-    * Suspicious hostname - some common malicious hostnames
-    * Created in VM - Check TrackerData MacAddress for known VM prefix
-    * Local Admin- check PropertyStore for indications LNK created by local admin UID 500
-    * Cyrillic Language - check PropertyStore for Cyrillic strings
-    * Chinese Language - check PropertyStore for Chinese strings
-    * Korean Language - check PropertyStore for Korean strings
-    * Persian Language - check PropertyStore for Persian strings
-    * Vietnamese Language - check PropertyStore for Vietnamese strings
-    * CodePage - checks for existence of a ExtraData code page setting. Rare enough to report on - 936:Simplified Chinese, 949:Korean, 950:Traditional Chinese
-    * Has Overlay - check for overlay and extra data attached to LNK
-    * Long Base64 - check for a long base64 blog over 20 decoded characters
-    * Arguments have ticks - ticks are common in malicious LNK files
-    * Arguments have environment variables - environment variables (%|\$env:) are common in malicious LNKs
-    * Arguments have rare characters - looks for specific rare characters that may indicate obfuscation (\?|\!|\~|\@)
-    * Arguments have leading space - malicious LNK files may have a many leading spaces to obfuscate some tools
-    * Arguments have http strings - LNKs are regularly used as a download cradle - https?://
-    * Arguments have UNC strings
-    * Suspicious arguments - some common malicious arguments observed in field (with mind to False positive)
-
-
 reference:
   - https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink
 
@@ -165,7 +171,7 @@ parameters:
     description: A regex to filter on all fields
   - name: IgnoreRegex
     type: regex
-    description: A regex to ignore ilter all fields
+    description: A regex for fields to ignore
   - name: UploadLnk
     description: Also upload the link files themselves.
     type: bool
@@ -184,15 +190,15 @@ parameters:
     description: Any lnk with Argument strings over this size is suspicious.
     type: int
   - name: SusArgRegex
-    description: Regex for suspicious strings in Argumetns.
+    description: Regex for suspicious strings in arguments.
     type: regex
     default: \\AppData\\|\\Users\\Public\\|\\Temp\\|comspec|&amp;cd&amp;echo| -NoP | -W Hidden | [-/]decode | -e.* (JAB|SUVYI|SQBFAFgA|aWV4I|aQBlAHgA)|start\s*[\\/]b|\.downloadstring\(|\.downloadfile\(|iex
   - name: SusHostnameRegex
-    description: Regex for suspicious TrackerData Hastname.
+    description: Regex for suspicious TrackerData hostnames.
     type: regex
     default: ^(Win-|Desktop-|Commando$)
   - name: VmPrefixMAC
-    description: VM MacAddress prefix regex to compate to LNK TrackerData.
+    description: VM MacAddress prefix regex to compare to LNK TrackerData.
     type: regex
     default: ^(00:50:56|00:0C:29|00:05:69|00:1C:14|08:00:27|52:54:00|00:21:F6|00:14:4F|00:0F:4B|00:15:5D)
   - name: RiskyExe

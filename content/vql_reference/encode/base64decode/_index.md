@@ -2,7 +2,11 @@
 title: base64decode
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Decodes a base64 encoded string.
 ---
 
 

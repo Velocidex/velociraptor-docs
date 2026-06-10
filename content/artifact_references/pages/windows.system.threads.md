@@ -1,0 +1,60 @@
+---
+title: Windows.System.Threads
+hidden: true
+sitemap:
+  disable: true
+tags: [Client Artifact]
+description: |
+  Lists threads for selected processes, matching by name or PID regex
+  filters.
+---
+
+Lists threads for selected processes, matching by name or PID regex
+filters.
+
+This uses Velociraptor's threads plugin.
+
+
+<pre><code class="language-yaml">
+name: Windows.System.Threads
+description: |
+  Lists threads for selected processes, matching by name or PID regex
+  filters.
+  
+  This uses Velociraptor's threads plugin.
+
+parameters:
+  - name: ProcessRegex
+    description: A regex applied to process names.
+    default: .
+    type: regex
+  - name: PidRegex
+    default: .
+    type: regex
+
+
+sources:
+  - query: |
+      -- firstly find processes in scope
+      LET processes = SELECT int(int=Pid) AS Pid,
+              Name, Exe, CommandLine, StartTime
+        FROM process_tracker_pslist()
+        WHERE Name =~ ProcessRegex
+            AND format(format="%d", args=Pid) =~ PidRegex
+            AND log(message="Scanning pid %v : %v", args=[Pid, Name])
+
+      LET Hex(X) = format(format="%#X", args=X)
+
+      SELECT * FROM foreach(row=processes,
+      query={
+          SELECT StartTime as ProcessCreateTime,Pid, Name,
+                 tid AS Tid, times.CreateTime AS ThreadCreateTime,
+                 Hex(X=thread_start_address) AS StartAddress,
+                 thread_start_address_name AS StartAddressName,
+                 Hex(X=memory_basic_info.BaseAddress) AS BaseAddress,
+                 filename AS Filename
+          FROM threads(pid=Pid)
+      })
+
+</code></pre>
+

@@ -3,6 +3,10 @@ title: "JOIN in VQL"
 date: 2021-06-11T05:55:46Z
 draft: false
 weight: 30
+description: |
+  As mentioned previously, VQL does not support the `JOIN` operator. If
+  you are coming from a background in SQL you might be wondering how to
+  emulate a `JOIN` in VQL?
 ---
 
 As mentioned previously, VQL does not support the `JOIN` operator. If
@@ -99,7 +103,7 @@ In the previous example we saw exactly what a `JOIN` operation looks
 like in `SQL` and how the database can utilize indexes to make the
 operation very fast. In VQL, however all data is dynamic because our
 data sources are plugins which calculate rows on the fly. Because we
-dont have a static table, it means that we can not have a permanent
+don't have a static table, it means that we can not have a permanent
 index on this data.
 
 Therefore, VQL does not have indexes! As such, there is no benefit in

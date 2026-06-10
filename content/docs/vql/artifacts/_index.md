@@ -11,4 +11,4 @@ chapter: false
 summary: "How to create and manage artifacts in the GUI"
 ---
 
-{{% include-content "/docs/artifacts/" %}}
+{{% include-page "/docs/artifacts/" %}}

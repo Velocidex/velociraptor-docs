@@ -6,6 +6,8 @@ last_reviewed: 2025-07-06
 draft: false
 weight: 75
 summary: Manipulate the Velociraptor server service on Windows.
+description: |
+  Manipulate the Velociraptor **server service** (on Windows only).
 ---
 
 Manipulate the Velociraptor **server service** (on Windows only).

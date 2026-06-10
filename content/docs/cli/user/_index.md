@@ -6,6 +6,8 @@ last_reviewed: 2025-07-06
 draft: false
 weight: 100
 summary: "Commands for working with users"
+description: |
+  Manage Velociraptor users.
 ---
 
 Manage Velociraptor users.
@@ -20,8 +22,8 @@ Changes made using this CLI command will not be effective until the server is
 restarted!
 
 To add or modify users during runtime you should instead use the `user`,
-`user_create`, `user_delete`, or `user_grant` [VQL functions]({{< ref
-"/vql_reference/" >}}).
+`user_create`, `user_delete`, or `user_grant`
+[VQL functions](/vql_reference/).
 
 {{% /notice %}}
 

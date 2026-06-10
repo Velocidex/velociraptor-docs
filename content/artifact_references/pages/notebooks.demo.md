@@ -1,16 +1,24 @@
 ---
 title: Notebooks.Demo
 hidden: true
+sitemap:
+  disable: true
 tags: [notebook]
+description: |
+  Demonstrates notebook functionality with sample VQL and tool
+  references.
 ---
 
-A notebook demonstrating features of notebooks
+Demonstrates notebook functionality with sample VQL and tool
+references.
 
 
 <pre><code class="language-yaml">
+
 name: Notebooks.Demo
 description: |
-  A notebook demonstrating features of notebooks
+  Demonstrates notebook functionality with sample VQL and tool
+  references.
 
 type: NOTEBOOK
 
@@ -18,6 +26,7 @@ type: NOTEBOOK
 tools:
   - name: Autorun_amd64
     url: https://live.sysinternals.com/tools/autorunsc64.exe
+    serve_locally: true
 
 parameters:
   - name: StartDate

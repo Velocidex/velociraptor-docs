@@ -1,0 +1,229 @@
+name: Generic.Client.HW.Identification
+author: Andreas Misje – @misje
+description: |
+   Extract product serial and other identification strings from the system.
+
+   One column `SystemInfo` is returned: a dict with all available fields.
+   Sources vary by platform:
+
+   - **Linux**: reads DMI tables from `/sys/class/dmi/id/*`, plus
+     `/sys/firmware/devicetree/base/*` to catch single-board computers
+     (Raspberry Pi etc.) where DMI is absent.
+   - **Windows**: uses WMI: `Win32_ComputerSystem`,
+     `Win32_ComputerSystemProduct`, `Win32_BaseBoard`,
+     `Win32_SystemEnclosure`.
+   - **macOS**: uses `ioreg -c IOPlatformExpertDevice`. Only
+     `product_manufacturer`, `product_name` and `product_serial` are
+     available.
+
+   A second column `virtual` is added, a best-effort boolean derived
+   from `product_name` that recognises common hypervisors and cloud
+   providers (VirtualBox, VMware, KVM/QEMU, Hyper-V, Xen, Parallels,
+   EC2, Azure, GCE etc.). The check is informational; systems can
+   easily evade this check, and some VMs does not provide any HW
+   information at all. `true` likely means that a host is virtual, but
+   `false` should not be trusted.
+
+   On hosts without DMI tables, the `firmware_*` fields provide an
+   alternative to identify the system.
+
+   {{% expand "Example values across platforms" %}}
+
+   Lenovo T14 Gen 2i (Linux):
+
+   | Key | Example value |
+   | --- | ------------- |
+   | product_family | Thinkpad T14 Gen 2i |
+   | product_name | 20W00126MX |
+   | product_sku | LENOVO_MT_20W0_BU_Think_FM_ThinkPad T14 Gen 2i |
+   | product_serial | xxxxxxxx |
+   | product_uuid | xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx |
+   | product_manufacturer | LENOVO |
+   | product_version | Thinkpad T14 Gen 2i |
+   | board_name | 20W00126MX |
+   | board_serial | xxxxxxxxxxx |
+   | board_manufacturer | LENOVO |
+   | board_version | SDK0T76538 WIN |
+   | chassis_asset_tag | No Asset Information |
+   | chassis_serial | xxxxxxxx |
+   | chassis_manufacturer | LENOVO |
+   | chassis_version | None |
+
+   Dell Latitude 7420 (Linux). Note empty `product_manufacturer`/
+   `product_version` — Dell ships those blank on some models, so always
+   verify the source field is populated before relying on it for
+   metadata:
+
+   | Key | Example value |
+   | --- | ------------- |
+   | product_family | Latitude |
+   | product_name | Latitude 7420 |
+   | product_sku | 0A36 |
+   | product_serial | xxxxxxx |
+   | product_uuid | xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx |
+   | product_manufacturer | |
+   | product_version | |
+   | board_name | 07MHG4 |
+   | board_serial | xxxxxxxx/xxxxxxxxxxxxxxx |
+   | board_manufacturer | Dell Inc. |
+   | board_version | A02 |
+   | chassis_asset_tag | 57182 |
+   | chassis_serial | xxxxxxx |
+   | chassis_manufacturer | Dell Inc. |
+   | chassis_version | |
+
+   Raspberry Pi (Linux, no DMI — firmware fields only):
+
+   | Key | Example value |
+   | --- | ------------- |
+   | firmware_version | Raspberry Pi 4 Model B Rev 1.2 |
+   | firmware_serial | xxxxxxxxxxxxxxxx |
+
+   MacBook Pro (macOS):
+
+   | Key | Example value |
+   | --- | ------------- |
+   | product_name | Mac15,6 |
+   | product_serial | xxxxxxxxxx |
+   | product_manufacturer | Apple Inc. |
+
+   Some manufacturers, like MSI, will refer to a serial number that is
+   not obtainable anywhere on the host.
+
+   {{% /expand %}}
+
+   ## Use as part of client interrogation
+
+   This artifact is designed to be called from a custom override of
+   [`Generic.Client.Info`](/artifact_references/pages/generic.client.info/)
+   so that hardware identification is collected on every interrogation.
+   Combined with
+   [`Server.Monitor.StoreClientHWInfo`](/exchange/artifacts/pages/server.monitor.storeclienthwinfo/),
+   you can store key hardware information, like serial, as client
+   metadata. See
+   [How can I automatically add & update client metadata?](/knowledge_base/tips/automating_metadata/)
+   for an in-depth walkthrough about how to save interrogation data as
+   client metadata.
+
+   #metadata
+
+type: CLIENT
+
+implied_permissions:
+  - EXECVE
+
+sources:
+   - query: |
+       LET Info <= SELECT OS
+         FROM info()
+
+       LET IsWin <= Info[0].OS = 'windows'
+
+       LET IsLin <= Info[0].OS = 'linux'
+
+       LET IsMac <= Info[0].OS = 'darwin'
+
+       LET WinInfo = SELECT {
+           SELECT dict(product_family=SystemFamily,
+                       product_name=Model,
+                       product_sku=SystemSKUNumber) AS Info
+           FROM wmi(query='select * from Win32_ComputerSystem')
+           } AS ComputerSystem,
+                            {
+           SELECT dict(product_serial=IdentifyingNumber,
+                       product_uuid=UUID,
+                       product_manufacturer=Vendor,
+                       product_version=Version) AS Info
+           FROM wmi(query='select * from Win32_ComputerSystemProduct')
+           } AS ComputerSystemProduct,
+                            {
+           SELECT dict(board_name=Product,
+                       board_serial=SerialNumber,
+                       board_manufacturer=Manufacturer,
+                       board_version=Version) AS Info
+           FROM wmi(query='select * from Win32_BaseBoard')
+           } AS BaseBoard,
+                            {
+           SELECT dict(chassis_asset_tag=SMBIOSAssetTag,
+                       chassis_serial=SerialNumber,
+                       chassis_manufacturer=Manufacturer,
+                       chassis_version=Version) AS Info
+           FROM wmi(query='SELECT * FROM Win32_SystemEnclosure')
+           } AS SystemEnclosure
+         FROM scope()
+
+       LET SysInfoDict = SELECT Info AS SystemInfo
+         FROM if(
+           condition=IsLin,
+           then={
+           SELECT
+           dict(
+             product_family=read_file(filename='/sys/class/dmi/id/product_family')[:-1],
+             product_name=read_file(
+               filename='/sys/class/dmi/id/product_name')[:-1],
+             product_serial=read_file(
+               filename='/sys/class/dmi/id/product_serial')[:-1],
+             product_sku=read_file(
+               filename='/sys/class/dmi/id/product_sku')[:-1],
+             product_uuid=read_file(
+               filename='/sys/class/dmi/id/product_uuid')[:-1],
+             product_version=read_file(
+               filename='/sys/class/dmi/id/product_version')[:-1],
+             board_name=read_file(
+               filename='/sys/class/dmi/id/board_name')[:-1],
+             board_serial=read_file(
+               filename='/sys/class/dmi/id/board_serial')[:-1],
+             board_manufacturer=read_file(
+               filename='/sys/class/dmi/id/board_vendor')[:-1],
+             board_version=read_file(
+               filename='/sys/class/dmi/id/board_version')[:-1],
+             chassis_asset_tag=read_file(
+               filename='/sys/class/dmi/id/chassis_asset_tag')[:-1],
+             chassis_serial=read_file(
+               filename='/sys/class/dmi/id/chassis_serial')[:-1],
+             chassis_manufacturer=read_file(
+               filename='/sys/class/dmi/id/chassis_vendor')[:-1],
+             chassis_version=read_file(
+               filename='/sys/class/dmi/id/chassis_version')[:-1],
+             // Useful on devices like Raspberry Pi, where no other information is available:
+             firmware_version=read_file(
+               filename='/sys/firmware/devicetree/base/model')[:-1],
+             // Useful on devices like Raspberry Pi, where no other information is available:
+             firmware_serial=read_file(
+               filename='/sys/firmware/devicetree/base/serial-number')[:-1]) AS Info
+           FROM scope()
+         },
+           else=if(
+             condition=IsMac,
+             then={
+           SELECT
+           parse_string_with_regex(
+             string=Stdout,
+             regex=('"manufacturer" = <"(?P<product_manufacturer>[^"]+)">', '"model" = <"(?P<product_name>[^"]+)">', '"IOPlatformSerialNumber" = "(?P<product_serial>[^"]+)"')) AS Info
+           FROM execve(
+             argv=['ioreg', '-c', 'IOPlatformExpertDevice', '-d', 2])
+         },
+             else=if(
+               condition=IsWin,
+               then={
+           SELECT
+           ComputerSystem + ComputerSystemProduct + BaseBoard +
+             SystemEnclosure AS Info
+           FROM WinInfo
+         })))
+
+       // This is a very simple attempt to detect whether the computer is virtual.
+       // Detecting this is really hard, sometimes impossible, but this may still
+       // be useful:
+       SELECT
+           *, product_name =~ '''(?i)\b(virtualbox|vmware|kvm|qemu|hyper[- ]?v|xen|parallels|bhyve|openstack|cloudstack|bochs|amazon ec2|azure|google compute engine|nutanix|proxmox|virtio|vultr|digitalocean|oracle cloud|microsoft virtual machine|virtual machine|standard pc)\b''' AS virtual
+       FROM foreach(
+         row=SysInfoDict,
+         column='SystemInfo')
+
+     notebook:
+       - name: As dict
+         type: vql_suggestion
+         template: |
+           SELECT _value AS SystemInfo
+           FROM items(item={ SELECT * FROM source() })

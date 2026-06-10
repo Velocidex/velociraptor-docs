@@ -2,7 +2,11 @@
 title: crypto_rc4
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Apply rc4 to the string and key.
 ---
 
 

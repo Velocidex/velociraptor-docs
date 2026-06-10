@@ -31,7 +31,7 @@ The current approach results in a few downsides and inefficiencies:
 
 * there is inevitably a lot of very similar or even duplicated logic across many artifacts.
 
-* artifacts are heavily dependent of path specifications which makes them somewhat brittle and prone to missing filesystem targets which are not in the conventional locations. This also means that the current artifacts are mainly suited to the use case of “online” data due to the the heavy reliance on path specifications. Thus many Velociraptor artifacts (without modification) are usable only on “live/online” endpoints and will not work against “offline” data, for example data which has been collected through disk imaging or other collection methods.
+* artifacts are heavily dependent of path specifications which makes them somewhat brittle and prone to missing filesystem targets which are not in the conventional locations. This also means that the current artifacts are mainly suited to the use case of “online” data due to the heavy reliance on path specifications. Thus many Velociraptor artifacts (without modification) are usable only on “live/online” endpoints and will not work against “offline” data, for example data which has been collected through disk imaging or other collection methods.
 
 ## Goals
 
@@ -224,7 +224,7 @@ The key things to notice about these artifacts are:
 
 1. The tool definitions (“tools” section of the artifact) are as simple as possible because we’ve already defined and initialised (incl. downloading) the tools during the setup process. The tool definitions here are just to ensure that these tools are available to this artifact.
 
-1. We don’t mess around with fancy-pants unzipping of tools in our artifact. Several of the Velociraptor-bundled artifacts download zipped tools from Github and then unzip them on the client. This is done for user-convenience but it creates unnecessary complexity in the artifact, plus we really shouldn’t be using tools in zips that have been pulled straight from Github. It’s better to download the tools, unzip the tools, test/validate the tools, and then store them in your Velociraptor’s inventory. This approach also means that your endpoints don’t need access to Github because all the tools will be pulled from the Velociraptor server.
+1. We don’t mess around with fancy-pants unzipping of tools in our artifact. Several of the Velociraptor-bundled artifacts download zipped tools from GitHub and then unzip them on the client. This is done for user-convenience but it creates unnecessary complexity in the artifact, plus we really shouldn’t be using tools in zips that have been pulled straight from GitHub. It’s better to download the tools, unzip the tools, test/validate the tools, and then store them in your Velociraptor’s inventory. This approach also means that your endpoints don’t need access to GitHub because all the tools will be pulled from the Velociraptor server.
 
 1. We set the artifact parameters to “hidden” because we don’t intend these artifacts to be used standalone.
 

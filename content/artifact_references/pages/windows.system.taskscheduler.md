@@ -1,32 +1,43 @@
 ---
 title: Windows.System.TaskScheduler
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Enumerates Windows scheduled tasks and parses their XML definitions
+  to extract commands and user contexts.
 ---
+
+Enumerates Windows scheduled tasks and parses their XML definitions
+to extract commands and user contexts.
 
 The Windows task scheduler is a common mechanism that malware uses
 for persistence. It can be used to run arbitrary programs at a later
 time. Commonly malware installs a scheduled task to run itself
 periodically to achieve persistence.
 
-This artifact enumerates all the task jobs (which are XML
-files). The artifact uploads the original XML files and then
-analyses them to provide an overview of the commands executed and
-the user under which they will be run.
+This artifact enumerates all the task jobs (which are XML files).
+The artifact uploads the original XML files and then analyses them
+to provide an overview of the commands executed and the user under
+which they will be run.
 
 
 <pre><code class="language-yaml">
 name: Windows.System.TaskScheduler
 description: |
+  Enumerates Windows scheduled tasks and parses their XML definitions
+  to extract commands and user contexts.
+  
   The Windows task scheduler is a common mechanism that malware uses
   for persistence. It can be used to run arbitrary programs at a later
   time. Commonly malware installs a scheduled task to run itself
   periodically to achieve persistence.
 
-  This artifact enumerates all the task jobs (which are XML
-  files). The artifact uploads the original XML files and then
-  analyses them to provide an overview of the commands executed and
-  the user under which they will be run.
+  This artifact enumerates all the task jobs (which are XML files).
+  The artifact uploads the original XML files and then analyses them
+  to provide an overview of the commands executed and the user under
+  which they will be run.
 
 parameters:
   - name: TasksPath
@@ -47,7 +58,7 @@ parameters:
 sources:
   - name: Analysis
     query: |
-      LET Uploads = SELECT Name, OSPath, if(
+      LET Uploads(TasksPath) = SELECT Name, OSPath, if(
            condition=AlsoUpload='Y',
            then=upload(file=OSPath)) AS Upload, Mtime
         FROM glob(globs=TasksPath)
@@ -55,7 +66,7 @@ sources:
 
       // Job files contain invalid XML which confuses the parser - we
       // use regex to remove the invalid tags.
-      LET parse_task = select OSPath, Mtime, parse_xml(
+      LET parse_task(OSPath, Mtime) = select OSPath, Mtime, parse_xml(
                accessor='data',
                file=regex_replace(
                     source=utf16(string=Data),
@@ -63,9 +74,23 @@ sources:
                     replace='')) AS XML
         FROM read_file(filenames=OSPath)
 
+      // Extract the binary from the command line. Fix up some common
+      // problems with the command specification.
+      LET _ExpandedTransforms &lt;= dict(
+         `^\\\\SystemRoot\\\\`="%SystemRoot%\\",
+         `^system32\\\\`="%SystemRoot%\\System32\\",
+         `^{.+}.+`="\\$0",
+         `^.:\\\\Program Files[^\\\\]*\\\\[^ ]+`='"$0"',
+         `^%[^ ]+%[^ ]+`='"$0"'
+      )
+
+      LET ExpandPath(Path) = lowcase(string=commandline_split(
+        command=expand(path=regex_transform(source=Path,
+         map=_ExpandedTransforms)))[0])
+
       LET Results = SELECT XML.Task.RegistrationInfo.URI AS TaskName,
             Mtime,
-            expand(path=XML.Task.Actions.Exec.Command)  AS Command,
+            ExpandPath(Path=XML.Task.Actions.Exec.Command)  AS Command,
             XML.Task.Actions.Exec.Arguments AS Arguments,
             XML.Task.Principals.Principal.UserId AS UserId,
             XML.Task.Principals.Principal.RunLevel AS RunLevel,
@@ -74,16 +99,21 @@ sources:
             XML.Task.Actions.ComHandler.ClassId AS ComHandler,
             timestamp(epoch=XML.Task.RegistrationInfo.Date) AS RegistrationTime,
             timestamp(epoch=XML.Task.Triggers.CalendarTrigger.StartBoundary) AS StartBoundary,
-            XML as _XML
-        FROM foreach(row=Uploads, query=parse_task)
+            XML as _XML,
+            OSPath
+        FROM foreach(row={
+          SELECT * FROM Uploads(TasksPath= TasksPath)
+        } , query={
+          SELECT * FROM parse_task(OSPath=OSPath, Mtime=Mtime)
+        })
 
       SELECT *,
          authenticode(filename=Command) AS Authenticode,
-         if(condition=UploadCommands and ExpandedCommand,
+         if(condition=UploadCommands AND Command,
             then=upload(file=Command)) AS Upload
       FROM Results
       WHERE UserId =~ Username
-      
+
 column_types:
 - name: Upload
   type: upload_preview

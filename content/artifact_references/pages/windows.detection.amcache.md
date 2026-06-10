@@ -1,59 +1,68 @@
 ---
 title: Windows.Detection.Amcache
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Collects AMCache entries with a SHA1 hash to enable threat
+  detection.
 ---
 
-This artifact collects AMCache entries with a SHA1 hash to enable threat
+Collects AMCache entries with a SHA1 hash to enable threat
 detection.
 
-AmCache is an artifact which stores metadata related to PE execution and
-program installation on Windows 7 and Server 2008 R2 and above. This artifact
-includes EntryName, EntryPath and SHA1 as great data points for IOC collection.
-Secondary datapoints include publisher/company, BinaryType and OriginalFileName.
+AmCache is an artifact which stores metadata related to PE execution
+and program installation on Windows 7 and Server 2008 R2 and above.
+This artifact includes EntryName, EntryPath and SHA1 as great data
+points for IOC collection. Secondary datapoints include
+publisher/company, BinaryType and OriginalFileName.
 
 Available filters include:
 
   - SHA1regex - regex entries to filter by SHA1.
   - PathRegex - filter on path if available.
   - NameRegex - filter on EntryName OR OriginalFileName.
+  - VersionRegex - filter on Version
 
 NOTE:
 
-  - Secondary fields are not consistent across AMCache types and some legacy
-  versions do not return these fields.
-  - Some enrichment has occurred but any secondary fields should be treated as
-  guidance only.
-  - This artifact collects only entries with a SHA1, for complete AMCache
-  analysis please download raw artifact sets.
+  - Secondary fields are not consistent across AMCache types and
+    some legacy versions do not return these fields.
+  - Some enrichment has occurred but any secondary fields should
+    be treated as guidance only.
+  - This artifact collects only entries with a SHA1, for complete
+    AMCache analysis please download raw artifact sets.
 
 
 <pre><code class="language-yaml">
 name: Windows.Detection.Amcache
 author: Matt Green - @mgreen27
 description: |
-    This artifact collects AMCache entries with a SHA1 hash to enable threat
-    detection.
+  Collects AMCache entries with a SHA1 hash to enable threat
+  detection.
 
-    AmCache is an artifact which stores metadata related to PE execution and
-    program installation on Windows 7 and Server 2008 R2 and above. This artifact
-    includes EntryName, EntryPath and SHA1 as great data points for IOC collection.
-    Secondary datapoints include publisher/company, BinaryType and OriginalFileName.
+  AmCache is an artifact which stores metadata related to PE execution
+  and program installation on Windows 7 and Server 2008 R2 and above.
+  This artifact includes EntryName, EntryPath and SHA1 as great data
+  points for IOC collection. Secondary datapoints include
+  publisher/company, BinaryType and OriginalFileName.
 
-    Available filters include:
+  Available filters include:
 
-      - SHA1regex - regex entries to filter by SHA1.
-      - PathRegex - filter on path if available.
-      - NameRegex - filter on EntryName OR OriginalFileName.
+    - SHA1regex - regex entries to filter by SHA1.
+    - PathRegex - filter on path if available.
+    - NameRegex - filter on EntryName OR OriginalFileName.
+    - VersionRegex - filter on Version
 
-    NOTE:
+  NOTE:
 
-      - Secondary fields are not consistent across AMCache types and some legacy
-      versions do not return these fields.
-      - Some enrichment has occurred but any secondary fields should be treated as
-      guidance only.
-      - This artifact collects only entries with a SHA1, for complete AMCache
-      analysis please download raw artifact sets.
+    - Secondary fields are not consistent across AMCache types and
+      some legacy versions do not return these fields.
+    - Some enrichment has occurred but any secondary fields should
+      be treated as guidance only.
+    - This artifact collects only entries with a SHA1, for complete
+      AMCache analysis please download raw artifact sets.
 
 reference:
   - https://www.ssi.gouv.fr/uploads/2019/01/anssi-coriin_2019-analysis_amcache.pdf
@@ -76,6 +85,9 @@ parameters:
   - name: NameRegex
     description: Regex of entry / binary name
     type: regex
+  - name: VersionRegex
+    description: Regex of version
+    type: regex
 
 sources:
   - query: |
@@ -93,45 +105,53 @@ sources:
                       Key.OSPath.Components[1] as EntryType,
 
                       if(condition=get(member="FileId"),
-                         then=strip(string=FileId, prefix='0000'),
+                        then=strip(string=FileId, prefix='0000'),
                       else=if(condition=get(member="101"),
-                         then=strip(string=`101`, prefix='0000'),
+                        then=strip(string=`101`, prefix='0000'),
                       else=if(condition=get(member="DriverId"),
-                         then=strip(string=DriverId, prefix='0000')))) as SHA1,
+                        then=strip(string=DriverId, prefix='0000')))) as SHA1,
 
                       if(condition=get(member="Name"),
-                         then=Name,
+                        then=Name,
                       else=if(condition=get(member="FriendlyName"),
-                         then=FriendlyName,
+                        then=FriendlyName,
                       else=if(condition=get(member="15"),
-                         then=split(string=str(str=`15`), sep='\\\\')[-1],
+                        then=split(string=str(str=`15`), sep='\\\\')[-1],
                       else=if(condition=get(member="DriverName"),
-                         then=DriverName)))) as EntryName,
+                        then=DriverName)))) as EntryName,
+                      
+                      if(condition=get(member="Version"),
+                        then=Version,
+                      else=if(condition=get(member="DriverVersion"),
+                        then=DriverVersion,
+                      else=if(condition=get(member="ProductVersion"),
+                        then=ProductVersion,
+                      else=''))) as Version,
 
                       if(condition=get(member="LowerCaseLongPath"),
-                          then=LowerCaseLongPath,
+                        then=LowerCaseLongPath,
                       else=if(condition=get(member="15"),
-                          then=`15`,
+                        then=`15`,
                       else=if(condition=get(member="AddinCLSID"),
-                          then=AddinCLSID))) as EntryPath,
+                        then=AddinCLSID))) as EntryPath,
 
                       if(condition=get(member="Publisher"),
-                          then=Publisher,
+                        then=Publisher,
                       else=if(condition=get(member="Provider"),
-                          then=Provider,
+                        then=Provider,
                       else=if(condition=get(member="DriverCompany"),
-                          then=DriverCompany))) as Publisher,
+                        then=DriverCompany))) as Publisher,
 
                       get(member="OriginalFileName") AS OriginalFileName,
 
                       if(condition=get(member="BinaryType"),
-                         then=BinaryType,
+                        then=BinaryType,
                       else=if(condition=get(member="AddInType"),
-                         then=AddinType + ' ' + OfficeArchitecture,
+                        then=AddinType + ' ' + OfficeArchitecture,
                       else=if(condition=Key.OSPath.Path =~ 'InventoryDevicePnp',
-                         then='DevicePnp',
+                        then='DevicePnp',
                       else=if(condition=Key.OSPath.Path =~ 'InventoryDriverBinary',
-                         then='DriverBinary')))) as BinaryType
+                        then='DriverBinary')))) as BinaryType
 
                     FROM read_reg_key(
                         globs=KeyPathGlob,
@@ -145,6 +165,10 @@ sources:
                         AND if(condition= PathRegex,
                             then= EntryPath =~ PathRegex,
                             else= True)
+                        AND if(condition= VersionRegex,
+                            then= Version =~ VersionRegex,
+                            else= True)
             })
+
 </code></pre>
 

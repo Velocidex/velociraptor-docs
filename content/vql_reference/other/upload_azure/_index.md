@@ -2,7 +2,11 @@
 title: upload_azure
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Upload files to Azure Blob Storage Service.
 ---
 
 

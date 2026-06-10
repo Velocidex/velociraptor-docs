@@ -1,36 +1,45 @@
 ---
 title: Server.Utils.DeleteMonitoringData
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+description: |
+  Purges historical monitoring logs from the server filestore with
+  dry-run and confirmation safety.
 ---
 
-Velociraptor collects monitoring data from endpoints all the time.
+Purges historical monitoring logs from the server filestore with
+dry-run and confirmation safety.
 
-Sometimes this data is no longer needed and we might want to free
-up disk space.
+Velociraptor collects monitoring data from endpoints all the time.
+Sometimes this data is no longer needed and we might want to free up
+disk space.
 
 This artifact searches the monitoring data for each client and
 optionally removes data older than the specified timestamp.
 
-**NOTE** This artifact will destroy all data irrevocably. Take
-  care! You should always do a dry run first to see which flows
-  will match before using the `ReallyDoIt` option.
+**NOTE** This artifact will destroy all data irrevocably. Take care!
+You should always do a dry run first to see which flows will match
+before using the `ReallyDoIt` option.
 
 
 <pre><code class="language-yaml">
 name: Server.Utils.DeleteMonitoringData
 description: |
-   Velociraptor collects monitoring data from endpoints all the time.
+  Purges historical monitoring logs from the server filestore with
+  dry-run and confirmation safety.
+  
+  Velociraptor collects monitoring data from endpoints all the time.
+  Sometimes this data is no longer needed and we might want to free up
+  disk space.
 
-   Sometimes this data is no longer needed and we might want to free
-   up disk space.
+  This artifact searches the monitoring data for each client and
+  optionally removes data older than the specified timestamp.
 
-   This artifact searches the monitoring data for each client and
-   optionally removes data older than the specified timestamp.
-
-   **NOTE** This artifact will destroy all data irrevocably. Take
-     care! You should always do a dry run first to see which flows
-     will match before using the `ReallyDoIt` option.
+  **NOTE** This artifact will destroy all data irrevocably. Take care!
+  You should always do a dry run first to see which flows will match
+  before using the `ReallyDoIt` option.
 
 type: SERVER
 
@@ -79,8 +88,13 @@ sources:
                timestamp(epoch=split(string=OSPath.Basename, sep="\\.")[0]) AS Timestamp,
                if(condition=ReallyDoIt, then=file_store_delete(path=OSPath)) AS ReallyDoIt
         FROM glob(
-          globs="/**.json*", accessor="fs",
-          root="/clients/"+ ClientId + "/monitoring")
+          globs=[
+            "/monitoring/**.json*",
+            "/monitoring_logs/**.json*"
+          ],
+          accessor="fs",
+          root="/clients/" + ClientId
+        )
         WHERE ArtifactName =~ ArtifactRegex
           AND Timestamp &lt; DateBefore
       }, workers=10)

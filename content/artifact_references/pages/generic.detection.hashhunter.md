@@ -1,33 +1,44 @@
 ---
 title: Generic.Detection.HashHunter
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Searches the filesystem for a list of hashes, with path file size
+  and date filtering.
 ---
 
-This artifact enables searching for hashes.
+Searches the filesystem for a list of hashes, with path file size
+and date filtering.
 
-The artifact takes a glob targeting input, then generates a hash for each
-file in scope to compare to several types of hash lists provided by the user.
+The artifact takes a glob targeting input, then generates a hash
+for each file in scope to compare to several types of hash lists
+provided by the user.
 
-Note: this artifacts filters are cumulative so a hash based hit will return
-no results if the file is filtered out by other filters.
-For most performant searches use path, size and and date filters. By default
-the artifact uses the 'auto' data accessor but can also be changed as desired.
+Note: this artifact's filters are cumulative so a hash-based hit
+will return no results if the file is filtered out by other
+filters. For most performant searches use path, size and date
+filters. By default the artifact uses the 'auto' data accessor but
+can also be changed as desired.
 
 
 <pre><code class="language-yaml">
 name: Generic.Detection.HashHunter
 author: "Matt Green - @mgreen27"
 description: |
-    This artifact enables searching for hashes.
+  Searches the filesystem for a list of hashes, with path file size
+  and date filtering.
 
-    The artifact takes a glob targeting input, then generates a hash for each
-    file in scope to compare to several types of hash lists provided by the user.
+  The artifact takes a glob targeting input, then generates a hash
+  for each file in scope to compare to several types of hash lists
+  provided by the user.
 
-    Note: this artifacts filters are cumulative so a hash based hit will return
-    no results if the file is filtered out by other filters.
-    For most performant searches use path, size and and date filters. By default
-    the artifact uses the 'auto' data accessor but can also be changed as desired.
+  Note: this artifact's filters are cumulative so a hash-based hit
+  will return no results if the file is filtered out by other
+  filters. For most performant searches use path, size and date
+  filters. By default the artifact uses the 'auto' data accessor but
+  can also be changed as desired.
 
 parameters:
   - name: TargetGlob

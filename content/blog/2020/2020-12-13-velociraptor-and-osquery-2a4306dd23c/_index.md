@@ -75,7 +75,7 @@ sources:
       })
 ```
 
-As described in a[ previous post](https://medium.com/velociraptor-ir/velociraptor-in-the-tool-age-d896dfe71b9), Velociraptor will deliver the OSQuery binary to the endpoint securely (line 29–30), then shell out to the binary executing the provided query (line 32–34). Finally the result is parsed from JSON and returned as a standard VQL result set (line 36–39).
+As described in a [previous post](/blog/2020/2020-07-13-velociraptor-in-the-tool-age-d896dfe71b9/), Velociraptor will deliver the OSQuery binary to the endpoint securely (line 29–30), then shell out to the binary executing the provided query (line 32–34). Finally the result is parsed from JSON and returned as a standard VQL result set (line 36–39).
 
 The entire OSQuery integration is implemented as above in VQL — one does not need to do anything else in order to launch an OSQuery query on a remote host… In particular, one does not need to have OSQuery installed on the endpoint in advance! Velociraptor will push the binary to the endpoint on demand, managing binary versioning if required and maintaining a local copy of OSQuery on the endpoint.
 
@@ -176,4 +176,4 @@ The biggest advantage of the OSQuery integration is that existing OSQuery querie
 
 An obvious disadvantage of the integration is that Velociraptor still ends up shelling to OSQuery to actually perform the query — therefore Velociraptor has no control of the resource usage consumed by OSQuery during query execution (however cancelling the artifact collection will terminate the OSQuery process). While normal VQL queries have throttling setting controlling the CPU load, we lose this ability when running the OSQuery process.
 
-To play with this feature yourself, take[ Velociraptor for a spin](https://github.com/Velocidex/velociraptor)! It is a available on GitHub under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com) . You can also chat with us directly on discord [https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+To play with this feature yourself, take[ Velociraptor for a spin](https://github.com/Velocidex/velociraptor)! It is a available on GitHub under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com) . You can also chat with us directly on [Discord](/discord/)

@@ -303,7 +303,7 @@ reasonable backwards compatibility with older clients so most things
 continue to work. However in 0.6.4, the introduction of the `OSPath`
 column means that newer artifacts will fail on older clients (since
 VQL is evaluated on the client).
-See our [Support Policy]({{% ref "/docs/overview/support/" %}})
+See our [Support Policy](/docs/overview/support/)
 
 To help with the migration process, we made the older versions of
 artifacts easily available in newer servers. If you still have older

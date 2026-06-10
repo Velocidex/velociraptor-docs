@@ -2,7 +2,11 @@
 title: js_set
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Set a variables value in the JS VM.
 ---
 
 

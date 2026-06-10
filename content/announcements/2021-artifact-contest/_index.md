@@ -11,7 +11,9 @@ no_edit: true
 
 ## The Contest is now closed!
 
-Check out the [submissions]({{< ref "/blog/2021/2021-10-08-contributor-contest/_index.md" >}}) and watch the winning presentation at the [SANS Threat Hunting Summit](https://www.sans.org/cyber-security-training-events/threat-hunting-and-incident-response-summit-2021/#agenda)
+Check out the [submissions](/blog/2021/2021-10-08-contributor-contest/)
+and watch the winning presentation at the
+[SANS Threat Hunting Summit](https://www.sans.org/cyber-security-training-events/threat-hunting-and-incident-response-summit-2021/#agenda).
 
 ## Goals
 
@@ -97,7 +99,7 @@ panel to properly assess the novelty and usefulness of the submission.
 All submission code will be released under the same license as
 Velociraptor (i.e. [AGPL](https://github.com/Velocidex/velociraptor/blob/master/LICENSE)) and may be included in future
 releases. Contributors should also sign the Velociraptor CLA prior to
-submitting a contribution (Please click [here to sign](https://cla-assistant.io/Velocidex/velociraptor) and indicate your Github username in the submission).
+submitting a contribution (Please click [here to sign](https://cla-assistant.io/Velocidex/velociraptor) and indicate your GitHub username in the submission).
 
 ## Selection criteria
 

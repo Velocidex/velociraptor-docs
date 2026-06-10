@@ -2,6 +2,9 @@
 title: DFRWS APAC 2022
 menutitle: DFRWS APAC 2022
 weight: 80
+description: |
+  At DFRWS APAC 2022, Mike gave a 4 hour workshop. Below you will find the
+  slides.
 ---
 
 At DFRWS APAC 2022, Mike gave a 4 hour workshop. Below you will find the
@@ -46,7 +49,7 @@ Participants will learn
 5. Use Velociraptor artifacts on hard disk images.
 
 Participants will need their own windows VM or cloud machine (with
-admin level access) and will download Velociraptor from Github to
+admin level access) and will download Velociraptor from GitHub to
 install it on that machine.
 
 There will also be a small disk image to play with which should not

@@ -6,10 +6,14 @@ last_reviewed: 2025-05-13
 draft: true
 weight: 40
 summary: "Notebook artifacts are templates for creating notebooks"
+description: |
+  Artifacts with the `NOTEBOOK`
+  [type](/docs/artifacts/basic_fields/#-type-)
+  are used as templates for creating new notebooks.
 ---
 
 Artifacts with the `NOTEBOOK`
-[type]({{< ref "/docs/artifacts/basic_fields/#-type-" >}})
+[type](/docs/artifacts/basic_fields/#-type-)
 are used as templates for creating new notebooks.
 
 While notebook templates do

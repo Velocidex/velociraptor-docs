@@ -2,7 +2,11 @@
 title: uuid
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Generate a UUID.
 ---
 
 

@@ -2,7 +2,14 @@
 title: combine
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Combine the output of several queries into the same result set.
+
+  A convenience plugin acting like chain(async=TRUE).
+
 ---
 
 

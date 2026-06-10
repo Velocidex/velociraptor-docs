@@ -10,7 +10,7 @@ date: 2022-09-07
 
 One of the advantages of running Velociraptor on the endpoint
 constantly is the ability to monitor the endpoint using [client
-monitoring queries]({{% ref "/docs/clients/monitoring/" %}}). Gaining
+monitoring queries](/docs/clients/monitoring/). Gaining
 visibility to volatile information is critical to reconstructing past
 activity and responding to new threats.
 
@@ -290,6 +290,5 @@ spin](https://github.com/Velocidex/velociraptor)!  It is a available
 on GitHub under an open source license. As always please file issues
 on the bug tracker or ask questions on our mailing list
 [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com)
-. You can also chat with us directly on discord
-[https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+. You can also chat with us directly on [Discord](/discord/).
 .

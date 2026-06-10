@@ -4,6 +4,8 @@ title: VeloCON 2023
 weight: 100
 
 
+description: |
+  <img style="width: 100%" src="velocon_banner_2023.jpg">
 ---
 
 <img style="width: 100%" src="velocon_banner_2023.jpg">

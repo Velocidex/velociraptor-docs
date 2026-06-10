@@ -24,7 +24,7 @@ view shows the specific plugins running with the values provided to
 them. The query view usually shows variable names being passed to the
 plugins, but this view shows the content of the variables.
 
-Sometimes a query runs very slowly and we dont really know why. Using
+Sometimes a query runs very slowly and we don't really know why. Using
 the plugins profile helps us understand what operations are currently
 running. For example, a common reason for slow down is when an
 artifact accesses files on a network share or fuse share because those

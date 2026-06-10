@@ -9,6 +9,8 @@ summary: |
   * How to troubleshoot client issues when you don't have local access to the client.
 aliases:
   - "/docs/troubleshooting/clients/"
+description: |
+  {{% notice note %}}
 ---
 
 {{% notice note %}}
@@ -16,10 +18,13 @@ aliases:
 The steps in this section assume you are troubleshooting a client that has
 already enrolled and is actively communicating with the server.
 
-If you are having problems with a client that is not communicating with the
-server, or that has never connected to the server, or is failing to start then
-please see the section
-[Client communications issues]({{< ref "/docs/troubleshooting/deployment/client/#client-communications-issues" >}})
+If you are having problems with a client that is:
+- not communicating with the server, or
+- that has never connected to the server, or
+- is failing to start
+
+then please see the section
+[Client communications issues](/docs/troubleshooting/deployment/client/)
 within the Deployment Troubleshooting section.
 
 {{% /notice %}}
@@ -27,7 +32,7 @@ within the Deployment Troubleshooting section.
 ### Debugging a remote client
 
 In the
-[Deployment troubleshooting section]({{< ref "/docs/troubleshooting/deployment/server" >}})
+[Deployment troubleshooting section](/docs/troubleshooting/deployment/server/)
 we explain how to bring up the debug server by providing the `--debug` flag on
 the command line. However clients are often remote and it's therefore not always
 possible to debug the client by starting it with this flag. Often we are also
@@ -42,36 +47,35 @@ to be enabled in advance.
 
 ![Collecting the client profile](client_profile_artifact.png)
 
-By default the artifact collects the most useful information
-developers require, but you can customize the artifact parameter to
+By default the artifact collects the most useful information the
+developers require, but you can customize the artifact parameters to
 collect more detailed information if required.
 
-You can share the result of the collection by exporting it to a zip
-file and sharing with the development team on Discord or GitHub
-issues.
+You can share the result of the collection by exporting and sharing it with the
+development team via Discord or GitHub issues.
 
 ![Exporting the client profile](exporting_client_profile.svg)
 
-### Enabling a trace
+### Enabling tracing
 
-While collecting the profile at any time is useful, it is sometimes
-hard to catch the problem on the client at just the right moment. For
-example, if a particular query causes a memory leak or performance
-issues, by the time you can schedule the `Generic.Client.Profile`
-artifact, the client may have already restarted or is too busy to
-actually collect the artifact.
+While collecting the profile at any time is useful, it is sometimes hard to
+catch the problem on the client at exactly the right moment. For example, if a
+particular query causes a memory leak or severe performance issues it's possible
+that these may occur too quickly, thus preventing the `Generic.Client.Profile`
+artifact from running. Or the client may have already crashed/restarted, or be
+too resource-starved to actually collect the artifact.
 
-In this case it is useful to enable a trace during the collection of
-another artifact. This setting will cause the client to take profile
-snapshots at specified intervals during query execution and
-automatically upload them to the server.
+In such situations we recommend enabling tracing during the collection of the
+suspected problem artifact. This setting will cause the client to take profile
+snapshots at specified intervals during query execution and automatically
+include them in the collection results uploaded to the server.
 
 ![Enabling periodic trace during artifact collection](enabling_trace.png)
 
-This setting will upload a zip file containing critical profile
-information every 10 seconds during query execution. This information
-is useful to see the memory and resource footprint as the query
-progresses as well as the logs from the client.
+At each interval the client will upload a zip file containing critical profile
+information during query execution. This information allows us to see the
+client's memory and resource footprint as the query progresses, as well as the
+logs from the client.
 
 ![The trace logs](trace_logs.png)
 

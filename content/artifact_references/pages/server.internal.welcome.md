@@ -1,39 +1,44 @@
 ---
 title: Server.Internal.Welcome
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+description: |
+  Renders the server Home page / Welcome page showing navigation links
+  to common tasks and dashboards.
 ---
 
-This is the welcome screen in the Velociraptor GUI. You can
-customize this screen by editing this artifact.
+Renders the server Home page / Welcome page showing navigation links
+to common tasks and dashboards.
+
+You can customize this screen by editing this artifact, perhaps to
+add important information to your specific deployment.
 
 When editing the artifact in the main `View Artifacts` screen you
-will see some markdown in the reports section of the YAML
-file. Simply edit this markdown and your server will display your
+will see some markdown in the reports section of the YAML file.
+Simply edit this markdown and your server will display your
 customized report.
-
-You can use this to add important information to your specific
-deployment.
 
 
 <pre><code class="language-yaml">
 name: Server.Internal.Welcome
 description: |
-  This is the welcome screen in the Velociraptor GUI. You can
-  customize this screen by editing this artifact.
+  Renders the server Home page / Welcome page showing navigation links
+  to common tasks and dashboards.
+  
+  You can customize this screen by editing this artifact, perhaps to
+  add important information to your specific deployment.
 
   When editing the artifact in the main `View Artifacts` screen you
-  will see some markdown in the reports section of the YAML
-  file. Simply edit this markdown and your server will display your
+  will see some markdown in the reports section of the YAML file.
+  Simply edit this markdown and your server will display your
   customized report.
-
-  You can use this to add important information to your specific
-  deployment.
 
 type: SERVER
 
 sources:
-- query: SELET * FROM info()
+- query: SELECT * FROM info()
 
 reports:
   - type: CLIENT

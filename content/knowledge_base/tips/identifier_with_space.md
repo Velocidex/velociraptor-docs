@@ -12,6 +12,6 @@ SELECT Raddr.IP FROM ...
 SELECT `Raddr.IP` FROM ...
 ```
 
-You can read more about [VQL identifiers]({{< ref "/docs/vql/#identifiers-with-spaces" >}})
+You can read more about [VQL identifiers](/docs/vql/fundamentals/#identifiers-with-spaces)
 
 Tags: #vql

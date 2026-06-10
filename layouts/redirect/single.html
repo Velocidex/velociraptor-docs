@@ -1,10 +1,23 @@
-<!DOCTYPE html><html>
-  <head>
+<!DOCTYPE html>
+<html>
+<head>
     {{ if .Page -}}{{ if .Page.Params -}}
     <title>{{ .Permalink }}</title>
-    <link rel="canonical" href="{{ .Page.Params.target }}"/>
+    <link rel="canonical" href="{{ .Page.Params.target }}" />
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="refresh" content="0; url={{ .Page.Params.target }}" />
+    <meta name="robots" content="noindex">
+    <meta charset="utf-8">
     {{- end }}{{ end }}
-  </head>
+</head>
+<body>
+    <section id="body">
+        <script>
+          window.open("{{ .Page.Params.target }}", "_blank");
+          if(window.evalContext) {
+              history.back();
+          }
+        </script>
+    </section>
+</body>
 </html>

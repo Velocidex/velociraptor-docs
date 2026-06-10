@@ -1,21 +1,45 @@
 ---
 title: Windows.Forensics.SolarwindsSunburst
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Searches for SolarWinds Sunburst backdoor
+  (SolarWinds.Orion.Core.BusinessLayer.dll) across all NTFS drives
+  using YARA.
 ---
 
-"SolarWinds.Orion.Core.BusinessLayer.dll is a SolarWinds digitally-signed component of the Orion software framework that contains a backdoor that communicates via HTTP to third party servers."
+Searches for SolarWinds Sunburst backdoor
+(SolarWinds.Orion.Core.BusinessLayer.dll) across all NTFS drives
+using YARA.
 
-We can look for evidence of this dll by first performing a YARA search on the MFT across all drives, then applying an additional FireEye-supplied rule against the file found via MFT.
+> "SolarWinds.Orion.Core.BusinessLayer.dll is a SolarWinds
+> digitally-signed component of the Orion software framework that
+> contains a backdoor that communicates via HTTP to third party
+> servers."
+
+This artifact looks for evidence of this dll by first performing a
+YARA search on the MFT across all drives, then applying an
+additional FireEye-supplied rule against the file found via MFT.
 
 
 <pre><code class="language-yaml">
 name: Windows.Forensics.SolarwindsSunburst
 
 description: |
-    "SolarWinds.Orion.Core.BusinessLayer.dll is a SolarWinds digitally-signed component of the Orion software framework that contains a backdoor that communicates via HTTP to third party servers."
+  Searches for SolarWinds Sunburst backdoor
+  (SolarWinds.Orion.Core.BusinessLayer.dll) across all NTFS drives
+  using YARA.
 
-    We can look for evidence of this dll by first performing a YARA search on the MFT across all drives, then applying an additional FireEye-supplied rule against the file found via MFT.
+  &gt; "SolarWinds.Orion.Core.BusinessLayer.dll is a SolarWinds
+  &gt; digitally-signed component of the Orion software framework that
+  &gt; contains a backdoor that communicates via HTTP to third party
+  &gt; servers."
+
+  This artifact looks for evidence of this dll by first performing a
+  YARA search on the MFT across all drives, then applying an
+  additional FireEye-supplied rule against the file found via MFT.
 
 reference:
   - https://www.fireeye.com/blog/threat-research/2020/12/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor.html

@@ -1,16 +1,37 @@
 ---
 title: Generic.Client.LocalLogsRetrieve
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Fetches encrypted local log files from endpoints via the upload
+  function.
 ---
 
-Retrives the locally written logs.
+Fetches encrypted local log files from endpoints via the upload
+function.
+
+It is possible to tell the client to log to an encrypted local
+storage file (see `Generic.Client.LocalLogs` for an example).
+
+This artifact allows us to collect the file from the client later
+and decrypt it on the server while not creating any information
+leakage risk.
 
 
 <pre><code class="language-yaml">
 name: Generic.Client.LocalLogsRetrieve
 description: |
-  Retrives the locally written logs.
+  Fetches encrypted local log files from endpoints via the upload
+  function.
+
+  It is possible to tell the client to log to an encrypted local
+  storage file (see `Generic.Client.LocalLogs` for an example).
+  
+  This artifact allows us to collect the file from the client later
+  and decrypt it on the server while not creating any information
+  leakage risk.
 
 type: CLIENT
 

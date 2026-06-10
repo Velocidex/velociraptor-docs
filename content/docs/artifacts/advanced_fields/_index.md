@@ -7,6 +7,9 @@ weight: 11
 summary: |
   Artifact fields that provide more advanced functionality.
 last_reviewed: 2025-05-26
+description: |
+  These are less frequently used fields which deal with more advanced artifact
+  functionality.
 ---
 
 These are less frequently used fields which deal with more advanced artifact
@@ -16,16 +19,16 @@ functionality.
 
 | Field Name         | Description                               |
 |--------------------|-------------------------------------------|
-| [column_types]({{< relref "#-column_types-" >}}) | Defines specific GUI formatting for selected results columns. | No | sequence |
-| [precondition]({{< relref "#-precondition-" >}}) | A VQL expression to be evaluated prior to using this artifact. |
-| [export]({{< relref "#-export-" >}}) | VQL that this artifact exports to other artifacts. |
-| [imports]({{< relref "#-imports-" >}}) | A list of other artifacts with exported VQL to be used in this artifact. |
-| [resources]({{< relref "#-resources-" >}}) | Resource limits that apply when the artifact is collected. |
-| [tools]({{< relref "#-tools-" >}}) | Tools are external files that Velociraptor ensures are available to the artifact. |
-| [impersonate]({{< relref "#-impersonate-" >}}) | Run the artifact as a different user. |
-| [implied_permissions]({{< relref "#-implied_permissions-" >}}) | Projected permissions which the artifact will use on the client. |
-| [required_permissions]({{< relref "#-required_permissions-" >}}) | A list of permissions required to collect this artifact. |
-| [reports]({{< relref "#-reports-" >}}) | A list of reports to potentially post-process this artifact. (deprecated) |
+| [column_types](#-column_types-) | Defines specific GUI formatting for selected results columns. | No | sequence |
+| [precondition](#-precondition-) | A VQL expression to be evaluated prior to using this artifact. |
+| [export](#-export-) | VQL that this artifact exports to other artifacts. |
+| [imports](#-imports-) | A list of other artifacts with exported VQL to be used in this artifact. |
+| [resources](#-resources-) | Resource limits that apply when the artifact is collected. |
+| [tools](#-tools-) | Tools are external files that Velociraptor ensures are available to the artifact. |
+| [impersonate](#-impersonate-) | Run the artifact as a different user. |
+| [implied_permissions](#-implied_permissions-) | Projected permissions which the artifact will use on the client. |
+| [required_permissions](#-required_permissions-) | A list of permissions required to collect this artifact. |
+| [reports](#-reports-) | A list of reports to potentially post-process this artifact. (deprecated) |
 
 {{% notice info "Field names are case-sensitive!" %}}
 
@@ -71,7 +74,7 @@ developing your artifact.
 - `type`: one of the allowed formatting types (see below).
 - `description` (optional): freeform text description.
 
-**Example:**
+###### Example
 
 ```yaml
 column_types:
@@ -83,22 +86,41 @@ column_types:
 
 These are the types currently supported:
 
-- string
-- number
-- mb
-- timestamp
-- nobreak
-- tree
-- url
-- url_internal
-- safe_url
-- flow
-- preview_upload
-- download
-- client
-- hex
-- base64
-- collapsed
+- `string`
+- `bool`
+- `number`
+- `mb`
+- `timestamp`
+- `nobreak`
+- `tree`
+- `url`
+- `url_internal`
+- `safe_url`
+- `flow`
+- `preview_upload`
+- `download`
+- `client`
+- `hex`
+- `base64`
+- `collapsed`
+- `hidden`
+- `log`
+- `log_level`
+- `translated`
+
+For displaying cells that contain JSON objects we can choose how many levels to
+display by default. The UI will allow the user to expand the hidden levels by
+clicking on them.
+
+- `json/0` - will collapse a JSON object at the top level.
+- `json/1` - will collapse a JSON object at the first level. This is very useful
+  as it only shows the first level of items in the JSON object and hides deeper
+  levels initially.
+- `json/2` - Displays the JSON object collapsed except for the first and second
+  levels.
+- `json/3` - Displays the JSON object collapsed except for the first, second and
+  third levels.
+
 
 
 ---
@@ -112,7 +134,7 @@ will be used.
 Preconditions are also supported in `sources`, in addition to the artifact-level
 precondition.
 
-See [preconditions]({{< ref "/docs/artifacts/preconditions/" >}})
+See [preconditions](/docs/artifacts/preconditions/)
 for further details of how this field works.
 
 
@@ -128,7 +150,7 @@ are made available to all sources. This means that such VQL can be used to
 define variables, custom functions, or modify parameter values prior to running
 each source.
 
-See [export & imports]({{< ref "/docs/artifacts/export_imports/" >}})
+See [export & imports](/docs/artifacts/export_imports/)
 for further details of how this field works.
 
 ---
@@ -141,7 +163,7 @@ The `import` field defines a list of artifacts from which to import their
 The imported VQL is run after the VQL in the `export` section, and before the
 VQL in each source.
 
-See [export & imports]({{< ref "/docs/artifacts/export_imports/" >}})
+See [export & imports](/docs/artifacts/export_imports/)
 for further details of how this field works.
 
 ---
@@ -174,6 +196,9 @@ definitions:
 - `max_batch_wait`
 - `max_batch_rows`
 - `max_batch_rows_buffer`
+
+See [Limiting resource usage](/docs/artifacts/resources/) for more
+information.
 
 ---
 
@@ -223,7 +248,7 @@ These are the subfields available for defining each tool:
   setting `Client.server_urls` on the server. Currently only the first URL from
   `server_urls` is used, and tools are only served over HTTPS (not WSS).
 - `github_project`: As an alternative to a url we allow scraping of GitHub
-  releases using the github API. When this method is specified, the file will
+  releases using the GitHub API. When this method is specified, the file will
   always be served locally.
 - `github_asset_regex`: A regex to select a specific file from the available
   GitHub releases.
@@ -233,7 +258,7 @@ These are the subfields available for defining each tool:
   pin the dependency into the artifact definition to protect against supply side
   attacks.
 
-**Examples:**
+###### Examples
 
 ```yaml
 tools:
@@ -303,7 +328,7 @@ This is similar to the Unix suid mechanism or the Windows impersonation
 mechanism in that it allows artifact writers to craft a curated set of powerful
 artifacts that can be run by low privileged users in a controlled way.
 
-See [Artifact Security]({{< ref "/docs/artifacts/security/#server-artifacts-and-impersonation" >}})
+See [Artifact Security](/docs/artifacts/security/#server-artifacts-and-impersonation)
 for more information.
 
 
@@ -338,9 +363,9 @@ required_permissions model by removing or changing the required permissions on
 the artifact.
 
 For more information see the
-[Artifact Security]({{< ref "/docs/artifacts/security/" >}})
+[Artifact Security](/docs/artifacts/security/)
 and
-[Roles and Permissions]({{< ref "/docs/deployment/security/#roles-and-permissions" >}})
+[Roles and Permissions](/docs/deployment/security/#roles-and-permissions)
 sections.
 
 ---
@@ -364,11 +389,11 @@ the artifact takes steps to ensure the user does not have arbitrary control over
 what to execute, for example, if the artifact launches a tool with restricted
 command line args.
 
-This field is only used by the [static analysis engine]({{< ref
-"/vql_reference/other/verify/" >}}) to ensure that the implied
-permission is properly controlled. It represents a promise by the
-artifact writer that this additional permission is safely handled
-within this artifact.
+This field is only used by the
+[static analysis engine](/vql_reference/other/verify/)
+to ensure that the implied permission is properly controlled. It
+represents a promise by the artifact writer that this additional
+permission is safely handled within this artifact.
 
 ---
 
@@ -376,5 +401,5 @@ within this artifact.
 
 Historically this artifact section contained templates that were used to produce
 HTML reports. Reports have been deprecated in favor of
-[notebooks]({{< ref "/docs/notebooks/" >}}),
+[notebooks](/docs/notebooks/),
 however this is still used by some internal artifacts.

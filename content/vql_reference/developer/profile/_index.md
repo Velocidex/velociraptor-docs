@@ -2,7 +2,11 @@
 title: profile
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Returns a profile dump from the running process.
 ---
 
 

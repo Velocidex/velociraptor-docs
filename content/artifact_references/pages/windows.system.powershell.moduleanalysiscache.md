@@ -1,25 +1,26 @@
 ---
 title: Windows.System.Powershell.ModuleAnalysisCache
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Parses the PowerShell ModuleAnalysisCache file to enumerate loaded
+  modules and their functions.
 ---
 
-ModuleAnalysisCache stores metadata about loaded PowerShell modules.
-
-Recent updates include filters by regex to enable targeted hunting
-use cases.
+Parses the PowerShell ModuleAnalysisCache file to enumerate loaded
+modules and their functions.
 
 
 <pre><code class="language-yaml">
 name: Windows.System.Powershell.ModuleAnalysisCache
 description: |
-    ModuleAnalysisCache stores metadata about loaded PowerShell modules.
-
-    Recent updates include filters by regex to enable targeted hunting
-    use cases.
+  Parses the PowerShell ModuleAnalysisCache file to enumerate loaded
+  modules and their functions.
 
 reference:
- - https://github.com/PowerShell/PowerShell/blob/281b437a65360ae869d40f3766a1f2bbba786e5e/src/System.Management.Automation/engine/Modules/AnalysisCache.cs#L649
+  - https://github.com/PowerShell/PowerShell/blob/281b437a65360ae869d40f3766a1f2bbba786e5e/src/System.Management.Automation/engine/Modules/AnalysisCache.cs#L649
 
 parameters:
   - name: GlobLookup

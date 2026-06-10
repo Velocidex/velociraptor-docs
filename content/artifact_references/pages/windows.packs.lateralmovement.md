@@ -1,16 +1,23 @@
 ---
 title: Windows.Packs.LateralMovement
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Queries multiple data sources (event logs, prefetch, shimcache, BAM)
+  for signs of lateral movement.
 ---
 
-Detect evidence of lateral movement.
+Queries multiple data sources (event logs, prefetch, shimcache, BAM)
+for signs of lateral movement.
 
 
 <pre><code class="language-yaml">
 name: Windows.Packs.LateralMovement
 description: |
-  Detect evidence of lateral movement.
+  Queries multiple data sources (event logs, prefetch, shimcache, BAM)
+  for signs of lateral movement.
 
 precondition: SELECT OS From info() where OS = 'windows'
 
@@ -36,8 +43,7 @@ sources:
       WHERE Binary =~ "wmic.exe"
   - name: AmCache
     query: |
-      SELECT * FROM Artifact.Windows.System.Amcache()
-      WHERE Binary =~ "wmic.exe"
-
+      SELECT * FROM Artifact.Windows.Detection.Amcache()
+      WHERE EntryPath =~ "wmic.exe"
 </code></pre>
 

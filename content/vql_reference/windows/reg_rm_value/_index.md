@@ -2,7 +2,11 @@
 title: reg_rm_value
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Removes a value in the registry.
 ---
 
 

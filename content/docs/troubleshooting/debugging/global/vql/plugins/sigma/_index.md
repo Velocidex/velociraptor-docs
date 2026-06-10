@@ -8,7 +8,7 @@ aliases:
 
 Velociraptor has a built in Sigma rule evaluator, implemented with the `sigma()`
 plugin. Sigma is an open standard for writing detection rules, with the
-[Velociraptor implementation described here]({{< ref "/blog/2023/2023-11-15-sigma_in_velociraptor/" >}}).
+[Velociraptor implementation described here](/blog/2023/2023-11-15-sigma_in_velociraptor/).
 
 Sigma rules rely on a `log source`, which in Velociraptor is a VQL
 query. The rules also define detection clauses which apply on the

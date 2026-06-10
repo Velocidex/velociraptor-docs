@@ -2,7 +2,11 @@
 title: inventory_get
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Get tool info from inventory service.
 ---
 
 

@@ -10,7 +10,7 @@ keywords: []
 
 ![](../../img/1__mBMHcMkKxXbyuJcMiGJ1LA.jpeg)
 
-In the [previous part](https://medium.com/@mike_89870/triage-with-velociraptor-pt-1-253f57ce96c0) of this series of articles we saw how Velociraptor can be used to automatically collect and preserve files from a remote system. This is great if you have Velociraptor installed as an agent on the endpoint — but what if you (or your customer) does not?
+In the [previous part](/blog/2019/2019-10-02_triage-with-velociraptor-pt-1-253f57ce96c0/) of this series of articles we saw how Velociraptor can be used to automatically collect and preserve files from a remote system. This is great if you have Velociraptor installed as an agent on the endpoint — but what if you (or your customer) does not?
 
 #### Interactive collection
 

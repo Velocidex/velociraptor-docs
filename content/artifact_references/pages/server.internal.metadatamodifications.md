@@ -1,22 +1,23 @@
 ---
 title: Server.Internal.MetadataModifications
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
+description: |
+  Emits an event when server metadata (such as client labels or host
+  info) is modified.
 ---
 
-This event artifact is an internal event stream over which
-notifications of server metadata modifications are sent.
-
-Note: This is an automated system artifact. You do not need to start it.
+Emits an event when server metadata (such as client labels or host
+info) is modified.
 
 
 <pre><code class="language-yaml">
 name: Server.Internal.MetadataModifications
 description: |
-  This event artifact is an internal event stream over which
-  notifications of server metadata modifications are sent.
-
-  Note: This is an automated system artifact. You do not need to start it.
+  Emits an event when server metadata (such as client labels or host
+  info) is modified.
 
 type: SERVER_EVENT
 

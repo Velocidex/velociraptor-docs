@@ -2,7 +2,11 @@
 title: parse_ese
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Opens an ESE file and dump a table.
 ---
 
 

@@ -24,11 +24,11 @@ Consider the identification of malicious processes running in memory. Many moder
 
 For example, [Malpedia](https://malpedia.caad.fkie.fraunhofer.de/) contains Yara signatures for common malware families derived from automated identification of common code blocks. We can apply these signatures to detect memory injected [Cobalt Strike beacon](https://malpedia.caad.fkie.fraunhofer.de/details/win.cobalt_strike) by simply scanning each process address space and reporting any hits.
 
-Velociraptor included bindings to libyara’s process scanning capabilities for a while now, exposed through the VQL plugin proc_yara() and usable through artifacts such as [Windows.Detection.ProcessMemory.CobaltStrike](https://github.com/Velocidex/velociraptor/blob/master/artifacts/definitions/Windows/Detection/ProcessMemory/CobaltStrike.yaml).
+Velociraptor included bindings to libyara’s process scanning capabilities for a while now, exposed through the VQL plugin proc_yara() and usable through artifacts such as [Windows.Carving.CobaltStrike](https://docs.velociraptor.app/artifact_references/pages/windows.carving.cobaltstrike).
 
 ### Direct access to process memory
 
-Since release 0.5.8, Velociraptor provides direct access to process memory via the “process” [accessor](https://www.velocidex.com/docs/user-interface/investigating_clients/virtual_filesystem/#filesystem-accessors). This allows any plugins and functions that normally operate on files to also operate on process memory, as if the process memory was just another file.
+Since release 0.5.8, Velociraptor provides direct access to process memory via the “process” accessor. This allows any plugins and functions that normally operate on files to also operate on process memory, as if the process memory was just another file.
 
 To demonstrate this new accessor, I will write “this is a test” in notepad without saving the file on disk (so the string exists only in memory). I will then write some VQL to detect this string in the process memory of notepad
 
@@ -44,9 +44,9 @@ When a process is launched it receives environment variables that often affect t
 
 On windows, each process is started with a [Process Environment Block](https://docs.microsoft.com/en-us/windows/win32/api/winternl/ns-winternl-peb). This data structure is populated by the OS before the process is created and contains important information about the process. Processes can extract this information at runtime. The process environment variables are stored in the PEB too and therefore we can parse these out from each process’s memory.
 
-Velociraptor has a powerful binary parser built in, as was described previously in the post “[Parsing binary files](https://velociraptor.velocidex.com/parsing-binary-files-d31114a41f14)”. Having the process memory exposed via an accessor allows us to apply this parser to process memory via a VQL query.
+Velociraptor has a powerful binary parser built in, as was described previously in the post “[Parsing binary files](/blog/2021/2021-01-19-parsing-binary-files-d31114a41f14/)”. Having the process memory exposed via an accessor allows us to apply this parser to process memory via a VQL query.
 
-If you are interested in the details, check out the VQL for the `Windows.Forensics.ProcessInfo` artifact [here](https://github.com/Velocidex/velociraptor/blob/master/artifacts/definitions/Windows/Forensics/ProcessInfo.yaml), but here is the result of collecting the process information (including each process’s environment variables) from my system
+If you are interested in the details, check out the VQL for the `Windows.Memory.ProcessInfo` artifact [here](https://docs.velociraptor.app/artifact_references/pages/windows.memory.processinfo), but here is the result of collecting the process information (including each process’s environment variables) from my system
 
 ![](../../img/1uuWWzOGWgSnIg_4Or8JLrQ.png)
 
@@ -75,4 +75,4 @@ To convert this VQL into a detection, we now encapsulate the query in an artifac
 
 This post introduced the “process” accessor, which exposes process memory to all VQL plugins that can usually access files. The process accessor allows us to implement memory analysis techniques on running processes in real time, safely, quickly and reliably, without needing to resort to acquiring and analysing full physical memory images. This provides unprecedented visibility into the state of the endpoint and forms the basis for novel detection and hunting possibilities.
 
-To use this feature yourself, take[ Velociraptor for a spin](https://github.com/Velocidex/velociraptor)! It is a available on GitHub under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com) . You can also chat with us directly on discord [https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+To use this feature yourself, take[ Velociraptor for a spin](https://github.com/Velocidex/velociraptor)! It is a available on GitHub under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com) . You can also chat with us directly on [Discord](/discord/)

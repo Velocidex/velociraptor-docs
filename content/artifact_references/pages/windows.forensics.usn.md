@@ -1,15 +1,21 @@
 ---
 title: Windows.Forensics.Usn
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Parses the NTFS USN journal ($J data stream) to enumerate recent
+  file creation, modification, and deletion events.
 ---
 
-This artifact parses the NTFS USN journal and allows filters to
-assist investigative workflow.
+Parses the NTFS USN journal ($J data stream) to enumerate recent
+file creation, modification, and deletion events.
 
-NTFS is a journal filesystem. This means that it maintains a journal
-file where intended filesystem changes are written first, then the
-filesystem is changed. This journal is called the USN journal in NTFS.
+NTFS is a journaled filesystem. This means that it maintains a
+journal file where intended filesystem changes are written first,
+then the filesystem is changed. This journal is called the USN
+journal in NTFS.
 
 Velociraptor can parse the USN journal from the filesystem. This
 provides an indication of recent file changes. Typically the system
@@ -20,18 +26,17 @@ Use this artifact to determine the times when a file was
 modified/added from the journal. This will be present even if the
 file was later removed.
 
-Availible filters are Filename, OSPath, MFT/Parent ID and time bounds.
-
 
 <pre><code class="language-yaml">
 name: Windows.Forensics.Usn
 description: |
-  This artifact parses the NTFS USN journal and allows filters to
-  assist investigative workflow.
+  Parses the NTFS USN journal ($J data stream) to enumerate recent
+  file creation, modification, and deletion events.
 
-  NTFS is a journal filesystem. This means that it maintains a journal
-  file where intended filesystem changes are written first, then the
-  filesystem is changed. This journal is called the USN journal in NTFS.
+  NTFS is a journaled filesystem. This means that it maintains a
+  journal file where intended filesystem changes are written first,
+  then the filesystem is changed. This journal is called the USN
+  journal in NTFS.
 
   Velociraptor can parse the USN journal from the filesystem. This
   provides an indication of recent file changes. Typically the system
@@ -41,8 +46,6 @@ description: |
   Use this artifact to determine the times when a file was
   modified/added from the journal. This will be present even if the
   file was later removed.
-
-  Availible filters are Filename, OSPath, MFT/Parent ID and time bounds.
 
 type: CLIENT
 

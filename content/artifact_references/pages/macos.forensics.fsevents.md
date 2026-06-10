@@ -1,19 +1,25 @@
 ---
 title: MacOS.Forensics.FSEvents
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Reads macOS FSEvents logs to enumerate file creation, deletion,
+  rename, and modification events.
 ---
 
-This artifact parses the FSEvents log files.
+Reads macOS FSEvents logs to enumerate file creation, deletion,
+rename, and modification events.
 
-We can filter on Path, Flags or use time box on source file.
+OPtionally filter on Path, Flags or use time box on source file.
 
-An interesting hunt may be filter for Entries of plist files modified or
-created on a specific date. Malware often creates plist files in
-/Library/LaunchAgents, Library/Preferences, /Library/LaunchDaemons, or
-/Library/Internet Plugins.
+An interesting hunt may filter for Entries of plist files modified
+or created on a specific date. Malware often creates plist files in
+`/Library/LaunchAgents`, `Library/Preferences`,
+`/Library/LaunchDaemons`, or `/Library/Internet Plugins`.
 
-#### NOTES
+**NOTES**
 
 - FSEvents do not have timestamps so we specify source file Mtime and
   Btime.
@@ -24,21 +30,22 @@ created on a specific date. Malware often creates plist files in
 <pre><code class="language-yaml">
 name: MacOS.Forensics.FSEvents
 description: |
-   This artifact parses the FSEvents log files.
+  Reads macOS FSEvents logs to enumerate file creation, deletion,
+  rename, and modification events.
 
-   We can filter on Path, Flags or use time box on source file.
+  OPtionally filter on Path, Flags or use time box on source file.
 
-   An interesting hunt may be filter for Entries of plist files modified or
-   created on a specific date. Malware often creates plist files in
-   /Library/LaunchAgents, Library/Preferences, /Library/LaunchDaemons, or
-   /Library/Internet Plugins.
+  An interesting hunt may filter for Entries of plist files modified
+  or created on a specific date. Malware often creates plist files in
+  `/Library/LaunchAgents`, `Library/Preferences`,
+  `/Library/LaunchDaemons`, or `/Library/Internet Plugins`.
 
-   #### NOTES
+  **NOTES**
 
-   - FSEvents do not have timestamps so we specify source file Mtime and
-     Btime.
-   - The default timeout is only 600 seconds - you will probably need to
-     increase it to allow the collection to finish.
+  - FSEvents do not have timestamps so we specify source file Mtime and
+    Btime.
+  - The default timeout is only 600 seconds - you will probably need to
+    increase it to allow the collection to finish.
 
 author: |
   Mike Cohen, Matt Green - @mgreen27, Yogesh Khatri (@swiftforensics), CyberCX
@@ -67,6 +74,10 @@ parameters:
      description: Filter by flags
      type: regex
      default: .
+   - name: MaxFileSize
+     type: int
+     default: "10000000"
+     description: "Read up to that many bytes"
    - name: DateAfter
      type: timestamp
      description: "search for source files with Btime after this date. YYYY-MM-DDTmm:hh:ssZ"
@@ -256,11 +267,10 @@ sources:
                 Btime as SourceBtime
             FROM
                 foreach(row=parse_binary(
-                    filename=read_file(filename=OSPath, accessor="gzip", length=1000000),
+                    filename=read_file(filename=OSPath, accessor="gzip", length=MaxFileSize),
                     accessor="data",
                     profile=FSEventProfile, struct="FSEventsProfile").Entries)
         })
-        WHERE EntryPath =~ PathRegex AND EntryFlags =~ FlagsRegex
 
       SELECT
         items.path as EntryPath,
@@ -273,6 +283,7 @@ sources:
         Version
       FROM
         flatten(query=x)
+      WHERE EntryPath =~ PathRegex AND EntryFlags =~ FlagsRegex
 
 </code></pre>
 

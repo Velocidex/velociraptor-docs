@@ -2,7 +2,15 @@
 title: authenticode
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Parses authenticode information from PE files.
+
+  On windows, the function will also use the windows API to determine
+  if the binary is trusted by the system.
+
 ---
 
 

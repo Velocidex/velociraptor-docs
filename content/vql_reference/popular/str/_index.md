@@ -2,7 +2,22 @@
 title: str
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Returns the string representation of the provided data
+
+  ### Notes
+
+  Most objects have a `.String` method that should return a similar result to
+  the `str()` function.
+
+  ### See also
+
+  - [serialize]({{< ref "/vql_reference/other/serialize/" >}}): Encode an
+    object as a string.
+
 ---
 
 

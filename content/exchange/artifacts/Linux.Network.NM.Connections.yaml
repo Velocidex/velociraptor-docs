@@ -15,7 +15,7 @@ description: |
   connections defined in /etc/network/interfaces.
 
   Whether the connections are currently active is not stored in file
-  and must be queried using using nmcli or through dbus. This artifact
+  and must be queried using nmcli or through dbus. This artifact
   runs nmcli as an external program to retrieve this information.
   Information such as IP addresses, routes, DNS servers, available Wi-Fi
   networks and other settings will also be collected through nmcli.

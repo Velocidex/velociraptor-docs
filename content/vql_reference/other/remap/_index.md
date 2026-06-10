@@ -2,7 +2,11 @@
 title: remap
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Apply a remapping configuration to the root scope.
 ---
 
 

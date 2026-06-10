@@ -2,7 +2,11 @@
 title: split_records
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Parses files by splitting lines into records.
 ---
 
 

@@ -1,12 +1,16 @@
 ---
 title: Windows.Applications.Firefox.History
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Queries Firefox `places.sqlite` files to extract browsing history.
 ---
 
-Enumerate the users Firefox history.
+Queries Firefox `places.sqlite` files to extract browsing history.
 
-## NOTES:
+**NOTES**
 
 This artifact is deprecated in favor of
 Generic.Forensic.SQLiteHunter and will be removed in future
@@ -15,13 +19,12 @@ Generic.Forensic.SQLiteHunter and will be removed in future
 <pre><code class="language-yaml">
 name: Windows.Applications.Firefox.History
 description: |
-  Enumerate the users Firefox history.
+  Queries Firefox `places.sqlite` files to extract browsing history.
 
-  ## NOTES:
+  **NOTES**
 
   This artifact is deprecated in favor of
   Generic.Forensic.SQLiteHunter and will be removed in future
-
 
 author: Zach Stanford @svch0st, Modified by @angry-bender
 parameters:

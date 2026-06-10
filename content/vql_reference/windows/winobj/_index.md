@@ -2,7 +2,11 @@
 title: winobj
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Enumerate The Windows Object Manager namespace.
 ---
 
 

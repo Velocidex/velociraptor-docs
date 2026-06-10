@@ -1,24 +1,33 @@
 ---
 title: Server.Utils.CreateCollector
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+description: |
+  A utility artifact to create a standalone Velociraptor offline
+  collector binary with specified artifacts and output target.
 ---
 
-A utility artifact to create a stand alone collector.
+A utility artifact to create a standalone Velociraptor offline
+collector binary with specified artifacts and output target.
 
-This artifact is actually invoked by the Offline collector GUI and
-that is the recommended way to launch it. You can find the Offline
-collector builder in the `Server Artifacts` section of the GUI.
+This artifact is invoked via the GUI's offline collector builder
+wizard and that is the recommended way to launch it. You can find
+the Offline collector builder in the `Server Artifacts` section of
+the GUI.
 
 
 <pre><code class="language-yaml">
 name: Server.Utils.CreateCollector
 description: |
-  A utility artifact to create a stand alone collector.
+  A utility artifact to create a standalone Velociraptor offline
+  collector binary with specified artifacts and output target.
 
-  This artifact is actually invoked by the Offline collector GUI and
-  that is the recommended way to launch it. You can find the Offline
-  collector builder in the `Server Artifacts` section of the GUI.
+  This artifact is invoked via the GUI's offline collector builder
+  wizard and that is the recommended way to launch it. You can find
+  the Offline collector builder in the `Server Artifacts` section of
+  the GUI.
 
 type: SERVER
 
@@ -68,6 +77,7 @@ parameters:
       - SFTP
       - Azure
       - SMBShare
+      - WebDAV
 
   - name: target_args
     description: Type Dependent args
@@ -117,10 +127,10 @@ parameters:
     description: Where we actually write the collection to. You can specify this as a mapped drive to write over the network.
 
   - name: opt_filename_template
-    default: "Collection-%FQDN%-%TIMESTAMP%"
+    default: "Collection-%Hostname%-%TIMESTAMP%"
     description: |
       The filename to use. You can expand environment variables as
-      well as the following %FQDN% and %TIMESTAMP%.
+      well as the following: %Hostname%, %FQDN% and %TIMESTAMP%.
 
   - name: opt_collector_filename
     type: string
@@ -155,7 +165,7 @@ parameters:
     description: |
       If specified the collection will be packed with the specified
       version of the binary. NOTE: This is rarely what you want
-      because the packed builtin artifacts are only compatible with
+      because the packed built-in artifacts are only compatible with
       the current release version.
 
   - name: opt_delete_at_exit
@@ -253,6 +263,18 @@ parameters:
         endpoint=TargetArgs.endpoint,
         hostkey = TargetArgs.hostkey)
 
+  - name: WebDAVCollection
+    type: hidden
+    default : |
+      LET upload_file(filename, name, accessor) = upload_webdav(
+        file=filename,
+        accessor=accessor,
+        name=name,
+        url=TargetArgs.url,
+        basic_auth_user=TargetArgs.basic_auth_user,
+        basic_auth_password=TargetArgs.basic_auth_password,
+        user_agent=TargetArgs.user_agent)
+
   - name: CommonCollections
     type: hidden
     default: |
@@ -269,7 +291,8 @@ parameters:
              " version " + (S.Version || "Unknown"))
 
       LET baseline &lt;= SELECT Fqdn, dirname(path=Exe) AS ExePath, Exe,
-         scope().CWD AS CWD FROM info()
+         scope().CWD AS CWD, Hostname
+      FROM info()
 
       LET OutputPrefix &lt;= if(condition= OutputPrefix,
         then=pathspec(parse=OutputPrefix),
@@ -281,6 +304,7 @@ parameters:
 
       LET FormatMessage(Message) = regex_transform(
           map=dict(`%FQDN%`=baseline[0].Fqdn,
+                   `%Hostname%`=baseline[0].Hostname,
                    `%Timestamp%`=timestamp(epoch=now()).MarshalText),
           source=Message)
 
@@ -422,8 +446,251 @@ parameters:
               Filename AS Name
        FROM matching_tools
 
+export: |
+  // Use this JSON schema to validate an offline collector spec.yaml
+  LET SpecSchema &lt;= '''
+  {
+    "type": "object",
+    "properties": {
+        "OS": {
+           "description": "OS Target to use",
+           "enum": ["Generic", "Windows", "Linux", "Windows_x86", "MacOS", "MacOSArm"],
+           "default": "Generic"
+        },
+        "Artifacts": {
+           "type": "object",
+           "description": "Keys are artifact names to collect and values are strings",
+           "patternProperties": {
+              "^.+$": {
+                "type": "object",
+                "patternProperties": {
+                   "^.+$": {
+                      "type": "string"
+                   }
+                }
+              }
+           }
+        },
+        "Target": {
+           "description": "The type of collector to use",
+           "enum": ["ZIP", "GCS", "S3", "Azure", "SMBShare", "SFTP", "WebDAV"]
+        },
+        "EncryptionScheme": {
+           "enum": ["None", "X509", "Password", "PGP"],
+           "default": "None"
+        },
+        "EncryptionArgs": {
+           "type": "object",
+           "description": "Args for encryption",
+           "properties": {
+             "public_key": {
+               "type": "string"
+             },
+             "password": {
+               "type": "string"
+             }
+           },
+           "additionalProperties": false
+        },
+        "OptVerbose": {
+           "type": "boolean",
+           "default": true
+        },
+        "OptBanner": {
+           "type": "boolean",
+           "default": true
+        },
+        "OptPrompt": {
+           "type": "boolean",
+           "default": false
+        },
+        "OptAdmin": {
+           "type": "boolean",
+           "default": true
+        },
+        "OptTempdir": {
+            "type": "string",
+            "default": "$TMP"
+        },
+        "OptLevel": {
+           "type": "integer",
+           "default": 5
+        },
+        "OptConcurrency": {
+           "type": "integer",
+           "default": 2
+        },
+        "OptFilenameTemplate": {
+           "type": "string",
+           "default": "Collection-%FQDN%-%TIMESTAMP%"
+        },
+        "OptCollectorTemplate": {"type": "string"},
+        "OptFormat": {
+          "enum": ["jsonl", "csv"],
+          "default": "jsonl"
+        },
+        "OptOutputDirectory":  {"type": "string"},
+        "OptCpuLimit":  {"type": "integer"},
+        "OptProgressTimeout":  {"type": "integer"},
+        "OptTimeout":  {"type": "integer"},
+        "OptDeleteAtExit":  {"type": "boolean"}
+    },
+    "allOf": [
+      { "description": "Target Args for GCS",
+        "if": {
+           "properties": { "Target": { "const": "GCS" } }
+        },
+        "then": {
+           "properties": {
+              "TargetArgs": {
+                 "type": "object",
+                 "properties": {
+                    "bucket": {"type": "string"},
+                    "GCSKey": {"type": "string"}
+                 },
+                 "additionalProperties": false,
+                 "required": ["bucket", "GCSKey"]
+              }
+           }
+        }
+      },
+      { "description": "Target Args for S3",
+        "if": {
+           "properties": { "Target": { "const": "S3" } }
+        },
+        "then": {
+           "properties": {
+              "TargetArgs": {
+               "type": "object",
+               "properties": {
+                 "bucket": {"type": "string"},
+                 "credentialsKey": {"type": "string"},
+                 "credentialsSecret": {"type": "string"},
+                 "credentialsToken": {"type": "string"},
+                 "region": {"type": "string"},
+                 "endpoint": {"type": "string"},
+                 "s3UploadRoot": {"type": "string"},
+                 "serverSideEncryption": {"type": "string"},
+                 "kmsEncryptionKey": {"type": "string"},
+                 "noverifycert": {"type": "boolean"}
+               },
+               "additionalProperties": false,
+               "required": ["bucket"]
+              }
+           }
+        }
+      },
+      { "description": "Target Args for AzureSASURL",
+        "if": {
+           "properties": { "Target": { "const": "Azure" } }
+        },
+        "then": {
+           "properties": {
+              "TargetArgs": {
+                 "type": "object",
+                 "properties": {
+                    "sas_url": {"type": "string"}
+                 },
+                 "additionalProperties": false,
+                 "required": ["sas_url"]
+              }
+           }
+        }
+      },
+      { "description": "Target Args for SMBShare",
+        "if": {
+           "properties": { "Target": { "const": "SMBShare" } }
+        },
+        "then": {
+           "properties": {
+              "TargetArgs": {
+                 "type": "object",
+                 "properties": {
+                   "username": {"type": "string"},
+                   "password": {"type": "string"},
+                   "server_address": {"type": "string"}
+                 },
+                 "additionalProperties": false,
+                 "required": ["username", "password", "server_address"]
+              }
+           }
+        }
+      },
+      { "description": "Target Args for SFTPCollection",
+        "if": {
+           "properties": { "Target": { "const": "SFTP" } }
+        },
+        "then": {
+           "properties": {
+              "TargetArgs": {
+                 "type": "object",
+                  "properties": {
+                     "path": {"type": "string"},
+                     "privatekey": {"type": "string"},
+                     "user": {"type": "string"},
+                     "endpoint": {"type": "string"},
+                     "hostkey": {"type": "string"}
+                  },
+                  "additionalProperties": false,
+                  "required": ["user", "privatekey", "endpoint"]
+              }
+           }
+        }
+      },
+      { "description": "Target Args for WebDAVCollection",
+        "if": {
+           "properties": { "Target": { "const": "WebDAV" } }
+        },
+        "then": {
+           "properties": {
+              "TargetArgs": {
+                 "type": "object",
+                  "properties": {
+                     "url": {"type": "string"},
+                     "basic_auth_user": {"type": "string"},
+                     "basic_auth_password": {"type": "string"},
+                     "user_agent": {"type": "string"}
+                  },
+                  "additionalProperties": false,
+                  "required": ["url"]
+              }
+           }
+        }
+      },
+      { "description": "Target Args for ZIP",
+        "if": {
+           "properties": { "Target": { "const": "ZIP" } }
+        },
+        "then": {
+           "properties": {
+              "TargetArgs": {
+                 "type": "object",
+                 "default": {},
+                 "additionalProperties": false,
+                 "properties": {}
+             }
+           }
+        }
+      }
+    ]
+  }
+  '''
+
 sources:
   - query: |
+      LET ParameterSpec &lt;= to_dict(item={
+         SELECT _value AS _key, dict() AS _value
+         FROM foreach(row=artifacts)
+      }) + parameters
+
+      -- Check for errors in the Spec
+      LET _ &lt;= SELECT {
+         SELECT name FROM artifact_definitions(names=_key)
+      } AS Def
+      FROM items(item=ParameterSpec)
+      WHERE Def || log(message="Artifact &lt;red&gt;%v&lt;/&gt; not found",
+           args=_key, dedup= -1, level="ERROR")
+
       LET Binaries &lt;= SELECT * FROM foreach(
           row={
              SELECT tools FROM artifact_definitions(deps=TRUE, names=artifacts)
@@ -471,6 +738,9 @@ sources:
         f = { SELECT SMBCollection + CommonCollections + CloudCollection AS Value
               FROM scope()
               WHERE target = "SMBShare" },
+        g = { SELECT WebDAVCollection + CommonCollections + CloudCollection AS Value
+              FROM scope()
+              WHERE target = "WebDAV" },
         z = { SELECT "" AS Value  FROM scope()
               WHERE log(message="Unknown collection type " + target) }
       )
@@ -486,7 +756,7 @@ sources:
          condition=use_server_cert,
          then=dict(public_key=server_frontend_cert(),
                    scheme="x509"),
-         else=encryption_args
+         else=encryption_args || dict()
       )
 
       -- Add custom definition if needed. Built in definitions are not added
@@ -502,7 +772,7 @@ sources:
                          default=serialize(format='json', item=artifacts),
                          type="json_array"),
                     dict(name="Parameters",
-                         default=serialize(format='json', item=parameters),
+                         default=serialize(format='json', item=ParameterSpec),
                          type="json"),
                     dict(name="encryption_scheme", default=encryption_scheme),
                     dict(name="encryption_args",
@@ -560,6 +830,30 @@ sources:
           argv=("artifacts", "collect", "Collector") + optional_cmdline.Opt,
           artifact_definitions=definitions)
       )
+
+      LET _ &lt;= upload(accessor="data", file=serialize(format="yaml",
+        item=dict(
+          OS=OS,
+          Artifacts=ParameterSpec,
+          Target=target,
+          EncryptionScheme=encryption_scheme || "None",
+          EncryptionArgs=encryption_args || dict(),
+          OptVerbose=opt_verbose,
+          OptBanner=opt_banner,
+          OptPrompt=opt_prompt,
+          OptAdmin=opt_admin,
+          OptTempdir=opt_tempdir,
+          OptLevel=opt_level,
+          OptConcurrency=opt_concurrency,
+          OptFormat=opt_format,
+          OptOutputDirectory=opt_output_directory,
+          OptFilenameTemplate=opt_filename_template,
+          OptCollectorFilename=opt_collector_filename,
+          OptCpuLimit=opt_cpu_limit,
+          OptProgressTimeout=opt_progress_timeout,
+          OptTimeout=opt_timeout,
+          OptDeleteAtExit=opt_delete_at_exit
+        )), name="spec.yaml")
 
       // Do the actual repacking.
       SELECT repack(

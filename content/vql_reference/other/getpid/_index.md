@@ -2,7 +2,14 @@
 title: getpid
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Returns the current pid of the Velociraptor process.
+
+  This is typically used to exclude analysis from our own process.
+
 ---
 
 

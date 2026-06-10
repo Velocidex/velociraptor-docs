@@ -8,9 +8,10 @@ title: "The Velociraptor Python API"
 categories: ["Blog"]
 ---
 
-{{% notice warning %}}
+{{% notice info %}}
 
-The Python bindings described in this page have now moved to https://github.com/Velocidex/pyvelociraptor/
+The Python bindings described in this page have now moved to
+https://github.com/Velocidex/pyvelociraptor/
 
 {{% /notice %}}
 

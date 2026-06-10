@@ -2,7 +2,11 @@
 title: org
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Return the details of the current org.
 ---
 
 

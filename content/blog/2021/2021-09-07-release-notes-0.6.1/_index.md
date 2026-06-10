@@ -143,7 +143,7 @@ collection by name
 Favorites are currently stored in the GUI user's profiles so each user
 can maintain their own list of favorites. However you can save a
 favorite into your own profile using the
-[favorite_save](/vql_reference/server/#favorites_save) VQL function,
+[favorite_save](/vql_reference/server/favorites_save/) VQL function,
 so a team may create a set of common favorites using a SERVER VQL
 artifact.
 
@@ -392,14 +392,13 @@ spin](https://github.com/Velocidex/velociraptor)!  It is a available
 on GitHub under an open source license. As always please file issues
 on the bug tracker or ask questions on our mailing list
 [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com)
-. You can also chat with us directly on discord
-[https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+. You can also chat with us directly on [Discord](/discord/).
 .
 
 There is still time to submit it to this year's [2021 Velociraptor
 Contributor
-Competition](https://docs.velociraptor.app/announcements/2021-artifact-contest/),
+Competition](/announcements/2021-artifact-contest/),
 where you can win prizes, honor and support the entire DFIR
 community. Alternatively, you can share your artifacts with the
 community on [Velociraptor's Artifact
-Exchange](https://docs.velociraptor.app/exchange/).
+Exchange](/exchange/).

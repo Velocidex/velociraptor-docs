@@ -26,14 +26,14 @@ backdoors, in a few lines of obfuscated scripts.
 
 Mari went through a number of examples and also expanded on some in her
 blog post [Malicious PowerShell in the Registry:
-Persistence](http://az4n6.blogspot.com/2018/06/malicious-powershell-in-registry.html),
+Persistence](https://az4n6.blogspot.com/2018/06/malicious-powershell-in-registry.html),
 where she documents persistence through an autorun key launching
 powershell to execute a payload within another registry key.
 
 A similar persistence mechanism is documented by David Kennedy from
 Binary defence in his post [PowerShell Injection with Fileless Payload
 Persistence and Bypass
-Techniques](https://blog.binarydefense.com/powershell-injection-diskless-persistence-bypass-techniques).
+Techniques](https://web.archive.org/web/20190921002637/https://blog.binarydefense.com/powershell-injection-diskless-persistence-bypass-techniques).
 In that case an msha.exe link was stored in the user\'s Run key which
 executed a payload from another registry key.
 

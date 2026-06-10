@@ -2,7 +2,11 @@
 title: help
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Dump information about all VQL functions and plugins.
 ---
 
 

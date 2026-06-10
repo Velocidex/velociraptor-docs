@@ -1,10 +1,16 @@
 ---
 title: Windows.System.DNSCache
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Queries the Windows DNS client cache via WMI and reports cached DNS
+  records with types and status.
 ---
 
-Collects DNS cache entries using the WMI class `MSFT_DNSClientCache`.
+Queries the Windows DNS client cache via WMI and reports cached DNS
+records with types and status.
 
 Windows maintains DNS lookups for a short time in the DNS cache.
 
@@ -12,7 +18,8 @@ Windows maintains DNS lookups for a short time in the DNS cache.
 <pre><code class="language-yaml">
 name: Windows.System.DNSCache
 description: |
-  Collects DNS cache entries using the WMI class `MSFT_DNSClientCache`.
+  Queries the Windows DNS client cache via WMI and reports cached DNS
+  records with types and status.
 
   Windows maintains DNS lookups for a short time in the DNS cache.
 

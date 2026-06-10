@@ -1,24 +1,39 @@
 ---
 title: Server.Powershell.EncodedCommand
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
+description: |
+  Intercepts PowerShell `-EncodedCommand` scripts in events that are
+  collected via client monitoring and decodes them.
 ---
 
-It is possible to pass PowerShell an encoded script. This artifact
-decodes such scripts.
+Intercepts PowerShell `-EncodedCommand` scripts in events that are
+collected via client monitoring and decodes them.
 
-NOTE: The client must be running the Windows.Events.ProcessCreation
-event artifact to retrieve process execution logs.
+It is possible to pass PowerShell an encoded script which then gets
+stored in the Windows event log in encoded form. This artifact
+decodes such script blocks on the server.
+
+NOTE: The client must be running the
+`Windows.Events.ProcessCreation` event artifact to retrieve the
+process execution logs that this artifact intercepts.
 
 
 <pre><code class="language-yaml">
 name: Server.Powershell.EncodedCommand
 description: |
-  It is possible to pass PowerShell an encoded script. This artifact
-  decodes such scripts.
+  Intercepts PowerShell `-EncodedCommand` scripts in events that are
+  collected via client monitoring and decodes them.
+  
+  It is possible to pass PowerShell an encoded script which then gets
+  stored in the Windows event log in encoded form. This artifact
+  decodes such script blocks on the server.
 
-  NOTE: The client must be running the Windows.Events.ProcessCreation
-  event artifact to retrieve process execution logs.
+  NOTE: The client must be running the
+  `Windows.Events.ProcessCreation` event artifact to retrieve the
+  process execution logs that this artifact intercepts.
 
 type: SERVER_EVENT
 

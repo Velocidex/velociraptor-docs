@@ -1,12 +1,14 @@
 # Rebuild the reference index.
 references:
 	python3 scripts/vql_reference.py --config scripts/vql_reference_config.yaml ~/projects/velociraptor/docs/references/vql.yaml --reference_data static/reference/data.json
+	python3 scripts/descriptions.py content/vql_reference/
 
 config_references:
-	cd ./scripts/config_reference/ && go run . ~/projects/velociraptor/docs/references/server.config.yaml > ../../content/docs/deployment/references/_reference.html
+	cd ./scripts/config_reference/ && go run . ~/projects/velociraptor/docs/references/server.config.yaml > ../../content/docs/deployment/references/_index.md
 
 artifact_references:
 	python3 scripts/artifact_reference_index.py ~/projects/velociraptor/
+	python scripts/descriptions.py content/
 
 exchange:
 	python3 scripts/exchange_index.py
@@ -19,14 +21,34 @@ blog:
 
 
 highlight_js:
-	cd ../highlight.js && node tools/build.js -t browser python yaml sql json bash powershell vql text
+	cd ../highlight.js && node tools/build.js -t browser python yaml sql json bash powershell vql text shell
 	cp ../highlight.js/build/highlight.min.js static/js/
 
 serve:
 	hugo serve
+
+clean_all:
+	rm -rf ./public/ ./content/artifact_references/pages/*
+	find ./content/vql_reference/ -mindepth 1 -maxdepth 1 -type d -exec rm -rf {} \;
 
 clean:
 	rm -rf ./public/
 
 build:
 	hugo
+
+index:
+	rm -rf /tmp/index/
+	cd ./velociraptor-site-search/ && go run ./cmd/ build ../content/ /tmp/index/ && cd -
+	cd /tmp/index && zip -r ../index.zip * && cd -
+	mkdir -p ./static/docs_index/
+	mv /tmp/index.zip ./static/docs_index/docs_index_v1.zip
+
+comparisons:
+	python3 scripts/comparisons.py
+
+descriptions:
+	python3 scripts/descriptions.py content/
+
+vale:
+	vale --output line .

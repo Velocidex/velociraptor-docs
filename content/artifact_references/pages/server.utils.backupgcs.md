@@ -1,14 +1,19 @@
 ---
 title: Server.Utils.BackupGCS
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
+description: |
+  Automatically zips and uploads collected flow results to a Google
+  Cloud Storage bucket.
 ---
 
-This server monitoring artifact will automatically zip and backup
-any collected artifacts to GCS.
+Automatically zips and uploads collected flow results to a Google
+Cloud Storage bucket.
 
 You will need to provide credentials to upload to the bucket. The
-credentials can be given as parameters or they will be taken from
+credentials can be provided as parameters or they will be taken from
 the server metadata (as DefaultBucket, DefaultGCSProject,
 DefaultGCSKey)
 
@@ -18,15 +23,15 @@ Thanks to @shortxstack and @Recon_InfoSec
 <pre><code class="language-yaml">
 name: Server.Utils.BackupGCS
 description: |
-   This server monitoring artifact will automatically zip and backup
-   any collected artifacts to GCS.
+  Automatically zips and uploads collected flow results to a Google
+  Cloud Storage bucket.
 
-   You will need to provide credentials to upload to the bucket. The
-   credentials can be given as parameters or they will be taken from
-   the server metadata (as DefaultBucket, DefaultGCSProject,
-   DefaultGCSKey)
+  You will need to provide credentials to upload to the bucket. The
+  credentials can be provided as parameters or they will be taken from
+  the server metadata (as DefaultBucket, DefaultGCSProject,
+  DefaultGCSKey)
 
-   Thanks to @shortxstack and @Recon_InfoSec
+  Thanks to @shortxstack and @Recon_InfoSec
 
 type: SERVER_EVENT
 

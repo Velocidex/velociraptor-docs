@@ -1,26 +1,31 @@
 ---
 title: Server.Utils.DeleteFlow
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+description: |
+  Permanently deletes a flow, plus all its associated metadata and
+  uploaded files, from the server.
 ---
 
-This artifact permanently deletes a flow including it's metadata and
-uploaded files.
+Permanently deletes a flow, plus all its associated metadata and
+uploaded files, from the server.
 
 NOTE: This action cannot be undone! The collection is deleted
-permanently. Since this is a sensitive operation, typically only
-users with the administrator role can run it.
+permanently. Since this is a sensitive operation, only users with
+the administrator role can run it.
 
 
 <pre><code class="language-yaml">
 name: Server.Utils.DeleteFlow
 description: |
-  This artifact permanently deletes a flow including it's metadata and
-  uploaded files.
+  Permanently deletes a flow, plus all its associated metadata and
+  uploaded files, from the server.
 
   NOTE: This action cannot be undone! The collection is deleted
-  permanently. Since this is a sensitive operation, typically only
-  users with the administrator role can run it.
+  permanently. Since this is a sensitive operation, only users with
+  the administrator role can run it.
 
 type: SERVER
 

@@ -2,7 +2,11 @@
 title: pk_encrypt
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Encrypt files using pubkey encryption
 ---
 
 

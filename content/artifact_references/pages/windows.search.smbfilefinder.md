@@ -1,19 +1,27 @@
 ---
 title: Windows.Search.SMBFileFinder
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Searches for files on remote SMB shares using glob patterns and
+  inspects file content using Yara rules, with optional hash
+  calculation and file upload.
 ---
 
-Find files on a remote filesystem using the filename or content.
+Searches for files on remote SMB shares using glob patterns and
+inspects file content using Yara rules, with optional hash
+calculation and file upload.
 
-## Security Note
+**Security Note**
 
 To access a remote share we require the credentials of a
 domain user. Currently only username/password are supported (i.e. no
-Kerberose). You should use Group Policy to create a user with read
+Kerberos). You should use Group Policy to create a user with read
 only access to the remote share.
 
-## Performance Note
+**Performance Note**
 
 This artifact can be quite expensive slow and generate a lot of
 network data, especially if we search file content. It will require
@@ -25,16 +33,18 @@ a rate limited way (about 20-50 ops per second).
 <pre><code class="language-yaml">
 name: Windows.Search.SMBFileFinder
 description: |
-  Find files on a remote filesystem using the filename or content.
+  Searches for files on remote SMB shares using glob patterns and
+  inspects file content using Yara rules, with optional hash
+  calculation and file upload.
 
-  ## Security Note
+  **Security Note**
 
   To access a remote share we require the credentials of a
   domain user. Currently only username/password are supported (i.e. no
-  Kerberose). You should use Group Policy to create a user with read
+  Kerberos). You should use Group Policy to create a user with read
   only access to the remote share.
 
-  ## Performance Note
+  **Performance Note**
 
   This artifact can be quite expensive slow and generate a lot of
   network data, especially if we search file content. It will require

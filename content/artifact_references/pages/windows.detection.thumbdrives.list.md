@@ -1,8 +1,16 @@
 ---
 title: Windows.Detection.Thumbdrives.List
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+description: |
+  Watches for removable drive insertion and enumerates all new files
+  on them.
 ---
+
+Watches for removable drive insertion and enumerates all new files
+on them.
 
 Users inserting Thumb drives or other Removable drive pose a
 constant security risk. The external drive may contain malware or
@@ -21,6 +29,9 @@ many files.
 <pre><code class="language-yaml">
 name: Windows.Detection.Thumbdrives.List
 description: |
+  Watches for removable drive insertion and enumerates all new files
+  on them.
+
   Users inserting Thumb drives or other Removable drive pose a
   constant security risk. The external drive may contain malware or
   other undesirable content. Additionally thumb drives are an easy way

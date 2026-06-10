@@ -1,20 +1,29 @@
 ---
 title: Windows.Memory.ProcessDump
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Captures process memory for selected processes via crash dump or
+  Velociraptor-compatible sparse upload.
 ---
 
-Dump process memory and upload to the server.
+Captures process memory for selected processes via crash dump or
+Velociraptor-compatible sparse upload.
 
-Previously named Windows.Triage.ProcessMemory
+NOTE: This artifact was previously named
+`Windows.Triage.ProcessMemory`
 
 
 <pre><code class="language-yaml">
 name: Windows.Memory.ProcessDump
 description: |
-  Dump process memory and upload to the server.
-
-  Previously named Windows.Triage.ProcessMemory
+  Captures process memory for selected processes via crash dump or
+  Velociraptor-compatible sparse upload.
+  
+  NOTE: This artifact was previously named
+  `Windows.Triage.ProcessMemory`
 
 precondition: SELECT OS From info() where OS = 'windows'
 
@@ -52,11 +61,11 @@ sources:
                               Path=serialize(item=Regions(Pid=Pid).Sparse),
                               DelegateAccessor="process",
                               DelegatePath=format(format="/%d", args=Pid)),
-                              name=pathspec(Path=format(format="%d.dd", args=Pid))) AS ProcessMemory
+                              name=pathspec(Path=format(format="%d_%s.dd", args=[Pid,ProcessName]))) AS ProcessMemory
              FROM scope()
           }, else={
             SELECT ProcessName, CommandLine, Pid, OSPath,
-                   upload(file=OSPath) as CrashDump
+                   upload(file=OSPath,name=format(format="%d_%s.dmp", args=[Pid,ProcessName])) as CrashDump
             FROM proc_dump(pid=Pid)
           })
 

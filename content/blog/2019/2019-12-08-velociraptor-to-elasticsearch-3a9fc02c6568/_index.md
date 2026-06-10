@@ -6,8 +6,6 @@ date: '2019-12-08T23:50:52.556Z'
 
 ## Taking your data elsewhere…
 
-#### By Justin Welgemoed
-
 ![](../../img/1_mAd_VmUqHkyZgz-hCL2ctQ.png)
 
 Since release 0.3.5 Velociraptor includes an Elastic VQL plugin plus two built-in server artifacts that demonstrate how to make use of this plugin.
@@ -34,7 +32,7 @@ Velociraptor supports this information management approach by providing out-of-t
 
 The first VQL artifact that we will use to accomplish our goal is named *Elastic.Flows.Upload*
 
-This artifact sends the results of [Flows](https://www.velocidex.com/docs/user-interface/artifacts/client_artifacts/) to Elasticsearch. It’s the easiest one to get started with because all you have to do is add the artifact to [Server Monitoring](https://www.velocidex.com/docs/user-interface/artifacts/server_events/) and tweak a parameter or two if necessary.
+This artifact sends the results of Flows to Elasticsearch. It’s the easiest one to get started with because all you have to do is add the artifact to Server Monitoring and tweak a parameter or two if necessary.
 
 ![This is where Server Monitoring artifacts are hidden!](../../img/1_iDsgXuKmszwthN8EX8AHsw.png)*This is where Server Monitoring artifacts are hidden!*
 
@@ -62,7 +60,7 @@ If you have an Elasticsearch cluster that uses authentication, non-standard port
 
 ## Sending Client Events to Elastic
 
-This is slightly less easy than the previous step but only because it requires that you first configure one or more artifacts to collect [client events](https://www.velocidex.com/docs/user-interface/artifacts/client_events/).
+This is slightly less easy than the previous step but only because it requires that you first configure one or more artifacts to collect client events.
 
 Once the client events are being collected and received by the VR server, the *Elastic.Events.Clients* artifact will take care of forwarding these events to Elastic *.*
 
@@ -83,37 +81,8 @@ When adding the artifact make sure to select the client event types that you wou
 
 As before, we now go to Kibana to check out the results…
 
-![Are you tired of winning yet?](../../img/1_4-AlVbICs9O_hUjKBSNung.png)*Are you tired of winning yet?*
+![Are you tired of winning yet?](../../img/1_4-AlVbICs9O_hUjKBSNung.png)
 
-Easier than you expected, right? Well in the next section we take it to the next level by bringing Logstash into the loop. Let’s put the L into the E**L**K Stack…
-
-## Slice & Dice with Logstash
-
-Want to reshape, filter or enrich the data? Well you could do that by writing custom Velociraptor artifacts, however you might already have an existing data pipeline that includes Logstash. This is a common architecture in information security environments where Logstash provides centralised flow control, data enrichment and standardization functions prior to the data being fed into Elasticsearch.
-
-While Velociraptor doesn’t directly support Logstash, integration can be achieved by making Logstash emulate the Elasticsearch Bulk API. To make this work you’ll need to install the Logstash [ES_bulk codec plugin](https://www.elastic.co/guide/en/logstash/current/plugins-codecs-es_bulk.html), since this is not one of the pre-installed plugins.
-
-A very simple Logstash Input configuration which uses that additional plugin, in conjunction with the Logstash HTTP Input plugin, will set up the desired Elastic emulation:
-
-```json
-input {
-
-  http {
-    port => 9200
-    additional_codecs => { "application/json" => "es_bulk" }
-    response_headers => {
-        "Access-Control-Allow-Origin" => "*"
-        "Content-Type" => "application/json"
-        "Access-Control-Allow-Headers" => "Origin, X-Requested-With, Content-Type, Accept"
-    }
-  }
-
-}
-```
-
-With the above in place Velociraptor will think it’s talking to Elastic’s Bulk API so the configuration steps described in the previous sections all remain equally applicable and unchanged in this scenario. No special configurations are required on the Velociraptor side.
-
-Now you can do all the data reshaping/filtering/enriching that your heart desires within Logstash and then have it pass that data on to Elastic!
 
 ## Conclusions
 

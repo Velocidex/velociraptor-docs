@@ -17,7 +17,7 @@ noTitle: true
 Thank you for joining us for the day-long virtual summit as we DIG
 DEEPER TOGETHER!
 
-[The full conference is now available!]({{< ref "/presentations/2022_velocon/" >}})
+[The full conference is now available!](/presentations/2022_velocon/)
 
 ## Agenda at a glance
 
@@ -248,7 +248,7 @@ methods for reverse engineering software systems. Now, he's heading
 APTA Technologies, a start-up building machine learning tools to
 understand software behavior .
 
-Affiliation: APTA Technologies, https://apta.tech
+Affiliation: APTA Technologies
 
 ### When Dinosaurs Ruled the Blue Team: Retrieving triage images with EDR
 By **Dan Banker**
@@ -340,7 +340,7 @@ I used Velociraptor during a network breach for a client, the attack
 resulted in all sys admin accounts being removed from the AD. The
 threat actor then disabled the buildings access controls and
 specifically the server room door controls. The threat actor then
-began to destroy the datacentre by mass deleting files and wiping
+began to destroy the datacenter by mass deleting files and wiping
 systems.  The attack was thwarted mid-way through by the IT staff
 using an emergency over-ride to bypass the door controls and used a
 metal bar to prise open the door and pull the network cables out. This

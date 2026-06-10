@@ -1,8 +1,16 @@
 ---
 title: Windows.ETW.KernelFile
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+description: |
+  Monitors file create, delete, open, and rename events via the
+  Kernel-File ETW provider.
 ---
+
+Monitors file create, delete, open, and rename events via the
+Kernel-File ETW provider.
 
 This artifact follows the Microsoft-Windows-Kernel-File provider.
 
@@ -13,6 +21,9 @@ NT_USER/SYSTEM.
 <pre><code class="language-yaml">
 name: Windows.ETW.KernelFile
 description: |
+  Monitors file create, delete, open, and rename events via the
+  Kernel-File ETW provider.
+  
   This artifact follows the Microsoft-Windows-Kernel-File provider.
 
   NOTE: We can only attach to this provider when running as

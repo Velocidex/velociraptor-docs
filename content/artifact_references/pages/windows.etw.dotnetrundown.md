@@ -1,7 +1,13 @@
 ---
 title: Windows.ETW.DotNetRundown
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Queries the Microsoft-Windows-DotNETRuntimeRundown provider to
+  collect a list of DotNet modules loaded into a process. This can be
+  useful when responding to reflectively loaded DotNet malware.
 ---
 
 Queries the Microsoft-Windows-DotNETRuntimeRundown provider to
@@ -36,6 +42,10 @@ parameters:
   - name: EventIDRegex
     default: .
     type: regex
+  - name: AnyKeyword
+    description: Any keyword level for collection
+    default: 0x48
+    type: int
   - name: Timeout
     default: 20
     type: int
@@ -51,7 +61,7 @@ sources:
       FROM watch_etw(
         description="CLR Rundown Provider",
         guid="{A669021C-C450-4609-A035-5AF59AF4DF18}",
-        any=0x48, timeout=Timeout)
+        any=AnyKeyword, timeout=Timeout)
 
       SELECT EventID, ProcessID, ProcessDetails.Data.Name AS ProcessName,
         ProcessDetails.Data.Exe AS ProcessPath, System, EventData, ProviderGUID,

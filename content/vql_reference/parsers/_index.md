@@ -3,8 +3,12 @@ title: Parsers
 weight: 50
 linktitle: Parsers
 index: true
+sitemap:
+  disable: true
 no_edit: true
 no_children: true
+description: |
+  Many Velociraptor artifacts rely on parsing of file and data formats.
 ---
 
 Many Velociraptor artifacts rely on parsing of file and data formats.

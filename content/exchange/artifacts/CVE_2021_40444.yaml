@@ -2,7 +2,7 @@ name: Windows.Registry.CVE_2021_40444
 author: Matt Green - @mgreen27
 description: |
     This artifact will enable both application and removal of the
-    reccomended mitigation for CVE-2021-40444.
+    recommended mitigation for CVE-2021-40444.
 
     Disabling the installation of all ActiveX controls in Internet
     Explorer mitigates this attack. This can be accomplished for all

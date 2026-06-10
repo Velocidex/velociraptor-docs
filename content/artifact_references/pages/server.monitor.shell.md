@@ -1,38 +1,51 @@
 ---
 title: Server.Monitor.Shell
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
+description: |
+  Captures stdout, stderr, and command details from shell command
+  executions across all clients for auditing purposes.
 ---
 
-Velociraptor can get an interactive shell on the endpoint by using
-the shell command. To use it, the user must be directly
-logged on the server.
+Captures stdout, stderr, and command details from shell command
+executions across all clients for auditing purposes.
+
+Velociraptor can issue shell commands on the endpoint by using the
+various wrapper artifacts. To use them, the user must be directly
+logged in to the Velociraptor server GUI and therefore
+authenticated and authorised.
 
 Obviously being able to run arbitrary commands on the end point is
 a powerful feature and should be used sparingly. There is an audit
-trail for shell commands executed and their output available by
+trail for shell commands executed and their output is available by
 streaming all shell commands to the "Shell" client event monitoring
 artifact.
 
-This server event artifact centralizes all shell access from all
-clients into the same log file.
+This server event artifact centralizes all shell access events from
+all clients into a single audit log.
 
 
 <pre><code class="language-yaml">
 name: Server.Monitor.Shell
 description: |
-   Velociraptor can get an interactive shell on the endpoint by using
-   the shell command. To use it, the user must be directly
-   logged on the server.
+   Captures stdout, stderr, and command details from shell command
+   executions across all clients for auditing purposes.
+   
+   Velociraptor can issue shell commands on the endpoint by using the
+   various wrapper artifacts. To use them, the user must be directly
+   logged in to the Velociraptor server GUI and therefore
+   authenticated and authorised.
 
    Obviously being able to run arbitrary commands on the end point is
    a powerful feature and should be used sparingly. There is an audit
-   trail for shell commands executed and their output available by
+   trail for shell commands executed and their output is available by
    streaming all shell commands to the "Shell" client event monitoring
    artifact.
 
-   This server event artifact centralizes all shell access from all
-   clients into the same log file.
+   This server event artifact centralizes all shell access events from
+   all clients into a single audit log.
 
 # Can be CLIENT, EVENT, SERVER, SERVER_EVENT
 type: SERVER_EVENT

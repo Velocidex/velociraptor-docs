@@ -6,7 +6,7 @@ description: |
   the exploitation of CVE-2023-34362
 
   This artifact parses EvtxHunter output and returns a set of fields in results.
-  An unparsed data field is availible in the hidden _RawData field.
+  An unparsed data field is available in the hidden `_RawData` field.
 
   There are several parameter's available for search leveraging regex.
 
@@ -36,7 +36,7 @@ parameters:
     description: "IOC Regex"
     default:
   - name: IgnoreRegex
-    description: "Regex of string to witelist"
+    description: "Regex of string to whitelist"
     type: regex
   - name: IdRegex
     default: .

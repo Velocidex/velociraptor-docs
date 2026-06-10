@@ -153,7 +153,7 @@ to archived data and re-analyze.
 ## Version compatibility
 
 The Velociraptor [support
-policy](https://docs.velociraptor.app/docs/overview/support/)
+policy](/docs/overview/support/)
 officially only supports clients and servers on the same release
 version. However in reality it usually takes longer to upgrade clients
 than servers. While some users are able to upgrade clients promptly,
@@ -215,7 +215,7 @@ collections and analysis. The VQL is usually shared via an `Artifact`
 with the community.
 
 Most users utilize the built in artifacts as well as the [artifact
-exchange](https://docs.velociraptor.app/exchange/). A significant
+exchange](/exchange/). A significant
 number of users also develop their own artifacts for their own
 use. Over 60% of users report that they develop their own artifacts.
 

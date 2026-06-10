@@ -6,7 +6,7 @@
     {{ hugo.Generator }}
     {{ partial "meta.html" . }}
     {{ partial "favicon.html" . }}
-    <title>{{ .Title }} {{ default "::" .Site.Params.titleSeparator }} {{ .Site.Title }}</title>
+    <title>{{ .Title  | truncate 70 }}</title>
 
     {{ $assetBusting := not .Site.Params.disableAssetsBusting }}
     <link href="{{"css/nucleus.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
@@ -17,6 +17,12 @@
     <link href="{{"css/theme.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
     <link href="{{"css/tabs.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
     <link href="{{"css/hugo-theme.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
     {{with .Site.Params.themeVariant}}
     <link href="{{(printf "css/theme-%s.css" .) | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
     {{end}}
@@ -39,10 +45,12 @@
     {{ partial "custom-header.html" . }}
   </head>
   <body class="" data-url="{{ .RelPermalink }}">
+    {{ if not .Params.nomenu }}
     {{ partial "menu.html" . }}
+    {{ end }}
         <section id="body">
         <div id="overlay"></div>
-        <div class="padding highlightable">
+        <div class="padding highlightable scroller">
           {{ $editURL := "" }}
           {{ if .File }}
           {{ $editURL = printf "%s%s%s" .Site.Params.editURL ( replace .File.Dir "\\" "/" ) .File.LogicalName }}
@@ -98,6 +106,9 @@
           <div id="chapter">
         {{ end }}
         <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
           {{if and (not .IsHome) (not .Params.chapter) (not .Params.noTitle) }}
             <h1>
               {{ if or (eq .Kind "taxonomy") (eq .Kind "term") }}

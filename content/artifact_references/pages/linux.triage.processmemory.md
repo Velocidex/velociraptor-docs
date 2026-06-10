@@ -1,16 +1,23 @@
 ---
 title: Linux.Triage.ProcessMemory
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Dumps process memory from a selected process and uploads it to the
+  server.
 ---
 
-Dump process memory and upload to the server
+Dumps process memory from a selected process and uploads it to the
+server.
 
 
 <pre><code class="language-yaml">
 name: Linux.Triage.ProcessMemory
 description: |
-  Dump process memory and upload to the server
+  Dumps process memory from a selected process and uploads it to the
+  server.
 
 precondition: SELECT OS From info() where OS = 'linux'
 

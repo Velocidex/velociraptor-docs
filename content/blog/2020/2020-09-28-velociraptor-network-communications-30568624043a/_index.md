@@ -12,7 +12,7 @@ keywords: []
 
 You might have heard that Velociraptor allows you to quickly query endpoint state for rapid response and monitoring of many thousands of devices across the internet. Unlike some other tools, Velociraptor’s communication is scalable, secure and instantaneous.
 
-Many people ask me about the client/server communication protocol. The [Velociraptor documentation](https://www.velocidex.com/docs/getting-started/stand_alone/) simply states that communications is encrypted over a TLS connection but there is more to it than that.
+Many people ask me about the client/server communication protocol. The Velociraptor documentation simply states that communications is encrypted over a TLS connection but there is more to it than that.
 
 In this post I would like to delve into the low level details of how clients securely communicate with the server and cover some common deployment scenarios. By understanding exactly how this works we will gain insight into debugging communication problems and enabling more sophisticated deployment scenarios.
 
@@ -110,7 +110,7 @@ Clients (Velociraptor instances running on endpoints) connect to the server over
 
 ### Velociraptor’s internal PKI
 
-Every Velociraptor deployments creates an internal PKI which underpins it. The configuration wizard creates an internal CA with an X509 certificate and a private key. This CA is used to:
+Every Velociraptor deployments creates an internal PKI which underpins it. The configuration wizard creates an internal CA with an X.509 certificate and a private key. This CA is used to:
 
 1. Create initial server certificates and any additional certificates for key rotation.
 
@@ -118,7 +118,7 @@ Every Velociraptor deployments creates an internal PKI which underpins it. The c
 
 1. The CA is used to create API keys for programmatic access. The server is then able to verify API clients.
 
-The configuration file contains the CA’s X509 certificate in the **Client.ca_certificate** parameter (it is therefore embedded in the client configuration). The private key is contained in the **CA.private_key** parameter.
+The configuration file contains the CA’s X.509 certificate in the **Client.ca_certificate** parameter (it is therefore embedded in the client configuration). The private key is contained in the **CA.private_key** parameter.
 
 
 {{% notice tip %}}
@@ -270,4 +270,4 @@ In addition, Velociraptor uses standard TLS communications to deliver messages u
 
 By understanding how the communication takes place, we saw how we can debug network problems and even configure a reverse proxy for TLS offloading — an important feature to be able to scale even higher.
 
-If you are interested in learning more about Velociraptor, check out our courses on [https://www.velocidex.com/training/](https://www.velocidex.com/training/) or join us on discord [https://www.velocidex.com/discord](https://www.velocidex.com/discord).
+If you are interested in learning more about Velociraptor, check out our courses [here](/training/) or join us on [Discord](/discord/).

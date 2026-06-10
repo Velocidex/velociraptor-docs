@@ -1,15 +1,21 @@
 ---
 title: Windows.Applications.Chrome.History
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Enumerates visited URLs, titles, and visit timestamps from
+  Chrome/Edge/Brave/Vivaldi/Opera history databases.
 ---
 
-Enumerates a targets chrome history.
+Enumerates visited URLs, titles, and visit timestamps from
+Chrome/Edge/Brave/Vivaldi/Opera history databases.
 
-Source based on Hindsight and code review of
+Based on Hindsight and code review of
 https://source.chromium.org/chromium/chromium/src/+/master:components/history/core/browser/history_types.h.
 
-#### NOTES:
+**NOTES**
 
 - Some research has shown that older browsers may not have this
   table. In that case you should treat it as you would in a traditional
@@ -23,12 +29,13 @@ https://source.chromium.org/chromium/chromium/src/+/master:components/history/co
 <pre><code class="language-yaml">
 name: Windows.Applications.Chrome.History
 description: |
-  Enumerates a targets chrome history.
+  Enumerates visited URLs, titles, and visit timestamps from
+  Chrome/Edge/Brave/Vivaldi/Opera history databases.
 
-  Source based on Hindsight and code review of
+  Based on Hindsight and code review of
   https://source.chromium.org/chromium/chromium/src/+/master:components/history/core/browser/history_types.h.
 
-  #### NOTES:
+  **NOTES**
 
   - Some research has shown that older browsers may not have this
     table. In that case you should treat it as you would in a traditional
@@ -38,8 +45,8 @@ description: |
   - This artifact is deprecated in favor of `Generic.Forensic.SQLiteHunter` and
     will be removed in future
 
-
 author: Angry-Bender @angry-bender
+
 parameters:
   - name: historyGlobs
     default: \AppData\{Local,Roaming}\{Google\Chrome\User Data,Microsoft\Edge\User Data,BraveSoftware\Brave-Browser\User Data,Vivaldi\User Data,Opera Software\Opera*Stable}\*\History
@@ -79,6 +86,8 @@ precondition: SELECT OS From info() where OS = 'windows'
 
 sources:
   - query: |
+        // linter: symbol_mask_warn:url
+
         LET history_files = SELECT * from foreach(
           row={
              SELECT Uid, Name AS User,

@@ -1,17 +1,24 @@
 ---
 title: Linux.SuSE.Packages
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Queries `zypper` to retrieve installed packages with version and
+  repository details.
 ---
 
-Parse list of installed packages from zypper output
+Queries `zypper` to retrieve installed packages with version and
+repository details.
 
 
 <pre><code class="language-yaml">
 name: Linux.SuSE.Packages
 author: Hilko Bengen &lt;bengen@hilluzination.de&gt;
 description: |
-  Parse list of installed packages from zypper output
+  Queries `zypper` to retrieve installed packages with version and
+  repository details.
 
 implied_permissions:
   - EXECVE

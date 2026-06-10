@@ -3,6 +3,8 @@ title: Encode/Decode
 weight: 60
 linktitle: Encode/Decode
 index: true
+sitemap:
+  disable: true
 no_edit: true
 no_children: true
 ---
@@ -13,9 +15,9 @@ Encoder, decoders and cryptographic functions.
 |[base64decode](base64decode)|<span class='vql_type'>Function</span>|Decodes a base64 encoded string|
 |[base64encode](base64encode)|<span class='vql_type'>Function</span>|Encodes a string into base64|
 |[base85decode](base85decode)|<span class='vql_type'>Function</span>|Decode a base85 encoded string|
-|[compress](compress)|<span class='vql_type'>Function</span>|Compress a file|
+|[compress](compress)|<span class='vql_type'>Function</span>|Compress a file using GZip|
 |[crypto_rc4](crypto_rc4)|<span class='vql_type'>Function</span>|Apply rc4 to the string and key|
-|[encode](encode)|<span class='vql_type'>Function</span>|Encodes a string as as different type|
+|[encode](encode)|<span class='vql_type'>Function</span>|Encode an object as a string|
 |[entropy](entropy)|<span class='vql_type'>Function</span>|Calculates shannon scale entropy of a string|
 |[gunzip](gunzip)|<span class='vql_type'>Function</span>|Uncompress a gzip-compressed block of data|
 |[hash](hash)|<span class='vql_type'>Function</span>|Calculate the hash of a file|

@@ -2,7 +2,17 @@
 title: grok
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Parse a string using a Grok expression.
+
+  This is most useful for parsing syslog style logs (e.g. IIS, Apache logs).
+
+  You can read more about GROK expressions here
+  https://www.elastic.co/blog/do-you-grok-grok
+
 ---
 
 

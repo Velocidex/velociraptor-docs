@@ -1,42 +1,48 @@
 ---
 title: Windows.Registry.AppCompatCache
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Parses the AppCompatCache (Shimcache) registry value to enumerate
+  recently executed application paths.
 ---
 
-This artifact parses AppCompatCache (shimcache) from target hives.
+Parses the AppCompatCache (Shimcache) registry value to enumerate
+recently executed application paths.
 
-AppCompatCache, also known as Shimcache, is a component of the Application
-Compatibility Database, which was created by Microsoft and used by the Windows
-operating system to identify application compatibility issues. This helps
-developers troubleshoot legacy functions and contains data related to Windows
-features.
+AppCompatCache, also known as Shimcache, is a component of the
+Application Compatibility Database, which was created by Microsoft
+and used by the Windows operating system to identify application
+compatibility issues. This helps developers troubleshoot legacy
+functions and contains data related to Windows features.
 
-Note:
+**NOTES:**
 
 - Windows 10+ systems Execution flag of 1 indicates execution.
-- The appcompatcache artifact does not currently support execution flag in
-Windows 7 and 8 / 8.1 Systems.
+- The appcompatcache artifact does not currently support execution
+  flag in Windows 7 and 8 / 8.1 Systems.
 
 
 <pre><code class="language-yaml">
 name: Windows.Registry.AppCompatCache
 author: Matt Green - @mgreen27
 description: |
-  This artifact parses AppCompatCache (shimcache) from target hives.
+  Parses the AppCompatCache (Shimcache) registry value to enumerate
+  recently executed application paths.
 
-  AppCompatCache, also known as Shimcache, is a component of the Application
-  Compatibility Database, which was created by Microsoft and used by the Windows
-  operating system to identify application compatibility issues. This helps
-  developers troubleshoot legacy functions and contains data related to Windows
-  features.
+  AppCompatCache, also known as Shimcache, is a component of the
+  Application Compatibility Database, which was created by Microsoft
+  and used by the Windows operating system to identify application
+  compatibility issues. This helps developers troubleshoot legacy
+  functions and contains data related to Windows features.
 
-  Note:
+  **NOTES:**
 
   - Windows 10+ systems Execution flag of 1 indicates execution.
-  - The appcompatcache artifact does not currently support execution flag in
-  Windows 7 and 8 / 8.1 Systems.
-
+  - The appcompatcache artifact does not currently support execution
+    flag in Windows 7 and 8 / 8.1 Systems.
 
 reference:
   - https://www.mandiant.com/resources/caching-out-the-val
@@ -150,7 +156,8 @@ sources:
       -- when greater than one key we need to extract results and order later
       LET results &lt;= SELECT
             ModificationTime,
-            Name as Path,
+            regex_replace(source=Name,re='''^SYSVOL''',replace="%SystemRoot%") as Path,
+            expand(path=regex_replace(source=Name,re='''^SYSVOL''',replace="%SystemRoot%")) as Expanded,
             ExecutionFlag,
             ControlSet,
             Key
@@ -166,6 +173,7 @@ sources:
                   FROM AppCompatCache(Blob=read_file(
                       accessor='registry', filename=OSPath))
             })
+          WHERE ModificationTime // removes junk build in references
 
       -- find position of entry for each ControlSet. Lower numbers more recent
       LET ControlSetPosition(cs) = SELECT *, count() - 1 as Position
@@ -184,18 +192,20 @@ sources:
                     SELECT * FROM foreach(row=_value)
                 })
 
-      -- output results
+      -- include final test for Path/Expanded to cover dead disk usecases
       SELECT
         Position,
         ModificationTime,
-        Path,
-        ExecutionFlag,
-        ControlSet,
-        Key
+        if(condition = split(string=Path,sep='''%[^%]+%''')[1] = Expanded,
+                then = Path,
+                else = Expanded ) as Path,
+        ExecutionFlag
       FROM if(condition= len(list=AppCompatKeys.OSPath)=1,
         then={
             SELECT *, count() - 1 as Position FROM results
         },
         else= mutli_controlset )
+      GROUP BY Position, Path, ModificationTime
+
 </code></pre>
 

@@ -2,7 +2,11 @@
 title: pskill
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Kill the specified process.
 ---
 
 

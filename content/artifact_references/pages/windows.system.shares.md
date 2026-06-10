@@ -1,17 +1,24 @@
 ---
 title: Windows.System.Shares
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Enumerates Windows network shares via the Win32_Share WMI class
+  with regex filtering.
 ---
 
-This artifact will extract network shares per machine.
+Enumerates Windows network shares via the Win32_Share WMI class
+with regex filtering.
 
 
 <pre><code class="language-yaml">
 name: Windows.System.Shares
 author: 'Matt Green - @mgreen27'
 description: |
-   This artifact will extract network shares per machine.
+  Enumerates Windows network shares via the Win32_Share WMI class
+  with regex filtering.
 
 type: CLIENT
 
@@ -33,5 +40,6 @@ sources:
         SELECT Name, Path, Caption, Status,MaximumAllowed,AllowMaximum,InstallDate
         FROM wmi(query='SELECT * FROM Win32_Share',namespace='root/cimv2')
         WHERE Name =~ NameRegex AND Path =~ PathRegex
+
 </code></pre>
 

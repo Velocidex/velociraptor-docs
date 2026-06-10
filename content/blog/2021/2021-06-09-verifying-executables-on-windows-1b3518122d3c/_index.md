@@ -35,7 +35,7 @@ For example, let’s inspect the Velociraptor binary itself which is signed.
 
 Obviously we can not use this method to verify thousands of binaries found on remote systems, so we need to understand how Authenticode is implemented under the covers.
 
-Authenticode uses a number of file format standards to actually embed the signature information into the binary file itself, as illustrated in the [diagram below](http://download.microsoft.com/download/9/c/5/9c5b2167-8017-4bae-9fde-d599bac8184a/Authenticode_PE.docx):
+Authenticode uses a number of file format standards to actually embed the signature information into the binary file itself, as illustrated in the [diagram below](https://download.microsoft.com/download/9/c/5/9c5b2167-8017-4bae-9fde-d599bac8184a/Authenticode_PE.docx):
 
 ![](../../img/0aJlEkIX3M0d8aKnI.png)
 
@@ -70,7 +70,7 @@ As we can see in the above screenshot, the authenticode standard provides an exp
 
 None of the calculated hashes is the same as the “ExpectedHash” provided in the Authenticode signature! This is because Authenticode hashes do not cover the entire PE file, as regular hashes do. Authenticode hashes only cover specific PE sections, in a specific order. They specifically allow PE sections to be reordered, and some regions in the file to be modified.
 
-{{% notice warning %}}
+{{% notice info %}}
 Many people find it surprising that signed PE files can be modified without invalidating the signature.
 {{% /notice %}}
 
@@ -86,7 +86,7 @@ Armed with our new understanding of Authenticode, we may run VQL queries to coll
 
 ![](../../img/156Eq-sGsBkzTnREg7ymsFA.png)
 
-The example above shows that notepad.exe, does not typically contain embedded signing information. Similarly, if one clicks on the the notepad.exe binary in the GUI no digital signature information is shown
+The example above shows that notepad.exe, does not typically contain embedded signing information. Similarly, if one clicks on the notepad.exe binary in the GUI no digital signature information is shown
 
 ![](../../img/1nVs1beihcqM5MefgsK3d9g.png)
 
@@ -159,4 +159,4 @@ Ultimately we simply need to know if a particular binary file is trusted or not.
 
 The above screenshot shows both our examples — The velociraptor binary was signed via embedded signature on the right and Notepad.exe was signed via catalog. In both cases Velociraptor is showing the signer and their issuers and if the file is trusted. We additionally get the catalog file that is used to verify the file if applicable.
 
-If you would like to quickly verify your windows executables at scale, take[ Velociraptor for a spin](https://github.com/Velocidex/velociraptor)! It is available on GitHub under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com) . You can also chat with us directly on discord [https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+If you would like to quickly verify your windows executables at scale, take[ Velociraptor for a spin](https://github.com/Velocidex/velociraptor)! It is available on GitHub under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com) . You can also chat with us directly on [Discord](/discord/)

@@ -2,7 +2,11 @@
 title: artifact_definitions
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Dump artifact definitions from the internal repository.
 ---
 
 

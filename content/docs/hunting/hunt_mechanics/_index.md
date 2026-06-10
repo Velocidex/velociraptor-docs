@@ -9,6 +9,10 @@ summary: |
   involve the client-server communication model, the Hunt Manager's scheduling,
   and a notification process.
 last_reviewed: 2025-05-15
+description: |
+  The mechanics of how Velociraptor clients are notified about and pick up hunts
+  involve the client-server communication model, the Hunt Manager's scheduling,
+  and a notification process.
 ---
 
 The mechanics of how Velociraptor clients are notified about and pick up hunts

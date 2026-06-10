@@ -1,10 +1,16 @@
 ---
 title: MacOS.Detection.Autoruns
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Gathers evidence of macOS autoruns by searching common persistence
+  locations and uploading found files.
 ---
 
-This artifact collects evidence of autoruns. We also capture the files and upload them.
+Gathers evidence of macOS autoruns by searching common persistence
+locations and uploading found files.
 
 This code is based on
 https://github.com/CrowdStrike/automactc/blob/master/modules/mod_autoruns_v102.py
@@ -13,10 +19,11 @@ https://github.com/CrowdStrike/automactc/blob/master/modules/mod_autoruns_v102.p
 <pre><code class="language-yaml">
 name: MacOS.Detection.Autoruns
 description: |
-   This artifact collects evidence of autoruns. We also capture the files and upload them.
+  Gathers evidence of macOS autoruns by searching common persistence
+  locations and uploading found files.
 
-   This code is based on
-   https://github.com/CrowdStrike/automactc/blob/master/modules/mod_autoruns_v102.py
+  This code is based on
+  https://github.com/CrowdStrike/automactc/blob/master/modules/mod_autoruns_v102.py
 
 precondition: SELECT OS FROM info() WHERE OS =~ 'darwin'
 

@@ -5,6 +5,8 @@ date: 2025-02-18
 last_reviewed: 2025-09-04
 draft: false
 weight: 80
+description: |
+  Sometimes things don't work when you first try them. 😓
 ---
 
 Sometimes things don't work when you first try them. 😓
@@ -20,7 +22,7 @@ that you're running the latest version, just in case your issue is one that's
 already been fixed.
 
 The current version is available from our
-[Downloads]({{< ref "/downloads/" >}}) page.
+[Downloads](/downloads/) page.
 
 {{% /notice %}}
 

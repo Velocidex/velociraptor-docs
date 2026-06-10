@@ -2,7 +2,15 @@
 title: vfs_ls
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  List directory and build a VFS object.
+
+  This plugin is probably only useful as part of the
+  System.VFS.ListDirectory artifact.
+
 ---
 
 

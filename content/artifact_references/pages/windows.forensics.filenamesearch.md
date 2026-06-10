@@ -1,17 +1,24 @@
 ---
 title: Windows.Forensics.FilenameSearch
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Searches the NTFS `$MFT` using YARA rules to determine if specific
+  filenames ever existed on the system.
 ---
 
-Did a specific file exist on this machine in the past or does it
-still exist on this machine?
+Searches the NTFS `$MFT` using YARA rules to determine if specific
+filenames ever existed on the system.
 
-This common question comes up frequently in cases of IP theft,
-discovery and other matters. One way to answer this question is to
-search the $MFT file for any references to the specific filename. If
-the filename is fairly unique then a positive hit on that name
-generally means the file was present.
+"Did a specific file exist on this machine in the past or does it
+still exist on this machine?" This common question comes up
+frequently in cases of IP theft, discovery and other matters. One
+way to answer this question is to search the $MFT file for any
+references to the specific filename. If the filename is fairly
+unique then a positive hit on that name generally means the file was
+present.
 
 Simply determining that a filename existed on an endpoint in the
 past is significant for some investigations.
@@ -25,14 +32,16 @@ to an actual filename.
 <pre><code class="language-yaml">
 name: Windows.Forensics.FilenameSearch
 description: |
-  Did a specific file exist on this machine in the past or does it
-  still exist on this machine?
-
-  This common question comes up frequently in cases of IP theft,
-  discovery and other matters. One way to answer this question is to
-  search the $MFT file for any references to the specific filename. If
-  the filename is fairly unique then a positive hit on that name
-  generally means the file was present.
+  Searches the NTFS `$MFT` using YARA rules to determine if specific
+  filenames ever existed on the system.
+  
+  "Did a specific file exist on this machine in the past or does it
+  still exist on this machine?" This common question comes up
+  frequently in cases of IP theft, discovery and other matters. One
+  way to answer this question is to search the $MFT file for any
+  references to the specific filename. If the filename is fairly
+  unique then a positive hit on that name generally means the file was
+  present.
 
   Simply determining that a filename existed on an endpoint in the
   past is significant for some investigations.

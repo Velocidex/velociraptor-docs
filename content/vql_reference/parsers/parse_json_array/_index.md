@@ -2,7 +2,11 @@
 title: parse_json_array
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Parses events from a line oriented json file.
 ---
 
 
@@ -20,6 +24,7 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 data|Json encoded string.|string (required)
+schema|Json schema to use for validation.|list of string
 
 ### Description
 
@@ -44,6 +49,7 @@ instead of an object.
 Arg | Description | Type
 ----|-------------|-----
 data|Json encoded string.|string (required)
+schema|Json schema to use for validation.|list of string
 
 ### Description
 

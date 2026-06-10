@@ -6,6 +6,8 @@ draft: false
 weight: 50
 summary: "How to manage artifacts from VQL"
 last_reviewed: 2025-06-04
+description: |
+  ## Working with the internal artifact repository in VQL
 ---
 
 ## Working with the internal artifact repository in VQL
@@ -15,13 +17,13 @@ both built-in and custom artifacts.
 
 On server startup, all compiled-in artifacts are loaded from the binary and
 additional artifacts are loaded from
-[several possible locations]({{< ref "/docs/artifacts/#loading-importing-and-saving-artifacts" >}}).
+[several possible locations](/docs/artifacts/#loading-importing-and-saving-artifacts).
 Artifacts loaded from these locations are deemed "built-in" and cannot be
 modified or deleted during runtime. Only custom artifacts loaded from the
 datastore can be modified or deleted.
 
 Most often artifacts are viewed and managed in the GUI's
-["View Artifact" screen]({{< ref "/docs/gui/artifacts/" >}}),
+["View Artifact" screen](/docs/gui/artifacts/),
 however artifacts can also be managed from VQL using the plugins and functions
 described in this section. Since the artifacts repository is maintained on the
 server, these VQL functions and plugins can only be used on the server - that
@@ -30,17 +32,17 @@ is, in server artifacts or notebooks.
 ### Accessing artifacts in other orgs
 
 The artifact-related VQL queries described in this section apply only to the
-[org]({{< ref "/docs/deployment/orgs/" >}}) that your user is currently working
+[org](/docs/deployment/orgs/) that your user is currently working
 in.
 
-As explained [here]({{< ref "/docs/artifacts/#orgs-artifact-inheritance-and-masking" >}}),
+As explained [here](/docs/artifacts/#orgs-artifact-inheritance-and-masking),
 artifacts from the root org are propagated to non-root orgs, while custom
 artifacts created in non-root orgs are only visible within that org, and can
 potentially "mask" custom artifacts that are inherited from the root org.
 
 If you wish to work with artifacts in a different org _without switching to that
 org_, then you can wrap your queries in the
-[query]({{< ref "/vql_reference/server/query/" >}}) plugin which allows you to
+[query](/vql_reference/server/query/) plugin which allows you to
 target a different org using its `org_id` argument and optionally specify a
 different user using its `runas` argument.
 
@@ -60,14 +62,14 @@ FROM query(query={ SELECT * FROM artifact_definitions()
 ### Viewing and Listing Artifacts
 
 You can view all known artifacts in the current org using the
-[artifact_definitions]({{< ref "/vql_reference/server/artifact_definitions/" >}})
+[artifact_definitions](/vql_reference/server/artifact_definitions/)
 plugin. This plugin returns artifacts in their parsed form, which means you can
 easily filter the results using WHERE clauses against the many available
 artifact fields.
 
 For example, with this query we can see all `SERVER` type artifacts and also see
 whether or not they are considered
-[built-in]({{< ref "/docs/artifacts/#built-in-vs-compiled-in-vs-custom-artifacts" >}}):
+[built-in](/docs/artifacts/#built-in-vs-compiled-in-vs-custom-artifacts):
 
 ```vql
 SELECT name, description, built_in, compiled_in
@@ -77,7 +79,7 @@ FROM artifact_definitions() WHERE type =~ "server"
 ![artifact_definitions query](artifact_definitions_01.png)
 
 If an artifact is
-[dependent]({{< ref "/docs/vql/artifacts/calling/#artifact-dependency-resolution" >}})
+[dependent](/docs/vql/artifacts/calling/#artifact-dependency-resolution)
 on other artifacts then you can include those in your results by using the
 `deps=TRUE` arg.
 
@@ -98,12 +100,12 @@ SELECT name, raw FROM artifact_definitions(names="Windows.Sysinternals.Autoruns"
 
 ### Creating and Modifying Custom Artifacts
 
-The [artifact_set]({{< ref "/vql_reference/server/artifact_set/" >}})
+The [artifact_set](/vql_reference/server/artifact_set/)
 function is used to create a custom artifact in the artifact repository.
 
 While the artifact YAML can be read from a file using the `read_file` function,
 it is preferable to add artifacts from the filesystem using one of the supported
-[loading mechanisms]({{< ref "/docs/artifacts/#loading-importing-and-saving-artifacts" >}}).
+[loading mechanisms](/docs/artifacts/#loading-importing-and-saving-artifacts).
 These allow you to add artifacts in bulk from specified locations.
 
 It is therefore more common to see the `artifact_set` function used with
@@ -116,12 +118,12 @@ SELECT artifact_set(prefix="Custom.", definition=Content) FROM http_client(url=.
 
 It is also commonly used to add multiple artifacts from a zip file that has been
 downloaded to the server using `http_client`. The artifact
-[`Server.Import.ArtifactExchange`]({{< ref "/artifact_references/pages/server.import.artifactexchange/" >}})
+[`Server.Import.ArtifactExchange`](/artifact_references/pages/server.import.artifactexchange/)
 provides a good example utilizing this approach.
 
 When you add custom artifacts using `artifact_set` they are written to the
 server's datastore. See
-[How artifact names translate to file and folder structure on disk]({{< ref "/docs/artifacts/basic_fields/#how-artifact-names-translate-to-file-and-folder-structure-on-disk" >}})
+[How artifact names translate to file and folder structure on disk](/docs/artifacts/basic_fields/#how-artifact-names-translate-to-file-and-folder-structure-on-disk)
 for more information.
 
 If a custom artifact with the same name exists in the datastore then
@@ -136,28 +138,28 @@ for server administrators: `hidden`, `basic` and `tags`.
 
 The `hidden` attribute controls the artifact's visibility in the GUI. This is
 explained in more detail
-[here]({{< ref "/docs/artifacts/security/#hidden-artifacts" >}}).
+[here](/docs/artifacts/security/#hidden-artifacts).
 
 The `basic` attribute is used to designate artifacts that can be collected by
 users who have only the `COLLECT_BASIC` (Collect Basic Client) permission. Such
 low-privilege users can only collect these specially designated artifacts. This
 is explained in more detail
-[here]({{< ref "/docs/artifacts/security/#basic-artifacts" >}}).
+[here](/docs/artifacts/security/#basic-artifacts).
 
 The `tags` attribute allows grouping artifacts into distinct groups,
 independent of their names. In previous versions we used an artifact name prefix
 to distinguish and group artifacts. This is useful for broad artifacts like
 Windows, Linux etc. but proved to be problematic for imported artifacts such as
-those from the community-contributed [Artifact Exchange]({{< ref "/exchange/" >}}),
+those from the community-contributed [Artifact Exchange](/exchange/),
 particularly when other artifacts need to refer to an artifact by it's original name.
 
 The artifacts screen supports
-[searching for tags]({{< ref "#searching-artifacts-by-tag" >}}).
+[searching for tags](/docs/gui/artifacts/#searching-artifacts-by-tag).
 
 The metadata attributes are set for new artifacts using the
-[artifact_set]({{< ref "/vql_reference/server/artifact_set/" >}})
+[artifact_set](/vql_reference/server/artifact_set/)
 function, or can be updated for existing artifacts using the
-[artifact_set_metadata]({{< ref "/vql_reference/server/artifact_set_metadata/" >}})
+[artifact_set_metadata](/vql_reference/server/artifact_set_metadata/)
 function.
 
 For example:
@@ -190,7 +192,7 @@ example to apply the single tag "Triage" you would specify:
 ### Deleting Artifacts
 
 The
-[artifact_delete]({{< ref "/vql_reference/server/artifact_delete/" >}})
+[artifact_delete](/vql_reference/server/artifact_delete/)
 function is used to delete artifacts.
 Only custom artifacts in the server's datastore can be deleted.
 

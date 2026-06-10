@@ -6,6 +6,11 @@ summary: |
   In this page we discuss some of the performance limitations of the platform.
   It is important to understand how performance affects the framework and how
   Velociraptor manages finite resources to scale up efficiently.
+description: |
+  With the present architecture, Velociraptor only supports a file based
+  data store. This makes it easy to deploy as you don't need to set up
+  an elaborate database backend, but this is inherently limited to a
+  single machine.
 ---
 
 With the present architecture, Velociraptor only supports a file based
@@ -122,7 +127,7 @@ controls described above.
 
 ### Disk space
 
-By far the most important aspects of specing the server is the amount
+By far the most important aspects of speccing the server is the amount
 of disk space available. Since Velociraptor uses a simple filesystem
 to store all its data, it is easy to manage disk space by deleting or
 archiving old data.
@@ -196,7 +201,7 @@ In the AWS cloud it is possible to resize disk space dynamically. See [Requestin
 ## Setting up monitoring.
 
 To set up monitoring for Velociraptor servers you will need to install
-both Graphana and Prometheus.
+both Grafana and Prometheus.
 
 ### Setting up Prometheus
 
@@ -208,15 +213,15 @@ prometheus.yaml file without change and launch prometheus like this:
 $ prometheus  --config.file velociraptor.yml
 ```
 
-### Setting up Graphana
+### Setting up Grafana
 
-Graphana is a graphing package which helps to visualize the Prometheus
-data. Graphana is very easy to use and can be configured using its web
+Grafana is a graphing package which helps to visualize the Prometheus
+data. Grafana is very easy to use and can be configured using its web
 interface.
 
 First add Prometheus as a data source.
 
-You can import the graphana.json file as a new dashboard. This is a
+You can import the Grafana.json file as a new dashboard. This is a
 good starting point for a useful monitoring dashboard and will show
 the following graphs:
 

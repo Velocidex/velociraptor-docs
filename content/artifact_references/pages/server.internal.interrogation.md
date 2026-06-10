@@ -1,24 +1,73 @@
 ---
 title: Server.Internal.Interrogation
 hidden: true
+sitemap:
+  disable: true
 tags: [Internal Artifact]
+description: |
+  Emits an event when the interrogation service completes processing a
+  client's info update.
 ---
 
-This event artifact is an internal event stream over which client
-interrogations are sent. When the interrogation service finishes
-updating a client record, it will send an event on this artifact.
+Emits an event when the interrogation service completes processing a
+client's info update.
 
-Note: This is an automated system artifact. You do not need to start it.
+This event artifact defines an internal event stream over which
+client interrogations are sent. When the interrogation service
+finishes updating a client record, it will send an event on this
+artifact.
+
+Note: This is an automated system artifact. You do not need to start
+it.
+
+During the interrogation workflow, the server schedules the
+`Generic.Client.Info` artifact. While it might seem like it should
+be possible to trigger workflow off the `System.Flow.Completion`
+artifact there are some subtle differences:
+
+1. The `System.Flow.Completion` event fires when the
+   `Generic.Client.Info` is completed but this may not be after the
+   interrogation service had a chance to parse and update the
+   data. This means that on first enrollment the client record may
+   not be ready by the time the `System.Flow.Completion` is fired.
+
+2. The `System.Flow.Completion` will fire whenever the
+  `Generic.Client.Info` is finished, even if that was collected
+  manually or with a hunt. If you only want automation to run the
+  first time a client is seen (on enrollment) then use
+  `Server.Internal.Interrogation`
 
 
 <pre><code class="language-yaml">
 name: Server.Internal.Interrogation
 description: |
-  This event artifact is an internal event stream over which client
-  interrogations are sent. When the interrogation service finishes
-  updating a client record, it will send an event on this artifact.
+  Emits an event when the interrogation service completes processing a
+  client's info update.
+  
+  This event artifact defines an internal event stream over which
+  client interrogations are sent. When the interrogation service
+  finishes updating a client record, it will send an event on this
+  artifact.
 
-  Note: This is an automated system artifact. You do not need to start it.
+  Note: This is an automated system artifact. You do not need to start
+  it.
+
+  During the interrogation workflow, the server schedules the
+  `Generic.Client.Info` artifact. While it might seem like it should
+  be possible to trigger workflow off the `System.Flow.Completion`
+  artifact there are some subtle differences:
+
+  1. The `System.Flow.Completion` event fires when the
+     `Generic.Client.Info` is completed but this may not be after the
+     interrogation service had a chance to parse and update the
+     data. This means that on first enrollment the client record may
+     not be ready by the time the `System.Flow.Completion` is fired.
+
+  2. The `System.Flow.Completion` will fire whenever the
+    `Generic.Client.Info` is finished, even if that was collected
+    manually or with a hunt. If you only want automation to run the
+    first time a client is seen (on enrollment) then use
+    `Server.Internal.Interrogation`
 
 type: INTERNAL
 

@@ -1,65 +1,73 @@
 ---
 title: Windows.Detection.TemplateInjection
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Detects injected templates in Office and RTF documents.
 ---
 
 Detects injected templates in Office and RTF documents.
 
-Template injection is a form of defense evasion.
-For office documents a malicious macro is loaded into an OOXML document
-via a resource file masquerading as an office template. The OOXML artifact structure
-will also detect MSHTML RCE Vulnerability #CVE-2021-40444 which has a similar payload technique.
-For RTF documents, a malicious payload can be delivered by modifying document
-formatting control via the `\\\*\template` structure.
+Template injection is a form of defense evasion. For office
+documents a malicious macro is loaded into an OOXML document via a
+resource file masquerading as an office template. The OOXML artifact
+structure will also detect MSHTML RCE Vulnerability
+#CVE-2021-40444 which has a similar payload technique. For RTF
+documents, a malicious payload can be delivered by modifying
+document formatting control via the `\\\*\template` structure.
 
-
-This artifact can be modified to search for other suspicious `rels` files:
+This artifact can be customized to search for other suspicious
+`rels` files:
 
 - document.xml.rels = macros, ole objects, images.
 - settings.xml.rels = templates.
 - websettings.xml.rels = frames.
-- header#.xml.rels and footer#.xml.rels and others has also been observed
-hosting image files for canary files or abused for NetNTLM hash collection.
+- header#.xml.rels and footer#.xml.rels and others has also been
+  observed hosting image files for canary files or abused for
+  NetNTLM hash collection.
 
-Change TemplateFileRegex to `\\.xml\\.rels$` for looser file selection.
-Change TemplateTargetRegex to `^(https?|smb|\\\\|//|mhtml|file)` for looser
-Target selection.
+Change TemplateFileRegex to `\\.xml\\.rels$` for looser file
+selection. Change TemplateTargetRegex to
+`^(https?|smb|\\\\|//|mhtml|file)` for looser Target selection.
 
-This artifact can also be modified to quickly deploy YARA based detections
-on other documents. Simply replace RtfYara with YARA rules of interest and
-modify the glob for targeting.
+This artifact can also be modified to quickly deploy YARA based
+detections on other documents. Simply replace RtfYara with YARA
+rules of interest and modify the glob for targeting.
 
 
 <pre><code class="language-yaml">
 name: Windows.Detection.TemplateInjection
 author: Matt Green - @mgreen27
 description: |
-    Detects injected templates in Office and RTF documents.
+  Detects injected templates in Office and RTF documents.
 
-    Template injection is a form of defense evasion.
-    For office documents a malicious macro is loaded into an OOXML document
-    via a resource file masquerading as an office template. The OOXML artifact structure
-    will also detect MSHTML RCE Vulnerability #CVE-2021-40444 which has a similar payload technique.
-    For RTF documents, a malicious payload can be delivered by modifying document
-    formatting control via the `\\\*\template` structure.
+  Template injection is a form of defense evasion. For office
+  documents a malicious macro is loaded into an OOXML document via a
+  resource file masquerading as an office template. The OOXML artifact
+  structure will also detect MSHTML RCE Vulnerability
+  #CVE-2021-40444 which has a similar payload technique. For RTF
+  documents, a malicious payload can be delivered by modifying
+  document formatting control via the `\\\*\template` structure.
 
+  This artifact can be customized to search for other suspicious
+  `rels` files:
 
-    This artifact can be modified to search for other suspicious `rels` files:
+  - document.xml.rels = macros, ole objects, images.
+  - settings.xml.rels = templates.
+  - websettings.xml.rels = frames.
+  - header#.xml.rels and footer#.xml.rels and others has also been
+    observed hosting image files for canary files or abused for
+    NetNTLM hash collection.
 
-    - document.xml.rels = macros, ole objects, images.
-    - settings.xml.rels = templates.
-    - websettings.xml.rels = frames.
-    - header#.xml.rels and footer#.xml.rels and others has also been observed
-    hosting image files for canary files or abused for NetNTLM hash collection.
+  Change TemplateFileRegex to `\\.xml\\.rels$` for looser file
+  selection. Change TemplateTargetRegex to
+  `^(https?|smb|\\\\|//|mhtml|file)` for looser Target selection.
 
-    Change TemplateFileRegex to `\\.xml\\.rels$` for looser file selection.
-    Change TemplateTargetRegex to `^(https?|smb|\\\\|//|mhtml|file)` for looser
-    Target selection.
-
-    This artifact can also be modified to quickly deploy YARA based detections
-    on other documents. Simply replace RtfYara with YARA rules of interest and
-    modify the glob for targeting.
+  This artifact can also be modified to quickly deploy YARA based
+  detections on other documents. Simply replace RtfYara with YARA
+  rules of interest and modify the glob for targeting.
 
 reference:
   - https://attack.mitre.org/techniques/T1221/
@@ -70,14 +78,14 @@ type: CLIENT
 parameters:
   - name: SearchGlob
     description: Glob to search
-    default: C:\Users\**\*.{rtf,doc,dot,docx,docm,dotx,dotm,docb,xls,xlt,xlm,xlsx,xlsm,xltx,xltm,xlsb,ppt,pptx,pptm,potx,potm}
+    default: C:\Users\**\*.{rtf,doc,dot,docx,docm,dotx,dotm,docb,xls,xlt,xlm,xlsx,xlsm,xltx,xltm,xlsb,ppt,pptx,pptm,potx,potm,ppsx}
   - name: TemplateFileRegex
     description: Regex to search inside resource section.
-    default: '(document|settings)\.xml\.rels$'
+    default: '\.xml\.rels$'
     type: regex
   - name: TemplateTargetRegex
     description: Regex to search inside resource section.
-    default: '^(https?|smb|\\\\|//|mhtml)'
+    default: '^(https?|smb|\\\\|//|mhtml|script)'
     type: regex
   - name: UploadDocument
     type: bool
@@ -153,7 +161,7 @@ sources:
             })
 
       -- parse settings file by line and extract config
-      LET template = SELECT * FROM foreach(row=document_parts,
+      LET Template = SELECT * FROM foreach(row=document_parts,
         query={
             SELECT
                 OSPath as SectionPath,
@@ -174,7 +182,7 @@ sources:
       LET hits = SELECT * FROM chain(
         rtf = { SELECT * FROM rtf_injection },
         office = {
-            SELECT * FROM foreach(row=template,
+            SELECT * FROM foreach(row=Template,
                 query={
                     SELECT
                         OSPath AS DocumentPath,

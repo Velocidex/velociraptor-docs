@@ -1,16 +1,22 @@
 ---
 title: Windows.Forensics.UEFI
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Analyzes the EFI System Partition (ESP) on a physical disk to
+  enumerate and inspect EFI binaries.
 ---
 
-This artifact enables disk analysis over an EFI System Partition (ESP).
+Analyzes the EFI System Partition (ESP) on a physical disk to
+enumerate and inspect EFI binaries.
 
-The artifact queries the specified physical disk, parses the partition table
-to targets the ESPs File Allocation Table (FAT).
+The artifact queries the specified physical disk, parses the
+partition table to targets the ESPs File Allocation Table (FAT).
 
-The default artifact returns file information and PE enrichment, as typical
-EFI files are in the PE format.
+The default artifact behaviour is to return file information and PE
+enrichment, as typical EFI files are in the PE format.
 
 We can look for anomalies in EFI such as:
 
@@ -28,13 +34,14 @@ return all files.
 name: Windows.Forensics.UEFI
 author: Matt Green - @mgreen27
 description: |
-  This artifact enables disk analysis over an EFI System Partition (ESP).
+  Analyzes the EFI System Partition (ESP) on a physical disk to
+  enumerate and inspect EFI binaries.
 
-  The artifact queries the specified physical disk, parses the partition table
-  to targets the ESPs File Allocation Table (FAT).
+  The artifact queries the specified physical disk, parses the
+  partition table to targets the ESPs File Allocation Table (FAT).
 
-  The default artifact returns file information and PE enrichment, as typical
-  EFI files are in the PE format.
+  The default artifact behaviour is to return file information and PE
+  enrichment, as typical EFI files are in the PE format.
 
   We can look for anomalies in EFI such as:
 

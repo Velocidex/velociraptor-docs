@@ -1,16 +1,23 @@
 ---
 title: Windows.Search.Yara
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Scans the NTFS filesystem for files matching a YARA rule by first
+  parsing the MFT to enumerate files.
 ---
 
-Searches for a specific malicious file or set of files by a YARA rule.
+Scans the NTFS filesystem for files matching a YARA rule by first
+parsing the MFT to enumerate files.
 
 
 <pre><code class="language-yaml">
 name: Windows.Search.Yara
 description: |
-  Searches for a specific malicious file or set of files by a YARA rule.
+  Scans the NTFS filesystem for files matching a YARA rule by first
+  parsing the MFT to enumerate files.
 
 parameters:
     - name: nameRegex

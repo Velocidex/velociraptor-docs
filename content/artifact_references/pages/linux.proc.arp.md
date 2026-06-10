@@ -1,14 +1,21 @@
 ---
 title: Linux.Proc.Arp
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Parses the ARP table from /proc/net/arp.
 ---
 
-ARP table via /proc/net/arp.
+Parses the ARP table from /proc/net/arp.
+
 
 <pre><code class="language-yaml">
 name: Linux.Proc.Arp
-description: ARP table via /proc/net/arp.
+description: |
+  Parses the ARP table from /proc/net/arp.
+
 parameters:
   - name: ProcNetArp
     default: /proc/net/arp

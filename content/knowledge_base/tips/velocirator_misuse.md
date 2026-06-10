@@ -23,7 +23,7 @@ the compromised asset. While this is not a vulnerability in the tool
 itself, it can be used for malicious purposes.
 
 On October 8th 2025, `Cisco Talos` reported observations from a
-threat actor abusing Velociraptor version (version 0.73.4.0) to
+threat actor abusing Velociraptor version (version 0.73.4) to
 distribute ransomware.
 
 ## How can I detect Velociraptor misuse in my environment?
@@ -136,7 +136,7 @@ Velociraptor may blend in with legitimate use. In this case:
    command line arguments (if Velociraptor is usually installed as a
    service it will always be started similar to the example above).
 
-2. Check the integrity of the Velociraptor agent configuration to to
+2. Check the integrity of the Velociraptor agent configuration to
    ensure that it is not tampered with.
 
 3. Check the process lineage of the Velociraptor binary in your EDR to

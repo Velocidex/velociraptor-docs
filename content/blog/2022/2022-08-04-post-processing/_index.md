@@ -1,5 +1,5 @@
 ---
-title: "Postprocessing Collections"
+title: "Post-processing Collections"
 description: |
    Sometimes we have a need to post process a collection on the server. This blog post covers this use case and possible approaches.
 tags:
@@ -38,7 +38,7 @@ In the following discussion we refer to the
 `Windows.KapeFiles.Targets` artifact. This artifact is not related to
 the commercial `Kape` product. The artifact is generated from the open
 source [KapeFiles](https://github.com/EricZimmerman/KapeFiles) project
-on github - an effort to document the path location of many bulk file
+on GitHub - an effort to document the path location of many bulk file
 evidence sources.
 
 {{% /notice %}}
@@ -91,7 +91,7 @@ that were transferred are visible in the `Uploaded Files` tab.
 
 ![Collecting KapeFiles Uploads](kapefiles_collection_uploads.png)
 
-### Postprocessing downloaded files
+### Post-processing downloaded files
 
 Our first example is to parse the prefetch files with the
 `Windows.Timeline.Prefetch` artifact.
@@ -357,9 +357,9 @@ However collecting the artifact on the endpoint works much better.
 * Parsing certain artifacts on the server is impossible to do. For
   example, the above EVTX hunter enriches the SID in the event by
   calling the `lookupSID()` VQL function (that calls the Windows
-  API). Clearly this can not work on the server. Similarly [resolving
-  the event messages]({{% ref  "/blog/2019/2019-11-12_windows-event-logs-d8d8e615c9ca/" %}}) is also
-  problematic when parsing the event logs offline.
+  API). Clearly this can not work on the server. Similarly
+  [resolving the event messages](/blog/2019/2019-11-12_windows-event-logs-d8d8e615c9ca/)
+  is also problematic when parsing the event logs offline.
 
 Rather than collecting bulk data using `Windows.KapeFiles.Targets`,
 Velociraptor users should collect other, more capable artifacts, that
@@ -385,6 +385,5 @@ spin](https://github.com/Velocidex/velociraptor)!  It is a available
 on GitHub under an open source license. As always please file issues
 on the bug tracker or ask questions on our mailing list
 [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com)
-. You can also chat with us directly on discord
-[https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+. You can also chat with us directly on [Discord](/discord/).
 .

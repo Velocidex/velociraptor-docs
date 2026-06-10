@@ -3,18 +3,18 @@ author: |
   Zach Stanford @svch0st
 description: |
    This artefact will read and correlate several tables to do with Microsoft Recall.
-   
+
    The main database is held here:
       C:\Users\\*\AppData\Local\CoreAIPlatform.00\UKP\{DA73A0DB-DDF4-4A81-9506-CCB5DE8B0F14}\ukg.db
-        
+
    With the images stored:
       C:\Users\\*\AppData\Local\CoreAIPlatform.00\UKP\{DA73A0DB-DDF4-4A81-9506-CCB5DE8B0F14}\ImageStore\\*
-   
-   To view the snapshot images easily from the notebook output, right click and open image in a new tab. 
 
-   
-   NOTE: There are many other very useful events in the database, this arefact just looks at the Capture Creation events. 
-   
+   To view the snapshot images easily from the notebook output, right click and open image in a new tab.
+
+
+   NOTE: There are many other very useful events in the database, this artifact just looks at the Capture Creation events.
+
 parameters:
   - name: ukgPath
     default: /AppData/Local/CoreAIPlatform.00/UKP/*/ukg.db

@@ -2,7 +2,20 @@
 title: elastic_upload
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Upload rows to elastic.
+
+  This uses the Elastic bulk upload API to push arbitrary rows to
+  elastic. The query specified in `query` will be run and each row
+  it emits will be uploaded as a separate event to Elastic.
+
+  You can either specify the elastic index explicitly using the
+  `index` parameter or provide an `_index` column in the query
+  itself to send the row to a different index each time.
+
 ---
 
 
@@ -27,7 +40,7 @@ chunk_size|The number of rows to send at the time.|int64
 addresses|A list of Elasticsearch nodes to use.|list of string
 username|Username for HTTP Basic Authentication.|string
 password|Password for HTTP Basic Authentication.|string
-cloud_id|Endpoint for the Elastic Service (https://elastic.co/cloud).|string
+cloud_id|Endpoint for the [Elastic Cloud Service](https://elastic.co/cloud).|string
 api_key|Base64-encoded token for authorization; if set, overrides username and password.|string
 wait_time|Batch elastic upload this long (2 sec).|int64
 pipeline|Pipeline for uploads|string

@@ -1,24 +1,31 @@
 ---
 title: Admin.Client.Upgrade.Debian
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Upgrades Velociraptor clients on Debian hosts by installing a new
+  Debian package.
 ---
 
-Remotely push new client updates to Debian hosts.
+Upgrades Velociraptor clients on Debian hosts by installing a new
+Debian package.
 
-NOTE: This artifact requires that you supply a client Debian package by using the
-tools interface or by using the "debian client" command. Simply click on the tool
-in the GUI and upload a package.
+NOTE: This artifact requires that you supply a client Debian package
+by using the tools interface. Click on the tool button in the GUI
+and upload a package.
 
 
 <pre><code class="language-yaml">
 name: Admin.Client.Upgrade.Debian
 description: |
-  Remotely push new client updates to Debian hosts.
+  Upgrades Velociraptor clients on Debian hosts by installing a new
+  Debian package.
 
-  NOTE: This artifact requires that you supply a client Debian package by using the
-  tools interface or by using the "debian client" command. Simply click on the tool
-  in the GUI and upload a package.
+  NOTE: This artifact requires that you supply a client Debian package
+  by using the tools interface. Click on the tool button in the GUI
+  and upload a package.
 
 tools:
   - name: VelociraptorDebian

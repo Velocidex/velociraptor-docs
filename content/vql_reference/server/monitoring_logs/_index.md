@@ -2,7 +2,11 @@
 title: monitoring_logs
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Retrieve log messages from client event monitoring for the specified client id and artifact
 ---
 
 

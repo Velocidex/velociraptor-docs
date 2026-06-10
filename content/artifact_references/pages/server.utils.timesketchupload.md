@@ -1,15 +1,22 @@
 ---
 title: Server.Utils.TimesketchUpload
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+description: |
+  Uploads Velociraptor timelines to Timesketch using the Timesketch
+  client library.
 ---
 
-Timesketch is an interactive collaborative timeline analysis tool
-that can be found at https://timesketch.org/
+Uploads Velociraptor timelines to Timesketch using the Timesketch
+client library.
 
-This artifact uploads Velociraptor's timelines to Timesketch using
-the Timesketch client library. The artifact assumes the client
-library is installed and configured on the server.
+[Timesketch](https://timesketch.org/) is an interactive
+collaborative timeline analysis tool.
+
+This artifact assumes the client library is installed and configured
+on the Velociraptor server.
 
 To install the Timesketch client library:
 ```
@@ -17,22 +24,25 @@ pip install timesketch-import-client timesketch-cli-client
 ```
 
 To configure the client library to access your Timesketch instance
-see instructions https://timesketch.org/guides/user/cli-client/ and
+see the instructions at
+https://timesketch.org/guides/user/cli-client/ and
 https://timesketch.org/guides/user/upload-data/
 
-This artifact assumes that the Timesketch CLI is preconfigured with
-the correct credentials in the `.timesketchrc` file.
+This artifact also assumes that the Timesketch CLI is preconfigured
+with the correct credentials in the `.timesketchrc` file.
 
 
 <pre><code class="language-yaml">
 name: Server.Utils.TimesketchUpload
 description: |
-  Timesketch is an interactive collaborative timeline analysis tool
-  that can be found at https://timesketch.org/
+  Uploads Velociraptor timelines to Timesketch using the Timesketch
+  client library.
 
-  This artifact uploads Velociraptor's timelines to Timesketch using
-  the Timesketch client library. The artifact assumes the client
-  library is installed and configured on the server.
+  [Timesketch](https://timesketch.org/) is an interactive
+  collaborative timeline analysis tool.
+
+  This artifact assumes the client library is installed and configured
+  on the Velociraptor server.
 
   To install the Timesketch client library:
   ```
@@ -40,11 +50,12 @@ description: |
   ```
 
   To configure the client library to access your Timesketch instance
-  see instructions https://timesketch.org/guides/user/cli-client/ and
+  see the instructions at
+  https://timesketch.org/guides/user/cli-client/ and
   https://timesketch.org/guides/user/upload-data/
 
-  This artifact assumes that the Timesketch CLI is preconfigured with
-  the correct credentials in the `.timesketchrc` file.
+  This artifact also assumes that the Timesketch CLI is preconfigured
+  with the correct credentials in the `.timesketchrc` file.
 
 required_permissions:
   - EXECVE

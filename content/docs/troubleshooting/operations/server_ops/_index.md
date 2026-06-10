@@ -6,6 +6,8 @@ draft: false
 weight: 20
 summary: |
   * Troubleshooting issues occurring on an operational server.
+description: |
+  {{% notice note %}}
 ---
 
 {{% notice note %}}
@@ -14,14 +16,14 @@ The steps in this section assume your server has previously been operating
 correctly and is now encountering an unexpected issue.
 
 If you are having problems during server deployment then please see the section
-[Server Deployment Issues]({{< ref "/docs/troubleshooting/deployment/server/" >}})
+[Server Deployment Issues](/docs/troubleshooting/deployment/server/)
 within the Deployment Troubleshooting section.
 
 {{% /notice %}}
 
 ### Server crashes
 
-Although we've do our best to prevent it, it's always a possibility that bugs or
+Although we do our best to prevent it, it's always a possibility that bugs or
 unusual VQL operations can cause the server to crash. Velociraptor has the
 ability to record the stacktrace to a log file if such conditions occur.
 This feature is enabled by default for the server.
@@ -38,14 +40,14 @@ actions might have caused the crash, to our developer team by
 
 If you are experiencing poor server performance, we recommend that you review
 the
-[Deployment > Server Performance and Monitoring]({{< ref "/docs/deployment/resources/" >}})
+[Deployment > Server Performance and Monitoring](/docs/deployment/resources/)
 page to better understand potential causes of performance issues in general.
 
 If your deployment has grown significantly in size since the initial deployment
 then it may simply be a case of inadequate server resources. You could consider
 scaling up your server resources or for very large deployments you may decide to
 scale your system horizontally by turning it into a
-[multi-frontend deployment]({{< ref "/docs/deployment/server/multifrontend/" >}}).
+[multi-frontend deployment](/docs/deployment/server/multifrontend/).
 
 #### Observing basic performance metrics
 
@@ -54,34 +56,52 @@ in the GUI.
 
 ![Basic performance metrics](dashboard_performance.png)
 
+#### Collecting profile data
+
+If you encounter issues when collecting artifacts on the server (perhaps via the
+API), you can use the `Server.Monitor.Profile` artifact to collect profile data.
+This is similar to the process described in the section about
+[debugging a remote client](/docs/troubleshooting/operations/remote_clients/#debugging-a-remote-client).
+
+![Server.Monitor.Profile results](server_monitor_profile_results.png)
+
+![Server.Monitor.Profile file uploads](server_monitor_profile_uploads.png)
+
+![Exporting Server.Monitor.Profile data](server_monitor_profile_export.png)
+
+You can share the result of the collection by exporting and sharing it with the
+development team via Discord or GitHub issues.
+
 #### Collecting performance metrics
 
-When Velociraptor is run in production it is often necessary to integrate with
-3rd-party performance monitoring apps to monitor the server's performance
-characteristics, such as memory user, requests per second etc.
-
-Velociraptor exports a lot of important metrics using the standard
+Velociraptor exports many important metrics using the standard
 [Prometheus](https://prometheus.io/) library.
 This information may be scraped from the
-server's monitoring endpoint (by default `http://127.0.0.1:8003/metrics`).
+server's monitoring endpoint, by default `http://127.0.0.1:8003/metrics`.
+
+When Velociraptor is run in production it is often integrated with 3rd-party
+performance monitoring apps to monitor the server's performance characteristics.
+This monitoring data can be helpful for understanding how a problem may have
+developed over time. We recommend that such monitoring be implemented for
+production systems.
 
 You can change the port and bind address for the metrics server using the
-[Monitoring.bind_port ]({{% ref "/docs/deployment/references/#Monitoring.bind_port" %}}) and
-[Monitoring.bind_address ]({{% ref "/docs/deployment/references/#Monitoring.bind_address" %}}) setting.
+[Monitoring.bind_port ](/docs/deployment/references/#Monitoring.bind_port) and
+[Monitoring.bind_address ](/docs/deployment/references/#Monitoring.bind_address)
+settings.
 
-You can either manually see program metrics using curl or configure an
-external system like [Grafana](https://grafana.com/) or
-[DataDog](https://www.datadoghq.com/) to scrape these metrics.
+You can either manually see program metrics using curl or configure an external
+system like [Grafana](https://grafana.com/) or
+[DataDog](https://www.datadoghq.com/) to periodically scrape these metrics.
 
-```
+```sh
 curl http://127.0.0.1:8003/metrics | less
 ```
 
-For more information about setting up Prometheus and Graphana, please see the
-[Deployment > Server Performance and Monitoring]({{< ref "/docs/deployment/resources/" >}})
+For more information about setting up Prometheus and Grafana, please see the
+[Deployment > Server Performance and Monitoring](/docs/deployment/resources/)
 page.
 
-We recommend that proper monitoring be implemented in production systems.
 
 ### Troubleshooting other operational issues
 
@@ -94,12 +114,12 @@ implement systems that allow for monitoring these logs and for searching them
 should the need arise.
 
 Logging is configured via the server configuration file's
-[Logging]({{% ref "/docs/deployment/references/#Logging" %}})
+[Logging](/docs/deployment/references/#Logging)
 section.
 
 #### Debugging
 
 For more complicated issues Velociraptor provides extensive debugging
 capabilities for individual operational aspects. For more information about
-debugging, please see the [Debugging]({{< ref "/docs/troubleshooting/debugging/" >}})
+debugging, please see the [Debugging](/docs/troubleshooting/debugging/)
 section.

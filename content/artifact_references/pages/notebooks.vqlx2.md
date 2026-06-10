@@ -1,16 +1,23 @@
 ---
 title: Notebooks.VQLx2
 hidden: true
+sitemap:
+  disable: true
 tags: [notebook]
+description: |
+  A notebook initialized with 2 VQL cells containing simple queries
+  and also demonstrating initial output.
 ---
 
-A notebook initialized with 2 VQL cells
+A notebook initialized with 2 VQL cells containing simple queries
+and also demonstrating initial output.
 
 
 <pre><code class="language-yaml">
 name: Notebooks.VQLx2
 description: |
-  A notebook initialized with 2 VQL cells
+  A notebook initialized with 2 VQL cells containing simple queries
+  and also demonstrating initial output.
 
 type: NOTEBOOK
 

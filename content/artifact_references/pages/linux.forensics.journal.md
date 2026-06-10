@@ -1,30 +1,38 @@
 ---
 title: Linux.Forensics.Journal
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Extracts records from systemd journal files for forensic analysis.
 ---
 
-Parses the binary journal logs. Systemd uses a binary log format to
-store logs.
+Extracts records from systemd journal files for forensic analysis.
+
+Systemd uses a binary log format to store logs. This parses the
+binary journal logs. 
 
 
 <pre><code class="language-yaml">
 name: Linux.Forensics.Journal
 description: |
-  Parses the binary journal logs. Systemd uses a binary log format to
-  store logs.
+  Extracts records from systemd journal files for forensic analysis.
+
+  Systemd uses a binary log format to store logs. This parses the
+  binary journal logs. 
 
 parameters:
 - name: JournalGlob
   type: glob
   description: A Glob expression for finding journal files.
-  default: /{run,var}/log/journal/*/*.journal
+  default: /{run,var}/log/journal/*/*.journal{,~}
 - name: IdentifierRegex
   type: regex
   description: "Regex of event source e.g sshd or kernel"
 - name: IocRegex
   type: regex
-  description: "IOC Regex in event data"
+  description: "IOC regex in event data"
 - name: DateAfter
   type: timestamp
   description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
@@ -59,7 +67,7 @@ sources:
                              start_time=DateAfter,
                              end_time=DateBefore)
        })
-     
+
      LET identifier_only = SELECT *
        FROM foreach(row={
          SELECT OSPath
@@ -72,7 +80,7 @@ sources:
                              end_time=DateBefore)
          WHERE EventData.SYSLOG_IDENTIFIER =~ IdentifierRegex
        })
-     
+
      LET all_regex = SELECT *
        FROM foreach(row={
          SELECT OSPath
@@ -88,7 +96,7 @@ sources:
                      args=[EventData, System._CMDLINE, System._EXE]) =~
                 IocRegex
        })
-     
+
      LET ioc_only = SELECT *
        FROM foreach(row={
          SELECT OSPath
@@ -103,7 +111,7 @@ sources:
                       args=[EventData, System._CMDLINE,
                         System._EXE]) =~ IocRegex
        })
-     
+
      SELECT *
      FROM if(condition=IdentifierRegex
               AND IocRegex,
@@ -127,6 +135,7 @@ sources:
                EventData.SYSLOG_IDENTIFIER AS Unit,
                EventData.MESSAGE AS Message
         FROM source()
+        ORDER BY Timestamp
 
 </code></pre>
 

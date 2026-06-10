@@ -2,7 +2,12 @@
 title: parse_xml
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Parse an XML document into a dict like object.
+
 ---
 
 

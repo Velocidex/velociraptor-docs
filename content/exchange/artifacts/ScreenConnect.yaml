@@ -8,7 +8,7 @@ description: |
    This artifact will:
 
    1. Check for Webshells in ```/App_Extensions/**/*.{aspx,ashx}``` path.
-   Some observed legitimate webapp strings have been excluded.
+   Some observed legitimate web app strings have been excluded.
    NOTE: Use WebshellsUSN to find potential exploits that cleanup shells.
 
    2. Parse ```C:\Program Files\ScreenConnect\App_data\User.Xml``` file.

@@ -5,6 +5,9 @@ date: 2024-12-29
 draft: false
 weight: 20
 last_reviewed: 2024-12-29
+description: |
+  Interrogation is the term we use to describe the process of querying a host for
+  it's basic host information.
 ---
 
 Interrogation is the term we use to describe the process of querying a host for
@@ -19,14 +22,14 @@ Windows.
 
 Some of the information collected by this artifact is added to the client info
 database and specific fields are also indexed so that we can perform
-[fast searches for clients]({{< ref "/docs/clients/searching/" >}}).
+[fast searches for clients](/docs/clients/searching/).
 
 ## Client information updates
 
 In old versions of Velociraptor this information was not kept up to date unless
 users explicitly created periodic hunts for `Generic.Client.Info`
-(see [Server.Monitoring.ScheduleHunt]({{< ref "/artifact_references/pages/server.monitoring.schedulehunt/" >}}) for an example).
-However this information is now recollected automatically on a recurring basis
+(see [Server.Monitoring.ScheduleHunt](/artifact_references/pages/server.monitoring.schedulehunt/) for an example).
+However this information is now re-collected automatically on a recurring basis
 in the background.
 
 Of course if you want to be sure you have the absolute latest info you can still

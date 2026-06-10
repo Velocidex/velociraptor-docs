@@ -2,7 +2,11 @@
 title: mock_check
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Check expectations on a mock.
 ---
 
 

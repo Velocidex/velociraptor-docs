@@ -5,83 +5,109 @@ draft: false
 weight: 25
 no_children: true
 pre: <i class="fas fa-download"></i>
-release: 0.75.2
-base_release: 0.75
+release: 0.76.6
+base_release: 0.76.6
 arches:
   - desc: Windows AMD64 (64-bit) Executable
     name: windows-amd64.exe
-    hash: 32c5cfa556dd0e001824487358f9cb3443cc14b5639dcb3a76969675047085f0
+    hash: 1e82175822aa9ffdfd7bc177599642f3db55159d0a2f38bb0fcc6722f15573cd
     platform: windows
 
   - desc: Windows AMD64 (64-bit) MSI
     name: windows-amd64.msi
-    hash: 08b7ed8a0593f829cebc92752cfd6320f9838dd3b35196f1f2b81f3e38fab107
+    hash: e5fc16e7d4aea87f70edb9ce09112f1c92808b9e4547a544769d433545ff3ee3
     platform: windows
 
   - desc: Windows 32-bit Executable
     name: windows-386.exe
-    hash: 06cdbe168674edf7159ee812c3b953ab902f7da7bc8b1da49973b4da17a7dc4d
+    hash: 4c329cb5b1d881ef7681e4faea9dc8f8e081bb579739d557ca0dc5bc57a8ef12
     platform: windows
 
   - desc: Windows 32-bit MSI
     name: windows-386.msi
-    hash: 08b7ed8a0593f829cebc92752cfd6320f9838dd3b35196f1f2b81f3e38fab107
+    hash: 9fb535710bba977f28761b387c3e90095ac02022cb1f3765b7067de9fdda3ce1
     platform: windows
 
   - desc: Linux Ubuntu 22.04 AMD64 and later. Recommended for servers.
     name: linux-amd64
-    hash: 359db48381d6f1418aa8eca12ed23bc791ec73e60b7e151023f8b493efc54771
+    hash: 9b1c439834a562a96cbef886f26a93521d16b020fd96777fb30e01f88947af18
     platform: linux
 
   - desc: Linux Ubuntu 22.04 ARM and later. Recommended for servers or containers.
     name: linux-arm64
-    hash: c7b6ac7832c2cdb5f0601f8d3e13dba6b1e43b94df2e0102ed5b1edc5ea34292
+    hash: d19218d37d76b6988d25d21d2cdb349658fa12b355d44c90f44b5cdd975b7616
     platform: linux
 
   - desc: Linux Static Build (Older Releases, e.g. RHEL, Centos) Recommended for clients.
     name: linux-amd64-musl
-    hash: 0ac95dec7189bb3afe7002eb2e8787e5aa06ea5fd36e1f4964d13b7ad7099e26
+    hash: 84ad1652ff6e79694441a06a6af4040aae6a982080d2ef583a31bda52f58e299
+    platform: linux
+
+  - desc: Linux Sumo build. Recommended for servers.
+    name: linux-amd64-sumo-musl
+    hash: f39269d2c1858497c0f244caefc603c9061ef4d837201aa28c18831967cc6343
     platform: linux
 
   - desc: MacOS AMD64
     name: darwin-amd64
-    hash: 73305ad06fb6f8b4706e53fdb60617545942be4ad7e7674bcd3302489fee4e20
+    hash: 6308ea8c7f7dbacad791977caefe387c61daaebf4f94cde2e1c39d89968091a3
     platform: apple
 
   - desc: MacOS ARM (M1, M2 chipsets)
     name: darwin-arm64
-    hash: fafd103d1eb120350cb3feb4fa097f588df306e6cc240dc1776a874e74520cba
+    hash: 4518998f95de31d4ee5734dfbcdd60f834c43a1b9fc6f9a1f372d8099172a496
     platform: apple
 
   - desc: FreeBSD AMD64
     name: freebsd-amd64
-    hash: cee094165cc7e7d5f6e072aac05721a0c29d42859128885c64b0a3679497a5e7
+    hash: ebc5722094eea312873cc725c214715da541a71a46a13ce0acb80db0a015a411
     platform: freebsd
-    release: 0.75.1
+    release: 0.76.1
+    base_release: 0.76
 
   - desc: Windows AMD64 (64 bits) Executable For Windows 7 Only
     name: windows-amd64-legacy.exe
-    hash: a2a36041ac6632e0ae3893a1bab7a9c50ef8da0f68f670ab1cbaa1d60e63c885
+    hash: a15f8b9bdfcf1fe5b4e73eafcb9c3091eb347b9c7f32ae7e94ab5de41c8c434e
     platform: windows
+    release: 0.76.1
+    base_release: 0.76
 
   - desc: Windows 32 bits Executable For Windows 7 Only
     name: windows-386-legacy.exe
-    hash: eeacdcbe48c89faeb495455fbfe97abc049e1e39acf7cf2472baab8988882f7b
+    hash: 3a66986c3a4a9e0d4dacd3131ee55d65ff37b0093373048cb05afa1572a800c6
     platform: windows
+    release: 0.76.1
+    base_release: 0.76
 
-
+description: |
+  Velociraptor is open source software and is free for anyone to use under the
+  [AGPL License](https://github.com/Velocidex/velociraptor?tab=License-1-ov-file#readme).
 ---
 
 Velociraptor is open source software and is free for anyone to use under the
 [AGPL License](https://github.com/Velocidex/velociraptor?tab=License-1-ov-file#readme).
 
-This page is for the current release. [The previous Release is 0.74.5]({{< ref "/downloads/previous_downloads" >}})
+This page is for the current release. [The previous Release is 0.75.7](/downloads/previous_downloads/). The next release candidate is [available for testing now](/downloads/rc_downloads/)
 
 {{< release_download >}}
 
 ## Release notes
 
-Full release notes are published in our [release blog post]({{< ref "/blog/2025/2025-08-30-release-notes-0.75/" >}})
+Full release notes are published in our [release blog post](/blog/2026/2026-03-10-release-notes-0.76/)
+
+## The Sumo build
+
+In recent releases, the build was split into two:
+
+1. The regular build is suitable for both clients and servers. It
+   reduces binary size by removing some large dependencies.
+2. The Sumo build includes additional dependencies which inflate the
+   size of the binary.
+
+In particular, the Sumo build uses the official AWS SDK, while the
+regular build uses the light weight Minio client library. If your
+server needs AWS integration (particularly around credentials) you
+will probably need to use the Sumo build.
 
 {{% notice note "Support for Windows 7" %}}
 
@@ -105,7 +131,7 @@ However, note the following caveats:
   updated. These builds may miss some specific functionality.
 
 * If you need to use these builds for an offline collector we
-  recommend using [the generic collector]({{< ref "/docs/offline_triage/#the-generic-offline-collector" >}}).
+  recommend using [the generic collector](/docs/deployment/offline_collections/#the-generic-collector).
 
 
 **Do not use this build in a general deployment!** Only use it for

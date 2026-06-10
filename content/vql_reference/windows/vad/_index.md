@@ -2,7 +2,11 @@
 title: vad
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Enumerate process memory regions.
 ---
 
 

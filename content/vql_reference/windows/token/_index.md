@@ -2,7 +2,11 @@
 title: token
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Extract process token.
 ---
 
 

@@ -9,15 +9,17 @@ no_edit: true
 disableToc: false
 chapter: false
 summary: "How to create and manage artifacts"
+description: |
+  In this section we look at managing artifacts using the GUI, via VQL, and the CLI.
 ---
 
 In this section we look at managing artifacts using the GUI, via VQL, and the CLI.
 
-{{% include-content "/docs/gui/artifacts/" %}}
+{{% include-page "/docs/gui/artifacts/" %}}
 
 
-{{% include-content "/docs/vql/artifacts/managing/" %}}
+{{% include-page "/docs/vql/artifacts/managing/" %}}
 
 ## Managing and collecting artifacts from the CLI
 
-{{% include-content "/docs/cli/artifacts/" %}}
+{{% include-page "/docs/cli/artifacts/" %}}

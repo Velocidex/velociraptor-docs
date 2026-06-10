@@ -2,7 +2,16 @@
 title: cancel_flow
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Cancels the flow.
+
+  This sends the client an immediate cancellation message and stops
+  the flow. It also removes any outstanding requests for the client
+  if there are any.
+
 ---
 
 

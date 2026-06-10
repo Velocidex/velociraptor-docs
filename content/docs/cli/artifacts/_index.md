@@ -6,12 +6,18 @@ last_reviewed: 2025-07-06
 draft: false
 weight: 20
 summary: "Commands for working with artifacts"
+description: |
+  Artifacts can be managed and used on the command line, using the `artifacts`
+  CLI command group. There may be circumstances where you don't have access to the
+  GUI, or don't want to or need to use it, such as when
+  [performing a local investigation](/docs/deployment/#command-line-investigation-tool)
+  on a machine.
 ---
 
 Artifacts can be managed and used on the command line, using the `artifacts`
 CLI command group. There may be circumstances where you don't have access to the
 GUI, or don't want to or need to use it, such as when
-[performing a local investigation]({{< ref "/docs/deployment/#command-line-investigation-tool" >}})
+[performing a local investigation](/docs/deployment/#command-line-investigation-tool)
 on a machine.
 
 When using the CLI, you can also make custom artifacts available by pointing the
@@ -55,7 +61,7 @@ the `artifact_definitions` plugin.
 The regex expression argument is case-sensitive. To make it case-insensitive
 prefix your expression with the `(?i)` modifier.
 
-##### Examples
+###### Examples
 
 ```sh
 $ velociraptor artifacts list "(?i).+services"
@@ -104,7 +110,7 @@ line.
 Wildcards and regex are _not_ supported. The command expects an exact artifact
 name.
 
-##### Example
+###### Example
 
 ```sh
 $ velociraptor artifacts show Windows.System.Services
@@ -148,7 +154,7 @@ This is often used for artifact testing, automated collections via scripts, or
 for "server-less" triage operations, potentially from a disk image.
 
 This is essentially a wrapper around the VQL
-[collect() plugin]({{< ref "/vql_reference/other/collect/" >}}),
+[collect() plugin](/vql_reference/other/collect/),
 with the CLI arguments being passed as arguments to this plugin.
 
 ```vql
@@ -267,7 +273,7 @@ you're dissatisfied with the resultant formatting.
 {{% /notice %}}
 
 
-##### Example
+###### Example
 
 ```sh
 velociraptor --config server.config.yaml artifacts reformat *.yaml -v
@@ -305,9 +311,9 @@ With failing artifacts the command sets errorlevel=1, which can be acted on by
 automation scripts.
 
 The same static analysis can be done via VQL using the
-[verify]({{< ref "/vql_reference/other/verify/" >}}) function.
+[verify](/vql_reference/other/verify/) function.
 
-##### Example
+###### Example
 
 ```sh
 velociraptor artifacts verify ./**/*.yaml -v

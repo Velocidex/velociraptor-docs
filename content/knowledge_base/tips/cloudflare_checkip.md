@@ -1,42 +1,42 @@
-# How do I configure check ip for Cloudflare Dynamic DNS?
+# How do I configure Cloudflare Dynamic DNS?
 
-## Problem
+Setting up Cloudflare as your preferred dynamic DNS provider requires
+the following steps:
 
-When deploying Dynamic DNS using Cloudflare in v0.74.3 I noticed an error and on
-investigation found that the default lookup IP Velociraptor used has moved.
+1. Sign into Cloudflare and buy a domain name.
+2. go to https://dash.cloudflare.com/profile/api-tokens to generate an
+   API token. Select `Edit Zone DNS` in the API Token templates.
 
-Running frontend in verbose mode:
-```[ERROR] 2025-06-18T00:13:23Z DynDns: Unable to set dns: Content for A record must be a valid IPv4 address.```
+![](cloudflare_1.png)
 
-Manually testing the old lookup URL:
+![](cloudflare_2.png)
 
-```text
-curl https://domains.google.com/checkip
-<HTML><HEAD><meta http-equiv="content-type" content="text/html;charset=utf-8">
-<TITLE>301 Moved</TITLE></HEAD><BODY>
-<H1>301 Moved</H1>
-The document has moved
-<A HREF="https://domains.google/">here</A>.
-</BODY></HTML>
-```
+You will require the "Edit" permission on Zone DNS and include the
+specific zone name you want to manage. The zone name is the domain you
+purchased for example "example.com". You will be able to set the
+hostname under that domain, e.g. "velociraptor.example.com"
 
-## Solution
+![](cloudflare_3.png)
 
-We can configure the lookup URL manually by adding The
-`checkip_url: https://wtfismyip.com/text` entry into the server configuration.
-
-
-Cloudflare configuration instructions:
-https://docs.velociraptor.app/blog/2024/2024-03-10-release-notes-0.72/#dynamic-dns-providers
-
-In the example below I am configuring a host name: `hostname.example.com`
+Using this information you can now create the dyndns configuration:
 
 ```yaml
-dyn_dns:
+Frontend:
+  ....
+  dyn_dns:
     type: cloudflare
-    api_token: <API_KEY>
+    api_token: XXXYYYZZZ
     zone_name: example.com
-    checkip_url: https://wtfismyip.com/text
 ```
+
+Make sure the Frontend.Hostname field is set to the correct hostname
+to update - for example
+
+```yaml
+Frontend:
+  hostname: velociraptor.example.com
+```
+
+This is the hostname that will be updated.
 
 Tags: #deployment, #cloudflare, #ddns, #checkip

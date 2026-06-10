@@ -2,7 +2,11 @@
 title: trace
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Upload a trace file.
 ---
 
 

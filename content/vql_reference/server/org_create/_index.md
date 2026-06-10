@@ -2,7 +2,11 @@
 title: org_create
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Creates a new organization.
 ---
 
 

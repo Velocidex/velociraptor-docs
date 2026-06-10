@@ -2,7 +2,11 @@
 title: template
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Expand a Go style template .
 ---
 
 
@@ -21,6 +25,7 @@ Arg | Description | Type
 ----|-------------|-----
 template|A Go Template compatible string.|string (required)
 expansion|An object to be expanded into the template.|ordereddict.Dict (required)
+html|Use when the output should be html escaped.|bool
 
 ### Description
 

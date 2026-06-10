@@ -1,25 +1,25 @@
 name: Windows.Events.SysmonRegistry
 author: Matt Green - @mgreen27
 description: |
-  This artifact enables monitoring for registry events of interest via the Sysmon 
-  ETW proiver.
-  
-  The artifact requires Sysmon installed collecting registry events 12,13 and 14.  
-  It is also reccomended to run Windows.Events.TrackProcesses as this also 
+  This artifact enables monitoring for registry events of interest via the Sysmon
+  ETW provider.
+
+  The artifact requires Sysmon installed collecting registry events 12,13 and 14.
+  It is also recommended to run Windows.Events.TrackProcesses as this also
   includes a base level Sysmon install.
-  
-  Monitoring is configured by a csv KeyRegex which has the following fields:  
-    * Regex - a regex to select registry key events of interest.  
-    * FilterRegex - a regex to filter out keys.  
-    * FilterProcess - a regex to filter out Image field - 
-    e.g ```C:\\Windows\\regedit\.exe$```.  
-    * Details - a description of the Detection.   
-    * ATT&CK - a MITRE ATT&CK reference.  
-    
-  Note: This artifact may be impacted by your Sysmon configuration. 
-  Generally it is more efficient to filter at the kernel level via Sysmon 
-  configurtion.
-  
+
+  Monitoring is configured by a csv KeyRegex which has the following fields:
+    * Regex - a regex to select registry key events of interest.
+    * FilterRegex - a regex to filter out keys.
+    * FilterProcess - a regex to filter out Image field -
+    e.g ```C:\\Windows\\regedit\.exe$```.
+    * Details - a description of the Detection.
+    * ATT&CK - a MITRE ATT&CK reference.
+
+  Note: This artifact may be impacted by your Sysmon configuration.
+  Generally it is more efficient to filter at the kernel level via Sysmon
+  configuration.
+
 type: CLIENT_EVENT
 
 parameters:
@@ -121,15 +121,15 @@ parameters:
         ^HKLM\\SYSTEM\\CurrentControlSet\\Control\\Winlogon\\,,,Windows: Providers notified by WinLogon,Tamper-Winlogon
         ^HKLM\\Software\\Microsoft\\Tracing\\RASAPI32,,,Windows: Malware sometimes disables tracing to obfuscate tracks,Tamper-Tracing
         \\{CAFEEFAC-,,,Java Registry,
-        
+
 
 sources:
   - query: |
       -- firstly generate initial regex to apply to events
       LET target_entries = join(array=KeyRegex.Regex,sep='|')
-      
+
       -- Monitor ETW provider and extract target key event by regex
-      LET hits = SELECT 
+      LET hits = SELECT
             EventData.UtcTime as EventTime,
             System.ID as EventId,
             EventData.EventType as EventType,

@@ -1,11 +1,16 @@
 ---
 title: Windows.System.CriticalServices
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Checks that important Windows services like antivirus and update
+  services are currently running.
 ---
 
-This artifact returns information about any services which are
-considered critical.
+Checks that important Windows services like antivirus and update
+services are currently running.
 
 The default list contains virus scanners. If the software is not
 installed at all, it will not be shown.
@@ -14,8 +19,8 @@ installed at all, it will not be shown.
 <pre><code class="language-yaml">
 name: Windows.System.CriticalServices
 description: |
-  This artifact returns information about any services which are
-  considered critical.
+  Checks that important Windows services like antivirus and update
+  services are currently running.
 
   The default list contains virus scanners. If the software is not
   installed at all, it will not be shown.

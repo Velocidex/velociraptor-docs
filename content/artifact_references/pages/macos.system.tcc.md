@@ -1,12 +1,18 @@
 ---
 title: MacOS.System.TCC
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Queries the TCC (Transparency, Consent, and Control) database, which
+  can help reveal when access to system services has been added or
+  modified for an application.
 ---
 
-This artifact provides details around the TCC (Transparency,
-Consent, and Control) database, and can help reveal when access to
-system services has been added or modified for an application.
+Queries the TCC (Transparency, Consent, and Control) database, which
+can help reveal when access to system services has been added or
+modified for an application.
 
 Note that this artifact has only been tested on macOS Big Sur, and
 that the `allowed`, and `prompt_count` columns will need to be used
@@ -17,14 +23,14 @@ columns for Catalina and prior.
 <pre><code class="language-yaml">
 name: MacOS.System.TCC
 description: |
-   This artifact provides details around the TCC (Transparency,
-   Consent, and Control) database, and can help reveal when access to
-   system services has been added or modified for an application.
+  Queries the TCC (Transparency, Consent, and Control) database, which
+  can help reveal when access to system services has been added or
+  modified for an application.
 
-   Note that this artifact has only been tested on macOS Big Sur, and
-   that the `allowed`, and `prompt_count` columns will need to be used
-   in place of the `auth_value`, `auth_reason`, and `auth_version`
-   columns for Catalina and prior.
+  Note that this artifact has only been tested on macOS Big Sur, and
+  that the `allowed`, and `prompt_count` columns will need to be used
+  in place of the `auth_value`, `auth_reason`, and `auth_version`
+  columns for Catalina and prior.
 
 type: CLIENT
 

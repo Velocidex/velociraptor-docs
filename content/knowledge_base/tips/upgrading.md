@@ -2,16 +2,16 @@
 
 To upgrade the Velociraptor server to a new version, simply download the latest release binary from the GitHub Release Page and regenerate a new `Debian` package as described above, but using the existing configuration file.
 
-See [this page for more details]({{< ref "/docs/deployment/server/#server-upgrades" >}})
+See [this page for more details](/docs/deployment/server/upgrades/)
 
 To upgrade the Velociraptor clients, you will need to push out new MSIs using the existing client configuration files.
 
-More details on [Client upgrades]({{< ref "/docs/deployment/clients/#client-upgrades" >}})
+More details on [Client upgrades](/docs/deployment/clients/#client-upgrades)
 
 ## Supported Upgrade Scenarios
 
 Matching client and server versions is the most supported configuration.
-See [the support policy]({{< ref "/docs/overview/support/#client-and-server-versioning" >}})
+See [the support policy](/docs/overview/support/#client-and-server-versioning)
 
 Before upgrading perform testing of the combination of client and server versions to be used, compatibility of mixed versions is best efforts based on community testing and issues being reported.
 

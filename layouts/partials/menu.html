@@ -1,3 +1,5 @@
+<script src="/js/theme.js"></script>
+
 <nav id="sidebar" class="{{if $.Site.Params.showVisitedLinks }}showVisitedLinks{{end}}">
 
 {{- $currentNode := . }}
@@ -15,25 +17,29 @@
     <section id="homelinks">
       <ul>
         <li>
-            <a class="padding" href='{{ (cond (and (ne .Site.Params.landingPageURL nil) (hugo.IsMultilingual)) .Site.Params.landingPageURL "/") }}'>{{ safeHTML (cond (ne .Site.Params.landingPageName nil) .Site.Params.landingPageName "<i class='fas fa-home'></i> Home") }}</a>
+            <a rel="nofollow" class="padding" href='{{ (cond (and (ne .Site.Params.landingPageURL nil) (hugo.IsMultilingual)) .Site.Params.landingPageURL "/") }}'>{{ safeHTML (cond (ne .Site.Params.landingPageName nil) .Site.Params.landingPageName "<i class='fas fa-home'></i> Home") }}</a>
         </li>
       </ul>
     </section>
-  {{end}}
+    {{end}}
+
+    {{ $fn := "js/menu.js" }}
+    {{ with .Site.GetPage "/" }}
+       {{ $fn = printf "js/menu-%v.js" .GitInfo.AbbreviatedHash }}
+    {{ end }}
+
+    {{ if .IsHome }}
+      {{ with resources.Get "js/menu-tml.js" }}
+       {{ with resources.ExecuteAsTemplate $fn $ . }}
+         {{ $a := .RelPermalink }}
+       {{ end }}
+      {{ end }}
+    {{ end }}
+
+    <script src="/{{ $fn }}" type="text/javascript"></script>
 
     <div class="highlightable">
-    <ul class="topics">
-
-{{- if eq .Site.Params.ordersectionsby "title"}}
-  {{- range .Site.Home.Sections.ByTitle}}
-  {{- template "section-tree-nav" dict "sect" . "currentnode" $currentNode "showvisitedlinks" $showvisitedlinks}}
-  {{- end}}
-{{- else}}
-  {{- range .Site.Home.Sections.ByWeight}}
-  {{- template "section-tree-nav" dict "sect" . "currentnode" $currentNode "showvisitedlinks" $showvisitedlinks}}
-  {{- end}}
-{{- end}}
-    </ul>
+      <ul class="sidemenu sidebar hidden"></ul>
     <hr />
     {{ $disableShortcutsTitle := .Site.Params.DisableShortcutsTitle}}
     {{with .Site.Menus.shortcuts}}
@@ -42,7 +48,7 @@
         <ul>
           {{ range sort . "Weight"}}
               <li>
-                  {{.Pre}}<a class="padding" href="{{.URL | absLangURL }}">{{safeHTML .Name}}</a>{{.Post}}
+                  {{.Pre}}<a rel="nofollow" class="padding" href="{{.URL | absLangURL }}">{{safeHTML .Name}}</a>{{.Post}}
               </li>
           {{end}}
         </ul>
@@ -55,7 +61,7 @@
       <ul>
       {{ if and hugo.IsMultilingual (not .Site.Params.DisableLanguageSwitchingButton)}}
         <li>
-          <a class="padding">
+          <a rel="nofollow" class="padding">
             <i class="fas fa-language fa-fw"></i>
           <div class="select-style">
             <select id="select-language" onchange="location = this.value;">
@@ -89,7 +95,7 @@
       {{end}}
 
       {{ if $showvisitedlinks}}
-        <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> {{T "Clear-History"}}</a></li>
+        <li><a rel="nofollow" class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> {{T "Clear-History"}}</a></li>
       {{ end }}
       </ul>
     </section>
@@ -100,80 +106,40 @@
   </div>
 </nav>
 
-<!-- templates -->
-{{- define "section-tree-nav" }}
-{{- $showvisitedlinks := .showvisitedlinks }}
-{{- $mycurrentNode := .currentnode }}
- {{- with .sect}}
-  {{- if and .IsSection (or (not (or .Params.no_menu .Params.hidden)) $.showhidden)}}
-    {{- $numberOfPages := (add (len .Pages) (len .Sections)) }}
-    {{- safeHTML .Params.head}}
-    <li data-nav-id="{{.Permalink}}" class="dd-item
-        {{- if .IsAncestor $mycurrentNode}} parent{{end}}
-        {{- if eq .Permalink $mycurrentNode.Permalink}} active{{end}}
-        {{- if .Params.alwaysopen}} alwaysopen{{end -}}
-        {{- if ne $numberOfPages 0 }} haschildren{{end}}
-        ">
-      <div>
-        {{- if and ( ne $numberOfPages 0 ) (not .Params.no_children)  }}
-          {{- if or (.IsAncestor $mycurrentNode) (.Params.alwaysopen) }}
-            <i class="fa fa-angle-down fa-sm category-icon"></i>
-          {{- else -}}
-            <i class="fa fa-angle-right fa-sm category-icon"></i>
-          {{- end}}
-        {{ else }}
-            <i class="fa fa-chevron-right fa-sm category-icon"></i>
-        {{- end}}
-        <a href="{{ .RelPermalink}}">{{safeHTML .Params.Pre}}{{or .Params.Menutitle .Title}}{{safeHTML .Params.Post}}</a>
-
-        {{- if $showvisitedlinks}}<i class="fa fa-circle-thin read-icon"></i>{{end}}
-      </div>
-      {{- if and ( ne $numberOfPages 0) (not .Params.no_children) }}
-        <ul>
-          {{- .Scratch.Set "pages" .Pages }}
-          {{- if .Sections}}
-          {{- .Scratch.Set "pages" (.Pages | union .Sections) }}
-          {{- end}}
-          {{- $pages := (.Scratch.Get "pages") }}
-          {{- $pages = .Pages }}
-
-        {{- if eq .Site.Params.ordersectionsby "title"}}
-          {{- range $pages.ByTitle }}
-            {{- if and (or .Params.hidden .Params.no_menu) (not $.showhidden) }}
-            {{- else}}
-            {{- template "section-tree-nav" dict "sect" . "currentnode" $mycurrentNode "showvisitedlinks" $showvisitedlinks }}
-            {{- end}}
-          {{- end}}
-        {{- else}}
-          {{- range $pages.ByWeight }}
-            {{- if and (or .Params.hidden .Params.no_menu) (not $.showhidden) }}
-            {{- else}}
-            {{- template "section-tree-nav" dict "sect" . "currentnode" $mycurrentNode "showvisitedlinks" $showvisitedlinks }}
-            {{- end}}
-          {{- end}}
-        {{- end}}
-        </ul>
-      {{- end}}
-    </li>
-  {{- else}}
-    {{- if not (or .Params.Hidden .Params.no_menu) }}
-      <li data-nav-id="{{.Permalink}}" class="dd-item
-     {{- if eq .Permalink $mycurrentNode.Permalink}} active{{end -}}
-      ">
-        <div>
-          <a href="{{ .RelPermalink}}">
-            {{safeHTML .Params.Pre}}{{.LinkTitle}}{{safeHTML .Params.Post}}
-          </a>
-          {{- if $showvisitedlinks}}<i class="fa fa-circle-thin read-icon"></i>{{end}}
-        </div>
-    </li>
-     {{- end}}
-  {{- end}}
- {{- end}}
-{{- end}}
-
 <script>
-  $("#sidebar i.fa-angle-right").each(function() {
+
+  findlink(window.menu, "{{.RelPermalink}}");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
       $( this ).parent().parent().find("ul").hide();
   });
+
+  // Only show it once the menu is stable - this avoids unintended flickering
+  menu.removeClass("hidden");
+
+  // Scroll the highlighted element into view
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  // Replace links in the body with ajax links.
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
 </script>

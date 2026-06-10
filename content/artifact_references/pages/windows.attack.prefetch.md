@@ -1,10 +1,16 @@
 ---
 title: Windows.Attack.Prefetch
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Enumerates Windows Prefetch directory entries and correlates them
+  with known ATT&CK techniques.
 ---
 
-Maps the MITRE Att&ck framework process executions into artifacts.
+Enumerates Windows Prefetch directory entries and correlates them
+with known ATT&CK techniques.
 
 This pack was generated from
 https://github.com/teoseller/osquery-attck
@@ -13,10 +19,11 @@ https://github.com/teoseller/osquery-attck
 <pre><code class="language-yaml">
 name: Windows.Attack.Prefetch
 description: |
-   Maps the MITRE Att&amp;ck framework process executions into artifacts.
+  Enumerates Windows Prefetch directory entries and correlates them
+  with known ATT&amp;CK techniques.
 
-   This pack was generated from
-   https://github.com/teoseller/osquery-attck
+  This pack was generated from
+  https://github.com/teoseller/osquery-attck
 
 precondition: SELECT OS From info() where OS = 'windows'
 

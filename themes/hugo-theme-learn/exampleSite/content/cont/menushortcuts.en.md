@@ -13,7 +13,7 @@ Edit the website configuration `config.toml` and add a `[[menu.shortcuts]]` entr
 Example from the current website:
 
     [[menu.shortcuts]] 
-    name = "<i class='fab fa-github'></i> Github repo"
+    name = "<i class='fab fa-github'></i> GitHub repo"
     identifier = "ds"
     url = "https://github.com/matcornic/hugo-theme-learn"
     weight = 10
@@ -58,7 +58,7 @@ Example from the current website:
     languageName = "English"
 
     [[Languages.en.menu.shortcuts]] 
-    name = "<i class='fab fa-github'></i> Github repo"
+    name = "<i class='fab fa-github'></i> GitHub repo"
     identifier = "ds"
     url = "https://github.com/matcornic/hugo-theme-learn"
     weight = 10
@@ -85,7 +85,7 @@ Example from the current website:
     languageName = "Français"
 
     [[Languages.fr.menu.shortcuts]]
-    name = "<i class='fab fa-github'></i> Repo Github"
+    name = "<i class='fab fa-github'></i> Repo GitHub"
     identifier = "ds"
     url = "https://github.com/matcornic/hugo-theme-learn"
     weight = 10

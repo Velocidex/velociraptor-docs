@@ -1,12 +1,19 @@
 ---
 title: Generic.Client.Profile
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Collects runtime profiling data including goroutines, memory, CPU,
+  and metrics from the client.
 ---
 
-This artifact collects profiling information about the running
-client. This is useful when you notice a high CPU load in the client
-and want to know why.
+Collects runtime profiling data including goroutines, memory, CPU,
+and metrics from the client.
+
+This is useful when you notice a high CPU load in the client and
+want to understand why that's happening.
 
 The following options are most useful:
 
@@ -39,9 +46,11 @@ way.
 <pre><code class="language-yaml">
 name: Generic.Client.Profile
 description: |
-  This artifact collects profiling information about the running
-  client. This is useful when you notice a high CPU load in the client
-  and want to know why.
+  Collects runtime profiling data including goroutines, memory, CPU,
+  and metrics from the client.
+
+  This is useful when you notice a high CPU load in the client and
+  want to understand why that's happening.
 
   The following options are most useful:
 

@@ -7,21 +7,23 @@ draft: false
 weight: 20
 summary: |
   * Troubleshooting problems with getting clients running.
+description: |
+  {{% notice note %}}
 ---
 
 {{% notice note %}}
 
-The steps in this section assume you are troubleshooting a client that _is not_
-already enrolled and actively communicating with the server.
+The steps in this section assume you are troubleshooting a client that
+_is not already enrolled and actively communicating with the server_.
 
 If you need to troubleshoot issues with a client that is communicating with the
 server - that is an online client - then please see the section
-[Troubleshooting Remote Client Issues]({{< ref "/docs/troubleshooting/operations/remote_clients/" >}}).
+[Troubleshooting Remote Client Issues](/docs/troubleshooting/operations/remote_clients/).
 
 {{% /notice %}}
 
 
-### Client fails to connect to server
+### Client fails to connect to or stops communicating with server
 
 Velociraptor clients will start even if there are issues with the configuration.
 This is by design since a new or updated configuration may be delivered via
@@ -86,7 +88,7 @@ client then it's possible that there's a misconfiguration on the server. In that
 case it's best to confirm that the Frontend port is reachable locally on the
 server before testing from remote hosts. The testing steps would be similar to
 those described
-[here]({{< ref "/docs/troubleshooting/deployment/server/#gui-connectivity-issues" >}})
+[here](/docs/troubleshooting/deployment/server/#gui-connectivity-issues)
 for testing access to the server GUI.
 
 #### Certificate retrieval and validation issues
@@ -158,4 +160,4 @@ a local web-based UI that exposes many aspects of the clients internal
 operations. The Debug Console is not enabled by default on clients.
 
 To learn how to enable and access it please see
-[Starting the Debug Console on clients]({{< ref "/docs/troubleshooting/debugging/#starting-the-debug-console-on-clients" >}}).
+[Starting the Debug Console on clients](/docs/troubleshooting/debugging/#starting-the-debug-console-on-clients).

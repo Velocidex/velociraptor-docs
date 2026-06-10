@@ -1,6 +1,6 @@
 name: Windows.Applications.AnyDesk
 description: |
-   This parses AnyDesk logs to retrieve information about AnyDesk usage. It includes source IP addresses, AnyDesk ID's, and filetransfers.
+   This parses AnyDesk logs to retrieve information about AnyDesk usage. It includes source IP addresses, AnyDesk ID's, and file transfers.
 
    Parts of below code was used from Matt Green - @mgreen27
 
@@ -52,7 +52,7 @@ sources:
 
       LET parse_log(OSPath) = SELECT parse_string_with_regex(
             string=Line,
-            regex="^[\\s\\w]+?" + 
+            regex="^[\\s\\w]+?" +
               "(?P<Timestamp>[\\d]{4}-[\\d]{2}-[\\d]{2}\\s[\\d]{2}:[\\d]{2}:[\\d]{2}.[\\d]{3})" +
               "\\s+\\w+\\s+" +
               "(?P<PPID>\\d+)\\s+" +
@@ -63,10 +63,10 @@ sources:
                 "(Logged in from (?P<LoggedInFromIP>[\\d.]+):(?P<Port>\\d+))?" +
                 "(?P<SessionStopped>Session stopped)?" +
                 "(Preparing files in ['](?P<PotentialFileTransfer>.+)['].+)?" +
-                "(External address: (?P<ExternalAddress>[\\d.]+):)?" + 
+                "(External address: (?P<ExternalAddress>[\\d.]+):)?" +
                 ".+$)"
               ) as Record,OSPath
-        FROM parse_lines(filename=OSPath) 
+        FROM parse_lines(filename=OSPath)
 
       -- function returning IOC hits
       LET logsearch(PathList) = SELECT * FROM foreach(
@@ -75,15 +75,15 @@ sources:
                SELECT *,timestamp(epoch=Record.Timestamp,format="2006-01-02 15:04:05") AS Timestamp
                FROM parse_log(OSPath=OSPath)
                WHERE Timestamp < DateBeforeTime AND
-                     Timestamp > DateAfterTime AND 
-                     Record.Message =~ MessageRegex AND 
+                     Timestamp > DateAfterTime AND
+                     Record.Message =~ MessageRegex AND
                      if(condition=OutputAll, then=TRUE, else= Record.ComputerName OR
                                                             Record.LoggedInFromIP OR
                                                             Record.PotentialFileTransfer OR
                                                             Record.SessionStopped OR
                                                             Record.AnyDeskID OR
-                                                            Record.ExternalAddress)     
-               }) 
+                                                            Record.ExternalAddress)
+               })
 
       -- include VSS in calculation and deduplicate with GROUP BY by file
       LET include_vss = SELECT * FROM foreach(row=fspaths,

@@ -1,16 +1,20 @@
 ---
 title: Server.Internal.ClientDelete
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
+description: |
+  Provides an internal event stream for client deletion notifications.
 ---
 
-An internal queue that receives events when a client is deleted.
+Provides an internal event stream for client deletion notifications.
 
 
 <pre><code class="language-yaml">
 name: Server.Internal.ClientDelete
 description: |
-  An internal queue that receives events when a client is deleted.
+  Provides an internal event stream for client deletion notifications.
 
 type: SERVER_EVENT
 

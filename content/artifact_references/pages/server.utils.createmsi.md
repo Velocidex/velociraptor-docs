@@ -1,10 +1,16 @@
 ---
 title: Server.Utils.CreateMSI
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+description: |
+  Builds a Windows MSI deployment package using the current org's
+  client configuration.
 ---
 
-Build an MSI ready for deployment in the current org.
+Builds a Windows MSI deployment package using the current org's
+client configuration.
 
 This artifact depends on the following tools:
 
@@ -17,7 +23,8 @@ You can replace those with suitable MSI builds.
 <pre><code class="language-yaml">
 name: Server.Utils.CreateMSI
 description: |
-  Build an MSI ready for deployment in the current org.
+  Builds a Windows MSI deployment package using the current org's
+  client configuration.
 
   This artifact depends on the following tools:
 
@@ -54,9 +61,11 @@ sources:
         config=serialize(format='yaml', item=client_config))
 
     SELECT * FROM chain(a={
-       SELECT Build(Target="VelociraptorWindowsMSI") FROM scope()
+       SELECT Build(Target="VelociraptorWindowsMSI") AS VelociraptorWindowsMSI
+       FROM scope()
     }, b={
-       SELECT Build(Target="VelociraptorWindows_x86MSI") FROM scope()
+       SELECT Build(Target="VelociraptorWindows_x86MSI") AS VelociraptorWindows_x86MSI
+       FROM scope()
        WHERE AlsoBuild_x86
     })
 

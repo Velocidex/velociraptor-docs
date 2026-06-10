@@ -1,13 +1,20 @@
 ---
 title: Windows.Registry.PuttyHostKeys
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Extracts PuTTY SSH host keys stored in the Windows registry for
+  each user.
 ---
 
-This artifact extracts PuTTY SSH host keys.
+Extracts PuTTY SSH host keys stored in the Windows registry for
+each user.
 
-As a security measure PuTTY and its companion utilities PSCP, PSFTP, and Plink
-records the host key for each server connected to, in the Windows Registry.
+As a security measure PuTTY and its companion utilities PSCP,
+PSFTP, and Plink record the host key for each server connected to
+in the Windows Registry.
 
 - Output KeyName: `ssh-ed12345@22:27.27.27.27`
 - To search for a specific IP: `TargetKeyName =~ ':\<IP\>$'`
@@ -18,15 +25,16 @@ records the host key for each server connected to, in the Windows Registry.
 name: Windows.Registry.PuttyHostKeys
 author: Matt Green - @mgreen27
 description: |
-   This artifact extracts PuTTY SSH host keys.
+  Extracts PuTTY SSH host keys stored in the Windows registry for
+  each user.
 
-   As a security measure PuTTY and its companion utilities PSCP, PSFTP, and Plink
-   records the host key for each server connected to, in the Windows Registry.
+  As a security measure PuTTY and its companion utilities PSCP,
+  PSFTP, and Plink record the host key for each server connected to
+  in the Windows Registry.
 
-   - Output KeyName: `ssh-ed12345@22:27.27.27.27`
-   - To search for a specific IP: `TargetKeyName =~ ':\&lt;IP\&gt;$'`
-   - To search for a specific PORT: `TargetKeyName =~ '@\&lt;PORT\&gt;:.+$'`
-
+  - Output KeyName: `ssh-ed12345@22:27.27.27.27`
+  - To search for a specific IP: `TargetKeyName =~ ':\&lt;IP\&gt;$'`
+  - To search for a specific PORT: `TargetKeyName =~ '@\&lt;PORT\&gt;:.+$'`
 
 type: CLIENT
 

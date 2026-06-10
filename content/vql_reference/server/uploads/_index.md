@@ -2,7 +2,11 @@
 title: uploads
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Retrieve information about a flow's uploads.
 ---
 
 

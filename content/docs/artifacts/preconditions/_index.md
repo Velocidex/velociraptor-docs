@@ -6,10 +6,14 @@ draft: false
 weight: 40
 summary: "Preconditions and how they work"
 last_reviewed: 2025-04-30
+description: |
+  A **precondition** is a query that is run to determine whether the artifact, or
+  a particular [source](/docs/artifacts/sources/)
+  within the artifact, should be collected.
 ---
 
 A **precondition** is a query that is run to determine whether the artifact, or
-a particular [source]({{< ref "/docs/artifacts/sources/" >}})
+a particular [source](/docs/artifacts/sources/)
 within the artifact, should be collected.
 
 The most common use for preconditions is to check the operating system and
@@ -49,7 +53,7 @@ An artifact-level precondition determines whether the artifact is collected or
 ignored entirely. If the precondition evaluates to True then the artifact is
 collected, however there may also be source-level preconditions that will
 subsequently determine which sources are collected and the
-[execution mode]({{< relref "#serial-vs-parallel-execution-mode" >}})
+[execution mode](#serial-vs-parallel-execution)
 of the artifact.
 
 
@@ -122,7 +126,7 @@ don't have any effect on the execution mode of the artifact.
 
 Preconditions are evaluated before any of the sources are run, including VQL in
 the artifact's `export` and `imports`
-[sections]({{< ref "/docs/artifacts/export_imports/" >}}).
+[sections](/docs/artifacts/export_imports/).
 This means that any variables and custom functions defined in these sections are
 not available for use in preconditions.
 
@@ -152,7 +156,7 @@ because the `export` section was executed in each scope.
 
 ## Preconditions and parameters
 
-Artifact [parameters]({{< ref "/docs/artifacts/parameters/" >}})
+Artifact [parameters](/docs/artifacts/parameters/)
 can be used in preconditions, for example:
 
 ```yaml
@@ -282,4 +286,3 @@ precondition: |
   WHERE Hour < 6 OR Hour > 15
 ```
 Only run outside of office hours.
-

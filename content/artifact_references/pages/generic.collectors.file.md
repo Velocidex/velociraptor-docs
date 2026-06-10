@@ -1,20 +1,29 @@
 ---
 title: Generic.Collectors.File
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Searches a filesystem using a set of glob patterns and uploads
+  matching files to the server.
 ---
 
-Collects files using a set of globs. All globs must be on the same
-device. The globs will be searched in one pass - so you can provide
-many globs at the same time.
+Searches a filesystem using a set of glob patterns and uploads
+matching files to the server.
+
+All globs must be on the same device. The globs will be searched in
+one pass - so you can provide many globs at the same time.
 
 
 <pre><code class="language-yaml">
 name: Generic.Collectors.File
 description: |
-   Collects files using a set of globs. All globs must be on the same
-   device. The globs will be searched in one pass - so you can provide
-   many globs at the same time.
+   Searches a filesystem using a set of glob patterns and uploads
+   matching files to the server.
+
+   All globs must be on the same device. The globs will be searched in
+   one pass - so you can provide many globs at the same time.
 
 aliases:
   - Windows.Collectors.File
@@ -48,8 +57,9 @@ parameters:
 
   - name: UPLOAD_IS_RESUMABLE
     type: bool
-    default: Y
-    description: If set the uploads can be resumed if the flow times out or errors.
+    default: N
+    description: |
+      If set the uploads can be resumed if the flow times out or errors.
 
   - name: MaxFileSize
     type: int

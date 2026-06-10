@@ -2,7 +2,11 @@
 title: logging
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Watch the logs emitted by the server.
 ---
 
 

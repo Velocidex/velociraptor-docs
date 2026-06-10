@@ -1,30 +1,43 @@
 ---
 title: Windows.Persistence.PowershellRegistry
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Scans NTUSER.DAT registry hives with YARA rules for PowerShell-based
+  persistence signatures.
 ---
 
-A common method of persistence is to install a hook into a user profile
-registry hive, using PowerShell. When the user logs in, the PowerShell script
-downloads a payload and executes it.
+Scans NTUSER.DAT registry hives with YARA rules for PowerShell-based
+persistence signatures.
 
-This artifact searches the user's profile registry hive for signatures related
-to general PowerShell execution. We use a YARA signature specifically
-targeting the user's profile which we extract by using raw NTFS parsing (in
-case the user is currently logged on and the registry hive is locked).
+A common method of persistence is to install a hook into a user
+profile registry hive, using PowerShell. When the user logs in, the
+PowerShell script downloads a payload and executes it.
+
+This artifact searches the user's profile registry hive for
+signatures related to general PowerShell execution. We use a YARA
+signature specifically targeting the user's profile which we extract
+by using raw NTFS parsing (in case the user is currently logged on
+and the registry hive is locked).
 
 
 <pre><code class="language-yaml">
 name: Windows.Persistence.PowershellRegistry
 description: |
-  A common method of persistence is to install a hook into a user profile
-  registry hive, using PowerShell. When the user logs in, the PowerShell script
-  downloads a payload and executes it.
+  Scans NTUSER.DAT registry hives with YARA rules for PowerShell-based
+  persistence signatures.
+  
+  A common method of persistence is to install a hook into a user
+  profile registry hive, using PowerShell. When the user logs in, the
+  PowerShell script downloads a payload and executes it.
 
-  This artifact searches the user's profile registry hive for signatures related
-  to general PowerShell execution. We use a YARA signature specifically
-  targeting the user's profile which we extract by using raw NTFS parsing (in
-  case the user is currently logged on and the registry hive is locked).
+  This artifact searches the user's profile registry hive for
+  signatures related to general PowerShell execution. We use a YARA
+  signature specifically targeting the user's profile which we extract
+  by using raw NTFS parsing (in case the user is currently logged on
+  and the registry hive is locked).
 
 parameters:
   - name: yaraRule

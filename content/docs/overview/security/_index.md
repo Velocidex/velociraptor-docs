@@ -3,6 +3,10 @@ menutitle: "Security"
 title: "Velociraptor Security"
 date: 2025-01-25
 weight: 40
+description: |
+  Velociraptor is a very powerful platform running with very high
+  privilege and access on many endpoints. We take the security of
+  Velociraptor very seriously.
 ---
 
 Velociraptor is a very powerful platform running with very high
@@ -21,7 +25,7 @@ as `SSO`, reverse proxies, `mTLS`, `Role Based Access Control`,
 
 To become familiar with the different security mechanisms and
 considerations available for new deployments, please see our
-[Deployment Security Guide]({{< ref "/docs/deployment/security/" >}})
+[Deployment Security Guide](/docs/deployment/security/)
 
 ## Artifact Security
 
@@ -33,8 +37,8 @@ downloading the `SAM` or `NTDS.dit` can lead to domain takeover.
 
 Understanding how to manage this risk and leverage `Velociraptor Role
 Based Access Control` (RBAC) mechanisms is essential. You can read
-more about this in our [Artifacts Security Guide]({{< ref
-"/docs/artifacts/security/" >}}).
+more about this in our
+[Artifacts Security Guide](/docs/artifacts/security/).
 
 
 ## Reporting Security Vulnerabilities

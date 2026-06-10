@@ -1,16 +1,21 @@
 ---
 title: Windows.Registry.RDP
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Extracts historical RDP connection server names and MRU entries from
+  each user's NTUSER.DAT registry hive.
 ---
 
-This artifact will collect historical RDP server names and MRU items stored 
-in each users NTUser.dat
+Extracts historical RDP connection server names and MRU entries from
+each user's NTUSER.DAT registry hive.
 
 1. Servers - list of all RDP connections that have ever been established by 
 this user.   
- UsernameHint shows the username used to connect to the RDP/RDS host.  
- CertHash variable contains the RDP server SSL certificate thumbprint.
+  - UsernameHint shows the username used to connect to the RDP/RDS host.  
+  - CertHash variable contains the RDP server SSL certificate thumbprint.
 
 2. MRU 10 - Most recently used RDP connections 
 
@@ -21,17 +26,17 @@ UserRegex and SidRegex can be used to target a specific user.
 name: Windows.Registry.RDP
 author: Matt Green - @mgreen27
 description: |
-   This artifact will collect historical RDP server names and MRU items stored 
-   in each users NTUser.dat
-   
-   1. Servers - list of all RDP connections that have ever been established by 
-   this user.   
-    UsernameHint shows the username used to connect to the RDP/RDS host.  
-    CertHash variable contains the RDP server SSL certificate thumbprint.
+  Extracts historical RDP connection server names and MRU entries from
+  each user's NTUSER.DAT registry hive.
 
-   2. MRU 10 - Most recently used RDP connections 
-   
-   UserRegex and SidRegex can be used to target a specific user.
+  1. Servers - list of all RDP connections that have ever been established by 
+  this user.   
+    - UsernameHint shows the username used to connect to the RDP/RDS host.  
+    - CertHash variable contains the RDP server SSL certificate thumbprint.
+
+  2. MRU 10 - Most recently used RDP connections 
+
+  UserRegex and SidRegex can be used to target a specific user.
 
 type: CLIENT
 

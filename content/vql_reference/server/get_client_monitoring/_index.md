@@ -2,7 +2,22 @@
 title: get_client_monitoring
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Retrieve the current client monitoring state.
+
+  The client monitoring table represents the server's configuration
+  of client event queries to deploy.
+
+  This function is designed to allow programmatic manipulation of
+  the event query table in conjunction with the
+  `set_client_monitoring()` function.
+
+  It is commonly used together with the `patch()` function to patch
+  the data structure to add additional event queries.
+
 ---
 
 
@@ -20,12 +35,12 @@ no_edit: true
 
 Retrieve the current client monitoring state.
 
-The client monitoring table represent's the server configuration
+The client monitoring table represents the server's configuration
 of client event queries to deploy.
 
 This function is designed to allow programmatic manipulation of
-the event query table in conjunction with set_client_monitoring()
-function.
+the event query table in conjunction with the
+`set_client_monitoring()` function.
 
 It is commonly used together with the `patch()` function to patch
 the data structure to add additional event queries.

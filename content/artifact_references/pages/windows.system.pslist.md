@@ -1,16 +1,26 @@
 ---
 title: Windows.System.Pslist
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Enumerates running processes along with their executable paths and
+  associated details, with optional authenticode trust verification
+  and binary hashing.
 ---
 
-List processes and their running binaries.
+Enumerates running processes along with their executable paths and
+associated details, with optional authenticode trust verification
+and binary hashing.
 
 
 <pre><code class="language-yaml">
 name: Windows.System.Pslist
 description: |
-  List processes and their running binaries.
+  Enumerates running processes along with their executable paths and
+  associated details, with optional authenticode trust verification
+  and binary hashing.
 
 parameters:
   - name: ProcessRegex
@@ -46,14 +56,14 @@ sources:
     query: |
         LET ProcList = SELECT * FROM if(condition=UseTracker,
         then={
-          SELECT Pid, Ppid, NULL AS TokenIsElevated,
+          SELECT CreateTime, Pid, Ppid, NULL AS TokenIsElevated,
                  Username, Name, CommandLine, Exe, NULL AS Memory
           FROM process_tracker_pslist()
         }, else={
           SELECT * FROM pslist()
         })
 
-        SELECT Pid, Ppid, TokenIsElevated, Name, CommandLine, Exe,
+        SELECT CreateTime, Pid, Ppid, TokenIsElevated, Name, CommandLine, Exe,
             token(pid=int(int=Pid)) as TokenInfo,
             hash(path=Exe) as Hash,
             authenticode(filename=Exe) AS Authenticode,
@@ -67,6 +77,5 @@ sources:
             AND NOT if(condition= UntrustedAuthenticode,
                         then= Authenticode.Trusted = 'trusted' OR NOT Exe,
                         else= False )
-
 </code></pre>
 

@@ -10,7 +10,7 @@ Metrics are counters in the program that are used to collect high
 level statistics about program execution.
 
 Metrics are also exported on the server using the `Metrics
-Server`. This is controlled in the configuration file [Monitoring]({{< ref "/docs/deployment/references/#Monitoring" >}})
+Server`. This is controlled in the configuration file [Monitoring](/docs/deployment/references/#Monitoring)
 section:
 
 ```yaml

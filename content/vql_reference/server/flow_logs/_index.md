@@ -2,7 +2,11 @@
 title: flow_logs
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Retrieve the query logs of a flow.
 ---
 
 

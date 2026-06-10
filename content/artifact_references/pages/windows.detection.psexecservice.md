@@ -1,30 +1,41 @@
 ---
 title: Windows.Detection.PsexecService
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+description: |
+  Detects PsExec execution by scanning newly created service binaries
+  for PsExec strings.
 ---
 
-PsExec works by installing a new service in the system. The service
-can be renamed by using the `-r` flag and therefore it is not enough to
-just watch for a new service called `psexecsvc.exe`. This artifact
-improves on this by scanning the service binary to detect the
-original PsExec binary.
+Detects PsExec execution by scanning newly created service binaries
+for PsExec strings.
 
-NOTE: If the service is very quick we are unable to examine the service binary
-in time then we will miss it.
+PsExec works by installing a new service in the system. The service
+can be renamed by using the `-r` flag and therefore it is not enough
+to just watch for a new service called `psexecsvc.exe`. This
+artifact improves on this by scanning the service binary to detect
+the original PsExec binary.
+
+NOTE: If the service is very quick we are unable to examine the
+service binary in time then we will miss it.
 
 
 <pre><code class="language-yaml">
 name: Windows.Detection.PsexecService
 description: |
+  Detects PsExec execution by scanning newly created service binaries
+  for PsExec strings.
+  
   PsExec works by installing a new service in the system. The service
-  can be renamed by using the `-r` flag and therefore it is not enough to
-  just watch for a new service called `psexecsvc.exe`. This artifact
-  improves on this by scanning the service binary to detect the
-  original PsExec binary.
+  can be renamed by using the `-r` flag and therefore it is not enough
+  to just watch for a new service called `psexecsvc.exe`. This
+  artifact improves on this by scanning the service binary to detect
+  the original PsExec binary.
 
-  NOTE: If the service is very quick we are unable to examine the service binary
-  in time then we will miss it.
+  NOTE: If the service is very quick we are unable to examine the
+  service binary in time then we will miss it.
 
 type: CLIENT_EVENT
 
