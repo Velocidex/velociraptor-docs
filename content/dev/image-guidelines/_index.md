@@ -26,27 +26,27 @@ The guidance in this document is intended to:
 
 ---
 
-* [Image categories](#image-categories)
-* [Fonts](#fonts)
-* [Colors](#colors)
-* [Excalidraw object library](#excalidraw-object-library)
-* [Screenshots](#screenshots)
-  * [Screen size](#screen-size)
-      * [Partial screens](#partial-screens)
-        * [Framing](#framing)
-      * [Full screens](#full-screens)
-  * [Velociraptor theme](#velociraptor-theme)
-  * [Annotations](#annotations)
-      * [Arrows](#arrows)
-      * [Numbered callouts](#numbered-callouts)
-      * [Excalidraw-specific options](#excalidraw-specific-options)
-* [Line diagrams](#line-diagrams)
-* [Exporting images](#exporting-images)
-  * [Formats and settings](#formats-and-settings)
-  * [Fonts in SVG images](#fonts-in-svg-images)
-  * [File size](#file-size)
-* [GIF animations](#gif-animations)
-  * [Terminal session recordings](#terminal-session-recordings)
+- [Image categories](#image-categories)
+- [Fonts](#fonts)
+- [Colors](#colors)
+- [Excalidraw object library](#excalidraw-object-library)
+- [Screenshots](#screenshots)
+  - [Screen size](#screen-size)
+      - [Partial screens](#partial-screens)
+        - [Framing](#framing)
+      - [Full screens](#full-screens)
+  - [Velociraptor theme](#velociraptor-theme)
+  - [Annotations](#annotations)
+      - [Arrows](#arrows)
+      - [Numbered callouts](#numbered-callouts)
+      - [Excalidraw-specific options](#excalidraw-specific-options)
+- [Line diagrams](#line-diagrams)
+- [Exporting images](#exporting-images)
+  - [Formats and settings](#formats-and-settings)
+  - [Fonts in SVG images](#fonts-in-svg-images)
+  - [File size](#file-size)
+- [GIF animations](#gif-animations)
+  - [Terminal session recordings](#terminal-session-recordings)
 
 
 ---
@@ -104,7 +104,7 @@ Excalidraw has provision for only 3 font variants at a time, so we assign them a
 
 Visually this is how our font allocations compare to the default ones:
 
-![](excalidraw_default_fonts.png)
+![Comparison of Velociraptor font allocations to Excalidraw default fonts](excalidraw_default_fonts.png)
 
 In our case the hand-drawn font _is_ our default/normal font. We assign our
 heading font to the provided "normal font" slot because Excalidraw doesn't have
@@ -150,7 +150,7 @@ If you find or create objects that you think will be useful in future drawings
 then please add them to this library, save the changes and commit the updated
 version back to the `velociraptor-docs` repo.
 
-![](library.png)
+![Excalidraw object library content](library.png)
 
 ## Screenshots
 
@@ -178,7 +178,7 @@ When screenshotting only a part of the screen then it's important to anchor it
 by including some familiar element like part of the header or sidebar. Unless a
 previous screenshot has already provided that spacial/navigational context.
 
-![](anchors.png)
+![Partial screenshot anchored by familiar UI element](anchors.png)
 
 Capturing screenshots that show only part of the screen area are relatively
 straightforward and many tools are capable of doing this.
@@ -186,7 +186,7 @@ straightforward and many tools are capable of doing this.
 > [!TIP] A useful trick in Chrome Dev Tools is that you can right-click on a DOM
 > element and capture an image of just that element.
 >
-> ![](node_screenshot.png)
+> ![DOM element node screenshot in Chrome Dev Tools](node_screenshot.png)
 
 #### Full screens
 
@@ -201,10 +201,10 @@ For full screenshots use one of the following 2 sizes:
 - 1280x960 (preferred)
 - 1600x1200 (only if needed to show wide table content or some other specific reason)
 
-![](screen_size.png)
+![Comparison of Velociraptor GUI at 1280x960 and 1600x1200 screen sizes](screen_size.png)
 *These particular constrained sizes can be configured as presets in Chrome's"dev tools" for quick access.*
 
-![](fullscreen.png)
+![Full screen screenshot of Velociraptor GUI](fullscreen.png)
 
 ### Velociraptor theme
 
@@ -212,7 +212,7 @@ For consistency, and to avoid confusing new users, we use a single GUI theme for
 all screenshots: the **Standard Docs** theme which is based on the default
 Velociraptor Light them but with some additional legibility tweaks.
 
-![](docs-theme.png)
+![Velociraptor Standard Docs theme used for all screenshots](docs-theme.png)
 
 ### Annotations
 
@@ -236,7 +236,7 @@ triangular one.
 To indicate a sequence of actions use numbered callouts. These are available in
 our [Excalidraw object library](#excalidraw-object-library)
 
-![](excalidraw_annotations.png)
+![Examples of arrows and numbered callouts in Excalidraw](excalidraw_annotations.png)
 *Examples of arrows and numbered callouts*
 
 The above example also shows that a semi-transparent rectangle can be placed
@@ -246,12 +246,12 @@ behind text to make it more legible if it overlays a dark area of background.
   then you may not need to add any descriptions.
 - If the callout numbers are explained/referenced in your written content then
   descriptions in the image may be unnecessary.
-- The arrow is also optional if the placement makes it's clear enough what the
+- The arrow is also optional if the placement makes it clear enough what the
   numbering is associated with. A good way to make this association clear is by
   drawing a square or rectangle around the element and placing the number so
-  that it touches the shape.. Example below.
+  that it touches the shape. Example below.
 
-![](screen_partial.png)
+![Partial screenshot with numbered callout](screen_partial.png)
 
 #### Excalidraw-specific options
 
@@ -267,7 +267,7 @@ For line thickness ("**stroke width**") we use "**extra bold**" for annotation
 arrows, however this is subjective choice since line thickness is ultimately
 relative to the dimensions of the rendered image.
 
-![](excalidraw_defaults.png)
+![Recommended Excalidraw settings for sloppiness and stroke width](excalidraw_defaults.png)
 
 ## Line diagrams
 
@@ -282,7 +282,7 @@ the following differences:
 - stroke width is **Bold** (not Extra Bold)
 - stroke color is black (not blue)
 
-![](line_diagram_settings.png)
+![Recommended Excalidraw settings for line diagrams](line_diagram_settings.png)
 
 The diagram heading is made bold by choosing the "Normal" font which is the same
 font as our "Hand-drawn" font but a bold variant. This is necessary because
@@ -292,7 +292,7 @@ Excalidraw currently doesn't have any options for bolding or italicizing fonts.
 
 ### Formats and settings
 
-![](excalidraw_export_settings.png)
+![Excalidraw export settings dialog](excalidraw_export_settings.png)
 
 We export our images from Excalidraw  - that is line diagrams and annotated
 screenshots - to SVG format, and not to PNG. However PNG images are suitable for
@@ -314,13 +314,13 @@ view that the reader will see (without needing to zoom in). When exported the
 SVG image will be sized at the dimensions of a bounding box around the elements
 on your canvas. The line thicknesses and font sizes are relative to your canvas.
 
-![](embedded-image-scaling.png)
+![Diagram showing how embedded screenshot scaling works in Excalidraw](embedded-image-scaling.png)
 
 
 Although it is possible to edit SVG images externally they cannot be imported
 back into Excalidraw. So for annotated screenshots and block diagrams we save
 the `.excalidraw` file alongside the exported SVG or PNG image, using the same
-file basename, and check it in to the Git VCS. This allows others to easily make
+file basename, and check it into the Git VCS. This allows others to easily make
 changes in future since they can open the `.excalidraw` file in the Excalidraw
 web app.
 
@@ -340,7 +340,7 @@ to find it be doing a search of the repo for the base filename.
 > So it is not necessary > to keep a copy of the original screenshot PNG.
 >
 
-If your Excalidraw diagram contains a screenshot, then that it stored
+If your Excalidraw diagram contains a screenshot, then it is stored
 inside the `.excalidraw` file and also the `.svg` file. So there is no
 need to keep the screenshot file once you have added it in Excalidraw.
 
@@ -400,7 +400,7 @@ font files.
 
 ### File size
 
-If you've followed the advice in this document your image files should not be
+If you've followed the advice in this document, your image files should not be
 too large. However it's worth checking the file size and if it's over 300KB then
 it might be a sign that you've done something wrong.
 
@@ -422,7 +422,7 @@ recording environment. This allows us to create such recordings in a
 reproducible way, and this means that it's easy for us to update the existing
 recordings when new versions are released.
 
-![example ](vhs.gif)
+![Example terminal session recording created with VHS](vhs.gif)
 
 The environment and scripted steps for each recording are specified in a `.tape`
 file which is a small text file.

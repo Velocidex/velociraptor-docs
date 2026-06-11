@@ -16,7 +16,7 @@ language is designed to lower the bar for contributions and make it
 easier for non-developers to contribute meaningful improvements in the
 form of new [Artifacts](/docs/artifacts/).
 
-Over time the number of contribution has exploded and so we have
+Over time the number of contributions has exploded and so we have
 developed some guidelines on which artifacts should be accepted into
 the project and where/how they should be included.
 
@@ -51,7 +51,7 @@ have created a set of high level artifacts to handle the common cases.
 Triage artifacts typically consist of:
 
 1. Search for files using `glob()`
-2. Collect the files using `upload()` and possibly hash the with `hash()`
+2. Collect the files using `upload()` and possibly hash them with `hash()`
 3. Enrich the collection somehow (for example using `authenticode()`
 
 
@@ -101,7 +101,7 @@ The advantages of centralizing registry analysis include:
   many edge cases. For example, when accessing the `HKEY_USERS` hive,
   only currently logged in users will have their hive mounted
   there. The Registry Hunter automatically handles these cases by
-  mounting the raw hives into the a remapping configuration.
+  mounting the raw hives into a remapping configuration.
 * More complex techniques like
   [Adaptive Triage](/blog/2025/2025-09-28-adaptive-collections/)
   can be implemented. All rules benefit from this without having to
@@ -194,7 +194,7 @@ maintainability:
    interact with various types of external APIs, including LLMs.
 
 
-We do also plan on reviewing the artifacts in the Exchange
+We also plan to review the artifacts in the Exchange
 periodically and removing outdated artifacts. Very useful Exchange
 artifacts may be graduated to become built-ins if suitable tests can
 be devised that can assure their ongoing reliability.
