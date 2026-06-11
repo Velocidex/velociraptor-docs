@@ -6,10 +6,13 @@ last_reviewed: 2025-07-14
 draft: false
 weight: 80
 description: |
-  Velociraptor offers many features via it's command line interface (CLI).
+  Velociraptor offers many features via its command line interface (CLI).
+summary: |-
+  Reference for the Velociraptor CLI, including command syntax, help
+  options, VQL documentation, and autoexec mode.
 ---
 
-Velociraptor offers many features via it's command line interface (CLI).
+Velociraptor offers many features via its command line interface (CLI).
 
 In addition to functioning as a client or server, the binary also provides
 several utility functions that are accessible on the command line, which in many
@@ -20,7 +23,7 @@ described [here](/docs/deployment/#command-line-investigation-tool),
 [here](/docs/cli/artifacts/#-artifacts-collect-) and
 [here](/docs/cli/query/).
 
-{{% notice info "Be aware of filesystem permissions when working on the command line" %}}
+{{% notice info "Filesystem permissions on the command line" %}}
 
 When installed as a service, Velociraptor's datastore directory is owned by the
 service account named `velociraptor` and accessible to the `velociraptor` user
@@ -125,18 +128,18 @@ work.
 - When the binary is run ***without*** any CLI commands, and it has an
   `autoexec.argv` spec which it can execute, then it does so.
 
-But what if you want it to load the autoexec section but change it's behavior
+But what if you want it to load the autoexec section but change its behavior
 with additional CLI flags?
 
 For that special case we have a special CLI pseudo-flag: `--`
 
 This special flag separates the CLI arguments into pre and post args. Post
 args will be appended to any that are in the embedded autoexec command line,
-while still allowing the autoexec spec to load and execute it's commands (if it
+while still allowing the autoexec spec to load and execute its commands (if it
 has any).
 
 As a concrete example, suppose we have created an offline collector named
-`velociraptor_collector.exe`. If we just run it without any args it does it's
+`velociraptor_collector.exe`. If we just run it without any args it does its
 offline collector business and we can't change how it runs. If we run it with
 any CLI arguments then it's just a normal binary, since the offline collector
 behaviour is skipped due to the presence of a command.
