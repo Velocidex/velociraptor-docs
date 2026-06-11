@@ -113,29 +113,51 @@ velociraptor vql export | yq -P '.[] | select(.type == "Function") | select(.nam
 
 ## Autoexec mode and post args
 
-Autoexec mode uses an embedded config's `autoexec.argv` section to specify
-default CLI arguments. When a binary with an embedded config runs without
-any CLI commands, it executes the command line defined in `autoexec.argv`.
-The embedded config can also store custom artifacts.
-[Offline collectors](/docs/deployment/offline_collections/) use this mechanism.
+Autoexec mode lets you embed a default command line and custom artifacts
+directly into the Velociraptor binary using the
+[`config repack`](/docs/cli/config/#-config-repack-) command.
+[Offline collectors](/docs/deployment/offline_collections/) use this
+mechanism.
 
-The binary follows these precedence rules:
+The embedded config's `autoexec.argv` section specifies the default CLI
+arguments. The binary follows these precedence rules:
 
 - When run **with** CLI commands: the commands are executed and
-  `autoexec.argv` is ignored (if present).
-- When run **without** CLI commands: if an `autoexec.argv` spec exists,
+  `autoexec.argv` is ignored.
+- When run **without** CLI commands: if an `autoexec.argv` section exists,
   it is executed.
 
 ### The `--` pseudo-flag
 
-The `--` pseudo-flag separates CLI arguments into pre and post args. In
-autoexec mode, post args are appended to the `autoexec.argv` command line:
+The `--` pseudo-flag solves a specific problem: running the binary without
+any CLI arguments triggers autoexec mode, but adding any CLI command causes
+autoexec to be skipped. The `--` pseudo-flag lets you append extra flags
+without supplying a command, so autoexec mode still activates.
+
+For example, consider an offline collector binary that contains this
+`autoexec.argv` section in its embedded config:
+
+```yaml
+autoexec:
+  argv:
+  - artifacts
+  - collect
+  - Collector
+  - -v
+  - --require_admin
+```
+
+Without any arguments, the binary runs `artifacts collect Collector
+-v --require_admin`. To add `--nobanner` and `--prompt` to that command
+line, use `--` followed by the extra flags:
 
 ```sh
 velociraptor_collector.exe -- --nobanner --prompt
 ```
 
-This produces the equivalent `autoexec.argv` configuration:
+Because no CLI command appears before `--`, autoexec mode activates. The
+post args are appended to the `autoexec.argv` command line, making it
+equivalent to the following config:
 
 ```yaml
 autoexec:
@@ -149,7 +171,7 @@ autoexec:
   - --prompt
 ```
 
-Which results in the effective command line:
+Which produces the effective command line:
 
 ```sh
 velociraptor_collector.exe artifacts collect Collector -v --require_admin --nobanner --prompt
