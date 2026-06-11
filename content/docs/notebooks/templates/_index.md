@@ -244,6 +244,7 @@ the notebook. The `imports` section imports functions that are
 [exported by other artifacts](/docs/artifacts/export_imports/), which
 will also then be available to all cells.
 
+
 ## Built-in templates
 
 Velociraptor ships with several built-in notebook templates:
