@@ -123,7 +123,7 @@ flag.
 Then upgrade by installing the new server package using the relevant
 command below, according to your server's packaging system.
 
-**Debian-based server installation:**
+**Debian-based server upgrade:**
 
 ```
 $ sudo dpkg -i velociraptor_server_0.74.2_amd64.deb
@@ -137,7 +137,7 @@ Created symlink /etc/systemd/system/multi-user.target.wants/velociraptor_server.
 
 or
 
-**RPM-based server installation:**
+**RPM-based server upgrade:**
 
 ```
 $ sudo rpm -Uvh velociraptor-server-0.74.2.x86_64.rpm
