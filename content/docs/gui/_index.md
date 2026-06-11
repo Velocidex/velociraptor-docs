@@ -69,7 +69,7 @@ You can read more about the individual options
 
 ## The Server Dashboard
 
-The Server Dashboard can be accessed using the <i class="fas fa-home"></i> icon
+The **Server Dashboard** can be accessed using the <i class="fas fa-home"></i> icon
 on the sidebar. The dashboard shows the current state of the deployment at a
 high level.
 

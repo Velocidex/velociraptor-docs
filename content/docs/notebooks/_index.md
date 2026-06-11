@@ -1,11 +1,16 @@
 ---
 title: Notebooks
 date: 2021-06-11T15:32:04Z
-last_reviewed: 2026-05-20
+last_reviewed: 2026-06-10
 draft: false
 weight: 35
 aliases:
   - "/docs/vql/notebooks/"
+summary: |
+  Notebooks are interactive collaborative documents which can interleave
+  markdown and VQL queries to create an interactive report. Notebooks
+  are typically used to track and post process one or more hunts or
+  collaborate on an investigation.
 description: |
   Notebooks are interactive collaborative documents which can interleave
   markdown and VQL queries to create an interactive report. Notebooks
@@ -13,121 +18,117 @@ description: |
   collaborate on an investigation.
 ---
 
-Notebooks are interactive collaborative workspaces which can
-interleave markdown and VQL queries to create an interactive document.
-Notebooks are typically used to track and post-process one or more
-hunts or collaborate on an investigation.
+Notebooks are interactive collaborative workspaces that combine
+markdown text with live VQL queries in a single document. They let you
+build reports that can be updated as new results arrive, post-process
+the results of hunts and collections, and collaborate with other users
+on an investigation.
 
-Let's create a notebook to see the feature at work.
+{{% notice tip %}}
 
-1. Start the Velociraptor GUI. You can do so easily by running
-   `velociraptor.exe gui`. This will create a new server configuration
-   and start a new server on the local machine. It will also start a
-   local client communicating with the server.
-
-   ![velociraptor gui command](gui_command.png)
-
-2. Select Notebooks <i class="fas fa-book"></i> from the sidebar menu then "Add
-   Notebook" <i class="fas fa-plus"></i>.
-
-   ![Add Notebook](notebook_add.png)
-
-3. Give the notebook a name and a description and submit. The new
-   notebook is created.
-
-   ![New Notebook](new_notebook.png)
-
-{{% notice tip "Notebook cells and focus" %}}
-
-A notebook consists of a sequence of cells which may each be edited. However,
-when not in focus a cell has no decorations in order to appear as a seamless
-part of a larger document. You have to click the cell into focus to be able to
-see it's controls.
-
-![](notebook_edit1.svg)
+If you prefer to learn by doing, try the
+[Creating Your First Notebook](/docs/notebooks/creating-your-first-notebook/)
+walkthrough.
 
 {{% /notice %}}
 
-4. Click on the cell to give it focus and the cell control toolbar
-   will be shown, from here click the **Edit Cell** <i class="fas
-   fa-pencil-alt"></i> button to edit the cell contents.
+A notebook is made up of **cells**. Each cell is either a `Markdown`
+cell (for formatted text, headings, and prose content) or a `VQL` cell
+(for queries). The cells appear as a seamless document until you click
+one to bring it into focus, at which point its editing controls
+appear. You can add, remove, reorder, and change the type of any cell
+at any time.
 
-   ![Editing a cell](image13.png)
+![Notebook cell without focus - no decorations visible](notebook_edit1.svg)
 
-There are two types of cells: A `Markdown` cell receives markdown text
-and renders HTML while a `VQL` cell can receive VQL queries. The cell
-type is shown on the right hand side of the cell toolbar. You may
-change cells from one type to the other at any time.
-
-5. Let's add a new cell to the notebook. Click the **Add Cell** button
-   <i class="fas fa-plus"></i> and a pull down menu appears offering
-   the type of Cell that can be added. For now, select a `VQL` cell.
-
-   ![New cell](new_cell.png)
-
-   ![Edit cell](new_cell2.png)
-
-After clicking the **Edit Cell** button, you can type VQL directory
-into the cell. As you type, the GUI offers context sensitive
-suggestions about what possible completions can appear at the cursor.
+When editing a VQL cell, the GUI offers context-sensitive suggestions
+as you type. Plugins that can only appear after a `FROM` clause are
+only suggested when the cursor is positioned after one. You can always
+press "?" to see all available completions.
 
 ![VQL auto-suggestions](autosuggest.png)
 
-Use your up and down arrow keys to navigate the suggestions, and Enter
-or Tab to select a suggestion. Typing "?" will show all possible
-suggestions.
+## Types of notebooks
 
-{{% notice tip "VQL suggestions are context-sensitive" %}}
+Velociraptor creates several kinds of notebooks, each serving a
+different purpose.
 
-Suggestions are context-sensitive, so VQL plugins which can only
-appear after a `FROM` clause will only be suggested when the cursor
-is positioned after a `FROM`.
+- **Global Notebooks** - created manually by users. Free-form
+  documents that can contain any combination of markdown and VQL. They
+  remain in the notebook list until deleted. Only visible to their
+  creator unless explicitly
+  [shared](/docs/notebooks/sharing/) with others.
 
-{{% /notice %}}
+- **Hunt notebooks** - created automatically when you view the
+  notebook tab of a hunt. Lets you post-process the hunt's results
+  using VQL queries that can aggregate data across all clients in the
+  hunt.
 
-Let's type the following VQL query into the VQL cell:
+- **Flow notebooks** (also called collection notebooks) - created
+  automatically when you view the notebook tab of a client collection.
+  Lets you explore the results of a single artifact collection.
 
-```vql
-SELECT * FROM info()
-```
+- **Event notebooks** - created automatically when you view an event
+  monitoring session.
 
-![Basic query](basic.png)
-
-
-{{% notice tip "Viewing the notebook in full screen" %}}
-
-The notebook may be switched into full screen mode via the notebook toolbar,
-which is useful when dealing with large tables. With this setting, the notebook
-takes up the entire width of the screen.
-
-![Full screen notebook](fullscreen.png)
-
-You can switch back to the pane view by clicking on the collapse button at the
-top right of the screen.
-
-{{% /notice %}}
-
-Notebooks like the one we just created are sometimes referred to as
-**Global Notebooks** to distinguish them from the notebooks attached
-to hunts and flows, described below.
-
-## Hunt and Flow Notebooks
-
-Notebooks are an excellent medium to run arbitrary VQL queries. Much
-of the time, these queries are used to post-process the results from
-collections or hunts.
-
-Therefore Velociraptor automatically creates a **hunt notebook** for each hunt
-and a **flow notebook** for each collection.
-
-For example, here we collected the `Windows.Timeline.Prefetch` artifact and can
-view it's results in the collection (flow) notebook.
+For hunt, flow, and event notebooks, the server checks whether the
+collected artifact includes a `notebook` section in its definition. If
+it does, the notebook is populated with the custom cells from that
+section. Otherwise, a default cell is created that simply queries the
+artifact's results.
 
 ![Example: flow notebook](timeline_prefetch.png)
 
-These automatically-created notebooks are always visible to all users
-in the org (i.e. there is no explicit
-[sharing](/docs/notebooks/sharing/) required, unlike Global Notebooks)
-and they can be accessed by any user who can log into the GUI. They
-can also be modified by any user who has the `NOTEBOOK_EDITOR`
-permission (included in the `investigator` role and above).
+Unlike Global Notebooks, automatic notebooks are visible to all users
+in the org without requiring explicit sharing. Any user with the
+`NOTEBOOK_EDITOR` permission (included in the `investigator` role and
+above) can modify them.
+
+## Notebook-scoped variables
+
+In automatically generated notebooks (hunt, flow, or event notebooks),
+variables such as `StartTime`, `EndTime`, `ClientId`, `FlowId`, and
+the artifact name are populated in the notebook's runtime environment.
+
+This allows plugins such as `source()` to retrieve the correct results
+(e.g. collection data in a flow notebook, or hunt data in a hunt
+notebook) without needing you to explicitly pass it all the function
+arguments.
+
+## Notebook creation from templates
+
+Every notebook is created from a **notebook template**. Templates are
+artifacts of type `NOTEBOOK`. They define the initial set of cells,
+any parameters the user must fill in, and optional tools or column
+formatting. When a user creates a new notebook, the template's VQL
+cells are calculated immediately, one at a time, before the notebook
+appears in the GUI. After that, the notebook behaves like any other —
+the template is only used for initial setup.
+
+For a complete reference on writing notebook templates, see the
+[Notebook Templates](/docs/notebooks/templates/) page.
+
+## Notebook sharing and collaboration
+
+Global Notebooks are private by default. Only the creator can see
+them in the notebook list. You can share a notebook with all users by
+making it public, or share it with specific users by adding them as
+collaborators.
+
+Sharing controls visibility in the GUI, but data inside a notebook is
+still accessible via VQL to any user who knows the notebook and cell
+IDs. This means the shared/private setting is a convenience feature,
+**not a security boundary**. See the
+[Notebook Sharing](/docs/notebooks/sharing/) page for details.
+
+## Full-screen mode
+
+Notebooks can be switched to full-screen mode via the notebook toolbar.
+This is useful when working with large tables, as it lets the notebook
+take up the full width of the browser window. You can return to the
+pane view by clicking the collapse button at the upper right.
+
+![Full screen notebook](fullscreen.png)
+
+
+
