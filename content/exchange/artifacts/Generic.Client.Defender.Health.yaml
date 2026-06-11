@@ -6,9 +6,7 @@ description: |
   MDATP is Microsoft's EDR product for Windows, macOS and Linux. This
   artifact retrieves all available agent status and configuration via the
   platform-native interface: `mdatp health --output json` on Linux and
-  macOS, `Get-MpComputerStatus` through
-  [`Windows.System.PowerShell`](/artifact_references/pages/windows.system.powershell/)
-  on Windows.
+  macOS, `Get-MpComputerStatus` on Windows.
 
   A single row is returned with a dict called `MDATPHealth` whose
   shape differs across platforms. Linux and macOS are nearly
@@ -88,8 +86,11 @@ sources:
             edrMachineId=read_file(
               accessor='reg',
               filename='''HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Advanced Threat Protection\senseId''')) AS MDATPHealth
-          FROM Artifact.Windows.System.PowerShell(
-            Command='Get-MpComputerStatus')
+          FROM execve(argv=[
+            '''C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe''',
+            '-ExecutionPolicy', 'Unrestricted',
+            '-encodedCommand', base64encode(string=utf16_encode(string='Get-MpComputerStatus'))
+          ])
         })))
 
     notebook:
