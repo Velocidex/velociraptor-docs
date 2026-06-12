@@ -177,13 +177,20 @@ Which produces the effective command line:
 velociraptor_collector.exe artifacts collect Collector -v --require_admin --nobanner --prompt
 ```
 
-### Constraints
+This modifies the offline collector behaviour slightly but it
+otherwise continues according to the embedded spec.
 
-- Flags already present in `autoexec.argv` cannot be negated or overridden.
-  Only flags not already set can be added.
-- Any global or command-specific [CLI flags](/docs/cli/flags/) can be used
-  as post args.
+Autoexec mode can be used in a lot of novel ways besides the usual
+offline collector use case. So this method of tweaking the command
+line allows you to use any of the global or command-specific
+[CLI flags](/docs/cli/flags/).
 
+Any global or command-specific [CLI flags](/docs/cli/flags/) can be
+used as post args.
+
+Note that if a flag is specified in `autoexec.argv` then it can't be
+negated or overridden. You can only _add_ flags that have not already
+been used.
 
 ## Learn about the commands available in the CLI
 
