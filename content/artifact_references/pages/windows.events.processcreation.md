@@ -5,26 +5,30 @@ sitemap:
   disable: true
 tags: [Client Event Artifact]
 description: |
-  Collect all process creation events.
+  Monitors for Windows process creation events using WMI
+  Win32_ProcessStartTrace and enriches them with parent and call chain
+  information.
 ---
 
-Collect all process creation events.
+Monitors for Windows process creation events using WMI
+Win32_ProcessStartTrace and enriches them with parent and call chain
+information.
 
-This artifact relies on WMI to receive process start events. This
-method is not as good as kernel mechanism used by Sysmon. It is more
-reliable to use Sysmon instead via the
-Windows.Sysinternals.SysmonLogForward artifact instead.
+This method is not as good as the kernel mechanism used by Sysmon.
+It is more reliable to use Sysmon instead via the
+`Windows.Sysinternals.SysmonLogForward` artifact.
 
 
 <pre><code class="language-yaml">
 name: Windows.Events.ProcessCreation
 description: |
-  Collect all process creation events.
-
-  This artifact relies on WMI to receive process start events. This
-  method is not as good as kernel mechanism used by Sysmon. It is more
-  reliable to use Sysmon instead via the
-  Windows.Sysinternals.SysmonLogForward artifact instead.
+  Monitors for Windows process creation events using WMI
+  Win32_ProcessStartTrace and enriches them with parent and call chain
+  information.
+  
+  This method is not as good as the kernel mechanism used by Sysmon.
+  It is more reliable to use Sysmon instead via the
+  `Windows.Sysinternals.SysmonLogForward` artifact.
 
 type: CLIENT_EVENT
 

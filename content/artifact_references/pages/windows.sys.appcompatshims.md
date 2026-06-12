@@ -5,22 +5,27 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Application Compatibility shims are a way to persist malware. This
-  table presents the AppCompat Shim information from the registry in a
-  nice format.
+  Queries the Windows registry for Application Compatibility shim
+  database entries and their associated executables.
 ---
 
+Queries the Windows registry for Application Compatibility shim
+database entries and their associated executables.
+
 Application Compatibility shims are a way to persist malware. This
-table presents the AppCompat Shim information from the registry in a
-nice format.
+artifact presents the AppCompat Shim information from the registry
+in a nice human-friendly format.
 
 
 <pre><code class="language-yaml">
 name: Windows.Sys.AppcompatShims
 description: |
+  Queries the Windows registry for Application Compatibility shim
+  database entries and their associated executables.
+  
   Application Compatibility shims are a way to persist malware. This
-  table presents the AppCompat Shim information from the registry in a
-  nice format.
+  artifact presents the AppCompat Shim information from the registry
+  in a nice human-friendly format.
 
 reference:
   - http://files.brucon.org/2015/Tomczak_and_Ballenthin_Shims_for_the_Win.pdf

@@ -5,16 +5,19 @@ sitemap:
   disable: true
 tags: [Server Artifact]
 description: |
-  Get Velociraptor server metrics.
+  Collects Velociraptor server performance metrics from the Prometheus
+  endpoint with CPU and memory stats.
 ---
 
-Get Velociraptor server metrics.
+Collects Velociraptor server performance metrics from the Prometheus
+endpoint with CPU and memory stats.
 
 
 <pre><code class="language-yaml">
 name: Server.Monitor.VeloMetrics
 description: |
-  Get Velociraptor server metrics.
+  Collects Velociraptor server performance metrics from the Prometheus
+  endpoint with CPU and memory stats.
 
 type: SERVER
 

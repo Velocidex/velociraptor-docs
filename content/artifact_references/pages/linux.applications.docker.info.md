@@ -5,14 +5,20 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Get Dockers info by connecting to its socket.
+  Connects to the Docker socket and retrieves daemon information
+  including containers, images, and driver settings.
 ---
 
-Get Dockers info by connecting to its socket.
+Connects to the Docker socket and retrieves daemon information
+including containers, images, and driver settings.
+
 
 <pre><code class="language-yaml">
 name: Linux.Applications.Docker.Info
-description: Get Dockers info by connecting to its socket.
+description: |
+  Connects to the Docker socket and retrieves daemon information
+  including containers, images, and driver settings.
+
 parameters:
   - name: dockerSocket
     description: |

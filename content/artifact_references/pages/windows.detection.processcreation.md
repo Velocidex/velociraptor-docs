@@ -5,22 +5,19 @@ sitemap:
   disable: true
 tags: [Client Event Artifact]
 description: |
-  This artifact logs specific process creation events to
-  Velociraptor. It auto-installs Sysmon and it watches the Sysmon ETW
-  provider for new events.
+  Deploys Sysmon and watches the Sysmon ETW provider for specific
+  process creation events, which are then forwarded to the server.
 ---
 
-This artifact logs specific process creation events to
-Velociraptor. It auto-installs Sysmon and it watches the Sysmon ETW
-provider for new events.
+Deploys Sysmon and watches the Sysmon ETW provider for specific
+process creation events, which are then forwarded to the server.
 
 
 <pre><code class="language-yaml">
 name: Windows.Detection.ProcessCreation
 description: |
-  This artifact logs specific process creation events to
-  Velociraptor. It auto-installs Sysmon and it watches the Sysmon ETW
-  provider for new events.
+  Deploys Sysmon and watches the Sysmon ETW provider for specific
+  process creation events, which are then forwarded to the server.
 
 author: Jos Clephas - @DfirJos
 

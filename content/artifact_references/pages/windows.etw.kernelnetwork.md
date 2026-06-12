@@ -5,10 +5,15 @@ sitemap:
   disable: true
 tags: [Client Event Artifact]
 description: |
-  This artifact follows the Microsoft-Windows-Kernel-Network provider.
+  Monitors network events (connections, data send/receive) via the
+  Kernel-Network ETW provider.
 ---
 
-This artifact follows the Microsoft-Windows-Kernel-Network provider.
+Monitors network events (connections, data send/receive) via the
+Kernel-Network ETW provider.
+
+This artifact follows the `Microsoft-Windows-Kernel-Network`
+provider.
 
 NOTE: We can only attach to this provider when running as
 NT_USER/SYSTEM.
@@ -17,13 +22,17 @@ NT_USER/SYSTEM.
 <pre><code class="language-yaml">
 name: Windows.ETW.KernelNetwork
 description: |
-  This artifact follows the Microsoft-Windows-Kernel-Network provider.
+  Monitors network events (connections, data send/receive) via the
+  Kernel-Network ETW provider.
+  
+  This artifact follows the `Microsoft-Windows-Kernel-Network`
+  provider.
 
   NOTE: We can only attach to this provider when running as
   NT_USER/SYSTEM.
 
 references:
-- "https://github.com/repnz/etw-providers-docs/blob/master/Manifests-Win10-18990/Microsoft-Windows-Kernel-Network.xml"
+- https://github.com/repnz/etw-providers-docs/blob/master/Manifests-Win10-18990/Microsoft-Windows-Kernel-Network.xml
 
 type: CLIENT_EVENT
 

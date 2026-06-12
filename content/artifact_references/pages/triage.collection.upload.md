@@ -5,16 +5,16 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  A Generic uploader used by triaging artifacts.
+  A generic uploader used by triaging artifacts.
 ---
 
-A Generic uploader used by triaging artifacts.
+A generic uploader used by triaging artifacts.
 
 
 <pre><code class="language-yaml">
 name: Triage.Collection.Upload
 description: |
-  A Generic uploader used by triaging artifacts.
+  A generic uploader used by triaging artifacts.
 
 parameters:
   - name: path

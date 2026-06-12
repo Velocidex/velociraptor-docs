@@ -5,19 +5,20 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Details for in-use Windows device drivers. This does not display
-  installed but unused drivers.
+  Enumerates running Windows device drivers with optional authenticode signature checking.
 ---
 
-Details for in-use Windows device drivers. This does not display
-installed but unused drivers.
+Enumerates running Windows device drivers with optional authenticode signature checking.
+
+This does not display installed-but-unused drivers.
 
 
 <pre><code class="language-yaml">
 name: Windows.Sys.Drivers
 description: |
-  Details for in-use Windows device drivers. This does not display
-  installed but unused drivers.
+  Enumerates running Windows device drivers with optional authenticode signature checking.
+
+  This does not display installed-but-unused drivers.
 
 precondition:
       SELECT OS From info() where OS = 'windows'

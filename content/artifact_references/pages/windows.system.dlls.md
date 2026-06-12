@@ -5,19 +5,19 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Enumerate the DLLs loaded by a running process. It includes hash value
-  and certificate information.
+  Lists DLLs loaded by running processes with optional hash
+  computation and certificate information.
 ---
 
-Enumerate the DLLs loaded by a running process. It includes hash value
-and certificate information.
+Lists DLLs loaded by running processes with optional hash
+computation and certificate information.
 
 
 <pre><code class="language-yaml">
 name: Windows.System.DLLs
 description: |
-  Enumerate the DLLs loaded by a running process. It includes hash value
-  and certificate information.
+  Lists DLLs loaded by running processes with optional hash
+  computation and certificate information.
 
 parameters:
   - name: ProcessRegex

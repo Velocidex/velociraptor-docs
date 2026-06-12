@@ -5,19 +5,22 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Gets a list of local admin accounts.
+  Retrieves local administrator accounts from a Windows system via
+  PowerShell.
 ---
 
-Gets a list of local admin accounts.
+Retrieves local administrator accounts from a Windows system via
+PowerShell.
 
 
 <pre><code class="language-yaml">
 name: Windows.System.LocalAdmins
 description: |
-   Gets a list of local admin accounts.
+  Retrieves local administrator accounts from a Windows system via
+  PowerShell.
 
 reference:
-- https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.localaccounts/get-localgroupmember?view=powershell-5.1
+  - https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.localaccounts/get-localgroupmember?view=powershell-5.1
 
 type: CLIENT
 

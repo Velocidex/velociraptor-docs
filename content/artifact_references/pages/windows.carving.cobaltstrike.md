@@ -5,55 +5,58 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  This artifact extracts Cobalt Strike configuration from a byte stream, process
-  or file on disk such as a process dump. Best used as a triage step against a
-  detection of a Cobalt Strike beacon via a YARA process scan.
+  Extracts Cobalt Strike beacon configuration from byte streams,
+  process memory, or files on disk such as a process dump.
 ---
 
-This artifact extracts Cobalt Strike configuration from a byte stream, process
-or file on disk such as a process dump. Best used as a triage step against a
-detection of a Cobalt Strike beacon via a YARA process scan.
+Extracts Cobalt Strike beacon configuration from byte streams,
+process memory, or files on disk such as a process dump.
 
-The User can define bytes, file glob, process name or pid regex as a target. The
-content will search for a configuration pattern, extract a defined byte size,
-xor with discovered key, then attempt configuration extraction.
+Best used as a triage step against a detection of a Cobalt Strike
+beacon via a YARA process scan.
 
-- Cobalt Strike beacon configuration is typically XORed with 0x69 or 0x2e
-(depending on version) but trivial to change.
-- Configuration is built in a typical index / type / length / value structure
-with either big endian values or zero terminated strings.
-- If no beacon is found, parser will fallback to Cobalt Strike Shellcode analysis.
+The User can define bytes, file glob, process name or pid regex as a
+target. The content will search for a configuration pattern, extract
+a defined byte size, xor with discovered key, then attempt
+configuration extraction.
 
-This content simply carves the configuration and does not unpack files on
-disk. That means pointing this artifact as a packed or obfuscated file may not
-obtain the expected results.
+- Cobalt Strike beacon configuration is typically XORed with 0x69 or
+  0x2e (depending on version) but trivial to change.
+- Configuration is built in a typical index / type / length / value
+  structure with either big endian values or zero terminated strings.
+- If no beacon is found, parser will fallback to Cobalt Strike
+  Shellcode analysis.
 
-Unpacking later version.
+This simply carves the configuration and does not unpack files on
+disk. That means pointing this artifact at a packed or obfuscated
+file may not return the expected results.
 
 
 <pre><code class="language-yaml">
 name: Windows.Carving.CobaltStrike
 author: Matt Green - @mgreen27
 description: |
-  This artifact extracts Cobalt Strike configuration from a byte stream, process
-  or file on disk such as a process dump. Best used as a triage step against a
-  detection of a Cobalt Strike beacon via a YARA process scan.
+  Extracts Cobalt Strike beacon configuration from byte streams,
+  process memory, or files on disk such as a process dump.
+  
+  Best used as a triage step against a detection of a Cobalt Strike
+  beacon via a YARA process scan.
 
-  The User can define bytes, file glob, process name or pid regex as a target. The
-  content will search for a configuration pattern, extract a defined byte size,
-  xor with discovered key, then attempt configuration extraction.
+  The User can define bytes, file glob, process name or pid regex as a
+  target. The content will search for a configuration pattern, extract
+  a defined byte size, xor with discovered key, then attempt
+  configuration extraction.
 
-  - Cobalt Strike beacon configuration is typically XORed with 0x69 or 0x2e
-  (depending on version) but trivial to change.
-  - Configuration is built in a typical index / type / length / value structure
-  with either big endian values or zero terminated strings.
-  - If no beacon is found, parser will fallback to Cobalt Strike Shellcode analysis.
+  - Cobalt Strike beacon configuration is typically XORed with 0x69 or
+    0x2e (depending on version) but trivial to change.
+  - Configuration is built in a typical index / type / length / value
+    structure with either big endian values or zero terminated strings.
+  - If no beacon is found, parser will fallback to Cobalt Strike
+    Shellcode analysis.
 
-  This content simply carves the configuration and does not unpack files on
-  disk. That means pointing this artifact as a packed or obfuscated file may not
-  obtain the expected results.
-
-  Unpacking later version.
+  This simply carves the configuration and does not unpack files on
+  disk. That means pointing this artifact at a packed or obfuscated
+  file may not return the expected results.
 
 reference:
   - https://attack.mitre.org/software/S0154/

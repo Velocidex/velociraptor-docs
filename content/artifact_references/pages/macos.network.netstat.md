@@ -5,16 +5,16 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Report network connections, and enrich with process information.
+  Reports network connections enriched with process information.
 ---
 
-Report network connections, and enrich with process information.
+Reports network connections enriched with process information.
 
 
 <pre><code class="language-yaml">
 name: MacOS.Network.Netstat
 description: |
-  Report network connections, and enrich with process information.
+  Reports network connections enriched with process information.
 
 type: CLIENT
 

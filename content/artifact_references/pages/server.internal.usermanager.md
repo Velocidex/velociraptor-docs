@@ -5,17 +5,17 @@ sitemap:
   disable: true
 tags: [Internal Artifact]
 description: |
-  An internal artifact notifying when user accounts are modified.
+  Fires an event when Velociraptor user accounts are created, modified, or deleted.
 ---
 
-An internal artifact notifying when user accounts are modified.
+Fires an event when Velociraptor user accounts are created, modified, or deleted.
 
 
 <pre><code class="language-yaml">
 name: Server.Internal.UserManager
 type: INTERNAL
 description: |
-  An internal artifact notifying when user accounts are modified.
+  Fires an event when Velociraptor user accounts are created, modified, or deleted.
 
 </code></pre>
 

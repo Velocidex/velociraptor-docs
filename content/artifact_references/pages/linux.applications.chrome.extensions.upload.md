@@ -5,22 +5,22 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Upload all users chrome extension.
+  Uploads the Chrome extension files from each user's home directory.
 ---
 
-Upload all users chrome extension.
+Uploads the Chrome extension files from each user's home directory.
 
-We don't bother actually parsing anything here, we just grab all the
-extension files in user's home directory.
+Note that this does not parse any of the files - it just grabs all
+the extension files in each user's home directory.
 
 
 <pre><code class="language-yaml">
 name: Linux.Applications.Chrome.Extensions.Upload
 description: |
-  Upload all users chrome extension.
+  Uploads the Chrome extension files from each user's home directory.
 
-  We don't bother actually parsing anything here, we just grab all the
-  extension files in user's home directory.
+  Note that this does not parse any of the files - it just grabs all
+  the extension files in each user's home directory.
 
 parameters:
   - name: extensionGlobs

@@ -5,27 +5,25 @@ sitemap:
   disable: true
 tags: [Client Event Artifact]
 description: |
-  An Event artifact which records client's CPU and memory
-  statistics.
+  Records CPU and memory statistics for the Velociraptor client
+  process.
 ---
 
-An Event artifact which records client's CPU and memory
-statistics.
+Records CPU and memory statistics for the Velociraptor client
+process.
 
-To learn about managing end point performance with Velociraptor
-see this [blog
-post](https://docs.velociraptor.app/blog/html/2019/02/10/velociraptor_performance/).
+To learn about managing endpoint performance with Velociraptor see
+this [blog post](https://docs.velociraptor.app/blog/html/2019/02/10/velociraptor_performance/).
 
 
 <pre><code class="language-yaml">
 name: Generic.Client.Stats
 description: |
-    An Event artifact which records client's CPU and memory
-    statistics.
+    Records CPU and memory statistics for the Velociraptor client
+    process.
 
-    To learn about managing end point performance with Velociraptor
-    see this [blog
-    post](https://docs.velociraptor.app/blog/html/2019/02/10/velociraptor_performance/).
+    To learn about managing endpoint performance with Velociraptor see
+    this [blog post](https://docs.velociraptor.app/blog/html/2019/02/10/velociraptor_performance/).
 
 parameters:
   - name: Frequency

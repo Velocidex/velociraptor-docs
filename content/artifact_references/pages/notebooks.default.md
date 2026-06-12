@@ -5,16 +5,19 @@ sitemap:
   disable: true
 tags: [notebook]
 description: |
-  A default notebook.
+  Creates a new notebook with a welcome message and placeholder VQL
+  cell.
 ---
 
-A default notebook.
+Creates a new notebook with a welcome message and placeholder VQL
+cell.
 
 
 <pre><code class="language-yaml">
 name: Notebooks.Default
 description: |
-  A default notebook.
+  Creates a new notebook with a welcome message and placeholder VQL
+  cell.
 
 type: NOTEBOOK
 

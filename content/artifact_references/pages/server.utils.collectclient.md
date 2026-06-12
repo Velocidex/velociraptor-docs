@@ -5,9 +5,12 @@ sitemap:
   disable: true
 tags: [Server Artifact]
 description: |
-  This artifact simplifies collecting from a specific client by
-  performing all steps automatically:
+  Automates the full collection workflow of a specified artifact:
+  schedule, wait, and retrieve results from a single client.
 ---
+
+Automates the full collection workflow of a specified artifact:
+schedule, wait, and retrieve results from a single client.
 
 This artifact simplifies collecting from a specific client by
 performing all steps automatically:
@@ -20,6 +23,9 @@ performing all steps automatically:
 <pre><code class="language-yaml">
 name: Server.Utils.CollectClient
 description: |
+  Automates the full collection workflow of a specified artifact:
+  schedule, wait, and retrieve results from a single client.
+  
   This artifact simplifies collecting from a specific client by
   performing all steps automatically:
 

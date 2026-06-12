@@ -5,40 +5,40 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  List all packages installed on the system, both deb packages and "snaps".
+  Queries `dpkg` and `snapd` to list installed deb and snap packages.
 ---
 
-List all packages installed on the system, both deb packages and "snaps".
+Queries `dpkg` and `snapd` to list installed deb and snap packages.
 
-The installed deb package information is fetched from the DPKG status file,
-while the snap package list is fetched from the snap daemon through a UNIX
-socket HTTP call (since detailed snap package information is not easily
-found in files).
+The installed deb package information is fetched from the DPKG
+status file, while the snap package list is fetched from the snap
+daemon through a UNIX socket HTTP call (since detailed snap package
+information is not easily found in files).
 
 The following columns are parsed from the DPKG status file:
 
- - Package
- - _SelectionState (install, hold, deinstall, purge, unknown)
- - _Flag (ok, reinstreq)
- - State (not-installed, config-files, half-installed, unpacked,
-   half-configured, triggers-awaited, triggers-pending, installed)
- - InstalledSize
- - Version
- - Source
- - _Description
- - Architecture
+- Package
+- _SelectionState (install, hold, deinstall, purge, unknown)
+- _Flag (ok, reinstreq)
+- State (not-installed, config-files, half-installed, unpacked,
+  half-configured, triggers-awaited, triggers-pending, installed)
+- InstalledSize
+- Version
+- Source
+- _Description
+- Architecture
 
 The following columns are parsed from the snap package response (/v2/snaps):
 
- - Name
- - _Summary
- - _Description
- - Status (available, installed, active, removed, priced)
- - InstalledSize
- - Publisher
- - InstalledAt
- - Version
- - Channel
+- Name
+- _Summary
+- _Description
+- Status (available, installed, active, removed, priced)
+- InstalledSize
+- Publisher
+- InstalledAt
+- Version
+- Channel
 
 Both package sources provide more information than this and, and the artifact
 can easily be modified to include more details.
@@ -48,14 +48,14 @@ can easily be modified to include more details.
 name: Linux.Debian.Packages
 author: Andreas Misje – @Misje
 description: |
- List all packages installed on the system, both deb packages and "snaps".
+  Queries `dpkg` and `snapd` to list installed deb and snap packages.
 
- The installed deb package information is fetched from the DPKG status file,
- while the snap package list is fetched from the snap daemon through a UNIX
- socket HTTP call (since detailed snap package information is not easily
- found in files).
+  The installed deb package information is fetched from the DPKG
+  status file, while the snap package list is fetched from the snap
+  daemon through a UNIX socket HTTP call (since detailed snap package
+  information is not easily found in files).
 
- The following columns are parsed from the DPKG status file:
+  The following columns are parsed from the DPKG status file:
 
   - Package
   - _SelectionState (install, hold, deinstall, purge, unknown)
@@ -68,7 +68,7 @@ description: |
   - _Description
   - Architecture
 
- The following columns are parsed from the snap package response (/v2/snaps):
+  The following columns are parsed from the snap package response (/v2/snaps):
 
   - Name
   - _Summary
@@ -80,8 +80,8 @@ description: |
   - Version
   - Channel
 
- Both package sources provide more information than this and, and the artifact
- can easily be modified to include more details.
+  Both package sources provide more information than this and, and the artifact
+  can easily be modified to include more details.
 
 parameters:
   - name: linuxDpkgStatus

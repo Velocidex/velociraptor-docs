@@ -5,21 +5,21 @@ sitemap:
   disable: true
 tags: [Server Artifact]
 description: |
-  Extracts file collected by the `Windows.KapeFiles.Targets` or
-  `Windows.Triage.Targets` artifacts. and restores the original
+  Extracts files collected by the `Windows.KapeFiles.Targets` or
+  `Windows.Triage.Targets` artifacts, and restores the original
   timestamps on the extracted files.
 ---
 
-Extracts file collected by the `Windows.KapeFiles.Targets` or
-`Windows.Triage.Targets` artifacts. and restores the original
+Extracts files collected by the `Windows.KapeFiles.Targets` or
+`Windows.Triage.Targets` artifacts, and restores the original
 timestamps on the extracted files.
 
-These artifacts collect files from the endpoint into a zip
-file. Zip files cannot generally preserve timestamps since they
-only have a single timestamp concept. Velociraptor will only record
-the modified time in the zip file header itself but all the times
-are present in the internal metadata file:
-`Windows.KapeFiles.Targets/All File Metadata.json`
+These artifacts collect files from the endpoint into a zip file. Zip
+files cannot generally preserve timestamps since they only have a
+single timestamp concept. Velociraptor will only record the modified
+time in the zip file header itself but all the times are present in
+the internal metadata file: `Windows.KapeFiles.Targets/All File
+Metadata.json`
 
 Sometimes, users wish to extract the contents of a collection to a
 directory, and run an external tool over the data. Some such
@@ -45,16 +45,16 @@ velociraptor artifacts collect Windows.KapeFiles.Extract --args ContainerPath=Co
 <pre><code class="language-yaml">
 name: Windows.KapeFiles.Extract
 description: |
-  Extracts file collected by the `Windows.KapeFiles.Targets` or
-  `Windows.Triage.Targets` artifacts. and restores the original
+  Extracts files collected by the `Windows.KapeFiles.Targets` or
+  `Windows.Triage.Targets` artifacts, and restores the original
   timestamps on the extracted files.
 
-  These artifacts collect files from the endpoint into a zip
-  file. Zip files cannot generally preserve timestamps since they
-  only have a single timestamp concept. Velociraptor will only record
-  the modified time in the zip file header itself but all the times
-  are present in the internal metadata file:
-  `Windows.KapeFiles.Targets/All File Metadata.json`
+  These artifacts collect files from the endpoint into a zip file. Zip
+  files cannot generally preserve timestamps since they only have a
+  single timestamp concept. Velociraptor will only record the modified
+  time in the zip file header itself but all the times are present in
+  the internal metadata file: `Windows.KapeFiles.Targets/All File
+  Metadata.json`
 
   Sometimes, users wish to extract the contents of a collection to a
   directory, and run an external tool over the data. Some such

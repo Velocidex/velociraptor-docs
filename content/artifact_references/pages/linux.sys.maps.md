@@ -5,28 +5,27 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  A running binary may link other binaries into its address
-  space. These shared objects contain exported functions which may be
-  used by the binary.
+  Extracts mapped library and file information from `/proc/<pid>/maps`
+  for running processes.
 ---
 
-A running binary may link other binaries into its address
-space. These shared objects contain exported functions which may be
-used by the binary.
+Extracts mapped library and file information from `/proc/<pid>/maps`
+for running processes.
 
-This artifact parses the /proc/<pid>/maps to emit all mapped files
-into the process.
+A running binary may link other binaries into its address space.
+These shared objects contain exported functions which may be used by
+the binary.
 
 
 <pre><code class="language-yaml">
 name: Linux.Sys.Maps
 description: |
-  A running binary may link other binaries into its address
-  space. These shared objects contain exported functions which may be
-  used by the binary.
+  Extracts mapped library and file information from `/proc/&lt;pid&gt;/maps`
+  for running processes.
 
-  This artifact parses the /proc/&lt;pid&gt;/maps to emit all mapped files
-  into the process.
+  A running binary may link other binaries into its address space.
+  These shared objects contain exported functions which may be used by
+  the binary.
 
 precondition: SELECT OS From info() where OS = 'linux'
 

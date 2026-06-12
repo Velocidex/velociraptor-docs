@@ -5,10 +5,12 @@ sitemap:
   disable: true
 tags: [Server Artifact]
 description: |
-  Build an MSI ready for deployment in the current org.
+  Builds a Windows MSI deployment package using the current org's
+  client configuration.
 ---
 
-Build an MSI ready for deployment in the current org.
+Builds a Windows MSI deployment package using the current org's
+client configuration.
 
 This artifact depends on the following tools:
 
@@ -21,7 +23,8 @@ You can replace those with suitable MSI builds.
 <pre><code class="language-yaml">
 name: Server.Utils.CreateMSI
 description: |
-  Build an MSI ready for deployment in the current org.
+  Builds a Windows MSI deployment package using the current org's
+  client configuration.
 
   This artifact depends on the following tools:
 

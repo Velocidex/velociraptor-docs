@@ -5,14 +5,17 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Fetch Chrome extensions.
+  Parses Chrome extension manifest files to identify installed
+  extensions and their permissions.
 ---
 
-Fetch Chrome extensions.
+Parses Chrome extension manifest files to identify installed
+extensions and their permissions.
 
-Chrome extensions are installed into the user's home directory.  We
-search for manifest.json files in a known path within each system
-user's home directory. We then parse the manifest file as JSON.
+Chrome extensions are installed into the user's home directory. This
+artifact searches for `manifest.json` files in a known path within
+each user's home directory, and then parses the manifest file as
+JSON.
 
 Many extensions use locale packs to resolve strings like name and
 description. In this case we detect the default locale and load
@@ -28,11 +31,13 @@ Generic.Forensic.SQLiteHunter and will be removed in future
 <pre><code class="language-yaml">
 name: Windows.Applications.Chrome.Extensions
 description: |
-  Fetch Chrome extensions.
+  Parses Chrome extension manifest files to identify installed
+  extensions and their permissions.
 
-  Chrome extensions are installed into the user's home directory.  We
-  search for manifest.json files in a known path within each system
-  user's home directory. We then parse the manifest file as JSON.
+  Chrome extensions are installed into the user's home directory. This
+  artifact searches for `manifest.json` files in a known path within
+  each user's home directory, and then parses the manifest file as
+  JSON.
 
   Many extensions use locale packs to resolve strings like name and
   description. In this case we detect the default locale and load
@@ -43,7 +48,6 @@ description: |
 
   This artifact is deprecated in favor of
   Generic.Forensic.SQLiteHunter and will be removed in future
-
 
 parameters:
   - name: extensionGlobs

@@ -5,16 +5,19 @@ sitemap:
   disable: true
 tags: [Client Event Artifact]
 description: |
-  A client-side event forwarder to forward Sysmon events to the server.
+  Reads Sysmon operational events from ETW and forwards them to the
+  server for analysis.
 ---
 
-A client-side event forwarder to forward Sysmon events to the server.
+Reads Sysmon operational events from ETW and forwards them to the
+server for analysis.
 
 
 <pre><code class="language-yaml">
 name: Windows.Sysinternals.SysmonLogForward
 description: |
-  A client-side event forwarder to forward Sysmon events to the server.
+  Reads Sysmon operational events from ETW and forwards them to the
+  server for analysis.
 
 type: CLIENT_EVENT
 

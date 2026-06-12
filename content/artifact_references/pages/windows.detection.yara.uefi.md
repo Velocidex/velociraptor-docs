@@ -5,18 +5,17 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  This artifact enables running YARA over files in an EFI System Partition (ESP).
+  Scans EFI System Partition files with YARA rules for rootkit detection.
 ---
 
-This artifact enables running YARA over files in an EFI System Partition (ESP).
+Scans EFI System Partition files with YARA rules for rootkit detection.
 
 
 <pre><code class="language-yaml">
 name: Windows.Detection.Yara.UEFI
 author: Matt Green - @mgreen27
 description: |
-  This artifact enables running YARA over files in an EFI System Partition (ESP).
-
+  Scans EFI System Partition files with YARA rules for rootkit detection.
 
 parameters:
   - name: ImagePath

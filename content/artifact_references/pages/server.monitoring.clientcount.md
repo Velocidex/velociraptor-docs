@@ -5,20 +5,26 @@ sitemap:
   disable: true
 tags: [Server Event Artifact]
 description: |
-  An artifact that sends an email every hour of the current state of
-  the deployment.
+  Emails deployment statistics, including the connected client count,
+  on a configurable schedule.
 ---
 
-An artifact that sends an email every hour of the current state of
-the deployment.
+Emails deployment statistics, including the connected client count,
+on a configurable schedule.
+
+By default, this artifact sends an email every hour summarizing the
+current state of the deployment.
 
 
 <pre><code class="language-yaml">
 name: Server.Monitoring.ClientCount
 
 description: |
-   An artifact that sends an email every hour of the current state of
-   the deployment.
+   Emails deployment statistics, including the connected client count,
+   on a configurable schedule.
+
+   By default, this artifact sends an email every hour summarizing the
+   current state of the deployment.
 
 type: SERVER_EVENT
 

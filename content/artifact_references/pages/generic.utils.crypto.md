@@ -5,20 +5,23 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  A utility artifact to provide helpful utility functions.
+  A utility artifact that provides HMAC-SHA256 and other custom hash
+  functions.
 ---
 
-A utility artifact to provide helpful utility functions.
+A utility artifact that provides HMAC-SHA256 and other custom hash
+functions.
 
-To use, import this artifact and use the functions.
+To use, import this artifact and call the functions in your queries.
 
 
 <pre><code class="language-yaml">
 name: Generic.Utils.Crypto
 description: |
-  A utility artifact to provide helpful utility functions.
+  A utility artifact that provides HMAC-SHA256 and other custom hash
+  functions.
 
-  To use, import this artifact and use the functions.
+  To use, import this artifact and call the functions in your queries.
 
 export: |
   /* Verify against python

@@ -1,7 +1,6 @@
+
 ---
 menutitle: RawCopy
-description: |
-  ## RawCopy
 ---
 
 ## RawCopy

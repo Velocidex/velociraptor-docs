@@ -5,15 +5,15 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  This artifact allows running arbitrary commands through the system
-  PowerShell.
+  Executes arbitrary commands through PowerShell with output capture
+  and upload support.
 ---
 
-This artifact allows running arbitrary commands through the system
-PowerShell.
+Executes arbitrary commands through PowerShell with output capture
+and upload support.
 
-Since Velociraptor typically runs as system, the commands will also
-run as System.
+Since Velociraptor typically runs as SYSTEM, the commands will also
+run as SYSTEM.
 
 This is a very powerful artifact since it allows for arbitrary
 command execution on the endpoints. Therefore this artifact requires
@@ -41,11 +41,11 @@ spaces in it:
 <pre><code class="language-yaml">
 name: Windows.System.PowerShell
 description: |
-  This artifact allows running arbitrary commands through the system
-  PowerShell.
+  Executes arbitrary commands through PowerShell with output capture
+  and upload support.
 
-  Since Velociraptor typically runs as system, the commands will also
-  run as System.
+  Since Velociraptor typically runs as SYSTEM, the commands will also
+  run as SYSTEM.
 
   This is a very powerful artifact since it allows for arbitrary
   command execution on the endpoints. Therefore this artifact requires
@@ -72,41 +72,114 @@ description: |
 required_permissions:
   - EXECVE
 
-precondition:
-  SELECT OS From info() where OS = 'windows'
-
 parameters:
   - name: Command
     default: "dir C:/"
   - name: PowerShellExe
     default: "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+  - name: Timeout
+    type: int
+    default: "3500"
+    description: How long to leave the session running for.
 
 sources:
-  - query: |
+  - precondition: |
+      SELECT * FROM info()
+      WHERE OS = 'windows' AND version(function="shell_session")
+    query: |
+      // Get the core flow id to key a unique session off.
+      LET FLOWID &lt;= split(string=_SessionId, sep="/")[0]
+
+      // Newer clients have support for true shell sessions.
+      LET Session &lt;= shell_session(name=FLOWID,
+      argv=[PowerShellExe, "-ExecutionPolicy", "Unrestricted"])
+
+      LET _ &lt;= shell_session_control(name=FLOWID, stdin=Command + "\n")
+
+      // Shut the session down gracefully without timing out the flow.
+      LET SessionSink = SELECT Stdin AS Command,
+             timestamp(epoch=now(ns=TRUE)) AS Timestamp,
+             Stdout,
+             NULL AS StdoutUpload,
+             Stderr,
+             NULL AS StderrUpload
+         FROM foreach(row=Session.Query)
+
+      SELECT * FROM if(condition=NOT Session.IsRunning,
+      then={
+        SELECT *
+        FROM query(query=SessionSink, timeout=Timeout, inherit=TRUE)
+      })
+
+    notebook:
+      - type: vql
+        name: Transcript
+        template: |
+          /*
+          # View session transcript
+          */
+          LET Transcript = pipe(query={
+             SELECT Stdout AS Line
+             FROM source()
+             WHERE Line
+          })
+
+          SELECT upload(accessor="pipe",
+               file="Transcript", name="transcript.txt") AS Transcript
+          FROM scope()
+
+  - precondition: |
+      SELECT * FROM info()
+      WHERE OS = "windows" AND NOT version(function="shell_session")
+    notebook:
+      - type: none
+    query: |
       LET SizeLimit &lt;= 4096
-      SELECT if(condition=len(list=Stdout) &lt; SizeLimit,
+      LET Now &lt;= str(str=now())
+
+      LET Output = SELECT "" AS Command,
+             timestamp(epoch=now()) AS Timestamp,
+             if(condition=len(list=Stdout) &lt; SizeLimit,
                 then=Stdout) AS Stdout,
              if(condition=len(list=Stdout) &gt;= SizeLimit,
                 then=upload(accessor="data",
                             file=Stdout,
-                            name="Stdout" + str(str=count()))) AS StdoutUpload,
+                            name="Stdout/" + Now)) AS StdoutUpload,
              if(condition=len(list=Stderr) &lt; SizeLimit,
                 then=Stderr) AS Stderr,
              if(condition=len(list=Stderr) &gt;= SizeLimit,
                 then=upload(accessor="data",
                             file=Stderr,
-                            name="Stderr" + str(str=count()))) AS StderrUpload,
+                            name="Stderr/" + Now)) AS StderrUpload,
              *
       FROM execve(argv=[PowerShellExe,
         "-ExecutionPolicy", "Unrestricted", "-encodedCommand",
         base64encode(string=utf16_encode(string=Command))
       ], length=10000000)
 
+      SELECT * FROM chain(a={
+         SELECT Command,
+                timestamp(epoch=now()) AS Timestamp,
+                "" AS Stdout,
+                NULL AS StdoutUpload,
+                "" AS Stderr,
+                NULL AS StderrUpload
+         FROM scope()
+      }, b=Output)
+
+
 column_types:
 - name: StdoutUpload
   type: preview_upload
 - name: StderrUpload
   type: preview_upload
+- name: Transcript
+  type: preview_upload
+
+resources:
+  # By default the shell session is up for an hour or until cancelled
+  # by the GUI.
+  timeout: 3600
 
 </code></pre>
 

@@ -5,14 +5,18 @@ sitemap:
   disable: true
 tags: [Server Artifact]
 description: |
-  Run Cortex analyzer jobs across all enabled and applicable analyzers (based on supported analyzer data types), then retrieve the results.
+  A utility artifact that runs Cortex analyzer jobs on observables and
+  retrieves the results from all applicable analyzers.
 ---
 
-Run Cortex analyzer jobs across all enabled and applicable analyzers (based on supported analyzer data types), then retrieve the results.
+A utility artifact that runs Cortex analyzer jobs on observables and
+retrieves the results from all applicable analyzers.
 
-This artifact can be called from within another artifact (such as one looking for files) to enrich the data made available by that artifact.
+This artifact is expected to be called from within another artifact
+(such as one looking for files) to enrich the data made available by
+that artifact.
 
-Ex.
+#### Example
 
   `SELECT * from Artifact.Server.Enrichment.CortexAnalyzer(Observable=$YOURHASH, ObservableType='hash')`
 
@@ -20,11 +24,14 @@ Ex.
 <pre><code class="language-yaml">
 name: Server.Enrichment.CortexAnalyzer
 description: |
-  Run Cortex analyzer jobs across all enabled and applicable analyzers (based on supported analyzer data types), then retrieve the results.
+  A utility artifact that runs Cortex analyzer jobs on observables and
+  retrieves the results from all applicable analyzers.
 
-  This artifact can be called from within another artifact (such as one looking for files) to enrich the data made available by that artifact.
+  This artifact is expected to be called from within another artifact
+  (such as one looking for files) to enrich the data made available by
+  that artifact.
 
-  Ex.
+  #### Example
 
     `SELECT * from Artifact.Server.Enrichment.CortexAnalyzer(Observable=$YOURHASH, ObservableType='hash')`
 

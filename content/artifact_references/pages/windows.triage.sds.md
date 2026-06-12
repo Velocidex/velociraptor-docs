@@ -5,28 +5,29 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Collects the $Secure:$SDS stream from the NTFS volume. The $Secure
-  stream is both a directory (it has I30 stream) and a file (it has a
-  $DATA stream) and therefore confuses the Windows.KapeFiles.Target
-  artifact which relies on globbing. Use this artifact to collect the
-  $SDS stream.
+  Extracts the $Secure:$SDS NTFS stream from a specified drive volume
+  using raw MFT parsing.
 ---
 
-Collects the $Secure:$SDS stream from the NTFS volume. The $Secure
-stream is both a directory (it has I30 stream) and a file (it has a
-$DATA stream) and therefore confuses the Windows.KapeFiles.Target
-artifact which relies on globbing. Use this artifact to collect the
-$SDS stream.
+Extracts the $Secure:$SDS NTFS stream from a specified drive volume
+using raw MFT parsing.
+
+The $Secure stream is both a directory (it has I30 stream) and a
+file (it has a $DATA stream) and therefore confuses the
+`Windows.KapeFiles.Target` artifact which relies on globbing. Use
+this artifact to collect the $SDS stream.
 
 
 <pre><code class="language-yaml">
 name: Windows.Triage.SDS
 description: |
-  Collects the $Secure:$SDS stream from the NTFS volume. The $Secure
-  stream is both a directory (it has I30 stream) and a file (it has a
-  $DATA stream) and therefore confuses the Windows.KapeFiles.Target
-  artifact which relies on globbing. Use this artifact to collect the
-  $SDS stream.
+  Extracts the $Secure:$SDS NTFS stream from a specified drive volume
+  using raw MFT parsing.
+  
+  The $Secure stream is both a directory (it has I30 stream) and a
+  file (it has a $DATA stream) and therefore confuses the
+  `Windows.KapeFiles.Target` artifact which relies on globbing. Use
+  this artifact to collect the $SDS stream.
 
 parameters:
   - name: Drive

@@ -5,16 +5,18 @@ sitemap:
   disable: true
 tags: [notebook]
 description: |
-  The notebook creates a default Super-Timeline.
+  Provides a notebook template for building consolidated timelines
+  from time series data across collections.
 ---
 
-The notebook creates a default Super-Timeline.
+Provides a notebook template for building consolidated timelines
+from time series data across collections.
 
 Timelines are used to visualize time series data from other
-collections in the same place. This notebook template creates an
-initial timeline.
+collections in the same place. This notebook template creates a
+"super timeline".
 
-Once this timeline is created, you can add any time series table in
+Once this timeline is created, you can add any time series data in
 other notebooks (e.g. Collection or Hunt notebooks) to this super
 timeline.
 
@@ -22,13 +24,14 @@ timeline.
 <pre><code class="language-yaml">
 name: Notebooks.Timelines
 description: |
-  The notebook creates a default Super-Timeline.
+  Provides a notebook template for building consolidated timelines
+  from time series data across collections.
 
   Timelines are used to visualize time series data from other
-  collections in the same place. This notebook template creates an
-  initial timeline.
+  collections in the same place. This notebook template creates a
+  "super timeline".
 
-  Once this timeline is created, you can add any time series table in
+  Once this timeline is created, you can add any time series data in
   other notebooks (e.g. Collection or Hunt notebooks) to this super
   timeline.
 

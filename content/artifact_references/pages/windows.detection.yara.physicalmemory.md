@@ -5,18 +5,18 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  This artifact enables running YARA over physical memory.
+  Scans physical memory for YARA matches using the WinPmem driver.
 ---
 
-This artifact enables running YARA over physical memory.
+Scans physical memory for YARA matches using the WinPmem driver.
 
 There are 2 kinds of YARA rules that can be deployed:
 
 1. URL link to a YARA rule.
 2. A standard YARA rule attached as a parameter.
 
-Only one method of YARA will be applied and search order is as above. The
-default is Cobalt Strike opcodes.
+Only one method of YARA will be applied and search order is as
+above. The default is Cobalt Strike opcodes.
 
 The artifact will load the WinPmem driver, then YARA scan the
 physical memory and remove the driver.
@@ -27,8 +27,8 @@ NOTE: This artifact is experimental and can crash the system!
 
 When the signature specifies fixed strings, the YARA engine will
 load it into memory, causing the signature to match memory used by
-Velociraptor. To avoid this false positive encode the fixed
-string as an alternative string.
+Velociraptor. To avoid this false positive encode the fixed string
+as an alternative string.
 
 For example instead of:
 ```
@@ -44,15 +44,15 @@ $sequence_5 = { 250000ff00 33d0 8b4db0 c1e9 ( 08 | 08 ) }
 <pre><code class="language-yaml">
 name: Windows.Detection.Yara.PhysicalMemory
 description: |
-  This artifact enables running YARA over physical memory.
+  Scans physical memory for YARA matches using the WinPmem driver.
 
   There are 2 kinds of YARA rules that can be deployed:
 
   1. URL link to a YARA rule.
   2. A standard YARA rule attached as a parameter.
 
-  Only one method of YARA will be applied and search order is as above. The
-  default is Cobalt Strike opcodes.
+  Only one method of YARA will be applied and search order is as
+  above. The default is Cobalt Strike opcodes.
 
   The artifact will load the WinPmem driver, then YARA scan the
   physical memory and remove the driver.
@@ -63,8 +63,8 @@ description: |
 
   When the signature specifies fixed strings, the YARA engine will
   load it into memory, causing the signature to match memory used by
-  Velociraptor. To avoid this false positive encode the fixed
-  string as an alternative string.
+  Velociraptor. To avoid this false positive encode the fixed string
+  as an alternative string.
 
   For example instead of:
   ```

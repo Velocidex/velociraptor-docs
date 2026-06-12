@@ -5,19 +5,25 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Carve URLs from files located in a glob. Note that we do not parse
-  any files - we simply carve anything that looks like a URL.
+  Extracts URLs from files in common user-related locations using
+  regex carving.
 ---
 
-Carve URLs from files located in a glob. Note that we do not parse
-any files - we simply carve anything that looks like a URL.
+Extracts URLs from files in common user-related locations using
+regex carving.
+
+Note that it does not parse any files - it simply extracts anything
+that looks like a URL.
 
 
 <pre><code class="language-yaml">
 name: Generic.Forensic.Carving.URLs
 description: |
-  Carve URLs from files located in a glob. Note that we do not parse
-  any files - we simply carve anything that looks like a URL.
+  Extracts URLs from files in common user-related locations using
+  regex carving.
+
+  Note that it does not parse any files - it simply extracts anything
+  that looks like a URL.
 
 
 parameters:

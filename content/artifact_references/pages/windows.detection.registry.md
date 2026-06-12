@@ -5,16 +5,19 @@ sitemap:
   disable: true
 tags: [Client Event Artifact]
 description: |
-  This artifact detects registry changes and triggers an alert.
+  Monitors selected registry keys for changes and raises alerts on
+  modifications.
 ---
 
-This artifact detects registry changes and triggers an alert.
+Monitors selected registry keys for changes and raises alerts on
+modifications.
 
 
 <pre><code class="language-yaml">
 name: Windows.Detection.Registry
 description: |
-  This artifact detects registry changes and triggers an alert.
+  Monitors selected registry keys for changes and raises alerts on
+  modifications.
 
 author: Jos Clephas - @DfirJos
 

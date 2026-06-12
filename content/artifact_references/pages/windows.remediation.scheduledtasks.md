@@ -5,10 +5,10 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Remove malicious task from the Windows scheduled task list.
+  Removes Windows scheduled tasks matching a command and argument regex pattern.
 ---
 
-Remove malicious task from the Windows scheduled task list.
+Removes Windows scheduled tasks matching a command and argument regex pattern.
 
 WARNING: Removing scheduled tasks is potentially dangerous! You need to test
 this thoroughly before deploying this artifact widely to clients.
@@ -17,10 +17,10 @@ this thoroughly before deploying this artifact widely to clients.
 <pre><code class="language-yaml">
 name: Windows.Remediation.ScheduledTasks
 description: |
-   Remove malicious task from the Windows scheduled task list.
+  Removes Windows scheduled tasks matching a command and argument regex pattern.
 
-   WARNING: Removing scheduled tasks is potentially dangerous! You need to test
-   this thoroughly before deploying this artifact widely to clients.
+  WARNING: Removing scheduled tasks is potentially dangerous! You need to test
+  this thoroughly before deploying this artifact widely to clients.
 
 type: CLIENT
 

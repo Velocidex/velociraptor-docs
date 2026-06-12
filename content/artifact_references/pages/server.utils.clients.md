@@ -5,22 +5,27 @@ sitemap:
   disable: true
 tags: [notebook]
 description: |
-  View detailed client informations
+  Provides an interactive notebook for searching and inspecting client
+  details.
 ---
 
-View detailed client informations
+Provides an interactive notebook for searching and inspecting client
+details.
 
-This template will create an interactive notebook that allows more
-refined inspection of clients.
+This notebook template will create an interactive notebook that
+allows more refined inspection of client information than the GUI
+search page provides.
 
 
 <pre><code class="language-yaml">
 name: Server.Utils.Clients
 description: |
-  View detailed client informations
+  Provides an interactive notebook for searching and inspecting client
+  details.
 
-  This template will create an interactive notebook that allows more
-  refined inspection of clients.
+  This notebook template will create an interactive notebook that
+  allows more refined inspection of client information than the GUI
+  search page provides.
 
 type: NOTEBOOK
 

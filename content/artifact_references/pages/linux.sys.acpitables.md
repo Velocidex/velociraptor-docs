@@ -5,14 +5,20 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Firmware ACPI functional table common metadata and content.
+  Lists ACPI firmware tables with their sizes and cryptographic
+  hashes.
 ---
 
-Firmware ACPI functional table common metadata and content.
+Lists ACPI firmware tables with their sizes and cryptographic
+hashes.
+
 
 <pre><code class="language-yaml">
 name: Linux.Sys.ACPITables
-description: Firmware ACPI functional table common metadata and content.
+description: |
+  Lists ACPI firmware tables with their sizes and cryptographic
+  hashes.
+
 reference:
   - https://osquery.io/schema/3.2.6#acpi_tables
 parameters:

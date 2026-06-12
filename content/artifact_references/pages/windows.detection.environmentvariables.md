@@ -5,16 +5,16 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  Find processes with the specified environment variables.
+  Find processes which have the specified environment variables.
 ---
 
-Find processes with the specified environment variables.
+Find processes which have the specified environment variables.
 
 
 <pre><code class="language-yaml">
 name: Windows.Detection.EnvironmentVariables
 description: |
-   Find processes with the specified environment variables.
+  Find processes which have the specified environment variables.
 
 parameters:
    - name: ProcessNameRegex

@@ -5,43 +5,39 @@ sitemap:
   disable: true
 tags: [Client Artifact]
 description: |
-  This Artifact will hunt for evidence of Telerik exploitation in the Application
-  Event Log.
+  Searches Windows Application Event Log for Telerik exploitation
+  indicators (Event ID 1309).
 ---
 
-This Artifact will hunt for evidence of Telerik exploitation in the Application
-Event Log.
+Searches Windows Application Event Log for Telerik exploitation
+indicators (Event ID 1309).
 
-Telerik is a commonly exploited component of IIS web pages that has been
-actively targeted by actors via several CVEs. Several tools and attack
-capabilities exist making exploitation of vulnerable services trivial. Due to
-the nature of the software and typical deployments the patches may require
-manual application.
+Telerik is a commonly exploited component of IIS web pages that has
+been actively targeted by actors via several CVEs. Several tools and
+attack capabilities exist making exploitation of vulnerable services
+trivial. Due to the nature of the software and typical deployments
+the patches may require manual application.
 
 IocRegex enables searching for regex in the whole EventData field.
-Output of this artifact is targeted fields from EventID 1309 to provide
-context for the hit.
-
-This Artifact will hunt for evidence of Telerik exploitation in the Application Event Log.
+Output of this artifact is targeted fields from EventID 1309 to
+provide context for the hit.
 
 
 <pre><code class="language-yaml">
 name: Windows.EventLogs.Telerik
 description: |
-  This Artifact will hunt for evidence of Telerik exploitation in the Application
-  Event Log.
-
-  Telerik is a commonly exploited component of IIS web pages that has been
-  actively targeted by actors via several CVEs. Several tools and attack
-  capabilities exist making exploitation of vulnerable services trivial. Due to
-  the nature of the software and typical deployments the patches may require
-  manual application.
+  Searches Windows Application Event Log for Telerik exploitation
+  indicators (Event ID 1309).
+  
+  Telerik is a commonly exploited component of IIS web pages that has
+  been actively targeted by actors via several CVEs. Several tools and
+  attack capabilities exist making exploitation of vulnerable services
+  trivial. Due to the nature of the software and typical deployments
+  the patches may require manual application.
 
   IocRegex enables searching for regex in the whole EventData field.
-  Output of this artifact is targeted fields from EventID 1309 to provide
-  context for the hit.
-
-  This Artifact will hunt for evidence of Telerik exploitation in the Application Event Log.
+  Output of this artifact is targeted fields from EventID 1309 to
+  provide context for the hit.
 
 author: Matt Green - @mgreen27
 
