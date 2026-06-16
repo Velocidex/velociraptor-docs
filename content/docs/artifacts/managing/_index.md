@@ -26,6 +26,6 @@ See the [artifacts CLI command reference](/docs/cli/commands/artifacts/)
 for detailed documentation on listing, viewing, collecting, and
 fetching artifacts from the command line.
 
-You can also use the [run syntax](/docs/cli/run/) (`-r` or `--run`
-flag) as an alternative way to run artifacts without the full
-subcommand syntax.
+You can also use [run mode](/docs/cli/run/) (`-r` or `--run` flag) as
+an alternative way to run artifacts without the full subcommand
+syntax.

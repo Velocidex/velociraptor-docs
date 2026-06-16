@@ -1,5 +1,5 @@
 ---
-menutitle: "Run syntax"
+menutitle: "Run mode"
 title: "Running collections on the command line"
 date: 2026-06-16
 last_reviewed: 2026-06-16
