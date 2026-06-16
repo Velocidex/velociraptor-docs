@@ -177,6 +177,12 @@ The general syntax for the command is `velociraptor artifacts collect ArtifactNa
 You need to specify the exact name of the artifact you want to collect -
 wildcards are not supported.
 
+The `-r` (or `--run`) flag provides an alternative syntax that
+transforms into `artifacts collect` behind the scenes. For example,
+instead of `velociraptor artifacts collect ArtifactName --args Foo=Bar`,
+you can use `velociraptor -r ArtifactName --Foo Bar`. See the
+[run syntax](/docs/cli/run/) page for details.
+
 #### Specifying Parameters/Arguments
 
 Many artifacts accept parameters to customize their collection. You can pass

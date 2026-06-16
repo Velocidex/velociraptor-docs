@@ -111,6 +111,13 @@ velociraptor vql export | yq -P '.[] | select(.type == "Function") | select(.nam
 ```
 ![velociraptor vql export output filtered with yq](yq.png)
 
+## Running artifacts on the command line
+
+The [`-r` (or `--run`) flag](/docs/cli/run/) lets you run any
+Velociraptor artifact directly from the terminal as if it were a
+standalone CLI command. See the
+[run artifacts](/docs/cli/run/) page for syntax and examples.
+
 ## Autoexec mode and post args
 
 Autoexec mode lets you embed a default command line and custom artifacts

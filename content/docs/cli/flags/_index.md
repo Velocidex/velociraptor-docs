@@ -1,10 +1,11 @@
 ---
-menutitle: "CLI flags"
+menutitle: "Global Flags"
 title: "Global CLI flags"
 date: 2025-05-20
+last_reviewed: 2026-06-16
 draft: false
-weight: 130
-Summary: CLI flags that are available for all commands.
+weight: 20
+summary: CLI flags that are available for all commands.
 description: |
   These CLI flags are available for all commands (but may not be relevant to all).
 ---
