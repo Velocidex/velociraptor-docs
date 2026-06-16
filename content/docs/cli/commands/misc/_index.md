@@ -156,6 +156,39 @@ For more information, see
 
 ----
 
+### [ help ]
+
+```text
+help [<command>...]
+    Show help.
+```
+
+The `help` command displays usage information for Velociraptor
+commands and subcommands. It behaves the same as the `-h` flag but
+accepts the command name as a positional argument instead of a flag.
+
+For example, the following two commands produce the same output:
+
+```sh
+velociraptor help artifacts collect
+```
+
+```sh
+velociraptor artifacts collect -h
+```
+
+You can also use `help` with a command group to list its available
+subcommands:
+
+```sh
+velociraptor help artifacts
+```
+
+Consult the [global flags](/docs/cli/flags/) page to see all
+available flags and options.
+
+---
+
 ### [ hunts reconstruct ]
 
 ```text
