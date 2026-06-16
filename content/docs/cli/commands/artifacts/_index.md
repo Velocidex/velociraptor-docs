@@ -239,6 +239,75 @@ also available to the `artifacts collect` command.
 
 ---
 
+### [ artifacts fetch ]
+
+```text
+artifacts fetch --flow_id=FLOW_ID --output=OUTPUT [<flags>]
+    Fetch a collection from the server via the API
+
+    --client_id="server"  The client ID to fetch from. The default is `server` which fetches server artifacts
+    --flow_id=FLOW_ID     The flow ID to fetch from (required).
+    --org_id="root"       Fetch from the specified org ID (default `root`)
+    --output=OUTPUT       The output zip file path in which to store the collection data.
+```
+
+The `artifacts fetch` command downloads the results of an existing
+collection (also called a flow) from a Velociraptor server using the
+Velociraptor API. It retrieves collected data as a ZIP file without
+using the GUI, for use in scripts or automated pipelines.
+
+This command works with any flow that you have access to, including
+client collections and server collections.
+
+#### Prerequisites
+
+The `artifacts fetch` command requires an API config file containing
+API client credentials. You provide this using the `--api_config` (or
+`-a`) flag, which is a global flag common to all commands:
+
+```sh
+velociraptor -a api.config.yaml artifacts fetch ...
+```
+
+You can generate an API config file using the
+`velociraptor config api_client` command.
+
+#### Basic usage
+
+The command requires the `--flow_id` flag to identify which collection
+to download, and the `--output` flag to specify where to save the
+resulting ZIP file.
+
+For a collection on a client, you also need to specify the
+`--client_id` flag. For server artifacts, the `--client_id` defaults
+to `server` and can be omitted.
+
+###### Example
+
+Download the results of flow `F.D6JCVA49O524O` from client
+`C.c892ae5478a6cda2`:
+
+```sh
+velociraptor -a api.config.yaml artifacts fetch \
+    --client_id C.c892ae5478a6cda2 \
+    --flow_id F.D6JCVA49O524O \
+    --output /tmp/collection.zip
+```
+
+The output file is a standard Velociraptor collection ZIP which can be
+imported into a server or mounted using the
+[[ fuse container ]](/docs/cli/commands/fuse/) command.
+
+#### Related commands
+
+The [[ artifacts collect ]](/docs/cli/commands/artifacts/#-artifacts-collect-)
+command can also perform remote collections using the `--client_id`
+flag when an API config is provided. Use `artifacts collect` to launch
+a new collection remotely, and `artifacts fetch` to download the
+results of one that has already completed.
+
+---
+
 ### [ artifacts reformat ]
 
 ```text
