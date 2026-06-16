@@ -20,8 +20,8 @@ cases are CLI equivalents of functions that are available in VQL.
 
 You can also do investigation of the local system using the CLI alone, as
 described in the [deployment options](/docs/deployment/#command-line-investigation-tool),
-[artifact collection](/docs/cli/artifacts/#-artifacts-collect-), and
-[query command](/docs/cli/query/) page.
+[artifact collection](/docs/cli/commands/artifacts/#-artifacts-collect-), and
+[query command](/docs/cli/commands/query/) page.
 
 {{% notice info "Filesystem permissions on the command line" %}}
 
@@ -115,7 +115,7 @@ velociraptor vql export | yq -P '.[] | select(.type == "Function") | select(.nam
 
 Autoexec mode lets you embed a default command line and custom artifacts
 directly into the Velociraptor binary using the
-[`config repack`](/docs/cli/config/#-config-repack-) command.
+[`config repack`](/docs/cli/commands/config/#-config-repack-) command.
 [Offline collectors](/docs/deployment/offline_collections/) use this
 mechanism.
 
@@ -192,6 +192,6 @@ Note that if a flag is specified in `autoexec.argv` then it can't be
 negated or overridden. You can only _add_ flags that have not already
 been used.
 
-## Learn about the commands available in the CLI
+## Learn about the commands and flags available in the CLI
 
-{{% children description=true %}}
+{{% children description=true depth=2 %}}

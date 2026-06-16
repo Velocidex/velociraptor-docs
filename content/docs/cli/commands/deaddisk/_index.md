@@ -58,7 +58,7 @@ velociraptor deaddisk --add_windows_directory /media/mnt/windows_c_drive/ remapp
 velociraptor client -c ./client.config.yaml --remap ./remapping.yaml
 ```
 
-{{% notice note %}}
+{{% notice note "Currently Windows-only" %}}
 
 The `deaddisk` command, by default, only supports Windows disk/partition images,
 and Windows partitions mounted to folders.
@@ -81,7 +81,9 @@ velociraptor artifacts collect Generic.Utils.DeadDiskRemapping --args ImagePath=
 velociraptor unzip remapping.zip /uploads/data/remapping.yaml
 ```
 
-###### Non-Windows disk images
+---
+
+**Non-Windows disk images**
 
 You can define your own customized version of the
 `Generic.Utils.DeadDiskRemapping` artifact if the default artifact does not suit

@@ -37,7 +37,7 @@ This is mainly intended to support automated build environments.
 _The GUI is the recommended way to create offline collectors, particularly for
 new users._
 
-## Creating a collector
+#### Creating a collector
 
 The process of creating an offline collector on the command line consists of 2
 steps:
@@ -53,7 +53,7 @@ binaries (under certain circumstances it may need to - see the section on server
 integration below).
 
 
-### Obtaining a sample spec file
+##### Obtaining a sample spec file
 
 If you run the `collector` command without any arguments it will print an
 example spec file in the terminal. You can redirect the output to a file and
@@ -65,7 +65,7 @@ velociraptor collector > sample_spec.yaml
 ```
 
 
-### Obtaining a spec file from the GUI
+##### Obtaining a spec file from the GUI
 
 From version 0.75.5 the `Server.Utils.CreateCollector` artifact will create the
 corresponding spec file and store it in the collection's Uploads section, in
@@ -81,7 +81,7 @@ also want to set this up as a repeatable process
 [for when new Velociraptor versions are released](/docs/deployment/offline_collections/updating/).
 
 
-### Spec file formatting
+##### Spec file formatting
 
 The spec file provides parameters to the `Server.Utils.CreateCollector` artifact
 which creates the collector. This means that all fields and their associated
@@ -136,7 +136,7 @@ character if you prefer that alternative.
   `Null` which is never a valid value for artifact parameters.
 
 
-### Integrating collector builds with a Velociraptor server
+##### Integrating collector builds with a Velociraptor server
 
 Certain offline collector options imply integration with an existing server:
 
@@ -260,7 +260,7 @@ functionality could be replicated using the same VQL
 [query against the API](/docs/server_automation/server_api/#using-the-built-in-api-client),
 but that would be far less convenient.
 
-### Reproducing configurations from previously-created collectors
+#### Reproducing configurations from previously-created collectors
 
 From version 0.75.5 the `Server.Utils.CreateCollector` artifact will create the
 corresponding spec file and store it in the collection's **Uploaded Files** tab,

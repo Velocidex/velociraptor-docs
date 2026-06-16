@@ -15,7 +15,7 @@ The GUI is the recommended way to create them as it provides an intuitive
 collector builder wizard that makes the process quick and easy. For advanced use
 cases, such as automating the creation of collectors in a separate build
 environment, the `collector` CLI command is often preferred, and we refer you to
-[the command's documentation](/docs/cli/collector/)
+[the command's documentation](/docs/cli/commands/collector/)
 for further information on that option.
 
 Here we will discuss the GUI-based method.
@@ -236,7 +236,7 @@ Once that collection is completed, it will contain the offline collector binary
 in it's **Uploaded Files** tab. From version 0.75.5 a spec file will also be
 available in the Uploaded Files tab - this file contains the specifications used
 to create the collector and can be used to
-[reproduce the collector on the command line](/docs/cli/collector/#creating-a-collector).
+[reproduce the collector on the command line](/docs/cli/commands/collector/#creating-a-collector).
 
 ![Retrieving the Offline Collector binary](collector_download.svg)
 

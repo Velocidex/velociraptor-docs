@@ -197,7 +197,7 @@ disable this duplication for a specific log function instance.
 
 In the other hand if you want the local personnel to see _less_ output - for
 whatever reason - then you can
-[rebuild the collector on the command line](/docs/cli/collector/)
+[rebuild the collector on the command line](/docs/cli/commands/collector/)
 using the spec file that the GUI generated and set the `OptVerbose` option to
 `false`. The GUI-based collector builder currently does not offer this option
 and it enables verbose output by default.

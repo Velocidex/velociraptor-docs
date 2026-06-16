@@ -280,7 +280,7 @@ To summarize the above: Analyzing a disk image is usually a 3-step process.
 
    This may require some preparatory steps such as converting or mounting the
    image if it's an unsupported type. The remapping config can be generated
-   either via the CLI's [deaddisk](/docs/cli/deaddisk/) command,
+   either via the CLI's [deaddisk](/docs/cli/commands/deaddisk/) command,
    or in the GUI using the `Generic.Utils.DeadDiskRemapping` server artifact.
    For non-standard partition layouts you might have to manually craft an
    appropriate remapping config, although you can generate one for a simple disk

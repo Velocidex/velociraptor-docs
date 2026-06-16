@@ -227,7 +227,7 @@ efforts.
 
 ## Tips for writing better artifacts
 
-* Use the [artifact verifier](/docs/cli/artifacts/#-artifacts-verify-)
+* Use the [artifact verifier](/docs/cli/commands/artifacts/#-artifacts-verify-)
   command to verify your artifact. This runs a static analysis of the
   artifact's VQL to ensure there are not major issues. It can also
   make some suggestions. When you submit your artifact, the CI

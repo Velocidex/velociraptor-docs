@@ -52,6 +52,7 @@ This document is also a work-in-progress, and not set-in-stone
   - [VQL reference documents](#vql-reference-documents)
   - [Examples](#examples)
   - [UI Elements](#ui-elements)
+  - [CLI command reference pages](#cli-command-reference-pages)
 
 ---
 
@@ -261,3 +262,88 @@ example title such as "Example: Recursive use case".
 
 Bold all UI elements (buttons, tabs, menu names) to help users scan
 the page quickly.
+
+
+### CLI command reference pages
+
+Pages under `docs/cli/commands/` document individual CLI commands
+and command groups. They follow a consistent heading structure:
+
+#### Command/subcommand headings
+
+Each command or subcommand gets a Level-3 heading:
+
+```md
+### [ artifacts list ]
+
+### [ config show ]
+
+### [ fuse container ]
+```
+
+The reason for using square brackets is that inline code notation
+overrides heading formatting and looks ugly. So this is just an
+alternative way to indicate that the commands are literals without
+using inline code notation.
+
+After the `###` command heading, include a text code block
+showing the usage syntax (flags, arguments, defaults). This block
+should be taken from the command's `-h` output, but omit the flags
+that the `-h` flag displays which are common to all commands.
+
+``````text
+artifacts list [<flags>] [<regex>]
+    Print all artifacts
+
+    -d, --[no-]details ...  Show more details (Use -d -dd for even more)
+
+Args:
+  [<regex>]  Regex of names to match.
+``````
+
+#### Separators
+
+On pages documenting multiple subcommands, separate each
+subcommand section with a horizontal rule (`---`).
+
+#### Sub-sections within a command
+
+Use `####` (Level-4) headings for major topics within a
+command's documentation.
+
+Use `#####` (Level-5) headings for auxiliary content such as
+notes and see-also sections.
+
+Use `######` (Level-6) headings for examples (see the
+[examples](#examples) section above).
+
+{{% notice tip %}}
+The heading hierarchy for CLI command pages is:
+
+- `### [ command.subcommand ]` — command signature
+- `####` — major topic within the command
+- `#####` — notes, see-also, usage notes
+- `######` — examples
+{{% /notice %}}
+
+#### Cross-references to other commands
+
+When linking to another CLI command from within a command page,
+use the `[[ command ]]` convention in the link text. This pairs
+the bracket-notation style of the heading with a standard markdown
+link:
+
+```md
+- [[ fuse container ]](/docs/cli/commands/fuse/),
+  which allows you to mount collection containers instead of
+  extracting them.
+
+- [[ decrypt ]](#-decrypt-), which removes the encryption from
+  collection containers.
+```
+
+This convention signals to the reader that the link refers to
+another CLI command (identifiable by the bracket style), even
+when skimming the page. This is again just an alternative to using
+inline code notation that makes things a bit more clear to the reader.
+

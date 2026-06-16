@@ -98,7 +98,7 @@ Args:
 
 ##### See also
 
-- [[ fuse container ]](/docs/cli/fuse/),
+- [[ fuse container ]](/docs/cli/commands/fuse/),
   which allows you to mount collection containers instead of extracting them.
 
 - [[ unzip ]](#-unzip-), which works similarly to `decrypt`
@@ -261,7 +261,7 @@ Args:
 - [[ decrypt ]](#-decrypt-), which removes the encryption from collection containers without
   extracting the collection's files.
 
-- [[ fuse container ]](/docs/cli/fuse/),
+- [[ fuse container ]](/docs/cli/commands/fuse/),
   which allows you to mount collection containers instead of extracting them.
 
 ----
