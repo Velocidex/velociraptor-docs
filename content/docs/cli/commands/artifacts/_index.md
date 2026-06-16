@@ -181,7 +181,7 @@ The `-r` (or `--run`) flag provides an alternative syntax that
 transforms into `artifacts collect` behind the scenes. For example,
 instead of `velociraptor artifacts collect ArtifactName --args Foo=Bar`,
 you can use `velociraptor -r ArtifactName --Foo Bar`. See the
-[run syntax](/docs/cli/run/) page for details.
+[run mode](/docs/cli/run/) page for details.
 
 #### Specifying Parameters/Arguments
 

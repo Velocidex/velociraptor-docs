@@ -6,18 +6,19 @@ last_reviewed: 2026-06-16
 draft: false
 weight: 30
 summary: |
-  Use the -r (or --run) flag to run any Velociraptor collection directly
-  from the command line.
+  Run mode (-r or --run flag) lets you run any Velociraptor collection
+  directly from the command line.
 description: |
-  Use the -r (or --run) flag to run any Velociraptor collection directly
-  from the command line.
+  Run mode (-r or --run flag) lets you run any Velociraptor collection
+  directly from the command line.
 ---
 
 You can run Velociraptor artifacts directly from the command line
-using the `-r` (or `--run`) flag. This turns any artifact into a
-standalone CLI tool without the standard `artifacts collect` subcommand
-syntax. The `-r` flag transforms the command line into the equivalent
-of `artifacts collect` behind the scenes.
+using **run mode** (`-r` or `--run` flag). This turns any artifact
+into a standalone CLI tool without the standard
+`artifacts collect` subcommand syntax. The `-r` flag transforms the
+command line into the equivalent of `artifacts collect` behind the
+scenes.
 
 ## Basic syntax
 
