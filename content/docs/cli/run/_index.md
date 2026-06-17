@@ -122,9 +122,9 @@ velociraptor --api_config api.yaml \
 Run mode via the API (and `artifacts collect`) schedules a normal
 collection, but runs synchronously. So if the client is offline the
 collection will be scheduled and the `--run` command will wait for
-results. You can CTRL+C to terminate the command and the collection will
-remain scheduled for the remote client. You can later run queries or
-artifacts to enumerate collections for the client and then download
+results. You can `CTRL+C` to terminate the command and the collection
+will remain scheduled for the remote client. You can later run queries
+or artifacts to enumerate collections for the client and then download
 them using `artifacts fetch` command.
 
 To download the results of a previously run collection from the
