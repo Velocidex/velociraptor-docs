@@ -33,7 +33,6 @@ query [<flags>] <queries>...
 
     -f, --[no-]from_files  Args are actually file names which will contain the VQL query
         --timeout=0        Time collection out after this many seconds.
-        --org="root"       The Org ID to target with this query
         --cpu_limit=0      A number between 0 to 100 representing maximum CPU utilization.
         --format=json      Output format to use (text,json,csv,jsonl).
         --dump_dir=""      Directory to dump output files.

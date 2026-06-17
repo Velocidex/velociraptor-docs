@@ -25,7 +25,6 @@ deaddisk [<flags>] <output>
     --hostname="Virtual Host"  The hostname to impersonate
     --add_windows_disk=ADD_WINDOWS_DISK
                                Add a Windows Hard Disk Image
-    --offset=-1                The offset of the partition inside the disk
     --add_windows_directory=ADD_WINDOWS_DIRECTORY
                                Add a Windows mounted directory
 

@@ -133,13 +133,18 @@ artifacts collect [<flags>] <artifact_name>...
     Collect all artifacts
 
     --output=""           When specified we create a zip file and store all output in it.
+    --client_id="server"  Used for remote API calls to specify the client id to
+                          collect from. By default this is `server` to server
+                          artifacts
+    --org_id="root"       Used for remote API calls to specify the org id
+                          (default `root`)
     --timeout=0           Time collection out after this many seconds.
     --progress_timeout=0  If specified we terminate the colleciton if no progress is made in this many seconds.
     --cpu_limit=0         A number between 0 to 100 representing maximum CPU utilization.
     --output_level=5      Compression level for zip output.
     --[no-]require_admin  Ensure the user is an admin
     --password=""         When specified we encrypt zip file with this password.
-    --format=json         Output format to use (text,json,csv,jsonl).
+    --format=json         Output format to use (csv, json, csv_only).
     --args=ARGS ...       Artifact args (e.g. --args Foo=Bar).
     --hard_memory_limit=HARD_MEMORY_LIMIT
                           If we reach this memory limit in bytes we exit.

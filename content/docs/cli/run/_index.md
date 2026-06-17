@@ -2,25 +2,41 @@
 menutitle: "Run mode"
 title: "Running collections on the command line"
 date: 2026-06-16
-last_reviewed: 2026-06-16
+last_reviewed: 2026-06-17
 draft: false
 weight: 30
 summary: |
-  Run mode (-r or --run flag) lets you run any Velociraptor collection
-  directly from the command line.
+  Run mode (-r or --run flag) provides a simpler syntax for running
+  Velociraptor collections on your local machine, a remote server, or
+  remote clients.
 description: |
-  Run mode (-r or --run flag) lets you run any Velociraptor collection
-  directly from the command line.
+  Run mode (-r or --run flag) provides a simpler syntax for running
+  Velociraptor collections on your local machine, a remote server, or
+  remote clients.
 ---
 
-You can run Velociraptor artifacts directly from the command line
-using **run mode** (`-r` or `--run` flag). This turns any artifact
-into a standalone CLI tool without the standard
-`artifacts collect` subcommand syntax. The `-r` flag transforms the
-command line into the equivalent of `artifacts collect` behind the
-scenes.
+Run mode (`-r` or `--run` flag) lets you run any Velociraptor
+collection directly from the command line, whether locally or against
+a remote server and its clients. It provides a simpler and more
+intuitive syntax than the equivalent `artifacts collect` command,
+especially when passing parameters to artifacts.
 
-## Basic syntax
+## Equivalence to `artifacts collect`
+
+Run mode is a front-end to `artifacts collect`. The following two
+commands are equivalent:
+
+```sh
+velociraptor -r Windows.Forensics.SRUM --SRUMLocation /tmp/srudb.dat
+```
+
+```sh
+velociraptor artifacts collect Windows.Forensics.SRUM \
+    --args SRUMLocation=/tmp/srudb.dat
+```
+
+Instead of wrapping parameters in `--args Key=Value` syntax, you pass
+them directly as flags:
 
 ```text
 velociraptor [global flags] -r <ArtifactName> [artifact parameters...]
@@ -79,11 +95,23 @@ definitions.
 
 ## Remote collection via the API
 
-With an API config file, the `-r` syntax works against a remote server
-and can collect artifacts from clients:
+With an API config file (`--api_config`), run mode works against a
+remote server. You can collect server artifacts or client artifacts
+from any connected endpoint.
+
+Collect a server artifact:
 
 ```sh
-velociraptor --api_config api.yaml -r Windows.Forensics.Lnk -o lnk.zip
+velociraptor --api_config api.yaml \
+    -r Server.Utils.CreateMSI -o /tmp/msi.zip
+```
+
+Collect an artifact from a specific client:
+
+```sh
+velociraptor --api_config api.yaml \
+    -r Windows.Forensics.Lnk -o /tmp/lnk.zip \
+    --client_id C.c892ae5478a6cda2
 ```
 
 To download the results of a collection that has already completed,

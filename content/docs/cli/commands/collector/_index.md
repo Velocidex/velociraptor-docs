@@ -19,6 +19,8 @@ collector [<flags>] [<spec_file>]
     Build an offline collector
 
     --datastore=DATASTORE  Path to a datastore directory (defaults to temp)
+    --format=json          Output format to use (text,json,csv,jsonl).
+    --[no-]force           Ignore schema errors and use it anyway
 
 Args:
   [<spec_file>]  A Spec file to use.

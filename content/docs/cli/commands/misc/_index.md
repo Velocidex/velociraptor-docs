@@ -48,18 +48,18 @@ Args:
 debian server [<flags>]
     Create a server package from a server config file.
 
-    --release=RELEASE  Specify the debian release number
-    --output=OUTPUT    Output directory where package files will be written
-    --binary=BINARY    The binary to package
+    --output="."     Directory to store deb files in. (Default current
+                     directory)
+    --binary=BINARY  The binary to package
 ```
 
 ```text
 debian client [<flags>]
     Create a client package from a client config file.
 
-    --release=RELEASE  Specify the debian release number
-    --output=OUTPUT    Filename to output
-    --binary=BINARY    The binary to package
+    --output="."     Directory to store deb package in. (Default current
+                     directory)
+    --binary=BINARY  The binary to package
 ```
 
 ----
@@ -240,7 +240,6 @@ pool_client [<flags>]
 rpm client [<flags>]
     Create a client package from a server config file.
 
-    --release="A"    Rpm package release version
     --output="."     Directory to store rpms in. (Default current directory)
     --binary=BINARY  The binary to package
 ```
@@ -248,7 +247,7 @@ rpm client [<flags>]
 ```text
 rpm server [<flags>]
     Create a server package from a server config file.
-    --release="A"    Rpm package release version
+
     --output="."     Directory to store rpms in. (Default current directory)
     --binary=BINARY  The binary to package
 ```
@@ -267,6 +266,7 @@ unzip [<flags>] <file> [<members>]
         --format=json           Output format for csv output
     -l, --[no-]list             List files in the zip
     -p, --[no-]print            Dump out the files in the zip
+        --password=PASSWORD     Use this password to extract ZIP
 
 Args:
   <file>       Zip file to parse
