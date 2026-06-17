@@ -61,7 +61,7 @@ velociraptor -r Windows.Forensics.SRUM -o /tmp/srum_results.zip
 
 Here `-o` maps to the `--output` flag of `artifacts collect`.
 
-## Viewing artifact parameters
+## Viewing available artifact parameters
 
 Use `-h` after the artifact name to see the artifact's specific
 parameters instead of the CLI help:
@@ -127,7 +127,7 @@ will remain scheduled for the remote client. You can later run queries
 or artifacts to enumerate collections for the client and then download
 them using `artifacts fetch` command.
 
-###### Example
+###### Example: Download previously collected results
 
 To download the results of a previously run collection from the
 server, use the `artifacts fetch` command with the flow ID:
