@@ -47,7 +47,22 @@ Use `-h` after the artifact name to see the artifact's specific
 parameters instead of the CLI help:
 
 ```sh
-velociraptor -r Windows.Forensics.SRUM -h
+velociraptor -r <Artifact.Name> -h
+```
+
+###### Example
+
+```shell
+> c:\velociraptor.exe -r Windows.Forensics.SRUM -h
+...
+Artifact Parameters:
+ --SRUMLocation
+   default: 'c:/windows/system32/sru/srudb.dat'
+...
+ --Upload [bool]
+   Select to Upload the SRUM database file 'srudb.dat'
+
+    Valid values: Y / N
 ```
 
 ## Using custom artifact definitions
@@ -85,7 +100,7 @@ reference for details.
 
 ## Detailed walkthrough
 
-For a full walkthrough covering local collection, remote collection
-via the API, custom artifact packs, external tool integration, and
-server management tasks, see the
+For a detailed walkthrough covering local collection, remote
+collection via the API, custom artifact packs, external tool
+integration, and server management tasks, see the
 [CLI blog post](/blog/2026/2026-03-21-cli/).

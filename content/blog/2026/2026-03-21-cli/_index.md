@@ -132,9 +132,12 @@ uploaded files. Usually we store all related files collected by an
 artifact in a single ZIP file. Artifacts also accept parameters to
 control the way they work.
 
-Running an artifact on the command line is done using the `-r` flag
-(also called `--run`). We can see what parameters the
-`Windows.Forensics.SRUM` artifact will accept using the `-h` flag:
+Running an artifact on the command line is done using a CLI syntax we
+call [Run mode](/docs/cli/run/) which is invoked when using the `-r`
+or `--run` flag.
+
+We can see what parameters the `Windows.Forensics.SRUM` artifact will
+accept using the `-h` flag:
 
 ```
 > c:\velociraptor.exe -r Windows.Forensics.SRUM -h

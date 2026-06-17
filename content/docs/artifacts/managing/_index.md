@@ -13,7 +13,8 @@ description: |
   In this section we look at managing artifacts using the GUI, via VQL, and the CLI.
 ---
 
-In this section we look at managing artifacts using the GUI, via VQL, and the CLI.
+In this section we look at managing artifacts using the GUI, via VQL,
+and the CLI.
 
 {{% include-page "/docs/gui/artifacts/" %}}
 
