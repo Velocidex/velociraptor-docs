@@ -103,14 +103,14 @@ With an API config file (`--api_config`), run mode works against a
 remote server. You can collect server artifacts or collect client
 artifacts from any client. 
 
-Collect a server artifact:
+###### Example: Collect a server artifact
 
 ```sh
 velociraptor --api_config api.yaml \
     -r Server.Utils.ListUsers -o /tmp/gui_users.zip --password "H4RDp@$$wOrd"
 ```
 
-Collect an artifact from a specific client:
+###### Example: Collect an artifact from a specific client
 
 ```sh
 velociraptor --api_config api.yaml \
@@ -126,6 +126,8 @@ results. You can `CTRL+C` to terminate the command and the collection
 will remain scheduled for the remote client. You can later run queries
 or artifacts to enumerate collections for the client and then download
 them using `artifacts fetch` command.
+
+###### Example
 
 To download the results of a previously run collection from the
 server, use the `artifacts fetch` command with the flow ID:
