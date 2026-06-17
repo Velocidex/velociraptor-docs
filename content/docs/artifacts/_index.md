@@ -274,6 +274,13 @@ If you are running the server manually in a terminal, you can use the
 Velociraptor will search these locations recursively for any `.yaml` or `.yml`
 files and try to parse them as artifacts.
 
+The `--definitions` flag also accepts a ZIP file containing artifact
+definitions. This is useful for distributing or sharing collections of
+artifacts as a single file, such as an
+[artifact pack](/docs/gui/artifacts/#importing-artifact-packs)
+downloaded from the
+[Artifact Exchange](/exchange/).
+
 {{% notice info "Be aware of filesystem permissions" %}}
 
 When installed as a service, Velociraptor's datastore directory is owned by the

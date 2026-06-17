@@ -47,7 +47,6 @@ Args:
 acl grant [<flags>] <principal> [<policy>]
     Grant a principal a policy.
 
-    --org=ORG     OrgID to grant
     --role=ROLE   A comma separated list of roles to grant the principal
     --[no-]merge  If specified we merge this policy with the old policy.
 

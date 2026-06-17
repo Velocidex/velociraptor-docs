@@ -179,10 +179,10 @@ default behavior:
 
 ##### See also
 
-- [[ decrypt ]](/docs/cli/misc/#-decrypt-), which removes the encryption from collection containers without
+- [[ decrypt ]](/docs/cli/commands/misc/#-decrypt-), which removes the encryption from collection containers without
   extracting the collection's files.
 
-- [[ unzip ]](/docs/cli/misc/#-unzip-), which works similarly to
+- [[ unzip ]](/docs/cli/commands/misc/#-unzip-), which works similarly to
   `decrypt` but lists filenames or extracts the files from a collection
   container.
 

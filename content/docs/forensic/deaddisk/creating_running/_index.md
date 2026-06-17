@@ -17,7 +17,7 @@ disk image, how to apply the remapping, and show how the dead disk client can be
 used in the GUI.
 
 A dead disk remapping can be created in the GUI or using the CLI's
-[deaddisk command](/docs/cli/deaddisk/). Under the hood, both
+[deaddisk command](/docs/cli/commands/deaddisk/). Under the hood, both
 methods use the same built-in artifact to inspect the disk image and create the
 remapping. Here we will primarily discuss the GUI-based approach and we refer
 you to the CLI documentation if you'd prefer to use a CLI-only approach.
@@ -193,7 +193,7 @@ folder named `Windows` is the `C:` drive.
    ![Download the remapping](dead_disk_remapping_download.png)
 
 As mentioned previously, the remapping generation step can also be done using
-the CLI's [deaddisk command](/docs/cli/deaddisk/), which runs the
+the CLI's [deaddisk command](/docs/cli/commands/deaddisk/), which runs the
 same `Generic.Utils.DeadDiskRemapping` artifact.
 
 ## Running a virtual client that uses the remapping

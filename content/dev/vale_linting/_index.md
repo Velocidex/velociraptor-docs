@@ -11,7 +11,7 @@ description: |
 
 ### What is Vale?
 
-https://vale.sh/docs
+[Vale documentation](https://vale.sh/docs)
 
 > Vale is a command-line tool that brings code-like linting to prose.
 > Vale is cross-platform (Windows, macOS, and Linux), written in Go,
@@ -59,7 +59,7 @@ dependencies.
 1. Install the latest `vale` binary into your path. Test it by running
    `vale --ls-dirs` or `vale version`.
 
-   _NOTE: despite what Vale's documentation says, you DO NOT need to
+   _NOTE: despite what Vale's documentation says, you **do not** need to
    run `vale sync` and you shouldn't do so. We don't use external
    styles and therefore don't need anything outside of our own repo.
    Everything you need, except for the Vale binary, is already in the

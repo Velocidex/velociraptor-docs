@@ -33,7 +33,7 @@ capability as an alternative for unusual deployment scenarios.
 
 ---
 
-## Windows platform
+### Windows platform
 
 On Windows the `service` command group functions much like Microsoft's Service
 Control Manager (`sc.exe`), with the exception being that it can also install or
@@ -109,7 +109,7 @@ Windows client the service configuration's command line will be:
 
 ---
 
-## macOS platform
+### macOS platform
 
 
 #### [ service install ]

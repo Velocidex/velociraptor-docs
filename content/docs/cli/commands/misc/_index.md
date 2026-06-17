@@ -48,18 +48,18 @@ Args:
 debian server [<flags>]
     Create a server package from a server config file.
 
-    --release=RELEASE  Specify the debian release number
-    --output=OUTPUT    Output directory where package files will be written
-    --binary=BINARY    The binary to package
+    --output="."     Directory to store deb files in. (Default current
+                     directory)
+    --binary=BINARY  The binary to package
 ```
 
 ```text
 debian client [<flags>]
     Create a client package from a client config file.
 
-    --release=RELEASE  Specify the debian release number
-    --output=OUTPUT    Filename to output
-    --binary=BINARY    The binary to package
+    --output="."     Directory to store deb package in. (Default current
+                     directory)
+    --binary=BINARY  The binary to package
 ```
 
 ----
@@ -98,7 +98,7 @@ Args:
 
 ##### See also
 
-- [[ fuse container ]](/docs/cli/fuse/),
+- [[ fuse container ]](/docs/cli/commands/fuse/),
   which allows you to mount collection containers instead of extracting them.
 
 - [[ unzip ]](#-unzip-), which works similarly to `decrypt`
@@ -156,6 +156,39 @@ For more information, see
 
 ----
 
+### [ help ]
+
+```text
+help [<command>...]
+    Show help.
+```
+
+The `help` command displays usage information for Velociraptor
+commands and subcommands. It behaves the same as the `-h` flag but
+accepts the command name as a positional argument instead of a flag.
+
+For example, the following two commands produce the same output:
+
+```sh
+velociraptor help artifacts collect
+```
+
+```sh
+velociraptor artifacts collect -h
+```
+
+You can also use `help` with a command group to list its available
+subcommands:
+
+```sh
+velociraptor help artifacts
+```
+
+Consult the [global flags](/docs/cli/flags/) page to see all
+available flags and options.
+
+---
+
 ### [ hunts reconstruct ]
 
 ```text
@@ -207,7 +240,6 @@ pool_client [<flags>]
 rpm client [<flags>]
     Create a client package from a server config file.
 
-    --release="A"    Rpm package release version
     --output="."     Directory to store rpms in. (Default current directory)
     --binary=BINARY  The binary to package
 ```
@@ -215,7 +247,7 @@ rpm client [<flags>]
 ```text
 rpm server [<flags>]
     Create a server package from a server config file.
-    --release="A"    Rpm package release version
+
     --output="."     Directory to store rpms in. (Default current directory)
     --binary=BINARY  The binary to package
 ```
@@ -234,6 +266,7 @@ unzip [<flags>] <file> [<members>]
         --format=json           Output format for csv output
     -l, --[no-]list             List files in the zip
     -p, --[no-]print            Dump out the files in the zip
+        --password=PASSWORD     Use this password to extract ZIP
 
 Args:
   <file>       Zip file to parse
@@ -261,7 +294,7 @@ Args:
 - [[ decrypt ]](#-decrypt-), which removes the encryption from collection containers without
   extracting the collection's files.
 
-- [[ fuse container ]](/docs/cli/fuse/),
+- [[ fuse container ]](/docs/cli/commands/fuse/),
   which allows you to mount collection containers instead of extracting them.
 
 ----

@@ -66,7 +66,7 @@ using the updated binary.
 From version 0.75.5 the `Server.Utils.CreateCollector` artifact will create a
 corresponding spec file and store it in the collection's Uploads section, in
 addition to the repacked collector binary. This spec file can be used with the
-[collector CLI command](/docs/cli/collector/) to rebuild the same
+[collector CLI command](/docs/cli/commands/collector/) to rebuild the same
 collector.
 
 ![](spec_file.png)
