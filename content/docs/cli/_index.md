@@ -115,8 +115,16 @@ velociraptor vql export | yq -P '.[] | select(.type == "Function") | select(.nam
 
 **Run mode** (`-r` or `--run` flag) lets you collect any
 Velociraptor artifact directly from the terminal as if it were a
-standalone CLI command. See the
-[Run mode](/docs/cli/run/) page for syntax and examples.
+standalone CLI command. It supports local collections on the
+current machine as well as remote collections on the server or on
+clients via the Velociraptor API.
+
+Run mode provides a simpler syntax than the equivalent
+`artifacts collect` command — artifact parameters are passed as
+direct flags instead of `--args Key=Value` pairs.
+
+See the [Run mode](/docs/cli/run/) page for syntax, examples,
+and remote collection details.
 
 ## Autoexec mode and post args
 
