@@ -41,11 +41,16 @@ them directly as flags:
 velociraptor [global flags] -r <ArtifactName> [artifact parameters...]
 ```
 
+Because run mode uses `artifacts collect` under the hood, it supports
+all the
+[flags for that command](/docs/cli/commands/artifacts/#-artifacts-collect-).
+
 ## Global flags vs artifact parameters
 
 [Global CLI flags](/docs/cli/flags/)
 (such as `--config` or `--api_config`) go **before** the `-r` flag.
-Flags after the `-r` flag are passed as parameters to the artifact.
+Flags after the `-r` flag are passed as parameters to the artifact
+unless they are flags expected by the `artifacts collect` command.
 
 For example, the following command runs the `Windows.Forensics.SRUM`
 artifact with a custom `--output` and saves the results to a ZIP file:
@@ -83,7 +88,7 @@ Artifact Parameters:
 ## Using custom artifact definitions
 
 You can load custom artifact packs with the `--definitions` flag.
-Place this flag before `-r`:
+Place this flag **before** `-r`:
 
 ```sh
 velociraptor --definitions /path/to/artifacts.zip -r Custom.MyArtifact
@@ -95,14 +100,14 @@ definitions.
 ## Remote collection via the API
 
 With an API config file (`--api_config`), run mode works against a
-remote server. You can collect server artifacts or client artifacts
-from any connected endpoint.
+remote server. You can collect server artifacts or collect client
+artifacts from any client. 
 
 Collect a server artifact:
 
 ```sh
 velociraptor --api_config api.yaml \
-    -r Server.Utils.CreateMSI -o /tmp/msi.zip
+    -r Server.Utils.ListUsers -o /tmp/gui_users.zip --password "H4RDp@$$wOrd"
 ```
 
 Collect an artifact from a specific client:
@@ -110,11 +115,20 @@ Collect an artifact from a specific client:
 ```sh
 velociraptor --api_config api.yaml \
     -r Windows.Forensics.Lnk -o /tmp/lnk.zip \
-    --client_id C.c892ae5478a6cda2
+    --client_id C.9e12b994f5c41ab6
 ```
 
-To download the results of a collection that has already completed,
-use the `artifacts fetch` command with the flow ID:
+
+Run mode via the API (and `artifacts collect`) schedules a normal
+collection, but runs synchronously. So if the client is offline the
+collection will be scheduled and the `--run` command will wait for
+results. You can CTRL+C to terminate the command and the collection will
+remain scheduled for the remote client. You can later run queries or
+artifacts to enumerate collections for the client and then download
+them using `artifacts fetch` command.
+
+To download the results of a previously run collection from the
+server, use the `artifacts fetch` command with the flow ID:
 
 ```sh
 velociraptor --api_config api.yaml artifacts fetch \
