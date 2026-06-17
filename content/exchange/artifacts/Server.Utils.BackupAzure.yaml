@@ -31,6 +31,13 @@ parameters:
      type: bool
      description: If set, upload exports to subdirectory per flow
 
+   - name: ZipPassword
+     description: |
+       Optional password to encrypt the zip archive before upload.
+       Leave blank for no encryption.
+     default: ""
+     type: string
+
 sources:
   - query: |
       -- Allow these settings to be set by the artifact parameter or the server metadata.
@@ -39,8 +46,8 @@ sources:
 
       LET completions = SELECT *,
          client_info(client_id=ClientId).os_info.fqdn AS Fqdn,
-         create_flow_download(client_id=ClientId,
-             flow_id=FlowId, wait=TRUE) AS FlowDownload
+         create_flow_download(client_id=ClientId, flow_id=FlowId, wait=TRUE,
+             password=ZipPassword) AS FlowDownload
       FROM watch_monitoring(artifact="System.Flow.Completion")
       WHERE Flow.artifacts_with_results =~ ArtifactNameRegex
 
