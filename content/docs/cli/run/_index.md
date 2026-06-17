@@ -21,7 +21,7 @@ a remote server and its clients. It provides a simpler and more
 intuitive syntax than the equivalent `artifacts collect` command,
 especially when passing parameters to artifacts.
 
-## Equivalence to `artifacts collect`
+## Equivalence to artifacts collect
 
 Run mode is a front-end to `artifacts collect`. The following two
 commands are equivalent:
@@ -31,8 +31,7 @@ velociraptor -r Windows.Forensics.SRUM --SRUMLocation /tmp/srudb.dat
 ```
 
 ```sh
-velociraptor artifacts collect Windows.Forensics.SRUM \
-    --args SRUMLocation=/tmp/srudb.dat
+velociraptor artifacts collect Windows.Forensics.SRUM --args SRUMLocation=/tmp/srudb.dat
 ```
 
 Instead of wrapping parameters in `--args Key=Value` syntax, you pass
@@ -44,9 +43,9 @@ velociraptor [global flags] -r <ArtifactName> [artifact parameters...]
 
 ## Global flags vs artifact parameters
 
-Global CLI flags (such as `--config` or `--api_config`) go **before**
-the `-r` flag. Flags after the `-r` flag are passed as parameters to
-the artifact.
+[Global CLI flags](/docs/cli/flags/)
+(such as `--config` or `--api_config`) go **before** the `-r` flag.
+Flags after the `-r` flag are passed as parameters to the artifact.
 
 For example, the following command runs the `Windows.Forensics.SRUM`
 artifact with a custom `--output` and saves the results to a ZIP file:
