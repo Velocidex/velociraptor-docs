@@ -30,33 +30,33 @@ a hurdle to contributions. If your contribution doesn't subscribe to
 all the guidelines that's perfectly OK - we can fix it up to be more
 compliant during future reviews.
 
-This document is a also work-in-progress, and not set-in-stone
+This document is also a work-in-progress, and not set-in-stone
 "rules".
 
 ---
 
-* [Markdown content](#markdown-content)
-* [Text wrapping](#text-wrapping)
-* [HTML content](#html-content)
-  * [Inline code](#inline-code)
-  * [Block code](#block-code)
-            * [Example](#example)
-  * [Admonitions (notices)](#admonitions-notices)
-  * [Unordered lists](#unordered-lists)
-  * [Shell commands](#shell-commands)
-  * [Internal links](#internal-links)
-* [Common page structures](#common-page-structures)
-  * [Ordinary documentation pages](#ordinary-documentation-pages)
-      * [Page metadata](#page-metadata)
-  * [KB articles](#kb-articles)
-  * [VQL reference documents](#vql-reference-documents)
-  * [Examples](#examples)
-  * [Markdown Links](#markdown-links)
-  * [UI Elements](#ui-elements)
+- [Markdown flavor](#markdown-flavor)
+- [Text wrapping](#text-wrapping)
+- [HTML content](#html-content)
+  - [Inline code](#inline-code)
+  - [Block code](#block-code)
+            - [Example](#example)
+  - [Admonitions (notices)](#admonitions-notices)
+  - [Unordered lists](#unordered-lists)
+  - [Shell commands](#shell-commands)
+  - [Internal links](#internal-links)
+- [Common page structures](#common-page-structures)
+  - [Ordinary documentation pages](#ordinary-documentation-pages)
+      - [Page metadata](#page-metadata)
+  - [KB articles](#kb-articles)
+  - [VQL reference documents](#vql-reference-documents)
+  - [Examples](#examples)
+  - [UI Elements](#ui-elements)
+  - [CLI command reference pages](#cli-command-reference-pages)
 
 ---
 
-## Markdown content
+## Markdown flavor
 
 Our docs website is compiled by Hugo which interprets markdown based
 on the Commonmark standard. Therefore it's best to avoid using
@@ -75,7 +75,7 @@ makes this easy. For example, in VSCode you can use
 
 Exceptions to hard-wrapping are:
 - [long links](#internal-links) (internal or external) where it is
-  preferable to have the link on it's own line and NOT wrap it.
+  preferable to have the link on its own line and NOT wrap it.
 - markdown tables.
 
 ## HTML content
@@ -87,25 +87,25 @@ simplifies website style changes, as well as automated style checking
 and content updates.
 
 When writing content in HTML the same style rules apply as described
-in the Markdown Content section.
+in the Markdown flavor section.
 
 ### Inline code
 
-We try not to overuse `inline code` or else the prose starts to look
-like patchwork.
+Avoid overusing `inline code` or the prose starts to look like
+patchwork.
 
 Use `inline code` only for:
 
 - file paths, file names
-- CLI commands, keywords, flags.
+- CLI commands, keywords, flags
+- terms that the user will type
 - VQL keywords, variable names and snippets
 - Artifact names, artifact parameter/key names and values, field names
-  and values.
+  and values
 
 Do not use it for:
 
 - brand names
-- terms that the user will type (use quotes instead)
 - defining new terms (use bold text instead)
 - names of GUI controls, controls and menu options (use bold text
   instead)
@@ -120,8 +120,8 @@ We currently support `browser`, `python`, `yaml`, `sql`, `json`,
 `bash`, `powershell`, `vql`, `text`, `shell` syntax highlighting via
 the `highlight.js` highlighter.
 
-Preferably format VQL code blocks with the VQL formatter, rather than
-SQL, although they are similar.
+Prefer the `vql` syntax highlighting tag for VQL code blocks over `sql`,
+although they are similar.
 
 ###### Example
 
@@ -142,14 +142,14 @@ FROM scope()
 
 ### Admonitions (notices)
 
-Try not to overuse admonition blocks. In particular, try not to avoid
+Try not to overuse admonition blocks. In particular, try to avoid
 having two or more of them adjacent, especially if they are the same
 admonition type.
 
 Try to use them sparingly when the reader's attention needs to be
 drawn to something specific. Often the content in an admonition block
 can be rewritten as part of the normal text content, and therefore
-doesn't need to be wrapped in it's own block.
+doesn't need to be wrapped in its own block.
 
 Currently we support 4 admonition types: `note`, `tip`, `info`,
 `warning`.
@@ -162,16 +162,16 @@ Use `-` not `*`. Just for consistency.
 
 ### Shell commands
 
-privilege indicator - this will depend on potential future changes to
-styling. TBD
+The privilege indicator (e.g. `#` or `$`) depends on future styling
+decisions and is TBD.
 
-use generic file names. omit version numbers and arch.
+Use generic file names and omit version numbers and architecture where
+possible.
 
-use platform alternatives where applicable
+Use platform-appropriate command alternatives where applicable.
 
-When providing command examples we should use a consistent order for
-the command components: `[binary]` `[command]` `[subcommand]`
-`[flags]` `[args]`
+When providing command examples, use a consistent order for the command
+components: `[binary]` `[command]` `[subcommand]` `[flags]` `[args]`.
 
 ### Internal links
 
@@ -188,6 +188,9 @@ your Hugo output for issues before submitting a PR.
 When internal links are invalid, Hugo will fail to compile and refuse
 to start, but this only happens on dev server start, so do also
 remember to check the console output.
+
+The same no-line-break rule applies to external links too: avoid
+splitting any link text or URL across lines.
 
 ## Common page structures
 
@@ -227,12 +230,12 @@ function/plugin/accessor need to be H3 or lower.
   - Lead
   - Body
 - Example (or Examples)
-  - one or more examples.
+  - one or more examples
 - Notes
   - notes or cautions about common considerations or pitfalls
 - See also
   - links to other functions that are likely to be related or of
-    interest.
+    interest
 
 ### Examples
 
@@ -255,11 +258,92 @@ Don't use a colon after the word Example _unless_ there's a subsequent
 example title such as "Example: Recursive use case".
 
 
-### Markdown Links
-
-Avoid line breaks in links.
-
 ### UI Elements
 
 Bold all UI elements (buttons, tabs, menu names) to help users scan
 the page quickly.
+
+
+### CLI command reference pages
+
+Pages under `docs/cli/commands/` document individual CLI commands
+and command groups. They follow a consistent heading structure:
+
+#### Command/subcommand headings
+
+Each command or subcommand gets a Level-3 heading:
+
+```md
+### [ artifacts list ]
+
+### [ config show ]
+
+### [ fuse container ]
+```
+
+The reason for using square brackets is that inline code notation
+overrides heading formatting and looks ugly. So this is just an
+alternative way to indicate that the commands are literals without
+using inline code notation.
+
+After the `###` command heading, include a text code block
+showing the usage syntax (flags, arguments, defaults). This block
+should be taken from the command's `-h` output, but omit the flags
+that the `-h` flag displays which are common to all commands.
+
+``````text
+artifacts list [<flags>] [<regex>]
+    Print all artifacts
+
+    -d, --[no-]details ...  Show more details (Use -d -dd for even more)
+
+Args:
+  [<regex>]  Regex of names to match.
+``````
+
+#### Separators
+
+On pages documenting multiple subcommands, separate each
+subcommand section with a horizontal rule (`---`).
+
+#### Sub-sections within a command
+
+Use `####` (Level-4) headings for major topics within a
+command's documentation.
+
+Use `#####` (Level-5) headings for auxiliary content such as
+notes and see-also sections.
+
+Use `######` (Level-6) headings for examples (see the
+[examples](#examples) section above).
+
+{{% notice tip %}}
+The heading hierarchy for CLI command pages is:
+
+- `### [ command.subcommand ]` — command signature
+- `####` — major topic within the command
+- `#####` — notes, see-also, usage notes
+- `######` — examples
+{{% /notice %}}
+
+#### Cross-references to other commands
+
+When linking to another CLI command from within a command page,
+use the `[[ command ]]` convention in the link text. This pairs
+the bracket-notation style of the heading with a standard markdown
+link:
+
+```md
+- [[ fuse container ]](/docs/cli/commands/fuse/),
+  which allows you to mount collection containers instead of
+  extracting them.
+
+- [[ decrypt ]](#-decrypt-), which removes the encryption from
+  collection containers.
+```
+
+This convention signals to the reader that the link refers to
+another CLI command (identifiable by the bracket style), even
+when skimming the page. This is again just an alternative to using
+inline code notation that makes things a bit more clear to the reader.
+

@@ -133,13 +133,18 @@ artifacts collect [<flags>] <artifact_name>...
     Collect all artifacts
 
     --output=""           When specified we create a zip file and store all output in it.
+    --client_id="server"  Used for remote API calls to specify the client id to
+                          collect from. By default this is `server` to server
+                          artifacts
+    --org_id="root"       Used for remote API calls to specify the org id
+                          (default `root`)
     --timeout=0           Time collection out after this many seconds.
     --progress_timeout=0  If specified we terminate the colleciton if no progress is made in this many seconds.
     --cpu_limit=0         A number between 0 to 100 representing maximum CPU utilization.
     --output_level=5      Compression level for zip output.
     --[no-]require_admin  Ensure the user is an admin
     --password=""         When specified we encrypt zip file with this password.
-    --format=json         Output format to use (text,json,csv,jsonl).
+    --format=json         Output format to use (csv, json, csv_only).
     --args=ARGS ...       Artifact args (e.g. --args Foo=Bar).
     --hard_memory_limit=HARD_MEMORY_LIMIT
                           If we reach this memory limit in bytes we exit.
@@ -176,6 +181,12 @@ The general syntax for the command is `velociraptor artifacts collect ArtifactNa
 
 You need to specify the exact name of the artifact you want to collect -
 wildcards are not supported.
+
+The `-r` (or `--run`) flag provides an alternative syntax that
+transforms into `artifacts collect` behind the scenes. For example,
+instead of `velociraptor artifacts collect ArtifactName --args Foo=Bar`,
+you can use `velociraptor -r ArtifactName --Foo Bar`. See the
+[run mode](/docs/cli/run/) page for details.
 
 #### Specifying Parameters/Arguments
 
@@ -236,6 +247,75 @@ instead of running its default embedded configuration.
 
 If your offline collector binary has embedded custom artifacts then these are
 also available to the `artifacts collect` command.
+
+---
+
+### [ artifacts fetch ]
+
+```text
+artifacts fetch --flow_id=FLOW_ID --output=OUTPUT [<flags>]
+    Fetch a collection from the server via the API
+
+    --client_id="server"  The client ID to fetch from. The default is `server` which fetches server artifacts
+    --flow_id=FLOW_ID     The flow ID to fetch from (required).
+    --org_id="root"       Fetch from the specified org ID (default `root`)
+    --output=OUTPUT       The output zip file path in which to store the collection data.
+```
+
+The `artifacts fetch` command downloads the results of an existing
+collection (also called a flow) from a Velociraptor server using the
+Velociraptor API. It retrieves collected data as a ZIP file without
+using the GUI, for use in scripts or automated pipelines.
+
+This command works with any flow that you have access to, including
+client collections and server collections.
+
+#### Prerequisites
+
+The `artifacts fetch` command requires an API config file containing
+API client credentials. You provide this using the `--api_config` (or
+`-a`) flag, which is a global flag common to all commands:
+
+```sh
+velociraptor -a api.config.yaml artifacts fetch ...
+```
+
+You can generate an API config file using the
+`velociraptor config api_client` command.
+
+#### Basic usage
+
+The command requires the `--flow_id` flag to identify which collection
+to download, and the `--output` flag to specify where to save the
+resulting ZIP file.
+
+For a collection on a client, you also need to specify the
+`--client_id` flag. For server artifacts, the `--client_id` defaults
+to `server` and can be omitted.
+
+###### Example
+
+Download the results of flow `F.D6JCVA49O524O` from client
+`C.c892ae5478a6cda2`:
+
+```sh
+velociraptor -a api.config.yaml artifacts fetch \
+    --client_id C.c892ae5478a6cda2 \
+    --flow_id F.D6JCVA49O524O \
+    --output /tmp/collection.zip
+```
+
+The output file is a standard Velociraptor collection ZIP which can be
+imported into a server or mounted using the
+[[ fuse container ]](/docs/cli/commands/fuse/) command.
+
+#### Related commands
+
+The [[ artifacts collect ]](/docs/cli/commands/artifacts/#-artifacts-collect-)
+command can also perform remote collections using the `--client_id`
+flag when an API config is provided. Use `artifacts collect` to launch
+a new collection remotely, and `artifacts fetch` to download the
+results of one that has already completed.
 
 ---
 

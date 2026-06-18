@@ -13,7 +13,8 @@ description: |
   In this section we look at managing artifacts using the GUI, via VQL, and the CLI.
 ---
 
-In this section we look at managing artifacts using the GUI, via VQL, and the CLI.
+In this section we look at managing artifacts using the GUI, via VQL,
+and the CLI.
 
 {{% include-page "/docs/gui/artifacts/" %}}
 
@@ -22,4 +23,10 @@ In this section we look at managing artifacts using the GUI, via VQL, and the CL
 
 ## Managing and collecting artifacts from the CLI
 
-{{% include-page "/docs/cli/artifacts/" %}}
+See the [artifacts CLI command reference](/docs/cli/commands/artifacts/)
+for detailed documentation on listing, viewing, collecting, and
+fetching artifacts from the command line.
+
+You can also use [run mode](/docs/cli/run/) (`-r` or `--run` flag) as
+an alternative way to run artifacts without the full subcommand
+syntax.

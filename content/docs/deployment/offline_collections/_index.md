@@ -221,7 +221,7 @@ In general, don't use offline collectors:
     get answers without delays.
 
   - The client config can be
-    [repacked](/docs/cli/config/#-config-repack-)
+    [repacked](/docs/cli/commands/config/#-config-repack-)
     into the binary, and made to
     [auto execute](/docs/cli/#autoexec-mode-and-post-args)
     in `client` mode. That is, the convenience of a single autoexec binary can
@@ -423,7 +423,7 @@ By default the offline collector will collect 2 artifacts at the same time
 (concurrency = 2). This can be overridden in the GUI collector builder or by
 specifying the `OptConcurrency` setting in the spec file if building the
 collector
-[on the command line](/docs/cli/collector/).
+[on the command line](/docs/cli/commands/collector/).
 
 Because offline collectors run without resource limits (by default), increasing
 the collection concurrency will not necessarily lead to faster collections, and

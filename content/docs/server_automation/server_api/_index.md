@@ -264,7 +264,7 @@ PowerShell) to orchestrate more complex API interactions. In such
 scripts, the queries can be constructed and the results processed by
 other tools and automation logic.
 
-The Velociraptor CLI offers [the `query` command](/docs/cli/query/)
+The Velociraptor CLI offers [the `query` command](/docs/cli/commands/query/)
 which allows you to run any VQL query. When used with the
 `--api_config` (or `-a`) flag, it uses the API configuration file to
 connect and authenticate to the API server first and then submit the

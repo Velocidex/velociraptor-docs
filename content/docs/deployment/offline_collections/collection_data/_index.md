@@ -741,7 +741,7 @@ extract the contents of the collection container.
 
 To extract the collection container on the command line you can use
 Velociraptor's built-in
-[`unzip` command](/docs/cli/misc/#-unzip-).
+[`unzip` command](/docs/cli/commands/misc/#-unzip-).
 This command only supports collections secured with the server's X.509
 certificate and unprotected zips.
 
@@ -794,7 +794,7 @@ velociraptor --config server.config.yaml unzip Collection-WIN-KMODJ1W0CYG-2025-1
 
 It's possible to work with the contents of collection containers by mounting
 them with FUSE instead of extracting them. The Velociraptor Linux binary
-provides the [`fuse container` command](/docs/cli/fuse/) which
+provides the [`fuse container` command](/docs/cli/commands/fuse/) which
 allows us to mount collection containers on a directory.
 
 Using FUSE allows efficient and rapid access because the container does not need
@@ -988,7 +988,7 @@ look and behave like a normal client.
    server config, which is generally not recommended for security reasons. In
    that case it's probably best to first decrypt the collection archive and then
    work with the non-encrypted `data.zip` container. To do that you can use the
-   [`decrypt` CLI command](/docs/cli/misc/#-decrypt-).
+   [`decrypt` CLI command](/docs/cli/commands/misc/#-decrypt-).
 
    If you've used a zip protection scheme other than X.509 using the server's
    certificate, then you need to first extract the inner `data.zip` from the

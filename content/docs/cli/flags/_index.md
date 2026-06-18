@@ -1,10 +1,11 @@
 ---
-menutitle: "CLI flags"
+menutitle: "Global Flags"
 title: "Global CLI flags"
 date: 2025-05-20
+last_reviewed: 2026-06-16
 draft: false
-weight: 130
-Summary: CLI flags that are available for all commands.
+weight: 20
+summary: CLI flags that are available for all commands.
 description: |
   These CLI flags are available for all commands (but may not be relevant to all).
 ---
@@ -15,6 +16,7 @@ These CLI flags are available for all commands (but may not be relevant to all).
 -h, --[no-]help                Show context-sensitive help (also try --help-long and --help-man).
     --remap=REMAP              A remapping configuration file for dead disk analysis.
     --[no-]nobanner            Suppress the Velociraptor banner
+    --org=ORG                  Org ID to show
     --[no-]debug               Enables debug and profile server.
     --debug_port=6060          Port for the debug server.
 -c, --config=CONFIG            The configuration file.
@@ -22,7 +24,7 @@ These CLI flags are available for all commands (but may not be relevant to all).
                                 Extract the embedded configuration from this file.
 -a, --api_config=API_CONFIG    The API configuration file.
     --runas=RUNAS              Run as this username's ACLs
-    --definitions=DEFINITIONS  A directory containing artifact definitions
+-D, --definitions=DEFINITIONS  A directory containing artifact definitions
     --[no-]nocolor             Disable color output
 -v, --[no-]verbose             Enabled verbose logging.
     --profile=PROFILE          Write profiling information to this file.

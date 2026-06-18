@@ -143,12 +143,30 @@ Args:
   <dumpdir>  The directory to store files at.
 ```
 
-###### Example
+###### Example: Copy file from the server filestore
 
-```text
+```shell
 velociraptor --config ./server.config.yaml fs cp -l --accessor=fs "/**/*.msi" ./MSI
 ```
-will copy all `.msi` files from the server filestore to a folder named `MSI`.
+will copy all `.msi` files from the server filestore to a folder named
+`MSI`.
+
+
+###### Example: Copy a "locked" file on Windows using the raw NTFS accessor
+
+Velociraptor can fall back to raw NTFS parsing when it can not access
+a file. We can use the `fs cp` command with the `--accessor` flag to
+have Velociraptor copy the file transparently, bypassing local file
+locks.
+
+```shell
+C:\Windows\System32>c:\velociraptor.exe fs cp c:\Windows\system32\sru\SRUDB.dat c:\output --accessor auto
+
+{"Name":"SRUDB.dat","Size":9568256,"Mode":"-rw-rw-rw-","Mtime":"2026-03-23T05:18:02.2159378Z","Data":{},"Upload":{"Path":"\\\\?\\c:\\output\\SRUDB.dat","Size":9474048,"UploadId":0,"sha256":"33a1c63b6cb863acf7c79e5d7881d09d7834052250502c05145fb95555495b69","md5":"15491bbc80d63d751c8bcb0114458bce","Components":["SRUDB.dat"]}}
+```
+
+This does not trigger a new Volume Shadow Copy or require any
+3rd-party binaries.
 
 ---
 

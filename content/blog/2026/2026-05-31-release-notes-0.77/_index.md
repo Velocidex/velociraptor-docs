@@ -126,11 +126,25 @@ This release improves a number of GUI features.
 
 ## CLI Improvements
 
-- **New CLI run syntax** with reworked command line parser.
+- **New run mode syntax** with reworked command line parser.
 
-  The CLI has a new syntax for running artifacts from the command line.
-  The new `--api_config` flag supports collecting artifacts remotely and
-  fetching results via the API.
+  The `-r` (or `--run`) flag introduces run mode, a simpler way to
+  run any Velociraptor collection directly from the command line.
+  Instead of wrapping artifact parameters in `--args Key=Value`
+  syntax, run mode lets you pass them as regular flags after the
+  artifact name. This makes the CLI feel more like running a
+  standalone tool:
+
+  ```
+  velociraptor -r Windows.Forensics.SRUM -o /tmp/results.zip
+  ```
+
+  Run mode can collect artifacts locally, on a remote server, or on
+  remote clients when combined with the `--api_config` and
+  `--client_id` flags.
+
+  See the [run mode documentation](/docs/cli/run/) for the full
+  syntax and examples.
 
 - **API support for the `artifacts collect` command**, allowing remote
   collection and result fetching over the API. Also added the

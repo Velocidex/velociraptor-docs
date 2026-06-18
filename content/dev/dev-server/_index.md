@@ -41,7 +41,7 @@ installed on your machine.
 ## 2. Create a fork of the velociraptor-docs repo and clone it locally
 
 ```bash
-# Use the gh CLI tool or else the GitHub website
+# Use the gh CLI tool or the GitHub website
 gh repo fork Velocidex/velociraptor-docs
 
 # then clone from YOUR fork
@@ -65,7 +65,7 @@ specific flags:
   slightly faster) instead of from the `public` folder in the repo
   root.
 
-Alternatively you can run hugo in a docker:
+Alternatively you can run Hugo in Docker:
 
 ```bash
 docker run --rm -it -v $(pwd):/src -p 1313:1313 hugomods/hugo server
@@ -74,7 +74,7 @@ docker run --rm -it -v $(pwd):/src -p 1313:1313 hugomods/hugo server
 {{% notice note "Build scripts" %}}
 
 For certain kinds of content, you might need to run one or more of the
-Python scripts listed in the Makefile] in the project root using the
+Python scripts listed in the Makefile in the project root using the
 `make` tool, although this is not necessary for normal page content
 and artifact contributions.
 
