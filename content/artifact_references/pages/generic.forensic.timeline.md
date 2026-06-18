@@ -1,20 +1,26 @@
 ---
 title: Generic.Forensic.Timeline
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Creates a bodyfile-format timeline of files matching a glob pattern.
 ---
 
-This artifact generates a timeline of a file glob in bodyfile
-format. We currently do not calculate the md5 because it is quite
-expensive.
+Creates a bodyfile-format timeline of files matching a glob pattern.
+
+We currently do not calculate the MD5 hash because that is a
+relatively resource-expensive operation.
 
 
 <pre><code class="language-yaml">
 name: Generic.Forensic.Timeline
 description: |
-  This artifact generates a timeline of a file glob in bodyfile
-  format. We currently do not calculate the md5 because it is quite
-  expensive.
+  Creates a bodyfile-format timeline of files matching a glob pattern.
+
+  We currently do not calculate the MD5 hash because that is a
+  relatively resource-expensive operation.
 
 parameters:
   - name: timelineGlob

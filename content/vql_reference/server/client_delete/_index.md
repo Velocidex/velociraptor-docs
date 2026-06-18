@@ -2,7 +2,12 @@
 title: client_delete
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Delete all information related to a client from the filestore.
+
 ---
 
 

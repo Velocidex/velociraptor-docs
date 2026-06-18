@@ -2,6 +2,8 @@
 title: Auscert Workshop 2024
 menutitle: Auscert 2024
 weight: 120
+description: |
+  This workshop took place on the 22nd May 2024.
 ---
 
 This workshop took place on the 22nd May 2024.

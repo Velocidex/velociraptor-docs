@@ -32,7 +32,7 @@ Velociraptor supports this information management approach by providing out-of-t
 
 The first VQL artifact that we will use to accomplish our goal is named *Elastic.Flows.Upload*
 
-This artifact sends the results of [Flows](https://www.velocidex.com/docs/user-interface/artifacts/client_artifacts/) to Elasticsearch. It’s the easiest one to get started with because all you have to do is add the artifact to [Server Monitoring](https://www.velocidex.com/docs/user-interface/artifacts/server_events/) and tweak a parameter or two if necessary.
+This artifact sends the results of Flows to Elasticsearch. It’s the easiest one to get started with because all you have to do is add the artifact to Server Monitoring and tweak a parameter or two if necessary.
 
 ![This is where Server Monitoring artifacts are hidden!](../../img/1_iDsgXuKmszwthN8EX8AHsw.png)*This is where Server Monitoring artifacts are hidden!*
 
@@ -60,7 +60,7 @@ If you have an Elasticsearch cluster that uses authentication, non-standard port
 
 ## Sending Client Events to Elastic
 
-This is slightly less easy than the previous step but only because it requires that you first configure one or more artifacts to collect [client events](https://www.velocidex.com/docs/user-interface/artifacts/client_events/).
+This is slightly less easy than the previous step but only because it requires that you first configure one or more artifacts to collect client events.
 
 Once the client events are being collected and received by the VR server, the *Elastic.Events.Clients* artifact will take care of forwarding these events to Elastic *.*
 

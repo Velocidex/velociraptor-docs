@@ -15,7 +15,7 @@ Please note the following requirements:
 
 * Your Velociraptor server must have a valid SSL certificate already issued and
   configured. This can be a certificate issued by Let's Encrypt or
-  [another public CA]({{< ref "/knowledge_base/tips/ssl/" >}}).
+  [another public CA](/knowledge_base/tips/ssl/).
 
 * Google restricts OAuth 2.0 applications to using Authorized Domains. According
   to Google:

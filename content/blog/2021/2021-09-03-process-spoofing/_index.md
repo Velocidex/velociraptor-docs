@@ -91,7 +91,7 @@ pid!
 
 This anomaly allows us to detect the spoofing behavior, now we just
 need to enrich the event with extra detail of the real parent, the
-spoofed parent etc. You can find the full VQL artifact on the [Velociraptor Artifact Exchange](https://docs.velociraptor.app/exchange/) [here](https://docs.velociraptor.app/exchange/artifacts/pages/windows.etw.detectprocessspoofing/)
+spoofed parent etc. You can find the full VQL artifact on the [Velociraptor Artifact Exchange](/exchange/) [here](/exchange/artifacts/pages/windows.etw.detectprocessspoofing/)
 
 ![Searching the Artifact Exchange](artifact_exchange.png)
 
@@ -162,7 +162,7 @@ After adding the artifact to our deployment, we then issued the
 monitoring query to all clients. When any client detected the spoofing
 behavior, an event was sent to server in real time. We could then
 utilize any escalation mechanism such as [escalation through
-slack](https://docs.velociraptor.app/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/)
+slack](/blog/2020/2020-12-26-slack-and-velociraptor-b63803ba4b16/)
 or a [The
 Hive](https://wlambertts.medium.com/zero-dollar-detection-and-response-orchestration-with-n8n-security-onion-thehive-and-10b5e685e2a1).
 
@@ -205,14 +205,13 @@ It is a available on GitHub under an open source license. As always
 please file issues on the bug tracker or ask questions on our mailing
 list
 [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com)
-. You can also chat with us directly on discord
-[https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+. You can also chat with us directly on [Discord](/discord/).
 .
 
 There is still time to submit it to this year's [2021 Velociraptor
 Contributor
-Competition](https://docs.velociraptor.app/announcements/2021-artifact-contest/),
+Competition](/announcements/2021-artifact-contest/),
 where you can win prizes, honor and support the entire DFIR
 community. Alternatively, you can share your artifacts with the
 community on [Velociraptor's Artifact
-Exchange](https://docs.velociraptor.app/exchange/).
+Exchange](/exchange/).

@@ -2,7 +2,14 @@
 title: lzxpress_decompress
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Decompress an lzxpress blob.
+
+  This function is most useful when decoding prefetch files.
+
 ---
 
 

@@ -2,7 +2,12 @@
 title: mscfb
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Parse a MSCFB file as an archive.
+
 ---
 
 

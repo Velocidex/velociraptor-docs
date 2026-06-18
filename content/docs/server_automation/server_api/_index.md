@@ -4,6 +4,11 @@ title: The Velociraptor API
 date: 2021-06-30T12:31:08Z
 draft: false
 weight: 10
+description: |
+  Velociraptor can be fully controlled by external programs using the
+  Velociraptor API. In this page you will learn how to connect to the
+  server using the API and control it using a Python script to schedule
+  collections on hosts and retrieve the results of those collections.
 ---
 
 Velociraptor can be fully controlled by external programs using the
@@ -22,8 +27,10 @@ the API keys can enable an attacker to act on the Velociraptor server
 with the permissions given to the key.
 
 Please, be aware of the implications of allowing automated collection on
-endpoints and review the information in [Artifact Security]({{< ref
-"/docs/artifacts/security/" >}}) carefully.
+endpoints and review the information in
+[API client security](/docs/deployment/security/#api-client-security)
+and
+[Artifact Security](/docs/artifacts/security/) carefully.
 
 {{% /notice %}}
 
@@ -37,7 +44,7 @@ important to ensure that Velociraptor integrates well with other tools.
 Generally there are two main requirements for Velociraptor integration:
 
 1. Velociraptor can itself control other systems. This can be achieved
-   using VQL and the execve() or http_client() plugins (See [Extending VQL]({{< ref "/docs/vql/extending_vql/" >}}) for an example)
+   using VQL and the execve() or http_client() plugins (See [Extending VQL](/docs/vql/extending_vql/) for an example)
 
 2. Velociraptor can be controlled by external tools. This allows
    external tools to enrich and automate Velociraptor using an
@@ -227,7 +234,7 @@ command _replaces_ the existing roles - it does not add to them.
 $ velociraptor --config server.config.yaml acl grant Mike --role investigator,api
 ```
 
-Note that role role changes made from the CLI require a service restart. You
+Note that role changes made from the CLI require a service restart. You
 will see a message recommending this after running the `acl grant` command.
 Changes made in the GUI or VQL do not require a service restart.
 
@@ -244,18 +251,55 @@ $ velociraptor --config server.config.yaml acl grant Mike --role ""
 In the GUI this can be achieved by deselecting all roles from the user in all
 orgs.
 
+## Using the built-in API client
 
-## Python bindings
+Although we provide a separate Python API client, which is described
+below, you don't have to use a powerful language like Python to
+interact with the Velociraptor API: The Velociraptor binary includes
+an API client as one of it's utility functions.
+
+This makes it possible to run standalone API queries on the command
+line, or to wrap these queries in shell scripts (for example Bash or
+PowerShell) to orchestrate more complex API interactions. In such
+scripts, the queries can be constructed and the results processed by
+other tools and automation logic.
+
+The Velociraptor CLI offers [the `query` command](/docs/cli/commands/query/)
+which allows you to run any VQL query. When used with the
+`--api_config` (or `-a`) flag, it uses the API configuration file to
+connect and authenticate to the API server first and then submit the
+query. This means that the query:
+- runs on the server via the API if the flag is used.
+- runs locally (not using the API) if the flag is _not_ used.
+
+Running VQL queries through the API is equivalent to running them in a
+[notebook](/docs/notebooks/) or via a server artifact on
+the server.
+
+###### Example
+
+```
+velociraptor --api_config api.config.yaml query "SELECT * FROM info()" --format jsonl | jq
+```
+
+![Using the built-in API client](query_api_client.svg)
+
+
+For additional examples please see the sections below. Although these
+use Python, the queries would be the same if used with the CLI client.
+
+## Using the Python bindings
 
 The Velociraptor API uses gRPC which is an open source, high performance RPC
 protocol compatible with many languages. The Velociraptor team officially
-supports python through the
+supports Python through the
 [pyvelociraptor project](https://github.com/Velocidex/pyvelociraptor),
-but since gRPC is very portable, many other languages can be used including C++,
-Java, etc. This document will discuss the python bindings specifically as an
-example.
+but since gRPC is very portable, API clients can be implemented in
+many other languages, for example C++, Rust, Java, etc. The built-in
+API client described in the previous section is implemented in the Go
+language, since it is part of the Velociraptor binary.
 
-### Install the python bindings
+### Installing the Python bindings
 
 For python we always recommend a virtual environment and
 Python 3. Once you have Python3 installed, simply install the
@@ -406,7 +450,15 @@ WHERE condition.  Finally we wish to quit the query once a single row
 is found so we specify a LIMIT of 1 row.
 
 {{% notice note "Waiting for a query" %}}
-  Note the `LET _ <=` statement. This tells VQL to materialize the query and store the result in a dummy variable. This statement causes VQL to pause and wait for the query to complete before evaluating the next query. See [Materialized LET expressions]({{< ref "/docs/vql/#materialized-let-expressions" >}}) for more about this.
+
+Note the `LET _ <=` statement. This tells VQL to materialize the query
+and store the result in a dummy variable. This statement causes VQL to
+pause and wait for the query to complete before evaluating the next
+query.
+
+See [Materialized LET expressions](/docs/vql/fundamentals/#materialized-let-expressions)
+for more about this.
+
 {{% /notice %}}
 
 After this query exits we know the collection is complete. This may
@@ -459,27 +511,3 @@ demonstrating how to perform common tasks.
 
 {{% /notice %}}
 
-
-## Using the shell for automation
-
-You don't have to use a powerful language like Python to connect to
-the API. It is possible to write simple shell scripts that use the
-Velociraptor API using bash or powershell by leveraging the
-velociraptor binary itself.
-
-Velociraptor offers the `query` command which allows you to run any
-VQL query. When provided with the `--api_config` flag, Velociraptor
-will use that api configuration file to connect remotely to the API
-server and run the query there.
-
-Running VQL queries through the API client is equivalent to running them in a
-[notebook]({{< ref "/docs/notebooks/" >}}) on the server.
-
-This can be chained to other tools and automation orchestrated with a
-simple bash script:
-
-```
-velociraptor --api_config api.config.yaml query "SELECT * FROM info()" --format jsonl | jq
-```
-
-![](query_api_client.svg)

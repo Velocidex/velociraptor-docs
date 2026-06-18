@@ -1,19 +1,25 @@
 ---
 title: MacOS.Forensics.FSEvents
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Reads macOS FSEvents logs to enumerate file creation, deletion,
+  rename, and modification events.
 ---
 
-This artifact parses the FSEvents log files.
+Reads macOS FSEvents logs to enumerate file creation, deletion,
+rename, and modification events.
 
-We can filter on Path, Flags or use time box on source file.
+OPtionally filter on Path, Flags or use time box on source file.
 
-An interesting hunt may be filter for Entries of plist files modified or
-created on a specific date. Malware often creates plist files in
-/Library/LaunchAgents, Library/Preferences, /Library/LaunchDaemons, or
-/Library/Internet Plugins.
+An interesting hunt may filter for Entries of plist files modified
+or created on a specific date. Malware often creates plist files in
+`/Library/LaunchAgents`, `Library/Preferences`,
+`/Library/LaunchDaemons`, or `/Library/Internet Plugins`.
 
-#### NOTES
+**NOTES**
 
 - FSEvents do not have timestamps so we specify source file Mtime and
   Btime.
@@ -24,21 +30,22 @@ created on a specific date. Malware often creates plist files in
 <pre><code class="language-yaml">
 name: MacOS.Forensics.FSEvents
 description: |
-   This artifact parses the FSEvents log files.
+  Reads macOS FSEvents logs to enumerate file creation, deletion,
+  rename, and modification events.
 
-   We can filter on Path, Flags or use time box on source file.
+  OPtionally filter on Path, Flags or use time box on source file.
 
-   An interesting hunt may be filter for Entries of plist files modified or
-   created on a specific date. Malware often creates plist files in
-   /Library/LaunchAgents, Library/Preferences, /Library/LaunchDaemons, or
-   /Library/Internet Plugins.
+  An interesting hunt may filter for Entries of plist files modified
+  or created on a specific date. Malware often creates plist files in
+  `/Library/LaunchAgents`, `Library/Preferences`,
+  `/Library/LaunchDaemons`, or `/Library/Internet Plugins`.
 
-   #### NOTES
+  **NOTES**
 
-   - FSEvents do not have timestamps so we specify source file Mtime and
-     Btime.
-   - The default timeout is only 600 seconds - you will probably need to
-     increase it to allow the collection to finish.
+  - FSEvents do not have timestamps so we specify source file Mtime and
+    Btime.
+  - The default timeout is only 600 seconds - you will probably need to
+    increase it to allow the collection to finish.
 
 author: |
   Mike Cohen, Matt Green - @mgreen27, Yogesh Khatri (@swiftforensics), CyberCX

@@ -107,7 +107,7 @@ the GUI.
 
 ![](image2.png)
 
-The flows that hunts launch arn the client. However, when they complete,
+The flows that hunts launch are on the client. However, when they complete,
 a small record is made in the hunts\'s results queue pointing to the
 flow. It is therefore possible to retrieve all results from the hunt
 from all client\'s. For example, the GUI allows downloading a zip file

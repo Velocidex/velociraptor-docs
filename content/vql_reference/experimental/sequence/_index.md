@@ -2,7 +2,44 @@
 title: sequence
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Combines the output of many queries into an in memory fifo. After
+  each row is received from any subquery runs the query specified in
+  the 'query' parameter to retrieve rows from the memory SEQUENCE
+  object.
+
+  The `sequence()` plugin is very useful to correlate temporally close
+  events from multiple queries - for example, say a process execution
+  query and a network query. The `query` can then search for relevant
+  network event closely followed by a process event.
+
+  ### Example
+
+  ```vql
+  SELECT * FROM sequence(
+  network={
+    SELECT * FROM Artifact.Windows.ETW.DNS()
+    WHERE Query =~ "github"
+  },
+  process={
+    SELECT * FROM Artifact.Windows.Detection.WMIProcessCreation()
+    WHERE Name =~ "cmd.exe"
+  },
+  query={
+    SELECT Name, CommandLine, {  -- search for a DNS lookup
+      SELECT * FROM SEQUENCE
+      WHERE Query =~ "github"
+    } AS DNSInfo
+    FROM SEQUENCE
+    WHERE DNSInfo AND Name
+  })
+  ```
+
+  NOTE: An alternative to this plugin is a `Sigma Correlation rule`
+
 ---
 
 
@@ -55,5 +92,7 @@ query={
   WHERE DNSInfo AND Name
 })
 ```
+
+NOTE: An alternative to this plugin is a `Sigma Correlation rule`
 
 

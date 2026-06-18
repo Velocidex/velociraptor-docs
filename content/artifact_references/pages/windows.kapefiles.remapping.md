@@ -1,7 +1,13 @@
 ---
 title: Windows.KapeFiles.Remapping
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Automates the creation of remapping rules to enable post-processing file
+  uploads collected by the `Windows.KapeFiles.Targets` or
+  `Windows.Triage.Targets` artifacts.
 ---
 
 Automates the creation of remapping rules to enable post-processing file
@@ -181,7 +187,8 @@ export: |
 
 sources:
   - query: |
-      SELECT remap(clear=TRUE, config=GetRemapping) AS Remapping
+      SELECT remap(clear=TRUE,
+         config=GetRemapping(FlowId=FlowId, ClientId=ClientId)) AS Remapping
       FROM scope()
 
 </code></pre>

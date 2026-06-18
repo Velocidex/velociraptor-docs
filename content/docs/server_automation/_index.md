@@ -3,6 +3,10 @@ title: "Server Automation"
 date: 2021-06-30T12:31:08Z
 draft: false
 weight: 70
+description: |
+  Velociraptor's unprecedented flexibility arises from the power of
+  VQL. We have seen how VQL can be used to collect artifacts on the
+  endpoint, but VQL can be used on the server too.
 ---
 
 Velociraptor's unprecedented flexibility arises from the power of
@@ -53,9 +57,9 @@ the running server will not be aware that these changes are made.
 It is only supported to run administrative VQL plugins using the
 following methods:
 
-1. The notebooks
+1. Notebooks
 2. Server Artifacts
-3. Using the [Velociraptor API]({{% ref "server_api/#using-the-shell-for-automation" %}})
+3. Using the [Velociraptor API](/docs/server_automation/server_api/)
 
 {{% /notice %}}
 

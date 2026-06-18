@@ -7,6 +7,8 @@ summary: |
 date: 2021-06-27T04:34:03Z
 draft: false
 weight: 80
+description: |
+  ## Windows Event Logs
 ---
 
 ## Windows Event Logs
@@ -159,7 +161,7 @@ disabling the `Microsoft-Windows-Bits-Client/Operational` log.
 ![Disabling logs](image25.png)
 
 To read the full analysis of how to detect such a registry modification, read
-the [blog post]({{< ref "blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/" >}}),
+the [blog post](blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/),
 or simply check for modifications using the `Windows.EventLogs.Modifications`
 artifact.
 
@@ -199,7 +201,7 @@ being stopped by disabling the log (as shown previously)
 
 {{% /notice %}}
 
-## Example - Use ETW to monitor to DNS queries
+###### Example: Use ETW to monitor to DNS queries
 
 We can query the DNS client ETW provider for all DNS lookup events.
 

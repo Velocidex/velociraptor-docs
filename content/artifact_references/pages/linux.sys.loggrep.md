@@ -1,19 +1,24 @@
 ---
 title: Linux.Sys.LogGrep
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Provides zgrep-like search capabilities across log files, including
+  gzipped log files, matching a glob for lines matching a regex.
 ---
 
-This artifact enables zgrep-like searching of Linux logs, including gzipped
-log files.
+Provides zgrep-like search capabilities across log files, including
+gzipped log files, matching a glob for lines matching a regex.
 
 
 <pre><code class="language-yaml">
 name: Linux.Sys.LogGrep
 author: "Matt Green - @mgreen27"
 description: |
-  This artifact enables zgrep-like searching of Linux logs, including gzipped
-  log files.
+  Provides zgrep-like search capabilities across log files, including
+  gzipped log files, matching a glob for lines matching a regex.
 
 parameters:
   - name: TargetGlob

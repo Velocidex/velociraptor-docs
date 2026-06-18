@@ -2,7 +2,11 @@
 title: hunt_delete
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Delete a hunt. 
 ---
 
 

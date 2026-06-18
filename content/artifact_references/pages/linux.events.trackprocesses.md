@@ -1,11 +1,19 @@
 ---
 title: Linux.Events.TrackProcesses
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+description: |
+  Subscribes to eBPF process events to track new processes and their
+  parent relationships.
 ---
 
-This artifact uses eBPF and pslist to keep track of running
-processes by using the Velociraptor process tracker.
+Subscribes to eBPF process events to track new processes and their
+parent relationships.
+
+Uses eBPF and pslist to keep track of running processes via the
+Velociraptor process tracker.
 
 The process tracker keeps track of exited processes, and resolves
 process call chains from it in memory cache.
@@ -22,8 +30,11 @@ external tools.
 <pre><code class="language-yaml">
 name: Linux.Events.TrackProcesses
 description: |
-  This artifact uses eBPF and pslist to keep track of running
-  processes by using the Velociraptor process tracker.
+  Subscribes to eBPF process events to track new processes and their
+  parent relationships.
+  
+  Uses eBPF and pslist to keep track of running processes via the
+  Velociraptor process tracker.
 
   The process tracker keeps track of exited processes, and resolves
   process call chains from it in memory cache.

@@ -2,6 +2,9 @@
 title: Velocon 2022
 menutitle: Velocon 2022
 weight: 75
+description: |
+  On Sept 15, 2022 We held our first VeloCon - a day-long virtual summit
+  as we DIG DEEPER TOGETHER!
 ---
 
 On Sept 15, 2022 We held our first VeloCon - a day-long virtual summit
@@ -104,7 +107,7 @@ methods for reverse engineering software systems. Now, he's heading
 APTA Technologies, a start-up building machine learning tools to
 understand software behavior .
 
-Affiliation: APTA Technologies, https://apta.tech
+Affiliation: APTA Technologies
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/lFfAam4KLuY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -213,7 +216,7 @@ I used Velociraptor during a network breach for a client, the attack
 resulted in all sys admin accounts being removed from the AD. The
 threat actor then disabled the buildings access controls and
 specifically the server room door controls. The threat actor then
-began to destroy the datacentre by mass deleting files and wiping
+began to destroy the datacenter by mass deleting files and wiping
 systems.  The attack was thwarted mid-way through by the IT staff
 using an emergency over-ride to bypass the door controls and used a
 metal bar to prise open the door and pull the network cables out. This

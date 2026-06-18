@@ -1,36 +1,45 @@
 ---
 title: Generic.Client.Info
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Collects basic system details including hostname, OS version,
+  interfaces, and platform info
 ---
 
-Collect basic information about the client.
+Collects basic system details including hostname, OS version,
+interfaces, and platform info
 
 This artifact is collected when any new client is enrolled into the
-system. Velociraptor will watch for this artifact and populate its
-internal indexes from this artifact as well.
+system. The Velociraptor server watches for completions of this
+artifact and populates its internal client info index from this
+artifact.
 
 You can edit this artifact to enhance the client's interrogation
 information as required, by adding new sources.
 
-NOTE: Do not modify the BasicInformation source since it is used to
-interrogate the clients.
+NOTE: Do not modify the BasicInformation source since its results
+are required by the server in that exact format.
 
 
 <pre><code class="language-yaml">
 name: Generic.Client.Info
 description: |
-  Collect basic information about the client.
+  Collects basic system details including hostname, OS version,
+  interfaces, and platform info
 
   This artifact is collected when any new client is enrolled into the
-  system. Velociraptor will watch for this artifact and populate its
-  internal indexes from this artifact as well.
+  system. The Velociraptor server watches for completions of this
+  artifact and populates its internal client info index from this
+  artifact.
 
   You can edit this artifact to enhance the client's interrogation
   information as required, by adding new sources.
 
-  NOTE: Do not modify the BasicInformation source since it is used to
-  interrogate the clients.
+  NOTE: Do not modify the BasicInformation source since its results
+  are required by the server in that exact format.
 
 sources:
   - name: BasicInformation
@@ -136,11 +145,56 @@ sources:
 reports:
   - type: CLIENT
     template: |
-      {{ $client_info := Query "SELECT * FROM clients(client_id=ClientId) LIMIT 1" | Expand }}
+      {{ define "pre" }}
+      LET Cap(X) = upcase(string=X[0:1]) + X[1:]
 
-      {{ $flow_id := Query "SELECT timestamp(epoch=active_time / 1000000) AS Timestamp FROM flows(client_id=ClientId, flow_id=FlowId)" | Expand }}
+      LET ClientInfo &lt;= SELECT *, Cap(X=os_info.system) AS OS
+        FROM clients(client_id=ClientId)
+        LIMIT 1
 
-      # {{ Get $client_info "0.os_info.fqdn" }} ( {{ Get $client_info "0.client_id" }} ) @ {{ Get $flow_id "0.Timestamp" }}
+      LET Hostname &lt;= ClientInfo[0].os_info.hostname
+      LET OS &lt;= Cap(X=ClientInfo[0].os_info.system)
+
+      LET _Timestamp &lt;= SELECT timestamp(epoch=active_time) AS Timestamp
+         FROM flows(client_id=ClientId, flow_id=FlowId)
+      LET Timestamp &lt;= _Timestamp[0].Timestamp
+
+      LET ArtifactDefined(X) = SELECT * FROM artifact_definitions(names=X)
+
+      {{ end }}
+      {{ $_ := Query "pre" | Expand }}
+
+      {{ if Expand "x=&gt;ArtifactDefined(X=OS + '.Search.FileFinder')" -}}
+      &lt;velo-button text="Search Files" icon="search"
+         href="{{ Expand " \
+           x=&gt;link_to(client_id=ClientId, flow_id='new', \
+                      artifact=OS + '.Search.FileFinder', raw=TRUE)"}}"&gt;
+      &lt;/velo-button&gt;
+      {{- end -}}
+      {{- if Expand "x=&gt;OS =~ 'Windows' AND ArtifactDefined(X='Windows.Hayabusa.Rules')" -}}
+      &lt;velo-button text="Triage With Sigma" icon="flag"
+         href="{{ Expand " \
+           x=&gt;link_to(client_id=ClientId, flow_id='new', \
+                      artifact='Windows.Hayabusa.Rules', raw=TRUE)"}}" &gt;
+      &lt;/velo-button&gt;
+      {{- end -}}
+      {{- if Expand "x=&gt;OS =~ 'Windows' AND ArtifactDefined(X='Windows.Registry.Hunter')" -}}
+      &lt;velo-button text="Analyze Registry" icon="book"
+         href="{{ Expand " \
+           x=&gt;link_to(client_id=ClientId, flow_id='new', \
+                      artifact='Windows.Registry.Hunter', raw=TRUE)"}}" &gt;
+      &lt;/velo-button&gt;
+      {{- end -}}
+      {{- if Expand "x=&gt;OS =~ 'Windows' AND ArtifactDefined(X='Windows.Triage.Targets')" -}}
+      &lt;velo-button text="Triage Files" icon="folder"
+         href="{{ Expand " \
+           x=&gt;link_to(client_id=ClientId, flow_id='new', \
+                      artifact='Windows.Triage.Targets', raw=TRUE)"}}" &gt;
+      &lt;/velo-button&gt;
+      {{- end }}
+
+
+      # {{ Scope "Hostname" }} ( {{ Scope "ClientId" }} ) @ {{ Scope "Timestamp" }}
 
       {{ Query "SELECT * FROM source(source='BasicInformation')" | Table }}
 

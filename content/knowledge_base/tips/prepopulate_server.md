@@ -36,7 +36,7 @@ can be easily recreated:
 
 Normally a client will be created on the server when a physical client
 first connects to it. However, it is possible to create new "client"
-objects using the VQL [client_create()](https://docs.velociraptor.app/vql_reference/server/client_create/) function.
+objects using the VQL [client_create()](/vql_reference/server/client_create/) function.
 
 Let's create 100 clients:
 

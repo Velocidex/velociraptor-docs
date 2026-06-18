@@ -2,7 +2,11 @@
 title: parse_ese_catalog
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Opens an ESE file and dump the schema.
 ---
 
 

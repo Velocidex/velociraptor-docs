@@ -15,7 +15,7 @@ date: 2021-06-16
 
 One of the most important tasks in DFIR is reconstructing past filesystem activity. This is useful for example, in determining when files were introduced into the system (e.g. in a phishing campaign or drive by downloads) or when binaries were executed by way of modifications of prefetch files.
 
-I have previously written about the [Windows Update Sequence Number journal (USN)](https://velociraptor.velocidex.com/the-windows-usn-journal-f0c55c9010e). The USN journal is a file internal to the NTFS filesystem that maintains a log of interactions with the filesystem.
+I have previously written about the [Windows Update Sequence Number journal (USN)](/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/). The USN journal is a file internal to the NTFS filesystem that maintains a log of interactions with the filesystem.
 
 The USN journal is a unique source of evidence because it can provide a timeline for when files were deleted, even if the file itself is no longer found on the system. In the screenshot below I parse the USN journal using Velociraptor’s built in USN parser. I filter for all interactions with the **test.txt** file and find that it has been removed (The **FILE_DELETE** reason).
 
@@ -150,4 +150,4 @@ Take all findings with a grain of salt and corroborate findings with other techn
 
 This article demonstrated the general methodology of writing an effective carver — use a fast scanner to extract hits quickly, despite a potentially higher false positive rate (using an engine such as Yara). Then use more thorough parsing techniques to eliminate the false positives and display the results (such as Velociraptor’s built in binary parser). Finally apply VQL conditions to surgically target findings to only relevant records to our investigation.
 
-To play with this new feature yourself, take Velociraptor for a spin! It is available on [GitHub](https://github.com/Velocidex/velociraptor) under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com) . You can also chat with us directly on discord [https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+To play with this new feature yourself, take Velociraptor for a spin! It is available on [GitHub](https://github.com/Velocidex/velociraptor) under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com) . You can also chat with us directly on [Discord](/discord/)

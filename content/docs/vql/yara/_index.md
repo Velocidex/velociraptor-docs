@@ -3,6 +3,11 @@ title: "YARA in Velociraptor"
 date: 2025-01-24
 draft: true
 weight: 60
+description: |
+  the yara() plugin can scan files in one of two ways - using libyara directly or
+  using Velociraptor accessors using libyara directly has some advantages - what
+  it does is mmap the whole file into memory and so a rule can match any part of
+  the file at the same time
 ---
 
 the yara() plugin can scan files in one of two ways - using libyara directly or
@@ -17,5 +22,5 @@ read the data in buffers and scan a buffer at the time
 blocksize comes in)
 
 the disadvantage here is that the rule can only really match one buffer at the time
-but limiting the iops can not work with libyara way because we dont control it
-it only works when using the accessor
+but limiting the iops can not work with libyara way because we don't
+control it. It only works when using the accessor

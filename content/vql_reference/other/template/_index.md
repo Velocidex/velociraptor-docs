@@ -2,7 +2,11 @@
 title: template
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Expand a Go style template .
 ---
 
 

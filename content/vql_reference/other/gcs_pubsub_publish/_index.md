@@ -2,7 +2,11 @@
 title: gcs_pubsub_publish
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Publish a message to Google PubSub.
 ---
 
 

@@ -1,15 +1,23 @@
 ---
 title: Windows.Memory.PEDump
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Extracts running executables from process memory using VAD region
+  enumeration and PE dumping, and uploads the files to the server.
 ---
 
-This artifact dumps a PE file from memory and uploads the file to
-the server.
+Extracts running executables from process memory using VAD region
+enumeration and PE dumping, and uploads the files to the server.
 
 NOTE: The output is not exactly the same as the original binary:
-1. Relocations are not fixed
-2. Due to ASLR the base address of the binary will not be the same as the original.
+
+1. Relocations are not fixed.
+
+2. Due to ASLR the base address of the binary will not be the same
+as the original.
 
 The result is usually much better than the binaries dumped from a
 physical memory image (using e.g. Volatility) because reading
@@ -21,12 +29,15 @@ as is often the case in memory analysis.
 <pre><code class="language-yaml">
 name: Windows.Memory.PEDump
 description: |
-  This artifact dumps a PE file from memory and uploads the file to
-  the server.
+  Extracts running executables from process memory using VAD region
+  enumeration and PE dumping, and uploads the files to the server.
 
   NOTE: The output is not exactly the same as the original binary:
-  1. Relocations are not fixed
-  2. Due to ASLR the base address of the binary will not be the same as the original.
+  
+  1. Relocations are not fixed.
+  
+  2. Due to ASLR the base address of the binary will not be the same
+  as the original.
 
   The result is usually much better than the binaries dumped from a
   physical memory image (using e.g. Volatility) because reading

@@ -2,7 +2,11 @@
 title: flatten
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Flatten the columns in query. If any column repeats then we repeat the entire row once for each item.
 ---
 
 

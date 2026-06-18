@@ -2,7 +2,21 @@
 title: client_metadata
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Returns client metadata from the datastore.
+
+  Client metadata is a set of free form key/value data. Artifacts
+  may use this metadata or it may simply be used as part of your IR
+  processes.
+
+  ### See also
+
+  - [client_set_metadata]({{< ref "/vql_reference/server/client_set_metadata/" >}}):
+    Sets client metadata.
+
 ---
 
 
@@ -29,7 +43,7 @@ client_id||string (required)
 Returns client metadata from the datastore.
 
 Client metadata is a set of free form key/value data. Artifacts
-may use this metdata or it may simply be used as part of your IR
+may use this metadata or it may simply be used as part of your IR
 processes.
 
 ### See also

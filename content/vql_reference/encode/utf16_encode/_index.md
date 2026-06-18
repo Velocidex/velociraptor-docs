@@ -2,7 +2,18 @@
 title: utf16_encode
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Encode a string to utf16 bytes.
+
+  ### Example
+
+  ```vql
+  utf16_encode(string="ABCD") -> "A\u0000B\u0000C\u0000D\u0000"
+  ```
+
 ---
 
 

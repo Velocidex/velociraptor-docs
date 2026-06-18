@@ -2,7 +2,11 @@
 title: process_tracker_updates
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Get the process tracker update events from the global process tracker.
 ---
 
 

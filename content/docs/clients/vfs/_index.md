@@ -5,6 +5,10 @@ date: 2021-06-09T04:12:50Z
 draft: false
 weight: 50
 last_reviewed: 2024-12-30
+description: |
+  Velociraptor provides an interface to interact with the client's filesystem
+  which we call the Virtual File System or VFS. The VFS GUI is a convenient tool
+  to interactively inspect the client's filesystem and fetch files if necessary.
 ---
 
 Velociraptor provides an interface to interact with the client's filesystem
@@ -89,9 +93,9 @@ other security products that might quarantine the produced ZIP
 file. In this case it is helpful to compress the export with a
 password.
 
-See the Knowledge Base article [How do I enable password protected VFS
-downloads?]({{<ref "/knowledge_base/tips/download_password" >}}) for
-reference on setting the password for export.
+See the Knowledge Base article
+["How do I enable password protected VFS downloads?"](/knowledge_base/tips/download_password/)
+for reference on setting the password for export.
 
 {{% /notice %}}
 
@@ -162,5 +166,5 @@ then click over multiple directories searching for these files.
 To automate collection it is better to write special purpose `VQL
 Artifacts` to identity the information of interest.
 
-The [Artifacts]({{< ref "/docs/artifacts/" >}}) section explores what Velociraptor
+The [Artifacts](/docs/artifacts/) section explores what Velociraptor
 artifacts are and how we collect them.

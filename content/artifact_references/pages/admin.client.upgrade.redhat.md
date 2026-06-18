@@ -1,24 +1,28 @@
 ---
 title: Admin.Client.Upgrade.RedHat
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Upgrades Velociraptor clients on Red Hat hosts by installing a new RPM package
 ---
 
-Remotely push new client updates to Red Hat hosts.
+Upgrades Velociraptor clients on Red Hat hosts by installing a new RPM package
 
-NOTE: This artifact requires that you supply a client Red Hat package by using the
-tools interface or by using the "rpm client" command. Simply click on the tool
-in the GUI and upload a package.
+NOTE: This artifact requires that you supply a client Red Hat
+package by using the tools interface. Click on the tool button in
+the GUI and upload a package.
 
 
 <pre><code class="language-yaml">
 name: Admin.Client.Upgrade.RedHat
 description: |
-  Remotely push new client updates to Red Hat hosts.
+  Upgrades Velociraptor clients on Red Hat hosts by installing a new RPM package
 
-  NOTE: This artifact requires that you supply a client Red Hat package by using the
-  tools interface or by using the "rpm client" command. Simply click on the tool
-  in the GUI and upload a package.
+  NOTE: This artifact requires that you supply a client Red Hat
+  package by using the tools interface. Click on the tool button in
+  the GUI and upload a package.
 
 tools:
   - name: VelociraptorRedHat

@@ -1,18 +1,23 @@
 ---
 title: Windows.Network.Netstat
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Reports open network sockets on Windows including binding time,
+  connection state, and owning process name.
 ---
 
-Show information about open sockets. On windows the time when the
-socket was first bound is also shown.
+Reports open network sockets on Windows including binding time,
+connection state, and owning process name.
 
 
 <pre><code class="language-yaml">
 name: Windows.Network.Netstat
 description: |
-  Show information about open sockets. On windows the time when the
-  socket was first bound is also shown.
+  Reports open network sockets on Windows including binding time,
+  connection state, and owning process name.
 
 sources:
 - precondition: SELECT OS From info() where OS = 'windows'

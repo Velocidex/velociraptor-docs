@@ -2,7 +2,16 @@
 title: certificates
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Collect certificate from the system trust store.
+
+  This plugin uses the Windows APIs to fetch the certificates. You
+  might also want to look at the `Windows.System.RootCAStore`
+  artifact.
+
 ---
 
 

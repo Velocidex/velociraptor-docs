@@ -7,6 +7,9 @@ date: 2024-04-11T23:25:17Z
 draft: false
 weight: 30
 last_reviewed: 2025-11-15
+description: |
+  In DFIR we often talk about paths and filesystems. However, these are
+  actually more complex than they appear at first glance.
 ---
 
 In DFIR we often talk about paths and filesystems. However, these are
@@ -133,7 +136,7 @@ FROM glob(globs="*", root="C:\\Windows", accessor="auto")
 
 The `glob()` plugin applies the glob expression on the filesystem and
 returns a single row for each matching file. Looking at the
-[reference for the glob()]({{< ref "/vql_reference/popular/glob/">}}) function, we
+[reference for the glob()](/vql_reference/popular/glob/) function, we
 can see that the `root` parameter is of type `OSPath`.
 
 Since in the above query, the accessor specified is the `auto`
@@ -372,4 +375,4 @@ containing directory, even for more complex pathspec based paths).
 
 Velociraptor's path handling abstraction is clear and has consistent rules. We
 will see how this enables Velociraptor's remapping rules in the
-[next section]({{< ref "/docs/forensic/filesystem/remapping/" >}}).
+[next section](/docs/forensic/filesystem/remapping/).

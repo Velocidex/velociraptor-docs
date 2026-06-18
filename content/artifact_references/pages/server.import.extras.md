@@ -1,11 +1,19 @@
 ---
 title: Server.Import.Extras
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+description: |
+  Downloads and imports artifact bundles from predefined external
+  repositories.
 ---
 
-This artifact imports additional artifacts maintained outside the
-Velociraptor tree.
+Downloads and imports artifact bundles from predefined external
+repositories.
+
+Many additional artifacts are maintained in their own project
+outside the Velociraptor tree.
 
 * [The Velociraptor Sigma Project](https://sigma.velocidex.com/)
 * [The Artifact Exchange](https://docs.velociraptor.app/exchange/)
@@ -18,8 +26,11 @@ Velociraptor tree.
 <pre><code class="language-yaml">
 name: Server.Import.Extras
 description: |
-  This artifact imports additional artifacts maintained outside the
-  Velociraptor tree.
+  Downloads and imports artifact bundles from predefined external
+  repositories.
+
+  Many additional artifacts are maintained in their own project
+  outside the Velociraptor tree.
 
   * [The Velociraptor Sigma Project](https://sigma.velocidex.com/)
   * [The Artifact Exchange](https://docs.velociraptor.app/exchange/)
@@ -49,7 +60,7 @@ sources:
   - query: |
       SELECT * FROM foreach(row=Details,
       query={
-        SELECT * FROM Artifact.Server.Import.ArtifactExchange(ExchangeURL=URL, Tag=Tag)
+        SELECT * FROM Artifact.Server.Import.ArtifactBundle(URL=URL, Tag=Tag)
       })
 
 </code></pre>

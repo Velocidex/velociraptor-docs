@@ -229,7 +229,7 @@ This will display the log messages in the terminal.
 
 {{% /notice %}}
 
-**6. Add the authenticator settings to your Velciraptor config**
+**6. Add the authenticator settings to your Velociraptor config**
 
 In the `GUI` section of your Velociraptor config you should have the following
 authenticator settings by default:
@@ -359,7 +359,7 @@ fully logging a user out because while logged out of Velociraptor the OIDC
 session is still active.
 
 Logout of the OIDC session can be achieved by
-navigating to the the endpoint
+navigating to the endpoint
 `https://keycloak.local/realms/myrealm/protocol/openid-connect/logout`
 from within the same web browser and choosing to log out.
 

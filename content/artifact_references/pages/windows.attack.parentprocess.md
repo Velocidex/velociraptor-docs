@@ -1,10 +1,16 @@
 ---
 title: Windows.Attack.ParentProcess
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Flags processes whose parent process does not match the expected
+  parent per the ATT&CK framework mapping.
 ---
 
-Maps the MITRE Att&ck framework process executions into artifacts.
+Flags processes whose parent process does not match the expected
+parent per the ATT&CK framework mapping.
 
 NOTE: This artifact uses the process tracker. If you also enable the
 Windows.Events.TrackProcesses or Windows.Events.TrackProcessesBasic
@@ -15,8 +21,9 @@ processes.
 <pre><code class="language-yaml">
 name: Windows.Attack.ParentProcess
 description: |
-  Maps the MITRE Att&amp;ck framework process executions into artifacts.
-
+  Flags processes whose parent process does not match the expected
+  parent per the ATT&amp;CK framework mapping.
+  
   NOTE: This artifact uses the process tracker. If you also enable the
   Windows.Events.TrackProcesses or Windows.Events.TrackProcessesBasic
   artifacts, this will be able to retrieve information about exited

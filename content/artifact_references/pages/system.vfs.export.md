@@ -1,16 +1,23 @@
 ---
 title: System.VFS.Export
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+description: |
+  Exports files from the VFS (Virtual Filesystem) by globbing under a
+  specified path in the server-side VFS cache.
 ---
 
-Exports parts of the VFS in a server side collection.
+Exports files from the VFS (Virtual Filesystem) by globbing under a
+specified path in the server-side VFS cache.
 
 
 <pre><code class="language-yaml">
 name: System.VFS.Export
 description: |
-  Exports parts of the VFS in a server side collection.
+  Exports files from the VFS (Virtual Filesystem) by globbing under a
+  specified path in the server-side VFS cache.
 
 type: SERVER
 

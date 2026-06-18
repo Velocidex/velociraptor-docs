@@ -4,6 +4,16 @@ title: "Sigma rules"
 date: 2025-05-12
 draft: true
 weight: 80
+summary: |
+  Detection engineering is an essential discipline for any security team wanting
+  to maximize their detection capabilities. It involves taking a scientific
+  approach, examining how we detect threats in our environment and continuously
+  improving upon it.
+description: |
+  Detection engineering is an essential discipline for any security team wanting
+  to maximize their detection capabilities. It involves taking a scientific
+  approach, examining how we detect threats in our environment and continuously
+  improving upon it.
 ---
 
 
@@ -52,7 +62,7 @@ rules effectively:
 
 ## Real-Time Alerting & Continuous Monitoring
 
-Velociraptor's [VQL language]({{< ref "/docs/vql/" >}}) is fully asynchronous
+Velociraptor's [VQL language](/docs/vql/) is fully asynchronous
 and can watch for changes on the endpoint in real-time. By tweaking VQL slightly
 to feed real-time events into Sigma rule matching, Velociraptor effectively
 creates real-time detection rules.

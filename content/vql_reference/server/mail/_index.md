@@ -2,7 +2,14 @@
 title: mail
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Send Email to a remote server.
+
+  See the mail() function for more details.
+
 ---
 
 

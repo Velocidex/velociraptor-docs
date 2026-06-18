@@ -2,7 +2,11 @@
 title: deb_create
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Create a deployable Debian package for client or server.
 ---
 
 

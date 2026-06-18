@@ -2,7 +2,11 @@
 title: dedup
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Dedups the query based on a column. This will suppress rows with identical values for the key column
 ---
 
 

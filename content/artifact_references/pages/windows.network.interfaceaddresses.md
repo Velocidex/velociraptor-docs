@@ -1,18 +1,27 @@
 ---
 title: Windows.Network.InterfaceAddresses
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Collects interface addresses and metadata such as MAC, MTU, and IP
+  masks across operating systems.
 ---
 
-Network interfaces and relevant metadata. This artifact works on all
-supported OSs.
+Collects interface addresses and metadata such as MAC, MTU, and IP
+masks across operating systems.
+
+This artifact works on all supported OSes.
 
 
 <pre><code class="language-yaml">
 name: Generic.Network.InterfaceAddresses
 description: |
-  Network interfaces and relevant metadata. This artifact works on all
-  supported OSs.
+  Collects interface addresses and metadata such as MAC, MTU, and IP
+  masks across operating systems.
+
+  This artifact works on all supported OSes.
 
 aliases:
   - Windows.Network.InterfaceAddresses

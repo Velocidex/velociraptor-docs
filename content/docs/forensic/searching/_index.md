@@ -7,6 +7,9 @@ summary: |
 date: 2021-06-17T02:30:41Z
 draft: false
 weight: 30
+description: |
+  A powerful DFIR technique is searching bulk data for patterns. Some
+  examples include:
 ---
 
 A powerful DFIR technique is searching bulk data for patterns. Some
@@ -75,7 +78,7 @@ plugin if you just need to scan files on disk.
 
 {{% /notice %}}
 
-### Example: drive by download
+###### Example: drive by download
 
 You suspect a user was compromised by a drive by download (i.e. they
 clicked and downloaded malware delivered by mail, ads etc).
@@ -112,7 +115,7 @@ You can get yara rules from many sources (threat intel, blog posts
 etc) or you can write your own. Rules may be very specific, in which
 case a hit may represent a valuable signal. If the YARA rule is too
 loose, the likelihood of a false positive increases, and further
-postprocessing will be required to verify the hits.
+post-processing will be required to verify the hits.
 
 Try to collect additional context around the hits to eliminate false
 positives. You can use other plugins to help verify other aspects of
@@ -139,7 +142,7 @@ read the file out, and the file is uploaded to the server
 automatically. Optionally the function may also take a `name`
 parameter which renames the file as sent to the server.
 
-### Example: Collect all executables in users’ home directory
+###### Example: Collect all executables in users’ home directory
 
 This is a common use of combining a `glob()` plugin with an
 `upload()` function:

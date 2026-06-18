@@ -2,7 +2,14 @@
 title: encode
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Encode an object as a string.
+
+  This function is an alias to `serialize()`
+
 ---
 
 
@@ -19,10 +26,13 @@ no_edit: true
 
 Arg | Description | Type
 ----|-------------|-----
-string||Any (required)
-type||string (required)
+string|The item to encode|Any (required)
+type|Encoding format (csv,json,yaml,hex,base64)|string (required)
 
 ### Description
 
-Encodes a string as as different type. Currently supported types include 'hex', 'base64'.
+Encode an object as a string.
+
+This function is an alias to `serialize()`
+
 

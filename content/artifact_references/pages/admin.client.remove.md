@@ -1,11 +1,17 @@
 ---
 title: Admin.Client.Remove
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+description: |
+  Purges inactive clients based on a configurable age threshold.
 ---
 
-This artifact will remove clients that have not checked in for a
-while.  All data for these clients will be removed.
+Purges inactive clients based on a configurable age threshold.
+
+This artifact can be used to remove clients that have not checked in
+for a while. All data for these clients will be removed.
 
 The artifact enumerates all the files that are removed.
 
@@ -13,8 +19,10 @@ The artifact enumerates all the files that are removed.
 <pre><code class="language-yaml">
 name: Admin.Client.Remove
 description: |
-  This artifact will remove clients that have not checked in for a
-  while.  All data for these clients will be removed.
+  Purges inactive clients based on a configurable age threshold.
+
+  This artifact can be used to remove clients that have not checked in
+  for a while. All data for these clients will be removed.
 
   The artifact enumerates all the files that are removed.
 

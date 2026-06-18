@@ -36,7 +36,7 @@ function addToNode(dom, nodes) {
             cls += " active";
         }
 
-        let new_dom = $("<li>").attr("class", cls);
+        let new_dom = $("<li>").attr("class", cls).attr("linkTo", x.link);
         let children = x.children || [];
 
         if(children.length > 0) {

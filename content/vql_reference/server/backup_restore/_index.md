@@ -2,7 +2,15 @@
 title: backup_restore
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Restore state from a backup file.
+
+  Note that the backups file can only reside in the file store under
+  the `<filestor>/backups` directory.
+
 ---
 
 

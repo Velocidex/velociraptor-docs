@@ -1,31 +1,38 @@
 ---
 title: Admin.Client.Upgrade.Windows
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Upgrades Velociraptor clients on Windows hosts by running msiexec
+  with the provided MSI.
 ---
 
-Remotely push new client updates.
+Upgrades Velociraptor clients on Windows hosts by running msiexec
+with the provided MSI.
 
-NOTE: This artifact requires that you supply a client MSI by using the
-tools interface. Simply click on the tool in the GUI and upload a
-pre-packaged MSI.
+NOTE: This artifact requires that you supply a _repacked_ client MSI
+by using the tools interface. Click on the tool button in the GUI
+and upload a repacked MSI.
 
-While typically the MSI will contain the Velociraptor windows
-client, you can install any other MSI as well by customizing this
+While typically the MSI will contain the Velociraptor Windows
+client, you can actually install any other MSI by customizing this
 artifact or uploading a different MSI file.
 
 
 <pre><code class="language-yaml">
 name: Admin.Client.Upgrade.Windows
 description: |
-  Remotely push new client updates.
+  Upgrades Velociraptor clients on Windows hosts by running msiexec
+  with the provided MSI.
 
-  NOTE: This artifact requires that you supply a client MSI by using the
-  tools interface. Simply click on the tool in the GUI and upload a
-  pre-packaged MSI.
+  NOTE: This artifact requires that you supply a _repacked_ client MSI
+  by using the tools interface. Click on the tool button in the GUI
+  and upload a repacked MSI.
 
-  While typically the MSI will contain the Velociraptor windows
-  client, you can install any other MSI as well by customizing this
+  While typically the MSI will contain the Velociraptor Windows
+  client, you can actually install any other MSI by customizing this
   artifact or uploading a different MSI file.
 
 tools:
@@ -61,7 +68,7 @@ sources:
       // If we fail to download the binary we do not run the command.
 
       // msiexec needs some random set of commands to really force a
-      // reinstall. We dont know which one will be correct at runtime so
+      // reinstall. We don't know which one will be correct at runtime so
       // we just try them all. If we succeed then the client will get
       // killed and restarted.
       SELECT * FROM foreach(row=bin,

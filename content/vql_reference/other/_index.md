@@ -3,6 +3,8 @@ title: Other
 weight: 90
 linktitle: Other
 index: true
+sitemap:
+  disable: true
 no_edit: true
 no_children: true
 ---
@@ -11,6 +13,7 @@ Functions and plugins that do not fall into a specific category or that have
 not yet been categorized.
 |Plugin/Function|<span class='vql_type'>Type</span>|Description|
 |-|-|-|
+|[adx_upload](adx_upload)|<span class='vql_type'>Plugin</span>|Upload rows to Azure Data Explorer (ADX)|
 |[alert](alert)|<span class='vql_type'>Function</span>|Generate an alert message|
 |[all](all)|<span class='vql_type'>Function</span>|Returns TRUE if all items are true|
 |[any](any)|<span class='vql_type'>Function</span>|Returns TRUE if any items are true|
@@ -44,8 +47,10 @@ not yet been categorized.
 |[getpid](getpid)|<span class='vql_type'>Function</span>|Returns the current pid of the Velociraptor process|
 |[help](help)|<span class='vql_type'>Plugin</span>|Dump information about all VQL functions and plugins|
 |[host](host)|<span class='vql_type'>Function</span>|Perform a DNS resolution|
+|[hunt_reindex](hunt_reindex)|<span class='vql_type'>Plugin</span>|Reindex a hunt|
 |[index](index)|<span class='vql_type'>Plugin</span>|Create a local index from a query|
 |[index_search](index_search)|<span class='vql_type'>Plugin</span>|Search a previously created index|
+|[info](info)|<span class='vql_type'>Function</span>|Get information about the running host|
 |[ip](ip)|<span class='vql_type'>Function</span>|Format an IP address|
 |[lazy_dict](lazy_dict)|<span class='vql_type'>Function</span>|Construct a dict from arbitrary keyword args - does not materialize args so it is suitable for building args via `**` expansion|
 |[logscale_upload](logscale_upload)|<span class='vql_type'>Plugin</span>|Upload rows to LogScale ingestion server|
@@ -79,6 +84,8 @@ not yet been categorized.
 |[sample](sample)|<span class='vql_type'>Plugin</span>|Executes 'query' and samples every n'th row|
 |[semver](semver)|<span class='vql_type'>Function</span>|Parse a semantic version string|
 |[serialize](serialize)|<span class='vql_type'>Function</span>|Encode an object as a string|
+|[shell_session](shell_session)|<span class='vql_type'>Function</span>|Recreate or retrieve a shell session handle|
+|[shell_session_control](shell_session_control)|<span class='vql_type'>Function</span>|Control a previously created shell session|
 |[sigma_log_sources](sigma_log_sources)|<span class='vql_type'>Function</span>|Constructs a Log sources object to be used in sigma rules|
 |[similarity](similarity)|<span class='vql_type'>Function</span>|Compare two Dicts for similarity|
 |[sleep](sleep)|<span class='vql_type'>Function</span>|Sleep for the specified number of seconds|
@@ -100,6 +107,8 @@ not yet been categorized.
 |[upload_transactions](upload_transactions)|<span class='vql_type'>Plugin</span>|View the outstanding transactions for uploads|
 |[upload_webdav](upload_webdav)|<span class='vql_type'>Function</span>|Upload files to a WebDAV server|
 |[url](url)|<span class='vql_type'>Function</span>|Construct a URL or parse one|
+|[user_message](user_message)|<span class='vql_type'>Function</span>|Send the user a message which will appear in the user notification view|
+|[user_messages](user_messages)|<span class='vql_type'>Plugin</span>|Emit the user's console messages|
 |[uuid](uuid)|<span class='vql_type'>Function</span>|Generate a UUID|
 |[verify](verify)|<span class='vql_type'>Function</span>|verify an artifact|
 |[version](version)|<span class='vql_type'>Function</span>|Gets the version of a VQL plugin or function|

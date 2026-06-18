@@ -2,7 +2,11 @@
 title: watch_jsonl
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Watch a jsonl file and stream events from it.
 ---
 
 

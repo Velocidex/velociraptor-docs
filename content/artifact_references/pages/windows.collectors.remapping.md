@@ -1,10 +1,16 @@
 ---
 title: Windows.Collectors.Remapping
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+description: |
+  Creates filesystem and registry remappings for offline analysis of
+  Velociraptor collection containers.
 ---
 
-Calculates a remapping config for a collection container (zip).
+Creates filesystem and registry remappings for offline analysis of
+Velociraptor collection containers.
 
 The remapping allows Velociraptor to treat the collection container as a dead
 disk image in a similar way to `Generic.Utils.DeadDiskRemapping`. This means
@@ -96,7 +102,8 @@ serverless collections/queries as in the following example.
 <pre><code class="language-yaml">
 name: Windows.Collectors.Remapping
 description: |
-  Calculates a remapping config for a collection container (zip).
+  Creates filesystem and registry remappings for offline analysis of
+  Velociraptor collection containers.
 
   The remapping allows Velociraptor to treat the collection container as a dead
   disk image in a similar way to `Generic.Utils.DeadDiskRemapping`. This means
@@ -239,7 +246,7 @@ parameters:
         - EXECVE
       - type: impersonation
         os: windows
-        hostname: "{{ .Hostname }}"
+        hostname: {{ .Hostname | quote }}
         env:
         - key: SystemRoot
           value: C:\Windows
@@ -272,6 +279,16 @@ parameters:
           accessor: zip
       - type: shadow
         from:
+          accessor: zip_nocase
+        "on":
+          accessor: zip_nocase
+      - type: shadow
+        from:
+          accessor: collector
+        "on":
+          accessor: collector
+      - type: shadow
+        from:
           accessor: raw_reg
         "on":
           accessor: raw_reg
@@ -289,14 +306,17 @@ export: |
                                        path_type="zip",
                                        Path="client_info.json")))
 
-  -- Set the hostname either from the parameters or read it from the file itself
-  LET DerivedHostname = Hostname ||
-                        CollectionHostinfo.Hostname ||
-                        CollectionHostinfo.hostname
+  -- Set the hostname either from the parameters or read it from the
+  -- file itself. Validate the hostname to have only allowed hostname chars.
+  LET DerivedHostname = parse_string_with_regex(
+    string=Hostname || CollectionHostinfo.Hostname || CollectionHostinfo.hostname,
+    regex="([a-z0-9-.]+)"
+  ).g1
 
   LET Remappings = parse_yaml(
                     filename=template(template=CommonRemapping,
-                                      expansion=dict(Hostname=DerivedHostname)),
+                                      expansion=dict(
+                                        Hostname=DerivedHostname || "Unknown")),
                     accessor="data")
 
   -- Normalize the drive name from device to drive. NTFS accessor uses
@@ -318,16 +338,17 @@ export: |
   LET ScopeTemplate &lt;= if(condition=ZIP_PASSWORDS,
                           then=template(template='''
   LET OVERLAY_ACCESSOR_DELEGATES &lt;= dict(
-       accessor="{{ .Accessor }}",
-       paths={{ .Paths }})
+       accessor={{ .Accessor | quote }},
+       paths={{"{{ .Paths }}"}})
 
-  LET ZIP_PASSWORDS &lt;= "{{ .ZipPassword }}"
-  ''', expansion=dict(ZipPassword=ZIP_PASSWORDS, Accessor=Accessor, Paths="{{ .Paths }}")),
-                          else=template(template='''
+  LET ZIP_PASSWORDS &lt;= {{ .ZipPassword | quote }}
+  ''', expansion=dict(ZipPassword=ZIP_PASSWORDS, Accessor=Accessor)),
+
+       else=template(template='''
   LET OVERLAY_ACCESSOR_DELEGATES &lt;= dict(
-       accessor="{{ .Accessor }}",
-       paths={{ .Paths }})
-  ''', expansion=dict(Accessor=Accessor, Paths="{{ .Paths }}"))
+       accessor={{ .Accessor | quote }},
+       paths={{"{{ .Paths }}"}})
+  ''', expansion=dict(Accessor=Accessor))
   )
 
   -- Overlay the files that were fetched with all accessors into the
@@ -437,15 +458,16 @@ sources:
 
 - name: TestRegistryAccess
   query: |
-    LET _ &lt;= remap(config=YamlText)
+    LET _ &lt;= remap(config=YamlText, clear=TRUE)
     SELECT OSPath
     FROM glob(globs="HKEY_LOCAL_MACHINE/Software/*", accessor='registry')
 
 - name: TestFileAccess
   query: |
-    LET _ &lt;= remap(config=YamlText)
+    LET _ &lt;= remap(config=YamlText, clear=TRUE)
     SELECT OSPath
-    FROM glob(globs="*/*")
+    FROM glob(globs="*/**")
+    LIMIT 5
 
 </code></pre>
 

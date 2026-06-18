@@ -1,10 +1,16 @@
 ---
 title: Server.Utils.ArtifactVerifier
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+description: |
+  Validates artifact YAML definitions from a file glob and reports
+  errors and warnings in a structured format.
 ---
 
-Verify a set of artifacts and returns results in a structured way.
+Validates artifact YAML definitions from a file glob and reports
+errors and warnings in a structured format.
 
 You can run this on the command line like:
 ```
@@ -15,7 +21,8 @@ velociraptor -r Server.Utils.ArtifactVerifier --SearchGlob '/path/to/*.yaml'
 <pre><code class="language-yaml">
 name: Server.Utils.ArtifactVerifier
 description: |
-  Verify a set of artifacts and returns results in a structured way.
+  Validates artifact YAML definitions from a file glob and reports
+  errors and warnings in a structured format.
 
   You can run this on the command line like:
   ```

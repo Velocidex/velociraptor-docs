@@ -9,6 +9,8 @@ summary: |
   * How to troubleshoot client issues when you don't have local access to the client.
 aliases:
   - "/docs/troubleshooting/clients/"
+description: |
+  {{% notice note %}}
 ---
 
 {{% notice note %}}
@@ -22,7 +24,7 @@ If you are having problems with a client that is:
 - is failing to start
 
 then please see the section
-[Client communications issues]({{< ref "/docs/troubleshooting/deployment/client/#client-communications-issues" >}})
+[Client communications issues](/docs/troubleshooting/deployment/client/)
 within the Deployment Troubleshooting section.
 
 {{% /notice %}}
@@ -30,7 +32,7 @@ within the Deployment Troubleshooting section.
 ### Debugging a remote client
 
 In the
-[Deployment troubleshooting section]({{< ref "/docs/troubleshooting/deployment/server" >}})
+[Deployment troubleshooting section](/docs/troubleshooting/deployment/server/)
 we explain how to bring up the debug server by providing the `--debug` flag on
 the command line. However clients are often remote and it's therefore not always
 possible to debug the client by starting it with this flag. Often we are also

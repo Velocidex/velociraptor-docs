@@ -11,18 +11,18 @@ Everything related to an organization is stored in a directory under `<file stor
 
 We need to transfer both to the destination server.
 
-1. Identify the org ID, either with the [`Server.Orgs.ListOrgs` Artifact](https://docs.velociraptor.app/artifact_references/pages/server.orgs.listorgs/) or scrolling down the Velociraptor *root org* home page.
-2. Archive the folder and the `json.db` file (mind the star) 
+1. Identify the org ID, either with the [`Server.Orgs.ListOrgs` Artifact](/artifact_references/pages/server.orgs.listorgs/) or scrolling down the Velociraptor *root org* home page.
+2. Archive the folder and the `json.db` file (mind the star)
 
 ```bash
-tar czf transport-<org name>.tar.gz <file store>/orgs/<org id>* 
+tar czf transport-<org name>.tar.gz <file store>/orgs/<org id>*
 ```
 
 3. Transfer the resulting archive to the destination Velociraptor server.
 
 ## Importing
 
-1. Decompress the archive under the `<file store>/orgs` directory. 
+1. Decompress the archive under the `<file store>/orgs` directory.
 
 {{% notice tip "No orgs folder" %}}
 
@@ -40,4 +40,4 @@ Upon startup, Velociraptor will run the workers linked to the organization, so y
 
 {{% /notice %}}
 
-Tags: #archiving #orgs #deployment 
+Tags: #archiving #orgs #deployment

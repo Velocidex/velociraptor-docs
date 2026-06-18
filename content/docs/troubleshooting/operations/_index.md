@@ -9,6 +9,8 @@ summary: |
   * Troubleshooting problems encountered during post-deployment operations.
 aliases:
   - "/docs/deployment/troubleshooting/"
+description: |
+  Troubleshooting problems encountered during post-deployment operations.
 ---
 
 Troubleshooting problems encountered during post-deployment operations.

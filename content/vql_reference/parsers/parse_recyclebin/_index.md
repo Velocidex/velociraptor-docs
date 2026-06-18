@@ -2,7 +2,11 @@
 title: parse_recyclebin
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Parses a $I file found in the $Recycle.Bin
 ---
 
 

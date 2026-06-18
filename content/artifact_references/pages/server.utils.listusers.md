@@ -1,13 +1,16 @@
 ---
 title: Server.Utils.ListUsers
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+description: |
+  Enumerates all users across orgs along with their roles and permissions.
 ---
 
-This server artifact is used to list all current users and their
-permissions and org access.
+Enumerates all users across orgs along with their roles and permissions.
 
-NOTE: When collected in an org context only users belonging to the
+NOTE: When collected in an org context, only users belonging to the
 current org are visible. When collected in the context of the root
 org, all users in all orgs are visible.
 
@@ -15,10 +18,9 @@ org, all users in all orgs are visible.
 <pre><code class="language-yaml">
 name: Server.Utils.ListUsers
 description: |
-  This server artifact is used to list all current users and their
-  permissions and org access.
+  Enumerates all users across orgs along with their roles and permissions.
 
-  NOTE: When collected in an org context only users belonging to the
+  NOTE: When collected in an org context, only users belonging to the
   current org are visible. When collected in the context of the root
   org, all users in all orgs are visible.
 

@@ -1,20 +1,23 @@
 ---
 title: Windows.Sysinternals.Autoruns
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Installs and runs Sysinternals `autorunsc` to enumerate autostart
+  persistence mechanisms.
 ---
 
-Uses Sysinternals autoruns to scan the host.
-
-Note this requires syncing the Sysinternals binary from the host.
+Installs and runs Sysinternals `autorunsc` to enumerate autostart
+persistence mechanisms.
 
 
 <pre><code class="language-yaml">
 name: Windows.Sysinternals.Autoruns
 description: |
-  Uses Sysinternals autoruns to scan the host.
-
-  Note this requires syncing the Sysinternals binary from the host.
+  Installs and runs Sysinternals `autorunsc` to enumerate autostart
+  persistence mechanisms.
 
 tools:
   - name: Autorun_386

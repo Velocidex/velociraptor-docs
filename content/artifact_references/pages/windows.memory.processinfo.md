@@ -1,20 +1,27 @@
 ---
 title: Windows.Memory.ProcessInfo
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Extracts process information by parsing the Process Environment
+  Block (PEB) directly for each running process.
 ---
 
-This artifact returns process information obtained by parsing the PEB directly.
+Extracts process information by parsing the Process Environment
+Block (PEB) directly for each running process.
 
-Renamed Windows.Forensics.ProcessInfo
+This artifact was previously named `Windows.Forensics.ProcessInfo`.
 
 
 <pre><code class="language-yaml">
 name: Windows.Memory.ProcessInfo
 description: |
-   This artifact returns process information obtained by parsing the PEB directly.
-
-   Renamed Windows.Forensics.ProcessInfo
+  Extracts process information by parsing the Process Environment
+  Block (PEB) directly for each running process.
+  
+  This artifact was previously named `Windows.Forensics.ProcessInfo`.
 
 parameters:
   - name: ProcessNameRegex
@@ -32,7 +39,7 @@ parameters:
 
 sources:
 - query: |
-       LET profile = '''[
+       LET PEBprofile = '''[
        ["PEB",0 , [
            # https://docs.microsoft.com/en-us/windows/win32/api/winternl/ns-winternl-peb
            ["ProcessParameters", 32, "Pointer", {
@@ -72,7 +79,7 @@ sources:
            format(format="%0#x", args=PebBaseAddress) AS PebBaseAddress, Pid,
            parse_binary(accessor="process",
                         filename=format(format="/%v", args=PID),
-                        profile=profile,
+                        profile=PEBprofile,
                         struct="PEB",
                         offset=PebBaseAddress) AS Data
        FROM pslist(pid=PID)

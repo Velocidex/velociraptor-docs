@@ -1,12 +1,20 @@
 ---
 title: Elastic.Events.Upload
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
+description: |
+  Forwards real-time monitoring events from selected artifacts to an
+  Elasticsearch index.
 ---
+
+Forwards real-time monitoring events from selected artifacts to an
+Elasticsearch index.
 
 This server monitoring artifact will watch a selection of client or
 server monitoring artifacts for new events and push those to an
-elastic index.
+Elastic index.
 
 NOTE: You must ensure you are collecting these artifacts from the
 clients by adding them to the "Client Events" GUI, or for server
@@ -19,9 +27,12 @@ aliases:
 - Elastic.Events.Clients
 
 description: |
+  Forwards real-time monitoring events from selected artifacts to an
+  Elasticsearch index.
+
   This server monitoring artifact will watch a selection of client or
   server monitoring artifacts for new events and push those to an
-  elastic index.
+  Elastic index.
 
   NOTE: You must ensure you are collecting these artifacts from the
   clients by adding them to the "Client Events" GUI, or for server

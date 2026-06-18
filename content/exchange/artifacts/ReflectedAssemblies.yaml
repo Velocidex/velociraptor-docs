@@ -1,19 +1,19 @@
 name: Windows.Detection.ReflectedAssemblies
 author: "Matt Green - @mgreen27"
 description: |
-   Collects current running .NET assemblies and replicates ProcessHacker's .NET 
+   Collects current running .NET assemblies and replicates ProcessHacker's .NET
    Assemblies view.
-   
-   By Default, the artifact will filter out assemblies with a ModulePath on disk 
-   and built in Modules with Dynamic flag which indicate reflectively loaded 
+
+   By Default, the artifact will filter out assemblies with a ModulePath on disk
+   and built in Modules with Dynamic flag which indicate reflectively loaded
    assemblies.
-   
-   Typical workflow would be to run once and scope the target ModuleID the rerun 
-   and specifiy ModuleIDRegex to pull back module information.
-   
-   Queries the Microsoft-Windows-DotNETRuntimeRundown ETW provider so ensure 
+
+   Typical workflow would be to run once and scope the target ModuleID the rerun
+   and specify ModuleIDRegex to pull back module information.
+
+   Queries the Microsoft-Windows-DotNETRuntimeRundown ETW provider so ensure
    timeout path is sufficient.
-   
+
 type: CLIENT
 
 parameters:
@@ -43,7 +43,7 @@ precondition: SELECT OS From info() where OS = 'windows'
 sources:
   - query: |
       LET VQL_MATERIALIZE_ROW_LIMIT <= 27000
-      
+
       LET collected <= SELECT System.ID AS EventID,
                             System.ProcessID AS ProcessID,
                             *
@@ -58,16 +58,16 @@ sources:
             AND log(message="CLR Rundown Provider any=" + if(condition=ModuleIDRegex,
                                                                   then="0x78",
                                                                   else="0x48"))
-        
+
       LET ordered = SELECT *,
                 format(format='%v_%v',
                         args=[System.ProcessID,System.ID]) AS __OrderMe
         FROM collected
         WHERE NOT EventID = 143
         ORDER BY __OrderMe DESC
-                       
+
       LET Cache <= lru()
-      
+
       LET results = SELECT
           process_tracker_get(id=ProcessID) AS ProcessDetails,
           get(item=Cache,
@@ -101,7 +101,7 @@ sources:
                     field=format(
                           format="AppDomainName%v_%v",
                           args=[ProcessID, EventData.AppDomainID]),
-                    value=EventData.AppDomainName), 
+                    value=EventData.AppDomainName),
             EventID = 155
                 && set(
                     item=Cache,
@@ -115,7 +115,7 @@ sources:
                     field=format(
                         format="AppDomainID%v_%v",
                         args=[ProcessID, EventData.AssemblyID]),
-                    value=EventData.AppDomainID), 
+                    value=EventData.AppDomainID),
             EventID = 187
                 && set(
                     item=Cache,
@@ -127,17 +127,17 @@ sources:
                         ClrVersion=format(
                             format='%s.%s.%s.%s',
                             args=[
-                                EventData.VMMajorVersion, 
+                                EventData.VMMajorVersion,
                                 EventData.VMMinorVersion,
-                                EventData.VMBuildNumber, 
+                                EventData.VMBuildNumber,
                                 EventData.VMQfeNumber]),
                         RuntimeDllPath=EventData.RuntimeDllPath
                     )),
-            EventID = 151, 
+            EventID = 151,
             EventID = 153)
          AND EventID IN (151, 153)
               AND ProcessDetails.Data.Name =~ ProcessRegex
-      
+
       -- match process hacker ModuleFlags
       LET PROFILE = '''[
                      ["ClrDeets", 0, [
@@ -153,15 +153,15 @@ sources:
                     ]'''
 
       LET hex_value(number) = format(format='0x%08x',args=int(int=number))
-      
-      LET final <= SELECT 
+
+      LET final <= SELECT
         dict(
             StartTime=ProcessDetails.StartTime,
             Pid=ProcessDetails.Id,
             Name=ProcessDetails.Data.Name,
             Exe=ProcessDetails.Data.Exe,
             CommandLine=ProcessDetails.Data.CommandLine,
-            Username=ProcessDetails.Data.Username ) AS ProcessDetails, 
+            Username=ProcessDetails.Data.Username ) AS ProcessDetails,
         AppDomainName,
         ModuleID,
         AssemblyID,
@@ -175,18 +175,18 @@ sources:
             AND NOT ModuleFlags = 'Dynamic'
             AND FullyQualifiedAssemblyName =~ AssemblyNameRegex
       GROUP BY Address, AppDomainName, FullyQualifiedAssemblyName
-        
+
       SELECT * FROM final
-      
+
   - name: Module Methods
     query: |
       LET lookup <= SELECT * FROM final
-      
+
       LET ModuleIDRegex2 <= join(array=final.ModuleID,sep='|')
-      
+
       LET final_lookup(moduleid) = SELECT AppDomainName,AssemblyID,FullyQualifiedAssemblyName
         FROM lookup WHERE ModuleID = moduleid
-      
+
       LET module_results = SELECT    ProcessID,
                 process_tracker_get(id=System.ProcessID).Data.Name AS ProcessName,
                 EventData.MethodID as MethodID,
@@ -199,11 +199,11 @@ sources:
                 EventData.MethodName as MethodName,
                 EventData.MethodSignature as MethodSignature
         FROM collected
-        WHERE System.ID = 143 
+        WHERE System.ID = 143
             AND ProcessName =~ ProcessRegex
             AND ModuleID =~ ModuleIDRegex
             AND ModuleID =~ ModuleIDRegex2
-      
+
       SELECT ProcessID, ProcessName,
         final_lookup(moduleid=ModuleID )[0] as AssemblyDetails,
         ModuleID,

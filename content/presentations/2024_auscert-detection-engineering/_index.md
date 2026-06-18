@@ -2,6 +2,8 @@
 title: Advances in Detection Engineering
 menutitle: Auscert 2024 Talk
 weight: 130
+description: |
+  ### Abstract
 ---
 
 ### Abstract

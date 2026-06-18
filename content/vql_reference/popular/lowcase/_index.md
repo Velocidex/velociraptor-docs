@@ -2,7 +2,11 @@
 title: lowcase
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Returns the lowercase version of a string.
 ---
 
 

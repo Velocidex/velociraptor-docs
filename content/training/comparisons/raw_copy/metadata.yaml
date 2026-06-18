@@ -1,0 +1,29 @@
+title: RawCopy
+link:  https://github.com/jschicht/RawCopy
+tools:
+- title: RawCopy
+  description: |
+    This a console application that copy files off NTFS volumes by
+    using low level disk reading method.
+
+  github: https://github.com/jschicht/RawCopy
+  artifacts:
+  - name: Windows.Search.FileFinder
+    link: https://docs.velociraptor.app/artifact_references/pages/windows.search.filefinder/
+    description: |
+        Use this artifact with the `ntfs` or `auto` accessor to
+        collect locked files.
+
+  examples:
+  - title: Copy a single file to a directory
+    description: |
+      Using the Velociraptor command line `fs cp` command, it is
+      possible to copy a file bypassing any OS level locks.
+    cmd: velociraptor fs cp c:\Windows\system32\sru\SRUDB.dat c:\output --accessor auto
+  - title: Copy many files into a collection ZIP
+    description: |
+      The `Windows.Search.FileFinder` artifact can collect files
+      regardless of their lock status. The `auto` accessor will
+      automatically parse the file from the NTFS filesystem if the
+      usual OS APIs fail to open it.
+    cmd: velociraptor -v -r Windows.Search.FileFinder --Glob 'C:\Windows\System32\sru\*' -o c:\output\test.zip --Upload_File Y

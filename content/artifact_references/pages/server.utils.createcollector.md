@@ -1,24 +1,33 @@
 ---
 title: Server.Utils.CreateCollector
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+description: |
+  A utility artifact to create a standalone Velociraptor offline
+  collector binary with specified artifacts and output target.
 ---
 
-A utility artifact to create a stand alone collector.
+A utility artifact to create a standalone Velociraptor offline
+collector binary with specified artifacts and output target.
 
-This artifact is actually invoked by the Offline collector GUI and
-that is the recommended way to launch it. You can find the Offline
-collector builder in the `Server Artifacts` section of the GUI.
+This artifact is invoked via the GUI's offline collector builder
+wizard and that is the recommended way to launch it. You can find
+the Offline collector builder in the `Server Artifacts` section of
+the GUI.
 
 
 <pre><code class="language-yaml">
 name: Server.Utils.CreateCollector
 description: |
-  A utility artifact to create a stand alone collector.
+  A utility artifact to create a standalone Velociraptor offline
+  collector binary with specified artifacts and output target.
 
-  This artifact is actually invoked by the Offline collector GUI and
-  that is the recommended way to launch it. You can find the Offline
-  collector builder in the `Server Artifacts` section of the GUI.
+  This artifact is invoked via the GUI's offline collector builder
+  wizard and that is the recommended way to launch it. You can find
+  the Offline collector builder in the `Server Artifacts` section of
+  the GUI.
 
 type: SERVER
 
@@ -156,7 +165,7 @@ parameters:
     description: |
       If specified the collection will be packed with the specified
       version of the binary. NOTE: This is rarely what you want
-      because the packed builtin artifacts are only compatible with
+      because the packed built-in artifacts are only compatible with
       the current release version.
 
   - name: opt_delete_at_exit

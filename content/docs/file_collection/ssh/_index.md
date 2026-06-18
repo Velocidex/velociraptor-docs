@@ -5,6 +5,10 @@ date: 2025-11-06
 last_reviewed: 2026-01-27
 draft: true
 weight: 30
+description: |
+  The ssh accessor is used to read remote files - it can not execute arbitrary
+  tools on the endpoint - UAC collector is a shell script which is pushed to the
+  endpoint normally so it can not be used via the ssh accessor.
 ---
 
 The ssh accessor is used to read remote files - it can not execute arbitrary

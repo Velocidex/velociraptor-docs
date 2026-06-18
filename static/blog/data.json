@@ -1,5 +1,37 @@
 [
  {
+  "title": "Velociraptor 0.77 Release",
+  "description": "Velociraptor Release 0.77 is now available",
+  "link": "/blog/2026/2026-05-31-release-notes-0.77/",
+  "tags": [
+   "Release"
+  ],
+  "date": "2026-05-31"
+ },
+ {
+  "title": "Alerts and e-mail notifications in Velociraptor",
+  "description": "A brief introduction to Velociraptor's alert system and the new\nexchange artifacts sending e-mail notifications for flow\ncompletions, alerts, and event query errors.\n",
+  "link": "/blog/2026/2026-04-19-alerts-and-email/",
+  "tags": [
+   "alerts",
+   "notifications",
+   "email",
+   "detection",
+   "monitoring",
+   "errors"
+  ],
+  "date": "2026-05-10"
+ },
+ {
+  "title": "Velociraptor CLI",
+  "description": "The Velociraptor CLI is a powerful interface for using\nand automating Velociraptor\n",
+  "link": "/blog/2026/2026-03-21-cli/",
+  "tags": [
+   "Automation"
+  ],
+  "date": "2026-03-21"
+ },
+ {
   "title": "Velociraptor 0.76 Release",
   "description": "Velociraptor Release 0.76 is now available\n",
   "link": "/blog/2026/2026-03-10-release-notes-0.76/",
@@ -138,7 +170,7 @@
  },
  {
   "title": "Sigma In Velociraptor",
-  "description": "",
+  "description": "This page discusses how Sigma is implemented and used within\nVelociraptor.\n",
   "link": "/blog/2023/2023-11-15-sigma_in_velociraptor/",
   "tags": [
    "Sigma",
@@ -211,15 +243,6 @@
   "date": "2022-11-19"
  },
  {
-  "title": "The Velociraptor process tracker",
-  "description": "Since 0.6.6, Velociraptor comes with a process tracker. What is it and how can it be used?\n",
-  "link": "/blog/2022/2022-08-17-process-tracker/",
-  "tags": [
-   "VQL"
-  ],
-  "date": "2022-09-07"
- },
- {
   "title": "Velociraptor 0.6.6 Release",
   "description": "Velociraptor Release 0.6.6 is now LIVE. This post discusses some of the new features.\n",
   "link": "/blog/2022/2022-08-15-release-notes/",
@@ -229,7 +252,16 @@
   "date": "2022-09-07"
  },
  {
-  "title": "Postprocessing Collections",
+  "title": "The Velociraptor process tracker",
+  "description": "Since 0.6.6, Velociraptor comes with a process tracker. What is it and how can it be used?\n",
+  "link": "/blog/2022/2022-08-17-process-tracker/",
+  "tags": [
+   "VQL"
+  ],
+  "date": "2022-09-07"
+ },
+ {
+  "title": "Post-processing Collections",
   "description": "Sometimes we have a need to post process a collection on the server. This blog post covers this use case and possible approaches.\n",
   "link": "/blog/2022/2022-08-04-post-processing/",
   "tags": [
@@ -257,9 +289,9 @@
   "date": "2022-04-21"
  },
  {
-  "title": "Dead disk Forensics",
-  "description": "Velociraptor features some advanced forensics capabilities, but traditionally\nonly works on live endpoints. In recent releases it is now also possible to\nuse Velociraptor on dead disk images.\n",
-  "link": "/blog/2022/2022-03-22-deaddisk/",
+  "title": "Paths and filesystem accessors",
+  "description": "Path handling seems like a simple task but it is surprisingly complex. This article discusses some of the nuances of thinking about paths and introduces Velociraptor's new OSPath feature that easier path manipulation from VQL queries.\n",
+  "link": "/blog/2022/2022-03-21-paths/",
   "tags": [
    "Forensics",
    "VQL"
@@ -267,9 +299,9 @@
   "date": "2022-03-20"
  },
  {
-  "title": "Paths and filesystem accessors",
-  "description": "Path handling seems like a simple task but it is surprisingly complex. This article discusses some of the nuances of thinking about paths and introduces Velociraptor's new OSPath feature that easier path manipulation from VQL queries.\n",
-  "link": "/blog/2022/2022-03-21-paths/",
+  "title": "Dead disk Forensics",
+  "description": "Velociraptor features some advanced forensics capabilities, but traditionally\nonly works on live endpoints. In recent releases it is now also possible to\nuse Velociraptor on dead disk images.\n",
+  "link": "/blog/2022/2022-03-22-deaddisk/",
   "tags": [
    "Forensics",
    "VQL"
@@ -291,15 +323,6 @@
   "date": "2022-01-12"
  },
  {
-  "title": "Velociraptor 0.6.3 Release",
-  "description": "Our latest Velociraptor release contains many new features and bug fixes. This post outlines some of the more interesting changes.\n",
-  "link": "/blog/2022/2022-01-05-release-notes-0.6.3/",
-  "tags": [
-   "Release"
-  ],
-  "date": "2022-01-05"
- },
- {
   "title": "Searching for files",
   "description": "A common technique in DFIR is simply searching the filesystem for files. While this seems like a simple task, there are some surprising traps. This article covers some of the issues and possible solutions.\n",
   "link": "/blog/2022/2022-01-05-searching-for-files-on-linux/",
@@ -307,6 +330,15 @@
    "VQL",
    "Linux",
    "Searching"
+  ],
+  "date": "2022-01-05"
+ },
+ {
+  "title": "Velociraptor 0.6.3 Release",
+  "description": "Our latest Velociraptor release contains many new features and bug fixes. This post outlines some of the more interesting changes.\n",
+  "link": "/blog/2022/2022-01-05-release-notes-0.6.3/",
+  "tags": [
+   "Release"
   ],
   "date": "2022-01-05"
  },
@@ -790,13 +822,6 @@
   "date": "2018-12-09"
  },
  {
-  "title": "Velociraptor training at NZITF",
-  "description": "We are very excited to run this full day training workshop at the New\nZealand Internet Engineering Task Force (NZITF) conference.\n",
-  "link": "/blog/html/2018/11/13/velociraptor_training_at_nzitf/",
-  "tags": [],
-  "date": "2018-11-13"
- },
- {
   "title": "Event Queries and Endpoint Monitoring",
   "description": "In previous posts we have seen how Velociraptor can run artifacts to\ncollect information from hosts. For example, we can collect WMI\nqueries, user accounts and files.\n\nHowever it would be super awesome to be able to do this collection in\nreal time, as soon as an event of interest appears on the host, we\nwould like to have that collected on the server. This post describes\nthe new event monitoring framework and shows how Velociraptor can\ncollect things such as event logs, process execution and more in real\ntime.\n",
   "link": "/blog/html/2018/11/09/event_queries_and_endpoint_monitoring/",
@@ -846,9 +871,16 @@
   "date": "2018-08-10"
  },
  {
-  "title": "Design differences between Velociraptor and GRR",
-  "description": "One of the main motivators for developing Velociraptor is the\nopportunity to try different approaches than GRR. Velociraptor has a\nnumber of fundamental design differences in contrast with the GRR\ndesign which improve overall performance and scalability.  We tried to\nkeep it light weight cutting out the features we think we did not need\nand leaving behind a fast, lean and mean raptor!\n",
-  "link": "/blog/html/2018/08/10/design_differences_between_velociraptor_and_grr/",
+  "title": "Browsing around the filesystem.",
+  "description": "Browsing the client's filesystem is probably the first thing\nresponders do. Both GRR and Velociraptor have a nice VFS abstraction\nthat allows users to browse files interactively. However, in order to\nmake Velociraptor much faster we made some trade-offs and improved the\nway that the VFS is stored in the datastore.\n",
+  "link": "/blog/html/2018/08/10/browsing_around_the_filesystem/",
+  "tags": [],
+  "date": "2018-08-10"
+ },
+ {
+  "title": "Interrogation - Make the endpoint tell us what it knows!",
+  "description": "Interrogation is the process of learning general information about the\nendpoint we are monitoring. Each endpoint is automatically\ninterrogated when it first joins the Velociraptor server, and the GUI\nshows this general information about each client.\n",
+  "link": "/blog/html/2018/08/10/interrogation_make_the_endpoint_tell_us_what_it_knows/",
   "tags": [],
   "date": "2018-08-10"
  },
@@ -860,16 +892,9 @@
   "date": "2018-08-10"
  },
  {
-  "title": "Browsing around the filesystem.",
-  "description": "Browsing the client's filesystem is probably the first thing\nresponders do. Both GRR and Velociraptor have a nice VFS abstraction\nthat allows users to browse files interactively. However, in order to\nmake Velociraptor much faster we made some tradeoffs and improved the\nway that the VFS is stored in the datastore.\n",
-  "link": "/blog/html/2018/08/10/browsing_around_the_filesystem/",
-  "tags": [],
-  "date": "2018-08-10"
- },
- {
-  "title": "Interrogation - Make the endpoint tell us what it knows!",
-  "description": "Interrogation is the process of learning general information about the\nendpoint we are monitoring. Each endpoint is automatically\ninterrogated when it first joins the Velociraptor server, and the GUI\nshows this general information about each client.\n",
-  "link": "/blog/html/2018/08/10/interrogation_make_the_endpoint_tell_us_what_it_knows/",
+  "title": "Design differences between Velociraptor and GRR",
+  "description": "One of the main motivators for developing Velociraptor is the\nopportunity to try different approaches than GRR. Velociraptor has a\nnumber of fundamental design differences in contrast with the GRR\ndesign which improve overall performance and scalability.  We tried to\nkeep it light weight cutting out the features we think we did not need\nand leaving behind a fast, lean and mean raptor!\n",
+  "link": "/blog/html/2018/08/10/design_differences_between_velociraptor_and_grr/",
   "tags": [],
   "date": "2018-08-10"
  },

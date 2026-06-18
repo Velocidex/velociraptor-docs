@@ -2,7 +2,11 @@
 title: reg_rm_key
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Removes a key and all its values from the registry.
 ---
 
 

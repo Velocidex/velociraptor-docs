@@ -1,8 +1,16 @@
 ---
 title: Windows.Forensics.Bam
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Parses the BAM registry key from Windows 10+ to identify program
+  execution times.
 ---
+
+Parses the BAM registry key from Windows 10+ to identify program
+execution times.
 
 The Background Activity Moderator (BAM) is a Windows service that
 Controls activity of background applications.  This service exists
@@ -15,6 +23,9 @@ system and last execution date/time
 <pre><code class="language-yaml">
 name: Windows.Forensics.Bam
 description: |
+  Parses the BAM registry key from Windows 10+ to identify program
+  execution times.
+  
   The Background Activity Moderator (BAM) is a Windows service that
   Controls activity of background applications.  This service exists
   in Windows 10 only after Fall Creators update – version 1709.

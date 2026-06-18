@@ -2,7 +2,11 @@
 title: slice
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Slice an array.
 ---
 
 

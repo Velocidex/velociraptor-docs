@@ -1,34 +1,43 @@
 ---
 title: Server.Enrichment.GreyNoise
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+description: |
+  Enriches an IP address with GreyNoise threat intelligence including
+  classification and noise status.
 ---
 
-Submit an IP to the GreyNoise API.
+Enriches an IP address with GreyNoise threat intelligence including
+classification and noise status.
 
-https://developer.greynoise.io/reference/community-api
+This is a utility artifact that can be called from within another
+artifact (such as one looking for network connections) to enrich the
+data made available by that artifact.
 
-This is a rather simple artifact that can be called from within another artifact (such as one looking for network connections) to enrich the data made available by that artifact.
+**Example**
 
-Ex.
-
-  `SELECT * from Artifact.Server.Enrichment.GreyNoise(IP=$YOURIP)`
+`SELECT * from Artifact.Server.Enrichment.GreyNoise(IP=$YOURIP)`
 
 
 <pre><code class="language-yaml">
 name: Server.Enrichment.GreyNoise
 author: Wes Lambert -- @therealwlambert
 description: |
-  Submit an IP to the GreyNoise API.
+  Enriches an IP address with GreyNoise threat intelligence including
+  classification and noise status.
 
-  https://developer.greynoise.io/reference/community-api
+  This is a utility artifact that can be called from within another
+  artifact (such as one looking for network connections) to enrich the
+  data made available by that artifact.
 
-  This is a rather simple artifact that can be called from within another artifact (such as one looking for network connections) to enrich the data made available by that artifact.
+  **Example**
 
-  Ex.
+  `SELECT * from Artifact.Server.Enrichment.GreyNoise(IP=$YOURIP)`
 
-    `SELECT * from Artifact.Server.Enrichment.GreyNoise(IP=$YOURIP)`
-
+reference:
+  - https://developer.greynoise.io/reference/community-api
 
 type: SERVER
 

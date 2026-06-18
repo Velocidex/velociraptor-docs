@@ -2,7 +2,11 @@
 title: client_create
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Create a new client in the data store.
 ---
 
 

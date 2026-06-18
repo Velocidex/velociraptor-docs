@@ -1,8 +1,16 @@
 ---
 title: Windows.EventLogs.AlternateLogon
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Extracts alternate credential logon events (Event ID 4648) from the
+  Security event log.
 ---
+
+Extracts alternate credential logon events (Event ID 4648) from the
+Security event log.
 
 Logon specifying alternate credentials - if NLA enabled on
 destination Current logged-on User Name Alternate User Name
@@ -12,6 +20,9 @@ Destination Host Name/IP Process Name
 <pre><code class="language-yaml">
 name: Windows.EventLogs.AlternateLogon
 description: |
+  Extracts alternate credential logon events (Event ID 4648) from the
+  Security event log.
+  
   Logon specifying alternate credentials - if NLA enabled on
   destination Current logged-on User Name Alternate User Name
   Destination Host Name/IP Process Name

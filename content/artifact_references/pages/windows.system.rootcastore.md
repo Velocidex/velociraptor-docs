@@ -1,16 +1,23 @@
 ---
 title: Windows.System.RootCAStore
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Enumerates root CA certificates from the Windows System Certificate
+  store.
 ---
 
-Enumerate the root certificates in the Windows Root store.
+Enumerates root CA certificates from the Windows System Certificate
+store.
 
 
 <pre><code class="language-yaml">
 name: Windows.System.RootCAStore
 description: |
-   Enumerate the root certificates in the Windows Root store.
+  Enumerates root CA certificates from the Windows System Certificate
+  store.
 
 reference:
    - "ATT&amp;CK: T1553"
@@ -31,7 +38,7 @@ sources:
       SELECT OS From info() where OS = 'windows'
 
     query: |
-        LET profile = '''[
+        LET CertsProfile = '''[
         ["Record", "x=&gt;x.Length + 12", [
           ["Type", 0, "uint32"],
           ["Length", 8, "uint32"],
@@ -54,18 +61,18 @@ sources:
         // Parse the types from the certificate record itself, as well as the X509 cert structure.
         LET GetCert(CertData) = SELECT parse_x509(data=Data)[0] AS Cert
           FROM foreach(row=parse_binary(filename=CertData,
-                       accessor="data", profile=profile, struct="Records").Items)
+                       accessor="data", profile= CertsProfile, struct="Records").Items)
           WHERE Type = 32
 
         // Format the fingerprint as a hex string
         LET GetFinger(CertData) = SELECT format(format="%x", args=Data) AS FingerPrint
           FROM foreach(row=parse_binary(filename=CertData,
-                       accessor="data", profile=profile, struct="Records").Items)
+                       accessor="data", profile=CertsProfile, struct="Records").Items)
           WHERE Type = 3
 
         LET GetName(CertData) = SELECT UnicodeString AS Name
           FROM foreach(row=parse_binary(filename=CertData,
-                       accessor="data", profile=profile, struct="Records").Items)
+                       accessor="data", profile=CertsProfile, struct="Records").Items)
           WHERE Type = 11
 
         // Glob for certificates in all the locations we know about.

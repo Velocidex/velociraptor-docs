@@ -5,6 +5,13 @@ date: 2024-12-18
 draft: false
 weight: 30
 last_reviewed: 2024-12-30
+description: |
+  Clients can have one or more **labels** attached to them. In some software
+  applications the same concept is called "tags" but we just happen to call them
+  labels. Labels are useful when we need to hunt or perform other operations on a
+  well-defined group of hosts. For example, we can restrict a hunt to one or more
+  labels to avoid collecting unnecessary data, or to target specific hosts, or to
+  avoid specific hosts.
 ---
 
 Clients can have one or more **labels** attached to them. In some software
@@ -74,11 +81,11 @@ hunt.
 
 For a practical example of using labels with client monitoring, please see the
 artifact
-[Windows.Remediation.QuarantineMonitor]({{< ref "/artifact_references/pages/windows.remediation.quarantinemonitor/" >}})
+[Windows.Remediation.QuarantineMonitor](/artifact_references/pages/windows.remediation.quarantinemonitor/)
 which is used to enforce network quarantine based on the `quarantine` label.
 
 In addition, it's possible to create
-[server monitoring]({{< ref "/docs/server_automation/server_monitoring/" >}})
+[server monitoring](/docs/server_automation/server_monitoring/)
 artifacts which automatically add or remove labels based on flow completion
 status and results. Thus we can implement event-driven label manipulation via
 VQL which in turn initiates further actions (such as assigning the client to a
@@ -114,7 +121,7 @@ With this added to the config, when the client enrolls it will tell the server
 to apply the `Sales` label to it.
 
 We then
-[repackage the client MSI]({{< ref "/docs/deployment/clients/#repacking-the-official-release-msi" >}})
+[repackage the client MSI](/docs/deployment/clients/#repacking-the-official-release-msi)
 so that it contains this modified config and then deploy it via Group Policy
 only on the Sales OU. This will result in those clients being enrolled with the
 `Sales` label automatically.

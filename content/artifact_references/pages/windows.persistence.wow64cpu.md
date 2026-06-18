@@ -1,7 +1,12 @@
 ---
 title: Windows.Persistence.Wow64cpu
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Checks for wow64cpu.dll replacement Autorun in Windows 10.
+  http://www.hexacorn.com/blog/2019/07/11/beyond-good-ol-run-key-part-108-2/
 ---
 
 Checks for wow64cpu.dll replacement Autorun in Windows 10.

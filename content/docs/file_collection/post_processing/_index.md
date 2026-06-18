@@ -5,6 +5,9 @@ date: 2025-11-01
 last_reviewed: 2026-02-26
 draft: true
 weight: 40
+description: |
+  As we mentioned in previous sections, file collections are usually done for two
+  distinct reasons:
 ---
 
 As we mentioned in previous sections, file collections are usually done for two
@@ -87,7 +90,7 @@ you can iterate over the output of the `hunt_flows()` plugin and then use
 
 ### Accessing files with the filestore accessor
 
-Once we have the the filestore path, we can then access the file itself using
+Once we have the filestore path, we can then access the file itself using
 any VQL function or plugin by providing it with the filestore path and telling
 it to use the `fs` (filestore) accessor.
 
@@ -130,7 +133,7 @@ WHERE file_size > 100
 ![screenshot]()
 
 Alternatively, you can
-[disable filestore compression globally]({{< ref "/docs/deployment/references/#Datastore.compression" >}})
+[disable filestore compression globally](/docs/deployment/references/#Datastore.compression)
 which allows external tools to read file in the filestore directly. While this
 is not recommended because of the significant storage benefits that the new
 compression feature provides, it is equivalent to how pre-v0.75 versions
@@ -237,7 +240,7 @@ collection timeout
 
 notebook timeout
 
-The [notebook timeout]({{< ref "" >}})
+The [notebook timeout]()
 can be extended via the server config, but 10 minutes is reasonable for most
 notebook cell operations and the timeout is intended to protect against
 poorly-constructed queries. In general if a cell needs longer than 10 minutes to

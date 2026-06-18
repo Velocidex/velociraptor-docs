@@ -8,6 +8,13 @@ date: 2024-04-11T23:25:17Z
 last_reviewed: 2025-11-16
 draft: false
 weight: 40
+description: |
+  In the previous section we learned how the Velociraptor's path
+  handling allows for precise and correct path manipulations. The OSPath
+  abstraction allows VQL plugins and functions to open files in a
+  consistent way using different accessors. For example we have seen how
+  files can be read inside a zip file easily, while still using the
+  familiar `glob()` plugin.
 ---
 
 In the previous section we learned how the Velociraptor's path
@@ -70,7 +77,7 @@ the VQL engine as a sandbox interpreting the VQL queries. However,
 there are really only two ways for VQL queries to interact with the
 system:
 
-1. Using [accessors]({{< ref "/vql_reference/accessors/" >}})
+1. Using [accessors](/vql_reference/accessors/)
    and OSPath objects allows VQL queries to access various filesystem-like
    constructs (e.g. registry, zip files, etc).
 2. Using specific plugins and VQL functions allows queries to call
@@ -136,10 +143,30 @@ path: {
       }
 ```
 
-### Dead disk analysis
+### Remapping in dead disk analysis
 
 Remapping is useful to virtualize a query and allow it to run in
 a different environment than it was initially designed for. This
 allows us to reuse artifacts in different contexts. For example, a
 live artifact can be reused with a
-[dead disk image]({{< ref "/docs/forensic/deaddisk/" >}}).
+[dead disk image](/docs/forensic/deaddisk/).
+
+When accessing a disk image that contains an NTFS filesystem, we apply
+remapping rules that translate requests to the abovementioned
+accessors into
+[compound pathspec objects](/docs/forensic/filesystem/paths/#nested-accessors-and-pathspecs)
+which include additional (delegate) accessors such as `vmdk` and `raw_ntfs`.
+This mechanism transparently provides access via the filesystem of the local
+host, the disk image, and partitions and filesystems in the image, etc.
+
+Similarly, for access to the Windows registry we construct remapping rules that
+use compound pathspecs to provide access via the various container layers, and
+ultimately present simple registry paths to VQL queries, as they would appear on
+a live Windows endpoint. An artifact that queries the registry using the
+operating system's APIs will now automatically query the raw registry parser
+which accesses the hive file, which is accessed by parsing the NTFS filesystem
+within the disk image.
+
+By remapping the accessors typically used in a live scenario, we are allowing
+the same VQL queries to apply to a very different (dead disk) scenario _without
+any changes_.

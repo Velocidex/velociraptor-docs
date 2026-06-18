@@ -2,7 +2,16 @@
 title: send_event
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Sends an event to a server event monitoring queue.
+
+  This is used to send an event to a waiting server event monitoring
+  artifact (either as a VQL query running on the server or perhaps
+  an external program waiting for this event via the API.
+
 ---
 
 
@@ -20,6 +29,7 @@ no_edit: true
 Arg | Description | Type
 ----|-------------|-----
 artifact|The artifact name to send the event to.|string (required)
+client_id|The client_id for this event in case of a client_event artifact.|string
 row|The row to send to the artifact|ordereddict.Dict (required)
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">SERVER_ADMIN</span>

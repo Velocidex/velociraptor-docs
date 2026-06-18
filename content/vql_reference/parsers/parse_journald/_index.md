@@ -2,7 +2,11 @@
 title: parse_journald
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Parse a journald file.
 ---
 
 

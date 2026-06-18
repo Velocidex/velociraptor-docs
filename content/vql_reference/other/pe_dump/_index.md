@@ -2,7 +2,11 @@
 title: pe_dump
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Dump a PE file from process memory.
 ---
 
 

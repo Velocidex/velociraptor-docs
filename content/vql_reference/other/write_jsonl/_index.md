@@ -2,7 +2,11 @@
 title: write_jsonl
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Write a query into a JSONL file.
 ---
 
 

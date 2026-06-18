@@ -5,6 +5,8 @@ date: 2021-06-12T14:03:59Z
 draft: false
 weight: 90
 pre: <i class="fas fa-graduation-cap"></i>
+description: |
+  ## Scheduled courses
 ---
 
 ## Scheduled courses
@@ -27,7 +29,7 @@ on YouTube.
 {{% notice info %}}
 
 Please note that these videos are not up to date with the
-[latest version]({{< ref "/downloads/" >}}).
+[latest version](/downloads/).
 The slide deck above is more recent and contains additional sections which don't
 have corresponding videos.
 

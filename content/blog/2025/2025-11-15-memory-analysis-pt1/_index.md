@@ -13,13 +13,11 @@ noindex: false
 ---
 
 This post was spurred by the recent release of the
-[Windows.Memory.Mem2Disk]({{< ref
-"/exchange/artifacts/pages/windows.memory.mem2disk/" >}}) artifact,
-written by Lautaro Lecumberry and Dr. Michael Denzel. The artifact was
-a culmination of their excellent thesis, [Detecting Fileless Malware
-using Endpoint Detection and Response
-Tools](https://github.com/lautarolecumberry/DetectingFilelessMalware). You
-should check it out!
+[Windows.Memory.Mem2Disk](/exchange/artifacts/pages/windows.memory.mem2disk/)
+artifact, written by Lautaro Lecumberry and Dr. Michael Denzel. The
+artifact was a culmination of their excellent thesis,
+[Detecting Fileless Malware using Endpoint Detection and Response Tools](https://github.com/lautarolecumberry/DetectingFilelessMalware).
+You should check it out!
 
 Memory analysis is a powerful technique used in DFIR to detect malware
 and persistence mechanisms which are sometimes not detectable using
@@ -68,7 +66,7 @@ response in modern environments:
 **Velociraptor's memory analysis capabilities do not rely on physical memory.**
 Although Velociraptor does have the ability to capture a physical memory image
 (e.g. using the
-[Windows.Memory.Acquisition]({{< ref "/artifact_references/pages/windows.memory.acquisition/" >}})
+[Windows.Memory.Acquisition](/artifact_references/pages/windows.memory.acquisition/)
 artifact), we don't recommend this approach. Much of Velociraptor's memory
 capabilities are implemented using plugins which directly query the operating
 system for information about the system (including process memory).
@@ -99,11 +97,11 @@ script, and it can be deployed quickly and at scale.
 
 In this post I will discuss how to detect inline hooking. There are
 many open source tools which implement this kind of detection (for
-example [Hollows
-Hunter](https://github.com/hasherezade/hollows_hunter) which you can
-use with Velociraptor via the [Windows.Memory.HollowsHunter]({{< ref
-"/exchange/artifacts/pages/hollowshunter/" >}}) artifact). In this
-post I will describe how this can be implemented purely in VQL.
+example [Hollows Hunter](https://github.com/hasherezade/hollows_hunter)
+which you can use with Velociraptor via the
+[Windows.Memory.HollowsHunter](/exchange/artifacts/pages/hollowshunter/) artifact).
+In this post I will describe how this can be implemented purely in
+VQL.
 
 # Inline hooking of binaries
 
@@ -112,10 +110,10 @@ patching the function header as it is loaded into memory. For example,
 patching ETW tracing functionality can disable user space ETW reporting,
 such as PowerShell script block logging.
 
-It is also possible to patch functions in [other
-processes](https://attack.mitre.org/techniques/T1056/004/), thereby
-subverting them by diverting execution to attacker-controlled code
-injections.
+It is also possible to patch functions in
+[other processes](https://attack.mitre.org/techniques/T1056/004/),
+thereby subverting them by diverting execution to attacker-controlled
+code injections.
 
 ![Patching a function preamble](patching_memory.svg)
 
@@ -188,11 +186,12 @@ here is to compare the code in memory with the code on disk for each
 DLL.
 
 I will develop the following in a notebook cell which I am launching
-on a Windows system using [Instant Velociraptor]({{< ref
-"/docs/deployment/#instant-velociraptor" >}}). This approach allows me
-to interactively develop my VQL on a live system in the convenience of
-a GUI notebook without needing to call into a remote client. See
-[Artifact Writing Tips ]({{< ref "/docs/artifacts/tips/" >}}) for more
+on a Windows system using
+[Instant Velociraptor](/docs/deployment/#instant-velociraptor).
+This approach allows me to interactively develop my VQL on a live
+system in the convenience of a GUI notebook without needing to call
+into a remote client. See
+[Artifact Writing Tips ](/docs/artifacts/tips/) for more
 details.
 
 In a separate window I start powershell, and paste the above code into
@@ -211,7 +210,7 @@ WHERE Name =~ "powershell"
 ![Filtering processes by name](pslist.png)
 
 
-The [pslist()]({{< ref "/vql_reference/popular/pslist/" >}}) VQL
+The [pslist()](/vql_reference/popular/pslist/) VQL
 plugin is similar to Volatility's `pslist` plugin - it simply lists
 all active processes and reveals important information about them.
 
@@ -224,12 +223,12 @@ the powershell process's address space.
 I am especially interested in how this process is mapping the
 `amsi.dll`. Executable dlls are normally mapped into a process address
 space by the kernel when the dll is loaded. I can view the mapped
-sections of a process using the [vad()]({{< ref
-"/vql_reference/windows/vad/">}}) VQL plugin. This plugin is
-equivalent to Volatility's `vad` plugin, and produces a list of all
-mapped sections in the process. If the section is backed by a file
-then the filename is also given, as well as the memory protections of
-the region.
+sections of a process using the
+[vad()](/vql_reference/windows/vad/) VQL plugin.
+This plugin is equivalent to Volatility's `vad` plugin, and produces a
+list of all mapped sections in the process. If the section is backed
+by a file then the filename is also given, as well as the memory
+protections of the region.
 
 ```vql
 SELECT * FROM foreach(row={
@@ -265,7 +264,7 @@ is simply a symbolic link to the real path as far as the kernel is
 concerned.
 
 Luckily we can inspect the content of the kernel object manager using
-the [winobj()]({{< ref "/vql_reference/windows/winobj/" >}})
+the [winobj()](/vql_reference/windows/winobj/)
 plugin. This is the VQL equivalent of Volatility's `winobj` plugin. It
 shows the kernel's object manager namespace.
 
@@ -309,8 +308,8 @@ from a common artifact (these functions are actually provided by the
 modularize artifacts and reuse code.
 
 I also want to format the address in hexadecimal and parse the dll
-from disk using the [parse_pe()]({{< ref
-"/vql_reference/parsers/parse_pe/" >}}) plugin.
+from disk using the
+[parse_pe()](/vql_reference/parsers/parse_pe/) plugin.
 
 Putting it all together:
 
@@ -396,15 +395,16 @@ information for the `.text` section.
 ## Step 5: Comparing the memory regions with the disk
 
 Now I will read the `.text` section from disk and memory. Velociraptor
-allows to read process memory using the [process accessor]({{< ref
-"/vql_reference/accessors/process/" >}}). The accessor makes the
-process memory appear as a huge file, so we can apply any VQL function
-or plugin which expects a file directly on process memory.
+allows to read process memory using the
+[process accessor](/vql_reference/accessors/process/).
+The accessor makes the process memory appear as a huge file, so we can
+apply any VQL function or plugin which expects a file directly on
+process memory.
 
 This is useful, for example, in applying the `yara()` plugin to scan
 memory for patterns. However, in this case I just want to read the
 `.text` section and compare it with the file on disk. I can use the
-[read_file()]({{< ref "/vql_reference/popular/read_file/" >}}) VQL
+[read_file()](/vql_reference/popular/read_file/) VQL
 function to just read the file into a single buffer string (Note that
 when using the process accessor the filename must be of the form
 `/<pid>`):
@@ -492,8 +492,9 @@ hit](calculating_hit_rva.svg)
 This is shown diagrammatically above. The different offset (within the
 mapped segment) is converted to an RVA by adding the `.text` section's
 RVA offset, then we can look up the name of the function from the
-export table using the [describe_address()]({{< ref
-"/vql_reference/other/describe_address/" >}}) function.
+export table using the
+[describe_address()](/vql_reference/other/describe_address/)
+function.
 
 We modify our comparison function to accept the `TextSegment` and
 return the name of the exported function:
@@ -534,9 +535,9 @@ More complex VQL can deal with these and exclude expected differences
 due to relocations.
 
 We will not describe this more complex code in this blog post, and
-simply refer the reader to the full [Windows.Memory.Mem2Disk]({{< ref
-"/exchange/artifacts/pages/windows.memory.mem2disk/" >}}) artifact,
-written by Lautaro Lecumberry and Dr. Michael Denzel.
+simply refer the reader to the full
+[Windows.Memory.Mem2Disk](/exchange/artifacts/pages/windows.memory.mem2disk/)
+artifact, written by Lautaro Lecumberry and Dr. Michael Denzel.
 
 This artifact is also optimized for performance and has many useful
 filters to restrict scanning to those dlls commonly targeted by
@@ -648,5 +649,5 @@ If you like to try the new `Windows.Memory.Mem2Disk` artifact, take
 Velociraptor for a spin !  It is available on GitHub under an open
 source license. As always please file issues on the bug tracker or ask
 questions on our mailing list `velociraptor-discuss@googlegroups.com`
-. You can also chat with us directly on discord
-https://www.velocidex.com/discord .
+. You can also chat with us directly
+on [Discord](/discord/).

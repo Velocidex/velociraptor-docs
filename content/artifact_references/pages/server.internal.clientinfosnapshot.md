@@ -1,11 +1,18 @@
 ---
 title: Server.Internal.ClientInfoSnapshot
 hidden: true
+sitemap:
+  disable: true
 tags: [Internal Artifact]
+description: |
+  Notifies minion nodes to refresh their client info cache when the
+  master writes a new snapshot.
 ---
 
-An internal artifact that fires when the master node writes a new
-snapshot. Minion use this to trigger a refresh of their client info
+Notifies minion nodes to refresh their client info cache when the
+master writes a new snapshot.
+
+Minions use this to trigger a refresh of their client info
 snapshots.
 
 
@@ -13,8 +20,10 @@ snapshots.
 name: Server.Internal.ClientInfoSnapshot
 type: INTERNAL
 description: |
-  An internal artifact that fires when the master node writes a new
-  snapshot. Minion use this to trigger a refresh of their client info
+  Notifies minion nodes to refresh their client info cache when the
+  master writes a new snapshot.
+  
+  Minions use this to trigger a refresh of their client info
   snapshots.
 
 </code></pre>

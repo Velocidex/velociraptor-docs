@@ -2,7 +2,11 @@
 title: etw_sessions
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Enumerates all active ETW sessions
 ---
 
 

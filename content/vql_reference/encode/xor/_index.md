@@ -2,7 +2,11 @@
 title: xor
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Apply xor to the string and key.
 ---
 
 

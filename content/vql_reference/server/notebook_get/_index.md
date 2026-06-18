@@ -2,7 +2,11 @@
 title: notebook_get
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Get a notebook.
 ---
 
 

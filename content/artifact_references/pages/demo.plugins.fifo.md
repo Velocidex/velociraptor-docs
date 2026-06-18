@@ -1,13 +1,23 @@
 ---
 title: Demo.Plugins.Fifo
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+description: |
+  Demonstrates using the fifo() plugin to detect event sequences,
+  using failed logon attempts preceding a successful logon as a
+  concrete example.
 ---
 
-This is a demo of the fifo() plugin. The Fifo plugin collects and
-caches rows from its inner query. Every subsequent execution of the
-query then reads from the cache. The plugin will expire old rows
-depending on its expiration policy - so we always see recent rows.
+Demonstrates using the fifo() plugin to detect event sequences,
+using failed logon attempts preceding a successful logon as a
+concrete example.
+
+The Fifo plugin collects and caches rows from its inner query. Every
+subsequent execution of the query then reads from the cache. The
+plugin will expire old rows depending on its expiration policy - so
+we always see recent rows.
 
 You can use this to build queries which consider historical events
 together with current events at the same time. In this example, we
@@ -56,10 +66,14 @@ information than just times (i.e. who logged on to where etc).
 <pre><code class="language-yaml">
 name: Demo.Plugins.Fifo
 description: |
-  This is a demo of the fifo() plugin. The Fifo plugin collects and
-  caches rows from its inner query. Every subsequent execution of the
-  query then reads from the cache. The plugin will expire old rows
-  depending on its expiration policy - so we always see recent rows.
+  Demonstrates using the fifo() plugin to detect event sequences,
+  using failed logon attempts preceding a successful logon as a
+  concrete example.
+
+  The Fifo plugin collects and caches rows from its inner query. Every
+  subsequent execution of the query then reads from the cache. The
+  plugin will expire old rows depending on its expiration policy - so
+  we always see recent rows.
 
   You can use this to build queries which consider historical events
   together with current events at the same time. In this example, we

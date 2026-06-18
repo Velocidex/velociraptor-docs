@@ -2,7 +2,15 @@
 title: flows
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Retrieve the flows launched on each client.
+
+  Each flow record will include the creator of the flow, the request
+  and metadata about the collection.
+
 ---
 
 
@@ -21,6 +29,7 @@ Arg | Description | Type
 ----|-------------|-----
 client_id||string (required)
 flow_id||string
+summary|If specified we fetch just the basic summary of the flow. This is a bit faster.|bool
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
 

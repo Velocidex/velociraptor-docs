@@ -12,7 +12,7 @@ keywords: []
 
 ![](../../img/1__SLf0Z8PXOXTWfjXyuTk__Xg.png)
 
-The recent [Velociraptor](https://www.velocidex.com/) [release](https://github.com/Velocidex/velociraptor/releases) (0.3.3) features a client side buffer. What does this do and how does it change Velociraptor’s approach to incident response?
+The recent Velociraptor [release](https://github.com/Velocidex/velociraptor/releases) (0.3.3) features a client side buffer. What does this do and how does it change Velociraptor’s approach to incident response?
 
 ### What is a local buffer?
 
@@ -42,7 +42,7 @@ With the recent Velociraptor release, we can deploy monitoring VQL artifacts whi
 
 Because the file buffer allows the VQL engine to operate even when the client is not online, VQL event monitoring queries are not interrupted and continue to work autonomously without involvement from the server.
 
-#### Example: Office macros on thumb drive
+###### Example: Office macros on thumb drive
 
 An example of an event monitoring artifact is the **Windows.Detection.Thumbdrives.List** artifact. This artifact watches for any newly inserted USB thumb drive and simply lists the files on it. In some environments it is interesting to see any newly added files on a USB removable drive.
 

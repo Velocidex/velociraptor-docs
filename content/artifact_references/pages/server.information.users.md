@@ -1,20 +1,31 @@
 ---
 title: Server.Information.Users
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+description: |
+  Lists user names and SIDs from collected `Windows.Sys.Users` results
+  across all clients.
 ---
 
-List the user names and SIDs on each machine. We get this
-information from the last time we collected Windows.Sys.Users. If we
-never collected it for this machine, there will be no results.
+Lists user names and SIDs from collected `Windows.Sys.Users` results
+across all clients.
+
+This artifact uses the previously collected data from
+`Windows.Sys.Users`. If it was never collected for any endpoints
+then this artifact will not produce any results.
 
 
 <pre><code class="language-yaml">
 name: Server.Information.Users
 description: |
-  List the user names and SIDs on each machine. We get this
-  information from the last time we collected Windows.Sys.Users. If we
-  never collected it for this machine, there will be no results.
+  Lists user names and SIDs from collected `Windows.Sys.Users` results
+  across all clients.
+
+  This artifact uses the previously collected data from
+  `Windows.Sys.Users`. If it was never collected for any endpoints
+  then this artifact will not produce any results.
 
 type: SERVER
 
@@ -26,7 +37,7 @@ parameters:
 
 sources:
   - query: |
-        LET clients = SELECT client_id, os_info.fqdn AS Fqdn FROM clients()
+        LET Clients = SELECT client_id, os_info.fqdn AS Fqdn FROM clients()
 
         // Get the most recent collection of our user listing.
         LET last_user_listing = SELECT
@@ -40,7 +51,7 @@ sources:
         /* For each Windows.Sys.Users collection, extract the user
            names, but hide standard SIDs.
         */
-        LET users = SELECT * FROM foreach(
+        LET Users = SELECT * FROM foreach(
             row=last_user_listing,
             query={
               SELECT Name, UUID, client_id, Fqdn from source(
@@ -50,7 +61,7 @@ sources:
               WHERE NOT UUID =~ StandardUserAccounts
             })
 
-        SELECT * FROM foreach(row=clients, query=users)
+        SELECT * FROM foreach(row=Clients, query=Users)
 
 </code></pre>
 

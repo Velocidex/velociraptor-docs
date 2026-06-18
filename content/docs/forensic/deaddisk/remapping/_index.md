@@ -6,6 +6,8 @@ last_reviewed: 2025-12-04
 draft: true
 weight: 10
 summary: "Understanding Remapping Rules"
+description: |
+  ## Accessor Remapping
 ---
 
 

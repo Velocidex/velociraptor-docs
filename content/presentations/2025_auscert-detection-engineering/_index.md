@@ -2,6 +2,8 @@
 title: Detection Engineering in Incident Response
 menutitle: Auscert 2025 Workshop
 weight: 150
+description: |
+  This workshop was held at the Auscert 2025 Conference, May 20th 2025.
 ---
 
 This workshop was held at the Auscert 2025 Conference, May 20th 2025.

@@ -133,4 +133,4 @@ Although this was a simple example, the binary parser is extremely capable. Some
 
 Being able to go from reading an analysis in a blog post to running a hunt across your entire network in a matter of minutes is a truly powerful capability, allowing our DFIR team to be proactive and innovative. Having a powerful binary parser in your toolbox is a real bonus making many types of hunts possible.
 
-If you are interested in learning more about Velociraptor, check out our hands on training courses on [https://www.velocidex.com/training/](https://www.velocidex.com/training/) or join us on discord [https://www.velocidex.com/discord](https://www.velocidex.com/discord).
+If you are interested in learning more about Velociraptor, check out our hands on training courses [here](/training/) or join us on [Discord](/discord/).

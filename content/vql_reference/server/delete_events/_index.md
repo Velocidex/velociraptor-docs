@@ -2,7 +2,11 @@
 title: delete_events
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Delete events from a flow.
 ---
 
 

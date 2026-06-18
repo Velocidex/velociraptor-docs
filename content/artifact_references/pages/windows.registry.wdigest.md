@@ -1,27 +1,35 @@
 ---
 title: Windows.Registry.WDigest
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Scans HKLM\SYSTEM ControlSets for WDigest security provider
+  registry keys that enable credential harvesting.
 ---
 
-Find WDigest registry values on the filesystem. The artifact will also use
-GROUP BY to limit all ControlSet output to a single row.
+Scans HKLM\SYSTEM ControlSets for WDigest security provider
+registry keys that enable credential harvesting.
+
+The artifact will also use GROUP BY to limit all ControlSet output
+to a single row.
 
 To prevent a clear-text password from being placed in
 LSASS, the following registry key needs to be set to “0” (Digest
 Disabled):
 
- - HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest
-    “UseLogonCredential”(DWORD)
-    “Negotiate”(DWORD)
+- HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest
+  “UseLogonCredential”(DWORD)
+  “Negotiate”(DWORD)
 
 These registry keys are worth monitoring in an environment as an
 attacker may wish to set it to 1 to enable Digest password support
 which forces “clear-text” passwords to be placed in LSASS on any
 version of Windows from Windows 7 / 2008R2 up to Windows 10 /
 2012R2. Furthermore, Windows 8.1 / 2012 R2 and newer do not have a
-“UseLogonCredential” DWORD value, so the key needs to be
-added. The existence of the key is suspicious, if not expected.
+“UseLogonCredential” DWORD value, so the key needs to be added.
+The existence of the key is suspicious, if not expected.
 
 * ATT&CK tactic: Defense Evasion, Credential Access
 * ATT&CK technique: T1112, T1003.001
@@ -31,27 +39,30 @@ added. The existence of the key is suspicious, if not expected.
 name: Windows.Registry.WDigest
 author: Eduardo Mattos - @eduardfir, Matt Green - @mgreen27
 description: |
-    Find WDigest registry values on the filesystem. The artifact will also use
-    GROUP BY to limit all ControlSet output to a single row.
+  Scans HKLM\SYSTEM ControlSets for WDigest security provider
+  registry keys that enable credential harvesting.
 
-    To prevent a clear-text password from being placed in
-    LSASS, the following registry key needs to be set to “0” (Digest
-    Disabled):
+  The artifact will also use GROUP BY to limit all ControlSet output
+  to a single row.
 
-     - HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest
-        “UseLogonCredential”(DWORD)
-        “Negotiate”(DWORD)
+  To prevent a clear-text password from being placed in
+  LSASS, the following registry key needs to be set to “0” (Digest
+  Disabled):
 
-    These registry keys are worth monitoring in an environment as an
-    attacker may wish to set it to 1 to enable Digest password support
-    which forces “clear-text” passwords to be placed in LSASS on any
-    version of Windows from Windows 7 / 2008R2 up to Windows 10 /
-    2012R2. Furthermore, Windows 8.1 / 2012 R2 and newer do not have a
-    “UseLogonCredential” DWORD value, so the key needs to be
-    added. The existence of the key is suspicious, if not expected.
+  - HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest
+    “UseLogonCredential”(DWORD)
+    “Negotiate”(DWORD)
 
-    * ATT&amp;CK tactic: Defense Evasion, Credential Access
-    * ATT&amp;CK technique: T1112, T1003.001
+  These registry keys are worth monitoring in an environment as an
+  attacker may wish to set it to 1 to enable Digest password support
+  which forces “clear-text” passwords to be placed in LSASS on any
+  version of Windows from Windows 7 / 2008R2 up to Windows 10 /
+  2012R2. Furthermore, Windows 8.1 / 2012 R2 and newer do not have a
+  “UseLogonCredential” DWORD value, so the key needs to be added.
+  The existence of the key is suspicious, if not expected.
+
+  * ATT&amp;CK tactic: Defense Evasion, Credential Access
+  * ATT&amp;CK technique: T1112, T1003.001
 
 reference:
     - https://medium.com/blue-team/preventing-mimikatz-attacks-ed283e7ebdd5

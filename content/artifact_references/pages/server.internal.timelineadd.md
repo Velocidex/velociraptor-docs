@@ -1,7 +1,13 @@
 ---
 title: Server.Internal.TimelineAdd
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
+description: |
+  This artifact will fire whenever a timeline is added to a super
+  timeline. You can use this to monitor for users adding timelines and
+  forward them to an external timeline system (e.g. TimeSketch)
 ---
 
 This artifact will fire whenever a timeline is added to a super

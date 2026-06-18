@@ -71,7 +71,7 @@ Additionally the MFT parser has access to the **$FILENAME** stream’s timestamp
 
 While the previous two methods were great for detecting files that are currently present on the endpoint, what if the file was since deleted? I mentioned that the MFT parser may still find evidence of a deleted file in unallocated MFT entries, but this will only happen if the entry is not reused by the system for something else.
 
-Luckily, Windows keeps another record of file operations in the NTFS USN journal. I wrote in details previously about [the USN journal](https://medium.com/velociraptor-ir/the-windows-usn-journal-f0c55c9010e) but for our purposes it is sufficient to know that file operations are continuously written by the system into a journal file internal to the NTFS filesystem (so it is not generally altered by adversaries).
+Luckily, Windows keeps another record of file operations in the NTFS USN journal. I wrote in details previously about [the USN journal](/blog/2020/2020-11-13-the-windows-usn-journal-f0c55c9010e/) but for our purposes it is sufficient to know that file operations are continuously written by the system into a journal file internal to the NTFS filesystem (so it is not generally altered by adversaries).
 
 Velociraptor contains a built-in parser for the USN journal which is made available via the `Windows.Forensics.Usn` artifact. I will select this artifact for collection as before
 
@@ -117,6 +117,6 @@ In this post we looked at some of the common ways to determine if a file was pre
 
 All the described methods are very quick ranging from under 30 seconds for a USN journal scan, to a couple of minutes for a large glob operation. Using Velociraptor we can perform an exhaustive search of a large 10–20k endpoint deployment in minutes. This unprecedented agility and scalability is rather unique in an open source DFIR tool.
 
-To play with these artifacts yourself, take[ Velociraptor for a spin](https://github.com/Velocidex/velociraptor)! It is a available on GitHub under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com) . You can also chat with us directly on discord [https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+To play with these artifacts yourself, take[ Velociraptor for a spin](https://github.com/Velocidex/velociraptor)! It is a available on GitHub under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com) . You can also chat with us directly on [Discord](/discord/)
 
-If you want to know more about Velociraptor, VQL and how to use it effectively to hunt across the enterprise, consider enrolling for the next available training course at [https://www.velocidex.com/training/](https://www.velocidex.com/training/).
+

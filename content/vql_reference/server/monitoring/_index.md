@@ -2,7 +2,12 @@
 title: monitoring
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Extract monitoring log from a client.
+
 ---
 
 

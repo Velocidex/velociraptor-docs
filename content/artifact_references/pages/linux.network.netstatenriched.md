@@ -1,16 +1,20 @@
 ---
 title: Linux.Network.NetstatEnriched
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Reports network connections and enriches with process information.
 ---
 
-Report network connections, and enrich with process information.
+Reports network connections and enriches with process information.
 
 
 <pre><code class="language-yaml">
 name: Linux.Network.NetstatEnriched
 description: |
-  Report network connections, and enrich with process information.
+  Reports network connections and enriches with process information.
 
 type: CLIENT
 

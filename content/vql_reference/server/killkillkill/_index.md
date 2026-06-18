@@ -2,7 +2,12 @@
 title: killkillkill
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Sends a kill message to the client and forces a restart - this is very aggressive!
+
 ---
 
 

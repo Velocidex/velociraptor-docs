@@ -1,28 +1,47 @@
 ---
 title: Server.Internal.ClientConflict
 hidden: true
+sitemap:
+  disable: true
 tags: [Internal Artifact]
+description: |
+  Emits events when the server detects a client ID conflict between
+  duplicate clients.
 ---
 
-This event artifact is an internal event stream receiving events
-about client conflict.
+Emits events when the server detects a client ID conflict between
+duplicate clients.
 
 When two clients attempt to connect to the server with the same
 client id, the server rejects one of these with a 409 Conflict HTTP
 message. The client id will be forwarded on this artifact as well so
 the server may take action.
 
+This can be used to create automation around identifying this common
+misconfiguration - usually resulting from including the client
+writeback in the SOE image.
+
+NOTE: In multi-frontend deployments this event may not always fire
+if the duplicated clients connect to separate nodes.
+
 
 <pre><code class="language-yaml">
 name: Server.Internal.ClientConflict
 description: |
-  This event artifact is an internal event stream receiving events
-  about client conflict.
+  Emits events when the server detects a client ID conflict between
+  duplicate clients.
 
   When two clients attempt to connect to the server with the same
   client id, the server rejects one of these with a 409 Conflict HTTP
   message. The client id will be forwarded on this artifact as well so
   the server may take action.
+
+  This can be used to create automation around identifying this common
+  misconfiguration - usually resulting from including the client
+  writeback in the SOE image.
+
+  NOTE: In multi-frontend deployments this event may not always fire
+  if the duplicated clients connect to separate nodes.
 
 type: INTERNAL
 

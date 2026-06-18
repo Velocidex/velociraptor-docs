@@ -1,19 +1,24 @@
 ---
 title: Server.Utils.CreateLinuxPackages
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+description: |
+  Builds Debian (.deb) and RPM packages with embedded client config for the current organization.
 ---
 
-Build Deb and RPM packages ready for deployment in the current org.
+Builds Debian (.deb) and RPM packages with embedded client config for the current organization.
 
-This artifact depends on the following tool:
+This artifact depends on the following tools:
 
-* <velo-tool-viewer name="VelociraptorLinux" />
+* Clients <velo-tool-viewer name="VelociraptorLinux" />
+* Server <velo-tool-viewer name="VelociraptorLinuxSumo" />
 
-You can replace this with suitable Velociraptor Linux build, or the
-current release binary will be used by default.
+You can replace this with suitable Velociraptor Linux build, or else
+the current release binary will be used by default.
 
-Use the following to inspect the RPM and Deb:
+Use the following shell commands to inspect the resulting RPM and Deb:
 - rpm -qi velociraptor.rpm
 - rpm -qp --scripts velociraptor.rpm
 - dpkg-deb -I velociraptor.deb
@@ -22,16 +27,17 @@ Use the following to inspect the RPM and Deb:
 <pre><code class="language-yaml">
 name: Server.Utils.CreateLinuxPackages
 description: |
-  Build Deb and RPM packages ready for deployment in the current org.
+  Builds Debian (.deb) and RPM packages with embedded client config for the current organization.
 
-  This artifact depends on the following tool:
+  This artifact depends on the following tools:
 
-  * &lt;velo-tool-viewer name="VelociraptorLinux" /&gt;
+  * Clients &lt;velo-tool-viewer name="VelociraptorLinux" /&gt;
+  * Server &lt;velo-tool-viewer name="VelociraptorLinuxSumo" /&gt;
 
-  You can replace this with suitable Velociraptor Linux build, or the
-  current release binary will be used by default.
+  You can replace this with suitable Velociraptor Linux build, or else
+  the current release binary will be used by default.
 
-  Use the following to inspect the RPM and Deb:
+  Use the following shell commands to inspect the resulting RPM and Deb:
   - rpm -qi velociraptor.rpm
   - rpm -qp --scripts velociraptor.rpm
   - dpkg-deb -I velociraptor.deb

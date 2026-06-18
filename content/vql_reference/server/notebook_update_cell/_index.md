@@ -2,7 +2,11 @@
 title: notebook_update_cell
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Update a notebook cell.
 ---
 
 

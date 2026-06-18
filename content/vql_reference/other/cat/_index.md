@@ -2,7 +2,13 @@
 title: cat
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Read files in chunks.
+
+  This is mostly useful for character devices on Linux or special files which can not be read in blocks.
 ---
 
 

@@ -1,29 +1,35 @@
 ---
 title: Windows.Applications.TeamViewer.Incoming
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Parses TeamViewer incoming connection logs to identify remote
+  access events.
 ---
 
-Parses the TeamViewer Connections_incoming.txt log file.
+Parses TeamViewer incoming connection logs to identify remote
+access events.
 
-When inbound logging enabled, this file will show all inbound TeamViewer
-connections.
+When inbound logging is enabled, this file will show all inbound
+TeamViewer connections.
 
 
 <pre><code class="language-yaml">
 name: Windows.Applications.TeamViewer.Incoming
 description: |
-   Parses the TeamViewer Connections_incoming.txt log file.
+   Parses TeamViewer incoming connection logs to identify remote
+   access events.
 
-   When inbound logging enabled, this file will show all inbound TeamViewer
-   connections.
+   When inbound logging is enabled, this file will show all inbound
+   TeamViewer connections.
 
 author: Matt Green - @mgreen27
 
 reference:
   - https://attack.mitre.org/techniques/T1219/
   - https://www.systoolsgroup.com/forensics/teamviewer/
-
 
 type: CLIENT
 parameters:

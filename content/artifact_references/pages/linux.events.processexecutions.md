@@ -1,13 +1,17 @@
 ---
 title: Linux.Events.ProcessExecutions
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+description: |
+  Collects process execution logs from the Linux kernel.
 ---
 
-This artifact collects process execution logs from the Linux kernel.
+Collects process execution logs from the Linux kernel.
 
 This artifact relies on the presence of `auditctl` usually included
-in the auditd package. On Ubuntu you can install it by using:
+in the `auditd` package. On Ubuntu you can install it using:
 
 ```
 apt-get install auditd
@@ -17,10 +21,10 @@ apt-get install auditd
 <pre><code class="language-yaml">
 name: Linux.Events.ProcessExecutions
 description: |
-  This artifact collects process execution logs from the Linux kernel.
+  Collects process execution logs from the Linux kernel.
 
   This artifact relies on the presence of `auditctl` usually included
-  in the auditd package. On Ubuntu you can install it by using:
+  in the `auditd` package. On Ubuntu you can install it using:
 
   ```
   apt-get install auditd
@@ -36,7 +40,7 @@ required_permissions:
 parameters:
   - name: pathToAuditctl
     default: /sbin/auditctl
-    description: We depend on auditctl to install the correct process execution rules.
+    description: We depend on `auditctl` to install the correct process execution rules.
 
 sources:
   - query: |

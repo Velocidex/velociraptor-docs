@@ -2,7 +2,20 @@
 title: unzip
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Unzips a file into a directory.
+
+  This plugin supports a number of compression formats:
+  1. Zip files
+  2. Tar gz files.
+
+  The type of the file will be detected by the file extension, or
+  else you can force a type using the `type` parameter (`tgz` or
+  `zip`).
+
 ---
 
 

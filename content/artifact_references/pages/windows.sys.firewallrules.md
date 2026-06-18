@@ -1,14 +1,24 @@
 ---
 title: Windows.Sys.FirewallRules
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Lists Windows firewall rules by parsing the registry FirewallRules
+  key.
 ---
 
-List Windows firewall rules.
+Lists Windows firewall rules by parsing the registry FirewallRules
+key.
+
 
 <pre><code class="language-yaml">
 name: Windows.Sys.FirewallRules
-description: List Windows firewall rules.
+description: |
+  Lists Windows firewall rules by parsing the registry FirewallRules
+  key.
+
 reference:
   - https://social.technet.microsoft.com/Forums/azure/en-US/aaed9c6a-fb8b-4d43-8b69-9f4e0f619a8c/how-to-check-the-windows-firewall-settings-from-netsh-command?forum=winserverGP
 

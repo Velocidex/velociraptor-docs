@@ -1,6 +1,6 @@
 # How can I automatically add & update client metadata?
 
-[Client metadata]({{< ref "/docs/clients/metadata/" >}}) is used to store custom
+[Client metadata](/docs/clients/metadata/) is used to store custom
 information associated with each client. Velociraptor always stores basic
 information about all clients but you may want to store additional information,
 for example asset information. Client metadata makes this possible by allowing
@@ -10,11 +10,11 @@ as we will demonstrate below.
 
 Metadata can be manually added and updated for any client in the client's
 Overview page, but also via VQL using the
-[client_set_metadata]({{< ref "/vql_reference/server/client_set_metadata/" >}})
+[client_set_metadata](/vql_reference/server/client_set_metadata/)
 function.
 
 We can automate the addition and updating of client metadata by running a
-[Server Event Artifact]({{< ref "/docs/server_automation/server_monitoring/" >}})
+[Server Event Artifact](/docs/server_automation/server_monitoring/)
 which sets metadata based on results of queries run on the client.
 
 {{% notice note "Metadata or Labels?" %}}
@@ -28,7 +28,7 @@ provides a way to store information *about* each client.
 It's important that you choose the appropriate one for your use case. This
 article is about automating Metadata but if you want to do similar automation of
 Labels then you may find this article more useful:
-[How can I automatically apply labels to clients?]({{< ref "/knowledge_base/tips/automating_labels/" >}})
+[How can I automatically apply labels to clients?](/knowledge_base/tips/automating_labels/)
 
 {{% /notice %}}
 
@@ -38,7 +38,7 @@ When a client connects for the first time in a Velociraptor deployment, the
 server instructs the client to enroll and also tells it to run the
 `Generic.Client.Info` artifact. This built-in artifact is designed to collect
 basic information about the endpoint. We refer to this process as
-["interrogation"]({{< ref "/docs/clients/interrogation/" >}}).
+["interrogation"](/docs/clients/interrogation/).
 
 As explained
 [here](https://docs.velociraptor.app/docs/clients/interrogation/#custom-artifact-override),
@@ -48,7 +48,7 @@ will use it.
 
 In this example we will use a custom interrogation artifact to collect custom
 information and then use a
-[Server Event]({{< ref "/docs/server_automation/server_monitoring/" >}}) artifact
+[Server Event](/docs/server_automation/server_monitoring/) artifact
 to watch for any new collections of `Custom.Generic.Client.Info` and add or update
 metadata fields based on the results.
 
@@ -56,7 +56,7 @@ The interrogation flow can also be run manually by clicking the **Interrogate**
 button on the client Overview page, or by creating a hunt for the
 `Generic.Client.Info` artifact. Such a hunt can further be created on a
 scheduled basis as demonstrated by the
-[Server.Monitoring.ScheduleHunt]({{< ref "/artifact_references/pages/server.monitoring.schedulehunt/" >}})
+[Server.Monitoring.ScheduleHunt](/artifact_references/pages/server.monitoring.schedulehunt/)
 artifact.
 
 Before we set up the event monitoring we first need to:
@@ -131,6 +131,11 @@ expected results:
 
 ![Linux BIOS info](biosinfo_linux.png)
 
+The exchange artifact
+[`Generic.Client.HW.Identification`](/exchange/artifacts/pages/generic.client.hw.identification/)
+can be used to extract hardware information like
+`Generic.Client.BiosInfo` and more, with support for all three
+operating systems.
 
 #### Add an artifact to collect the last logged on user
 
@@ -181,7 +186,7 @@ client metadata:
 
 When run, the above two artifacts will altogether return 6 fields
 which we want added as client metadata. As explained
-[here]({{< ref "/docs/clients/metadata/#indexed-metadata" >}}),
+[here](/docs/clients/metadata/#indexed-metadata),
 client metadata fields can be indexed or non-indexed. While all metadata is
 accessible - and therefore searchable - via VQL, indexed fields are also
 searchable via the search bar in the GUI. So you might be thinking
@@ -275,6 +280,18 @@ step is to create a server event artifact and add it to server monitoring. This
 will monitor for incoming results and then populate the metadata fields with
 data from these results.
 
+{{% notice info %}}
+You do not have to create your own monitoring artifacts. There are two
+artifacts in the [exchange](/exchange/) that will likely cover most of
+your needs:
+
+- [`Server.Monitor.StoreClientHWInfo`](/exchange/artifacts/pages/server.monitor.storeclienthwinfo/):
+  Store hardware information, with special logic to pick a suitable computer serial
+- [`Server.Monitor.StoreClientInfo`](/exchange/artifacts/pages/server.monitor.storeclientinfo/):
+  Store any kind of interrogation data as client metadata.
+
+{{% /notice %}}
+
 #### Add a Server Event Monitoring artifact
 
 Our server event artifact to be added has 2 sources - one to monitor each of the
@@ -342,7 +359,7 @@ existing client you will see the metadata fields populated.
 ![](metadata_populated.svg)
 
 The indexed fields will now be available as
-[search operators]({{< ref "/docs/clients/searching/" >}})
+[search operators](/docs/clients/searching/)
 in the client search bar.
 
 ![search by indexed fields](indexed_search.png)
@@ -351,7 +368,7 @@ As mentioned, the interrogation flow can be run manually by clicking the
 **Interrogate** button on the client Overview page, or by creating a hunt for
 the `Custom.Generic.Client.Info` artifact. Such a hunt can further be created on
 a schedule as demonstrated by the
-[Server.Monitoring.ScheduleHunt]({{< ref "/artifact_references/pages/server.monitoring.schedulehunt/" >}})
+[Server.Monitoring.ScheduleHunt](/artifact_references/pages/server.monitoring.schedulehunt/)
 artifact.
 
 ## Adding/updating metadata from normal collections
@@ -444,4 +461,4 @@ WHERE LastUser = "Mary"
 
 ![Running a search in a notebook](vql_search.png)
 
-Tags: #configuration #vql #deployment
+Tags: #configuration #vql #deployment #automation #metadata

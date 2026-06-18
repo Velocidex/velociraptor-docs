@@ -1,16 +1,20 @@
 ---
 title: MacOS.Detection.InstallHistory
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Collects entries from the InstallHistory .plist file
 ---
 
-This artifact collects entries from the InstallHistory .plist file
+Collects entries from the InstallHistory .plist file
 
 
 <pre><code class="language-yaml">
 name: MacOS.Detection.InstallHistory
 description: |
-  This artifact collects entries from the InstallHistory .plist file
+  Collects entries from the InstallHistory .plist file
 
 type: CLIENT
 

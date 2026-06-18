@@ -1,17 +1,54 @@
 ---
 title: Windows.EventLogs.EvtxHunter
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Searches all Windows EVTX files for events matching a regex IOC in
+  message, EventData, or UserData fields.
 ---
 
-This Artifact will hunt the Event Log message field for a regex value.
-For example and IP, username or string.
+Searches all Windows EVTX files for events matching a regex IOC in
+message, EventData, or UserData fields.
 
-Searching EventLog files is helpful for triage and scoping an incident.
-The idea is a user can search for any IOC or other string of interest and
-return all results across the Event Log ecosystem.
+Searching EventLog files is helpful for triage and scoping an
+incident. The idea is a user can search for any IOC or other string
+of interest and return all results across the Event Log ecosystem.
 
-There are several parameters available for search leveraging regex.
+There are several parameters available for search leveraging regex:
+
+- EvtxGlob glob of EventLogs to target. Default to all but can be targeted.
+- dateAfter enables search for events after this date.
+- dateBefore enables search for events before this date.
+- IocRegex enables regex search over the message field.
+- WhitelistRegex enables a regex whitelist for the Message field.
+- PathRegex enables filtering on evtx path for specific log targeting.
+- ChannelRegex allows specific EVTX Channel targets.
+- IdRegex enables a regex query to select specific event Ids.
+- SearchVSS enables searching over VSS
+
+Note: this artifact can potentially be heavy on the endpoint.
+Please use with caution.
+EventIds with an EventData field regex will be applied and requires double
+escape for backslash due to serialization of this field.
+E.g `C:\\\\FOLDER\\\\binary\\.exe`
+For EventIds with no EventData the Message field is queried and requires
+standard Velociraptor escape. E.g `C:\\FOLDER\\binary\\.exe`
+
+
+<pre><code class="language-yaml">
+name: Windows.EventLogs.EvtxHunter
+description: |
+  Searches all Windows EVTX files for events matching a regex IOC in
+  message, EventData, or UserData fields.
+
+  Searching EventLog files is helpful for triage and scoping an
+  incident. The idea is a user can search for any IOC or other string
+  of interest and return all results across the Event Log ecosystem.
+
+  There are several parameters available for search leveraging regex:
+
   - EvtxGlob glob of EventLogs to target. Default to all but can be targeted.
   - dateAfter enables search for events after this date.
   - dateBefore enables search for events before this date.
@@ -30,36 +67,6 @@ There are several parameters available for search leveraging regex.
   For EventIds with no EventData the Message field is queried and requires
   standard Velociraptor escape. E.g `C:\\FOLDER\\binary\\.exe`
 
-
-<pre><code class="language-yaml">
-name: Windows.EventLogs.EvtxHunter
-description: |
-  This Artifact will hunt the Event Log message field for a regex value.
-  For example and IP, username or string.
-
-  Searching EventLog files is helpful for triage and scoping an incident.
-  The idea is a user can search for any IOC or other string of interest and
-  return all results across the Event Log ecosystem.
-
-  There are several parameters available for search leveraging regex.
-    - EvtxGlob glob of EventLogs to target. Default to all but can be targeted.
-    - dateAfter enables search for events after this date.
-    - dateBefore enables search for events before this date.
-    - IocRegex enables regex search over the message field.
-    - WhitelistRegex enables a regex whitelist for the Message field.
-    - PathRegex enables filtering on evtx path for specific log targeting.
-    - ChannelRegex allows specific EVTX Channel targets.
-    - IdRegex enables a regex query to select specific event Ids.
-    - SearchVSS enables searching over VSS
-
-    Note: this artifact can potentially be heavy on the endpoint.
-    Please use with caution.
-    EventIds with an EventData field regex will be applied and requires double
-    escape for backslash due to serialization of this field.
-    E.g `C:\\\\FOLDER\\\\binary\\.exe`
-    For EventIds with no EventData the Message field is queried and requires
-    standard Velociraptor escape. E.g `C:\\FOLDER\\binary\\.exe`
-
 author: Matt Green - @mgreen27
 
 precondition: SELECT OS From info() where OS = 'windows'
@@ -69,20 +76,20 @@ parameters:
     default: '%SystemRoot%\System32\Winevt\Logs\*.evtx'
   - name: IocRegex
     type: regex
-    description: "IOC Regex"
+    description: "IOC regex"
     default:
   - name: WhitelistRegex
-    description: "Regex of string to witelist"
+    description: "Regex of string to whitelist"
     type: regex
   - name: PathRegex
-    description: "Event log Regex to enable filtering on path"
+    description: "Event log regex to enable filtering on path"
     default: .
     type: regex
   - name: ChannelRegex
-    description: "Channel Regex to enable filtering on path"
+    description: "Channel regex to enable filtering on path"
     default: .
   - name: ProviderRegex
-    description: "Provider Regex to enable filtering on provider"
+    description: "Provider regex to enable filtering on provider"
     default: .
     type: regex
   - name: IdRegex
@@ -105,6 +112,10 @@ parameters:
   - name: MessageDB
     type: hidden
     description: "Add message DB path if desired for offline parsing"
+
+implied_permissions:
+  # For imported Windows.Sys.AllUsers
+  - FILESYSTEM_WRITE
 
 imports:
   - Windows.Sys.AllUsers

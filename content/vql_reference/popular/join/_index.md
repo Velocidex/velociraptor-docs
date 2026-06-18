@@ -2,7 +2,14 @@
 title: join
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Join all the args on a separator.
+
+  Joins the array into a string separated by the sep character.
+
 ---
 
 

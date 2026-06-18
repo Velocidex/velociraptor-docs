@@ -1,29 +1,46 @@
 ---
 title: Server.Enrichment.HybridAnalysis
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+description: |
+  Submits a file hash to the Hybrid Analysis threat intelligence
+  service for a verdict.
 ---
 
-Submit a file hash to Hybrid Analysis for a verdict. Default free API restriction is 200 requests/min or 2000 requests/hour.
+Submits a file hash to the Hybrid Analysis threat intelligence
+service for a verdict.
 
-This artifact can be called from within another artifact (such as one looking for files) to enrich the data made available by that artifact.
+This artifact can be called from within another artifact (such as
+one looking for files) to enrich the data made available by that
+artifact.
 
-Ex.
+Default free API restriction apply: 200 requests/min or 2000
+requests/hour at the time of writing.
 
-  `SELECT * from Artifact.Server.Enrichment.HybridAnalysis(Hash=$YOURHASH)`
+#### Example
+
+`SELECT * from Artifact.Server.Enrichment.HybridAnalysis(Hash=$YOURHASH)`
 
 
 <pre><code class="language-yaml">
 name: Server.Enrichment.HybridAnalysis
 author: Wes Lambert -- @therealwlambert
 description: |
-  Submit a file hash to Hybrid Analysis for a verdict. Default free API restriction is 200 requests/min or 2000 requests/hour.
+  Submits a file hash to the Hybrid Analysis threat intelligence
+  service for a verdict.
 
-  This artifact can be called from within another artifact (such as one looking for files) to enrich the data made available by that artifact.
+  This artifact can be called from within another artifact (such as
+  one looking for files) to enrich the data made available by that
+  artifact.
+  
+  Default free API restriction apply: 200 requests/min or 2000
+  requests/hour at the time of writing.
 
-  Ex.
+  #### Example
 
-    `SELECT * from Artifact.Server.Enrichment.HybridAnalysis(Hash=$YOURHASH)`
+  `SELECT * from Artifact.Server.Enrichment.HybridAnalysis(Hash=$YOURHASH)`
 
 type: SERVER
 

@@ -1,8 +1,16 @@
 ---
 title: Windows.EventLogs.Modifications
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Checks registry keys for WINEVT channels and WMI autologger
+  providers to detect event log tampering.
 ---
+
+Checks registry keys for WINEVT channels and WMI autologger
+providers to detect event log tampering.
 
 It is possible to disable windows event logs on a per channel or per
 provider basis. Attackers may disable critical log sources to
@@ -15,6 +23,9 @@ registry and attempts to detect when event logs were disabled.
 <pre><code class="language-yaml">
 name: Windows.EventLogs.Modifications
 description: |
+  Checks registry keys for WINEVT channels and WMI autologger
+  providers to detect event log tampering.
+  
   It is possible to disable windows event logs on a per channel or per
   provider basis. Attackers may disable critical log sources to
   prevent detections.

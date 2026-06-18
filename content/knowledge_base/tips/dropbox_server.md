@@ -2,12 +2,12 @@
 
 AWS S3 buckets can be a useful upload destination for receiving files from
 Velociraptor clients or collection containers from
-[offline collectors]({{< ref "/docs/deployment/offline_collections" >}})
+[offline collectors](/docs/deployment/offline_collections/)
 in scenarios where the source system is internet connected and you do not want
 to stand up storage services on the local network.
 
 This is made possible by the
-[upload_s3]({{< ref "/vql_reference/other/upload_s3/" >}}) VQL function.
+[upload_s3](/vql_reference/other/upload_s3/) VQL function.
 
 However, if you want similar functionality to AWS S3 and prefer to keep things
 local, or at least fully under your own control, then

@@ -2,7 +2,11 @@
 title: add_server_monitoring
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Adds a new artifact to the server monitoring table.
 ---
 
 

@@ -139,8 +139,6 @@ In that case our analysis machine may not actually have the correct message dlls
 
 We need a way to maintain a library of event id’s for different providers and the messages they represent. This way we can instantly look up the correct message on demand — without needing to have DLLs installed.
 
-[Velocidex](https://www.velocidex.com/), the company behind Velociraptor is an innovative software company crafting many free and open source digital forensics tools. In fact Velociraptor’s EVTX parsing is implemented by the [Velocidex/evtx](https://github.com/Velocidex/evtx) project on GitHub. You should check it out!
-
 The project releases a stand along command line tool for parsing and examining windows event log format. In this post, I would like to demonstrate the latest “extract” feature:
 
 ![](../../img/1__ABF6klKd0xQ82TvhOEq__hw.png)

@@ -2,7 +2,11 @@
 title: upload_smb
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Upload files using the SMB file share protocol.
 ---
 
 

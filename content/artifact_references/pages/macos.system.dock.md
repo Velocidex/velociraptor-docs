@@ -1,30 +1,39 @@
 ---
 title: MacOS.System.Dock
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Lists docked applications and their metadata from each user's Dock
+  plist.
 ---
 
-This artifact examines the contents of the user's dock.  The
-property list entry for each application represented within the dock
-can be modified to point to a malicious application.
+Lists docked applications and their metadata from each user's Dock
+plist.
 
- By comparing the application name, CFURLString, and book, we can
- gather greater context to assist in determining if an adversary may
- have tampered with an entry, or if an entry has been added to
- emulate a legitimate application.
+The property list entry for each application represented within the
+dock can be modified to point to a malicious application.
+
+By comparing the application name, CFURLString, and book, we can
+gather greater context to assist in determining if an adversary may
+have tampered with an entry, or if an entry has been added to
+emulate a legitimate application.
 
 
 <pre><code class="language-yaml">
 name: MacOS.System.Dock
 description: |
-  This artifact examines the contents of the user's dock.  The
-  property list entry for each application represented within the dock
-  can be modified to point to a malicious application.
+  Lists docked applications and their metadata from each user's Dock
+  plist.
 
-   By comparing the application name, CFURLString, and book, we can
-   gather greater context to assist in determining if an adversary may
-   have tampered with an entry, or if an entry has been added to
-   emulate a legitimate application.
+  The property list entry for each application represented within the
+  dock can be modified to point to a malicious application.
+
+  By comparing the application name, CFURLString, and book, we can
+  gather greater context to assist in determining if an adversary may
+  have tampered with an entry, or if an entry has been added to
+  emulate a legitimate application.
 
 reference:
   - https://specterops.io/so-con2020/event-758922

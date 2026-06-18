@@ -2,7 +2,11 @@
 title: timelines
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  List all timelines in a notebook
 ---
 
 

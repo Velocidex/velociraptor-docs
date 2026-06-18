@@ -1,42 +1,45 @@
 ---
 title: Windows.Remediation.Sinkhole
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Configures DNS sinkholing by editing the Windows hosts file (with a
+  provided backup and restore mechanism).
 ---
 
-**Apply a Sinkhole via Windows hosts file modification**
-This content will modify the Windows hosts file by a configurable
-lookup table.
+Configures DNS sinkholing by editing the Windows hosts file (with a
+provided backup and restore mechanism).
 
-On application, the original configuration is backed up.
-When reapplying a sinkhole, the original configuration is restored then
-changes applied to maintain integrity of the restore process.
-If RestoreBackup is selected the artifact will restore the backup
+Modifies the Windows hosts file via a configurable lookup table.
+
+On application, the original configuration is backed up. When
+reapplying a sinkhole, the original configuration is restored then
+changes applied to maintain integrity of the restore process. If
+RestoreBackup is selected the artifact will restore the backup
 configuration, then delete the backup with no further processing.
 
-NOTE:
-Modifying the hosts file may cause network communication issues. I have
-disabled any sinkhole settings on the Velociraptor agent configuration
-but there are no rail guards on other domains. Use with caution.
+NOTE: Modifying the hosts file may cause network communication
+issues. Test first and use with caution!
 
 
 <pre><code class="language-yaml">
 name: Windows.Remediation.Sinkhole
 description: |
-   **Apply a Sinkhole via Windows hosts file modification**
-   This content will modify the Windows hosts file by a configurable
-   lookup table.
+  Configures DNS sinkholing by editing the Windows hosts file (with a
+  provided backup and restore mechanism).
 
-   On application, the original configuration is backed up.
-   When reapplying a sinkhole, the original configuration is restored then
-   changes applied to maintain integrity of the restore process.
-   If RestoreBackup is selected the artifact will restore the backup
-   configuration, then delete the backup with no further processing.
+  Modifies the Windows hosts file via a configurable lookup table.
 
-   NOTE:
-   Modifying the hosts file may cause network communication issues. I have
-   disabled any sinkhole settings on the Velociraptor agent configuration
-   but there are no rail guards on other domains. Use with caution.
+  On application, the original configuration is backed up. When
+  reapplying a sinkhole, the original configuration is restored then
+  changes applied to maintain integrity of the restore process. If
+  RestoreBackup is selected the artifact will restore the backup
+  configuration, then delete the backup with no further processing.
+
+  NOTE: Modifying the hosts file may cause network communication
+  issues. Test first and use with caution!
 
 author: Matt Green - @mgreen27
 
@@ -88,7 +91,7 @@ sources:
       WHERE log(message="Found backup at %v", args=OSPath)
 
       -- Backup old config
-      LET backup = copy(filename=HostsFile,dest=HostsFileBackup)
+      LET Backup = copy(filename=HostsFile, dest=HostsFileBackup)
 
       -- Restore old config
       LET restore = SELECT * FROM chain(
@@ -202,7 +205,7 @@ sources:
                  a= log(message='Backup hosts file already exists.'),
                  b= restore)
               },
-          else= backup)
+          else= Backup)
         )
 
       -- Do kick off logic

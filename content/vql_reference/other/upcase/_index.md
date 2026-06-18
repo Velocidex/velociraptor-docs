@@ -2,7 +2,11 @@
 title: upcase
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Returns an uppercase version of the string.
 ---
 
 

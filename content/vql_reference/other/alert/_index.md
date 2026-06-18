@@ -2,7 +2,18 @@
 title: alert
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Generate an alert message.
+
+  ### See also
+
+  - [log]({{< ref "/vql_reference/popular/log/" >}}): alerts and log messages are similar in
+    concept and use the same deduplication mechanism which is explained with
+    examples for the `log()` function.
+
 ---
 
 

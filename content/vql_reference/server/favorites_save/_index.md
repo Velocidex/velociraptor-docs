@@ -2,7 +2,23 @@
 title: favorites_save
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Save a collection into the favorites.
+
+  Velociraptor allows the user to save a collection into their
+  "Favorite" list. This allows them to quickly and easily pick a
+  previously used collection.
+
+  This VQL function provides an interface for this functionality.
+
+  ### Notes
+
+  A favorite belongs to the calling user - this function will
+  update the favorite for the calling user only.
+
 ---
 
 

@@ -46,7 +46,7 @@ Velociraptor exposes this functionality by simply offering the **profile()** VQL
 
 In the following example we examine how profiling can be used to gain an understanding of what is going on under the covers.
 
-### Example — recursive file hash
+###### Example: Recursive file hash
 
 To illustrate this process I will launch a CPU heavy collection on my endpoint. I create a new artifact collection of the **Windows.Search.FileFinder** artifacts, searching recursively for all files below *C:\Users* and hashing them all.
 

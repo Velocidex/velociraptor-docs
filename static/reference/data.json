@@ -3,7 +3,7 @@
         "name": "Artifact",
         "description": "This is the special plugin which automatically runs other\nartifacts inline.",
         "type": "Plugin",
-        "category": "basic"
+        "category": "popular"
     },
     {
         "name": "add_client_monitoring",
@@ -66,6 +66,80 @@
             "linux_amd64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "adx_upload",
+        "description": "Upload rows to Azure Data Explorer (ADX).",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "query",
+                "type": "StoredQuery",
+                "description": "Source for rows to upload.",
+                "required": true
+            },
+            {
+                "name": "threads",
+                "type": "int64",
+                "description": "How many threads to use."
+            },
+            {
+                "name": "cluster_url",
+                "type": "string",
+                "description": "The ADX cluster URL."
+            },
+            {
+                "name": "database",
+                "type": "string",
+                "description": "The ADX database name."
+            },
+            {
+                "name": "table",
+                "type": "string",
+                "description": "The name of the table to upload to."
+            },
+            {
+                "name": "client_id",
+                "type": "string",
+                "description": "Azure Service Principal Client ID."
+            },
+            {
+                "name": "client_secret",
+                "type": "string",
+                "description": "Azure Service Principal Client Secret."
+            },
+            {
+                "name": "tenant_id",
+                "type": "string",
+                "description": "Azure Service Principal Tenant ID."
+            },
+            {
+                "name": "chunk_size",
+                "type": "int64",
+                "description": "The number of rows to send at the time."
+            },
+            {
+                "name": "wait_time",
+                "type": "int64",
+                "description": "Batch ADX upload this long (5 sec)."
+            },
+            {
+                "name": "max_memory_buffer",
+                "type": "uint64",
+                "description": "How large we allow the memory buffer to grow to while we are trying to contact the ADX server (default 100mb)."
+            },
+            {
+                "name": "secret",
+                "type": "string",
+                "description": "Alternatively use a secret from the secrets service. Secret must be of type 'ADX Creds'"
+            }
+        ],
+        "metadata": {
+            "permissions": "NETWORK"
+        },
+        "platforms": [
+            "linux_amd64_cgo"
         ]
     },
     {
@@ -666,12 +740,17 @@
         "name": "cache",
         "description": "Creates a cache object.",
         "type": "Function",
+        "version": 2,
         "args": [
             {
                 "name": "func",
                 "type": "LazyExpr",
-                "description": "A function to evaluate",
-                "required": true
+                "description": "A function to evaluate (deprecated - use a lambda instead)"
+            },
+            {
+                "name": "lambda",
+                "type": "Lambda",
+                "description": "A VQL lambda to evaluate with the key as parameter. e.g.. x=>x+1 "
             },
             {
                 "name": "name",
@@ -680,16 +759,28 @@
             },
             {
                 "name": "key",
-                "type": "string",
-                "description": "Cache key to use.",
-                "required": true
+                "type": "Any",
+                "description": "Cache key to use."
             },
             {
                 "name": "period",
                 "type": "int64",
                 "description": "The latest age of the cache."
+            },
+            {
+                "name": "filename",
+                "type": "string",
+                "description": "Filename for a persistent cache."
+            },
+            {
+                "name": "max_size",
+                "type": "uint64",
+                "description": "Maximum size of the LRU (default 10000)."
             }
         ],
+        "metadata": {
+            "permissions": "FILESYSTEM_WRITE"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -725,6 +816,7 @@
         "name": "cancel_flow",
         "description": "Cancels the flow.",
         "type": "Function",
+        "version": 3,
         "args": [
             {
                 "name": "client_id",
@@ -1208,13 +1300,18 @@
         "name": "collect_client",
         "description": "Launch an artifact collection against a client. If the client_id\nis \"server\" then the collection occurs on the server itself. In\nthat case the caller needs the SERVER_ADMIN permission.",
         "type": "Function",
-        "version": 2,
+        "version": 3,
         "args": [
             {
                 "name": "client_id",
                 "type": "string",
                 "description": "The client id to schedule a collection on",
                 "required": true
+            },
+            {
+                "name": "flow_id",
+                "type": "string",
+                "description": "If a flow id is specified we do not create a new flow, but instead add the collection to this flow."
             },
             {
                 "name": "artifacts",
@@ -1353,7 +1450,8 @@
             "linux_amd64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
-        ]
+        ],
+        "free_form_args": true
     },
     {
         "name": "commandline_split",
@@ -2099,7 +2197,7 @@
             {
                 "name": "cloud_id",
                 "type": "string",
-                "description": "Endpoint for the Elastic Service (https://elastic.co/cloud)."
+                "description": "Endpoint for the [Elastic Cloud Service](https://elastic.co/cloud)."
             },
             {
                 "name": "api_key",
@@ -2160,17 +2258,20 @@
     },
     {
         "name": "encode",
-        "description": "Encodes a string as as different type. Currently supported types include 'hex', 'base64'.",
+        "description": "Encode an object as a string.",
         "type": "Function",
+        "version": 3,
         "args": [
             {
                 "name": "string",
                 "type": "Any",
+                "description": "The item to encode",
                 "required": true
             },
             {
                 "name": "type",
                 "type": "string",
+                "description": "Encoding format (csv,json,yaml,hex,base64)",
                 "required": true
             }
         ],
@@ -2226,6 +2327,7 @@
         "name": "enumerate_flow",
         "description": "Enumerate all the files that make up a flow.",
         "type": "Plugin",
+        "version": 3,
         "args": [
             {
                 "name": "client_id",
@@ -2781,6 +2883,7 @@
         "name": "flows",
         "description": "Retrieve the flows launched on each client.",
         "type": "Plugin",
+        "version": 3,
         "args": [
             {
                 "name": "client_id",
@@ -2790,6 +2893,11 @@
             {
                 "name": "flow_id",
                 "type": "string"
+            },
+            {
+                "name": "summary",
+                "type": "bool",
+                "description": "If specified we fetch just the basic summary of the flow. This is a bit faster."
             }
         ],
         "category": "server",
@@ -3095,6 +3203,7 @@
         "name": "get_flow",
         "description": "Gets flow details.",
         "type": "Function",
+        "version": 3,
         "args": [
             {
                 "name": "client_id",
@@ -3104,6 +3213,11 @@
             {
                 "name": "flow_id",
                 "type": "string"
+            },
+            {
+                "name": "summary",
+                "type": "bool",
+                "description": "If specified we fetch just the basic summary of the flow. This is a bit faster."
             }
         ],
         "category": "server",
@@ -3546,12 +3660,18 @@
         "name": "hunt",
         "description": "Create and launch a hunt.",
         "type": "Function",
-        "version": 2,
+        "version": 3,
         "args": [
             {
                 "name": "description",
                 "type": "string",
                 "description": "Description of the hunt"
+            },
+            {
+                "name": "tags",
+                "type": "string",
+                "description": "A list of tags to add to the hunt",
+                "repeated": true
             },
             {
                 "name": "artifacts",
@@ -3781,6 +3901,21 @@
         ]
     },
     {
+        "name": "hunt_reindex",
+        "description": "Reindex a hunt.",
+        "type": "Plugin",
+        "args": [
+            {
+                "name": "hunt_id",
+                "type": "string",
+                "description": "The hunt to reindex. If not specified we index all hunts"
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
+    },
+    {
         "name": "hunt_results",
         "description": "Retrieve the results of a hunt.",
         "type": "Plugin",
@@ -3887,11 +4022,17 @@
         "name": "hunts",
         "description": "Retrieve the list of hunts.\n",
         "type": "Plugin",
+        "version": 2,
         "args": [
             {
                 "name": "hunt_id",
                 "type": "string",
                 "description": "A hunt id to read, if not specified we list all of them."
+            },
+            {
+                "name": "summary",
+                "type": "bool",
+                "description": "If specified we fetch just the basic summary of the flow. This is a bit faster."
             }
         ],
         "category": "server",
@@ -4033,7 +4174,7 @@
         "name": "index",
         "description": "Create a local index from a query.",
         "type": "Plugin",
-        "version": 1,
+        "version": 2,
         "args": [
             {
                 "name": "query",
@@ -4056,6 +4197,26 @@
                 "type": "string",
                 "description": "The file path to create the index on.",
                 "required": true
+            },
+            {
+                "name": "workers",
+                "type": "int64",
+                "description": "Index with this many workers (default 2)"
+            },
+            {
+                "name": "purge",
+                "type": "bool",
+                "description": "If set we delete the index to start fresh"
+            },
+            {
+                "name": "batch",
+                "type": "int64",
+                "description": "Default batch size for index (default 1000)"
+            },
+            {
+                "name": "silent",
+                "type": "bool",
+                "description": "Do not forward events (this is faster)"
             }
         ],
         "metadata": {
@@ -4070,8 +4231,50 @@
         "description": "Search a previously created index.",
         "type": "Plugin",
         "version": 1,
+        "args": [
+            {
+                "name": "path",
+                "type": "string",
+                "description": "The file path to the index to open.",
+                "required": true
+            },
+            {
+                "name": "search",
+                "type": "string",
+                "description": "A Bleve search query. See https://blevesearch.com/docs/Query-String-Query/",
+                "required": true
+            },
+            {
+                "name": "fields",
+                "type": "string",
+                "description": "A list of fields to include from the index.",
+                "repeated": true
+            },
+            {
+                "name": "sort",
+                "type": "string",
+                "description": "The field to sort by (precede with - to sort in descending order).",
+                "repeated": true
+            },
+            {
+                "name": "start",
+                "type": "uint64",
+                "description": "Row number to start."
+            }
+        ],
         "metadata": {
             "permissions": "FILESYSTEM_READ"
+        },
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
+    },
+    {
+        "name": "info",
+        "description": "Get information about the running host. This is the function version of the info() plugin",
+        "type": "Function",
+        "metadata": {
+            "permissions": "MACHINE_STATE"
         },
         "platforms": [
             "linux_amd64_cgo"
@@ -5122,11 +5325,11 @@
         "name": "memoize",
         "description": "Memoize a query into memory.",
         "type": "Function",
-        "version": 2,
+        "version": 3,
         "args": [
             {
                 "name": "query",
-                "type": "LazyExpr",
+                "type": "StoredQuery",
                 "description": "Query to expand into memory",
                 "required": true
             },
@@ -5145,6 +5348,11 @@
                 "name": "name",
                 "type": "string",
                 "description": "The name of this cache."
+            },
+            {
+                "name": "filename",
+                "type": "string",
+                "description": "Filename for a persistent cache."
             }
         ],
         "category": "popular",
@@ -5761,6 +5969,14 @@
         "name": "now",
         "description": "Returns the current time in seconds since epoch.",
         "type": "Function",
+        "version": 2,
+        "args": [
+            {
+                "name": "ns",
+                "type": "bool",
+                "description": "Return the time in ns"
+            }
+        ],
         "category": "popular",
         "platforms": [
             "darwin_amd64_cgo",
@@ -5955,7 +6171,7 @@
         "type": "Plugin",
         "category": "developer",
         "metadata": {
-            "permissions": "MACHINE_STATE"
+            "permissions": "SERVER_ADMIN"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -6081,6 +6297,7 @@
         "name": "parse_binary",
         "description": "Parse a binary file into a data structure using a profile.",
         "type": "Function",
+        "version": 2,
         "args": [
             {
                 "name": "filename",
@@ -6096,7 +6313,7 @@
             {
                 "name": "profile",
                 "type": "string",
-                "description": "Profile to use (see https://github.com/Velocidex/vtypes)."
+                "description": "Profile to use (see [vfilter](https://github.com/Velocidex/vtypes))."
             },
             {
                 "name": "struct",
@@ -6108,6 +6325,11 @@
                 "name": "offset",
                 "type": "int64",
                 "description": "Start parsing from this offset"
+            },
+            {
+                "name": "env",
+                "type": "ordereddict.Dict",
+                "description": "Additional environment variables to make available to the profile"
             }
         ],
         "category": "parsers",
@@ -7480,7 +7702,7 @@
             {
                 "name": "namespace",
                 "type": "string",
-                "description": "The Yara namespece to use."
+                "description": "The Yara namespace to use."
             },
             {
                 "name": "vars",
@@ -9075,12 +9297,18 @@
         "name": "send_event",
         "description": "Sends an event to a server event monitoring queue.",
         "type": "Function",
+        "version": 2,
         "args": [
             {
                 "name": "artifact",
                 "type": "string",
                 "description": "The artifact name to send the event to.",
                 "required": true
+            },
+            {
+                "name": "client_id",
+                "type": "string",
+                "description": "The client_id for this event in case of a client_event artifact."
             },
             {
                 "name": "row",
@@ -9282,6 +9510,81 @@
             "linux_amd64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
+        ]
+    },
+    {
+        "name": "shell_session",
+        "description": "Recreate or retrieve a shell session handle.",
+        "type": "Function",
+        "version": 1,
+        "args": [
+            {
+                "name": "argv",
+                "type": "string",
+                "description": "Argv to run the command with.",
+                "repeated": true,
+                "required": true
+            },
+            {
+                "name": "env",
+                "type": "ordereddict.Dict",
+                "description": "Environment variables to launch with."
+            },
+            {
+                "name": "cwd",
+                "type": "string",
+                "description": "If specified we change to this working directory first."
+            },
+            {
+                "name": "secret",
+                "type": "string",
+                "description": "The name of a secret to use."
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "description": "The name of the shell session. If the session already exists, we just return a handle to it."
+            }
+        ],
+        "metadata": {
+            "permissions": "EXECVE"
+        },
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
+    },
+    {
+        "name": "shell_session_control",
+        "description": "Control a previously created shell session.",
+        "type": "Function",
+        "version": 1,
+        "args": [
+            {
+                "name": "name",
+                "type": "string",
+                "description": "The name of the shell session."
+            },
+            {
+                "name": "stdin",
+                "type": "string",
+                "description": "Write this string to the session stdin."
+            },
+            {
+                "name": "close_stdin",
+                "type": "bool",
+                "description": "If specified we close the stdin of the session. This will usually terminate the session gracefully."
+            },
+            {
+                "name": "kill",
+                "type": "bool",
+                "description": "If specified we kill the session."
+            }
+        ],
+        "metadata": {
+            "permissions": "EXECVE"
+        },
+        "platforms": [
+            "linux_amd64_cgo"
         ]
     },
     {
@@ -11366,6 +11669,50 @@
         ]
     },
     {
+        "name": "user_message",
+        "description": "Send the user a message which will appear in the user notification view.",
+        "type": "Function",
+        "version": 1,
+        "args": [
+            {
+                "name": "user",
+                "type": "string",
+                "description": "The user to create or update.",
+                "required": true
+            },
+            {
+                "name": "message",
+                "type": "ordereddict.Dict",
+                "description": "The message to deliver to the user."
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo"
+        ],
+        "free_form_args": true
+    },
+    {
+        "name": "user_messages",
+        "description": "Emit the user's console messages.",
+        "type": "Plugin",
+        "version": 1,
+        "args": [
+            {
+                "name": "clear",
+                "type": "bool",
+                "description": "If set also clear messages."
+            },
+            {
+                "name": "user",
+                "type": "string",
+                "description": "If set we read another user's messages (must be admin)."
+            }
+        ],
+        "platforms": [
+            "linux_amd64_cgo"
+        ]
+    },
+    {
         "name": "user_options",
         "description": "Update and read the user GUI options",
         "type": "Function",
@@ -12437,7 +12784,7 @@
             {
                 "name": "namespace",
                 "type": "string",
-                "description": "The Yara namespece to use."
+                "description": "The Yara namespace to use."
             },
             {
                 "name": "vars",
@@ -12544,7 +12891,7 @@
             {
                 "name": "namespace",
                 "type": "string",
-                "description": "The Yara namespece to use."
+                "description": "The Yara namespace to use."
             },
             {
                 "name": "vars",

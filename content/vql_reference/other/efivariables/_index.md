@@ -2,7 +2,11 @@
 title: efivariables
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Enumerate efi variables.
 ---
 
 

@@ -2,7 +2,18 @@
 title: set
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Sets the member field of the item.
+
+  If item is omitted sets the scope.
+
+  ### See also
+
+  - [get]({{< ref "/vql_reference/popular/get/" >}}): Gets the member field from the item.
+
 ---
 
 

@@ -1,14 +1,20 @@
 ---
 title: Linux.Mounts
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Lists mounted filesystems by reading `/proc/mounts`.
 ---
 
-List mounted filesystems by reading /proc/mounts
+Lists mounted filesystems by reading `/proc/mounts`.
+
 
 <pre><code class="language-yaml">
 name: Linux.Mounts
-description: List mounted filesystems by reading /proc/mounts
+description: |
+  Lists mounted filesystems by reading `/proc/mounts`.
 
 parameters:
   - name: ProcMounts

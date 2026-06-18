@@ -1,14 +1,30 @@
 ---
 title: Generic.Client.Stats
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+description: |
+  Records CPU and memory statistics for the Velociraptor client
+  process.
 ---
 
-An Event artifact which generates client's CPU and memory statistics.
+Records CPU and memory statistics for the Velociraptor client
+process.
+
+To learn about managing endpoint performance with Velociraptor see
+this [blog post](https://docs.velociraptor.app/blog/html/2019/02/10/velociraptor_performance/).
+
 
 <pre><code class="language-yaml">
 name: Generic.Client.Stats
-description: An Event artifact which generates client's CPU and memory statistics.
+description: |
+    Records CPU and memory statistics for the Velociraptor client
+    process.
+
+    To learn about managing endpoint performance with Velociraptor see
+    this [blog post](https://docs.velociraptor.app/blog/html/2019/02/10/velociraptor_performance/).
+
 parameters:
   - name: Frequency
     description: Return stats every this many seconds.
@@ -114,9 +130,6 @@ reports:
       ```sql
       {{ template "resources" }}
       ```
-
-      &gt; To learn about managing end point performance with Velociraptor see
-        the [blog post](https://docs.velociraptor.velocidex.com/blog/html/2019/02/10/velociraptor_performance.html).
 
 column_types:
   - name: Timestamp

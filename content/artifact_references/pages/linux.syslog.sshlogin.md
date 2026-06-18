@@ -1,16 +1,20 @@
 ---
 title: Linux.Syslog.SSHLogin
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Parses the auth logs to identify all SSH login attempts.
 ---
 
-Parses the auth logs to determine all SSH login attempts.
+Parses the auth logs to identify all SSH login attempts.
 
 
 <pre><code class="language-yaml">
 name: Linux.Syslog.SSHLogin
 description: |
-  Parses the auth logs to determine all SSH login attempts.
+  Parses the auth logs to identify all SSH login attempts.
 
 reference:
   - https://www.elastic.co/blog/grokking-the-linux-authorization-logs

@@ -2,7 +2,12 @@
 title: gui_users
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Retrieve the list of users on the server.
+
 ---
 
 

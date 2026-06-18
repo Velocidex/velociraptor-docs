@@ -1,20 +1,27 @@
 ---
 title: Server.Enrichment.Virustotal
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+description: |
+  Enriches a file hash or IP address with VirusTotal threat
+  intelligence results.
 ---
 
-Submit a file hash or IP to VirusTotal for details.
+Enriches a file hash or IP address with VirusTotal threat
+intelligence results.
 
-Note that the default public API rate limit is 4 requests/min.
+Note that the default public API rate limit is 4 requests/min, as
+the time of writing.
 
 This artifact can be called from within another artifact (such as one looking
 for files) to enrich the data made available by that artifact.
 
-Example:
+**Examples:**
 
-  `SELECT * from Artifact.Server.Enrichment.Virustotal(Hash=$YOURHASH)`
-  `SELECT * from Artifact.Server.Enrichment.Virustotal(IP=$YOURIP,QueryType='ip')`
+`SELECT * from Artifact.Server.Enrichment.Virustotal(Hash=$YOURHASH)`
+`SELECT * from Artifact.Server.Enrichment.Virustotal(IP=$YOURIP,QueryType='ip')`
 
 TODO: Implement a timer to spread out requests
 
@@ -23,17 +30,19 @@ TODO: Implement a timer to spread out requests
 name: Server.Enrichment.Virustotal
 author: Wes Lambert -- @therealwlambert, Whitney Champion -- @shortxstack
 description: |
-  Submit a file hash or IP to VirusTotal for details.
+  Enriches a file hash or IP address with VirusTotal threat
+  intelligence results.
 
-  Note that the default public API rate limit is 4 requests/min.
+  Note that the default public API rate limit is 4 requests/min, as
+  the time of writing.
 
   This artifact can be called from within another artifact (such as one looking
   for files) to enrich the data made available by that artifact.
 
-  Example:
+  **Examples:**
 
-    `SELECT * from Artifact.Server.Enrichment.Virustotal(Hash=$YOURHASH)`
-    `SELECT * from Artifact.Server.Enrichment.Virustotal(IP=$YOURIP,QueryType='ip')`
+  `SELECT * from Artifact.Server.Enrichment.Virustotal(Hash=$YOURHASH)`
+  `SELECT * from Artifact.Server.Enrichment.Virustotal(IP=$YOURIP,QueryType='ip')`
 
   TODO: Implement a timer to spread out requests
 

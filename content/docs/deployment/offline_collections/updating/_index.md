@@ -5,6 +5,16 @@ date: 2025-11-03
 last_reviewed: 2025-11-03
 draft: false
 weight: 50
+description: |
+  Because offline collector binaries are usually stored separately from the
+  server, they often get overlooked when the time comes to do server and client
+  upgrades. This can lead to the collector binaries inadvertently becoming
+  seriously out of date, and which might produce offline collections that are
+  inconsistent with the equivalent collections produced by online clients. In the
+  worst case scenario it can result in offline collections that are incompatible
+  with the server's
+  [import_collection](/vql_reference/server/import_collection/)
+  function.
 ---
 
 Because offline collector binaries are usually stored separately from the
@@ -14,7 +24,7 @@ seriously out of date, and which might produce offline collections that are
 inconsistent with the equivalent collections produced by online clients. In the
 worst case scenario it can result in offline collections that are incompatible
 with the server's
-[import_collection]({{< ref "/vql_reference/server/import_collection/" >}})
+[import_collection](/vql_reference/server/import_collection/)
 function.
 
 We recommend that you keep your offline collectors in-sync with your server
@@ -56,7 +66,7 @@ using the updated binary.
 From version 0.75.5 the `Server.Utils.CreateCollector` artifact will create a
 corresponding spec file and store it in the collection's Uploads section, in
 addition to the repacked collector binary. This spec file can be used with the
-[collector CLI command]({{< ref "/docs/cli/collector/" >}}) to rebuild the same
+[collector CLI command](/docs/cli/commands/collector/) to rebuild the same
 collector.
 
 ![](spec_file.png)

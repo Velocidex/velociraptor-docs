@@ -1,15 +1,22 @@
 ---
 title: Linux.Sys.Groups
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Lists system group IDs, names and memberships from `/etc/group`.
 ---
 
-Get system group IDs, names and memberships from /etc/group
+Lists system group IDs, names and memberships from `/etc/group`.
+
 
 <pre><code class="language-yaml">
 name: Linux.Sys.Groups
 author: Andreas Misje – @misje
-description: Get system group IDs, names and memberships from /etc/group
+description: |
+  Lists system group IDs, names and memberships from `/etc/group`.
+
 parameters:
   - name: GroupFile
     default: /etc/group

@@ -4,7 +4,7 @@ date: 2021-06-12T07:11:04Z
 draft: false
 noDisqus: true
 weight: 20
-no_header: true
+no_header: false
 carousel:
  - name: '<div class="logo-btn"><i class="fas fa-laptop"></i> Collect</div>'
    image: collect.png
@@ -36,17 +36,26 @@ navs:
    description: Troubleshooting deployments
    link: /docs/troubleshooting/
 
+description: |
+  {{% navs %}}
 ---
 
 {{% navs %}}
 
-{{% notice warning "CVE-2025-14728 published on 2025-12-29" %}}
 
-Velociraptor versions before 0.75.6 contain a directory traversal
-issue on Linux servers that allows a rogue client to upload a file
-which is written outside the datastore directory.
+{{% notice warning "Current Security Advisories" %}}
 
-Read the [Full announcement]({{< ref "/announcements/advisories/cve-2025-14728/" >}}) and upgrade immediately.
+Please update to the latest release [0.76.5](/downloads/) to address
+the following CVEs:
+
+* [CVE-2026-5329](/announcements/advisories/cve-2026-5329/) Velociraptor improper input validation in client message handler. This could lead to remote
+  code execution on the server.
+
+* [CVE-2026-6290](/announcements/advisories/cve-2026-6290/)  Velociraptor query() plugin misapplies permissions to orgs.
+
+* [CVE-2026-6863](/announcements/advisories/cve-2026-6863/)  HTTP Filestore Endpoints Misapply Permissions Across Organizations
+
+* [CVE-2026-6948](/announcements/advisories/cve-2026-6948/)  Unbounded Memory Allocation in VQLResponse Result-Set Writer. This could lead to a DoS attack against the server.
 
 {{% /notice %}}
 
@@ -57,3 +66,7 @@ Velociraptor is an advanced digital forensic and incident response
 tool that enhances your visibility into your endpoints.
 
 {{% carousel %}}
+
+<script>
+    $("#top-bar").addClass("hidden");
+</script>

@@ -1,26 +1,29 @@
 ---
 title: Server.Internal.ArtifactModification
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
+description: |
+  Provides an internal event stream for artifact modification
+  notifications.
 ---
 
-This event artifact is an internal event stream over which
-notifications of artifact modifications are sent. Interested parties
-can watch for new artifact modification events and rebuild caches
-etc.
+Provides an internal event stream for artifact modification
+notifications.
 
-Note: This is an automated system artifact. You do not need to start it.
+Interested parties can watch for new artifact modification events
+and use this as a trigger to rebuild caches etc.
 
 
 <pre><code class="language-yaml">
 name: Server.Internal.ArtifactModification
 description: |
-  This event artifact is an internal event stream over which
-  notifications of artifact modifications are sent. Interested parties
-  can watch for new artifact modification events and rebuild caches
-  etc.
-
-  Note: This is an automated system artifact. You do not need to start it.
+  Provides an internal event stream for artifact modification
+  notifications.
+  
+  Interested parties can watch for new artifact modification events
+  and use this as a trigger to rebuild caches etc.
 
 type: SERVER_EVENT
 

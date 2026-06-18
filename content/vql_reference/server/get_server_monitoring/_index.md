@@ -2,7 +2,14 @@
 title: get_server_monitoring
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Retrieve the current server monitoring state.
+
+  See `get_client_monitoring()`
+
 ---
 
 

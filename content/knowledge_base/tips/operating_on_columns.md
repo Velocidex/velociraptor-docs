@@ -104,12 +104,12 @@ Now that we have the row as a dict we can perform any operations on
 it. In the following we see two methods for manipulating dicts:
 
 1. **Set operations**: allow us to add, remove or merge dicts based on
-   their keys. See [Set operations]({{< ref "/knowledge_base/tips/set_operations/" >}}).
+   their keys. See [Set operations](/knowledge_base/tips/set_operations/).
 
 2. **Dict reconstruction**: is a more powerful technique for tearing the
    dict apart and reconstructing it again.
 
-### Example: Select only columns that match a regular expression.
+###### Example: Select only columns that match a regular expression.
 
 For this example, let's assume we don't know all the exact columns in advance
 but want to match certain columns based on some regular expression.
@@ -152,7 +152,7 @@ only keys matching the regular expression:
 ]
 ```
 
-### Example: Hash a subset of columns
+###### Example: Hash a subset of columns
 
 For this example, suppose we have a set of columns that we consider to
 be a representative of the row and we want to generate a hash based on
@@ -166,7 +166,7 @@ vary but as long as those fields are the same, we consider the rows to
 be duplicates.
 
 We can quickly extract only those fields by using
-[Set intersection]({{< ref "/knowledge_base/tips/set_operations/" >}})
+[Set intersection](/knowledge_base/tips/set_operations/)
 (In VQL this is implemented by dict multiplication):
 
 ```vql

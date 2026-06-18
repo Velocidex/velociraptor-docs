@@ -1,12 +1,19 @@
 ---
 title: Server.Utils.KillClient
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+description: |
+  Aggressively terminates a Velociraptor client process by sending a
+  kill signal to the specified client ID.
 ---
 
-This artifact aggressively kills a client.
+Aggressively terminates a Velociraptor client process by sending a
+kill signal to the specified client ID.
 
-If the client runs as a service, it will restart by the service manager.
+If the client is installed as a service, it should be automatically
+restarted by the service manager after the process is killed.
 
 NOTE: If the client is not running as a service (i.e. interactively)
 it may not restart and further communication will be lost!
@@ -15,9 +22,11 @@ it may not restart and further communication will be lost!
 <pre><code class="language-yaml">
 name: Server.Utils.KillClient
 description: |
-  This artifact aggressively kills a client.
+  Aggressively terminates a Velociraptor client process by sending a
+  kill signal to the specified client ID.
 
-  If the client runs as a service, it will restart by the service manager.
+  If the client is installed as a service, it should be automatically
+  restarted by the service manager after the process is killed.
 
   NOTE: If the client is not running as a service (i.e. interactively)
   it may not restart and further communication will be lost!

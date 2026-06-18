@@ -107,7 +107,7 @@ primarily for rapid triaging of Windows Events using the `Hayabusa`
 rule set. A Curated set of rules are published on the Velociraptor
 Sigma site at https://sigma.velocidex.com/ - these rules can be
 automatically imported using the
-[Server.Import.CuratedSigma](https://docs.velociraptor.app/artifact_references/pages/server.import.curatedsigma/)
+[Server.Import.Extras](/artifact_references/pages/server.import.extras/)
 artifact.
 
 Previously it was difficult to write and test your own custom Sigma
@@ -120,15 +120,15 @@ The GUI also introduces a new `Sigma Editor` which is used in the
 or curate custom Sigma Rules.
 
 To understand how all these components work together, read our new
-blog post [Developing Sigma Rules in Velociraptor]({{% ref
-"/blog/2025/2025-02-02-sigma/" %}})
+blog post
+[Developing Sigma Rules in Velociraptor](/blog/2025/2025-02-02-sigma/).
 
 ### Linux eBPF support
 
 Live detection using Sigma rules works well on Windows as we have a
 good source of events with Sysmon or Windows event logs. For example
 the
-[Windows.Hayabusa.Monitoring](https://sigma.velocidex.com/docs/artifacts/velociraptor_hayabusa_event_ruleset/)
+[Windows.Hayabusa.Monitoring](https://sigma.velocidex.com/docs/artifacts/windows.hayabusa.monitoring/)
 artifact uses the `watch_evtx()` plugin to follow event logs and match
 them against the Hayabusa rule set in real time.
 
@@ -216,7 +216,7 @@ Currently the command employs the following checks:
   artifacts define the parameters that are being called.
 
 This command is intended to run inside a Continuous integration (CI)
-pipeline as a presumbit check for artifact correctness.
+pipeline as a pre-submit check for artifact correctness.
 
 
 ## Conclusions
@@ -230,6 +230,5 @@ spin](https://github.com/Velocidex/velociraptor)!  It is available
 on GitHub under an open source license. As always please file issues
 on the bug tracker or ask questions on our mailing list
 [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com)
-. You can also chat with us directly on discord
-[https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+. You can also chat with us directly on [Discord](/discord/).
 .

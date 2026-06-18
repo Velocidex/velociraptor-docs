@@ -1,14 +1,24 @@
 ---
 title: Windows.Sys.PhysicalMemoryRanges
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Parses the CM_RESOURCE_LIST from the registry to list physical
+  memory range descriptors.
 ---
 
-List Windows physical memory ranges.
+Parses the CM_RESOURCE_LIST from the registry to list physical
+memory range descriptors.
+
 
 <pre><code class="language-yaml">
 name: Windows.Sys.PhysicalMemoryRanges
-description: List Windows physical memory ranges.
+description: |
+  Parses the CM_RESOURCE_LIST from the registry to list physical
+  memory range descriptors.
+
 reference:
   - https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/ns-wdm-_cm_resource_list
 

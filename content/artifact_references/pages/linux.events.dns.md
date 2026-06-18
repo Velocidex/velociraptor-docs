@@ -1,10 +1,16 @@
 ---
 title: Linux.Events.DNS
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+description: |
+  Monitors DNS requests in real time using eBPF, with filtering by
+  process and destination.
 ---
 
-This artifact uses eBPF to track DNS requests from various processes.
+Monitors DNS requests in real time using eBPF, with filtering by
+process and destination.
 
 NOTE: This event is generated from network traffic - it is unable to
 view DoH traffic.
@@ -13,7 +19,8 @@ view DoH traffic.
 <pre><code class="language-yaml">
 name: Linux.Events.DNS
 description: |
-  This artifact uses eBPF to track DNS requests from various processes.
+  Monitors DNS requests in real time using eBPF, with filtering by
+  process and destination.
 
   NOTE: This event is generated from network traffic - it is unable to
   view DoH traffic.

@@ -3,7 +3,11 @@ menutitle: "Security"
 title: "Artifact Security"
 date: 2025-01-25
 weight: 140
-summary: "How to secure artifacts"
+summary: "How to create and use artifacts securely"
+description: |
+  Artifacts are the main way in which users interact with Velociraptor:
+  Users launch artifact collections from clients and collect artifacts
+  on the Velociraptor server.
 ---
 
 Artifacts are the main way in which users interact with Velociraptor:
@@ -75,7 +79,7 @@ The visibility of an artifact is controlled by `artifact metadata` - a
 field attached to each artifact in the system. You can hide or show
 each artifact using the `artifact_set_metadata()` function.
 
-### Example: Making only certain artifacts visible.
+###### Example: Making only certain artifacts visible.
 
 The following VQL can be run in a notebook to hide all artifacts other
 than a selected set:
@@ -228,7 +232,7 @@ Some client artifacts allow running arbitrary commands on the
 endpoint. For example, as we have seen previously, the
 `Windows.System.CmdShell` artifact allows running arbitrary shell
 commands, because the commandline to run is a user supplied parameter
-directly passed to the shell, using the the `execve()` plugin. This
+directly passed to the shell, using the `execve()` plugin. This
 can be leveraged for a complete domain compromise by e.g. running a
 malicious command on all assets in the environment.
 
@@ -408,3 +412,51 @@ This is exactly the same as the Linux `suid` mechanism or the windows
 `Impersonation` mechanism.
 
 ![This time the artifact works with the impersonated user](impersonation.png)
+
+## Artifact Obfuscation
+
+When an artifact is collected, it is compiled into a set of basic VQL
+statements and sent to the client in a **Collection Request**. You can
+see the raw request in the **Request** tab in the GUI.
+
+While the request is executed by the client, the client is able to see
+what the original query was. This represents a risk for sensitive
+artifacts - for example consider a custom artifact searching for a
+sensitive IOC pattern. A rogue client (for example, a compromised
+endpoint running an attacker-controlled Velociraptor client) may
+receive the request in a hunt and gain insight into the current threat
+intel or threat-hunting methodology.
+
+This risk has to be considered when crafting custom artifacts, or
+collecting artifacts targeting specific IOCs:
+
+* Never add sensitive information to the artifact definition. The
+  client's request will strip out the artifact description, comments
+  and some non-essential parts but variable names remain unaltered.
+
+* Treat artifact parameters as public information. Never send
+  sensitive IOCs directly as artifact parameters. This also goes for
+  API keys - never write a client side artifact that requires API keys
+  to upload data directly to a service provider. Artifact parameters
+  can be easily intercepted by rogue clients.
+
+* If you are searching for a very specific, but sensitive IOC (for
+  example a specific name which is very unique), consider reworking
+  the artifact to search for a less sensitive and more generic IOC,
+  and post-process the results on the server to remove false
+  positives.
+
+  For example, if the IOC is searching for the string `ThreatActorXYZ`
+  it is very specific and the threat actor may know they are being
+  specifically targeted. Instead search for the regular expression
+  `Threat[^ ]+`, and post-process by filtering down the false
+  positives on the server.
+
+  There is obviously a trade-off between being very specific and
+  getting few, very high-value, results, vs being less specific and
+  potentially increasing the false positive rate, while making it
+  harder for an adversary to know what you are searching for.
+
+Velociraptor implements an experimental form of obfuscation for
+artifact names but this should not be regarded as a security
+mechanism.

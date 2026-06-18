@@ -3,6 +3,9 @@ menutitle: "Support Policy"
 title: "The Velociraptor Support Policy"
 weight: 10
 draft: false
+description: |
+  While Velociraptor is an open source project, we do take the security
+  and stability of the project very seriously.
 ---
 
 While Velociraptor is an open source project, we do take the security
@@ -20,7 +23,7 @@ feature which does not work quite as expected, please file an issue on
 Tracker](https://github.com/Velocidex/velociraptor/issues) with steps
 to help us reproduce it!
 
-## The Release process
+## Our Release Process
 
 Velociraptor release numbers follow [semantic versioning](https://semver.org/)
 (e.g. 0.74.1). Currently our major version is 0, meaning that we do not
@@ -49,7 +52,7 @@ patched release at that version (e.g. v0.73.2). We generally do not
 update any previous releases older than the current release.
 
 
-## Client and Server versioning
+## Client and Server Versioning
 
 Velociraptor has two major components, the client and server. Clients
 are typically deployed widely across a large number of endpoints, and
@@ -111,7 +114,8 @@ initially.
 The Velociraptor server may be upgraded by keeping the same server
 configuration file, and data store as the previous version. We
 generally ensure that suitable migration code is run on upgrades on a
-best effort basis. See [server upgrades documentation]({{<ref "/docs/deployment/server/#server-upgrades" >}}).
+best effort basis. See
+[server upgrades documentation](/docs/deployment/server/upgrades/).
 
 The release notes may indicate additional caveats or steps that need
 to be taken during the upgrade.
@@ -134,7 +138,7 @@ We generally recommend upgrading one release at the time to be
 conservative. Although it is possible to skip a few releases the
 migration path may not be as well tested.
 
-## Continuous integration and testing
+## Continuous Integration And Testing
 
 Velociraptor has a continuous integration pipeline (CI), building
 binaries at each commit point (and performing extensive
@@ -154,7 +158,7 @@ available) a back-ported bugfix into one of the release branches. Note
 that release branches do not receive new features, but may still
 receive bugfixes for critical bugs.
 
-## Supported configurations
+## Supported Configurations
 
 Velociraptor is a very flexible tool and may be configured in many
 different ways to suit many different use cases. The Velociraptor team
@@ -169,13 +173,12 @@ include them in the next release, or open a feature request on [our
 issue tracker](https://github.com/Velocidex/velociraptor/issues).
 
 
-## Support channels
+## Support Channels
 
-As an open source project, the community is our greatest resource!
-Many of us hang on the [discord
-channel](https://docs.velociraptor.app/discord/), and are all too
-happy to help.
+As an open source project, our community is our greatest resource!
+Many of us hang out on the [discord channel](/discord/), and are all
+too happy to help.
 
-We also have a mailing list velociraptor-discuss@googlegroups.com that
-can be accessed or subscribed to on [Google
-Groups](https://groups.google.com/g/velociraptor-discuss).
+We also have a mailing list - velociraptor-discuss@googlegroups.com -
+that can be accessed or subscribed to on
+[Google Groups](https://groups.google.com/g/velociraptor-discuss).

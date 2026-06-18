@@ -1,8 +1,16 @@
 ---
 title: Windows.Persistence.Debug
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Detects programs with a debugger configured in Image File Execution
+  Options registry keys.
 ---
+
+Detects programs with a debugger configured in Image File Execution
+Options registry keys.
 
 Windows allows specific configuration of various executables via a
 registry key. Some keys allow defining a debugger to attach to a
@@ -16,12 +24,15 @@ Execution Options\*` however this is kept inline with the x64 key and
 therefore does not need to be processed.
 
 Limitations: This queries the live registry and therefore does not
-parse data in Windows.old or Regback folders, or VSS.
+parse data in `Windows.old` or `Regback` folders, or VSS.
 
 
 <pre><code class="language-yaml">
 name: Windows.Persistence.Debug
 description: |
+  Detects programs with a debugger configured in Image File Execution
+  Options registry keys.
+
   Windows allows specific configuration of various executables via a
   registry key. Some keys allow defining a debugger to attach to a
   program as it is run. If this debugger is launched for commonly used
@@ -34,7 +45,7 @@ description: |
   therefore does not need to be processed.
 
   Limitations: This queries the live registry and therefore does not
-  parse data in Windows.old or Regback folders, or VSS.
+  parse data in `Windows.old` or `Regback` folders, or VSS.
 
 reference:
   - https://attack.mitre.org/techniques/T1183/

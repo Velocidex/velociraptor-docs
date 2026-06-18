@@ -113,26 +113,23 @@ tools to interact and utilize Velociraptor as a platform.
   executing them remotely and transferring their results back to the
   server. This allows third party tools to be deployed safely at scale
   and orchestrated using Velociraptor in wide ranging Hunts. Examples
-  include [Nextron
-  Thor](https://www.nextron-systems.com/2023/11/03/integration-of-thor-in-velociraptor-supercharging-digital-forensics-and-incident-response/),
-  [Cyber
-  Triage](https://www.cybertriage.com/blog/scope-with-velociraptor-analyze-with-cyber-triage/)
-  and [Hayabusa]({{< ref
-  "/exchange/artifacts/pages/windows.eventlogs.hayabusa/" >}})
+  include
+  [Nextron Thor](https://www.nextron-systems.com/2023/11/03/integration-of-thor-in-velociraptor-supercharging-digital-forensics-and-incident-response/),
+  [Cyber Triage](https://www.cybertriage.com/blog/scope-with-velociraptor-analyze-with-cyber-triage/)
+  and [Hayabusa](/exchange/artifacts/pages/windows.eventlogs.hayabusa/)
 
 * **Analysis**: Velociraptor offers a powerful interactive notebook
   environment for collaborative analysis. However, it is also possible
   to export collected data to other common platforms, such as
-  [Timesketch]({{< ref
-  "/artifact_references/pages/server.utils.timesketchupload/" >}}).
+  [Timesketch](/artifact_references/pages/server.utils.timesketchupload/).
 
 * **Exports**: Collected data can be conveniently exported to archives
-  such as Zip file, automatically [backed up the cloud]({{< ref
-  "/artifact_references/pages/server.utils.backups3/" >}}) or exported
-  in real time to data lakes such as [Splunk]({{< ref
-  "/artifact_references/pages/splunk.flows.upload/" >}}) or
-  [Elastic]({{< ref
-  "/artifact_references/pages/elastic.eventlogs.sysmon/" >}}).
+  such as Zip file, automatically
+  [backed up to the cloud](/artifact_references/pages/server.utils.backups3/)
+  or exported in real time to data lakes such as
+  [Splunk](/artifact_references/pages/splunk.flows.upload/)
+  or
+  [Elastic](/artifact_references/pages/elastic.eventlogs.sysmon/).
 
 * **Automation**: Velociraptor can be fully automated using a `gRPC`
   based API. The API allows Velociraptor to be controlled from many
@@ -272,8 +269,9 @@ of audience:
    which situation and what information can these provide to the
    ongoing response process.
 
-   These are covered by the [playbooks]({{% ref "/training/playbooks/"
-   %}}), and artifact references.
+   These are covered by the
+   [playbooks](/training/playbooks/),
+   and artifact references.
 
 These aspects are complimentary - without a secure and well
 maintained enterprise deployment is it difficult to widely deploy

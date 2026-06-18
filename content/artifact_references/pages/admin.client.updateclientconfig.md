@@ -1,8 +1,14 @@
 ---
 title: Admin.Client.UpdateClientConfig
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Replaces client configuration and optionally rekeys the client ID.
 ---
+
+Replaces client configuration and optionally rekeys the client ID.
 
 Sometimes we wish to move a client from one org ID to another. This
 requires updating the config on the client and rekeying the client.
@@ -20,6 +26,8 @@ changed to a different org.
 <pre><code class="language-yaml">
 name: Admin.Client.UpdateClientConfig
 description: |
+  Replaces client configuration and optionally rekeys the client ID.
+
   Sometimes we wish to move a client from one org ID to another. This
   requires updating the config on the client and rekeying the client.
 

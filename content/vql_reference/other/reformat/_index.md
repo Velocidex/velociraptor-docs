@@ -2,7 +2,13 @@
 title: reformat
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Reformat VQL
+
+  This function will reformat the artifact provided and return the reformatted content.
 ---
 
 

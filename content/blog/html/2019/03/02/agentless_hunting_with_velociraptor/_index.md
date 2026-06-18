@@ -130,8 +130,8 @@ collecting and delivering its artifacts to the server. After the
 allotted time has passed, the client will shut down without having
 installed anything on the endpoint.
 
-You can force a group policy update by running the gpupdate program. Now
-you can verify that Velociraptor is running:
+You can force a group policy update by running the `gpupdate` program.
+Now you can verify that Velociraptor is running:
 
 ![](10.png)
 

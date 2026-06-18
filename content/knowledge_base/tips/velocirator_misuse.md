@@ -136,7 +136,7 @@ Velociraptor may blend in with legitimate use. In this case:
    command line arguments (if Velociraptor is usually installed as a
    service it will always be started similar to the example above).
 
-2. Check the integrity of the Velociraptor agent configuration to to
+2. Check the integrity of the Velociraptor agent configuration to
    ensure that it is not tampered with.
 
 3. Check the process lineage of the Velociraptor binary in your EDR to

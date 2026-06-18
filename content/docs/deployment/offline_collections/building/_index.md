@@ -5,6 +5,8 @@ date: 2025-11-03
 last_reviewed: 2025-11-03
 draft: false
 weight: 10
+description: |
+  Offline collectors can be created in the GUI or using the CLI.
 ---
 
 Offline collectors can be created in the GUI or using the CLI.
@@ -13,7 +15,7 @@ The GUI is the recommended way to create them as it provides an intuitive
 collector builder wizard that makes the process quick and easy. For advanced use
 cases, such as automating the creation of collectors in a separate build
 environment, the `collector` CLI command is often preferred, and we refer you to
-[the command's documentation]({{< ref "/docs/cli/collector/" >}})
+[the command's documentation](/docs/cli/commands/collector/)
 for further information on that option.
 
 Here we will discuss the GUI-based method.
@@ -55,23 +57,23 @@ You can start the offline collector builder using either:
 
   This specifies the target platform and
   architecture of the Velociraptor binary that the
-  [collector config]({{< ref "/docs/deployment/offline_collections/#what-is-an-offline-collector" >}})
+  [collector config](/docs/deployment/offline_collections/#what-is-an-offline-collector)
   will be packed into. The choices cover the most commonly used Velociraptor
   binaries. Note that the list also includes the
-  [Generic collector]({{< ref "/docs/deployment/offline_collections/#the-generic-collector" >}})
+  [Generic collector](/docs/deployment/offline_collections/#the-generic-collector)
   option which is platform-independent.
 
   The option you choose will change the **Velociraptor Binary** tool button on
   the collector options form. Normally you don't need to do anything with this
   field, but it helps to understand what it means: The target binary that will
-  be used is defined as a Velociraptor [tool]({{< ref "/docs/artifacts/tools/" >}})
+  be used is defined as a Velociraptor [tool](/docs/artifacts/tools/)
   and the server will attempt to download it from GitHub. If your server has no
   internet access then this obviously won't work, so in that case you'll need to
-  [manually upload the binary]({{< relref "#overriding-the-default-binaries" >}}).
+  [manually upload the binary](#overriding-the-default-velociraptor-binaries).
 
 - **Encryption**
 
-  As explained [here]({{< ref "/docs/deployment/offline_collections/#collection-security" >}}),
+  As explained [here](/docs/deployment/offline_collections/#collection-security),
   the zip archive used to store the collection results can be secured with
   encryption. Additional fields for the encryption key (certificate) or password
   will be displayed depending on which option you select.
@@ -144,12 +146,12 @@ You can start the offline collector builder using either:
   Whether to _also_ include CSV-formatted results in the collection container.
   By default we only include JSON-formatted results and these are the ones that
   are used when
-  [importing the collection archive on the server]({{< ref "/docs/deployment/offline_collections/collection_data/#importing-collections-into-the-velociraptor-server"
-  >}}).
+  [importing the collection archive on the server](/docs/deployment/offline_collections/collection_data/#importing-collections-into-the-velociraptor-server).
 
   However, if you intend to
-  [work with the results without importing the collection container]({{< ref "/docs/deployment/offline_collections/collection_data/#accessing-collection-containers-without-importing" >}}) - possibly using
-  other tools - then you might find the CSV format more convenient.
+  [work with the results without importing the collection container](/docs/deployment/offline_collections/collection_data/#accessing-collection-containers-without-importing)
+  - possibly using other tools - then you might find the CSV format
+  more convenient.
 
 - **Pause For Prompt**
 
@@ -200,7 +202,7 @@ You can start the offline collector builder using either:
 ![Collector resource limits](collector_resources.png)
 
 4. The **Specify Resources** page is where you specify
-   [resource limits]({{< ref "/docs/artifacts/resources/" >}})
+   [resource limits](/docs/artifacts/resources/)
    that apply to all queries in the collection. With offline collectors,
    although we allow setting collection-wide resource limits, resource usage is
    generally not considered as critical as it is with the client-server
@@ -234,7 +236,7 @@ Once that collection is completed, it will contain the offline collector binary
 in it's **Uploaded Files** tab. From version 0.75.5 a spec file will also be
 available in the Uploaded Files tab - this file contains the specifications used
 to create the collector and can be used to
-[reproduce the collector on the command line]({{< ref "/docs/cli/collector/#creating-a-collector" >}}).
+[reproduce the collector on the command line](/docs/cli/commands/collector/#creating-a-collector).
 
 ![Retrieving the Offline Collector binary](collector_download.svg)
 
@@ -245,7 +247,7 @@ Sometimes we want to collect the output from other third-party executables.
 Velociraptor can package them into with offline collector and the artifacts that
 use them can include their output in the collection results. In Velociraptor we
 refer to such external files as
-[tools]({{< ref "/docs/artifacts/tools/" >}}),
+[tools](/docs/artifacts/tools/),
 which can be executables or any other type of file that you want to use on the
 endpoint during the collection.
 
@@ -263,13 +265,13 @@ files are cached in the server's datastore so the next time the
 command is run it will reuse them without downloading.
 
 Tools are bundled the same way into the
-[Generic Collector]({{< ref "/docs/deployment/offline_collections/#the-generic-collector" >}})
+[Generic Collector](/docs/deployment/offline_collections/#the-generic-collector)
 if you decide to use that option.
 
 ### Overriding the default Velociraptor binaries
 
 The Velociraptor binaries that will be used for creating offline collectors are
-themselves defined as [tools]({{< ref "/docs/artifacts/tools/" >}}) in the
+themselves defined as [tools](/docs/artifacts/tools/) in the
 `Server.Internal.ToolDependencies` artifact. This is a built-in artifact that is
 updated with each Velociraptor release.
 
@@ -280,7 +282,7 @@ create a new offline collector it will be created using the release version for
 the selected platform corresponding to your server's version.
 
 You can override a specific binary by clicking on the tool button to access the
-the tool management screen, and then manually upload a different binary.
+tool management screen, and then manually upload a different binary.
 
 ![](collector_binary.png)
 
@@ -300,7 +302,7 @@ some circumstances, for example:
 
 Although in all the abovementioned cases except the last one, you could
 alternatively create a
-[Generic Collector]({{< ref "/docs/deployment/offline_collections/#the-generic-collector" >}})
+[Generic Collector](/docs/deployment/offline_collections/#the-generic-collector)
 which is binary-agnostic and can be used with any standard Velociraptor binary.
 The generic collector allows you to quickly switch between binaries which is
 very useful if you encounter an issue which you think might be version-related.
@@ -331,12 +333,12 @@ is possible to pre-populate the server's tools inventory with all the tools
 currently defined in the tools inventory (at least all the ones that have
 download URLs defined). This includes all the Velociraptor binaries that the
 offline collector builder might use. Once the binaries are in the server's tools
-inventory, Velociraptor won't try to download them when you run the the
+inventory, Velociraptor won't try to download them when you run the
 collector builder.
 
 To facilitate this process we provide a built-in server artifact that partially
 automates the process:
-[`Server.Utils.UploadTools`]({{< ref "/artifact_references/pages/server.utils.uploadtools/" >}})
+[`Server.Utils.UploadTools`](/artifact_references/pages/server.utils.uploadtools/)
 
 This artifact is designed to be used as follows:
 
@@ -374,11 +376,11 @@ segments instead.
 
 There are several options for that:
 
-1. A [Windows file share]({{< ref "/knowledge_base/tips/setup_smb_share/" >}})
+1. A [Windows file share](/knowledge_base/tips/setup_smb_share/)
    can be created on a Windows system.
-2. An [SFTP server]({{< ref "/knowledge_base/tips/setting_up_sftp/" >}})
+2. An [SFTP server](/knowledge_base/tips/setting_up_sftp/)
    can be installed on a local Linux system.
-3. A [local S3 server]({{< ref "/knowledge_base/tips/dropbox_server/" >}})
+3. A [local S3 server](/knowledge_base/tips/dropbox_server/)
    can be installed using [MinIO](https://github.com/minio/minio)
 
 A common thread between these options is to ensure that credentials are only

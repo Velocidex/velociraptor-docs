@@ -1,32 +1,40 @@
 ---
 title: Windows.Events.ServiceCreation
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+description: |
+  Detects new Windows service installations by monitoring System event
+  log for EventID 7045.
 ---
 
-Monitor for creation of new services.
+Detects new Windows service installations by monitoring System event
+log for EventID 7045.
 
 New services are typically created by installing new software or
 kernel drivers. Attackers will sometimes install a new service to
-either insert a malicious kernel driver or as a persistence
+either insert a malicious kernel driver or to act as a persistence
 mechanism.
 
 This event monitor extracts the service creation events from the
-event log and records them on the server.
+event log and forwards them to the server.
 
 
 <pre><code class="language-yaml">
 name: Windows.Events.ServiceCreation
 description: |
-  Monitor for creation of new services.
-
+  Detects new Windows service installations by monitoring System event
+  log for EventID 7045.
+  
   New services are typically created by installing new software or
   kernel drivers. Attackers will sometimes install a new service to
-  either insert a malicious kernel driver or as a persistence
+  either insert a malicious kernel driver or to act as a persistence
   mechanism.
 
   This event monitor extracts the service creation events from the
-  event log and records them on the server.
+  event log and forwards them to the server.
+
 type: CLIENT_EVENT
 
 parameters:

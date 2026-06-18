@@ -1,16 +1,23 @@
 ---
 title: MacOS.System.Packages
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Parses `system_profiler` output to enumerate installed macOS
+  applications with metadata.
 ---
 
-Parse packages installed on Macs
+Parses `system_profiler` output to enumerate installed macOS
+applications with metadata.
 
 
 <pre><code class="language-yaml">
 name: MacOS.System.Packages
 description: |
-  Parse packages installed on Macs
+  Parses `system_profiler` output to enumerate installed macOS
+  applications with metadata.
 
 parameters:
   - name: Length

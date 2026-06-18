@@ -1,10 +1,16 @@
 ---
 title: Generic.Utils.DeadDiskRemapping
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+description: |
+  Inspects a disk image and produces an appropriate YAML remapping
+  config for transparent filesystem access.
 ---
 
-Calculate a remapping configuration from a dead disk image.
+Inspects a disk image and produces an appropriate YAML remapping
+config for transparent filesystem access.
 
 The artifact uses some heuristics to calculate a suitable remapping
 configuration for a dead disk image:
@@ -29,7 +35,8 @@ The following cases are handled:
 <pre><code class="language-yaml">
 name: Generic.Utils.DeadDiskRemapping
 description: |
-  Calculate a remapping configuration from a dead disk image.
+  Inspects a disk image and produces an appropriate YAML remapping
+  config for transparent filesystem access.
 
   The artifact uses some heuristics to calculate a suitable remapping
   configuration for a dead disk image:
@@ -123,6 +130,16 @@ parameters:
           accessor: raw_reg
         "on":
           accessor: raw_reg
+      - type: shadow
+        from:
+          accessor: raw_reg
+        "on":
+          accessor: raw_registry
+      - type: shadow
+        from:
+          accessor: raw_ntfs
+        "on":
+          accessor: ntfs
       - type: shadow
         from:
           accessor: data

@@ -1,16 +1,20 @@
 ---
 title: Linux.RHEL.Packages
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Parses packages installed from `dnf` or `yum`.
 ---
 
-Parse packages installed from dnf or yum
+Parses packages installed from `dnf` or `yum`.
 
 
 <pre><code class="language-yaml">
 name: Linux.RHEL.Packages
 description: |
-  Parse packages installed from dnf or yum
+  Parses packages installed from `dnf` or `yum`.
 
 implied_permissions:
   - EXECVE

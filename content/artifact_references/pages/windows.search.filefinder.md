@@ -1,21 +1,51 @@
 ---
 title: Windows.Search.FileFinder
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Searches for files by path glob, inspects file content via YARA, and
+  provides file hash and upload options.
 ---
 
-Find files on the filesystem using the filename or content.
-
-
-## Performance Note
-
-This artifact can be quite expensive, especially if we search file
-content. It will require opening each file and reading its entire
-content. To minimize the impact on the endpoint we recommend this
-artifact is collected with a rate limited way (about 20-50 ops per
-second).
+Searches for files by path glob, inspects file content via YARA, and
+provides file hash and upload options.
 
 This artifact is useful in the following scenarios:
+
+* We need to locate all the places on our network where customer
+  data has been copied.
+
+* We’ve identified malware in a data breach, named using short
+  random strings in specific folders and need to search for other
+  instances across the network.
+
+* We believe our user account credentials have been dumped and
+  need to locate them.
+
+* We need to search for exposed credit card data to satisfy PCI
+  requirements.
+
+* We have a sample of data that has been disclosed and need to
+  locate other similar files
+
+**Performance Note**
+
+This artifact can be quite resource intensive, especially if we
+search file content. It will require opening each file and reading
+its entire content. To minimize the impact on the endpoint we
+recommend this artifact is collected with a rate limited applied
+(about 20-50 ops per second should be reasonable).
+
+
+<pre><code class="language-yaml">
+name: Windows.Search.FileFinder
+description: |
+  Searches for files by path glob, inspects file content via YARA, and
+  provides file hash and upload options.
+
+  This artifact is useful in the following scenarios:
 
   * We need to locate all the places on our network where customer
     data has been copied.
@@ -33,44 +63,22 @@ This artifact is useful in the following scenarios:
   * We have a sample of data that has been disclosed and need to
     locate other similar files
 
+  **Performance Note**
 
-<pre><code class="language-yaml">
-name: Windows.Search.FileFinder
-description: |
-  Find files on the filesystem using the filename or content.
-
-
-  ## Performance Note
-
-  This artifact can be quite expensive, especially if we search file
-  content. It will require opening each file and reading its entire
-  content. To minimize the impact on the endpoint we recommend this
-  artifact is collected with a rate limited way (about 20-50 ops per
-  second).
-
-  This artifact is useful in the following scenarios:
-
-    * We need to locate all the places on our network where customer
-      data has been copied.
-
-    * We’ve identified malware in a data breach, named using short
-      random strings in specific folders and need to search for other
-      instances across the network.
-
-    * We believe our user account credentials have been dumped and
-      need to locate them.
-
-    * We need to search for exposed credit card data to satisfy PCI
-      requirements.
-
-    * We have a sample of data that has been disclosed and need to
-      locate other similar files
+  This artifact can be quite resource intensive, especially if we
+  search file content. It will require opening each file and reading
+  its entire content. To minimize the impact on the endpoint we
+  recommend this artifact is collected with a rate limited applied
+  (about 20-50 ops per second should be reasonable).
 
 
 precondition:
   SELECT * FROM info() where OS = 'windows'
 
 parameters:
+  - name: Glob
+    description: "Search for this file glob"
+
   - name: SearchFilesGlobTable
     type: csv
     default: |
@@ -132,7 +140,7 @@ sources:
                Btime AS BTime,
                Ctime AS CTime, "" AS Keywords,
                IsDir, Data
-        FROM glob(globs=SearchFilesGlobTable.Glob,
+        FROM glob(globs=Glob || SearchFilesGlobTable.Glob,
                   accessor=Accessor)
 
       LET more_recent = SELECT * FROM if(

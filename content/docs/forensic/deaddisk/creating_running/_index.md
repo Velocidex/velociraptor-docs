@@ -6,6 +6,10 @@ last_reviewed: 2025-12-04
 draft: false
 weight: 20
 summary: "Creating a remapping config and running a dead disk client"
+description: |
+  In this section we explain the various way to create remapping configs for a
+  disk image, how to apply the remapping, and show how the dead disk client can be
+  used in the GUI.
 ---
 
 In this section we explain the various way to create remapping configs for a
@@ -13,7 +17,7 @@ disk image, how to apply the remapping, and show how the dead disk client can be
 used in the GUI.
 
 A dead disk remapping can be created in the GUI or using the CLI's
-[deaddisk command]({{< ref "/docs/cli/deaddisk/" >}}). Under the hood, both
+[deaddisk command](/docs/cli/commands/deaddisk/). Under the hood, both
 methods use the same built-in artifact to inspect the disk image and create the
 remapping. Here we will primarily discuss the GUI-based approach and we refer
 you to the CLI documentation if you'd prefer to use a CLI-only approach.
@@ -25,7 +29,7 @@ example of how the virtual client can be launched using VQL's `execve()` plugin.
 ## Supported disk image formats
 
 Velociraptor currently supports the following disk image formats via it's
-built-in [accessors]({{< ref "/vql_reference/accessors/" >}}):
+built-in [accessors](/vql_reference/accessors/):
 
 - raw format: a bit-by-bit copy of a hard drive, also know as "DD" or "flat"
   format. The file extension is often `.img` but there is no standard.
@@ -152,7 +156,7 @@ However the simplest option is usually to rely on an external tool (such as
 `guestmount`, as mentioned above) to mount the target filesystem as a directory
 so that Velociraptor can access it.
 
-## Generating the remapping config
+## Auto-generating the remapping config (Windows only)
 
 The following process will work in most simple cases - namely a disk or
 partition image of a Windows system, where we assume the partition containing a
@@ -189,7 +193,7 @@ folder named `Windows` is the `C:` drive.
    ![Download the remapping](dead_disk_remapping_download.png)
 
 As mentioned previously, the remapping generation step can also be done using
-the CLI's [deaddisk command]({{< ref "/docs/cli/deaddisk/" >}}), which runs the
+the CLI's [deaddisk command](/docs/cli/commands/deaddisk/), which runs the
 same `Generic.Utils.DeadDiskRemapping` artifact.
 
 ## Running a virtual client that uses the remapping
@@ -209,7 +213,7 @@ replicate the path to the image / mount point on the client system.
 {{% /notice %}}
 
 Running the virtual client is basically the same as
-[running a client interactively]({{< ref "/docs/deployment/clients/#running-clients-interactively" >}}).
+[running a client interactively](/docs/deployment/clients/#running-clients-interactively).
 The only difference is that we now provide it with the remapping config using
 the `--remap` flag.
 
@@ -237,7 +241,7 @@ the `--remap` flag.
 
    The `client.config.yaml` is the normal client config that you can download
    from your server's
-   [Dashboard screen]({{< ref "/docs/gui/#the-server-dashboard" >}}).
+   [Dashboard screen](/docs/gui/#the-server-dashboard).
 
    {{% notice note %}}
 

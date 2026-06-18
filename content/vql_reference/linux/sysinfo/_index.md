@@ -2,7 +2,11 @@
 title: sysinfo
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Collect system information on Linux clients
 ---
 
 

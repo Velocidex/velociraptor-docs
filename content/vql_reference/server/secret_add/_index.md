@@ -2,7 +2,11 @@
 title: secret_add
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Add a new secret
 ---
 
 

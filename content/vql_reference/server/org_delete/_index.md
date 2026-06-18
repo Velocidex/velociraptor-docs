@@ -2,7 +2,11 @@
 title: org_delete
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Deletes an Org from the server.
 ---
 
 

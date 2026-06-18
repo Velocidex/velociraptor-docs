@@ -1,7 +1,13 @@
 ---
 title: Server.Internal.Enrollment
 hidden: true
+sitemap:
+  disable: true
 tags: [Internal Artifact]
+description: |
+  This event artifact is an internal event stream over which client
+  enrollments are sent. You can watch this event queue to be notified
+  on any new clients enrolling for the first time.
 ---
 
 This event artifact is an internal event stream over which client

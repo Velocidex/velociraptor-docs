@@ -2,7 +2,11 @@
 title: notebooks
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  List all notebooks
 ---
 
 

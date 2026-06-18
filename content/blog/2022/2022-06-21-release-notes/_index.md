@@ -26,7 +26,7 @@ modify the query by adding a `WHERE` statement.
 ![Filtering rows with VQL](vql_filter.png)
 
 In our experience this type of quickly filtering/sorting a table is
-very common and sometimes we dont really need the full power of
+very common and sometimes we don't really need the full power of
 VQL. In 0.6.5 we introduced `table transformations` - simple
 filtering/sorting operations on every table in the GUI.
 
@@ -130,6 +130,5 @@ spin](https://github.com/Velocidex/velociraptor)!  It is a available
 on GitHub under an open source license. As always please file issues
 on the bug tracker or ask questions on our mailing list
 [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com)
-. You can also chat with us directly on discord
-[https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+. You can also chat with us directly on [Discord](/discord/).
 .

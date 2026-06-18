@@ -2,7 +2,11 @@
 title: timeline
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Read a timeline. You can create a timeline with the timeline_add() function
 ---
 
 

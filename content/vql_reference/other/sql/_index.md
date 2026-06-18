@@ -2,7 +2,11 @@
 title: sql
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Run queries against sqlite, mysql, and postgres databases
 ---
 
 

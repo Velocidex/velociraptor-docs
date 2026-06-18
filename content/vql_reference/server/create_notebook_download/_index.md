@@ -2,7 +2,11 @@
 title: create_notebook_download
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Creates a notebook export zip file.
 ---
 
 

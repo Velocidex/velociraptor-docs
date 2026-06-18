@@ -2,7 +2,11 @@
 title: splunk_upload
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Upload rows to splunk.
 ---
 
 

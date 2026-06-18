@@ -2,7 +2,13 @@
 title: watch_monitoring
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Watch clients' monitoring log. This is an event plugin. This
+  plugin will produce events from all clients.
+
 ---
 
 

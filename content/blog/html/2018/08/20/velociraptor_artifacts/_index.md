@@ -75,7 +75,7 @@ binary and push it out to clients.
 Re-deploying new code to endpoints is a difficult task in practice.
 There is testing and release processes to employ. Furthermore if a local
 modification is made to OSQuery one needs to submit PRs upstream,
-otherwise the codebases may diverge and maintainance would be difficult.
+otherwise the codebases may diverge and maintenance would be difficult.
 
 Rather than have a built in plugin for each such table, Velociraptor
 simply includes a number of generic parsers which may be reused for
@@ -135,7 +135,7 @@ Velociraptor\'s artifacts are similar to OSQuery\'s table definition
 by the YAML definition file, using generic reusable VQL plugins, put
 together with VQL queries.
 
-Here is an example of the the Linux.Sys.Users artifact - this is the
+Here is an example of the Linux.Sys.Users artifact - this is the
 equivalent artifact to OSQuery\'s users table:
 
 ``` {.sourceCode .yaml}

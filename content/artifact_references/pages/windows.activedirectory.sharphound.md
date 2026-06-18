@@ -1,37 +1,47 @@
 ---
 title: Windows.ActiveDirectory.SharpHound
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Deploys the SharpHound tool to collect Active Directory relationship
+  data for BloodHound.
 ---
 
-This artifact allows deployment of the BloodHound collection tool Sharphound.
+Deploys the SharpHound tool to collect Active Directory relationship
+data for BloodHound.
 
-BloodHound is a popular Active Directory Assessment tool that uses graph
-theory to reveal the hidden and often unintended relationships. It can also be
-used to identify and eliminate potentially risky domain configuration.
+BloodHound is a popular Active Directory Assessment tool that uses
+graph theory to reveal the hidden and often unintended
+relationships. It can also be used to identify and eliminate
+potentially risky domain configuration.
 
 NOTE: 
 
 - EDR exclusions are required.
 - General recommendation is to run this artifact on only a handful of machines 
   in a typical domain then deduplicate output.  
+ 
 
 
 <pre><code class="language-yaml">
 name: Windows.ActiveDirectory.SharpHound
 author: Matt Green - @mgreen27
 description: |
-   This artifact allows deployment of the BloodHound collection tool Sharphound.
+  Deploys the SharpHound tool to collect Active Directory relationship
+  data for BloodHound.
 
-   BloodHound is a popular Active Directory Assessment tool that uses graph
-   theory to reveal the hidden and often unintended relationships. It can also be
-   used to identify and eliminate potentially risky domain configuration.
+  BloodHound is a popular Active Directory Assessment tool that uses
+  graph theory to reveal the hidden and often unintended
+  relationships. It can also be used to identify and eliminate
+  potentially risky domain configuration.
 
-   NOTE: 
+  NOTE: 
 
-   - EDR exclusions are required.
-   - General recommendation is to run this artifact on only a handful of machines 
-     in a typical domain then deduplicate output.  
+  - EDR exclusions are required.
+  - General recommendation is to run this artifact on only a handful of machines 
+    in a typical domain then deduplicate output.  
    
 reference:
   - https://github.com/SpecterOps/SharpHound/

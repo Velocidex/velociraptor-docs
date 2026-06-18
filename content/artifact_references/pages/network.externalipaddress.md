@@ -1,7 +1,12 @@
 ---
 title: Network.ExternalIpAddress
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Identifies the external IP address of the endpoint using an external
+  web service.
 ---
 
 Identifies the external IP address of the endpoint using an external

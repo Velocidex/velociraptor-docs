@@ -1,16 +1,23 @@
 ---
 title: Generic.System.EfiSignatures
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Collects UEFI Secure Boot signature variables including PK, db, and
+  dbx from the client.
 ---
 
-Collect Efi Signature information from the client.
+Collects UEFI Secure Boot signature variables including PK, db, and
+dbx from the client.
 
 
 <pre><code class="language-yaml">
 name: Generic.System.EfiSignatures
 description: |
-  Collect Efi Signature information from the client.
+  Collects UEFI Secure Boot signature variables including PK, db, and
+  dbx from the client.
 
 type: CLIENT
 export: |

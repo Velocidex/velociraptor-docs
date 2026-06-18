@@ -1,14 +1,22 @@
 ---
 title: Windows.Events.TrackProcesses
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+description: |
+  Tracks processes using Sysmon ETW events (process creation and
+  termination) with pslist sync.
 ---
+
+Tracks processes using Sysmon ETW events (process creation and
+termination) with pslist sync.
 
 Uses Sysmon and pslist to keep track of running processes by using the
 Velociraptor Process Tracker.
 
 The Process Tracker keeps track of exited processes, and resolves
-process call chains from it in memory cache.
+process call chains from its in-memory cache.
 
 This event artifact enables the global process tracker and makes it
 possible to run many other artifacts that depend on the process
@@ -18,11 +26,14 @@ tracker.
 <pre><code class="language-yaml">
 name: Windows.Events.TrackProcesses
 description: |
+  Tracks processes using Sysmon ETW events (process creation and
+  termination) with pslist sync.
+
   Uses Sysmon and pslist to keep track of running processes by using the
   Velociraptor Process Tracker.
 
   The Process Tracker keeps track of exited processes, and resolves
-  process call chains from it in memory cache.
+  process call chains from its in-memory cache.
 
   This event artifact enables the global process tracker and makes it
   possible to run many other artifacts that depend on the process

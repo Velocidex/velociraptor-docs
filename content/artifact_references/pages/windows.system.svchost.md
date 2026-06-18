@@ -1,26 +1,37 @@
 ---
 title: Windows.System.SVCHost
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Lists `svchost.exe` processes whose parent is not services.exe,
+  indicating suspicious activity.
 ---
 
-Typically a windows system will have many svchost.exe
-processes. Sometimes attackers name their processes svchost.exe to
-try to hide. Typically svchost.exe is spawned by services.exe.
+Lists `svchost.exe` processes whose parent is not services.exe,
+indicating suspicious activity.
 
-This artifact lists all the processes named svchost.exe and their
-parents if the parent is not also named services.exe.
+Typically a windows system will have many `svchost.exe`
+processes. Sometimes attackers name their processes `svchost.exe` to
+try to hide. Typically `svchost.exe` is spawned by `services.exe`.
+
+This artifact lists all the processes named `svchost.exe` and their
+parents where the parent is NOT named `services.exe`.
 
 
 <pre><code class="language-yaml">
 name: Windows.System.SVCHost
 description: |
-  Typically a windows system will have many svchost.exe
-  processes. Sometimes attackers name their processes svchost.exe to
-  try to hide. Typically svchost.exe is spawned by services.exe.
+  Lists `svchost.exe` processes whose parent is not services.exe,
+  indicating suspicious activity.
+  
+  Typically a windows system will have many `svchost.exe`
+  processes. Sometimes attackers name their processes `svchost.exe` to
+  try to hide. Typically `svchost.exe` is spawned by `services.exe`.
 
-  This artifact lists all the processes named svchost.exe and their
-  parents if the parent is not also named services.exe.
+  This artifact lists all the processes named `svchost.exe` and their
+  parents where the parent is NOT named `services.exe`.
 
 sources:
   - precondition: |

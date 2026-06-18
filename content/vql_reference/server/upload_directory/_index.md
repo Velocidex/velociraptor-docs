@@ -2,7 +2,13 @@
 title: upload_directory
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Upload a file to an upload directory. The final filename will be
+  the output directory path followed by the filename path.
+
 ---
 
 

@@ -4,7 +4,7 @@ description: |
   This artifact completely removes a client from the data store if a configured
   label is set.
 
-  We reccomend running as a server artifact then if happy with actions add as an
+  We recommend running as a server artifact then if happy with actions add as an
   action for monitoring.
 
   Be careful with this one: there is no way to recover old

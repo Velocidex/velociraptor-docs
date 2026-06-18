@@ -1,16 +1,23 @@
 ---
 title: Server.Utils.RemoveTimeline
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+description: |
+  Deletes a child timeline from a specified super-timeline in a
+  notebook.
 ---
 
-Remove a child timeline from a super timeline.
+Deletes a child timeline from a specified super-timeline in a
+notebook.
 
 
 <pre><code class="language-yaml">
 name: Server.Utils.RemoveTimeline
 description: |
-  Remove a child timeline from a super timeline.
+   Deletes a child timeline from a specified super-timeline in a
+   notebook.
 
 type: SERVER
 

@@ -5,6 +5,12 @@ date: 2021-06-09T04:03:42Z
 last_reviewed: 2025-12-29
 draft: false
 weight: 25
+description: |
+  Velociraptor's superpower is a powerful query language termed
+  **VQL**. You might be surprised to learn that you have already been
+  using VQL all this time. When clicking in the VFS interface to sync a
+  directory listing or download files, the GUI was collecting artifacts
+  behind the scenes.
 ---
 
 Velociraptor's superpower is a powerful query language termed
@@ -38,7 +44,7 @@ A collection of artifacts can return rows or upload
 files. This is because an artifact is simply a VQL query and all
 queries return a sequence of rows.
 
-## Example: collect scheduled tasks from endpoint.
+###### Example: collect scheduled tasks from endpoint.
 
 To illustrate how artifacts can be used, let's collect a common
 forensic artifact from our Windows endpoint. Windows allows commands
@@ -76,9 +82,10 @@ The next step allows us to modify artifact parameters.
 
 Artifacts may accept parameters from the user which change the way the
 artifact works. The detail of how artifact parameters work is
-described in [Artifact Parameters]({{< ref
-"/docs/artifacts/parameters/" >}}) but for the moment we just update
-the parameters needed for the `Windows.System.TaskScheduler` artifact.
+described in
+[Artifact Parameters](/docs/artifacts/parameters/)
+but for the moment we just update the parameters needed for the
+`Windows.System.TaskScheduler` artifact.
 
 ![Artifact Parameters](artifact_parameters.svg)
 
@@ -101,9 +108,10 @@ degradation.
 
 Velociraptor contains a number of mechanism to limit resource usage,
 as a "fail safe" and to prevent accidentally overloading the
-endpoint. You can read more details on [Resource Limits here]({{< ref
-"/docs/artifacts/resources/" >}}), but for now notice that
-Velociraptor's default resource limits are pretty sensible for most use cases.
+endpoint. You can read more details on
+[Resource Limits here](/docs/artifacts/resources/),
+but for now notice that Velociraptor's default resource limits are
+pretty sensible for most use cases.
 
 ![Artifact Resource usage](resource_use.png)
 
@@ -166,7 +174,7 @@ The **View Artifacts** screen allows you to search and find all
 artifacts loaded by the Velociraptor server.
 
 You can learn more about Velociraptor Artifacts in
-[this section]({{< ref "/docs/artifacts/" >}}).
+[this section](/docs/artifacts/).
 
 Search for an artifact in the search screen and select an artifact to view it.
 
@@ -206,5 +214,5 @@ collection you are basing it on.
 
 ## Learn more
 
-Go [here]({{< ref "/docs/artifacts/" >}}) to learn more about Velociraptor
+Go [here](/docs/artifacts/) to learn more about Velociraptor
 Artifacts and about how to write your own artifacts.

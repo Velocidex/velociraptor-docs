@@ -5,20 +5,25 @@ date: 2025-05-14
 last_reviewed: 2025-07-14
 draft: false
 weight: 80
+description: |
+  Velociraptor offers many features via its command line interface (CLI).
+summary: |-
+  Reference for the Velociraptor CLI, including command syntax, help
+  options, VQL documentation, and autoexec mode.
 ---
 
-Velociraptor offers many features via it's command line interface (CLI).
+Velociraptor offers many features via its command line interface (CLI).
 
 In addition to functioning as a client or server, the binary also provides
 several utility functions that are accessible on the command line, which in many
 cases are CLI equivalents of functions that are available in VQL.
 
 You can also do investigation of the local system using the CLI alone, as
-described [here]({{< ref "/docs/deployment/#command-line-investigation-tool" >}}),
-[here]({{< ref "/docs/cli/artifacts/#-artifacts-collect-" >}}) and
-[here]({{< ref "/docs/cli/query/" >}}).
+described in the [deployment options](/docs/deployment/#command-line-investigation-tool),
+[artifact collection](/docs/cli/commands/artifacts/#-artifacts-collect-), and
+[query command](/docs/cli/commands/query/) page.
 
-{{% notice info "Be aware of filesystem permissions when working on the command line" %}}
+{{% notice info "Filesystem permissions on the command line" %}}
 
 When installed as a service, Velociraptor's datastore directory is owned by the
 service account named `velociraptor` and accessible to the `velociraptor` user
@@ -39,7 +44,7 @@ systems this can be done with the command `sudo -u velociraptor bash`.
 Velociraptor's CLI commands generally consist of a command and optionally a
 subcommand, using a subject-verb syntax. For example `config show`.
 
-There are [global flags]({{< ref "/docs/cli/flags/" >}}) that can be used with
+There are [global flags](/docs/cli/flags/) that can be used with
 any command, and also flags that are specific to each command and
 subcommand.
 
@@ -66,7 +71,7 @@ You can print a more verbose listing of help for all commands by using the
 `--help-long` flag:
 - `velociraptor --help-long`
 
-A huge number of command line flags and environment variables are supported -
+Velociraptor supports many command line flags and environment variables -
 too many to show in the standard help listing. To see all of these, set the
 environment variable `DEBUG=1` before running the help command:
 
@@ -78,10 +83,10 @@ For those situations where you're working in a bunker without internet access.
 
 #### [ vql list ]
 
-Prints the reference documentation for all VQL plugins, functions and accessors
+Prints the reference documentation for all VQL plugins, functions, and accessors
 in Markdown format.
 
-Can be piped through [Glow](https://github.com/charmbracelet/glow) to page it
+Pipe the output through [Glow](https://github.com/charmbracelet/glow) to page it
 and pretty-print it.
 
 For example:
@@ -89,14 +94,14 @@ For example:
 ```sh
 velociraptor vql list | glow -p
 ```
-![](glow.png)
+![velociraptor vql list output rendered with Glow](glow.png)
 
 #### [ vql export ]
 
-Prints the reference documentation for all VQL plugins, functions and accessors
+Prints the reference documentation for all VQL plugins, functions, and accessors
 in YAML format.
 
-The output can be piped through [yq](https://github.com/mikefarah/yq) to filter,
+Pipe the output through [yq](https://github.com/mikefarah/yq) to filter,
 transform, or pretty-print it.
 
 For example:
@@ -104,43 +109,48 @@ For example:
 ```sh
 velociraptor vql export | yq -P '.[] | select(.type == "Function") | select(.name == "stat")'
 ```
-![](yq.png)
+![velociraptor vql export output filtered with yq](yq.png)
+
+## Running artifacts on the command line
+
+**Run mode** (`-r` or `--run` flag) lets you collect any
+Velociraptor artifact directly from the terminal as if it were a
+standalone CLI command. It supports local collections on the
+current machine as well as remote collections on the server or on
+clients via the Velociraptor API.
+
+Run mode provides a simpler syntax than the equivalent
+`artifacts collect` command — artifact parameters are passed as
+direct flags instead of `--args Key=Value` pairs.
+
+See the [Run mode](/docs/cli/run/) page for syntax, examples,
+and remote collection details.
 
 ## Autoexec mode and post args
 
-Velociraptor has the ability to embed config and files in its binary when using
-[the `config repack` command]({{< ref "/docs/cli/config/#-config-repack-" >}}).
-When the binary is run without any CLI commands it first checks whether it has
-an embedded config and if it does then it loads it. A special section in the
-config, named `autoexec.argv`, tells the binary what command line (including
-flags) to execute. The embedded config can also store custom artifacts.
-This is how [offline collectors]({{< ref "/docs/deployment/offline_collections/" >}})
-work.
+Autoexec mode lets you embed a default command line and custom artifacts
+directly into the Velociraptor binary using the
+[`config repack`](/docs/cli/commands/config/#-config-repack-) command.
+[Offline collectors](/docs/deployment/offline_collections/) use this
+mechanism.
 
-- When the binary is run ***with*** CLI commands it executes them, and ignores
-  the `autoexec.argv` spec (if the embedded config contains one).
+The embedded config's `autoexec.argv` section specifies the default CLI
+arguments. The binary follows these precedence rules:
 
-- When the binary is run ***without*** any CLI commands, and it has an
-  `autoexec.argv` spec which it can execute, then it does so.
+- When run **with** CLI commands: the commands are executed and
+  `autoexec.argv` is ignored.
+- When run **without** CLI commands: if an `autoexec.argv` section exists,
+  it is executed.
 
-But what if you want it to load the autoexec section but change it's behavior
-with additional CLI flags?
+### The `--` pseudo-flag
 
-For that special case we have a special CLI pseudo-flag: `--`
+The `--` pseudo-flag solves a specific problem: running the binary without
+any CLI arguments triggers autoexec mode, but adding any CLI command causes
+autoexec to be skipped. The `--` pseudo-flag lets you append extra flags
+without supplying a command, so autoexec mode still activates.
 
-This special flag separates the CLI arguments into pre and post args. Post
-args will be appended to any that are in the embedded autoexec command line,
-while still allowing the autoexec spec to load and execute it's commands (if it
-has any).
-
-As a concrete example, suppose we have created an offline collector named
-`velociraptor_collector.exe`. If we just run it without any args it does it's
-offline collector business and we can't change how it runs. If we run it with
-any CLI arguments then it's just a normal binary, since the offline collector
-behaviour is skipped due to the presence of a command.
-
-If we run it with the `config show` command we can inspect the embedded config
-and see that it contains the following `autoexec.argv` section:
+For example, consider an offline collector binary that contains this
+`autoexec.argv` section in its embedded config:
 
 ```yaml
 autoexec:
@@ -152,21 +162,17 @@ autoexec:
   - --require_admin
 ```
 
-But what if we want it to slightly modify the autoexec behaviour by adding
-`--nobanner` and `--prompt` to the autoexec command line because we decided (for
-arbitrary reasons) that we want to hide the Velociraptor banner and also have it
-pause for user acknowledgement at the end of the collection?
-
-We can do this by adding `-- --nobanner --prompt` to the command line.
+Without any arguments, the binary runs `artifacts collect Collector
+-v --require_admin`. To add `--nobanner` and `--prompt` to that command
+line, use `--` followed by the extra flags:
 
 ```sh
 velociraptor_collector.exe -- --nobanner --prompt
 ```
 
-Because the command line doesn't include any commands, the embedded config will
-still be loaded and the `autoexec.argv` command line will be executed. However
-it now appends our new flags to the command line, which is equivalent to having
-this in the autoexec section:
+Because no CLI command appears before `--`, autoexec mode activates. The
+post args are appended to the `autoexec.argv` command line, making it
+equivalent to the following config:
 
 ```yaml
 autoexec:
@@ -180,24 +186,27 @@ autoexec:
   - --prompt
 ```
 
-The above would look like this on the command line:
+Which produces the effective command line:
 
 ```sh
 velociraptor_collector.exe artifacts collect Collector -v --require_admin --nobanner --prompt
 ```
 
-This modifies the offline collector behaviour slightly but it otherwise
-continues according to the embedded spec.
+This modifies the offline collector behaviour slightly but it
+otherwise continues according to the embedded spec.
 
-Autoexec mode can be used in a lot of novel ways besides the usual offline
-collector use case. So this method of tweaking the command line allows you to
-use any of the global or command-specific
-[CLI flags]({{< ref "/docs/cli/flags/" >}})
+Autoexec mode can be used in a lot of novel ways besides the usual
+offline collector use case. So this method of tweaking the command
+line allows you to use any of the global or command-specific
+[CLI flags](/docs/cli/flags/).
 
-Note that if a flag is specified in `autoexec.argv` then it can't be negated
-or overridden. You can only add flags that have not already been used.
+Any global or command-specific [CLI flags](/docs/cli/flags/) can be
+used as post args.
 
+Note that if a flag is specified in `autoexec.argv` then it can't be
+negated or overridden. You can only _add_ flags that have not already
+been used.
 
-## Learn about the commands available in the CLI
+## Learn about the commands and flags available in the CLI
 
-{{% children description=true %}}
+{{% children description=true depth=2 %}}

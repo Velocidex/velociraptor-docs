@@ -70,11 +70,11 @@ not enough:
 To address some of these issues, Velociraptor creates a backup package
 daily by default. If you need more frequent backups, you can configure the
 backup interval in your server config using the
-[defaults.backup_period_seconds]({{< ref
-"/docs/deployment/references/#defaults.backup_period_seconds" >}}) setting.
+[defaults.backup_period_seconds](/docs/deployment/references/#defaults.backup_period_seconds)
+setting.
 
 You can also force Velociraptor to create a backup package using the VQL
-[backup()]({{< ref "/vql_reference/server/backup/" >}}) function, but if you do
+[backup()](/vql_reference/server/backup/) function, but if you do
 not you can still find the scheduled (daily by default) packages in the backup
 directory `<filestore>/backups/`. Note that the backup package in the root org
 will contain all other orgs' backups as well.
@@ -107,7 +107,7 @@ SELECT * FROM backup_restore(name="MyBackup")
 
 Backups always include the data from all Providers, but when restoring you can
 choose a subset that you want to restore the using the
-[backup_restore()]({{< ref "/vql_reference/server/backup_restore" >}})
+[backup_restore()](/vql_reference/server/backup_restore/)
 `providers` parameter.
 
 The current backup providers are:
@@ -174,12 +174,12 @@ collections as generic Zip files containing CSV or JSON files is
 preferable to files that can only be viewed in Velociraptor.
 
 Therefore, we really need `Data Export` capability from
-Velociraptor. This is generated using the [create_flow_download()]({{<
-ref "/vql_reference/server/create_flow_download/" >}}) and
-[create_hunt_download()]({{< ref
-"/vql_reference/server/create_hunt_download/" >}}) plugins. Those
-plugins are the equivalent of the `Download Results` option in the
-Velociraptor GUI.
+Velociraptor. This is generated using the
+[create_flow_download()](/vql_reference/server/create_flow_download/)
+and
+[create_hunt_download()](/vql_reference/server/create_hunt_download/)
+plugins. Those plugins are the equivalent of the `Download Results`
+option in the Velociraptor GUI.
 
 * An export ZIP of a hunt contains all the data collected for that
   hunt by each client that participated.

@@ -16,15 +16,15 @@ date: 2022-03-20
 Velociraptor's killer feature is its VQL language making it possible
 to write powerful queries that triage and extract valuable forensic
 evidence from the running system. One of the most attractive features
-is the ability to write VQL [artifacts]({{< ref "/docs/artifacts/" >}})
+is the ability to write VQL [artifacts](/docs/artifacts/)
 encapsulating powerful VQL queries. Users have access to a library of
-[packaged artifacts]({{< ref "/artifact_references/" >}})
+[packaged artifacts](/artifact_references/)
 that come with Velociraptor as well as a vibrant community and an
-[Artifact Exchange]({{< ref "/exchange/" >}}).
+[Artifact Exchange](/exchange/).
 
 Previously Velociraptor was most useful as a live analysis
 platform. Either deployed as an agent on the live endpoint, or via the
-[Offline Collector]({{< ref "/docs/deployment/offline_collections/" >}})
+[Offline Collector](/docs/deployment/offline_collections/)
 collecting artifacts from the running system. However, many users are sometimes
 faced with analyzing a dead disk image - for example, when handed a clone of a
 cloud VM disk after a compromise.
@@ -74,10 +74,10 @@ my existing favorite artifacts.
 
 ## Remapping accessors
 
-Velociraptor accesses files using [filesystem accessors]({{% ref
-"/docs/forensic/filesystem/#filesystem-accessors" %}}). You can think
-of an accessor as simply a driver that provides access to a file or
-directory.
+Velociraptor accesses files using
+[filesystem accessors](/docs/forensic/filesystem/#filesystem-accessors).
+You can think of an accessor as simply a driver that provides access
+to a file or directory.
 
 There are a number of types of accessors available, in the following
 discussion the following accessors are important:
@@ -101,7 +101,7 @@ discussion the following accessors are important:
 {{% notice note "Supported disk image formats" %}}
 
 Velociraptor currently supports the following 4 disk image formats via built-in
-[accessors]({{< ref "/vql_reference/accessors/" >}}):
+[accessors](/vql_reference/accessors/):
 
 - `EWF`: Expert Witness Compression Format, sometimes called "E01 images"
 - `VMDK`: virtual hard drive format introduced by VMware
@@ -281,7 +281,7 @@ This rule mounts the `registry` accessor's
 partition.  Note how pathspec descriptors nest and can utilize
 multiple different accessors to achieve the final mount point (in this
 case, the `file` accessor, followed by `offset` followed by `raw_ntfs`
-followed by `raw_registry`)..
+followed by `raw_registry`).
 
 ![Browsing the VFS with registry accessors](reg_accssor_vfs.png)
 
@@ -478,5 +478,5 @@ like to try out these features in Velociraptor, It is available on
 GitHub under an open source license. As always, please file issues on
 the bug tracker or ask questions on our mailing list
 velociraptor-discuss@googlegroups.com. You can also chat with us
-directly on discord at https://www.velocidex.com/discord.
+directly on [Discord](/discord/)..
 

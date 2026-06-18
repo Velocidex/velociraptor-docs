@@ -2,7 +2,17 @@
 title: pslist
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Enumerate running processes.
+
+  When specifying the pid this operation is much faster so if you are
+  interested in specific processes, the pid should be
+  specified. Otherwise, the plugin returns all processes one on each
+  row.
+
 ---
 
 

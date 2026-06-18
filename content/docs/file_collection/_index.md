@@ -4,6 +4,10 @@ date: 2021-06-27T04:31:24Z
 last_reviewed: 2026-01-29
 draft: false
 weight: 50
+description: |
+  Traditional DFIR tools focus on file acquisition and often rely on file _copies_
+  as their primary data source. These tools typically perform subsequent analysis
+  on a centralized server or network-isolated system.
 ---
 
 Traditional DFIR tools focus on file acquisition and often rely on file _copies_
@@ -28,7 +32,7 @@ copy files, this is only one of many available actions.
 
 Velociraptor queries are written in VQL (Velociraptor Query Language) and
 packaged inside a YAML data structure which we call an
-[artifact]({{< ref "/docs/artifacts/" >}}). You then **collect** these artifacts
+[artifact](/docs/artifacts/). You then **collect** these artifacts
 on one or more target endpoints.
 
 VQL artifacts can combine data from multiple sources to create a more complete
@@ -78,8 +82,8 @@ file collection and centralized processing highly impractical and painfully
 slow. The centralized file processing approach is at odds with the goal of rapid
 incident response. For that reason, Velociraptor is not designed around the
 centralized processing paradigm, although you can still use Velociraptor to work
-with [file copies]({{< ref "/docs/deployment/offline_collections/collection_data/" >}})
-and [disk images]({{< ref "/docs/forensic/deaddisk/" >}}) in a centralized
+with [file copies](/docs/deployment/offline_collections/collection_data/)
+and [disk images](/docs/forensic/deaddisk/) in a centralized
 manner if necessary. And that might be necessary under certain circumstances,
 but you should take advantage of Velociraptor's scalable, decentralized design
 whenever possible.
@@ -100,7 +104,7 @@ legal reasons, then disk images are still considered the gold standard for that
 purpose. You might still consider creating disk images _in addition to_
 investigating the endpoint with Velociraptor. Velociraptor does also provide
 artifacts that facilitate
-[bulk file collection]({{< ref "/docs/file_collection/bulk/" >}})
+[bulk file collection](/docs/file_collection/bulk/)
 if you need to do selective file preservation.
 
 With all that considered, let's look at how files are actually collected...
@@ -110,7 +114,7 @@ With all that considered, let's look at how files are actually collected...
 In Velociraptor, a "file upload" is the transfer of a file from an endpoint to
 the server, which then stores the file in its filestore. The VQL `upload()`
 function is the workhorse behind this capability and is used in many of the
-[built-in artifacts]({{< ref "/artifact_references/" >}}).
+[built-in artifacts](/artifact_references/).
 
 Velociraptor enables efficient file transfer and storage through several
 built-in mechanisms:
@@ -133,7 +137,7 @@ built-in mechanisms:
 Beyond uploading files to the server, specialized plugins like `upload_s3()`,
 `upload_gcs()`, `upload_azure()`, and `upload_sftp()` allow endpoints to send
 data
-[directly to external cloud storage providers or remote servers]({{< relref "#remote-upload-destinations" >}}).
+[directly to external cloud storage providers or remote servers](#remote-upload-destinations).
 
 {{% notice tip "Terminology note"%}}
 
@@ -164,7 +168,7 @@ To summarize the terminology conventions used in our documentation:
 
 ## The VQL upload function
 
-The VQL [upload()]({{< ref "/vql_reference/popular/upload/" >}}) function is the
+The VQL [upload()](/vql_reference/popular/upload/) function is the
 primary mechanism for transferring files from an endpoint to the server
 filestore. It can be triggered based on specific query criteria, and all
 resulting files are associated with the collection that invoked the function.
@@ -174,7 +178,7 @@ associated with the collection that invoked the `upload()` function.
 
 Alternatively, if you want to upload to destinations other than the server,
 Velociraptor has a range of other upload-related functions that are
-[described below]({{< relref "#remote-upload-destinations" >}}).
+[described below](#remote-upload-destinations).
 
 ###### A Basic Example
 
@@ -189,7 +193,7 @@ FROM glob(globs="C:/Users/*/Downloads/*.exe")
 
 Of course if you know the exact path of a file that you want to upload to the
 server then you don't need to use the `glob()` plugin, but this plugin is
-usually used when [searching the filesystem]({{< ref "/docs/forensic/filesystem/" >}}).
+usually used when [searching the filesystem](/docs/forensic/filesystem/).
 The `upload()` function requires an OSPath in its `file` argument, so any
 plugin that produces an OSPath will work, or you could manually specify a path
 to target a particular file.
@@ -205,7 +209,7 @@ built-in file inspector (the "preview" option).
 ![File Inspector view](uploaded_files_preview.png)
 
 In other VQL results tables, you can configure which
-[column types]({{< ref "/docs/artifacts/advanced_fields/#-column_types-" >}})
+[column types](/docs/artifacts/advanced_fields/#-column_types-)
 are used to facilitate GUI access to the uploaded files.
 
 For example, if we use the `upload()` function in an artifact and assign it to
@@ -219,7 +223,7 @@ FROM glob(globs="C:/Users/*/Downloads/*.exe")
 ```
 
 then we can also define how we want them displayed in the results table in the
-GUI using the [column_types]({{< ref "/docs/artifacts/advanced_fields/#-column_types-" >}})
+GUI using the [column_types](/docs/artifacts/advanced_fields/#-column_types-)
 section in the artifact:
 
 ```yaml
@@ -245,17 +249,18 @@ your VQL as:
 LET ColumnTypes <= dict(`FilePreview`='preview_upload', `FileDownload`='download')
 ```
 
-The VQL specification approach is more commonly used in Velociraptor notebooks,
-although these are based on [notebook templates]() which are also just
-artifacts, and therefore also support the YAML-based `column_types`
-specification.
+The VQL specification approach is more commonly used in Velociraptor
+notebooks, although these are based on
+[notebook templates](/docs/artifacts/notebook_templates/),
+which are also just artifacts, and therefore also support the
+YAML-based `column_types` specification.
 
 
 ### Enumerating uploads using VQL
 
 The uploads associated with a collection can be enumerated in Velociraptor
 notebooks using the VQL
-[uploads()]({{< ref "/vql_reference/server/uploads/" >}}) plugin.
+[uploads()](/vql_reference/server/uploads/) plugin.
 
 This plugin returns information about all the uploads in a collection, including
 2 fields that can be used to access the file in the server's filestore:
@@ -265,7 +270,7 @@ This plugin returns information about all the uploads in a collection, including
 These fields can be used in subsequent VQL actions to access or manipulate the
 file copy that is stored in the server's filestore. For example, the `vfs_path`
 can be used with the
-[`file_store_delete()`]({{< ref "/vql_reference/server/file_store_delete/" >}})
+[`file_store_delete()`](/vql_reference/server/file_store_delete/)
 function, if necessary.
 
 #### For an individual collection
@@ -330,7 +335,7 @@ upload efficiency in certain scenarios.
 
 ### Filesystem Accessors
 
-[Accessors]({{< ref "/vql_reference/accessors/" >}}) act as filesystem drivers,
+[Accessors](/vql_reference/accessors/) act as filesystem drivers,
 allowing the `upload()` function to read from diverse sources such as:
 - the standard OS API (`file` accessor),
 - raw cluster level (`ntfs`, `fat`, `ext4` accessors),
@@ -352,7 +357,7 @@ be restricted or require an intermediate processing step. For example:
 
 As an interesting application of accessors, and demonstrating the usefulness of
 their modular nature, the `ssh` accessor can be used to
-[upload files from a remote host via SSH]({{< ref "/docs/file_collection/ssh/" >}}),
+[upload files from a remote host via SSH](/docs/file_collection/ssh/),
 that is: without needing a Velociraptor client on the remote host.
 
 Any data that has been generated by another function or plugin can be uploaded
@@ -363,7 +368,7 @@ as a file if you use the `upload()` function with the `data` accessor.
 For additional safety when locally handling files, and to reduce the chance of
 your local antivirus accidentally quarantining potential malware that you intend
 to analyze, you can set a downloads password (such as the industry-standard
-"infected") in your [user preferences]({{< ref "/docs/gui/user_preferences/" >}}).
+"infected") in your [user preferences](/docs/gui/user_preferences/).
 This ensures that any files exported from the GUI are placed in a
 password-protected zip and thereby made safe for transit to your analysis
 environment.
@@ -403,7 +408,7 @@ by default.
 
 In addition, enabling this feature comes with some caveats and changes to upload
 behavior that might be confusing to the user (see the
-[upload function documentation]({{< ref "/vql_reference/popular/upload/" >}})
+[upload function documentation](/vql_reference/popular/upload/)
 for more details).
 
 As with any advanced feature, Resumable Uploads have seen continuous refinement.
@@ -449,7 +454,7 @@ as when attempting file collections over an unstable internet link.
 #### Checking the status of resumable uploads
 
 On the server, you can check which file uploads are outstanding for a specific
-collection using the [upload_transactions()]({{< ref "/vql_reference/other/upload_transactions/" >}})
+collection using the [upload_transactions()](/vql_reference/other/upload_transactions/)
 plugin.
 
 For example, in the following screenshot you can see that the client is
@@ -492,7 +497,7 @@ long it will take. It might happen that a certain endpoint has many more files
 than you anticipated, or that a certain file might be unusually large on some
 particular endpoint.
 
-[Resource limits]({{< ref "/docs/artifacts/resources/" >}}) is a feature
+[Resource limits](/docs/artifacts/resources/) is a feature
 intended to protect against such unforeseen circumstances. Velociraptor allows
 limits to be set, after which the collection is cancelled. In particular, the
 `max_upload_bytes` and `timeout` resource limits provide an additional safeguard
@@ -501,7 +506,7 @@ against unexpected/accidental uploads of extremely large files.
 To guard against accidental server disk exhaustion, there is a default limit of
 1GB per collection. This limit, and the default 10-minute timeout, can be
 increased in the GUI for larger acquisitions. Alternatively they can be
-[defined in the artifact]({{< ref "/docs/artifacts/advanced_fields/#-resources-" >}})
+[defined in the artifact](/docs/artifacts/advanced_fields/#-resources-)
 if the artifact is expected to usually result in large data transfers (such as
 and artifact which uploads memory dumps).
 
@@ -553,7 +558,7 @@ The GUI will also display an alert if the minimum threshold is encountered.
 
 It's also possible to have the client upload files to destinations other than
 the Velociraptor server. This is most often used with
-[offline collections]({{< ref "/docs/deployment/offline_collections/" >}})
+[offline collections](/docs/deployment/offline_collections/)
 to upload a large collection container zip to a remote destination, but the same
 upload functions can be used in any VQL queries to upload individual files.
 
@@ -580,29 +585,29 @@ Velociraptor currently supports the following remote upload destinations:
 
 - **Google Cloud Storage**: using the `upload_gcs` function.
 
-  See [How to set up a GCS Bucket for file uploads]({{< ref "/knowledge_base/tips/setup_gcs_storage/" >}}).
+  See [How to set up a GCS Bucket for file uploads](/knowledge_base/tips/setup_gcs_storage/).
 
 - **AWS S3** or **MinIO**: using the `upload_s3` function.
 
   MinIO is a self-hosted S3-compatible server.
 
-  See [How to set up a MinIO (S3-compatible) dropbox server for file uploads]({{< ref "/knowledge_base/tips/dropbox_server/" >}}).
+  See [How to set up a MinIO (S3-compatible) dropbox server for file uploads](/knowledge_base/tips/dropbox_server/).
 
 - **Azure Blob Storage**: using the `upload_azure` function.
 
-  See [How to set up Azure Blob Storage for file uploads]({{< ref "/knowledge_base/tips/setup_azure_storage/" >}}).
+  See [How to set up Azure Blob Storage for file uploads](/knowledge_base/tips/setup_azure_storage/).
 
 - **SMB Share**: using the `upload_smb` function.
 
-  See [How to set up a SMB share for file uploads]({{< ref "/knowledge_base/tips/setup_smb_share/" >}}).
+  See [How to set up a SMB share for file uploads](/knowledge_base/tips/setup_smb_share/).
 
 - **SFTP server**: using the `upload_sftp` function.
 
-  See [How to set up a SFTP server for file uploads]({{< ref "/knowledge_base/tips/setting_up_sftp/" >}}).
+  See [How to set up a SFTP server for file uploads](/knowledge_base/tips/setting_up_sftp/).
 
 - **WebDAV server**: using the `upload_webdav` function.
 
-  See the [upload_webdav]({{< ref "/vql_reference/other/upload_webdav/" >}})
+  See the [upload_webdav](/vql_reference/other/upload_webdav/)
   function documentation.
 
 - **Generic HTTP server**: using the `http_client` function.
@@ -611,7 +616,7 @@ Velociraptor currently supports the following remote upload destinations:
   generic web service destination, a common use case being to submit files to
   malware analysis sandboxes.
   See the function's
-  [documentation]({{< ref "/vql_reference/popular/http_client/#example---uploading-files">}})
+  [documentation](/vql_reference/popular/http_client/#example---uploading-files)
   for examples.
 
 {{% notice note "Differences from the upload function" %}}
@@ -624,7 +629,7 @@ other collection.
 
 Each remote destination type offers its own particular options and you should
 refer to the function-specific documentation in the
-[VQL reference]({{< ref "/vql_reference/" >}}), and the vendor documentation for
+[VQL reference](/vql_reference/), and the vendor documentation for
 the supported cloud storage providers.
 
 {{% /notice %}}

@@ -2,7 +2,11 @@
 title: rm
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Remove a file from the filesystem using the API.
 ---
 
 

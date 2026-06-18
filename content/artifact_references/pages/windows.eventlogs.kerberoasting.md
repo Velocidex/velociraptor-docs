@@ -1,20 +1,29 @@
 ---
 title: Windows.EventLogs.Kerberoasting
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Detects Kerberoasting attempts by extracting Kerberos TGS requests
+  (EID 4769) with RC4 encryption from the Security log.
 ---
 
-This Artifact will return all successful Kerberos TGS Ticket events for
-Service Accounts (SPN attribute) implemented with weak encryption. These
-tickets are vulnerable to brute force attack and this event is an indicator
-of a Kerberoasting attack.
+Detects Kerberoasting attempts by extracting Kerberos TGS requests
+(EID 4769) with RC4 encryption from the Security log.
 
-Typical attacker methodology is to firstly request accounts in the domain
-with SPN attributes, then request an insecure TGS ticket for brute forcing.
-This attack is particularly effective as any domain credentials can be used
-to implement the attack and service accounts often have elevated privileges.
-Kerberoasting can be used for privilege escalation or persistence by adding a
-SPN attribute to an unexpected account.
+This Artifact will return all successful Kerberos TGS Ticket events
+for Service Accounts (SPN attribute) implemented with weak
+encryption. These tickets are vulnerable to brute force attack and
+this event is an indicator of a Kerberoasting attack.
+
+Typical attacker methodology is to firstly request accounts in the
+domain with SPN attributes, then request an insecure TGS ticket for
+brute forcing. This attack is particularly effective as any domain
+credentials can be used to implement the attack and service accounts
+often have elevated privileges. Kerberoasting can be used for
+privilege escalation or persistence by adding a SPN attribute to an
+unexpected account.
 
 Log Source: Windows Security Event Log (Domain Controllers).
 Event ID: 4769
@@ -23,10 +32,11 @@ Ticket Encryption: 0x17 (RC4)
 Service Name: NOT krbtgt or NOT a system account (account name ends in $)
 TargetUserName: NOT a system account (*$@*)
 
-Monitor and alert on unusual events with these conditions from an unexpected
-IP.
-Note: There are potential false positives so whitelist normal source IPs and
-manage risk of insecure ticket generation.
+Monitor and alert on unusual events with these conditions from an
+unexpected IP.
+
+**Note:** There are potential false positives so whitelist normal
+source IPs and manage risk of insecure ticket generation.
 
 
 <pre><code class="language-yaml">
@@ -34,18 +44,22 @@ name: Windows.EventLogs.Kerberoasting
 author: Matt Green - @mgreen27
 
 description: |
-  This Artifact will return all successful Kerberos TGS Ticket events for
-  Service Accounts (SPN attribute) implemented with weak encryption. These
-  tickets are vulnerable to brute force attack and this event is an indicator
-  of a Kerberoasting attack.
+  Detects Kerberoasting attempts by extracting Kerberos TGS requests
+  (EID 4769) with RC4 encryption from the Security log.
+  
+  This Artifact will return all successful Kerberos TGS Ticket events
+  for Service Accounts (SPN attribute) implemented with weak
+  encryption. These tickets are vulnerable to brute force attack and
+  this event is an indicator of a Kerberoasting attack.
 
-  Typical attacker methodology is to firstly request accounts in the domain
-  with SPN attributes, then request an insecure TGS ticket for brute forcing.
-  This attack is particularly effective as any domain credentials can be used
-  to implement the attack and service accounts often have elevated privileges.
-  Kerberoasting can be used for privilege escalation or persistence by adding a
-  SPN attribute to an unexpected account.
-
+  Typical attacker methodology is to firstly request accounts in the
+  domain with SPN attributes, then request an insecure TGS ticket for
+  brute forcing. This attack is particularly effective as any domain
+  credentials can be used to implement the attack and service accounts
+  often have elevated privileges. Kerberoasting can be used for
+  privilege escalation or persistence by adding a SPN attribute to an
+  unexpected account.
+  
   Log Source: Windows Security Event Log (Domain Controllers).
   Event ID: 4769
   Status: 0x0 (Audit Success)
@@ -53,10 +67,11 @@ description: |
   Service Name: NOT krbtgt or NOT a system account (account name ends in $)
   TargetUserName: NOT a system account (*$@*)
 
-  Monitor and alert on unusual events with these conditions from an unexpected
-  IP.
-  Note: There are potential false positives so whitelist normal source IPs and
-  manage risk of insecure ticket generation.
+  Monitor and alert on unusual events with these conditions from an
+  unexpected IP.
+
+  **Note:** There are potential false positives so whitelist normal
+  source IPs and manage risk of insecure ticket generation.
 
 reference:
   - https://attack.mitre.org/techniques/T1208/

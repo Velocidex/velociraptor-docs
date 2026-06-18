@@ -1,7 +1,11 @@
 ---
 title: Linux.Ssh.KnownHosts
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Finds and parses SSH known hosts files.
 ---
 
 Finds and parses SSH known hosts files.
@@ -9,6 +13,7 @@ Finds and parses SSH known hosts files.
 <pre><code class="language-yaml">
 name: Linux.Ssh.KnownHosts
 description: Finds and parses SSH known hosts files.
+
 parameters:
   - name: sshKnownHostsFiles
     default: '.ssh/known_hosts*'

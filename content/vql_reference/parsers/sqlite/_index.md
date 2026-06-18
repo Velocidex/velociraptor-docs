@@ -2,7 +2,11 @@
 title: sqlite
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Opens an SQLite file and run a query against it.
 ---
 
 

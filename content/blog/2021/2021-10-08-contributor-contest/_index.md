@@ -40,7 +40,7 @@ You can still view our award presentation at the SANS Threat Hunting Summit by
 registering to view a replay of the summit [here](https://www.sans.org/cyber-security-training-events/threat-hunting-and-incident-response-summit-2021/).
 But until then, take a look at all the submissions below and evaluate them yourself.
 
-Be sure to follow us on Twitter **@velocidex**, join our [Discord server](https://docs.velociraptor.app/discord/),
+Be sure to follow us on Twitter **@velocidex**, join our [Discord server](/discord/),
 sign up for our [mailing list](https://groups.google.com/g/velociraptor-discuss)
 and regularly check out this blog for details on upcoming Velociraptor events.  We have some exciting things planned for the rest of 2021, into 2022 and beyond!
 <br>

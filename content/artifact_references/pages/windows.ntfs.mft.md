@@ -1,21 +1,24 @@
 ---
 title: Windows.NTFS.MFT
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+description: |
+  Parses $MFT files and returns rows of each in-scope MFT record.
 ---
 
-Parses $MFT files and returns rows of each in scope MFT record.
+Parses $MFT files and returns rows of each in-scope MFT record.
 
-This artifact can be used as the basis for other artifacts where the MFT needs
-to be queried or for deleted file recovery.
+This artifact can be used as the basis for other artifacts where the
+MFT needs to be queried or for deleted file recovery.
 
-For deleted file recovery: Take the MFT ID of a file of interest and provide
-it to the Windows.NTFS.Recover artifact.
+For deleted file recovery: Take the MFT ID of a file of interest and
+provide it to the Windows.NTFS.Recover artifact.
 
 To query all attached NTFS drives: select the AllDrives option.
 
-I have added several filters to uplift search capabilities from the original
-MFT artifact. Due to the multi-drive features, the MFTPath will output the MFT
+Due to the multi-drive features, the MFTPath will output the MFT
 path of the entry.
 
 Available filters include:
@@ -27,7 +30,7 @@ Available filters include:
 - MFTDrive: drive to target collection and show as source in results during offline processing.
 - MFTPath: optional filter for offline MFT processing.
 
-#### NOTES
+**NOTES**
 
 - It is generally more efficient to filter on filename.
 - Multiple filters are cumulative.
@@ -38,18 +41,17 @@ Available filters include:
 name: Windows.NTFS.MFT
 author: "Matt Green - @mgreen27"
 description: |
-  Parses $MFT files and returns rows of each in scope MFT record.
+  Parses $MFT files and returns rows of each in-scope MFT record.
 
-  This artifact can be used as the basis for other artifacts where the MFT needs
-  to be queried or for deleted file recovery.
+  This artifact can be used as the basis for other artifacts where the
+  MFT needs to be queried or for deleted file recovery.
 
-  For deleted file recovery: Take the MFT ID of a file of interest and provide
-  it to the Windows.NTFS.Recover artifact.
+  For deleted file recovery: Take the MFT ID of a file of interest and
+  provide it to the Windows.NTFS.Recover artifact.
 
   To query all attached NTFS drives: select the AllDrives option.
 
-  I have added several filters to uplift search capabilities from the original
-  MFT artifact. Due to the multi-drive features, the MFTPath will output the MFT
+  Due to the multi-drive features, the MFTPath will output the MFT
   path of the entry.
 
   Available filters include:
@@ -61,7 +63,7 @@ description: |
   - MFTDrive: drive to target collection and show as source in results during offline processing.
   - MFTPath: optional filter for offline MFT processing.
 
-  #### NOTES
+  **NOTES**
 
   - It is generally more efficient to filter on filename.
   - Multiple filters are cumulative.
@@ -70,7 +72,7 @@ description: |
 parameters:
   - name: MFTDrive
     description: |
-      The path to to the drive that holds the MFT file (can be a pathspec). This
+      The path to the drive that holds the MFT file (can be a pathspec). This
       drive is also used for results for offline processing.
     default: "C:"
   - name: MFTPath
@@ -128,7 +130,7 @@ sources:
                          filename=filename, accessor=accessor)
               })
 
-      -- The path to to the drive that holds the MFT file (can be a pathspec)
+      -- The path to the drive that holds the MFT file (can be a pathspec)
       LET Drive &lt;= pathspec(parse=MFTDrive, path_type="ntfs")
 
       -- time testing

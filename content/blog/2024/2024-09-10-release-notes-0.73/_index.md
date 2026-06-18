@@ -36,14 +36,14 @@ In this release, the Winpmem driver is incorporated into the
 Velociraptor binary itself so there is no need to introduce additional
 binaries to the endpoint. The driver is inserted on demand when an
 image is required using the new VQL function
-[winpmem()](https://docs.velociraptor.app/vql_reference/misc/winpmem/). This
+[winpmem()](/vql_reference/windows/winpmem/). This
 VQL function can compress the memory image, to make it faster to
 acquire (less IO) and deliver over the network (less network bandwidth
 required).
 
 The ability to access physical memory simply is also leveraged with
 the
-[winpmem](https://docs.velociraptor.app/vql_reference/accessors/winpmem/)
+[winpmem](/vql_reference/accessors/winpmem/)
 accessor which allows for direct Yara scans with
 `Windows.Detection.Yara.PhysicalMemory `
 
@@ -271,7 +271,7 @@ collect offline collections for preservation of hosts.
 Although best practice is to **also** collect parsing artifacts at the
 same time, sometimes this is left out (See [Preserving Forensic
 Evidence
-](https://docs.velociraptor.app/training/playbooks/preservation/) for
+](/training/playbooks/preservation/) for
 a full discussion. It is particularly problematic when using the
 offline collector to collect the `Windows.KapeFiles.Targets` artifact,
 because once the collection is imported back into Velociraptor there
@@ -356,7 +356,7 @@ now. In this release we have really expanded their functionality into
 a complete end to end timelining analysis tool.
 
 The details of the new workflow are described in the [Timelines in
-Velociraptor]({{% ref "/blog/2024/2024-09-12-timelines/" %}}) blog
+Velociraptor](/blog/2024/2024-09-12-timelines/) blog
 post, but below is a screenshot to illustrate the final product - an
 annotated timeline derived from analysis of multiple artifacts.
 
@@ -474,6 +474,5 @@ spin](https://github.com/Velocidex/velociraptor)!  It is available
 on GitHub under an open source license. As always please file issues
 on the bug tracker or ask questions on our mailing list
 [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com)
-. You can also chat with us directly on discord
-[https://www.velocidex.com/discord](https://www.velocidex.com/discord)
+. You can also chat with us directly on [Discord](/discord/).
 .

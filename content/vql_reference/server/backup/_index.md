@@ -2,7 +2,11 @@
 title: backup
 index: true
 noTitle: true
+sitemap:
+   disable: true
 no_edit: true
+description: |
+  Generates a backup file.
 ---
 
 

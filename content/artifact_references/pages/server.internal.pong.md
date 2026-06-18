@@ -1,7 +1,11 @@
 ---
 title: Server.Internal.Pong
 hidden: true
+sitemap:
+  disable: true
 tags: [Internal Artifact]
+description: |
+  An internal queue for Ping replies
 ---
 
 An internal queue for Ping replies

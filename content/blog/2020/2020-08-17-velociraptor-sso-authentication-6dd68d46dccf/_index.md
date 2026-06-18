@@ -41,13 +41,16 @@ The following steps are performed to log a user into the Velociraptor GUI:
 
 1. Once the user authorizes the app, the OAuth2 provider redirects back to the Velociraptor **callback URL **with a token. The callback URL is the path location within the Velociraptor App that will handle the incoming token.
 
-1. At this point Velociraptor already knows the user’s email address and can log them in, as long as they have sufficient permissions (The Velociraptor [ACL model](https://www.velocidex.com/blog/medium/2020-03-29-velociraptors-acl-model-7f497575daee/) still applied).
+1. At this point Velociraptor already knows the user’s email address and can log them in, as long as they have sufficient permissions (The Velociraptor ACL model still applied).
 
 The advantage of this scheme is that Velociraptor never handles user passwords, and additional authentication requirements like 2FA can be imposed by the OAuth2 provider.
 
 ### Google OAuth2
 
-Velociraptor previously [only supported Google ](https://www.velocidex.com/blog/html/2018/12/23/deploying_velociraptor_with_oauth_sso.html)as an OAuth2 provider. However this recently changed when new providers were added.
+Velociraptor previously [only supported Google
+](/blog/html/2018/12/23/deploying_velociraptor_with_oauth_sso.html) as
+an OAuth2 provider. However this recently changed when new providers
+were added.
 
 This post outlines the process of setting up OAuth2 authentication for both GitHub and Microsoft O365 environments.
 
@@ -80,7 +83,7 @@ Finally enter the GitHub client ID and secret and create the server config files
 
 ![](../../img/19WneTKLF_985TEXYJKcAbQ.png)
 
-I will now push the Debian package to the server and install it using SCP and SSH. When I navigate to the public URL at [https://vm1.training.velocidex.com](https://vm1.training.velocidex.com) I am redirected to GitHub to authenticate and upon authorizing the app I can log into my Velociraptor server.
+I will now push the Debian package to the server and install it using SCP and SSH. When I navigate to the public URL at `https://vm1.training.velocidex.com` I am redirected to GitHub to authenticate and upon authorizing the app I can log into my Velociraptor server.
 
 ![](../../img/1U5rYGAoEkXr1TeQFJ8UDiw.png)
 
