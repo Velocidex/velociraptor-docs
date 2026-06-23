@@ -45,7 +45,7 @@ description: |
 
 {{% notice warning "Current Security Advisories" %}}
 
-Please update to the latest release [0.76.5](/downloads/) to address
+Please update to the latest release [0.77.1](/downloads/) to address
 the following CVEs:
 
 * [CVE-2026-5329](/announcements/advisories/cve-2026-5329/) Velociraptor improper input validation in client message handler. This could lead to remote
