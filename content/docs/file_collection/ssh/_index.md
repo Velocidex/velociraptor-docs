@@ -11,8 +11,8 @@ description: |
   The ssh accessor can be used to read filesystems on remote hosts over SSH
 ---
 
-Velociraptor's [SSH accessor](/vql_reference/accessors/ssh/) allows
-reading and retrieving files from a remote SSH-enabled system. This is
+Velociraptor's [SSH accessor](/vql_reference/accessors/ssh/) lets you
+read and retrieve files from a remote SSH-enabled system. This is
 very useful in situations where deployment of the client on the
 remote system isn't justified, or isn't technically possible (for
 example, on unsupported architectures such as routers and firewalls
@@ -24,7 +24,7 @@ have SSH access enabled, but it could also be a Windows or macOS
 system where installation of a client is just not possible for either
 technical, political, or other reasons.
 
-Access via SSH allows you to read files in place on the remote system,
+Access via SSH lets you read files in place on the remote system,
 or retrieve them as collection uploads. One possible reason for not
 wanting to deploy a client on the remote system is that it may just be
 hosting files that you want to read/retrieve, such as logs on a
@@ -45,7 +45,7 @@ and in that case Velociraptor will return an access error.
 
 Accessing a remote system using the SSH accessor is essentially
 equivalent to using [SSHFS](https://github.com/libfuse/sshfs), which also uses
-SFTP and has the similar constraints/limitations.
+SFTP and has similar constraints and limitations.
 
 - **No tool use**: The SSH accessor is used to read or retrieve remote
   files. Unlike a full client, it cannot execute arbitrary tools or
@@ -93,11 +93,11 @@ filesystem, and each of these has two ways in which it could be done:
    client could be run on the server or another machine - from the
    server's perspective its just another client.
 
-As mentioned above, the choice of which of the above options is most
-suitable depends on the specific collection requirements. For each of
-them we've provided some guidance below. In general, if you want the
-remote endpoint to be appear and be managed as a Velociraptor client
-then you'll want to use a dedicated virtual client.
+The choice of which option is most suitable depends on the specific
+collection requirements. We've provided guidance for each of them in
+the following sections. In general, if you want the remote endpoint to
+appear and be managed as a Velociraptor client then you'll want to use
+a dedicated virtual client.
 
 
 ## Example Use Cases
@@ -123,14 +123,14 @@ the `SSH_CONFIG` VQL variable, which accepts these fields:
 
 | Field | Description |
 |-------|-------------|
-| `hostname` | Remote host **and port** (e.g. `192.168.1.100:22`) |
+| `hostname` | Remote host **and port** (for example, `192.168.1.100:22`) |
 | `username` | SSH username |
 | `password` | Password authentication |
 | `private_key` | Private key content (unencrypted PEM format) |
 | `secret` | Name of a server secret to use instead of inline credentials |
 
 Although credentials (`username`, `password`/`private_key`) can be
-explictly passed to the accessor, this is strongly discouraged. See
+explicitly passed to the accessor, this is strongly discouraged. See
 the note below.
 
 The accessor requires the `NETWORK` permission to operate.
@@ -192,7 +192,7 @@ SELECT *
 FROM glob(globs='/**', accessor='ssh')
 ```
 
-As you can see, this does not expose the credentials and makes setting
+This does not expose the credentials and makes setting
 the `SSH_CONFIG` variable much simpler.
 
 If you are just doing query development on a test system, you could
@@ -209,7 +209,7 @@ LET SSH_CONFIG <= dict(
 
 #### Hostname format and key requirements
 
-- The `hostname` field must include the port (e.g. `10.0.0.1:22`).
+- The `hostname` field must include the port (for example, `10.0.0.1:22`).
 - Private keys must be in unencrypted PEM format. Encrypted keys are
   not supported.
 - The host key of the remote SSH server is not verified - it is
@@ -257,8 +257,8 @@ discovery and upload.
 ![Collected files in Notebook Uploads](ssh_uploads.png)
 
 The `ColumnTypes` variable causes the notebook to render the
-`FileUpload` column as the `preview_upload` type, which then allows
-you to use the GUI's File Inspector utility to view the file contents.
+`FileUpload` column as the `preview_upload` type, which then lets
+you use the GUI's File Inspector utility to view the file contents.
 
 ###### Example: Reading a file over SSH
 
@@ -269,7 +269,7 @@ If you're doing a lot of queries in a notebook against the same remote
 filesystem, you can create a
 [notebook template](/docs/notebooks/templates/)
 that includes an [export](/docs/artifacts/export_imports/) section.
-VQL in the `export` section is executed before each cells runs, so it
+VQL in the `export` section is executed before each cell runs, so it
 is a convenient way to share the SSH connection information between
 notebook cells.
 
@@ -299,7 +299,7 @@ sources:
 ```
 
 When a new notebook is created from this template, it will prepend the
-VQL in the `export` section` to the VQL in each cell before executing
+VQL in the `export` section to the VQL in each cell before executing
 it. In this example the notebook cell will be immediately populated
 with lines read from the target log file, via SSH.
 
@@ -395,7 +395,7 @@ previous example into a **server artifact**. However, to make it
 reusable for other hosts we can parameterize some of the values used
 in the remapping config.
 
-Notice that we cannot keep the remapping in the `export` section of
+We cannot keep the remapping in the `export` section of
 the artifact, as we did in the previous example, because VQL in
 `export` cannot use artifact parameters. We can, however, add it to a
 source so that it's available to all subsequent sources. The
@@ -467,13 +467,13 @@ sources:
       SELECT * FROM Artifact.Linux.Mounts()
 ```
 
-![Artifact results](remap_server_artifact.png)
+![Server artifact showing filesystem collection from remapped SSH host](remap_server_artifact.png)
 
 As with the notebook examples, you can use the `upload()` function, or
 any artifacts that use the `upload()` function, and the files will be
 uploaded to the server and attached to the collection.
 
-### 3. Dedicated virtual client with SSH accessor remapping
+## Dedicated virtual client with SSH accessor remapping
 
 If you want the SSH-accessible host to look and behave like a real
 client, that is: participate in hunts, be selectable in the GUI, etc.
@@ -498,7 +498,7 @@ to match the target host's platform or architecture. You can run
 virtual clients on a Windows host that impersonates SSH-accessible
 Linux hosts, or any other combination you can think of.
 
-Secrets may only be used on the server, but the virtual client needs
+Secrets can only be used on the server, but the virtual client needs
 to be able to run autonomously, which means the remapping file
 has to contain explicit credentials for accessing the SSH target. You
 therefore need to secure the virtual client host and the remapping
@@ -582,8 +582,8 @@ remappings:
    SSH. It also specifies that Linux paths are expected, which is
    necessary if the virtual client is running on Windows, for example.
 
-   The `shadow` rules allow pass-thru for other commonly used
-   accessors.
+The `shadow` rules pass through other commonly used
+accessors.
 
    The `disabled_functions` and `disabled_plugins` sections tell the
    client not to use these as they would produce results from the host
