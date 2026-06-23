@@ -5,79 +5,79 @@ draft: false
 weight: 25
 no_children: true
 pre: <i class="fas fa-download"></i>
-release: 0.76.6
-base_release: 0.76.6
+release: 0.77.1
+base_release: 0.77.1
 arches:
   - desc: Windows AMD64 (64-bit) Executable
     name: windows-amd64.exe
-    hash: 1e82175822aa9ffdfd7bc177599642f3db55159d0a2f38bb0fcc6722f15573cd
+    hash: c91cf8a32731c4c45c148393bc7d2af688c392194a9fffc4535e8b583260d55e
     platform: windows
 
   - desc: Windows AMD64 (64-bit) MSI
     name: windows-amd64.msi
-    hash: e5fc16e7d4aea87f70edb9ce09112f1c92808b9e4547a544769d433545ff3ee3
+    hash: 7e38f39ccd50520ee752c8850777e2033b2e892d796adaec027d296606f42445
     platform: windows
 
   - desc: Windows 32-bit Executable
     name: windows-386.exe
-    hash: 4c329cb5b1d881ef7681e4faea9dc8f8e081bb579739d557ca0dc5bc57a8ef12
+    hash: 4d3eb4960d464a1c3b3232818f151ee1e000e5de21c5b4b91b3e34444cf2e94a
     platform: windows
 
   - desc: Windows 32-bit MSI
     name: windows-386.msi
-    hash: 9fb535710bba977f28761b387c3e90095ac02022cb1f3765b7067de9fdda3ce1
+    hash: 63ac4b35356afbb13460c1ac87895cd3b6da4dfb1b04d3b49a84c8533db082b8
     platform: windows
 
   - desc: Linux Ubuntu 22.04 AMD64 and later. Recommended for servers.
     name: linux-amd64
-    hash: 9b1c439834a562a96cbef886f26a93521d16b020fd96777fb30e01f88947af18
+    hash: 6636020f3ce03ea4eff5d5b96d635c400e51d2636c823a8f0bd458ddc7c4d28a
     platform: linux
 
   - desc: Linux Ubuntu 22.04 ARM and later. Recommended for servers or containers.
     name: linux-arm64
-    hash: d19218d37d76b6988d25d21d2cdb349658fa12b355d44c90f44b5cdd975b7616
+    hash: a0377f261f85314b692b2fbba980af58fc562e3ab085a293dd2ef3e6f8175669
     platform: linux
 
   - desc: Linux Static Build (Older Releases, e.g. RHEL, Centos) Recommended for clients.
     name: linux-amd64-musl
-    hash: 84ad1652ff6e79694441a06a6af4040aae6a982080d2ef583a31bda52f58e299
+    hash: c39e0d402776555d35c9555df41d5901bfb7f32f4baba1d06795d12862028a4f
     platform: linux
 
   - desc: Linux Sumo build. Recommended for servers.
     name: linux-amd64-sumo-musl
-    hash: f39269d2c1858497c0f244caefc603c9061ef4d837201aa28c18831967cc6343
+    hash: c39e0d402776555d35c9555df41d5901bfb7f32f4baba1d06795d12862028a4f
     platform: linux
 
   - desc: MacOS AMD64
     name: darwin-amd64
-    hash: 6308ea8c7f7dbacad791977caefe387c61daaebf4f94cde2e1c39d89968091a3
+    hash: b403a14cfbe7ed31e57cc8b8a2b436a978985eadcf7845a34a416e433be8a388
     platform: apple
 
   - desc: MacOS ARM (M1, M2 chipsets)
     name: darwin-arm64
-    hash: 4518998f95de31d4ee5734dfbcdd60f834c43a1b9fc6f9a1f372d8099172a496
+    hash: a2e8fa47352f2191769393c1aec39b10f54f6f82a9b47454949bed33450c81b4
     platform: apple
 
   - desc: FreeBSD AMD64
     name: freebsd-amd64
-    hash: ebc5722094eea312873cc725c214715da541a71a46a13ce0acb80db0a015a411
+    hash: 512cd253b2f3e3136a897fc080c9f04de4b6d577fce370126ef4a2520c697c2c
     platform: freebsd
-    release: 0.76.1
-    base_release: 0.76
+    release: 0.77.1
+    base_release: 0.77.1
 
   - desc: Windows AMD64 (64 bits) Executable For Windows 7 Only
     name: windows-amd64-legacy.exe
-    hash: a15f8b9bdfcf1fe5b4e73eafcb9c3091eb347b9c7f32ae7e94ab5de41c8c434e
+    hash: 4b56a1c082024e765a70e8c0f75e0cc3873a29f07402dac1d9beba08a424fb85
     platform: windows
-    release: 0.76.1
-    base_release: 0.76
+    release: 0.77.1
+    base_release: 0.77.1
 
   - desc: Windows 32 bits Executable For Windows 7 Only
     name: windows-386-legacy.exe
-    hash: 3a66986c3a4a9e0d4dacd3131ee55d65ff37b0093373048cb05afa1572a800c6
+    hash: 828f0c295eebb01edb18e29bacdd1b14751446f9b43e969906b4fda50e0c53fe
     platform: windows
-    release: 0.76.1
-    base_release: 0.76
+    release: 0.77.1
+    base_release: 0.77.1
 
 description: |
   Velociraptor is open source software and is free for anyone to use under the
@@ -87,13 +87,13 @@ description: |
 Velociraptor is open source software and is free for anyone to use under the
 [AGPL License](https://github.com/Velocidex/velociraptor?tab=License-1-ov-file#readme).
 
-This page is for the current release. [The previous Release is 0.75.7](/downloads/previous_downloads/). The next release candidate is [available for testing now](/downloads/rc_downloads/)
+This page is for the current release. [The previous Release is 0.76.6](/downloads/previous_downloads/).
 
 {{< release_download >}}
 
 ## Release notes
 
-Full release notes are published in our [release blog post](/blog/2026/2026-03-10-release-notes-0.76/)
+Full release notes are published in our [release blog post](/blog/2026/2026-05-31-release-notes-0.77/)
 
 ## The Sumo build
 
