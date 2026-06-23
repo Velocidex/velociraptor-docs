@@ -79,7 +79,8 @@ trade-offs. The right approach depends on whether you are doing ad-hoc
 investigation, automated collection, or something in between.
 
 You have two main options when using SSH to access a remote system's
-filesystem, and each of these has two ways in which it could be done:
+filesystem, and each of these has variations in the ways in which it
+could be done:
 1. **Using VQL on the server**, either in a
    [server artifact](/docs/artifacts/basic_fields/#-type-) or a
    [notebook](/docs/notebooks/). For simple filesystem access
@@ -540,7 +541,7 @@ remappings:
     scope: |
       LET SSH_CONFIG <= dict(hostname='192.168.56.120:22',
               username='root',
-              private_key=read_file(filename='/home/me/Sync/zxcv/servers/velociraptor/datastore4/id_ed25519_openwrt'))
+              private_key=read_file(filename='/velociraptor-clients/id_ed25519_openwrt'))
     from:
       accessor: ssh
       prefix: /
@@ -553,7 +554,7 @@ remappings:
     scope: |
       LET SSH_CONFIG <= dict(hostname='192.168.56.120:22',
               username='root',
-              private_key=read_file(filename='/home/me/Sync/zxcv/servers/velociraptor/datastore4/id_ed25519_openwrt'))
+              private_key=read_file(filename='/velociraptor-clients/id_ed25519_openwrt'))
     from:
       accessor: ssh
       prefix: /
