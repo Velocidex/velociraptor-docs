@@ -2,7 +2,7 @@
 menutitle: Upgrades
 title: Server Upgrades
 draft: false
-weight: 50
+weight: 60
 date: 2025-02-27
 last_reviewed: 2026-04-24
 summary: "How to upgrade your server."
