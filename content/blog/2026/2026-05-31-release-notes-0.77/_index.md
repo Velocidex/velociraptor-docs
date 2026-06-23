@@ -98,9 +98,10 @@ this release.
   used for more granular role mapping.
 
 - **Velociraptor Docker container.** An officially supported
-  Docker-based container is now available, and a Dockerfile,
-  compose.yaml, and supporting configuration files. This makes it
-  easier to deploy Velociraptor in containerized environments.
+  [Docker-based container](https://github.com/Velocidex/velociraptor/tree/master/Docker)
+  is now available, and a Dockerfile, compose.yaml, and supporting
+  configuration files. This makes it easier to deploy Velociraptor in
+  containerized environments.
 
 ## GUI Improvements
 
