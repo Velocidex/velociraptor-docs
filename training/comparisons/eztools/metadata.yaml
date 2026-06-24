@@ -1,0 +1,27 @@
+title: EZ Tools
+link: https://ericzimmerman.github.io/
+description: |
+  This suite of tool, written by Eric Zimmerman, include many
+  dedicated tools to parse specific artifacts.
+
+tools:
+- title: AmCacheParser
+  github: https://github.com/EricZimmerman/AmcacheParser
+  description: |
+    This program is different from other Amcache parsers in that it
+    does not dump everything available. Rather, it looks at both File
+    entries and Program entries.
+
+  examples:
+  - title: Parse the Amcache hive
+    description: |
+      Use the
+      [Windows.Forensics.Amcache](https://docs.velociraptor.app/artifact_references/pages/windows.forensics.amcache/)
+      artifact to parse the Amcache hive.
+
+    cmd: velociraptor -v -r Windows.Forensics.Amcache -o c:\output\test.zip
+  - title: Using the registry hunter
+    description: |
+      The [Registry Hunter](https://registry-hunter.velocidex.com/)
+      contains several targets to parse the Amcache hive.
+    cmd: velociraptor -v --definitions ./Windows.Registry.Hunter.zip -r Windows.Registry.Hunter --RuleFilter AmCache -o c:\output\test.zip

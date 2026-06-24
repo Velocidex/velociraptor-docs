@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.163.3">
+    <meta name="description" content="Notebook templates let you create pre-built notebooks with ready-made
+content, including VQL queries, Markdown text, and configuration
+options.
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Notebook Templates</title>
+
+    
+    <link href="/css/nucleus.css?1782260661" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1782260661" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1782260661" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1782260661" rel="stylesheet">
+    <link href="/css/auto-complete.css?1782260661" rel="stylesheet">
+    <link href="/css/theme.css?1782260661" rel="stylesheet">
+    <link href="/css/tabs.css?1782260661" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1782260661" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1782260661" rel="stylesheet">
+    
+    <link href="/css/dark.css?1782260661" rel="stylesheet"><link href="/css/syntax.css?1782260661" rel="stylesheet"><link href="/css/light.css?1782260661" rel="stylesheet"><link href="/css/hljs.css?1782260661" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1782260661" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1782260661"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/notebooks/templates/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" alt="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" alt="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-35872c80.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" alt="rapid7 logo" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/notebooks\/templates\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/notebooks/templates/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Notebook Templates</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#cell-types">Cell Types</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#parameters">Parameters</a>
+      <ul>
+        <li><a href="#using-parameters-inside-markdown-cells">Using parameters inside Markdown cells</a></li>
+      </ul>
+    </li>
+    <li><a href="#tools">Tools</a></li>
+    <li><a href="#column-types">Column Types</a></li>
+    <li><a href="#when-does-the-template-get-processed">When does the template get processed?</a></li>
+    <li><a href="#sharing-vql-between-cells-exports-and-imports">Sharing VQL between cells (exports and imports)</a></li>
+    <li><a href="#built-in-templates">Built-in templates</a></li>
+    <li><a href="#automatic-notebooks-hunts-flows-events">Automatic notebooks (hunts, flows, events)</a></li>
+    <li><a href="#creating-your-own-template">Creating your own template</a></li>
+    <li><a href="#tips">Tips</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Notebook Templates
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>When you create a new notebook in Velociraptor, it is always based on
+a <strong>notebook template</strong>. You can pick one of the existing templates to
+set it up with some ready-made content, or you can create your own
+custom templates.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/notebooks/templates/builtin_templates.png"
+         class="inline"
+         alt="Choosing a notebook template"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="builtin_templates.png">
+      <i class="fa fa-download"></i></a>
+    Choosing a notebook template
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>A template can include VQL queries, content written in Markdown
+(useful for providing the notebook user with instructions), suggested
+follow-on queries, or any combination of these things.</p>
+<p>Notebook templates <em>are</em>, in fact, just <a href="/docs/artifacts/">artifacts</a>
+and are therefore defined the same way as any other Velociraptor
+artifacts. The only difference is that the artifact <code>type</code> is set to
+<code>NOTEBOOK</code> instead of the more commonly used <code>CLIENT</code> or <code>SERVER</code>
+types.</p>
+<p>In a <code>NOTEBOOK</code> artifact definition, the notebook content itself is
+specified in the artifact&rsquo;s <a href="/docs/artifacts/sources/">sources</a>.</p>
+<h2 id="cell-types">Cell Types</h2>
+<p>A template is made up of one or more <em>cells</em>. Each cell has a
+<code>type</code> and a <code>template</code> field. These are the available cell types:</p>
+<table>
+	<thead>
+			<tr>
+					<th>Type</th>
+					<th>What it does</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>markdown</code> or <code>md</code></td>
+					<td>Displays formatted text. Good for headings, instructions, or notes.</td>
+			</tr>
+			<tr>
+					<td><code>vql</code></td>
+					<td>Runs a VQL query and shows the results as a table when the cell is calculated.</td>
+			</tr>
+			<tr>
+					<td><code>vql_suggestion</code></td>
+					<td>Adds a suggested VQL query that the user can select and run. Useful for optional or advanced queries that not everyone will need.</td>
+			</tr>
+			<tr>
+					<td><code>none</code></td>
+					<td>Produces no cell at all. This can be used to stop a default cell from being created.</td>
+			</tr>
+	</tbody>
+</table>
+<p>Note that there is only a <code>vql_suggestion</code> type - there is no
+<code>markdown_suggestion</code> type. If you want a suggestion that displays
+formatted text, the suggestion itself must contain VQL with markdown
+or HTML embedded on comment blocks.</p>
+<h6 id="a-markdown-cell-example-this-just-shows-some-text-in-the-notebook">A markdown cell example: this just shows some text in the notebook:</h6>
+<pre><code class="language-yaml">sources:
+  - notebook:
+    - type: markdown
+      name: Welcome
+      template: |
+        # Welcome to Velociraptor notebooks!
+
+        You can add VQL queries or markdown cells to this notebook.
+</code></pre>
+<h6 id="a-vql-cell-example-this-runs-a-query-and-shows-the-results">A VQL cell example: this runs a query and shows the results:</h6>
+<pre><code class="language-yaml">sources:
+  - notebook:
+    - type: vql
+      name: Filtered Clients
+      output: |
+        &lt;&lt; Filtered Clients: Click here to calculate &gt;&gt;
+      template: |
+        SELECT client_id,
+               os_info.hostname AS Hostname,
+               os_info.system AS OS
+        FROM clients()
+</code></pre>
+<p>You can also add an <code>output</code> field to a VQL cell. This field holds
+text or HTML that renders inside the cell before the user clicks to
+run the query. It&rsquo;s essentially static predefined output that will be
+displayed <em>before</em> the cell is run. It&rsquo;s useful for providing
+instructions or warnings to the notebook&rsquo;s user <em>before</em> they execute
+a VQL cell.</p>
+<p>VQL suggestions are templates for creating a new VQL cell with a
+predefined query. All <code>vql_suggestion</code> templates are added to the
+suggestions menu for all other non-suggestion cells.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/notebooks/templates/vql_suggestion.png"
+         class="inline"
+         alt="A VQL suggestion"
+         width="1180" height="761">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="vql_suggestion.png">
+      <i class="fa fa-download"></i></a>
+    A VQL suggestion
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>When a suggestion is selected from the menu, the notebook creates a
+new VQL cell above the one that invoked the suggestion, containing the
+suggestion&rsquo;s VQL. The VQL contained in the new cell is executed
+immediately.</p>
+<h2 id="parameters">Parameters</h2>
+<p>You can add <a href="/docs/artifacts/parameters/">parameters</a> to a notebook
+template, just like you can with all other artifact types.</p>
+<pre><code class="language-yaml">parameters:
+  - name: TimelineName
+    description: Give your timeline a name
+    default: Supertimeline
+  - name: SearchTerm
+    default: &quot;all&quot;
+    description: A search term, for example &quot;host:DESKTOP*&quot;
+</code></pre>
+<p>When someone creates a notebook based on the template, the wizard asks
+them to fill in the parameters first, which is the same thing you
+would see if it was an artifact that you were about to collect.</p>
+<p>Using parameter values inside a VQL cell is not different from using
+them in the <code>source</code> of the other artifact types. You just refer to
+them directly as <a href="/docs/vql/fundamentals/#variables">named variables</a>.</p>
+<h3 id="using-parameters-inside-markdown-cells">Using parameters inside Markdown cells</h3>
+<p>To use a parameter value inside a <code>markdown</code> cell, you use Go&rsquo;s
+templating language, for example <code>{{ Scope &quot;ParameterName&quot; }}</code> (note
+that the parameter name is in quotes).</p>
+<pre><code class="language-markdown"># Inserts the StartDate and EndDate parameters into markdown
+
+These query results show events between {{ Scope &quot;StartDate&quot; }} and {{ Scope &quot;EndDate&quot; }}.
+</code></pre>
+<p>The templating language lets you perform complex operations such as
+define functions, iterate over iterables, pipe through
+<a href="https://masterminds.github.io/sprig/" target="_blank" >Sprig</a> or Velociraptor-provided
+templating functions, and more. See the <code>Notebooks.Sigma.Studio</code>
+artifact for good examples of this.</p>
+<p>Parameters in notebooks can be changed after creating the notebook,
+unlike the parameters in the other types of artifacts.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/notebooks/templates/notebook_parameters.png"
+         class="inline"
+         alt="Editing the notebook parameters"
+         width="1200" height="567">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="notebook_parameters.png">
+      <i class="fa fa-download"></i></a>
+    Editing the notebook parameters
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>This is accessed via the <strong>Edit Notebook</strong> button on the notebook
+toolbar.</p>
+<h2 id="tools">Tools</h2>
+<p>As with the other artifact types, notebook templates can specify
+<a href="/docs/artifacts/tools/">tools</a> that can then be used in the notebook.
+Because notebooks are a server-side feature, this means that the tools
+will be running on the server, so security implications should be
+considered. As with other artifact types, the ability to allow tools
+to be run can be controlled through a <a href="/docs/artifacts/security/">variety of
+mechanisms</a>.</p>
+<p>If your template needs an external tool (like a command-line
+utility), you can list it under the <code>tools</code> key:</p>
+<pre><code class="language-yaml">tools:
+  - name: dasel
+    url: https://github.com/TomWright/dasel/releases/download/v3.11.0/dasel_linux_amd64
+    expected_hash: aa422a1ba61ff1d5c7bc84bdc019394863c14a9140cfd0e0bd2000be3b297ead
+    serve_locally: true
+</code></pre>
+<p>Because creating a notebook equates to collecting the artifact, tools
+with URLs specified will be downloaded when the notebook is created.</p>
+<h2 id="column-types">Column Types</h2>
+<p>You can tell the GUI how to display specific columns. For example, if
+a column contains a client ID, you can set its type to <code>client_id</code>
+so it becomes a clickable link:</p>
+<pre><code class="language-yaml">column_types:
+  - name: client_id
+    type: client_id
+</code></pre>
+<p>The notebook user can also change column types at any time by clicking
+on the <strong>Format Columns</strong> toolbar button that&rsquo;s above each VQL cell.</p>
+<p>Column types are explained in more detail in the
+<a href="/docs/artifacts/advanced_fields/#-column_types-">advanced fields</a>
+documentation.</p>
+<h2 id="when-does-the-template-get-processed">When does the template get processed?</h2>
+<p>A notebook template is processed <em>at the moment the user creates a new
+notebook</em> from it. This is what happens, step by step, during notebook
+creation:</p>
+<ol>
+<li>The user picks a template in the new-notebook wizard and fills in
+any parameters.</li>
+<li>The server reads the template&rsquo;s cells and builds the notebook.</li>
+<li>All VQL cells are calculated one at a time. The notebook waits for
+each cell to finish before starting the next one, which prevents
+overloading the calculation workers.</li>
+<li>The new notebook is saved and appears in the GUI, ready to use.</li>
+</ol>
+<p>Unlike client or server artifacts, a notebook template is not
+evaluated at some future time - it is &ldquo;collected&rdquo; immediately and just
+sets up the initial notebook structure and content. From there the
+user interacts with the notebook, in the same way they would work with
+collected results in a flow or hunt notebook.</p>
+
+<div class="mynotices warning">
+  <div heading=" Beware of using `hunt()` in notebook templates "><p>If your template includes a VQL cell that calls the <code>hunt()</code> function,
+the hunt will be <em>created immediately</em> when the notebook is created -
+not when the user clicks the cell. This means a user could
+accidentally launch multiple hunts just by creating the notebook.
+Consider using <code>vql_suggestion</code> cells instead for actions that should
+require a deliberate click, or else define <code>output</code> for the cell (as
+described previously) to prevent immediate execution of that specific
+cell.</p>
+</div>
+</div>
+
+
+<h2 id="sharing-vql-between-cells-exports-and-imports">Sharing VQL between cells (exports and imports)</h2>
+<p>You can define helper functions in a notebook template that all cells
+in the notebook can use. You can also pull in exported VQL from other
+artifacts:</p>
+<pre><code class="language-yaml">export: |
+  LET useful_function(x) = x * 2
+
+imports:
+  - Windows.System.VAD
+</code></pre>
+<p>The <code>export</code> section defines VQL functions available to every cell in
+the notebook. The <code>imports</code> section imports functions that are
+<a href="/docs/artifacts/export_imports/">exported by other artifacts</a>, which
+will also then be available to all cells.</p>
+<h2 id="built-in-templates">Built-in templates</h2>
+<p>Velociraptor ships with several built-in notebook templates:</p>
+<p><strong>Notebooks.Default</strong> - The standard template that appears when no
+other template is chosen. It includes a welcome message and a
+suggested VQL cell.</p>
+<p><strong>Notebooks.VQLx2</strong> - Starts a notebook with two VQL cells right
+away, without any introductory markdown. Good if you just want to
+jump straight into running queries.</p>
+<p><strong>Notebooks.Timelines</strong> - Helps you build a &ldquo;super timeline&rdquo; from
+time series data across collections. You give it a timeline name and
+it creates a timeline that can pull data from other notebooks.</p>
+<p><strong>Server.Utils.Clients</strong> (previously called Notebooks.Clients) -
+An interactive template for searching and examining client details.
+It comes with a search box and displays results in a formatted table
+with clickable client IDs.</p>
+<p><strong>Notebooks.Demo</strong> - Shows example notebook features including VQL
+queries and tool references. Good for learning how notebook templates
+work.</p>
+<p><strong>Sigma Studio Notebook</strong> - A full Sigma rule editor built as a
+notebook. Provides an interactive environment for writing, testing,
+and managing Sigma detection rules. It uses typed parameters
+(including drop-down choices and boolean toggles) and a custom
+SigmaEditor widget for rule editing.</p>
+<p>Another one you may find useful is:</p>
+<p><strong>Notebooks.Admin.Flows</strong> - A server-side template that lists recent
+collections across all organizations. Available from the
+<a href="/exchange/artifacts/pages/notebooks.admin.flows/">Velociraptor Artifact Exchange</a>.</p>
+<p>Since notebook templates are artifacts, if you create useful or
+interesting notebook templates then do consider sharing them with the
+community <a href="/dev/contributing-artifacts/">via the artifact exchange</a>.</p>
+<h2 id="automatic-notebooks-hunts-flows-events">Automatic notebooks (hunts, flows, events)</h2>
+<p>Not all notebooks are created from templates chosen by the user.
+Velociraptor automatically creates notebooks in a few situations:</p>
+<ul>
+<li><strong>Hunt notebooks</strong> - Created when you view the notebook tab
+inside a hunt.</li>
+<li><strong>Flow notebooks</strong> - Created when you view the notebook tab for a
+client collection.</li>
+<li><strong>Event notebooks</strong> - Created when you view an event monitoring
+session.</li>
+</ul>
+<p>These are explained in more detail in the
+<a href="/docs/notebooks/#hunt-and-flow-notebooks">notebooks overview</a>.</p>
+<h2 id="creating-your-own-template">Creating your own template</h2>
+<p>You can create a custom notebook template by writing an artifact with
+<code>type: NOTEBOOK</code>. Here is a complete example:</p>
+<pre><code class="language-yaml">name: Custom.Notebook.Template
+description: |
+  Describe what your notebook template does here.
+
+type: NOTEBOOK
+
+# Optional: parameters the user fills in when creating the notebook
+parameters:
+  - name: CustomParameter
+    description: A parameter for the notebook
+    default: default_value
+
+# Optional: external tools to download
+tools:
+  - name: MyTool
+    url: https://example.com/tool.exe
+
+# Optional: how to format certain columns
+column_types:
+  - name: some_column
+    type: client_id
+
+# Define the cells that make up the notebook
+sources:
+  - notebook:
+    - type: markdown
+      template: |
+        # My Custom Notebook
+
+        This notebook was created from a custom template.
+
+    - type: vql
+      name: My Query
+      output: |
+        &lt;&lt; Click to calculate &gt;&gt;
+      template: |
+        SELECT * FROM info()
+
+    - type: vql_suggestion
+      name: My Suggested Query
+      template: |
+        SELECT * FROM range(end=31) WHERE _value = timestamp(epoch=now()).Day
+</code></pre>
+<p>Once created it will appear as a notebook template option in the &ldquo;new
+notebook&rdquo; wizard.</p>
+<h2 id="tips">Tips</h2>
+<ul>
+<li>
+<p><strong>Turning an existing notebook into a template</strong>: There is currently
+no feature to convert a notebook into a template artifact. However,
+you can export the notebook as YAML (from the notebook menu), and the
+export will contain all the VQL from each cell. You can then use that
+as a starting point to build a <code>NOTEBOOK</code> artifact by hand.</p>
+</li>
+<li>
+<p><strong>vql_suggestion cells are added to all VQL/Markdown cells</strong>: If
+your artifact&rsquo;s notebook section only has <code>vql_suggestion</code> cells (and
+no <code>vql</code> cells), the notebook may appear empty when first opened. The
+server only creates cells when it finds <code>vql</code> or <code>markdown</code> cell
+types. Make sure to include at least one <code>vql</code> or <code>markdown</code> cell if
+you want to use <code>vql_suggestion</code> cells.</p>
+</li>
+</ul>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1782260661"></script>
+    <script src="/js/perfect-scrollbar.min.js?1782260661"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1782260661"></script>
+    <script src="/js/jquery.sticky.js?1782260661"></script>
+    <script src="/js/featherlight.min.js?1782260661"></script>
+    <script src="/js/highlight.min.js?1782260661"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1782260661"></script>
+    <script src="/js/learn.js?1782260661"></script>
+    <script src="/js/hugo-learn.js?1782260661"></script>
+    
+    
+
+  </body>
+</html>

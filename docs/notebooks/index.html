@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.163.3">
+    <meta name="description" content="Notebooks are interactive collaborative documents which can interleave
+markdown and VQL queries to create an interactive report. Notebooks
+are typically used to track and post process one or more hunts or
+collaborate on an investigation.
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Notebooks</title>
+
+    
+    <link href="/css/nucleus.css?1782260661" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1782260661" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1782260661" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1782260661" rel="stylesheet">
+    <link href="/css/auto-complete.css?1782260661" rel="stylesheet">
+    <link href="/css/theme.css?1782260661" rel="stylesheet">
+    <link href="/css/tabs.css?1782260661" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1782260661" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1782260661" rel="stylesheet">
+    
+    <link href="/css/dark.css?1782260661" rel="stylesheet"><link href="/css/syntax.css?1782260661" rel="stylesheet"><link href="/css/light.css?1782260661" rel="stylesheet"><link href="/css/hljs.css?1782260661" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1782260661" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1782260661"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/notebooks/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" alt="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" alt="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-35872c80.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" alt="rapid7 logo" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/notebooks\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/notebooks/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Notebooks</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#types-of-notebooks">Types of notebooks</a></li>
+    <li><a href="#notebook-scoped-variables">Notebook-scoped variables</a></li>
+    <li><a href="#notebook-creation-from-templates">Notebook creation from templates</a></li>
+    <li><a href="#notebook-sharing-and-collaboration">Notebook sharing and collaboration</a></li>
+    <li><a href="#full-screen-mode">Full-screen mode</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Notebooks
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>Notebooks are interactive collaborative workspaces that combine
+markdown text with live VQL queries in a single document. They let you
+build reports that can be updated as new results arrive, post-process
+the results of hunts and collections, and collaborate with other users
+on an investigation.</p>
+
+<div class="mynotices tip">
+  <div heading="tip"><p>If you prefer to learn by doing, try the
+<a href="/docs/notebooks/creating-your-first-notebook/">Creating Your First Notebook</a>
+walkthrough.</p>
+</div>
+</div>
+
+
+<p>A notebook is made up of <strong>cells</strong>. Each cell is either a <code>Markdown</code>
+cell (for formatted text, headings, and prose content) or a <code>VQL</code> cell
+(for queries). The cells appear as a seamless document until you click
+one to bring it into focus, at which point its editing controls
+appear. You can add, remove, reorder, and change the type of any cell
+at any time.</p>
+<p>
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/docs/notebooks/notebook_edit1_.svg" alt="Notebook cell without focus - no decorations visible"
+         class="inline"
+         height="519"
+         width="1143.452157598499"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="notebook_edit1.svg"><i class="fa fa-download"></i></a>
+    Notebook cell without focus - no decorations visible
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>When editing a VQL cell, the GUI offers context-sensitive suggestions
+as you type. Plugins that can only appear after a <code>FROM</code> clause are
+only suggested when the cursor is positioned after one. You can always
+press &ldquo;?&rdquo; to see all available completions.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/notebooks/autosuggest.png"
+         class="inline"
+         alt="VQL auto-suggestions"
+         width="1201" height="266">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="autosuggest.png">
+      <i class="fa fa-download"></i></a>
+    VQL auto-suggestions
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="types-of-notebooks">Types of notebooks</h2>
+<p>Velociraptor creates several kinds of notebooks, each serving a
+different purpose.</p>
+<ul>
+<li>
+<p><strong>Global Notebooks</strong> - created manually by users. Free-form
+documents that can contain any combination of markdown and VQL. They
+remain in the notebook list until deleted. Only visible to their
+creator unless explicitly
+<a href="/docs/notebooks/sharing/">shared</a> with others.</p>
+</li>
+<li>
+<p><strong>Hunt notebooks</strong> - created automatically when you view the
+notebook tab of a hunt. Lets you post-process the hunt&rsquo;s results
+using VQL queries that can aggregate data across all clients in the
+hunt.</p>
+</li>
+<li>
+<p><strong>Flow notebooks</strong> (also called collection notebooks) - created
+automatically when you view the notebook tab of a client collection.
+Lets you explore the results of a single artifact collection.</p>
+</li>
+<li>
+<p><strong>Event notebooks</strong> - created automatically when you view an event
+monitoring session.</p>
+</li>
+</ul>
+<p>For hunt, flow, and event notebooks, the server checks whether the
+collected artifact includes a <code>notebook</code> section in its definition. If
+it does, the notebook is populated with the custom cells from that
+section. Otherwise, a default cell is created that simply queries the
+artifact&rsquo;s results.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/notebooks/timeline_prefetch.png"
+         class="inline"
+         alt="Example: flow notebook"
+         width="1200" height="745">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="timeline_prefetch.png">
+      <i class="fa fa-download"></i></a>
+    Example: flow notebook
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Unlike Global Notebooks, automatic notebooks are visible to all users
+in the org without requiring explicit sharing. Any user with the
+<code>NOTEBOOK_EDITOR</code> permission (included in the <code>investigator</code> role and
+above) can modify them.</p>
+<h2 id="notebook-scoped-variables">Notebook-scoped variables</h2>
+<p>In automatically generated notebooks (hunt, flow, or event notebooks),
+variables such as <code>StartTime</code>, <code>EndTime</code>, <code>ClientId</code>, <code>FlowId</code>, and
+the artifact name are populated in the notebook&rsquo;s runtime environment.</p>
+<p>This allows plugins such as <code>source()</code> to retrieve the correct results
+(e.g. collection data in a flow notebook, or hunt data in a hunt
+notebook) without needing you to explicitly pass it all the function
+arguments.</p>
+<h2 id="notebook-creation-from-templates">Notebook creation from templates</h2>
+<p>Every notebook is created from a <strong>notebook template</strong>. Templates are
+artifacts of type <code>NOTEBOOK</code>. They define the initial set of cells,
+any parameters the user must fill in, and optional tools or column
+formatting. When a user creates a new notebook, the template&rsquo;s VQL
+cells are calculated immediately, one at a time, before the notebook
+appears in the GUI. After that, the notebook behaves like any other —
+the template is only used for initial setup.</p>
+<p>For a complete reference on writing notebook templates, see the
+<a href="/docs/notebooks/templates/">Notebook Templates</a> page.</p>
+<h2 id="notebook-sharing-and-collaboration">Notebook sharing and collaboration</h2>
+<p>Global Notebooks are private by default. Only the creator can see
+them in the notebook list. You can share a notebook with all users by
+making it public, or share it with specific users by adding them as
+collaborators.</p>
+<p>Sharing controls visibility in the GUI, but data inside a notebook is
+still accessible via VQL to any user who knows the notebook and cell
+IDs. This means the shared/private setting is a convenience feature,
+<strong>not a security boundary</strong>. See the
+<a href="/docs/notebooks/sharing/">Notebook Sharing</a> page for details.</p>
+<h2 id="full-screen-mode">Full-screen mode</h2>
+<p>Notebooks can be switched to full-screen mode via the notebook toolbar.
+This is useful when working with large tables, as it lets the notebook
+take up the full width of the browser window. You can return to the
+pane view by clicking the collapse button at the upper right.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<img class="inline"
+     src="/docs/notebooks/fullscreen.png"
+     width="592"
+     height="190"/>
+
+
+
+
+</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1782260661"></script>
+    <script src="/js/perfect-scrollbar.min.js?1782260661"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1782260661"></script>
+    <script src="/js/jquery.sticky.js?1782260661"></script>
+    <script src="/js/featherlight.min.js?1782260661"></script>
+    <script src="/js/highlight.min.js?1782260661"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1782260661"></script>
+    <script src="/js/learn.js?1782260661"></script>
+    <script src="/js/hugo-learn.js?1782260661"></script>
+    
+    
+
+  </body>
+</html>

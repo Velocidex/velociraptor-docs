@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.163.3">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Reference list of known VQL DEFAULT-level errors</title>
+
+    
+    <link href="/css/nucleus.css?1782260662" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1782260662" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1782260662" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1782260662" rel="stylesheet">
+    <link href="/css/auto-complete.css?1782260662" rel="stylesheet">
+    <link href="/css/theme.css?1782260662" rel="stylesheet">
+    <link href="/css/tabs.css?1782260662" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1782260662" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1782260662" rel="stylesheet">
+    
+    <link href="/css/dark.css?1782260662" rel="stylesheet"><link href="/css/syntax.css?1782260662" rel="stylesheet"><link href="/css/light.css?1782260662" rel="stylesheet"><link href="/css/hljs.css?1782260662" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1782260662" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1782260662"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/knowledge_base/tips/vql_error_catalogue/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" alt="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" alt="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-35872c80.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" alt="rapid7 logo" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/knowledge_base\/tips\/vql_error_catalogue\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/knowledge_base/tips/vql_error_catalogue.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Reference list of known VQL DEFAULT-level errors</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#why-this-is-not-the-artifacts-default">Why this is not the artifact&rsquo;s default</a></li>
+    <li><a href="#the-reference-list">The reference list</a></li>
+    <li><a href="#see-also">See also</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/alerts">alerts</a>
+
+  <a class="tag-link" href="/tags/monitoring">monitoring</a>
+
+  <a class="tag-link" href="/tags/notifications">notifications</a>
+
+  <a class="tag-link" href="/tags/errors">errors</a>
+
+  <a class="tag-link" href="/tags/troubleshooting">troubleshooting</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+
+        
+
+
+
+	<h1 id="reference-list-of-known-vql-default-level-errors">Reference list of known VQL DEFAULT-level errors</h1>
+<p>Many native VQL functions and plugins log errors at level <code>DEFAULT</code>
+rather than <code>ERROR</code>. Some of these should arguably be <code>WARN</code> or
+<code>ERROR</code>, but in many cases it is up to the caller to decide whether
+the VQL has failed.</p>
+<p>When monitoring errors from event artifacts, you should consider
+including some of these <code>DEFAULT</code>-level log messages in your alerting
+filters. This is done in <code>IncludeFilter</code> in the artifacts
+<a href="/exchange/artifacts/pages/server.monitor.errors.alert/"><code>Server.Monitor.Errors.Alert</code></a>
+and
+<a href="/exchange/artifacts/pages/server.monitor.client.errors.alert/"><code>Server.Monitor.Client.Errors.Alert</code></a>.</p>
+<p>See <a href="/knowledge_base/tips/monitoring_artifact_errors/">How to monitor event artifact errors</a>
+for the surrounding setup.</p>
+
+<div class="mynotices tip">
+  <div heading="tip"><p>Use the configuration setting
+<a href="/docs/deployment/references/#Frontend.collection_error_regex">collection_error_regex</a>
+(default &ldquo;ERROR:&rdquo;) to mark a client collection as failed when log
+entries match a regex.</p>
+</div>
+</div>
+
+
+<h2 id="why-this-is-not-the-artifacts-default">Why this is not the artifact&rsquo;s default</h2>
+<p>In some cases an error from a function is critical, in other cases it
+is expected. For example:</p>
+<ul>
+<li>A failing <a href="/vql_reference/popular/read_file/"><code>read_file</code></a> is fatal
+if the artifact&rsquo;s job is to read that file, but expected if the call
+is a best-effort probe.</li>
+<li>A failing <a href="/vql_reference/parsers/parse_json/"><code>parse_json</code></a> loses
+data if it is part of the artifact&rsquo;s main parsing step, but is
+harmless on an optional enrichment.</li>
+<li>An <a href="/vql_reference/other/upload_s3/"><code>upload_S3</code></a> retry exhaustion
+should most likely be considered a serious error. However, it really
+depends on the data you are uploading, and the importance of not
+losing any information.</li>
+<li>A <a href="/vql_reference/popular/glob/"><code>glob</code></a> permission denial is normal
+during a recursive walk. The same message from a single targeted
+lookup is a real problem.</li>
+</ul>
+<p>Severity also varies with the deployment. A
+<a href="/vql_reference/other/splunk_upload/"><code>splunk_upload</code></a> failure could
+be <code>low</code> for someone forwarding only debug events, and <code>high</code> for
+someone whose entire detection pipeline depends on it.</p>
+<p>For these reasons the alert artifacts ship with a deliberately
+conservative default: match <code>ERROR</code> and nothing else — so they do not
+spam alerts out of the box. Copy the rows whose failure modes matter
+to you, adjust artifact and severities to your environment, and place
+specific patterns above broader catch-alls (rows are evaluated
+top-to-bottom and the first match wins).</p>
+<h2 id="the-reference-list">The reference list</h2>
+<pre><code class="language-csv">Artifact,Level,Message,Severity,Explanation
+.+,ERROR,.+,high,
+.+,WARN,.+,medium,
+.+,DEFAULT,ERROR:execve: .+,high,Shell command failed to launch or run.
+.+,DEFAULT,execve: fork/exec .+: no such file or directory,high,Executable not found.
+.+,DEFAULT,execve: Not allowed to execve by configuration,high,Shell execution blocked by client config.
+.+,DEFAULT,ERROR:query: Permission required for runas: .+,high,query() denied: caller lacks the IMPERSONATION ACL required for run-as.
+.+,DEFAULT,ERROR:query: query should be a string or subquery,high,query() called with wrong argument type: must be a string or stored query.
+.+,DEFAULT,ERROR:query: .+,medium,query() failed: VQL syntax error.
+.+,DEFAULT,ERROR:mail: .+,medium,Email delivery failed.
+.+,DEFAULT,ERROR:pk_encrypt: .+,high,Public-key encryption failed: output data is not protected.
+.+,DEFAULT,ERROR:pk_decrypt: .+,medium,Public-key decryption failed: data is unreadable.
+.+,DEFAULT,ERROR:sqlite: Unable to create temp file: .+,high,SQLite cannot create working temp file: query returns nothing.
+.+,DEFAULT,ERROR:Unable to open sqlite file .+,medium,SQLite file inaccessible.
+.+,DEFAULT,ERROR:NewSQLCache can not set (?:desctructor|destructor): .+,low,SQLite cache destructor registration failed: temp files may leak.
+.+,DEFAULT,ERROR:upload_gcs: .+,high,GCS upload failed with no retry: file not uploaded.
+.+,DEFAULT,ERROR:splunk_upload: all \d+ attempts failed: .+,high,All Splunk upload retries exhausted: data not delivered.
+.+,DEFAULT,ERROR:client_repack: .+,high,Client repack operation failed.
+.+,DEFAULT,ERROR:parse_json: .+,medium,parse_json failed to parse a value: result is silently dropped.
+.+,DEFAULT,ERROR:parse_yaml: .+,medium,parse_yaml failed to parse a value: result is silently dropped.
+.+,DEFAULT,ERROR:process_tracker: .+,medium,Process tracker hit a fatal error: process ancestry data may be incomplete.
+.+,DEFAULT,ERROR:alert: .+,medium,alert() function failed.
+.+,DEFAULT,ERROR:array: .+,medium,array() function failed.
+.+,DEFAULT,rm: Retry count exceeded - giving up,low,File deletion permanently failed after all retries (file remains on disk).
+.+,DEFAULT,RemoveDirectory: Retry count exceeded - giving up,medium,Directory removal permanently failed after all retries.
+.+,DEFAULT,tempfile: Retry count exceeded - giving up,medium,Temporary file cleanup permanently failed: disk space may leak.
+.+,DEFAULT,watch_jsonl: unable to get config,high,watch_jsonl watcher cannot read configuration: no events will be produced.
+.+,DEFAULT,remap: Failed to apply remapping,high,Remapping failed: artifact yields nothing downstream.
+.+,DEFAULT,copy: Failed to (open|copy|create directories).+,medium,File copy operation failed: destination file will be absent or incomplete.
+.+,DEFAULT,upload: Unable to open .+,medium,upload() cannot open source file: nothing uploaded to server.
+.+,DEFAULT,upload_S3: Unable to open .+,medium,S3 upload source file not found: file not uploaded.
+.+,DEFAULT,upload_S3: operation error .+,high,S3 upload failed with no retry: file not uploaded.
+.+,DEFAULT,upload_SFTP: Unable to open .+,medium,SFTP upload source file not found: file not archived.
+.+,DEFAULT,upload_azure: Unable to open .+,medium,Azure Blob upload source file not found.
+.+,DEFAULT,upload_smb: Unable to open .+,medium,SMB upload source file not found.
+.+,DEFAULT,upload_webdav: Unable to open .+,medium,WebDAV upload source file not found.
+.+,DEFAULT,upload_SFTP: Unable to verify size of uploaded file due to insufficient read permissions,medium,SFTP upload integrity check skipped: transfer may be truncated.
+.+,DEFAULT,splunk_upload: attempt \d+ failed: .+,medium,Splunk upload attempt failed and is retrying.
+.+,DEFAULT,splunk: cannot get TLS config: .+,medium,Splunk TLS configuration error: upload will likely fail.
+.+,DEFAULT,elastic: cannot get TLS config: .+,medium,Elastic TLS configuration error: upload will likely fail.
+.+,DEFAULT,yara: Failed to open .+ with accessor .+: .+,medium,YARA cannot open scan target: file skipped silently.
+.+,DEFAULT,sigma: Error parsing: .+ in rule '.+',medium,Sigma rule rejected at parse time: rule not evaluated against events.
+.+,DEFAULT,sigma: Error parsing rule '.+': no title set,medium,Sigma rule missing required title field: rule silently skipped.
+.+,DEFAULT,sigma: Correlation .+: Error in rule .+,medium,Sigma correlation rule contains an error: correlation not evaluated.
+.+,DEFAULT,ERROR:sigma_log_sources: .+,high,Sigma log source misconfigured.
+.+,DEFAULT,GROUP BY: \d+ bins exceeded,low,GROUP BY memory limit exceeded: query will run significantly slower.
+.+,DEFAULT,import_collection: Error copying .+,high,File copy failed during collection import: some files may be missing.
+.+,DEFAULT,import_collection: .+,high,import_collection hit an error: collection may be partially imported.
+.+,DEFAULT,tracker update query error: .+,medium,Process tracker update query failed: process ancestry data may be stale or missing.
+.+,DEFAULT,hunt: expiry time invalid: .+,medium,Hunt expiry time could not be parsed: hunt may never expire.
+.+,DEFAULT,hunt: expiry time .+ in the past,medium,Hunt expiry is already in the past: hunt will expire immediately.
+.+,DEFAULT,hunt: OS condition invalid .+,medium,Hunt OS condition string is invalid: hunt may run on unintended platforms.
+.+,DEFAULT,interfaces: failed to enumerate interfaces: .+,high,Network interface enumeration failed: interface list will be empty.
+.+,DEFAULT,parse_usn: Unable to get MFT,medium,USN journal parsed without MFT: FullPath column will be empty for all records.
+.+,DEFAULT,ERROR:etw: failed to disable provider; .+,medium,Windows ETW provider could not be disabled cleanly: may affect subsequent traces.
+.+,DEFAULT,parse_ntfs: invalid context,high,NTFS parsing context is invalid: all NTFS results suppressed. Check accessor and image path.
+.+,DEFAULT,parse_mft: Unable to open file .+,high,MFT file cannot be opened: NTFS file enumeration produces no output.
+.+,DEFAULT,watch_ebpf: should provide a policy or a list of events,high,watch_ebpf called without policy or events: nothing is monitored.
+.+,DEFAULT,watch_ebpf: Unable to compile regex_prefilter .+,medium,eBPF event pre-filter regex is invalid: all events pass through unfiltered.
+.+,DEFAULT,watch_ebpf: .+,medium,watch_ebpf failed to load/attach/run: events not produced.
+.+,DEFAULT,audit: .+,medium,Linux audit socket error: audit events may be lost.
+.+,DEFAULT,receive failed: .+,medium,Linux audit event receive failed: gap in audit event stream.
+.+,DEFAULT,Unable to load timezone from PARSE_TZ .+,low,PARSE_TZ timezone string invalid: timestamps silently converted to UTC.
+.+,DEFAULT,Unable to load timezone from TZ .+,low,TZ timezone string invalid: timestamps silently converted to UTC.
+.+,DEFAULT,environ: access to env var \S+ is denied,low,Environment variable access blocked by ACL: VQL expression receives an empty string.
+.+,DEFAULT,.+: Field \S+ is required,high,Required argument missing: function returns no output.
+.+,DEFAULT,.+: Unexpected arg \S+,high,Unknown argument name passed to function (likely a typo in the artifact): argument is silently ignored.
+.+,DEFAULT,.+: Field \S+ .+,high,Argument type conversion failed: function returns no output.
+.+,DEFAULT,upload_gcs: unable to fetch config,high,GCS upload cannot read client config: file not uploaded.
+.+,DEFAULT,parse_csv: separator can only be one character,medium,parse_csv separator parameter is invalid: no rows produced.
+.+,DEFAULT,parse_csv: comment can only be one character,medium,parse_csv comment parameter is invalid: no rows produced.
+.+,DEFAULT,elastic: action must be either index or create,medium,elastic_upload called with invalid action parameter: rows not indexed.
+.+,DEFAULT,sigma: Correlation .+: References missing rule .+,medium,Sigma correlation references a rule that was not loaded: correlation not evaluated.
+.+,DEFAULT,netcat: unsupported address type .+,medium,netcat called with unsupported address type: no connection made.
+.+,DEFAULT,http_client: must use secrets is enforced.+,medium,http_client URL dropped: server policy requires secrets-managed credentials.
+.+,DEFAULT,user_grant: You must provide either roles or a policy object,medium,user_grant called without roles or policy: no permissions granted.
+.+,DEFAULT,hunt_delete: '.+' not found,medium,Hunt not found: nothing deleted.
+.+,DEFAULT,hunt_add: Hunt id not found .+,medium,Hunt not found: client not added.
+.+,DEFAULT,add_client_monitoring: artifact .+ not found,medium,Client monitoring artifact not found: monitoring not configured.
+.+,DEFAULT,add_server_monitoring: artifact .+ not found,medium,Server monitoring artifact not found: monitoring not configured.
+.+,DEFAULT,proc_dump: failed to dump process: .+,medium,Process memory dump failed.
+.+,DEFAULT,parse_pe: .+,medium,PE parsing failed: no rows produced for this file.
+.+,DEFAULT,prefetch: file is not seekable .+,low,Prefetch input is not seekable: file skipped.
+.+,DEFAULT,prefetch: .+,medium,Prefetch parsing failed: no rows for this file.
+.+,DEFAULT,parse_pst: .+,medium,PST parsing failed: messages skipped.
+.+,DEFAULT,hashselect option .+ not recognized.+,high,hash() called with unsupported algorithm (only md5/sha1/sha256): file not hashed.
+.+,DEFAULT,glob: Rejected glob expression .+,medium,Glob expression rejected by safety check: no files matched.
+.+,DEFAULT,read_file: .+,medium,read_file() failed: contents not returned.
+.+,DEFAULT,process_tracker_(?:tree|get|callchain|children|all): Initialize a process tracker first .+,high,Process tracker query made before process_tracker_install(): result empty.
+.+,DEFAULT,artifact_set: Command can only run on the server,high,artifact_set() called from a non-server context: artifact not added.
+.+,DEFAULT,artifact_set: artifact type .+ invalid,high,artifact_set() given an invalid artifact type: not added.
+.+,DEFAULT,artifact_set: .+,medium,artifact_set() failed: artifact may not have been written.
+.+,DEFAULT,artifact_delete: Artifact '.+' not found,medium,artifact_delete() target missing: nothing deleted.
+.+,DEFAULT,artifact_delete: Can only delete custom artifacts.+,medium,artifact_delete() refused: built-in artifact cannot be deleted.
+.+,DEFAULT,artifact_delete: .+,medium,artifact_delete() failed.
+.+,DEFAULT,unzip: .+,medium,unzip() failed (open/read/walk error): archive contents not produced.
+.+,DEFAULT,js(?:_call|_set|_get)?: .+,medium,JavaScript runtime error: js() returned nothing.
+.+,DEFAULT,yara_lint: .+,medium,yara_lint() failed to compile/inspect rule: lint output missing.
+.+,DEFAULT,http_client: Permission Denied accessing secret .+,medium,VelociraptorServer does not have access to HTTP secret.
+.+,DEFAULT,http_client: http_client: HTTP Secret excludes all URLs,medium,URL does not match configured secret URL (regex).
+.+,DEFAULT,http_client: Secret Not Found,high,HTTP secret not found.
+</code></pre>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="/knowledge_base/tips/monitoring_artifact_errors/">How to monitor event artifact errors</a></li>
+<li><a href="/exchange/artifacts/pages/server.monitor.errors.alert/"><code>Server.Monitor.Errors.Alert</code></a></li>
+<li><a href="/exchange/artifacts/pages/server.monitor.client.errors.alert/"><code>Server.Monitor.Client.Errors.Alert</code></a></li>
+<li><a href="/knowledge_base/tips/vql_alerts/">Using alerts in Velociraptor</a></li>
+</ul>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1782260662"></script>
+    <script src="/js/perfect-scrollbar.min.js?1782260662"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1782260662"></script>
+    <script src="/js/jquery.sticky.js?1782260662"></script>
+    <script src="/js/featherlight.min.js?1782260662"></script>
+    <script src="/js/highlight.min.js?1782260662"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1782260662"></script>
+    <script src="/js/learn.js?1782260662"></script>
+    <script src="/js/hugo-learn.js?1782260662"></script>
+    
+    
+
+  </body>
+</html>

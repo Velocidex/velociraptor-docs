@@ -1,0 +1,1961 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.163.3">
+    <meta name="description" content="Velociraptor Query Language (VQL) is the query language used across all of
+Velociraptor&#39;s features — from artifact collections and client monitoring to
+notebook investigations and API automation.
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>VQL Fundamentals</title>
+
+    
+    <link href="/css/nucleus.css?1782260662" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1782260662" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1782260662" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1782260662" rel="stylesheet">
+    <link href="/css/auto-complete.css?1782260662" rel="stylesheet">
+    <link href="/css/theme.css?1782260662" rel="stylesheet">
+    <link href="/css/tabs.css?1782260662" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1782260662" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1782260662" rel="stylesheet">
+    
+    <link href="/css/dark.css?1782260662" rel="stylesheet"><link href="/css/syntax.css?1782260662" rel="stylesheet"><link href="/css/light.css?1782260662" rel="stylesheet"><link href="/css/hljs.css?1782260662" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1782260662" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1782260662"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/vql/fundamentals/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" alt="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" alt="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-35872c80.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" alt="rapid7 logo" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/vql\/fundamentals\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/vql/fundamentals/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">VQL Fundamentals</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#basic-syntax">Basic Syntax</a>
+      <ul>
+        <li><a href="#variables">Variables</a></li>
+        <li><a href="#whitespace">Whitespace</a></li>
+        <li><a href="#plugins">Plugins</a></li>
+        <li><a href="#life-of-a-query">Life of a query</a></li>
+        <li><a href="#lazy-evaluation">Lazy Evaluation</a></li>
+        <li><a href="#what-is-a-scope">What is a Scope?</a></li>
+        <li><a href="#string-constants">String constants</a></li>
+        <li><a href="#identifiers-with-spaces">Identifiers with spaces</a></li>
+        <li><a href="#subqueries">Subqueries</a></li>
+        <li><a href="#subqueries-as-columns">Subqueries as columns</a></li>
+        <li><a href="#arrays">Arrays</a></li>
+        <li><a href="#dictionaries">Dictionaries</a></li>
+        <li><a href="#the-scope-plugin">The scope() plugin</a></li>
+      </ul>
+    </li>
+    <li><a href="#the-foreach-plugin">The Foreach plugin</a>
+      <ul>
+        <li><a href="#foreach-on-steroids">Foreach on steroids</a></li>
+        <li><a href="#foreach-and-deconstructing-a-dict">Foreach and deconstructing a dict</a></li>
+      </ul>
+    </li>
+    <li><a href="#let-expressions">LET expressions</a>
+      <ul>
+        <li><a href="#let-expressions-are-lazy">LET expressions are lazy</a></li>
+        <li><a href="#materialized-let-expressions">Materialized LET expressions</a></li>
+      </ul>
+    </li>
+    <li><a href="#local-functions">Local functions</a></li>
+    <li><a href="#vql-operators">VQL Operators</a>
+      <ul>
+        <li><a href="#protocols">Protocols</a></li>
+        <li><a href="#logical-operators">Logical operators</a></li>
+      </ul>
+    </li>
+    <li><a href="#vql-control-structures">VQL control structures</a>
+      <ul>
+        <li><a href="#looping-over-rows">Looping over rows</a></li>
+        <li><a href="#looping-over-arrays">Looping over arrays</a></li>
+        <li><a href="#conditional-if-plugin-and-function">Conditional: if plugin and function</a></li>
+        <li><a href="#conditional-switch-plugin">Conditional: switch plugin</a></li>
+        <li><a href="#conditional-chain-plugin">Conditional: chain plugin</a></li>
+      </ul>
+    </li>
+    <li><a href="#group-by-clause">Group by clause</a>
+      <ul>
+        <li><a href="#aggregate-functions">Aggregate functions</a></li>
+        <li><a href="#vql-lambda-functions">VQL Lambda functions</a></li>
+      </ul>
+    </li>
+    <li><a href="#vql-error-handling">VQL Error handling</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              VQL Fundamentals
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>Velociraptor Query Language (VQL) is the query language used across
+all of Velociraptor&rsquo;s features - from artifact collections and client
+monitoring to notebook investigations and API automation. This page
+covers the core concepts you need to write and understand VQL queries.</p>
+
+<div class="mynotices tip">
+  <div heading=" Running VQL queries in Notebooks "><p>When learning VQL, we recommend practicing in an environment where you
+can easily debug, iterate, and interactively test each query.
+Velociraptor notebooks provide a perfect playpen for learning and
+experimenting with VQL. You can read more about notebooks
+<a href="/docs/notebooks/">here</a>.</p>
+<p>For the purposes of this documentation, we will assume you&rsquo;ve created
+a notebook and are typing VQL into a notebook cell.</p>
+</div>
+</div>
+
+
+<h2 id="basic-syntax">Basic Syntax</h2>
+<p>VQL&rsquo;s syntax is heavily inspired by SQL. It uses the same basic
+<code>SELECT .. FROM .. WHERE</code> semantic structure, but does not include the
+more complex SQL syntax, such as <code>JOIN</code> or <code>HAVING</code>. In VQL, similar
+functionality is provided through plugins, which keeps the syntax
+simple and concise.</p>
+<h3 id="variables">Variables</h3>
+<p>In VQL, variables are assigned using <code>LET</code> statements, for example:</p>
+<pre><code class="language-vql">LET my_variable &lt;= SELECT * FROM info()
+</code></pre>
+<p>In the above example the assignment is using <code>&lt;=</code> which is a
+<a href="/docs/vql/fundamentals/#materialized-let-expressions">materialized LET expression</a>, meaning
+that the value is immediately assigned to the variable. However
+assignment can be &ldquo;lazy&rdquo; which means that the assignment only happens
+when the variable is subsequently referenced and therefore evaluated
+only if an when it&rsquo;s needed.
+See <a href="/docs/vql/fundamentals/#let-expressions">LET expressions</a> for more information about
+lazy evaluation.</p>
+<p>Variable names can only consist of alphanumeric characters,
+underscores (<code>_</code>), and dashes (<code>-</code>), and cannot begin with a numeric
+or a dash character. They are also case-sensitive.</p>
+
+<div class="mynotices tip">
+  <div heading=" Throwaway variables "><p>In artifacts you might sometimes see just a <code>_</code> used as a variable
+name. This is a naming convention (not a language-enforced rule) for
+an anonymous or &ldquo;throwaway&rdquo; variable, where we don&rsquo;t care about the
+name because we don&rsquo;t intend to use the actual value in subsequent
+VQL, and therefore also don&rsquo;t care is the variable name is later
+reassigned another value.</p>
+<p>For example:</p>
+<pre><code class="language-vql">LET _ &lt;= log(message=&quot;Start time %v&quot;, args=start_time)
+</code></pre>
+<p>would be used just to generate a log message and we don&rsquo;t intend to do
+anything with the result.
+It uses a <a href="/docs/vql/fundamentals/#materialized-let-expressions">materialized LET expression</a>
+so that the evaluation happens immediately.</p>
+</div>
+</div>
+
+
+<p>A convention of using CamelCase for variable names has evolved in our
+artifacts. But you are free to use any naming convention that you
+prefer in your VQL.</p>
+<p>Any supported data type can be assigned to a variable, including VQL
+queries.</p>
+<p>In VQL, variables can also perform double-duty as local function
+names. For example:</p>
+<pre><code class="language-vql">LET CheckTime(Time, Default) = if(condition={
+                                  SELECT *
+                                  FROM info()
+                                  WHERE OS =~ &quot;windows&quot;
+                                },
+                                then=Time,
+                                else=Default)
+</code></pre>
+<p>defines a local VQL function that can be called from subsequent VQL
+queries and passed arguments.</p>
+<p>See <a href="/docs/vql/fundamentals/#local-functions">Local Functions</a> for
+more information.</p>
+<p>The assignment of variables can be immediate or &ldquo;lazy&rdquo; (when
+required).
+See <a href="/docs/vql/fundamentals/#let-expressions">LET expressions</a>
+to learn about lazy evaluation/assignment.</p>
+<h4 id="artifact-parameters-are-externally-defined-variables">Artifact parameters are externally-defined variables</h4>
+<p><a href="/docs/artifacts/parameters/">Artifact parameters</a> are converted to
+variables using the parameter name as the variable name and the
+parameter type as the data type. So artifact parameters are really
+just a convenient way to define variables outside of the VQL itself.</p>
+<h4 id="built-in-variables">Built-in Variables</h4>
+<p>The behaviour of certain VQL plugins are determined by a set of
+<a href="https://github.com/Velocidex/velociraptor/blob/e851953bd5bcff06a6e026ae6bb7a2cbd6de1cab/constants/constants.go#L80" target="_blank" >built-in variables</a>.</p>
+<p>In general, you should not need to modify these, but if for some
+reason you need to override the default behavior of these plugins you
+can do so by setting the relevant variables within the same VQL scope
+as the plugin call. In a sense, these can be considered &ldquo;hidden
+arguments&rdquo; for certain plugins.</p>
+<p>Some default variables are also used to define certain aspects of GUI
+behaviour, for example <code>column_types</code> is a variable that the GUI uses
+to configure user-defined display formatting for specific columns. If
+you&rsquo;re working in a notebook and use the <strong>Format Columns</strong> GUI
+option, you will see that it adds a variable <code>ColumnTypes</code> to the VQL.
+You could define this special variable in artifacts too, but for that
+we have the equivalent <code>column_types</code> YAML key.</p>
+<h3 id="whitespace">Whitespace</h3>
+<p>VQL does not place any restrictions on the use of whitespace in the
+query body. We generally prefer queries that are well indented because
+they are more readable and look better but this is not a
+requirement. Unlike SQL, VQL does not require or allow a semicolon <code>;</code>
+at the end of statements.</p>
+<p>The following two queries are equivalent</p>
+<pre><code class="language-vql">-- This query is all on the same line - not very readable but valid.
+LET X = SELECT * FROM info() SELECT * FROM X
+
+-- We prefer well indented queries but VQL does not mind.
+LET X= SELECT * FROM info()
+SELECT * FROM X
+</code></pre>
+<p>Let&rsquo;s consider the basic syntax of a VQL query.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/vql/fundamentals/vql_structure.png"
+         class="inline"
+         alt="Basic syntax"
+         width="1732" height="427">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="vql_structure.png">
+      <i class="fa fa-download"></i></a>
+    Basic syntax
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The query starts with a SELECT keyword, followed by a list of <code>Column Selectors</code> then the <code>FROM</code> keyword and a <code>VQL Plugin</code> potentially
+taking arguments. Finally we have a <code>WHERE</code> keyword followed by a
+filter expression.</p>
+<h3 id="plugins">Plugins</h3>
+<p>While VQL syntax is similar to SQL, SQL was designed to work on static
+tables in a database. In VQL, the data sources are not actually static
+tables on disk - they are provided by code that runs to generate
+rows. <code>VQL Plugins</code> produce rows and are positioned after the
+<code>FROM</code> clause.</p>
+<p>Like all code, VQL plugins use parameters to customize and control
+their operations. VQL Syntax requires all arguments to be provided by
+name (these are called keyword arguments). Depending on the specific
+plugins, some arguments are required while some are optional.</p>
+
+<div class="mynotices tip">
+  <div heading=" Using the GUI suggestions "><p>You can type <code>?</code> in the Notebook interface to view a
+list of possible completions for a keyword. Completions are context sensitive. For example, since plugins must follow the <code>FROM</code> keyword, any suggestions
+after the <code>FROM</code> keyword will be for VQL plugins. Typing <code>?</code> inside
+a plugin arguments list shows the possible arguments, their
+type, and if they are required or optional.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/vql/fundamentals/completion.png"
+         class="inline"
+         alt="VQL Plugin Completions"
+         width="1052" height="357">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="completion.png">
+      <i class="fa fa-download"></i></a>
+    VQL Plugin Completions
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/vql/fundamentals/completion2.png"
+         class="inline"
+         alt="VQL Plugin arguments Completions"
+         width="1050" height="419">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="completion2.png">
+      <i class="fa fa-download"></i></a>
+    VQL Plugin arguments Completions
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</div>
+</div>
+
+
+<h4 id="argument-unpacking">Argument unpacking</h4>
+<p>Args can be passed to plugins or functions as a dict.</p>
+<p>In the following simple example, the plugin&rsquo;s args are first packed
+into a dict. The plugin is then passed the dict using the special <code>**</code>
+arg, which unpacks the dict into the separate arguments that the
+plugin expects.</p>
+<h6 id="example">Example</h6>
+<pre><code class="language-vql">LET args &lt;= dict(root=&quot;c:/windows&quot;, globs=&quot;*&quot;)
+
+SELECT *
+FROM glob(`**`=args)
+</code></pre>
+<p>Note that the <code>**</code> has to be enclosed in backticks because
+<a href="/docs/vql/fundamentals/#identifiers-with-spaces">it is an identifier that uses non-alphanumeric characters</a>.</p>
+<p>Also, when this method is used any other arguments specified are
+ignored.</p>
+<h4 id="free-form-args">Free-form Args</h4>
+<p>Certain plugins and functions, namely:</p>
+<ul>
+<li><code>alert</code></li>
+<li><code>array</code></li>
+<li><code>chain</code></li>
+<li><code>dict</code></li>
+<li><code>sigma_log_sources</code></li>
+<li><code>switch</code></li>
+<li><code>typeof</code></li>
+</ul>
+<p>accept arbitrary arguments, which we call &ldquo;free-form args&rdquo;.</p>
+<p>However all args still have to be named, so you&rsquo;ll usually see the
+args specified as <code>a=, b=, c=</code> just for simplicity.</p>
+<h6 id="example-1">Example</h6>
+<pre><code class="language-vql">SELECT *
+    FROM chain(
+      a={ SELECT * FROM ...) },
+      b={ SELECT * FROM ...) })
+</code></pre>
+<h3 id="life-of-a-query">Life of a query</h3>
+<p>In order to understand how VQL works, let&rsquo;s follow a single row through the query.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/vql/fundamentals/life_of_a_query.png"
+         class="inline"
+         alt="Life of a query"
+         width="1691" height="942">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="life_of_a_query.png">
+      <i class="fa fa-download"></i></a>
+    Life of a query
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<ol>
+<li>
+<p>Velociraptor&rsquo;s VQL engine will call the plugin and pass
+any relevant arguments to it. The plugin will then generate one or
+more rows and send a row at a time into the query for further
+processing.</p>
+</li>
+<li>
+<p>The column expression in the query receives the
+row. However, instead of evaluating the column expression
+immediately, VQL wraps the column expression in a <code>Lazy Evaluator</code>. Lazy evaluators allow the actual evaluation of the
+column expression to be delayed until a later time.</p>
+</li>
+<li>
+<p>Next, VQL takes the lazy evaluator and uses them to evaluate the
+filter condition, which will determine if the row is to be
+eliminated or passed on.</p>
+</li>
+<li>
+<p>In this example, the filter condition (<code>X=1</code>) must evaluate the
+value of X and therefore will trigger the Lazy Evaluator.</p>
+</li>
+<li>
+<p>Assuming X is indeed 1, the filter will return TRUE and the row
+will be emitted from the query.</p>
+</li>
+</ol>
+<h3 id="lazy-evaluation">Lazy Evaluation</h3>
+<p>In the previous example, the VQL engine goes through significant
+effort to postpone the evaluation as much as possible. Delaying an
+evaluation is a recurring theme in VQL and it saves Velociraptor from
+performing unnecessary work, like evaluating a column value if the
+entire row will be filtered out.</p>
+<p>Understanding lazy evaluation is critical to writing efficient VQL
+queries. Let&rsquo;s examine how this work using a series of
+experiments. For these experiments we will use the <code>log()</code> VQL
+function, which simply produces a log message when evaluated.</p>
+<pre><code class="language-sql">-- Case 1: One row and one log message
+SELECT OS, log(message=&quot;I Ran!&quot;) AS Log
+FROM info()
+
+-- Case 2: No rows and no log messages
+SELECT OS, log(message=&quot;I Ran!&quot;) AS Log
+FROM info()
+WHERE OS = &quot;Unknown&quot;
+
+-- Case 3: Log message but no rows
+SELECT OS, log(message=&quot;I Ran!&quot;) AS Log
+FROM info()
+WHERE Log AND OS = &quot;Unknown&quot;
+
+-- Case 4: No rows and no log messages
+SELECT OS, log(message=&quot;I Ran!&quot;) AS Log
+FROM info()
+WHERE OS = &quot;Unknown&quot; AND Log
+</code></pre>
+<p>In Case 1, a single row will be emitted by the query and the
+associated log function will be evaluated, producing a log message.</p>
+<p>Case 2 adds a condition which should eliminate the row. <strong>Because the
+row is eliminated VQL can skip evaluation of the log()
+function.</strong> No log message will be produced.</p>
+<p>Cases 3 and 4 illustrate VQL&rsquo;s evaluation order of <code>AND</code> terms - from
+left to right with an early exit.</p>
+<p>We can use this property to control when expensive functions are
+evaluated e.g. <code>hash()</code> or <code>upload()</code>.</p>
+<h3 id="what-is-a-scope">What is a Scope?</h3>
+<p>Scope is a concept common in many languages, and it is also central in
+VQL.  A scope is a bag of names that is used to resolve symbols,
+functions and plugins in the query.</p>
+<p>For example, consider the query</p>
+<pre><code class="language-sql">SELECT OS FROM info()
+</code></pre>
+<p>VQL sees “info” as a plugin and looks in the scope to get the real
+implementation of the plugin.</p>
+<p>Scopes can be nested, which means that in different parts of the query a
+new child scope is used to evaluate the query. The child scope is
+constructed by layering a new set of names over the top of the
+previous set. When VQL tries to resolve a name, it looks up the scope
+in reverse order going from layer to layer until the symbol is
+resolved.</p>
+<p>Take the following query for example,</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/vql/fundamentals/scope.png"
+         class="inline"
+         alt="Scope lookup"
+         width="1468" height="400">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="scope.png">
+      <i class="fa fa-download"></i></a>
+    Scope lookup
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>VQL evaluates the <code>info()</code> plugin, which emits a single row. Then VQL
+creates a child scope, with the row at the bottom level. When VQL tries
+to resolve the symbol <code>OS</code> from the column expression, it examines the
+scope stack in reverse, checking if the symbol <code>OS</code> exists in the
+lower layer. If not, VQL checks the next layer, and so on.</p>
+
+<div class="mynotices warning">
+  <div heading=" Masking variables in the scope "><p>Columns produced by a plugin are added to the child scope and
+therefore <strong>mask</strong> the same symbol name from parent scopes. This can
+sometimes unintentionally hide variables of the same name which are
+defined at a parent scope. If you find this happens to your query you
+can rename earlier symbols using the <code>AS</code> keyword to avoid this
+problem.  For example:</p>
+<pre><code class="language-sql">SELECT Pid, Name, {
+   SELECT Name FROM pslist(pid=Ppid)
+} AS ParentName
+FROM pslist()
+</code></pre>
+<p>In this query, the symbol <code>Name</code> in the outer query will be resolved
+from the rows emitted by <code>pslist()</code> but the second <code>Name</code> will be
+resolved from the row emitted by <code>pslist(pid=Ppid)</code> - or in other
+words, the parent&rsquo;s name.</p>
+</div>
+</div>
+
+
+<h3 id="string-constants">String constants</h3>
+<p>Strings in VQL are denoted by <code>&quot;</code> or <code>'</code>, and can include
+backslash-escaped special characters, for example, <code>&quot;\n&quot;</code> means a new
+line.</p>
+<p>Allowing backslash escapes is useful but it also means that literal
+backslashes also need to be escaped. This is sometimes inconvenient,
+especially when dealing with Windows paths (that often contain a lot
+of backslashes) or <a href="/docs/vql/fundamentals/#regex-in-vql">regexes</a> where <code>\</code> is used for
+shorthand character classes and for escaping special characters.</p>
+<p>Therefore, Velociraptor also offers a raw string syntax which is
+denoted by <code>'''</code> (three single quotes). Within this type of string no
+escaping is possible and <em>all</em> characters are treated literally,
+including new lines.</p>
+<p>Because the raw string syntax preserves newline it can also be used
+for specifying multi-line strings. For example:</p>
+<pre><code class="language-vql">SELECT *
+FROM parse_csv(accessor=&quot;data&quot;, filename='''
+X,Y,Z
+1,2,3
+2,4,6
+''')
+</code></pre>
+<p>If you come from a Python or C# background, note that multi-line
+strings do not use triple double-quotes. Only triple single-quotes
+facilitate multi-line strings in VQL.</p>
+<h3 id="identifiers-with-spaces">Identifiers with spaces</h3>
+<p>In VQL an <code>Identifier</code> is the name of a column, member of a dict or a
+keyword name. Sometimes identifiers contain special characters such as
+space or <code>.</code> which make it difficult to specify them without having
+VQL get confused by these extra characters.</p>
+<p>In this case it is possible to enclose the identifier name with back
+ticks (<code>`</code>).</p>
+<p>In the following example, the query specifies keywords with spaces to
+the <code>dict()</code> plugin in order to create a dict with keys containing spaces.</p>
+<p>The query then continues to extract the value from this key by
+enclosing the name of the key using backticks.</p>
+<pre><code class="language-vql">LET X = SELECT dict(`A key with spaces`=&quot;String value&quot;) AS Dict
+FROM scope()
+
+SELECT Dict, Dict.`A key with spaces` FROM X
+</code></pre>
+<h3 id="subqueries">Subqueries</h3>
+<p>VQL Subqueries can be specified as a column expression or as an
+arguments. Subqueries are delimited by <code>{</code> and <code>}</code>. Subqueries are
+also lazily evaluated, and will only be evaluated when necessary.</p>
+<p>The following example demonstrates subqueries inside plugin args. The
+<code>if()</code> plugin will evaluate the <code>then</code> or the <code>else</code> query depending
+on the <code>condition</code> value (in this example when X has the value 1).</p>
+<pre><code class="language-vql">SELECT * FROM if(condition=X=1,
+then={
+  SELECT * FROM ...
+},
+else={
+  SELECT * FROM ...
+})
+</code></pre>
+<h3 id="subqueries-as-columns">Subqueries as columns</h3>
+<p>You can use a subquery as a column which will cause it to be evaluated
+for each row (in this way it is similar to the <code>foreach()</code> plugin).</p>
+<p>Since subqueries are always an array of dictionaries, the output if
+often difficult to read when the subquery returns many rows or
+columns. As a special case, VQL will simplify subqueries:</p>
+<ol>
+<li>If the subquery returns one row and has several columns, VQL will
+put a single dictionary of data in the column.</li>
+<li>If the subquery returns one row and a single column, the value is
+expanded into the cell.</li>
+</ol>
+<p>These heuristics are helpful when constructing subqueries to enrich
+columns. If you wish to preserve the array of dicts you can use a VQL
+function instead.</p>
+<p>Here is an example to demonstrate:</p>
+<pre><code class="language-vql">LET Foo =  SELECT &quot;Hello&quot; AS Greeting FROM scope()
+
+SELECT { SELECT &quot;Hello&quot; AS Greeting FROM scope() } AS X,
+       { SELECT &quot;Hello&quot; AS Greeting, &quot;Goodbye&quot; AS Farewell FROM scope() } AS Y,
+       Foo AS Z
+FROM scope()
+</code></pre>
+<p>In the above query - X is a subquery with a single row and a single
+column, therefore VQL will simplify the column X to contain <code>&quot;Hello&quot;</code>
+The second query contains two columns so VQL will simplify it into a
+dict.</p>
+<p>Finally to get the full unsimplified content, a VQL stored query can
+be used. This will result in an array of one dict, containing a single
+column <code>Greeting</code> with value of <code>Hello</code></p>
+<h3 id="arrays">Arrays</h3>
+<p>An array may be defined either by <code>(</code> and <code>)</code> or <code>[</code> and <code>]</code>. Since it
+can be confusing to tell regular parenthesis from an array with a
+single element, VQL also allows a trailing comma to indicate a single
+element array. For example <code>(1, )</code> means an array with one member,
+whereas <code>(1)</code> means a single value of 1.</p>
+<h3 id="dictionaries">Dictionaries</h3>
+<p>A dictionary (or in short a <code>dict</code>) is an associative data structure
+which associates keys with values. This is often called a <code>hash map</code>
+in other languages.</p>
+<p>VQL&rsquo;s dict appears in many places and used heavily internally. You can
+recognize that a dict is involved using the <code>typeof()</code> VQL function.</p>
+<p>Unlike some other languages, Velociraptor&rsquo;s dicts maintain their key
+order. You can iterate over the dict&rsquo;s key value pairs using the
+<code>items()</code> plugin:</p>
+<pre><code class="language-vql">LET MyDict &lt;= dict(Foo=1, Bar=2, Baz=3)
+
+SELECT * FROM items(item=MyDict)
+</code></pre>
+<p>The dict has a number of very useful attributes:</p>
+<ul>
+<li><code>MyDict.Items</code>: Returns a list of key value pairs</li>
+<li><code>MyDict.Keys</code>: Returns a list of keys</li>
+<li><code>MyDict.Values</code>: Returns a list of Values</li>
+<li><code>MyDict.Len</code>: Returns the number of keys</li>
+<li><code>MyDict.ToMap</code>: Converts to an unordered map.</li>
+<li><code>MyDict.String</code>: Converts to a JSON representation of the dict.</li>
+</ul>
+<h3 id="the-scope-plugin">The scope() plugin</h3>
+<p>VQL is strict about the syntax of a VQL statement. Each statement must
+have a plugin specified, however sometimes we don&rsquo;t really want to
+select from any plugin at all.</p>
+<p>The default noop plugin is called <code>scope()</code> and simply returns the
+current scope as a single row. If you even need to write a query but
+do not want to actually run a plugin, use <code>scope()</code> as a noop
+plugin. For example</p>
+<pre><code class="language-sql">-- Returns one row with Value=4
+SELECT 2 + 2 AS Value
+FROM scope()
+</code></pre>
+<h2 id="the-foreach-plugin">The Foreach plugin</h2>
+<p>VQL is modeled on basic SQL since SQL is a familiar language for new
+users to pick up. However, SQL quickly becomes more complex with very
+subtle syntax that only experienced SQL users use regularly. One of
+the more complex aspects of SQL is the <code>JOIN</code> operator which typically
+comes in multiple flavors with subtle differences (INNER JOIN, OUTER
+JOIN, CROSS JOIN etc).</p>
+<p>While these make sense for SQL since they affect the way indexes are
+used in the query, VQL does not have table indexes, nor does it have
+any tables. Therefore the <code>JOIN</code> operator is meaningless for
+Velociraptor. To keep VQL simple and accessible, we specifically did
+not implement a <code>JOIN</code> operator. For a more detailed discussion of the
+<code>JOIN</code> operator see
+<a href="/docs/vql/join/">emulating join in VQL</a>.</p>
+<p>Instead of a <code>JOIN</code> operator, VQL has the <code>foreach()</code> plugin, which is
+probably the most commonly used plugin in VQL queries. The <code>foreach()</code>
+plugin takes two arguments:</p>
+<ol>
+<li>
+<p>The <code>row</code> parameter is a subquery that provides rows</p>
+</li>
+<li>
+<p>The <code>query</code> parameter is a subquery that will be evaluated on a
+subscope containing each row that is emitted by the <code>row</code> argument.</p>
+</li>
+</ol>
+<p>Consider the following query:</p>
+<pre><code class="language-sql">SELECT * FROM foreach(
+    row={
+        SELECT Exe FROM pslist(pid=getpid())
+    },
+    query={
+        SELECT ModTime, Size, FullPath FROM stat(filename=Exe)
+    })
+</code></pre>
+<p>Note how <code>Exe</code> is resolved from the produced row since the query is
+evaluated within the nested scope.</p>
+<p>Foreach is useful when we want to run a query on the output of another
+query.</p>
+<h3 id="foreach-on-steroids">Foreach on steroids</h3>
+<p>Normally foreach iterates over each row one at a time.  The
+<code>foreach()</code> plugin also takes the workers parameter. If this is larger
+than 1, <code>foreach()</code> will use multiple threads and evaluate the <code>query</code>
+query in each worker thread. This allows the query to evaluate values in parallel.</p>
+<p>For example, the following query retrieves all the
+files in the System32 directory and calculates their hash.</p>
+<pre><code class="language-sql">SELECT FullPath, hash(path=FullPath)
+FROM glob(globs=&quot;C:/Windows/system32/*&quot;)
+WHERE NOT IsDir
+</code></pre>
+<p>As each row is emitted from the <code>glob()</code> plugin with a filename of a
+file, the <code>hash()</code> function is evaluated and the hash is
+calculated.</p>
+<p>However this is linear, since each hash is calculated before the next
+hash is started - hence only one hash is calculated at once.</p>
+<p>This example is very suitable for parallelization because globbing for
+all files is quite fast, but hashing the
+files can be slow. If we delegate the hashing to multiple threads, we
+can make more effective use of the CPU.</p>
+<pre><code class="language-sql">SELECT * FROM foreach(
+row={
+   SELECT FullPath
+   FROM glob(globs=&quot;C:/Windows/system32/*&quot;)
+   WHERE NOT IsDir
+}, query={
+   SELECT FullPath, hash(path=FullPath)
+   FROM scope()
+}, worker=10)
+
+</code></pre>
+<h3 id="foreach-and-deconstructing-a-dict">Foreach and deconstructing a dict</h3>
+<p>Deconstructing a dict means to take that dict and create a column for
+each field of that dict. Consider the following query:</p>
+<pre><code class="language-sql">LET Lines = '''Foo Bar
+Hello World
+Hi There
+'''
+
+LET all_lines = SELECT grok(grok=&quot;%{NOTSPACE:First} %{NOTSPACE:Second}&quot;, data=Line) AS Parsed
+FROM parse_lines(accessor=&quot;data&quot;, filename=Lines)
+
+SELECT * FROM foreach(row=all_lines, column=&quot;Parsed&quot;)
+</code></pre>
+<p>This query reads some lines (for example log lines) and applies a grok
+expression to parse each line. The grok function will produce a dict
+after parsing the line with fields determined by the grok expression.</p>
+<p>The <code>all_lines</code> query will have one column called &ldquo;Parsed&rdquo; containing
+a dict with two fields (First and Second). Using the <code>column</code>
+parameter to the foreach() plugin, foreach will use the value in that
+column as a row, deconstructing the dict into a table containing the
+<code>First</code> and <code>Second</code> column.</p>
+<h2 id="let-expressions">LET expressions</h2>
+<p>We know that subqueries can be used in various parts of
+the query, such as in a column specifier or as an argument to a
+plugin. While subqueries are convenient, they can become unwieldy when
+nested too deeply. VQL offers an alternative to subqueries called
+<code>Stored Queries</code>.</p>
+<p>A stored query is a lazy evaluator of a query that we can store in
+the scope.  Wherever the stored query is used it will be evaluated on
+demand. Consider the example below, where for each process, we
+evaluate the <code>stat()</code> plugin on the executable to check the
+modification time of the executable file.</p>
+<pre><code class="language-sql">LET myprocess = SELECT Exe FROM pslist()
+
+LET mystat = SELECT ModTime, Size, FullPath
+        FROM stat(filename=Exe)
+
+SELECT * FROM foreach(row=myprocess, query=mystat)
+</code></pre>
+
+<div class="mynotices note">
+  <div heading="note"><p>A <strong>Stored Query</strong> is simply a query that is stored into a variable. It is
+not actually evaluated at the point of definition. At the point where
+the query is referred, that is where evaluation occurs. The scope at
+which the query is evaluated is derived from the point of reference.</p>
+<p>For example in the query above, <code>mystat</code> simply stores the query
+itself. Velociraptor will then re-evaluate the <code>mystat</code> query for each
+row given by <code>myprocess</code> as part of the <code>foreach()</code> plugin operation.</p>
+</div>
+</div>
+
+
+<h3 id="let-expressions-are-lazy">LET expressions are lazy</h3>
+<p>We have previously seen VQL goes out of its way to do as little work
+as possible.</p>
+<p>Consider the following query</p>
+<pre><code class="language-sql">LET myhashes = SELECT FullPath, hash(path=FullPath)
+FROM glob(globs=&quot;C:/Windows/system32/*&quot;)
+
+SELECT * FROM myhashes
+LIMIT 5
+</code></pre>
+<p>The <code>myhashes</code> stored query hashes all files in System32 (many
+thousands of files). However, this query is used in a second query
+with a <code>LIMIT</code> clause.</p>
+<p>When the query emits 5 rows in total, the entire query is cancelled
+(since we do not need any more data) which in turn aborts the
+<code>myhashes</code> query. Therefore, VQL is able to exit early from any query
+without having to wait for the query to complete.</p>
+<p>This is possible because VQL queries are <strong>asynchronous</strong> - we do
+<strong>not</strong> calculate the entire result set of <code>myhashes</code> <strong>before</strong> using
+<code>myhashes</code> in another query, we simply pass the query itself and
+forward each row as needed.</p>
+<h3 id="materialized-let-expressions">Materialized LET expressions</h3>
+<p>A stored query does not in itself evaluate the
+query. Instead the query will be
+evaluated whenever it is referenced.</p>
+<p>Sometimes this is not what we want to do. For example consider a query
+which takes a few seconds to run, but its output is not expected to
+change quickly. In that case, we actually want to cache the results of
+the query in memory and simply access it as an array.</p>
+<p>Expanding a query into an array in memory is termed <strong>Materializing</strong>
+the query.</p>
+<p>For example, consider the following query that lists all sockets on
+the machine, and attempts to resolve the process ID to a process name
+using the <code>pslist()</code> plugin.</p>
+<pre><code class="language-sql">LET process_lookup = SELECT Pid AS ProcessPid, Name FROM pslist()
+
+SELECT Laddr, Status, Pid, {
+   SELECT Name FROM process_lookup
+   WHERE Pid = ProcessPid
+} AS ProcessName
+FROM netstat()
+</code></pre>
+<p>This query will be very slow because the <code>process_lookup</code> stored query
+will be re-evaluated for each row returned from netstat (that is, for each
+socket).</p>
+<p>The process listing will not likely change during the few seconds it takes the query to run.
+It would be more efficient to have the process listing cached in memory
+for the entire length of the query.</p>
+<p>We recommend that you <code>Materialize</code> the query:</p>
+<pre><code class="language-sql">LET process_lookup &lt;= SELECT Pid AS ProcessPid, Name FROM pslist()
+
+SELECT Laddr, Status, Pid, {
+   SELECT Name FROM process_lookup
+   WHERE Pid = ProcessPid
+} AS ProcessName
+FROM netstat()
+</code></pre>
+<p>The difference between this query and the previous one is that
+the <code>LET</code> clause uses <code>&lt;=</code> instead of <code>=</code>. The <code>&lt;=</code> is the materialize
+operator. It tells VQL to expand the query in place into an array
+which is then assigned to the variable <code>process_lookup</code>.</p>
+<p>Subsequent accesses to <code>process_lookup</code> simply access an in-memory
+array of pid and name for all processes and <strong>do not</strong> need to run
+<code>pslist()</code> again.</p>
+<h2 id="local-functions">Local functions</h2>
+<p><code>LET</code> expressions may store queries into a variable,
+and have the queries evaluated in a subscope at the point of use.</p>
+<p>A <code>LET</code> expression can also declare explicit passing of
+variables.</p>
+<p>Consider the following example which is identical to the example
+above:</p>
+<pre><code class="language-sql">LET myprocess = SELECT Exe FROM pslist()
+
+LET mystat(Exe) = SELECT ModTime, Size, FullPath
+        FROM stat(filename=Exe)
+
+SELECT * FROM foreach(row=myprocess, query={
+  SELECT * FROM mystat(Exe=Exe)
+})
+</code></pre>
+<p>This time <code>mystat</code> is declares as a <code>VQL Local Plugin</code> that
+takes arguments. Therefore we now pass it an parameter explicitly and
+it behaves as a plugin.</p>
+<p>Similarly we can define a <code>VQL Local Function</code>.</p>
+<pre><code class="language-sql">LET MyFunc(X) = X + 5
+
+-- Return 11
+SELECT MyFunc(X=6) FROM scope()
+</code></pre>
+
+<div class="mynotices tip">
+  <div heading=" Differences between a VQL plugin and VQL function "><p>Remember the difference between a VQL plugin and a VQL function is
+that a plugin returns multiple rows and therefore needs to appear
+between the FROM and WHERE clauses. A function simply takes several
+values and transforms them into a single value.</p>
+</div>
+</div>
+
+
+<h2 id="vql-operators">VQL Operators</h2>
+<p>In VQL an operator represents an operation to be taken on
+operands. Unlike SQL, VQL keeps the number of operators down,
+preferring to use VQL functions over introducing new operators.</p>
+<p>The following operators are available. Most operators apply to two
+operands, one on the left and one on the right (so in the expression
+<code>1 + 2</code> we say that <code>1</code> is the Left Hand Side (LHS) operand, <code>2</code> is
+the Right Hand Side (RHS) operand, and <code>+</code> is the operator.</p>
+<table>
+	<thead>
+			<tr>
+					<th>Operator</th>
+					<th>Meaning</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>+</code> <code>-</code> <code>*</code> <code>/</code></td>
+					<td>These are the usual arithmetic operators.</td>
+			</tr>
+			<tr>
+					<td><code>=~</code></td>
+					<td>This is the regex operator, which reads like &ldquo;matches&rdquo;.<br>For example <code>X =~ &quot;Windows&quot;</code> will return <code>TRUE</code> if X matches the regex <code>Windows</code>.</td>
+			</tr>
+			<tr>
+					<td><code>!=</code> <code>=</code> <code>&lt;</code> <code>&lt;=</code> <code>&gt;</code> <code>&gt;=</code></td>
+					<td>These are usual equality and ordering comparison operators.</td>
+			</tr>
+			<tr>
+					<td><code>in</code></td>
+					<td>The membership operator. Returns TRUE if the LHS is present in the RHS.<br>Note that <code>in</code> is an exact case sensitive match.</td>
+			</tr>
+			<tr>
+					<td><code>.</code></td>
+					<td>The <code>.</code> operator is called the Associative Operator.<br>It dereferences a field from the LHS named by the RHS.<br>For example <code>X.Y</code> extracts the field <code>Y</code> from the dict <code>X</code></td>
+			</tr>
+			<tr>
+					<td><code>||</code> <code>&amp;&amp;</code></td>
+					<td>Logical operators that perform logical <code>AND</code> and <code>OR</code> operations on boolean expressions.</td>
+			</tr>
+	</tbody>
+</table>
+<h3 id="protocols">Protocols</h3>
+<p>When VQL encounters an operator it needs to decide how to actually
+evaluate the operator. This depends on what types the LHS and RHS
+operands actually are. The way in which operators interact with the
+types of operands is called a &ldquo;protocol&rdquo;.</p>
+<p>Certain comparison operators would normally make no sense for
+disparate data types. For example, comparing a string with an int is
+normally nonsensical. However VQL implements some special handling for
+comparisons that would otherwise not make sense. In general, if one of
+the operands can be coerced so that it can be meaningfully compared
+with the other operand then VQL does so. VQL generally does the
+expected/intuitive thing but it is valuable to understand which
+protocol will be chosen in specific cases.</p>
+<h6 id="example-regex-operator">Example: Regex operator</h6>
+<p>For example consider the following query</p>
+<pre><code class="language-vql">LET MyArray = (&quot;X&quot;, &quot;XY&quot;, &quot;Y&quot;)
+LET MyValue = &quot;X&quot;
+LET MyInteger = 5
+
+SELECT MyArray =~ &quot;X&quot;,
+       MyValue =~ &quot;X&quot;,
+       MyInteger =~ &quot;5&quot;
+FROM scope()
+</code></pre>
+<p>In the first case the regex operator is applied to an array so the
+expression is TRUE if <em>any</em> member of the array matches the regular
+expression.</p>
+<p>The second case applies the regex to a string, so it is TRUE because
+the string matches. In most languages this is normally the only valid
+regex comparison, i.e. string vs. string.</p>
+<p>Finally in the last case, the regex is applied to an integer. Normally
+it would make no sense to apply a regular expression to an integer,
+but VQL is smart enough to automatically coerce the int to a string
+for the purpose of the comparison. The result is therefore also TRUE.</p>
+<h6 id="example-associative-operator-applied-on-a-stored-query">Example: Associative operator applied on a stored query</h6>
+<p>The Associative operator is denoted by <code>.</code> and accesses a field from
+an object or dict. One of the interesting protocols of the <code>.</code>
+operator is when it is applied to a query or a list.</p>
+<p>In the following example, I define a stored query that calls the
+<code>Generic.Utils.FetchBinary</code> artifact (This artifact fetches the named
+binary):</p>
+<pre><code class="language-vql">LET binary = SELECT FullPath
+  FROM Artifact.Generic.Utils.FetchBinary(ToolName=&quot;ToolName&quot;)
+</code></pre>
+<p>Although a query defined via the <code>LET</code> keyword does not actually run
+the query immediately (it is a lazy operator), we can think of the
+variable <code>binary</code> as containing an array of dictionaries
+(e.g. <code>[{&quot;FullPath&quot;: &quot;C:\Windows\Temp\binary.exe&quot;}]</code>).</p>
+<p>If we now apply the associative operator <code>.</code> to the variable binary,
+the operator will convert the array into another array, where each
+member is extracted for example <code>binary.FullPath</code> is
+<code>[&quot;C:\Windows\Temp\binary.exe&quot;]</code>. To access the name of the binary we
+can then index the first element from the array.</p>
+<pre><code class="language-vql">SELECT * FROM execve(argv=[binary.FullPath[0], &quot;-flag&quot;])
+</code></pre>
+
+<div class="mynotices warning">
+  <div heading=" Expanding queries using the associative operator "><p>While using the <code>.</code> operator is useful to apply to a stored query,
+care must be taken that the query is not too large. In VQL, stored
+queries are lazy and do not actually execute until needed because they
+can generate thousands of rows! The <code>.</code> operator expands the query
+into an array and may exhaust memory while doing so.</p>
+<p>The following query may be disastrous:</p>
+<pre><code class="language-vql">LET MFT = SELECT * FROM Artifact.Windows.NTFS.MFT()
+
+SELECT MFT.FullPath FROM scope()
+</code></pre>
+<p>The <code>Windows.NTFS.MFT</code> artifact typically generates millions of rows,
+and <code>MFT.FullPath</code> will expand them all into memory!</p>
+</div>
+</div>
+
+
+<h4 id="comparison-and-evaluation-logic">Comparison and Evaluation Logic</h4>
+<p>Before any comparison or operation, the system checks if a value or
+referenced object (e.g. Stored Query) is &ldquo;lazy&rdquo;, for example:</p>
+<pre><code class="language-vql">LET Past24hours = timestamp(epoch=now() - 86400)
+
+SELECT *
+FROM source()
+WHERE Mtime &gt; Past24hours
+</code></pre>
+<p>If it is lazily-defined, then it&rsquo;s resolved to an actual
+value first. In other words, the comparison triggers evaluation
+because it&rsquo;s needed for the comparison.</p>
+<p><code>Null</code> compared to anything is false.</p>
+<h5 id="truthiness">Truthiness</h5>
+<p>Truthiness is a programming concept where non-boolean values are
+implicitly converted to true or false when evaluated in a boolean
+context, such as in
+<a href="/docs/vql/fundamentals/#conditional-if-plugin-and-function"><code>if</code> statements</a> or
+<a href="/docs/vql/fundamentals/#logical-operators">logical operators</a>.
+This is a key concept for implementing flow control logic in VQL.</p>
+<p>Truthiness is distinct from strict boolean equality. Sometimes people
+like to use the words &ldquo;truthy&rdquo; or &ldquo;falsy&rdquo; rather than &ldquo;true&rdquo; or
+&ldquo;false&rdquo; to emphasize the difference, but we still use the latter for
+simplicity.</p>
+<p>In general, empty objects (storedQuery objects, strings, dicts,
+arrays, etc.) or <code>NULL</code> are considered <code>false</code> in VQL. This means that
+a query that returns zero rows is considered <code>false</code>. Artifact
+<a href="/docs/artifacts/preconditions/">preconditions</a>, for example, rely on
+this principle to determine whether or not the artifact&rsquo;s sources
+should run.</p>
+<p>The truthiness of VQL data types generally corresponds to their
+analogous data types in other languages such as Python. The Go
+language, in which Velociraptor is written, does not itself have the
+concept of truthiness. So in VQL, truthiness is defined by the
+<a href="/docs/vql/fundamentals/#protocols">protocols</a> mentioned previously.</p>
+<p>In particular:</p>
+<ul>
+<li>
+<p><code>nil</code> / <code>Null</code> is false.</p>
+</li>
+<li>
+<p><code>int</code>: Negative ints and 0 are false. Positive ints are true.</p>
+</li>
+<li>
+<p><code>float</code>: Negative ints and 0 are false. Positive ints are true.</p>
+</li>
+<li>
+<p><code>string</code>: The empty string (<code>&quot;&quot;</code>) is false. Non-empty strings are
+true.</p>
+</li>
+<li>
+<p><code>array</code> and <code>dict</code>: Empty arrays and dicts are false. Non-empty ones
+are true.</p>
+</li>
+<li>
+<p>VQL <code>StoredQuery</code> object: That is, the result of a VQL query, is
+false if it returns zero rows and true if it returns any rows.</p>
+</li>
+<li>
+<p><code>timestamp</code> (date/time value): A timestamp representing a real point
+in time after January 1, 1970 (the Unix epoch) is true. An unset or
+zero timestamp is false.</p>
+</li>
+</ul>
+<p>Truthiness is also central to understanding VQL&rsquo;s
+<a href="/docs/vql/fundamentals/#logical-operators">logical operators</a>, which can be used to control
+execution flow or provide conditional fallback values for data fields.</p>
+<h5 id="equality-comparisons">Equality comparisons</h5>
+<p>The VQL equality operators are <code>=</code> (equals) and <code>!=</code> (not equals).</p>
+<p>VQL compares values in a way that usually does what you&rsquo;d expect, even
+when the two values are different types. Here is how it works:</p>
+<ol>
+<li>
+<p><strong>No value (Null)</strong>: something with no value is only equal to
+another thing with no value. Comparing anything to nothing is
+always false.</p>
+</li>
+<li>
+<p><strong>Text (strings)</strong>: two pieces of text are equal only if they are
+exactly the same, including upper/lower case. Text is never equal
+to a number or other type.</p>
+<pre><code class="language-vql">SELECT &quot;hello&quot; = &quot;hello&quot; AS Result    -- TRUE
+FROM scope()
+
+SELECT &quot;hello&quot; = &quot;world&quot; AS Result    -- FALSE
+FROM scope()
+</code></pre>
+</li>
+<li>
+<p><strong>Integers</strong>: all integers are treated the same
+regardless of size. So <code>1</code> always equals <code>1</code>, whether it came from
+a small or large number.</p>
+<pre><code class="language-vql">SELECT 100 = 100 AS Result FROM scope()   -- TRUE
+SELECT 100 = 101 AS Result FROM scope()   -- FALSE
+</code></pre>
+</li>
+<li>
+<p><strong>True/false (booleans)</strong>: a true/false value is usually only equal
+to another true/false value. However, VQL also accepts common text
+representations: <code>&quot;Y&quot;</code>, <code>&quot;y&quot;</code>, <code>&quot;true&quot;</code>, and <code>&quot;True&quot;</code> are treated
+the same as <code>TRUE</code>. Any other text is treated as <code>FALSE</code>. Notice
+that in VQL the true/false values are not case sensitive, unlike
+many other languages.</p>
+</li>
+<li>
+<p><strong>Decimal numbers</strong>: decimal numbers are compared as decimals. A
+integer and a decimal can still be equal if they represent the
+same value.</p>
+</li>
+<li>
+<p><strong>Dates and times (timestamps)</strong>: timestamps are compared precisely
+down to the nanosecond. You can compare a timestamp against a
+number, and VQL will interpret that number as seconds since January
+1, 1970 (Unix time).</p>
+<pre><code class="language-vql">SELECT now() = 1710000000 AS Result FROM scope()
+</code></pre>
+</li>
+<li>
+<p><strong>Mixed number types</strong>: if one value is a integer and the
+other is a decimal, VQL converts both to decimals before comparing.</p>
+</li>
+<li>
+<p><strong>Arrays (lists)</strong>: two arrays are equal only if they have the same
+number of items and each matching position contains an equal value.</p>
+</li>
+<li>
+<p><strong>Dictionaries</strong>: two dictionaries are equal if they have the same
+keys and each key holds an equal value.</p>
+</li>
+</ol>
+<h5 id="ordering-comparisons">Ordering comparisons</h5>
+<p>The VQL ordering operators are <code>&lt;</code> (less than), <code>&lt;=</code> (less than or
+equal), <code>&gt;</code> (greater than), and <code>&gt;=</code> (greater than or equal).</p>
+<ol>
+<li>
+<p><strong>No value</strong>: any ordering comparison with a missing value (<code>Null</code>)
+returns FALSE.</p>
+</li>
+<li>
+<p><strong>Text vs Text</strong>: text is compared alphabetically. For example
+<code>&quot;apple&quot; &lt; &quot;banana&quot;</code> is true because &ldquo;apple&rdquo; comes before &ldquo;banana&rdquo;
+in the alphabet.</p>
+<pre><code class="language-vql">SELECT &quot;apple&quot; &lt; &quot;banana&quot; AS Result FROM scope()   -- TRUE
+</code></pre>
+</li>
+<li>
+<p><strong>Integers</strong>: all integers are converted to a common form
+and compared.</p>
+<pre><code class="language-vql">SELECT 5 &gt; 3 AS Result FROM scope()     -- TRUE
+SELECT 5 &gt; 10 AS Result FROM scope()    -- FALSE
+</code></pre>
+</li>
+<li>
+<p><strong>Integer vs Decimal</strong>: the integer is treated as a
+decimal for comparison. So <code>3 &lt; 3.5</code> is true.</p>
+</li>
+<li>
+<p><strong>Decimal vs Decimal</strong>: compared directly as decimals.</p>
+</li>
+<li>
+<p><strong>Dates and times (timestamps)</strong>: timestamps are compared by their
+point in time. You can compare:</p>
+<ul>
+<li>a timestamp against another timestamp</li>
+<li>a timestamp against a number (interpreted as seconds since 1970)</li>
+<li>a timestamp against a decimal (seconds with fractional nanoseconds)</li>
+</ul>
+<pre><code class="language-vql">SELECT now() &gt; timestamp(epoch=0) AS Result FROM scope()   -- TRUE
+</code></pre>
+</li>
+<li>
+<p><strong>Text vs Timestamp</strong>: if you compare text against a timestamp, VQL
+tries to interpret that text as a number of seconds since 1970.</p>
+</li>
+<li>
+<p><strong>Fallback for mixed types</strong>: if VQL cannot figure out the types
+directly, it tries converting both sides to numbers. This handles
+cases like comparing a number against text that looks like a
+number.</p>
+</li>
+</ol>
+<p>The numeric comparison rules in short:</p>
+<table>
+	<thead>
+			<tr>
+					<th>Left side</th>
+					<th>Right side</th>
+					<th>How VQL compares</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Integer</td>
+					<td>Integer</td>
+					<td>Convert both, then compare</td>
+			</tr>
+			<tr>
+					<td>Integer</td>
+					<td>Decimal</td>
+					<td>Treat integer as decimal, then compare</td>
+			</tr>
+			<tr>
+					<td>Decimal</td>
+					<td>Integer</td>
+					<td>Treat integer as decimal, then compare</td>
+			</tr>
+			<tr>
+					<td>Decimal</td>
+					<td>Decimal</td>
+					<td>Compare directly</td>
+			</tr>
+	</tbody>
+</table>
+<ol start="9">
+<li>
+<p><strong>Dictionaries</strong>: when comparing two dictionaries with <code>&lt;</code> or <code>&gt;</code>,
+VQL compares by the number of keys (the dictionary&rsquo;s length). A
+dictionary with fewer keys is considered smaller.</p>
+<pre><code class="language-vql">SELECT dict(a=1) &lt; dict(a=1, b=2) AS Result FROM scope()   -- TRUE (1 key &lt; 2 keys)
+</code></pre>
+</li>
+<li>
+<p><strong>Arrays (lists)</strong>: when comparing two arrays, VQL compares by
+their first element. An empty list is smaller than any non-empty
+list.</p>
+<pre><code class="language-vql">SELECT (1, 2, 3) &lt; (4, 5, 6) AS Result FROM scope()   -- TRUE (1 &lt; 4)
+</code></pre>
+</li>
+</ol>
+<h5 id="membership-comparisons">Membership comparisons</h5>
+<p>The <code>in</code> operator checks whether a value belongs to a group. Think of
+it as asking &ldquo;is this thing <em>in</em> that collection?&rdquo;</p>
+<ol>
+<li>
+<p><strong>No value (Null)</strong>: returns false. You cannot find something in
+nothing!</p>
+</li>
+<li>
+<p><strong>Dictionary</strong>: if the right side is a dictionary, the left side
+must be text. VQL checks whether the dictionary has a key with that
+name.</p>
+<pre><code class="language-vql">SELECT &quot;Name&quot; in dict(Name=&quot;Alice&quot;, Age=30) AS Result FROM scope()   -- TRUE
+SELECT &quot;Phone&quot; in dict(Name=&quot;Alice&quot;, Age=30) AS Result FROM scope()  -- FALSE
+</code></pre>
+</li>
+<li>
+<p><strong>Text</strong>: if the right side is a piece of text, VQL checks whether
+the left side text appears anywhere inside it (a substring check).</p>
+<pre><code class="language-vql">SELECT &quot;he&quot; in &quot;hello&quot; AS Result FROM scope()     -- TRUE (&quot;he&quot; is inside &quot;hello&quot;)
+SELECT &quot;xyz&quot; in &quot;hello&quot; AS Result FROM scope()    -- FALSE
+</code></pre>
+</li>
+<li>
+<p><strong>List</strong>: if the right side is a list, VQL checks each item in the
+list. If any item equals the left side, the result is true.</p>
+<pre><code class="language-vql">SELECT &quot;admin&quot; in (&quot;admin&quot;, &quot;user&quot;, &quot;guest&quot;) AS Result FROM scope()   -- TRUE
+SELECT &quot;root&quot; in (&quot;admin&quot;, &quot;user&quot;, &quot;guest&quot;) AS Result FROM scope()    -- FALSE
+</code></pre>
+</li>
+<li>
+<p><strong>All other collections</strong>: VQL falls back to checking each element
+one by one using the same equality rules described above.</p>
+</li>
+</ol>
+<h5 id="regex-comparisons">Regex comparisons</h5>
+<p>Velociraptor has several
+<a href="/vql_reference/?query=regex">functions and plugins</a>
+that provide regex-based matching.</p>
+<p>In VQL syntax itself, regex matching is provided by the <code>=~</code> operator.
+In contrast to the functions/plugins mentioned above, this is used
+purely for logical comparisons with the result always being a boolean
+(<code>TRUE/FALSE</code>) value.</p>
+<p>Internally we use Go’s <a href="https://pkg.go.dev/regexp/syntax" target="_blank" >regexp</a>
+package, so the expression syntax (RE2) and capabilities are generally
+the same as in Go, with a few VQL-specific exceptions that are
+described below. This regex engine allows faster and safer matching
+than more complex implementations such as PCRE. However, this means
+that some PCRE regex constructs that you may be familiar with are not
+supported, in particular:</p>
+<ul>
+<li>Lookarounds: positive lookahead (<code>(?=re)</code>), negative lookahead
+(<code>(?!re)</code>), positive lookbehind (<code>(?&lt;=re)</code>), and negative lookbehind
+(<code>(?&lt;!re)</code>) are not supported.</li>
+<li>Backreferences (e.g. <code>([a-z])\1</code>) are not supported.</li>
+</ul>
+<p>Regex comparisons are most commonly used in VQL <code>WHERE</code> clauses, but
+can be used anywhere that value comparisons are supported.</p>
+<p>For example, in a <code>WHERE</code> clause:</p>
+<pre><code class="language-vql">SELECT _value AS count FROM range(end=40) WHERE count =~ &quot;3$&quot;
+</code></pre>
+<p>which will return rows containing <code>3</code>, <code>13</code>, <code>23</code>, and <code>33</code>.</p>
+<p>Or a regex comparison can be used in a field value, such as:</p>
+<pre><code class="language-vql">SELECT (timestamp(epoch=now()).Weekday.String =~ &quot;Friday&quot;) AS IsItFriday
+FROM scope()
+</code></pre>
+<p>which will return <code>true</code> if today is Friday and <code>false</code> if it&rsquo;s not.</p>
+<h6 id="negative-regex-matching">Negative regex matching</h6>
+<p>VQL does not have a regex &ldquo;not like&rdquo; (<code>!~</code>) comparator. Instead, to
+achieve negative matching you can either:</p>
+<ul>
+<li>
+<p>implement the inverse matching directly in your regex, although this
+may be tricky given that we don&rsquo;t support lookaheads, as mentioned
+previously, but it may be viable for trivial inverse matches.
+or</p>
+</li>
+<li>
+<p>use the <code>NOT</code> keyword. This is the preferred way and provides the
+best readability for the comparison. For example:</p>
+<p><code>SELECT _value AS count FROM range(end=5) WHERE NOT count =~ &quot;3$&quot;</code></p>
+</li>
+</ul>
+<h6 id="regex-modifiers">Regex modifiers</h6>
+<p>Expressions are treated as <strong>case-insensitive</strong> by default. If you
+require case-sensitive matching, you can prefix the <code>(?-i)</code> modifier
+to your expression. You can apply the <code>(?i)</code> and <code>(?-i)</code> modifiers to
+enable/disable case sensitivity in different parts of your regex. This
+case-insensitive default also applies to standard character classes
+such as <code>[A-Z]</code>.</p>
+<p>By default we don&rsquo;t match across lines. If you need to match across
+multi-line input, you can prefix the single-line &ldquo;s&rdquo; modifier <code>(?s)</code>
+to your regex, for example:</p>
+<pre><code class="language-vql">LET message &lt;= '''one
+two
+three
+'''
+
+SELECT (message =~ '''(?s)wo.th''') FROM scope()
+</code></pre>
+<p>Similarly, for multi-line values you can apply the &ldquo;m&rdquo; (<code>(?m)</code>)
+modifier to match the <code>^</code> and <code>$</code> anchors within the text.</p>
+<pre><code class="language-vql">LET message &lt;= '''one
+two three
+four
+'''
+
+SELECT (message =~ '''(?m)^tw.+ee$''') FROM scope()
+</code></pre>
+<p>Modifiers can be combined, for example <code>(?sm-i)</code>, and you can apply
+any set of modifiers to any subexpression of the regex using &ldquo;scoped
+modifiers&rdquo; where the  subexpression is enclosed in the parenthesis
+along with the modifier. For example, <code>(?-i:F)riday</code> will match
+<code>Friday</code> or <code>FRIDAY</code> but not <code>friday</code>, although you could
+alternatively use character classes which are inherently
+case-sensitive, for example <code>[F]riday</code>.</p>
+<p>The <code>(?g)</code> modifier, also known as the &ldquo;global&rdquo; flag, is not supported
+and is further meaningless in comparisons since they either match or
+don&rsquo;t match.</p>
+<h6 id="regex-special-cases">Regex special cases</h6>
+<p>In VQL the regex &ldquo;match all&rdquo; operator (<code>.</code>) matches <em>anything</em> if it&rsquo;s
+used on its own. In other words it always returns true regardless of
+what it&rsquo;s being compared to, including non-string data types.</p>
+<p>However, when used as part of an expression along with other
+characters it retains it&rsquo;s normal regex meaning.</p>
+<p>So in this example, <code>y</code> will evaluate to FALSE because there is no
+character ahead of the string <code>test</code>.</p>
+<pre><code class="language-vql">LET x &lt;= &quot;testing&quot;
+SELECT (x =~ &quot;.test&quot;) AS y FROM scope()
+</code></pre>
+<p>While in this case, <code>y</code> will evaluate as TRUE regardless of what
+string value, or even which data type, <code>x</code> is set to.</p>
+<pre><code class="language-vql">LET x &lt;= &quot;testing&quot;
+SELECT (x =~ &quot;.&quot;) AS y FROM scope()
+</code></pre>
+<p>The main use case for this special behavior is to allow artifact
+parameters to accept empty strings and have these interpreted as a
+&ldquo;match all&rdquo; in the VQL rather than requiring <code>.*</code> as the parameter
+input.</p>
+<h6 id="regex-on-other-data-types">Regex on other data types</h6>
+<p>VQL&rsquo;s <code>=~</code> operator also works on data types other than plain text:</p>
+<ul>
+<li>
+<p><strong>Numbers and timestamps</strong>: VQL automatically converts them to text before matching. For example, <code>5 =~ &quot;5&quot;</code> returns TRUE because <code>5</code> is formatted as <code>&quot;5&quot;</code> and then compared.</p>
+</li>
+<li>
+<p><strong>Dictionaries</strong>: a dictionary is converted to its JSON representation and the regex is matched against that JSON string.</p>
+<pre><code class="language-vql">SELECT dict(Name=&quot;Alice&quot;, Age=30) =~ &quot;Alice&quot; AS Result FROM scope()   -- TRUE
+SELECT dict(Name=&quot;Alice&quot;, Age=30) =~ &quot;999&quot; AS Result FROM scope()     -- FALSE
+</code></pre>
+</li>
+</ul>
+
+<div class="mynotices tip">
+  <div heading=" Raw strings vs. character escaping "><p>VQL allows you to specify <a href="/docs/vql/fundamentals/#string-constants">raw (literal) strings</a>
+using the <code>'''</code> (triple single quotes) syntax. For regex expressions
+this is the preferred way of specifying them since the expression is
+passed uninterpreted to the regex parser.</p>
+<p>It&rsquo;s OK to use standard string syntax (with single or double quotes)
+for simple expressions, but if your expression itself requires regex
+escaping (<code>\</code>) then you&rsquo;d also have to escape that escape character,
+which leads to inelegant expressions, for example <code>C:\\\\Windows</code>,
+which is also prone to typo mistakes. It&rsquo;s best to develop the habit
+of always using raw strings for regex unless it&rsquo;s a very simple
+expression.</p>
+</div>
+</div>
+
+
+<h3 id="logical-operators">Logical operators</h3>
+<p>You might already be familiar with <code>||</code> and <code>&amp;&amp;</code> from scripting
+environments like Bash. In VQL they work similarly and are most often
+used to provide conditional fallback values.</p>
+<p>These operators can be chained, so they are not limited to comparing
+only two values.</p>
+<p>To understand how the operands are evaluated as true/false for various
+data types, please see the section about <a href="/docs/vql/fundamentals/#truthiness">Truthiness</a>.</p>
+<p><strong><code>||</code> (Logical OR)</strong></p>
+<p>This operator returns the first true value encountered, or the last
+value if all are false. This behaviour is know as &ldquo;short-circuiting&rdquo;
+where it evaluates from left to right and stops as soon as it
+encounters the first true value, returning that value immediately.
+This is a common pattern used to provide fallback values for Null or
+empty fields, or invalid values.</p>
+<h6 id="examples">Examples</h6>
+<pre><code class="language-vql">SELECT
+    (timestamp(epoch=now()).Weekday.String = &quot;Friday&quot; || &quot;Not Friday&quot;) AS IsItFriday
+FROM scope()
+</code></pre>
+<p>will return either &ldquo;Friday&rdquo; or &ldquo;Not Friday&rdquo; depending on which day of
+the week today is.</p>
+<pre><code class="language-vql">SELECT ( 0 || 1 || FALSE) FROM scope()
+</code></pre>
+<p>will return 1 since positive ints are considered true, and this is the
+first true value encountered when evaluating from left to right.</p>
+<p><strong><code>&amp;&amp;</code> (Logical AND)</strong></p>
+<p>This operator returns the last value if all are true. So it either
+returns false or it returns the last operand - it never returns any
+operands other than the last one.</p>
+<p>As with the OR operator, this also implements &ldquo;short-circuiting&rdquo;: it
+evaluates from left to right and stops as soon as it encounters the
+first false value, returning that value immediately without evaluating
+the rest.</p>
+<h6 id="examples-1">Examples</h6>
+<pre><code class="language-vql">SELECT
+    (timestamp(epoch=now()).Weekday.String = &quot;Friday&quot; &amp;&amp; &quot;It is Friday!&quot;) AS IsItFriday
+FROM scope()
+</code></pre>
+<p>will return &ldquo;It is Friday!&rdquo; if today is Friday, otherwise it will
+return false.</p>
+<pre><code class="language-vql">SELECT ( 1 &amp;&amp; 0 &amp;&amp; TRUE) FROM scope()
+</code></pre>
+<p>will return false when it encounters the second operand 0 since the
+number zero is considered false, and this is the first false value
+encountered when evaluating from left to right.</p>
+<p>Notice that the AND operator only returns the last value if <strong>all</strong>
+the preceding operands are true. Otherwise it returns false. This is
+different from OR which will return the value of the first operand
+that&rsquo;s true in the chain regardless of it&rsquo;s position in the chain.</p>
+<h2 id="vql-control-structures">VQL control structures</h2>
+<p>Let&rsquo;s summarize some of the more frequent VQL control structures.</p>
+<p>We already met with the <code>foreach()</code> plugin before. The <code>row</code> parameter
+can also receive any iterable type (like an array or a dict).</p>
+<h3 id="looping-over-rows">Looping over rows</h3>
+<p>VQL <a href="/docs/vql/join/">does not have a JOIN operator</a> - we use the
+<code>foreach</code> plugin to iterate over the results of one query and apply a
+second query on it.</p>
+<pre><code class="language-sql">SELECT * FROM foreach(
+    row={ &lt;sub query goes here&gt; },
+    query={ &lt;sub query goes here &gt;})
+</code></pre>
+<h3 id="looping-over-arrays">Looping over arrays</h3>
+<p>Sometimes arrays are present in column data. We can iterate over these
+using the foreach plugin.</p>
+<pre><code class="language-sql">SELECT * FROM foreach(
+    row=&lt;An iterable type&gt;,
+    query={ &lt;sub query goes here &gt;})
+</code></pre>
+<p>If row is an array, the value will be assigned to <code>_value</code> as a special placeholder.</p>
+<h3 id="conditional-if-plugin-and-function">Conditional: if plugin and function</h3>
+<p>The <code>if()</code> plugin and function allows branching in VQL.</p>
+<pre><code class="language-sql">SELECT * FROM if(
+    condition=&lt;sub query or value&gt;,
+    then={ &lt;sub query goes here &gt;},
+    else={ &lt;sub query goes here &gt;})
+</code></pre>
+<p>If the condition is a query it is true if it returns any rows. Next, we&rsquo;ll
+evaluate the <code>then</code> subquery or the <code>else</code> subquery. Note that as usual,
+VQL is lazy and will not evaluate the unused query or expression.</p>
+<h3 id="conditional-switch-plugin">Conditional: switch plugin</h3>
+<p>The <code>switch()</code> plugin and function allows multiple branching in VQL.</p>
+<pre><code class="language-sql">SELECT * FROM switch(
+    a={ &lt;sub query &gt;},
+    b={ &lt;sub query &gt;},
+    c={ &lt;sub query &gt;})
+</code></pre>
+<p>Evaluate all subqueries in order and when any of them returns any rows
+we stop evaluation the rest of the queries.</p>
+<p>As usual VQL is lazy - this means that branches that are not taken are
+essentially free!</p>
+<h3 id="conditional-chain-plugin">Conditional: chain plugin</h3>
+<p>The <code>chain()</code> plugin allows multiple queries to be combined.</p>
+<pre><code class="language-sql">SELECT * FROM chain(
+    a={ &lt;sub query &gt;},
+    b={ &lt;sub query &gt;},
+    c={ &lt;sub query &gt;})
+</code></pre>
+<p>Evaluate all subqueries in order and append all the rows together.</p>
+<h2 id="group-by-clause">Group by clause</h2>
+<p>A common need in VQL is to use the <code>GROUP BY</code> clause to stack all rows
+which have the same value, but what exactly does the <code>GROUP BY</code> clause
+do?</p>
+<p>As the name suggests, <code>GROUP BY</code> splits all the rows into groups
+called bins where each bin has the same value of as the target
+expression.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/vql/fundamentals/groupby.png"
+         class="inline"
+         alt="Group By"
+         width="1652" height="616">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="groupby.png">
+      <i class="fa fa-download"></i></a>
+    Group By
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>Consider the query in the example above, the <code>GROUP BY</code> clause
+specifies that rows will be grouped where each bin has the same value
+of the <code>X</code> column. Using the same table, we can see the first group
+having <code>X=1</code> contains 2 rows, while the second group having <code>X=2</code>
+contains only a single row.</p>
+<p>The <code>GROUP BY</code> query will therefore return two rows (one for each
+bin). Each row will contain a single value for the <code>X</code> value and one
+of the <code>Y</code> values.</p>
+
+<div class="mynotices warning">
+  <div heading=" Selecting columns with GROUP BY "><p>As the above diagram illustrates, it only makes sense in general to
+select the same column as is being grouped. This is because other
+columns may contain any number of values, but only a single one of
+these values will be returned.</p>
+<p>In the above example, selecting the <code>Y</code> column is not deterministic
+because the first bin contains several values for <code>Y</code>.</p>
+<p>Be careful not to rely on the order of rows in each bin.</p>
+</div>
+</div>
+
+
+<h3 id="aggregate-functions">Aggregate functions</h3>
+<p>Aggregate VQL functions are designed to work with the <code>GROUP BY</code>
+clause to operate on all the rows in each bin separately.</p>
+<p>Aggregate functions keep state between evaluations. For example
+consider the <code>count()</code> function. Each time count() is evaluated, it
+increments a number in its own state.</p>
+<p>Aggregate function State is kept in an <code>Aggregate Context</code> - a
+separate context for each <code>GROUP BY</code> bin. Therefore, the following
+query will produce a count of all the rows in each bin (because each
+bin has a separate state).</p>
+<pre><code class="language-sql">SELECT X, count() AS Count
+FROM …
+GROUP BY X
+</code></pre>
+<p>Aggregate functions are used to calculate values that consider
+multiple rows.</p>
+<p>Some aggregate functions:</p>
+<ul>
+<li><code>count()</code> counts the total number of rows in each bin.</li>
+<li><code>sum()</code> adds up a value for an expression in each bin.</li>
+<li><code>enumerate()</code> collect all the values in each bin into an in-memory array.</li>
+<li><code>rate()</code> calculates a rate (first order derivative) between each
+invocation and its previous one.</li>
+</ul>
+<p>These can be seen in the query below.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/vql/fundamentals/image70.png"
+         class="inline"
+         alt="Aggregate functions"
+         width="1200" height="800">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="image70.png">
+      <i class="fa fa-download"></i></a>
+    Aggregate functions
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="vql-lambda-functions">VQL Lambda functions</h3>
+<p>In various places it is possible to specify a VQL lambda
+function. These functions a simple VQL expressions which can be used
+as filters, or simple callbacks in some plugins. The format is simple:</p>
+<pre><code>x=&gt;x.Field + 2
+</code></pre>
+<p>Represents a simple function with a single parameter <code>x</code>. When the
+lambda function is evaluated, the caller will pass the value as <code>x</code>
+and receive the result of the function.</p>
+<p>Usually lambda functions are specified as strings, and will be
+interpreted at run time. For example the <code>eval()</code> function allows a
+lambda to be directly evaluated (with <code>x</code> being the current scope in
+that case).</p>
+<pre><code class="language-vql">SELECT eval(func=&quot;x=&gt;1+1&quot;) AS Two FROM scope()
+</code></pre>
+<p>The scope that is visited at the place where the lambda is evaluated
+will be passed to the lambda function - this allows the lambda to
+access previously defined helper functions.</p>
+<pre><code class="language-vql">LET AddTwo(x) = x + 2
+
+SELECT eval(func=&quot;x=&gt;AddTwo(x=1)&quot;) AS Three FROM scope()
+</code></pre>
+<h2 id="vql-error-handling">VQL Error handling</h2>
+<p>VQL queries may encounter errors during their execution. For example,
+we might try to open a file, but fail due to insufficient permissions.</p>
+<p>It is especially not desirable to have VQL stop execution completely
+and abort when an error occurs. Usually we want the query to continue
+and produce as much data as possible. However, we do want to
+know that some things potentially went wrong.</p>
+<p>Therefore VQL functions typically return <code>NULL</code> in the case of an
+error, and log the error in the <code>Query Logs</code>. These logs are visible
+in a number of places:</p>
+<ol>
+<li>When collecting an artifact from a client, the query logs are
+visible in the <code>Logs</code> tab.</li>
+<li>In a notebook cell the query logs are visible by clicking the
+<code>Logs</code> button at the bottom of the cell.</li>
+<li>With the API the query logs are returned in a separate response
+field.</li>
+</ol>
+<p>When writing a VQL query, another aspect to think about is: what do we
+define as an error? For example if we write a VQL query to collect a
+bunch of files, but one of these files is unreadable - do we consider
+the query has failed?  Should we just stop?</p>
+<p>It really depends on a case by case basis.</p>
+<p>Generally when collecting an artifact, a number of error conditions
+might occur and some query logs will be produced. But the collection
+is not automatically marked as an <code>Error</code> unless one of the following
+conditions is met:</p>
+<ol>
+<li>Any logs are emitted at the <code>ERROR</code> level (using the <code>log()</code>
+function with <code>level='ERROR'</code>).</li>
+<li>Any log messages match the error patterns defined in
+<a href="/docs/deployment/references/">Frontend.collection_error_regex</a>. By
+default this includes <code>Symbol not found</code> which usually indicates a
+mistake or typo with the VQL query itself.</li>
+<li>Errors produced by the client itself (e.g. the query canceled or timed out)</li>
+</ol>
+<p>When a collection indicates an error all it means is that something
+unexpected happened and a user needs to take a closer look. The
+collection may still contain useful data - it is a judgment call.</p>
+<p>Therefore when writing your own VQL think if an error is actually
+something we need to alert the user about (i.e. there is no further
+value in the collection) or can we just log the error and move on.</p>
+<p>Conversely as a Velociraptor user, when a collection is completed
+without an error it does not necessarily mean that everything worked
+perfectly - there may be some messages in the query logs that alert to
+some errors encountered. You should always take a quick look at the
+error logs to see if there is anything of concern.</p>
+
+<div class="mynotices warning">
+  <div heading=" Temporary or permanent errors "><p>Note that an error may be temporary (e.g. the artifact collection
+timed out), or permanent (e.g. an error within the VQL itself, file
+not found etc).</p>
+<p>It is not a good idea to automatically retry a collection unless you
+are sure the error is temporary - if the error is more permanent the
+same thing will happen again. It is always worth checking the query
+logs to make sure there is any point in retrying the collection.</p>
+</div>
+</div>
+
+
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1782260662"></script>
+    <script src="/js/perfect-scrollbar.min.js?1782260662"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1782260662"></script>
+    <script src="/js/jquery.sticky.js?1782260662"></script>
+    <script src="/js/featherlight.min.js?1782260662"></script>
+    <script src="/js/highlight.min.js?1782260662"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1782260662"></script>
+    <script src="/js/learn.js?1782260662"></script>
+    <script src="/js/hugo-learn.js?1782260662"></script>
+    
+    
+
+  </body>
+</html>

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.163.3">
+    <meta name="description" content="Run mode (-r or --run flag) provides a simpler syntax for running
+Velociraptor collections on your local machine, a remote server, or
+remote clients.
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Run mode syntax</title>
+
+    
+    <link href="/css/nucleus.css?1782260661" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1782260661" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1782260661" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1782260661" rel="stylesheet">
+    <link href="/css/auto-complete.css?1782260661" rel="stylesheet">
+    <link href="/css/theme.css?1782260661" rel="stylesheet">
+    <link href="/css/tabs.css?1782260661" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1782260661" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1782260661" rel="stylesheet">
+    
+    <link href="/css/dark.css?1782260661" rel="stylesheet"><link href="/css/syntax.css?1782260661" rel="stylesheet"><link href="/css/light.css?1782260661" rel="stylesheet"><link href="/css/hljs.css?1782260661" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1782260661" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1782260661"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/cli/run/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" alt="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" alt="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-35872c80.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" alt="rapid7 logo" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/cli\/run\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/cli/run/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Run mode syntax</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#running-collections-on-the-command-line">Running collections on the command line</a>
+      <ul>
+        <li><a href="#equivalence-to-artifacts-collect">Equivalence to artifacts collect</a></li>
+        <li><a href="#global-flags-vs-artifact-parameters">Global flags vs artifact parameters</a></li>
+        <li><a href="#viewing-available-artifact-parameters">Viewing available artifact parameters</a></li>
+        <li><a href="#using-custom-artifact-definitions">Using custom artifact definitions</a></li>
+        <li><a href="#remote-collection-via-the-api">Remote collection via the API</a></li>
+        <li><a href="#detailed-walkthrough">Detailed walkthrough</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Run mode syntax
+            </h1>
+            
+          
+
+        
+
+
+
+	<h2 id="running-collections-on-the-command-line">Running collections on the command line</h2>
+<p>Run mode (<code>-r</code> or <code>--run</code> flag) lets you run any Velociraptor
+collection directly from the command line, whether locally or against
+a remote server and its clients. It provides a simpler and more
+intuitive syntax than the equivalent <code>artifacts collect</code> command,
+especially when passing parameters to artifacts.</p>
+<h3 id="equivalence-to-artifacts-collect">Equivalence to artifacts collect</h3>
+<p>Run mode is a front-end to <code>artifacts collect</code>. The following two
+commands are equivalent:</p>
+<pre><code class="language-sh">velociraptor -r Windows.Forensics.SRUM --SRUMLocation /tmp/srudb.dat
+</code></pre>
+<pre><code class="language-sh">velociraptor artifacts collect Windows.Forensics.SRUM --args SRUMLocation=/tmp/srudb.dat
+</code></pre>
+<p>Instead of wrapping parameters in <code>--args Key=Value</code> syntax, you pass
+them directly as flags:</p>
+<pre><code class="language-text">velociraptor [global flags] -r &lt;ArtifactName&gt; [artifact parameters...]
+</code></pre>
+<p>Because run mode uses <code>artifacts collect</code> under the hood, it supports
+all the
+<a href="/docs/cli/commands/artifacts/#-artifacts-collect-">flags for that command</a>.</p>
+<h3 id="global-flags-vs-artifact-parameters">Global flags vs artifact parameters</h3>
+<p><a href="/docs/cli/flags/">Global CLI flags</a>
+(such as <code>--config</code> or <code>--api_config</code>) go <strong>before</strong> the <code>-r</code> flag.
+Flags after the <code>-r</code> flag are passed as parameters to the artifact
+unless they are flags expected by the <code>artifacts collect</code> command.</p>
+<p>For example, the following command runs the <code>Windows.Forensics.SRUM</code>
+artifact with a custom <code>--output</code> and saves the results to a ZIP file:</p>
+<pre><code class="language-sh">velociraptor -r Windows.Forensics.SRUM -o /tmp/srum_results.zip
+</code></pre>
+<p>Here <code>-o</code> maps to the <code>--output</code> flag of <code>artifacts collect</code>.</p>
+<h3 id="viewing-available-artifact-parameters">Viewing available artifact parameters</h3>
+<p>Use <code>-h</code> after the artifact name to see the artifact&rsquo;s specific
+parameters instead of the CLI help:</p>
+<pre><code class="language-sh">velociraptor -r &lt;Artifact.Name&gt; -h
+</code></pre>
+<h6 id="example">Example</h6>
+<pre><code class="language-shell">&gt; c:\velociraptor.exe -r Windows.Forensics.SRUM -h
+...
+Artifact Parameters:
+ --SRUMLocation
+   default: 'c:/windows/system32/sru/srudb.dat'
+...
+ --Upload [bool]
+   Select to Upload the SRUM database file 'srudb.dat'
+
+    Valid values: Y / N
+</code></pre>
+<h3 id="using-custom-artifact-definitions">Using custom artifact definitions</h3>
+<p>You can load custom artifact packs with the <code>--definitions</code> flag.
+Place this flag <strong>before</strong> <code>-r</code>:</p>
+<pre><code class="language-sh">velociraptor --definitions /path/to/artifacts.zip -r Custom.MyArtifact
+</code></pre>
+<p>The <code>--definitions</code> flag also accepts a ZIP file containing artifact
+definitions.</p>
+<h3 id="remote-collection-via-the-api">Remote collection via the API</h3>
+<p>With an API config file (<code>--api_config</code>), run mode works against a
+remote server. You can collect server artifacts or collect client
+artifacts from any client.</p>
+<h6 id="example-collect-a-server-artifact">Example: Collect a server artifact</h6>
+<pre><code class="language-sh">velociraptor --api_config api.yaml \
+    -r Server.Utils.ListUsers -o /tmp/gui_users.zip --password &quot;H4RDp@$$wOrd&quot;
+</code></pre>
+<h6 id="example-collect-an-artifact-from-a-specific-client">Example: Collect an artifact from a specific client</h6>
+<pre><code class="language-sh">velociraptor --api_config api.yaml \
+    -r Windows.Forensics.Lnk -o /tmp/lnk.zip \
+    --client_id C.9e12b994f5c41ab6
+</code></pre>
+<p>Run mode via the API (and <code>artifacts collect</code>) schedules a normal
+collection, but runs synchronously. So if the client is offline the
+collection will be scheduled and the <code>--run</code> command will wait for
+results. You can <code>CTRL+C</code> to terminate the command and the collection
+will remain scheduled for the remote client. You can later run queries
+or artifacts to enumerate collections for the client and then download
+them using <code>artifacts fetch</code> command.</p>
+<h6 id="example-download-previously-collected-results">Example: Download previously collected results</h6>
+<p>To download the results of a previously run collection from the
+server, use the <code>artifacts fetch</code> command with the flow ID:</p>
+<pre><code class="language-sh">velociraptor --api_config api.yaml artifacts fetch \
+    --flow_id F.D6JCVA49O524O \
+    --output /tmp/results.zip
+</code></pre>
+<p>See the <a href="/docs/cli/commands/artifacts/#-artifacts-fetch-">[ artifacts fetch ]</a>
+reference for details.</p>
+<h3 id="detailed-walkthrough">Detailed walkthrough</h3>
+<p>For a detailed walkthrough covering local collection, remote
+collection via the API, custom artifact packs, external tool
+integration, and server management tasks, see the
+<a href="/blog/2026/2026-03-21-cli/">CLI blog post</a>.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1782260661"></script>
+    <script src="/js/perfect-scrollbar.min.js?1782260661"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1782260661"></script>
+    <script src="/js/jquery.sticky.js?1782260661"></script>
+    <script src="/js/featherlight.min.js?1782260661"></script>
+    <script src="/js/highlight.min.js?1782260661"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1782260661"></script>
+    <script src="/js/learn.js?1782260661"></script>
+    <script src="/js/hugo-learn.js?1782260661"></script>
+    
+    
+
+  </body>
+</html>

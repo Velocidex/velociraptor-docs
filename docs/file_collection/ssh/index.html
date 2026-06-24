@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.163.3">
+    <meta name="description" content="The ssh accessor can be used to read filesystems on remote hosts over SSH
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Collections and File Acquisition over SSH</title>
+
+    
+    <link href="/css/nucleus.css?1782260661" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1782260661" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1782260661" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1782260661" rel="stylesheet">
+    <link href="/css/auto-complete.css?1782260661" rel="stylesheet">
+    <link href="/css/theme.css?1782260661" rel="stylesheet">
+    <link href="/css/tabs.css?1782260661" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1782260661" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1782260661" rel="stylesheet">
+    
+    <link href="/css/dark.css?1782260661" rel="stylesheet"><link href="/css/syntax.css?1782260661" rel="stylesheet"><link href="/css/light.css?1782260661" rel="stylesheet"><link href="/css/hljs.css?1782260661" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1782260661" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1782260661"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/file_collection/ssh/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" alt="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" alt="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-35872c80.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" alt="rapid7 logo" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/file_collection\/ssh\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/file_collection/ssh/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Collections and File Acquisition over SSH</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#different-approaches-to-using-the-ssh-accessor">Different approaches to using the SSH accessor</a></li>
+    <li><a href="#example-use-cases">Example Use Cases</a></li>
+    <li><a href="#how-the-ssh-accessor-works">How the SSH accessor works</a>
+      <ul>
+        <li><a href="#creating-ssh-secrets">Creating SSH secrets</a></li>
+      </ul>
+    </li>
+    <li><a href="#clientless-collections">Clientless collections</a>
+      <ul>
+        <li><a href="#1-ad-hoc-vql-in-a-notebook-simplest-option">1. Ad-hoc VQL in a notebook (simplest option)</a></li>
+        <li><a href="#2-artifact-collections-via-notebooks">2. Artifact collections via notebooks</a></li>
+        <li><a href="#3-server-artifacts-reusable-across-multiple-ssh-hosts">3. Server artifacts (reusable across multiple SSH hosts)</a></li>
+      </ul>
+    </li>
+    <li><a href="#dedicated-virtual-client-with-ssh-accessor-remapping">Dedicated virtual client with SSH accessor remapping</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#resource-consumption">Resource consumption</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Collections and File Acquisition over SSH
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>Velociraptor&rsquo;s <a href="/vql_reference/accessors/ssh/">SSH accessor</a> lets you
+read and retrieve files from a remote SSH-enabled system. This is
+very useful in situations where deployment of the client on the
+remote system isn&rsquo;t justified, or isn&rsquo;t technically possible (for
+example, on unsupported architectures such as routers and firewalls
+which nevertheless do provide filesystem access via SSH), or perhaps
+where new software installations just aren&rsquo;t permitted.</p>
+<p>Typically the target endpoints are Unix-like systems, as these often
+have SSH access enabled, but it could also be a Windows or macOS
+system where installation of a client is just not possible for either
+technical, political, or other reasons.</p>
+<p>Access via SSH lets you read files in place on the remote system,
+or retrieve them as collection uploads. One possible reason for not
+wanting to deploy a client on the remote system is that it may just be
+hosting files that you want to read/retrieve, such as logs on a
+firewall, and you aren&rsquo;t interested in investigating the device
+itself.</p>
+<p>This page explains the options for running filesystem-oriented
+Velociraptor queries and artifacts on systems without running a client
+on them, over SSH, using Velociraptor&rsquo;s SSH accessor.</p>
+<p>The SSH accessor requires that the SFTP subsystem is enabled and
+running on the remote system. It&rsquo;s possible to have SSH access enabled
+on a host <em>without</em> SFTP in which case the SSH accessor will not work,
+and in that case Velociraptor will return an access error.</p>
+
+<div class="mynotices note">
+  <div heading=" Limitations "><p>Accessing a remote system using the SSH accessor is essentially
+equivalent to using <a href="https://github.com/libfuse/sshfs" target="_blank" >SSHFS</a>, which also uses
+SFTP and has similar constraints and limitations.</p>
+<ul>
+<li><strong>No tool use</strong>: The SSH accessor is used to read or retrieve remote
+files. Unlike a full client, it cannot execute arbitrary tools or
+shell commands on the endpoint. For example, the UAC collector is a
+shell script which is pushed to the endpoint when collecting the
+<code>Linux.Triage.UAC</code> artifact on a normal Linux client, however this
+or other tools cannot be used via the SSH accessor.</li>
+<li><strong>Only file-related plugins</strong>: Plugins that return data from sources
+other than from the filesystem, for example <code>pslist()</code>, cannot
+produce data and should therefore be disabled via the remapping
+config. If you accidentally use a plugin that retrieves data from
+non-filesystem sources, then it will produce data from the local
+system rather than the remote system.</li>
+<li><strong>No access to virtual filesystems</strong>: On Linux this means that
+reading <code>/proc</code> or <code>/sys</code> won&rsquo;t work since SFTP doesn&rsquo;t expose
+virtual filesystems.</li>
+</ul>
+<p>All of Velociraptor&rsquo;s file-related functions and plugins can be used
+with the SSH accessor. Also all other
+<a href="/vql_reference/accessors/">accessors</a> can be used via
+<a href="/docs/forensic/filesystem/remapping/">accessor remapping</a>,
+so existing artifacts that use specific accessors will still work,
+provided that an appropriate remapping config is used.</p>
+</div>
+</div>
+
+
+<h2 id="different-approaches-to-using-the-ssh-accessor">Different approaches to using the SSH accessor</h2>
+<p>There are several ways to use the SSH accessor, each with different
+trade-offs. The right approach depends on whether you are doing ad-hoc
+investigation, automated collection, or something in between.</p>
+<p>You have two main options when using SSH to access a remote system&rsquo;s
+filesystem, and each of these has variations in the ways in which it
+could be done:</p>
+<ol>
+<li><strong>Using VQL on the server</strong>, either in a
+<a href="/docs/artifacts/basic_fields/#-type-">server artifact</a> or a
+<a href="/docs/notebooks/">notebook</a>. For simple filesystem access
+operations no remapping is required, but if you want to collect
+artifacts that depend on path remapping then you&rsquo;ll need to add a
+remapping to the VQL scope.</li>
+<li><strong>Using a dedicated virtual client</strong> with a
+<a href="/docs/forensic/filesystem/remapping/">remapping config</a>.
+This is a client which impersonates the SSH-accessible system and
+relays VQL queries to the remote filesystem system via SSH. This
+client could be run on the server or another machine - from the
+server&rsquo;s perspective its just another client.</li>
+</ol>
+<p>The choice of which option is most suitable depends on the specific
+collection requirements. We&rsquo;ve provided guidance for each of them in
+the following sections. In general, if you want the remote endpoint to
+appear and be managed as a Velociraptor client then you&rsquo;ll want to use
+a dedicated virtual client.</p>
+<h2 id="example-use-cases">Example Use Cases</h2>
+<ul>
+<li>You have a hypervisor or container host that isn&rsquo;t running a
+supported platform or architecture, and you want to check it&rsquo;s logs
+or configuration.</li>
+<li>You want to retrieve firewall or router logs from a hardware
+appliance, but have no reason to investigate the device itself. You
+just want the logs that might describe actions taken by hosts that
+you are investigating.</li>
+<li>You want to do some once-off checks on a few Linux hosts in a
+mostly-Windows environment which doesn&rsquo;t justify full client
+deployment, or permanent Velociraptor presence on those hosts. Maybe
+those Linux machine are also very old and incapable of running the
+latest Velociraptor binary.</li>
+</ul>
+<h2 id="how-the-ssh-accessor-works">How the SSH accessor works</h2>
+<p>The SSH accessor connects to a remote host over SSH and uses the SFTP
+subsystem to provide filesystem access. You configure it by setting
+the <code>SSH_CONFIG</code> VQL variable, which accepts these fields:</p>
+<table>
+	<thead>
+			<tr>
+					<th>Field</th>
+					<th>Description</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>hostname</code></td>
+					<td>Remote host <strong>and port</strong> (for example, <code>192.168.1.100:22</code>)</td>
+			</tr>
+			<tr>
+					<td><code>username</code></td>
+					<td>SSH username</td>
+			</tr>
+			<tr>
+					<td><code>password</code></td>
+					<td>Password authentication</td>
+			</tr>
+			<tr>
+					<td><code>private_key</code></td>
+					<td>Private key content (unencrypted PEM format)</td>
+			</tr>
+			<tr>
+					<td><code>secret</code></td>
+					<td>Name of a server secret to use instead of inline credentials</td>
+			</tr>
+	</tbody>
+</table>
+<p>Although credentials (<code>username</code>, <code>password</code>/<code>private_key</code>) can be
+explicitly passed to the accessor, this is strongly discouraged. See
+the note below.</p>
+<p>The accessor requires the <code>NETWORK</code> permission to operate.</p>
+
+<div class="mynotices warning">
+  <div heading=" Avoid using credentials directly in notebooks and artifacts "><p>Unless you&rsquo;re just doing some testing in a non-production environment,
+you should <strong>always use server secrets</strong> to store credentials for SSH,
+rather than specifying them in the artifact or notebook.</p>
+<p>For notebooks this is especially important because notebook cell
+contents are saved to disk when executed, and have a default cell
+history that stores the last five versions. Even for server artifacts
+this is important as explicit credentials will be saved in
+the VQL request where other users can see them (collections are
+visible to all users in an org).</p>
+<p>Server secrets are designed to address this exact problem: You can
+create a new SSH secret, which is stored encrypted - the credentials
+in it can&rsquo;t be viewed, even by yourself once created and saved - and
+then selectively share it with other users. Users who have access to the
+secret can use it but cannot view its contents.</p>
+<p>Using a SSH secret also has the benefit of making your VQL more
+succinct, as you&rsquo;ll see below.</p>
+<p><strong>Enforcing secrets-only usage:</strong></p>
+<p>Server administrators can set <code>VqlMustUseSecrets</code> in the server
+configuration to require that all credentials be supplied via secrets.
+When this is enabled, inline credentials (like <code>username</code> and
+<code>private_key</code> in <code>SSH_CONFIG</code>) are rejected, and only <code>secret=</code>
+lookups are allowed.</p>
+</div>
+</div>
+
+
+<h3 id="creating-ssh-secrets">Creating SSH secrets</h3>
+<p>Creating an SSH secret is a simple 2-step process:</p>
+<ol>
+<li>Define the secret.</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/ssh/ssh_secret_config.png"
+         class="inline"
+         alt="Define a new SSH secret"
+         width="1200" height="629">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="ssh_secret_config.png">
+      <i class="fa fa-download"></i></a>
+    Define a new SSH secret
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<ol start="2">
+<li>Grant access to the secret. Access should be granted to the
+<code>VelociraptorServer</code> user when you need the secret to be used by
+automated (i.e. non-user-initiated) actions, for example when
+running an artifact in response to a server monitoring event.</li>
+</ol>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/ssh/ssh_secret_sharing.png"
+         class="inline"
+         alt="Share the SSH secret"
+         width="1200" height="403">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="ssh_secret_sharing.png">
+      <i class="fa fa-download"></i></a>
+    Share the SSH secret
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The secret can then be referenced by its name when setting the
+<code>SSH_CONFIG</code> VQL variable that the SSH accessor uses.</p>
+<pre><code class="language-vql">LET SSH_CONFIG &lt;= dict(secret=&quot;alpine&quot;)
+
+SELECT *
+FROM glob(globs='/**', accessor='ssh')
+</code></pre>
+<p>This does not expose the credentials and makes setting
+the <code>SSH_CONFIG</code> variable much simpler.</p>
+<p>If you are just doing query development on a test system, you could
+specify the credentials explicitly, which would look something like
+this:</p>
+<pre><code class="language-vql">LET SSH_CONFIG &lt;= dict(
+    hostname='192.168.1.100:22',
+    username='admin',
+    private_key=read_file(filename='/etc/velociraptor/ssh_keys/remote.key')
+)
+</code></pre>
+<h4 id="hostname-format-and-key-requirements">Hostname format and key requirements</h4>
+<ul>
+<li>The <code>hostname</code> field must include the port (for example, <code>10.0.0.1:22</code>).</li>
+<li>Private keys must be in unencrypted PEM format. Encrypted keys are
+not supported.</li>
+<li>The host key of the remote SSH server is not verified - it is
+trusted by default.</li>
+</ul>
+<h2 id="clientless-collections">Clientless collections</h2>
+<p>You can run queries and artifacts on the server itself that query a
+remote host over SSH, without needing a client.</p>
+<p>This works well for data exploration and one-off investigations but
+you need to write the query from scratch each time. The advantage of
+this approach is simplicity. The disadvantage is that the collection
+is not associated with a client. It is most suitable for ad-hoc
+queries against file data from a remote server, where you only need to
+work with the data on the server and don&rsquo;t need it to be integrated
+into standard collection workflows, such as forwarding it to an
+Elastic server.</p>
+<h3 id="1-ad-hoc-vql-in-a-notebook-simplest-option">1. Ad-hoc VQL in a notebook (simplest option)</h3>
+<p>The most direct way is to run VQL in a <strong>server notebook</strong>. You set
+<code>SSH_CONFIG</code> at the top of the query and then use <code>accessor=&quot;ssh&quot;</code>
+with plugins like <code>glob()</code> and <code>upload()</code>:</p>
+<h6 id="example-file-uploads-in-a-notebook">Example: File uploads in a notebook</h6>
+<pre><code class="language-vql">LET ColumnTypes &lt;= dict(`FileUpload`='preview_upload')
+
+LET SSH_CONFIG &lt;= dict(secret=&quot;esxi&quot;)
+
+SELECT OSPath,
+       Mtime,
+       Size,
+       upload(file=OSPath, accessor=&quot;ssh&quot;) AS FileUpload
+FROM glob(globs='/var/log/*', accessor='ssh')
+</code></pre>
+<p>The example above uploads files from <code>/var/log/</code> on the remote host to
+the Velociraptor server, using the SSH accessor for both file
+discovery and upload.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/ssh/ssh_uploads.png"
+         class="inline"
+         alt="Collected files in Notebook Uploads"
+         width="1200" height="750">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="ssh_uploads.png">
+      <i class="fa fa-download"></i></a>
+    Collected files in Notebook Uploads
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The <code>ColumnTypes</code> variable causes the notebook to render the
+<code>FileUpload</code> column as the <code>preview_upload</code> type, which then lets
+you use the GUI&rsquo;s File Inspector utility to view the file contents.</p>
+<h6 id="example-reading-a-file-over-ssh">Example: Reading a file over SSH</h6>
+<p>With functions and plugins that support accessors, you can use the
+<code>ssh</code> accessor to do analysis on the files in-place.</p>
+<p>If you&rsquo;re doing a lot of queries in a notebook against the same remote
+filesystem, you can create a
+<a href="/docs/notebooks/templates/">notebook template</a>
+that includes an <a href="/docs/artifacts/export_imports/">export</a> section.
+VQL in the <code>export</code> section is executed before each cell runs, so it
+is a convenient way to share the SSH connection information between
+notebook cells.</p>
+<pre><code class="language-yaml">name: Custom.Notebook.SSH
+type: NOTEBOOK
+
+export: |
+  LET SSH_CONFIG &lt;= dict(secret=&quot;openwrt&quot;)
+
+# Define the cells that make up the notebook
+sources:
+  - notebook:
+    - type: vql
+      name: File Read
+      template: |
+        SELECT *
+        FROM parse_lines(filename='/root/log/messages', accessor='ssh')
+    - type: vql
+      name: File Upload
+      template: |
+        SELECT OSPath,
+        Mtime,
+        Size,
+        upload(file=OSPath, accessor=&quot;ssh&quot;) AS FileUpload
+        FROM glob(globs='/root/log/messages', accessor='ssh')
+</code></pre>
+<p>When a new notebook is created from this template, it will prepend the
+VQL in the <code>export</code> section to the VQL in each cell before executing
+it. In this example the notebook cell will be immediately populated
+with lines read from the target log file, via SSH.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/ssh/ssh_file_read.png"
+         class="inline"
+         alt="Reading a file over SSH"
+         width="1200" height="742">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="ssh_file_read.png">
+      <i class="fa fa-download"></i></a>
+    Reading a file over SSH
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="2-artifact-collections-via-notebooks">2. Artifact collections via notebooks</h3>
+<p>For Linux system, most artifacts are file-based, so you can run them
+in a notebook by simply using the
+<a href="/docs/artifacts/calling_artifacts/">Artifact</a> plugin, for example:</p>
+<pre><code class="language-vql">SELECT * FROM Artifact.Linux.Sys.Users()
+</code></pre>
+<p>However, the standard artifacts default to the <code>auto</code> accessor for
+file access, which tries to use the <code>file</code> accessor with fallback to
+<code>ntfs</code> on Windows. The artifacts don&rsquo;t know that they should use the
+<code>ssh</code> accessor. So we need a remapping config applied to the notebook
+scope that intercepts regular file access and substitutes it with SSH
+access.</p>
+<p>Following the pattern of the previous example, let&rsquo;s create another
+notebook template that includes the needed remapping config in it&rsquo;s
+<code>export</code> section. This will then be applicable to all cells in the
+notebook.</p>
+<p>The remapping config remaps the remote filesystem tree from <code>/</code>, and
+disables functions and plugins that will either not work or give
+misleading results due to being run on the local system rather than
+the remote host.</p>
+<pre><code class="language-yaml">name: Custom.Notebook.OpenWrtViaSSH
+description: Maps the filesystem from host openwrt via ssh accessor remapping
+type: NOTEBOOK
+
+export: |
+  LET remapping &lt;= remap(
+      config=dict(
+        remappings=(
+          dict(
+            type=&quot;impersonation&quot;,
+            os=&quot;linux&quot;,
+            hostname=&quot;target-hostname&quot;,
+            disabled_plugins=(&quot;execve&quot;, &quot;http_client&quot;, &quot;pslist&quot;, &quot;connections&quot;, &quot;netstat&quot;, &quot;filesystems&quot;, &quot;partitions&quot;, &quot;proc_yara&quot;),
+            disabled_functions=(&quot;sysinfo&quot;, )),
+          dict(
+            type=&quot;mount&quot;,
+            scope='LET SSH_CONFIG &lt;= dict(secret=&quot;openwrt&quot;)',
+            `from`=dict(
+              accessor=&quot;ssh&quot;,
+              prefix=&quot;/&quot;),
+            `on`=dict(
+              accessor=&quot;auto&quot;,
+              prefix=&quot;/&quot;,
+              path_type=&quot;linux&quot;)),
+          dict(
+            type=&quot;mount&quot;,
+            scope='LET SSH_CONFIG &lt;= dict(secret=&quot;openwrt&quot;)',
+            `from`=dict(
+              accessor=&quot;ssh&quot;,
+              prefix=&quot;/&quot;),
+            `on`=dict(
+              accessor=&quot;file&quot;,
+              prefix=&quot;/&quot;,
+              path_type=&quot;linux&quot;)))))
+
+  LET ColumnTypes &lt;= dict(`FileUpload`='preview_upload')
+
+# Define the cells that make up the notebook
+sources:
+  - notebook:
+    - type: vql
+      name: Call an artifact
+      template: |
+        SELECT * FROM Artifact.Linux.Sys.Users()
+</code></pre>
+<p>When a notebook is created from this template, the remapping applies
+and queries run against the filesystem of the remote host over SSH.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/ssh/artifact_with_remap.png"
+         class="inline"
+         alt="Linux artifacts show info from the remote host"
+         width="1161" height="654">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="artifact_with_remap.png">
+      <i class="fa fa-download"></i></a>
+    Linux artifacts show info from the remote host
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>You can create more cells and each of them will inherit the remapping
+config, so it&rsquo;s basically the same as running artifacts live on the
+remote host.</p>
+<h3 id="3-server-artifacts-reusable-across-multiple-ssh-hosts">3. Server artifacts (reusable across multiple SSH hosts)</h3>
+<p>Since notebook templates are just artifacts, it&rsquo;s easy to adapt the
+previous example into a <strong>server artifact</strong>. However, to make it
+reusable for other hosts we can parameterize some of the values used
+in the remapping config.</p>
+<p>We cannot keep the remapping in the <code>export</code> section of
+the artifact, as we did in the previous example, because VQL in
+<code>export</code> cannot use artifact parameters. We can, however, add it to a
+source so that it&rsquo;s available to all subsequent sources. The
+<code>format()</code> function is used to replace values in the remapping config
+with parameter values.</p>
+<pre><code class="language-yaml">name: Custom.Server.Remap.FilesystemViaSSH
+description: Remaps the filesystem from remote hosts via the ssh accessor and runs some artifacts
+type: SERVER
+
+parameters:
+  - name: hostname
+    default: alpine
+  - name: secretname
+    default: alpine
+  - name: RemappingTemplate
+    default: |
+      remappings:
+      - type: impersonation
+        os: linux
+        hostname: %q
+        disabled_plugins:
+          - execve
+          - http_client
+          - pslist
+          - connections
+          - netstat
+          - filesystems
+          - partitions
+          - proc_yara
+        disabled_functions:
+          - sysinfo
+
+      - type: mount
+        scope: |
+          LET SSH_CONFIG &lt;= dict(secret=%q)
+        from:
+          accessor: ssh
+          prefix: /
+        on:
+          accessor: auto
+          prefix: /
+          path_type: linux
+
+      - type: mount
+        scope: |
+          LET SSH_CONFIG &lt;= dict(secret=%q)
+        from:
+          accessor: ssh
+          prefix: /
+        on:
+          accessor: file
+          prefix: /
+          path_type: linux
+
+sources:
+  - name: Remap
+    query: |
+      LET remapping &lt;= remap(config=format(format=RemappingTemplate,
+                             args=[hostname, secretname, secretname]), clear=TRUE)
+      SELECT * FROM info()
+  - name: Users
+    query: |
+      SELECT * FROM Artifact.Linux.Sys.Users()
+  - name: Mounts
+    query: |
+      SELECT * FROM Artifact.Linux.Mounts()
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/ssh/remap_server_artifact.png"
+         class="inline"
+         alt="Server artifact showing filesystem collection from remapped SSH host"
+         width="1200" height="756">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="remap_server_artifact.png">
+      <i class="fa fa-download"></i></a>
+    Server artifact showing filesystem collection from remapped SSH host
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>As with the notebook examples, you can use the <code>upload()</code> function, or
+any artifacts that use the <code>upload()</code> function, and the files will be
+uploaded to the server and attached to the collection.</p>
+<h2 id="dedicated-virtual-client-with-ssh-accessor-remapping">Dedicated virtual client with SSH accessor remapping</h2>
+<p>If you want the SSH-accessible host to look and behave like a real
+client, that is: participate in hunts, be selectable in the GUI, etc.
+then the best option is to run a dedicated client for it that uses a
+remapping config file and impersonates the SSH-accessible system.</p>
+<p>The dedicated client can run anywhere, provided it can reach the SSH
+target <em>and</em> the Velociraptor server. You may choose to run such
+dedicated &ldquo;virtual&rdquo; clients on the server itself, if resources permit
+that.</p>
+<p>If the client is impersonating systems in a DMZ then you may
+choose to have a dedicated machine in the DMZ which runs multiple
+virtual clients, and then the only network connectivity requirement
+will be a single TCP port from that machine to the Velociraptor
+server (rather than needing to allow all hosts in the DMZ access to the
+Velociraptor server).</p>
+<p>Because the virtual client is impersonating the target host and
+operating system, with SSH remapping the filesystem, it does not have
+to match the target host&rsquo;s platform or architecture. You can run
+virtual clients on a Windows host that impersonates SSH-accessible
+Linux hosts, or any other combination you can think of.</p>
+<p>Secrets can only be used on the server, but the virtual client needs
+to be able to run autonomously, which means the remapping file
+has to contain explicit credentials for accessing the SSH target. You
+therefore need to secure the virtual client host and the remapping
+file which contains the credentials to the same degree that you would
+for any other SSH keys.</p>
+<h6 id="example-creating-a-virtual-client-for-an-ssh-accessible-openwrt-router">Example: Creating a virtual client for an SSH-accessible OpenWrt router</h6>
+<ol>
+<li>Create a remapping YAML file, <code>remap_openwrt.yaml</code>, with a
+remapping config similar to this:</li>
+</ol>
+<pre><code class="language-yaml">remappings:
+  - type: impersonation
+    os: linux
+    hostname: openwrt
+    disabled_plugins:
+      - execve
+      - http_client
+      - pslist
+      - connections
+      - netstat
+      - filesystems
+      - partitions
+      - proc_yara
+    disabled_functions:
+      - sysinfo
+
+  - type: permissions
+    permissions:
+      - COLLECT_CLIENT
+      - FILESYSTEM_READ
+      - FILESYSTEM_WRITE
+      - READ_RESULTS
+      - MACHINE_STATE
+      - NETWORK
+
+  - type: mount
+    scope: |
+      LET SSH_CONFIG &lt;= dict(hostname='192.168.56.120:22',
+              username='root',
+              private_key=read_file(filename='/velociraptor-clients/id_ed25519_openwrt'))
+    from:
+      accessor: ssh
+      prefix: /
+    &quot;on&quot;:
+      accessor: auto
+      prefix: /
+      path_type: linux
+
+  - type: mount
+    scope: |
+      LET SSH_CONFIG &lt;= dict(hostname='192.168.56.120:22',
+              username='root',
+              private_key=read_file(filename='/velociraptor-clients/id_ed25519_openwrt'))
+    from:
+      accessor: ssh
+      prefix: /
+    &quot;on&quot;:
+      accessor: file
+      prefix: /
+      path_type: linux
+
+  - type: shadow
+    from:
+      accessor: zip
+    &quot;on&quot;:
+      accessor: zip
+  - type: shadow
+    from:
+      accessor: data
+    &quot;on&quot;:
+      accessor: data
+</code></pre>
+<p>The <code>impersonation</code> section tells the client to impersonate a Linux
+system named <code>openwrt</code>.</p>
+<p>The two <code>mount</code> rules replace both the <code>auto</code> and <code>file</code> accessors
+with the <code>ssh</code> accessor, so every file read operation goes through
+SSH. It also specifies that Linux paths are expected, which is
+necessary if the virtual client is running on Windows, for example.</p>
+<p>The <code>shadow</code> rules pass through other commonly used
+accessors.</p>
+<p>The <code>disabled_functions</code> and <code>disabled_plugins</code> sections tell the
+client not to use these as they would produce results from the host
+machine rather than the remote SSH system.</p>
+<ol start="2">
+<li>
+<p>Start the virtual client:</p>
+<pre><code class="language-bash">$ velociraptor client -v --remap /path/to/remap_openwrt.yaml \
+    --config /path/to/client.config.yaml \
+    --config.client-writeback-linux=/path/to/openwrt.writeback.yaml \
+    --config.client-local-buffer-disk-size=0
+</code></pre>
+<p>The <code>--config.client-writeback-linux</code> flag is used to persist the
+client&rsquo;s ID using a unique persistent writeback file. This
+overrides the default specified in the client config. If you have
+multiple virtual clients running on the same host then ensure that
+each one has a unique writeback file.</p>
+</li>
+</ol>
+<p>When the virtual client is running, the server sees it as a normal
+online client. You can:</p>
+<ul>
+<li>Browse its filesystem in the VFS browser</li>
+<li>Run client artifacts that use <code>auto</code> or <code>file</code> accessors</li>
+<li>Use the hunt manager to task it with collections like any other
+client</li>
+<li>Upload files from the remote system to the server</li>
+</ul>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/file_collection/ssh/ssh_virtual_client.png"
+         class="inline"
+         alt="Virtual client impersonating the SSH host"
+         width="1200" height="760">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="ssh_virtual_client.png">
+      <i class="fa fa-download"></i></a>
+    Virtual client impersonating the SSH host
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>You won&rsquo;t be able to run any queries on the client that require
+executables (i.e. no <code>execve()</code> or shell commands), or that make OS
+system calls on the remote system, since the SSH accessor provides
+filesystem-only access.</p>
+<p>In the above example, the client is being run manually on the command
+line. For a persistent client you&rsquo;d need to set it up as a service and
+then modify its service configuration file to add the additional CLI
+arguments. Alternatively you could create a custom client config file
+for the virtual client that uses a hardcoded unique writeback file and
+the remapping can be included in the client config (remappings are
+actually just a separate section of config that gets merged when using
+the <code>--remap</code> flag).</p>
+<h2 id="resource-consumption">Resource consumption</h2>
+<p>Because the SSH accessor streams file data over the network for every
+read operation, it can be slower than a local Velociraptor client.
+Consider using the
+<a href="/docs/file_collection/#resumable-uploads">resumable uploads</a>
+feature for large file transfers over unstable network connections.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1782260661"></script>
+    <script src="/js/perfect-scrollbar.min.js?1782260661"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1782260661"></script>
+    <script src="/js/jquery.sticky.js?1782260661"></script>
+    <script src="/js/featherlight.min.js?1782260661"></script>
+    <script src="/js/highlight.min.js?1782260661"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1782260661"></script>
+    <script src="/js/learn.js?1782260661"></script>
+    <script src="/js/hugo-learn.js?1782260661"></script>
+    
+    
+
+  </body>
+</html>

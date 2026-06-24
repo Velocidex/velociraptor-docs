@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.163.3">
+    <meta name="description" content="Velociraptor Release 0.77 is now available">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Velociraptor 0.77 Release</title>
+
+    
+    <link href="/css/nucleus.css?1782260660" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1782260660" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1782260660" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1782260660" rel="stylesheet">
+    <link href="/css/auto-complete.css?1782260660" rel="stylesheet">
+    <link href="/css/theme.css?1782260660" rel="stylesheet">
+    <link href="/css/tabs.css?1782260660" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1782260660" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1782260660" rel="stylesheet">
+    
+    <link href="/css/dark.css?1782260660" rel="stylesheet"><link href="/css/syntax.css?1782260660" rel="stylesheet"><link href="/css/light.css?1782260660" rel="stylesheet"><link href="/css/hljs.css?1782260660" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1782260660" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1782260660"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/blog/2026/2026-05-31-release-notes-0.77/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" alt="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" alt="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-35872c80.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" alt="rapid7 logo" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/blog\/2026\/2026-05-31-release-notes-0.77\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/2026/2026-05-31-release-notes-0.77/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Velociraptor 0.77 Release</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#new-features">New Features</a></li>
+    <li><a href="#gui-improvements">GUI Improvements</a></li>
+    <li><a href="#cli-improvements">CLI Improvements</a>
+      <ul>
+        <li><a href="#performance-and-operational-improvements">Performance and operational improvements</a></li>
+      </ul>
+    </li>
+    <li><a href="#security-improvements">Security improvements</a></li>
+    <li><a href="#artifact-changes">Artifact changes</a>
+      <ul>
+        <li><a href="#new-artifacts">New Artifacts</a></li>
+        <li><a href="#removed-artifacts">Removed Artifacts</a></li>
+      </ul>
+    </li>
+    <li><a href="#changes-to-vql-plugins-functions-and-accessors">Changes to VQL Plugins, Functions, and Accessors</a>
+      <ul>
+        <li><a href="#new">New</a></li>
+        <li><a href="#improved">Improved</a></li>
+      </ul>
+    </li>
+    <li><a href="#conclusions">Conclusions</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/release">Release</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Velociraptor 0.77 Release
+            </h1>
+            
+            <div class="author pull-right">
+              Mike Cohen
+              <span class="date">2026-05-31</span>
+            </div>
+            
+          
+
+        
+
+
+
+	<p>I am very excited to announce that the latest Velociraptor release
+0.77 RC1 is now available for testing.</p>
+<p>In this post I will discuss some of the new features introduced by
+this release.</p>
+<h2 id="new-features">New Features</h2>
+<ul>
+<li>
+<p><strong>Interactive shell sessions.</strong> The shell is no longer a one-shot
+affair. Commands now run inside persistent sessions where each
+command builds on the last, with all output visible in a single
+scrollable view. Each command appends to the same flow, replacing
+the previous approach where each interaction ran as a separate flow.
+Graceful timeouts, CSS improvements, and proper stdin lifecycle
+management have also been added.</p>
+</li>
+<li>
+<p><strong>Datastore object limits</strong> Flow requests are now stored in a
+separate data store file making flow and hunt objects a lot
+smaller. Additionally, limits were placed on the size of frequently
+accessed datastore files, such as hunt objects, flow objects and
+client tasks.</p>
+<p>This limit is essential to maintain performance and stability but it
+might affect the following two use cases:</p>
+<ol>
+<li>Artifacts that contain a lot of data internally for example
+<code>Windows.Hayabusa.Rules</code> contains all the Sigma rules inside the
+artifact.</li>
+<li>Artifacts that can accept very large parameters, for example
+<code>Generic.Detection.Yara.Glob</code> can include large yara rules as a
+parameter when launched.</li>
+</ol>
+<p>Going forward, such collections can be refactored:</p>
+<ul>
+<li>For artifacts that include large data blobs internally, they can be
+compressed or extracted into a tool (see <a href="/docs/artifacts/tools/">Managing external tools</a> ).</li>
+<li>Artifacts that include large parameters (e.g. Yara rulesets) can be
+changed to include a URL to the ruleset which can be fetched by the
+client (for example <code>Generic.Detection.Yara.Glob</code> has the <code>YaraUrl</code>
+parameter instead of the <code>YaraRules</code> parameter).</li>
+</ul>
+</li>
+<li>
+<p><strong>User messaging.</strong> Messages can now be sent to GUI users via the
+<code>user_message()</code> VQL function, which means they can be packaged into
+server artifacts and set up by server operators. A new
+<code>Server.Monitoring.RSSFeeds</code> artifact is provided as an example: it
+polls RSS feeds (such as Velociraptor&rsquo;s own CVE and blog feeds) and
+automatically emits user notifications when new items appear.</p>
+<p>This means users will be notified inside the application about new
+releases and important announcements (like CVE reports). Users can
+also use the same mechanism to distribute custom messages to their
+users. For example via the VQL</p>
+<pre><code class="language-vql">SELECT user_message(user=&quot;admin&quot;,
+                    Message=&quot;Hello user&quot;,
+                    Date=timestamp(epoch=now()))
+FROM scope()
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2026/2026-05-31-release-notes-0.77/user_notifications.png"
+         class="inline"
+         alt="User notifications contain arbitrary key/value pairs"
+         width="1140" height="389">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="user_notifications.png">
+      <i class="fa fa-download"></i></a>
+    User notifications contain arbitrary key/value pairs
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>User notifications accumulate in the GUI and can all be cleared when
+acknowledged.</p>
+</li>
+<li>
+<p><strong>Azure Data Explorer (ADX) upload.</strong> A new <code>adx_upload()</code> VQL plugin
+uploads rows to Azure Data Explorer for KQL-based analysis, along
+with a <code>ADX Creds</code> secret type for securely managing credentials. A
+corresponding server event artifact (<code>ADX.Flows.Upload</code>) is provided
+that uses this plugin to forward flow results to ADX. This mirrors
+the existing Splunk and Elastic upload integrations, and has been
+tested in production engagements.</p>
+</li>
+<li>
+<p><strong>Artifact verifier overrides.</strong> The artifact verifier now emits
+structured errors and warnings that can be selectively disabled on a
+per-artifact basis. To suppress a specific linter error, add a <code>// linter:</code> comment to the VQL snippet with the error name and an
+optional subject regex.</p>
+</li>
+<li>
+<p><strong>Loading artifact packs from zips.</strong> Zip files can now be imported
+directly with the <code>--definitions</code> flag, avoiding the need to
+manually unzip them first. This is especially useful when
+distributing collections of artifacts as a single archive file.</p>
+</li>
+<li>
+<p><strong>OIDC role assignment rework.</strong> Automated OIDC role assignment now
+supports removing access from users (roles are no longer treated as
+a minimum floor). Custom claims from Azure ID tokens can also be
+used for more granular role mapping.</p>
+</li>
+<li>
+<p><strong>Velociraptor Docker container.</strong> An officially supported
+<a href="https://github.com/Velocidex/velociraptor/tree/master/Docker" target="_blank" >Docker-based container</a>
+is now available, and a Dockerfile, compose.yaml, and supporting
+configuration files. This makes it easier to deploy Velociraptor in
+containerized environments.</p>
+</li>
+</ul>
+<h2 id="gui-improvements">GUI Improvements</h2>
+<p>This release improves a number of GUI features.</p>
+<ul>
+<li>
+<p><strong>Redesigned Shell interface</strong> now uses sessions where each
+command builds on the previous one.</p>
+</li>
+<li>
+<p><strong>User messaging system</strong> for sending notifications directly in the
+GUI.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/blog/2026/2026-05-31-release-notes-0.77/notification.png"
+         class="inline"
+         alt="image"
+         width="454" height="211">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="notification.png">
+      <i class="fa fa-download"></i></a>
+    image
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>The new <code>Server.Monitoring.RSSFeeds</code> artifact polls RSS feeds
+and alerts users about new items, such as critical CVEs or blog
+posts.</p>
+</li>
+<li>
+<p><strong>GUI state stored in sessionStorage</strong>, preserving state when
+switching between screens.</p>
+</li>
+<li>
+<p><strong>Filters added to the user management screen</strong> for easier user
+lookup.</p>
+</li>
+</ul>
+<h2 id="cli-improvements">CLI Improvements</h2>
+<ul>
+<li>
+<p><strong>New run mode syntax</strong> with reworked command line parser.</p>
+<p>The <code>-r</code> (or <code>--run</code>) flag introduces run mode, a simpler way to
+run any Velociraptor collection directly from the command line.
+Instead of wrapping artifact parameters in <code>--args Key=Value</code>
+syntax, run mode lets you pass them as regular flags after the
+artifact name. This makes the CLI feel more like running a
+standalone tool:</p>
+<pre><code>velociraptor -r Windows.Forensics.SRUM -o /tmp/results.zip
+</code></pre>
+<p>Run mode can collect artifacts locally, on a remote server, or on
+remote clients when combined with the <code>--api_config</code> and
+<code>--client_id</code> flags.</p>
+<p>See the <a href="/docs/cli/run/">run mode documentation</a> for the full
+syntax and examples.</p>
+</li>
+<li>
+<p><strong>API support for the <code>artifacts collect</code> command</strong>, allowing remote
+collection and result fetching over the API. Also added the
+<code>artifacts fetch</code> command for fetching remote artifact results.</p>
+</li>
+<li>
+<p><strong>Zip file import with the <code>--definitions</code> flag</strong> for loading artifact
+packs.</p>
+</li>
+</ul>
+<h3 id="performance-and-operational-improvements">Performance and operational improvements</h3>
+<ul>
+<li>
+<p><strong>Memory allocation limits.</strong> Velociraptor now places limits on memory
+allocations to prevent out of memory errors during large collections
+or data processing tasks.</p>
+</li>
+<li>
+<p><strong>EVTX preferred message language.</strong> The EVTX parser has been updated to
+support a preferred message language, allowing Windows event log
+messages to be rendered in the specified language when available.</p>
+</li>
+<li>
+<p><strong>Refactored hunt dispatcher.</strong> The hunt dispatcher internals have
+been reworked for improved tracking and reliability of hunt state
+management.</p>
+</li>
+<li>
+<p><strong>Refactored journal service.</strong> The journal service has been updated
+with more efficient artifact type discovery and stricter validation
+of forwarded messages, ensuring messages reach only the artifact
+types they are authorized for.</p>
+</li>
+<li>
+<p><strong>Removed hunt dispatcher housekeeping thread.</strong> The periodic
+housekeeping thread that tallied hunt stats has been removed,
+reducing IO overhead. The same functionality can now be triggered on
+demand via a VQL query when needed.</p>
+</li>
+<li>
+<p><strong>Removed old client API support.</strong> Support for legacy client API
+versions has been removed, simplifying the server codebase. The
+server now falls back to <code>Frontend.Hostname</code> when <code>API.Hostname</code> is
+not specified.</p>
+</li>
+<li>
+<p><strong>Email client compatibility.</strong> The <code>SendEmail</code> artifact now supports an
+alphanumeric-only MIME boundary mode. Some email clients (such as
+Evolution) struggle with the standard boundary characters prescribed
+by RFC 2045, so this option improves compatibility when sending
+multipart emails from Velociraptor.</p>
+</li>
+<li>
+<p><strong>Background dispatcher startup.</strong> The dispatcher now starts in the
+background, avoiding pauses at server startup and making the
+initialization sequence faster and more responsive.</p>
+</li>
+</ul>
+<h2 id="security-improvements">Security improvements</h2>
+<ul>
+<li>
+<p><strong>Refactored event queues with caller tagging.</strong> Each event is now
+tagged with the caller&rsquo;s ID, enabling listeners to verify the sender
+and reject messages from untrusted sources. This prevents users from
+sending events to privileged queues intended only for server-
+originated messages.</p>
+</li>
+<li>
+<p><strong>Zip directory traversal prevention.</strong> The <code>unzip()</code> plugin has
+been hardened against directory traversal attacks, preventing
+malicious zip files from writing files outside the intended
+extraction directory.</p>
+</li>
+<li>
+<p><strong>YAML field validation for Secrets.</strong> The secrets service now
+validates YAML fields more rigorously when creating or updating
+secrets, catching misconfigurations earlier.</p>
+</li>
+</ul>
+<h2 id="artifact-changes">Artifact changes</h2>
+<h3 id="new-artifacts">New Artifacts</h3>
+<ul>
+<li>
+<p><strong><code>Server.Monitoring.RSSFeeds</code>.</strong> Polls RSS feeds at a configurable
+interval and alerts users about new items via GUI messages.</p>
+</li>
+<li>
+<p><strong><code>ADX.Flows.Upload</code>.</strong> Forwards flow results to Azure Data Explorer
+(ADX) for analysis using KQL queries.</p>
+</li>
+<li>
+<p><strong><code>Generic.Utils.Crypto</code>.</strong> Utility artifact providing HMAC-SHA256
+and other custom hash functions.</p>
+</li>
+</ul>
+<h3 id="removed-artifacts">Removed Artifacts</h3>
+<ul>
+<li><strong><code>Server.Internal.Enrollment</code>, <code>Server.Internal.FrontendMetrics</code>,
+<code>Server.Internal.Label</code>, <code>Server.Internal.Notifications</code>,
+<code>Server.Internal.Ping</code>, <code>Server.Internal.Pong</code>,
+<code>Server.Internal.TimelineAdd</code>, and <code>System.Hunt.Participation</code></strong>
+were removed as part of event queue refactoring where each event is
+now tagged with the caller&rsquo;s ID for security.</li>
+<li><strong><code>Server.Import.ArtifactExchange</code>.</strong> Renamed to
+<code>Server.Import.ArtifactBundle</code> (old name aliased for backward
+compatibility).</li>
+</ul>
+<h2 id="changes-to-vql-plugins-functions-and-accessors">Changes to VQL Plugins, Functions, and Accessors</h2>
+<h3 id="new">New</h3>
+<ul>
+<li>
+<p><strong><code>user_message()</code>.</strong> Sends messages to GUI users from VQL queries.</p>
+</li>
+<li>
+<p><strong><code>user_messages()</code>.</strong> Emits user console messages as a plugin.</p>
+</li>
+<li>
+<p><strong><code>adx_upload()</code>.</strong> Uploads rows to Azure Data Explorer (ADX).</p>
+</li>
+</ul>
+<h3 id="improved">Improved</h3>
+<ul>
+<li>
+<p><strong><code>cache()</code>.</strong> Updated to use disk-based LRU, allowing persistent caches
+across different queries. API updated to use VQL lambda for more
+intuitive usage.</p>
+</li>
+<li>
+<p><strong><code>memoize()</code>.</strong> Updated to use disk-based LRU for persistence. Added
+<code>period</code> parameter for stale data refresh and <code>filename</code> parameter
+for file-backed storage.</p>
+</li>
+<li>
+<p><strong><code>index()</code>.</strong> Changed to batch mode, providing much faster indexing
+performance.</p>
+</li>
+</ul>
+<h2 id="conclusions">Conclusions</h2>
+<p>There are many more new features and bug fixes in the latest release.</p>
+<p>If you like the new features, take <a href="https://github.com/Velocidex/velociraptor" target="_blank" >Velociraptor for a
+spin</a>!</p>
+<p>It is available on GitHub under an open source license. As always
+please file issues on the bug tracker or ask questions on our mailing
+list <a href="mailto:velociraptor-discuss@googlegroups.com" target="_blank" >velociraptor-discuss@googlegroups.com</a>.
+You can also chat with us directly on <a href="/discord/">Discord</a>.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1782260660"></script>
+    <script src="/js/perfect-scrollbar.min.js?1782260660"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1782260660"></script>
+    <script src="/js/jquery.sticky.js?1782260660"></script>
+    <script src="/js/featherlight.min.js?1782260660"></script>
+    <script src="/js/highlight.min.js?1782260660"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1782260660"></script>
+    <script src="/js/learn.js?1782260660"></script>
+    <script src="/js/hugo-learn.js?1782260660"></script>
+    
+    
+
+  </body>
+</html>

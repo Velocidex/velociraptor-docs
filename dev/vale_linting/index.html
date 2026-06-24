@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.163.3">
+    <meta name="description" content="### What is Vale?
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Linting with Vale</title>
+
+    
+    <link href="/css/nucleus.css?1782260660" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1782260660" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1782260660" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1782260660" rel="stylesheet">
+    <link href="/css/auto-complete.css?1782260660" rel="stylesheet">
+    <link href="/css/theme.css?1782260660" rel="stylesheet">
+    <link href="/css/tabs.css?1782260660" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1782260660" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1782260660" rel="stylesheet">
+    
+    <link href="/css/dark.css?1782260660" rel="stylesheet"><link href="/css/syntax.css?1782260660" rel="stylesheet"><link href="/css/light.css?1782260660" rel="stylesheet"><link href="/css/hljs.css?1782260660" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1782260660" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1782260660"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/dev/vale_linting/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" alt="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" alt="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-35872c80.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" alt="rapid7 logo" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/dev\/vale_linting\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/dev/vale_linting/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Linting with Vale</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#what-is-vale">What is Vale?</a></li>
+        <li><a href="#vale-files-and-folders">Vale files and folders</a></li>
+        <li><a href="#running-vale-locally">Running Vale locally</a></li>
+        <li><a href="#output-templates">Output templates</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Linting with Vale
+            </h1>
+            
+          
+
+        
+
+
+
+	<h3 id="what-is-vale">What is Vale?</h3>
+<p><a href="https://vale.sh/docs" target="_blank" >Vale documentation</a></p>
+<blockquote>
+<p>Vale is a command-line tool that brings code-like linting to prose.
+Vale is cross-platform (Windows, macOS, and Linux), written in Go,
+and available on GitHub.</p>
+</blockquote>
+<h3 id="vale-files-and-folders">Vale files and folders</h3>
+<ol>
+<li>
+<p><code>.vale.ini</code> is the configuration file, located in the project root.</p>
+<p>This file defines what to lint, what linting rules to apply, and
+the global alert threshold that should be reported.</p>
+</li>
+<li>
+<p>The <code>.github/vale</code> <strong>folder</strong> contains the linting rules themselves
+(each defined in YAML - much like Velociraptor artifacts), plus
+support files such as dictionaries and &ldquo;views&rdquo; definitions that
+allow the rules to operate on non-standard files such as YAML.</p>
+</li>
+</ol>
+<p>The same <code>.github/vale</code>
+(<a href="https://github.com/Velocidex/velociraptor-vale" target="_blank" >https://github.com/Velocidex/velociraptor-vale</a>) is used across
+projects, thus ensuring consistency, but the <code>.vale.ini</code> is specific
+to each project since the linting targets vary.</p>
+<p>The vale repo is referenced in each project as a git submodule. This
+means that a normal clone of any repo will not automatically have
+these files. To include these files when cloning you either need to
+run:</p>
+<p><code>git clone --recurse-submodules &lt;main-repo-url&gt;</code></p>
+<p>or else run:</p>
+<p><code>git submodule update --remote --recursive</code></p>
+<p>after cloning, to pull in the submodule contents.</p>
+<p>Once that&rsquo;s done, you will already have the files and folders
+necessary to run all the Vale tests. All you need to do is ensure that
+you have the Vale binary in your path on your computer so that you can
+actually run it. Vale is a Go program that has no external
+dependencies.</p>
+<h3 id="running-vale-locally">Running Vale locally</h3>
+<ol>
+<li>
+<p>Install the latest <code>vale</code> binary into your path. Test it by running
+<code>vale --ls-dirs</code> or <code>vale version</code>.</p>
+<p><em>NOTE: despite what Vale&rsquo;s documentation says, you <strong>do not</strong> need to
+run <code>vale sync</code> and you shouldn&rsquo;t do so. We don&rsquo;t use external
+styles and therefore don&rsquo;t need anything outside of our own repo.
+Everything you need, except for the Vale binary, is already in the
+repo.</em></p>
+</li>
+<li>
+<p><code>cd</code> to the project root - when you run Vale it will look for the
+<code>.vale.ini</code> file in the <code>CWD</code>, which in turn will tell Vale where
+to find the Vale &ldquo;styles&rdquo; directory (which is <code>.github/vale</code>).</p>
+</li>
+<li>
+<p><strong>Run <code>vale .</code> is all you need to do to perform all the checks.</strong></p>
+</li>
+</ol>
+<h3 id="output-templates">Output templates</h3>
+<p>Vale&rsquo;s default output is usually fine, but for particular types of
+tasks you might want to try the custom output templates in
+<code>vale/config/templates</code>.</p>
+<p>Some templates generate more concise output (useful for feeding into
+other CLI apps) and some are just more human-friendly.</p>
+<p>Use them with the <code>--output</code> flag, for example:</p>
+<pre><code class="language-sh">vale . --output=collate.tmpl
+</code></pre>
+<p>Vale also has a native <code>JSON</code> output format that you might find
+useful because it dumps all fields:</p>
+<pre><code class="language-sh">vale . --output=&quot;JSON&quot;
+</code></pre>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1782260660"></script>
+    <script src="/js/perfect-scrollbar.min.js?1782260660"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1782260660"></script>
+    <script src="/js/jquery.sticky.js?1782260660"></script>
+    <script src="/js/featherlight.min.js?1782260660"></script>
+    <script src="/js/highlight.min.js?1782260660"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1782260660"></script>
+    <script src="/js/learn.js?1782260660"></script>
+    <script src="/js/hugo-learn.js?1782260660"></script>
+    
+    
+
+  </body>
+</html>

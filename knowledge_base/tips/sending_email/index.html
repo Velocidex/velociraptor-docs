@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.163.3">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>How to send e-mails from Velociraptor</title>
+
+    
+    <link href="/css/nucleus.css?1782260662" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1782260662" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1782260662" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1782260662" rel="stylesheet">
+    <link href="/css/auto-complete.css?1782260662" rel="stylesheet">
+    <link href="/css/theme.css?1782260662" rel="stylesheet">
+    <link href="/css/tabs.css?1782260662" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1782260662" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1782260662" rel="stylesheet">
+    
+    <link href="/css/dark.css?1782260662" rel="stylesheet"><link href="/css/syntax.css?1782260662" rel="stylesheet"><link href="/css/light.css?1782260662" rel="stylesheet"><link href="/css/hljs.css?1782260662" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1782260662" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1782260662"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/knowledge_base/tips/sending_email/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" alt="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" alt="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-35872c80.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" alt="rapid7 logo" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/knowledge_base\/tips\/sending_email\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/knowledge_base/tips/sending_email.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">How to send e-mails from Velociraptor</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-mail-function">The <code>mail()</code> function</a>
+      <ul>
+        <li><a href="#line-length-limit">Line length limit</a></li>
+        <li><a href="#sending-html">Sending HTML</a></li>
+      </ul>
+    </li>
+    <li><a href="#smtp-secret">SMTP secret</a></li>
+    <li><a href="#throttling">Throttling</a></li>
+    <li><a href="#testing-locally-with-mailpit">Testing locally with Mailpit</a></li>
+    <li><a href="#the-genericutilssendemail-artifact">The Generic.Utils.SendEmail artifact</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#see-also">See also</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/notifications">notifications</a>
+
+  <a class="tag-link" href="/tags/smtp">smtp</a>
+
+  <a class="tag-link" href="/tags/email">email</a>
+
+  <a class="tag-link" href="/tags/configuration">configuration</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+
+        
+
+
+
+	<h1 id="how-to-send-e-mails-from-velociraptor">How to send e-mails from Velociraptor</h1>
+<p>Velociraptor can send e-mails for a range of purposes: notifying you
+when a flow completes, forwarding alerts from detection artifacts, or
+reporting operational problems. See
+<a href="/knowledge_base/tips/email_alerts/">How to set up e-mail notifications for flow completions</a>
+and <a href="/knowledge_base/tips/vql_alerts/">Using alerts in Velociraptor</a>
+for artifact-level guides covering those use cases.</p>
+<p>This article covers the mechanics: the
+<a href="/vql_reference/other/mail/"><code>mail()</code></a> function, SMTP secrets,
+throttling behaviour, local testing with Mailpit, and the
+<a href="/artifact_references/pages/generic.utils.sendemail/"><code>Generic.Utils.SendEmail</code></a>
+artifact that handles MIME encoding.</p>
+<h2 id="the-mail-function">The <code>mail()</code> function</h2>
+<p>The <a href="/vql_reference/other/mail/"><code>mail()</code></a> function is the built-in
+VQL primitive for sending e-mail. It connects to an SMTP server and
+sends a single message:</p>
+<pre><code class="language-vql">SELECT mail(
+    secret=&quot;my_smtp_secret&quot;,
+    to=&quot;recipient@example.com&quot;,
+    subject=&quot;Hello from Velociraptor&quot;,
+    body=&quot;Important message&quot;
+)
+FROM scope()
+</code></pre>
+<p>SMTP configuration (server, port, username, password) can be supplied
+inline via <code>server</code>, <code>server_port</code>, <code>auth_username</code>, and
+<code>auth_password</code>, but using a
+<a href="/knowledge_base/tips/sending_email/#smtp-secret">secret</a> is strongly
+recommended.</p>
+<h3 id="line-length-limit">Line length limit</h3>
+<p>Raw SMTP imposes a hard limit of
+<a href="https://www.rfc-editor.org/rfc/rfc2822.html#section-2.1.1" target="_blank" ><strong>998 characters per line</strong> (RFC 2822)</a>.
+If the body contains longer lines, some servers will reject or corrupt
+the message. This is easy to hit with log output or structured text.
+Base64-encoding the body and declaring the correct transfer encoding
+header avoids this:</p>
+<pre><code class="language-vql">LET Body = &quot;A long line that might exceed the limit: &quot; + body_text
+
+-- NOTE: Example only; do not do this — use Generic.Utils.SendEmail instead:
+SELECT mail(
+    secret=&quot;my_smtp_secret&quot;,
+    to=(&quot;recipient@example.com&quot;,),
+    subject=&quot;Hello from Velociraptor&quot;,
+    headers=dict(`Content-Transfer-Encoding`=&quot;base64&quot;,
+                 `Content-Type`='text/plain; charset=&quot;utf-8&quot;'),
+    body=regex_replace(re=&quot;(.{76})&quot;, replace=&quot;$1\r\n&quot;,
+                       source=base64encode(string=Body))
+)
+FROM scope()
+</code></pre>
+
+<div class="mynotices tip">
+  <div heading="tip"><p>This encoding is handled automatically by the
+<a href="/artifact_references/pages/generic.utils.sendemail/"><code>Generic.Utils.SendEmail</code></a>
+artifact described <a href="/knowledge_base/tips/sending_email/#the-genericutilssendemail-artifact">below</a>.</p>
+</div>
+</div>
+
+
+<h3 id="sending-html">Sending HTML</h3>
+<p>To send HTML instead of plain text, pass a <code>Content-Type: text/html</code> header:</p>
+<pre><code class="language-vql">
+-- NOTE: Example only; prefer Generic.Utils.SendEmail instead:
+SELECT mail(
+    secret=&quot;my_smtp_secret&quot;,
+    to=(&quot;recipient@example.com&quot;,),
+    subject=&quot;Hello from Velociraptor&quot;,
+    headers=dict(`Content-Type`=&quot;text/html&quot;),
+    body=&quot;&lt;h1&gt;Hello&lt;/h1&gt;&lt;p&gt;A flow has completed.&lt;/p&gt;&quot;
+)
+FROM scope()
+</code></pre>
+<p>For multi-part messages (HTML + plain-text fallback) or attachments,
+use
+<a href="/artifact_references/pages/generic.utils.sendemail/"><code>Generic.Utils.SendEmail</code></a>
+instead.</p>
+<h2 id="smtp-secret">SMTP secret</h2>
+<p>The recommended way to supply SMTP credentials is via a
+<a href="/docs/gui/#server-secrets">server secret</a> of type <strong>SMTP Creds</strong>.
+This keeps credentials out of artifact parameters and notebook cells.</p>
+<p>To add an SMTP secret:</p>
+<ol>
+<li>
+<p>Open the Velociraptor GUI, navigate to the welcome page (click the
+Velociraptor icon), and then <strong>Manage Server Secrets</strong>.</p>
+<p>
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/sending_email/welcome_secret_.svg" alt="Enter secret management from the welcome page"
+         class="inline"
+         height="561"
+         width="914.6770025839793"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="welcome_secret.svg"><i class="fa fa-download"></i></a>
+    Enter secret management from the welcome page
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+<li>
+<p>Click <strong>Add Secret</strong>, choose type <strong>SMTP Creds</strong>, give it a name
+(e.g. <code>my_smtp_secret</code>), and fill in the SMTP server details.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/sending_email/add_smtp_secret.png"
+         class="inline"
+         alt="Adding an SMTP Creds secret"
+         width="1301" height="717">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="add_smtp_secret.png">
+      <i class="fa fa-download"></i></a>
+    Adding an SMTP Creds secret
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+<li>
+<p>Give access to the secret to <strong>VelociraptorServer (Server Event
+Runner)</strong>, plus any other users that need it. VelociraptorServer
+needs access to send e-mails from server event queries.</p>
+<p>
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/sending_email/secret_access_.svg" alt="Modify the secret in order to give access to it"
+         class="inline"
+         height="561"
+         width="1001.647140864714"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="secret_access.svg"><i class="fa fa-download"></i></a>
+    Modify the secret in order to give access to it
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/sending_email/secret_access2.png"
+         class="inline"
+         alt="VelociraptorServer given access to SMTP secret"
+         width="1301" height="450">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="secret_access2.png">
+      <i class="fa fa-download"></i></a>
+    VelociraptorServer given access to SMTP secret
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+</li>
+</ol>
+<p>In most cases you do not need to set all fields when defining a
+secret. Fields you leave empty may be overridden in the functions
+using the secret. <a href="/artifact_references/pages/generic.utils.sendemail/"><code>Generic.Utils.SendEmail</code></a> expects most fields to be
+defined in the secret, but lets you override <code>from</code> (<code>Sender</code>).</p>
+<p>Once the secret exists, pass its name to <a href="/vql_reference/other/mail/"><code>mail()</code></a> or
+<a href="/artifact_references/pages/generic.utils.sendemail/"><code>Generic.Utils.SendEmail</code></a> via the <code>secret</code> parameter.</p>
+<h2 id="throttling">Throttling</h2>
+<p>Velociraptor rate-limits outgoing e-mail <strong>globally across the entire
+server</strong>. If <a href="/vql_reference/other/mail/"><code>mail()</code></a> is called within <code>period</code> seconds of the
+previous successful send, the message is silently dropped and an
+error is logged. The default <code>period</code> is <strong>60 seconds</strong>.</p>
+
+<div class="mynotices info">
+  <div heading="info"><p>When an e-mail is dropped, <a href="/vql_reference/other/mail/"><code>mail()</code></a> logs <code>ERROR:mail: Send too fast, suppressing.</code> (logged at level <code>DEFAULT</code>, not <code>ERROR</code>) and returns an
+<code>ErrorStatus</code> field. Check the artifact logs if you suspect messages
+are being silently throttled.</p>
+</div>
+</div>
+
+
+<p>When using <a href="/artifact_references/pages/generic.utils.sendemail/"><code>Generic.Utils.SendEmail</code></a>, the <code>Period</code> parameter maps to
+this same throttling window.</p>
+<h2 id="testing-locally-with-mailpit">Testing locally with Mailpit</h2>
+<p>Sending test e-mails against a real SMTP server can have unintended
+consequences: repeated failures or unusual traffic patterns may lower
+your sender reputation (affecting spam scoring) or trigger account
+lockouts. Use a local SMTP testing tool instead, like
+<a href="https://mailpit.axllent.org/" target="_blank" >Mailpit</a>.</p>
+<p>Mailpit accepts SMTP connections and captures messages in a web UI
+without forwarding them. It also shows the raw message, which is
+useful for debugging encoding issues.</p>
+<p>Start it with Docker:</p>
+<pre><code class="language-sh">docker run -d --name mailpit \
+    -p 127.0.0.1:8025:8025 -p 127.0.0.1:1025:1025 \
+    axllent/mailpit
+</code></pre>
+<p>To persist captured e-mails across restarts, mount a volume:</p>
+<pre><code class="language-sh">docker run -d --name mailpit \
+    -p 127.0.0.1:8025:8025 -p 127.0.0.1:1025:1025 \
+    -v mailpit-data:/data \
+    axllent/mailpit
+</code></pre>
+<p>The two listening ports are</p>
+<ul>
+<li><strong>SMTP</strong>: <code>localhost:1025</code> (no authentication)</li>
+<li><strong>Web UI</strong>: <a href="http://localhost:8025" target="_blank" >http://localhost:8025</a></li>
+</ul>
+<p>Configure your secret with <code>server=localhost</code>, <code>server_port=1025</code>, and
+<code>skip_verify=true</code>. Open <a href="http://localhost:8025" target="_blank" >http://localhost:8025</a> to
+see incoming messages.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/sending_email/mailpit_html.png"
+         class="inline"
+         alt="Mailpit web UI showing a test e-mail from Velociraptor"
+         width="1280" height="960">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="mailpit_html.png">
+      <i class="fa fa-download"></i></a>
+    Mailpit web UI showing a test e-mail from Velociraptor
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="the-genericutilssendemail-artifact">The Generic.Utils.SendEmail artifact</h2>
+<p>The
+<a href="/artifact_references/pages/generic.utils.sendemail/"><code>Generic.Utils.SendEmail</code></a>
+artifact builds a properly-encoded MIME message and then calls
+<a href="/vql_reference/other/mail/"><code>mail()</code></a> for you. It handles Base64 line-wrapping,
+<code>multipart/alternative</code> (HTML + plain-text fallback), and file
+attachments.</p>
+<p>Call it from a notebook or another server artifact using
+<a href="/artifact_references/pages/generic.utils.sendemail/"><code>Artifact.Generic.Utils.SendEmail(…)</code></a>.</p>
+<h6 id="plain-text">Plain text</h6>
+<pre><code class="language-vql">SELECT * FROM Artifact.Generic.Utils.SendEmail(
+    Secret=&quot;my_smtp_secret&quot;,
+    Recipients=(&quot;recipient@example.com&quot;,),
+    Subject=&quot;Collection finished&quot;,
+    PlainTextMessage=&quot;The collection on MyClient has finished.&quot;
+)
+</code></pre>
+<h6 id="html-only">HTML only</h6>
+<pre><code class="language-vql">SELECT * FROM Artifact.Generic.Utils.SendEmail(
+    Secret=&quot;my_smtp_secret&quot;,
+    Recipients=(&quot;recipient@example.com&quot;,),
+    Subject=&quot;Collection finished&quot;,
+    HTMLMessage=&quot;&lt;h1&gt;Done&lt;/h1&gt;&lt;p&gt;The collection on &lt;b&gt;MyClient&lt;/b&gt; has finished.&lt;/p&gt;&quot;
+)
+</code></pre>
+<h6 id="html-with-plain-text-fallback">HTML with plain-text fallback</h6>
+<p>When both <code>HTMLMessage</code> and <code>PlainTextMessage</code> are provided, the
+artifact creates a <code>multipart/alternative</code> message. The recipient&rsquo;s
+e-mail client displays the HTML version where supported and falls
+back to plain text otherwise:</p>
+<pre><code class="language-vql">SELECT * FROM Artifact.Generic.Utils.SendEmail(
+    Secret=&quot;my_smtp_secret&quot;,
+    Recipients=(&quot;recipient@example.com&quot;,),
+    Subject=&quot;Collection finished&quot;,
+    PlainTextMessage=&quot;The collection on MyClient has finished.&quot;,
+    HTMLMessage=&quot;&lt;h1&gt;Done&lt;/h1&gt;&lt;p&gt;The collection on &lt;b&gt;MyClient&lt;/b&gt; has finished.&lt;/p&gt;&quot;
+)
+</code></pre>
+
+<details>
+  <summary>The &#34;Raw&#34; tab in Mailpit shows how &#34;multipart/alternative&#34; is used to send both HTML and plain-text.</summary>
+  <p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/sending_email/mailpit_text.png"
+         class="inline"
+         alt="The plain-text version of the e-mail in Mailpit"
+         width="1280" height="960">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="mailpit_text.png">
+      <i class="fa fa-download"></i></a>
+    The plain-text version of the e-mail in Mailpit
+  </figcaption>
+</figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/sending_email/mailpit_raw.png"
+         class="inline"
+         alt="An e-mail viewed in its raw format in Mailpit"
+         width="1280" height="960">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="mailpit_raw.png">
+      <i class="fa fa-download"></i></a>
+    An e-mail viewed in its raw format in Mailpit
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+
+</details>
+
+<h6 id="attachments">Attachments</h6>
+<p>Pass a list of dicts with <code>Path</code> and optionally <code>Filename</code> via
+<code>FilesToUpload</code>. Each file is Base64-encoded and attached. <code>Filename</code>
+overrides the file name used in the attachment.</p>
+<p>The files must exist on the <strong>server</strong>. Use <a href="/vql_reference/popular/tempdir/"><code>tempdir()</code></a> and a write
+function such as <a href="/vql_reference/other/write_csv/"><code>write_csv()</code></a> or <a href="/vql_reference/other/write_jsonl/"><code>write_jsonl()</code></a> to create them on
+the fly:</p>
+<pre><code class="language-vql">LET TmpDir &lt;= tempdir()
+
+LET _ &lt;= SELECT * FROM write_csv(
+    filename=TmpDir + &quot;/report.csv&quot;,
+    query={ SELECT * FROM source() }
+)
+
+SELECT * FROM Artifact.Generic.Utils.SendEmail(
+    Secret=&quot;my_smtp_secret&quot;,
+    Recipients=(&quot;recipient@example.com&quot;,),
+    Subject=&quot;Report attached&quot;,
+    PlainTextMessage=&quot;Please find the report attached.&quot;,
+    FilesToUpload=(dict(Path=TmpDir + &quot;/report.csv&quot;, Filename=&quot;report.csv&quot;),)
+)
+</code></pre>
+
+<div class="mynotices info">
+  <div heading="info"><p>Some e-mail clients (like Evolution) do not follow the RFC 2045
+specification and fail to parse e-mails with boundaries using
+certain characters. Set <code>UseSimpleBoundary</code> to &ldquo;true&rdquo; in
+<a href="/artifact_references/pages/generic.utils.sendemail/"><code>Generic.Utils.SendEmail</code></a>
+to support such clients.</p>
+</div>
+</div>
+
+
+<h2 id="see-also">See also</h2>
+<ul>
+<li>Built-in e-mail sending function: <a href="/vql_reference/other/mail/"><code>mail()</code></a></li>
+<li>E-mail sending helper artifact: <a href="/artifact_references/pages/generic.utils.sendemail/"><code>Generic.Utils.SendEmail</code></a></li>
+<li><a href="/knowledge_base/tips/email_alerts/">How to set up e-mail notifications for flow completions</a></li>
+<li><a href="/knowledge_base/tips/vql_alerts/">Using alerts in Velociraptor</a></li>
+</ul>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1782260662"></script>
+    <script src="/js/perfect-scrollbar.min.js?1782260662"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1782260662"></script>
+    <script src="/js/jquery.sticky.js?1782260662"></script>
+    <script src="/js/featherlight.min.js?1782260662"></script>
+    <script src="/js/highlight.min.js?1782260662"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1782260662"></script>
+    <script src="/js/learn.js?1782260662"></script>
+    <script src="/js/hugo-learn.js?1782260662"></script>
+    
+    
+
+  </body>
+</html>

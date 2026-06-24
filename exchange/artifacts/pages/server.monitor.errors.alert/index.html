@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.163.3">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Server.Monitor.Errors.Alert</title>
+
+    
+    <link href="/css/nucleus.css?1782260662" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1782260662" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1782260662" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1782260662" rel="stylesheet">
+    <link href="/css/auto-complete.css?1782260662" rel="stylesheet">
+    <link href="/css/theme.css?1782260662" rel="stylesheet">
+    <link href="/css/tabs.css?1782260662" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1782260662" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1782260662" rel="stylesheet">
+    
+    <link href="/css/dark.css?1782260662" rel="stylesheet"><link href="/css/syntax.css?1782260662" rel="stylesheet"><link href="/css/light.css?1782260662" rel="stylesheet"><link href="/css/hljs.css?1782260662" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1782260662" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1782260662"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/exchange/artifacts/pages/server.monitor.errors.alert/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" alt="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" alt="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-35872c80.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" alt="rapid7 logo" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/exchange\/artifacts\/pages\/server.monitor.errors.alert\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/exchange/artifacts/Server.Monitor.Errors.Alert.yaml" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Server.Monitor.Errors.Alert</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents"></nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/monitoring">monitoring</a>
+
+  <a class="tag-link" href="/tags/alerts">alerts</a>
+
+  <a class="tag-link" href="/tags/notifications">notifications</a>
+
+  <a class="tag-link" href="/tags/errors">errors</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Server.Monitor.Errors.Alert
+            </h1>
+            
+          
+
+        
+
+
+<p>Create alerts from errors logged by server event queries.</p>
+<p>Server event queries are often used for important monitoring and automation,
+but failures in these queries may otherwise go unnoticed in the server logs.
+This artifact periodically inspects the monitoring logs for active server event
+artifacts and creates alerts for log entries that match <code>IncludeFilter</code> and
+are not rejected by <code>ExcludeFilter</code>.</p>
+<p>Matching can be controlled by artifact name, log level, and message content.
+This allows you to alert on all server event query errors, or to focus on a
+smaller set of important artifacts and known failure patterns.</p>
+<p>Each alert includes useful context such as the artifact name, log level, error
+message, and the original log timestamp. Duplicate alerts may be suppressed for
+a configurable interval to avoid repeated notifications for the same problem.
+Deduplication is performed on the alert name, which includes the event artifact
+name. This means that at most one alert is produced per artifact within the
+deduplication interval. You should check the event query log for errors; there
+may be more than one.</p>
+<p>If <code>SeverityField</code> is set, the alert will also include a severity value taken
+from the matching <code>IncludeFilter</code> row&rsquo;s <code>Severity</code> column. This can be used by
+<a href="/exchange/artifacts/pages/server.monitor.alerts/"><code>Server.Monitor.Alerts</code></a>
+to format, filter, and forward the alert as an e-mail notification, or by
+<a href="/exchange/artifacts/pages/server.monitor.alerts.usermessage/"><code>Server.Monitor.Alerts.UserMessage</code></a>
+to post it as an in-app notification. The severity values can be anything,
+but <a href="/exchange/artifacts/pages/server.monitor.alerts/"><code>Server.Monitor.Alerts</code></a> expects the
+following unless overridden:</p>
+<ul>
+<li>low</li>
+<li>medium</li>
+<li>high</li>
+</ul>
+<p><code>IncludeFilter</code> must contain columns <code>Artifact</code>, <code>Level</code>, and <code>Message</code>, plus
+the optional <code>Severity</code> column. Any additional columns you add are passed
+through to the alert under the same name as extra context. For instance, if
+you want to add a helpful description to a particular error, you can use
+<code>IncludeFilter</code> as follows:</p>
+<table>
+	<thead>
+			<tr>
+					<th>Artifact</th>
+					<th>Level</th>
+					<th>Message</th>
+					<th>Severity</th>
+					<th>Explanation</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>.+</td>
+					<td>DEFAULT</td>
+					<td>fork/exec .+ no such file or directory</td>
+					<td>high</td>
+					<td>Executable not found on system</td>
+			</tr>
+			<tr>
+					<td>.+</td>
+					<td>ERROR</td>
+					<td>.+</td>
+					<td>medium</td>
+					<td></td>
+			</tr>
+	</tbody>
+</table>
+<p>With this filter we pick up any attempt to use <a href="/vql_reference/popular/execve/"><code>execve</code></a> with a non-existent
+binary. This would normally not produce an <code>ERROR</code>-level log entry (only a
+<code>DEFAULT</code>-level one), but it would definitely break important functionality
+in most artifacts. Remember that the filters are matched from top to bottom,
+so put your most specific filters at the top.</p>
+<p>Note that many errors produced by native VQL functions and plugins
+are logged with the <code>DEFAULT</code> level rather than <code>ERROR</code>. To alert on
+these, either add your own checks that log <code>ERROR</code> to artifacts, or
+match the native log messages with <code>IncludeFilter</code>. See <a href="/knowledge_base/tips/vql_error_catalogue/">this
+reference</a> for a list of
+regexes matching <code>DEFAULT</code>-level errors worth monitoring.</p>
+<p>#monitoring #alerts #notifications #errors</p>
+<pre><code class="language-yaml">
+name: Server.Monitor.Errors.Alert
+author: Andreas Misje – @misje
+description: |
+  Create alerts from errors logged by server event queries.
+
+  Server event queries are often used for important monitoring and automation,
+  but failures in these queries may otherwise go unnoticed in the server logs.
+  This artifact periodically inspects the monitoring logs for active server event
+  artifacts and creates alerts for log entries that match `IncludeFilter` and
+  are not rejected by `ExcludeFilter`.
+
+  Matching can be controlled by artifact name, log level, and message content.
+  This allows you to alert on all server event query errors, or to focus on a
+  smaller set of important artifacts and known failure patterns.
+
+  Each alert includes useful context such as the artifact name, log level, error
+  message, and the original log timestamp. Duplicate alerts may be suppressed for
+  a configurable interval to avoid repeated notifications for the same problem.
+  Deduplication is performed on the alert name, which includes the event artifact
+  name. This means that at most one alert is produced per artifact within the
+  deduplication interval. You should check the event query log for errors; there
+  may be more than one.
+
+  If `SeverityField` is set, the alert will also include a severity value taken
+  from the matching `IncludeFilter` row's `Severity` column. This can be used by
+  [`Server.Monitor.Alerts`](/exchange/artifacts/pages/server.monitor.alerts/)
+  to format, filter, and forward the alert as an e-mail notification, or by
+  [`Server.Monitor.Alerts.UserMessage`](/exchange/artifacts/pages/server.monitor.alerts.usermessage/)
+  to post it as an in-app notification. The severity values can be anything,
+  but [`Server.Monitor.Alerts`](/exchange/artifacts/pages/server.monitor.alerts/) expects the
+  following unless overridden:
+
+  - low
+  - medium
+  - high
+
+  `IncludeFilter` must contain columns `Artifact`, `Level`, and `Message`, plus
+  the optional `Severity` column. Any additional columns you add are passed
+  through to the alert under the same name as extra context. For instance, if
+  you want to add a helpful description to a particular error, you can use
+  `IncludeFilter` as follows:
+
+  | Artifact | Level | Message | Severity | Explanation |
+  | -------- | ----- | ------- | -------- | ----------- |
+  | .+ | DEFAULT | fork/exec .+ no such file or directory | high | Executable not found on system |
+  | .+ | ERROR | .+ | medium | |
+
+  With this filter we pick up any attempt to use [`execve`](/vql_reference/popular/execve/) with a non-existent
+  binary. This would normally not produce an `ERROR`-level log entry (only a
+  `DEFAULT`-level one), but it would definitely break important functionality
+  in most artifacts. Remember that the filters are matched from top to bottom,
+  so put your most specific filters at the top.
+
+  Note that many errors produced by native VQL functions and plugins
+  are logged with the `DEFAULT` level rather than `ERROR`. To alert on
+  these, either add your own checks that log `ERROR` to artifacts, or
+  match the native log messages with `IncludeFilter`. See [this
+  reference](/knowledge_base/tips/vql_error_catalogue/) for a list of
+  regexes matching `DEFAULT`-level errors worth monitoring.
+
+  #monitoring #alerts #notifications #errors
+
+type: SERVER_EVENT
+
+parameters:
+  - name: Period
+    type: int
+    description: |
+      Seconds between each monitoring log inspection
+    default: 60
+
+  - name: DedupInterval
+    type: int
+    description: |
+      Suppress duplicate alerts from the same artifact within this many
+      seconds. Inspect the event query log for the full set of errors.
+    default: 3600
+
+  - name: IncludeFilter
+    type: csv
+    description: |
+      Include only log entries matching one of these rows. Each column is a
+      regex; empty means "any". The optional `Severity` column is copied into
+      the alert (see `SeverityField`). Any extra columns are passed through
+      to the alert under the same name. Rows are evaluated top-to-bottom and
+      the first match wins, so place specific rules before broad catch-alls.
+    default: |
+      Artifact,Level,Message,Severity
+      .+,ERROR,.+,medium
+
+  - name: ExcludeFilter
+    type: csv
+    description: |
+      Reject log entries matching one of these rows, applied after
+      `IncludeFilter`. The default excludes artifacts that would
+      create alert loops if they fail, so do not remove them from the
+      filter.
+    default: |
+      Artifact,Level,Message
+      Server\.Monitor\.Alerts$,.+,.+
+      Server\.Monitor\.Alerts\.UserMessage$,.+,.+
+      Server\.Monitor\.Errors\.Alert$,.+,.+
+
+  - name: SeverityField
+    type: str
+    description: |
+      Name of the alert field that will receive the value from the matching
+      `IncludeFilter` row's `Severity` column. Leave empty to omit severity
+      from alerts entirely.
+    default: Severity
+
+export: |
+  // Combine a timestamp and a duration string:
+  LET TimestampString(Timestamp) = if(
+      condition=Timestamp.Unix,
+      then=format(format='%v (%v)',
+                  args=(Timestamp.String, humanize(time=Timestamp))),
+      else='(never)')
+
+  LET RemoveEmptyStrs(Item) = to_dict(item={
+      SELECT _key,
+             _value
+      FROM items(item=Item)
+      WHERE _value != ""
+    })
+
+  LET _FilterLogic = (NOT Artifact OR artifact =~ Artifact)
+     AND (NOT Level OR level =~ Level)
+          AND (NOT Message OR message =~ Message)
+
+  // Return true if any CSV filter row matches the artifact, level, and message.
+  // This lets both include and exclude tables share the same matching logic.
+  LET IncludeLog(artifact, level, message, filter) =
+      any(items={
+      SELECT _FilterLogic AS Result
+      FROM filter
+    },
+          filter='x=&gt;x.Result')
+
+  LET IncludeArtifact(artifact, filter) = any(items={
+      SELECT artifact =~ Artifact AS Result
+      FROM filter
+    },
+                                              filter='x=&gt;x.Result')
+
+  LET GetSeverity(artifact, level, message) = SELECT Severity
+    FROM IncludeFilter
+    WHERE _FilterLogic
+    LIMIT 1
+
+  LET GetErrorContext(artifact, level, message) = SELECT *
+    FROM column_filter(exclude='^(Artifact|Level|Message|Severity)$',
+                       query={
+      SELECT *
+      FROM IncludeFilter
+      WHERE _FilterLogic
+      LIMIT 1
+    })
+
+  // Add an optional severity field to the alert payload:
+  LET SeverityArgs = if(condition=SeverityField,
+                        then=set(item=dict(),
+                                 field=get(field='SeverityField'),
+                                 value=GetSeverity(
+                                   artifact=Artifact,
+                                   level=Level,
+                                   message=Message).Severity[0]),
+                        else=dict())
+
+  LET ErrorContext = GetErrorContext(artifact=Artifact,
+                                     level=Level,
+                                     message=Message)[0]
+
+sources:
+  - query: |
+      LET MonitoredArtifacts = SELECT _value.artifact AS Artifact
+        FROM foreach(row=get_server_monitoring().specs)
+        WHERE IncludeArtifact(artifact=Artifact, filter=IncludeFilter)
+
+      LET _ &lt;= SELECT
+          log(level='DEBUG',
+              message='Monitoring event artifact %v',
+              args=Artifact,
+              dedup=-1)
+        FROM MonitoredArtifacts
+
+      // Poll logs for every currently active server monitoring artifact and emit
+      // only entries that match filters:
+      LET EventErrors(StartTime) = SELECT *
+        FROM foreach(row=MonitoredArtifacts,
+                     query={
+          SELECT Artifact,
+                 *
+          FROM monitoring_logs(client_id='server',
+                               artifact=Artifact,
+                               start_time=StartTime)
+          WHERE IncludeLog(artifact=Artifact,
+                           level=Level,
+                           message=Message,
+                           filter=IncludeFilter)
+           AND NOT IncludeLog(artifact=Artifact,
+                              level=Level,
+                              message=Message,
+                              filter=ExcludeFilter)
+        },
+                     async=true)
+
+      // Build the final alert context from the matching log row, including a
+      // human-readable log timestamp:
+      LET AlertArgs = RemoveEmptyStrs(Item=SeverityArgs + ErrorContext) +
+          dict(
+            dedup=DedupInterval,
+            name=format(format='Server event query error in %v', args=Artifact),
+            Level=Level,
+            Error=Message,
+            `Log timestamp`=TimestampString(Timestamp=timestamp(string=Timestamp)),
+            Artifact=Artifact)
+
+      // On each interval, inspect only the recent log window and raise alerts for
+      // matching entries:
+      SELECT *
+      FROM foreach(row={
+          SELECT Unix
+          FROM clock(period=Period)
+        },
+                   query={
+          SELECT *, alert(`**`=AlertArgs) AS Alert
+          FROM EventErrors(StartTime=Unix - Period)
+        })
+</code></pre>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1782260662"></script>
+    <script src="/js/perfect-scrollbar.min.js?1782260662"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1782260662"></script>
+    <script src="/js/jquery.sticky.js?1782260662"></script>
+    <script src="/js/featherlight.min.js?1782260662"></script>
+    <script src="/js/highlight.min.js?1782260662"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1782260662"></script>
+    <script src="/js/learn.js?1782260662"></script>
+    <script src="/js/hugo-learn.js?1782260662"></script>
+    
+    
+
+  </body>
+</html>
+

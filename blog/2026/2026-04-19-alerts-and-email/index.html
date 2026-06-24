@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.163.3">
+    <meta name="description" content="A brief introduction to Velociraptor&#39;s alert system and the new
+exchange artifacts sending e-mail notifications for flow
+completions, alerts, and event query errors.
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Alerts and e-mail notifications in Velociraptor</title>
+
+    
+    <link href="/css/nucleus.css?1782260660" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1782260660" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1782260660" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1782260660" rel="stylesheet">
+    <link href="/css/auto-complete.css?1782260660" rel="stylesheet">
+    <link href="/css/theme.css?1782260660" rel="stylesheet">
+    <link href="/css/tabs.css?1782260660" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1782260660" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1782260660" rel="stylesheet">
+    
+    <link href="/css/dark.css?1782260660" rel="stylesheet"><link href="/css/syntax.css?1782260660" rel="stylesheet"><link href="/css/light.css?1782260660" rel="stylesheet"><link href="/css/hljs.css?1782260660" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1782260660" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1782260660"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/blog/2026/2026-04-19-alerts-and-email/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" alt="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" alt="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-35872c80.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" alt="rapid7 logo" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/blog\/2026\/2026-04-19-alerts-and-email\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/blog/2026/2026-04-19-alerts-and-email/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Alerts and e-mail notifications in Velociraptor</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#overview">Overview</a>
+      <ul>
+        <li><a href="#sending-e-mails">Sending e-mails</a></li>
+      </ul>
+    </li>
+    <li><a href="#flow-completion-notifications">Flow-completion notifications</a>
+      <ul>
+        <li><a href="#a-few-examples">A few examples</a></li>
+        <li><a href="#including-results-in-the-e-mail">Including results in the e-mail</a></li>
+      </ul>
+    </li>
+    <li><a href="#detection-alerts">Detection alerts</a>
+      <ul>
+        <li><a href="#where-to-call-alert">Where to call <code>alert()</code></a></li>
+      </ul>
+    </li>
+    <li><a href="#catching-silent-failures">Catching silent failures</a></li>
+    <li><a href="#using-in-app-user-messages">Using in-app user messages</a></li>
+    <li><a href="#summary">Summary</a></li>
+    <li><a href="#further-reading">Further reading</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/alerts">alerts</a>
+
+  <a class="tag-link" href="/tags/notifications">notifications</a>
+
+  <a class="tag-link" href="/tags/email">email</a>
+
+  <a class="tag-link" href="/tags/detection">detection</a>
+
+  <a class="tag-link" href="/tags/monitoring">monitoring</a>
+
+  <a class="tag-link" href="/tags/errors">errors</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Alerts and e-mail notifications in Velociraptor
+            </h1>
+            
+            <div class="author pull-right">
+              Andreas Misje
+              <span class="date">2026-05-10</span>
+            </div>
+            
+          
+
+        
+
+
+
+	<p>Velociraptor does a lot in the background. Client and server event
+queries run continuously. Hunts and scheduled flows complete on their
+own time. Detection artifacts watch for IoCs. Most of this happens
+without anyone looking. And when someone does, they may find that
+the event query they relied on for uploading data to S3 has failed
+for over a week. Or that flows in the last hunt have started
+failing. Or that the collection scheduled for the CEO&rsquo;s laptop —
+which was offline at the time — has finally completed, with results
+that should have been inspected immediately.</p>
+<p>This post introduces a small family of exchange artifacts that
+notify you when any of this happens:</p>
+<ul>
+<li><a href="/exchange/artifacts/pages/server.monitor.flowcompletion/"><code>Server.Monitor.FlowCompletion</code></a>:
+sends an e-mail when a client flow completes (or fails)</li>
+<li><a href="/exchange/artifacts/pages/server.monitor.alerts/"><code>Server.Monitor.Alerts</code></a>:
+forwards alerts created by <a href="/vql_reference/other/alert/"><code>alert()</code></a> calls anywhere in the
+deployment</li>
+<li><a href="/exchange/artifacts/pages/server.monitor.errors.alert/"><code>Server.Monitor.Errors.Alert</code></a>
+and
+<a href="/exchange/artifacts/pages/server.monitor.client.errors.alert/"><code>Server.Monitor.Client.Errors.Alert</code></a>:
+turn entries in the monitoring log into alerts so failures stop
+being silent</li>
+</ul>
+<p>A series of knowledge base articles will go into detail on how to use
+these artifacts.</p>
+<h2 id="overview">Overview</h2>
+<p>There are many ways to send a notification (Slack, Teams, PagerDuty
+etc.), but this post sticks to e-mail because:</p>
+<ul>
+<li>it requires little setup and works almost everywhere</li>
+<li>it can carry a lot of information per message</li>
+</ul>
+<p>Two of the artifacts introduced here send e-mail directly:</p>
+<ul>
+<li><a href="/exchange/artifacts/pages/server.monitor.flowcompletion/"><code>Server.Monitor.FlowCompletion</code></a></li>
+<li><a href="/exchange/artifacts/pages/server.monitor.alerts/"><code>Server.Monitor.Alerts</code></a></li>
+</ul>
+<p>The remaining artifacts, and most of the examples, produce alerts. If
+you want alerting but not e-mail notifications, the error monitoring
+and the use of <a href="/vql_reference/other/alert/"><code>alert()</code></a> for detection are still relevant. You
+only need to use or write/adjust a monitoring artifact to produce
+notifications, for example Slack or Teams, for alerts produced. See
+<a href="/blog/2026/2026-04-19-alerts-and-email/#using-in-app-user-messages">Using in-app user messages</a> for how to use Velociraptor&rsquo;s
+new built-in notification system.</p>
+<p>
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+<figure>
+  <div class="figure">
+    <img src="/blog/2026/2026-04-19-alerts-and-email/monitoring_diagram_.svg" alt="Simple overview of how a detection creates an e-mail"
+         class="inline"
+         height="285.75"
+         width="823"  />
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="monitoring_diagram.svg"><i class="fa fa-download"></i></a>
+    Simple overview of how a detection creates an e-mail
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="sending-e-mails">Sending e-mails</h3>
+<p>Every e-mail produced by the artifacts in this post passes through
+two pieces of shared infrastructure:</p>
+<ul>
+<li><strong>An SMTP secret</strong> holds the connection details (server, port,
+credentials, sender address). It is created once in <strong>Manage
+Server Secrets</strong> and referenced by name everywhere else.</li>
+<li><a href="/artifact_references/pages/generic.utils.sendemail/"><code>Generic.Utils.SendEmail</code></a>
+builds a properly-encoded MIME message: it Base64-wraps the body,
+supports <code>multipart/alternative</code> for HTML with plain-text fallback,
+and handles file attachments. It then calls the underlying
+<a href="/vql_reference/other/mail/"><code>mail()</code></a> function for you.</li>
+</ul>
+<p>
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/sending_email/add_smtp_secret.png"
+         class="inline"
+         alt="Adding an SMTP Creds secret" />
+  </div>
+  <figcaption>
+    Adding an SMTP Creds secret
+  </figcaption>
+</figure>
+
+
+</p>
+<p>If you have not configured SMTP yet, start with
+<a href="/knowledge_base/tips/sending_email/">How to send e-mails from Velociraptor</a>.
+It also covers testing locally with
+<a href="/knowledge_base/tips/sending_email/#testing-locally-with-mailpit">Mailpit</a>,
+which lets you send as many e-mails as you want without getting
+blocked by any real SMTP server, and explains the
+<a href="/knowledge_base/tips/sending_email/#throttling">global e-mail throttling</a>
+worth knowing about before going to production.</p>
+<h2 id="flow-completion-notifications">Flow-completion notifications</h2>
+<p><a href="/exchange/artifacts/pages/server.monitor.flowcompletion/"><code>Server.Monitor.FlowCompletion</code></a> watches
+<a href="/artifact_references/pages/system.flow.completion/"><code>System.Flow.Completion</code></a>
+and sends an e-mail when a client flow finishes. The default e-mail
+includes client details, flow metadata (creator, timestamps, duration,
+requested artifacts, arguments), and a result summary.</p>
+<p>
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/email_alerts/ff_client.png"
+         class="inline"
+         alt="Flow-completion e-mail: client section" />
+  </div>
+  <figcaption>
+    Flow-completion e-mail: client section
+  </figcaption>
+</figure>
+
+
+</p>
+<p>
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/email_alerts/ff_flow.png"
+         class="inline"
+         alt="Flow-completion e-mail: flow and uploads section" />
+  </div>
+  <figcaption>
+    Flow-completion e-mail: flow and uploads section
+  </figcaption>
+</figure>
+
+
+</p>
+<p>The artifact comes with a great number of parameters, most being
+filters that let you configure in detail when and for what to be notified. You
+should read through the description and use cases and pick suitable
+arguments. Some of the parameters are:</p>
+<ul>
+<li><code>ArtifactsToAlertOn</code>/<code>ArtifactsToIgnore</code>: regex match on the
+collected artifacts</li>
+<li><code>ClientLabelsToAlertOn</code>/<code>ClientLabelsToIgnore</code>: match on client
+labels</li>
+<li><code>ArtifactPermToAlertOn</code>: only notify when the collected artifacts
+require a specific permission, e.g. <code>EXECVE</code></li>
+<li><code>DelayThreshold</code>: only notify when the flow took at least N
+seconds (filters out clients that were already online)</li>
+<li><code>ErrorHandling</code>: multi-choice flag that lets failures bypass
+individual filters (<code>IncludeHunts</code>, <code>IgnoreArtifactFilters</code>,
+<code>IgnoreDelay</code>)</li>
+<li><code>NotifyIfResultsLabels</code>/<code>NotifyIfUploadsLabels</code>: special
+override: If a client carries this label, or a hunt is tagged with
+this value, any flow that produces results (or uploads) notifies
+regardless of other filters</li>
+</ul>
+<p>Recipients can come from a fixed list (<code>Recipients</code>), be derived
+from the user who scheduled the flow (<code>NotifyExecutor</code>, optionally
+mapping bare usernames to full addresses), or be pulled from a
+client metadata field (<code>NotifyMetadataEMail</code>). All three can be used
+at once.</p>
+<h3 id="a-few-examples">A few examples</h3>
+<ul>
+<li><strong>Notify the analyst who ran a collection</strong>: Set <code>NotifyExecutor</code> to
+true. If usernames are e-mail addresses, that is all you need;
+otherwise add <code>NotifyExecutorDomains</code> to map them. Since getting a
+notification for a flow that finishes immediately is not very
+useful, set <code>DelayThreshold</code> to a few seconds or minutes. The idea
+is to get notified when a collection finishes some time in the
+future, so that its results are not forgotten.</li>
+<li><strong>Audit shell access</strong>: Set <code>ArtifactPermToAlertOn</code> to <code>EXECVE</code> and
+<code>DelayThreshold</code> to <code>0</code>. Every completed flow that involved a shell
+artifact (or any artifact that allows for arbitrary code execution
+through artifact arguments) notifies an auditor.</li>
+<li><strong>Notify the device owner</strong>: Store the owner&rsquo;s address in a
+client metadata field and point <code>NotifyMetadataEMail</code> at that
+field. Useful in environments with strict privacy rules.</li>
+<li><strong>Catch failures in a hunt</strong>: Leave <code>NotifyHunts</code> off, but
+add <code>IncludeHunts</code> to <code>ErrorHandling</code>. Be sure to test-run your
+hunts before enabling this.</li>
+</ul>
+<h3 id="including-results-in-the-e-mail">Including results in the e-mail</h3>
+<p>Apart from just notifying you that a collection has completed,
+<a href="/exchange/artifacts/pages/server.monitor.flowcompletion/"><code>Server.Monitor.FlowCompletion</code></a>
+can also include (parts) of the results in the e-mail.</p>
+<p><code>IncludeResultTableFrom</code> renders selected sources as inline HTML
+tables. <code>IncludeResultAttachmentFrom</code> exports them as JSONL or CSV
+attachments. Both accept a CSV argument of <code>Source</code>, <code>Columns</code>, <code>MaxRows</code>
+(and <code>CellLimit</code>) to help you restrict the amount of data to include.</p>
+<p>
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/email_alerts/ds_results.png"
+         class="inline"
+         alt="DiskSpace results inline plus a JSONL attachment, viewed in Mailpit" />
+  </div>
+  <figcaption>
+    DiskSpace results inline plus a JSONL attachment, viewed in Mailpit
+  </figcaption>
+</figure>
+
+
+</p>
+<p>See
+<a href="/knowledge_base/tips/email_alerts/">How to set up e-mail notifications for flow completions</a>
+for more information.</p>
+<h2 id="detection-alerts">Detection alerts</h2>
+<p>Flow-completion notifications fire on every flow that passes the
+filters, regardless of what the flow actually found. Alerts are
+different: the artifact author chooses when to surface something worth
+attention, such as when a honey file is accessed, when a YARA rule
+matches, or when an IoC is detected in the system log. The
+<a href="/vql_reference/other/alert/"><code>alert()</code></a> function is how that signal
+is sent. Alerts are created very much like log entries, but as opposed
+to logs, alerts are sent to the queue
+<a href="/artifact_references/pages/server.internal.alerts/"><code>Server.Internal.Alerts</code></a>,
+which server event artifacts can subscribe to.</p>
+<pre><code class="language-vql">SELECT alert(
+    name=&quot;Honey file accessed&quot;,
+    dedup=300,
+    Path=FileName,
+    `Process name`=ProcessName,
+    `Process info`=ProcInfo,
+    PID=Pid
+)
+FROM ...
+</code></pre>
+<p>The <code>name</code> argument is required. Every other argument is free-form
+context, available as an individual column in the internal
+<a href="/artifact_references/pages/server.internal.alerts/"><code>Server.Internal.Alerts</code></a>
+artifact. Identical names are deduplicated for two hours by default;
+pass <code>dedup=-1</code> to disable the suppression while testing.</p>
+<p>Although <a href="/vql_reference/other/alert/"><code>alert()</code></a> can be used in VQL anywhere, it makes the most
+sense to use it in event artifacts. Collections and hunts finish or
+expire, after which you would normally inspect the results. Event
+queries never stop, making alerts a good way to notify when
+something noteworthy happens.</p>
+<p><a href="/exchange/artifacts/pages/server.monitor.alerts/"><code>Server.Monitor.Alerts</code></a> is the consumer. It watches the
+<a href="/artifact_references/pages/server.internal.alerts/"><code>Server.Internal.Alerts</code></a> queue, formats each alert as an HTML or
+plain-text e-mail, and sends it through the same
+<a href="/artifact_references/pages/generic.utils.sendemail/"><code>Generic.Utils.SendEmail</code></a> utility as <a href="/exchange/artifacts/pages/server.monitor.flowcompletion/"><code>Server.Monitor.FlowCompletion</code></a>.</p>
+<p>
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/vql_alerts/alert.png"
+         class="inline"
+         alt="An alert e-mail triggered by Wazuh’s file integrity monitoring accessing a decoy SSH key" />
+  </div>
+  <figcaption>
+    An alert e-mail triggered by Wazuh’s file integrity monitoring accessing a decoy SSH key
+  </figcaption>
+</figure>
+
+
+</p>
+<p>As seen in the screenshot above, the resulting e-mail contains a
+lot of details. Every free-form argument passed to <a href="/vql_reference/other/alert/"><code>alert()</code></a> is
+included as alert context and flattened by default. This makes
+nested JSON data a lot more readable. The client and flow
+information may be optionally disabled.</p>
+<h3 id="where-to-call-alert">Where to call <code>alert()</code></h3>
+<p>There are two places to call <a href="/vql_reference/other/alert/"><code>alert()</code></a> for
+detections in client monitoring: directly in the client event artifact,
+or in a server event artifact watching the client event artifact.</p>
+<p>The simplest place is inside the artifact that detects the
+condition. If you do not want to modify the existing artifact, or
+want full control over when the alert fires and with what context,
+create a small server event artifact:</p>
+<h6 id="server-monitoring-for-client-honey-file-access">Server monitoring for client honey file access</h6>
+<pre><code class="language-yaml">name: Server.Monitor.HoneyfileAccess
+type: SERVER_EVENT
+sources:
+  - query: |
+      SELECT alert(
+          name=format(
+            format='Honeyfile &quot;%v&quot; accessed on %v',
+            args=(FileName,
+                  client_info(client_id=ClientId).os_info.hostname)),
+          ClientId=ClientId,
+          Artifact=&quot;Linux.Detection.Honeyfiles&quot;,
+          ArtifactType=&quot;CLIENT_EVENT&quot;,
+          Severity=&quot;high&quot;,
+          `File name`=FileName,
+          PID=Pid,
+          `Process name`=ProcessName)
+      FROM watch_monitoring(artifact=&quot;Linux.Detection.Honeyfiles&quot;)
+</code></pre>
+<p>See <a href="/knowledge_base/tips/vql_alerts/">Using alerts in Velociraptor</a>
+for details.</p>
+<h2 id="catching-silent-failures">Catching silent failures</h2>
+<p>Event queries fail. Perhaps not during testing, but after months of
+successfully calling an API or parsing events from an endpoint. A
+<a href="/vql_reference/parsers/parse_json/"><code>parse_json()</code></a> call quietly fails, returning nothing. An <a href="/vql_reference/other/upload_s3/"><code>upload_S3()</code></a>
+call exhausts its retries. <a href="/vql_reference/popular/execve/"><code>execve()</code></a> fails to find the executable.
+None of these stops the event query from running; they all just write
+something to the monitoring log. You would have to study these logs
+(per client in the case of client monitoring) in order to notice the
+errors.</p>
+<p>
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/monitoring_artifact_errors/server_event_logs.svg"
+         class="inline"
+         alt="Server event logs for a selected artifact" />
+  </div>
+  <figcaption>
+    Server event logs for a selected artifact
+  </figcaption>
+</figure>
+
+
+</p>
+<p><a href="/exchange/artifacts/pages/server.monitor.errors.alert/"><code>Server.Monitor.Errors.Alert</code></a> (server) and
+<a href="/exchange/artifacts/pages/server.monitor.client.errors.alert/"><code>Server.Monitor.Client.Errors.Alert</code></a> (clients) inspect
+those logs and call <a href="/vql_reference/other/alert/"><code>alert()</code></a> for entries that match their filters.
+Combined with <a href="/exchange/artifacts/pages/server.monitor.alerts/"><code>Server.Monitor.Alerts</code></a>, you can get an e-mail notification every
+time a monitoring artifact starts failing.</p>
+<p>The filter model is shared by both: <code>IncludeFilter</code> and
+<code>ExcludeFilter</code> are CSVs with regex columns for <code>Artifact</code>, <code>Level</code>
+and <code>Message</code>, plus an optional <code>Severity</code> column and any extra
+columns you add for free-form context (such as a description of the
+error). Rows match top-to-bottom and the first match wins, so put
+specific patterns above broad catch-alls.</p>
+<pre><code class="language-csv">Artifact,Level,Message,Severity,Explanation
+.+,DEFAULT,fork/exec .+ no such file or directory,high,Executable not found
+.+,DEFAULT,upload_S3: operation error .+,high,S3 upload failed with no retry
+.+,ERROR,.+,medium,
+</code></pre>
+<p>A subtle point worth knowing: many errors from native VQL functions
+and plugins are logged at level <code>DEFAULT</code>, not <code>ERROR</code>. A naive filter
+that only matches <code>ERROR</code> will miss most of them. <a href="/knowledge_base/tips/vql_error_catalogue/">This
+reference</a> contains a CSV
+list that you can use as an argument to <code>IncludeFilter</code> to detect many
+of these errors.</p>
+<p><a href="/exchange/artifacts/pages/server.monitor.client.errors.alert/"><code>Server.Monitor.Client.Errors.Alert</code></a> iterates over <strong>all</strong> clients
+to query their per-client monitoring logs. The work is parallelised,
+but it is still more expensive than the server-side variant —
+narrow <code>IncludeFilter</code> to the artifacts you actually care about
+before turning it on in a large deployment.</p>
+<p>See
+<a href="/knowledge_base/tips/monitoring_artifact_errors/">How to monitor event artifact errors</a>
+for a full walkthrough.</p>
+<h2 id="using-in-app-user-messages">Using in-app user messages</h2>
+<p>You can supplement e-mail notifications with in-app notifications (&ldquo;user messages&rdquo;) by using
+<a href="/exchange/artifacts/pages/server.monitor.alerts.usermessage/"><code>Server.Monitor.Alerts.UserMessage</code></a>
+This simple artifact posts each matching alert as an in-app user
+message in addition to (or instead of) an e-mail. Logged-in users see
+the notification when they open the message panel from the bell icon
+in the lower-left corner of the web app. The bell turns red when there
+are unread messages, and the list can be cleared from the panel.</p>
+<p>
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/vql_alerts/global_messages.svg"
+         class="inline"
+         alt="The in-app message panel showing an alert posted by Server.Monitor.Alerts.UserMessage" />
+  </div>
+  <figcaption>
+    The in-app message panel showing an alert posted by Server.Monitor.Alerts.UserMessage
+  </figcaption>
+</figure>
+
+
+</p>
+<p>User messages have no formatting and only show a nested dict. However,
+since you are already in the Velociraptor web app, the additional
+details provided in the e-mail notifications are not needed: Simply
+navigate to the source of the alert and investigate.</p>
+<h2 id="summary">Summary</h2>
+<p>If you want to try out all of the discussed monitoring:</p>
+<ol>
+<li>Create an SMTP secret of type <strong>SMTP Creds</strong> and grant access to
+<code>VelociraptorServer (Server Event Runner)</code>.</li>
+<li>Add <a href="/exchange/artifacts/pages/server.monitor.flowcompletion/"><code>Server.Monitor.FlowCompletion</code></a> as a server event artifact.
+Start with <code>NotifyExecutor=true</code> and a sensible <code>DelayThreshold</code>,
+then refine <code>ArtifactsToAlertOn</code>/<code>ArtifactsToIgnore</code> and the
+label filters as you go.</li>
+<li>Add <a href="/exchange/artifacts/pages/server.monitor.alerts/"><code>Server.Monitor.Alerts</code></a> so anything that calls <a href="/vql_reference/other/alert/"><code>alert()</code></a>
+(detection artifacts, error monitors, your own custom watchers)
+produces an e-mail. Configure <code>SeverityTransforms</code> and
+<code>SeverityThreshold</code> as needed.</li>
+<li>Add <a href="/exchange/artifacts/pages/server.monitor.errors.alert/"><code>Server.Monitor.Errors.Alert</code></a> to surface failures in your
+server event queries.</li>
+<li>Optionally add <a href="/exchange/artifacts/pages/server.monitor.client.errors.alert/"><code>Server.Monitor.Client.Errors.Alert</code></a>, scoped to the
+handful of client event artifacts you feel the need to monitor
+closely for errors.</li>
+<li>Optionally add
+<a href="/exchange/artifacts/pages/server.monitor.alerts.usermessage/"><code>Server.Monitor.Alerts.UserMessage</code></a>
+to enable in-app user messages for alert notifications.</li>
+<li>Set <code>SendInterval</code> to <code>-1</code> once the configuration is settled. The
+default 10-second window silently drops bursts. This is useful
+while tuning, but could be problematic in production when you
+expect to be alerted.</li>
+</ol>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li><a href="/knowledge_base/tips/sending_email/">How to send e-mails from Velociraptor</a>:
+SMTP secrets, <a href="/vql_reference/other/mail/"><code>mail()</code></a>, <a href="/artifact_references/pages/generic.utils.sendemail/"><code>Generic.Utils.SendEmail</code></a>, Mailpit</li>
+<li><a href="/knowledge_base/tips/email_alerts/">How to set up e-mail notifications for flow completions</a>:
+<a href="/exchange/artifacts/pages/server.monitor.flowcompletion/"><code>Server.Monitor.FlowCompletion</code></a> in depth</li>
+<li><a href="/knowledge_base/tips/vql_alerts/">Using alerts in Velociraptor</a>:
+<a href="/vql_reference/other/alert/"><code>alert()</code></a>, severity, deduplication, custom watchers</li>
+<li><a href="/knowledge_base/tips/monitoring_artifact_errors/">How to monitor event artifact errors</a>:
+<a href="/exchange/artifacts/pages/server.monitor.errors.alert/"><code>Server.Monitor.Errors.Alert</code></a> and the client variant</li>
+</ul>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1782260660"></script>
+    <script src="/js/perfect-scrollbar.min.js?1782260660"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1782260660"></script>
+    <script src="/js/jquery.sticky.js?1782260660"></script>
+    <script src="/js/featherlight.min.js?1782260660"></script>
+    <script src="/js/highlight.min.js?1782260660"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1782260660"></script>
+    <script src="/js/learn.js?1782260660"></script>
+    <script src="/js/hugo-learn.js?1782260660"></script>
+    
+    
+
+  </body>
+</html>

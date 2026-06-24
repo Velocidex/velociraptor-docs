@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.163.3">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Generic.Client.Defender.Health</title>
+
+    
+    <link href="/css/nucleus.css?1782260662" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1782260662" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1782260662" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1782260662" rel="stylesheet">
+    <link href="/css/auto-complete.css?1782260662" rel="stylesheet">
+    <link href="/css/theme.css?1782260662" rel="stylesheet">
+    <link href="/css/tabs.css?1782260662" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1782260662" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1782260662" rel="stylesheet">
+    
+    <link href="/css/dark.css?1782260662" rel="stylesheet"><link href="/css/syntax.css?1782260662" rel="stylesheet"><link href="/css/light.css?1782260662" rel="stylesheet"><link href="/css/hljs.css?1782260662" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1782260662" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1782260662"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/exchange/artifacts/pages/generic.client.defender.health/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" alt="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" alt="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-35872c80.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" alt="rapid7 logo" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/exchange\/artifacts\/pages\/generic.client.defender.health\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/exchange/artifacts/Generic.Client.Defender.Health.yaml" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Generic.Client.Defender.Health</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#use-as-part-of-client-interrogation">Use as part of client interrogation</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/mdatp">mdatp</a>
+
+  <a class="tag-link" href="/tags/metadata">metadata</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Generic.Client.Defender.Health
+            </h1>
+            
+          
+
+        
+
+
+<p>Get Microsoft Defender for Endpoint (MDATP) health and configuration.</p>
+<p>MDATP is Microsoft&rsquo;s EDR product for Windows, macOS and Linux. This
+artifact retrieves all available agent status and configuration via the
+platform-native interface: <code>mdatp health --output json</code> on Linux and
+macOS, <code>Get-MpComputerStatus</code> on Windows.</p>
+<p>A single row is returned with a dict called <code>MDATPHealth</code> whose
+shape differs across platforms. Linux and macOS are nearly
+identical; Windows differs significantly. Platform-specific extras:</p>
+<p>Linux:</p>
+<ul>
+<li><code>behaviorMonitoring</code></li>
+<li><code>supplementaryEventsSubsystem</code></li>
+</ul>
+<p>macOS:</p>
+<ul>
+<li><code>deviceControlEnforcementLevel</code></li>
+<li><code>ecsConfigurationIds</code></li>
+<li><code>fullDiskAccessEnabled</code></li>
+<li><code>networkEventsSubsystem</code></li>
+<li><code>tamperProtection</code></li>
+<li><code>troubleshootingMode</code></li>
+</ul>
+<p>Windows values are parsed from text output and arrive as strings
+(e.g. the literal <code>'True'</code>, not the boolean <code>true</code>). Linux and macOS
+values are properly typed JSON. The notebook suggestion <strong>Common
+MDATP health information</strong> normalises a useful subset across all
+three platforms.</p>
+<h2 id="use-as-part-of-client-interrogation">Use as part of client interrogation</h2>
+<p>Although useful on its own to gather MDATP status from hosts, this
+artifact can also be called from a custom override of
+<a href="/artifact_references/pages/generic.client.info/"><code>Generic.Client.Info</code></a>.
+Combined with
+<a href="/exchange/artifacts/pages/server.monitor.storeclientinfo/"><code>Server.Monitor.StoreClientInfo</code></a>,
+selected fields can be saved as client metadata. In particular,
+<code>edrMachineId</code> can be used to identify the client in MDATP, and tie
+the client ID to machines in Microsoft Graph API queries. See
+<a href="/knowledge_base/tips/automating_metadata/">How can I automatically add &amp; update client metadata?</a>
+for an in-depth walkthrough about how to save interrogation data as
+client metadata.</p>
+<p>#mdatp #metadata</p>
+<pre><code class="language-yaml">
+name: Generic.Client.Defender.Health
+author: Andreas Misje – @misje
+description: |
+  Get Microsoft Defender for Endpoint (MDATP) health and configuration.
+
+  MDATP is Microsoft's EDR product for Windows, macOS and Linux. This
+  artifact retrieves all available agent status and configuration via the
+  platform-native interface: `mdatp health --output json` on Linux and
+  macOS, `Get-MpComputerStatus` on Windows.
+
+  A single row is returned with a dict called `MDATPHealth` whose
+  shape differs across platforms. Linux and macOS are nearly
+  identical; Windows differs significantly. Platform-specific extras:
+
+  Linux:
+
+  - `behaviorMonitoring`
+  - `supplementaryEventsSubsystem`
+
+  macOS:
+
+  - `deviceControlEnforcementLevel`
+  - `ecsConfigurationIds`
+  - `fullDiskAccessEnabled`
+  - `networkEventsSubsystem`
+  - `tamperProtection`
+  - `troubleshootingMode`
+
+  Windows values are parsed from text output and arrive as strings
+  (e.g. the literal `'True'`, not the boolean `true`). Linux and macOS
+  values are properly typed JSON. The notebook suggestion **Common
+  MDATP health information** normalises a useful subset across all
+  three platforms.
+
+  ## Use as part of client interrogation
+
+  Although useful on its own to gather MDATP status from hosts, this
+  artifact can also be called from a custom override of
+  [`Generic.Client.Info`](/artifact_references/pages/generic.client.info/).
+  Combined with
+  [`Server.Monitor.StoreClientInfo`](/exchange/artifacts/pages/server.monitor.storeclientinfo/),
+  selected fields can be saved as client metadata. In particular,
+  `edrMachineId` can be used to identify the client in MDATP, and tie
+  the client ID to machines in Microsoft Graph API queries. See
+  [How can I automatically add &amp; update client metadata?](/knowledge_base/tips/automating_metadata/)
+  for an in-depth walkthrough about how to save interrogation data as
+  client metadata.
+
+  #mdatp #metadata
+
+type: CLIENT
+
+implied_permissions:
+  - EXECVE
+
+sources:
+  - query: |
+      LET Info &lt;= SELECT OS
+        FROM info()
+
+      SELECT *
+      FROM if(
+        condition=Info[0].OS = 'linux',
+        then={
+          SELECT parse_json(data=Stdout) AS MDATPHealth
+          FROM execve(argv=['/usr/bin/mdatp', 'health', '--output', 'json'])
+        },
+        else=if(
+          condition=Info[0].OS = 'darwin',
+          then={
+          SELECT parse_json(data=Stdout) AS MDATPHealth
+          FROM execve(argv=['/usr/local/bin/mdatp', 'health', '--output', 'json'])
+        },
+          else=if(
+            condition=Info[0].OS = 'windows',
+            then={
+          SELECT
+          to_dict(item={
+          SELECT _key,
+                 _value
+          FROM parse_records_with_regex(
+            file=Stdout,
+            accessor='data',
+            regex='''^\s*(?P&lt;_key&gt;\S+)\s+:\s+(?P&lt;_value&gt;[^\r\n]+)''')
+        }) + dict(
+            edrMachineId=read_file(
+              accessor='reg',
+              filename='''HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Advanced Threat Protection\senseId''')) AS MDATPHealth
+          FROM execve(argv=[
+            '''C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe''',
+            '-ExecutionPolicy', 'Unrestricted',
+            '-encodedCommand', base64encode(string=utf16_encode(string='Get-MpComputerStatus'))
+          ])
+        })))
+
+    notebook:
+      - name: Common MDATP health information
+        type: vql_suggestion
+        template: |
+          /*
+          # Common MDATP health information
+          */
+          LET ColumnTypes &lt;= dict(`ClientId`='client')
+
+          LET S = scope()
+
+          LET Result &lt;= SELECT
+              ClientId,
+              S.Fqdn || client_info(client_id=ClientId).os_info.fqdn AS Fqdn,
+              S.MDATPHealth || dict() AS D
+            FROM source()
+
+          SELECT *
+          FROM foreach(
+            row=Result,
+            query={
+              SELECT *
+              FROM if(
+                condition='AMEngineVersion' IN D,
+                then={
+              SELECT
+              ClientId,
+              Fqdn,
+              D.edrMachineId AS edrMachineId,
+              D.AMProductVersion AS appVersion,
+              D.AMEngineVersion AS engineVersion,
+              D.AntivirusSignatureVersion AS definitionsVersion,
+              timestamp(string=D.AntivirusSignatureLastUpdated) AS definitionsUpdated,
+              if(condition=D.DefenderSignaturesOutOfDate = NULL,
+                  then=NULL,
+                  else=D.DefenderSignaturesOutOfDate != 'False') AS definitionsUpToDate,
+              if(condition=D.BehaviorMonitorEnabled = NULL,
+                  then=NULL,
+                  else=D.BehaviorMonitorEnabled = 'True') AS behaviorMonitoringEnabled,
+              if(condition=D.RealTimeProtectionEnabled = NULL,
+                  then=NULL,
+                  else=D.RealTimeProtectionEnabled = 'True') AS realTimeProtectionEnabled,
+              if(
+                condition=D.IsTamperProtected = NULL,
+                then=NULL,
+                else=D.IsTamperProtected = 'True') AS tamperProtectionEnabled,
+              if(
+                condition=D.TroubleShootingMode = NULL,
+                then=NULL,
+                else=D.TroubleShootingMode != 'Disabled') AS troubleshootingModeEnabled
+              FROM scope()
+            },
+                else={
+              SELECT
+              ClientId,
+              Fqdn,
+              D.edrMachineId AS edrMachineId,
+              D.appVersion AS appVersion,
+              D.engineVersion AS engineVersion,
+              D.definitionsVersion AS definitionsVersion,
+              timestamp(
+                epoch=D.definitionsUpdated) AS definitionsUpdated,
+              if(
+                condition=D.definitionsStatus.`$type` = NULL,
+                then=NULL,
+                else=D.definitionsStatus.`$type` = 'upToDate') AS definitionsUpToDate,
+              // Not available in Darwin:
+              D.behaviorMonitoring.displayValue AS behaviorMonitoringEnabled,
+              D.realTimeProtectionEnabled.value AS realTimeProtectionEnabled,
+              // Not available in Linux:
+              D.tamperProtection.displayValue AS tamperProtectionEnabled,
+              // Not available in Linux:
+              D.troubleshootingMode AS troubleshootingModeEnabled
+              FROM scope()
+            })
+            })
+</code></pre>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1782260662"></script>
+    <script src="/js/perfect-scrollbar.min.js?1782260662"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1782260662"></script>
+    <script src="/js/jquery.sticky.js?1782260662"></script>
+    <script src="/js/featherlight.min.js?1782260662"></script>
+    <script src="/js/highlight.min.js?1782260662"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1782260662"></script>
+    <script src="/js/learn.js?1782260662"></script>
+    <script src="/js/hugo-learn.js?1782260662"></script>
+    
+    
+
+  </body>
+</html>
+

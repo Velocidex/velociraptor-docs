@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.163.3">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Windows.Memory.DotnetDumper</title>
+
+    
+    <link href="/css/nucleus.css?1782260662" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1782260662" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1782260662" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1782260662" rel="stylesheet">
+    <link href="/css/auto-complete.css?1782260662" rel="stylesheet">
+    <link href="/css/theme.css?1782260662" rel="stylesheet">
+    <link href="/css/tabs.css?1782260662" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1782260662" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1782260662" rel="stylesheet">
+    
+    <link href="/css/dark.css?1782260662" rel="stylesheet"><link href="/css/syntax.css?1782260662" rel="stylesheet"><link href="/css/light.css?1782260662" rel="stylesheet"><link href="/css/hljs.css?1782260662" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1782260662" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1782260662"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/exchange/artifacts/pages/dotnetdumper/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" alt="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" alt="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-35872c80.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" alt="rapid7 logo" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/exchange\/artifacts\/pages\/dotnetdumper\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/exchange/artifacts/DotnetDumper.yaml" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Windows.Memory.DotnetDumper</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents"></nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Windows.Memory.DotnetDumper
+            </h1>
+            
+          
+
+        
+
+
+<p>Response artifact to triage Windows .NET processes and collect .NET assemblies from
+memory using DotnetDumper.</p>
+<p>Collected output includes recovered .NET assemblies, suspicious managed strings,
+full managed string listings, loaded module details, and patch detection findings.
+These results support DFIR workflows focused on inspecting potentially malicious
+or tampered managed code executing in memory.</p>
+<p>The original process dump can optionally be uploaded.</p>
+<p>NOTE: this artifact writes a process dump to the Velociraptor temporary directory
+before analysis. Dump files may be large, similar to standard Velociraptor process
+dump collection.</p>
+<pre><code class="language-yaml">
+name: Windows.Memory.DotnetDumper
+author: Matt Green - @mgreen27
+description: |
+  Response artifact to triage Windows .NET processes and collect .NET assemblies from 
+  memory using DotnetDumper.
+
+  Collected output includes recovered .NET assemblies, suspicious managed strings, 
+  full managed string listings, loaded module details, and patch detection findings. 
+  These results support DFIR workflows focused on inspecting potentially malicious 
+  or tampered managed code executing in memory.
+
+  The original process dump can optionally be uploaded.
+
+  NOTE: this artifact writes a process dump to the Velociraptor temporary directory 
+  before analysis. Dump files may be large, similar to standard Velociraptor process 
+  dump collection.
+  
+tools:
+  - name: DotNetDumper
+    url: https://github.com/mgreen27/DotnetDumper/releases/download/continuous/DotnetDumper.exe
+    serve_locally: true
+    expected_hash: c7cfb900675e5394548ee3c1da39c0d3a365235b40d5566b26d89f22cc4ca3bd
+  - name: DotNetDumper_x86
+    url: https://github.com/mgreen27/DotnetDumper/releases/download/continuous/DotnetDumper_x86.exe
+    serve_locally: true
+    expected_hash: 1b7d6fabd150eda572522e3fce351452517abff071d1bbf6346790b5e032fd48
+  - name: DotNetDumper_arm64
+    url: https://github.com/mgreen27/DotnetDumper/releases/download/continuous/DotnetDumper_arm64.exe
+    serve_locally: true
+    expected_hash: 4b4f9f4bf42ad4758d4c51e62c7be92267c7f0612ee2f9b6608bc847634eb68e
+
+implied_permissions:
+  - EXECVE
+  - FILESYSTEM_WRITE
+  
+precondition: SELECT OS From info() where OS = 'windows'
+
+parameters:
+  - name: ProcessRegex
+    default: notepad
+    type: regex
+  - name: PidRegex
+    default: .
+    type: regex
+  - name: EncodeKey
+    default: infected
+    description: password used when dumping assemblies to bypass AV detection
+    type: hidden
+  - name: UploadDmp
+    type: bool
+    description: |
+      If specified we upload process dump in addition to Dotnetdumper triage results
+
+sources:
+  - query: |
+      LET tempfolder &lt;= str(str=tempdir())
+      
+      LET processes &lt;= SELECT
+          Name AS ProcessName,
+          ImagePathName AS Exe,
+          CommandLine,
+          Pid,
+          Env.PROCESSOR_ARCHITECTURE AS Type,
+          path_join(components=[tempfolder, str(str=Pid)]) AS OutPath,
+          parse_pe(file=ImagePathName) AS __PEInfo
+        FROM Artifact.Windows.Memory.ProcessInfo(
+          ProcessNameRegex=ProcessRegex,
+          PidRegex=PidRegex)
+        WHERE __PEInfo.Imports =~ 'mscoree|iisutil|mscorwks|clr\.dll' OR __PEInfo.Directories.DotNet_Directory
+      
+      LET fetch_x64 &lt;= SELECT *
+        FROM if(condition=processes.Type =~ "AMD64",
+                then={
+          SELECT *
+          FROM Artifact.Generic.Utils.FetchBinary(ToolName="DotNetDumper")
+        },
+                else=FALSE)
+      
+      LET fetch_x86 &lt;= SELECT *
+        FROM if(condition=processes.Type =~ "x86",
+                then={
+          SELECT *
+          FROM Artifact.Generic.Utils.FetchBinary(ToolName="DotNetDumper_x86")
+        },
+                else=FALSE)
+      
+      LET fetch_arm64 &lt;= SELECT *
+        FROM if(condition=processes.Type =~ "ARM64",
+                then={
+          SELECT *
+          FROM Artifact.Generic.Utils.FetchBinary(ToolName="DotNetDumper_arm64")
+        },
+                else=FALSE)
+      
+      LET find_arch(type) = get(member=type,
+                                item=dict(AMD64=fetch_x64[0].OSPath,
+                                          x86=fetch_x86[0].OSPath,
+                                          ARM64=fetch_arm64[0].OSPath))
+      
+      LET collection &lt;= SELECT *
+        FROM foreach(row=processes,
+                     query={
+          SELECT *, Type,
+                 ProcessName,
+                 Pid,
+                 Exe,
+                 CommandLine,
+                 OutPath
+          FROM execve(argv=[find_arch(type=Type), "--pid",
+                        Pid, OutPath, "--json", "--encode",EncodeKey],
+                      length=999999999)
+        })
+      
+      LET find_dmp(path) = SELECT * FROM glob(globs="*.dmp",root=path)
+      
+      LET results &lt;= SELECT
+          *, parse_json(data=read_file(filename=path_join(
+                                         components=[OutPath, "modules.json"]))) AS Modules,
+          parse_json(
+            data=read_file(
+              filename=path_join(
+                components=[OutPath, "patch_detection.json"]))) AS PatchDetection
+        FROM collection
+      
+      LET list_assemblies(path) = SELECT
+          Name,
+          upload(
+            accessor='data',
+            file=crypto_rc4(key=EncodeKey, string=read_file(filename=OSPath)),
+            name=Name ) as Assembly
+        FROM glob(globs="assemblies/*", root=path)
+      
+      LET final = SELECT
+          Pid,
+          ProcessName,
+          CommandLine,
+          Type,
+          list_assemblies(path=OutPath).Assembly AS Assemblies,
+          upload(name="managed_strings_suspicious.txt",
+                 file=path_join(
+                   components=[OutPath, "managed_strings_suspicious.txt"])) AS SuspiciousManagedStrings,
+          upload(
+            name="managed_strings_all.txt",
+            file=path_join(
+              components=[OutPath, "managed_strings_all.txt"])) AS AllManagedStrings,
+          OutPath as __Outpath
+      FROM results
+      
+      LET upload_dmp = SELECT *, upload(file=find_dmp(path=__Outpath)[0].OSPath) as Dmp 
+        FROM final
+        
+      SELECT * FROM if(condition= UploadDmp,
+                            then= upload_dmp,
+                            else= final )
+
+  - name: Modules
+    query: |
+      SELECT *
+      FROM foreach(row=results,
+                   query={
+          SELECT Pid,
+                 ProcessName,
+                 *
+          FROM Modules.modules
+        })
+  - name: PatchDetection
+    query: |
+      LET lookup &lt;= SELECT *
+        FROM results
+      
+      SELECT *
+      FROM foreach(row=results,
+                   query={
+          SELECT Pid,
+                 ProcessName,
+                 *
+          FROM PatchDetection.findings
+        })
+column_types:
+  - name: SuspiciousManagedStrings
+    type: preview_upload
+  - name: AllManagedStrings
+    type: preview_upload
+  - name: Dmp
+    type: preview_upload
+
+</code></pre>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1782260662"></script>
+    <script src="/js/perfect-scrollbar.min.js?1782260662"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1782260662"></script>
+    <script src="/js/jquery.sticky.js?1782260662"></script>
+    <script src="/js/featherlight.min.js?1782260662"></script>
+    <script src="/js/highlight.min.js?1782260662"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1782260662"></script>
+    <script src="/js/learn.js?1782260662"></script>
+    <script src="/js/hugo-learn.js?1782260662"></script>
+    
+    
+
+  </body>
+</html>
+

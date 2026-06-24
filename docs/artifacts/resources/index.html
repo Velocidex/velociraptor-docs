@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.163.3">
+    <meta name="description" content="Velociraptor often runs on performance sensitive endpoints, like
+servers and laptops, as well as low resource machines like cloud
+virtual machines. It is critical to ensure that Velociraptor does not
+generate undue load on the endpoint, leading to performance
+degradation.
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Limiting resource usage</title>
+
+    
+    <link href="/css/nucleus.css?1782260660" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1782260660" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1782260660" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1782260660" rel="stylesheet">
+    <link href="/css/auto-complete.css?1782260660" rel="stylesheet">
+    <link href="/css/theme.css?1782260660" rel="stylesheet">
+    <link href="/css/tabs.css?1782260660" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1782260660" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1782260660" rel="stylesheet">
+    
+    <link href="/css/dark.css?1782260660" rel="stylesheet"><link href="/css/syntax.css?1782260660" rel="stylesheet"><link href="/css/light.css?1782260660" rel="stylesheet"><link href="/css/hljs.css?1782260660" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1782260660" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1782260660"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/artifacts/resources/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" alt="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" alt="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-35872c80.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" alt="rapid7 logo" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/artifacts\/resources\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/artifacts/resources/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Limiting resource usage</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#how-limits-are-aggregated-across-artifacts">How Limits Are Aggregated Across Artifacts</a></li>
+      </ul>
+    </li>
+    <li><a href="#time-limits">Time Limits</a></li>
+    <li><a href="#resource-limits">Resource Limits</a></li>
+    <li><a href="#data-limits">Data Limits</a></li>
+    <li><a href="#batching-controls">Batching Controls</a></li>
+    <li><a href="#limiting-memory-use">Limiting Memory Use</a>
+      <ul>
+        <li><a href="#client-side-memory-management">Client-Side Memory Management</a></li>
+        <li><a href="#server-side-memory-management-notebooks">Server-Side Memory Management (Notebooks)</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Limiting resource usage
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>Velociraptor often runs on performance sensitive endpoints, like
+servers and laptops, as well as low resource machines like cloud
+virtual machines. It is critical to ensure that Velociraptor does not
+generate undue load on the endpoint, leading to performance
+degradation.</p>
+<p>Resource limits can be placed on queries and collections. These limits
+are usually set in the artifact collection or hunt creation workflows
+in the GUI.  However it is possible to predefine these limits in the
+artifact definitions themselves using the <code>resources</code> key. If resource
+limits are specified in the artifact then the user still has the
+opportunity to change these as usual in the GUI workflows.</p>
+<p>Resource limits are essential for controlling the load on endpoints
+and preventing collections from negatively impacting users or network
+infrastructure. They protect the endpoint.</p>
+<p>They act as a &ldquo;fail safe&rdquo; mechanism to prevent accidents, such as
+inadvertently collecting massive quantities of data or using excessive
+resources.</p>
+<p>Setting resource limits can ensure that runaway queries or collections
+that take too long are cancelled before they cause too many problems.</p>
+<p>Resource control is specific to an artifact and what it does. For
+example, CPU limiting is useful for artifacts doing heavy processing
+like Yara scans but not necessarily for others.</p>
+<p>Limits are set using the <code>resources</code> key in the artifact definition.</p>
+<p>resources:</p>
+<ul>
+<li><code>timeout</code></li>
+<li><code>ops_per_second</code></li>
+<li><code>cpu_limit</code></li>
+<li><code>iops_limit</code></li>
+<li><code>max_rows</code></li>
+<li><code>max_upload_bytes</code></li>
+<li><code>max_batch_wait</code></li>
+<li><code>max_batch_rows</code></li>
+<li><code>max_batch_rows_buffer</code></li>
+</ul>
+<p>If you define <code>resources</code> in your artifact, you only need to specify
+the subkeys relevant to the resources you want to limit. Default
+values will apply to any subkeys not specified, and as mentioned
+above, users still have the opportunity to override these limits in
+the GUI before collecting the artifact.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-yaml">resources:
+  timeout: 1800
+  cpu_limit: 50
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/artifacts/resources/collection_CPU50.png"
+         class="inline"
+         alt="An example of a 50% CPU limit being applied"
+         width="1137" height="232">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="collection_CPU50.png">
+      <i class="fa fa-download"></i></a>
+    An example of a 50% CPU limit being applied
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h3 id="how-limits-are-aggregated-across-artifacts">How Limits Are Aggregated Across Artifacts</h3>
+<p>When a collection includes multiple artifacts, the effective resource
+limits are calculated by taking the <strong>maximum</strong> value across all
+artifacts&rsquo; <code>resources</code> blocks. For example, if artifact A specifies
+<code>max_rows: 10</code> and artifact B specifies <code>max_rows: 20</code>, the
+collection will have <code>max_rows: 20</code>. This aggregation applies to all
+numeric resource limits.</p>
+<p>Values specified in the collection request (via the GUI or API)
+<strong>override</strong> the artifact-level defaults entirely. The precedence
+order from lowest to highest is:</p>
+<ol>
+<li>Built-in defaults in the Velociraptor configuration</li>
+<li>Artifact <code>resources</code> key (in the artifact YAML definition)</li>
+<li>Artifact spec overrides (per-artifact overrides in the collection request)</li>
+<li>Collection-level request values (set in the GUI or API)</li>
+</ol>
+<h2 id="time-limits">Time Limits</h2>
+<p>There are two timeouts. The first is for the overall collection and
+for offline collections there is no timeout by default. There is also
+a progress timeout which aims to catch cases where a query is not
+making progress in a reasonable time.</p>
+<p><code>Timeout / Max Execution Time</code>: This sets a maximum duration for an
+artifact collection. The default timeout is 600 seconds. If the
+timeout is reached, the collection is timed out and cancelled.</p>
+<ul>
+<li>
+<p><code>timeout</code> (Query Timeout): A general timeout parameter can be set
+for a query. This timeout applies to the entire query and cancels
+the collection when exceeded. Timed-out flows might need to be
+re-run with increased timeouts Setting a timeout is considered a
+way to make a query safe enough.  Queries are typically limited to
+10 minutes (600 seconds).</p>
+</li>
+<li>
+<p><code>progress_timeout</code> (Max Idle Time in Seconds): This parameter, set
+in the resources section, terminates a query if no progress (rows
+emitted) is detected within the specified time. By default, it is
+not set (which means there is no limit). In the context of offline
+collectors, this kills the specific artifact that is not making
+progress, allowing the collection to move on. This parameter can
+also be provided to the <code>query()</code> plugin for more fine-grained
+control. This limit cannot currently be specified in an artifact&rsquo;s
+<code>resources</code> section.</p>
+</li>
+<li>
+<p>Notebook Query Timeout: The timeout for notebook queries is 10 minutes, by
+default. Normally this should be more than sufficient for any reasonable
+notebook query, but in rare cases if you need to set this to a longer
+interval you can do so via
+<a href="/docs/deployment/references/#defaults.notebook_cell_timeout_min">a config setting</a>
+(which requires a server restart).</p>
+</li>
+</ul>
+<h2 id="resource-limits">Resource Limits</h2>
+<p>Resource limits can be applied to any artifacts/collections, although
+the effectiveness of these limits depends on what the artifact
+actually does. In particular CPU and IO limits are not enforceable
+when running external applications via execve().</p>
+<ul>
+<li>
+<p><strong>CPU Limit</strong>: This limits how much CPU the Velociraptor agent can
+use on average.</p>
+<ul>
+<li>
+<p>Setting a CPU limit pauses the query when the average CPU usage exceeds the
+limit, and it resumes when the average drops below the threshold.</p>
+</li>
+<li>
+<p>CPU limiting works in all queries, but the underlying plugin needs to
+support pausing.</p>
+</li>
+<li>
+<p>CPU limiting can cause queries to take longer or even not complete if the
+limit is set too low, since a limited query will stop until the CPU load for
+the entire process drops below the threshold, other queries which are not
+limited may preempt it.</p>
+</li>
+<li>
+<p>Setting a global CPU limit is generally not recommended; Only artifacts
+which are known to impose a high CPU load should have throttling enabled.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>IOPS Limit</strong>: The iops_limit parameter limits the I/O per
+second. The mechanism works by throttling the client based on an IO
+budget, not necessarily tied to real CPU load or bandwidth, and is
+most useful for large Yara scans. It can also be set on the
+<code>query()</code> plugin.</p>
+</li>
+<li>
+<p><strong>Ops Per Second</strong>: The <code>ops_per_second</code> parameter limits the rate
+at which VQL operations are executed. This is useful for
+throttling artifacts that iterate over large numbers of files or
+registry keys, preventing them from overwhelming the endpoint.
+This limit is set at the collection level in the GUI rather than
+in the artifact definition.</p>
+</li>
+</ul>
+<p><strong><i class="fas fa-warning"></i> CPU and IOPS limits do not apply to external tools invoked by an
+artifact since Velociraptor has no control over the resources they
+consume.</strong></p>
+<h2 id="data-limits">Data Limits</h2>
+<ul>
+<li>
+<p><strong>Max Rows</strong>: This limit restricts the total number of rows
+returned by a collection.  This limit is set per collection and
+works by cancelling the entire collection once the limit is
+reached. Server artifacts currently don&rsquo;t enforce a row limit.</p>
+<p><strong>Do not confuse <code>max_rows</code> with <code>max_batch_rows</code></strong> (see Batching
+Controls below). <code>max_rows</code> is a hard limit on the <em>total</em> number
+of rows the collection may emit — the collection is cancelled when
+exceeded. <code>max_batch_rows</code> controls how many rows are included in
+each <em>individual response chunk</em> during transmission; it does not
+cancel the collection.</p>
+</li>
+<li>
+<p><strong>Max Upload Bytes</strong>: This limits the total amount of data
+transferred back from the client as an &ldquo;Upload&rdquo; (i.e. bulk
+files). This limit is set per collection and cancels the entire
+collection when reached. This is a crucial limit to prevent
+accidentally collecting massive amounts of data.</p>
+</li>
+</ul>
+<h2 id="batching-controls">Batching Controls</h2>
+<p>The <code>max_batch_wait</code>, <code>max_batch_rows</code>, and <code>max_batch_rows_buffer</code>
+parameters control how the Velociraptor client chunks results into
+response packets during collection. They do <strong>not</strong> limit the total
+data collected — they determine the granularity of data transmission
+from the client back to the server.</p>
+<p>These settings are most relevant for event-based or long-running
+queries where you want to control how frequently results arrive at
+the server and how large each payload is.</p>
+<ul>
+<li>
+<p><strong>Max Batch Rows</strong> (<code>max_batch_rows</code>): The maximum number of rows
+to buffer before sending a response packet. When the buffer reaches
+this many rows, the payload is flushed and transmitted. The default
+is 1000 rows.</p>
+</li>
+<li>
+<p><strong>Max Batch Wait</strong> (<code>max_batch_wait</code>): The maximum time in seconds
+to wait before sending a partial payload. If the row count or
+buffer size thresholds have not been reached within this time, the
+accumulated rows are sent anyway. This ensures the server sees
+progress even for slow queries. The default is 100 seconds.</p>
+</li>
+<li>
+<p><strong>Max Batch Rows Buffer</strong> (<code>max_batch_rows_buffer</code>): The maximum
+size in bytes for a response payload before it is sent. This is a
+fairer measure than row count because rows can vary significantly
+in size. The default is 5 MB (5 * 1024 * 1024 bytes).</p>
+</li>
+</ul>
+<p>The first condition to be met — row count, buffer size, or wait
+timeout — triggers a payload flush. For example, if a query produces
+very large rows, the buffer size limit may be reached before the row
+count limit, causing an early transmission.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-yaml">resources:
+  max_batch_rows: 5000
+  max_batch_wait: 30
+  max_batch_rows_buffer: 10485760
+</code></pre>
+<p>This configuration would send a response packet when either 5,000
+rows, 10 MB of data, or 30 seconds of wall time is reached, whichever
+comes first.</p>
+<h2 id="limiting-memory-use">Limiting Memory Use</h2>
+<p>It is not possible to limit memory usage via artifact resource
+settings. However, Velociraptor provides memory management at both
+the client and server levels through configuration settings.</p>
+<h3 id="client-side-memory-management">Client-Side Memory Management</h3>
+<p>The client runs a <a href="/docs/deployment/references/#Client.nanny_max_connection_delay">nanny</a>
+process that periodically checks the client&rsquo;s memory footprint. The
+<a href="/docs/deployment/references/#Client.max_memory_hard_limit"><code>Client.max_memory_hard_limit</code></a>
+setting specifies a hard ceiling (in bytes) for the client process.
+If the client&rsquo;s heap usage exceeds this limit, the nanny triggers a
+controlled hard exit. If Velociraptor is installed as a Windows
+service, the service recovery option can restart the client
+automatically.</p>
+<h3 id="server-side-memory-management-notebooks">Server-Side Memory Management (Notebooks)</h3>
+<p>On the server, memory pressure is managed through notebook cell
+calculation controls:</p>
+<ul>
+<li>
+<p><a href="/docs/deployment/references/#defaults.notebook_memory_low_water_mark"><code>defaults.notebook_memory_low_water_mark</code></a>:
+A threshold (in bytes) that must be met before a new notebook cell
+calculation can start. If the server process memory exceeds this
+mark, the cell calculation is delayed until memory drops below it.
+This prevents new calculations from starting under high memory
+pressure.</p>
+</li>
+<li>
+<p><a href="/docs/deployment/references/#defaults.notebook_memory_high_water_mark"><code>defaults.notebook_memory_high_water_mark</code></a>:
+An upper threshold (in bytes) that triggers cancellation of
+in-flight notebook cell calculations. When the server process
+memory exceeds this mark, active cell calculations are cancelled to
+bring memory usage back down.</p>
+</li>
+</ul>
+<p>The low water mark acts as a <strong>soft admission control</strong> (delay new
+work) while the high water mark acts as a <strong>hard cancellation</strong>
+(kill in-flight work). These settings are independent of artifact
+collection and apply only to notebook cell execution on the server.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1782260660"></script>
+    <script src="/js/perfect-scrollbar.min.js?1782260660"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1782260660"></script>
+    <script src="/js/jquery.sticky.js?1782260660"></script>
+    <script src="/js/featherlight.min.js?1782260660"></script>
+    <script src="/js/highlight.min.js?1782260660"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1782260660"></script>
+    <script src="/js/learn.js?1782260660"></script>
+    <script src="/js/hugo-learn.js?1782260660"></script>
+    
+    
+
+  </body>
+</html>

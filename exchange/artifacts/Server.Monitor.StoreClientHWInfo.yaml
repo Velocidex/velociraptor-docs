@@ -1,0 +1,206 @@
+name: Server.Monitor.StoreClientHWInfo
+author: Andreas Misje – @misje
+description: |
+  Save hardware identification data from client interrogation as
+  client metadata.
+
+  The primary use case is to store a stable device serial number as
+  the `serial` metadata field. Indexing `serial` makes clients quickly
+  searchable from the GUI by their hardware identity. Additional
+  hardware fields, like manufacturer, product name and model, may also
+  be set as metadata for non-indexed lookup.
+
+  ## Setup requirement
+
+  This artifact reads from a source named `HWIdentification` (override
+  via `HWIdentificationSource`) inside the interrogation artifact named
+  by `InterrogationArtifact` (default `Custom.Generic.Client.Info`).
+  You need to add a source by that name to your
+  [`Generic.Client.Info`](/artifact_references/pages/generic.client.info/)
+  override that calls
+  [`Generic.Client.HW.Identification`](/exchange/artifacts/pages/generic.client.hw.identification/):
+
+  ```yaml
+  - name: HWIdentification
+    query: SELECT * FROM Artifact.Generic.Client.HW.Identification()
+  ```
+
+  ## Stable serial selection
+
+  Hardware serials are reported under several names depending on the
+  vendor and platform: `product_serial`, `board_serial`,
+  `chassis_serial`, `firmware_serial`. Some are reliable; others are
+  blank or contain BIOS placeholders such as `Default string` or
+  `System Serial Number`. `SerialColumn` lets you declare a fallback
+  order: the first candidate with a non-empty, non-ignored (by
+  `SerialIgnore`) value is picked. `SerialIgnore` is a regex that filters
+  out known placeholder values.
+
+
+  ## Customisation
+
+  Use `HWInfoMetadata` to select which hardware information to store,
+  and under what name, e.g.
+
+  | Field | Alias |
+  | ----- | ----- |
+  | `board_manufacturer` | `manufacturer`
+  | `product_name` | |
+  | `virtual` | |
+  | `chassis_asset_tag` | `asset_tag` |
+
+  If you modify/extend
+  [`Generic.Client.HW.Identification`](/exchange/artifacts/pages/generic.client.hw.identification/),
+  remember to still produce a single row, and simply add new columns
+  to refer to in `HWInfoMetadata`.
+
+  If you need to store results from collections other than hardware
+  information like
+  [`Generic.Client.HW.Identification`](/exchange/artifacts/pages/generic.client.hw.identification/),
+  use
+  [`Server.Monitor.StoreClientInfo`](/exchange/artifacts/pages/server.monitor.storeclientinfo/)
+  instead.
+
+  ## See also
+
+  - [`Server.Monitor.StoreClientInfo`](/exchange/artifacts/pages/server.monitor.storeclientinfo/):
+    sibling artifact for storing arbitrary metadata from any
+    interrogation source (no serial-specific behaviour)
+  - [`Generic.Client.HW.Identification`](/exchange/artifacts/pages/generic.client.hw.identification/):
+    the producing artifact this one expects to consume
+  - [How can I automatically add & update client metadata?](/knowledge_base/tips/automating_metadata/):
+    in-depth walkthrough about how to save interrogation data as
+    client metadata
+
+  #metadata #automation
+
+type: SERVER_EVENT
+
+parameters:
+  - name: InterrogationArtifact
+    type: regex
+    description: |
+      Name of the client artifact to watch
+    default: Custom.Generic.Client.Info
+
+  - name: HWIdentificationSource
+    description: |
+      Source in InterrogationArtifact that contains hardware information
+    default: HWIdentification
+
+  - name: SerialColumn
+    description: |
+      Name of column containing the serial number used to find the device in
+      Snipe-IT. The default behaviour is to pick the first non-empty value in
+      product_serial, board_serial, and lastly, firmware_serial. The order of
+      choices matter.
+    type: multichoice
+    choices:
+      - product_serial
+      - board_serial
+      - chassis_serial
+      - firmware_serial
+    default: '["product_serial", "board_serial", "firmware_serial"]'
+
+  - name: SerialMetadataField
+    description: |
+      Name of the metadata field that will store the serial number (from
+      SerialColumn).
+    default: serial
+
+  - name: SerialIgnore
+    description: |
+      Serial values to ignore, typically defaults set on motherboards.
+    type: regex
+    default: '^(System Serial Number|System Version|Default string|0|None|)$'
+
+  - name: HWInfoMetadata
+    description: |
+      Additional columns from InterrogationArtifact/HWIdentificationSource that will be
+      set as client metadata (SerialColumn/SerialMetadataField is always set).
+      Specify the column from the HWIdentification source in "Field", and an
+      optional alias, used as metadata name, in "Alias".
+    type: csv
+    default: |
+      Field,Alias
+      board_manufacturer,manufacturer
+      product_name,
+
+  - name: KeepEmptyValues
+    description: |
+      If true, an empty value will be stored as metadata. If false, the metadata
+      will not be set at all. Note that if a metadata value was previously empty,
+      this will not remove that value. Empty/null serials are ignored.
+    type: bool
+    default: false
+
+sources:
+  - query: |
+      LET HWInfo = SELECT *
+        FROM foreach(row={
+          SELECT *
+          FROM watch_monitoring(artifact='System.Flow.Completion')
+          WHERE Flow.artifacts_with_results =~ InterrogationArtifact
+        },
+                     query={
+          SELECT ClientId,
+                 *
+          FROM source(client_id=ClientId,
+                      flow_id=Flow.session_id,
+                      artifact=InterrogationArtifact,
+                      source=HWIdentificationSource)
+        })
+
+      // With HW info as dict:
+      LET HWInfoDict = SELECT _value.ClientId AS ClientId,
+                              _value - dict(ClientId=NULL, _Source=NULL) AS Data
+        FROM items(item={ SELECT * FROM HWInfo })
+
+      // Walk SerialColumn in declared priority order and return the first
+      // candidate field in Data with a non-empty, non-ignored value.
+      LET SerialValue(Data) = SELECT Value
+        FROM foreach(row=SerialColumn,
+                     query={
+          SELECT get(item=Data, field=_value) AS Value
+          FROM scope()
+        })
+        WHERE Value
+         AND NOT str(str=Value) =~ SerialIgnore
+        LIMIT 1
+
+      LET NullOrEmpty(Value) = Value = NULL OR Value = ""
+
+      LET SelectedMetadata = SELECT *
+        FROM foreach(row=HWInfoDict,
+                     query={
+          SELECT ClientId,
+                 to_dict(item={
+          SELECT *
+          FROM foreach(row=HWInfoMetadata,
+                       query={
+          SELECT Alias || Field AS _key,
+                 get(item=Data, field=Field) AS _value
+          FROM scope()
+          WHERE KeepEmptyValues OR (_value != NULL
+             AND len(list=str(str=_value)))
+        })
+        }) + if(condition=NOT NullOrEmpty(Value=SerialValue(Data=Data)[0].Value),
+                then=set(item=dict(),
+                         field=SerialMetadataField,
+                         value=SerialValue(Data=Data)[0].Value),
+                else=dict()) AS Metadata
+          FROM scope()
+        })
+
+      // Set the metadata and return the dict of data, as well as the
+      // client_set_metadata() result:
+      // Do not store an empty dict. This has proved to cause issues:
+      LET SetMetadata = SELECT *, if(condition=Metadata,
+                                     then=client_set_metadata(
+                                       client_id=ClientId,
+                                       metadata=Metadata),
+                                     else=false) AS Updated
+        FROM SelectedMetadata
+
+      SELECT *
+      FROM SetMetadata

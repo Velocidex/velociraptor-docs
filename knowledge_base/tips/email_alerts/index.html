@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.163.3">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>How to set up e-mail notifications for flow completions</title>
+
+    
+    <link href="/css/nucleus.css?1782260662" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1782260662" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1782260662" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1782260662" rel="stylesheet">
+    <link href="/css/auto-complete.css?1782260662" rel="stylesheet">
+    <link href="/css/theme.css?1782260662" rel="stylesheet">
+    <link href="/css/tabs.css?1782260662" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1782260662" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1782260662" rel="stylesheet">
+    
+    <link href="/css/dark.css?1782260662" rel="stylesheet"><link href="/css/syntax.css?1782260662" rel="stylesheet"><link href="/css/light.css?1782260662" rel="stylesheet"><link href="/css/hljs.css?1782260662" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1782260662" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1782260662"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/knowledge_base/tips/email_alerts/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" alt="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" alt="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-35872c80.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" alt="rapid7 logo" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/knowledge_base\/tips\/email_alerts\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/knowledge_base/tips/email_alerts.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">How to set up e-mail notifications for flow completions</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#filtering">Filtering</a></li>
+    <li><a href="#throttling">Throttling</a></li>
+    <li><a href="#e-mail-content">E-mail content</a></li>
+    <li><a href="#example-use-cases">Example use cases</a>
+      <ul>
+        <li><a href="#notify-the-analyst-who-ran-the-collection">Notify the analyst who ran the collection</a></li>
+        <li><a href="#notify-when-an-offline-client-finally-checks-in">Notify when an offline client finally checks in</a></li>
+        <li><a href="#get-notified-when-hunt-flows-fail">Get notified when hunt flows fail</a></li>
+        <li><a href="#audit-shell-and-execve-artifact-use">Audit shell and EXECVE artifact use</a></li>
+        <li><a href="#alert-on-results-from-priority-clients">Alert on results from priority clients</a></li>
+        <li><a href="#new-client-enrolled">New client enrolled</a></li>
+        <li><a href="#notify-the-device-owner">Notify the device owner</a></li>
+      </ul>
+    </li>
+    <li><a href="#see-also">See also</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/email">email</a>
+
+  <a class="tag-link" href="/tags/notifications">notifications</a>
+
+  <a class="tag-link" href="/tags/flows">flows</a>
+
+  <a class="tag-link" href="/tags/configuration">configuration</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+
+        
+
+
+
+	<h1 id="how-to-set-up-e-mail-notifications-for-flow-completions">How to set up e-mail notifications for flow completions</h1>
+<p><a href="/exchange/artifacts/pages/server.monitor.flowcompletion/"><code>Server.Monitor.FlowCompletion</code></a>
+sends an e-mail when a client flow completes, with support for HTML
+formatting, inline result tables, and file attachments. It monitors
+<a href="/artifact_references/pages/system.flow.completion/"><code>System.Flow.Completion</code></a> and applies a configurable set of filters
+before deciding whether to send a notification.</p>
+<p>An SMTP secret is required. See
+<a href="/knowledge_base/tips/sending_email/">How to send e-mails from Velociraptor</a>.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/email_alerts/ff_client.png"
+         class="inline"
+         alt="Flow completion notification from FileFinder looking for files of interest"
+         width="800" height="603">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="ff_client.png">
+      <i class="fa fa-download"></i></a>
+    Flow completion notification from FileFinder looking for files of interest
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/email_alerts/ff_flow.png"
+         class="inline"
+         alt="Flow completion notification from FileFinder looking for files of interest (continued)"
+         width="800" height="1024">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="ff_flow.png">
+      <i class="fa fa-download"></i></a>
+    Flow completion notification from FileFinder looking for files of interest (continued)
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="installation">Installation</h2>
+<p>If your server has internet access, run
+<a href="/artifact_references/pages/server.import.extras/"><code>Server.Import.Extras</code></a>
+to import all exchange artifacts, including
+<a href="/exchange/artifacts/pages/server.monitor.flowcompletion/"><code>Server.Monitor.FlowCompletion</code></a>. Otherwise, copy the artifact
+definition manually from the
+<a href="/exchange/artifacts/pages/server.monitor.flowcompletion/">Artifact Exchange</a>.</p>
+<p>Add <a href="/exchange/artifacts/pages/server.monitor.flowcompletion/"><code>Server.Monitor.FlowCompletion</code></a> as a server event artifact. Set
+<code>Secret</code> to the name of your SMTP secret. Configure at least one
+recipient in <code>Recipients</code>, or enable <code>NotifyExecutor</code> to notify
+whoever scheduled the flow.</p>
+<h2 id="filtering">Filtering</h2>
+<p>By default, <a href="/exchange/artifacts/pages/server.monitor.flowcompletion/"><code>Server.Monitor.FlowCompletion</code></a> notifies on every flow
+except those collecting only <a href="/artifact_references/pages/generic.client.info/"><code>Generic.Client.Info</code></a> (or its <code>Custom.</code>
+override). The main parameters for controlling what triggers a
+notification are:</p>
+<table>
+	<thead>
+			<tr>
+					<th>Parameter</th>
+					<th>Type</th>
+					<th>Description</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>ArtifactsToAlertOn</code></td>
+					<td>regex</td>
+					<td>Only flows collecting matching artifacts notify</td>
+			</tr>
+			<tr>
+					<td><code>ArtifactsToIgnore</code></td>
+					<td>regex</td>
+					<td>Suppresses notifications for single-artifact flows</td>
+			</tr>
+			<tr>
+					<td><code>ClientLabelsToAlertOn</code> / <code>ClientLabelsToIgnore</code></td>
+					<td>regex</td>
+					<td>Filter by client label</td>
+			</tr>
+			<tr>
+					<td><code>NotifyHunts</code></td>
+					<td>bool</td>
+					<td>Include flows that are part of a hunt (off by default)</td>
+			</tr>
+			<tr>
+					<td><code>DelayThreshold</code></td>
+					<td>int</td>
+					<td>Only notify if the flow took longer than N seconds to complete (default 10 s)</td>
+			</tr>
+	</tbody>
+</table>
+<p><code>ArtifactsToIgnore</code> does not take effect when multiple artifacts are collected.</p>
+<p>The parameter <code>ErrorHandling</code> lets failed flows bypass filters:</p>
+<table>
+	<thead>
+			<tr>
+					<th>Choice</th>
+					<th>Description</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>IncludeHunts</code></td>
+					<td>Create notifications for failed flows part of hunts (may be noisy!)</td>
+			</tr>
+			<tr>
+					<td><code>IgnoreCancelled</code></td>
+					<td>Do not consider a cancelled flow a failure (enabled by default)</td>
+			</tr>
+			<tr>
+					<td><code>IgnoreArtifactFilters</code></td>
+					<td>Ignore <code>ArtifactsToAlertOn</code> and <code>ArtifactsToIgnore</code> for failed flows</td>
+			</tr>
+			<tr>
+					<td><code>IgnoreDelay</code></td>
+					<td>Ignore <code>DelayThreshold</code> for failed flows</td>
+			</tr>
+	</tbody>
+</table>
+<h2 id="throttling">Throttling</h2>
+<p><code>SendInterval</code> controls how many seconds must pass between
+notifications. The default is 10 seconds. Set it to <code>-1</code> to disable
+throttling once you have confirmed the configuration works correctly.
+See the
+<a href="/knowledge_base/tips/sending_email/#throttling">throttling section</a>
+in the e-mail setup guide for how dropped messages are logged.</p>
+<h2 id="e-mail-content">E-mail content</h2>
+<p><a href="/exchange/artifacts/pages/server.monitor.flowcompletion/"><code>Server.Monitor.FlowCompletion</code></a> sends HTML by default (<code>HTML=true</code>).
+The message includes client details, flow details, and optionally:</p>
+<ul>
+<li>Selected client metadata (<code>ClientMetadata</code>)</li>
+<li>Inline result tables from selected artifact sources
+(<code>IncludeResultTableFrom</code>)</li>
+<li>JSONL or CSV attachments (<code>IncludeResultAttachmentFrom</code>)</li>
+<li>Direct download links to uploaded files (<code>IncludeUploadsTableRows</code>)</li>
+</ul>
+<p>When HTML is enabled, a plain-text alternative is also provided (using
+&ldquo;multipart/alternative&rdquo;). E-mail clients that do not support HTML can
+still view the e-mails.</p>
+<p>For <code>IncludeResultTableFrom</code>, rows, columns, and cell values are
+automatically truncated when they exceed the hard limits: 100 rows, 4
+columns (<code>ResultTableMaxColumns</code>), and 10,000 characters per cell.
+Tables with many columns render poorly in e-mail clients even within
+these limits. Only configure inline tables for specific artifact
+sources with compact, predictable output, and use the <code>Columns</code> regex
+to select only the fields you need.</p>
+<p>For example, to include shell command output, a compact network
+connection summary and results from querying disk usage:</p>
+<table>
+	<thead>
+			<tr>
+					<th><code>Source</code></th>
+					<th><code>Columns</code></th>
+					<th><code>MaxRows</code></th>
+					<th><code>CellLimit</code></th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>bash|powershell</td>
+					<td>Stdout|Stderr</td>
+					<td>20</td>
+					<td>1000</td>
+			</tr>
+			<tr>
+					<td>Windows.Network.Netstat</td>
+					<td>RemoteAddr|ProcessName|Pid</td>
+					<td>30</td>
+					<td>200</td>
+			</tr>
+			<tr>
+					<td>DiskSpace$</td>
+					<td>Filesystem|Size|Avail|Use%</td>
+					<td></td>
+					<td></td>
+			</tr>
+	</tbody>
+</table>
+<p>All regexes are case-insensitive.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/knowledge_base/tips/email_alerts/ds_results.png"
+         class="inline"
+         alt="Results from the DiskSpace artifact, including a JSONL attachment, in Mailpit"
+         width="1390" height="956">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="ds_results.png">
+      <i class="fa fa-download"></i></a>
+    Results from the DiskSpace artifact, including a JSONL attachment, in Mailpit
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<p><code>IncludeResultAttachmentFrom</code> has no row or column limits, but if the
+total size of all attachments exceeds <code>AttachmentsMaxMiB</code> (default 100
+MiB), all attachments for that e-mail are dropped. Keep the source
+selection specific here as well.</p>
+
+<div class="mynotices info">
+  <div heading="info"><p>Including results in the e-mail, either inline or as attachments,
+should be used with care. Only include data limited by targeted
+regexes, and consider dropping attachments altogether. The e-mail
+already includes direct download links in the uploads HTML table.</p>
+</div>
+</div>
+
+
+<h2 id="example-use-cases">Example use cases</h2>
+<p><a href="/exchange/artifacts/pages/server.monitor.flowcompletion/"><code>Server.Monitor.FlowCompletion</code></a> may be used in many ways. Some
+examples follow. If you need to run several of these in parallel, you
+may have to create your own artifacts that call
+<a href="/exchange/artifacts/pages/server.monitor.flowcompletion/"><code>Server.Monitor.FlowCompletion</code></a> individually with different arguments.</p>
+<h3 id="notify-the-analyst-who-ran-the-collection">Notify the analyst who ran the collection</h3>
+<p>Enable <code>NotifyExecutor</code>. If the Velociraptor username is an e-mail
+address, the result is sent directly to whoever scheduled the flow,
+with no fixed <code>Recipients</code> list needed. If usernames are not e-mail
+addresses, use <code>NotifyExecutorDomains</code> to map them: a row
+<code>.+,example.org</code> appends <code>@example.org</code> to any username.</p>
+<h3 id="notify-when-an-offline-client-finally-checks-in">Notify when an offline client finally checks in</h3>
+<p>You have scheduled a collection on an offline client. Set
+<code>DelayThreshold</code> to something larger than the expected completion time
+(e.g. 300 for five minutes) so you are only notified when the
+client had to wait. Use <code>NotifyExecutor</code> to send the result to the
+analyst who scheduled it, and/or set <code>Recipients</code>, and set
+<code>IncludeResultAttachmentFrom</code> to attach the results directly to the
+e-mail so the analyst does not need to open the GUI at all.</p>
+<p>When collecting artifacts from individual clients (i.e. not through
+hunts), it may be easy to forget about the collection — especially if
+the client was not online when the flow was scheduled. Getting an
+e-mail notification when the flow fails or completes is very useful.</p>
+<h3 id="get-notified-when-hunt-flows-fail">Get notified when hunt flows fail</h3>
+<p>You are running a large hunt and want to know about failing clients
+without being flooded by success notifications. Leave <code>NotifyHunts</code>
+off (so successful hunt flows are silent), but add <code>IncludeHunts</code> to
+<code>ErrorHandling</code>. Failed flows in the hunt will still notify,
+regardless of the <code>NotifyHunts</code> setting.</p>
+<p>Combine with <code>IgnoreArtifactFilters</code> in <code>ErrorHandling</code> if you also
+want failure notifications regardless of <code>ArtifactsToIgnore</code>.</p>
+<p>This may create a lot of notifications if the hunt is buggy. Test the
+artifact collection on a smaller part of the fleet before enabling.</p>
+<h3 id="audit-shell-and-execve-artifact-use">Audit shell and EXECVE artifact use</h3>
+<p>Artifacts with <code>EXECVE</code> permissions allow the collector to run
+arbitrary commands on endpoints. Such artifacts are dangerous, and you
+may want to monitor when they are used.</p>
+<p>Set <code>ArtifactPermToAlertOn</code> to <code>EXECVE</code> and <code>DelayThreshold</code> to <code>0</code>
+to get a notification for every completed flow that includes an
+artifact requiring shell access.</p>
+<p>To include the command output directly in the e-mail body, configure
+<code>IncludeResultTableFrom</code>:</p>
+<table>
+	<thead>
+			<tr>
+					<th><code>Source</code></th>
+					<th><code>Columns</code></th>
+					<th><code>MaxRows</code></th>
+					<th><code>CellLimit</code></th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>bash|powershell</td>
+					<td>Stdout|Stderr</td>
+					<td>20</td>
+					<td>1000</td>
+			</tr>
+			<tr>
+					<td>generic.client.vql$</td>
+					<td>.+</td>
+					<td></td>
+					<td>3000</td>
+			</tr>
+	</tbody>
+</table>
+<h3 id="alert-on-results-from-priority-clients">Alert on results from priority clients</h3>
+<p>Apply the label <code>notify_results</code> to clients that warrant immediate
+attention regardless of other filters: a server under active
+investigation, a VIP&rsquo;s workstation, a honeypot. Whenever a flow on
+such a client produces any results, <code>NotifyIfResultsLabels</code> (default
+<code>^notify_results$</code>) causes a notification to be sent, bypassing
+<code>ArtifactsToIgnore</code>, <code>DelayThreshold</code>, and label filters.</p>
+<p>The same mechanism works for uploads: use <code>NotifyIfUploadsLabels</code>
+with a label such as <code>notify_uploads</code> on clients where any file
+collection should always trigger a notification.</p>
+<h3 id="new-client-enrolled">New client enrolled</h3>
+<p>Set <code>NewClientArtifacts</code> to a regex matching the artifacts you
+collect on enrolment (e.g. <a href="/artifact_references/pages/generic.client.info/"><code>Generic.Client.Info</code></a>). When a client that
+is newer than <code>NewClientThreshold</code> seconds completes such a flow, a
+notification is sent regardless of other filters. Useful for getting
+an e-mail whenever a new endpoint appears on the server.</p>
+<h3 id="notify-the-device-owner">Notify the device owner</h3>
+<p>If client metadata includes the device owner&rsquo;s e-mail address, set
+<code>NotifyMetadataEMail</code> to that field name. The owner is notified
+whenever a collection on their device finishes. This can run
+alongside <code>Recipients</code> and <code>NotifyExecutor</code>, so the analyst, a
+central mailbox, and the device owner all receive the notification
+independently.</p>
+<p>Some jurisdictions require notifying the device owner when certain
+data is collected from their endpoint, and this parameter provides a
+simple automated way to meet that obligation.</p>
+<h2 id="see-also">See also</h2>
+<ul>
+<li>Send e-mail on flow completion: <a href="/exchange/artifacts/pages/server.monitor.flowcompletion/"><code>Server.Monitor.FlowCompletion</code></a></li>
+<li><a href="/knowledge_base/tips/sending_email/">How to send e-mails from Velociraptor</a></li>
+<li><a href="/knowledge_base/tips/vql_alerts/">Using alerts in Velociraptor</a></li>
+<li><a href="/blog/2026/2026-04-19-alerts-and-email/">Alerts and e-mail notifications in Velociraptor</a></li>
+</ul>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1782260662"></script>
+    <script src="/js/perfect-scrollbar.min.js?1782260662"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1782260662"></script>
+    <script src="/js/jquery.sticky.js?1782260662"></script>
+    <script src="/js/featherlight.min.js?1782260662"></script>
+    <script src="/js/highlight.min.js?1782260662"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1782260662"></script>
+    <script src="/js/learn.js?1782260662"></script>
+    <script src="/js/hugo-learn.js?1782260662"></script>
+    
+    
+
+  </body>
+</html>
