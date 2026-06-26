@@ -1,8 +1,8 @@
 ---
 menutitle: "Run mode"
-title: "Running collections on the command line"
+title: "Run mode syntax"
 date: 2026-06-16
-last_reviewed: 2026-06-17
+last_reviewed: 2026-06-20
 draft: false
 weight: 30
 summary: |
@@ -15,13 +15,15 @@ description: |
   remote clients.
 ---
 
+## Running collections on the command line
+
 Run mode (`-r` or `--run` flag) lets you run any Velociraptor
 collection directly from the command line, whether locally or against
 a remote server and its clients. It provides a simpler and more
 intuitive syntax than the equivalent `artifacts collect` command,
 especially when passing parameters to artifacts.
 
-## Equivalence to artifacts collect
+### Equivalence to artifacts collect
 
 Run mode is a front-end to `artifacts collect`. The following two
 commands are equivalent:
@@ -45,7 +47,7 @@ Because run mode uses `artifacts collect` under the hood, it supports
 all the
 [flags for that command](/docs/cli/commands/artifacts/#-artifacts-collect-).
 
-## Global flags vs artifact parameters
+### Global flags vs artifact parameters
 
 [Global CLI flags](/docs/cli/flags/)
 (such as `--config` or `--api_config`) go **before** the `-r` flag.
@@ -61,7 +63,7 @@ velociraptor -r Windows.Forensics.SRUM -o /tmp/srum_results.zip
 
 Here `-o` maps to the `--output` flag of `artifacts collect`.
 
-## Viewing available artifact parameters
+### Viewing available artifact parameters
 
 Use `-h` after the artifact name to see the artifact's specific
 parameters instead of the CLI help:
@@ -85,7 +87,7 @@ Artifact Parameters:
     Valid values: Y / N
 ```
 
-## Using custom artifact definitions
+### Using custom artifact definitions
 
 You can load custom artifact packs with the `--definitions` flag.
 Place this flag **before** `-r`:
@@ -97,11 +99,11 @@ velociraptor --definitions /path/to/artifacts.zip -r Custom.MyArtifact
 The `--definitions` flag also accepts a ZIP file containing artifact
 definitions.
 
-## Remote collection via the API
+### Remote collection via the API
 
 With an API config file (`--api_config`), run mode works against a
 remote server. You can collect server artifacts or collect client
-artifacts from any client. 
+artifacts from any client.
 
 ###### Example: Collect a server artifact
 
@@ -141,7 +143,7 @@ velociraptor --api_config api.yaml artifacts fetch \
 See the [[ artifacts fetch ]](/docs/cli/commands/artifacts/#-artifacts-fetch-)
 reference for details.
 
-## Detailed walkthrough
+### Detailed walkthrough
 
 For a detailed walkthrough covering local collection, remote
 collection via the API, custom artifact packs, external tool
