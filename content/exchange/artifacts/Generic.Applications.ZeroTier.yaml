@@ -39,7 +39,7 @@ description: |
   ### Identity
 
   Each node has a globally unique 10-hex-digit address derived from an
-  elliptic-curve keypair generated on first run. The address appears
+  elliptic-curve key pair generated on first run. The address appears
   permanently in any network controller's member list once the node has
   joined. By default this artifact redacts private key material (see
   `RedactPrivateKeys`).
@@ -509,7 +509,7 @@ sources:
           ## Node identity
 
           The ZeroTier node address is a globally unique 10-hex-digit identifier
-          derived from the keypair in `identity.public`/`identity.secret`. It
+          derived from the key pair in `identity.public`/`identity.secret`. It
           is the same address that appears in every network controller's member
           list for networks this host has joined.
 
