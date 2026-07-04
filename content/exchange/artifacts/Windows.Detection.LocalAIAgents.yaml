@@ -5,7 +5,7 @@ reference:
 
 description: |
   This hunt inventories locally-installed AI agents on Windows endpoints:
-  CLI coding agents, desktop apps, agentic IDEs, VS Code
+  CLI coding agents, desktop apps, AI-powered IDEs, VS Code
   extensions, Claw-family agents, and local LLM runtimes that people install on
   their own without going through IT.
 
