@@ -5,22 +5,19 @@ reference:
 
 description: |
   This hunt inventories locally-installed AI agents on Windows endpoints:
-  CLI coding agents, desktop apps, agentic IDEs, VS Code
+  CLI coding agents, desktop apps, AI-powered IDEs, VS Code
   extensions, Claw-family agents, and local LLM runtimes that people install on
   their own without going through IT.
 
   The design keeps the detection logic simple and puts all the knowledge in
   editable lookup tables. Each agent is identified by the files it
-  leaves on disk and the way its process looks at runtime, never by hashes,
-  since these tools auto-update almost weekly and any hash list would be stale
-  within days.
+  leaves on disk and the way its process looks at runtime.
 
   Four sources, each answering a different question:
 
     InstalledFootprint: Is the agent on disk? Globs a table of known install,
     config, and extension paths under each user profile. It only checks whether
-    the path exists (path, mtime, size) and does not open any file. Profiles of
-    logged-off users under C:\Users are covered too.
+    the path exists (path, mtime, size) and does not open any file.
 
     RunningAgents: Is it running now, and who is running it? Walks pslist() and
     matches process name, command line, and exe path against a signature table.
