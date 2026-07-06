@@ -1,0 +1,60 @@
+name: MacOS.Raptorscope.BTM
+author: cac0ns3c (https://github.com/cac0ns3c/Raptorscope)
+description: |
+  Enumerate macOS Background Task Management (BTM) persistence items via
+  `sfltool dumpbtm` — the launch agents/daemons and login items registered in the
+  macOS 13+ BTM database, with developer name, disposition, and hash. There is no
+  standard built-in for BTM, so raptorscope ships this one.
+  Keywords: persistence, launchd, login items, btm, sfltool, macOS. MITRE T1543 / T1547.
+
+  ### Output
+  One row per BTM item (Path, ItemName, DeveloperName, Disabled, Type, UUID,
+  Identifier, Mtime).
+type: CLIENT
+reference:
+  - https://attack.mitre.org/techniques/T1547/015/
+  - https://www.objective-see.org/blog/blog_0x7B.html
+column_types:
+  - name: Mtime
+    type: timestamp
+sources:
+  - name: BTM
+    precondition: SELECT OS FROM info() WHERE OS = 'darwin'
+    query: |
+      -- Bound the run: `sfltool dumpbtm` can be slow, and macOS has no `timeout`
+      -- binary, so wrap it in a shell background-kill (30s). It degrades to empty
+      -- output instead of stalling the whole collection.
+      LET dump = SELECT Stdout FROM execve(argv=["/bin/sh", "-c",
+        "sfltool dumpbtm & P=$!; (sleep 30; kill -9 $P 2>/dev/null) & K=$!; wait $P 2>/dev/null; kill $K 2>/dev/null"])
+      -- One record per BTM item. Real `dumpbtm` output is a labelled block per
+      -- item; each full item starts with `UUID:` (embedded sub-records start with
+      -- `Identifier:` and are skipped). Anchor on UUID and pull fields by label
+      -- with non-greedy gaps so optional fields (e.g. `Executable Path:`, present
+      -- only on legacy agents) don't break the parse. Regex/format validated
+      -- against real macOS output 2026-07-05.
+      LET items = SELECT * FROM parse_records_with_regex(
+        accessor="data",
+        file=dump.Stdout,
+        regex="(?sm)^\\s*UUID:\\s+(?P<UUID>\\S+).*?"
+              + "^\\s*Name:\\s+(?P<ItemName>.+?)\\s*$.*?"
+              + "^\\s*Developer Name:\\s+(?P<DeveloperName>.+?)\\s*$.*?"
+              + "^\\s*Type:\\s+(?P<Type>.+?)\\s*$.*?"
+              + "^\\s*Disposition:\\s+(?P<Disposition>.+?)\\s*$.*?"
+              + "^\\s*Identifier:\\s+(?P<Identifier>.+?)\\s*$.*?"
+              + "^\\s*URL:\\s+(?P<URL>.+?)\\s*$")
+      -- Derive a clean filesystem Path from the (url-encoded) URL; a real boolean
+      -- Disabled from the disposition token; and a best-effort Mtime by stat-ing
+      -- absolute paths. `(null)` developer collapses to NULL.
+      SELECT
+        url(parse=URL).Path AS Path,
+        ItemName,
+        if(condition=DeveloperName = "(null)", then=NULL, else=DeveloperName)
+          AS DeveloperName,
+        Disposition =~ "disabled" AS Disabled,
+        Type,
+        UUID,
+        Identifier,
+        if(condition=url(parse=URL).Path =~ "^/",
+           then=timestamp(epoch=stat(filename=url(parse=URL).Path).Mtime),
+           else=NULL) AS Mtime
+      FROM items
