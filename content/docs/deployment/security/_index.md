@@ -25,46 +25,87 @@ deployment methods to ensure it can be secured on the network. We then
 discuss the Velociraptor permission model and suggest some further
 steps to ensure user actions are audited and controlled.
 
-## Client verification
+## Client trust model
 
 From the outset we need to highlight a fundamental limitation of agent
-based security software.
+based security software:
 
-> Because the agent (The Velociraptor `Client`) is running on a
-> potentially compromised platform, We can never fully trust what the
-> client is telling us.
+**Because the agent (the Velociraptor Client) is running on a
+potentially compromised platform, we can never fully trust what the
+client is telling us.**
 
-There is no guarantee that the client will work correctly - it may be
-subverted by an attacker (who has full control of the endpoint) to:
+There is no guarantee that the client will work correctly — it may be
+subverted by an attacker to disable itself, omit or hide information,
+or report fabricated data.
 
-1. Disable the client completely - it will not report to the server.
-2. The client may omit reporting some information - For example, the
-   client may hide sensitive files or artifacts that the attacker
-   wants to hide.
-3. The client may report incorrect information (for example fake
-   processes, files etc).
-
-This is a fundamental limitation in the server/client model and can
-not be mitigated. Typically the Velociraptor client is running at an
-elevated permissions level which makes it harder to interact with by
-low privileged users, this reduces the risk somewhat. If you have an
-EDR installed on the endpoint, you may add anti-tamper rules to the
-EDR to reduce the risk of client interference even further - however
-there is always a residual risk of interference when the platform may
-be compromised.
-
-We refer to a compromised client as a `Rogue Client`. This type of
-client can send malformed responses or fake data.
+This is a fundamental limitation in the server/client model and cannot
+be fully mitigated. The Velociraptor client typically runs at elevated
+permissions to make tampering harder, and an EDR can add anti-tamper
+rules, but residual risk remains when the platform itself is
+compromised. We refer to this as a `Rogue Client`.
 
 You should always keep this limitation in mind when interpreting
-results from Velociraptor. The results may be missing or incorrect, or
-a client may be completely disabled by an attacker.
+results. A client may be disabled by an attacker, or the results may
+be missing or incorrect.
 
-The main concern for Velociraptor is to ensure that one client can not
-impersonate another client. This mitigates the risk of a compromised
-client injecting fake information about another client. Velociraptor
-mitigates this risk using cryptographic keys as described in the next
-section.
+### Client identity
+
+Velociraptor's main defence against rogue clients is cryptographic
+identity verification. Each client has a unique encryption key, and
+the server uses the internal PKI to ensure one client cannot
+impersonate another. This prevents a compromised client from injecting
+fake information about a different endpoint. See the
+[communications](#velociraptor-communications) section for details.
+
+### What a rogue client can influence
+
+Even with identity verification in place, the server largely trusts
+whatever data a client sends. A rogue client can influence several
+aspects of its relationship with the server:
+
+**Self-labeling and metadata.** Clients send labels during enrollment
+via `Server.Internal.ClientInfo` and can send arbitrary labels at any
+time via a crafted `VQLResponse`. The server applies these without
+checking authorization. A rogue client can exclude itself from
+label-targeted hunts or spoof its hostname, FQDN, and system type.
+See the [client labels](/docs/clients/labels/) page for more.
+
+**Event monitoring injection.** Clients can send monitoring results
+for any `CLIENT_EVENT` artifact regardless of whether it was assigned
+to them. A rogue client can flood the event stream with fabricated
+telemetry, trigger false detection rules, poison SIEM pipelines, or
+mask real activity with noise.
+
+**Alert injection.** Clients can send alert messages with arbitrary
+content. The server overrides only `ClientId` and `FlowId` for
+attribution but preserves `AlertName`, `EventData`, and `Timestamp`
+from the client. A rogue client can trigger false incident response
+notifications or corrupt investigation timelines.
+
+**Flow state manipulation.** Clients report their own collection
+statistics and completion status via `FlowStats`. A rogue client can
+mark a flow as `FINISHED` immediately — before collecting any data —
+making the collection appear successful with zero results.
+
+### Mitigations
+
+While the trust model is by design, you can take practical steps to
+reduce risk:
+
+- **Treat client-reported data as signals, not facts.** Labels,
+  hostnames, collection statistics, and alert details are
+  client-reported and should be correlated with other sources.
+- **Use client IDs for reliable identity.** The client ID is derived
+  from the client's cryptographic key and cannot be spoofed. Use it
+  instead of hostname or FQDN for authoritative identification.
+- **Monitor for suspicious behavior.** Watch for clients that change
+  labels unexpectedly, send unusual alerts, or report flow completion
+  without corresponding data.
+- **Correlate collection results.** Compare reported collection
+  statistics against actual received data to detect discrepancies.
+- **Segment the network.** Limit which endpoints can connect to the
+  server. A client that cannot reach the server cannot abuse the trust
+  model.
 
 ## Velociraptor communications
 
@@ -1315,10 +1356,4 @@ artifact created in the root org will be visible to all other orgs.
 
 You should only give trusted users access to the root org.
 
-### Client trust model
 
-Velociraptor's server generally trusts the data that clients report.
-A compromised or rogue client can influence labels, event monitoring,
-alerts, and flow statistics. See the
-[client trust model](/docs/deployment/security/client_trust_model/)
-page for details.
