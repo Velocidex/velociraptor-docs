@@ -1119,6 +1119,27 @@ If an untrusted user has access to one org but does not have access to
 another, there are multiple ways which allow the user to read/modify
 data in the other org:
 
+{{% notice warning "SAML/OIDC auto-role assignment applies to all orgs" %}}
+When you configure SAML or OIDC to automatically assign roles via
+`saml_user_roles` or `claims.roles`, those roles are granted in
+**every org** on the server, not just the org the user initially
+authenticates into. There is no way to scope SAML/OIDC
+role assignment to a subset of orgs.
+
+If your deployment uses orgs for multi-tenant isolation (for example
+MSSP deployments where orgs represent different customers), be aware
+that SAML/OIDC auto-role assignment bypasses that isolation. A user
+authenticated via SAML/OIDC receives roles in all orgs
+automatically.
+
+To avoid unintended cross-org access, either:
+
+- Manage user roles manually through the GUI instead of using
+  SAML/OIDC auto-role assignment.
+- Use separate Velociraptor instances for each tenant if true
+  data isolation is required.
+{{% /notice %}}
+
 ### Shelling out
 
 By default, users have access to the `execve()` plugin providing they
@@ -1172,6 +1193,17 @@ requirement.
 By default, the `fs` accessor is denied access to [some filestore
 prefixes](https://github.com/Velocidex/velociraptor/blob/bb0fb04b128f791e2fb74b1008b9b7700f952e0b/services/sanity/security.go#L76),
 which are considered sensitive.
+
+{{% notice warning "Replace semantics" %}}
+When you set `security.denied_fs_accessor_prefix` in your config,
+the specified list **replaces** the default deny list entirely
+— it does not merge with it. The built-in defaults are:
+`acl`, `backups`, `config`, `orgs`, `secrets`, `users`.
+To preserve them while adding custom prefixes, you must include
+all of them explicitly in your list. This replace-on-write
+behavior applies to all list-type security settings in
+Velociraptor.
+{{% /notice %}}
 
 However, Velociraptor's ACL policies are such that any user with the
 `READ_RESULTS` permission, is able to real **any** client's data
@@ -1282,3 +1314,11 @@ to this org allows them to affect other orgs. For example, any custom
 artifact created in the root org will be visible to all other orgs.
 
 You should only give trusted users access to the root org.
+
+### Client trust model
+
+Velociraptor's server generally trusts the data that clients report.
+A compromised or rogue client can influence labels, event monitoring,
+alerts, and flow statistics. See the
+[client trust model](/docs/deployment/security/client_trust_model/)
+page for details.

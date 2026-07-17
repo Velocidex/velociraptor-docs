@@ -135,4 +135,9 @@ client config file will return after the client restarts.
 You can also change the labels in the client config at any time and any new
 labels will be applied when the client restarts.
 
+Labels reported by the client are applied without server-side
+verification. See the [client trust
+model](/docs/deployment/security/client_trust_model/) page for more
+about the implications of this design.
+
 {{% /notice %}}
