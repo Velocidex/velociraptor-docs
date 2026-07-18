@@ -42,7 +42,7 @@ This is a fundamental limitation in the server/client model and cannot
 be fully mitigated. The Velociraptor client typically runs at elevated
 permissions to make tampering harder, and an EDR can add anti-tamper
 rules, but residual risk remains when the platform itself is
-compromised. We refer to this as a `Rogue Client`.
+compromised. We refer to this as a **Rogue Client**.
 
 You should always keep this limitation in mind when interpreting
 results. A client may be disabled by an attacker, or the results may
@@ -888,7 +888,7 @@ velociraptor acl grant --name "CompromisedKey" --role ""
 
 This immediately strips all permissions, thus denying that user the
 ability to make an API calls. Any applications using that API user
-will need to be configured to use a new account with a new key. 
+will need to be configured to use a new account with a new key.
 
 API client accounts can alternatively have their roles and permissions
 revoked via the User Management screen in the GUI.
