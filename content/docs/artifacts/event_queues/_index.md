@@ -104,7 +104,7 @@ default, but you can still view them in a notebook by running the VQL
 query:
 
 ```vql
-SELECT name, description FROM artifact_definitions() WHERE NOT sources AND type =~ "server_event"
+SELECT name, description FROM artifact_definitions() WHERE NOT sources AND type =~ "server_event|internal"
 ```
 
 {{% /notice %}}
