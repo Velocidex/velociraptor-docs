@@ -69,7 +69,7 @@ description: |
   - `_KERNEL_DEVICE`: device connections and disconnections: brackets
     when a disk or USB device was attached.
   - `MESSAGE_ID`: systemd catalog event class (128-bit IDs for events
-    like a unit start, a session open, or a coredump). A compact way to
+    like a unit start, a session open, or a core dump). A compact way to
     see which classes of events occurred and when.
   - `SYSLOG_IDENTIFIER`: the program name most tools log under, often
     more meaningful than `_COMM` for scripts and daemons.
