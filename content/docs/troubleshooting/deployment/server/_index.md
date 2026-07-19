@@ -154,3 +154,22 @@ Once you have confirmed that the GUI is accessible from the server itself, then
 you can test from a remote host. If possible first test from another computer on
 the same local network as the server.
 
+#### Check your browser extension app
+If an ERR_TOO_MANY_RETRIES error occurs in the client browser when accessing the GUI, there is a possibility that the browser's extended app will cause problems.
+
+The inspection method is as follows.
+1. See the Try running the server in a terminal with verbose output troubleshooting guide.
+
+If you identify invalid credential logs in method 1, try the 2-1 or 2-2 method.
+
+2-1. 
+Try accessing it using a different browser on the client.
+
+2-2. 
+Access your browser from the tab that enables Secret Mode.
+
+If you access the GUI through the method of 2-1 or 2-2, it's an extended app problem in your browser.
+
+This is not a problem with the server configuration, and it happens because the installed extension app constantly sends the wrong credentials. (It is also possible to send if the feature of the extension app is disabled.)
+
+To address this, delete extended apps that send incorrect credentials. If it's difficult to delete extended apps, use Secret Mode or use a different browser to access the GUI
