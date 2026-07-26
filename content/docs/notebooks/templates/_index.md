@@ -284,7 +284,7 @@ collections across all organizations. Available from the
 
 Since notebook templates are artifacts, if you create useful or
 interesting notebook templates then do consider sharing them with the
-community [via the artifact exchange](/dev/contributing-artifacts/).
+community [via the artifact exchange](/exchange/).
 
 ## Automatic notebooks (hunts, flows, events)
 
