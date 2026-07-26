@@ -1,4 +1,4 @@
-# Contributing to Velociraptor Documentation
+# Contributing to the Velociraptor Documentation site
 
 Thank you for your interest in contributing to the Velociraptor
 project! This repository hosts the [Velociraptor documentation
@@ -7,11 +7,44 @@ community-driven [Artifact Exchange](content/exchange/).
 
 There are two main ways to contribute:
 
-1. [**Submit an artifact**](#contributing-artifacts-to-the-exchange) to the Artifact Exchange.
-2. [**Improve the documentation**](#contributing-to-the-documentation-website) website itself.
+1. [**Improve the documentation**](#documentation-contributions) itself.
+2. [**Submit an artifact**](#contributing-artifacts-to-the-exchange) to the Artifact Exchange.
 
 Both contribution types use the standard GitHub fork-and-PR workflow,
 as described below.
+
+---
+
+## Documentation Contributions
+
+If you want to improve the documentation itself (fix typos, add
+content, update screenshots, etc.), you can find a full set of
+guidelines in the
+[Documentation Development Guidelines](https://docs.velociraptor.app/dev/)
+section of the website. This is also accessible in the repository
+under [`content/dev/`](content/dev/) and includes:
+
+- **Setting up a Hugo development server** — how to get a local
+  live-preview web server running so you can see your changes before
+  submitting.
+- **Prose style guidelines** — writing and formatting standards,
+  markdown flavor tips, page structure conventions, etc.
+- **Image guidelines** — advice for creating screenshots and diagrams
+  (optionally using Excalidraw), and recommendations for image
+  format/size/font/colors/etc.
+- **Vale linting** — how to run our automated prose linter locally.
+
+The general workflow for documentation contributions is:
+
+1. [Fork](https://github.com/Velocidex/velociraptor-docs/fork) this
+   repository.
+2. Clone your fork locally.
+3. (Optional) Install Hugo and run `hugo server` for a live preview.
+4. Make your changes to the markdown content under `content/`.
+5. Run `vale .` from the project root if you have Vale installed
+   (optional, CI will catch issues).
+6. Commit, push to your fork, and open a Pull Request.
+
 
 ---
 
@@ -160,38 +193,6 @@ Request if anything needs changing.
   See the section
   [Tips for creating better artifacts](https://docs.velociraptor.app/docs/artifacts/tips/#tips-for-creating-better-artifacts)
   in the documentation for more detailed guidance.
-
----
-
-## Contributing to the Documentation Website
-
-If you want to improve the documentation itself (fix typos, add
-content, update screenshots, etc.), you can find a full set of
-guidelines in the
-[Documentation Development Guidelines](https://docs.velociraptor.app/dev/)
-section of the website. This is also accessible in the repository
-under [`content/dev/`](content/dev/) and includes:
-
-- **Setting up a Hugo development server** — how to get a local
-  live-preview web server running so you can see your changes before
-  submitting.
-- **Prose style guidelines** — writing and formatting standards,
-  markdown flavor tips, page structure conventions, etc.
-- **Image guidelines** — advice for creating screenshots and diagrams
-  (optionally using Excalidraw), and recommendations for image
-  format/size/font/colors/etc.
-- **Vale linting** — how to run our automated prose linter locally.
-
-The general workflow for documentation contributions is:
-
-1. [Fork](https://github.com/Velocidex/velociraptor-docs/fork) this
-   repository.
-2. Clone your fork locally.
-3. (Optional) Install Hugo and run `hugo server` for a live preview.
-4. Make your changes to the markdown content under `content/`.
-5. Run `vale .` from the project root if you have Vale installed
-   (optional, CI will catch issues).
-6. Commit, push to your fork, and open a Pull Request.
 
 ---
 
