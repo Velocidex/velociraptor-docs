@@ -1,4 +1,4 @@
-# Documentation website for Velociraptor
+# Documentation site for Velociraptor
 
 This is the documentation website for Velociraptor - digging deeper!
 

@@ -1,4 +1,4 @@
-# Contributing to the Velociraptor Documentation site
+# Contributing to the Velociraptor Documentation
 
 Thank you for your interest in contributing to the Velociraptor
 project! This repository hosts the [Velociraptor documentation
