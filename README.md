@@ -2,8 +2,11 @@
 
 This is the documentation website for Velociraptor - digging deeper!
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidance on developing
-and contributing content, including Velociraptor community artifacts.
+## Contributing
+
+See [our contributing guide](./CONTRIBUTING.md) for information on
+developing and contributing content, including Velociraptor community
+artifacts.
 
 ---
 
