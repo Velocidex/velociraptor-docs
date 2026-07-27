@@ -19,7 +19,7 @@ documentation site.
 
 All the docs are written in markdown and Hugo supports the Commonmark
 markdown syntax. The exception to this is community-contributed
-[Velociraptor artifacts](/dev/contributing-artifacts/)
+[Velociraptor artifacts](/exchange/)
 which are written in YAML format.
 
 ---

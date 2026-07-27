@@ -1,14 +1,12 @@
 # Documentation site for Velociraptor
 
-This is the documentation site for Velociraptor - digging deeper!
+This is the documentation website for Velociraptor - digging deeper!
 
+## Contributing
 
-## Contributing Content
-
-For guidance on developing and contributing content, including
-Velociraptor community artifacts, please see the
-[Documentation Development Guidelines](https://docs.velociraptor.app/dev/)
-section on our documentation site.
+See [our contributing guide](./CONTRIBUTING.md) for information on
+developing and contributing content, including Velociraptor community
+artifacts.
 
 ---
 
