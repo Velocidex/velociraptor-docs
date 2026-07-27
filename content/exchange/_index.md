@@ -20,14 +20,10 @@ outputs:
 - RSS
 summary: |
   The artifact exchange is a place for sharing community contributed
-  artifacts. Simply search below for an artifact that might address
-  your need. If you wish to contribute to the exchange, please click the
-  button to the right.
+  artifacts.
 description: |
   The artifact exchange is a place for sharing community contributed
-  artifacts. Simply search below for an artifact that might address
-  your need. If you wish to contribute to the exchange, please click the
-  button to the right.
+  artifacts.
 ---
 
 <div style="padding-top: 50px;"></div>
