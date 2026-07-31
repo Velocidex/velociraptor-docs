@@ -241,7 +241,7 @@ Applies if the dpkg tool exists and is functioning, on Linux systems.
 
 Sometimes Velociraptor's built-in functions and plugins need to evolve in a way
 that affects either their input (that is the accepted arguments may change),
-behaviour, or output. In the case of output changes the function/plugin may not
+behavior, or output. In the case of output changes the function/plugin may not
 produce results in the particular format that previously written VQL expects.
 This doesn't happen often, but when such backwardly-incompatible changes need to
 be made, we increment the plugin's version number. The version number is a

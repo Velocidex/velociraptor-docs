@@ -1,7 +1,7 @@
 name: Windows.Registry.ScheduledTasks
 author: Matt Green - @mgreen27
 description: |
-  This artefact will collect Scheduled task information from the registry without
+  This artifact will collect Scheduled task information from the registry without
   relying on the existence of an XML file in C:\\Windows\\System32\\Tasks.
 
   The artifact will attempt to find relevant XML data if exists.

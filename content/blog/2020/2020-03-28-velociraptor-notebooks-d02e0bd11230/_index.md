@@ -24,7 +24,7 @@ In the following article we analyze the same case as in our [previous article](.
 
 Notebooks are free form, shared documents built right into the Velociraptor GUI. Multiple analysts can view and edit the same notebook simultaneously.
 
-Typically in DFIR work, analysts do not necessarily immediately know the root cause of an intrusion. Analysis is often a long process of collecting evidence, post processing it in some way, analysing the results and collecting further evidence based on our findings.
+Typically in DFIR work, analysts do not necessarily immediately know the root cause of an intrusion. Analysis is often a long process of collecting evidence, post processing it in some way, analyzing the results and collecting further evidence based on our findings.
 
 Notebooks are a way of documenting this process while facilitating collaboration between different team members. During the investigation phase, they are a living document collecting conclusions from multiple artifacts, and coordinating team members. While after the investigation they are a document indicating what was done, and the logical process of reaching the final conclusions.
 

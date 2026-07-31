@@ -15,7 +15,7 @@ When writing Velociraptor we decided to keep things very simple - we did
 away with a lot of the information gathered during interrogate in favor
 of a much simpler data model.
 
-Data Modelling - The Interrogate Flow
+Data Modeling - The Interrogate Flow
 =====================================
 
 GRR maintains an elaborate model of client data. For example, GRR
@@ -53,7 +53,7 @@ Customizing the Interrogate flow.
 =================================
 
 Normally Velociraptor collects minimal information from the client upon
-interrogation (i.e. when the client first enrols or when interrogated
+interrogation (i.e. when the client first enrolls or when interrogated
 periodically). However it is very easy to customize this collection
 depending on local site requirements. In this section we work through a
 step by step example of extending the Velociraptor interrogate flow.

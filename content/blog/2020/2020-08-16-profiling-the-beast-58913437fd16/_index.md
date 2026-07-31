@@ -70,7 +70,7 @@ By default the profile is taken over 30 seconds, after which it is uploaded to t
 
 ![](../../img/17ZeuBYe5dIV_LATRLZkUaw.png)
 
-After downloading the profile file, I convert it to a callgrind format, so it can be viewed by my favourite profile inspector [kcachegrind](https://kcachegrind.github.io/html/Home.html) (there are other similar viewers and the Golang one is [called pprof](https://github.com/google/pprof)).
+After downloading the profile file, I convert it to a callgrind format, so it can be viewed by my favorite profile inspector [kcachegrind](https://kcachegrind.github.io/html/Home.html) (there are other similar viewers and the Golang one is [called pprof](https://github.com/google/pprof)).
 
 ```sh
 $ go tool pprof -callgrind -output=profile.grind profile.bin

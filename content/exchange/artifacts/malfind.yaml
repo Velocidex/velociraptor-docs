@@ -23,7 +23,7 @@ parameters:
     type: regex
   - name: ProtectionRegex
     description: |
-        Protection of section. Default is Executable but can customise for other use cases.
+        Protection of section. Default is Executable but can customize for other use cases.
         Examples: x for executable, r for read, w for write.
         (x|r|w) or xrw for multiple.
         x-w for strict.

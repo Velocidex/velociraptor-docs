@@ -29,7 +29,7 @@ description: |
   Windows values are parsed from text output and arrive as strings
   (e.g. the literal `'True'`, not the boolean `true`). Linux and macOS
   values are properly typed JSON. The notebook suggestion **Common
-  MDATP health information** normalises a useful subset across all
+  MDATP health information** normalizes a useful subset across all
   three platforms.
 
   ## Use as part of client interrogation

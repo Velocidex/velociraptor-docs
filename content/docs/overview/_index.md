@@ -76,7 +76,7 @@ Velociraptor can be used in many ways depending on your requirements.
   Velociraptor investigator to collect artifacts, hunt etc.
 
   This deployment method allows you to rapidly iterate through the
-  investigative process, collecting evidence, analysing and
+  investigative process, collecting evidence, analyzing and
   re-collecting rapidly.
 
 * **Offline collector**: If the Velociraptor client can not be
@@ -92,7 +92,7 @@ Velociraptor can be used in many ways depending on your requirements.
 * **Interactive analysis**: Velociraptor can be used for analysis of
   raw disk images. Using remapping rules, a `virtual client` can be
   launched which uses the disk image to collect the same VQL
-  artifacts. This allows disk images to be analysed using the same
+  artifacts. This allows disk images to be analyzed using the same
   procedure.
 
 ## The Velociraptor ecosystem

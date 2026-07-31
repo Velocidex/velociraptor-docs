@@ -51,7 +51,7 @@ timestamps, sorted by time. This approach does not require any
 additional tools than a simple spreadsheet:
 
 - `Analysis step`: The investigator identifies important events to
-  annotate by analysing various forensic artifacts or even just
+  annotate by analyzing various forensic artifacts or even just
   interviewing people, looking at other sources of evidence like
   security video etc.
 

@@ -118,7 +118,7 @@ just a convenient way to define variables outside of the VQL itself.
 
 #### Built-in Variables
 
-The behaviour of certain VQL plugins are determined by a set of
+The behavior of certain VQL plugins are determined by a set of
 [built-in variables](https://github.com/Velocidex/velociraptor/blob/e851953bd5bcff06a6e026ae6bb7a2cbd6de1cab/constants/constants.go#L80).
 
 In general, you should not need to modify these, but if for some
@@ -128,7 +128,7 @@ as the plugin call. In a sense, these can be considered "hidden
 arguments" for certain plugins.
 
 Some default variables are also used to define certain aspects of GUI
-behaviour, for example `column_types` is a variable that the GUI uses
+behavior, for example `column_types` is a variable that the GUI uses
 to configure user-defined display formatting for specific columns. If
 you're working in a notebook and use the **Format Columns** GUI
 option, you will see that it adds a variable `ColumnTypes` to the VQL.
@@ -1341,7 +1341,7 @@ data types, please see the section about [Truthiness](#truthiness).
 **`||` (Logical OR)**
 
 This operator returns the first true value encountered, or the last
-value if all are false. This behaviour is know as "short-circuiting"
+value if all are false. This behavior is know as "short-circuiting"
 where it evaluates from left to right and stops as soon as it
 encounters the first true value, returning that value immediately.
 This is a common pattern used to provide fallback values for Null or

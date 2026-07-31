@@ -73,6 +73,6 @@ To convert this VQL into a detection, we now encapsulate the query in an artifac
 
 ### Conclusions
 
-This post introduced the “process” accessor, which exposes process memory to all VQL plugins that can usually access files. The process accessor allows us to implement memory analysis techniques on running processes in real time, safely, quickly and reliably, without needing to resort to acquiring and analysing full physical memory images. This provides unprecedented visibility into the state of the endpoint and forms the basis for novel detection and hunting possibilities.
+This post introduced the “process” accessor, which exposes process memory to all VQL plugins that can usually access files. The process accessor allows us to implement memory analysis techniques on running processes in real time, safely, quickly and reliably, without needing to resort to acquiring and analyzing full physical memory images. This provides unprecedented visibility into the state of the endpoint and forms the basis for novel detection and hunting possibilities.
 
 To use this feature yourself, take[ Velociraptor for a spin](https://github.com/Velocidex/velociraptor)! It is a available on GitHub under an open source license. As always please file issues on the bug tracker or ask questions on our mailing list [velociraptor-discuss@googlegroups.com](mailto:velociraptor-discuss@googlegroups.com) . You can also chat with us directly on [Discord](/discord/)
