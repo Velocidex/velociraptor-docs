@@ -37,7 +37,7 @@ description: |
   out known placeholder values.
 
 
-  ## Customisation
+  ## Customization
 
   Use `HWInfoMetadata` to select which hardware information to store,
   and under what name, e.g.
@@ -65,7 +65,7 @@ description: |
 
   - [`Server.Monitor.StoreClientInfo`](/exchange/artifacts/pages/server.monitor.storeclientinfo/):
     sibling artifact for storing arbitrary metadata from any
-    interrogation source (no serial-specific behaviour)
+    interrogation source (no serial-specific behavior)
   - [`Generic.Client.HW.Identification`](/exchange/artifacts/pages/generic.client.hw.identification/):
     the producing artifact this one expects to consume
   - [How can I automatically add & update client metadata?](/knowledge_base/tips/automating_metadata/):
@@ -91,7 +91,7 @@ parameters:
   - name: SerialColumn
     description: |
       Name of column containing the serial number used to find the device in
-      Snipe-IT. The default behaviour is to pick the first non-empty value in
+      Snipe-IT. The default behavior is to pick the first non-empty value in
       product_serial, board_serial, and lastly, firmware_serial. The order of
       choices matter.
     type: multichoice

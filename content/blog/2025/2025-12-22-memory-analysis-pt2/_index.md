@@ -182,7 +182,7 @@ previously knowing which machines are infected.
 
 Our detection technique, `Windows.Memory.Mem2Disk`, compares the .text segment
 of running processes to the executable on disk. Any deviation indicates
-suspicious behaviour, i.e. mostly RAM injections.
+suspicious behavior, i.e. mostly RAM injections.
 
 ## 4.2. BaseOfData and ASLR
 

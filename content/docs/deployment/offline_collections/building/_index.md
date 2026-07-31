@@ -47,7 +47,7 @@ You can start the offline collector builder using either:
 
 3. The **Configure Collector** page is where you select the options that determine
    how the offline collector will be built, and key aspects of it's runtime
-   behaviour.
+   behavior.
 
 ![Offline Collector configuration](collector_configure.png)
 

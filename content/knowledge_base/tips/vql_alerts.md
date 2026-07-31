@@ -284,7 +284,7 @@ Key parameters:
 | --------- | ----------- |
 | `Secret` | [SMTP secret](/knowledge_base/tips/sending_email/#smtp-secret) name (required) |
 | `Recipients` | Who to notify |
-| `SeverityTransforms` | Derive a normalised severity string from context fields |
+| `SeverityTransforms` | Derive a normalized severity string from context fields |
 | `SeverityThreshold` | Only notify for alerts at or above a given severity |
 | `ContextInclude`/`ContextExclude` | Control which context fields appear in the notification |
 | `FlattenContext` | Flatten nested dicts in the context for readability |
@@ -295,7 +295,7 @@ Key parameters:
 keyword arguments passed to [`alert()`](/vql_reference/other/alert/) like any other context.
 [`Server.Monitor.Alerts`](/exchange/artifacts/pages/server.monitor.alerts/) gives them meaning through
 `SeverityTransforms`: it reads named fields from the context and maps
-their values to a normalised severity string. If your alert context
+their values to a normalized severity string. If your alert context
 already includes a field like `level` or `severity` (for instance from
 a Sigma rule), you can map it to a common scale. For example:
 

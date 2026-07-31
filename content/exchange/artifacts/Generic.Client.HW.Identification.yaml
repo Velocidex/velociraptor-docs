@@ -17,7 +17,7 @@ description: |
      available.
 
    A second column `virtual` is added, a best-effort boolean derived
-   from `product_name` that recognises common hypervisors and cloud
+   from `product_name` that recognizes common hypervisors and cloud
    providers (VirtualBox, VMware, KVM/QEMU, Hyper-V, Xen, Parallels,
    EC2, Azure, GCE etc.). The check is informational; systems can
    easily evade this check, and some VMs does not provide any HW

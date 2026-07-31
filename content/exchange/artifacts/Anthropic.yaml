@@ -38,7 +38,7 @@ parameters:
       default: Can you list 10 Windows persistence items in bullet points?
     - name: PromptData
       type: string
-      description: The data sent to Anthropic - this data is serialised and added to the prompt
+      description: The data sent to Anthropic - this data is serialized and added to the prompt
     - name: Model
       type: string
       description: The model used for processing the prompt

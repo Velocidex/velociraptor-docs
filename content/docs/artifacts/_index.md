@@ -394,7 +394,7 @@ writable, which means they can be edited or deleted.
 
 When the server starts it reads all artifacts stored in the
 `artifact_definitions` directory and marks these as "custom" (i.e. "not
-built-in). In the GUI's artifact previews these artifacts are labelled with
+built-in). In the GUI's artifact previews these artifacts are labeled with
 "Custom Artifact". Note that the artifact name does not need to start with the
 word "Custom" - it's just a helpful convention to use.
 
@@ -467,7 +467,7 @@ button on the host Overview page in the GUI. If a custom artifact name
 used instead when clients enroll or are interrogated. This override capability
 allows you to create a custom version of the artifact which gathers additional
 information and then have it work seamlessly via the GUI. This override
-behaviour does _not_ occur when either artifact is collected explicitly.
+behavior does _not_ occur when either artifact is collected explicitly.
 
 **Custom.Server.Monitor.Health**
 

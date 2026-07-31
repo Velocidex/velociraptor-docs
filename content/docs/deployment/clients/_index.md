@@ -1037,7 +1037,7 @@ Files** tab.
 
 ### Remotely upgrading clients
 
-The newly created client installer packages can be deployed using your favourite
+The newly created client installer packages can be deployed using your favorite
 enterprise software management tool, or by using the built-in
 `Admin.Client.Upgrade.<Platform>` artifacts which use the existing client to
 run the installer.

@@ -40,7 +40,7 @@ If you thought this was an unknown technique, rest assured that most
 attack tools integrate parent process spoofing already. For example
 [Cobalt Strike](https://www.youtube.com/watch?v=DOe7WTuJ1Ac) has been
 able to do this for a number of years now, and the technique is
-actively used frequently to avoid behavioural detection.
+actively used frequently to avoid behavioral detection.
 
 How can one detect this kind of spoofing? I found it surprising that
 there are no indicators that a process has been spoofed that can be

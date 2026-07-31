@@ -192,7 +192,7 @@ Which produces the effective command line:
 velociraptor_collector.exe artifacts collect Collector -v --require_admin --nobanner --prompt
 ```
 
-This modifies the offline collector behaviour slightly but it
+This modifies the offline collector behavior slightly but it
 otherwise continues according to the embedded spec.
 
 Autoexec mode can be used in a lot of novel ways besides the usual

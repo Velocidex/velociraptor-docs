@@ -50,7 +50,7 @@ be missing or incorrect.
 
 ### Client identity
 
-Velociraptor's main defence against rogue clients is cryptographic
+Velociraptor's main defense against rogue clients is cryptographic
 identity verification. Each client has a unique encryption key, and
 the server uses the internal PKI to ensure one client cannot
 impersonate another. This prevents a compromised client from injecting
