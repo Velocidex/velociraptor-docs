@@ -4,6 +4,25 @@ description: |
    Windows event log fast forensics timeline generator and threat
    hunting tool.
 
+   **WARNING**: This artifact deploys and executes a third-party binary
+   (`hayabusa.exe`) on the endpoint, which carries significant
+   operational risks:
+
+   * Security tools (AV/EDR) commonly detect, block, or quarantine the
+     Hayabusa binary, which may raise alerts for defenders or interfere
+     with the collection.
+   * The `UpdateRules` option causes the endpoint to make outbound
+     network connections to GitHub.
+   * Running analysis tools on the endpoint modifies forensic state
+     (Prefetch, Amcache, USN journal, etc.).
+
+   In most cases you should prefer Velociraptor's built-in Sigma engine,
+   which evaluates the same Hayabusa ruleset natively without deploying
+   any binary to the endpoint: import the curated `Windows.Hayabusa.Rules`
+   artifact from https://sigma.velocidex.com/ using the built-in
+   `Server.Import.CuratedSigma` artifact on Velociraptor 0.74, or
+   `Server.Import.Extras` on 0.75 and later.
+
    This artifact runs Hayabusa on the endpoint against the specified
    Windows event log directory, and generates and uploads a single CSV/JSONL
    file for further analysis with excel, timeline explorer, elastic
