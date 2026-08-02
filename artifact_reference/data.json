@@ -1,0 +1,3863 @@
+[
+    {
+        "title": "ADX.Flows.Upload",
+        "description": "This server-side event monitoring artifact waits for new artifacts\nto be collected from endpoints and automatically uploads those to an\nAzure Data Explorer (ADX) cluster.",
+        "link": "/artifact_references/pages/adx.flows.upload",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Admin.Client.Remove",
+        "description": "Purges inactive clients based on a configurable age threshold.",
+        "link": "/artifact_references/pages/admin.client.remove",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Admin.Client.Uninstall",
+        "description": "Executes uninstall commands via msiexec, dpkg, or rpm to remove the\nclient from the endpoint.",
+        "link": "/artifact_references/pages/admin.client.uninstall",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Admin.Client.UpdateClientConfig",
+        "description": "Replaces client configuration and optionally rekeys the client ID.",
+        "link": "/artifact_references/pages/admin.client.updateclientconfig",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Admin.Client.Upgrade.Debian",
+        "description": "Upgrades Velociraptor clients on Debian hosts by installing a new\nDebian package.",
+        "link": "/artifact_references/pages/admin.client.upgrade.debian",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Admin.Client.Upgrade.RedHat",
+        "description": "Upgrades Velociraptor clients on Red Hat hosts by installing a new RPM package",
+        "link": "/artifact_references/pages/admin.client.upgrade.redhat",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Admin.Client.Upgrade.Windows",
+        "description": "Upgrades Velociraptor clients on Windows hosts by running msiexec\nwith the provided MSI.",
+        "link": "/artifact_references/pages/admin.client.upgrade.windows",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Demo.Plugins.Fifo",
+        "description": "Demonstrates using the fifo() plugin to detect event sequences,\nusing failed logon attempts preceding a successful logon as a\nconcrete example.",
+        "link": "/artifact_references/pages/demo.plugins.fifo",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Demo.Plugins.GUI",
+        "description": "Provides test cases for GUI elements, parameter validation, and\nnotebook rendering.\n",
+        "link": "/artifact_references/pages/demo.plugins.gui",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Elastic.EventLogs.Sysmon",
+        "description": "Converts Windows Sysmon event logs to ECS schema-compliant output\nfor Elasticsearch ingestion.",
+        "link": "/artifact_references/pages/elastic.eventlogs.sysmon",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Elastic.Events.Clients",
+        "description": "Forwards real-time monitoring events from selected artifacts to an\nElasticsearch index.",
+        "link": "/artifact_references/pages/elastic.events.clients",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Elastic.Events.Upload",
+        "description": "Forwards real-time monitoring events from selected artifacts to an\nElasticsearch index.",
+        "link": "/artifact_references/pages/elastic.events.upload",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Elastic.Flows.Upload",
+        "description": "Uploads collected artifact results to an Elasticsearch server.",
+        "link": "/artifact_references/pages/elastic.flows.upload",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Applications.Chrome.SessionStorage",
+        "description": "Extracts key-value session storage entries from Chrome, Brave, and\nEdge browsers.",
+        "link": "/artifact_references/pages/generic.applications.chrome.sessionstorage",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Applications.Office.Keywords",
+        "description": "Scans Microsoft Office and LibraOffice/OpenDocument files for\nkeyword matches using YARA rules via the `zip` accessor.",
+        "link": "/artifact_references/pages/generic.applications.office.keywords",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Client.CleanupTemp",
+        "description": "Removes old temporary files from the Velociraptor client's temp\ndirectory.\n",
+        "link": "/artifact_references/pages/generic.client.cleanuptemp",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Client.DiskSpace",
+        "description": "Reports disk usage and free disk space on Linux, macOS, and Windows\nusing platform-specific commands.",
+        "link": "/artifact_references/pages/generic.client.diskspace",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Client.DiskUsage",
+        "description": "Computes disk usage per directory recursively, similar to the `du`\ncommand.",
+        "link": "/artifact_references/pages/generic.client.diskusage",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Client.Info",
+        "description": "Collects basic system details including hostname, OS version,\ninterfaces, and platform info",
+        "link": "/artifact_references/pages/generic.client.info",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Client.LocalLogs",
+        "description": "Writes client logs to an encrypted local container file with\nconfigurable row limit (with flush) and size limit.",
+        "link": "/artifact_references/pages/generic.client.locallogs",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Client.LocalLogsRetrieve",
+        "description": "Fetches encrypted local log files from endpoints via the upload\nfunction.",
+        "link": "/artifact_references/pages/generic.client.locallogsretrieve",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Client.Profile",
+        "description": "Collects runtime profiling data including goroutines, memory, CPU,\nand metrics from the client.",
+        "link": "/artifact_references/pages/generic.client.profile",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Client.Rekey",
+        "description": "Forces the client to regenerate its client ID and restart itself.",
+        "link": "/artifact_references/pages/generic.client.rekey",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Client.Stats",
+        "description": "Records CPU and memory statistics for the Velociraptor client\nprocess.",
+        "link": "/artifact_references/pages/generic.client.stats",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Client.Trace",
+        "description": "Captures runtime trace information from the client at a specified\ninterval",
+        "link": "/artifact_references/pages/generic.client.trace",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Client.VQL",
+        "description": "Runs an arbitrary VQL query on the endpoint.\n",
+        "link": "/artifact_references/pages/generic.client.vql",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Collectors.File",
+        "description": "Searches a filesystem using a set of glob patterns and uploads\nmatching files to the server.",
+        "link": "/artifact_references/pages/generic.collectors.file",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Detection.HashHunter",
+        "description": "Searches the filesystem for a list of hashes, with path file size\nand date filtering.",
+        "link": "/artifact_references/pages/generic.detection.hashhunter",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Detection.Logs",
+        "description": "Searches text-based log files for strings matching a regex pattern\nacross common web server and system log paths.",
+        "link": "/artifact_references/pages/generic.detection.logs",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Detection.Yara.Glob",
+        "description": "Runs YARA rules against files discovered via glob search with\nconfigurable filters and optional upload of hit context.",
+        "link": "/artifact_references/pages/generic.detection.yara.glob",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Detection.Yara.Zip",
+        "description": "Searches for YARA matches inside nested compressed archives up to a\nconfigurable recursion depth.",
+        "link": "/artifact_references/pages/generic.detection.yara.zip",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Forensic.Carving.URLs",
+        "description": "Extracts URLs from files in common user-related locations using\nregex carving.",
+        "link": "/artifact_references/pages/generic.forensic.carving.urls",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Forensic.HashLookup",
+        "description": "Collects file hashes from various sources into a central event\nstream for external lookups.",
+        "link": "/artifact_references/pages/generic.forensic.hashlookup",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Forensic.LocalHashes.Glob",
+        "description": "Calculates hashes for files matching a glob pattern and stores them\nin a SQLite database on the client.",
+        "link": "/artifact_references/pages/generic.forensic.localhashes.glob",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Forensic.LocalHashes.Init",
+        "description": "Sets up a client-side SQLite database for storing file paths, MD5\nhashes, and timestamps generated by\n`Generic.Forensic.LocalHashes.Glob` or similar artifacts.\n",
+        "link": "/artifact_references/pages/generic.forensic.localhashes.init",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Forensic.LocalHashes.Query",
+        "description": "Searches the local SQLite hash database for files matching a\nuser-supplied hash list.",
+        "link": "/artifact_references/pages/generic.forensic.localhashes.query",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Forensic.Timeline",
+        "description": "Creates a bodyfile-format timeline of files matching a glob pattern.",
+        "link": "/artifact_references/pages/generic.forensic.timeline",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Network.InterfaceAddresses",
+        "description": "Collects interface addresses and metadata such as MAC, MTU, and IP\nmasks across operating systems.",
+        "link": "/artifact_references/pages/generic.network.interfaceaddresses",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.System.EfiSignatures",
+        "description": "Collects UEFI Secure Boot signature variables including PK, db, and\ndbx from the client.\n",
+        "link": "/artifact_references/pages/generic.system.efisignatures",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.System.HostsFile",
+        "description": "Parses the system hosts file to extract hostname-to-IP mappings.",
+        "link": "/artifact_references/pages/generic.system.hostsfile",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.System.ProcessSiblings",
+        "description": "Lists sibling processes from the process tracker to reveal related\nprocess activity.",
+        "link": "/artifact_references/pages/generic.system.processsiblings",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.System.Pstree",
+        "description": "Shows process lineage by following parent PIDs to establish call\nchains.",
+        "link": "/artifact_references/pages/generic.system.pstree",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Utils.Crypto",
+        "description": "A utility artifact that provides HMAC-SHA256 and other custom hash\nfunctions.",
+        "link": "/artifact_references/pages/generic.utils.crypto",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Utils.DeadDiskRemapping",
+        "description": "Inspects a disk image and produces an appropriate YAML remapping\nconfig for transparent filesystem access.",
+        "link": "/artifact_references/pages/generic.utils.deaddiskremapping",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Utils.FetchBinary",
+        "description": "A utility artifact which fetches a binary (or data file) from a URL\nand caches it on disk.",
+        "link": "/artifact_references/pages/generic.utils.fetchbinary",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Generic.Utils.SendEmail",
+        "description": "A Utility artifact for sending emails.",
+        "link": "/artifact_references/pages/generic.utils.sendemail",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Applications.Chrome.Extensions",
+        "description": "Enumerates installed Chrome extensions by locating and parsing\n`manifest.json` files for all users.",
+        "link": "/artifact_references/pages/linux.applications.chrome.extensions",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Applications.Chrome.Extensions.Upload",
+        "description": "Uploads the Chrome extension files from each user's home directory.",
+        "link": "/artifact_references/pages/linux.applications.chrome.extensions.upload",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Applications.Docker.Info",
+        "description": "Connects to the Docker socket and retrieves daemon information\nincluding containers, images, and driver settings.\n",
+        "link": "/artifact_references/pages/linux.applications.docker.info",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Applications.Docker.Version",
+        "description": "Connects to the Docker socket and retrieves daemon version details\nincluding API and kernel versions.\n",
+        "link": "/artifact_references/pages/linux.applications.docker.version",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Debian.AptSources",
+        "description": "Extracts package repository configuration from Debian-based systems\nby parsing apt sources.",
+        "link": "/artifact_references/pages/linux.debian.aptsources",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Debian.Packages",
+        "description": "Queries `dpkg` and `snapd` to list installed deb and snap packages.",
+        "link": "/artifact_references/pages/linux.debian.packages",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Detection.AnomalousFiles",
+        "description": "Detects anomalous files in a Linux filesystem.",
+        "link": "/artifact_references/pages/linux.detection.anomalousfiles",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Detection.Yara.Glob",
+        "description": "Runs YARA rules against files discovered via glob search with\nconfigurable filters and optional upload of hit context.",
+        "link": "/artifact_references/pages/linux.detection.yara.glob",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Detection.Yara.Process",
+        "description": "Scans process memory with YARA rules, supporting URL-based or inline\nrule deployment.",
+        "link": "/artifact_references/pages/linux.detection.yara.process",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Events.DNS",
+        "description": "Monitors DNS requests in real time using eBPF, with filtering by\nprocess and destination.",
+        "link": "/artifact_references/pages/linux.events.dns",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Events.EBPF",
+        "description": "Forwards selected EBPF events generated on the endpoint.\n",
+        "link": "/artifact_references/pages/linux.events.ebpf",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Events.HTTPConnections",
+        "description": "Monitors HTTP traffic on Linux systems using eBPF network tracing.",
+        "link": "/artifact_references/pages/linux.events.httpconnections",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Events.Journal",
+        "description": "Forwards events from the Systemd binary journal logs.\n",
+        "link": "/artifact_references/pages/linux.events.journal",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Events.ProcessExecutions",
+        "description": "Collects process execution logs from the Linux kernel.",
+        "link": "/artifact_references/pages/linux.events.processexecutions",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Events.SSHBruteforce",
+        "description": "Monitors SSH authentication logs to detect successful logins\nfollowing multiple failed attempts within a 1-hour time window.",
+        "link": "/artifact_references/pages/linux.events.sshbruteforce",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Events.SSHLogin",
+        "description": "Watches the `auth.log` file for new successful SSH login events and\nforwards them to the server.\n",
+        "link": "/artifact_references/pages/linux.events.sshlogin",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Events.TrackProcesses",
+        "description": "Subscribes to eBPF process events to track new processes and their\nparent relationships.",
+        "link": "/artifact_references/pages/linux.events.trackprocesses",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Forensics.ImmutableFiles",
+        "description": "Locates immutable files on Linux by checking ext4 filesystem flags.",
+        "link": "/artifact_references/pages/linux.forensics.immutablefiles",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Forensics.Journal",
+        "description": "Extracts records from systemd journal files for forensic analysis.",
+        "link": "/artifact_references/pages/linux.forensics.journal",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Mounts",
+        "description": "Lists mounted filesystems by reading `/proc/mounts`.\n",
+        "link": "/artifact_references/pages/linux.mounts",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Network.Netstat",
+        "description": "Reads Linux `/proc/net` files to display socket connection states\nand processes.",
+        "link": "/artifact_references/pages/linux.network.netstat",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Network.NetstatEnriched",
+        "description": "Reports network connections and enriches with process information.\n",
+        "link": "/artifact_references/pages/linux.network.netstatenriched",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Network.PacketCapture",
+        "description": "Runs tcpdump to capture network packets and upload the PCAP file.",
+        "link": "/artifact_references/pages/linux.network.packetcapture",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.OSQuery.Generic",
+        "description": "Deploys the osquery binary and runs a user-specified SQL query,\nreturning parsed JSON results.",
+        "link": "/artifact_references/pages/linux.osquery.generic",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Proc.Arp",
+        "description": "Parses the ARP table from /proc/net/arp.\n",
+        "link": "/artifact_references/pages/linux.proc.arp",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Proc.Modules",
+        "description": "Parses `/proc/modules` to enumerate loaded kernel modules with their\ndetails.\n",
+        "link": "/artifact_references/pages/linux.proc.modules",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.RHEL.Packages",
+        "description": "Parses packages installed from `dnf` or `yum`.\n",
+        "link": "/artifact_references/pages/linux.rhel.packages",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Remediation.Quarantine",
+        "description": "Applies network quarantine to a Linux system using nftables.",
+        "link": "/artifact_references/pages/linux.remediation.quarantine",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Search.FileFinder",
+        "description": "Searches for files by path glob, inspects file content via YARA, and\nprovides file hash and upload options..",
+        "link": "/artifact_references/pages/linux.search.filefinder",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Ssh.AuthorizedKeys",
+        "description": "Finds and parses SSH authorized keys files.",
+        "link": "/artifact_references/pages/linux.ssh.authorizedkeys",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Ssh.KnownHosts",
+        "description": "Finds and parses SSH known hosts files.",
+        "link": "/artifact_references/pages/linux.ssh.knownhosts",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Ssh.PrivateKeys",
+        "description": "Searches filesystem for SSH private keys and detects encryption\nstatus.",
+        "link": "/artifact_references/pages/linux.ssh.privatekeys",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.SuSE.Packages",
+        "description": "Queries `zypper` to retrieve installed packages with version and\nrepository details.\n",
+        "link": "/artifact_references/pages/linux.suse.packages",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Sys.ACPITables",
+        "description": "Lists ACPI firmware tables with their sizes and cryptographic\nhashes.\n",
+        "link": "/artifact_references/pages/linux.sys.acpitables",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Sys.BashHistory",
+        "description": "Provides grep-like searching of Bash and alternate shell history log\nfiles.",
+        "link": "/artifact_references/pages/linux.sys.bashhistory",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Sys.BashShell",
+        "description": "This artifact allows running arbitrary commands through the system\nshell.",
+        "link": "/artifact_references/pages/linux.sys.bashshell",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Sys.CPUTime",
+        "description": "Displays information from the `/proc/stat` file about the time the\nCPU cores spent in different parts of the system.\n",
+        "link": "/artifact_references/pages/linux.sys.cputime",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Sys.Crontab",
+        "description": "Displays parsed information from crontab.\n",
+        "link": "/artifact_references/pages/linux.sys.crontab",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Sys.Groups",
+        "description": "Lists system group IDs, names and memberships from `/etc/group`.\n",
+        "link": "/artifact_references/pages/linux.sys.groups",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Sys.LastUserLogin",
+        "description": "Parses system WTMP files. These indicate when users last logged in.\n",
+        "link": "/artifact_references/pages/linux.sys.lastuserlogin",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Sys.LogGrep",
+        "description": "Provides zgrep-like search capabilities across log files, including\ngzipped log files, matching a glob for lines matching a regex.\n",
+        "link": "/artifact_references/pages/linux.sys.loggrep",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Sys.LogHunter",
+        "description": "Provides grep-like search capabilities for Linux, MacOS and Windows\nlogs.",
+        "link": "/artifact_references/pages/linux.sys.loghunter",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Sys.Maps",
+        "description": "Extracts mapped library and file information from `/proc/<pid>/maps`\nfor running processes.",
+        "link": "/artifact_references/pages/linux.sys.maps",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Sys.Pslist",
+        "description": "Lists processes and their associated binaries.\n",
+        "link": "/artifact_references/pages/linux.sys.pslist",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Sys.SUID",
+        "description": "Searches for applications that have the `setuid` or `setgid` bits\nset.",
+        "link": "/artifact_references/pages/linux.sys.suid",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Sys.Services",
+        "description": "Parses services output from `systemctl`.\n",
+        "link": "/artifact_references/pages/linux.sys.services",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Sys.Users",
+        "description": "Gets user-specific information like homedir, group, etc. from\n`/etc/passwd`.\n",
+        "link": "/artifact_references/pages/linux.sys.users",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Syslog.SSHLogin",
+        "description": "Parses the auth logs to identify all SSH login attempts.\n",
+        "link": "/artifact_references/pages/linux.syslog.sshlogin",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Triage.ProcessMemory",
+        "description": "Dumps process memory from a selected process and uploads it to the\nserver.\n",
+        "link": "/artifact_references/pages/linux.triage.processmemory",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Users.InteractiveUsers",
+        "description": "Gets the interactive users from a Linux host.\n",
+        "link": "/artifact_references/pages/linux.users.interactiveusers",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Users.RootUsers",
+        "description": "Detects users added in the `sudo` group.\n",
+        "link": "/artifact_references/pages/linux.users.rootusers",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Linux.Utils.InstallDeb",
+        "description": "Installs .deb packages on Debian-based systems with optional debconf\nanswers configuration.",
+        "link": "/artifact_references/pages/linux.utils.installdeb",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "LogScale.Events.Clients",
+        "description": "Forwards selected client monitoring events to a LogScale ingestion\nendpoint.",
+        "link": "/artifact_references/pages/logscale.events.clients",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "LogScale.Flows.Upload",
+        "description": "Forwards completed flow results to LogScale with configurable\nbatching and artifact filtering.\n",
+        "link": "/artifact_references/pages/logscale.flows.upload",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.Applications.Chrome.History",
+        "description": "Enumerates visited URLs, titles, and visit timestamps from Chrome\nhistory databases on macOS.",
+        "link": "/artifact_references/pages/macos.applications.chrome.history",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.Applications.MRU",
+        "description": "Parses Finder's `FXRecentFolders` plist entries to extract recently\naccessed items.\n",
+        "link": "/artifact_references/pages/macos.applications.mru",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.Detection.Autoruns",
+        "description": "Gathers evidence of macOS autoruns by searching common persistence\nlocations and uploading found files.",
+        "link": "/artifact_references/pages/macos.detection.autoruns",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.Detection.InstallHistory",
+        "description": "Collects entries from the InstallHistory .plist file\n",
+        "link": "/artifact_references/pages/macos.detection.installhistory",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.Detection.Yara.Glob",
+        "description": "Runs YARA rules against files discovered via glob search with\nconfigurable filters and optional upload of hit context.",
+        "link": "/artifact_references/pages/macos.detection.yara.glob",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.Detection.Yara.Process",
+        "description": "Scans process memory with YARA rules, supporting URL-based or inline\nrule deployment.",
+        "link": "/artifact_references/pages/macos.detection.yara.process",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.Forensics.AppleDoubleZip",
+        "description": "Searches for zip files containing download URLs inadvertently\nincluded in the zip contents.",
+        "link": "/artifact_references/pages/macos.forensics.appledoublezip",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.Forensics.FSEvents",
+        "description": "Reads macOS FSEvents logs to enumerate file creation, deletion,\nrename, and modification events.",
+        "link": "/artifact_references/pages/macos.forensics.fsevents",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.Network.Netstat",
+        "description": "Reports network connections enriched with process information.\n",
+        "link": "/artifact_references/pages/macos.network.netstat",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.Network.PacketCapture",
+        "description": "Captures network packets using tcpdump and uploads the resulting\npcap file.",
+        "link": "/artifact_references/pages/macos.network.packetcapture",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.OSQuery.Generic",
+        "description": "Deploys the osquery binary and runs a user-specified SQL query,\nreturning parsed JSON results.",
+        "link": "/artifact_references/pages/macos.osquery.generic",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.Search.FileFinder",
+        "description": "Searches for files by path glob, inspects file content via YARA, and\nprovides file hash and upload options.",
+        "link": "/artifact_references/pages/macos.search.filefinder",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.Sys.Pslist",
+        "description": "Lists processes and their associated binaries.\n",
+        "link": "/artifact_references/pages/macos.sys.pslist",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.Sys.SUID",
+        "description": "Searches for applications that have the `setuid` or `setgid` bits\nset.",
+        "link": "/artifact_references/pages/macos.sys.suid",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.System.Dock",
+        "description": "Lists docked applications and their metadata from each user's Dock\nplist.",
+        "link": "/artifact_references/pages/macos.system.dock",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.System.Packages",
+        "description": "Parses `system_profiler` output to enumerate installed macOS\napplications with metadata.\n",
+        "link": "/artifact_references/pages/macos.system.packages",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.System.Plist",
+        "description": "Parses and optionally uploads macOS `.plist` files. ",
+        "link": "/artifact_references/pages/macos.system.plist",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.System.QuarantineEvents",
+        "description": "Parses the QuarantineEventsV2 database, which provides information\non when a file was downloaded from the internet.\n",
+        "link": "/artifact_references/pages/macos.system.quarantineevents",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.System.TCC",
+        "description": "Queries the TCC (Transparency, Consent, and Control) database, which\ncan help reveal when access to system services has been added or\nmodified for an application.",
+        "link": "/artifact_references/pages/macos.system.tcc",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.System.TimeMachine",
+        "description": "Collects Time Machine backup settings including volume, auto-backup\nstatus, and destinations.\n",
+        "link": "/artifact_references/pages/macos.system.timemachine",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.System.Users",
+        "description": "Collects information about the local users on the system.",
+        "link": "/artifact_references/pages/macos.system.users",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.System.Wifi",
+        "description": "Parses the macOS airport preferences to enumerate previously joined\nWiFi networks.",
+        "link": "/artifact_references/pages/macos.system.wifi",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Network.ExternalIpAddress",
+        "description": "Identifies the external IP address of the endpoint using an external\nweb service.\n",
+        "link": "/artifact_references/pages/network.externalipaddress",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Notebooks.Default",
+        "description": "Creates a new notebook with a welcome message and placeholder VQL\ncell.\n",
+        "link": "/artifact_references/pages/notebooks.default",
+        "type": "notebook",
+        "tags": [
+            "notebook"
+        ]
+    },
+    {
+        "title": "Notebooks.Demo",
+        "description": "Demonstrates notebook functionality with sample VQL and tool\nreferences.\n",
+        "link": "/artifact_references/pages/notebooks.demo",
+        "type": "notebook",
+        "tags": [
+            "notebook"
+        ]
+    },
+    {
+        "title": "Notebooks.Sigma.Studio",
+        "description": "Sets up a Sigma rule development workspace with live testing against\nsample events.\n",
+        "link": "/artifact_references/pages/notebooks.sigma.studio",
+        "type": "notebook",
+        "tags": [
+            "notebook"
+        ]
+    },
+    {
+        "title": "Notebooks.Timelines",
+        "description": "Provides a notebook template for building consolidated timelines\nfrom time series data across collections.",
+        "link": "/artifact_references/pages/notebooks.timelines",
+        "type": "notebook",
+        "tags": [
+            "notebook"
+        ]
+    },
+    {
+        "title": "Notebooks.VQLx2",
+        "description": "A notebook initialized with 2 VQL cells containing simple queries\nand also demonstrating initial output.\n",
+        "link": "/artifact_references/pages/notebooks.vqlx2",
+        "type": "notebook",
+        "tags": [
+            "notebook"
+        ]
+    },
+    {
+        "title": "Reporting.Default",
+        "description": "Provides the default HTML template for exporting notebook and report\ncontent.",
+        "link": "/artifact_references/pages/reporting.default",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Reporting.Hunts.Details",
+        "description": "Reports hunt execution details including client participation,\nduration, and completion status.\n",
+        "link": "/artifact_references/pages/reporting.hunts.details",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Alerts.Notification",
+        "description": "Sends alert notifications from the `Server.Internal.Alerts` queue to\na webhook-compatible chat service such as Slack/Teams/Discord.\n",
+        "link": "/artifact_references/pages/server.alerts.notification",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Alerts.ProcessCreation",
+        "description": "Forwards process creation detections to Slack, Teams, or Discord via\nwebhook.",
+        "link": "/artifact_references/pages/server.alerts.processcreation",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Alerts.PsExec",
+        "description": "Sends an email alert when PsExec service execution is detected on a\nmonitored client.",
+        "link": "/artifact_references/pages/server.alerts.psexec",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Alerts.TheHive.Alert",
+        "description": "Creates TheHive alerts when monitored artifact collections complete\nwith results.",
+        "link": "/artifact_references/pages/server.alerts.thehive.alert",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Alerts.TheHive.Case",
+        "description": "Generates TheHive cases from completed artifact flows using\nClientId, FlowId, and FQDN as tags. Also adds FQDN as an observable.",
+        "link": "/artifact_references/pages/server.alerts.thehive.case",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Alerts.Trackaccount",
+        "description": "Forwards account tracking events from `Windows.Events.Trackaccount`\nas an alert to a Slack/Teams/Discord webhook.",
+        "link": "/artifact_references/pages/server.alerts.trackaccount",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Alerts.WinPmem",
+        "description": "Sends an alert via email when the pmem service installation is\ndetected by `Windows.Events.ServiceCreation`.",
+        "link": "/artifact_references/pages/server.alerts.winpmem",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Audit.Logs",
+        "description": "Collects server audit events for significant user actions such as\nstarting a new collection, creating a new hunt, updating an artifact\ndefinition etc.\n",
+        "link": "/artifact_references/pages/server.audit.logs",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Enrichment.CortexAnalyzer",
+        "description": "A utility artifact that runs Cortex analyzer jobs on observables and\nretrieves the results from all applicable analyzers.",
+        "link": "/artifact_references/pages/server.enrichment.cortexanalyzer",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Enrichment.GeoIP",
+        "description": "A utility artifact that enriches an IP address with country, state,\nand city information from a MaxMind GeoIP database.",
+        "link": "/artifact_references/pages/server.enrichment.geoip",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Enrichment.GeoIPISP",
+        "description": "A utility artifact that enriches an IP address with ISP,\norganization, and ASN information from a MaxMind GeoIP ISP database.",
+        "link": "/artifact_references/pages/server.enrichment.geoipisp",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Enrichment.GreyNoise",
+        "description": "Enriches an IP address with GreyNoise threat intelligence including\nclassification and noise status.",
+        "link": "/artifact_references/pages/server.enrichment.greynoise",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Enrichment.HybridAnalysis",
+        "description": "Submits a file hash to the Hybrid Analysis threat intelligence\nservice for a verdict.",
+        "link": "/artifact_references/pages/server.enrichment.hybridanalysis",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Enrichment.Virustotal",
+        "description": "Enriches a file hash or IP address with VirusTotal threat\nintelligence results.",
+        "link": "/artifact_references/pages/server.enrichment.virustotal",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Hunts.AddFlow",
+        "description": "Links an existing flow to a hunt so it appears in the hunt's\nresults.",
+        "link": "/artifact_references/pages/server.hunts.addflow",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Hunts.CancelAndDelete",
+        "description": "Cancels all in-flight flows in a hunt, deletes the hunt, and\noptionally removes collected data.",
+        "link": "/artifact_references/pages/server.hunts.cancelanddelete",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Hunts.List",
+        "description": "Enumerates scheduled hunts showing hunt IDs, artifacts, and status.\n",
+        "link": "/artifact_references/pages/server.hunts.list",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Hunts.Results",
+        "description": "Returns the collected data rows for a specified artifact within a\nhunt.\n",
+        "link": "/artifact_references/pages/server.hunts.results",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Import.ArtifactBundle",
+        "description": "Imports a zipped package containing Velociraptor artifacts from a\nremote web server.",
+        "link": "/artifact_references/pages/server.import.artifactbundle",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Import.ArtifactExchange",
+        "description": "Imports a zipped package containing Velociraptor artifacts from a\nremote web server.",
+        "link": "/artifact_references/pages/server.import.artifactexchange",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Import.Extras",
+        "description": "Downloads and imports artifact bundles from predefined external\nrepositories.",
+        "link": "/artifact_references/pages/server.import.extras",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Import.PreviousReleases",
+        "description": "Downloads and installs legacy artifact bundles from a specified\nolder Velociraptor release.",
+        "link": "/artifact_references/pages/server.import.previousreleases",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Information.Users",
+        "description": "Lists user names and SIDs from collected `Windows.Sys.Users` results\nacross all clients.",
+        "link": "/artifact_references/pages/server.information.users",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.Alerts",
+        "description": "Provides an internal event stream for high-value alerts generated by\nclient or server artifacts.",
+        "link": "/artifact_references/pages/server.internal.alerts",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.ArtifactDescription",
+        "description": "Renders a formatted view of any artifact's metadata, parameters,\nsources, exports, etc.\n",
+        "link": "/artifact_references/pages/server.internal.artifactdescription",
+        "type": "internal",
+        "tags": [
+            "Internal Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.ArtifactModification",
+        "description": "Provides an internal event stream for artifact modification\nnotifications.",
+        "link": "/artifact_references/pages/server.internal.artifactmodification",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.ClientConflict",
+        "description": "Emits events when the server detects a client ID conflict between\nduplicate clients.",
+        "link": "/artifact_references/pages/server.internal.clientconflict",
+        "type": "internal",
+        "tags": [
+            "Internal Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.ClientDelete",
+        "description": "Provides an internal event stream for client deletion notifications.\n",
+        "link": "/artifact_references/pages/server.internal.clientdelete",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.ClientInfo",
+        "description": "Automatically collects and updates client info indexes from\nheartbeat messages.",
+        "link": "/artifact_references/pages/server.internal.clientinfo",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.ClientInfoSnapshot",
+        "description": "Notifies minion nodes to refresh their client info cache when the\nmaster writes a new snapshot.",
+        "link": "/artifact_references/pages/server.internal.clientinfosnapshot",
+        "type": "internal",
+        "tags": [
+            "Internal Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.ClientPing",
+        "description": "Provides an internal event channel for client ping notifications\n",
+        "link": "/artifact_references/pages/server.internal.clientping",
+        "type": "internal",
+        "tags": [
+            "Internal Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.ClientScheduled",
+        "description": "Fires an event when new flows are scheduled for a client to process.\n",
+        "link": "/artifact_references/pages/server.internal.clientscheduled",
+        "type": "internal",
+        "tags": [
+            "Internal Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.ClientTasks",
+        "description": "Fires an event when the server schedules new tasks for a client.\n",
+        "link": "/artifact_references/pages/server.internal.clienttasks",
+        "type": "internal",
+        "tags": [
+            "Internal Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.HuntModification",
+        "description": "Provides an internal event queue for hunt modification notifications\nincluding stop and start events.",
+        "link": "/artifact_references/pages/server.internal.huntmodification",
+        "type": "internal",
+        "tags": [
+            "Internal Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.HuntUpdate",
+        "description": "Notifies hunt dispatchers across all minions when a hunt's status or\nconfiguration changes, and should be updated from the internal\ncache.",
+        "link": "/artifact_references/pages/server.internal.huntupdate",
+        "type": "internal",
+        "tags": [
+            "Internal Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.Interrogate",
+        "description": "Captures client interrogation results (OS, hostname, architecture)\nwhen clients complete the client info collection.\n",
+        "link": "/artifact_references/pages/server.internal.interrogate",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.Interrogation",
+        "description": "Emits an event when the interrogation service completes processing a\nclient's info update.",
+        "link": "/artifact_references/pages/server.internal.interrogation",
+        "type": "internal",
+        "tags": [
+            "Internal Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.Inventory",
+        "description": "Fires an event when the server's tool inventory is updated or\nmodified.\n",
+        "link": "/artifact_references/pages/server.internal.inventory",
+        "type": "internal",
+        "tags": [
+            "Internal Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.MasterRegistrations",
+        "description": "Advertises event subscriptions from the master node to all minions\nin a multi-frontend deployment.",
+        "link": "/artifact_references/pages/server.internal.masterregistrations",
+        "type": "internal",
+        "tags": [
+            "Internal Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.MetadataModifications",
+        "description": "Emits an event when server metadata (such as client labels or host\ninfo) is modified.\n",
+        "link": "/artifact_references/pages/server.internal.metadatamodifications",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.ResumedUploads",
+        "description": "Displays the status and details of all resumable upload operations\non the server.\n",
+        "link": "/artifact_references/pages/server.internal.resumeduploads",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.ToolDependencies",
+        "description": "An internal artifact that defines some tool\ndependencies. Velociraptor releases for offline collector",
+        "link": "/artifact_references/pages/server.internal.tooldependencies",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.UserManager",
+        "description": "Fires an event when Velociraptor user accounts are created, modified, or deleted.\n",
+        "link": "/artifact_references/pages/server.internal.usermanager",
+        "type": "internal",
+        "tags": [
+            "Internal Artifact"
+        ]
+    },
+    {
+        "title": "Server.Internal.Welcome",
+        "description": "Renders the server Home page / Welcome page showing navigation links\nto common tasks and dashboards.",
+        "link": "/artifact_references/pages/server.internal.welcome",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Monitor.ClientConflict",
+        "description": "Detects client ID conflicts on the server and forces affected\nclients to rekey with a new identity.",
+        "link": "/artifact_references/pages/server.monitor.clientconflict",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Monitor.Health",
+        "description": "Provides the server overview dashboard showing performance metrics,\ndisk space, and user permissions.",
+        "link": "/artifact_references/pages/server.monitor.health",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Monitor.Profile",
+        "description": "Collects server profiling data including goroutine traces, memory\nheap, CPU profiles, and metrics.",
+        "link": "/artifact_references/pages/server.monitor.profile",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Monitor.Shell",
+        "description": "Captures stdout, stderr, and command details from shell command\nexecutions across all clients for auditing purposes.",
+        "link": "/artifact_references/pages/server.monitor.shell",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Monitor.VeloMetrics",
+        "description": "Collects Velociraptor server performance metrics from the Prometheus\nendpoint with CPU and memory stats.\n",
+        "link": "/artifact_references/pages/server.monitor.velometrics",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Monitoring.ClientCount",
+        "description": "Emails deployment statistics, including the connected client count,\non a configurable schedule.",
+        "link": "/artifact_references/pages/server.monitoring.clientcount",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Monitoring.RSSFeeds",
+        "description": "Polls RSS feeds at a configurable interval and alerts users about\nnew items.",
+        "link": "/artifact_references/pages/server.monitoring.rssfeeds",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Monitoring.ScheduleHunt",
+        "description": "Runs client interrogation periodically.",
+        "link": "/artifact_references/pages/server.monitoring.schedulehunt",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Monitoring.TimesketchUpload",
+        "description": "Watches for creation of new Velociraptor timelines and\nautomatically uploads matching ones to Timesketch.\n",
+        "link": "/artifact_references/pages/server.monitoring.timesketchupload",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Orgs.ListOrgs",
+        "description": "Lists all configured organizations on the Velociraptor server with\noptional downloadable client config for each org.",
+        "link": "/artifact_references/pages/server.orgs.listorgs",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Orgs.NewOrg",
+        "description": "Creates a new Velociraptor organization and assigns the current user\nas the org administrator.",
+        "link": "/artifact_references/pages/server.orgs.neworg",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Powershell.EncodedCommand",
+        "description": "Intercepts PowerShell `-EncodedCommand` scripts in events that are\ncollected via client monitoring and decodes them.",
+        "link": "/artifact_references/pages/server.powershell.encodedcommand",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Slack.Clients.Online",
+        "description": "Sends a Slack notification when clients with a target label appear\nonline.",
+        "link": "/artifact_references/pages/server.slack.clients.online",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.AddTimeline",
+        "description": "Adds a new timeline entry to a notebook super-timeline with results\nfrom a provided VQL query.\n",
+        "link": "/artifact_references/pages/server.utils.addtimeline",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.AddUser",
+        "description": "Creates a new Velociraptor GUI user with a specified role and a\nrandomly generated password.",
+        "link": "/artifact_references/pages/server.utils.adduser",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.ArtifactVerifier",
+        "description": "Validates artifact YAML definitions from a file glob and reports\nerrors and warnings in a structured format.",
+        "link": "/artifact_references/pages/server.utils.artifactverifier",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.BackupDirectory",
+        "description": "Automatically exports and backs up completed flow results to a\nspecified directory on the server.\n",
+        "link": "/artifact_references/pages/server.utils.backupdirectory",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.BackupGCS",
+        "description": "Automatically zips and uploads collected flow results to a Google\nCloud Storage bucket.",
+        "link": "/artifact_references/pages/server.utils.backupgcs",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.BackupS3",
+        "description": "Automatically zips and uploads collected flow results to an\nS3-compatible bucket.",
+        "link": "/artifact_references/pages/server.utils.backups3",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.CancelHunt",
+        "description": "Cancels all in-progress flows for one or more specified hunts.",
+        "link": "/artifact_references/pages/server.utils.cancelhunt",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.Clients",
+        "description": "Provides an interactive notebook for searching and inspecting client\ndetails.",
+        "link": "/artifact_references/pages/server.utils.clients",
+        "type": "notebook",
+        "tags": [
+            "notebook"
+        ]
+    },
+    {
+        "title": "Server.Utils.CollectClient",
+        "description": "Automates the full collection workflow of a specified artifact:\nschedule, wait, and retrieve results from a single client.",
+        "link": "/artifact_references/pages/server.utils.collectclient",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.CreateCollector",
+        "description": "A utility artifact to create a standalone Velociraptor offline\ncollector binary with specified artifacts and output target.",
+        "link": "/artifact_references/pages/server.utils.createcollector",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.CreateLinuxPackages",
+        "description": "Builds Debian (.deb) and RPM packages with embedded client config for the current organization.",
+        "link": "/artifact_references/pages/server.utils.createlinuxpackages",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.CreateMSI",
+        "description": "Builds a Windows MSI deployment package using the current org's\nclient configuration.",
+        "link": "/artifact_references/pages/server.utils.createmsi",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.DeadDiskClient",
+        "description": "Automates the preparatory steps for dead disk analysis by inspecting\nthe disk image, building an appropriate remapping config, and then\nlaunching a virtual Velociraptor client which uses that remapping\nconfig.",
+        "link": "/artifact_references/pages/server.utils.deaddiskclient",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.DeleteClient",
+        "description": "Removes one or more clients by ID from the server, deleting all\nassociated collection data permanently.",
+        "link": "/artifact_references/pages/server.utils.deleteclient",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.DeleteEvents",
+        "description": "Permanently deletes client event or monitoring event data within a\nspecified time range.",
+        "link": "/artifact_references/pages/server.utils.deleteevents",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.DeleteFavoriteFlow",
+        "description": "Removes a specific named favorite collection spec from the current\nuser's saved templates.",
+        "link": "/artifact_references/pages/server.utils.deletefavoriteflow",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.DeleteFlow",
+        "description": "Permanently deletes a flow, plus all its associated metadata and\nuploaded files, from the server.",
+        "link": "/artifact_references/pages/server.utils.deleteflow",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.DeleteManyFlows",
+        "description": "Removes old or unwanted flows from the server based on configurable\nfilters with a dry-run mode.\n \nSometimes the Velociraptor server accumulates a lot of data that is\nno longer needed. This artifact will enumerate all flows from all\nclients and matches them against some criteria. Flows that match are\nthen removed.",
+        "link": "/artifact_references/pages/server.utils.deletemanyflows",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.DeleteMonitoringData",
+        "description": "Purges historical monitoring logs from the server filestore with\ndry-run and confirmation safety.",
+        "link": "/artifact_references/pages/server.utils.deletemonitoringdata",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.DeleteNotebook",
+        "description": "Completely removes a notebook from the server including all its cells, attachments etc.\n",
+        "link": "/artifact_references/pages/server.utils.deletenotebook",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.ExportHunt",
+        "description": "Exports an entire hunt's results to a downloadable zip archive with\nconfigurable data formatting options.",
+        "link": "/artifact_references/pages/server.utils.exporthunt",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.ImportCollection",
+        "description": "Imports offline collector results (in zipped collection containers)\ninto the server so they appear alongside regular client collections.",
+        "link": "/artifact_references/pages/server.utils.importcollection",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.KillClient",
+        "description": "Aggressively terminates a Velociraptor client process by sending a\nkill signal to the specified client ID.",
+        "link": "/artifact_references/pages/server.utils.killclient",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.ListUsers",
+        "description": "Enumerates all users across orgs along with their roles and permissions.",
+        "link": "/artifact_references/pages/server.utils.listusers",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.Policy",
+        "description": "Automates the configuration of Velociraptor server security policies\nincluding IP-based GUI access control, plugin restrictions, secrets\nenforcement, and lockdown mode.\n",
+        "link": "/artifact_references/pages/server.utils.policy",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.RemoveTimeline",
+        "description": "Deletes a child timeline from a specified super-timeline in a\nnotebook.\n",
+        "link": "/artifact_references/pages/server.utils.removetimeline",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.SaveFavoriteFlow",
+        "description": "Saves a collection configuration spec as a named favorite template\nfor reuse across client or server collections.",
+        "link": "/artifact_references/pages/server.utils.savefavoriteflow",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.StartHuntExample",
+        "description": "A template artifact, providing an example of how to grant controlled\nhigh-privilege operations to users with limited permissions.",
+        "link": "/artifact_references/pages/server.utils.starthuntexample",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.TimesketchUpload",
+        "description": "Uploads Velociraptor timelines to Timesketch using the Timesketch\nclient library.",
+        "link": "/artifact_references/pages/server.utils.timesketchupload",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Server.Utils.UploadTools",
+        "description": "Generates a download script for tool binaries and then uploads them\nfrom a local directory to the server inventory (in separate runs of\nthis artifact).",
+        "link": "/artifact_references/pages/server.utils.uploadtools",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Splunk.Flows.Upload",
+        "description": "Sends Velociraptor collected data to Splunk for indexing and\nanalysis.",
+        "link": "/artifact_references/pages/splunk.flows.upload",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "System.Flow.Archive",
+        "description": "Emits an event when a flow is archived, enabling post-archival\nprocessing workflows.\n",
+        "link": "/artifact_references/pages/system.flow.archive",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "System.Flow.Completion",
+        "description": "Emits an event for every completed flow, including imported offline\ncollections, enabling post-processing automation.",
+        "link": "/artifact_references/pages/system.flow.completion",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "System.Hunt.Archive",
+        "description": "Fires when a hunt is archived, thus enabling post-archive\nautomation, for example cleanup or notification workflows.",
+        "link": "/artifact_references/pages/system.hunt.archive",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "System.Hunt.Creation",
+        "description": "Fires an event whenever a new hunt is created on the Velociraptor\nserver.\n",
+        "link": "/artifact_references/pages/system.hunt.creation",
+        "type": "server_event",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
+        "title": "System.Upload.Completion",
+        "description": "Emits an event for every uploaded file, including offline collection\nimports, enabling post-upload automation.",
+        "link": "/artifact_references/pages/system.upload.completion",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "System.VFS.DownloadFile",
+        "description": "Uploads a single file or recursively uploads directory contents from\na client to populate information in the VFS screen.",
+        "link": "/artifact_references/pages/system.vfs.downloadfile",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "System.VFS.Export",
+        "description": "Exports files from the VFS (Virtual Filesystem) by globbing under a\nspecified path in the server-side VFS cache.\n",
+        "link": "/artifact_references/pages/system.vfs.export",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "System.VFS.ListDirectory",
+        "description": "Lists directory contents and populates the server-side\nVFS cache to enable VFS browsing.",
+        "link": "/artifact_references/pages/system.vfs.listdirectory",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Triage.Collection.Upload",
+        "description": "A generic uploader used by triaging artifacts.\n",
+        "link": "/artifact_references/pages/triage.collection.upload",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Triage.Collection.UploadTable",
+        "description": "A generic uploader used by triaging artifacts. This is similar to\n`Triage.Collection.Upload` but uses a CSV table to drive it.\n",
+        "link": "/artifact_references/pages/triage.collection.uploadtable",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.ActiveDirectory.SharpHound",
+        "description": "Deploys the SharpHound tool to collect Active Directory relationship\ndata for BloodHound.",
+        "link": "/artifact_references/pages/windows.activedirectory.sharphound",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Analysis.EvidenceOfDownload",
+        "description": "Finds downloaded files by searching for `Zone.Identifier` alternate\ndata streams across user directories.",
+        "link": "/artifact_references/pages/windows.analysis.evidenceofdownload",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Applications.ChocolateyPackages",
+        "description": "Lists Chocolatey packages installed on a Windows system by parsing\n.nuspec files.\n",
+        "link": "/artifact_references/pages/windows.applications.chocolateypackages",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Applications.Chrome.Cookies",
+        "description": "Enumerates Chrome browser cookies including host key, name,\ntimestamps, and encrypted values.",
+        "link": "/artifact_references/pages/windows.applications.chrome.cookies",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Applications.Chrome.Extensions",
+        "description": "Parses Chrome extension manifest files to identify installed\nextensions and their permissions.",
+        "link": "/artifact_references/pages/windows.applications.chrome.extensions",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Applications.Chrome.History",
+        "description": "Enumerates visited URLs, titles, and visit timestamps from\nChrome/Edge/Brave/Vivaldi/Opera history databases.",
+        "link": "/artifact_references/pages/windows.applications.chrome.history",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Applications.Edge.Favicons",
+        "description": "Enumerates Edge browser favicons including page URLs, favicon URLs,\nand last updated timestamps.",
+        "link": "/artifact_references/pages/windows.applications.edge.favicons",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Applications.Edge.History",
+        "description": "Enumerates Edge browsing history (URLs, visit times, titles) from\nuser profiles.\n",
+        "link": "/artifact_references/pages/windows.applications.edge.history",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Applications.Firefox.Downloads",
+        "description": "Enumerates Firefox download records (file names, URLs, timestamps)\nfrom the `places.sqlite` database.",
+        "link": "/artifact_references/pages/windows.applications.firefox.downloads",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Applications.Firefox.History",
+        "description": "Queries Firefox `places.sqlite` files to extract browsing history.",
+        "link": "/artifact_references/pages/windows.applications.firefox.history",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Applications.IISLogs",
+        "description": "Provides grep-like search of IIS log files in specified directories\nwith optional whitelist filtering.",
+        "link": "/artifact_references/pages/windows.applications.iislogs",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Applications.MegaSync",
+        "description": "Parses MEGASync logs and allows using regular expressions to search for\nentries of interest.",
+        "link": "/artifact_references/pages/windows.applications.megasync",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Applications.NirsoftBrowserViewer",
+        "description": "Wraps the Nirsoft BrowsingHistoryView tool to parse browsing history\nfrom Chrome, Firefox, IE, and Safari.",
+        "link": "/artifact_references/pages/windows.applications.nirsoftbrowserviewer",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Applications.OfficeMacros",
+        "description": "Scans directories for Office documents (xls, xlsm, doc, docx, ppt,\npptm) and extracts embedded VBA macros via OLE parsing.",
+        "link": "/artifact_references/pages/windows.applications.officemacros",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Applications.SBECmd",
+        "description": "Executes Eric Zimmerman's SBECmd tool to parse Shellbags and capture\nthe results.",
+        "link": "/artifact_references/pages/windows.applications.sbecmd",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Applications.TeamViewer.Incoming",
+        "description": "Parses TeamViewer incoming connection logs to identify remote\naccess events.",
+        "link": "/artifact_references/pages/windows.applications.teamviewer.incoming",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Attack.ParentProcess",
+        "description": "Flags processes whose parent process does not match the expected\nparent per the ATT&CK framework mapping.",
+        "link": "/artifact_references/pages/windows.attack.parentprocess",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Attack.Prefetch",
+        "description": "Enumerates Windows Prefetch directory entries and correlates them\nwith known ATT&CK techniques.",
+        "link": "/artifact_references/pages/windows.attack.prefetch",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Attack.UnexpectedImagePath",
+        "description": "Detects well-known system processes running from unexpected file\npaths.",
+        "link": "/artifact_references/pages/windows.attack.unexpectedimagepath",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Carving.CobaltStrike",
+        "description": "Extracts Cobalt Strike beacon configuration from byte streams,\nprocess memory, or files on disk such as a process dump.",
+        "link": "/artifact_references/pages/windows.carving.cobaltstrike",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Carving.USN",
+        "description": "Recovers USN journal entries from raw disk by carving NTFS update\nsequence number records.",
+        "link": "/artifact_references/pages/windows.carving.usn",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Collectors.File",
+        "description": "Searches a filesystem using a set of glob patterns and uploads\nmatching files to the server.",
+        "link": "/artifact_references/pages/windows.collectors.file",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Collectors.Remapping",
+        "description": "Creates filesystem and registry remappings for offline analysis of\nVelociraptor collection containers.",
+        "link": "/artifact_references/pages/windows.collectors.remapping",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.Amcache",
+        "description": "Collects AMCache entries with a SHA1 hash to enable threat\ndetection.",
+        "link": "/artifact_references/pages/windows.detection.amcache",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.BinaryHunter",
+        "description": "This artifact enables hunting for binary attributes.",
+        "link": "/artifact_references/pages/windows.detection.binaryhunter",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.BinaryRename",
+        "description": "Detects renamed binaries commonly abused by adversaries.",
+        "link": "/artifact_references/pages/windows.detection.binaryrename",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.EnvironmentVariables",
+        "description": "Find processes which have the specified environment variables.\n",
+        "link": "/artifact_references/pages/windows.detection.environmentvariables",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.ForwardedImports",
+        "description": "Scans DLLs for self-referencing forwarded imports that could\nindicate DLL hijacking.",
+        "link": "/artifact_references/pages/windows.detection.forwardedimports",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.Impersonation",
+        "description": "Enumerates threads with impersonation tokens that differ from their\nparent process.",
+        "link": "/artifact_references/pages/windows.detection.impersonation",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.Mutants",
+        "description": "Searches for named Mutant objects used by selected processes for\nmalware persistence detection.",
+        "link": "/artifact_references/pages/windows.detection.mutants",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.ProcessCreation",
+        "description": "Deploys Sysmon and watches the Sysmon ETW provider for specific\nprocess creation events, which are then forwarded to the server.\n",
+        "link": "/artifact_references/pages/windows.detection.processcreation",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.PsexecService",
+        "description": "Detects PsExec execution by scanning newly created service binaries\nfor PsExec strings.",
+        "link": "/artifact_references/pages/windows.detection.psexecservice",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.PsexecService.Kill",
+        "description": "Kills all child processes of a detected PsExec service using\ntaskkill.",
+        "link": "/artifact_references/pages/windows.detection.psexecservice.kill",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.Registry",
+        "description": "Monitors selected registry keys for changes and raises alerts on\nmodifications.\n",
+        "link": "/artifact_references/pages/windows.detection.registry",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.Service.Upload",
+        "description": "Uploads the service binary to the server when a new service is\ninstalled.\n",
+        "link": "/artifact_references/pages/windows.detection.service.upload",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.TemplateInjection",
+        "description": "Detects injected templates in Office and RTF documents.",
+        "link": "/artifact_references/pages/windows.detection.templateinjection",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.Thumbdrives.List",
+        "description": "Watches for removable drive insertion and enumerates all new files\non them.",
+        "link": "/artifact_references/pages/windows.detection.thumbdrives.list",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.Thumbdrives.OfficeKeywords",
+        "description": "Detects potentially-sensitive content exfiltration by\nkeyword-scanning Office documents on USB drives.",
+        "link": "/artifact_references/pages/windows.detection.thumbdrives.officekeywords",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.Thumbdrives.OfficeMacros",
+        "description": "Watches for removable drives and extracts VBA macros from newly\nadded Office files.",
+        "link": "/artifact_references/pages/windows.detection.thumbdrives.officemacros",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.Usn",
+        "description": "Detects file creation and modification by polling the NTFS USN\njournal.",
+        "link": "/artifact_references/pages/windows.detection.usn",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.WMIProcessCreation",
+        "description": "Captures WMI calls to the Win32_Process.Create method as a lateral\nmovement indicator.",
+        "link": "/artifact_references/pages/windows.detection.wmiprocesscreation",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.Yara.Device",
+        "description": "Scans physical disk sectors with YARA rules at configurable offsets\nand uploads hit context.",
+        "link": "/artifact_references/pages/windows.detection.yara.device",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.Yara.Glob",
+        "description": "Runs YARA rules against files discovered via glob search with\nconfigurable filters and optional upload of hit context.",
+        "link": "/artifact_references/pages/windows.detection.yara.glob",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.Yara.NTFS",
+        "description": "Searches the MFT, returns a list of target files, and then runs YARA\nover the target list.",
+        "link": "/artifact_references/pages/windows.detection.yara.ntfs",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.Yara.PhysicalMemory",
+        "description": "Scans physical memory for YARA matches using the WinPmem driver.",
+        "link": "/artifact_references/pages/windows.detection.yara.physicalmemory",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.Yara.Process",
+        "description": "Runs YARA over processes in memory and optionally uploads process\ndumps.",
+        "link": "/artifact_references/pages/windows.detection.yara.process",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.Yara.UEFI",
+        "description": "Scans EFI System Partition files with YARA rules for rootkit detection.\n",
+        "link": "/artifact_references/pages/windows.detection.yara.uefi",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Detection.YaraX.Glob",
+        "description": "Deploys YARA-X and scans files matching a glob pattern. Supports\nURL-based or inline rule deployment.",
+        "link": "/artifact_references/pages/windows.detection.yarax.glob",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.ETW.DNS",
+        "description": "Watches real-time DNS queries via ETW and reports query names,\ntypes, and answers.",
+        "link": "/artifact_references/pages/windows.etw.dns",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.ETW.DNSQueriesServer",
+        "description": "Captures DNS server query events from the\n`Microsoft-Windows-DNSServer` ETW provider.",
+        "link": "/artifact_references/pages/windows.etw.dnsqueriesserver",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.ETW.DotNetRundown",
+        "description": "Queries the Microsoft-Windows-DotNETRuntimeRundown provider to\ncollect a list of DotNet modules loaded into a process. This can be\nuseful when responding to reflectively loaded DotNet malware.",
+        "link": "/artifact_references/pages/windows.etw.dotnetrundown",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.ETW.ETWSessions",
+        "description": "Watches kernel event tracing ETW events to detect creation and\nremoval of ETW sessions.",
+        "link": "/artifact_references/pages/windows.etw.etwsessions",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.ETW.EdgeURLs",
+        "description": "Captures URLs accessed by the Edge browser via the\nMicrosoft-Windows-URLMon ETW provider.",
+        "link": "/artifact_references/pages/windows.etw.edgeurls",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.ETW.FileCreation",
+        "description": "Monitors file create, delete, open, and rename events via the\nKernel-File ETW provider.",
+        "link": "/artifact_references/pages/windows.etw.filecreation",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.ETW.KernelFile",
+        "description": "Monitors file create, delete, open, and rename events via the\nKernel-File ETW provider.",
+        "link": "/artifact_references/pages/windows.etw.kernelfile",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.ETW.KernelNetwork",
+        "description": "Monitors network events (connections, data send/receive) via the\nKernel-Network ETW provider.",
+        "link": "/artifact_references/pages/windows.etw.kernelnetwork",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.ETW.KernelProcess",
+        "description": "Monitors process creation, termination, and image load events via\nthe Kernel-Process ETW provider.",
+        "link": "/artifact_references/pages/windows.etw.kernelprocess",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.ETW.Registry",
+        "description": "Monitors registry create, open, delete, and value modification\nevents via the Kernel-Registry ETW provider.",
+        "link": "/artifact_references/pages/windows.etw.registry",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.ETW.ViewSessions",
+        "description": "Enumerates running ETW tracing sessions via logman and optionally\nkills dangling ones.\n",
+        "link": "/artifact_references/pages/windows.etw.viewsessions",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.ETW.WMIProcessCreate",
+        "description": "Monitors process creation events triggered via WMI using the\nMicrosoft-Windows-WMI-Activity ETW provider.",
+        "link": "/artifact_references/pages/windows.etw.wmiprocesscreate",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.EventLogs.AlternateLogon",
+        "description": "Extracts alternate credential logon events (Event ID 4648) from the\nSecurity event log.",
+        "link": "/artifact_references/pages/windows.eventlogs.alternatelogon",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.EventLogs.Cleared",
+        "description": "Detects event log clearing events from the Security (EID 1102) and\nSystem (EID 104) logs.\n",
+        "link": "/artifact_references/pages/windows.eventlogs.cleared",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.EventLogs.DHCP",
+        "description": "Parses Windows DHCP client event logs (admin and operational) to\nextract IP address lease assignments and rejections.",
+        "link": "/artifact_references/pages/windows.eventlogs.dhcp",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.EventLogs.Evtx",
+        "description": "Parses and returns events from Windows evtx logs.",
+        "link": "/artifact_references/pages/windows.eventlogs.evtx",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.EventLogs.EvtxHunter",
+        "description": "Searches all Windows EVTX files for events matching a regex IOC in\nmessage, EventData, or UserData fields.",
+        "link": "/artifact_references/pages/windows.eventlogs.evtxhunter",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.EventLogs.ExplicitLogon",
+        "description": "Searches the Windows Security event log for explicit logon events, that is\nEvent ID 4648: \"A logon was attempted using explicit credentials\".",
+        "link": "/artifact_references/pages/windows.eventlogs.explicitlogon",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.EventLogs.Kerberoasting",
+        "description": "Detects Kerberoasting attempts by extracting Kerberos TGS requests\n(EID 4769) with RC4 encryption from the Security log.",
+        "link": "/artifact_references/pages/windows.eventlogs.kerberoasting",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.EventLogs.Modifications",
+        "description": "Checks registry keys for WINEVT channels and WMI autologger\nproviders to detect event log tampering.",
+        "link": "/artifact_references/pages/windows.eventlogs.modifications",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.EventLogs.PowershellModule",
+        "description": "Extracts PowerShell module logging events (EID 4103) from the\nPowerShell Operational log with context and payload filtering.",
+        "link": "/artifact_references/pages/windows.eventlogs.powershellmodule",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.EventLogs.PowershellScriptblock",
+        "description": "Parses PowerShell script block logging entries (Event ID 4104) to\ndetect potentially malicious script content.",
+        "link": "/artifact_references/pages/windows.eventlogs.powershellscriptblock",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.EventLogs.RDPAuth",
+        "description": "Extracts RDP authentication and session events from Security,\nSystem, and Terminal Services event logs.",
+        "link": "/artifact_references/pages/windows.eventlogs.rdpauth",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.EventLogs.ScheduledTasks",
+        "description": "Extracts and formats Windows scheduled task events from the\nTaskScheduler operational and Security logs.",
+        "link": "/artifact_references/pages/windows.eventlogs.scheduledtasks",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.EventLogs.ServiceCreationComspec",
+        "description": "Detects SCM lateral movement by searching System event log for\nservice creation events (EID 7045) with \"COMSPEC\" or \"cmd.exe\" in\nthe image path.",
+        "link": "/artifact_references/pages/windows.eventlogs.servicecreationcomspec",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.EventLogs.Symantec",
+        "description": "Searches Symantec Endpoint Protection event logs for\nhigh-value detection events like infostealers, backdoors, and\nexploits.",
+        "link": "/artifact_references/pages/windows.eventlogs.symantec",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.EventLogs.Telerik",
+        "description": "Searches Windows Application Event Log for Telerik exploitation\nindicators (Event ID 1309).",
+        "link": "/artifact_references/pages/windows.eventlogs.telerik",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Events.EventLogModifications",
+        "description": "Monitors the Windows event log registry channels to detect when logs\nare disabled.",
+        "link": "/artifact_references/pages/windows.events.eventlogmodifications",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Events.FailedLogBeforeSuccess",
+        "description": "Detects successful logons preceded by multiple failed logon attempts\nwithin a configurable time window.",
+        "link": "/artifact_references/pages/windows.events.failedlogbeforesuccess",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Events.Kerberoasting",
+        "description": "Monitors Kerberos TGS ticket requests (EventID 4769) with RC4 (weak)\nencryption as indicators of Kerberoasting attacks.",
+        "link": "/artifact_references/pages/windows.events.kerberoasting",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Events.Mutants",
+        "description": "Watches for new Mutants in the Windows object manager namespace and\nalerts on detections.\n",
+        "link": "/artifact_references/pages/windows.events.mutants",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Events.ProcessCreation",
+        "description": "Monitors for Windows process creation events using WMI\nWin32_ProcessStartTrace and enriches them with parent and call chain\ninformation.",
+        "link": "/artifact_references/pages/windows.events.processcreation",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Events.ServiceCreation",
+        "description": "Detects new Windows service installations by monitoring System event\nlog for EventID 7045.",
+        "link": "/artifact_references/pages/windows.events.servicecreation",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Events.TrackProcesses",
+        "description": "Tracks processes using Sysmon ETW events (process creation and\ntermination) with pslist sync.",
+        "link": "/artifact_references/pages/windows.events.trackprocesses",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Events.TrackProcessesBasic",
+        "description": "Tracks running and exited processes by polling pslist() at a\nconfigurable interval.",
+        "link": "/artifact_references/pages/windows.events.trackprocessesbasic",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Events.TrackProcessesETW",
+        "description": "Tracks process execution using ETW kernel events (CreateProcess,\nTerminateProcess, LoadImage).",
+        "link": "/artifact_references/pages/windows.events.trackprocessesetw",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Events.Trackaccount",
+        "description": "Watches Windows security event logs for successful logon events\n(4624) which also match additional configurable criteria.",
+        "link": "/artifact_references/pages/windows.events.trackaccount",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.Amcache",
+        "description": "Parses the Amcache.hve registry hive to enumerate executed binaries,\ninstalled programs, and drivers.",
+        "link": "/artifact_references/pages/windows.forensics.amcache",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.Bam",
+        "description": "Parses the BAM registry key from Windows 10+ to identify program\nexecution times.",
+        "link": "/artifact_references/pages/windows.forensics.bam",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.BulkExtractor",
+        "description": "Deploys the bulk_extractor binary onto the endpoint and runs it\nagainst selected drives or directories for data carving.",
+        "link": "/artifact_references/pages/windows.forensics.bulkextractor",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.CertUtil",
+        "description": "Extracts download metadata from the Windows Certutil\nCryptnetUrlCache to reveal LOLBin downloads.",
+        "link": "/artifact_references/pages/windows.forensics.certutil",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.FilenameSearch",
+        "description": "Searches the NTFS `$MFT` using YARA rules to determine if specific\nfilenames ever existed on the system.",
+        "link": "/artifact_references/pages/windows.forensics.filenamesearch",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.JumpLists",
+        "description": "Parses Windows AutomaticDestinations JumpList files to extract LNK\nentries with application IDs and target paths.",
+        "link": "/artifact_references/pages/windows.forensics.jumplists",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.Lnk",
+        "description": "Parses Windows LNK shortcut files to extract target paths,\narguments, timestamps, and metadata.",
+        "link": "/artifact_references/pages/windows.forensics.lnk",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.LocalHashes.Usn",
+        "description": "Watches the NTFS USN journal for file modifications and records file\nhashes in a local database.",
+        "link": "/artifact_references/pages/windows.forensics.localhashes.usn",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.NotepadParser",
+        "description": "Parses Windows 11 Notepad TabState and WindowState files to recover\nedited file paths, timestamps, and content.",
+        "link": "/artifact_references/pages/windows.forensics.notepadparser",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.PartitionTable",
+        "description": "Parses GPT and MBR partition tables from a raw disk image or\nphysical drive.",
+        "link": "/artifact_references/pages/windows.forensics.partitiontable",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.Prefetch",
+        "description": "Parses Windows prefetch (.pf) files to extract executable execution\nhistory and run counts.",
+        "link": "/artifact_references/pages/windows.forensics.prefetch",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.Pst",
+        "description": "Parses Outlook PST files to extract email messages, attachments, and\nmetadata with regex-based targeting.\n",
+        "link": "/artifact_references/pages/windows.forensics.pst",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.RDPCache",
+        "description": "Parses RDP Bitmap Cache (.BIN) files to extract and reconstruct\ncached remote desktop screen images.",
+        "link": "/artifact_references/pages/windows.forensics.rdpcache",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.RecentApps",
+        "description": "Enumerates program execution history from the Windows RecentApps\nregistry key.",
+        "link": "/artifact_references/pages/windows.forensics.recentapps",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.RecycleBin",
+        "description": "Parses Recycle Bin `$I` metadata files to recover deleted file names,\noriginal paths, and deletion timestamps.",
+        "link": "/artifact_references/pages/windows.forensics.recyclebin",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.SAM",
+        "description": "Parses the Windows SAM registry hive to extract user account\ndetails, RIDs, and password hashes.",
+        "link": "/artifact_references/pages/windows.forensics.sam",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.SRUM",
+        "description": "Parses the Windows SRUM database (srudb.dat) to extract execution\nstats, resource usage, and network activity.\n",
+        "link": "/artifact_references/pages/windows.forensics.srum",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.Shellbags",
+        "description": "Extracts Shellbag data from NTUSER.DAT and UsrClass.dat to recover\nfolder navigation history.",
+        "link": "/artifact_references/pages/windows.forensics.shellbags",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.SolarwindsSunburst",
+        "description": "Searches for SolarWinds Sunburst backdoor\n(SolarWinds.Orion.Core.BusinessLayer.dll) across all NTFS drives\nusing YARA.",
+        "link": "/artifact_references/pages/windows.forensics.solarwindssunburst",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.Timeline",
+        "description": "Queries the Windows 10 Timeline ActivitiesCache.db SQLite database\nto extract recently used applications.",
+        "link": "/artifact_references/pages/windows.forensics.timeline",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.UEFI",
+        "description": "Analyzes the EFI System Partition (ESP) on a physical disk to\nenumerate and inspect EFI binaries.",
+        "link": "/artifact_references/pages/windows.forensics.uefi",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.UserAccessLogs",
+        "description": "Parses the Windows User Access Logging (UAL) ESE database to\nenumerate client connections and server roles.",
+        "link": "/artifact_references/pages/windows.forensics.useraccesslogs",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Forensics.Usn",
+        "description": "Parses the NTFS USN journal ($J data stream) to enumerate recent\nfile creation, modification, and deletion events.",
+        "link": "/artifact_references/pages/windows.forensics.usn",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.KapeFiles.Extract",
+        "description": "Extracts files collected by the `Windows.KapeFiles.Targets` or\n`Windows.Triage.Targets` artifacts, and restores the original\ntimestamps on the extracted files.",
+        "link": "/artifact_references/pages/windows.kapefiles.extract",
+        "type": "server",
+        "tags": [
+            "Server Artifact"
+        ]
+    },
+    {
+        "title": "Windows.KapeFiles.Remapping",
+        "description": "Automates the creation of remapping rules to enable post-processing file\nuploads collected by the `Windows.KapeFiles.Targets` or\n`Windows.Triage.Targets` artifacts.",
+        "link": "/artifact_references/pages/windows.kapefiles.remapping",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Memory.Acquisition",
+        "description": "Acquires a full memory image by using the built-in WinPmem driver.",
+        "link": "/artifact_references/pages/windows.memory.acquisition",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Memory.Intezer",
+        "description": "Runs the Intezer memory scanner to collect running code for malware\nanalysis via Intezer Analyze.",
+        "link": "/artifact_references/pages/windows.memory.intezer",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Memory.PEDump",
+        "description": "Extracts running executables from process memory using VAD region\nenumeration and PE dumping, and uploads the files to the server.",
+        "link": "/artifact_references/pages/windows.memory.pedump",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Memory.ProcessDump",
+        "description": "Captures process memory for selected processes via crash dump or\nVelociraptor-compatible sparse upload.",
+        "link": "/artifact_references/pages/windows.memory.processdump",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Memory.ProcessInfo",
+        "description": "Extracts process information by parsing the Process Environment\nBlock (PEB) directly for each running process.",
+        "link": "/artifact_references/pages/windows.memory.processinfo",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.NTFS.ADSHunter",
+        "description": "Scans NTFS volumes for data hidden in Alternate Data Streams, using\nconfigurable filtering rules.",
+        "link": "/artifact_references/pages/windows.ntfs.adshunter",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.NTFS.ExtendedAttributes",
+        "description": "Parses NTFS Extended Attributes ($EA) from the MFT to detect hidden\ndata.",
+        "link": "/artifact_references/pages/windows.ntfs.extendedattributes",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.NTFS.I30",
+        "description": "Carves the $I30 index stream from NTFS directories to recover\npreviously deleted file entries, and optionally upload the $I30\nstream to the server",
+        "link": "/artifact_references/pages/windows.ntfs.i30",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.NTFS.MFT",
+        "description": "Parses $MFT files and returns rows of each in-scope MFT record.",
+        "link": "/artifact_references/pages/windows.ntfs.mft",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.NTFS.Recover",
+        "description": "Uploads all data streams from a specified MFT ID on an NTFS volume\nfor deleted file recovery purposes.",
+        "link": "/artifact_references/pages/windows.ntfs.recover",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Network.ArpCache",
+        "description": "Enumerates the Windows network neighbor cache (ARP/NDP) showing\nresolved IP and MAC address pairs.\n",
+        "link": "/artifact_references/pages/windows.network.arpcache",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Network.InterfaceAddresses",
+        "description": "Collects interface addresses and metadata such as MAC, MTU, and IP\nmasks across operating systems.",
+        "link": "/artifact_references/pages/windows.network.interfaceaddresses",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Network.ListeningPorts",
+        "description": "Reports processes that have open listening ports with address,\nprotocol, and PID details.\n",
+        "link": "/artifact_references/pages/windows.network.listeningports",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Network.Netstat",
+        "description": "Reports open network sockets on Windows including binding time,\nconnection state, and owning process name.\n",
+        "link": "/artifact_references/pages/windows.network.netstat",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Network.NetstatEnriched",
+        "description": "NetstatEnriched adds data enrichment to the Netstat artifact and\nprovides extensive filtering options.",
+        "link": "/artifact_references/pages/windows.network.netstatenriched",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Network.PacketCapture",
+        "description": "Captures network packets on Windows using netsh trace and then\nconverts these ETL traces to PCAP format.",
+        "link": "/artifact_references/pages/windows.network.packetcapture",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.OSQuery.Generic",
+        "description": "Deploys the osquery binary and runs a user-specified SQL query,\nreturning parsed JSON results.",
+        "link": "/artifact_references/pages/windows.osquery.generic",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Packs.LateralMovement",
+        "description": "Queries multiple data sources (event logs, prefetch, shimcache, BAM)\nfor signs of lateral movement.\n",
+        "link": "/artifact_references/pages/windows.packs.lateralmovement",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Packs.Persistence",
+        "description": "Aggregates results from multiple persistence-related artifacts into\na single artifact \"pack\".\n",
+        "link": "/artifact_references/pages/windows.packs.persistence",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Persistence.Debug",
+        "description": "Detects programs with a debugger configured in Image File Execution\nOptions registry keys.",
+        "link": "/artifact_references/pages/windows.persistence.debug",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Persistence.PermanentWMIEvents",
+        "description": "Enumerates permanent WMI event subscriptions including filters,\nconsumers, and their bindings across namespaces.",
+        "link": "/artifact_references/pages/windows.persistence.permanentwmievents",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Persistence.PowershellProfile",
+        "description": "Searches for and parses PowerShell profile scripts across user and\nsystem directories for persistence detection.",
+        "link": "/artifact_references/pages/windows.persistence.powershellprofile",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Persistence.PowershellRegistry",
+        "description": "Scans NTUSER.DAT registry hives with YARA rules for PowerShell-based\npersistence signatures.",
+        "link": "/artifact_references/pages/windows.persistence.powershellregistry",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Persistence.Wow64cpu",
+        "description": "Checks for wow64cpu.dll replacement Autorun in Windows 10.\nhttp://www.hexacorn.com/blog/2019/07/11/beyond-good-ol-run-key-part-108-2/\n",
+        "link": "/artifact_references/pages/windows.persistence.wow64cpu",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Registry.AppCompatCache",
+        "description": "Parses the AppCompatCache (Shimcache) registry value to enumerate\nrecently executed application paths.",
+        "link": "/artifact_references/pages/windows.registry.appcompatcache",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Registry.BackupRestore",
+        "description": "Enumerates Windows BackupRestore registry keys showing\napplications configured for backup and restore operations.",
+        "link": "/artifact_references/pages/windows.registry.backuprestore",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Registry.EnableUnsafeClientMailRules",
+        "description": "Checks Outlook Security registry for EnableUnsafeClientMailRules set\nto 1 (enabled), indicating potential persistence.",
+        "link": "/artifact_references/pages/windows.registry.enableunsafeclientmailrules",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Registry.EnabledMacro",
+        "description": "Scans Office Trust Records registry entries for documents with\nmacro-enabled trust flags.",
+        "link": "/artifact_references/pages/windows.registry.enabledmacro",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Registry.MountPoints2",
+        "description": "Extracts MountPoints2 registry entries with ADMIN$ share paths to\nidentify lateral movement via mapped drives.",
+        "link": "/artifact_references/pages/windows.registry.mountpoints2",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Registry.NTUser",
+        "description": "Searches for registry keys and values across all users' NTUSER.DAT\nhives using raw NTFS parsing.",
+        "link": "/artifact_references/pages/windows.registry.ntuser",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Registry.NTUser.Upload",
+        "description": "Uploads each user's NTUSER.DAT registry hive from disk by bypassing\nfile locking with raw NTFS parsing.",
+        "link": "/artifact_references/pages/windows.registry.ntuser.upload",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Registry.PortProxy",
+        "description": "Enumerates Windows port proxy registry entries configured via\nnetsh or attack tools for network redirection.",
+        "link": "/artifact_references/pages/windows.registry.portproxy",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Registry.PuttyHostKeys",
+        "description": "Extracts PuTTY SSH host keys stored in the Windows registry for\neach user.",
+        "link": "/artifact_references/pages/windows.registry.puttyhostkeys",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Registry.RDP",
+        "description": "Extracts historical RDP connection server names and MRU entries from\neach user's NTUSER.DAT registry hive.",
+        "link": "/artifact_references/pages/windows.registry.rdp",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Registry.RecentDocs",
+        "description": "Extracts Recent Documents MRU entries from Windows NTUSER.DAT\nregistry hives for each user.",
+        "link": "/artifact_references/pages/windows.registry.recentdocs",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Registry.Sysinternals.Eulacheck",
+        "description": "Checks which Sysinternals tools have accepted EULAs by reading the\n`HKCU\\Software\\Sysinternals` registry keys.",
+        "link": "/artifact_references/pages/windows.registry.sysinternals.eulacheck",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Registry.UserAssist",
+        "description": "Decodes UserAssist registry keys from NTUSER.DAT to reveal program\nexecution counts and last run times.",
+        "link": "/artifact_references/pages/windows.registry.userassist",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Registry.WDigest",
+        "description": "Scans HKLM\\SYSTEM ControlSets for WDigest security provider\nregistry keys that enable credential harvesting.",
+        "link": "/artifact_references/pages/windows.registry.wdigest",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Remediation.Quarantine",
+        "description": "Configures Windows IPsec policy to block network traffic except for\nDNS, DHCP, and Velociraptor server access.",
+        "link": "/artifact_references/pages/windows.remediation.quarantine",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Remediation.QuarantineMonitor",
+        "description": "Periodically applies and maintains Windows IPsec quarantine policy\non the endpoint via an event query that will ensure the client stays\nquarantined.",
+        "link": "/artifact_references/pages/windows.remediation.quarantinemonitor",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Remediation.ScheduledTasks",
+        "description": "Removes Windows scheduled tasks matching a command and argument regex pattern.",
+        "link": "/artifact_references/pages/windows.remediation.scheduledtasks",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Remediation.Sinkhole",
+        "description": "Configures DNS sinkholing by editing the Windows hosts file (with a\nprovided backup and restore mechanism).",
+        "link": "/artifact_references/pages/windows.remediation.sinkhole",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Search.FileFinder",
+        "description": "Searches for files by path glob, inspects file content via YARA, and\nprovides file hash and upload options.",
+        "link": "/artifact_references/pages/windows.search.filefinder",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Search.SMBFileFinder",
+        "description": "Searches for files on remote SMB shares using glob patterns and\ninspects file content using Yara rules, with optional hash\ncalculation and file upload.",
+        "link": "/artifact_references/pages/windows.search.smbfilefinder",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Search.VSS",
+        "description": "Finds files in Volume Shadow Copies (VSS) using the `ntfs_vss`\naccessor.",
+        "link": "/artifact_references/pages/windows.search.vss",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Search.WSLFileFinder",
+        "description": "Searches for files inside Windows Subsystem for Linux (WSL) VHDX\ndisk images. Supports glob filtering, file content inspection using\nYara, and provides optional file hash calculation and upload.\n",
+        "link": "/artifact_references/pages/windows.search.wslfilefinder",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Search.Yara",
+        "description": "Scans the NTFS filesystem for files matching a YARA rule by first\nparsing the MFT to enumerate files.\n",
+        "link": "/artifact_references/pages/windows.search.yara",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Sigma.EventLogs",
+        "description": "Evaluates Windows event log entries against inline or uploaded Sigma\nrules for threat detection.",
+        "link": "/artifact_references/pages/windows.sigma.eventlogs",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Sys.AllUsers",
+        "description": "Lists all user accounts on a Windows system including domain users\nwith cached profiles.",
+        "link": "/artifact_references/pages/windows.sys.allusers",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Sys.AppcompatShims",
+        "description": "Queries the Windows registry for Application Compatibility shim\ndatabase entries and their associated executables.",
+        "link": "/artifact_references/pages/windows.sys.appcompatshims",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Sys.CertificateAuthorities",
+        "description": "Enumerates certificate authorities from Windows certificate stores.\n",
+        "link": "/artifact_references/pages/windows.sys.certificateauthorities",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Sys.DiskInfo",
+        "description": "Collects physical disk drive information including model, serial\nnumber, size, and interface type via WMI.\n",
+        "link": "/artifact_references/pages/windows.sys.diskinfo",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Sys.Drivers",
+        "description": "Enumerates running Windows device drivers with optional authenticode signature checking.",
+        "link": "/artifact_references/pages/windows.sys.drivers",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Sys.FirewallRules",
+        "description": "Lists Windows firewall rules by parsing the registry FirewallRules\nkey.\n",
+        "link": "/artifact_references/pages/windows.sys.firewallrules",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Sys.Interfaces",
+        "description": "Report information about the system's network interfaces.",
+        "link": "/artifact_references/pages/windows.sys.interfaces",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Sys.PhysicalMemoryRanges",
+        "description": "Parses the CM_RESOURCE_LIST from the registry to list physical\nmemory range descriptors.\n",
+        "link": "/artifact_references/pages/windows.sys.physicalmemoryranges",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Sys.Programs",
+        "description": "Enumerates installed Windows applications by reading registry\nuninstall keys.",
+        "link": "/artifact_references/pages/windows.sys.programs",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Sys.StartupItems",
+        "description": "Enumerates startup applications from registry Run keys and Startup\nfolder locations.\n",
+        "link": "/artifact_references/pages/windows.sys.startupitems",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Sys.Users",
+        "description": "Lists user accounts that have logged on locally by inspecting\nregistry profile list keys for locally-created profiles.",
+        "link": "/artifact_references/pages/windows.sys.users",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Sysinternals.Autoruns",
+        "description": "Installs and runs Sysinternals `autorunsc` to enumerate autostart\npersistence mechanisms.\n",
+        "link": "/artifact_references/pages/windows.sysinternals.autoruns",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Sysinternals.SysmonInstall",
+        "description": "Deploys Sysmon with a config file and ensures the Sysmon64 service\nis running.",
+        "link": "/artifact_references/pages/windows.sysinternals.sysmoninstall",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Sysinternals.SysmonLogForward",
+        "description": "Reads Sysmon operational events from ETW and forwards them to the\nserver for analysis.\n",
+        "link": "/artifact_references/pages/windows.sysinternals.sysmonlogforward",
+        "type": "client_event",
+        "tags": [
+            "Client Event Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.AuditPolicy",
+        "description": "Collects Windows Audit Policy configuration data from Windows\nsystems via auditpol.",
+        "link": "/artifact_references/pages/windows.system.auditpolicy",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.CatFiles",
+        "description": "Parses Windows `.cat` catalog files and extracts certificate trust\nlist hashes with signer information.",
+        "link": "/artifact_references/pages/windows.system.catfiles",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.CmdShell",
+        "description": "Runs shell commands through cmd.exe and captures or uploads stdout\noutput.",
+        "link": "/artifact_references/pages/windows.system.cmdshell",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.CriticalServices",
+        "description": "Checks that important Windows services like antivirus and update\nservices are currently running.",
+        "link": "/artifact_references/pages/windows.system.criticalservices",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.DLLs",
+        "description": "Lists DLLs loaded by running processes with optional hash\ncomputation and certificate information.\n",
+        "link": "/artifact_references/pages/windows.system.dlls",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.DNSCache",
+        "description": "Queries the Windows DNS client cache via WMI and reports cached DNS\nrecords with types and status.",
+        "link": "/artifact_references/pages/windows.system.dnscache",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.DomainRole",
+        "description": "Extracts and categorizes the domain role of Windows systems based\non `Win32_ComputerSystem` WMI data.\n",
+        "link": "/artifact_references/pages/windows.system.domainrole",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.Handles",
+        "description": "Lists open handles (files, registry keys, etc.) for processes\nmatching a regex pattern.",
+        "link": "/artifact_references/pages/windows.system.handles",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.HostsFile",
+        "description": "Reads and parses the Windows hosts file, reporting resolution\nentries, hostnames, and comments.",
+        "link": "/artifact_references/pages/windows.system.hostsfile",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.LocalAdmins",
+        "description": "Retrieves local administrator accounts from a Windows system via\nPowerShell.\n",
+        "link": "/artifact_references/pages/windows.system.localadmins",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.PowerShell",
+        "description": "Executes arbitrary commands through PowerShell with output capture\nand upload support.",
+        "link": "/artifact_references/pages/windows.system.powershell",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.Powershell.ModuleAnalysisCache",
+        "description": "Parses the PowerShell ModuleAnalysisCache file to enumerate loaded\nmodules and their functions.\n",
+        "link": "/artifact_references/pages/windows.system.powershell.moduleanalysiscache",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.Powershell.PSReadline",
+        "description": "Extracts PowerShell command history from PSReadline\n`ConsoleHost_history.txt` files.",
+        "link": "/artifact_references/pages/windows.system.powershell.psreadline",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.Pslist",
+        "description": "Enumerates running processes along with their executable paths and\nassociated details, with optional authenticode trust verification\nand binary hashing.\n",
+        "link": "/artifact_references/pages/windows.system.pslist",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.RootCAStore",
+        "description": "Enumerates root CA certificates from the Windows System Certificate\nstore.\n",
+        "link": "/artifact_references/pages/windows.system.rootcastore",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.SVCHost",
+        "description": "Lists `svchost.exe` processes whose parent is not services.exe,\nindicating suspicious activity.",
+        "link": "/artifact_references/pages/windows.system.svchost",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.Services",
+        "description": "Enumerates Windows services via WMI, with optional filtering\ncriteria, and enriches with hashes and authenticode signatures.\n",
+        "link": "/artifact_references/pages/windows.system.services",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.Shares",
+        "description": "Enumerates Windows network shares via the Win32_Share WMI class\nwith regex filtering.\n",
+        "link": "/artifact_references/pages/windows.system.shares",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.Signers",
+        "description": "Scans executable files and groups them by their authenticode signer\nsubject.\n",
+        "link": "/artifact_references/pages/windows.system.signers",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.TaskScheduler",
+        "description": "Enumerates Windows scheduled tasks and parses their XML definitions\nto extract commands and user contexts.",
+        "link": "/artifact_references/pages/windows.system.taskscheduler",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.Threads",
+        "description": "Lists threads for selected processes, matching by name or PID regex\nfilters.",
+        "link": "/artifact_references/pages/windows.system.threads",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.UntrustedBinaries",
+        "description": "Checks that common Windows system binaries are signed using\nauthenticode verification.",
+        "link": "/artifact_references/pages/windows.system.untrustedbinaries",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.VAD",
+        "description": "Enumerates process memory sections using Virtual Address Descriptor\n(VAD) information.",
+        "link": "/artifact_references/pages/windows.system.vad",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.VBScript",
+        "description": "Runs VBScript code on Windows endpoints using the Windows Script\nHost (cscript.exe).",
+        "link": "/artifact_references/pages/windows.system.vbscript",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.System.WMIQuery",
+        "description": "Runs a configurable WMI query on Windows and outputs the result\nrows.",
+        "link": "/artifact_references/pages/windows.system.wmiquery",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Timeline.MFT",
+        "description": "Parses the MFT and outputs file metadata in timeline format with\nanomaly detection flags and advanced filters.",
+        "link": "/artifact_references/pages/windows.timeline.mft",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Timeline.Prefetch",
+        "description": "Extracts execution timestamps from prefetch files and outputs them\nin timeline format.",
+        "link": "/artifact_references/pages/windows.timeline.prefetch",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Timeline.Registry.RunMRU",
+        "description": "Extracts RunMRU registry entries from user hives and outputs them\nin timeline format.",
+        "link": "/artifact_references/pages/windows.timeline.registry.runmru",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "Windows.Triage.SDS",
+        "description": "Extracts the $Secure:$SDS NTFS stream from a specified drive volume\nusing raw MFT parsing.",
+        "link": "/artifact_references/pages/windows.triage.sds",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    }
+]
