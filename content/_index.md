@@ -46,7 +46,7 @@ description: |
 {{% notice warning "Current Security Advisories" %}}
 
 Please update to the latest release [0.77.2](/downloads/) to address
-[Multiple CVEs](/announcements/advisories/).
+[Multiple CVEs](/announcements/advisories/v0-77-2/).
 {{% /notice %}}
 
 

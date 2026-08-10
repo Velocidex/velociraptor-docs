@@ -13,7 +13,7 @@ _We currently have no official training courses scheduled._ Please see
 below for training material from the last official training course
 from the Velociraptor team (from 2022), but it may be very outdated.
 
-We recomment users take on of the third party training courses offered
+We recommend users take on of the third party training courses offered
 below for more up to date content.
 
 ---
