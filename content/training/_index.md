@@ -9,9 +9,12 @@ description: |
   ## Scheduled courses
 ---
 
-## Scheduled courses
+_We currently have no official training courses scheduled._ Please see
+below for training material from the last official training course
+from the Velociraptor team (from 2022), but it may be very outdated.
 
-_There are currently no official training courses scheduled._
+We recomment users take on of the third party training courses offered
+below for more up to date content.
 
 ---
 
@@ -62,4 +65,3 @@ have corresponding videos.
 {{% /notice %}}
 
 {{< youtube class="youtube" title="Velociraptor Installation and Overview" id="70CBB9MdNWM" >}}
-
