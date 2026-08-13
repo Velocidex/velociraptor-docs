@@ -32,7 +32,7 @@ parameters:
     description: "IOC Filter to reduce results"
     default: "."
   - name: ParentUserRegex
-    description: "User filter by parent user for process artefacts"
+    description: "User filter by parent user for process artifacts"
     default: "."
     
 

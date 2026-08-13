@@ -44,7 +44,7 @@ Ultimately, Velociraptor agents are simply VQL engines — all tasks to the agen
 
 Writing free-form queries is a powerful tool, but from a user experience perspective, it is not ideal. Users will need to remember potentially complex queries. Velociraptor solves this by implementing **Artifacts**. An artifact is a text file written in YAML which encapsulates the VQL, adds some human readable descriptions and provides some parameters allowing users to customize the operation of the artifact to some extent.
 
-As an example of this process, we consider the [Windows Scheduled Tasks](https://docs.microsoft.com/en-us/windows/win32/taskschd/task-scheduler-start-page). These tasks are often added by attackers as a way of gaining persistence and a backdoor to a compromised system (See Att&ck Matrix [T1053](https://attack.mitre.org/techniques/T1053/)). Velociraptor can collect and analyse these tasks if provided with the appropriate VQL query. By writing the query into an artifact we make it possible for other users to simply re-use our VQL.
+As an example of this process, we consider the [Windows Scheduled Tasks](https://docs.microsoft.com/en-us/windows/win32/taskschd/task-scheduler-start-page). These tasks are often added by attackers as a way of gaining persistence and a backdoor to a compromised system (See Att&ck Matrix [T1053](https://attack.mitre.org/techniques/T1053/)). Velociraptor can collect and analyze these tasks if provided with the appropriate VQL query. By writing the query into an artifact we make it possible for other users to simply re-use our VQL.
 
 ![](../../img/0ZUoUfr0Mk8LOSn_Z)
 
@@ -80,7 +80,7 @@ To be really effective, Velociraptor implements many forensic capabilities direc
 
 A common task for analysts is to search for particular filenames. For example, in a drive by download or phishing email case, we already know in advance the name of the dropped file and we simply want to know if the file exists on any of our endpoints.
 
-The **Windows.Search.FileFinder** artifact is designed to search for various files by filename. **Figure 8** below illustrates the parameters that can be used to customize the collection. For a typical drive-by download, we might want to search for all binaries downloaded recently within the user’s home directories. We can also collect matching files centrally to further analyse those binaries. The artifact also allows us to filter by keywords appearing within file contents.
+The **Windows.Search.FileFinder** artifact is designed to search for various files by filename. **Figure 8** below illustrates the parameters that can be used to customize the collection. For a typical drive-by download, we might want to search for all binaries downloaded recently within the user’s home directories. We can also collect matching files centrally to further analyze those binaries. The artifact also allows us to filter by keywords appearing within file contents.
 
 ![](../../img/0lxWTbRpxhE7iGO51)
 

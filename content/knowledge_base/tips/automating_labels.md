@@ -27,7 +27,7 @@ Metadata then you may find this article more useful:
 
 {{% /notice %}}
 
-## Basic Use Case: Labelling based on default interrogation data
+## Basic Use Case: Labeling based on default interrogation data
 
 When a client connects for the first time in a Velociraptor deployment, the
 server instructs the client to enroll and also tells it to run the
@@ -123,7 +123,7 @@ FROM clients()
 
 {{% /notice %}}
 
-## Advanced Use Case: Labelling based on custom interrogation data
+## Advanced Use Case: Labeling based on custom interrogation data
 
 In the previous example we used data that was already being gathered by the
 `Generic.Client.Info` artifact. In addition, the `Platform` information doesn't
@@ -222,7 +222,7 @@ example.
 ![Installing server event monitoring](event_monitoring2.png)
 
 Now the interrogation of any Windows client will also check the Windows Defender
-logs and if a threat was logged in the past 24 hours the client will be labelled
+logs and if a threat was logged in the past 24 hours the client will be labeled
 "Recent Threat Detection".
 
 ![Label added!](label_added.png)

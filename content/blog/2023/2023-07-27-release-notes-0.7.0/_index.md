@@ -59,7 +59,7 @@ accessed.
 ### Chrome artifacts
 
 Added a leveldb parser and artifacts around Chrome Session
-Storage. This allows to analyse data that is stored by Chrome locally
+Storage. This allows to analyze data that is stored by Chrome locally
 by various web apps.
 
 ### Lnk forensics

@@ -222,13 +222,13 @@ The key things to notice about these artifacts are:
 
 1. They are multi-platform. So they can be run on the 3 main operating systems without OS-specific targeting. They can also work on “offline” data, where files from 1 operating system are being processed on a different operating system.
 
-1. The tool definitions (“tools” section of the artifact) are as simple as possible because we’ve already defined and initialised (incl. downloading) the tools during the setup process. The tool definitions here are just to ensure that these tools are available to this artifact.
+1. The tool definitions (“tools” section of the artifact) are as simple as possible because we’ve already defined and initialized (incl. downloading) the tools during the setup process. The tool definitions here are just to ensure that these tools are available to this artifact.
 
 1. We don’t mess around with fancy-pants unzipping of tools in our artifact. Several of the Velociraptor-bundled artifacts download zipped tools from GitHub and then unzip them on the client. This is done for user-convenience but it creates unnecessary complexity in the artifact, plus we really shouldn’t be using tools in zips that have been pulled straight from GitHub. It’s better to download the tools, unzip the tools, test/validate the tools, and then store them in your Velociraptor’s inventory. This approach also means that your endpoints don’t need access to GitHub because all the tools will be pulled from the Velociraptor server.
 
 1. We set the artifact parameters to “hidden” because we don’t intend these artifacts to be used standalone.
 
-1. We give them a generous timeout because we could be targeting a large set of files that were previously collected and are now being analysed “offline”. Also `Capa` is written in Python and slow as molasses.
+1. We give them a generous timeout because we could be targeting a large set of files that were previously collected and are now being analyzed “offline”. Also `Capa` is written in Python and slow as molasses.
 
 {{% notice note %}}
 Windows Defender will probably prevent `Capa` from running. You may need to temporarily disable it’s realtime protection option or else add a realtime scanning exclusion for the folder your testing on.
@@ -280,7 +280,7 @@ In the System.VFS.DownloadFile artifact we've replaced the download_recursive fu
 
 ![](0umZkoPpBx_LFI-9W.png)
 
-We also added the 1-hour timeout into the artifact so that it’s behaviour is consistent with the timeout of the Custom.Client.FindByMagics artifact. Finding files can take a long time, so this is just to avoid frustrating timeouts - however it should rarely take anything as long as an hour.
+We also added the 1-hour timeout into the artifact so that it’s behavior is consistent with the timeout of the Custom.Client.FindByMagics artifact. Finding files can take a long time, so this is just to avoid frustrating timeouts - however it should rarely take anything as long as an hour.
 
 ![](0_Sg3JaXOEeWZJCE2.png)
 

@@ -1,0 +1,160 @@
+{{ $file := .Get 0 }}
+{{ $cve := (printf "%s%s" .Page.File.Dir $file) | readFile | transform.Unmarshal }}
+{{ $cna := $cve.containers.cna }}
+{{ $metrics := index $cna.metrics 0 }}
+{{ $cvss := $metrics.cvssV3_1 }}
+{{ $scenario := index $metrics.scenarios 0 }}
+
+<h1> {{ $cve.cveMetadata.cveId}}: {{ $cna.title }} </h1>
+
+<div class="cve">
+
+<span class="published">
+  Published on {{ printf "%04d-%02d-%02d" .Page.Date.Year .Page.Date.Month .Page.Date.Day }}
+</span>
+<span class="pull-right">
+  <a href="{{ $file }}" download target="_blank" class="redirected">
+    <i class="fa-solid fa-download"></i>
+  </a>
+  <a href="https://vulnogram.org/#editor" target="_blank" >Vulnogram</a>
+</span>
+
+<details class="popup">
+  <summary class="lbl rnd sec CVSS">CVSS · {{ $cvss.baseSeverity}} · {{ $cvss.baseScore }}
+      <sub>⁄10
+      </sub>
+      <span style="font-size:0px;opacity:0"> · {{ $cvss.vectorString }}
+      </span>
+    </summary>
+    <div class="pop wht rnd shd pad bor">
+      <span>Scoring scenario:
+      </span>{{ $scenario.value }}
+      <div>attackVector:
+        <b>{{ $cvss.attackVector }}
+        </b>
+      </div>
+      <div>attackComplexity:
+        <b>{{ $cvss.attackComplexity }}
+        </b>
+      </div>
+      <div>privilegesRequired:
+        <b>{{ $cvss.privilegesRequired }}
+        </b>
+      </div>
+      <div>userInteraction:
+        <b>{{ $cvss.userInteraction }}
+        </b>
+      </div>
+      <div>scope:
+        <b>{{ $cvss.scope }}
+        </b>
+      </div>
+      <div>confidentialityImpact:
+        <b>{{ $cvss.confidentialityImpact }}
+        </b>
+      </div>
+      <div>integrityImpact:
+        <b>{{ $cvss.integrityImpact }}
+        </b>
+      </div>
+      <div>availabilityImpact:
+        <b>{{ $cvss.availabilityImpact }}
+        </b>
+      </div>
+      <div>
+        <a class="vgi-dial redirected" href="https://www.first.org/cvss/calculator/3.1#{{ $cvss.vectorString | safeURL }}" target="_blank">Open CVSS Calc: {{ $cvss.vectorString }}
+        </a>
+      </div>
+    </div>
+  </details>
+
+{{- range $cna.descriptions -}}
+  {{ range .supportingMedia }}
+<div class="desc"><b class="vgi-text">Description </b>
+  <div class="desc-text">
+  <p> {{.value | safeHTML }} </p>
+  </div>
+</div>
+  {{ end }}
+{{ end }}
+
+{{ range $cna.problemTypes }}
+{{ range .descriptions }}
+<div class="problem"><b class="vgi-bug">Problem</b>
+  <span class="problem-text">{{.description}}</span></div>
+{{ end }}
+{{ end }}
+
+{{ range $cna.impacts }}
+  {{ range .descriptions }}
+  {{ if .description }}
+    <div class="impact"><b class="vgi-impact">Impact</b>{{.description}}</div>
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ range $cna.configurations }}
+  {{ range .supportingMedia }}
+  {{ if .value }}
+    <div class="configurations"><b class="vgi-cog">Required configuration for exposure</b>
+      <span class="configuration-text">
+        {{.value | safeHTML}}
+      </span>
+    </div>
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ range $cna.workarounds }}
+  {{ range .supportingMedia }}
+  {{ if .value }}
+    <div class="workaround"><b class="vgi-avoid">Workarounds</b>
+      <span class="workaround-text">
+        {{.value | safeHTML}}
+      </span>
+    </div>
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+
+{{ $affected := index $cna.affected 0 }}
+    <table><colgroup>
+        <col><col class="affectedCol"></colgroup>
+      <thead>
+        <tr>
+          <th>Product</th><th>Affected</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{ $version := index $affected.versions 0 }}
+        <tr><td rowspan="1"><b class="vgi-package">{{ $affected.vendor}} {{ $affected.product }}</b><i> on </i>
+            <span class="vgi-stack">{{ delimit $affected.platforms ", " }}</span>
+            <br>
+            <a class="vgi-ext" href="{{ $affected.repo }}">
+              source repo
+            </a>
+            <br><span class="vgi-impact">Default status is {{ $affected.defaultStatus}} </span>
+          </td>
+          <td> before {{ $version.lessThan }}<br>
+        </td></tr>
+    </tbody></table>
+</div>
+
+
+{{ if $cna.credits }}
+<div class="credit"><b class="vgi-like">Credits</b>
+  <ul>
+    {{ range $cna.credits }}
+    <span class="credits-text"><li>{{.value}}</li></span>
+    {{ end }}
+  </ul>
+{{ end }}
+
+
+<div class="references"><b class="vgi-ext">References</b>
+<ul>
+  {{ range $cna.references }}
+  <li><a href="{{.url | safeURL}}">{{ .url }}</a></li>
+  {{ end }}
+</ul>

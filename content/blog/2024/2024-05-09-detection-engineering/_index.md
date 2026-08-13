@@ -652,7 +652,7 @@ time!
 
 This blog post explores the discipline of `Detection
 Engineering`. Although this is not a new idea - people have been
-refining and analysing detection rules since intrusion detection
+refining and analyzing detection rules since intrusion detection
 systems were invented. By treating detection engineering as an art and
 a science and dedicating specialist roles to it within an
 organization, we can encourage and support this important role.

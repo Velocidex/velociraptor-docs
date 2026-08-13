@@ -3,7 +3,7 @@ author: 'Andreas Misje - @misje'
 description: |
   NetworkManager is a popular high-level interface for configuring
   networks in Linux systems, in particular Ubuntu and other Debian-based
-  flavours. This artifact lists the NetworkManager state, all configured
+  flavors. This artifact lists the NetworkManager state, all configured
   connections and their settings, as well as when the connections were
   last activated. A list of BSSIDs per connection is also retrieved.
 

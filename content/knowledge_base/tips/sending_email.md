@@ -9,7 +9,7 @@ for artifact-level guides covering those use cases.
 
 This article covers the mechanics: the
 [`mail()`](/vql_reference/other/mail/) function, SMTP secrets,
-throttling behaviour, local testing with Mailpit, and the
+throttling behavior, local testing with Mailpit, and the
 [`Generic.Utils.SendEmail`](/artifact_references/pages/generic.utils.sendemail/)
 artifact that handles MIME encoding.
 

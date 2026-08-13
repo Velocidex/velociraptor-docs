@@ -294,7 +294,7 @@ list that you can use as an argument to `IncludeFilter` to detect many
 of these errors.
 
 [`Server.Monitor.Client.Errors.Alert`](/exchange/artifacts/pages/server.monitor.client.errors.alert/) iterates over **all** clients
-to query their per-client monitoring logs. The work is parallelised,
+to query their per-client monitoring logs. The work is parallelized,
 but it is still more expensive than the server-side variant —
 narrow `IncludeFilter` to the artifacts you actually care about
 before turning it on in a large deployment.

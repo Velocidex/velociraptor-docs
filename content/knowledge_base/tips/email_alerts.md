@@ -190,7 +190,7 @@ collection should always trigger a notification.
 ### New client enrolled
 
 Set `NewClientArtifacts` to a regex matching the artifacts you
-collect on enrolment (e.g. [`Generic.Client.Info`](/artifact_references/pages/generic.client.info/)). When a client that
+collect on enrollment (e.g. [`Generic.Client.Info`](/artifact_references/pages/generic.client.info/)). When a client that
 is newer than `NewClientThreshold` seconds completes such a flow, a
 notification is sent regardless of other filters. Useful for getting
 an e-mail whenever a new endpoint appears on the server.

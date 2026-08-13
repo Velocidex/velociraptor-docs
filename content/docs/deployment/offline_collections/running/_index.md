@@ -26,7 +26,7 @@ restricted.
 When the collector is run without command line arguments, the collection will
 automatically start. If any [command line arguments](/docs/cli/)
 are provided then it behaves as any ordinary Velociraptor binary would, with the
-collector behaviour being bypassed.
+collector behavior being bypassed.
 
 Collectors built using the GUI-based collector builder will require admin-level
 privileges on all platforms (this check gets added by the inclusion of the
@@ -54,7 +54,7 @@ container, using the same file basename, which contains a copy of the collector
 activity as displayed in the terminal.
 
 
-## Collector behaviour when admin is required
+## Collector behavior when admin is required
 
 As mentioned above, this requirement is the default for offline collectors. When
 the collector is launched on the endpoint, it first checks if the user running

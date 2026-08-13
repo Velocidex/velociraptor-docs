@@ -360,7 +360,7 @@ process, I will use the `Sigma Studio` notebook template.
 ![Creating a new Sigma Studio Notebook](sigma_studio_1.svg)
 
 Velociraptor notebooks are interactive documents allowing users to
-dissect and analyse data using VQL. The `Sigma Studio` template is
+dissect and analyze data using VQL. The `Sigma Studio` template is
 specifically designed to make manipulation of Sigma Rules simpler.
 
 ![The Sigma Studio Notebook assists in writing rules](sigma_studio_2.svg)

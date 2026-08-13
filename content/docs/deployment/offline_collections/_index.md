@@ -112,7 +112,7 @@ The process of embedding the config - and optionally bundling other tools - does
 not require compiling a new binary from source. It uses the standard
 Velociraptor binary and produces a modified version of it. So you can still use
 the collector binary to perform any operations that an unmodified Velociraptor
-binary is capable of. The offline collector behaviour is only invoked when the
+binary is capable of. The offline collector behavior is only invoked when the
 binary is launched without any
 [command line arguments](/docs/cli/).
 
@@ -122,7 +122,7 @@ Because offline collectors are based on standard Velociraptor binaries they can
 be created for any platform or architecture that Velociraptor supports.
 
 When run without any command line arguments the embedded config is loaded. The
-config defines the offline collector's behaviour which is:
+config defines the offline collector's behavior which is:
 
 1. **collect** the specified artifacts which are included in the config.
 

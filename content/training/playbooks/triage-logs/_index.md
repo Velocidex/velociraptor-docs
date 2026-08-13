@@ -97,7 +97,7 @@ The `Exchange.Windows.EventLogs.Hayabusa` artifact is available in the
 artifact exchange. This artifact uses an external binary `Hayabusa` to
 evaluate the `Sigma` rules from the `Hayabusa` project.
 
-Post processing and analysing the results from this artifact is
+Post processing and analyzing the results from this artifact is
 similar to the procedure described above.
 
 

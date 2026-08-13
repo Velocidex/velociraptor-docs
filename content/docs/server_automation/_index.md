@@ -15,7 +15,7 @@ endpoint, but VQL can be used on the server too.
 
 Running VQL queries on the server allows for tasks on the server to be
 automated. In this page we will see how server artifacts can be used
-to customize server behaviour.
+to customize server behavior.
 
 Before we discuss server automation we need to clarify some of the
 terms used when discussing the server.

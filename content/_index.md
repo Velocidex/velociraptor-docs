@@ -45,18 +45,8 @@ description: |
 
 {{% notice warning "Current Security Advisories" %}}
 
-Please update to the latest release [0.77.1](/downloads/) to address
-the following CVEs:
-
-* [CVE-2026-5329](/announcements/advisories/cve-2026-5329/) Velociraptor improper input validation in client message handler. This could lead to remote
-  code execution on the server.
-
-* [CVE-2026-6290](/announcements/advisories/cve-2026-6290/)  Velociraptor query() plugin misapplies permissions to orgs.
-
-* [CVE-2026-6863](/announcements/advisories/cve-2026-6863/)  HTTP Filestore Endpoints Misapply Permissions Across Organizations
-
-* [CVE-2026-6948](/announcements/advisories/cve-2026-6948/)  Unbounded Memory Allocation in VQLResponse Result-Set Writer. This could lead to a DoS attack against the server.
-
+Please update to the latest release [0.77.2](/downloads/) to address
+[Multiple CVEs](/announcements/advisories/v0-77-2/).
 {{% /notice %}}
 
 

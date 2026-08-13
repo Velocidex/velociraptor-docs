@@ -18,7 +18,7 @@ description: |
   By default, context rows with false-like values are omitted from the e-mail.
   Set `KeepEmptyRows` to keep them.
 
-  `SeverityTransforms` can derive a normalised severity from one or more fields
+  `SeverityTransforms` can derive a normalized severity from one or more fields
   in the alert context. The derived severity is added to the notification title
   and body and may also be used with `SeverityThreshold` to send only selected
   severities. If multiple transforms match, the last matching value is used.
