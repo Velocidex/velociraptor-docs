@@ -1,0 +1,153 @@
+name: IONSEC.TRACE.AI.Processes
+description: |
+  IONSEC TRACE — Detect running AI processes and cross-reference with
+  network connections to AI service ports.
+
+  Version: 0.1.0
+  Author: IONSEC
+
+  This artifact collects:
+  - Running processes matching known AI tool patterns
+  - Network connections on common AI service ports
+  - Process-to-network cross-references
+  - Command-line analysis for AI-specific arguments
+
+  AI Service Ports:
+  - 11434: Ollama
+  - 1234: LM Studio
+  - 7860: text-generation-webui (Gradio)
+  - 5001: KoboldCpp
+  - 8080: llama.cpp server / LocalAI
+  - 8000: vLLM
+  - 3000: AnythingLLM
+  - 8394: Jan AI
+  - 4891: TabbyML
+  - 5000: Generic AI web UI (Flask)
+
+type: CLIENT
+parameters:
+  - name: CollectChatHistory
+    description: Not used in this artifact (kept for interface consistency)
+    type: bool
+    default: true
+  - name: CollectLogs
+    description: Not used in this artifact (kept for interface consistency)
+    type: bool
+    default: true
+  - name: DeepCollection
+    description: Include extended process details and cross-reference all connections
+    type: bool
+    default: false
+
+sources:
+  - name: AI_Process_Detection
+    query: |
+      -- Detect running AI inference engine processes
+      LET ai_inference_procs = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, Username,
+                 "ai_inference_process" AS ArtifactType, "process_detection" AS Platform
+          FROM pslist()
+          WHERE Name =~ "(?i)(ollama|llama|llama-cpp|llamaserver|server-llm|llamafile)"
+             OR Name =~ "(?i)(lm.studio|lmstudio)"
+             OR Name =~ "(?i)(kobold|koboldcpp)"
+             OR Name =~ "(?i)(gpt4all|gpt4all-chat)"
+             OR Name =~ "(?i)(local-ai|localai)"
+             OR Name =~ "(?i)(vllm)"
+             OR Name =~ "(?i)(text-generation|textgeneration|oobabooga)"
+             OR Name =~ "(?i)(jan|jan.ai)"
+
+      -- Detect running AI agent framework processes
+      LET ai_agent_procs = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, Username,
+                 "ai_agent_process" AS ArtifactType, "process_detection" AS Platform
+          FROM pslist()
+          WHERE Name =~ "(?i)(hermes)"
+             OR CommandLine =~ "(?i)(autogpt|auto-gpt)"
+             OR CommandLine =~ "(?i)(crewai|crew-ai)"
+             OR CommandLine =~ "(?i)(langchain|langgraph)"
+             OR CommandLine =~ "(?i)(autogen|ag2)"
+             OR CommandLine =~ "(?i)(aider)"
+             OR CommandLine =~ "(?i)(shell.gpt|sgpt)"
+
+      -- Detect running AI dev tool processes
+      LET ai_devtool_procs = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, Username,
+                 "ai_devtool_process" AS ArtifactType, "process_detection" AS Platform
+          FROM pslist()
+          WHERE Name =~ "(?i)(cursor)"
+             OR Name =~ "(?i)(codex)"
+             OR CommandLine =~ "(?i)(claude.code|claude-code)"
+             OR CommandLine =~ "(?i)(continue)"
+             OR CommandLine =~ "(?i)(cline)"
+             OR Name =~ "(?i)(warp)"
+
+      -- Detect Python/Node processes with AI-related arguments
+      LET ai_script_procs = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, Username,
+                 "ai_script_process" AS ArtifactType, "process_detection" AS Platform
+          FROM pslist()
+          WHERE (Name =~ "(?i)(python|node)" AND (
+              CommandLine =~ "(?i)(ollama|llama|transformers|huggingface|torch)"
+              OR CommandLine =~ "(?i)(openai|anthropic|langchain|crewai|autogpt)"
+              OR CommandLine =~ "(?i)(text-generation-webui|gradio|streamlit)"
+              OR CommandLine =~ "(?i)(vllm|localai|koboldcpp|gpt4all)"
+              OR CommandLine =~ "(?i)(aider|hermes|shell.gpt)"
+          ))
+
+      SELECT * FROM chain(a=ai_inference_procs, b=ai_agent_procs, c=ai_devtool_procs, d=ai_script_procs)
+
+  - name: AI_Service_Ports
+    query: |
+      -- Network connections on known AI service ports
+      LET ai_port_connections = SELECT Pid, Name AS ProcessName, Exe,
+                 Laddr.IP AS LocalIP, Laddr.Port AS LocalPort,
+                 Raddr.IP AS RemoteIP, Raddr.Port AS RemotePort,
+                 Status, CommandLine,
+                 "ai_network_connection" AS ArtifactType, "network_detection" AS Platform
+          FROM connections()
+          WHERE Laddr.Port IN (11434, 1234, 7860, 5001, 8080, 8000, 3000, 8394, 4891, 5000)
+             OR Raddr.Port IN (11434, 1234, 7860, 5001, 8080, 8000, 3000, 8394, 4891, 5000)
+
+      -- Port mapping for display
+      LET port_labels = SELECT *,
+                 if(condition=LocalPort = 11434, then="Ollama",
+                     condition=LocalPort = 1234, then="LM_Studio",
+                     condition=LocalPort = 7860, then="TextGen_WebUI",
+                     condition=LocalPort = 5001, then="KoboldCpp",
+                     condition=LocalPort = 8080, then="LlamaCpp_LocalAI",
+                     condition=LocalPort = 8000, then="vLLM",
+                     condition=LocalPort = 3000, then="AnythingLLM",
+                     condition=LocalPort = 8394, then="Jan_AI",
+                     condition=LocalPort = 4891, then="TabbyML",
+                     condition=LocalPort = 5000, then="AI_WebUI",
+                     else="Unknown_AI_Service") AS ServiceName
+          FROM ai_port_connections
+
+      SELECT * FROM port_labels
+
+  - name: AI_Process_Network_CrossRef
+    query: |
+      -- Get all AI processes
+      LET ai_pids = SELECT Pid, Name AS ProcessName, CommandLine
+          FROM pslist()
+          WHERE Name =~ "(?i)(ollama|llama|lm.studio|lmstudio|kobold|gpt4all|local-ai|vllm|hermes|aider|cursor|warp)"
+             OR CommandLine =~ "(?i)(ollama|llama|autogpt|crewai|langchain|autogen|aider|hermes|shell.gpt|sgpt|claude.code|codex|continue|cline|text-generation|gradio)"
+
+      -- Get all network connections for those PIDs
+      LET ai_netstat = SELECT Pid, Name AS ProcessName, Exe, CommandLine,
+                 Laddr.IP AS LocalIP, Laddr.Port AS LocalPort,
+                 Raddr.IP AS RemoteIP, Raddr.Port AS RemotePort,
+                 Status,
+                 "ai_process_network" AS ArtifactType, "network_detection" AS Platform
+          FROM connections()
+          WHERE Pid IN ai_pids.Pid
+
+      SELECT * FROM ai_netstat
+
+column_types:
+  - name: ArtifactType
+    type: string
+  - name: Platform
+    type: string
+  - name: CreateTime
+    type: timestamp
