@@ -1,0 +1,91 @@
+name: IONSEC.TRACE.AI.Browser
+description: |
+  IONSEC TRACE — Collect forensic evidence of browser-based AI assistant usage.
+
+  This artifact collects:
+  - Browser History SQLite entries (URLs + titles) for known AI assistant
+    sites: chatgpt.com, claude.ai, perplexity.ai, gemini.google.com,
+    copilot.microsoft.com, leo.brave.com, grok.com, poe.com, deepseek.com,
+    mistral.ai, and others.
+  - Per-site IndexedDB conversation stores (https_<ai-domain>_0.indexeddb.*)
+  - Brave Leo built-in assistant data (AIChat/ dir)
+
+  Version: 0.2.0
+  Author: IONSEC
+  Reference: https://github.com/ionsec/trace
+  License: AGPL-3.0-or-later
+
+type: CLIENT
+parameters:
+  - name: CollectChatHistory
+    description: Collect IndexedDB conversation stores and Brave Leo data
+    type: bool
+    default: true
+  - name: CollectLogs
+    description: Not used (browser history is queried read-only)
+    type: bool
+    default: true
+  - name: DeepCollection
+    description: Include all per-site AI IndexedDB stores regardless of size
+    type: bool
+    default: false
+
+sources:
+  - name: BraveLeo
+    query: |
+      LET home = expand(path=HomeDir)
+      LET leo_dir = home + "/Library/Application Support/BraveSoftware/Brave-Browser/Default/AIChat"
+
+      SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+             "brave_leo_data" AS ArtifactType, "browser_brave_leo" AS Platform
+      FROM glob(globs=leo_dir + "/**", accessor="file")
+      WHERE CollectChatHistory
+
+  - name: BrowserAIHistory_Linux
+    precondition: SELECT OS FROM info() WHERE OS = 'linux'
+    query: |
+      LET profiles = SELECT OSPath FROM glob(globs=[
+          expand(path=HomeDir) + "/.config/google-chrome/**/History",
+          expand(path=HomeDir) + "/.config/microsoft-edge/**/History",
+          expand(path=HomeDir) + "/.config/BraveSoftware/Brave-Browser/**/History",
+      ], accessor="file")
+
+      SELECT * FROM foreach(row=profiles, query={
+          SELECT OSPath, url, title, visit_count, last_visit_time,
+                 "browser_ai_history" AS ArtifactType, "browser_ai" AS Platform
+          FROM sqlite(file=OSPath, query="SELECT url, title, visit_count, last_visit_time FROM urls WHERE url LIKE '%chatgpt.com%' OR url LIKE '%claude.ai%' OR url LIKE '%perplexity.ai%' OR url LIKE '%gemini.google.com%' OR url LIKE '%copilot.microsoft.com%' OR url LIKE '%leo.brave.com%' OR url LIKE '%grok.com%' OR url LIKE '%poe.com%' OR url LIKE '%deepseek.com%' OR url LIKE '%mistral.ai%' OR url LIKE '%openai.com%' OR url LIKE '%anthropic.com%' LIMIT 500")
+          WHERE CollectChatHistory
+      })
+
+  - name: BrowserAIHistory_macOS
+    precondition: SELECT OS FROM info() WHERE OS = 'darwin'
+    query: |
+      LET profiles = SELECT OSPath FROM glob(globs=[
+          expand(path=HomeDir) + "/Library/Application Support/Google/Chrome/**/History",
+          expand(path=HomeDir) + "/Library/Application Support/Microsoft Edge/**/History",
+          expand(path=HomeDir) + "/Library/Application Support/BraveSoftware/Brave-Browser/**/History",
+          expand(path=HomeDir) + "/Library/Application Support/Arc/**/History",
+      ], accessor="file")
+
+      SELECT * FROM foreach(row=profiles, query={
+          SELECT OSPath, url, title, visit_count, last_visit_time,
+                 "browser_ai_history" AS ArtifactType, "browser_ai" AS Platform
+          FROM sqlite(file=OSPath, query="SELECT url, title, visit_count, last_visit_time FROM urls WHERE url LIKE '%chatgpt.com%' OR url LIKE '%claude.ai%' OR url LIKE '%perplexity.ai%' OR url LIKE '%gemini.google.com%' OR url LIKE '%copilot.microsoft.com%' OR url LIKE '%leo.brave.com%' OR url LIKE '%grok.com%' OR url LIKE '%poe.com%' OR url LIKE '%deepseek.com%' OR url LIKE '%mistral.ai%' OR url LIKE '%openai.com%' OR url LIKE '%anthropic.com%' LIMIT 500")
+          WHERE CollectChatHistory
+      })
+
+  - name: BrowserAIHistory_Windows
+    precondition: SELECT OS FROM info() WHERE OS = 'windows'
+    query: |
+      LET profiles = SELECT OSPath FROM glob(globs=[
+          expand(path=HomeDir) + "/AppData/Local/Google/Chrome/**/History",
+          expand(path=HomeDir) + "/AppData/Local/Microsoft/Edge/**/History",
+          expand(path=HomeDir) + "/AppData/Local/BraveSoftware/Brave-Browser/**/History",
+      ], accessor="file")
+
+      SELECT * FROM foreach(row=profiles, query={
+          SELECT OSPath, url, title, visit_count, last_visit_time,
+                 "browser_ai_history" AS ArtifactType, "browser_ai" AS Platform
+          FROM sqlite(file=OSPath, query="SELECT url, title, visit_count, last_visit_time FROM urls WHERE url LIKE '%chatgpt.com%' OR url LIKE '%claude.ai%' OR url LIKE '%perplexity.ai%' OR url LIKE '%gemini.google.com%' OR url LIKE '%copilot.microsoft.com%' OR url LIKE '%leo.brave.com%' OR url LIKE '%grok.com%' OR url LIKE '%poe.com%' OR url LIKE '%deepseek.com%' OR url LIKE '%mistral.ai%' OR url LIKE '%openai.com%' OR url LIKE '%anthropic.com%' LIMIT 500")
+          WHERE CollectChatHistory
+      })
