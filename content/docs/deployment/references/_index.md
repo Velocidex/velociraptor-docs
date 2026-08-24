@@ -7,6 +7,8 @@ pre: <i class="fas fa-book"></i>
 summary: |
   This is an annotated server.config.yaml with complete explanations for all
   options currently available.
+description: |
+  <div class="document-comment">
 ---
 
 <div class="document-comment">

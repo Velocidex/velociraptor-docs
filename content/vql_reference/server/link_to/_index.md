@@ -52,7 +52,7 @@ description: |
 
   A useful feature is to embed collection parameters inside the
   link. This allows you to build a list of links where users can
-  click to initiate pre-determined pre-canned colletions.
+  click to initiate pre-determined pre-canned collections.
 
   For example, the following will create a link to launch the
   `Demo.Plugins.GUI` artifact with a pre-set parameter of
@@ -95,12 +95,14 @@ Arg | Description | Type
 ----|-------------|-----
 type|The type of link. Currently one of collection, hunt, artifact, event, debug|string
 client_id||string
-flow_id||string
+flow_id|Link to this flow. If this value is 'new', the link will create a new collection with the specified artifact.|string
 upload|Upload object for the file to upload (upload object is returned by the upload() function)|ordereddict.Dict
 tab|The tab to focus - can be overview, request, results, logs, notebook|string
 text|If specified we emit a markdown style URL with a text|string
-hunt_id|The hunt id to read.|string
+hunt_id|The hunt id to read. You can specify 'new' to create a new hunt based on the template in the 'artifact' parameter. |string
+notebook_id|The notebook id to read. You can specify 'new' to create a new notebook based on the template in the 'artifact' parameter. |string
 artifact|The artifact to retrieve|string
+parameters|artifact parameters to use when creating a new flow/hunt/notebook.|ordereddict.Dict
 raw|When specified we emit a raw URL (without autodetected text)|bool
 org|If set the link accesses a different org. Otherwise we accesses the current org.|string
 
@@ -152,7 +154,7 @@ FROM scope()
 
 A useful feature is to embed collection parameters inside the
 link. This allows you to build a list of links where users can
-click to initiate pre-determined pre-canned colletions.
+click to initiate pre-determined pre-canned collections.
 
 For example, the following will create a link to launch the
 `Demo.Plugins.GUI` artifact with a pre-set parameter of

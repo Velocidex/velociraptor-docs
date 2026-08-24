@@ -31,6 +31,7 @@ query||string (required)
 args||Any
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+<span class="permission_list linkcolour label label-important">NETWORK</span>
 
 ### Description
 

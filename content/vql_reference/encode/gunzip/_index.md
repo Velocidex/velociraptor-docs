@@ -31,6 +31,7 @@ description: |
 Arg | Description | Type
 ----|-------------|-----
 string|Data to apply Gunzip|string (required)
+max_bytes|Maximum length of bytes to read into memory|int64
 
 ### Description
 

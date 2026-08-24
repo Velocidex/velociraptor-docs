@@ -58,7 +58,7 @@ description: |
   ```
 
   Thus the log message will be emitted for the 1st, 4th, 7th, and 10th rows.
-  To observe the deduplication behaviour in real time you can run this query
+  To observe the deduplication behavior in real time you can run this query
   in a notebook cell and tweak the arguments to understand their impacts.
 
   ### See also
@@ -143,7 +143,7 @@ LIMIT 10
 ```
 
 Thus the log message will be emitted for the 1st, 4th, 7th, and 10th rows.
-To observe the deduplication behaviour in real time you can run this query
+To observe the deduplication behavior in real time you can run this query
 in a notebook cell and tweak the arguments to understand their impacts.
 
 ### See also

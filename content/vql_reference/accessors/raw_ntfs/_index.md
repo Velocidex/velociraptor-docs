@@ -50,7 +50,7 @@ description: |
   The `raw_ntfs` accessor is available in all supported platforms
   (i.e. not only Windows) and uses the same filesystem parser as the
   `ntfs` accessor. You can use this in conjunction with the
-  `remap()` function to analyse raw NTFS volumes on any supported
+  `remap()` function to analyze raw NTFS volumes on any supported
   platform.
 
 ---
@@ -110,7 +110,7 @@ SELECT * FROM parse_mft(
 The `raw_ntfs` accessor is available in all supported platforms
 (i.e. not only Windows) and uses the same filesystem parser as the
 `ntfs` accessor. You can use this in conjunction with the
-`remap()` function to analyse raw NTFS volumes on any supported
+`remap()` function to analyze raw NTFS volumes on any supported
 platform.
 
 

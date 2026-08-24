@@ -15,7 +15,7 @@ executions across all clients for auditing purposes.
 Velociraptor can issue shell commands on the endpoint by using the
 various wrapper artifacts. To use them, the user must be directly
 logged in to the Velociraptor server GUI and therefore
-authenticated and authorised.
+authenticated and authorized.
 
 Obviously being able to run arbitrary commands on the end point is
 a powerful feature and should be used sparingly. There is an audit
@@ -36,7 +36,7 @@ description: |
    Velociraptor can issue shell commands on the endpoint by using the
    various wrapper artifacts. To use them, the user must be directly
    logged in to the Velociraptor server GUI and therefore
-   authenticated and authorised.
+   authenticated and authorized.
 
    Obviously being able to run arbitrary commands on the end point is
    a powerful feature and should be used sparingly. There is an audit

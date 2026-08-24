@@ -110,6 +110,15 @@ parameters:
     default: "."
     type: regex
 
+export: |
+  LET Levels &lt;= dict(
+    `0`='Always',
+    `1`='Critical',
+    `2`='Error',
+    `3`='Warning',
+    `4`='Info',
+    `5`='Verbose')
+
 sources:
   - query: |
       LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
@@ -149,13 +158,9 @@ sources:
        - name: Simplified view
          type: vql_suggestion
          template: |
-            LET Levels &lt;= dict(
-                `0`='Always',
-                `1`='Critical',
-                `2`='Error',
-                `3`='Warning',
-                `4`='Info',
-                `5`='Verbose')
+            /*
+            # Simplified log view
+            */
             LET S = scope()
 
             SELECT TimeCreated,
@@ -185,5 +190,29 @@ sources:
             */
 
             LET Dummy &lt;= 42
+
+       - type: vql_suggestion
+         name: Timeline
+         template: |
+          /*
+          # EVTX timeline
+          {{ Timeline "EVTX" }}
+          */
+          LET S = scope()
+
+          LET _ &lt;= timeline_add(key='TimeCreated',
+                          name='evtx',
+                          timeline='EVTX',
+                          query={
+              SELECT TimeCreated,
+                    System AS _System,
+                    EventID,
+                    get(item=Levels, field=str(str=System.Level)) AS Level,
+                    S.System.Execution.ProcessID AS PID,
+                    Message,
+                    S.EventData AS Data
+              FROM source()
+              ORDER BY TimeCreated
+            })
 </code></pre>
 
