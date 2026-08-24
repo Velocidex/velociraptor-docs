@@ -33,6 +33,7 @@ endpoint|The Endpoint to use including port number (e.g. 192.168.1.1:22 )|string
 hostkey|Host key to verify. Blank to disable|string
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+<span class="permission_list linkcolour label label-important">NETWORK</span>
 
 ### Description
 

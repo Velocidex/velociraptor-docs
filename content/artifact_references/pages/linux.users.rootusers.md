@@ -38,8 +38,7 @@ sources:
           FROM Artifact.Linux.Sys.Users()
         },
         query={
-          SELECT Fqdn AS Host,
-                 User,
+          SELECT User,
                  Description,
                  Uid,
                  Gid,

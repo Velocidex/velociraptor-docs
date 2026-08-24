@@ -15,7 +15,7 @@ enumerate and inspect EFI binaries.
 The artifact queries the specified physical disk, parses the
 partition table to targets the ESPs File Allocation Table (FAT).
 
-The default artifact behaviour is to return file information and PE
+The default artifact behavior is to return file information and PE
 enrichment, as typical EFI files are in the PE format.
 
 We can look for anomalies in EFI such as:
@@ -40,7 +40,7 @@ description: |
   The artifact queries the specified physical disk, parses the
   partition table to targets the ESPs File Allocation Table (FAT).
 
-  The default artifact behaviour is to return file information and PE
+  The default artifact behavior is to return file information and PE
   enrichment, as typical EFI files are in the PE format.
 
   We can look for anomalies in EFI such as:

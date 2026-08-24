@@ -1109,7 +1109,7 @@
         "name": "client_set_metadata",
         "description": "Sets client metadata.",
         "type": "Function",
-        "version": 2,
+        "version": 3,
         "args": [
             {
                 "name": "client_id",
@@ -1120,6 +1120,11 @@
                 "name": "metadata",
                 "type": "ordereddict.Dict",
                 "description": "A dict containing metadata. If not specified we use kwargs."
+            },
+            {
+                "name": "modify",
+                "type": "Lambda",
+                "description": "A modification callback lambda. This performs an atomic mutation on the client metadata.."
             }
         ],
         "category": "server",
@@ -1132,7 +1137,8 @@
             "linux_amd64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
-        ]
+        ],
+        "free_form_args": true
     },
     {
         "name": "clients",
@@ -3144,6 +3150,9 @@
                 "required": true
             }
         ],
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -3375,12 +3384,18 @@
         "name": "gunzip",
         "description": "Uncompress a gzip-compressed block of data.",
         "type": "Function",
+        "version": 2,
         "args": [
             {
                 "name": "string",
                 "type": "string",
                 "description": "Data to apply Gunzip",
                 "required": true
+            },
+            {
+                "name": "max_bytes",
+                "type": "int64",
+                "description": "Maximum length of bytes to read into memory"
             }
         ],
         "category": "encode",
@@ -4776,7 +4791,7 @@
         "name": "link_to",
         "description": "Create a url linking to a particular part in the Velociraptor GUI.",
         "type": "Function",
-        "version": 2,
+        "version": 3,
         "args": [
             {
                 "name": "type",
@@ -4789,7 +4804,8 @@
             },
             {
                 "name": "flow_id",
-                "type": "string"
+                "type": "string",
+                "description": "Link to this flow. If this value is 'new', the link will create a new collection with the specified artifact."
             },
             {
                 "name": "upload",
@@ -4809,12 +4825,22 @@
             {
                 "name": "hunt_id",
                 "type": "string",
-                "description": "The hunt id to read."
+                "description": "The hunt id to read. You can specify 'new' to create a new hunt based on the template in the 'artifact' parameter. "
+            },
+            {
+                "name": "notebook_id",
+                "type": "string",
+                "description": "The notebook id to read. You can specify 'new' to create a new notebook based on the template in the 'artifact' parameter. "
             },
             {
                 "name": "artifact",
                 "type": "string",
                 "description": "The artifact to retrieve"
+            },
+            {
+                "name": "parameters",
+                "type": "ordereddict.Dict",
+                "description": "artifact parameters to use when creating a new flow/hunt/notebook."
             },
             {
                 "name": "raw",
@@ -8983,8 +9009,14 @@
         "name": "rsyslog",
         "description": "Send an RFC5424 compliant remote syslog message.",
         "type": "Function",
-        "version": 2,
+        "version": 3,
         "args": [
+            {
+                "name": "hostname",
+                "type": "string",
+                "description": "Destination host to connect to.",
+                "required": true
+            },
             {
                 "name": "port",
                 "type": "uint64",
@@ -9017,7 +9049,7 @@
                 "description": "Timestamp of this message, if omitted we use the current time."
             },
             {
-                "name": "hostname",
+                "name": "source_hostname",
                 "type": "string",
                 "description": "Hostname associated with this message. If omitted we use the current hostname."
             },
@@ -9400,6 +9432,14 @@
         "name": "server_metadata",
         "description": "Returns server metadata from the datastore. Server metadata is a\nset of free form key/value data\n",
         "type": "Function",
+        "version": 3,
+        "args": [
+            {
+                "name": "metadata",
+                "type": "ordereddict.Dict",
+                "description": "A dict containing metadata. If not specified we use kwargs."
+            }
+        ],
         "category": "server",
         "metadata": {
             "permissions": "SERVER_ADMIN"
@@ -9410,7 +9450,8 @@
             "linux_amd64_cgo",
             "windows_386_cgo",
             "windows_amd64_cgo"
-        ]
+        ],
+        "free_form_args": true
     },
     {
         "name": "server_set_metadata",
@@ -9627,6 +9668,9 @@
             }
         ],
         "category": "popular",
+        "metadata": {
+            "permissions": "MACHINE_STATE,EXECVE,FILESYSTEM_READ,FILESYSTEM_WRITE"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -10095,7 +10139,7 @@
             }
         ],
         "metadata": {
-            "permissions": "FILESYSTEM_READ"
+            "permissions": "FILESYSTEM_READ,NETWORK"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -11033,7 +11077,7 @@
             }
         ],
         "metadata": {
-            "permissions": "FILESYSTEM_READ"
+            "permissions": "FILESYSTEM_READ,NETWORK"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -11299,7 +11343,7 @@
             }
         ],
         "metadata": {
-            "permissions": "FILESYSTEM_READ"
+            "permissions": "FILESYSTEM_READ,NETWORK"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -11348,7 +11392,7 @@
             }
         ],
         "metadata": {
-            "permissions": "FILESYSTEM_READ"
+            "permissions": "FILESYSTEM_READ,NETWORK"
         },
         "platforms": [
             "darwin_amd64_cgo",
@@ -11560,7 +11604,7 @@
         "name": "user_create",
         "description": "Creates a new user from the server, or updates their permissions or reset their password.",
         "type": "Function",
-        "version": 2,
+        "version": 3,
         "args": [
             {
                 "name": "user",
@@ -11579,6 +11623,11 @@
                 "name": "password",
                 "type": "string",
                 "description": "A password to set for the user (If not using SSO this might be needed)."
+            },
+            {
+                "name": "sub",
+                "type": "string",
+                "description": "A sub value for OIDC pinning."
             },
             {
                 "name": "orgs",

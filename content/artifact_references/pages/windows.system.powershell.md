@@ -72,6 +72,9 @@ description: |
 required_permissions:
   - EXECVE
 
+implied_permissions:
+  - IMPERSONATION
+
 parameters:
   - name: Command
     default: "dir C:/"
@@ -81,11 +84,19 @@ parameters:
     type: int
     default: "3500"
     description: How long to leave the session running for.
+  - name: Stateful
+    default: "Y"
+    type: bool
+  - name: CommandId
+    default: 0
 
 sources:
   - precondition: |
       SELECT * FROM info()
-      WHERE OS = 'windows' AND version(function="shell_session")
+      WHERE OS = "windows"
+        AND version(function="shell_session")
+        AND Stateful
+
     query: |
       // Get the core flow id to key a unique session off.
       LET FLOWID &lt;= split(string=_SessionId, sep="/")[0]
@@ -105,11 +116,23 @@ sources:
              NULL AS StderrUpload
          FROM foreach(row=Session.Query)
 
-      SELECT * FROM if(condition=NOT Session.IsRunning,
+      LET Result = SELECT * FROM if(condition=NOT Session.IsRunning,
       then={
         SELECT *
         FROM query(query=SessionSink, timeout=Timeout, inherit=TRUE)
       })
+
+      // Always send the command id to ack we received the command.
+      SELECT * FROM chain(a={
+         SELECT "" AS Command,
+                CommandId,
+                timestamp(epoch=now(ns=TRUE)) AS Timestamp,
+                "" AS Stdout,
+                NULL AS StdoutUpload,
+                "" AS Stderr,
+                NULL AS StderrUpload
+         FROM scope()
+      }, b=Result)
 
     notebook:
       - type: vql
@@ -130,7 +153,9 @@ sources:
 
   - precondition: |
       SELECT * FROM info()
-      WHERE OS = "windows" AND NOT version(function="shell_session")
+      WHERE OS = "windows"
+        AND NOT ( version(function="shell_session") AND Stateful )
+
     notebook:
       - type: none
     query: |
@@ -138,6 +163,7 @@ sources:
       LET Now &lt;= str(str=now())
 
       LET Output = SELECT "" AS Command,
+             "" AS CommandId,
              timestamp(epoch=now()) AS Timestamp,
              if(condition=len(list=Stdout) &lt; SizeLimit,
                 then=Stdout) AS Stdout,
@@ -159,6 +185,7 @@ sources:
 
       SELECT * FROM chain(a={
          SELECT Command,
+                CommandId,
                 timestamp(epoch=now()) AS Timestamp,
                 "" AS Stdout,
                 NULL AS StdoutUpload,
@@ -167,8 +194,11 @@ sources:
          FROM scope()
       }, b=Output)
 
-
 column_types:
+- name: Stdout
+  type: nobreak
+- name: Stderr
+  type: nobreak
 - name: StdoutUpload
   type: preview_upload
 - name: StderrUpload
