@@ -31,7 +31,7 @@ where she documents persistence through an autorun key launching
 powershell to execute a payload within another registry key.
 
 A similar persistence mechanism is documented by David Kennedy from
-Binary defence in his post [PowerShell Injection with Fileless Payload
+Binary defense in his post [PowerShell Injection with Fileless Payload
 Persistence and Bypass
 Techniques](https://web.archive.org/web/20190921002637/https://blog.binarydefense.com/powershell-injection-diskless-persistence-bypass-techniques).
 In that case an msha.exe link was stored in the user\'s Run key which
@@ -39,7 +39,7 @@ executed a payload from another registry key.
 
 I was eager to write a Velociraptor artifact to attempt to detect such
 keys using a YARA signature. Of course signature based detection is not
-as robust as behavioural analysis but it is quick and usually quite
+as robust as behavioral analysis but it is quick and usually quite
 effective.
 
 I thought it was still quite instructive to document how one can develop
@@ -319,7 +319,7 @@ Yara is a very powerful tool because it allows us to search for patterns
 in amorphous data (such as process memory and structured files) without
 having to fully understand the structure of the data we are searching
 for. Of course this has its limitations, but yara can raise a red flag
-if the signature matches the file, and we can analyse this file more
+if the signature matches the file, and we can analyze this file more
 carefully later.
 
 In this case, we can not rely on globbing the `HKEY_USER` registry hive,

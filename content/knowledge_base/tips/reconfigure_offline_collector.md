@@ -20,7 +20,7 @@ small tweaks to an existing offline collector this method may be quicker.
 Also note that you can override or append command line arguments to those
 embedded in and offline collector using
 [post-args](/docs/cli/#autoexec-mode-and-post-args),
-which may be sufficient when you want to change the collector behaviour on a
+which may be sufficient when you want to change the collector behavior on a
 once-off basis.
 
 ## General Method
@@ -49,7 +49,7 @@ You can verify that the new collector has the modified configuration using
 
 In the example above the `config repack` command repacked the collector config
 into a copy of the binary which invoked the command. This is the default
-behaviour. If you wish to repack into a different binary then please see the
+behavior. If you wish to repack into a different binary then please see the
 next section.
 
 Also note that the commands above are invoked using the offline collector binary

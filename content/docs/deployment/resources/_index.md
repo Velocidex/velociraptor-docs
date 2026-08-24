@@ -169,7 +169,7 @@ filestore directory:
 
 3. `client_index` and `clients`: These contains information collected
    from all clients. It is possible to completely remove these
-   directories and restart the server. Clients will simply re-enrol
+   directories and restart the server. Clients will simply re-enroll
    automatically.
 
 4. `config`: This directory contains server specific configuration

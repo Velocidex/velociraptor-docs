@@ -269,7 +269,7 @@ an alternate triage image process for Linux machines.
 ### Using DinoSOARLab to Uncover Adversary Actions and Orchestrate Rapid Response
 By **Wes Lambert** - Principal Engineer, Security Onion Solutions
 
-Have you ever worked in a DinoSOAR lab? If not, now’s your chance!
+Have you ever worked in a DinoSOAR lab? If not, now is your chance!
 
 In this presentation, we'll discuss integration of Velociraptor with
 Security Onion, a free and open platform for enterprise security

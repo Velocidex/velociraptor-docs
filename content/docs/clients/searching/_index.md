@@ -47,7 +47,7 @@ names will also be available as search operators.
 The following **search terms** are recognized:
 
 - `none`: currently only supported with the `label` operator and used to return
-  unlabelled clients.
+  unlabeled clients.
 
 Search patterns can utilize the wildcard symbol `*` anywhere in the pattern. The
 wildcard can occur more than once in a pattern. If specified on it's own `*` is

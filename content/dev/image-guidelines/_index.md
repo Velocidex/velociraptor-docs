@@ -131,7 +131,7 @@ Velociraptor's light theme. It's also light enough to be visible against dark
 backgrounds.
 
 For pure **line diagrams** we use black for lines and text, with de-emphasized
-elements being grey.
+elements being gray.
 
 Additional colors can be used to emphasize particular drawing objects.
 

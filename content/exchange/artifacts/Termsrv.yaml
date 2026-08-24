@@ -7,7 +7,7 @@ description: |
     ATT&CK T1505.005. Non Terminal Services Windows systems (e.g Windows 10 or 11) do not allow
     concurrent users to RDP into the machine at the same time. Typically a notice
     is displayed to the logged-on user requesting access and notifying of the
-    impending log off. As a defence evasion technique threat actors have been
+    impending log off. As a defense evasion technique threat actors have been
     known to patch termsrv.dll to evade detections.
 
     The artifact collects 3 potential detection points:

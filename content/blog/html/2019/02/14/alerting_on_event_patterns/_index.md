@@ -243,7 +243,7 @@ We have seen how the fifo() plugin can be used in the monitoring
 artifact itself to have the client detect its own events. However, the
 endpoint is usually only able to see its own events in isolation. It
 would be nice to be able to detect patterns only evident by seeing
-concerted behaviour from multiple endpoints at the same time.
+concerted behavior from multiple endpoints at the same time.
 
 For example, consider the pattern of an attacker who compromised domain
 credentials running multiple PowerShell Remoting commands across the

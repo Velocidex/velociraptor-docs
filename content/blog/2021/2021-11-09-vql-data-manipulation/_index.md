@@ -28,7 +28,7 @@ can  be used to load C# or Visual Basic code via an inline task project
 file. Legitimately used in Windows software development, it can handle XML
 formatted task files that define requirements for loading and building
 Visual Studio configurations. Adversaries can abuse this mechanism for
-execution as defence evasion and to bypass application whitelisting -
+execution as defense evasion and to bypass application whitelisting -
 [ATT&CK T1127](https://attack.mitre.org/techniques/T1127/001/).
 
 In this particular engagement, the Rapid7 MDR/IR team responded to an
@@ -187,11 +187,11 @@ The aim of this plugin is to split the file into records which can be further pa
 ![VQL: extract data and keys](07_notebook_regex.png)
 
 
-### Extract normalisation
+### Extract normalization
 
-The third step adds a custom function for hex normalisation and converts the inline
+The third step adds a custom function for hex normalization and converts the inline
 C Sharp style encoding to a standard hex encoded string which VQL can easily parse.
-In this case, the local normalise function will ensure we have  valid 2 character hex.
+In this case, the local normalize function will ensure we have  valid 2 character hex.
 The `regex_replace()` will strip the leading '0x' from the hex strings and prepare for
 xor processing.
 
@@ -214,7 +214,7 @@ SELECT * FROM foreach(row=targets,
             regex=target_regex)
     })
 ```
-![VQL: hex normalisation](08_notebook_normalise.png)
+![VQL: hex normalization](08_notebook_normalise.png)
 
 
 ### Extract to bytes

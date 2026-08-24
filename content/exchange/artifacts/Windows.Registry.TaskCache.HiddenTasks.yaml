@@ -1,7 +1,7 @@
 name: Windows.Registry.TaskCache.HiddenTasks
 author: Zach Stanford - @svch0st
 description: |
-  This artefact will highlight any scheduled tasks missing the Security Descriptor (SD) value in the task cache. Without this value, the task is hidden from common query methods.
+  This artifact will highlight any scheduled tasks missing the Security Descriptor (SD) value in the task cache. Without this value, the task is hidden from common query methods.
 
   Once a task is identified with the SD value missing, the artifact tries to pull additional information from the registry and XML file for the task.
 
