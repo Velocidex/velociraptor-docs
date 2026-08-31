@@ -34,19 +34,6 @@ the recommended approach for production systems.
 
 {{% /notice %}}
 
-This page covers **configuration-defined logging** (that is, logging
-defined in the server config file). Some categories of server events are also
-available via
-[server monitoring](/docs/server_automation/server_monitoring/)
-and artifacts can be created to send such events to any destination
-supported by VQL functions and plugins (including but not limited to
-syslog). Since configuration-based logging requires server filesystem
-access, which Velociraptor GUI users typically don't have, it is
-considered more resistant to tampering and therefore preferable
-especially for audit logging.
-
-![Viewing audit logs via server monitoring](server_audit_logs.png)
-
 ## File-based logging
 
 File-based logging writes log files to a directory on the server. Each
@@ -221,9 +208,9 @@ by design; debug messages tend to be high-volume and are not useful
 for operational monitoring.
 
 Velociraptor sends each message using traditional syslog text format
-(RFC 3164-style): the receiving syslog server prepends its own standard
-header — for example rsyslog adds a priority, timestamp, and hostname —
-followed by the raw message body.
+(RFC 3164-style): the receiving syslog server prepends its own
+standard header — for example rsyslog adds a priority, timestamp, and
+hostname — followed by the raw message body.
 
 The message body itself is a **JSON object** containing the log level,
 timestamp, and the original log message:
@@ -289,7 +276,7 @@ represents a different part of the server.
 | `VelociraptorClient` | Client-side operational messages (when running as a client). |
 | `VelociraptorGUI` | Web interface and GUI-related events. |
 | `VelociraptorAPI` | API server operations. |
-| `VelociraptorAudit` | User and service actions: logins, artifact changes, hunt creation, access control changes. **This is the most important component for security monitoring.** |
+| `VelociraptorAudit` | User and service actions: logins, artifact changes, hunt creation, access control changes. |
 
 When `separate_logs_per_component` is `true`, each component writes
 to its own file. This makes it easier to find messages from a specific
@@ -318,9 +305,18 @@ mechanism from the `Logging`-configured file logs and syslog forwarding.
 On Windows servers, audit events are also written to the Windows
 Event Log.
 
-Audit events are the default target for syslog forwarding because
-they are the most valuable for security monitoring and incident
-response.
+While this page covers **configuration-defined logging** (that is,
+logging defined in the server config file). Some categories of server
+events are also available via
+[server monitoring](/docs/server_automation/server_monitoring/)
+and artifacts can be created to send such events to any destination
+supported by VQL functions and plugins (including but not limited to
+syslog). Since configuration-based logging requires server filesystem
+access, which Velociraptor GUI users typically don't have, it is
+considered more resistant to tampering and therefore preferable
+especially for audit logging.
+
+![Viewing audit logs via server monitoring](server_audit_logs.png)
 
 
 ## Configuration examples
