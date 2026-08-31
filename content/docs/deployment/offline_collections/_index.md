@@ -223,7 +223,7 @@ In general, don't use offline collectors:
   - The client config can be
     [repacked](/docs/cli/commands/config/#-config-repack-)
     into the binary, and made to
-    [auto execute](/docs/cli/#autoexec-mode-and-post-args)
+    [auto execute](/docs/cli/autoexec/)
     in `client` mode. That is, the convenience of a single autoexec binary can
     be replicated for non-installable clients using the same embedding
     mechanism that offline collectors use. In certain scenarios this may be
@@ -263,7 +263,9 @@ embedded in a platform-specific binary:
    few artifacts that are relatively large and contain already-compressed data
    that can't be compressed much more. Some of these large artifacts are larger
    than the ~80KB embed limit, or else a selection of artifacts that includes 2
-   or 3 of the large ones will be beyond the limit.
+   or 3 of the large ones will be beyond the limit. In contrast, the generic
+   collector has a hard limit of 100 MB (post-extraction), which for configs is
+   virtually unlimited.
 
 2. The macOS binaries that we create are code-signed. Embedding a collector
    config into the binary invalidates this digital signature. Recent versions of
