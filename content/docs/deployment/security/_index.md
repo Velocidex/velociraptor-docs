@@ -663,8 +663,9 @@ upon with a server event query using the `watch_monitoring()` plugin.
 You can forward server event logs to a remote syslog server by setting
 the value in the
 [Logging.remote_syslog_server](/docs/deployment/references/#Logging.remote_syslog_server)
-setting in the config. We recommend this be done to archive audit
-logs.
+setting in the config. For details on syslog forwarding configuration,
+see the [Server Logging](/docs/deployment/logging/#syslog-forwarding)
+page. We recommend this be done to archive audit logs.
 
 However, much more interestingly, Velociraptor treats server audit
 events as simply another event query called
