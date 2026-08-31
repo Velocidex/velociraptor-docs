@@ -22,7 +22,7 @@ of sending anything but simple plain-text emails. It will, among other things,
 - The whole email is sent as a multi-part message
 
 All of the functions used to create the final body of the email are exported
-and are available for further customisation when sending an email.
+and are available for further customization when sending an email.
 
 
 <pre><code class="language-yaml">
@@ -43,7 +43,7 @@ description: |
   - The whole email is sent as a multi-part message
 
   All of the functions used to create the final body of the email are exported
-  and are available for further customisation when sending an email.
+  and are available for further customization when sending an email.
 
 type: SERVER
 

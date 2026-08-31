@@ -1,18 +1,18 @@
 name: Windows.EventLogs.CondensedAccountUsage
 description: |
    This artifact will extract condensed information on logon / logoff events.
-   
+
    Security channel - EventIDs in 4624, 4625, 4634, 4647, 4648, 4672, 4778,
    4779, 4800, 4801, 4802, and 4803.
-   
-   Exclude by default events related to:  
-     - UserName egal to SYSTEM, ANONYMOUS LOGON, LOCAL SERVICE, NETWORK
-       SERVICE, or %ComputerName%$.  
-     - Domain egal to NT AUTHORITY, Font Driver Host, or Window Manager.
-    
-   Inspired from work by Brian Maloney and @0x47617279.  
-   Thanks to Mike Cohen (scudette) for its help optimizing the query.  
-   
+
+   Exclude by default events related to:
+      - UserName equal to SYSTEM, ANONYMOUS LOGON, LOCAL SERVICE, NETWORK
+        SERVICE, or %ComputerName%$.
+      - Domain equal to NT AUTHORITY, Font Driver Host, or Window Manager.
+
+   Inspired from work by Brian Maloney and @0x47617279.
+   Thanks to Mike Cohen (scudette) for its help optimizing the query.
+
 
 author: Thomas DIOT (Qazeer)
 
@@ -27,7 +27,7 @@ sources:
       SELECT OS From info() where OS = 'windows'
 
     query: |
-      
+
       LET DomainNameLookup <= dict(
             `4624` = 'TargetDomainName',
             `4625` = 'TargetDomainName',
@@ -41,7 +41,7 @@ sources:
             `4801` = 'TargetDomainName',
             `4802` = 'TargetDomainName',
             `4803` = 'TargetDomainName')
-      
+
       LET UserNameLookup <= dict(
             `4624` = 'TargetUserName',
             `4625` = 'TargetUserName',
@@ -55,7 +55,7 @@ sources:
             `4801` = 'TargetUserName',
             `4802` = 'TargetUserName',
             `4803` = 'TargetUserName')
-      
+
       LET LogonIdLookup <= dict(
             `4624` = 'TargetLogonId',
             `4625` = '-',
@@ -69,7 +69,7 @@ sources:
             `4801` = 'TargetLogonId',
             `4802` = 'TargetLogonId',
             `4803` = 'TargetLogonId')
-            
+
       LET LogonDescriptionLookup <= dict(
             `4624` = 'ACCOUNT_LOGGED_ON',
             `4625` = 'ACCOUNT_FAILED_TO_LOGON',
@@ -97,7 +97,7 @@ sources:
             `11` = 'CACHED_INTERACTIVE_LOGON',
             `12` = 'CACHED_REMOTE_INTERACTIVE_LOGON',
             `13` = 'CACHED_UNLOCK_LOGON')
-      
+
       SELECT
         timestamp(epoch=int(int=System.TimeCreated.SystemTime)) AS EventTime,
         System.Computer as Computer,

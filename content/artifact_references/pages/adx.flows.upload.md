@@ -36,9 +36,9 @@ The table should have the following schema:
     RawData: dynamic
 )
 ```
-### KQL Artefact Schemas mappings
+### KQL Artifact Schemas mappings
 
-For KQL Artefact schema mappings for Velociraptor artifacts,
+For KQL Artifact schema mappings for Velociraptor artifacts,
 see: https://github.com/baseVISION/IR-Velociraptor-Artefact-KQL-Mappings
 
 ## Setup Instructions
@@ -91,9 +91,9 @@ description: |
       RawData: dynamic
   )
   ```
-  ### KQL Artefact Schemas mappings
+  ### KQL Artifact Schemas mappings
   
-  For KQL Artefact schema mappings for Velociraptor artifacts,
+  For KQL Artifact schema mappings for Velociraptor artifacts,
   see: https://github.com/baseVISION/IR-Velociraptor-Artefact-KQL-Mappings
 
   ## Setup Instructions

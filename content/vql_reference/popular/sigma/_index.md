@@ -57,6 +57,11 @@ debug|If enabled we emit all match objects with description of what would match.
 rule_filter|If specified we use this callback to filter the rules for inclusion.|Lambda
 default_details|If specified we use this callback to determine a details column if the sigma rule does not specify it.|Lambda
 
+<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
+<span class="permission_list linkcolour label label-important">EXECVE</span>
+<span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+<span class="permission_list linkcolour label label-important">FILESYSTEM_WRITE</span>
+
 ### Description
 
 Evaluate sigma rules.

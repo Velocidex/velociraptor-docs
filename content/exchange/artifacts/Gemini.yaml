@@ -46,7 +46,7 @@ parameters:
       default: what is prefetch?
     - name: PromptData
       type: string
-      description: The data sent to Google - this data is serialised and added to the prompt
+      description: The data sent to Google - this data is serialized and added to the prompt
     - name: Model
       type: string
       description: The model used for processing the prompt

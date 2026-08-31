@@ -56,7 +56,7 @@ At Blackhat 2018 Lee Christensen and Matt Graeber presented "Subverting
 Sysmon: Application of a Formalized Security Product Evasion Methodology".
 This excellent talk focused on defense evasion methodology and highlighted
 potential collection gaps in telemetry tools around WMI eventing. In this
-case, the focus was on Sysmon behaviour of collection only in
+case, the focus was on Sysmon behavior of collection only in
 root/subscription, interestingly, it also highlighted the possibility to
 implement \_\_EventConsumer classes in arbitrary namespaces.
 

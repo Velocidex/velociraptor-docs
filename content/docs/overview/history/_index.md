@@ -22,7 +22,7 @@ Let's look at the major design differences and priorities of Velociraptor, GRR, 
 ### Velociraptor vs Google Rapid Response
 
 Google's Rapid Response (GRR) launched in 2011, and was one of the first tools to allow hunting for forensic artifacts at scale.
-GRR allowed investigators to quickly query network hosts to check files or registry settings. Rather than passively analyse logs that after they were collected into a central location, GRR allowed security professionals to proactively search for evidence of compromise
+GRR allowed investigators to quickly query network hosts to check files or registry settings. Rather than passively analyze logs that after they were collected into a central location, GRR allowed security professionals to proactively search for evidence of compromise
 across many hosts.
 
 One of the challenges of remotely accessing machines at scale is

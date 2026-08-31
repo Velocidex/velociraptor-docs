@@ -139,7 +139,7 @@ and ideas along as well!
     * Exercise: Upload only first 10k of each file.
     * The smb accessor
     * Exercise: Configuring an SMB share
-  * Parsing: Processing and analysing evidence on the endpoint
+  * Parsing: Processing and analyzing evidence on the endpoint
     * Built in parsers: SQLite
     * Parsing with Regular Expressions
     * Exercise: Parse MPLogs

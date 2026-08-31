@@ -304,7 +304,7 @@ leave traces in the registry.
 
 Traditionally, registry analysis is performed on the raw registry
 hives (collected using, for example, the `KapeFiles` artifact). These
-files are analysed using tools such as [Reg
+files are analyzed using tools such as [Reg
 Ripper](https://github.com/keydet89/RegRipper4.0) or [Registry
 Explorer](https://www.sans.org/tools/registry-explorer). These tools
 operate on collected registry hives and contain rules designed to
@@ -333,7 +333,7 @@ binaries uncovered in the registry, but they can collect them as well.
 For example, consider the [Scheduled Tasks (TaskCache)
 rule](https://registry-hunter.velocidex.com/docs/rules/#Scheduled%20Tasks%20(TaskCache))
 from the Registry Hunter. This rule analyses the registry to extract
-the scheduled tasks (as opposed to analysing the XML files in the
+the scheduled tasks (as opposed to analyzing the XML files in the
 `Windows/System32/Tasks` directory).
 
 ![Registry analysis for the Scheduled Tasks rule](scheduled_tasks.svg)
@@ -428,7 +428,7 @@ complete a full analysis of a case.
 
 The `Adaptive Collection` is a middle ground - not as complete as a
 bit-for-bit copy, but a lot better than just collecting files blindly.
-By reducing the analyse/collect feedback loop, Velociraptor is able to
+By reducing the analyze/collect feedback loop, Velociraptor is able to
 speed up investigations and strike a better balance along the
 acquisition spectrum.
 

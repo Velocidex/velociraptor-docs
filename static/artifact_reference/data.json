@@ -585,6 +585,15 @@
         ]
     },
     {
+        "title": "Linux.Forensics.Journal.Fields",
+        "description": "Lists the fields and field values recorded in the systemd journal.",
+        "link": "/artifact_references/pages/linux.forensics.journal.fields",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "Linux.Mounts",
         "description": "Lists mounted filesystems by reading `/proc/mounts`.\n",
         "link": "/artifact_references/pages/linux.mounts",
@@ -993,6 +1002,15 @@
         "title": "MacOS.OSQuery.Generic",
         "description": "Deploys the osquery binary and runs a user-specified SQL query,\nreturning parsed JSON results.",
         "link": "/artifact_references/pages/macos.osquery.generic",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
+        "title": "MacOS.Remediation.Quarantine",
+        "description": "Applies network quarantine to a macOS system using Packet Filter (PF).",
+        "link": "/artifact_references/pages/macos.remediation.quarantine",
         "type": "client",
         "tags": [
             "Client Artifact"
@@ -2961,8 +2979,17 @@
         ]
     },
     {
+        "title": "Windows.Forensics.SAM.Enriched",
+        "description": "Extracts everything usefully derivable from the SAM registry hive",
+        "link": "/artifact_references/pages/windows.forensics.sam.enriched",
+        "type": "client",
+        "tags": [
+            "Client Artifact"
+        ]
+    },
+    {
         "title": "Windows.Forensics.SRUM",
-        "description": "Parses the Windows SRUM database (srudb.dat) to extract execution\nstats, resource usage, and network activity.\n",
+        "description": "Parses the Windows SRUM database (srudb.dat) to extract execution\nstats, resource usage, and network activity.",
         "link": "/artifact_references/pages/windows.forensics.srum",
         "type": "client",
         "tags": [

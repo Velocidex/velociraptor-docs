@@ -57,7 +57,7 @@ description: |
   regexes matching `DEFAULT`-level errors worth monitoring.
 
   Note that this artifact periodically iterates over **all** clients in
-  order to query their monitoring logs. The work is parallelised across
+  order to query their monitoring logs. The work is parallelized across
   clients and artifacts, but can still be expensive on large deployments.
 
   #monitoring #alerts #notifications #errors

@@ -272,7 +272,7 @@ simply call them:
 ### Conclusions
 
 This post described some of the more obvious differences between
-OSQuery and Velociraptor. To summarise
+OSQuery and Velociraptor. To summarize
 
 1. The OSQuery file table equivalent is the VQL glob() plugin. Glob
    takes a glob expression as a parameter. Glob expressions use * and

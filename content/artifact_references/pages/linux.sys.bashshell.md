@@ -44,9 +44,19 @@ description: |
 required_permissions:
   - EXECVE
 
+implied_permissions:
+  - IMPERSONATION
+
 parameters:
   - name: Command
     default: "ls -l /"
+
+  - name: CommandId
+    default: 0
+
+  - name: Stateful
+    default: "Y"
+    type: bool
 
   - name: Timeout
     type: int
@@ -55,13 +65,18 @@ parameters:
 
 sources:
   - precondition: |
-      SELECT * FROM info() WHERE version(function="shell_session")
+      SELECT * FROM info()
+      WHERE version(function="shell_session") AND Stateful
+
     query: |
       // Get the core flow id to key a unique session off.
       LET FLOWID &lt;= split(string=_SessionId, sep="/")[0]
 
       // Newer clients have support for true shell sessions.
       LET Session &lt;= shell_session(name=FLOWID, argv=["bash"])
+      LET _ &lt;= if(condition=NOT Session.IsRunning,
+        then=log(message="Started session %v with command %v and timeout %v",
+                 args=[FLOWID, Command, Timeout]))
 
       LET _ &lt;= shell_session_control(name=FLOWID, stdin=Command + "\n")
 
@@ -74,11 +89,23 @@ sources:
              NULL AS StderrUpload
          FROM foreach(row=Session.Query)
 
-      SELECT * FROM if(condition=NOT Session.IsRunning,
+      LET Result = SELECT * FROM if(condition=NOT Session.IsRunning,
       then={
         SELECT *
         FROM query(query=SessionSink, timeout=Timeout, inherit=TRUE)
       })
+
+      // Always send the command id to ack we received the command.
+      SELECT * FROM chain(a={
+         SELECT "" AS Command,
+                CommandId,
+                timestamp(epoch=now(ns=TRUE)) AS Timestamp,
+                "" AS Stdout,
+                NULL AS StdoutUpload,
+                "" AS Stderr,
+                NULL AS StderrUpload
+         FROM scope()
+      }, b=Result)
 
     notebook:
       - type: vql
@@ -98,7 +125,9 @@ sources:
           FROM scope()
 
   - precondition: |
-      SELECT * FROM info() WHERE NOT version(function="shell_session")
+      SELECT * FROM info()
+      WHERE NOT version(function="shell_session") OR  NOT Stateful
+
     notebook:
       - type: none
     query: |
@@ -106,6 +135,7 @@ sources:
       LET Now = str(str=now())
 
       LET Output = SELECT "" AS Command,
+             "" AS CommandId,
              timestamp(epoch=now()) AS Timestamp,
              if(condition=len(list=Stdout) &lt; SizeLimit,
                 then=Stdout) AS Stdout,
@@ -123,8 +153,11 @@ sources:
       FROM execve(argv=["/bin/bash", "-c", Command],
                   length=10000000)
 
+      // Emit a single placeholder row for the command and command id
+      // followed by the full output.
       SELECT * FROM chain(a={
          SELECT Command,
+                CommandId,
                 timestamp(epoch=now()) AS Timestamp,
                 "" AS Stdout,
                 NULL AS StdoutUpload,
@@ -143,6 +176,10 @@ resources:
   max_batch_rows: 1
 
 column_types:
+- name: Stdout
+  type: nobreak
+- name: Stderr
+  type: nobreak
 - name: StdoutUpload
   type: preview_upload
 - name: StderrUpload

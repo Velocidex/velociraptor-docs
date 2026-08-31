@@ -83,7 +83,7 @@ displaying and editing the parameter.
 
 With certain parameter types -- namely `choices`, `multichoice`, and
 `artifactset` -- additional fields become available that are necessary to
-support the specific behaviour of those parameter types.
+support the specific behavior of those parameter types.
 
 ## Parameter types
 

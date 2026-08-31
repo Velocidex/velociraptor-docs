@@ -22,7 +22,7 @@ description: |
   - Include selected flow results as:
     - Inline HTML tables (with row/column/cell limits)
     - CSV or JSONL attachments
-  - Control failed-flow behaviour with `ErrorHandling` options
+  - Control failed-flow behavior with `ErrorHandling` options
   - Support special handling for newly seen clients
   - Support both nicely-formatted HTML and plain-text e-mails
 
@@ -198,7 +198,7 @@ parameters:
       Send an e-mail to the user executing this flow, in addition to
       Recipients. If the username contains an '@', it is used directly as an
       e-mail address. Otherwise, NotifyExecutorDomains is consulted to
-      synthesise an address from the username.
+      synthesize an address from the username.
     default: false
 
   - name: NotifyExecutorDomains

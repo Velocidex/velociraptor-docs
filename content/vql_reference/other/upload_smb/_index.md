@@ -31,6 +31,7 @@ password|The SMB password to login as (if not provided we use the SMB_CREDENTIAL
 server_address|The SMB server address and optionally port followed by the share name (e.g. \\192.168.1.1:445\ShareName)|string (required)
 
 <span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+<span class="permission_list linkcolour label label-important">NETWORK</span>
 
 ### Description
 

@@ -187,6 +187,27 @@ sources:
             Data
       FROM keyword_search
 
+    notebook:
+      - type: none
+        name: quick_link
+        env:
+          - key: text
+            value: Search Files
+          - key: icon
+            value: search
+          - key: os_filter
+            value: Windows
+          - key: weight
+            value: "010"
+      - type: vql
+        template: |
+          /*
+          # Windows.Search.FileFinder
+          */
+
+          SELECT * FROM source()
+          LIMIT 50
+
 column_types:
   - name: Modified
     type: timestamp

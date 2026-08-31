@@ -53,7 +53,7 @@ image.
 In this release, Velociraptor supports EWF (AKA E01) format using the
 `ewf` accessor. This allows Velociraptor to analyze E01 image sets.
 
-To analyse dead disk images use the following steps:
+To analyze dead disk images use the following steps:
 
 1. Create a remapping configuration that maps the disk accessors into
    the E01 image. This automatically diverts VQL functions that look

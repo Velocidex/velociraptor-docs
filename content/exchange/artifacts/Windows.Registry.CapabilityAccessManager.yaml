@@ -2,7 +2,7 @@ name: Windows.Registry.CapabilityAccessManager
 description: |
     The ConsentStore in CapabilityAccessManager can provide insight to
     what resources binaries have had access to, such as the microphone
-    and webcam. This artefact returns non-Microsoft executables (ie:
+    and webcam. This artifact returns non-Microsoft executables (ie:
     entries listed in the `NonPackaged` path).
 
     Additional Resources:

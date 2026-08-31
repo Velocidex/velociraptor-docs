@@ -37,7 +37,7 @@ the server package onto a new server and everything should work again:
 3. Update DNS records to point to the new server IP. The clients will
    use these DNS records to find the new server.
 
-4. After a short time, all clients will re-enrol and the system will
+4. After a short time, all clients will re-enroll and the system will
    become functional again.
 
 {{% notice tip "Requirements" %}}

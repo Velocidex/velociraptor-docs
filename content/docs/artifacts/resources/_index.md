@@ -31,6 +31,14 @@ Resource limits are essential for controlling the load on endpoints
 and preventing collections from negatively impacting users or network
 infrastructure. They protect the endpoint.
 
+{{% notice warning "Not a security boundary" %}}
+Resource limits are enforced **by the Velociraptor client on itself**
+and are not validated server-side. A compromised or malicious client
+can ignore these limits entirely. Treat resource limits as a
+**cooperative safeguard** against accidental runaway collections,
+not as a security boundary against untrusted clients.
+{{% /notice %}}
+
 They act as a "fail safe" mechanism to prevent accidents, such as
 inadvertently collecting massive quantities of data or using excessive
 resources.

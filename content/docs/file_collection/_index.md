@@ -483,7 +483,7 @@ both measured in bytes per second.
 
 - `global_upload_rate`: This setting caps the total bandwidth that the server
    allows for all incoming client uploads.
-- `per_client_upload_rate`: Restricts the bandwidth utilised by each individual
+- `per_client_upload_rate`: Restricts the bandwidth utilized by each individual
    client. This is a global value that applies to every client connected to that
    frontend.
 
