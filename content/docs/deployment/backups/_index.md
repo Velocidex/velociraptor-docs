@@ -175,9 +175,22 @@ No service restart is required after restoring a backup.
 
 {{% notice warning "Restoring rolls back server state" %}}
 
-Restoring a backup rolls the server state back to what it was when the
-backup was taken. Any changes made since then - such as new clients,
-hunts, or users - are lost.
+Restoring a backup restores the server state to what it was when the
+backup was taken. What this means depends on whether you restore onto
+an existing server or onto a newly built one.
+
+When restoring onto a **new (rebuilt) server**, the backup only
+contains data that existed when it was created. Anything created since
+then - such as new clients, hunts, or notebooks - will not be present
+on the restored server.
+
+When restoring onto an **existing server** using `backup_restore()`,
+the restore generally only adds objects from the backup rather than
+deleting current ones. Hunts, notebooks, and custom artifacts that
+exist on the server but not in the backup are left in place. The main
+exception is client information: restoring replaces the entire client
+store with only what is in the backup, so clients registered since the
+backup was taken are removed.
 
 {{% /notice %}}
 
