@@ -92,6 +92,32 @@ For a successful recovery the following are required:
 
 {{% /notice %}}
 
+## Backing up the server configuration
+
+The single most important thing to back up in any Velociraptor
+deployment is the server configuration file (`server.config.yaml`).
+Without it you cannot bring a replacement server online that your
+already-deployed clients will talk to.
+
+Because client IDs and their keys are stored on each client rather than
+on the server, clients can re-enroll with any server they find at their
+configured DNS name (see [Re-deploy server](#simplest-option-re-deploy-server)).
+So as long as you have a copy of `server.config.yaml`, you can stand up
+a new server with it and existing clients will connect back without
+being redeployed.
+
+The installer package itself is therefore a form of minimal backup.
+When you build a server package with `velociraptor deb` or
+`velociraptor rpm`, that package embeds the `server.config.yaml` used
+to build it and installs it to `/etc/velociraptor/server.config.yaml`.
+Keeping a copy of the package you last used to install or upgrade the
+server gives you a recoverable configuration even if you lose
+everything else.
+
+Daily backups do not include `server.config.yaml`, so keep your own
+copy of it somewhere safe - ideally under version control and offline,
+since it contains your CA keys and other secrets.
+
 ## Daily server backups
 
 While deploying a new server gets the system operational again, it is
