@@ -118,6 +118,7 @@ Daily backups do not include `server.config.yaml`, so keep your own
 copy of it somewhere safe - ideally under version control and offline,
 since it contains your CA keys and other secrets.
 
+
 ## Daily server backups
 
 While deploying a new server gets the system operational again, it is
@@ -178,6 +179,14 @@ they are restored along with the rest of the server state.
 
 ### Restoring a daily backup
 
+{{% notice note "The server configuration is not part of the backup" %}}
+
+Daily backups contain server state, but not the server configuration
+file itself. Keep a copy of your server config separately so you can
+fully recover a deployment.
+
+{{% /notice %}}
+
 To restore the backup, you must copy the backup file into the backups
 directory on the new server (create the directory if it does not
 exist). Then run `backup_restore()`, referring to the backup by name
@@ -217,14 +226,6 @@ exist on the server but not in the backup are left in place. The main
 exception is client information: restoring replaces the entire client
 store with only what is in the backup, so clients registered since the
 backup was taken are removed.
-
-{{% /notice %}}
-
-{{% notice note "The server configuration is not part of the backup" %}}
-
-Daily backups contain server state, but not the server configuration
-file itself. Keep a copy of your server config separately so you can
-fully recover a deployment.
 
 {{% /notice %}}
 
