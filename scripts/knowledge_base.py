@@ -88,7 +88,11 @@ def getAuthor(record, yaml_filename):
 
   commits = None
   try:
-    commits = json.loads(urllib.request.urlopen(commits_url + "?path=" + path).read())
+    req = urllib.request.Request(commits_url + "?path=" + path)
+    token = os.getenv('GITHUB_TOKEN')
+    if token:
+      req.add_header('Authorization', f'token {token}')
+    commits = json.loads(urllib.request.urlopen(req).read())
   except urllib.error.HTTPError as e:
     print("HTTPError: %s" %e)
 
