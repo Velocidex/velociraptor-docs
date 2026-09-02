@@ -2,7 +2,7 @@
 menutitle: "CLI"
 title: "The Velociraptor CLI"
 date: 2025-05-14
-last_reviewed: 2025-07-14
+last_reviewed: 2026-08-26
 draft: false
 weight: 80
 description: |
@@ -126,86 +126,18 @@ direct flags instead of `--args Key=Value` pairs.
 See the [Run mode](/docs/cli/run/) page for syntax, examples,
 and remote collection details.
 
-## Autoexec mode and post args
+## Autoexec mode
 
 Autoexec mode lets you embed a default command line and custom artifacts
 directly into the Velociraptor binary using the
 [`config repack`](/docs/cli/commands/config/#-config-repack-) command.
 [Offline collectors](/docs/deployment/offline_collections/) use this
-mechanism.
+mechanism. A `--` pseudo-flag lets you append extra flags to the embedded
+command without bypassing autoexec.
 
-The embedded config's `autoexec.argv` section specifies the default CLI
-arguments. The binary follows these precedence rules:
-
-- When run **with** CLI commands: the commands are executed and
-  `autoexec.argv` is ignored.
-- When run **without** CLI commands: if an `autoexec.argv` section exists,
-  it is executed.
-
-### The `--` pseudo-flag
-
-The `--` pseudo-flag solves a specific problem: running the binary without
-any CLI arguments triggers autoexec mode, but adding any CLI command causes
-autoexec to be skipped. The `--` pseudo-flag lets you append extra flags
-without supplying a command, so autoexec mode still activates.
-
-For example, consider an offline collector binary that contains this
-`autoexec.argv` section in its embedded config:
-
-```yaml
-autoexec:
-  argv:
-  - artifacts
-  - collect
-  - Collector
-  - -v
-  - --require_admin
-```
-
-Without any arguments, the binary runs `artifacts collect Collector
--v --require_admin`. To add `--nobanner` and `--prompt` to that command
-line, use `--` followed by the extra flags:
-
-```sh
-velociraptor_collector.exe -- --nobanner --prompt
-```
-
-Because no CLI command appears before `--`, autoexec mode activates. The
-post args are appended to the `autoexec.argv` command line, making it
-equivalent to the following config:
-
-```yaml
-autoexec:
-  argv:
-  - artifacts
-  - collect
-  - Collector
-  - -v
-  - --require_admin
-  - --nobanner
-  - --prompt
-```
-
-Which produces the effective command line:
-
-```sh
-velociraptor_collector.exe artifacts collect Collector -v --require_admin --nobanner --prompt
-```
-
-This modifies the offline collector behavior slightly but it
-otherwise continues according to the embedded spec.
-
-Autoexec mode can be used in a lot of novel ways besides the usual
-offline collector use case. So this method of tweaking the command
-line allows you to use any of the global or command-specific
-[CLI flags](/docs/cli/flags/).
-
-Any global or command-specific [CLI flags](/docs/cli/flags/) can be
-used as post args.
-
-Note that if a flag is specified in `autoexec.argv` then it can't be
-negated or overridden. You can only _add_ flags that have not already
-been used.
+See the [Autoexec mode](/docs/cli/autoexec/) page for syntax, examples,
+environment variable expansion, embedded artifacts, and the Generic
+Collector.
 
 ## Learn about the commands and flags available in the CLI
 

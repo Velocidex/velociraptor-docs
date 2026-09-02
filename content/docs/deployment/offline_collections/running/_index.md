@@ -134,7 +134,7 @@ any command.
 
 To make Velociraptor accept the `--embedded_config` flag without a command, we
 use the
-["post args" pseudo-flag](/docs/cli/#autoexec-mode-and-post-args):
+["post args" pseudo-flag](/docs/cli/autoexec/#the---pseudo-flag-post-args):
 `--`. This tells Velociraptor to act as if no arguments were specified and to
 pass the subsequent flag(s) to the autoexec function, which is contained in the
 generic collector file.
