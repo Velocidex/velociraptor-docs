@@ -132,22 +132,48 @@ not enough:
 6. Multi-tenanted orgs are lost
 
 To address some of these issues, Velociraptor creates a backup package
-daily by default. If you need more frequent backups, you can configure
-the backup interval in your server config using the
+automatically on a schedule. By default this runs daily, but you can
+change the interval in your server config using the
 [defaults.backup_period_seconds](/docs/deployment/references/#defaults.backup_period_seconds)
-setting.
+setting, which is measured in seconds. For example, setting it to
+`43200` creates a backup every 12 hours. Setting it to a negative value
+disables automatic backups entirely.
 
-You can also force Velociraptor to create a backup package using the
-VQL [backup()](/vql_reference/server/backup/) function, but if you do
-not then you can still find the scheduled (daily by default) packages
-in the backup directory `<filestore>/backups/`. Note that the backup
-package in the root org will contain all other orgs' backups as well.
+You can also create a backup on demand using the VQL
+[backup()](/vql_reference/server/backup/) function, which requires
+`SERVER_ADMIN` permission:
 
 ```vql
 SELECT * FROM backup(name="MyBackup")
 ```
 
 ![Creating a backup package](creating_backup.png)
+
+The `backup()` function is not limited to manual use - you can call it
+from any server-side VQL, which makes it possible to back up
+conditionally. For example, you could write a
+[server monitoring](/docs/server_automation/server_monitoring/) artifact
+that creates a backup only when some condition is met, such as a
+particular time of day, a certain number of new clients enrolling, or
+any other trigger you decide is a good reason to take a backup. The
+following query shows the pattern: it checks every minute and creates a
+backup when the clock matches a configured time.
+
+```vql
+LET schedule = SELECT
+     UTC.String AS Now,
+     Weekday.String AS Today
+FROM clock(period=60)
+WHERE Now =~ ScheduleTimeRegex + ":[0-9][0-9]"
+  AND Today =~ ScheduleDayRegex
+
+SELECT backup(name="MyBackup") FROM schedule
+```
+
+If you do not create backups manually, you can still find the scheduled
+packages in the backup directory `<filestore>/backups/`. Note that the
+backup package in the root org will contain all other orgs' backups as
+well.
 
 The backup package contains data from various
 `Providers`. Each provider is responsible for saving some aspect of
