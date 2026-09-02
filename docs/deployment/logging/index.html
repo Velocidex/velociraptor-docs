@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="google-site-verification" content="TWf2C5KkKfaG0pltB0jltq3yWk7WhtFKmlpUQu7ukRQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.165.0">
+    <meta name="description" content="Velociraptor can log server operational events (client connections,
+hunt progress, errors, and audit actions) to local files and
+optionally forward them to a remote syslog server. This page
+explains how to configure both.
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Server Logging</title>
+
+    
+    <link href="/css/nucleus.css?1788327744" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1788327744" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1788327744" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1788327744" rel="stylesheet">
+    <link href="/css/auto-complete.css?1788327744" rel="stylesheet">
+    <link href="/css/theme.css?1788327744" rel="stylesheet">
+    <link href="/css/tabs.css?1788327744" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1788327744" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1788327744" rel="stylesheet">
+    
+    <link href="/css/dark.css?1788327744" rel="stylesheet"><link href="/css/syntax.css?1788327744" rel="stylesheet"><link href="/css/light.css?1788327744" rel="stylesheet"><link href="/css/hljs.css?1788327744" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1788327744" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1788327744"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/deployment/logging/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" alt="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" alt="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-d63701db.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" alt="rapid7 logo" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/deployment\/logging\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/deployment/logging/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Server Logging</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#file-based-logging">File-based logging</a>
+      <ul>
+        <li><a href="#configuration">Configuration</a></li>
+        <li><a href="#file-naming">File naming</a></li>
+        <li><a href="#log-rotation-and-retention">Log rotation and retention</a></li>
+      </ul>
+    </li>
+    <li><a href="#syslog-forwarding">Syslog forwarding</a>
+      <ul>
+        <li><a href="#configuration-1">Configuration</a></li>
+        <li><a href="#what-gets-forwarded">What gets forwarded</a></li>
+        <li><a href="#forwarding-specific-components">Forwarding specific components</a></li>
+      </ul>
+    </li>
+    <li><a href="#log-components">Log components</a></li>
+    <li><a href="#audit-logging">Audit logging</a></li>
+    <li><a href="#configuration-examples">Configuration examples</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Server Logging
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>Velociraptor can log server operational events to local files, forward
+them to a remote syslog server, or both. On a production system you
+should enable at least one of these so you have a historical record of
+what the server was doing.</p>
+<p>Logging is distinct from <a href="/docs/deployment/resources/#setting-up-monitoring">Prometheus/Grafana performance
+monitoring</a>.
+Monitoring tracks performance metrics like CPU and memory usage.
+Logging captures discrete operational events, for example which
+clients connected, what hunts ran, which users authenticated, and any
+errors the server encountered.</p>
+
+<div class="mynotices tip">
+  <div heading=" Centralized logging "><p>If your deployment sends logs to a central syslog server (for example
+rsyslog, Graylog, or a SIEM), you can search and alert on Velociraptor
+operational events alongside logs from other infrastructure. This is
+the recommended approach for production systems.</p>
+</div>
+</div>
+
+
+<h2 id="file-based-logging">File-based logging</h2>
+<p>File-based logging writes log files to a directory on the server. Each
+log level (debug, info, error) gets its own rotating log file.</p>
+<h3 id="configuration">Configuration</h3>
+<p>Add a <code>Logging</code> block to your <code>server.config.yaml</code>:</p>
+<pre><code class="language-yaml">Logging:
+  output_directory: /mnt/data/logs
+  separate_logs_per_component: true
+</code></pre>
+<p>The key settings are:</p>
+<table>
+	<thead>
+			<tr>
+					<th>Setting</th>
+					<th>Description</th>
+					<th>Default</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>output_directory</code></td>
+					<td>Directory for log files. If empty or this key is missing, no files are written.</td>
+					<td><em>(empty)</em></td>
+			</tr>
+			<tr>
+					<td><code>separate_logs_per_component</code></td>
+					<td>Give each Velociraptor logging component its own log file.</td>
+					<td><code>false</code></td>
+			</tr>
+	</tbody>
+</table>
+<p>When <code>output_directory</code> is empty, Velociraptor does not write any log
+files. This is the default. It applies either when the
+<code>output_directory</code> key is omitted from the config entirely, and when
+it is present but set to an empty value (for example
+<code>output_directory: &quot;&quot;</code>).</p>
+<h3 id="file-naming">File naming</h3>
+<p>Log files are written into the output directory. The file name
+includes the component and log level.</p>
+<p>With <code>separate_logs_per_component: true</code> (recommended), each component
+gets its own set of files:</p>
+<pre><code>/mnt/data/logs/
+    VelociraptorFrontend_debug.log
+    VelociraptorFrontend_info.log
+    VelociraptorFrontend_error.log
+    VelociraptorAudit_info.log
+    VelociraptorAPI_info.log
+    ...
+</code></pre>
+<p>With <code>separate_logs_per_component: false</code>, all components write to
+the same files:</p>
+<pre><code>/mnt/data/logs/
+    Velociraptor_debug.log
+    Velociraptor_info.log
+    Velociraptor_error.log
+</code></pre>
+
+<div class="mynotices note">
+  <div heading=" Distributed deployments "><p>In a distributed deployment with
+<a href="/docs/deployment/server/multifrontend/">minion frontends</a>,
+each minion writes its logs to a subdirectory named after the node.
+This ensures that minions do not overwrite each other&rsquo;s or the
+master&rsquo;s logs.</p>
+</div>
+</div>
+
+
+<p>When a log file rotates, the old file gets a timestamp suffix added
+(for example <code>VelociraptorAudit_info.log.202608311200</code>) and a symlink
+points to the current active file.</p>
+<h3 id="log-rotation-and-retention">Log rotation and retention</h3>
+<p>Each log level rotates independently. The defaults are:</p>
+<ul>
+<li><strong>Rotation:</strong> every 7 days (<code>604800</code> seconds)</li>
+<li><strong>Max age:</strong> 1 year (<code>31536000</code> seconds)</li>
+</ul>
+<p>You can override these per level. For example, to rotate debug logs
+daily but keep error logs for two years:</p>
+<pre><code class="language-yaml">Logging:
+  output_directory: /mnt/data/logs
+  debug:
+    rotation_time: 86400      # 1 day
+    max_age: 2592000          # 30 days
+  error:
+    rotation_time: 604800     # 7 days
+    max_age: 63072000         # 2 years
+</code></pre>
+<p>To disable a log level entirely (for example, to stop writing debug
+logs to disk while still forwarding info and error to syslog):</p>
+<pre><code class="language-yaml">Logging:
+  output_directory: /mnt/data/logs
+  debug:
+    disabled: true
+</code></pre>
+<p>When a level is disabled, no log file is written for that level.</p>
+<h2 id="syslog-forwarding">Syslog forwarding</h2>
+<p>Velociraptor can forward log messages to a remote syslog server. This
+is useful for centralizing logs from multiple servers or feeding them
+into a SIEM.</p>
+<h3 id="configuration-1">Configuration</h3>
+<pre><code class="language-yaml">Logging:
+  separate_logs_per_component: true
+  remote_syslog_server: syslog.example.com:514
+  remote_syslog_protocol: udp
+  remote_syslog_components:
+    - VelociraptorAudit
+</code></pre>
+<table>
+	<thead>
+			<tr>
+					<th>Setting</th>
+					<th>Description</th>
+					<th>Default</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>remote_syslog_server</code></td>
+					<td>Address of the syslog server (<code>host:port</code>). Port defaults to <code>514</code> if omitted.</td>
+					<td><em>(empty — disabled)</em></td>
+			</tr>
+			<tr>
+					<td><code>remote_syslog_protocol</code></td>
+					<td>Transport protocol: <code>udp</code>, <code>tcp</code>, or <code>tls</code>.</td>
+					<td><code>udp</code></td>
+			</tr>
+			<tr>
+					<td><code>remote_syslog_components</code></td>
+					<td>Which components to forward.</td>
+					<td><code>[&quot;VelociraptorAudit&quot;]</code></td>
+			</tr>
+	</tbody>
+</table>
+<p>If <code>remote_syslog_server</code> is empty, syslog forwarding is disabled
+regardless of other settings. As with <code>output_directory</code>, this applies
+both when the <code>remote_syslog_server</code> key is omitted entirely and when
+it is present but set to an empty value (<code>remote_syslog_server: &quot;&quot;</code>).</p>
+
+<div class="mynotices warning">
+  <div heading=" Syslog forwarding and separate logs "><p>How syslog forwarding works depends on <code>separate_logs_per_component</code>:</p>
+<ul>
+<li>With <code>separate_logs_per_component: true</code>, each component logs
+separately, so every component you list in
+<code>remote_syslog_components</code> is forwarded on its own.</li>
+<li>With <code>separate_logs_per_component: false</code> (the default), all
+components are logged together as a single <code>Velociraptor</code> stream. In
+this mode, listing a specific component such as <code>VelociraptorAudit</code>
+has no effect; only <code>Velociraptor</code> is forwarded. If your list does
+not include <code>Velociraptor</code>, then nothing is forwarded at all.</li>
+</ul>
+<p>The simplest way to make syslog forwarding work is to set
+<code>separate_logs_per_component: true</code> and list the components you want
+to forward. If you prefer to keep all components in a single log
+stream, leave it at the default and list <code>Velociraptor</code> instead; this
+forwards everything.</p>
+<p>See <a href="/docs/deployment/logging/#forwarding-specific-components">Forwarding specific components</a>
+for details on the available logging components.</p>
+</div>
+</div>
+
+
+<h3 id="what-gets-forwarded">What gets forwarded</h3>
+<p>Syslog forwarding sends messages at the following log levels:</p>
+<ul>
+<li>Panic</li>
+<li>Fatal</li>
+<li>Error</li>
+<li>Warn</li>
+<li>Info</li>
+</ul>
+<p><strong>Debug-level messages are not forwarded to syslog.</strong> This is
+by design; debug messages tend to be high-volume and are not useful
+for operational monitoring.</p>
+<p>Velociraptor sends each message using traditional syslog text format
+(RFC 3164-style): the receiving syslog server prepends its own
+standard header — for example rsyslog adds a priority, timestamp, and
+hostname — followed by the raw message body.</p>
+<p>The message body itself is a <strong>JSON object</strong> containing the log level,
+timestamp, and the original log message:</p>
+<pre><code class="language-json">{&quot;level&quot;:&quot;info&quot;,&quot;msg&quot;:&quot;Frontend is ready to handle client TLS requests at https://127.0.0.1:8000/&quot;,&quot;time&quot;:&quot;2026-08-31T13:23:23Z&quot;}
+</code></pre>
+<p>These fields are <strong>not</strong> parsed into individual syslog fields or RFC
+5424 structured data — they are embedded together in the JSON body of
+the <code>msg</code> portion of each syslog line. If you ingest these logs into a
+SIEM, we recommend configuring JSON parsing on the receiving side so
+that <code>level</code>, <code>time</code>, and <code>msg</code> become queryable fields.</p>
+
+<div class="mynotices note">
+  <div heading=" Protocol choice "><p>UDP is the simplest option but offers no delivery guarantee. If the
+syslog server is unreachable or the network drops packets, messages
+are lost silently and Velociraptor continues to run normally.</p>
+<p>With <code>tcp</code> or <code>tls</code>, Velociraptor establishes a connection to the
+syslog server at startup. If it cannot connect, <strong>the server fails to
+start</strong>. Ensure your syslog server is reachable before enabling TCP or
+TLS forwarding.</p>
+<p>If you specify <code>tls</code>, the syslog connection is encrypted. You may need
+to configure your syslog server with appropriate certificates.</p>
+</div>
+</div>
+
+
+<h3 id="forwarding-specific-components">Forwarding specific components</h3>
+<p>The default value of <code>remote_syslog_components</code> is
+<code>[&quot;VelociraptorAudit&quot;]</code>, so audit events are forwarded by default when
+syslog forwarding is enabled with <code>separate_logs_per_component: true</code>.
+This captures user and service actions like logins, artifact
+modifications, and hunt operations, the most important events for
+security monitoring.</p>
+<p>To forward additional components, list them explicitly:</p>
+<pre><code class="language-yaml">Logging:
+  separate_logs_per_component: true
+  remote_syslog_server: syslog.example.com:514
+  remote_syslog_components:
+    - VelociraptorAudit
+    - VelociraptorFrontend
+    - VelociraptorAPI
+</code></pre>
+<p>See <a href="/docs/deployment/logging/#log-components">Log components</a> for the full list.</p>
+<h2 id="log-components">Log components</h2>
+<p>Velociraptor separates log messages by component. Each component
+represents a different part of the server.</p>
+<table>
+	<thead>
+			<tr>
+					<th>Component</th>
+					<th>What it logs</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>Velociraptor</code></td>
+					<td>Generic messages, startup/shutdown, and tool operations. This is the fallback component.</td>
+			</tr>
+			<tr>
+					<td><code>VelociraptorFrontend</code></td>
+					<td>Client connections, communications, and data reception.</td>
+			</tr>
+			<tr>
+					<td><code>VelociraptorClient</code></td>
+					<td>Client-side operational messages (when running as a client).</td>
+			</tr>
+			<tr>
+					<td><code>VelociraptorGUI</code></td>
+					<td>Web interface and GUI-related events.</td>
+			</tr>
+			<tr>
+					<td><code>VelociraptorAPI</code></td>
+					<td>API server operations.</td>
+			</tr>
+			<tr>
+					<td><code>VelociraptorAudit</code></td>
+					<td>User and service actions: logins, artifact changes, hunt creation, access control changes.</td>
+			</tr>
+	</tbody>
+</table>
+<p>When <code>separate_logs_per_component</code> is <code>true</code>, each component writes
+to its own file. This makes it easier to find messages from a specific
+part of the system. When <code>false</code>, all components write to the same file. This is useful
+for seeing the full picture in one place but harder to filter.</p>
+<h2 id="audit-logging">Audit logging</h2>
+<p>The <code>VelociraptorAudit</code> component captures security-relevant actions:
+who did what and when. This includes:</p>
+<ul>
+<li>User logins and logouts</li>
+<li>Artifact creation, modification, and deletion</li>
+<li>Hunt creation, modification, and deletion</li>
+<li>Access control changes</li>
+<li>Server configuration changes</li>
+</ul>
+<p>Audit events are written at the <strong>Info</strong> level, so they appear in the
+<code>_info.log</code> file (or in syslog forwarding).</p>
+<p>Audit events are also stored in the <code>Server.Audit.Logs</code> event-monitoring
+artifact, which you can view and query from the GUI. This is a separate
+mechanism from the <code>Logging</code>-configured file logs and syslog forwarding.</p>
+<p>On Windows servers, audit events are also written to the Windows
+Event Log.</p>
+<p>While this page covers <strong>configuration-defined logging</strong> (that is,
+logging defined in the server config file). Some categories of server
+events are also available via
+<a href="/docs/server_automation/server_monitoring/">server monitoring</a>
+and artifacts can be created to send such events to any destination
+supported by VQL functions and plugins (including but not limited to
+syslog). Since configuration-based logging requires server filesystem
+access, which Velociraptor GUI users typically don&rsquo;t have, it is
+considered more resistant to tampering and therefore preferable
+especially for audit logging.</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/logging/server_audit_logs.png"
+         class="inline"
+         alt="Viewing audit logs via server monitoring"
+         width="1200" height="619">
+  </div>
+  <figcaption>
+    <a class="image-link"
+       target="_blank" rel="noopener noreferrer"
+       href="server_audit_logs.png">
+      <i class="fa fa-download"></i></a>
+    Viewing audit logs via server monitoring
+  </figcaption>
+</figure>
+
+
+
+
+</p>
+<h2 id="configuration-examples">Configuration examples</h2>
+<h6 id="example-file-logging-only">Example: File logging only</h6>
+<p>A minimal setup that writes all log levels to disk:</p>
+<pre><code class="language-yaml">Logging:
+  output_directory: /var/log/velociraptor
+  separate_logs_per_component: true
+</code></pre>
+<h6 id="example-syslog-only">Example: Syslog only</h6>
+<p>Forward audit events to a remote syslog server without writing log
+files:</p>
+<pre><code class="language-yaml">Logging:
+  separate_logs_per_component: true
+  remote_syslog_server: syslog.example.com:514
+  remote_syslog_protocol: tcp
+  remote_syslog_components:
+    - VelociraptorAudit
+</code></pre>
+<h6 id="example-both-file-and-syslog">Example: Both file and syslog</h6>
+<p>Write all logs to disk and forward audit events to syslog:</p>
+<pre><code class="language-yaml">Logging:
+  output_directory: /var/log/velociraptor
+  separate_logs_per_component: true
+  remote_syslog_server: syslog.example.com:514
+  remote_syslog_protocol: tcp
+  remote_syslog_components:
+    - VelociraptorAudit
+</code></pre>
+<h6 id="example-custom-retention">Example: Custom retention</h6>
+<p>Write logs with aggressive rotation for debug logs and long retention
+for errors:</p>
+<pre><code class="language-yaml">Logging:
+  output_directory: /var/log/velociraptor
+  separate_logs_per_component: true
+  debug:
+    rotation_time: 86400       # Rotate daily
+    max_age: 604800            # Keep for 7 days
+  info:
+    rotation_time: 604800      # Rotate weekly
+    max_age: 2592000           # Keep for 30 days
+  error:
+    rotation_time: 604800      # Rotate weekly
+    max_age: 63072000          # Keep for 2 years
+</code></pre>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1788327744"></script>
+    <script src="/js/perfect-scrollbar.min.js?1788327744"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1788327744"></script>
+    <script src="/js/jquery.sticky.js?1788327744"></script>
+    <script src="/js/featherlight.min.js?1788327744"></script>
+    <script src="/js/highlight.min.js?1788327744"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1788327744"></script>
+    <script src="/js/learn.js?1788327744"></script>
+    <script src="/js/hugo-learn.js?1788327744"></script>
+    
+    
+
+  </body>
+</html>

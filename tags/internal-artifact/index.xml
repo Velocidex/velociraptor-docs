@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Internal Artifact on Velociraptor - Digging deeper!</title>
+    <link>https://docs.velociraptor.app/tags/internal-artifact/</link>
+    <description>Recent content in Internal Artifact on Velociraptor - Digging deeper!</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <atom:link href="https://docs.velociraptor.app/tags/internal-artifact/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Server.Internal.ArtifactDescription</title>
+      <link>https://docs.velociraptor.app/artifact_references/pages/server.internal.artifactdescription/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.artifactdescription/</guid>
+      <description>&lt;p&gt;Renders a formatted view of any artifact&amp;rsquo;s metadata, parameters,&#xA;sources, exports, etc.&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;&#xA;name: Server.Internal.ArtifactDescription&#xA;description: |&#xA;  Renders a formatted view of any artifact&#39;s metadata, parameters,&#xA;  sources, exports, etc.&#xA;&#xA;type: INTERNAL&#xA;&#xA;reports:&#xA;  - type: INTERNAL&#xA;    template: |&#xA;      {{ $artifact := Scope &#34;artifact&#34; }}&#xA;&#xA;      ## {{ $artifact.Name }}&#xA;&#xA;      #### Type: {{ $artifact.Type }}&#xA;&#xA;      {{ if $artifact.BuiltIn }}&#xA;      {{ else }}&#xA;      ##### Custom Artifact&#xA;      {{ end }}&#xA;&#xA;      {{ if and $artifact.Metadata $artifact.Metadata.Tags }}&#xA;      ##### Tags&#xA;&#xA;      {{ range $i, $t := $artifact.Metadata.Tags }}&#xA;      * {{ $t }}&#xA;      {{ end }}&#xA;&#xA;      {{ end }}&#xA;&#xA;      {{ if $artifact.Author }}&#xA;      ##### Author: {{ $artifact.Author }}&#xA;      {{end}}&#xA;&#xA;      {{ if $artifact.Description }}&#xA;&#xA;      &amp;lt;div class=&#34;description-content&#34;&amp;gt;&#xA;&#xA;      {{ $artifact.Description }}&#xA;&#xA;      {{ if $artifact.Reference }}&#xA;      ---&#xA;      References:&#xA;      &amp;lt;ul&amp;gt;&#xA;      {{- range $item := $artifact.Reference -}}&#xA;      &amp;lt;li&amp;gt;{{ $item }}&amp;lt;/li&amp;gt;&#xA;      {{- end -}}&#xA;      &amp;lt;/ul&amp;gt;&#xA;      {{ end }}&#xA;      &amp;lt;/div&amp;gt;&#xA;&#xA;      {{ end }}&#xA;&#xA;      {{ if $artifact.Tools }}&#xA;      ### Tools&#xA;&#xA;      {{ range $artifact.Tools -}}&#xA;      * &amp;lt;velo-tool-viewer name=&#34;{{.Name}}&#34; version=&#34;{{.Version}}&#34;&amp;gt;&amp;lt;/velo-tool-viewer&amp;gt;&#xA;      {{ end }}&#xA;&#xA;      {{ end }}&#xA;&#xA;      {{ if $artifact.Parameters }}&#xA;&#xA;      ### Parameters&#xA;&#xA;      &amp;lt;table class=&#34;table table-striped&#34;&amp;gt;&#xA;      &amp;lt;thead&amp;gt;&#xA;         &amp;lt;tr&amp;gt;&#xA;           &amp;lt;th&amp;gt;Name&amp;lt;/th&amp;gt;&#xA;           &amp;lt;th&amp;gt;Type&amp;lt;/th&amp;gt;&#xA;           &amp;lt;th&amp;gt;Default&amp;lt;/th&amp;gt;&#xA;           &amp;lt;th&amp;gt;Description&amp;lt;/th&amp;gt;&#xA;         &amp;lt;/tr&amp;gt;&#xA;      &amp;lt;/thead&amp;gt;&#xA;      &amp;lt;tbody&amp;gt;&#xA;      {{- range $item := $artifact.Parameters -}}&#xA;         {{- if not (eq $item.Type &#34;hidden&#34;) -}}&#xA;           &amp;lt;tr&amp;gt;&#xA;             &amp;lt;td&amp;gt;{{ $item.Name }}&amp;lt;/td&amp;gt;&#xA;             &amp;lt;td&amp;gt;{{ $item.Type }}&amp;lt;/td&amp;gt;&#xA;             &amp;lt;td&amp;gt;&amp;lt;pre&amp;gt;{{ $item.Default }}&amp;lt;/pre&amp;gt;&amp;lt;/td&amp;gt;&#xA;             &amp;lt;td&amp;gt;{{ $item.Description }}&amp;lt;/td&amp;gt;&#xA;           &amp;lt;/tr&amp;gt;&#xA;         {{- end -}}&#xA;      {{- end -}}&#xA;      &amp;lt;/tbody&amp;gt;&amp;lt;/table&amp;gt;&#xA;&#xA;      {{ end }}&#xA;&#xA;      {{ if $artifact.Imports }}&#xA;&#xA;      &amp;lt;table class=&#34;table table-striped&#34;&amp;gt;&#xA;      &amp;lt;thead&amp;gt;&#xA;         &amp;lt;tr&amp;gt;&#xA;           &amp;lt;th&amp;gt;Imports&amp;lt;/th&amp;gt;&#xA;         &amp;lt;/tr&amp;gt;&#xA;      &amp;lt;/thead&amp;gt;&#xA;      &amp;lt;tbody&amp;gt;&#xA;      {{- range $item := $artifact.Imports -}}&#xA;        &amp;lt;tr&amp;gt;&#xA;          &amp;lt;td&amp;gt;{{ $item }}&amp;lt;/td&amp;gt;&#xA;        &amp;lt;/tr&amp;gt;&#xA;      {{- end -}}&#xA;      &amp;lt;/tbody&amp;gt;&amp;lt;/table&amp;gt;&#xA;&#xA;      {{ end }}&#xA;&#xA;      {{ if $artifact.Export }}&#xA;      ### Exports&#xA;&#xA;      ```vql&#xA;      {{ $artifact.Export }}&#xA;      ```&#xA;      {{ end }}&#xA;&#xA;      {{ range $source := $artifact.Sources }}&#xA;&#xA;      {{ if or $source.Queries $source.Query $source.Notebook }}&#xA;&#xA;      ### Source {{ $source.Name }}&#xA;&#xA;      {{ if $source.Query }}&#xA;&#xA;      ```vql&#xA;      {{ $source.Query }}&#xA;      ```&#xA;&#xA;      {{- else if $source.Queries -}}&#xA;&#xA;      ```vql&#xA;      {{ range $query := $source.Queries -}}&#xA;      {{- $query -}}&#xA;      {{ end }}&#xA;      ```&#xA;&#xA;      {{ end }}&#xA;&#xA;      {{ if len $source.Notebook }}&#xA;&#xA;      #### Notebook cells&#xA;&#xA;      {{ range $notebook := $source.Notebook }}&#xA;&#xA;      {{ if $notebook.Name }}&#xA;      * `{{ $notebook.Type }}`: {{ $notebook.Name }}&#xA;      {{ else }}&#xA;      * `{{ $notebook.Type }}`&#xA;      {{ end }}&#xA;      {{ end }}&#xA;&#xA;      {{ end }}&#xA;&#xA;      {{ end }}&#xA;&#xA;      {{ end }}&#xA;&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Internal.ClientConflict</title>
+      <link>https://docs.velociraptor.app/artifact_references/pages/server.internal.clientconflict/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.clientconflict/</guid>
+      <description>&lt;p&gt;Emits events when the server detects a client ID conflict between&#xA;duplicate clients.&lt;/p&gt;&#xA;&lt;p&gt;When two clients attempt to connect to the server with the same&#xA;client id, the server rejects one of these with a 409 Conflict HTTP&#xA;message. The client id will be forwarded on this artifact as well so&#xA;the server may take action.&lt;/p&gt;&#xA;&lt;p&gt;This can be used to create automation around identifying this common&#xA;misconfiguration - usually resulting from including the client&#xA;writeback in the SOE image.&lt;/p&gt;&#xA;&lt;p&gt;NOTE: In multi-frontend deployments this event may not always fire&#xA;if the duplicated clients connect to separate nodes.&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;&#xA;name: Server.Internal.ClientConflict&#xA;description: |&#xA;  Emits events when the server detects a client ID conflict between&#xA;  duplicate clients.&#xA;&#xA;  When two clients attempt to connect to the server with the same&#xA;  client id, the server rejects one of these with a 409 Conflict HTTP&#xA;  message. The client id will be forwarded on this artifact as well so&#xA;  the server may take action.&#xA;&#xA;  This can be used to create automation around identifying this common&#xA;  misconfiguration - usually resulting from including the client&#xA;  writeback in the SOE image.&#xA;&#xA;  NOTE: In multi-frontend deployments this event may not always fire&#xA;  if the duplicated clients connect to separate nodes.&#xA;&#xA;type: INTERNAL&#xA;&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Internal.ClientInfoSnapshot</title>
+      <link>https://docs.velociraptor.app/artifact_references/pages/server.internal.clientinfosnapshot/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.clientinfosnapshot/</guid>
+      <description>&lt;p&gt;Notifies minion nodes to refresh their client info cache when the&#xA;master writes a new snapshot.&lt;/p&gt;&#xA;&lt;p&gt;Minions use this to trigger a refresh of their client info&#xA;snapshots.&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;&#xA;name: Server.Internal.ClientInfoSnapshot&#xA;type: INTERNAL&#xA;description: |&#xA;  Notifies minion nodes to refresh their client info cache when the&#xA;  master writes a new snapshot.&#xA;  &#xA;  Minions use this to trigger a refresh of their client info&#xA;  snapshots.&#xA;&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Internal.ClientPing</title>
+      <link>https://docs.velociraptor.app/artifact_references/pages/server.internal.clientping/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.clientping/</guid>
+      <description>&lt;p&gt;Provides an internal event channel for client ping notifications&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;&#xA;name: Server.Internal.ClientPing&#xA;type: INTERNAL&#xA;description: |&#xA;  Provides an internal event channel for client ping notifications&#xA;&#xA;&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Internal.ClientScheduled</title>
+      <link>https://docs.velociraptor.app/artifact_references/pages/server.internal.clientscheduled/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.clientscheduled/</guid>
+      <description>&lt;p&gt;Fires an event when new flows are scheduled for a client to process.&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;&#xA;name: Server.Internal.ClientScheduled&#xA;description: |&#xA;  Fires an event when new flows are scheduled for a client to process.&#xA;&#xA;type: INTERNAL&#xA;column_types:&#xA;  - name: ClientId&#xA;  - name: InFlightFlows&#xA;    description: New flows scheduled for the client&#xA;  - name: ClearFlows&#xA;    description: If this is set we clear all in flight flows.&#xA;&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Internal.ClientTasks</title>
+      <link>https://docs.velociraptor.app/artifact_references/pages/server.internal.clienttasks/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.clienttasks/</guid>
+      <description>&lt;p&gt;Fires an event when the server schedules new tasks for a client.&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;&#xA;name: Server.Internal.ClientTasks&#xA;description: |&#xA;  Fires an event when the server schedules new tasks for a client.&#xA;&#xA;type: INTERNAL&#xA;column_types:&#xA;  - name: ClientId&#xA;&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Internal.Enrollment</title>
+      <link>https://docs.velociraptor.app/artifact_references/pages/server.internal.enrollment/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.enrollment/</guid>
+      <description>&lt;p&gt;This event artifact is an internal event stream over which client&#xA;enrollments are sent. You can watch this event queue to be notified&#xA;on any new clients enrolling for the first time.&lt;/p&gt;&#xA;&lt;p&gt;Note: This is an automated system artifact. You do not need to start it.&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;&#xA;name: Server.Internal.Enrollment&#xA;description: |&#xA;  This event artifact is an internal event stream over which client&#xA;  enrollments are sent. You can watch this event queue to be notified&#xA;  on any new clients enrolling for the first time.&#xA;&#xA;  Note: This is an automated system artifact. You do not need to start it.&#xA;&#xA;type: INTERNAL&#xA;&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Internal.FrontendMetrics</title>
+      <link>https://docs.velociraptor.app/artifact_references/pages/server.internal.frontendmetrics/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.frontendmetrics/</guid>
+      <description>&lt;p&gt;An internal queue that receives metrics from all frontends. The&#xA;master Frontend manager service will aggregate these into a combined&#xA;metric stream.&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;&#xA;name: Server.Internal.FrontendMetrics&#xA;description: |&#xA;  An internal queue that receives metrics from all frontends. The&#xA;  master Frontend manager service will aggregate these into a combined&#xA;  metric stream.&#xA;&#xA;type: INTERNAL&#xA;&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Internal.HuntModification</title>
+      <link>https://docs.velociraptor.app/artifact_references/pages/server.internal.huntmodification/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.huntmodification/</guid>
+      <description>&lt;p&gt;Provides an internal event queue for hunt modification notifications&#xA;including stop and start events.&lt;/p&gt;&#xA;&lt;p&gt;The hunt dispatcher from all nodes sends this mutation to the hunt&#xA;manager which applies it.&lt;/p&gt;&#xA;&lt;p&gt;Users can also watch this queue to be notified when hunts are&#xA;modified (e.g. stopped, started etc).&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;&#xA;name: Server.Internal.HuntModification&#xA;description: |&#xA;  Provides an internal event queue for hunt modification notifications&#xA;  including stop and start events.&#xA;  &#xA;  The hunt dispatcher from all nodes sends this mutation to the hunt&#xA;  manager which applies it.&#xA;&#xA;  Users can also watch this queue to be notified when hunts are&#xA;  modified (e.g. stopped, started etc).&#xA;&#xA;type: INTERNAL&#xA;&#xA;column_types:&#xA;  - name: HuntId&#xA;  - name: Mutation&#xA;    type: json&#xA;&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Internal.HuntUpdate</title>
+      <link>https://docs.velociraptor.app/artifact_references/pages/server.internal.huntupdate/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.huntupdate/</guid>
+      <description>&lt;p&gt;Notifies hunt dispatchers across all minions when a hunt&amp;rsquo;s status or&#xA;configuration changes, and should be updated from the internal&#xA;cache.&lt;/p&gt;&#xA;&lt;p&gt;Users can also watch this queue to be notified when hunts are&#xA;modified (e.g. stopped, started etc).&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;&#xA;name: Server.Internal.HuntUpdate&#xA;description: |&#xA;  Notifies hunt dispatchers across all minions when a hunt&#39;s status or&#xA;  configuration changes, and should be updated from the internal&#xA;  cache.&#xA;&#xA;  Users can also watch this queue to be notified when hunts are&#xA;  modified (e.g. stopped, started etc).&#xA;&#xA;type: INTERNAL&#xA;&#xA;column_types:&#xA;  - name: HuntId&#xA;  - name: Hunt&#xA;    type: json&#xA;&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Internal.Interrogation</title>
+      <link>https://docs.velociraptor.app/artifact_references/pages/server.internal.interrogation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.interrogation/</guid>
+      <description>&lt;p&gt;Emits an event when the interrogation service completes processing a&#xA;client&amp;rsquo;s info update.&lt;/p&gt;&#xA;&lt;p&gt;This event artifact defines an internal event stream over which&#xA;client interrogations are sent. When the interrogation service&#xA;finishes updating a client record, it will send an event on this&#xA;artifact.&lt;/p&gt;&#xA;&lt;p&gt;Note: This is an automated system artifact. You do not need to start&#xA;it.&lt;/p&gt;&#xA;&lt;p&gt;During the interrogation workflow, the server schedules the&#xA;&lt;code&gt;Generic.Client.Info&lt;/code&gt; artifact. While it might seem like it should&#xA;be possible to trigger workflow off the &lt;code&gt;System.Flow.Completion&lt;/code&gt;&#xA;artifact there are some subtle differences:&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;The &lt;code&gt;System.Flow.Completion&lt;/code&gt; event fires when the&#xA;&lt;code&gt;Generic.Client.Info&lt;/code&gt; is completed but this may not be after the&#xA;interrogation service had a chance to parse and update the&#xA;data. This means that on first enrollment the client record may&#xA;not be ready by the time the &lt;code&gt;System.Flow.Completion&lt;/code&gt; is fired.&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;The &lt;code&gt;System.Flow.Completion&lt;/code&gt; will fire whenever the&#xA;&lt;code&gt;Generic.Client.Info&lt;/code&gt; is finished, even if that was collected&#xA;manually or with a hunt. If you only want automation to run the&#xA;first time a client is seen (on enrollment) then use&#xA;&lt;code&gt;Server.Internal.Interrogation&lt;/code&gt;&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;&#xA;name: Server.Internal.Interrogation&#xA;description: |&#xA;  Emits an event when the interrogation service completes processing a&#xA;  client&#39;s info update.&#xA;  &#xA;  This event artifact defines an internal event stream over which&#xA;  client interrogations are sent. When the interrogation service&#xA;  finishes updating a client record, it will send an event on this&#xA;  artifact.&#xA;&#xA;  Note: This is an automated system artifact. You do not need to start&#xA;  it.&#xA;&#xA;  During the interrogation workflow, the server schedules the&#xA;  `Generic.Client.Info` artifact. While it might seem like it should&#xA;  be possible to trigger workflow off the `System.Flow.Completion`&#xA;  artifact there are some subtle differences:&#xA;&#xA;  1. The `System.Flow.Completion` event fires when the&#xA;     `Generic.Client.Info` is completed but this may not be after the&#xA;     interrogation service had a chance to parse and update the&#xA;     data. This means that on first enrollment the client record may&#xA;     not be ready by the time the `System.Flow.Completion` is fired.&#xA;&#xA;  2. The `System.Flow.Completion` will fire whenever the&#xA;    `Generic.Client.Info` is finished, even if that was collected&#xA;    manually or with a hunt. If you only want automation to run the&#xA;    first time a client is seen (on enrollment) then use&#xA;    `Server.Internal.Interrogation`&#xA;&#xA;type: INTERNAL&#xA;&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Internal.Inventory</title>
+      <link>https://docs.velociraptor.app/artifact_references/pages/server.internal.inventory/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.inventory/</guid>
+      <description>&lt;p&gt;Fires an event when the server&amp;rsquo;s tool inventory is updated or&#xA;modified.&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;&#xA;name: Server.Internal.Inventory&#xA;description: |&#xA;  Fires an event when the server&#39;s tool inventory is updated or&#xA;  modified.&#xA;&#xA;type: INTERNAL&#xA;&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Internal.Label</title>
+      <link>https://docs.velociraptor.app/artifact_references/pages/server.internal.label/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.label/</guid>
+      <description>&lt;p&gt;An internal artifact used to track new labeling events.&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;&#xA;name: Server.Internal.Label&#xA;description: |&#xA;  An internal artifact used to track new labeling events.&#xA;&#xA;type: INTERNAL&#xA;&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Internal.MasterRegistrations</title>
+      <link>https://docs.velociraptor.app/artifact_references/pages/server.internal.masterregistrations/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.masterregistrations/</guid>
+      <description>&lt;p&gt;Advertises event subscriptions from the master node to all minions&#xA;in a multi-frontend deployment.&lt;/p&gt;&#xA;&lt;p&gt;The master will advertise to the minions the events it is interested in.&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;&#xA;name: Server.Internal.MasterRegistrations&#xA;description: |&#xA;  Advertises event subscriptions from the master node to all minions&#xA;  in a multi-frontend deployment.&#xA;  &#xA;  The master will advertise to the minions the events it is interested in.&#xA;&#xA;type: INTERNAL&#xA;column_types:&#xA;  - name: Events&#xA;    type: json_array&#xA;&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Internal.Notifications</title>
+      <link>https://docs.velociraptor.app/artifact_references/pages/server.internal.notifications/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.notifications/</guid>
+      <description>&lt;p&gt;This event artifact is an internal event stream over which client&#xA;notifications are sent. A frontend will watch for events over this&#xA;stream and if a client is actively connected to this frontend, the&#xA;client will be notified that new work is available to it.&lt;/p&gt;&#xA;&lt;p&gt;Note: This is an automated system artifact. You do not need to start it.&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;&#xA;name: Server.Internal.Notifications&#xA;description: |&#xA;  This event artifact is an internal event stream over which client&#xA;  notifications are sent. A frontend will watch for events over this&#xA;  stream and if a client is actively connected to this frontend, the&#xA;  client will be notified that new work is available to it.&#xA;&#xA;  Note: This is an automated system artifact. You do not need to start it.&#xA;&#xA;type: INTERNAL&#xA;&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Internal.Ping</title>
+      <link>https://docs.velociraptor.app/artifact_references/pages/server.internal.ping/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.ping/</guid>
+      <description>&lt;p&gt;An internal queue for Ping requests. The queue is watched by the&#xA;replication service on the slave nodes which will notify the target&#xA;specified.&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;&#xA;name: Server.Internal.Ping&#xA;description: |&#xA;  An internal queue for Ping requests. The queue is watched by the&#xA;  replication service on the slave nodes which will notify the target&#xA;  specified.&#xA;&#xA;type: INTERNAL&#xA;&#xA;column_types:&#xA;  - name: ClientId&#xA;  - name: NotifyTarget&#xA;&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Internal.Pong</title>
+      <link>https://docs.velociraptor.app/artifact_references/pages/server.internal.pong/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.pong/</guid>
+      <description>&lt;p&gt;An internal queue for Ping replies&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;&#xA;name: Server.Internal.Pong&#xA;description: |&#xA;  An internal queue for Ping replies&#xA;&#xA;type: INTERNAL&#xA;&#xA;column_types:&#xA;  - name: ClientId&#xA;  - name: Connected&#xA;&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Internal.UserManager</title>
+      <link>https://docs.velociraptor.app/artifact_references/pages/server.internal.usermanager/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://docs.velociraptor.app/artifact_references/pages/server.internal.usermanager/</guid>
+      <description>&lt;p&gt;Fires an event when Velociraptor user accounts are created, modified, or deleted.&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;&#xA;name: Server.Internal.UserManager&#xA;type: INTERNAL&#xA;description: |&#xA;  Fires an event when Velociraptor user accounts are created, modified, or deleted.&#xA;&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;</description>
+    </item>
+    <item>
+      <title>System.Hunt.Participation</title>
+      <link>https://docs.velociraptor.app/artifact_references/pages/system.hunt.participation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://docs.velociraptor.app/artifact_references/pages/system.hunt.participation/</guid>
+      <description>&lt;p&gt;Endpoints may participate in hunts. This artifact collects which&#xA;hunt each system participated in.&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;&#xA;name: System.Hunt.Participation&#xA;description: |&#xA;     Endpoints may participate in hunts. This artifact collects which&#xA;     hunt each system participated in.&#xA;&#xA;# Will not be written but will be relayed between minions and server.&#xA;type: INTERNAL&#xA;&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;</description>
+    </item>
+  </channel>
+</rss>

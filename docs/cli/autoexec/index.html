@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="google-site-verification" content="TWf2C5KkKfaG0pltB0jltq3yWk7WhtFKmlpUQu7ukRQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.165.0">
+    <meta name="description" content="Autoexec mode lets you embed a default command line and custom
+artifacts directly into the Velociraptor binary using config repack.
+When the binary is run without any CLI commands, the embedded
+command executes automatically.
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Autoexec mode</title>
+
+    
+    <link href="/css/nucleus.css?1788327744" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1788327744" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1788327744" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1788327744" rel="stylesheet">
+    <link href="/css/auto-complete.css?1788327744" rel="stylesheet">
+    <link href="/css/theme.css?1788327744" rel="stylesheet">
+    <link href="/css/tabs.css?1788327744" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1788327744" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1788327744" rel="stylesheet">
+    
+    <link href="/css/dark.css?1788327744" rel="stylesheet"><link href="/css/syntax.css?1788327744" rel="stylesheet"><link href="/css/light.css?1788327744" rel="stylesheet"><link href="/css/hljs.css?1788327744" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1788327744" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1788327744"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/docs/cli/autoexec/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" alt="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" alt="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-d63701db.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" alt="rapid7 logo" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/docs\/cli\/autoexec\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/docs/cli/autoexec/_index.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Autoexec mode</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#embedding-a-config-with-config-repack">Embedding a config with config repack</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#the-autoexec-config-section">The autoexec config section</a>
+      <ul>
+        <li><a href="#argv">argv</a></li>
+        <li><a href="#artifact_definitions">artifact_definitions</a></li>
+      </ul>
+    </li>
+    <li><a href="#environment-variable-expansion">Environment variable expansion</a></li>
+    <li><a href="#the-post-args----pseudo-flag">The “post args” (<code>--</code>) pseudo-flag</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#example-use-cases">Example use cases</a>
+      <ul>
+        <li><a href="#offline-collectors">Offline collectors</a></li>
+        <li><a href="#online-non-persistent-collectors">Online (non-persistent) collectors</a></li>
+        <li><a href="#custom-automation-tools">Custom automation tools</a></li>
+        <li><a href="#wrap-one-or-more-bundled-tools">Wrap one or more bundled tools</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Autoexec mode
+            </h1>
+            
+          
+
+        
+
+
+
+	<p>Autoexec mode lets you run preset run commands automatically . It
+does this by including a default command line, and optionally custom
+artifact definitions, directly into the Velociraptor binary. When the
+binary is run without any <a href="/docs/cli/commands/">CLI commands</a>, the
+embedded commandline executes automatically.</p>
+<p>
+
+
+
+
+
+
+<figure>
+  <div class="figure">
+    <img src="/docs/deployment/offline_collections/offline-collector-repacking.svg"
+         class="inline"
+         alt="Config embedding and tool bundling" />
+  </div>
+  <figcaption>
+    Config embedding and tool bundling
+  </figcaption>
+</figure>
+
+
+</p>
+<p>This is actually the mechanism used for
+<a href="/docs/deployment/offline_collections/">offline collectors</a>
+which are special-purpose binaries that collect artifacts and store
+the results locally without needing a server connection. But autoexec
+mode is also flexible enough for any other scenario where you want a
+Velociraptor binary to run some preconfigured commandline when
+double-clicked or launched from a script.</p>
+<p>The binary always checks for an embedded config when it is launched.
+If it has such a config and if the config contains an <code>autoexec</code>
+section, then it uses it. This behavior is not triggered if any CLI
+commands are provided. That is:</p>
+<ul>
+<li><em>With CLI commands</em>: the commands are executed normally. The
+<code>autoexec</code> section is ignored.</li>
+<li><em>Without CLI commands</em>: if an <code>autoexec.argv</code> section exists, it is
+executed as if those arguments had been typed on the command line.</li>
+</ul>
+<p>This means the embedded config with an <code>autoexec.argv</code> is treated as a
+default commandline. Any explicit CLI command will take precedence
+and override it.</p>
+<h2 id="embedding-a-config-with-config-repack">Embedding a config with config repack</h2>
+<p>The <a href="/docs/cli/commands/config/#-config-repack-"><code>config repack</code></a>
+command embeds a configuration file inside the Velociraptor binary:</p>
+<pre><code class="language-text">velociraptor config repack [&lt;flags&gt;] &lt;config_file&gt; &lt;output&gt;
+</code></pre>
+<p>See the section about
+<a href="/docs/deployment/offline_collections/#what-is-an-offline-collector">config embedding</a>
+to understand the mechanism in more detail.</p>
+<h6 id="example">Example</h6>
+<pre><code class="language-sh">velociraptor config repack my_config.yaml my_collector.exe
+</code></pre>
+<p>To embed into a specific binary (instead of the current one), use
+the <code>--exe</code> flag:</p>
+<pre><code class="language-sh">velociraptor config repack --exe /path/to/velociraptor \
+    my_config.yaml my_collector.exe
+</code></pre>
+<p>You can also bundle <a href="/docs/artifacts/tools/">tools</a> into the
+repacked binary using the <code>--binaries</code> flag:</p>
+<pre><code class="language-sh">velociraptor config repack --binaries MyTool \
+    my_config.yaml my_collector.exe
+</code></pre>
+<p>The repacked binary is a fully functional Velociraptor binary. When
+run with CLI commands it behaves like any other Velociraptor binary.
+Autoexec mode only activates when the binary is launched without
+commands.</p>
+<h2 id="the-autoexec-config-section">The autoexec config section</h2>
+<p>The <code>autoexec</code> section of the config has two parts:</p>
+<pre><code class="language-yaml">autoexec:
+  argv:
+  - artifacts
+  - collect
+  - MyCollector
+  - -v
+  - --require_admin
+
+  artifact_definitions:
+  - name: MyCollector
+    description: A custom collector artifact
+    sources:
+    - query: |
+        SELECT * FROM info()
+</code></pre>
+<h3 id="argv">argv</h3>
+<p>The <code>argv</code> list specifies the default CLI arguments. These are the
+same arguments you would type on the command line, where the first
+element is the command, followed by any subcommands and flags.</p>
+<p>For example, to start a client automatically:</p>
+<pre><code class="language-yaml">autoexec:
+  argv:
+  - client
+  - -v
+  - --require_admin
+</code></pre>
+<p>To run an artifact collection:</p>
+<pre><code class="language-yaml">autoexec:
+  argv:
+  - artifacts
+  - collect
+  - Collector
+  - -v
+  - --require_admin
+</code></pre>
+<h3 id="artifact_definitions">artifact_definitions</h3>
+<p>The <code>artifact_definitions</code> list lets you <em>optionally</em> embed custom
+artifact definitions directly in the config. These artifacts are
+available whenever the binary runs, not just in autoexec mode.</p>
+<p>Embedded artifacts take precedence over built-in artifacts compiled
+into the binary.</p>
+<p>For more about artifact precedence, see
+<a href="/docs/artifacts/#built-in-vs-compiled-in-vs-custom-artifacts">Built-in vs. Compiled-in vs. Custom Artifacts</a>.</p>
+<h2 id="environment-variable-expansion">Environment variable expansion</h2>
+<p>Values in <code>argv</code> are expanded at runtime using environment variable
+substitution. Both Unix-style <code>$VAR</code> and Windows-style <code>%VAR%</code>
+notations are supported:</p>
+<pre><code class="language-yaml">autoexec:
+  argv:
+  - artifacts
+  - collect
+  - Collector
+  - --output
+  - $OUTPUT_DIR/results.zip
+</code></pre>
+<p>On Windows, <code>%VAR%</code> works the same way:</p>
+<pre><code class="language-yaml">autoexec:
+  argv:
+  - artifacts
+  - collect
+  - Collector
+  - --output
+  - &quot;%USERPROFILE%\\results.zip&quot;
+</code></pre>
+<p>To include a literal <code>$</code> character, escape it by doubling:</p>
+<pre><code class="language-yaml">autoexec:
+  argv:
+  - echo
+  - $$
+</code></pre>
+<h2 id="the-post-args----pseudo-flag">The &ldquo;post args&rdquo; (<code>--</code>) pseudo-flag</h2>
+<p>The <code>--</code> pseudo-flag solves a specific problem: running the binary
+without any CLI arguments triggers autoexec mode, but adding any
+CLI command causes autoexec to be skipped. The <code>--</code> pseudo-flag lets
+you append extra flags to the autoexec command without supplying a
+command, so autoexec mode still activates.</p>
+<p>For example, consider an offline collector binary that contains this
+<code>autoexec.argv</code> section:</p>
+<pre><code class="language-yaml">autoexec:
+  argv:
+  - artifacts
+  - collect
+  - Collector
+  - -v
+  - --require_admin
+</code></pre>
+<p>Without any arguments, the binary runs <code>artifacts collect Collector -v --require_admin</code>. To add <code>--nobanner</code> and <code>--prompt</code> to that
+command line, use <code>--</code> followed by the extra flags:</p>
+<pre><code class="language-sh">velociraptor_collector.exe -- --nobanner --prompt
+</code></pre>
+<p>Because no CLI command appears before <code>--</code>, autoexec mode activates.
+The post args are appended to the <code>autoexec.argv</code> command line,
+making it equivalent to:</p>
+<pre><code class="language-yaml">autoexec:
+  argv:
+  - artifacts
+  - collect
+  - Collector
+  - -v
+  - --require_admin
+  - --nobanner
+  - --prompt
+</code></pre>
+<p>Which produces the effective command line:</p>
+<pre><code class="language-sh">velociraptor_collector.exe artifacts collect Collector \
+    -v --require_admin --nobanner --prompt
+</code></pre>
+<p>Any global or command-specific <a href="/docs/cli/flags/">CLI flags</a> can be
+used as post args.</p>
+
+<div class="mynotices note">
+  <div heading=" Flag override limitation "><p>If a flag is specified in <code>autoexec.argv</code> then it cannot be negated
+or overridden via post args. You can only <em>add</em> flags that have not
+already been used in the embedded command.</p>
+</div>
+</div>
+
+
+<h6 id="example-using-custom-artifacts-with-autoexec">Example: Using custom artifacts with autoexec</h6>
+<p>You can combine embedded artifact definitions with autoexec to
+create self-contained binaries that run custom artifacts without
+any external dependencies:</p>
+<pre><code class="language-yaml">autoexec:
+  argv:
+  - artifacts
+  - collect
+  - MyCustom.Artifact
+  - -v
+
+  artifact_definitions:
+  - name: MyCustom.Artifact
+    description: Collects specific forensic data
+    sources:
+    - query: |
+        SELECT * FROM info()
+</code></pre>
+<p>This is especially useful for creating targeted collection binaries
+for specific investigations. The artifact definition is baked into
+the binary, so no need to distribute artifact files separately.</p>
+<h2 id="example-use-cases">Example use cases</h2>
+<h3 id="offline-collectors">Offline collectors</h3>
+<p>The most common use of autoexec mode is
+<a href="/docs/deployment/offline_collections/">offline collectors</a>:
+binaries that collect artifacts without a server connection. The
+<a href="/docs/deployment/offline_collections/building/">collector builder</a>
+in the GUI creates these automatically, but you can also build them
+on the command line with the
+<a href="/docs/cli/commands/collector/"><code>collector</code> command</a>.</p>
+<h3 id="online-non-persistent-collectors">Online (non-persistent) collectors</h3>
+<p>You can repack a client config with autoexec to create a binary
+that starts in client mode, connects to the server, and collects
+data, all without installation. This is useful when you need the
+interactivity of a live client but can&rsquo;t install software on the
+target. See
+<a href="/knowledge_base/tips/online_collector/">How to create an &ldquo;online collector&rdquo; binary</a>
+for a detailed walkthrough.</p>
+<h3 id="custom-automation-tools">Custom automation tools</h3>
+<p>Any CLI command can be embedded. For example, you could create a
+binary that automatically dumps server config, lists artifacts, or
+runs a specific VQL query, useful for scripted workflows or
+one-click operations.</p>
+<h6 id="example-create-an-api-query-binary">Example: Create an API query binary</h6>
+<p>Normally the built-in API client is
+<a href="/docs/server_automation/server_api/#using-the-built-in-api-client">run with a separate API config</a>,
+however it&rsquo;s possible to include the API config in the embedded config
+and then use the <code>autoexec</code> section to preconfigure the binary to run
+in API client mode and run a specific API query against the server.</p>
+
+<div class="mynotices warning">
+  <div heading=" API config security "><p>API configs contain cryptographic keys to authenticate against the
+server and should therefore be carefully guarded. A binary containing
+an embedded API config should be treated the with the same security
+considerations as a standalone API config file, since the embedded
+config can trivially be extracted from the binary.</p>
+<p>As with any API client, ensure that the associated user account
+adheres to the principle of least privilege.</p>
+</div>
+</div>
+
+
+<p>First create an API client config with the
+<a href="/docs/server_automation/server_api/#creating-an-api-client-configuration"><code>config api_client</code> command</a>,
+which mints a client certificate and writes the connection details and
+key material to a YAML file. Then add an <code>autoexec</code> section to that
+config:</p>
+<pre><code class="language-yaml">autoexec:
+  argv:
+  - query
+
+api_config:
+  ca_certificate: |
+    -----BEGIN CERTIFICATE-----
+    ...
+    -----END CERTIFICATE-----
+  client_cert: |
+    -----BEGIN CERTIFICATE-----
+    ...
+    -----END CERTIFICATE-----
+  client_private_key: |
+    -----BEGIN RSA PRIVATE KEY-----
+    ...
+    -----END RSA PRIVATE KEY-----
+  api_connection_string: localhost:8001
+  name: reader
+
+</code></pre>
+<p>Then we embed the config into a new binary:</p>
+<pre><code class="language-sh">velociraptor config repack my_api_config.yaml velociraptor_query.exe
+</code></pre>
+<p>We can then run the repacked binary and use the <code>--</code> [pseudo-flag] to
+pass it the actual query and any additional flags:</p>
+<pre><code class="language-sh">./velociraptor_query.exe -- &quot;SELECT client_id, hostname, last_ip, last_seen_at FROM clients()&quot; --format csv
+</code></pre>
+<h3 id="wrap-one-or-more-bundled-tools">Wrap one or more bundled tools</h3>
+<p>You can bundle an external tool into the binary and have autoexec run
+it with preset arguments. This is useful for distributing a single
+binary that wraps one or more utilities, and optionally their support
+files. This single binary can then be given to local support staff to
+run on machines without them needing to type a potentially complicated
+command line or set up supporting files (for example configuration
+files or other prerequisite files). This is similar to a
+self-extracting zip exe, with a predefined commandline baked into the
+binary.</p>
+<h6 id="example-wrap-a-3rd-party-tool">Example: Wrap a 3rd-party tool</h6>
+<p>In this example, we&rsquo;ll wrap the
+<a href="https://github.com/perplexityai/bumblebee" target="_blank" >bumblebee</a>
+package inventory assessment tool with a custom commandline. Note that
+this example is a bit contrived in order to demonstrate the basic
+concepts - we&rsquo;re not recommending this particular utility, nor that it
+should be run this way, nor implying that its results will be
+particularly useful. You can easily substitute your own tool (or
+multiple tools) and command line in the same manner.</p>
+<p>First embed the tool with <code>config repack --binaries</code>. The tool must be
+registered in the server&rsquo;s <a href="/docs/artifacts/tools/">tool inventory</a>:</p>
+<pre><code class="language-sh">velociraptor config repack --binaries Bumblebee \
+    my_config.yaml bumblebee_runner.exe
+</code></pre>
+<p>The bundled tool is stored in the binary&rsquo;s embedded archive under
+<code>uploads/</code>, alongside an <code>uploads/inventory.csv</code> that maps tool names
+to their bundled filenames. A custom artifact reads this inventory via
+the <a href="/vql_reference/accessors/me/"><code>me</code> accessor</a>,
+copies the tool out to an executable temporary file, and runs it with
+<a href="/vql_reference/popular/execve/"><code>execve</code></a>:</p>
+<pre><code class="language-yaml">autoexec:
+  argv:
+  - artifacts
+  - collect
+  - Custom.Bumblebee.Scan
+
+  artifact_definitions:
+  - name: Custom.Bumblebee.Scan
+    description: Run the bundled bumblebee scanner against this host
+    sources:
+    - query: |
+        LET tool &lt;= SELECT Filename FROM parse_csv(
+            filename=&quot;/uploads/inventory.csv&quot;, accessor=&quot;me&quot;)
+        WHERE ToolName = &quot;Bumblebee&quot;
+
+        LET bin &lt;= copy(filename=tool[0].Filename, accessor=&quot;me&quot;,
+            dest=tempfile(permissions=&quot;x&quot;, remove_last=TRUE))
+
+        SELECT Stdout FROM execve(argv=[
+            bin, &quot;scan&quot;, &quot;--profile&quot;, &quot;baseline&quot;,
+            &quot;--output=file&quot;, &quot;--output-file=/tmp/bumblebee.ndjson&quot;])
+</code></pre>
+<p>The <a href="/vql_reference/accessors/me/"><code>me</code> accessor</a> reads files directly
+from the binary&rsquo;s embedded archive; it cannot execute them. The <code>copy</code>
+step copies the tool to a real file on disk (with execute permissions
+set), and <code>execve</code> runs it from there. Here bumblebee writes its scan
+results straight to a file using its own <code>--output=file</code> flag, so no
+extra VQL is needed to capture the output. One of the benefits of
+wrapping a tool in an autoexec binary is that you could use VQL to
+filter and reformat the tool&rsquo;s output, and use VQL functions to write
+the results to a format or output destination that the tool itself
+doesn&rsquo;t support.</p>
+
+<div class="mynotices note">
+  <div heading=" The Generic Collector uses autoexec mode under the hood "><p>Normally, autoexec mode requires repacking the config <em>into</em> the
+binary. The
+<a href="/docs/deployment/offline_collections/#the-generic-collector">Generic Collector</a>
+is a variation where the config is stored in a separate file and
+referenced at launch using the <code>--embedded_config</code> flag. This approach
+is required on macOS (where code signing prevents binary modification)
+and is also useful when the embedded config exceeds the embedding size
+limit (80 KB). The generic collector config file and the embedded
+config share the same format, and it is worth noting that it uses
+autoexec mode.</p>
+<p>However, Velociraptor does not currently provide a way to create a
+generic collector that runs anything other than the offline
+<code>Collector</code> artifact. The generic collector builder always generates
+an <code>autoexec</code> section that runs <code>artifacts collect Collector</code>. So
+while autoexec mode works with a generic collector config, it is only
+useful for collecting artifacts; you cannot use it to run other CLI
+commands (such as the API query or bundled tool examples above). This
+means autoexec mode is not an option in situations where you would
+otherwise need <code>--embedded_config</code> to avoid embedding a config into a
+binary.</p>
+</div>
+</div>
+
+
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1788327744"></script>
+    <script src="/js/perfect-scrollbar.min.js?1788327744"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1788327744"></script>
+    <script src="/js/jquery.sticky.js?1788327744"></script>
+    <script src="/js/featherlight.min.js?1788327744"></script>
+    <script src="/js/highlight.min.js?1788327744"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1788327744"></script>
+    <script src="/js/learn.js?1788327744"></script>
+    <script src="/js/hugo-learn.js?1788327744"></script>
+    
+    
+
+  </body>
+</html>

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="google-site-verification" content="TWf2C5KkKfaG0pltB0jltq3yWk7WhtFKmlpUQu7ukRQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.165.0">
+    <meta name="description" content="Extracts everything usefully derivable from the SAM registry hive
+">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Windows.Forensics.SAM.Enriched</title>
+
+    
+    <link href="/css/nucleus.css?1788327743" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1788327743" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1788327743" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1788327743" rel="stylesheet">
+    <link href="/css/auto-complete.css?1788327743" rel="stylesheet">
+    <link href="/css/theme.css?1788327743" rel="stylesheet">
+    <link href="/css/tabs.css?1788327743" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1788327743" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1788327743" rel="stylesheet">
+    
+    <link href="/css/dark.css?1788327743" rel="stylesheet"><link href="/css/syntax.css?1788327743" rel="stylesheet"><link href="/css/light.css?1788327743" rel="stylesheet"><link href="/css/hljs.css?1788327743" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1788327743" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1788327743"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/artifact_references/pages/windows.forensics.sam.enriched/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" alt="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" alt="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-d63701db.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" alt="rapid7 logo" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/artifact_references\/pages\/windows.forensics.sam.enriched\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/artifact_references/pages/windows.forensics.sam.enriched.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Windows.Forensics.SAM.Enriched</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents"></nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/client-artifact">Client Artifact</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Windows.Forensics.SAM.Enriched
+            </h1>
+            
+          
+
+        
+
+
+<p>Extracts everything usefully derivable from the SAM registry hive</p>
+<p>Whereas <code>Windows.Forensics.SAM</code> only returns users, this artifact
+list groups, group memberships, machine SID and the systems&rsquo; account
+policy.</p>
+<p>Sources:</p>
+<ul>
+<li><strong>Users</strong>: every local user, like <code>Windows.Forensics.SAM</code>&rsquo;s
+<code>Parsed</code> source, plus <code>PrimaryGroupID</code> and <code>IsLocalAdmin</code> (cross-
+referenced against the local <code>Administrators</code> group).</li>
+<li><strong>GroupMembers</strong>: every local group&rsquo;s members, classified as a
+local account, a domain account, or a well-known SID.</li>
+<li><strong>Aliases</strong>: every local group, without expanding membership.</li>
+<li><strong>Groups</strong>: global groups (<code>SAM\Domains\Account\Groups</code>), only useful
+if on a domain controller.</li>
+<li><strong>MachineSID</strong>: this machine&rsquo;s own account-domain SID, as a
+single row.</li>
+<li><strong>AccountPolicy</strong>: password/lockout policy and the domain&rsquo;s own
+creation time, from <code>SAM\Domains\Account</code>.</li>
+</ul>
+<pre><code class="language-yaml">
+name: Windows.Forensics.SAM.Enriched
+author: Andreas Misje – @misje
+description: |
+  Extracts everything usefully derivable from the SAM registry hive
+
+  Whereas `Windows.Forensics.SAM` only returns users, this artifact
+  list groups, group memberships, machine SID and the systems' account
+  policy.
+
+  Sources:
+
+  - **Users**: every local user, like `Windows.Forensics.SAM`'s
+    `Parsed` source, plus `PrimaryGroupID` and `IsLocalAdmin` (cross-
+    referenced against the local `Administrators` group).
+  - **GroupMembers**: every local group's members, classified as a
+    local account, a domain account, or a well-known SID.
+  - **Aliases**: every local group, without expanding membership.
+  - **Groups**: global groups (`SAM\Domains\Account\Groups`), only useful
+    if on a domain controller.
+  - **MachineSID**: this machine's own account-domain SID, as a
+    single row.
+  - **AccountPolicy**: password/lockout policy and the domain's own
+    creation time, from `SAM\Domains\Account`.
+
+parameters:
+  - name: SAMPath
+    description: Path to the SAM hive to parse.
+    default: C:/Windows/System32/Config/SAM
+
+required_permissions:
+  - MACHINE_STATE
+
+implied_permissions:
+  - FILESYSTEM_WRITE
+
+imports:
+  - Windows.Forensics.SAM
+
+precondition:
+  SELECT OS From info() where OS = 'windows'
+
+sources:
+  - name: Users
+    query: |
+      // Cache function for lookupSID (copied from Windows.Sys.AllUsers):
+      LET LookupSIDCache(SID) = cache(
+          name="SID",
+          key=SID,
+          func=lookupSID(sid=SID) || pathspec(
+            parse=stat(
+              accessor="registry",
+              filename="HKEY_LOCAL_MACHINE/Software/Microsoft/Windows NT/CurrentVersion/ProfileList/" +
+                SID + "/ProfileImagePath").Data.value).Basename || "")
+
+      LET LocalAdminRIDs &lt;= to_dict(item={
+          SELECT str(str=MemberRID) AS _key,
+                 true AS _value
+          FROM GroupMembers(SAMPath=SAMPath)
+          WHERE GroupRID = 544
+           AND GroupDomain = 'Builtin'
+                AND MemberClass = 'Local account'
+        })
+
+      // Help make timestamps nullable if the raw value is zero:
+      LET NullifyIfZero(Raw, Value) = if(condition=Raw = 0, then=NULL, else=Value)
+
+      SELECT
+          Key.OSPath.Path AS Key,
+          ParsedF.RID AS RID,
+          ParsedV.username AS Username,
+          ParsedV.fullname AS FullName,
+          ParsedV.comment AS Comment,
+          ParsedF.PrimaryGroupID AS PrimaryGroupID,
+          if(condition=get(item=LocalAdminRIDs, field=str(str=ParsedF.RID)),
+             then=true,
+             else=false) AS IsLocalAdmin,
+          ParsedF.Flags AS Flags,
+          NullifyIfZero(Raw=ParsedF.__last_login_raw, Value=ParsedF.LastLoginDate) AS LastLoginDate,
+          NullifyIfZero(
+            Raw=ParsedF.__password_reset_raw,
+            Value=ParsedF.PasswordResetDate) AS PasswordResetDate,
+          ParsedF.FailedLoginCount AS FailedLoginCount,
+          ParsedF.LoginCount AS LoginCount,
+          ParsedV.AccountType AS _AccountType,
+          NullifyIfZero(
+            Raw=ParsedF.__password_fail_raw,
+            Value=ParsedF.PasswordFailDate) AS _PasswordFailDate,
+          ParsedV.driveletter AS _DriveLetter,
+          ParsedV.logon_script AS _LogonScript,
+          ParsedV.profile_path AS _ProfilePath,
+          ParsedV.workstation AS _Workstation,
+          ParsedV.lmpwd_hash AS _LMHash,
+          ParsedV.ntpwd_hash AS _NTHash
+      FROM foreach(
+        row={
+          SELECT
+          Key,
+          parse_binary(
+            accessor="data",
+            filename=get(
+              field="F"),
+            profile=Profile,
+            struct="F") AS ParsedF,
+          parse_binary(
+            accessor="data",
+            filename=get(
+              field="V"),
+            profile=Profile,
+            struct="V") AS ParsedV
+          FROM read_reg_key(
+            globs='SAM\\Domains\\Account\\Users\\0*',
+            root=pathspec(
+              DelegatePath=SAMPath),
+            accessor="raw_reg")
+          WHERE get(
+            field="F")
+           AND get(
+                 field="V")
+        })
+
+  - name: GroupMembers
+    query: |
+      // A domain account's name is never in the SAM; try a live lookup
+      // for one before falling back to its bare SID:
+      LET ResolvedMember(MemberName, MemberClass, MemberSID) =
+          MemberName || if(condition=MemberClass = 'Domain account',
+                           then=LookupSIDCache(SID=MemberSID)) ||
+          MemberSID
+
+      SELECT GroupDomain,
+             GroupName,
+             GroupDescription,
+             GroupRID,
+             ResolvedMember(MemberName=MemberName,
+                            MemberClass=MemberClass,
+                            MemberSID=MemberSID) AS Member,
+             MemberSID,
+             MemberRID,
+             MemberClass,
+             RegistryKey
+      FROM GroupMembers(SAMPath=SAMPath)
+
+  - name: Aliases
+    query: |
+      SELECT RegistryKey,
+             GroupDomain,
+             Group.RID AS GroupRID,
+             Group.Name AS GroupName,
+             Group.Description AS GroupDescription,
+             Group.MembersCount AS MemberCount
+      FROM Aliases(SAMPath=SAMPath)
+
+  - name: Groups
+    query: SELECT * FROM Groups(SAMPath=SAMPath)
+
+  - name: MachineSID
+    query: SELECT * FROM MachineSID(SAMPath=SAMPath)
+
+  - name: AccountPolicy
+    query: |
+      SELECT
+          Policy.CreationTime AS DomainCreationTime,
+          Policy.MaxPasswordAge * -1.0 / 864000000000.0 AS MaxPasswordAgeDays,
+          Policy.MinPasswordAge * -1.0 / 864000000000.0 AS MinPasswordAgeDays,
+          Policy.LockoutDuration * -1.0 / 600000000.0 AS LockoutDurationMinutes,
+          Policy.LockoutObservationWindow * -1.0 / 600000000.0 AS LockoutObservationWindowMinutes,
+          Policy.NextRID AS NextRID,
+          Policy.PasswordProperties AS PasswordProperties,
+          Policy.MinPasswordLength AS MinPasswordLength,
+          Policy.PasswordHistoryLength AS PasswordHistoryLength,
+          Policy.LockoutThreshold AS LockoutThreshold
+      FROM AccountPolicy(
+        SAMPath=SAMPath)
+
+column_types:
+  - name: NextRID
+    description: &gt;-
+      Next RID this domain will assign to a newly created user or
+      group. Useful for estimating how many accounts have ever existed,
+      since RIDs are never reused after an account is deleted.
+  - name: LockoutThreshold
+    description: &gt;-
+      Number of failed logon attempts allowed before an account is
+      locked out. 0 means account lockout is disabled entirely.
+  - name: IsLocalAdmin
+    description: &gt;-
+      True only if the account is a direct member of the local
+      Administrators group. Does not detect admin rights gained through
+      nested/transitive group membership.
+  - name: GroupDomain
+    description: &gt;-
+      Which SAM sub-hive this group is defined in ("Builtin" or
+      "Account") — not an Active Directory domain name.
+  - name: MemberClass
+    description: &gt;-
+      How the member SID was classified: "Local account" (resolved
+      against this machine's own users/groups), "Domain account" (an
+      S-1-5-21 SID), or "Well-known SID" (a fixed OS-defined SID).
+  - name: Member
+    description: &gt;-
+      Best-effort resolved name: local username/groupname if resolvable,
+      else a live SID lookup, else the bare SID.
+  - name: PrimaryGroupID
+    description: &gt;-
+      The RID (not full SID) of the account's primary group, e.g. 513
+      for the default "Domain Users"/"None" group. Cross-reference
+      against GroupRID in the Groups source to resolve a name.
+  - name: _PasswordFailDate
+    description: &gt;-
+      Timestamp of the last failed logon attempt (wrong password) for
+      this account.
+  - name: _LMHash
+    type: hex
+  - name: _NTHash
+    type: hex
+</code></pre>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1788327743"></script>
+    <script src="/js/perfect-scrollbar.min.js?1788327743"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1788327743"></script>
+    <script src="/js/jquery.sticky.js?1788327743"></script>
+    <script src="/js/featherlight.min.js?1788327743"></script>
+    <script src="/js/highlight.min.js?1788327743"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1788327743"></script>
+    <script src="/js/learn.js?1788327743"></script>
+    <script src="/js/hugo-learn.js?1788327743"></script>
+    
+    
+
+  </body>
+</html>
+

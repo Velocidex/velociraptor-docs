@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="google-site-verification" content="TWf2C5KkKfaG0pltB0jltq3yWk7WhtFKmlpUQu7ukRQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.165.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Server.Analysis.Windows.EventLogs.Hayabusa</title>
+
+    
+    <link href="/css/nucleus.css?1788327744" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1788327744" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1788327744" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1788327744" rel="stylesheet">
+    <link href="/css/auto-complete.css?1788327744" rel="stylesheet">
+    <link href="/css/theme.css?1788327744" rel="stylesheet">
+    <link href="/css/tabs.css?1788327744" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1788327744" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1788327744" rel="stylesheet">
+    
+    <link href="/css/dark.css?1788327744" rel="stylesheet"><link href="/css/syntax.css?1788327744" rel="stylesheet"><link href="/css/light.css?1788327744" rel="stylesheet"><link href="/css/hljs.css?1788327744" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1788327744" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1788327744"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/exchange/artifacts/pages/server.analysis.windows.eventlogs.hayabusa/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" alt="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" alt="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-d63701db.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" alt="rapid7 logo" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/exchange\/artifacts\/pages\/server.analysis.windows.eventlogs.hayabusa\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/exchange/artifacts/Server.Analysis.Windows.EventLogs.Hayabusa.yaml" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Server.Analysis.Windows.EventLogs.Hayabusa</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents"></nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/sigma">sigma</a>
+
+  <a class="tag-link" href="/tags/hayabusa">hayabusa</a>
+
+  <a class="tag-link" href="/tags/evtx">evtx</a>
+
+  <a class="tag-link" href="/tags/triage">triage</a>
+
+  <a class="tag-link" href="/tags/postprocessing">postprocessing</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Server.Analysis.Windows.EventLogs.Hayabusa
+            </h1>
+            
+          
+
+        
+
+
+<p>Runs the curated Hayabusa Sigma ruleset against Windows event logs
+that were already uploaded to the server by a completed collection
+flow, using Velociraptor&rsquo;s built-in Sigma engine. No Hayabusa binary
+is deployed to the endpoint or the server - the entire analysis runs
+in VQL on the server side.</p>
+<p>This artifact is intended to post-process collections that upload
+<code>.evtx</code> files, such as <code>Windows.KapeFiles.Targets</code> or
+<code>Windows.Triage.Targets</code> (or any other collection that uploads raw
+event logs). It copies the collected EVTX files out of the server&rsquo;s
+file store into a temporary directory, then evaluates the
+<code>Windows.Hayabusa.Rules</code> artifact over that directory.</p>
+<p><strong>Prerequisite</strong>: The curated Hayabusa Sigma package must be imported
+into the server first so that the <code>Windows.Hayabusa.Rules</code> artifact
+resolves. Import it using the built-in <code>Server.Import.CuratedSigma</code>
+artifact on Velociraptor 0.74, or <code>Server.Import.Extras</code> on 0.75 and
+later. The curated packages are published at
+<a href="https://sigma.velocidex.com/" target="_blank" >https://sigma.velocidex.com/</a>. If the package is missing at runtime
+this artifact logs an error and returns no rows.</p>
+<p>This artifact can be called from within another artifact:</p>
+<p><code>SELECT * FROM Artifact.Server.Analysis.Windows.EventLogs.Hayabusa(ClientId=..., FlowId=...)</code></p>
+<p>Notes:</p>
+<ul>
+<li>Requires Velociraptor 0.74 or later.</li>
+<li>The analysis needs temporary disk space on the server roughly equal
+to the decompressed size of the collected EVTX set. The temporary
+directory is removed automatically when the collection completes.</li>
+<li>Uploaded files are flattened to their basename in the temporary
+directory because the Sigma log sources read fixed channel
+filenames directly under <code>ROOT</code> (for example <code>Security.evtx</code>).
+Only standard-named channel files are scanned. If the same channel
+file was uploaded more than once (for example from volume shadow
+copies), the live-volume copy is preferred and duplicates are
+skipped with a log message.</li>
+<li>If <code>security.allowed_file_accessor_prefix</code> is configured on the
+server, the temporary directory must fall under an allowed prefix.</li>
+</ul>
+<p>#sigma #hayabusa #evtx #triage #postprocessing</p>
+<pre><code class="language-yaml">
+name: Server.Analysis.Windows.EventLogs.Hayabusa
+author: Whitney Champion - bluesky @whit.zip, Eric Capuano - bluesky @eric.zip
+description: |
+  Runs the curated Hayabusa Sigma ruleset against Windows event logs
+  that were already uploaded to the server by a completed collection
+  flow, using Velociraptor's built-in Sigma engine. No Hayabusa binary
+  is deployed to the endpoint or the server - the entire analysis runs
+  in VQL on the server side.
+
+  This artifact is intended to post-process collections that upload
+  `.evtx` files, such as `Windows.KapeFiles.Targets` or
+  `Windows.Triage.Targets` (or any other collection that uploads raw
+  event logs). It copies the collected EVTX files out of the server's
+  file store into a temporary directory, then evaluates the
+  `Windows.Hayabusa.Rules` artifact over that directory.
+
+  **Prerequisite**: The curated Hayabusa Sigma package must be imported
+  into the server first so that the `Windows.Hayabusa.Rules` artifact
+  resolves. Import it using the built-in `Server.Import.CuratedSigma`
+  artifact on Velociraptor 0.74, or `Server.Import.Extras` on 0.75 and
+  later. The curated packages are published at
+  https://sigma.velocidex.com/. If the package is missing at runtime
+  this artifact logs an error and returns no rows.
+
+  This artifact can be called from within another artifact:
+
+    `SELECT * FROM Artifact.Server.Analysis.Windows.EventLogs.Hayabusa(ClientId=..., FlowId=...)`
+
+  Notes:
+
+  - Requires Velociraptor 0.74 or later.
+  - The analysis needs temporary disk space on the server roughly equal
+    to the decompressed size of the collected EVTX set. The temporary
+    directory is removed automatically when the collection completes.
+  - Uploaded files are flattened to their basename in the temporary
+    directory because the Sigma log sources read fixed channel
+    filenames directly under `ROOT` (for example `Security.evtx`).
+    Only standard-named channel files are scanned. If the same channel
+    file was uploaded more than once (for example from volume shadow
+    copies), the live-volume copy is preferred and duplicates are
+    skipped with a log message.
+  - If `security.allowed_file_accessor_prefix` is configured on the
+    server, the temporary directory must fall under an allowed prefix.
+
+  #sigma #hayabusa #evtx #triage #postprocessing
+
+type: SERVER
+
+reference:
+  - https://sigma.velocidex.com/
+  - https://github.com/Velocidex/velociraptor-docs/pull/1064
+
+required_permissions:
+  - SERVER_ADMIN
+
+parameters:
+  - name: ClientId
+    description: The client ID that the flow was collected from. Required.
+    default:
+  - name: FlowId
+    description: The flow ID of the completed collection containing uploaded EVTX files. Required.
+    default:
+  - name: EvtxRegex
+    description: Only uploaded files with paths matching this regex are analyzed.
+    type: regex
+    default: '(?i)\.evtx$'
+  - name: RuleLevel
+    description: Minimum Sigma rule level to match.
+    type: choices
+    default: Critical and High
+    choices:
+      - "Critical"
+      - "Critical and High"
+      - "Critical, High, and Medium"
+      - "Critical, High, Medium, and Low"
+      - "All"
+  - name: RuleStatus
+    description: Sigma rule status filter.
+    type: choices
+    default: Stable
+    choices:
+      - Stable
+      - Stable and Experimental
+      - Stable and Test
+      - All Rules
+  - name: RuleTitleFilter
+    description: Use this to filter only some rules to match by title.
+    type: regex
+    default: .
+  - name: DateAfter
+    description: "Search for events after this date. YYYY-MM-DDTmm:hh:ss Z"
+    type: timestamp
+  - name: DateBefore
+    description: "Search for events before this date. YYYY-MM-DDTmm:hh:ss Z"
+    type: timestamp
+
+sources:
+  - query: |
+      LET _CheckArgs &lt;= if(condition=NOT ClientId OR NOT FlowId,
+          then=log(message="ClientId and FlowId are required parameters",
+                   level="ERROR"))
+
+      -- The curated artifact is resolved at runtime so this artifact
+      -- loads even before the curated Sigma package has been imported,
+      -- but fail loudly if it is actually missing at execution time.
+      LET HaveRules &lt;= SELECT name
+        FROM artifact_definitions(names="Windows.Hayabusa.Rules")
+      LET _CheckRules &lt;= if(condition=NOT HaveRules,
+          then=log(message="The Windows.Hayabusa.Rules artifact is not installed. Import the curated Sigma package first (Server.Import.CuratedSigma on 0.74, Server.Import.Extras on 0.75+). See https://sigma.velocidex.com/",
+                   level="ERROR"))
+
+      -- A temporary directory to stage the EVTX files. It is removed
+      -- automatically when the scope closes at the end of collection.
+      LET TmpDir &lt;= tempdir()
+
+      LET Fqdn &lt;= client_info(client_id=ClientId).os_info.fqdn
+
+      -- Enumerate the EVTX files uploaded by the flow. The vfs_path
+      -- column is a file store path spec usable with the fs accessor.
+      -- Fall back to the file store path when the original endpoint
+      -- path is not recorded in the uploads metadata.
+      LET AllEvtx &lt;= SELECT vfs_path,
+                            client_path,
+                            file_size,
+                            basename(path=client_path || format(format="%v", args=vfs_path)) AS BaseName,
+                            client_path =~ '''(?i)GLOBALROOT|HarddiskVolumeShadowCopy''' AS IsVSS
+        FROM uploads(client_id=ClientId, flow_id=FlowId)
+        WHERE NOT Type = "idx"
+          AND (client_path || format(format="%v", args=vfs_path)) =~ EvtxRegex
+
+      -- The Sigma log sources read fixed channel filenames directly
+      -- under ROOT, so staged files are flattened to their basename.
+      -- When the same channel file was uploaded more than once (e.g.
+      -- volume shadow copies), prefer the live-volume copy.
+      LET LiveFiles &lt;= SELECT * FROM AllEvtx WHERE NOT IsVSS GROUP BY BaseName
+      LET VSSFiles &lt;= SELECT * FROM AllEvtx
+        WHERE IsVSS AND NOT BaseName IN LiveFiles.BaseName
+        GROUP BY BaseName
+      LET EvtxFiles &lt;= SELECT * FROM chain(a=LiveFiles, b=VSSFiles)
+
+      LET _CheckDupes &lt;= if(condition=len(list=AllEvtx) &gt; len(list=EvtxFiles),
+          then=log(message=format(
+              format="Skipped %v duplicate channel file(s) with the same name - kept live-volume copies",
+              args=[len(list=AllEvtx) - len(list=EvtxFiles)])))
+
+      LET _CheckEmpty &lt;= if(condition=NOT AllEvtx,
+          then=log(message=format(
+              format="No uploaded files matching %v found in flow %v - nothing to scan",
+              args=[EvtxRegex, FlowId])))
+
+      -- Copy each file into the temporary directory. The fs accessor
+      -- reads through the file store API and transparently decompresses
+      -- compressed uploads.
+      LET _Staged &lt;= SELECT BaseName,
+                            file_size,
+                            copy(filename=vfs_path,
+                                 accessor="fs",
+                                 dest=TmpDir + "/" + BaseName) AS StagedPath
+        FROM EvtxFiles
+
+      SELECT * FROM if(
+          condition=ClientId AND FlowId AND HaveRules AND _Staged,
+          then={
+        SELECT ClientId,
+               FlowId,
+               Fqdn,
+               *
+        FROM collect(artifacts="Windows.Hayabusa.Rules",
+                     args=dict(`Windows.Hayabusa.Rules`=dict(
+                         ROOT=TmpDir,
+                         RuleLevel=RuleLevel,
+                         RuleStatus=RuleStatus,
+                         RuleTitleFilter=RuleTitleFilter,
+                         DateAfter=DateAfter,
+                         DateBefore=DateBefore)))
+      })
+
+column_types:
+  - name: Timestamp
+    type: timestamp
+
+</code></pre>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1788327744"></script>
+    <script src="/js/perfect-scrollbar.min.js?1788327744"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1788327744"></script>
+    <script src="/js/jquery.sticky.js?1788327744"></script>
+    <script src="/js/featherlight.min.js?1788327744"></script>
+    <script src="/js/highlight.min.js?1788327744"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1788327744"></script>
+    <script src="/js/learn.js?1788327744"></script>
+    <script src="/js/hugo-learn.js?1788327744"></script>
+    
+    
+
+  </body>
+</html>
+
