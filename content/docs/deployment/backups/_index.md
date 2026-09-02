@@ -242,15 +242,7 @@ Velociraptor notebook, after carefully reviewing the data. For
 example, this VQL would restore the users and ACLs for a specific org:
 
 ```vql
-SELECT *
-FROM foreach(
-  row={
-    SELECT *
-    FROM parse_jsonl(
-      filename="/tmp/extracted_backups/orgs/O123/acls.json")
-  },
-  query={
-    SELECT
+SELECT
     user_create(
       user=Principal.name,
       orgs=Principal.orgs[0].id,
@@ -259,8 +251,8 @@ FROM foreach(
       user=Principal.name,
       orgs=Principal.orgs[0].id,
       policy=Policy)
-    FROM scope()
-  })
+FROM parse_jsonl(
+      filename="/tmp/extracted_backups/orgs/O123/acls.json")
 ```
 
 ## Backing up collected data
