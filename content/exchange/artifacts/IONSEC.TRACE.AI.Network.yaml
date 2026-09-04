@@ -1,0 +1,232 @@
+name: IONSEC.TRACE.AI.Network
+description: |
+  IONSEC TRACE — Collect network artifacts related to AI services.
+  Identifies connections to AI API endpoints, DNS cache entries for AI
+  domains, listening ports for local AI services, and proxy/VPN configs
+  that may indicate AI usage.
+
+  Version: 0.1.0
+  Author: IONSEC
+
+  This artifact collects:
+  - Listening ports on known AI service ports
+  - DNS cache entries for AI-related domains
+  - Established connections to AI API endpoints
+  - Proxy/VPN configurations that may route AI traffic
+  - Hosts file entries redirecting AI domains
+
+  AI API Domains:
+  - api.openai.com, chat.openai.com
+  - api.anthropic.com
+  - huggingface.co, huggingface.cloud
+  - ollama.com, ollama.ai
+  - generativelanguage.googleapis.com
+  - api.groq.com
+  - api.together.xyz
+  - api.mistral.ai
+  - api.deepseek.com
+  - api.perplexity.ai
+  - replicate.com, api.replicate.com
+  - generativeai.googleapis.com
+
+type: CLIENT
+parameters:
+  - name: CollectChatHistory
+    description: Not used in this artifact (kept for interface consistency)
+    type: bool
+    default: true
+  - name: CollectLogs
+    description: Include connection log details and DNS resolution history
+    type: bool
+    default: true
+  - name: DeepCollection
+    description: Include proxy/VPN config scanning and hosts file analysis
+    type: bool
+    default: false
+
+sources:
+  - name: AI_Listening_Ports
+    query: |
+      -- Listening connections on AI service ports
+      LET ai_listening = SELECT Pid, Name AS ProcessName, Exe, CommandLine,
+                 Laddr.IP AS LocalIP, Laddr.Port AS LocalPort,
+                 Status,
+                 if(condition=LocalPort = 11434, then="Ollama",
+                     condition=LocalPort = 1234, then="LM_Studio",
+                     condition=LocalPort = 7860, then="TextGen_WebUI",
+                     condition=LocalPort = 5001, then="KoboldCpp",
+                     condition=LocalPort = 8080, then="LlamaCpp_LocalAI",
+                     condition=LocalPort = 8000, then="vLLM",
+                     condition=LocalPort = 3000, then="AnythingLLM",
+                     condition=LocalPort = 8394, then="Jan_AI",
+                     condition=LocalPort = 4891, then="TabbyML",
+                     condition=LocalPort = 5000, then="AI_WebUI",
+                     condition=LocalPort = 443, then="HTTPS",
+                     condition=LocalPort = 80, then="HTTP",
+                     else="Unknown_AI_Service") AS ServiceName,
+                 "ai_listening_port" AS ArtifactType, "network_detection" AS Platform
+          FROM connections()
+          WHERE Status =~ "LISTEN"
+            AND Laddr.Port IN (11434, 1234, 7860, 5001, 8080, 8000, 3000, 8394, 4891, 5000)
+
+      SELECT * FROM ai_listening
+
+  - name: AI_API_Connections
+    query: |
+      -- Established connections to AI API endpoints
+      LET ai_established = SELECT Pid, Name AS ProcessName, Exe, CommandLine,
+                 Laddr.IP AS LocalIP, Laddr.Port AS LocalPort,
+                 Raddr.IP AS RemoteIP, Raddr.Port AS RemotePort,
+                 Status,
+                 "ai_api_connection" AS ArtifactType, "network_detection" AS Platform
+          FROM connections()
+          WHERE Status =~ "ESTABLISHED|CLOSE_WAIT|TIME_WAIT"
+
+      -- Filter for connections to known AI service IPs/ports
+      -- We can't do DNS reverse lookup in VQL, so we match on common AI API ports
+      -- and known AI-related process names
+      LET ai_filtered = SELECT * FROM ai_established
+          WHERE RemotePort IN (443, 80, 11434, 1234, 7860, 8080, 8000)
+             OR ProcessName =~ "(?i)(ollama|llama|lm.studio|python|node|hermes|aider|cursor|warp|codex)"
+             OR CommandLine =~ "(?i)(openai|anthropic|ollama|huggingface|langchain|crewai|autogpt|aider|hermes)"
+
+      SELECT * FROM ai_filtered
+
+  - name: DNS_Cache_Linux
+    precondition: SELECT OS FROM info() WHERE OS = 'linux'
+    query: |
+      -- Parse /etc/hosts for AI domain entries
+      LET hosts_file = SELECT FullPath, Mtime, Size,
+                 "hosts_entry" AS ArtifactType, "network_detection" AS Platform
+          FROM glob(globs="/etc/hosts", accessor="file")
+
+      -- Parse nsswitch config
+      LET nsswitch = SELECT FullPath, Mtime, Size,
+                 "dns_config" AS ArtifactType, "network_detection" AS Platform
+          FROM glob(globs="/etc/nsswitch.conf", accessor="file")
+
+      -- Resolv.conf for DNS servers
+      LET resolv_conf = SELECT FullPath, Mtime, Size,
+                 "dns_config" AS ArtifactType, "network_detection" AS Platform
+          FROM glob(globs="/etc/resolv.conf", accessor="file")
+
+      -- Proxy configuration files
+      LET proxy_configs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "proxy_config" AS ArtifactType, "network_detection" AS Platform
+          FROM glob(globs=[
+              expand(path=HomeDir) + "/.config/proxy.conf",
+              expand(path=HomeDir) + "/.config/environment.d/**",
+              "/etc/environment",
+              "/etc/profile.d/proxy*",
+              expand(path=HomeDir) + "/.bashrc",
+              expand(path=HomeDir) + "/.zshrc",
+          ], accessor="file")
+          WHERE DeepCollection
+
+      -- Known AI tool network config files
+      LET ai_net_configs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "ai_network_config" AS ArtifactType, "network_detection" AS Platform
+          FROM glob(globs=[
+              expand(path=HomeDir) + "/.ollama/config.json",
+              expand(path=HomeDir) + "/.ollama/hosts",
+              "/etc/systemd/system/ollama.service",
+              "/etc/systemd/system/ollama.service.d/**",
+          ], accessor="file")
+
+      SELECT * FROM chain(a=hosts_file, b=nsswitch, c=resolv_conf, d=proxy_configs, e=ai_net_configs)
+
+  - name: DNS_Cache_macOS
+    precondition: SELECT OS FROM info() WHERE OS = 'darwin'
+    query: |
+      -- Parse /etc/hosts for AI domain entries
+      LET hosts_file = SELECT FullPath, Mtime, Size,
+                 "hosts_entry" AS ArtifactType, "network_detection" AS Platform
+          FROM glob(globs="/etc/hosts", accessor="file")
+
+      -- resolv.conf
+      LET resolv_conf = SELECT FullPath, Mtime, Size,
+                 "dns_config" AS ArtifactType, "network_detection" AS Platform
+          FROM glob(globs="/etc/resolv.conf", accessor="file")
+
+      -- macOS network configuration
+      LET network_prefs = SELECT FullPath, Mtime, Size,
+                 "network_config" AS ArtifactType, "network_detection" AS Platform
+          FROM glob(globs=[
+              "/Library/Preferences/SystemConfiguration/preferences.plist",
+              "/Library/Preferences/SystemConfiguration/networkinterfaces.plist",
+          ], accessor="file")
+
+      -- Proxy configuration
+      LET proxy_configs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "proxy_config" AS ArtifactType, "network_detection" AS Platform
+          FROM glob(globs=[
+              expand(path=HomeDir) + "/.config/proxy.conf",
+              expand(path=HomeDir) + "/.bashrc",
+              expand(path=HomeDir) + "/.zshrc",
+              expand(path=HomeDir) + "/.zshenv",
+          ], accessor="file")
+          WHERE DeepCollection
+
+      -- Known AI tool network configs
+      LET ai_net_configs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "ai_network_config" AS ArtifactType, "network_detection" AS Platform
+          FROM glob(globs=[
+              expand(path=HomeDir) + "/.ollama/config.json",
+              expand(path=HomeDir) + "/.ollama/hosts",
+              expand(path=HomeDir) + "/Library/Application Support/Ollama/config.json",
+          ], accessor="file")
+
+      SELECT * FROM chain(a=hosts_file, b=resolv_conf, c=network_prefs, d=proxy_configs, e=ai_net_configs)
+
+  - name: DNS_Cache_Windows
+    precondition: SELECT OS FROM info() WHERE OS = 'windows'
+    query: |
+      -- Windows hosts file
+      LET hosts_file = SELECT FullPath, Mtime, Size,
+                 "hosts_entry" AS ArtifactType, "network_detection" AS Platform
+          FROM glob(globs="C:\\Windows\\System32\\drivers\\etc\\hosts", accessor="file")
+
+      -- Windows DNS client cache (via artifact)
+      LET dns_cache = SELECT Name, Data, TTL,
+                 "dns_cache_entry" AS ArtifactType, "network_detection" AS Platform
+          FROM dns_cache()
+          WHERE Name =~ "(?i)(openai|anthropic|huggingface|ollama|gemini|groq|together|mistral|deepseek|perplexity|replicate|cohere|ai21|palm|copilot|claude)"
+
+      -- Windows proxy settings from registry
+      LET proxy_reg = SELECT Name, Data,
+                 "proxy_config" AS ArtifactType, "network_detection" AS Platform
+          FROM read_reg_key(globs="HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\*", accessor="reg")
+          WHERE Name =~ "(?i)(proxy|enable)"
+
+      -- Known AI tool network configs on Windows
+      LET ai_net_configs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "ai_network_config" AS ArtifactType, "network_detection" AS Platform
+          FROM glob(globs=[
+              expand(path=HomeDir) + "\\.ollama\\config.json",
+              expand(path=HomeDir) + "\\.ollama\\hosts",
+              expand(path=AppDataDir) + "\\Ollama\\config.json",
+          ], accessor="file")
+
+      SELECT * FROM chain(a=hosts_file, b=dns_cache, c=proxy_reg, d=ai_net_configs)
+
+  - name: AI_DNS_Enrichment
+    query: |
+      -- Cross-reference: processes with AI-related connections
+      LET ai_conn_processes = SELECT Pid, Name AS ProcessName, Exe,
+                 Laddr.IP AS LocalIP, Laddr.Port AS LocalPort,
+                 Raddr.IP AS RemoteIP, Raddr.Port AS RemotePort,
+                 Status, CommandLine,
+                 "ai_connection_enrichment" AS ArtifactType, "network_detection" AS Platform
+          FROM connections()
+          WHERE ProcessName =~ "(?i)(ollama|llama|lm.studio|python|node|hermes|aider|cursor|warp|codex|chrome|firefox|edge)"
+             OR CommandLine =~ "(?i)(openai|anthropic|ollama|huggingface|langchain|crewai|autogpt)"
+
+      SELECT * FROM ai_conn_processes
+
+column_types:
+  - name: ArtifactType
+    type: string
+  - name: Platform
+    type: string
+  - name: FileHash
+    type: string
