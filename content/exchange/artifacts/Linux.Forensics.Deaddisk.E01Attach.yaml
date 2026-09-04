@@ -1,0 +1,42 @@
+name: Linux.Forensics.Deaddisk.E01Attach
+description: |
+  Velociraptor has introduced the ability to analyze dead disk images in the past. Although we don’t need to analyze disk images very often, the need comes up   occasionally.
+
+  While previously Velociraptor only supported analysis of DD images (AKA Raw images). Most people use a standard acquisition software to acquire the image    which uses the common EWF format to compress the image.
+
+  In the 0.72 release, Velociraptor supports EWF (AKA E01) format using the ewf accessor. This allows Velociraptor to analyze E01 image sets.
+  
+  Therefore this artifact requires
+  elevated permissions (specifically the `EXECVE`
+  permission). Typically it is only available with the `administrator`
+  role.
+
+
+required_permissions:
+  - EXECVE
+  
+precondition: |
+  SELECT OS From info() where OS =~ 'linux'
+
+parameters:
+  - name: E01_Name
+    default: "image.E01"
+  - name: E01_Path
+    default: "/tmp/"
+  - name: Velociraptor_Binary
+    default: "/usr/local/bin/velociraptor"
+  - name: Velociraptor_Client_Config
+    default: "/etc/velociraptor/client.config.yaml"
+
+ 
+
+sources:
+  - query: |
+      LET E01_PathDisk = E01_Path+E01_Name
+      SELECT * FROM chain(
+      a={
+        SELECT * FROM execve(argv=[Velociraptor_Binary, "deaddisk", "--add_windows_disk="+E01_PathDisk, E01_Path+"remapping.yaml" ], sep=" ")
+      }, 
+      b={
+        SELECT * FROM execve(argv=[Velociraptor_Binary, "--remap", E01_Path+"/remapping.yaml","--config","/etc/velociraptor/client.config.yaml", "client", "--config.client-writeback-linux="+E01_Path+"remapping.writeback.yaml"], sep=" ")
+      })
