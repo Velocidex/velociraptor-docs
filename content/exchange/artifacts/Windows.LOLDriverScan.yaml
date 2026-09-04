@@ -1,0 +1,32 @@
+name: Windows.LOLDriverScan
+description: LolDriverScan is a golang tool that allows users to discover vulnerable drivers on their system. This tool fetches the loldrivers.io list from their APIs and scans the system for any vulnerable drivers This project is implemented in Go and does not require elevated privileges to run. https://github.com/FourCoreLabs/LolDriverScan
+
+author: Chris Jones - CPIRT
+tools:
+ - name: LOLDriverScan
+   url: https://github.com/FourCoreLabs/LolDriverScan/releases/download/v1.2/LolDriverScan_1.2_windows_amd64.zip
+
+type: Client
+
+precondition: 
+    SELECT OS From info() where OS = 'windows'
+    
+sources:
+    - query: |
+        
+        LET Toolzip <= SELECT FullPath FROM Artifact.Generic.Utils.FetchBinary(ToolName="LOLDriverScan", IsExecutable=FALSE)
+
+        LET TmpDir <= tempdir()
+        
+        LET _ <= SELECT * FROM unzip(filename=Toolzip.FullPath, output_directory=TmpDir)
+
+        LET LOLDriverScanLocation <= TmpDir + '\\loldriverscan.exe'
+        
+        LET execute <= LOLDriverScanLocation + ' -json -'         
+        
+        SELECT * FROM foreach(
+            row={
+                SELECT Stdout FROM execve(argv=["Powershell", execute], length=1000000)
+            }, query={
+                SELECT * FROM parse_json_array(data=Stdout) where log(message=Stdout) AND log(message=Stderr)
+            })
