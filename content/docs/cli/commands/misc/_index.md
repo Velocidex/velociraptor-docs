@@ -218,21 +218,7 @@ sudo -u velociraptor bash
 velociraptor hunts reconstruct --config /path/to/server.config.yaml
 ```
 
-----
-
-### [ pool_client ]
-
-```text
-pool_client [<flags>]
-    Run a pool client for load testing.
-
-    --number=NUMBER    Total number of clients to run.
-    --writeback_dir=.  The directory to store all writebacks.
-    --concurrency=10   How many real queries to run.
-    --start_rate=20    How many clients per second to start.
-```
-
-----
+---
 
 ### [ rpm ]
 
