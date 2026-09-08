@@ -8,4 +8,6 @@ anauaque
 Kayaliev
 Kennaway
 Talence
+esentutl
+certutil
 Graylog
