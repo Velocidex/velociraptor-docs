@@ -1,4 +1,4 @@
-name: Custom.Windows.ADCS.CertificateAuthority.EDB
+name: Windows.ADCS.CertificateAuthority.EDB
 description: |
   Parses the Active Directory Certificate Services (ADCS) ESE database
   directly from disk.
