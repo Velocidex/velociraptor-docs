@@ -33,6 +33,8 @@ jobs:
           # extended: true
 
       - name: Prepare
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python scripts/exchange_index.py
           python scripts/exchange_verify.py

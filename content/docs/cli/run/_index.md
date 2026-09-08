@@ -4,7 +4,7 @@ title: "Run mode syntax"
 date: 2026-06-16
 last_reviewed: 2026-06-20
 draft: false
-weight: 30
+weight: 40
 summary: |
   Run mode (-r or --run flag) provides a simpler syntax for running
   Velociraptor collections on your local machine, a remote server, or

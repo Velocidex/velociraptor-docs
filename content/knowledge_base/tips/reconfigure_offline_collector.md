@@ -19,7 +19,7 @@ small tweaks to an existing offline collector this method may be quicker.
 
 Also note that you can override or append command line arguments to those
 embedded in and offline collector using
-[post-args](/docs/cli/#autoexec-mode-and-post-args),
+[post-args](/docs/cli/autoexec/#the---pseudo-flag-post-args),
 which may be sufficient when you want to change the collector behavior on a
 once-off basis.
 

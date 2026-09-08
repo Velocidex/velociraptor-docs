@@ -177,7 +177,7 @@ are datastore incompatibilities introduced by the later version that
 you are reverting from, then you can delete the datastore and the
 server will recreate it using the correct structure when restarting.
 You can also restore some key information from
-[automated server backups](/knowledge_base/tips/backing_up/).
+[automated server backups](/docs/deployment/backups/).
 
 Although in the worst-case scenario you may lose collection data,
 clients will continue reporting to the server. In all cases, if you
@@ -213,7 +213,7 @@ an old server to a new server by using a remote client upgrade.
    global notebooks, etc. as on the old server. You can restore the
    latest daily backup from the old server to preserve various server
    configuration items, as described in
-   [Restoring from daily backups](/knowledge_base/tips/backing_up/#restoring-from-daily-backups).
+   [Restoring from daily backups](/docs/deployment/backups/#restoring-from-daily-backups).
 
 3. Export the appropriate client config from the new server. Copy it
    to the old server. Use the `Server.Utils.CreateMSI` or

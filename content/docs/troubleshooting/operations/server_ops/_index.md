@@ -113,9 +113,10 @@ production systems, ideally to a secure remote server, and that you also
 implement systems that allow for monitoring these logs and for searching them
 should the need arise.
 
-Logging is configured via the server configuration file's
-[Logging](/docs/deployment/references/#Logging)
-section.
+For details on how to configure logging, see the
+[Server Logging](/docs/deployment/logging/) page. For the full
+list of configuration options, see the
+[Logging](/docs/deployment/references/#Logging) reference.
 
 #### Debugging
 
