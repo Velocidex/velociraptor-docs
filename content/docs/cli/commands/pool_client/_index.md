@@ -33,9 +33,9 @@ pool_client [<flags>]
     Run a pool client for load testing.
 
     --number=NUMBER    Total number of clients to run.
-    --writeback_dir=WRITEBACK_DIR
-                       The directory to store all writebacks. If not
-                       specified, in-memory writebacks are used.
+    --writeback_dir=.  The directory to store all writebacks.
+    --no_writeback     Use in-memory writebacks so client identities
+                       are ephemeral.
     --concurrency=10   How many real queries to run.
     --start_rate=20    How many clients per second to start.
 ```
@@ -43,11 +43,16 @@ pool_client [<flags>]
 #### How the pool client handles collections
 
 The pool client remembers the results of every collection it runs.
-When a virtual client is asked to run a collection, the pool client
-first checks whether it has already run the same collection before
-(the same artifact with the same parameters). If it has, it reports
-the saved results again instead of running the collection again. If
-it has not, it runs the collection and saves the results.
+A collection is a request to run an artifact, for example
+`Windows.System.Pslist` or `Generic.Client.Info`. When a virtual
+client is asked to run a collection, the pool client first checks
+whether it has already run the same collection before. Two
+collections are the same when they ask for the same artifact with
+the same parameters. For example, `Windows.System.Pslist` with the
+same filter is the same collection no matter which virtual client
+asks for it. If the pool client has already run it, it reports the
+saved results again instead of running the collection again. If it
+has not, it runs the collection and saves the results.
 
 This means each collection is only ever actually run once on the
 host, no matter how many virtual clients receive it. Each client
@@ -73,8 +78,9 @@ In practice this means:
 This behavior is intentional. The pool client is meant to put load on
 the server (communications, datastore, GUI), not to run the same
 query hundreds of times on the host. Because all virtual clients run
-on the same host, an identical collection from any of them returns
-the same data, so reusing the results is both correct and efficient.
+on the same host, running the same artifact with the same parameters
+on any of them returns the same data, so reusing the results is both
+correct and efficient.
 
 The pool client also limits how many collections it runs at the same
 time. By default it runs up to 10 collections in parallel (the
@@ -102,14 +108,22 @@ hostname collisions happen in real networks too.
 
 #### How the pool client stores client information
 
-Each virtual client needs its own client ID and private key. By
-default the pool client keeps these in memory, so nothing is written
-to disk and every run starts with fresh clients. This makes it easy
-to spin up clients, run some tests, stop them, and start again
-without having to clean up writeback files. To keep the same clients
-between runs, use the `--writeback_dir` flag to store the client
-information in a directory on disk. The codename hostnames are
-generated fresh each time the pool client starts.
+Each virtual client needs its own client ID and private key. The
+pool client stores these in writeback files, one per virtual client,
+in the directory given by the `--writeback_dir` flag. This directory
+is the current directory by default. Because the writebacks are kept
+on disk, running the pool client again reuses the same client
+identities. Reusing the writebacks also avoids generating new
+private keys, so the pool client starts faster the second time.
+
+If you want every run to start with fresh clients, use the
+`--no_writeback` flag. The pool client then keeps the client
+information in memory only, so nothing is written to disk and each
+run creates new client identities. The `--no_writeback` and
+`--writeback_dir` flags cannot be used together.
+
+The codename hostnames are generated fresh each time the pool client
+starts.
 
 ###### Example
 
