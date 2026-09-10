@@ -1,0 +1,15 @@
+name: Windows.Events.ETWProcesses
+author: Herbert Bärschneider, SEC Consult
+description: |
+  This artifact is meant for monitoring processes on Windows clients. 
+  It uses Kernel ETW providers to notice process creations and terminations.
+  
+  Requirements:
+  - Velociraptor Client and Velociraptor Server need version v0.74 or newer (or else the feature is just not supported and won't work at all)
+
+type: CLIENT_EVENT
+
+sources:
+   - query: |
+       SELECT *, atoi(string=EventData.ProcessId) AS Pid, atoi(string=EventData.ParentId) AS Ppid 
+       FROM watch_etw(guid='kernel', kernel_tracer_type=['process'])
