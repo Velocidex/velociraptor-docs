@@ -1,62 +1,54 @@
 ---
-title: "Welcome"
+title: "Velociraptor - Digging deeper!"
 date: 2021-06-12T07:11:04Z
 draft: false
-noDisqus: true
-weight: 20
-no_header: false
-carousel:
- - name: '<div class="logo-btn"><i class="fas fa-laptop"></i> Collect</div>'
-   image: collect.png
-   description: |
-     At the press of a (few) buttons, perform targeted collection of digital forensic evidence simultaneously across your endpoints, with speed and precision.
-
- - name: <div class="logo-btn"><i class="fas fa-eye"></i> Monitor</div>
-   image: monitoring.png
-   description: Continuously collect endpoint events such as event logs, file modifications and process execution. Centrally store events indefinitely for historical review and analysis.
-
- - name: <div class="logo-btn"><i class="fas fa-bullseye"></i> Hunt</div>
-   image: hunt.png
-   description: Don't wait until an event occurs. Actively search for suspicious activities using our library of forensic artifacts, then customize to your specific threat hunting needs.
-
-navs:
- - name: Overview
-   description: Velociraptor overview
-   link: /docs/overview/
- - name: Quickstart
-   description: Quick Start
-   link: /docs/deployment/quickstart/
- - name: Security
-   description: Lean about Velociraptor Security
-   link: /docs/overview/security/
- - name: Configure
-   description: Configuration File Reference
-   link: /docs/deployment/references/
- - name: Troubleshooting
-   description: Troubleshooting deployments
-   link: /docs/troubleshooting/
-
-description: |
-  {{% navs %}}
+heroCaption: "Advanced Digital Forensics and Incident Response"
+heroLead: "Velociraptor is an advanced digital forensic and incident
+response tool that enhances your visibility into your endpoints."
+heroButtons:
+  - label: "Get started"
+    url: "/docs/"
+    style: "primary"
+  - label: "Downloads"
+    url: "/downloads/"
+    style: "outline"
 ---
 
-{{% navs %}}
-
-
-{{% notice warning "Current Security Advisories" %}}
-
+{{< alert icon="triangle-exclamation" >}}
 Please update to the latest release [0.77.2](/downloads/) to address
 [Multiple CVEs](/announcements/advisories/v0-77-2/).
-{{% /notice %}}
+{{< /alert >}}
 
+{{< feature-grid >}}
 
-## Velociraptor - Digging Deeper!
+  {{< feature icon="book-open" title="Documentation" url="/docs/" >}}
+    Everything you need to install, configure and use Velociraptor,
+    from the deployment quickstart to the configuration reference.
+  {{< /feature >}}
 
-Velociraptor is an advanced digital forensic and incident response
-tool that enhances your visibility into your endpoints.
+  {{< feature icon="code" title="VQL Reference" url="/vql_reference/" >}}
+    Every VQL plugin, function and accessor documented, cross-referenced
+    and searchable.
+  {{< /feature >}}
 
-{{% carousel %}}
+  {{< feature icon="cube" title="Artifact Exchange" url="/exchange/" >}}
+    A community library of Velociraptor artifacts - share the ones you
+    write and use the ones others have shared.
+  {{< /feature >}}
 
-<script>
-    $("#top-bar").addClass("hidden");
-</script>
+  {{< feature icon="lightbulb" title="Knowledge Base" url="/knowledge_base/" >}}
+    Short, focused articles that answer everyday questions about using
+    Velociraptor.
+  {{< /feature >}}
+
+  {{< feature icon="newspaper" title="Blog" url="/blog/" >}}
+    In-depth articles on using Velociraptor in different scenarios and
+    staying on top of what's new.
+  {{< /feature >}}
+
+  {{< feature icon="download" title="Downloads" url="/downloads/" >}}
+    Pre-built binaries for all supported platforms, complete with hashes
+    and signatures.
+  {{< /feature >}}
+
+{{< /feature-grid >}}
