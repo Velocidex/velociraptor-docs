@@ -1,0 +1,31 @@
+# -- Markup --
+# The Blowfish theme requires the parser attributes and passthrough
+# extensions; highlighting is done via Chroma (all languages) plus a custom
+# highlight.js grammar for VQL fences (see layouts/_default/_markup/).
+
+[goldmark]
+  [goldmark.parser]
+    wrapStandAloneImageWithinParagraph = false
+
+    [goldmark.parser.attribute]
+      block = true
+
+  [goldmark.renderer]
+    unsafe = true
+
+  [goldmark.extensions]
+    [goldmark.extensions.passthrough]
+      enable = true
+      [goldmark.extensions.passthrough.delimiters]
+        block = [['\[', '\]'], ['$$', '$$']]
+        inline = [['\(', '\)']]
+
+[highlight]
+  noClasses = false
+  # Chroma handles all code fences; the VQL grammar is added via
+  # render-codeblock.html in a later phase.
+  codeFences = true
+
+[tableOfContents]
+  startLevel = 2
+  endLevel = 4

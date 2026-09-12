@@ -1,0 +1,13 @@
+# -- Language -- (single-language site)
+
+disabled = false
+locale = "en-us"
+label = "English"
+weight = 1
+title = "Velociraptor - Digging deeper!"
+
+[params]
+  displayName = "EN"
+  isoCode = "en"
+  rtl = false
+  dateFormat = "2 January 2006"

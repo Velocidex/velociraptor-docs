@@ -1,0 +1,54 @@
+# -- Site Configuration --
+# Fresh Blowfish v3 configuration replacing the old hugo-theme-learn
+# config.yaml. See config/_default/params.toml for theme options.
+
+baseURL = "https://docs.velociraptor.app/"
+defaultContentLanguage = "en"
+title = "Velociraptor - Digging deeper!"
+
+# Show the "Edit this page" link (uses lastmod/git info + editURL in params).
+enableGitInfo = true
+enableEmoji = true
+enableRobotsTXT = true
+
+# Anything we need to embed as-is (e.g. HTML bodies of generated pages).
+[security]
+  allowContent = ['text/html', 'text/markdown']
+
+# Google Analytics. Rendered by the Blowfish analytics partial (gtag.js)
+# in production builds only.
+[services]
+  [services.googleAnalytics]
+    ID = "G-QYH72LMYCS"
+
+# Make summary/description generation predictable.
+[imaging]
+  anchor = "Center"
+
+[pagination]
+  pagerSize = 100
+
+# Taxonomies enabled by the Blowfish theme. Only "tags" is actually
+# populated on content, the others produce no output when unused.
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+  author = "authors"
+  series = "series"
+
+[sitemap]
+  changefreq = "daily"
+  filename = "sitemap.xml"
+  priority = 0.5
+
+# Outputs: we primarily emit HTML. Sections opt into RSS via front matter
+# (see content/blog, content/exchange etc. which declare outputs: [html, RSS]).
+# JSON on the home page feeds Blowfish's built-in Fuse.js search modal - this
+# is replaced by Pagefind (statically generated index) in a later phase and
+# the JSON output will be removed then.
+[outputs]
+  home = ["HTML", "JSON"]
+  page = ["HTML"]
+  section = ["HTML"]
+  taxonomy = ["HTML"]
+  term = ["HTML"]
