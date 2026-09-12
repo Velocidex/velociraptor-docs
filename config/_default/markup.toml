@@ -1,7 +1,9 @@
 # -- Markup --
 # The Blowfish theme requires the parser attributes and passthrough
-# extensions; highlighting is done via Chroma (all languages) plus a custom
-# highlight.js grammar for VQL fences (see layouts/_default/_markup/).
+# extensions. Highlighting is entirely Chroma: vql/VQL code fences are
+# aliased to Chroma's SQL lexer by layouts/_default/_markup/render-codeblock.html
+# (VQL is SQL-derived); token colors come from Blowfish's bundled
+# github-style chroma.css.
 
 [goldmark]
   [goldmark.parser]
