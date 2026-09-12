@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Detects SCM lateral movement by searching System event log for
   service creation events (EID 7045) with "COMSPEC" or "cmd.exe" in

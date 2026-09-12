@@ -1,25 +1,18 @@
 ---
 title: client_create
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Create a new client in the data store.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## client_create
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -31,7 +24,7 @@ hostname|The hostname of the system|string
 client_id|if set we use this client id otherwise we make a new one|string
 mac_addresses||list of string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">SERVER_ADMIN</span>
+**Required permissions:** `SERVER_ADMIN`
 
 ### Description
 

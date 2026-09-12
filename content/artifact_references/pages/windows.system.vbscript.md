@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Runs VBScript code on Windows endpoints using the Windows Script
   Host (cscript.exe).

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Extracts RDP authentication and session events from Security,
   System, and Terminal Services event logs.

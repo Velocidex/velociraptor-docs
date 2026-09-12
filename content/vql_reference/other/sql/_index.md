@@ -1,25 +1,18 @@
 ---
 title: sql
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Run queries against sqlite, mysql, and postgres databases
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## sql
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -30,8 +23,7 @@ accessor|The accessor to use if using sqlite|string
 query||string (required)
 args||Any
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
-<span class="permission_list linkcolour label label-important">NETWORK</span>
+**Required permissions:** `FILESYSTEM_READ`, `NETWORK`
 
 ### Description
 

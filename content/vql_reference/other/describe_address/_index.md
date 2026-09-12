@@ -1,10 +1,9 @@
 ---
 title: describe_address
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Describe an address in the PE text section.
 
@@ -26,26 +25,20 @@ description: |
   FROM foreach(row=parse_pe(file=DLL).ExportRVAs)
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## describe_address
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 rva|The Relative Virtual Address to describe.|int64 (required)
 module|The path of the PE file to inspect.|string (required)
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `FILESYSTEM_READ`
 
 ### Description
 

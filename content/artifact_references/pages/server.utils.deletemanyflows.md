@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Removes old or unwanted flows from the server based on configurable
   filters with a dry-run mode.

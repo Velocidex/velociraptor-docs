@@ -1,10 +1,9 @@
 ---
 title: filter
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Filters an array by regex or condition.
 
@@ -21,26 +20,19 @@ description: |
   filter(list=[1, 2, 3, 4, 5, 6], condition="x=>x > 3") -> [4, 5, 6]
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## filter
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 list|A list of items to filter|list of Any (required)
 regex|A regex to test each item|string
 condition|A VQL lambda to use to filter elements|Lambda
-
 ### Description
 
 Filters an array by regex or condition.

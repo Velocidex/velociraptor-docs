@@ -1,10 +1,9 @@
 ---
 title: len
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Returns the length of an object.
 
@@ -12,24 +11,17 @@ description: |
   For arrays, this is the number of entries.
   For dicts, this is the number of key/value pairs.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## len
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 list|A list of items to filter|Any (required)
-
 ### Description
 
 Returns the length of an object.

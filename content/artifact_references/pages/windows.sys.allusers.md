@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Lists all user accounts on a Windows system including domain users
   with cached profiles.

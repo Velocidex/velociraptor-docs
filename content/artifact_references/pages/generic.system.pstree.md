@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Shows process lineage by following parent PIDs to establish call
   chains.

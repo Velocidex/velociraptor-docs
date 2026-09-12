@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Locates immutable files on Linux by checking ext4 filesystem flags.
 ---

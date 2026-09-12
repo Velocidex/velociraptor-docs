@@ -1,10 +1,9 @@
 ---
 title: timestamp_format
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Format a timestamp into a string.
 
@@ -26,25 +25,18 @@ description: |
   > "2024-08-29T02:05:23+02:00"
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## timestamp_format
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 time|Time to format|Any (required)
 format|A format specifier as per the Golang time.Format. Additionally any constants specified in https://pkg.go.dev/time#pkg-constants can be used.|string
-
 ### Description
 
 Format a timestamp into a string.

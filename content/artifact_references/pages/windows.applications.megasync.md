@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Parses MEGASync logs and allows using regular expressions to search for
   entries of interest.

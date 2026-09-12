@@ -1,32 +1,25 @@
 ---
 title: notebook_get
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Get a notebook.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## notebook_get
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 notebook_id|The id of the notebook to fetch|string (required)
 verbose|Include more information|bool
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
+**Required permissions:** `READ_RESULTS`
 
 ### Description
 

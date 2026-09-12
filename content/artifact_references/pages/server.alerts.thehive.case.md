@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 description: |
   Generates TheHive cases from completed artifact flows using
   ClientId, FlowId, and FQDN as tags. Also adds FQDN as an observable.

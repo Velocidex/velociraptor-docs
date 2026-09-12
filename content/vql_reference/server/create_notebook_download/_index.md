@@ -1,32 +1,25 @@
 ---
 title: create_notebook_download
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Creates a notebook export zip file.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## create_notebook_download
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 notebook_id|Notebook ID to export.|string (required)
 filename|The name of the export. If not set this will be named according to the notebook id and timestamp|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">PREPARE_RESULTS</span>
+**Required permissions:** `PREPARE_RESULTS`
 
 ### Description
 

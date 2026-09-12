@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Extracts Cobalt Strike beacon configuration from byte streams,
   process memory, or files on disk such as a process dump.

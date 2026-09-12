@@ -1,10 +1,9 @@
 ---
 title: carve_usn
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Carve for the USN journal entries from a device.
 
@@ -24,19 +23,13 @@ description: |
   SELECT * FROM carve_usn(device='''\\.\C:''')
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## carve_usn
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -46,7 +39,7 @@ accessor|The accessor to use.|string
 mft_filename|A path to a raw $MFT file to use for path resolution.|OSPath
 usn_filename|A path to a raw USN file to carve. If not provided we carve the image file or the device.|OSPath
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `FILESYSTEM_READ`
 
 ### Description
 

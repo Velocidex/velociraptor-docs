@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Extracts and formats Windows scheduled task events from the
   TaskScheduler operational and Security logs.

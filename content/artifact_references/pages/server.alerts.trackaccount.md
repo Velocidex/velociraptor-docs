@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 description: |
   Forwards account tracking events from `Windows.Events.Trackaccount`
   as an alert to a Slack/Teams/Discord webhook.

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Searches Symantec Endpoint Protection event logs for
   high-value detection events like infostealers, backdoors, and

@@ -1,10 +1,9 @@
 ---
 title: geoip
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Lookup an IP Address using the MaxMind GeoIP database.
 
@@ -20,26 +19,20 @@ description: |
     networks.
   - [ip]({{< ref "/vql_reference/other/ip/" >}}): Format an IP address.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## geoip
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 ip|IP Address to lookup.|string (required)
 db|Path to the MaxMind GeoIP Database.|string (required)
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `FILESYSTEM_READ`
 
 ### Description
 

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Extracts MountPoints2 registry entries with ADMIN$ share paths to
   identify lateral movement via mapped drives.

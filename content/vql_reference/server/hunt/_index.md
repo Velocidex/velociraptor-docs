@@ -1,10 +1,9 @@
 ---
 title: hunt
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Create and launch a hunt.
 
@@ -38,19 +37,13 @@ description: |
   3. Hunt conditions are not additive! A hunt can only be targeted
      to an operating system, or label but not both.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## hunt
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -71,8 +64,7 @@ exclude_labels|If specified exclude these labels|list of string
 os|If specified target this OS|string
 org_id|If set the collection will be started in the specified orgs.|list of string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">START_HUNT</span>
-<span class="permission_list linkcolour label label-important">ORG_ADMIN</span>
+**Required permissions:** `START_HUNT`, `ORG_ADMIN`
 
 ### Description
 

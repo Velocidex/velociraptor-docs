@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Uploads the service binary to the server when a new service is
   installed.

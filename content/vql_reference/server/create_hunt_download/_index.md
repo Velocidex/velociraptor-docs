@@ -1,10 +1,9 @@
 ---
 title: create_hunt_download
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Creates a download pack for a hunt.
 
@@ -15,19 +14,13 @@ description: |
   Using the `wait` parameter you can wait for the download to
   complete or just kick it off asynchronously.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## create_hunt_download
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -39,7 +32,7 @@ base|Base filename to write to.|string
 password|An optional password to encrypt the collection zip.|string
 expand_sparse|If set we expand sparse files in the archive.|bool
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">PREPARE_RESULTS</span>
+**Required permissions:** `PREPARE_RESULTS`
 
 ### Description
 

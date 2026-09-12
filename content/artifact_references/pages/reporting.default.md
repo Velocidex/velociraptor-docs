@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Provides the default HTML template for exporting notebook and report
   content.

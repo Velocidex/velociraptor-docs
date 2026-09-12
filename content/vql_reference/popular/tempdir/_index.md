@@ -1,31 +1,24 @@
 ---
 title: tempdir
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Create a temporary directory. The directory will be removed when the query ends.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## tempdir
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 remove_last|If set we delay removal as much as possible.|bool
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_WRITE</span>
+**Required permissions:** `FILESYSTEM_WRITE`
 
 ### Description
 

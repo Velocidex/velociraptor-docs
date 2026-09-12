@@ -1,10 +1,9 @@
 ---
 title: now
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Returns the current time in seconds since epoch.
 
@@ -39,24 +38,17 @@ description: |
 
   - [timestamp]({{< ref "/vql_reference/popular/timestamp/" >}})
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## now
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 ns|Return the time in ns|bool
-
 ### Description
 
 Returns the current time in seconds since epoch.

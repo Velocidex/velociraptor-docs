@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
+build:
+  list: never
 description: |
   Advertises event subscriptions from the master node to all minions
   in a multi-frontend deployment.

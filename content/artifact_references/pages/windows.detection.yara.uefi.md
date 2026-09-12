@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Scans EFI System Partition files with YARA rules for rootkit detection.
 ---

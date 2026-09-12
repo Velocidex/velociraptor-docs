@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Uploads all data streams from a specified MFT ID on an NTFS volume
   for deleted file recovery purposes.

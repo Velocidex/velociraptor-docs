@@ -1,25 +1,18 @@
 ---
 title: uploads
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Retrieve information about a flow's uploads.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## uploads
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -28,7 +21,7 @@ flow_id|A flow ID (client or server artifacts)|string
 hunt_id|A hunt ID|string
 notebook_id|A notebook ID|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
+**Required permissions:** `READ_RESULTS`
 
 ### Description
 

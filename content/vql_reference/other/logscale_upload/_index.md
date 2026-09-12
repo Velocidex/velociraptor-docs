@@ -1,25 +1,18 @@
 ---
 title: logscale_upload
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Upload rows to LogScale ingestion server.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## logscale_upload
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -37,7 +30,7 @@ tag_fields|Name of fields to be used as tags. Fields can be renamed using =<newn
 stats_interval|Interval, in seconds, to post statistics to the log (default: 600, 0 to disable)|int
 debug|Enable verbose logging.|bool
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">NETWORK</span>
+**Required permissions:** `NETWORK`
 
 ### Description
 

@@ -34,13 +34,14 @@ def SaveDefinitions(filename, name, description, texts):
     with open(filename, "w") as fd:
         fd.write("""---
 title: %s
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
 %s
+build:
+  list: never
 ---
 
 """ % (name, textwrap.indent(description, "  ")))
@@ -56,11 +57,9 @@ def BuildDefinition(filename, item):
     filename =  os.path.join(dirname, "_index.md")
     description = item.get("description", "")
 
-    result = "\n\n<div class=\"vql_item\"></div>\n\n"
-    result += ("\n## %s\n<span class='vql_type label label-warning pull-right page-header'>%s</span>\n\n" % (item["name"], item["type"]))
+    result = "\n\n{{< badge >}}%s{{< /badge >}}\n\n" % item["type"]
 
     if item.get("args"):
-        result += ("\n\n<div class=\"vqlargs\"></div>\n\n")
         result += ("Arg | Description | Type\n----|-------------|-----\n")
         for arg in item["args"]:
             name = arg["name"]
@@ -80,11 +79,9 @@ def BuildDefinition(filename, item):
 
     permissions = item.get("metadata", {}).get("permissions")
     if permissions:
-        result += '\n<span class="permission_list vql_type">Required permissions:</span>'
-        for p in permissions.split(","):
-            result += '<span class="permission_list linkcolour label label-important">%s</span>\n' % p
-
-    result+=("\n")
+        result += '\n**Required permissions:** '
+        result += ", ".join("`%s`" % p.strip() for p in permissions.split(","))
+        result += "\n\n"
 
     if description:
         result+= ("### Description\n\n%s\n\n" % item.get("description", ""))
@@ -128,8 +125,7 @@ if __name__ == "__main__" :
             fd.write("""---
 title: %s
 weight: %s
-linktitle: %s
-index: true
+linkTitle: %s
 sitemap:
   disable: true
 no_edit: true
@@ -166,12 +162,12 @@ no_children: true
                 desc = def_map[filename].get("description", "")
                 SaveDefinitions(filename, filenames.get(filename), desc, texts)
 
-            fd.write("|Plugin/Function|<span class='vql_type'>Type</span>|Description|\n|-|-|-|\n")
+            fd.write("|Plugin/Function|Type|Description|\n|-|-|-|\n")
             for definition in sorted(children, key=lambda x: x.get("name")):
                 first_description = re.split("\\.|$", definition.get("description", ""), maxsplit=1, flags=re.M)
                 if first_description and len(first_description) > 0:
                     first_description = first_description[0]
-                fd.write("|[%s](%s)|<span class='vql_type'>%s</span>|%s|\n" % (
+                fd.write("|[%s](%s)|%s|%s|\n" % (
                     definition.get("name"),
                     convertNameToLURL(definition.get("name")),
                     definition.get("type", ""),

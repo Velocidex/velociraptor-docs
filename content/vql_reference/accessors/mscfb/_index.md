@@ -1,23 +1,19 @@
 ---
 title: mscfb
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Parse a MSCFB file as an archive.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## mscfb
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
+{{< badge >}}Accessor{{< /badge >}}
 
 ### Description
 

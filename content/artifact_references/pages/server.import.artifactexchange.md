@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Imports a zipped package containing Velociraptor artifacts from a
   remote web server.

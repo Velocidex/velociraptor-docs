@@ -1,10 +1,9 @@
 ---
 title: raw_reg
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Access keys and values by parsing a raw registry hive.
 
@@ -25,16 +24,13 @@ description: |
   This accessor is available on all supported platforms and uses the
   internal raw registry parser.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## raw_reg
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
+{{< badge >}}Accessor{{< /badge >}}
 
 ### Description
 

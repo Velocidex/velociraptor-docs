@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Scans NTFS volumes for data hidden in Alternate Data Streams, using
   configurable filtering rules.

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Scans Office Trust Records registry entries for documents with
   macro-enabled trust flags.

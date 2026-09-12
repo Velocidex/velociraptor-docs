@@ -1,10 +1,9 @@
 ---
 title: watch_ebpf
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Watch for events from eBPF.
 
@@ -69,19 +68,13 @@ description: |
   - [ebpf_events]({{< ref "/vql_reference/linux/ebpf_events/" >}}): Dumps information about
     potential ebpf_events.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## watch_ebpf
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -90,7 +83,7 @@ include_env|Include process environment variables.|bool
 policy|Use a tracee policy in YAML format to specify events instead.|string
 regex_prefilter|A regex that must match the raw buffer before we process it.|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
+**Required permissions:** `MACHINE_STATE`
 
 ### Description
 

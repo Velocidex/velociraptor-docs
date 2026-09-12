@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Extracts RunMRU registry entries from user hives and outputs them
   in timeline format.

@@ -1,10 +1,9 @@
 ---
 title: fat
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Access the FAT filesystem inside an image by parsing FAT.
 
@@ -27,16 +26,13 @@ description: |
       DelegatePath='fat.dd'))
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## fat
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
+{{< badge >}}Accessor{{< /badge >}}
 
 ### Description
 

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 description: |
   Sends an email alert when PsExec service execution is detected on a
   monitored client.

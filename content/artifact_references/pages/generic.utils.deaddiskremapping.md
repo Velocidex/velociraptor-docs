@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Inspects a disk image and produces an appropriate YAML remapping
   config for transparent filesystem access.

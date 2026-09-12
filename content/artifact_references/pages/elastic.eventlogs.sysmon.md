@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Converts Windows Sysmon event logs to ECS schema-compliant output
   for Elasticsearch ingestion.

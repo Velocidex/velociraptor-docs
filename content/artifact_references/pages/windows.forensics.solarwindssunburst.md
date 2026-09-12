@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Searches for SolarWinds Sunburst backdoor
   (SolarWinds.Orion.Core.BusinessLayer.dll) across all NTFS drives

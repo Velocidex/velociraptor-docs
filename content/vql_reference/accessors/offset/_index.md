@@ -1,10 +1,9 @@
 ---
 title: offset
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Allow reading another file from a specific offset.
 
@@ -26,16 +25,13 @@ description: |
   offset into the file. For example when reading a filesystem
   partition from an image.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## offset
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
+{{< badge >}}Accessor{{< /badge >}}
 
 ### Description
 

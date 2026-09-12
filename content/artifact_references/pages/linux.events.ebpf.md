@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Forwards selected EBPF events generated on the endpoint.
 ---

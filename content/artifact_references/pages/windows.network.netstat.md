@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Reports open network sockets on Windows including binding time,
   connection state, and owning process name.

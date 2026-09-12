@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Recovers USN journal entries from raw disk by carving NTFS update
   sequence number records.

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Collects UEFI Secure Boot signature variables including PK, db, and
   dbx from the client.

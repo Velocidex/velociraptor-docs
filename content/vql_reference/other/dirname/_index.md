@@ -1,10 +1,9 @@
 ---
 title: dirname
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Return the directory path.
 
@@ -18,26 +17,19 @@ description: |
 
   - [basename]({{< ref "/vql_reference/popular/basename/" >}})
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## dirname
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 path|Extract directory name of path|Any (required)
 sep|Separator to use (default /)|string
 path_type|Type of path (e.g. windows, linux)|string
-
 ### Description
 
 Return the directory path.

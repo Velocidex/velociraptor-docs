@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Evaluates Windows event log entries against inline or uploaded Sigma
   rules for threat detection.

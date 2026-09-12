@@ -1,10 +1,9 @@
 ---
 title: cache
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Creates a cache object.
 
@@ -29,19 +28,13 @@ description: |
   The cache will ensure that `get_pid_query()` is only called once per
   unique Pid by comparing the key against the internal memory store.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## cache
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -53,7 +46,7 @@ period|The latest age of the cache.|int64
 filename|Filename for a persistent cache.|string
 max_size|Maximum size of the LRU (default 10000).|uint64
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_WRITE</span>
+**Required permissions:** `FILESYSTEM_WRITE`
 
 ### Description
 

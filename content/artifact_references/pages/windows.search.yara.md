@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Scans the NTFS filesystem for files matching a YARA rule by first
   parsing the MFT to enumerate files.

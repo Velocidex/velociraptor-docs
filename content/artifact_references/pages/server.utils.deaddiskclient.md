@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Automates the preparatory steps for dead disk analysis by inspecting
   the disk image, building an appropriate remapping config, and then

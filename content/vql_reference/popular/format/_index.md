@@ -1,10 +1,9 @@
 ---
 title: format
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Format one or more items according to a format string.
 
@@ -79,25 +78,18 @@ description: |
   - [typeof]({{< ref "/vql_reference/other/typeof/" >}}): a dedicated function equivalent
     to the special use case: `format(format="%T",args=x)`
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## format
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 format|Format string to use|string (required)
 args|An array of elements to apply into the format string.|Any
-
 ### Description
 
 Format one or more items according to a format string.

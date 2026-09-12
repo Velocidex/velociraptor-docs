@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
+build:
+  list: never
 description: |
   Emits events when the server detects a client ID conflict between
   duplicate clients.

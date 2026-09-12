@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Upgrades Velociraptor clients on Red Hat hosts by installing a new RPM package
 ---

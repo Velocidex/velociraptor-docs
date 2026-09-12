@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 description: |
   Captures client interrogation results (OS, hostname, architecture)
   when clients complete the client info collection.

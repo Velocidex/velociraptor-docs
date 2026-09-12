@@ -1,10 +1,9 @@
 ---
 title: ssh
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Access a remote system's filesystem via `SSH/SFTP`.
 
@@ -37,19 +36,13 @@ description: |
   "/blog/2024/2024-03-10-release-notes-0.72/#secret-management" >}}) in
   0.72 to manage these credentials.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## ssh
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Accessor{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -59,7 +52,7 @@ password|The password to use to log into the remote system.|string
 private_key|A private key to use to log into the remote system instead of a password.|string
 hostname|The hostname to log into.|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">NETWORK</span>
+**Required permissions:** `NETWORK`
 
 ### Description
 

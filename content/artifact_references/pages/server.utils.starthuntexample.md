@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   A template artifact, providing an example of how to grant controlled
   high-privilege operations to users with limited permissions.

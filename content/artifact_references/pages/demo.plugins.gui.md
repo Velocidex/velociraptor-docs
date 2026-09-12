@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Provides test cases for GUI elements, parameter validation, and
   notebook rendering.

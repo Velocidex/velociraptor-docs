@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Searches for files by path glob, inspects file content via YARA, and
   provides file hash and upload options.

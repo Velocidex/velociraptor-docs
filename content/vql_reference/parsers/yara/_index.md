@@ -1,10 +1,9 @@
 ---
 title: yara
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Scan files using yara rules.
 
@@ -95,19 +94,13 @@ description: |
   signatures can be easily invalidated, robust rules typically have
   other conditions as a fallback so the impact should be minimal.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## yara
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -124,7 +117,7 @@ namespace|The Yara namespace to use.|string
 vars|The Yara variables to use.|ordereddict.Dict
 force_buffers|Force buffer scan in all cases.|bool
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `FILESYSTEM_READ`
 
 ### Description
 

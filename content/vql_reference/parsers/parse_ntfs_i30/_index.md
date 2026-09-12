@@ -1,10 +1,9 @@
 ---
 title: parse_ntfs_i30
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Scan the $I30 stream from an NTFS MFT entry.
 
@@ -14,19 +13,13 @@ description: |
   Note: You can also use a raw $MFT file to operate on - see
   `parse_ntfs()` for a full description.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## parse_ntfs_i30
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -37,7 +30,6 @@ accessor|The accessor to use.|string
 inode|The MFT entry to parse in inode notation (5-144-1).|string
 mft|The MFT entry to parse.|int64
 mft_offset|The offset to the MFT entry to parse.|int64
-
 ### Description
 
 Scan the $I30 stream from an NTFS MFT entry.

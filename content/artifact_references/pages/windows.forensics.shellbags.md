@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Extracts Shellbag data from NTUSER.DAT and UsrClass.dat to recover
   folder navigation history.

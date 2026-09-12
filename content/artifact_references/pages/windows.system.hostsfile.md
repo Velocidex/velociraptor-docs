@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Reads and parses the Windows hosts file, reporting resolution
   entries, hostnames, and comments.

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Removes one or more clients by ID from the server, deleting all
   associated collection data permanently.

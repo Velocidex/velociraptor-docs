@@ -1,25 +1,18 @@
 ---
 title: pk_encrypt
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Encrypt files using pubkey encryption
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## pk_encrypt
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -28,7 +21,7 @@ signing_key|Private key to sign with|string
 public_key|Public key to encrypt with. Defaults to server public key|string
 scheme|Encryption scheme to use. Defaults to X509. Currently supported: PGP,X509|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">SERVER_ADMIN</span>
+**Required permissions:** `SERVER_ADMIN`
 
 ### Description
 

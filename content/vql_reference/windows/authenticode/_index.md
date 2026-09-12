@@ -1,29 +1,22 @@
 ---
 title: authenticode
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Parses authenticode information from PE files.
 
   On windows, the function will also use the windows API to determine
   if the binary is trusted by the system.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## authenticode
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -31,7 +24,7 @@ accessor|The accessor to use.|string
 filename|The filename to parse.|OSPath (required)
 verbose|Set to receive verbose information about all the certs.|bool
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
+**Required permissions:** `MACHINE_STATE`
 
 ### Description
 

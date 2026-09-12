@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Deploys the SharpHound tool to collect Active Directory relationship
   data for BloodHound.

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Uploads a single file or recursively uploads directory contents from
   a client to populate information in the VFS screen.

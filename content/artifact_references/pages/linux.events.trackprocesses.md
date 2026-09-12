@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Subscribes to eBPF process events to track new processes and their
   parent relationships.

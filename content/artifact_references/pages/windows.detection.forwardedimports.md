@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Scans DLLs for self-referencing forwarded imports that could
   indicate DLL hijacking.

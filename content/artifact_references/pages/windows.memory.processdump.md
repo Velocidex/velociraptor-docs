@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Captures process memory for selected processes via crash dump or
   Velociraptor-compatible sparse upload.

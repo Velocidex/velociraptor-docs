@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Parses PowerShell script block logging entries (Event ID 4104) to
   detect potentially malicious script content.

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Monitors process creation, termination, and image load events via
   the Kernel-Process ETW provider.

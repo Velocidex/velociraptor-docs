@@ -1,10 +1,9 @@
 ---
 title: ip
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Format an IP address.
 
@@ -54,26 +53,19 @@ description: |
   - [geoip]({{< ref "/vql_reference/other/geoip/" >}}): Lookup an IP Address
     using the MaxMind GeoIP database.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## ip
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 parse|Parse the IP as an IPv4 or IPv6 address.|string
 netaddr4_le|A network order IPv4 address (as little endian).|int64
 netaddr4_be|A network order IPv4 address (as big endian).|int64
-
 ### Description
 
 Format an IP address.

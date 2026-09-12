@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 description: |
   Forwards selected client monitoring events to a LogScale ingestion
   endpoint.

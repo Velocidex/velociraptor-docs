@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Enumerates Windows BackupRestore registry keys showing
   applications configured for backup and restore operations.

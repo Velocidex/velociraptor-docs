@@ -1,25 +1,18 @@
 ---
 title: adx_upload
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Upload rows to Azure Data Explorer (ADX).
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## adx_upload
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -36,7 +29,7 @@ wait_time|Batch ADX upload this long (5 sec).|int64
 max_memory_buffer|How large we allow the memory buffer to grow to while we are trying to contact the ADX server (default 100mb).|uint64
 secret|Alternatively use a secret from the secrets service. Secret must be of type 'ADX Creds'|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">NETWORK</span>
+**Required permissions:** `NETWORK`
 
 ### Description
 

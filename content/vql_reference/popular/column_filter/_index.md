@@ -1,10 +1,9 @@
 ---
 title: column_filter
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Select columns from another query using regex.
 
@@ -26,26 +25,19 @@ description: |
   will include columns with the letter A in their name and remove
   columns with the letter B (so it will have A and AA above).
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## column_filter
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 query|This query will be run to produce the columns.|StoredQuery (required)
 exclude|One of more regular expressions that will exclude columns.|list of string
 include|One of more regular expressions that will include columns.|list of string
-
 ### Description
 
 Select columns from another query using regex.

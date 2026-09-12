@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Parses Outlook PST files to extract email messages, attachments, and
   metadata with regex-based targeting.

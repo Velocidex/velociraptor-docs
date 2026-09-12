@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Searches Windows Application Event Log for Telerik exploitation
   indicators (Event ID 1309).

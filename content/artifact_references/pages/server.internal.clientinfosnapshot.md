@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
+build:
+  list: never
 description: |
   Notifies minion nodes to refresh their client info cache when the
   master writes a new snapshot.

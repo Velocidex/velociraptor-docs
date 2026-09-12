@@ -1,22 +1,18 @@
 ---
 title: trace
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Upload a trace file.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## trace
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
+{{< badge >}}Function{{< /badge >}}
 
 ### Description
 

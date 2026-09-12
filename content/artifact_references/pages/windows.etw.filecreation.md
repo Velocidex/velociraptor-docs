@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Monitors file create, delete, open, and rename events via the
   Kernel-File ETW provider.

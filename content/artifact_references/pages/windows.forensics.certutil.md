@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Extracts download metadata from the Windows Certutil
   CryptnetUrlCache to reveal LOLBin downloads.

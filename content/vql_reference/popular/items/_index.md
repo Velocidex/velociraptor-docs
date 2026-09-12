@@ -1,10 +1,9 @@
 ---
 title: items
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Enumerate all members of the item (similar to Python's items() method).
 
@@ -52,24 +51,17 @@ description: |
   ]
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## items
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 item||Any
-
 ### Description
 
 Iterate over dict members producing _key and _value columns
@@ -80,20 +72,11 @@ This can be used to filter dict items by feeding the results to
 
 
 
-<div class="vql_item"></div>
-
-
-## items
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 item|The item to enumerate.|Any
-
 ### Description
 
 Enumerate all members of the item (similar to Python's items() method).

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Deploys YARA-X and scans files matching a glob pattern. Supports
   URL-based or inline rule deployment.

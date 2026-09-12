@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Demonstrates using the fifo() plugin to detect event sequences,
   using failed logon attempts preceding a successful logon as a

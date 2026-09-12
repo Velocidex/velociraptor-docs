@@ -1,10 +1,9 @@
 ---
 title: registry
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Access the registry like a filesystem using the OS APIs.
 
@@ -73,16 +72,13 @@ description: |
   - [reg_set_value]({{< ref "/vql_reference/windows/reg_set_value/" >}}):
     Set a value in the registry.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## registry
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
+{{< badge >}}Accessor{{< /badge >}}
 
 ### Description
 

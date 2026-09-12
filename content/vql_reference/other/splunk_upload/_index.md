@@ -1,25 +1,18 @@
 ---
 title: splunk_upload
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Upload rows to splunk.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## splunk_upload
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -42,7 +35,7 @@ max_retries|Maximum number of retries for failed uploads (default: 3).|int64
 retry_wait|Base wait time in seconds for exponential backoff between retries (default: 2). Actual wait times: 2s, 4s, 8s, 16s...|int64
 idle_conn_timeout|How long to keep idle HTTP connections open in seconds (default: 55). Lower values help with firewalls/load balancer/HECs that close connections.|int64
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">NETWORK</span>
+**Required permissions:** `NETWORK`
 
 ### Description
 

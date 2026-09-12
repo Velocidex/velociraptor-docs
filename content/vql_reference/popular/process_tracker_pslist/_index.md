@@ -1,22 +1,18 @@
 ---
 title: process_tracker_pslist
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   List all processes from the process tracker.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## process_tracker_pslist
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
+{{< badge >}}Plugin{{< /badge >}}
 
 ### Description
 

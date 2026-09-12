@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Collects runtime profiling data including goroutines, memory, CPU,
   and metrics from the client.

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Submits a file hash to the Hybrid Analysis threat intelligence
   service for a verdict.

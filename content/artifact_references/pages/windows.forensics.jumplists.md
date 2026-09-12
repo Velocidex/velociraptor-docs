@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Parses Windows AutomaticDestinations JumpList files to extract LNK
   entries with application IDs and target paths.

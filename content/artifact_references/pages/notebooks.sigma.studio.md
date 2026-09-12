@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [notebook]
+build:
+  list: never
 description: |
   Sets up a Sigma rule development workspace with live testing against
   sample events.

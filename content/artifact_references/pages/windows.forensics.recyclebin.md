@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Parses Recycle Bin `$I` metadata files to recover deleted file names,
   original paths, and deletion timestamps.

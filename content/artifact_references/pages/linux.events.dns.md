@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Monitors DNS requests in real time using eBPF, with filtering by
   process and destination.

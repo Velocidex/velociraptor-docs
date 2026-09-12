@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Deploys the osquery binary and runs a user-specified SQL query,
   returning parsed JSON results.

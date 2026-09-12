@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Enumerates visited URLs, titles, and visit timestamps from Chrome
   history databases on macOS.

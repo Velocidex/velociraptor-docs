@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Watches Windows security event logs for successful logon events
   (4624) which also match additional configurable criteria.

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Queries multiple data sources (event logs, prefetch, shimcache, BAM)
   for signs of lateral movement.

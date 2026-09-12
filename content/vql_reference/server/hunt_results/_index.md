@@ -1,10 +1,9 @@
 ---
 title: hunt_results
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Retrieve the results of a hunt.
 
@@ -14,19 +13,13 @@ description: |
   It is equivalent to the source() plugin in the hunt notebook
   context.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## hunt_results
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -36,7 +29,7 @@ hunt_id|The hunt id to read.|string (required)
 brief|If set we return less columns (deprecated).|bool
 orgs|If set we combine results from all orgs.|list of string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
+**Required permissions:** `READ_RESULTS`
 
 ### Description
 

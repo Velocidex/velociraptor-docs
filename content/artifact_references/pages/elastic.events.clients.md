@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 description: |
   Forwards real-time monitoring events from selected artifacts to an
   Elasticsearch index.

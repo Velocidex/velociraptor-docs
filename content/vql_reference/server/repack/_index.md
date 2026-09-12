@@ -1,25 +1,18 @@
 ---
 title: repack
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Repack and upload a repacked binary or MSI to the server.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## repack
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -32,8 +25,7 @@ config|The config to be repacked in the form of a json or yaml string|string (re
 upload_name|The name of the upload to create|string
 dest_filename|If an upload name is not provided, the file will be written to this path|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">COLLECT_SERVER</span>
-<span class="permission_list linkcolour label label-important">FILESYSTEM_WRITE</span>
+**Required permissions:** `COLLECT_SERVER`, `FILESYSTEM_WRITE`
 
 ### Description
 

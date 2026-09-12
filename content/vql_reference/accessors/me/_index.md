@@ -1,10 +1,9 @@
 ---
 title: me
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Access files bundled inside the Velociraptor binary itself.
 
@@ -18,16 +17,13 @@ description: |
   This is used for unpacking extra files delivered by the Offline
   Collector and is probably not generally useful.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## me
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
+{{< badge >}}Accessor{{< /badge >}}
 
 ### Description
 

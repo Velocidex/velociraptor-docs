@@ -1,10 +1,9 @@
 ---
 title: if
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Conditional execution of query
 
@@ -51,26 +50,19 @@ description: |
   SELECT * FROM if(condition=FALSE, then=LogQuery)
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## if
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 condition||Any (required)
 then||types.LazyAny
 else||types.LazyAny
-
 ### Description
 
 Conditional execution of query
@@ -86,22 +78,13 @@ given, then perform hash or upload to the server.
 
 
 
-<div class="vql_item"></div>
-
-
-## if
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 condition||Any (required)
 then||StoredQuery (required)
 else||StoredQuery
-
 ### Description
 
 Conditional execution of query

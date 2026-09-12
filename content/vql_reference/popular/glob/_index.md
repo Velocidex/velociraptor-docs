@@ -1,10 +1,9 @@
 ---
 title: glob
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Retrieve files based on a list of glob expressions
 
@@ -116,19 +115,13 @@ description: |
     recursion_callback="x=> NOT x.OSPath =~ Exclude")
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## glob
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -139,7 +132,7 @@ nosymlink|If set we do not follow symlinks.|bool
 recursion_callback|A VQL function that determines if a directory should be recursed (e.g. "x=>NOT x.Name =~ 'proc'").|string
 one_filesystem|If set we do not follow links to other filesystems.|bool
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `FILESYSTEM_READ`
 
 ### Description
 

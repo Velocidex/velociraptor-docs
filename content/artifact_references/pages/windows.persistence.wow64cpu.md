@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Checks for wow64cpu.dll replacement Autorun in Windows 10.
   http://www.hexacorn.com/blog/2019/07/11/beyond-good-ol-run-key-part-108-2/

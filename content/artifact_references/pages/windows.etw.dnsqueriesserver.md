@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Captures DNS server query events from the
   `Microsoft-Windows-DNSServer` ETW provider.

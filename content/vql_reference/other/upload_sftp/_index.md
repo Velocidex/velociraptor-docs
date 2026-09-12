@@ -1,25 +1,18 @@
 ---
 title: upload_sftp
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Upload files to SFTP.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## upload_sftp
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -32,8 +25,7 @@ privatekey|The private key to use|string (required)
 endpoint|The Endpoint to use including port number (e.g. 192.168.1.1:22 )|string (required)
 hostkey|Host key to verify. Blank to disable|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
-<span class="permission_list linkcolour label label-important">NETWORK</span>
+**Required permissions:** `FILESYSTEM_READ`, `NETWORK`
 
 ### Description
 

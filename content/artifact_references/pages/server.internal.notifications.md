@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
+build:
+  list: never
 description: |
   This event artifact is an internal event stream over which client
   notifications are sent. A frontend will watch for events over this

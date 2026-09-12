@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Provides grep-like search of IIS log files in specified directories
   with optional whitelist filtering.

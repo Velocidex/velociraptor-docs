@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Flags processes whose parent process does not match the expected
   parent per the ATT&CK framework mapping.

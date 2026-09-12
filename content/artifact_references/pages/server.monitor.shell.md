@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 description: |
   Captures stdout, stderr, and command details from shell command
   executions across all clients for auditing purposes.

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
+build:
+  list: never
 description: |
   An internal queue for Ping replies
 ---

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 description: |
   Provides the server overview dashboard showing performance metrics,
   disk space, and user permissions.

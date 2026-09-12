@@ -1,10 +1,9 @@
 ---
 title: host
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Perform a DNS resolution.
 
@@ -31,19 +30,13 @@ description: |
   No caching is currently provided so this may generate a lot
   of load on DNS servers when scanning many rows.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## host
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -53,7 +46,7 @@ type|Type of lookup, can be CNAME, NS, SOA, TXT, DNSKEY, AXFR, A (default)|strin
 prefer_go|Prefer calling the native Go implementation rather than the system.|bool
 tracker_only|Only use the dns tracker - if the IP is not known then do not attempt to resolve it.|bool
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
+**Required permissions:** `MACHINE_STATE`
 
 ### Description
 

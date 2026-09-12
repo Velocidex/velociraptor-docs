@@ -1,10 +1,9 @@
 ---
 title: server_set_metadata
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Sets server metadata. Server metadata is a set of free form
   key/value data, usually used for configuration of artifacts.
@@ -19,24 +18,17 @@ description: |
   FROM scope()
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## server_set_metadata
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 metadata|A dict containing metadata. If not specified we use kwargs.|ordereddict.Dict
-
 ### Description
 
 Sets server metadata. Server metadata is a set of free form

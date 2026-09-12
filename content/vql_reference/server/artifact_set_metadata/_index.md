@@ -1,10 +1,9 @@
 ---
 title: artifact_set_metadata
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Sets metadata about the artifact.
 
@@ -26,19 +25,13 @@ description: |
   FROM artifact_definitions() WHERE NOT description =~ "ACME"
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## artifact_set_metadata
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -47,8 +40,7 @@ hidden|Set to true make the artifact hidden in the GUI, false to make it visible
 basic|Set to true make the artifact a 'basic' artifact. This allows users with the COLLECT_BASIC permission able to collect it.|bool
 tags|Optional tags to attach to the artifact.|list of string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">ARTIFACT_WRITER</span>
-<span class="permission_list linkcolour label label-important">SERVER_ARTIFACT_WRITER</span>
+**Required permissions:** `ARTIFACT_WRITER`, `SERVER_ARTIFACT_WRITER`
 
 ### Description
 

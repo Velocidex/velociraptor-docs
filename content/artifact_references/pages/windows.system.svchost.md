@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Lists `svchost.exe` processes whose parent is not services.exe,
   indicating suspicious activity.

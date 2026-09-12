@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Monitors network events (connections, data send/receive) via the
   Kernel-Network ETW provider.

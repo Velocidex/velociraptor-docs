@@ -1,10 +1,9 @@
 ---
 title: starl
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Compile a starlark code block - returns a module usable in VQL
 
@@ -32,26 +31,19 @@ description: |
   FROM scope()
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## starl
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 code|The body of the starlark code.|string (required)
 key|If set use this key to cache the Starlark code block.|string
 globals|Dictionary of values to feed into Starlark environment|Any
-
 ### Description
 
 Compile a starlark code block - returns a module usable in VQL

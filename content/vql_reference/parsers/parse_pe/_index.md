@@ -1,10 +1,9 @@
 ---
 title: parse_pe
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Parse a PE file.
 
@@ -84,19 +83,13 @@ description: |
   that relevant or corrupted and may result in slowing down the
   query.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## parse_pe
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -104,7 +97,7 @@ file|The PE file to open.|OSPath (required)
 accessor|The accessor to use.|string
 base_offset|The offset in the file for the base address.|int64
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `FILESYSTEM_READ`
 
 ### Description
 

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Parses Windows prefetch (.pf) files to extract executable execution
   history and run counts.
@@ -308,7 +310,7 @@ export: |
           }],
           ["__DeviceSize", 4, "unsigned long"],
           ["DeviceCreationTime", 8, "WinFileTime"],
-          ["VolumeSerialNumber", 12, "unsigned long"],
+          ["VolumeSerialNumber", 16, "unsigned long"],
           ["VolumeSerialNumberHex", 0, Value, {
               value: "x=&gt;format(format='%#x', args=x.VolumeSerialNumber)",
           }],

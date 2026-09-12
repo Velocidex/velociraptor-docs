@@ -1,10 +1,9 @@
 ---
 title: parse_lines
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Parse a file separated into lines.
 
@@ -32,19 +31,13 @@ description: |
   Most users need to further parse the emitted line using for
   example `grok()` or `parse_string_with_regex()`
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## parse_lines
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -52,7 +45,7 @@ filename|A list of log files to parse.|list of OSPath (required)
 accessor|The accessor to use.|string
 buffer_size|Maximum size of line buffer.|int
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `FILESYSTEM_READ`
 
 ### Description
 

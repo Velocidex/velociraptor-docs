@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Queries the Windows DNS client cache via WMI and reports cached DNS
   records with types and status.

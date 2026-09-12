@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Enriches an IP address with GreyNoise threat intelligence including
   classification and noise status.

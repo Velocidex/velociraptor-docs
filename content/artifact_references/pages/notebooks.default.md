@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [notebook]
+build:
+  list: never
 description: |
   Creates a new notebook with a welcome message and placeholder VQL
   cell.

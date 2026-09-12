@@ -1,10 +1,9 @@
 ---
 title: winpmem
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Uses the `winpmem` driver to take a memory image.
 
@@ -34,19 +33,13 @@ description: |
   SELECT winpmem(image_path='c:/test.dd', compression='s2') FROM scope()
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## winpmem
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -55,7 +48,7 @@ image_path|If specified we write a physical memory image on this path.|string
 compression|When writing a memory image use this compression (default none) can be none, s2, snappy, gzip.|string
 driver_path|Specify where to extract the driver - by default we use the temp folder|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
+**Required permissions:** `MACHINE_STATE`
 
 ### Description
 

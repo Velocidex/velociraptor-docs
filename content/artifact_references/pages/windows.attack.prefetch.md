@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Enumerates Windows Prefetch directory entries and correlates them
   with known ATT&CK techniques.

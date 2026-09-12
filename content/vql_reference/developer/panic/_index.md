@@ -1,24 +1,21 @@
 ---
 title: panic
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Crash the program with a panic!
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 
-## panic
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">SERVER_ADMIN</span>
+**Required permissions:** `SERVER_ADMIN`
 
 ### Description
 

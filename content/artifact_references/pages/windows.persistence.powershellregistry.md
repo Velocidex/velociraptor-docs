@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Scans NTUSER.DAT registry hives with YARA rules for PowerShell-based
   persistence signatures.

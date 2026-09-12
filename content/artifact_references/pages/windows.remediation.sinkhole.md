@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Configures DNS sinkholing by editing the Windows hosts file (with a
   provided backup and restore mechanism).

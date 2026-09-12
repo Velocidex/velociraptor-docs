@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Downloads and installs legacy artifact bundles from a specified
   older Velociraptor release.

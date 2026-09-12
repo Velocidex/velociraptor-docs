@@ -1,25 +1,18 @@
 ---
 title: profile
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Returns a profile dump from the running process.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## profile
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -37,7 +30,7 @@ metrics|Collect metrics|bool
 duration|Duration of samples (default 30 sec)|int64
 type|The type of profile (this is a regex of debug output types that will be shown).|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
+**Required permissions:** `MACHINE_STATE`
 
 ### Description
 

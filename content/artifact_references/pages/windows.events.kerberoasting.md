@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Monitors Kerberos TGS ticket requests (EventID 4769) with RC4 (weak)
   encryption as indicators of Kerberoasting attacks.

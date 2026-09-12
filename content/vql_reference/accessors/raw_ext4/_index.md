@@ -1,10 +1,9 @@
 ---
 title: raw_ext4
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Access the Ext4 filesystem inside an image by parsing the image.
 
@@ -28,16 +27,13 @@ description: |
   ```
 
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## raw_ext4
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
+{{< badge >}}Accessor{{< /badge >}}
 
 ### Description
 

@@ -1,10 +1,9 @@
 ---
 title: query
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Evaluate a VQL query.
 
@@ -142,19 +141,13 @@ description: |
   }, exit='x=>x._value >= my_limit', inherit=true)
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## query
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -170,7 +163,7 @@ runas|If specified, the query will run as the specified user|string
 inherit|If specified we inherit the scope instead of building a new one.|bool
 exit|A callback to consider each row. When the callback returns TRUE the query is aborted|Lambda
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">IMPERSONATION</span>
+**Required permissions:** `IMPERSONATION`
 
 ### Description
 

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Parses the NTFS USN journal ($J data stream) to enumerate recent
   file creation, modification, and deletion events.

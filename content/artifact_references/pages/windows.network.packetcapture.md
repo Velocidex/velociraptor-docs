@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Captures network packets on Windows using netsh trace and then
   converts these ETL traces to PCAP format.

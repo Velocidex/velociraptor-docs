@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Enumerates Chrome browser cookies including host key, name,
   timestamps, and encrypted values.

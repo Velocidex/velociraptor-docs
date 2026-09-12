@@ -1,32 +1,25 @@
 ---
 title: upload_transactions
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   View the outstanding transactions for uploads.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## upload_transactions
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 client_id||string (required)
 flow_id||string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
+**Required permissions:** `READ_RESULTS`
 
 ### Description
 

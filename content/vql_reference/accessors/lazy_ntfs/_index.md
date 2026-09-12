@@ -1,10 +1,9 @@
 ---
 title: lazy_ntfs
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Access the NTFS filesystem by parsing NTFS structures.
 
@@ -17,16 +16,13 @@ description: |
   Usually the extra performance is not worth these limitations since the
   `ntfs` accessor is pretty fast these days already.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## lazy_ntfs
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
+{{< badge >}}Accessor{{< /badge >}}
 
 ### Description
 

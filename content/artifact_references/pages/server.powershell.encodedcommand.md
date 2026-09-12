@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 description: |
   Intercepts PowerShell `-EncodedCommand` scripts in events that are
   collected via client monitoring and decodes them.

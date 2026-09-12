@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Searches for files inside Windows Subsystem for Linux (WSL) VHDX
   disk images. Supports glob filtering, file content inspection using

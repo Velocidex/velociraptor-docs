@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Runs the Intezer memory scanner to collect running code for malware
   analysis via Intezer Analyze.

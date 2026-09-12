@@ -1,10 +1,9 @@
 ---
 title: ewf
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Allow reading an EWF file.
 
@@ -37,16 +36,13 @@ description: |
               DelegatePath="/tmp/ubnist1.gen3.E01")))
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## ewf
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
+{{< badge >}}Accessor{{< /badge >}}
 
 ### Description
 

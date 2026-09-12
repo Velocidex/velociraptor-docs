@@ -1,10 +1,9 @@
 ---
 title: read_reg_key
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   This is a convenience plugin which applies the globs to the registry
   accessor to find keys. For each key the plugin then lists all the
@@ -14,26 +13,19 @@ description: |
 
   This makes it easier to access a bunch of related values at once.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## read_reg_key
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 globs|Glob expressions to apply.|list of string
 accessor|The accessor to use.|string
 root|The root directory to glob from (default '/').|OSPath
-
 ### Description
 
 This is a convenience plugin which applies the globs to the registry

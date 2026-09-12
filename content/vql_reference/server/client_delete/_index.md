@@ -1,33 +1,26 @@
 ---
 title: client_delete
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Delete all information related to a client from the filestore.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## client_delete
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 client_id||string (required)
 really_do_it||bool
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">DELETE_RESULTS</span>
+**Required permissions:** `DELETE_RESULTS`
 
 ### Description
 

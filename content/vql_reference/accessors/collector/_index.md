@@ -1,10 +1,9 @@
 ---
 title: collector
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Open a collector zip file as if it was a directory - automatically
   expand sparse files.
@@ -18,16 +17,13 @@ description: |
   padding them (when possible - if zero padding is unreasonable
   large for this file, we do not expand it).
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## collector
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
+{{< badge >}}Accessor{{< /badge >}}
 
 ### Description
 

@@ -1,10 +1,9 @@
 ---
 title: sequence
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Combines the output of many queries into an in memory fifo. After
   each row is received from any subquery runs the query specified in
@@ -40,25 +39,18 @@ description: |
 
   NOTE: An alternative to this plugin is a `Sigma Correlation rule`
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## sequence
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 query|Run this query to generate rows. The query should select from SEQUENCE which will contain the current set of rows in the sequence. The query will be run on each new row that is pushed to the sequence.|StoredQuery (required)
 max_age|Maximum number of seconds to hold rows in the sequence.|int64
-
 ### Description
 
 Combines the output of many queries into an in memory fifo. After

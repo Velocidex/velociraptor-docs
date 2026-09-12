@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Imports offline collector results (in zipped collection containers)
   into the server so they appear alongside regular client collections.

@@ -1,10 +1,9 @@
 ---
 title: zip_nocase
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Open a zip file as if it was a directory.
 
@@ -13,16 +12,13 @@ description: |
   remapping an offline collector from a Windows system for post
   processing.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## zip_nocase
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
+{{< badge >}}Accessor{{< /badge >}}
 
 ### Description
 

@@ -1,10 +1,9 @@
 ---
 title: upload_gcs
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Upload files to GCS.
 
@@ -13,19 +12,13 @@ description: |
 
   You can read how to [How To Set Up A GCS Bucket For File Uploads](https://docs.velociraptor.app/knowledge_base/tips/setup_gcs_storage)
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## upload_gcs
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -36,7 +29,7 @@ bucket|The bucket to upload to|string (required)
 project|The project to upload to|string (required)
 credentials|The credentials to use|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `FILESYSTEM_READ`
 
 ### Description
 

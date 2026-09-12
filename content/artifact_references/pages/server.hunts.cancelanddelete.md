@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Cancels all in-flight flows in a hunt, deletes the hunt, and
   optionally removes collected data.

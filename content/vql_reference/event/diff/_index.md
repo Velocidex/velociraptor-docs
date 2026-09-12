@@ -1,10 +1,9 @@
 ---
 title: diff
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Executes 'query' periodically and emit differences from the last query.
 
@@ -78,26 +77,19 @@ description: |
   Sometimes we need to wait for a subprocess to exist if it detaches
   from the terminal immediately but does some work in the background.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## diff
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 query|Source for cached rows.|StoredQuery (required)
 key|The column to use as key.|string (required)
 period|Number of seconds between evaluation of the query.|int64
-
 ### Description
 
 Executes 'query' periodically and emit differences from the last query.

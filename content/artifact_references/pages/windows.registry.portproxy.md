@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Enumerates Windows port proxy registry entries configured via
   netsh or attack tools for network redirection.

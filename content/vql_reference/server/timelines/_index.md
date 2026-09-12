@@ -1,31 +1,24 @@
 ---
 title: timelines
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   List all timelines in a notebook
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## timelines
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 notebook_id|The notebook ID the timeline is stored in.|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
+**Required permissions:** `READ_RESULTS`
 
 ### Description
 

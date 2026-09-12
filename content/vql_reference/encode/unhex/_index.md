@@ -1,10 +1,9 @@
 ---
 title: unhex
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Apply hex decoding to the string.
 
@@ -20,24 +19,17 @@ description: |
   format(format="%02x", args="Hello") -> "48656c6c6f"
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## unhex
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 string|Hex string to decode|string
-
 ### Description
 
 Apply hex decoding to the string.

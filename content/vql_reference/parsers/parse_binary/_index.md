@@ -1,10 +1,9 @@
 ---
 title: parse_binary
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Parse a binary file into a data structure using a profile.
 
@@ -34,19 +33,13 @@ description: |
   can be found in the [vfilter](https://github.com/Velocidex/vtypes)
   module documentation.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## parse_binary
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -57,7 +50,7 @@ struct|Name of the struct in the profile to instantiate.|string (required)
 offset|Start parsing from this offset|int64
 env|Additional environment variables to make available to the profile|ordereddict.Dict
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `FILESYSTEM_READ`
 
 ### Description
 

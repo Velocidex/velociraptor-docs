@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Saves a collection configuration spec as a named favorite template
   for reuse across client or server collections.

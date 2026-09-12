@@ -1,29 +1,22 @@
 ---
 title: vfs_ls
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   List directory and build a VFS object.
 
   This plugin is probably only useful as part of the
   System.VFS.ListDirectory artifact.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## vfs_ls
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -32,7 +25,7 @@ components|Alternatively a list of path components can be given.|list of string
 accessor|An accessor to use.|string
 depth|Depth of directory to list (default 0).|int64
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `FILESYSTEM_READ`
 
 ### Description
 

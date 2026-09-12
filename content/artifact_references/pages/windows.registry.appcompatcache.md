@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Parses the AppCompatCache (Shimcache) registry value to enumerate
   recently executed application paths.

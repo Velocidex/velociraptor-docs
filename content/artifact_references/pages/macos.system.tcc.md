@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Queries the TCC (Transparency, Consent, and Control) database, which
   can help reveal when access to system services has been added or

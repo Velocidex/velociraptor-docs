@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Fires when a hunt is archived, thus enabling post-archive
   automation, for example cleanup or notification workflows.

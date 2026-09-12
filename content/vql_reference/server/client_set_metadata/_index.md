@@ -1,10 +1,9 @@
 ---
 title: client_set_metadata
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Sets client metadata.
 
@@ -51,19 +50,13 @@ description: |
   - [client_metadata]({{< ref "/vql_reference/server/client_metadata/" >}}):
     Returns client metadata from the datastore.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## client_set_metadata
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -72,8 +65,7 @@ metadata|A dict containing metadata. If not specified we use kwargs.|ordereddict
 modify|A modification callback lambda. This performs an atomic mutation on the client metadata..|Lambda
 `**`|Free Form Args|
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">COLLECT_CLIENT</span>
-<span class="permission_list linkcolour label label-important">SERVER_ADMIN</span>
+**Required permissions:** `COLLECT_CLIENT`, `SERVER_ADMIN`
 
 ### Description
 

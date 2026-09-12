@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Parses the Windows SAM registry hive to extract user account
   details, RIDs, and password hashes.

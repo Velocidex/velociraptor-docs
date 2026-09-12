@@ -1,10 +1,9 @@
 ---
 title: gunzip
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Uncompress a gzip-compressed block of data.
 
@@ -14,25 +13,18 @@ description: |
   gunzip(string=base64decode(string="H4sIAAAAAAACA3N0pC4AAKAb0QxQAAAA")) -> "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## gunzip
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 string|Data to apply Gunzip|string (required)
 max_bytes|Maximum length of bytes to read into memory|int64
-
 ### Description
 
 Uncompress a gzip-compressed block of data.

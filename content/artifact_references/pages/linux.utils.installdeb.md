@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Installs .deb packages on Debian-based systems with optional debconf
   answers configuration.

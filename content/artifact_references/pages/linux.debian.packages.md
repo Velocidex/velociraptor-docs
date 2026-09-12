@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Queries `dpkg` and `snapd` to list installed deb and snap packages.
 ---

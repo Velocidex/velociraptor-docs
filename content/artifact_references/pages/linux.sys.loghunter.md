@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Provides grep-like search capabilities for Linux, MacOS and Windows
   logs.

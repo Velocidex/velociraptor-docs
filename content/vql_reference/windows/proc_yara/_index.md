@@ -1,10 +1,9 @@
 ---
 title: proc_yara
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Scan processes using yara rules.
 
@@ -20,19 +19,13 @@ description: |
 
   {{% /notice %}}
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## proc_yara
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -44,7 +37,7 @@ namespace|The Yara namespace to use.|string
 vars|The Yara variables to use.|ordereddict.Dict
 number|Stop after this many hits (1).|int64
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
+**Required permissions:** `MACHINE_STATE`
 
 ### Description
 

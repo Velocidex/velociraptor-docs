@@ -1,32 +1,25 @@
 ---
 title: add_server_monitoring
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Adds a new artifact to the server monitoring table.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## add_server_monitoring
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 artifact|The name of the artifact to add|string (required)
 parameters|A dict of artifact parameters|LazyExpr
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">COLLECT_SERVER</span>
+**Required permissions:** `COLLECT_SERVER`
 
 ### Description
 

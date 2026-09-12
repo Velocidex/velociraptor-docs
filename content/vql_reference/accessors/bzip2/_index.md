@@ -1,10 +1,9 @@
 ---
 title: bzip2
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Access the content of bzip2 files.
 
@@ -27,16 +26,13 @@ description: |
   entire file into a temporary file so it can seek within it. This means
   that performance can be extremely bad in some cases.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## bzip2
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
+{{< badge >}}Accessor{{< /badge >}}
 
 ### Description
 

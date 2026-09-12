@@ -1,10 +1,9 @@
 ---
 title: import
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Imports an artifact into the current scope.
 
@@ -15,24 +14,17 @@ description: |
   statement is not needed, since you can always add the dependent
   artifact to the `imports` section.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## import
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 artifact|The Artifact to import|string (required)
-
 ### Description
 
 Imports an artifact into the current scope.

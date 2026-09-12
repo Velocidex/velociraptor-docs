@@ -1,10 +1,9 @@
 ---
 title: background
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Run a query in the background.
 
@@ -12,24 +11,17 @@ description: |
   for the background thread to exit - instead the background query
   will be cancelled when this query exists.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## background
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 query|Run this query in the background.|StoredQuery
-
 ### Description
 
 Run a query in the background.

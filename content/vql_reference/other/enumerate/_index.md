@@ -1,10 +1,9 @@
 ---
 title: enumerate
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Collect all the items in each group by bin.
 
@@ -17,24 +16,17 @@ description: |
   keeps a copy of every element in the group and that can be very
   large for large result sets.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## enumerate
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 items|The items to enumerate|Any
-
 ### Description
 
 Collect all the items in each group by bin.

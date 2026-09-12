@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Extracts and categorizes the domain role of Windows systems based
   on `Win32_ComputerSystem` WMI data.

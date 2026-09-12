@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Extracts Recent Documents MRU entries from Windows NTUSER.DAT
   registry hives for each user.

@@ -1,31 +1,23 @@
 ---
 title: xor
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Apply xor to the string and key.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## xor
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 string|String to apply Xor|string (required)
 key|Xor key.|string (required)
-
 ### Description
 
 Apply xor to the string and key.

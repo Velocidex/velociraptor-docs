@@ -1,31 +1,24 @@
 ---
 title: set_server_monitoring
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Sets the current server monitoring state.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## set_server_monitoring
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 value|The Value to set|Any (required)
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">COLLECT_SERVER</span>
+**Required permissions:** `COLLECT_SERVER`
 
 ### Description
 

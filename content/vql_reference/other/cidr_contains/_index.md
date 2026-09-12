@@ -1,10 +1,9 @@
 ---
 title: cidr_contains
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Calculates if an IP address falls within a range of CIDR specified
   networks.
@@ -22,25 +21,18 @@ description: |
   - [geoip]({{< ref "/vql_reference/other/geoip/" >}}): Lookup an IP Address
     using the MaxMind GeoIP database.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## cidr_contains
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 ip|An IP address|string (required)
 ranges|A list of CIDR notation network ranges|list of string (required)
-
 ### Description
 
 Calculates if an IP address falls within a range of CIDR specified

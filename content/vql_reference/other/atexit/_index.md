@@ -1,10 +1,9 @@
 ---
 title: atexit
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Install a query to run when the query is unwound. This is used to
   clean up when the query ends.
@@ -17,26 +16,19 @@ description: |
   })
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## atexit
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 query|A VQL Query to parse and execute.|Any (required)
 env|A dict of args to insert into the scope.|ordereddict.Dict
 timeout|How long to wait for destructors to run (default 60 seconds).|uint64
-
 ### Description
 
 Install a query to run when the query is unwound. This is used to

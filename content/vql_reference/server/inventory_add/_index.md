@@ -1,10 +1,9 @@
 ---
 title: inventory_add
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Add or reconfigure a tool into the inventory.
 
@@ -12,19 +11,13 @@ description: |
   readable by the server (so the file must reside on the server or
   be accessible over a network share).
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## inventory_add
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -37,7 +30,7 @@ version||string
 file|An optional file to upload|OSPath
 accessor|The accessor to use to read the file.|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">SERVER_ADMIN</span>
+**Required permissions:** `SERVER_ADMIN`
 
 ### Description
 

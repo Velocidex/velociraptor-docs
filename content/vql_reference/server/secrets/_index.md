@@ -1,22 +1,18 @@
 ---
 title: secrets
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Retrieve the list of secrets on the server.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## secrets
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
+{{< badge >}}Plugin{{< /badge >}}
 
 ### Description
 

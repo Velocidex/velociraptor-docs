@@ -1,27 +1,20 @@
 ---
 title: cat
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Read files in chunks.
 
   This is mostly useful for character devices on Linux or special files which can not be read in blocks.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## cat
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -30,7 +23,7 @@ accessor|An accessor to use.|string
 chunk|length of each chunk to read from the file.|int
 timeout|If specified we abort reading after this much time.|int
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `FILESYSTEM_READ`
 
 ### Description
 

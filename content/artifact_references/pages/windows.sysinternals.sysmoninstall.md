@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Deploys Sysmon with a config file and ensures the Sysmon64 service
   is running.

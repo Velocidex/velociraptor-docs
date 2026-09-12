@@ -1,10 +1,9 @@
 ---
 title: parse_records_with_regex
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Parses a file with a set of regexp and yields matches as records.  The
   file is read into a large buffer. Then each regular expression is
@@ -77,19 +76,13 @@ description: |
        regex='(?sm)^(?P<Record>Package:.+?)\\n\\n')
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## parse_records_with_regex
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -98,7 +91,7 @@ regex|A list of regex to apply to the file data.|list of string (required)
 accessor|The accessor to use.|string
 buffer_size|Maximum size of line buffer (default 64kb).|int
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `FILESYSTEM_READ`
 
 ### Description
 

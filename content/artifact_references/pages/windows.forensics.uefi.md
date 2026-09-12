@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Analyzes the EFI System Partition (ESP) on a physical disk to
   enumerate and inspect EFI binaries.

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Executes uninstall commands via msiexec, dpkg, or rpm to remove the
   client from the endpoint.

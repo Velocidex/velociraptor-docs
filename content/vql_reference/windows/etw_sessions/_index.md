@@ -1,31 +1,24 @@
 ---
 title: etw_sessions
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Enumerates all active ETW sessions
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## etw_sessions
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 count|The count of sessions to retrieve (default 64) |uint64
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
+**Required permissions:** `MACHINE_STATE`
 
 ### Description
 

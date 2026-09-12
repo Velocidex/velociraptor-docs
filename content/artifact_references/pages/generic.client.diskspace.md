@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Reports disk usage and free disk space on Linux, macOS, and Windows
   using platform-specific commands.

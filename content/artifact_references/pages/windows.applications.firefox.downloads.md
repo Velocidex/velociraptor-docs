@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Enumerates Firefox download records (file names, URLs, timestamps)
   from the `places.sqlite` database.

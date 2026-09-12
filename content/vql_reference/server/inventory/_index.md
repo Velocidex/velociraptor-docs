@@ -1,10 +1,9 @@
 ---
 title: inventory
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Retrieve the tools inventory.
 
@@ -15,16 +14,13 @@ description: |
   https://docs.velociraptor.app/docs/vql/extending_vql/
   for more information.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## inventory
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
+{{< badge >}}Plugin{{< /badge >}}
 
 ### Description
 

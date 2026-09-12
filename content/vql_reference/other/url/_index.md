@@ -1,10 +1,9 @@
 ---
 title: url
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Construct a URL or parse one.
 
@@ -29,19 +28,13 @@ description: |
   possible in the general case to simply append strings. You need to use
   the `url()` function to build the proper url.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## url
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -51,7 +44,6 @@ path|The path component|string
 fragment|The fragment|string
 query|A dict representing a query string|Any
 parse|A url to parse|string
-
 ### Description
 
 Construct a URL or parse one.

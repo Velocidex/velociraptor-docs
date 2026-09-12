@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Scans physical disk sectors with YARA rules at configurable offsets
   and uploads hit context.

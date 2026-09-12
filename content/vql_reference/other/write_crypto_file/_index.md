@@ -1,25 +1,18 @@
 ---
 title: write_crypto_file
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Write a query into an encrypted local storage file.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## write_crypto_file
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -29,7 +22,7 @@ max_wait|How often to flush the file (default 60 sec).|uint64
 max_rows|How many rows to buffer before writing (default 1000).|uint64
 max_size|When the file grows to this size, truncate it (default 1Gb).|uint64
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_WRITE</span>
+**Required permissions:** `FILESYSTEM_WRITE`
 
 ### Description
 

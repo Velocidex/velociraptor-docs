@@ -1,26 +1,19 @@
 ---
 title: monitoring
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Extract monitoring log from a client.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## monitoring
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -31,7 +24,7 @@ start_time|Start return events from this date (for event sources)|Any
 end_time|Stop end events reach this time (event sources).|Any
 start_row|Start reading the result set from this row|int64
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
+**Required permissions:** `READ_RESULTS`
 
 ### Description
 

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
+build:
+  list: never
 description: |
   Notifies hunt dispatchers across all minions when a hunt's status or
   configuration changes, and should be updated from the internal

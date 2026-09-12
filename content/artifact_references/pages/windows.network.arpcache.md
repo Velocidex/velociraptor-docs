@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Enumerates the Windows network neighbor cache (ARP/NDP) showing
   resolved IP and MAC address pairs.

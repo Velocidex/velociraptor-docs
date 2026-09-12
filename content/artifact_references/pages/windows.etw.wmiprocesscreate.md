@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Monitors process creation events triggered via WMI using the
   Microsoft-Windows-WMI-Activity ETW provider.

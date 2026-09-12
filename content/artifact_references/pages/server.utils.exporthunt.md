@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Exports an entire hunt's results to a downloadable zip archive with
   configurable data formatting options.

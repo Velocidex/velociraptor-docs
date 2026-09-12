@@ -1,10 +1,9 @@
 ---
 title: array
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Create an array.
 
@@ -53,16 +52,13 @@ description: |
   This works because the `.` operator on a list, creates another
   list with the `.` operator applying on each member.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## array
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
+{{< badge >}}Function{{< /badge >}}
 
 ### Description
 

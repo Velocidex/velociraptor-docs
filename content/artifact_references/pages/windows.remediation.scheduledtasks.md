@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Removes Windows scheduled tasks matching a command and argument regex pattern.
 ---

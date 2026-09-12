@@ -1,10 +1,9 @@
 ---
 title: pipe
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   A pipe allows plugins that use files to read data from a vql
   query.
@@ -37,26 +36,19 @@ description: |
      filename="MyPipe", accessor="pipe")
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## pipe
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 name|Name to call the pipe|string
 query|Run this query to generator data - the first column will be appended to pipe data.|StoredQuery
 sep|The separator that will be used to split each read (default: no separator will be used)|string
-
 ### Description
 
 A pipe allows plugins that use files to read data from a vql

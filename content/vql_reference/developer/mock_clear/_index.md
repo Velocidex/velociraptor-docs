@@ -1,22 +1,18 @@
 ---
 title: mock_clear
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Resets all mocks.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## mock_clear
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
+{{< badge >}}Function{{< /badge >}}
 
 ### Description
 

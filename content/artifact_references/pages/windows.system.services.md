@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Enumerates Windows services via WMI, with optional filtering
   criteria, and enriches with hashes and authenticode signatures.

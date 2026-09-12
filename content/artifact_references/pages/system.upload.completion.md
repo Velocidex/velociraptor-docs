@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Emits an event for every uploaded file, including offline collection
   imports, enabling post-upload automation.

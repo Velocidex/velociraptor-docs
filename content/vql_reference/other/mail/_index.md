@@ -1,10 +1,9 @@
 ---
 title: mail
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Send Email to a remote server.
 
@@ -35,19 +34,13 @@ description: |
   FROM scope()
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## mail
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -66,7 +59,7 @@ root_ca|As a better alternative to disable_ssl_security, allows root ca certs to
 secret|Alternatively use a secret from the secrets service. Secret must be of type 'SMTP Creds'|string
 headers|A dict of headers to send.|ordereddict.Dict
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">NETWORK</span>
+**Required permissions:** `NETWORK`
 
 ### Description
 

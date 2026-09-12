@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
+build:
+  list: never
 description: |
   An internal queue that receives metrics from all frontends. The
   master Frontend manager service will aggregate these into a combined

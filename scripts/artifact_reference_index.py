@@ -25,6 +25,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [%s]
+build:
+  list: never
 ---
 
 %s

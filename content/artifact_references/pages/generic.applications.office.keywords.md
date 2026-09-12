@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Scans Microsoft Office and LibraOffice/OpenDocument files for
   keyword matches using YARA rules via the `zip` accessor.

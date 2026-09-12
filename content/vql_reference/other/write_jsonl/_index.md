@@ -1,25 +1,18 @@
 ---
 title: write_jsonl
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Write a query into a JSONL file.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## write_jsonl
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -30,7 +23,7 @@ buffer_size|Maximum size of buffer before flushing to file.|int
 max_time|Maximum time before flushing the buffer (10 sec).|int
 append|Append JSONL records to existing file.|bool
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_WRITE</span>
+**Required permissions:** `FILESYSTEM_WRITE`
 
 ### Description
 

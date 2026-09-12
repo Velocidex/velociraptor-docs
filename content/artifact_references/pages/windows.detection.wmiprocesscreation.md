@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Captures WMI calls to the Win32_Process.Create method as a lateral
   movement indicator.

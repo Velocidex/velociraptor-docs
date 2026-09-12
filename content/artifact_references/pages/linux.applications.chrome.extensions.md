@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Enumerates installed Chrome extensions by locating and parsing
   `manifest.json` files for all users.

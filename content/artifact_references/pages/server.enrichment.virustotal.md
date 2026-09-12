@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Enriches a file hash or IP address with VirusTotal threat
   intelligence results.

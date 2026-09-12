@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Periodically applies and maintains Windows IPsec quarantine policy
   on the endpoint via an event query that will ensure the client stays

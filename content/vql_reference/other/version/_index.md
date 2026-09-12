@@ -1,10 +1,9 @@
 ---
 title: version
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Gets the version of a VQL plugin or function.
 
@@ -24,25 +23,18 @@ description: |
     else=LegacyQuery)
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## version
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 function||string
 plugin||string
-
 ### Description
 
 Gets the version of a VQL plugin or function.

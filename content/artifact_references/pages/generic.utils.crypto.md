@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   A utility artifact that provides HMAC-SHA256 and other custom hash
   functions.

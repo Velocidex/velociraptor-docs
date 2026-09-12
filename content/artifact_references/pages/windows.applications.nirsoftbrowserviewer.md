@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Wraps the Nirsoft BrowsingHistoryView tool to parse browsing history
   from Chrome, Firefox, IE, and Safari.

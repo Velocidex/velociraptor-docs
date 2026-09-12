@@ -1,10 +1,9 @@
 ---
 title: switch
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Conditional execution of multiple queries in order
 
@@ -20,16 +19,13 @@ description: |
   })
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## switch
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
+{{< badge >}}Plugin{{< /badge >}}
 
 ### Description
 

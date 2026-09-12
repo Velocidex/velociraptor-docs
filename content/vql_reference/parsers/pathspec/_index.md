@@ -1,25 +1,18 @@
 ---
 title: pathspec
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Create a structured path spec to pass to certain accessors.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## pathspec
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -30,7 +23,6 @@ Path|A path to open.|Any
 parse|Alternatively parse the pathspec from this string.|string
 path_type|Type of path this is (windows,linux,registry,ntfs).|string
 accessor|The accessor to use to parse the path with|string
-
 ### Description
 
 Create a structured path spec to pass to certain accessors.

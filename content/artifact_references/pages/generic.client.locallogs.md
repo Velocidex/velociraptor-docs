@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Writes client logs to an encrypted local container file with
   configurable row limit (with flush) and size limit.

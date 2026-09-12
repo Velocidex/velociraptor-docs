@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Automates the configuration of Velociraptor server security policies
   including IP-based GUI access control, plugin restrictions, secrets

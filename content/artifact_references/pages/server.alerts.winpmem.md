@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 description: |
   Sends an alert via email when the pmem service installation is
   detected by `Windows.Events.ServiceCreation`.

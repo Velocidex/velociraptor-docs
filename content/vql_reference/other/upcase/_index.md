@@ -1,30 +1,22 @@
 ---
 title: upcase
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Returns an uppercase version of the string.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## upcase
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 string|The string to process|string (required)
-
 ### Description
 
 Returns an uppercase version of the string.

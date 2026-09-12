@@ -1,10 +1,9 @@
 ---
 title: timestamp
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Convert from different types to a time.Time.
 
@@ -122,19 +121,13 @@ description: |
   FROM scope()
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## timestamp
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -144,7 +137,6 @@ mactime|HFS+|int64
 winfiletime||int64
 string|Guess a timestamp from a string|string
 format|A format specifier as per the Golang time.Parse|string
-
 ### Description
 
 Convert from different types to a time.Time.

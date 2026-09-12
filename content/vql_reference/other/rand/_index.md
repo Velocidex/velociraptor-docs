@@ -1,30 +1,22 @@
 ---
 title: rand
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Selects a random number.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## rand
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 range|Selects a random number up to this range.|int64
-
 ### Description
 
 Selects a random number.

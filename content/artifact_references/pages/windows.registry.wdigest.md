@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Scans HKLM\SYSTEM ControlSets for WDigest security provider
   registry keys that enable credential harvesting.

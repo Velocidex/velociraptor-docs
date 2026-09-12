@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Parses NTFS Extended Attributes ($EA) from the MFT to detect hidden
   data.

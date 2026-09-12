@@ -1,25 +1,18 @@
 ---
 title: parse_pst
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Parse a PST file and extract email data.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## parse_pst
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -27,7 +20,7 @@ filename|The PST file to parse.|OSPath (required)
 accessor|The accessor to use|string
 raw|If set we emit the raw message object for all objects|bool
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `FILESYSTEM_READ`
 
 ### Description
 

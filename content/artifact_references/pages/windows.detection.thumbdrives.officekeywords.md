@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Detects potentially-sensitive content exfiltration by
   keyword-scanning Office documents on USB drives.

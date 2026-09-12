@@ -1,31 +1,24 @@
 ---
 title: lookupSID
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Get information about the SID.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## lookupSID
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 sid|A SID to lookup using LookupAccountSid |string (required)
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
+**Required permissions:** `MACHINE_STATE`
 
 ### Description
 

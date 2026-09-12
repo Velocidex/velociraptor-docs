@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   A utility artifact which fetches a binary (or data file) from a URL
   and caches it on disk.

@@ -1,10 +1,9 @@
 ---
 title: commandline_split
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Split a commandline into separate components following the windows
   conventions.
@@ -18,25 +17,18 @@ description: |
   FROM scope()
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## commandline_split
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 command|Commandline to split into components.|string (required)
 bash_style|Use bash rules (Uses Windows rules by default).|bool
-
 ### Description
 
 Split a commandline into separate components following the windows

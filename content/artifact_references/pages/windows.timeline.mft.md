@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Parses the MFT and outputs file metadata in timeline format with
   anomaly detection flags and advanced filters.

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Checks registry keys for WINEVT channels and WMI autologger
   providers to detect event log tampering.

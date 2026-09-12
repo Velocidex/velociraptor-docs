@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Generates a download script for tool binaries and then uploads them
   from a local directory to the server inventory (in separate runs of

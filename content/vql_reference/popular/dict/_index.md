@@ -1,10 +1,9 @@
 ---
 title: dict
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Construct a dict from arbitrary keyword args.
 
@@ -21,16 +20,13 @@ description: |
   See the `to_dict()` function to create dicts from a query with
   unpredictable key names.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## dict
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
+{{< badge >}}Function{{< /badge >}}
 
 ### Description
 

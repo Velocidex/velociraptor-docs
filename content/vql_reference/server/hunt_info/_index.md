@@ -1,10 +1,9 @@
 ---
 title: hunt_info
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Retrieve the hunt information.
 
@@ -14,25 +13,19 @@ description: |
   flows which were launched by the hunt. These flow IDs have a
   specific format indicating they were launched from a hunt.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## hunt_info
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 hunt_id|Hunt Id to look up or a flow id created by that hunt (e.g. F.CRUU3KIE5D73G.H ).|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
+**Required permissions:** `READ_RESULTS`
 
 ### Description
 

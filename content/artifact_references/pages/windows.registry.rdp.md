@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Extracts historical RDP connection server names and MRU entries from
   each user's NTUSER.DAT registry hive.

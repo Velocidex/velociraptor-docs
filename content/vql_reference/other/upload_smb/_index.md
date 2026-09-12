@@ -1,25 +1,18 @@
 ---
 title: upload_smb
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Upload files using the SMB file share protocol.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## upload_smb
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -30,8 +23,7 @@ username|The SMB username to login as (if not provided we use the SMB_CREDENTIAL
 password|The SMB password to login as (if not provided we use the SMB_CREDENTIALS env)|string
 server_address|The SMB server address and optionally port followed by the share name (e.g. \\192.168.1.1:445\ShareName)|string (required)
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
-<span class="permission_list linkcolour label label-important">NETWORK</span>
+**Required permissions:** `FILESYSTEM_READ`, `NETWORK`
 
 ### Description
 

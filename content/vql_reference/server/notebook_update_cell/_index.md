@@ -1,25 +1,18 @@
 ---
 title: notebook_update_cell
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Update a notebook cell.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## notebook_update_cell
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -30,7 +23,7 @@ type|Set the type of the cell if needed (markdown or vql).|string
 input|The new cell content.|string
 output|If this is set, we do not calculate the cell but set this as the rendered output.|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">COLLECT_SERVER</span>
+**Required permissions:** `COLLECT_SERVER`
 
 ### Description
 

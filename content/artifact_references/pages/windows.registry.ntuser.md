@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Searches for registry keys and values across all users' NTUSER.DAT
   hives using raw NTFS parsing.

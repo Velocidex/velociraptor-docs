@@ -1,10 +1,9 @@
 ---
 title: ntfs_vss
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Access the NTFS filesystem by considering all VSS.
 
@@ -16,16 +15,13 @@ description: |
   file is the same across all VSS then the accessor prefers to show
   the one of the main device (i.e. `\\.\C:`)
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## ntfs_vss
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
+{{< badge >}}Accessor{{< /badge >}}
 
 ### Description
 

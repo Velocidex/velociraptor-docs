@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Creates a bodyfile-format timeline of files matching a glob pattern.
 ---

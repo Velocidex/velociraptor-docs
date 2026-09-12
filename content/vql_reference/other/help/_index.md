@@ -1,22 +1,18 @@
 ---
 title: help
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Dump information about all VQL functions and plugins.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## help
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
+{{< badge >}}Plugin{{< /badge >}}
 
 ### Description
 

@@ -1,10 +1,9 @@
 ---
 title: serialize
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Encode an object as a string.
 
@@ -30,25 +29,18 @@ description: |
   - [str]({{< ref "/vql_reference/popular/str/" >}}): Returns the string
     representation of the provided data.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## serialize
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 item|The item to encode|Any (required)
 format|Encoding format (csv,json,yaml,hex,base64)|string
-
 ### Description
 
 Encode an object as a string.

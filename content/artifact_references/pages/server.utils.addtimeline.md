@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Adds a new timeline entry to a notebook super-timeline with results
   from a provided VQL query.

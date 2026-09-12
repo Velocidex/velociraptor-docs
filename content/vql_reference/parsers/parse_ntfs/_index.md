@@ -1,10 +1,9 @@
 ---
 title: parse_ntfs
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Parse specific inodes from an NTFS image file or the raw device.
 
@@ -42,19 +41,13 @@ description: |
   reconstruct all attributes (for example if attributes are not
   stored in the $MFT but in external clusters).
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## parse_ntfs
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -65,7 +58,6 @@ accessor|The accessor to use.|string
 inode|The MFT entry to parse in inode notation (5-144-1).|string
 mft|The MFT entry to parse.|int64
 mft_offset|The offset to the MFT entry to parse.|int64
-
 ### Description
 
 Parse specific inodes from an NTFS image file or the raw device.

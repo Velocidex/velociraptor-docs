@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Creates filesystem and registry remappings for offline analysis of
   Velociraptor collection containers.

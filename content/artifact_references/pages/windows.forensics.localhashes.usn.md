@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Watches the NTFS USN journal for file modifications and records file
   hashes in a local database.

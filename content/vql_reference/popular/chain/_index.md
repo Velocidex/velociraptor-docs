@@ -1,10 +1,9 @@
 ---
 title: chain
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Chain the output of several queries into the same table.
 
@@ -28,25 +27,18 @@ description: |
     async=TRUE)
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## chain
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 async|If specified we run all queries asynchronously and combine the output.|bool
 `**`|Free Form Args|
-
 ### Description
 
 Chain the output of several queries into the same table.

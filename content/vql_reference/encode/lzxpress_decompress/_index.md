@@ -1,33 +1,25 @@
 ---
 title: lzxpress_decompress
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Decompress an lzxpress blob.
 
   This function is most useful when decoding prefetch files.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## lzxpress_decompress
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 data|The lzxpress stream (bytes)|string (required)
-
 ### Description
 
 Decompress an lzxpress blob.

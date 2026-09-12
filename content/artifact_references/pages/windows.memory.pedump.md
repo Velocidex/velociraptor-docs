@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Extracts running executables from process memory using VAD region
   enumeration and PE dumping, and uploads the files to the server.

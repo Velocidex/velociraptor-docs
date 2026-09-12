@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Provides zgrep-like search capabilities across log files, including
   gzipped log files, matching a glob for lines matching a regex.

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Searches the NTFS `$MFT` using YARA rules to determine if specific
   filenames ever existed on the system.

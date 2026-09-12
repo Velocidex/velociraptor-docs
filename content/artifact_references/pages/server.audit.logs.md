@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 description: |
   Collects server audit events for significant user actions such as
   starting a new collection, creating a new hunt, updating an artifact

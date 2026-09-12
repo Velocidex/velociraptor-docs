@@ -1,30 +1,22 @@
 ---
 title: parse_float
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Convert a string to a float.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## parse_float
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 string|A string to convert to int|Any (required)
-
 ### Description
 
 Convert a string to a float.

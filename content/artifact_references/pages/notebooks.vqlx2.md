@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [notebook]
+build:
+  list: never
 description: |
   A notebook initialized with 2 VQL cells containing simple queries
   and also demonstrating initial output.

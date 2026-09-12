@@ -1,10 +1,9 @@
 ---
 title: overlay
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Merges several paths into a single path.
 
@@ -27,25 +26,18 @@ description: |
   SELECT * FROM glob(globs='*', accessor="overlay")
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## overlay
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Accessor{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 paths|A list of paths to try to resolve.|list of OSPath (required)
 accessor|File accessor|string
-
 ### Description
 
 Merges several paths into a single path.

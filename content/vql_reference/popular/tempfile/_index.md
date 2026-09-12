@@ -1,28 +1,21 @@
 ---
 title: tempfile
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Create a temporary file and write some data into it.
 
   The file will be automatically removed when the query completes.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## tempfile
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -31,7 +24,7 @@ extension|An extension to place in the tempfile.|string
 permissions|Required permissions (e.g. 'x').|string
 remove_last|If set we delay removal as much as possible.|bool
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_WRITE</span>
+**Required permissions:** `FILESYSTEM_WRITE`
 
 ### Description
 

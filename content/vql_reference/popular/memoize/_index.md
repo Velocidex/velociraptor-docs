@@ -1,10 +1,9 @@
 ---
 title: memoize
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Memoize a query into memory.
 
@@ -57,19 +56,13 @@ description: |
   file. This is helpful when the query is very large or the results
   need to be re-used in another query.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## memoize
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -78,7 +71,6 @@ key|The name of the column to use as a key.|string (required)
 period|The latest age of the cache.|int64
 name|The name of this cache.|string
 filename|Filename for a persistent cache.|string
-
 ### Description
 
 Memoize a query into memory.

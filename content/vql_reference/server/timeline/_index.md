@@ -1,25 +1,18 @@
 ---
 title: timeline
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Read a timeline. You can create a timeline with the timeline_add() function
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## timeline
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -29,7 +22,7 @@ skip|List of child components to skip|list of string
 start|First timestamp to fetch|Any
 notebook_id|The notebook ID the timeline is stored in.|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
+**Required permissions:** `READ_RESULTS`
 
 ### Description
 

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Permanently deletes a flow, plus all its associated metadata and
   uploaded files, from the server.

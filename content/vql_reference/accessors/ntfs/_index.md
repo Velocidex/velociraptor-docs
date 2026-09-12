@@ -1,10 +1,9 @@
 ---
 title: ntfs
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Access the NTFS filesystem by parsing NTFS structures.
 
@@ -27,16 +26,13 @@ description: |
 
   See the `raw_ntfs` accessor for more information and comparisons.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## ntfs
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
+{{< badge >}}Accessor{{< /badge >}}
 
 ### Description
 

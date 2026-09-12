@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
+build:
+  list: never
 description: |
   Renders a formatted view of any artifact's metadata, parameters,
   sources, exports, etc.

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Collects Velociraptor server performance metrics from the Prometheus
   endpoint with CPU and memory stats.

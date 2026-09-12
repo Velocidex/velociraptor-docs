@@ -1,10 +1,9 @@
 ---
 title: scope
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   The scope plugin returns the current scope as a single row.
 
@@ -17,16 +16,13 @@ description: |
   SELECT 1+1 As Two FROM scope()
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## scope
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
+{{< badge >}}Function{{< /badge >}}
 
 ### Description
 
@@ -34,12 +30,7 @@ return the scope.
 
 
 
-<div class="vql_item"></div>
-
-
-## scope
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
+{{< badge >}}Plugin{{< /badge >}}
 
 ### Description
 

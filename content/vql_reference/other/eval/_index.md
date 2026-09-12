@@ -1,10 +1,9 @@
 ---
 title: eval
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Evaluate a vql lambda function on the current scope.
 
@@ -25,25 +24,18 @@ description: |
   SELECT eval(func="x=>AddTwo(x=1)") AS Three FROM scope()
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## eval
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 func|Lambda function to evaluate e.g. x=>1+1 where x will be the current scope.|Lambda (required)
 args|An array of elements to use as args for the lambda function. If not provided we pass the scope|Any
-
 ### Description
 
 Evaluate a vql lambda function on the current scope.

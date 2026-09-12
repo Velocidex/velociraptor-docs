@@ -1,31 +1,23 @@
 ---
 title: cache_dns
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Add a DNS record to the cache..
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## cache_dns
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 name|The domain name to cache |string (required)
 ip|The ip of the domain|string (required)
-
 ### Description
 
 Add a DNS record to the cache..

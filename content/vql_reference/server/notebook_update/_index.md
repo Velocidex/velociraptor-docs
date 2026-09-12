@@ -1,25 +1,18 @@
 ---
 title: notebook_update
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Update a notebook metadata.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## notebook_update
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -30,7 +23,7 @@ public|If set the notebook will be public.|bool
 attachment|Raw data of an attachment to be added to the notebook|string
 attachment_filename|The name of the attachment|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">COLLECT_SERVER</span>
+**Required permissions:** `COLLECT_SERVER`
 
 ### Description
 

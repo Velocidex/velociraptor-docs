@@ -1,22 +1,18 @@
 ---
 title: process_tracker_all
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Get all processes stored in the tracker.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## process_tracker_all
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
+{{< badge >}}Function{{< /badge >}}
 
 ### Description
 

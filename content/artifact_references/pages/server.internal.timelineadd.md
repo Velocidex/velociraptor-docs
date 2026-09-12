@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 description: |
   This artifact will fire whenever a timeline is added to a super
   timeline. You can use this to monitor for users adding timelines and

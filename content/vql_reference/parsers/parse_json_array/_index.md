@@ -1,31 +1,23 @@
 ---
 title: parse_json_array
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Parses events from a line oriented json file.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## parse_json_array
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 data|Json encoded string.|string (required)
 schema|Json schema to use for validation.|list of string
-
 ### Description
 
 Parse a JSON string into an array.
@@ -36,21 +28,12 @@ instead of an object.
 
 
 
-<div class="vql_item"></div>
-
-
-## parse_json_array
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 data|Json encoded string.|string (required)
 schema|Json schema to use for validation.|list of string
-
 ### Description
 
 Parses events from a line oriented json file.

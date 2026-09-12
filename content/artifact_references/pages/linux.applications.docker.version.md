@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Connects to the Docker socket and retrieves daemon version details
   including API and kernel versions.

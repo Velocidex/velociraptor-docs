@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Parses the Windows SRUM database (srudb.dat) to extract execution
   stats, resource usage, and network activity.

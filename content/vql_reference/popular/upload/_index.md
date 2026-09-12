@@ -1,10 +1,9 @@
 ---
 title: upload
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Upload a file to the upload service. For a Velociraptor client this
   will upload the file into the flow and store it in the server's file store.
@@ -43,19 +42,13 @@ description: |
   resumable uploads because the temporary file will be cleared after
   the query ends.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## upload
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -67,7 +60,7 @@ atime|Access time to record|Any
 ctime|Change time to record|Any
 btime|Birth time to record|Any
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `FILESYSTEM_READ`
 
 ### Description
 

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Decodes UserAssist registry keys from NTUSER.DAT to reveal program
   execution counts and last run times.

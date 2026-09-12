@@ -1,31 +1,23 @@
 ---
 title: sleep
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Sleep for the specified number of seconds. Always returns true.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## sleep
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 time|The number of seconds to sleep|int64
 ms|The number of ms to sleep|int64
-
 ### Description
 
 Sleep for the specified number of seconds. Always returns true.

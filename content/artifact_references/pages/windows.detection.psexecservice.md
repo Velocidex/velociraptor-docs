@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Detects PsExec execution by scanning newly created service binaries
   for PsExec strings.

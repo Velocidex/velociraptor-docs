@@ -1,10 +1,9 @@
 ---
 title: favorites_save
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Save a collection into the favorites.
 
@@ -19,19 +18,13 @@ description: |
   A favorite belongs to the calling user - this function will
   update the favorite for the calling user only.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## favorites_save
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -39,7 +32,6 @@ name|A name for this collection template.|string (required)
 description|A description for the template.|string
 specs|The collection request spec that will be saved. We use this to create the new collection.|LazyExpr (required)
 type|The type of favorite.|string (required)
-
 ### Description
 
 Save a collection into the favorites.

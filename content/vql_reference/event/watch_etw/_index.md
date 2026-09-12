@@ -1,10 +1,9 @@
 ---
 title: watch_etw
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Watch for events from an ETW provider.
 
@@ -133,19 +132,13 @@ description: |
   }
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## watch_etw
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -161,7 +154,6 @@ enable_map_info|Resolving MapInfo with TdhGetEventMapInformation is very expensi
 description|Description for this GUID provider|string
 kernel_tracer_type|A list of event types to fetch from the kernel tracer (can be registry, process, image_load, network, driver, file, thread, handle)|list of string
 kernel_tracer_stacks|A list of kernel tracer event types to append stack traces to (can be any of the types accepted by kernel_tracer_type)|list of string
-
 ### Description
 
 Watch for events from an ETW provider.

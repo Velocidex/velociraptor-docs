@@ -1,10 +1,9 @@
 ---
 title: parse_json
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Parse a JSON string into an object.
 
@@ -23,25 +22,18 @@ description: |
   returned. This would normally cause the artifact collection to
   fail.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## parse_json
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 data|Json encoded string.|string (required)
 schema|Json schema to use for validation.|list of string
-
 ### Description
 
 Parse a JSON string into an object.

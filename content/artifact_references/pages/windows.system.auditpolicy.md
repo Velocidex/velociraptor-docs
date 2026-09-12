@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Collects Windows Audit Policy configuration data from Windows
   systems via auditpol.

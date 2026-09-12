@@ -1,25 +1,18 @@
 ---
 title: inventory_get
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Get tool info from inventory service.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## inventory_get
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -27,7 +20,7 @@ tool||string (required)
 version||string
 probe|If specified we only probe the tool definition without materializing|bool
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">SERVER_ADMIN</span>
+**Required permissions:** `SERVER_ADMIN`
 
 ### Description
 

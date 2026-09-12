@@ -1,22 +1,18 @@
 ---
 title: users
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Display information about workstation local users. This is obtained through the NetUserEnum() API.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## users
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
+{{< badge >}}Plugin{{< /badge >}}
 
 ### Description
 

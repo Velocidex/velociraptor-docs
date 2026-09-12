@@ -1,10 +1,9 @@
 ---
 title: proc_dump
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Dumps process memory.
 
@@ -15,25 +14,19 @@ description: |
   use the upload() plugin to upload it to the server or otherwise copy
   it.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## proc_dump
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 pid|The PID to dump out.|int64 (required)
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
+**Required permissions:** `MACHINE_STATE`
 
 ### Description
 

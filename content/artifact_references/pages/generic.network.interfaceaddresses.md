@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Collects interface addresses and metadata such as MAC, MTU, and IP
   masks across operating systems.

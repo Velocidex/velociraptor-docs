@@ -1,10 +1,9 @@
 ---
 title: parse_mft
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Scan the $MFT from an NTFS volume.
 
@@ -28,19 +27,13 @@ description: |
        accessor="raw_ntfs")
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## parse_mft
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -49,7 +42,7 @@ accessor|The accessor to use.|string
 prefix|If specified we prefix all paths with this path.|OSPath
 start|The first entry to scan.|int64
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `FILESYSTEM_READ`
 
 ### Description
 

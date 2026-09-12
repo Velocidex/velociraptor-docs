@@ -1,27 +1,20 @@
 ---
 title: upload_directory
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Upload a file to an upload directory. The final filename will be
   the output directory path followed by the filename path.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## upload_directory
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -34,7 +27,7 @@ atime|Access time to set the output file.|Any
 ctime|Change time to set the output file.|Any
 btime|Birth time to set the output file.|Any
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_WRITE</span>
+**Required permissions:** `FILESYSTEM_WRITE`
 
 ### Description
 

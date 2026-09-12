@@ -1,10 +1,9 @@
 ---
 title: foreach
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Executes 'query' once for each row in the 'row' query.
 
@@ -20,19 +19,13 @@ description: |
   concurrently if possible. It is safe to use a large number here
   (say 100) to utilize all available cores.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## foreach
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -41,7 +34,6 @@ query|Run this query for each row.|StoredQuery
 async|If set we run all queries asynchronously (implies workers=100).|bool
 workers|Total number of asynchronous workers.|int64
 column|If set we only extract the column from row.|string
-
 ### Description
 
 Executes 'query' once for each row in the 'row' query.

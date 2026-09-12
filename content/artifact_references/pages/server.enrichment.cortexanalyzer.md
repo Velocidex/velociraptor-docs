@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   A utility artifact that runs Cortex analyzer jobs on observables and
   retrieves the results from all applicable analyzers.

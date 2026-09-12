@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Creates a new Velociraptor organization and assigns the current user
   as the org administrator.

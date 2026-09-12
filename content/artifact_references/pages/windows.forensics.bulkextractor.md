@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Deploys the bulk_extractor binary onto the endpoint and runs it
   against selected drives or directories for data carving.

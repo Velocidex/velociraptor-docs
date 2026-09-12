@@ -1,10 +1,9 @@
 ---
 title: generate
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Create a named generator that receives rows from the query.
 
@@ -59,19 +58,13 @@ description: |
   `watch_etw()` query will never terminate since it is an event
   query.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## generate
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -81,7 +74,6 @@ delay|Wait before starting the query|int64
 with_file_buffer|Enable file buffering|bool
 fan_out|Wait for this many listeners to connect before starting the query|int64
 description|A description to add to debug server|string
-
 ### Description
 
 Create a named generator that receives rows from the query.

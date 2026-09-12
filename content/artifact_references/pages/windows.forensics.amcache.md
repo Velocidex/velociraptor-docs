@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Parses the Amcache.hve registry hive to enumerate executed binaries,
   installed programs, and drivers.

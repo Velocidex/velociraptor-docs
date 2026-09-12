@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Reads macOS FSEvents logs to enumerate file creation, deletion,
   rename, and modification events.

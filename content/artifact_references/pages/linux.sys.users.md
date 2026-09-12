@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Gets user-specific information like homedir, group, etc. from
   `/etc/passwd`.

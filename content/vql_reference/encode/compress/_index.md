@@ -1,10 +1,9 @@
 ---
 title: compress
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Compress a file using GZip.
 
@@ -25,27 +24,20 @@ description: |
 
   Unlike the common `gzip` utility the file is not removed after compression.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## compress
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 path|A path to compress|string (required)
 output|A path to write the output - default is the path with a .gz extension|string (required)
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_WRITE</span>
-<span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `FILESYSTEM_WRITE`, `FILESYSTEM_READ`
 
 ### Description
 

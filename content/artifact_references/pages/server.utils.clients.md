@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [notebook]
+build:
+  list: never
 description: |
   Provides an interactive notebook for searching and inspecting client
   details.

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Configures Windows IPsec policy to block network traffic except for
   DNS, DHCP, and Velociraptor server access.

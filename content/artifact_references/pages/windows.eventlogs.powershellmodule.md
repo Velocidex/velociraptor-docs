@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Extracts PowerShell module logging events (EID 4103) from the
   PowerShell Operational log with context and payload filtering.

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [notebook]
+build:
+  list: never
 description: |
   Demonstrates notebook functionality with sample VQL and tool
   references.

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Lists all configured organizations on the Velociraptor server with
   optional downloadable client config for each org.

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Finds files in Volume Shadow Copies (VSS) using the `ntfs_vss`
   accessor.

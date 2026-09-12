@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Executes Eric Zimmerman's SBECmd tool to parse Shellbags and capture
   the results.

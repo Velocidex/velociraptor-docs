@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Aggregates results from multiple persistence-related artifacts into
   a single artifact "pack".

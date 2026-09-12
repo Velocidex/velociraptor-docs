@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Monitors SSH authentication logs to detect successful logins
   following multiple failed attempts within a 1-hour time window.

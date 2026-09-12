@@ -1,10 +1,9 @@
 ---
 title: unzip
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Unzips a file into a directory.
 
@@ -16,19 +15,13 @@ description: |
   else you can force a type using the `type` parameter (`tgz` or
   `zip`).
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## unzip
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -38,8 +31,7 @@ filename_filter|Only extract members matching this regex filter.|string
 output_directory|Where to unzip to|string (required)
 type|The type of file (default autodetected from file extension - zip or tgz or tar.gz).|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_WRITE</span>
-<span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `FILESYSTEM_WRITE`, `FILESYSTEM_READ`
 
 ### Description
 

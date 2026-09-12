@@ -1,31 +1,23 @@
 ---
 title: parse_string_with_regex
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Parse a string with a set of regex and extract fields. Returns a dict with fields populated from all regex capture variables.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## parse_string_with_regex
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 string|A string to parse.|string (required)
 regex|The regex to apply.|list of string (required)
-
 ### Description
 
 Parse a string with a set of regex and extract fields. Returns a dict with fields populated from all regex capture variables.

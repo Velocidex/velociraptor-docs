@@ -1,10 +1,9 @@
 ---
 title: copy
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Copy a file.
 
@@ -23,19 +22,13 @@ description: |
 
   NOTE: Sparse files are padded out
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## copy
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -47,8 +40,7 @@ dir_permissions|Permissions for intermediate directories.|string
 append|If true we append to the target file otherwise truncate it|bool
 create_directories|If true we ensure the destination directories exist|bool
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_WRITE</span>
-<span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `FILESYSTEM_WRITE`, `FILESYSTEM_READ`
 
 ### Description
 

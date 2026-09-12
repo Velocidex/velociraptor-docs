@@ -1,10 +1,9 @@
 ---
 title: raw_ntfs
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Access the NTFS filesystem inside an image by parsing NTFS.
 
@@ -53,16 +52,13 @@ description: |
   `remap()` function to analyze raw NTFS volumes on any supported
   platform.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## raw_ntfs
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
+{{< badge >}}Accessor{{< /badge >}}
 
 ### Description
 

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Lists Chocolatey packages installed on a Windows system by parsing
   .nuspec files.

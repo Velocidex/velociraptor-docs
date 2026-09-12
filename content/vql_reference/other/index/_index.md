@@ -1,10 +1,9 @@
 ---
 title: index
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Create a local index from a query.
 
@@ -42,19 +41,13 @@ description: |
   FROM index_search(path=IndexPath, fields="Data", search="syslog")
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## index
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -67,7 +60,7 @@ purge|If set we delete the index to start fresh|bool
 batch|Default batch size for index (default 1000)|int64
 silent|Do not forward events (this is faster)|bool
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_WRITE</span>
+**Required permissions:** `FILESYSTEM_WRITE`
 
 ### Description
 

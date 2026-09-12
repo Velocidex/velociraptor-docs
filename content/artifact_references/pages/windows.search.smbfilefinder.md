@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Searches for files on remote SMB shares using glob patterns and
   inspects file content using Yara rules, with optional hash

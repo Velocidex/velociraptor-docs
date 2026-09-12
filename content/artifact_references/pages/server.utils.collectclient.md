@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Automates the full collection workflow of a specified artifact:
   schedule, wait, and retrieve results from a single client.

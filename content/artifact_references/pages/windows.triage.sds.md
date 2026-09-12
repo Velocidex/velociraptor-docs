@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Extracts the $Secure:$SDS NTFS stream from a specified drive volume
   using raw MFT parsing.

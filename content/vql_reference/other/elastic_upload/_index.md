@@ -1,10 +1,9 @@
 ---
 title: elastic_upload
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Upload rows to elastic.
 
@@ -16,19 +15,13 @@ description: |
   `index` parameter or provide an `_index` column in the query
   itself to send the row to a different index each time.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## elastic_upload
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -51,7 +44,7 @@ max_memory_buffer|How large we allow the memory buffer to grow to while we are t
 action|Either index or create. For data streams this must be create.|string
 secret|Alternatively use a secret from the secrets service. Secret must be of type 'AWS S3 Creds'|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">NETWORK</span>
+**Required permissions:** `NETWORK`
 
 ### Description
 

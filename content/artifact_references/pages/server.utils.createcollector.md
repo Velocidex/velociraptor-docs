@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   A utility artifact to create a standalone Velociraptor offline
   collector binary with specified artifacts and output target.

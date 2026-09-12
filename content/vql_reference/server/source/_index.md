@@ -1,10 +1,9 @@
 ---
 title: source
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Retrieve rows from an artifact's source.
 
@@ -39,19 +38,13 @@ description: |
   SELECT * FROM source(notebook_id="N.123", notebook_cell="NC.1234")
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## source
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -70,7 +63,7 @@ start_row|Start reading the result set from this row|int64
 count|Maximum number of rows to fetch (default unlimited)|int64
 orgs|Run the query over these orgs. If empty use the current org.|list of string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
+**Required permissions:** `READ_RESULTS`
 
 ### Description
 

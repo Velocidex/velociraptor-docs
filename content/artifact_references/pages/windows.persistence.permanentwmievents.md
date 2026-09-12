@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Enumerates permanent WMI event subscriptions including filters,
   consumers, and their bindings across namespaces.

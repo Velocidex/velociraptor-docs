@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Creates a new Velociraptor GUI user with a specified role and a
   randomly generated password.

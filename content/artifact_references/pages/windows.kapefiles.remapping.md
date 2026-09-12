@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Automates the creation of remapping rules to enable post-processing file
   uploads collected by the `Windows.KapeFiles.Targets` or

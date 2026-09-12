@@ -1,25 +1,18 @@
 ---
 title: netcat
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Make a tcp connection and read data from a socket.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## netcat
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -30,7 +23,7 @@ sep|The separator that will be used to split (default - line feed)|string
 chunk_size|Read input with this chunk size (default 64kb)|int
 retry|Seconds to wait before retry - default 0 - do not retry|int
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">NETWORK</span>
+**Required permissions:** `NETWORK`
 
 ### Description
 

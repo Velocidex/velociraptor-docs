@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 description: |
   This server-side event monitoring artifact waits for new artifacts
   to be collected from endpoints and automatically uploads those to an

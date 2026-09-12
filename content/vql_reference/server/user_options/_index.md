@@ -1,10 +1,9 @@
 ---
 title: user_options
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Update and read the user GUI options
 
@@ -27,19 +26,13 @@ description: |
   FROM scope()
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## user_options
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -50,7 +43,6 @@ lang|Set the user's language.|string
 org|Set the user's default org id.|string
 links|Set the user's default links. This should be a list of dicts with columns: type, text, url, icon_url, new_tab, encode, parameter, method, disabled.|StoredQuery
 default_password|Set the user's default password for Zip Exports.|string
-
 ### Description
 
 Update and read the user GUI options

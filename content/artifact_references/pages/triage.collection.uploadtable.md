@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   A generic uploader used by triaging artifacts. This is similar to
   `Triage.Collection.Upload` but uses a CSV table to drive it.

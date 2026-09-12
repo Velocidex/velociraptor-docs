@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [notebook]
+build:
+  list: never
 description: |
   Provides a notebook template for building consolidated timelines
   from time series data across collections.

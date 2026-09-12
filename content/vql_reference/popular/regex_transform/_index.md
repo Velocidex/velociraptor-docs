@@ -1,10 +1,9 @@
 ---
 title: regex_transform
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Search and replace a string with multiple regex. Note you can use $1
   to replace the capture string.
@@ -16,26 +15,19 @@ description: |
   FROM scope()
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## regex_transform
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 source|The source string to replace.|string (required)
 map|A dict with keys reg, values substitutions.|ordereddict.Dict (required)
 key|A key for caching|string
-
 ### Description
 
 Search and replace a string with multiple regex. Note you can use $1

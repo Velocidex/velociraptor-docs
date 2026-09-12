@@ -1,10 +1,9 @@
 ---
 title: sparse
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Allows reading another file by overlaying a sparse map on top of
   it.
@@ -38,16 +37,13 @@ description: |
 
   For more flexibility than this use the "ranged" accessor.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## sparse
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
+{{< badge >}}Accessor{{< /badge >}}
 
 ### Description
 

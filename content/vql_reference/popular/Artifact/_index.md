@@ -1,10 +1,9 @@
 ---
 title: Artifact
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   This is the special plugin which automatically runs other
   artifacts inline.
@@ -27,16 +26,13 @@ description: |
 
   This allows artifacts to be nested and call other artifacts.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## Artifact
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
+{{< badge >}}Plugin{{< /badge >}}
 
 ### Description
 

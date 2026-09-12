@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 description: |
   Detects client ID conflicts on the server and forces affected
   clients to rekey with a new identity.

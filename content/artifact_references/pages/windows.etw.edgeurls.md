@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Captures URLs accessed by the Edge browser via the
   Microsoft-Windows-URLMon ETW provider.

@@ -1,25 +1,18 @@
 ---
 title: parse_journald
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Parse a journald file.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## parse_journald
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -29,7 +22,7 @@ raw|Emit raw events (not parsed).|bool
 start_time|Only parse events newer than this time (default all times).|time.Time
 end_time|Only parse events older than this time (default all times).|time.Time
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `FILESYSTEM_READ`
 
 ### Description
 

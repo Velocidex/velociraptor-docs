@@ -1,10 +1,9 @@
 ---
 title: hunt_flows
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Retrieve the flows launched by a hunt.
 
@@ -14,19 +13,13 @@ description: |
   You can use this to figure out if all the collections were
   successful by looking at the result of each flow object.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## hunt_flows
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -35,7 +28,7 @@ start_row|The first row to show (used for paging).|int64
 limit|Number of rows to show (used for paging).|int64
 basic_info|If specified we only return basic information like flow id and client id.|bool
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
+**Required permissions:** `READ_RESULTS`
 
 ### Description
 

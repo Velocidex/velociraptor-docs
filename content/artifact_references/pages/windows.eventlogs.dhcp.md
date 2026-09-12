@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Parses Windows DHCP client event logs (admin and operational) to
   extract IP address lease assignments and rejections.

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Parses the CM_RESOURCE_LIST from the registry to list physical
   memory range descriptors.

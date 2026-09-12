@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Validates artifact YAML definitions from a file glob and reports
   errors and warnings in a structured format.

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 description: |
   Watches for creation of new Velociraptor timelines and
   automatically uploads matching ones to Timesketch.

@@ -1,10 +1,9 @@
 ---
 title: str
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Returns the string representation of the provided data
 
@@ -18,24 +17,17 @@ description: |
   - [serialize]({{< ref "/vql_reference/other/serialize/" >}}): Encode an
     object as a string.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## str
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 str|The string to normalize|Any (required)
-
 ### Description
 
 Returns the string representation of the provided data

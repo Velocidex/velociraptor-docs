@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Lists user names and SIDs from collected `Windows.Sys.Users` results
   across all clients.

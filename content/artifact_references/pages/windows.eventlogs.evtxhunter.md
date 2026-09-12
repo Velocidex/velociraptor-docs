@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Searches all Windows EVTX files for events matching a regex IOC in
   message, EventData, or UserData fields.

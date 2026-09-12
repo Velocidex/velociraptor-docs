@@ -1,30 +1,22 @@
 ---
 title: semver
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Parse a semantic version string.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## semver
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 version|A string to convert to a semantic version|string (required)
-
 ### Description
 
 Parse a semantic version string.

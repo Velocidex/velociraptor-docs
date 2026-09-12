@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Reads Sysmon operational events from ETW and forwards them to the
   server for analysis.

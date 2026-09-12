@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Exports files from the VFS (Virtual Filesystem) by globbing under a
   specified path in the server-side VFS cache.

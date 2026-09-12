@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Detects event log clearing events from the Security (EID 1102) and
   System (EID 104) logs.

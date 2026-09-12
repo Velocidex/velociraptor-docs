@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Detects Kerberoasting attempts by extracting Kerberos TGS requests
   (EID 4769) with RC4 encryption from the Security log.

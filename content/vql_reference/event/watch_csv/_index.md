@@ -1,10 +1,9 @@
 ---
 title: watch_csv
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Watch a CSV file and stream events from it. Note: This is an event
   plugin which does not complete.
@@ -12,19 +11,13 @@ description: |
   This plugin is the event version of `parse_csv()`. When the CSV file
   grows this plugin will emit the new rows.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## watch_csv
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -35,7 +28,7 @@ separator|Comma separator (default ',')|string
 comment|The single character that should be considered a comment|string
 columns|The columns to use|list of string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `FILESYSTEM_READ`
 
 ### Description
 

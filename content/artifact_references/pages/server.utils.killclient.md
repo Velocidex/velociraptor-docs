@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Aggressively terminates a Velociraptor client process by sending a
   kill signal to the specified client ID.

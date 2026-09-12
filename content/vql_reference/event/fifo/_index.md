@@ -1,10 +1,9 @@
 ---
 title: fifo
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Executes 'query' and cache a number of rows from it. For each invocation
   we present the set of past rows.
@@ -56,19 +55,13 @@ description: |
         })  WHERE Count > atoi(string=failureCount)
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## fifo
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -76,7 +69,6 @@ query|Source for cached rows.|StoredQuery (required)
 max_age|Maximum number of seconds to hold rows in the fifo.|int64
 max_rows|Maximum number of rows to hold in the fifo.|int64
 flush|If specified we flush all rows from cache after the call.|bool
-
 ### Description
 
 Executes 'query' and cache a number of rows from it. For each invocation

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Collects server profiling data including goroutine traces, memory
   heap, CPU profiles, and metrics.

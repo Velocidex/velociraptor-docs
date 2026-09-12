@@ -1,35 +1,27 @@
 ---
 title: for
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Iterate over a list.
 
   DEPRECATED - use foreach() instead.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## for
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 var|The variable to assign.|string (required)
 foreach|The variable to iterate over.|StoredQuery (required)
 query|Run this query over the item.|StoredQuery
-
 ### Description
 
 Iterate over a list.

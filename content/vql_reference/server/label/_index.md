@@ -1,10 +1,9 @@
 ---
 title: label
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Add the labels to the client. If op is 'remove' then remove these labels.
 
@@ -19,19 +18,13 @@ description: |
   FROM clients() WHERE  last_ip =~ "127.+"
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## label
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -39,7 +32,7 @@ client_id|Client ID to label.|string (required)
 labels|A list of labels to apply|list of string (required)
 op|An operation on the labels (set, check, remove)|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">LABEL_CLIENT</span>
+**Required permissions:** `LABEL_CLIENT`
 
 ### Description
 

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Watches for new Mutants in the Windows object manager namespace and
   alerts on detections.

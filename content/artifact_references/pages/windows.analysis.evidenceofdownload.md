@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Finds downloaded files by searching for `Zone.Identifier` alternate
   data streams across user directories.

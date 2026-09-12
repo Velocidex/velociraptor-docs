@@ -1,10 +1,9 @@
 ---
 title: secret_modify
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Modify the secret
 
@@ -44,19 +43,13 @@ description: |
   secret_modify(delete=TRUE) to truly delete the secret in the child
   org context (see the query() plugin to switch org contexts).
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## secret_modify
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -69,7 +62,7 @@ visible_to_all_orgs|If set we make the secret visible to all orgs|bool
 add_orgs|A list of orgs to add to the secret|list of string
 remove_orgs|A list of orgs to remove from the secret|list of string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">SERVER_ADMIN</span>
+**Required permissions:** `SERVER_ADMIN`
 
 ### Description
 

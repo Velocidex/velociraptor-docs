@@ -1,10 +1,9 @@
 ---
 title: set
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Sets the member field of the item.
 
@@ -14,26 +13,19 @@ description: |
 
   - [get]({{< ref "/vql_reference/popular/get/" >}}): Gets the member field from the item.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## set
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 item|A dict to set|Any (required)
 field|The field to set|string (required)
 value||Any (required)
-
 ### Description
 
 Sets the member field of the item.

@@ -1,10 +1,9 @@
 ---
 title: typeof
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Print the underlying Go type of the variable.
 
@@ -46,16 +45,13 @@ description: |
 
   - [format]({{< ref "/vql_reference/popular/format/" >}})
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## typeof
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
+{{< badge >}}Function{{< /badge >}}
 
 ### Description
 

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Parses Windows `.cat` catalog files and extracts certificate trust
   list hashes with signer information.

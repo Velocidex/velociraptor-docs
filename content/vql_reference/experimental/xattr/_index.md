@@ -1,10 +1,9 @@
 ---
 title: xattr
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Query a file for the specified extended attribute.
 
@@ -16,19 +15,13 @@ description: |
 
   Note: This function only works on Mac and Linux.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## xattr
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -36,7 +29,7 @@ filename|Filename to inspect.|OSPath (required)
 attribute|Attribute to collect. |list of string
 accessor|File accessor|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `FILESYSTEM_READ`
 
 ### Description
 

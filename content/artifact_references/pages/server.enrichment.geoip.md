@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   A utility artifact that enriches an IP address with country, state,
   and city information from a MaxMind GeoIP database.

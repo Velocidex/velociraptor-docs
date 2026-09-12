@@ -1,10 +1,9 @@
 ---
 title: ext4
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Access files by parsing the raw ext4 filesystems.
 
@@ -24,16 +23,13 @@ description: |
   FROM glob(globs='/boot/*', accessor="ext4")
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## ext4
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
+{{< badge >}}Accessor{{< /badge >}}
 
 ### Description
 

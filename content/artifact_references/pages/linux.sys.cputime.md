@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Displays information from the `/proc/stat` file about the time the
   CPU cores spent in different parts of the system.

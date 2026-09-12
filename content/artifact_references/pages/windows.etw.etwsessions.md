@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Watches kernel event tracing ETW events to detect creation and
   removal of ETW sessions.

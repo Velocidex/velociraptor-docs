@@ -1,10 +1,9 @@
 ---
 title: clock
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Generate a timestamp periodically. This is mostly useful for event
   queries.
@@ -26,26 +25,19 @@ description: |
   at a particular time. This can be an integer (which will be
   interpreted as seconds since the epoch), a string or a time value.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## clock
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 start|Start at this time.|Any
 period|Wait this many seconds between events.|int64
 ms|Wait this many ms between events.|int64
-
 ### Description
 
 Generate a timestamp periodically. This is mostly useful for event

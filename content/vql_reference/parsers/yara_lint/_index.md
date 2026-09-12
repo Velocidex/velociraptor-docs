@@ -1,10 +1,9 @@
 ---
 title: yara_lint
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Clean a set of yara rules. This removes invalid or unsupported rules.
 
@@ -53,25 +52,18 @@ description: |
   FROM scope()
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## yara_lint
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 rules|A string containing Yara Rules.|string (required)
 clean|Remove metadata to make rules smaller.|bool
-
 ### Description
 
 Clean a set of yara rules. This removes invalid or unsupported rules.

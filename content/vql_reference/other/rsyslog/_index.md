@@ -1,25 +1,18 @@
 ---
 title: rsyslog
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Send an RFC5424 compliant remote syslog message.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## rsyslog
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -37,7 +30,7 @@ sd_id|When sending structured data, this is the Structured Data ID|string
 args|A dict to be interpolated into the message as structured data, according to RFC5424.|ordereddict.Dict
 root_ca|As a better alternative to disable_ssl_security, allows root ca certs to be added here.|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">NETWORK</span>
+**Required permissions:** `NETWORK`
 
 ### Description
 

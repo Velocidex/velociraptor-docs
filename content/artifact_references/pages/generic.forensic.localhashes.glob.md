@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Calculates hashes for files matching a glob pattern and stores them
   in a SQLite database on the client.

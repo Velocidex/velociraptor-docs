@@ -1,10 +1,9 @@
 ---
 title: process
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Access process memory like a file.
 
@@ -26,18 +25,16 @@ description: |
   not an error to read from unmapped regions, but it will just
   return nulls.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
+{{< badge >}}Accessor{{< /badge >}}
 
 
-## process
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
-
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
+**Required permissions:** `MACHINE_STATE`
 
 ### Description
 

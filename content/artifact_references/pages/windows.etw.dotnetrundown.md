@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Queries the Microsoft-Windows-DotNETRuntimeRundown provider to
   collect a list of DotNet modules loaded into a process. This can be

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 description: |
   Forwards completed flow results to LogScale with configurable
   batching and artifact filtering.

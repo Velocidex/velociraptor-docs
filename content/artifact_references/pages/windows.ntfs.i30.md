@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Carves the $I30 index stream from NTFS directories to recover
   previously deleted file entries, and optionally upload the $I30

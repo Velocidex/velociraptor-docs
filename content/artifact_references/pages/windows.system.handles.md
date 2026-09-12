@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Lists open handles (files, registry keys, etc.) for processes
   matching a regex pattern.

@@ -1,32 +1,24 @@
 ---
 title: srum_lookup_id
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Lookup a SRUM id.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## srum_lookup_id
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 file||OSPath (required)
 accessor|The accessor to use.|string
 id||int64 (required)
-
 ### Description
 
 Lookup a SRUM id.

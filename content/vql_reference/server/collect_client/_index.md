@@ -1,10 +1,9 @@
 ---
 title: collect_client
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Launch an artifact collection against a client. If the client_id
   is "server" then the collection occurs on the server itself. In
@@ -82,19 +81,13 @@ description: |
   you will often need to specify a field name containing full
   stop. You can escape this using the backticks like the example above.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## collect_client
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -112,9 +105,7 @@ max_bytes|Max number of bytes to upload|uint64
 urgent|Set the collection as urgent - skips other queues collections on the client.|bool
 org_id|If set the collection will be started in the specified org.|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">COLLECT_CLIENT</span>
-<span class="permission_list linkcolour label label-important">COLLECT_SERVER</span>
-<span class="permission_list linkcolour label label-important">COLLECT_BASIC</span>
+**Required permissions:** `COLLECT_CLIENT`, `COLLECT_SERVER`, `COLLECT_BASIC`
 
 ### Description
 

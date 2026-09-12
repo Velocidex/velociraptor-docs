@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Tracks processes using Sysmon ETW events (process creation and
   termination) with pslist sync.

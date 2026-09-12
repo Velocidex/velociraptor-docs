@@ -1,33 +1,26 @@
 ---
 title: handles
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Enumerate process handles.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## handles
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 pid|If specified only get handles from these PIDs.|uint64
 types|If specified only get handles of this type.|list of string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
+**Required permissions:** `MACHINE_STATE`
 
 ### Description
 

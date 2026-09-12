@@ -1,10 +1,9 @@
 ---
 title: sigma
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Evaluate sigma rules.
 
@@ -34,19 +33,13 @@ description: |
      will be used in a detection clause. The lambda will receive the
      field and should return a boolean value.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## sigma
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -57,10 +50,7 @@ debug|If enabled we emit all match objects with description of what would match.
 rule_filter|If specified we use this callback to filter the rules for inclusion.|Lambda
 default_details|If specified we use this callback to determine a details column if the sigma rule does not specify it.|Lambda
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
-<span class="permission_list linkcolour label label-important">EXECVE</span>
-<span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
-<span class="permission_list linkcolour label label-important">FILESYSTEM_WRITE</span>
+**Required permissions:** `MACHINE_STATE`, `EXECVE`, `FILESYSTEM_READ`, `FILESYSTEM_WRITE`
 
 ### Description
 

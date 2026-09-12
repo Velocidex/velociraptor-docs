@@ -1,10 +1,9 @@
 ---
 title: link_to
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Create a url linking to a particular part in the Velociraptor GUI.
 
@@ -77,19 +76,13 @@ description: |
   actually valid - i.e. it does not check that the client id refers
   to a real client, flow id to a real flow, etc.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## link_to
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -105,7 +98,6 @@ artifact|The artifact to retrieve|string
 parameters|artifact parameters to use when creating a new flow/hunt/notebook.|ordereddict.Dict
 raw|When specified we emit a raw URL (without autodetected text)|bool
 org|If set the link accesses a different org. Otherwise we accesses the current org.|string
-
 ### Description
 
 Create a url linking to a particular part in the Velociraptor GUI.

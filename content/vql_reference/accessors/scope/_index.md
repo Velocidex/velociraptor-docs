@@ -1,10 +1,9 @@
 ---
 title: scope
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Present the content of a scope variable as a file.
 
@@ -26,16 +25,13 @@ description: |
   SELECT read_file(accessor="scope", filename="MyData") FROM scope()
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## scope
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
+{{< badge >}}Accessor{{< /badge >}}
 
 ### Description
 

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Monitors registry create, open, delete, and value modification
   events via the Kernel-Registry ETW provider.

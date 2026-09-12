@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Parses the Windows User Access Logging (UAL) ESE database to
   enumerate client connections and server roles.

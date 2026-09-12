@@ -1,10 +1,9 @@
 ---
 title: client_info
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Returns client info (like the fqdn) for a specific client from the
   datastore.
@@ -35,25 +34,19 @@ description: |
   - [clients]({{< ref "/vql_reference/server/clients/" >}}): Returns client
     info for one or more clients from the datastore.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## client_info
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 client_id||string (required)
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
+**Required permissions:** `READ_RESULTS`
 
 ### Description
 

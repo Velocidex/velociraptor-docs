@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Scans directories for Office documents (xls, xlsm, doc, docx, ppt,
   pptm) and extracts embedded VBA macros via OLE parsing.

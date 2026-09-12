@@ -1,10 +1,9 @@
 ---
 title: file_nocase
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Access files using the operating system's API.
 
@@ -15,18 +14,16 @@ description: |
   due to incorrect casing making it impossible to find the right
   files.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
+{{< badge >}}Accessor{{< /badge >}}
 
 
-## file_nocase
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
-
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `FILESYSTEM_READ`
 
 ### Description
 

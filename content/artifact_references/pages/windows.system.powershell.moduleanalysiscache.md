@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Parses the PowerShell ModuleAnalysisCache file to enumerate loaded
   modules and their functions.

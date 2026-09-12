@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   NetstatEnriched adds data enrichment to the Netstat artifact and
   provides extensive filtering options.

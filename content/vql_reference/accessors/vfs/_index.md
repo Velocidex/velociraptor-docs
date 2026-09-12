@@ -1,10 +1,9 @@
 ---
 title: vfs
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Access client's VFS filesystem on the server.
 
@@ -30,18 +29,16 @@ description: |
   This accessor is mostly used in the `System.VFS.Export` artifact
   to facilitate snapshotting of the VFS view in the GUI.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
+{{< badge >}}Accessor{{< /badge >}}
 
 
-## vfs
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
-
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">READ_RESULTS</span>
+**Required permissions:** `READ_RESULTS`
 
 ### Description
 

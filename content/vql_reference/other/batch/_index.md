@@ -1,10 +1,9 @@
 ---
 title: batch
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Batches query rows into multiple arrays.
 
@@ -20,19 +19,13 @@ description: |
   }, batch_size=3)
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## batch
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -40,7 +33,6 @@ batch_size|Size of batch (defaults to 10).|int64
 batch_func|A VQL Lambda that determines when a batch is ready. Example 'x=>len(list=x) >= 10'.|string
 query|Run this query over the item.|StoredQuery (required)
 timeout|If specified we flush incomplete batches in this many seconds.|uint64
-
 ### Description
 
 Batches query rows into multiple arrays.

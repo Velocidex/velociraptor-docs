@@ -1,25 +1,21 @@
 ---
 title: collector_sparse
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Open a collector zip file as if it was a directory.
 
   Same as the `collector` accessor but does not expand sparse files.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## collector_sparse
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
+{{< badge >}}Accessor{{< /badge >}}
 
 ### Description
 

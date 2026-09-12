@@ -1,32 +1,24 @@
 ---
 title: reformat
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Reformat VQL
 
   This function will reformat the artifact provided and return the reformatted content.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## reformat
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 artifact|The artifact VQL to reformat.|string (required)
-
 ### Description
 
 Reformat VQL

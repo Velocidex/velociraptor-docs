@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Builds Debian (.deb) and RPM packages with embedded client config for the current organization.
 ---

@@ -1,25 +1,18 @@
 ---
 title: reg_set_value
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Set a value in the registry.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## reg_set_value
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -28,7 +21,7 @@ value|Value to set|LazyExpr (required)
 type|Type to set (SZ, DWORD, QWORD)|string (required)
 create|Set to create missing intermediate keys|bool
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_WRITE</span>
+**Required permissions:** `FILESYSTEM_WRITE`
 
 ### Description
 

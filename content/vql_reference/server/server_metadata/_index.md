@@ -1,34 +1,27 @@
 ---
 title: server_metadata
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Returns server metadata from the datastore. Server metadata is a
   set of free form key/value data
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## server_metadata
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 metadata|A dict containing metadata. If not specified we use kwargs.|ordereddict.Dict
 `**`|Free Form Args|
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">SERVER_ADMIN</span>
+**Required permissions:** `SERVER_ADMIN`
 
 ### Description
 

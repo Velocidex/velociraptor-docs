@@ -1,10 +1,9 @@
 ---
 title: count
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Counts the items.
 
@@ -20,24 +19,17 @@ description: |
   For a full discussion of aggregate functions see
   https://docs.velociraptor.app/docs/vql/#aggregate-functions
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## count
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 items|Not used anymore|Any
-
 ### Description
 
 Counts the items.

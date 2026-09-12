@@ -1,10 +1,9 @@
 ---
 title: import_collection
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Imports a collection zip file .
 
@@ -49,19 +48,13 @@ description: |
   Combine this function with the hunt_add() function to add a
   manual offline collection to an ongoing hunt.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## import_collection
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -71,8 +64,7 @@ filename|Path on server to the collector zip.|string (required)
 accessor|The accessor to use.|string
 import_type|Whether the import is an offline_collector or hunt.|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">COLLECT_SERVER</span>
-<span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `COLLECT_SERVER`, `FILESYSTEM_READ`
 
 ### Description
 

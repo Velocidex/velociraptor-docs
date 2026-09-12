@@ -1,10 +1,9 @@
 ---
 title: parse_usn
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Parse the USN journal from a device, image file or USN file.
 
@@ -19,19 +18,13 @@ description: |
   can result in more accurate path resolution when the directories
   have also been removed.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## parse_usn
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -43,7 +36,7 @@ usn_filename|A path to a raw USN file to parse. If not provided we extract it fr
 start_offset|The starting offset of the first USN record to parse.|int64
 fast_paths|If set we resolve full paths using faster but less accurate algorithm.|bool
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `FILESYSTEM_READ`
 
 ### Description
 

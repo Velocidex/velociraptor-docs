@@ -1,10 +1,9 @@
 ---
 title: collect
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Collect artifacts into a local file.
 
@@ -12,19 +11,13 @@ description: |
   collect --output file.zip` command. It will collect the artifacts
   into a zip file.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## collect
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -46,7 +39,7 @@ metadata|Metadata to store in the zip archive. Outputs to metadata.json in top l
 concurrency|Number of concurrent collections.|int64
 remapping|A Valid remapping configuration in YAML or JSON format.|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_WRITE</span>
+**Required permissions:** `FILESYSTEM_WRITE`
 
 ### Description
 

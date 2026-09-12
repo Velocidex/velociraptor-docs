@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Detects successful logons preceded by multiple failed logon attempts
   within a configurable time window.

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Parses Windows 11 Notepad TabState and WindowState files to recover
   edited file paths, timestamps, and content.

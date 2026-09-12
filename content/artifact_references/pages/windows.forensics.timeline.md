@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Queries the Windows 10 Timeline ActivitiesCache.db SQLite database
   to extract recently used applications.
@@ -27,7 +29,7 @@ name: Windows.Forensics.Timeline
 description: |
   Queries the Windows 10 Timeline ActivitiesCache.db SQLite database
   to extract recently used applications.
-  
+
   Win10 records recently used applications and files in a "timeline"
   accessible via the "WIN+TAB" key. The data is recorded in a SQLite
   database.
@@ -55,7 +57,7 @@ precondition: SELECT OS From info() where OS = 'windows'
 
 sources:
   - query: |
-      LET timeline = SELECT * FROM foreach(
+      LET timeline_files = SELECT * FROM foreach(
          row={
             SELECT OSPath
             FROM glob(globs=Win10TimelineGlob)
@@ -73,7 +75,7 @@ sources:
                regex="\\\\L.(?P&lt;User&gt;[^\\\\]+)\\\\").User AS User,
                LastModifiedTime,
                LastModifiedTime.Unix as LastExecutionTS
-        FROM timeline
+        FROM timeline_files
 
       LET A1 = SELECT * FROM if(
           condition=UserFilter,

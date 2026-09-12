@@ -1,10 +1,9 @@
 ---
 title: pipe
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Read from a VQL pipe.
 
@@ -28,16 +27,13 @@ description: |
   another without using temp files. You probably do not want to use
   it!
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## pipe
-<span class='vql_type label label-warning pull-right page-header'>Accessor</span>
-
+{{< badge >}}Accessor{{< /badge >}}
 
 ### Description
 

@@ -1,10 +1,9 @@
 ---
 title: upload_s3
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Upload files to S3.
 
@@ -19,19 +18,13 @@ description: |
   shows how to safely configure an AWS bucket for use with this
   plugin.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## upload_s3
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -51,8 +44,7 @@ skip_verify|Skip TLS Verification|bool
 path_style|Use path style URLs if set|bool
 secret|Alternatively use a secret from the secrets service. Secret must be of type 'AWS S3 Creds'|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">NETWORK</span>
-<span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `NETWORK`, `FILESYSTEM_READ`
 
 ### Description
 

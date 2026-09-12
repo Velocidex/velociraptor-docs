@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Tracks process execution using ETW kernel events (CreateProcess,
   TerminateProcess, LoadImage).

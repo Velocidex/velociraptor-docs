@@ -1,10 +1,9 @@
 ---
 title: file_store
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Resolves file store paths into full filesystem paths.
 
@@ -26,24 +25,17 @@ description: |
   In future the file store may be abstracted (e.g. files may not be
   locally stored at all) and this function may stop working.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## file_store
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 path|A VFS path to convert|LazyExpr (required)
-
 ### Description
 
 Resolves file store paths into full filesystem paths.

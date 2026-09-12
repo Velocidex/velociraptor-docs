@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Lists user accounts that have logged on locally by inspecting
   registry profile list keys for locally-created profiles.

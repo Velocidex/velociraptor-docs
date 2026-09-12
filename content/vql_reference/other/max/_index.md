@@ -1,10 +1,9 @@
 ---
 title: max
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Finds the largest item in the aggregate.
 
@@ -19,24 +18,17 @@ description: |
   SELECT Name, max(items=Pid) as LargestPid from pslist() Where Name =~ 'bash' group by Name
   ```
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## max
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 item||LazyExpr (required)
-
 ### Description
 
 Finds the largest item in the aggregate.

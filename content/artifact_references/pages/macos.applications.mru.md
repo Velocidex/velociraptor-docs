@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Parses Finder's `FXRecentFolders` plist entries to extract recently
   accessed items.

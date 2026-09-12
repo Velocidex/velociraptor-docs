@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Uploads each user's NTUSER.DAT registry hive from disk by bypassing
   file locking with raw NTFS parsing.

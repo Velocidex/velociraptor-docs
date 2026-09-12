@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Emits an event for every completed flow, including imported offline
   collections, enabling post-processing automation.

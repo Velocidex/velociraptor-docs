@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Parses RDP Bitmap Cache (.BIN) files to extract and reconstruct
   cached remote desktop screen images.

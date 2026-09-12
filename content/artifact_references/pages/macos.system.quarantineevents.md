@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Parses the QuarantineEventsV2 database, which provides information
   on when a file was downloaded from the internet.

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Parses Windows LNK shortcut files to extract target paths,
   arguments, timestamps, and metadata.

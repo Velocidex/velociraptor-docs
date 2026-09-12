@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
+build:
+  list: never
 description: |
   Fires an event when Velociraptor user accounts are created, modified, or deleted.
 ---

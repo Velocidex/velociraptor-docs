@@ -1,10 +1,9 @@
 ---
 title: info
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Get information about the running host.
 
@@ -67,18 +66,16 @@ description: |
     `Architecture` as `wow64`. Note that this configuration is not
     supported and may lead to crashes and undetermined behavior!
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 
-## info
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">MACHINE_STATE</span>
+**Required permissions:** `MACHINE_STATE`
 
 ### Description
 

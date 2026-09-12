@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Runs YARA rules against files discovered via glob search with
   configurable filters and optional upload of hit context.

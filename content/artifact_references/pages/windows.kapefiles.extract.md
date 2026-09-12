@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Extracts files collected by the `Windows.KapeFiles.Targets` or
   `Windows.Triage.Targets` artifacts, and restores the original

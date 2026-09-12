@@ -1,10 +1,9 @@
 ---
 title: process_tracker
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Install a global process tracker.
 
@@ -15,19 +14,13 @@ description: |
   The tracker has two queries: a sync_query and an update_query. The update
   query resets the internal database.
 
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## process_tracker
-<span class='vql_type label label-warning pull-right page-header'>Function</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Function{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
@@ -38,7 +31,6 @@ max_size|Maximum size of process tracker LRU.|uint64
 max_expiry|Expire process records older than this much.|uint64
 enrichments|One or more VQL lambda functions that can enrich the data for the process.|list of string
 cache|The path to the cache file - if not set we use a memory based cache.|string
-
 ### Description
 
 Install a global process tracker.

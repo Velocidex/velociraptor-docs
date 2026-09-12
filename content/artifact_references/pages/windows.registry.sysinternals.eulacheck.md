@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Checks which Sysinternals tools have accepted EULAs by reading the
   `HKCU\Software\Sysinternals` registry keys.

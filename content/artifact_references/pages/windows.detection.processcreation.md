@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Deploys Sysmon and watches the Sysmon ETW provider for specific
   process creation events, which are then forwarded to the server.

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Gathers evidence of macOS autoruns by searching common persistence
   locations and uploading found files.

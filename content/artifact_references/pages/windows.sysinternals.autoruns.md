@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
+build:
+  list: never
 description: |
   Installs and runs Sysinternals `autorunsc` to enumerate autostart
   persistence mechanisms.

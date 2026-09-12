@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
+build:
+  list: never
 description: |
   This event artifact is an internal event stream over which client
   enrollments are sent. You can watch this event queue to be notified

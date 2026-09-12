@@ -1,32 +1,25 @@
 ---
 title: stat
-index: true
-noTitle: true
 sitemap:
-   disable: true
+  disable: true
 no_edit: true
+no_children: true
 description: |
   Get file information. Unlike glob() this does not support wildcards.
+build:
+  list: never
 ---
 
 
 
-<div class="vql_item"></div>
-
-
-## stat
-<span class='vql_type label label-warning pull-right page-header'>Plugin</span>
-
-
-
-<div class="vqlargs"></div>
+{{< badge >}}Plugin{{< /badge >}}
 
 Arg | Description | Type
 ----|-------------|-----
 filename|One or more files to open.|OSPath (required)
 accessor|An accessor to use.|string
 
-<span class="permission_list vql_type">Required permissions:</span><span class="permission_list linkcolour label label-important">FILESYSTEM_READ</span>
+**Required permissions:** `FILESYSTEM_READ`
 
 ### Description
 

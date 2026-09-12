@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Purges historical monitoring logs from the server filestore with
   dry-run and confirmation safety.

@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 description: |
   Monitors for Windows process creation events using WMI
   Win32_ProcessStartTrace and enriches them with parent and call chain

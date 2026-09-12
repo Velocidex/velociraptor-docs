@@ -4,6 +4,8 @@ hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
+build:
+  list: never
 description: |
   Renders the server Home page / Welcome page showing navigation links
   to common tasks and dashboards.
