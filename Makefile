@@ -37,6 +37,12 @@ clean:
 build:
 	hugo
 
+pagefind:
+	pagefind --site public
+
+site: build
+	pagefind --site public
+
 index:
 	rm -rf /tmp/index/
 	cd ./velociraptor-site-search/ && go run ./cmd/ build ../content/ /tmp/index/ && cd -

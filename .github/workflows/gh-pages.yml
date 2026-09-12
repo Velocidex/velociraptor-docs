@@ -47,6 +47,14 @@ jobs:
       - name: Build
         run: hugo
 
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: BuildSearchIndex
+        run: bun run pagefind
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         if: github.ref == 'refs/heads/master'

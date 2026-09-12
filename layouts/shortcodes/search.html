@@ -1,11 +1,28 @@
-{{/* Site-wide search page. Currently a lightweight client-side search over
-     index.json; will be replaced by the full Pagefind UI. */}}
+{{/* Site-wide search page backed by Pagefind (built by `pagefind --site public`). */}}
 <div class="search-box" data-site-search>
-  <input type="search" class="w-full rounded-md border border-neutral-300 bg-white px-4 py-2 text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
-         placeholder="Search the site"
-         aria-label="Search the site">
+  <div id="pagefind-site-search"></div>
 </div>
-<p class="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
-  Search this website by entering keywords above.
-</p>
-<script src="/js/site-search.js"></script>
+<script>
+  (function () {
+    var el = document.getElementById("pagefind-site-search");
+    if (!el) {
+      return;
+    }
+    var css = document.createElement("link");
+    css.rel = "stylesheet";
+    css.href = "/pagefind/pagefind-ui.css";
+    document.head.appendChild(css);
+
+    var script = document.createElement("script");
+    script.src = "/pagefind/pagefind-ui.js";
+    script.onload = function () {
+      new PagefindUI({
+        element: "#pagefind-site-search",
+        showSubResults: true,
+        showImages: false,
+        highlightParam: "q"
+      });
+    };
+    document.head.appendChild(script);
+  })();
+</script>

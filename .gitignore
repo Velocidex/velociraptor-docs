@@ -5,4 +5,4 @@ public/
 .wordlist.dict
 .hugo_build.lock
 .idea
-static/docs_index/
+static/docs_index/node_modules/
