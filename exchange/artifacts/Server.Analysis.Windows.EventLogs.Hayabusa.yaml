@@ -1,0 +1,180 @@
+name: Server.Analysis.Windows.EventLogs.Hayabusa
+author: Whitney Champion - bluesky @whit.zip, Eric Capuano - bluesky @eric.zip
+description: |
+  Runs the curated Hayabusa Sigma ruleset against Windows event logs
+  that were already uploaded to the server by a completed collection
+  flow, using Velociraptor's built-in Sigma engine. No Hayabusa binary
+  is deployed to the endpoint or the server - the entire analysis runs
+  in VQL on the server side.
+
+  This artifact is intended to post-process collections that upload
+  `.evtx` files, such as `Windows.KapeFiles.Targets` or
+  `Windows.Triage.Targets` (or any other collection that uploads raw
+  event logs). It copies the collected EVTX files out of the server's
+  file store into a temporary directory, then evaluates the
+  `Windows.Hayabusa.Rules` artifact over that directory.
+
+  **Prerequisite**: The curated Hayabusa Sigma package must be imported
+  into the server first so that the `Windows.Hayabusa.Rules` artifact
+  resolves. Import it using the built-in `Server.Import.CuratedSigma`
+  artifact on Velociraptor 0.74, or `Server.Import.Extras` on 0.75 and
+  later. The curated packages are published at
+  https://sigma.velocidex.com/. If the package is missing at runtime
+  this artifact logs an error and returns no rows.
+
+  This artifact can be called from within another artifact:
+
+    `SELECT * FROM Artifact.Server.Analysis.Windows.EventLogs.Hayabusa(ClientId=..., FlowId=...)`
+
+  Notes:
+
+  - Requires Velociraptor 0.74 or later.
+  - The analysis needs temporary disk space on the server roughly equal
+    to the decompressed size of the collected EVTX set. The temporary
+    directory is removed automatically when the collection completes.
+  - Uploaded files are flattened to their basename in the temporary
+    directory because the Sigma log sources read fixed channel
+    filenames directly under `ROOT` (for example `Security.evtx`).
+    Only standard-named channel files are scanned. If the same channel
+    file was uploaded more than once (for example from volume shadow
+    copies), the live-volume copy is preferred and duplicates are
+    skipped with a log message.
+  - If `security.allowed_file_accessor_prefix` is configured on the
+    server, the temporary directory must fall under an allowed prefix.
+
+  #sigma #hayabusa #evtx #triage #postprocessing
+
+type: SERVER
+
+reference:
+  - https://sigma.velocidex.com/
+  - https://github.com/Velocidex/velociraptor-docs/pull/1064
+
+required_permissions:
+  - SERVER_ADMIN
+
+parameters:
+  - name: ClientId
+    description: The client ID that the flow was collected from. Required.
+    default:
+  - name: FlowId
+    description: The flow ID of the completed collection containing uploaded EVTX files. Required.
+    default:
+  - name: EvtxRegex
+    description: Only uploaded files with paths matching this regex are analyzed.
+    type: regex
+    default: '(?i)\.evtx$'
+  - name: RuleLevel
+    description: Minimum Sigma rule level to match.
+    type: choices
+    default: Critical and High
+    choices:
+      - "Critical"
+      - "Critical and High"
+      - "Critical, High, and Medium"
+      - "Critical, High, Medium, and Low"
+      - "All"
+  - name: RuleStatus
+    description: Sigma rule status filter.
+    type: choices
+    default: Stable
+    choices:
+      - Stable
+      - Stable and Experimental
+      - Stable and Test
+      - All Rules
+  - name: RuleTitleFilter
+    description: Use this to filter only some rules to match by title.
+    type: regex
+    default: .
+  - name: DateAfter
+    description: "Search for events after this date. YYYY-MM-DDTmm:hh:ss Z"
+    type: timestamp
+  - name: DateBefore
+    description: "Search for events before this date. YYYY-MM-DDTmm:hh:ss Z"
+    type: timestamp
+
+sources:
+  - query: |
+      LET _CheckArgs <= if(condition=NOT ClientId OR NOT FlowId,
+          then=log(message="ClientId and FlowId are required parameters",
+                   level="ERROR"))
+
+      -- The curated artifact is resolved at runtime so this artifact
+      -- loads even before the curated Sigma package has been imported,
+      -- but fail loudly if it is actually missing at execution time.
+      LET HaveRules <= SELECT name
+        FROM artifact_definitions(names="Windows.Hayabusa.Rules")
+      LET _CheckRules <= if(condition=NOT HaveRules,
+          then=log(message="The Windows.Hayabusa.Rules artifact is not installed. Import the curated Sigma package first (Server.Import.CuratedSigma on 0.74, Server.Import.Extras on 0.75+). See https://sigma.velocidex.com/",
+                   level="ERROR"))
+
+      -- A temporary directory to stage the EVTX files. It is removed
+      -- automatically when the scope closes at the end of collection.
+      LET TmpDir <= tempdir()
+
+      LET Fqdn <= client_info(client_id=ClientId).os_info.fqdn
+
+      -- Enumerate the EVTX files uploaded by the flow. The vfs_path
+      -- column is a file store path spec usable with the fs accessor.
+      -- Fall back to the file store path when the original endpoint
+      -- path is not recorded in the uploads metadata.
+      LET AllEvtx <= SELECT vfs_path,
+                            client_path,
+                            file_size,
+                            basename(path=client_path || format(format="%v", args=vfs_path)) AS BaseName,
+                            client_path =~ '''(?i)GLOBALROOT|HarddiskVolumeShadowCopy''' AS IsVSS
+        FROM uploads(client_id=ClientId, flow_id=FlowId)
+        WHERE NOT Type = "idx"
+          AND (client_path || format(format="%v", args=vfs_path)) =~ EvtxRegex
+
+      -- The Sigma log sources read fixed channel filenames directly
+      -- under ROOT, so staged files are flattened to their basename.
+      -- When the same channel file was uploaded more than once (e.g.
+      -- volume shadow copies), prefer the live-volume copy.
+      LET LiveFiles <= SELECT * FROM AllEvtx WHERE NOT IsVSS GROUP BY BaseName
+      LET VSSFiles <= SELECT * FROM AllEvtx
+        WHERE IsVSS AND NOT BaseName IN LiveFiles.BaseName
+        GROUP BY BaseName
+      LET EvtxFiles <= SELECT * FROM chain(a=LiveFiles, b=VSSFiles)
+
+      LET _CheckDupes <= if(condition=len(list=AllEvtx) > len(list=EvtxFiles),
+          then=log(message=format(
+              format="Skipped %v duplicate channel file(s) with the same name - kept live-volume copies",
+              args=[len(list=AllEvtx) - len(list=EvtxFiles)])))
+
+      LET _CheckEmpty <= if(condition=NOT AllEvtx,
+          then=log(message=format(
+              format="No uploaded files matching %v found in flow %v - nothing to scan",
+              args=[EvtxRegex, FlowId])))
+
+      -- Copy each file into the temporary directory. The fs accessor
+      -- reads through the file store API and transparently decompresses
+      -- compressed uploads.
+      LET _Staged <= SELECT BaseName,
+                            file_size,
+                            copy(filename=vfs_path,
+                                 accessor="fs",
+                                 dest=TmpDir + "/" + BaseName) AS StagedPath
+        FROM EvtxFiles
+
+      SELECT * FROM if(
+          condition=ClientId AND FlowId AND HaveRules AND _Staged,
+          then={
+        SELECT ClientId,
+               FlowId,
+               Fqdn,
+               *
+        FROM collect(artifacts="Windows.Hayabusa.Rules",
+                     args=dict(`Windows.Hayabusa.Rules`=dict(
+                         ROOT=TmpDir,
+                         RuleLevel=RuleLevel,
+                         RuleStatus=RuleStatus,
+                         RuleTitleFilter=RuleTitleFilter,
+                         DateAfter=DateAfter,
+                         DateBefore=DateBefore)))
+      })
+
+column_types:
+  - name: Timestamp
+    type: timestamp

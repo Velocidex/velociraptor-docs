@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="google-site-verification" content="TWf2C5KkKfaG0pltB0jltq3yWk7WhtFKmlpUQu7ukRQ" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.166.0">
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Windows.ADCS.CertificateAuthority.EDB</title>
+
+    
+    <link href="/css/nucleus.css?1789201971" rel="stylesheet">
+    <link href="/css/font-awesome-all.min.css?1789201971" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1789201971" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1789201971" rel="stylesheet">
+    <link href="/css/auto-complete.css?1789201971" rel="stylesheet">
+    <link href="/css/theme.css?1789201971" rel="stylesheet">
+    <link href="/css/tabs.css?1789201971" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1789201971" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+      integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+      crossorigin="anonymous"
+      >
+    
+    <link href="/css/theme-mine.css?1789201971" rel="stylesheet">
+    
+    <link href="/css/dark.css?1789201971" rel="stylesheet"><link href="/css/syntax.css?1789201971" rel="stylesheet"><link href="/css/light.css?1789201971" rel="stylesheet"><link href="/css/hljs.css?1789201971" rel="stylesheet"><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1789201971" rel="stylesheet">
+
+    <script src="/js/jquery-3.3.1.min.js?1789201971"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+
+<script>
+
+
+</script>
+
+  </head>
+  <body class="" data-url="/exchange/artifacts/pages/windows.adcs.certificateauthority.edb/">
+    
+    <script src="/js/theme.js"></script>
+
+<nav id="sidebar" class=""><div id="header-wrapper">
+    <div id="header">
+      <a href="https://docs.velociraptor.app/">
+  <img class="logo dark" alt="logo dark" src="https://docs.velociraptor.app//images/VeloR7_DarkMode.svg" />
+  <img class="logo light" alt="logo light" src="https://docs.velociraptor.app//images/VeloR7_LightMode.svg" />
+</a>
+
+<div class="ThemeSelector darkmode">
+  <i class="fas fa-moon"></i>
+</div>
+
+<div class="ThemeSelector lightmode">
+  <i class="fas fa-sun"></i>
+</div>
+
+<script>
+  const regex = new RegExp('theme=darkmode');
+  if (regex.test(document.cookie)) {
+      $("body").addClass("dark").removeClass("light");
+  } else {
+      $("body").addClass("light").removeClass("dark");
+  }
+
+  $(".ThemeSelector.darkmode").on("click", function(e) {
+      $("body").addClass("dark").removeClass("light");
+      document.cookie = "theme=darkmode;path=/";
+      return false;
+  });
+
+  $(".ThemeSelector.lightmode").on("click", function(e) {
+      $("body").addClass("light").removeClass("dark");
+      document.cookie = "theme=lightmode;path=/";
+      return false;
+  });
+
+</script>
+
+    </div>
+    
+  </div>
+  
+
+    
+    
+       
+    
+
+    
+
+    <script src="/js/menu-d63701db.js" type="text/javascript"></script>
+
+    <div class="highlightable">
+      <ul class="sidemenu sidebar hidden"></ul>
+    <hr />
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://github.com/Velocidex/velociraptor"><i class='fab fa-github'></i>GitHub</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/discord/"><i class='fab fa-discord'></i>Discord</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/youtube/"><i class='fab fa-youtube'></i>YouTube</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="mailto:velociraptor-discuss@googlegroups.com"><i class='fas fa-envelope'></i>Mailing List</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.velociraptor.app/rss/"><i class='fas fa-rss'></i>RSS</a>
+              </li>
+          
+              <li>
+                  <a rel="nofollow" class="padding" href="https://docs.rapid7.com/insightidr/velociraptor-integration/"><i class='fa fa-question-circle'></i>Rapid7 Docs</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <div class="footer-copyright">Brought to you by
+  <img src="/images/Rapid7_logo.svg" alt="rapid7 logo" class="rapid7">
+  <br> <i class="fas fa-copyright"></i> 2025
+</div>
+
+    </section>
+  </div>
+</nav>
+
+<script>
+
+  findlink(window.menu, "\/exchange\/artifacts\/pages\/windows.adcs.certificateauthority.edb\/");
+
+  let menu = $(".sidemenu.hidden");
+  addToNode(menu, window.menu);
+
+  menu.find("i.fa-angle-right").each(function() {
+      $( this ).parent().parent().find("ul").hide();
+  });
+
+  
+  menu.removeClass("hidden");
+
+  
+  $(window).on('load', function(){
+      $("li.dd-item.active").each(function() {
+          $(this)[0].scrollIntoView();
+      })
+  })
+
+  menu.find("li.dd-item.active").each(function() {
+      $(this)[0].scrollIntoView();
+  })
+
+
+  menu.find("li[linkTo]").click(function(e) {
+      let target = $(this).attr("linkTo");
+      return navigateTo(target);
+  });
+
+  
+  $(document).ready(function () {
+      decorateLinks();
+  });
+
+</script>
+
+    
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable scroller">
+          
+          
+          
+          
+          
+          
+          
+             
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/Velocidex/velociraptor-docs/edit/master/content/exchange/artifacts/Windows.ADCS.CertificateAuthority.EDB.yaml" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                 
+                 
+                    <span itemprop="item"><span itemprop="name">Windows.ADCS.CertificateAuthority.EDB</span></span>
+                    <meta itemprop="position" content="1" />
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents"></nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          <div id="loading">
+            <i class="fas fa-spinner fa-spin fa-10x"></i>
+          </div>
+          
+            <h1>
+              
+              Windows.ADCS.CertificateAuthority.EDB
+            </h1>
+            
+          
+
+        
+
+
+<p>Parses the Active Directory Certificate Services (ADCS) ESE database
+directly from disk.
+Reads the CA database at C:\Windows\System32\CertLog*.edb using the
+ntfs accessor to handle the file lock while CertSvc is running.
+Returns all certificate requests with key forensic fields including
+disposition (issued/revoked/failed/pending), requester and caller
+identity, subject DN, template, timestamps, and serial number.
+Joins the Requests, Certificates, and RequestAttributes tables on
+RequestID to produce a single complete row per certificate.
+CertificateTemplate is resolved to the human-readable display name
+using a three-stage lookup:</p>
+<ol>
+<li>Display name from RequestAttributes for this RequestID</li>
+<li>Inline $RequestAttributes text CertificateTemplate:Name</li>
+<li>Raw OID from the Certificates table as last resort
+UPN is resolved with two-stage fallback:</li>
+<li>$UPN from the issued certificate (Certificates table)</li>
+<li>Requested UPN from SAN attribute (RequestAttributes table)
+Requires a build of Velociraptor compiled against the patched go-ese
+library (<a href="https://github.com/Velocidex/go-ese" target="_blank" >https://github.com/Velocidex/go-ese</a>) where DateTime columns
+are always decoded as Windows FILETIMEs regardless of column Flags.
+Without the patch, all DateTime fields return 1899-12-30.
+Transaction log recovery: the CA service buffers writes in ESE
+transaction logs. esentutl /r is used to replay those logs into a
+temp copy of the EDB before parsing, ensuring all committed rows are
+visible and matching certutil output.
+Disposition values:
+9  = Issued
+11 = Pending
+15 = Revoked
+16 = Error
+20 = Failed
+21 = Denied</li>
+</ol>
+<pre><code class="language-yaml">
+name: Windows.ADCS.CertificateAuthority.EDB
+description: |
+  Parses the Active Directory Certificate Services (ADCS) ESE database
+  directly from disk.
+  Reads the CA database at C:\Windows\System32\CertLog\*.edb using the
+  ntfs accessor to handle the file lock while CertSvc is running.
+  Returns all certificate requests with key forensic fields including
+  disposition (issued/revoked/failed/pending), requester and caller
+  identity, subject DN, template, timestamps, and serial number.
+  Joins the Requests, Certificates, and RequestAttributes tables on
+  RequestID to produce a single complete row per certificate.
+  CertificateTemplate is resolved to the human-readable display name
+  using a three-stage lookup:
+    1. Display name from RequestAttributes for this RequestID
+    2. Inline $RequestAttributes text CertificateTemplate:Name
+    3. Raw OID from the Certificates table as last resort
+  UPN is resolved with two-stage fallback:
+    1. $UPN from the issued certificate (Certificates table)
+    2. Requested UPN from SAN attribute (RequestAttributes table)
+  Requires a build of Velociraptor compiled against the patched go-ese
+  library (https://github.com/Velocidex/go-ese) where DateTime columns
+  are always decoded as Windows FILETIMEs regardless of column Flags.
+  Without the patch, all DateTime fields return 1899-12-30.
+  Transaction log recovery: the CA service buffers writes in ESE
+  transaction logs. esentutl /r is used to replay those logs into a
+  temp copy of the EDB before parsing, ensuring all committed rows are
+  visible and matching certutil output.
+  Disposition values:
+    9  = Issued
+    11 = Pending
+    15 = Revoked
+    16 = Error
+    20 = Failed
+    21 = Denied
+type: CLIENT
+
+author: Paolo Coba, Lee Kirkpatrick, Rui Ataide - GuidePoint Security DFIR
+
+required_permissions:
+  - FILESYSTEM_READ
+  - FILESYSTEM_WRITE
+  - EXECVE
+
+parameters:
+  - name: EDBGlob
+    default: C:/Windows/System32/CertLog/*.edb
+    description: Glob to locate the CA database file
+  - name: DispositionFilter
+    description: |
+      Filter by disposition value. Leave blank for all.
+      Common values: 9=Issued, 15=Revoked, 20=Failed, 11=Pending
+    type: int
+  - name: RequesterRegex
+    default: .
+    description: Regex to filter on RequesterName or CallerName
+    type: regex
+  - name: SubjectRegex
+    default: .
+    description: Regex to filter on DistinguishedName or CommonName
+    type: regex
+  - name: TemplateRegex
+    default: .
+    description: Regex to filter on CertificateTemplate (display name or OID)
+    type: regex
+  - name: DateAfter
+    description: Only return requests submitted after this date (ISO8601, e.g. 2026-01-01)
+    type: timestamp
+  - name: DateBefore
+    description: Only return requests submitted before this date (ISO8601, e.g. 2026-12-31)
+    type: timestamp
+
+sources:
+  - precondition: |
+      SELECT * FROM wmi(
+        query="SELECT * FROM Win32_Service WHERE Name='CertSvc'",
+        namespace="root/CIMV2")
+    query: |
+      LET DispositionLookup &lt;= dict(
+        `9`  = "Issued",
+        `11` = "Pending",
+        `15` = "Revoked",
+        `16` = "Error",
+        `20` = "Failed",
+        `21` = "Denied")
+      LET edb_files = SELECT OSPath
+        FROM glob(globs=EDBGlob, accessor="ntfs")
+        WHERE NOT OSPath =~ "(?i)tmp\\.edb$"
+      LET work_dirs &lt;= SELECT
+          OSPath AS OriginalPath,
+          dirname(path=OSPath) AS CertLogDir,
+          basename(path=OSPath) AS EDBName,
+          tempdir(remove_last=TRUE) AS TempDir
+        FROM edb_files
+      LET copied_edbs &lt;= SELECT
+          OriginalPath, CertLogDir, EDBName, TempDir,
+          copy(filename=OriginalPath,
+               accessor="ntfs",
+               dest=TempDir + "\\" + EDBName,
+               create_directories=TRUE) AS CopiedEDB
+        FROM work_dirs
+      LET copied_chk &lt;= SELECT
+          OriginalPath, CertLogDir, EDBName, TempDir,
+          copy(filename=CertLogDir + "\\edb.chk",
+               accessor="ntfs",
+               dest=TempDir + "\\edb.chk") AS CopiedChk
+        FROM copied_edbs
+      LET copied_jfm &lt;= SELECT
+          OriginalPath, CertLogDir, EDBName, TempDir,
+          copy(filename=CertLogDir + "\\" + regex_replace(
+               source=EDBName, re="\\.edb$", replace=".jfm"),
+               accessor="ntfs",
+               dest=TempDir + "\\" + regex_replace(
+               source=EDBName, re="\\.edb$", replace=".jfm")) AS CopiedJfm
+        FROM copied_chk
+      LET copied_logs &lt;= SELECT OriginalPath, CertLogDir, EDBName, TempDir
+        FROM foreach(
+          row=copied_jfm,
+          query={
+            SELECT OriginalPath, CertLogDir, EDBName, TempDir,
+              copy(filename=OSPath,
+                   accessor="ntfs",
+                   dest=TempDir + "\\" + basename(path=OSPath)) AS CopiedLog
+            FROM glob(
+              globs=CertLogDir + "\\edb*.log",
+              accessor="ntfs")
+          })
+      LET deduped_logs &lt;= SELECT OriginalPath, TempDir, EDBName
+        FROM copied_logs
+        GROUP BY OriginalPath
+      -- Run esentutl soft recovery to replay transaction logs, ensuring rows not yet checkpointed to the EDB are visible.
+      LET recovered &lt;= SELECT
+          OriginalPath,
+          TempDir + "\\" + EDBName AS RecoveredEDB
+        FROM foreach(
+          row=deduped_logs,
+          query={
+            SELECT OriginalPath, TempDir, EDBName,
+                   Stdout, ReturnCode
+            FROM execve(argv=[
+              "esentutl.exe", "/r", "edb",
+              "/l", TempDir,
+              "/s", TempDir,
+              "/d", TempDir],
+              sep="\n")
+          })
+        GROUP BY OriginalPath
+      LET req_attrs &lt;= SELECT RequestID,
+          `$AttributeName`  AS AttrName,
+          `$AttributeValue` AS AttrValue
+        FROM foreach(
+          row=recovered,
+          query={
+            SELECT * FROM parse_ese(
+              file=RecoveredEDB,
+              table="RequestAttributes")
+          })
+        WHERE `$AttributeName` = "CertificateTemplate"
+           OR `$AttributeName` = "SAN"
+      LET attr_lookup &lt;= to_dict(item={
+        SELECT format(format="%d", args=RequestID) AS _key,
+               AttrValue AS _value
+        FROM req_attrs
+        WHERE AttrName = "CertificateTemplate"
+      })
+      LET san_lookup &lt;= to_dict(item={
+        SELECT format(format="%d", args=RequestID) AS _key,
+               regex_replace(
+                 source=AttrValue,
+                 re="(?i).*upn=([^,\n]+).*",
+                 replace="$1") AS _value
+        FROM req_attrs
+        WHERE AttrName = "SAN" AND AttrValue =~ "(?i)upn="
+      })
+      LET inline_attrs &lt;= SELECT RequestID,
+          regex_replace(
+            source=get(field="$RequestAttributes"),
+            re="(?ms).*CertificateTemplate:([^\n\\\\]+).*",
+            replace="$1") AS TemplateName
+        FROM foreach(
+          row=recovered,
+          query={
+            SELECT * FROM parse_ese(
+              file=RecoveredEDB,
+              table="Requests")
+          })
+        WHERE get(field="$RequestAttributes") =~ "CertificateTemplate:"
+          AND NOT get(item=attr_lookup,
+                      member=format(format="%d", args=RequestID))
+      LET inline_lookup &lt;= to_dict(item={
+        SELECT format(format="%d", args=RequestID) AS _key,
+               TemplateName AS _value
+        FROM inline_attrs
+      })
+      -- Load Certificates table from the recovered EDB.
+      -- With the patched go-ese, DateTime columns (NotBefore, NotAfter)
+      -- are correct time.Time values decoded as Windows FILETIMEs.
+      LET certs &lt;= SELECT
+          format(format="%d", args=RequestID)  AS _key,
+          get(field="$CertificateTemplate")    AS CertificateTemplateOID,
+          get(field="$SerialNumber")            AS SerialNumber,
+          get(field="$UPN")                     AS UPN,
+          NotBefore                             AS NotBefore,
+          NotAfter                              AS NotAfter
+        FROM foreach(
+          row=recovered,
+          query={
+            SELECT * FROM parse_ese(
+              file=RecoveredEDB,
+              table="Certificates")
+          })
+      LET cert_lookup &lt;= to_dict(item={
+        SELECT _key,
+               dict(
+                 CertificateTemplateOID=CertificateTemplateOID,
+                 SerialNumber=SerialNumber,
+                 UPN=UPN,
+                 NotBefore=NotBefore.Unix,
+                 NotAfter=NotAfter.Unix) AS _value
+        FROM certs
+      })
+      LET lookup(rid) = get(
+        item=cert_lookup,
+        member=format(format="%d", args=rid))
+      -- Resolve template name
+      LET resolve_template(rid) =
+        if(condition=get(item=attr_lookup, member=format(format="%d", args=rid)),
+           then=get(item=attr_lookup, member=format(format="%d", args=rid)),
+           else=if(condition=get(item=inline_lookup, member=format(format="%d", args=rid)),
+                  then=get(item=inline_lookup, member=format(format="%d", args=rid)),
+                  else=get(item=cert_lookup,
+                           member=format(format="%d", args=rid)).CertificateTemplateOID))
+      -- Resolve UPN
+      LET resolve_upn(rid) =
+        if(condition=get(item=cert_lookup, member=format(format="%d", args=rid)).UPN,
+           then=get(item=cert_lookup, member=format(format="%d", args=rid)).UPN,
+           else=get(item=san_lookup, member=format(format="%d", args=rid)))
+      -- Suppress zero/unset FILETIME values to NULL
+      LET safe_ts(v) = if(condition=v AND v &gt; 0,
+                          then=timestamp(epoch=v),
+                          else=NULL)
+      SELECT
+        RequestID,
+        get(item=DispositionLookup,
+            member=str(str=Disposition)) || str(str=Disposition) AS Disposition,
+        get(field="$DispositionMessage")  AS DispositionMessage,
+        `$RequesterName`                  AS RequesterName,
+        `$CallerName`                     AS CallerName,
+        SubmittedWhen,
+        ResolvedWhen,
+        get(field="RevokedWhen")          AS RevokedWhen,
+        get(field="RevokedReason")        AS RevokedReason,
+        get(field="$DistinguishedName")   AS DistinguishedName,
+        get(field="$CommonName")          AS CommonName,
+        resolve_template(rid=RequestID)            AS CertificateTemplate,
+        lookup(rid=RequestID).SerialNumber         AS SerialNumber,
+        resolve_upn(rid=RequestID)                 AS UPN,
+        safe_ts(v=lookup(rid=RequestID).NotBefore) AS NotBefore,
+        safe_ts(v=lookup(rid=RequestID).NotAfter)  AS NotAfter,
+        OriginalPath                               AS DatabasePath
+      FROM foreach(
+        row=recovered,
+        query={
+          SELECT *, OriginalPath, RecoveredEDB
+          FROM parse_ese(file=RecoveredEDB, table="Requests")
+        })
+      WHERE
+        `$RequesterName` =~ RequesterRegex
+        AND get(field="$DistinguishedName") =~ SubjectRegex
+        AND resolve_template(rid=RequestID) =~ TemplateRegex
+        AND if(condition=DispositionFilter,
+               then=Disposition = DispositionFilter,
+               else=TRUE)
+        AND if(condition=DateAfter,
+               then=SubmittedWhen &gt; DateAfter,
+               else=TRUE)
+        AND if(condition=DateBefore,
+               then=SubmittedWhen &lt; DateBefore,
+               else=TRUE)
+
+</code></pre>
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1789201971"></script>
+    <script src="/js/perfect-scrollbar.min.js?1789201971"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1789201971"></script>
+    <script src="/js/jquery.sticky.js?1789201971"></script>
+    <script src="/js/featherlight.min.js?1789201971"></script>
+    <script src="/js/highlight.min.js?1789201971"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
+
+    <script src="/js/modernizr.custom-3.6.0.js?1789201971"></script>
+    <script src="/js/learn.js?1789201971"></script>
+    <script src="/js/hugo-learn.js?1789201971"></script>
+    
+    
+
+  </body>
+</html>
+
