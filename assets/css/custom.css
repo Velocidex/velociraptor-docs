@@ -1,0 +1,89 @@
+/* Custom styles for the Velociraptor documentation (Blowfish).
+   Plain CSS; gets concatenated + minified into the main bundle by
+   partials/head.html. Dark mode via the `.dark` class on <html>. */
+
+/* Hidden easter egg in the artifact exchange "Share your own Artifact" box. */
+p.egg {
+  display: none;
+}
+
+/* Visual layout for the generated config reference page
+   (docs/deployment/references) — was styled by the deleted learn-theme CSS. */
+.document-comment,
+.item-comment {
+  margin-top: 20px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: rgb(var(--color-neutral-100) / 60%);
+  color: rgb(var(--color-neutral-900));
+}
+
+.dark .document-comment,
+.dark .item-comment {
+  background: rgb(var(--color-neutral-800) / 60%);
+  color: rgb(var(--color-neutral-100));
+}
+
+.item-name {
+  display: inline-block;
+  margin-top: 12px;
+}
+
+.category-icon {
+  margin: 0 6px;
+}
+
+.reference-key {
+  padding-right: 1ex;
+}
+
+.reference-key,
+.reference-value-sequence,
+.reference-value-mapping {
+  display: inline;
+}
+
+.reference-value-mapping,
+.reference-value-sequence {
+  color: rgb(var(--color-neutral-500));
+}
+
+.dark .reference-value-mapping,
+.dark .reference-value-sequence {
+  color: rgb(var(--color-neutral-400));
+}
+
+.reference-document {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", monospace;
+  font-size: 0.95em;
+}
+
+.reference-document ul {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0.5em;
+}
+
+.bullet-placeholder {
+  padding: 10px;
+  display: inline;
+}
+
+.anchorlink {
+  float: right;
+  padding-right: 20px;
+  color: rgb(var(--color-neutral-500));
+}
+
+.dark .anchorlink {
+  color: rgb(var(--color-neutral-400));
+}
+
+.multiline-value {
+  display: block;
+  unicode-bidi: embed;
+  font-family: inherit;
+  white-space: pre;
+  padding-left: 40px;
+}

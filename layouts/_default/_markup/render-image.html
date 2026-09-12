@@ -37,7 +37,7 @@
   <figcaption>
     <a class="image-link"
        target="_blank" rel="noopener noreferrer"
-       href="{{ $src }}"><i class="fa fa-download"></i></a>
+       href="{{ $src }}">{{ partial "icon.html" "download" }}</a>
     {{ $caption }}
   </figcaption>
 </figure>
@@ -65,7 +65,7 @@
     <a class="image-link"
        target="_blank" rel="noopener noreferrer"
        href="{{ $src }}">
-      <i class="fa fa-download"></i></a>
+      {{ partial "icon.html" "download" }}</a>
     {{ $caption }}
   </figcaption>
 </figure>
