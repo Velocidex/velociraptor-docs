@@ -168,7 +168,8 @@ Use backticks for `inline code` and triple backticks for blocks.
 
 We currently support `browser`, `python`, `yaml`, `sql`, `json`,
 `bash`, `powershell`, `vql`, `text`, `shell` syntax highlighting via
-the `highlight.js` highlighter.
+Hugo's built-in Chroma highlighter (the `vql` tag is aliased to the
+`sql` lexer since VQL is SQL-derived).
 
 ###### VQL example
 

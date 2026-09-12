@@ -118,7 +118,8 @@ necessary to use quotes around the term.
 
 We currently support `browser`, `python`, `yaml`, `sql`, `json`,
 `bash`, `powershell`, `vql`, `text`, `shell` syntax highlighting via
-the `highlight.js` highlighter.
+Hugo's built-in Chroma highlighter (the `vql` tag is aliased to the
+`sql` lexer since VQL is SQL-derived).
 
 Prefer the `vql` syntax highlighting tag for VQL code blocks over `sql`,
 although they are similar.

@@ -14,7 +14,7 @@ description: |
 
 This guide will help you get your local docs development environment
 up and running with [Hugo](https://gohugo.io), which is the
-open-source static site generator that we use to built this
+open-source static site generator that we use to build this
 documentation site.
 
 All the docs are written in markdown and Hugo supports the Commonmark
@@ -37,6 +37,19 @@ installed on your machine.
 * **Windows:** `choco install hugo-extended`
 * **macOS:** `brew install hugo`
 * **Linux:** `sudo apt install hugo`
+
+The site is built with the
+[Blowfish theme](https://blowfish.page/), which is committed into this
+repository as a Hugo module (_vendor/ directory), so no additional
+installation is needed to run the development server. However, the
+[`velociraptor-site-search`](https://github.com/Velocidex/velociraptor-site-search)
+and [`.github/vale`](https://github.com/Velocidex/velociraptor-vale)
+git `submodules` are used by the build scripts and linting respectively.
+If they are missing you can pull them in with:
+
+```bash
+git submodule update --init --remote --recursive
+```
 
 ## 2. Create a fork of the velociraptor-docs repo and clone it locally
 
