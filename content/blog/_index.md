@@ -18,4 +18,4 @@ description: |
 
 <div style="padding-top: 50px;"></div>
 
-{{% blog %}}
+{{< blog >}}

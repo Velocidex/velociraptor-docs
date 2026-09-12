@@ -50,4 +50,4 @@ can access in the sidebar](/vql_reference/popular/).
 
 {{% /expand %}}
 
-{{% reference %}}
+{{< reference >}}

@@ -1,41 +1,11 @@
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js">
-</script>
-
-<div class="search-box">
-<div class="input-group">
-  <span class="input-group-addon" id="prev-page"><i class="fas fa-arrow-left"></i></span>
-  <span class="input-group-addon" id="start-count"></span>
-  <input type="text" id="myInput" onkeyup="doSearchDelay()" class="form-control" placeholder="Search site" aria-describedby="basic-addon2">
-  <span class="input-group-addon" id="page-count"></span>
-  <span class="input-group-addon" id="next-page"><i class="fas fa-arrow-right"></i></span>
+{{/* Site-wide search page. Currently a lightweight client-side search over
+     index.json; will be replaced by the full Pagefind UI. */}}
+<div class="search-box" data-site-search>
+  <input type="search" class="w-full rounded-md border border-neutral-300 bg-white px-4 py-2 text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
+         placeholder="Search the site"
+         aria-label="Search the site">
 </div>
-<div class="search-shortcuts">
-  <a class="space tag" onclick="searchShortcutTag('Blog')">
-    <i class="linkcolour label label-success">Blog</i></a>
-  <a class="space tag" onclick="searchShortcutTag('Docs')">
-    <i class="linkcolour label label-success">Docs</i></a>
-  <a class="space tag" onclick="searchShortcutTag('KB')">
-    <i class="linkcolour label label-success">KB</i></a>
-  <a class="space tag" onclick="searchShortcutTag('Artifacts')">
-    <i class="linkcolour label label-success">Artifacts</i></a>
-  <a class="space tag" onclick="searchShortcutTag('VQLReference')">
-    <i class="linkcolour label label-success">VQLReference</i></a>
-  <a class="space tag" onclick="searchShortcutMust()">
-    <i class="linkcolour label label-success">Must Contain All terms</i></a>
-
-</div>
-</div>
-
-<div class="search_results search-pad">
-Search this website by entering keywords above.
-</div>
-
-<script>
-  searchUrl = "{{ .Site.Params.searchURL }}";
-
-  initSearch();
-  $("#next-page").click(SearchPageForward);
-  $("#prev-page").click(SearchPageBack);
-  $("#top-bar").addClass("hidden");
-</script>
+<p class="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
+  Search this website by entering keywords above.
+</p>
+<script src="/js/site-search.js"></script>

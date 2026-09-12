@@ -1,99 +1,69 @@
-{{ $_hugo_config := `{ "version": 1 }` }}
-{{ $showhidden := .Get "showhidden"}}
-{{ $style :=  .Get "style" | default "li" }}
-{{ $depth :=  .Get "depth" | default 1 }}
-{{ $withDescription :=  .Get "description" | default false }}
-{{ $sortTerm :=  .Get "sort" | default "Weight" }}
+{{- /* Port of the learn-theme children shortcode: lists child pages of the
+       current section. Default style renders Blowfish-styled link tiles;
+       style="hN" preserves the old heading-based rendering (used for TOC). */ -}}
+{{- $_hugo_config := `{ "version": 1 }` -}}
+{{- $showhidden := .Get "showhidden" -}}
+{{- $style := .Get "style" | default "li" -}}
+{{- $depth := .Get "depth" | default 1 -}}
+{{- $withDescription := .Get "description" | default false -}}
+{{- $sortTerm := .Get "sort" | default "Weight" -}}
 
-<ul class="children children-{{$style}}">
-	{{ .Scratch.Set "pages" .Page.Pages }}
+{{- $pages := .Page.Pages -}}
+{{- if .Page.IsHome -}}
+  {{- $rootPage := where .Page.Pages "Dir" "" -}}
+  {{- $pages = .Page.Sections | union $rootPage -}}
+{{- else if .Page.Sections -}}
+  {{- $pages = .Page.Pages | union .Page.Sections -}}
+{{- end -}}
 
-	{{if .Page.IsHome}}
-		<!-- Add pages that are in root dir -->
-		{{ $rootPage := where .Page.Pages "Dir" "" }}
-		{{ .Scratch.Set "pages" (.Page.Sections | union $rootPage)}}
-	{{else}}
-		{{ if .Page.Sections}}
-			{{ .Scratch.Set "pages" (.Page.Pages | union .Page.Sections) }}
-		{{end}}
-	{{end}}
+{{- $sorted := $pages -}}
+{{- if eq $sortTerm "Name" }}{{ $sorted = $pages.ByTitle }}
+{{- else if eq $sortTerm "PublishDate" }}{{ $sorted = $pages.ByPublishDate }}
+{{- else if eq $sortTerm "Date" }}{{ $sorted = $pages.ByDate }}
+{{- else if eq $sortTerm "Length" }}{{ $sorted = $pages.ByLength }}
+{{- else if eq $sortTerm "Weight" }}{{ $sorted = $pages.ByWeight }}
+{{- end -}}
 
-	{{ $pages := (.Scratch.Get "pages") }}
-
-	{{if eq $sortTerm "Weight"}}
-		{{template "childs" dict "menu" $pages.ByWeight "style" $style "showhidden" $showhidden "count" 1 "depth" $depth "pages" .Site.Pages "description" $withDescription "sortTerm" $sortTerm}}
-	{{else if eq $sortTerm "Name"}}
-		{{template "childs" dict "menu" $pages.ByTitle "style" $style "showhidden" $showhidden "count" 1 "depth" $depth "pages" .Site.Pages "description" $withDescription "sortTerm" $sortTerm}}
-	{{else if eq $sortTerm "PublishDate"}}
-		{{template "childs" dict "menu" $pages.ByPublishDate "style" $style "showhidden" $showhidden "count" 1 "depth" $depth "pages" .Site.Pages "description" $withDescription "sortTerm" $sortTerm}}
-	{{else if eq $sortTerm "Date"}}
-		{{template "childs" dict "menu" $pages.ByDate "style" $style "showhidden" $showhidden "count" 1 "depth" $depth "pages" .Site.Pages "description" $withDescription "sortTerm" $sortTerm}}
-	{{else if eq $sortTerm "Length"}}
-		{{template "childs" dict "menu" $pages.ByLength "style" $style "showhidden" $showhidden "count" 1 "depth" $depth "pages" .Site.Pages "description" $withDescription "sortTerm" $sortTerm}}
-	{{else}}
-		{{template "childs" dict "menu" $pages "style" $style "showhidden" $showhidden "count" 1 "depth" $depth "pages" .Site.Pages "description" $withDescription "sortTerm" $sortTerm}}
-	{{end}}
-</ul>
+{{- if hasPrefix $style "h" }}
+  {{ template "childs" dict "menu" $sorted "style" $style "showhidden" $showhidden "count" 1 "depth" $depth "description" $withDescription }}
+{{- else }}
+<div class="children children-{{ $style }} grid gap-4">
+  {{ template "childs" dict "menu" $sorted "style" $style "showhidden" $showhidden "count" 1 "depth" $depth "description" $withDescription }}
+</div>
+{{- end }}
 
 {{ define "childs" }}
-	{{ range .menu }}
-		{{ if and .Params.hidden (not $.showhidden) }}
-		{{else}}
-			{{if not .IsHome}}
-				{{if hasPrefix $.style "h"}}
-					{{$num := sub ( int (trim $.style "h") ) 1 }}
-					{{$numn := add $num $.count }}
-
-{{(printf "<h%d>" $numn)|safeHTML}}
-<a href="{{.RelPermalink}}" >{{ .Title }}</a>
-{{(printf "</h%d>" $numn)|safeHTML}}
-
-				{{else}}
-{{(printf "<%s>" $.style)|safeHTML}}
-<a href="{{.RelPermalink}}" >{{ .Title }}</a>
-{{(printf "</%s>" $.style)|safeHTML}}
-				{{end}}
-
-				{{if $.description}}
-					{{if .Summary}}
-<p>{{.Summary}}</p>
-					{{else}}
-<p>{{.Description}}</p>
-					{{end}}
-				{{end}}
-			{{end}}
-			{{ if lt $.count $.depth}}
-
-				{{if eq $.style "li"}}
-<ul>
-				{{end}}
-
-				{{ if .Sections}}
-					{{ .Scratch.Set "pages" (.Pages | union .Sections) }}
-				{{else}}
-					{{ .Scratch.Set "pages" .Pages }}
-				{{end}}
-
-				{{ $pages := (.Scratch.Get "pages") }}
-
-				{{if eq $.sortTerm "Weight"}}
-					{{template "childs" dict "menu" $pages.ByWeight  "style" $.style "showhidden" $.showhidden "count" (add $.count 1) "depth" $.depth "pages" $.pages "description" $.description "sortTerm" $.sortTerm}}
-				{{else if eq $.sortTerm "Name"}}
-					{{template "childs" dict "menu" $pages.ByTitle  "style" $.style "showhidden" $.showhidden "count" (add $.count 1) "depth" $.depth "pages" $.pages "description" $.description "sortTerm" $.sortTerm}}
-				{{else if eq $.sortTerm "PublishDate"}}
-					{{template "childs" dict "menu" $pages.ByPublishDate  "style" $.style "showhidden" $.showhidden "count" (add $.count 1) "depth" $.depth "pages" $.pages "description" $.description "sortTerm" $.sortTerm}}
-				{{else if eq $.sortTerm "Date"}}
-					{{template "childs" dict "menu" $pages.ByDate  "style" $.style "showhidden" $.showhidden "count" (add $.count 1) "depth" $.depth "pages" $.pages "description" $.description "sortTerm" $.sortTerm}}
-				{{else if eq $.sortTerm "Length"}}
-					{{template "childs" dict "menu" $pages.ByLength  "style" $.style "showhidden" $.showhidden "count" (add $.count 1) "depth" $.depth "pages" $.pages "description" $.description "sortTerm" $.sortTerm}}
-				{{else}}
-					{{template "childs" dict "menu" $pages  "style" $.style "showhidden" $.showhidden "count" (add $.count 1) "depth" $.depth "pages" $.pages "description" $.description "sortTerm" $.sortTerm}}
-				{{end}}
-
-				{{if eq $.style "li"}}
-</ul>
-				{{end}}
-			{{end}}
-		{{end}}
-	{{end}}
-{{end}}
+  {{- range .menu -}}
+    {{- if and .Params.hidden (not $.showhidden) -}}
+    {{- else -}}
+      {{- if not .IsHome -}}
+        {{- if hasPrefix $.style "h" -}}
+          {{- $numn := add (sub (int (trim $.style "h") ) 1) $.count -}}
+          <h{{ $numn }}><a href="{{ .RelPermalink }}" class="decoration-primary-500 hover:underline hover:underline-offset-2">{{ .Title }}</a></h{{ $numn }}>
+        {{- else -}}
+          <a href="{{ .RelPermalink }}"
+             class="group relative flex items-center justify-between gap-4 rounded-lg border border-neutral-300/80 bg-white/60 px-5 py-4 shadow-sm backdrop-blur-xl transition duration-200 hover:border-primary-300 hover:shadow-xl dark:border-neutral-800 dark:bg-neutral-900/50 dark:hover:border-primary-700">
+            <span class="block">
+              <span class="block text-base font-bold text-neutral-800 dark:text-neutral-200">{{ .Title }}</span>
+              {{- if $.description -}}
+                {{- $desc := "" -}}
+                {{- if .Summary }}{{ $desc = .Summary | plainify }}{{ else }}{{ $desc = .Description | plainify }}{{ end -}}
+                {{- if $desc }}<span class="block mt-1 text-sm leading-6 text-neutral-600 dark:text-neutral-400">{{ $desc }}</span>{{ end -}}
+              {{- end -}}
+            </span>
+            <span class="shrink-0 text-primary-500">{{ partial "icon.html" "chevron-right" }}</span>
+          </a>
+        {{- end -}}
+      {{- end -}}
+      {{- if lt $.count $.depth -}}
+        {{- $sub := .Pages -}}
+        {{- if .Sections }}{{ $sub = .Pages | union .Sections }}{{ end -}}
+        {{- if gt (len $sub) 0 -}}
+          <div class="{{ if eq $.style "li" }}ml-2{{ end }}">
+            {{ template "childs" dict "menu" $sub "style" $.style "showhidden" $.showhidden "count" (add $.count 1) "depth" $.depth "description" $.description }}
+          </div>
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end }}

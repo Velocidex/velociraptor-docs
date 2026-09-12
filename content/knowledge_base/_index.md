@@ -31,4 +31,4 @@ to achieve?"
 Search the below questions to read a short knowledge base article of
 how to answer the question.
 
-{{% knowledge_base %}}
+{{< knowledge_base >}}

@@ -7,4 +7,4 @@ weight: 400
 pre: "<i class='fas fa-search'></i>"
 ---
 
-{{% search %}}
+{{< search >}}

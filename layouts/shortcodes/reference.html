@@ -1,20 +1,8 @@
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js">
-</script>
-
-<div class="search-box">
-<div class="input-group">
-  <input type="text" id="myInput" onkeyup="doSearchVQL()" class="form-control"
+{{/* Self-contained VQL reference search over /reference/data.json.
+     Styled with Blowfish/Tailwind classes; logic in static/js/section-search.js. */}}
+<div class="search-box" data-section-search="vql">
+  <input type="search" class="w-full rounded-md border border-neutral-300 bg-white px-4 py-2 text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
          placeholder="Search for VQL plugins, functions, or accessors"
-         aria-describedby="basic-addon2">
-  <span class="input-group-addon" id="basic-addon2"><i class="fas fa-search"></i></span>
+         aria-label="Search for VQL plugins, functions, or accessors">
 </div>
-</div>
-
-<div class="search_results" style="padding-top: 0px;"></div>
-
-<script>
-  initVQLReference();
-
-  $("#top-bar").addClass("hidden");
-  $("#body-inner").addClass("offset");
-</script>
+<script src="/js/section-search.js"></script>

@@ -13,8 +13,8 @@
   Published on {{ printf "%04d-%02d-%02d" .Page.Date.Year .Page.Date.Month .Page.Date.Day }}
 </span>
 <span class="pull-right">
-  <a href="{{ $file }}" download target="_blank" class="redirected">
-    <i class="fa-solid fa-download"></i>
+  <a href="{{ $file }}" download target="_blank">
+    {{ partial "icon.html" "download" }}
   </a>
   <a href="https://vulnogram.org/#editor" target="_blank" >Vulnogram</a>
 </span>

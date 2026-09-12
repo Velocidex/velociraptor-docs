@@ -93,4 +93,4 @@ into new artifacts using the GUI's
 
 {{% /expand %}}
 
-{{% exchange %}}
+{{< exchange >}}

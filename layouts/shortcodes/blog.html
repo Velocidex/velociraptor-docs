@@ -1,18 +1,7 @@
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js">
-</script>
-
-<div class="search-box">
-<div class="input-group">
-  <input type="text" id="myInput" onkeyup="doSearchBlog()" class="form-control" placeholder="Search blog posts" aria-describedby="basic-addon2">
-  <span class="input-group-addon" id="basic-addon2"><i class="fas fa-search"></i></span>
+{{/* Self-contained blog search over /blog/data.json. */}}
+<div class="search-box" data-section-search="blog">
+  <input type="search" class="w-full rounded-md border border-neutral-300 bg-white px-4 py-2 text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
+         placeholder="Search blog posts"
+         aria-label="Search blog posts">
 </div>
-</div>
-
-<div class="search_results"></div>
-
-<script>
-  initBlog();
-
- $("#top-bar").addClass("hidden");
-</script>
+<script src="/js/section-search.js"></script>

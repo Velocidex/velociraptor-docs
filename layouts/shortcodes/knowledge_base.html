@@ -1,85 +1,54 @@
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js">
-</script>
-
-<div class="row searchbar">
-  <div class="input-group col-lg-8 pull-left">
-    <input type="text" id="myInput" onkeyup="doSearchKB()" class="form-control"
-           placeholder="Search the knowledge base" aria-describedby="basic-addon2">
-    <span class="input-group-addon" id="basic-addon2"><i class="fas fa-search"></i></span>
-  </div>
-  <div class="col-lg-3 pull-right exchange-contribute">
-    <button type="button" class="btn btn-default btn-lg pull-right"
-            data-toggle="modal" data-target="#myModal">
-      <i class="fas fa-external-link-alt"></i>
-      Share your own tip
-    </button>
-  </div>
+{{/* Self-contained knowledge base search over /kb/data.json. */}}
+<div class="search-box" data-section-search="kb">
+  <input type="search" class="w-full rounded-md border border-neutral-300 bg-white px-4 py-2 text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
+         placeholder="Search the knowledge base"
+         aria-label="Search the knowledge base">
 </div>
 
-<!-- Modal -->
-<div class="modal fade E" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog E wide" role="document">
-    <div class="modal-content E">
-      <div class="modal-header E">
-        <button type="button" class="close"
-                data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title E">Share a tip</h4>
-      </div>
-      <div class="modal-body E">
-        <p>
-          A knowledge base tip aims to help users answer a specific
-          question.
-        </p>
-        <p>
-          Clicking "Contribute" below will allow you to add a new kb
-          article to this repository. You will be taken to GitHub
-          where you can create a new article using the knowledge base
-          template described below.
-        </p>
-        <p>
-          Please provide a name for the file above prior to preparing
-          a pull request. This file is in markdown
-          format.  <b>Remember</b>: The aim of this article is to
-          quickly answer an immediate need for users who may not be
-          familiar with Velociraptor or DFIR in general. It should
-          have pointers for further research or links to other
-          knowledge base articles.
-        </p>
-        <p>
-          <pre class="code">
-# The article should begin with a title (start with #)...
-<br>
-The title should be in the form of a question or task - for example: <b>"How do I search for malicious downloaded files?"</b> (The website will use the first heading as the searchable title.)
+<details class="my-8 rounded-md border border-neutral-300/80 bg-white/60 px-4 py-3 dark:border-neutral-700 dark:bg-neutral-900/50">
+  <summary class="cursor-pointer font-bold text-primary-600 hover:text-primary-500 dark:text-primary-400">Share your own tip</summary>
+  <div class="mt-3 text-sm">
+    <p>
+      A knowledge base tip aims to help users answer a specific question.
+    </p>
+    <p>
+      Clicking "Contribute" below will allow you to add a new kb article to
+      this repository. You will be taken to GitHub where you can create a new
+      article using the knowledge base template described below.
+    </p>
+    <p>
+      Please provide a name for the file above prior to preparing a pull
+      request. This file is in markdown format. <b>Remember:</b> The aim of
+      this article is to quickly answer an immediate need for users who may
+      not be familiar with Velociraptor or DFIR in general. It should have
+      pointers for further research or links to other knowledge base
+      articles.
+    </p>
+    <pre><code># The article should begin with a title (start with #)...
 
-The first paragraph after the title should be a short description of the kb article. It will be searchable on the main knowledge base page.
+The title should be in the form of a question or task - for example:
+<b>"How do I search for malicious downloaded files?"</b> (The website will use
+the first heading as the searchable title.)
 
-The rest of the article is normal markdown. You can also include screenshots by simply pasting them into the github editor.
+The first paragraph after the title should be a short description of the kb
+article. It will be searchable on the main knowledge base page.
 
-You can tag your tip using the following syntax. A line starting with Tags: will be removed from the final text. For example:
+The rest of the article is normal markdown. You can also include screenshots
+by simply pasting them into the github editor.
+
+You can tag your tip using the following syntax. A line starting with Tags:
+will be removed from the final text. For example:
 
 Tags: #deployment, #vql
 
-Once you finish writing the article, simply save it to a local branch and send a pull request.
-          </pre>
-        </p>
-      </div>
-      <div class="modal-footer">
-        <a href="https://github.com/Velocidex/velociraptor-docs/new/master/content/knowledge_base/tips"
-           target="_blank"
-           class="btn btn-primary btn-lg right">
-          <i class="fab fa-github"></i>&nbsp;Contribute
-        </a>
-      </div>
-    </div>
+Once you finish writing the article, simply save it to a local branch and
+send a pull request.</code></pre>
+    <a href="https://github.com/Velocidex/velociraptor-docs/new/master/content/knowledge_base/tips"
+       target="_blank" rel="noopener"
+       class="inline-flex items-center gap-2 rounded-md bg-primary-600 px-4 py-2 font-bold text-white hover:bg-primary-500">
+      Contribute
+    </a>
   </div>
-</div>
+</details>
 
-<hr />
-<div class="row search_results"></div>
-
-<script>
-  initKB();
-</script>
+<script src="/js/section-search.js"></script>
