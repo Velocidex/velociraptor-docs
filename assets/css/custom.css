@@ -189,6 +189,32 @@ html.dark .platform svg path {
   margin: 2rem 0;
 }
 
+/* --- Sidebar / page width: widen the left sidebar 25% (16rem→20rem) ---
+   The page container grows by the same 4rem (80→84rem) so the article
+   column and right TOC widths are unchanged; the sidebar absorbs the
+   extra space from both outer margins equally.  Navbar and footer are
+   bumped to match so the header/content edges stay aligned. */
+:root {
+  --hextra-max-page-width: 84rem;
+  --hextra-max-navbar-width: 84rem;
+  --hextra-max-footer-width: 84rem;
+}
+
+@media (min-width: 768px) {
+  .hextra-sidebar-container {
+    width: 20rem;
+  }
+}
+
+/* Sidebar menu item text: the theme's [word-break:break-word] utility on the
+   item span never made it into the compiled Tailwind output, so long soldered
+   names (e.g. deeply nested exchange artifacts) were clipped at the sidebar
+   edge instead of wrapping. Restore the intended wrapping. */
+.hextra-sidebar-item a span {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 .hash {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", monospace;
