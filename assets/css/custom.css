@@ -267,6 +267,20 @@ html.dark .hextra-nav-btn[aria-current] {
   }
 }
 
+/* Sidebar logo: scale to ~80% and center horizontally.  The theme wraps
+   the logo in two shrink-to-fit flex containers and left-aligns the outer
+   one, so give them the full content width and let their existing
+   justify-center utilities do the centering. */
+.hextra-sidebar-container .hextra-sidebar-logo,
+.hextra-sidebar-container .hextra-sidebar-logo a {
+  width: 100%;
+}
+
+.hextra-sidebar-container .hextra-sidebar-logo img {
+  width: 80% !important;
+  height: auto !important;
+}
+
 .hash {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", monospace;
