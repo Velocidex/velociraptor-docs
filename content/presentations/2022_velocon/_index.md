@@ -20,7 +20,6 @@ By Mike Cohen
 <a href="https://present.velocidex.com/presentations/velocon_2022_year_in_review/" target="_blank">
     Slides!
 </a>
-<p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/ahUMgKZLHLk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Notebook and VQL - data munging your way to victory!
@@ -31,7 +30,6 @@ Velociraptor notebook is a feature that supercharges analysis and speeds up many
 <a href="https://docs.google.com/presentation/d/1Ev1o3nDmTyejOj2RDjiscRvV_SeS0E90ygrlZU0wsig" target="_blank">
     Full Screen
 </a>
-<p>
 <iframe src="https://docs.google.com/presentation/d/1Ev1o3nDmTyejOj2RDjiscRvV_SeS0E90ygrlZU0wsig/embed?start=false&loop=false&delayms=3000" frameborder="0" width="560" height="315" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/VoO7y65TOsE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -200,7 +198,6 @@ useful to the Velociraptor ecosystem.
 <a href="https://present.velocidex.com/presentations/velocon_2022_cloud_velo/" target="_blank">
     Slides!
 </a>
-<p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/tdsOrU_fxXE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Velociraptor and Law enforcement

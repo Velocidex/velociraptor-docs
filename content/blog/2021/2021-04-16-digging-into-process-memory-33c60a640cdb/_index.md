@@ -34,7 +34,7 @@ To demonstrate this new accessor, I will write “this is a test” in notepad w
 
 ![](../../img/1jhU1ZpOf3ArKtHQsES5UpA.png)
 
-In the above example, I am iterating over all processes with a name matching “notepad” and then applying a yara signature over their process address space. The “process” accessor allows me to open the process represented by the filename “/<pid>” as if it was a file. The `yara()` plugin (which normally operates on files) will just see process memory as another file to scan.
+In the above example, I am iterating over all processes with a name matching “notepad” and then applying a yara signature over their process address space. The “process” accessor allows me to open the process represented by the filename “`/<pid>`” as if it was a file. The `yara()` plugin (which normally operates on files) will just see process memory as another file to scan.
 
 I can then also extract some context around the hits to see if the hit is a false positive.
 

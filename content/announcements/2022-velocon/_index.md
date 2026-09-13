@@ -66,7 +66,7 @@ DEEPER TOGETHER!
         <td style="border-right: 1px solid #000000" align="left" valign=bottom><font size=3 color="#000000">
             <a href="#machine-learning-for-dfir-with-velociraptor-from-setting-expectations-to-a-case-study">
                 Machine Learning for DFIR with Velociraptor: From Setting Expectations to a Case Study
-            <a>
+            </a>
         </font></td>
     </tr>
     <tr>

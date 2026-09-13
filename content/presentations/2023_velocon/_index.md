@@ -78,7 +78,7 @@ YouTube links to the sessions can be found below.
   <td style="border-right: 1px solid #000000" align="left" valign=bottom><font size=3 color="#000000">
       <a href="#windows-search-index-the-forensic-artifact-youve-been-searching-for">
         Windows Search Index: The Forensic Artifact You’ve Been Searching For
-        <a>
+        </a>
   </font></td>
   </tr>
   <tr>
@@ -107,7 +107,6 @@ YouTube links to the sessions can be found below.
     <td style="border-left: 1px solid #000000; padding-left: 10px" height="20" align="left" valign=bottom bgcolor="#EFEFEF"><font size=3 color="#000000">2:30-2:45 pm</font></td>
     <td style="border-right: 1px solid #000000" colspan=2 align="center" valign=bottom bgcolor="#EFEFEF"><b><font size=3 color="#000000">BREAK</font></b></td>
   </tr>
-  <tr>
   <tr>
     <td style="border-left: 1px solid #000000; padding-left: 10px" height="20" align="left" valign=bottom bgcolor="#EFEFEF"><font size=3 color="#000000">2:45-3:30 pm</font></td>
     <td align="left" valign=bottom bgcolor="#EFEFEF"><font size=3 color="#000000">Phalgun Kulkarni & Kostya Ilioukevitch <br> DFIR Consultants, Aon</font></td>
