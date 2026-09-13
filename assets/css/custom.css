@@ -281,6 +281,16 @@ html.dark .hextra-nav-btn[aria-current] {
   height: auto !important;
 }
 
+/* Cards without a subtitle (e.g. the children shortcode) render the icon
+   row with top padding only (pt-4 px-4), pinning the text to the bottom
+   edge of the card.  Balance it with matching bottom padding.  Cards that
+   have a subtitle are excluded -- their subtitle provides the bottom space
+   (mb-4), and theme cards without subtitles already use p-4, so this
+   selector only changes the children shortcode's output. */
+.hextra-card:not(:has(.hextra-card-subtitle)) .hextra-card-icon {
+  padding-bottom: 1rem;
+}
+
 .hash {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", monospace;
