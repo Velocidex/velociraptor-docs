@@ -161,18 +161,9 @@ html.dark .platform svg path {
   fill: #fff !important;
 }
 
-/* Navbar logo: render in darkened grayscale regardless of the source
-   SVG's own fills.  Keeps the raptor detail (eye, teeth) that pure
-   grayscale gives while pulling the tones down toward the surrounding
-   text colour; dark mode inverts for a light mark on the dark canvas.
-   (The sidebar shows the full-colour VeloR7 mark instead.) */
-.hextra-navbar-logo img {
-  filter: grayscale(1) brightness(0.55);
-}
-
-.dark .hextra-navbar-logo img {
-  filter: grayscale(1) brightness(0.55) invert(1);
-}
+/* Navbar logo: show the brand SVG in its full colour as shipped; no
+   grayscale filter.  (The source SVG should already stay legible on both
+   light and dark navbar backgrounds; the 28px height is pinned below.) */
 
 /* Bootstrap size: the raptor mark is a tall/narrow glyph (~0.62 aspect).
    A global `img { height:auto }` rule makes the height attribute moot, so
