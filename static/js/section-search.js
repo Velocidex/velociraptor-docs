@@ -228,11 +228,21 @@
 
   function genericCard(item) {
     const meta = [];
-    // Author is shown as plain text: the whole card is a single anchor, and
-    // nesting an <a> for the author inside it would make browsers auto-close
-    // the outer anchor and corrupt the card markup.
+    // Author is shown with their GitHub avatar (author_avatar) and name as
+    // plain text: the whole card is a single anchor, and nesting an <a> for
+    // the author inside it would make browsers auto-close the outer anchor
+    // and corrupt the card markup. An <img> is fine inside the anchor, and
+    // the card itself links to the item, so the avatar need not be a link.
     if (item.author) {
-      meta.push(esc(item.author));
+      let author = "";
+      if (item.author_avatar) {
+        author +=
+          '<img src="' +
+          esc(item.author_avatar) +
+          '" alt="" loading="lazy" width="16" height="16" ' +
+          'class="hx:mr-2 hx:inline-block hx:size-4 hx:rounded-full hx:align-middle" />';
+      }
+      meta.push(author + esc(item.author));
     }
     if (item.date) {
       meta.push(esc(item.date));
@@ -257,7 +267,7 @@
       esc(amount) +
       "</div>";
     html +=
-      '<div class="hextra-cards hx:mt-4 hx:gap-4 hx:grid not-prose" style="--hextra-cards-grid-cols: 3;">';
+      '<div class="hextra-cards hx:mt-4 hx:gap-4 hx:grid not-prose" style="--hextra-cards-grid-cols: 1;">';
     items.forEach(function (item) {
       html += section === "vql" ? vqlCard(item) : genericCard(item);
     });

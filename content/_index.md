@@ -1,6 +1,9 @@
 ---
 type: docs
-title: "Velociraptor - Digging deeper!"
+# Landing page: hide the on-page title heading and breadcrumb. The browser
+# tab title is unaffected (Hextra uses .Site.Title for the home page).
+title: ""
+breadcrumbs: false
 date: 2021-06-12T07:11:04Z
 draft: false
 heroCaption: "Advanced Digital Forensics and Incident Response"
