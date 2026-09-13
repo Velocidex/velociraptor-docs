@@ -24,7 +24,7 @@ shortcode used on landing pages. Renders through Hextra's callout partial.
   )
 -}}
 {{- $style := or ($styles.Get $type) ($styles.Get "default") -}}
-{{- $content := .Inner | markdownify -}}
+{{- $content := .Inner | partial "utils/dedent.html" | markdownify -}}
 
 {{- partial "shortcodes/callout.html" (dict
   "content" $content

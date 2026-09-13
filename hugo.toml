@@ -82,11 +82,14 @@ enableRobotsTXT = true
 # the combined tree of the sidebar-scope sections (docs, vql_reference,
 # artifact_references, exchange, knowledge_base) - see content section front
 # matter (`type: docs` + `cascade`) and the sidebar-related params below.
+# VQL Reference, Artifact Exchange and Knowledge Base are reachable from the
+# sidebar, so they are intentionally not duplicated in the top navbar.
 #
 # The "Search" entry is Hextra's search trigger; our Pagefind override lives
 # in layouts/_partials/search.html + _partials/scripts/search.html.
-# Other destinations (GitHub, Discord, YouTube, Mailing list, RSS,
-# Rapid7 docs) live in the footer menu, rendered by our custom footer partial.
+# The icon-only entries (github/rss/mail/discord/youtube) render next to the
+# theme toggle via the theme's `params.icon` menu-item support. External
+# destinations live on the footer link bar (see menus.footer below).
 
 [[menus.main]]
   name = "Docs"
@@ -94,40 +97,65 @@ enableRobotsTXT = true
   weight = 10
 
 [[menus.main]]
-  name = "VQL Reference"
-  pageRef = "/vql_reference/"
-  weight = 20
-
-[[menus.main]]
-  name = "Artifact Exchange"
-  pageRef = "/exchange/"
-  weight = 30
-
-[[menus.main]]
-  name = "Knowledge Base"
-  pageRef = "/knowledge_base/"
-  weight = 40
-
-[[menus.main]]
   name = "Blog"
   pageRef = "/blog/"
-  weight = 50
+  weight = 20
 
 [[menus.main]]
   name = "Downloads"
   pageRef = "/downloads/"
-  weight = 60
+  weight = 30
 
 [[menus.main]]
   name = "Search"
-  weight = 70
+  weight = 40
 
   [menus.main.params]
     type = "search"
 
 [[menus.main]]
+  name = "RSS"
+  pageRef = "/rss/"
+  weight = 51
+
+  [menus.main.params]
+    icon = "rss"
+
+[[menus.main]]
+  name = "Mailing List"
+  url = "mailto:velociraptor-discuss@googlegroups.com"
+  weight = 52
+
+  [menus.main.params]
+    icon = "mail"
+
+[[menus.main]]
+  name = "Discord"
+  url = "/discord/"
+  weight = 53
+
+  [menus.main.params]
+    icon = "discord"
+
+[[menus.main]]
+  name = "YouTube"
+  url = "/youtube/"
+  weight = 54
+
+  [menus.main.params]
+    icon = "youtube"
+
+[[menus.main]]
+  name = "GitHub"
+  url = "https://github.com/Velocidex/velociraptor"
+  weight = 55
+
+  [menus.main.params]
+    icon = "github"
+
+[[menus.main]]
   name = "Theme"
-  weight = 80
+  weight = 60
 
   [menus.main.params]
     type = "theme-toggle"
@@ -135,34 +163,9 @@ enableRobotsTXT = true
 # -- Footer Menu -- (rendered by layouts/partials/custom/footer.html)
 
 [[menus.footer]]
-  name = "GitHub"
-  url = "https://github.com/Velocidex/velociraptor"
-  weight = 10
-
-[[menus.footer]]
-  name = "Discord"
-  url = "/discord/"
-  weight = 20
-
-[[menus.footer]]
-  name = "YouTube"
-  url = "/youtube/"
-  weight = 30
-
-[[menus.footer]]
-  name = "Mailing List"
-  url = "mailto:velociraptor-discuss@googlegroups.com"
-  weight = 40
-
-[[menus.footer]]
-  name = "RSS"
-  pageRef = "/rss/"
-  weight = 50
-
-[[menus.footer]]
   name = "Rapid7 Docs"
   url = "https://docs.rapid7.com/insightidr/velociraptor-integration/"
-  weight = 60
+  weight = 10
 
 # -- Theme Options (Hextra) --
 
@@ -180,7 +183,7 @@ enableRobotsTXT = true
 
   [params.footer]
     width = "normal"
-    displayPoweredBy = true
+    displayPoweredBy = false
     displayCopyright = true
 
   [params.page]

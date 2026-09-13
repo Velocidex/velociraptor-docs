@@ -1,15 +1,27 @@
 {{- /*
 Footer link bar, rendered inside Hextra's footer (custom/footer.html hook).
-The powered-by / copyright blocks stay with the theme's default footer.
+Each entry in the footer menu renders as a spaced-out button with an icon.
+Icons come from `entry.Params.icon`; external links default to the
+external-link icon and open in a new tab. The powered-by / copyright blocks
+stay with the theme's default footer (powered-by is disabled via params).
 */ -}}
 {{- with site.Menus.footer -}}
-  <nav class="hextra-footer-menu hx:flex hx:flex-wrap hx:gap-x-6 hx:gap-y-2 hx:py-8" aria-label="Footer">
+  <nav class="hextra-footer-menu hx:flex hx:flex-wrap hx:gap-x-4 hx:gap-y-3 hx:py-8" aria-label="Footer">
     {{- range . -}}
       {{- $link := .URL -}}
       {{- with .PageRef -}}
         {{- if hasPrefix . "/" -}}{{- $link = relLangURL (strings.TrimPrefix "/" .) -}}{{- end -}}
       {{- end -}}
-      <a class="hx:text-sm hx:text-gray-600 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100" href="{{ $link }}">{{ or (T .Identifier) .Name }}</a>
+      {{- $external := strings.HasPrefix $link "http" -}}
+      {{- $icon := or .Params.icon (cond $external "external-link" "") -}}
+      <a
+        class="hx:inline-flex hx:items-center hx:gap-2 hx:rounded-md hx:border hx:border-gray-300 hx:bg-white hx:px-4 hx:py-2 hx:text-sm hx:font-medium hx:text-gray-700 hx:shadow-sm hx:no-underline hx:hover:border-gray-400 hx:hover:text-gray-900 hx:dark:border-neutral-700 hx:dark:bg-neutral-800 hx:dark:text-neutral-200 hx:dark:hover:border-neutral-500 hx:dark:hover:text-neutral-50"
+        href="{{ $link | safeURL }}"{{ if $external }} target="_blank" rel="noopener noreferrer"{{ end }}>
+        {{- with $icon }}
+          {{- partial "utils/icon.html" (dict "name" $icon "attributes" `height=1em class="hx:inline-block hx:align-middle"`) -}}
+        {{- end }}
+        <span>{{- or (T .Identifier) .Name -}}</span>
+      </a>
     {{- end -}}
   </nav>
 {{- end -}}
