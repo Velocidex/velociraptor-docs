@@ -10,6 +10,10 @@
 //   <script src="/js/section-search.js"></script>
 //
 // Supported sections: vql, artifact_reference, exchange, kb, blog.
+//
+// Results are rendered as Hextra-style cards (same markup/classes as the
+// theme's {{< card >}} shortcode, minus the parts we don't need) laid out
+// in the theme's .hextra-cards grid.
 (function () {
   "use strict";
 
@@ -98,25 +102,65 @@
     return item.link;
   }
 
+  // Tags used to link to a /tags/... taxonomy page that this site does not
+  // have, so they are rendered as plain text (no dead links).
   function pills(tags) {
     if (!tags || !tags.length) {
       return "";
     }
     return (
-      '<div class="mt-1 flex flex-wrap gap-1">' +
+      '<div class="hx:mt-1 hx:mb-4 hx:flex hx:flex-wrap hx:gap-1 hx:px-4 hx:text-xs">' +
       tags
         .map(function (tag) {
-          const slug = String(tag)
-            .toLowerCase()
-            .replaceAll(" ", "-");
           return (
-            '<a href="/tags/' + esc(slug) + '" class="rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400">' +
+            '<span class="hx:font-medium hx:text-primary-800 hx:dark:text-primary-600">#' +
             esc(tag) +
-            "</a>"
+            "</span>"
           );
         })
-        .join("") +
+        .join(" ") +
       "</div>"
+    );
+  }
+
+  // Mirrors the theme's card shortcode wrapper classes (see
+  // layouts/_partials/shortcodes/card.html) with dark-mode border/bg
+  // accents for the section index grids.
+  const CARD_CLASS =
+    "hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden " +
+    "hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline " +
+    "hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none " +
+    "hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 " +
+    "hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent " +
+    "hx:shadow-xs hx:dark:border-neutral-800 hx:dark:hover:border-neutral-700 " +
+    "hx:dark:hover:bg-neutral-900";
+
+  function card(link, title, metaHtml, description, extraHtml) {
+    return (
+      '<a href="' +
+      esc(link) +
+      '" class="' +
+      CARD_CLASS +
+      '">' +
+      '<div class="hx:mt-auto">' +
+      '<span class="hextra-card-icon hx:flex hx:font-semibold hx:items-start ' +
+      'hx:gap-2 hx:p-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 ' +
+      'hx:dark:hover:text-neutral-50">' +
+      esc(title) +
+      "</span>" +
+      (metaHtml
+        ? '<div class="hx:px-4 hx:text-xs hx:font-normal hx:text-gray-500 hx:dark:text-gray-400">' +
+          metaHtml +
+          "</div>"
+        : "") +
+      (description
+        ? '<div class="hextra-card-subtitle hx:line-clamp-3 hx:text-sm hx:font-normal ' +
+          'hx:text-gray-500 hx:dark:text-gray-400 hx:px-4 hx:mb-4 hx:mt-2">' +
+          esc(description) +
+          "</div>"
+        : "") +
+      (extraHtml || "") +
+      "</div></a>"
     );
   }
 
@@ -143,11 +187,11 @@
         "</td></tr>";
     });
     if (freeFormArgs) {
-      rows +=
-        "<tr><td>**</td><td>Free form args</td><td></td></tr>";
+      rows += "<tr><td>**</td><td>Free form args</td><td></td></tr>";
     }
     return (
-      '<div class="mt-2 overflow-x-auto"><table class="text-sm"><thead><tr><th>Arg</th><th>Description</th><th>Type</th></tr></thead><tbody>' +
+      '<div class="hx:mt-2 hx:mb-4 hx:overflow-x-auto hx:px-4"><table class="hx:w-full hx:text-sm">' +
+      "<thead><tr><th>Arg</th><th>Description</th><th>Type</th></tr></thead><tbody>" +
       rows +
       "</tbody></table></div>"
     );
@@ -156,75 +200,45 @@
   function vqlCard(item) {
     const category = item.category || "other";
     const permissions = (item.metadata && item.metadata.permissions) || "";
-    return (
-      '<div class="mb-2">' +
-      '<a href="' +
-      esc(linkFor("vql", item)) +
-      '" class="block rounded-md bg-neutral-100 px-3 py-2 hover:bg-primary-100 dark:bg-neutral-700 dark:hover:bg-primary-900">' +
-      '<div class="grow"><div class="-mb-1 text-lg font-bold">' +
-      esc(item.name) +
-      "</div>" +
-      '<div class="text-sm text-neutral-500 dark:text-neutral-400">' +
-      esc(item.type || "") +
-      (category ? " &middot; " + esc(category) : "") +
-      "</div>" +
-      (item.description
-        ? '<div class="text-sm italic">' + esc(item.description) + "</div>"
-        : "") +
-      (permissions
-        ? '<div class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">Required permissions: ' +
-          permissions
-            .split(",")
-            .map(function (p) {
-              return (
-                '<span class="rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400">' +
-                esc(p.trim()) +
-                "</span>"
-              );
-            })
-            .join(" ") +
-          "</div>"
-        : "") +
-      argsTable(item.args, item.free_form_args) +
-      "</div></a></div>"
-    );
+    const meta = [item.type || "", category]
+      .filter(function (x) {
+        return x;
+      })
+      .join(" &middot; ");
+    let extra = "";
+    if (permissions) {
+      extra +=
+        '<div class="hx:mb-2 hx:flex hx:flex-wrap hx:gap-1 hx:px-4 hx:text-xs ' +
+        'hx:text-gray-500 hx:dark:text-gray-400"><span>Required permissions:</span> ' +
+        permissions
+          .split(",")
+          .map(function (p) {
+            return (
+              '<span class="hx:font-medium hx:text-primary-800 hx:dark:text-primary-600">' +
+              esc(p.trim()) +
+              "</span>"
+            );
+          })
+          .join(" ") +
+        "</div>";
+    }
+    extra += argsTable(item.args, item.free_form_args);
+    return card(linkFor("vql", item), item.name, meta, item.description, extra);
   }
 
   function genericCard(item) {
     const meta = [];
-    if (item.author && item.author_link) {
-      meta.push(
-        '<a href="' +
-          esc(item.author_link) +
-          '" class="underline">' +
-          esc(item.author) +
-          "</a>"
-      );
-    } else if (item.author) {
+    // Author is shown as plain text: the whole card is a single anchor, and
+    // nesting an <a> for the author inside it would make browsers auto-close
+    // the outer anchor and corrupt the card markup.
+    if (item.author) {
       meta.push(esc(item.author));
     }
     if (item.date) {
       meta.push(esc(item.date));
     }
-    return (
-      '<div class="mb-2">' +
-      '<a href="' +
-      esc(item.link) +
-      '" class="block rounded-md bg-neutral-100 px-3 py-2 hover:bg-primary-100 dark:bg-neutral-700 dark:hover:bg-primary-900">' +
-      '<div class="grow"><div class="-mb-1 text-lg font-bold">' +
-      esc(item.title) +
-      "</div>" +
-      (meta.length
-        ? '<div class="text-sm text-neutral-500 dark:text-neutral-400">' +
-          meta.join(" &middot; ") +
-          "</div>"
-        : "") +
-      (item.description
-        ? '<div class="text-sm italic">' + esc(item.description) + "</div>"
-        : "") +
-      pills(item.tags) +
-      "</div></a></div>"
-    );
+    const extra = pills(item.tags);
+    return card(item.link, item.title, meta.join(" &middot; "), item.description, extra);
   }
 
   function render(section, items) {
@@ -233,13 +247,21 @@
       return;
     }
     if (!items.length) {
-      results.innerHTML = '<div class="text-neutral-500 dark:text-neutral-400">No results available</div>';
+      results.innerHTML =
+        '<div class="hx:text-neutral-500 hx:dark:text-neutral-400">No results available</div>';
       return;
     }
-    let html = "";
+    const amount = items.length + (section === "vql" ? " elements" : " entries");
+    let html =
+      '<div class="hx:mb-2 hx:text-xs hx:text-gray-500 hx:dark:text-gray-400">' +
+      esc(amount) +
+      "</div>";
+    html +=
+      '<div class="hextra-cards hx:mt-4 hx:gap-4 hx:grid not-prose" style="--hextra-cards-grid-cols: 3;">';
     items.forEach(function (item) {
       html += section === "vql" ? vqlCard(item) : genericCard(item);
     });
+    html += "</div>";
     results.innerHTML = html;
   }
 
@@ -266,7 +288,7 @@
         const results = document.getElementById("ssr-" + section);
         if (results) {
           results.innerHTML =
-            '<div class="text-neutral-500 dark:text-neutral-400 font-bold">Error loading search index: ' +
+            '<div class="hx:text-neutral-500 hx:dark:text-neutral-400 hx:font-bold">Error loading search index: ' +
             esc(err.message) +
             "</div>";
         }
@@ -275,7 +297,9 @@
 
   function initWidget(section, root) {
     // The <input> is placed by the shortcode template.
-    const input = root.querySelector('input[type="search"], input[type="text"]');
+    const input = root.querySelector(
+      'input[type="search"], input[type="text"]'
+    );
     if (!input) {
       return;
     }
@@ -284,7 +308,7 @@
 
     const results = document.createElement("div");
     results.id = "ssr-" + section;
-    results.className = "search_results mt-2";
+    results.className = "search_results hx:mt-2";
     root.after(results);
 
     let timer = 0;

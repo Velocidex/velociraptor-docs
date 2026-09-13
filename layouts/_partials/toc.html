@@ -74,6 +74,11 @@
     {{ return }}
   {{- end -}}
 
+  {{- /* Only show headings up to level 5 (h5). The docs use h6 headings
+       for code examples etc., which should remain linkable on the page
+       but not clutter the "On this page" list. */ -}}
+  {{- $headings = where $headings "Level" "le" 5 -}}
+
   {{- $padding := (mul $level 4) -}}
   {{- $class := cond (eq $level 0) "hx:font-medium" (printf "hx:ltr:pl-%d hx:rtl:pr-%d" $padding $padding) -}}
 
