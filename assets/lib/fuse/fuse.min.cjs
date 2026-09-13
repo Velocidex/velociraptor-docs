@@ -1,1 +1,1 @@
-module.exports = {};
+window.Fuse={};

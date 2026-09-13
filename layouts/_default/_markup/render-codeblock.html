@@ -1,12 +1,22 @@
 {{/* Code fence handler.
      VQL is SQL-derived, so we alias vql/VQL fences to Chroma's SQL lexer.
-     Everything else falls through to Hugo's normal Chroma highlighting. */}}
+     Everything else falls through to Hugo's normal Chroma highlighting.
+     The output is wrapped in Blowfish's `.highlight-wrapper` so the theme's
+     copy-button JS (assets/js/code.js) and chroma.css styles apply. */}}
+{{- $title := or .Attributes.title "" -}}
 {{- $lang := .Type -}}
 {{- if or (eq $lang "vql") (eq $lang "VQL") -}}
   {{- $lang = "sql" -}}
 {{- end -}}
-{{- if transform.CanHighlight $lang -}}
-  {{- highlight .Inner $lang .Options -}}
-{{- else -}}
-  <pre><code class="language-{{ .Type }}">{{ .Inner }}</code></pre>
-{{- end -}}
+<div class="highlight-wrapper">
+  {{- with $title -}}
+    <div class="codeblock-title">
+      {{- $title -}}
+    </div>
+  {{- end -}}
+  {{- if transform.CanHighlight $lang -}}
+    {{- highlight .Inner $lang .Options -}}
+  {{- else -}}
+    <pre><code class="language-{{ .Type }}">{{ .Inner }}</code></pre>
+  {{- end -}}
+</div>
