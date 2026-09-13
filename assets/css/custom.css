@@ -182,6 +182,13 @@ html.dark .platform svg path {
   width: auto;
 }
 
+/* Section search widgets (VQL Reference, Artifact Reference, Exchange,
+   Knowledge Base, Blog): give the search input breathing room above and
+   below, away from the page intro and the results grid. */
+.search-box[data-section-search] {
+  margin: 2rem 0;
+}
+
 .hash {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", monospace;
