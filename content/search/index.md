@@ -1,4 +1,5 @@
 ---
+title: "Search"
 type: wide
 cascade:
   type: wide

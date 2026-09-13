@@ -1,5 +1,6 @@
 
 ---
+title: "EZ Tools"
 menutitle: EZ Tools
 ---
 

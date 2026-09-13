@@ -124,7 +124,7 @@ def build_markdown():
 
     for name in files:
       if (not name.endswith(".md") or
-          name == '_index.md'):
+          name in ('_index.md', 'index.md')):
         continue
 
       md_filename = os.path.join(root, name)
@@ -143,7 +143,7 @@ def build_markdown():
         base_name = os.path.splitext(md_filename)[0]
         base_name = os.path.relpath(base_name, kb_root_directory)
         dirname = os.path.join(kb_root_directory, base_name)
-        filename_name = os.path.join(dirname, "_index.md")
+        filename_name = os.path.join(dirname, "index.md")
 
         ensure_dir_exists(dirname)
 

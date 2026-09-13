@@ -54,7 +54,7 @@ def BuildDefinition(filename, item):
     dirname = os.path.join(os.path.dirname(filename), item["name"])
     EnsureDirExists(dirname)
 
-    filename =  os.path.join(dirname, "_index.md")
+    filename =  os.path.join(dirname, "index.md")
     description = item.get("description", "")
 
     result = "\n\n{{< badge >}}%s{{< /badge >}}\n\n" % item["type"]
