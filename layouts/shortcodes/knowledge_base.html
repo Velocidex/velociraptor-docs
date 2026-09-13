@@ -1,13 +1,13 @@
 {{/* Self-contained knowledge base search over /kb/data.json. */}}
 <div class="search-box" data-section-search="kb">
-  <input type="search" class="w-full rounded-md border border-neutral-300 bg-white px-4 py-2 text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
+  <input type="search" class="hx:block hx:w-full hx:rounded-md hx:border hx:border-gray-200 hx:bg-white hx:px-4 hx:py-2 hx:text-gray-800 hx:placeholder-gray-400 hx:dark:border-neutral-800 hx:dark:bg-neutral-900 hx:dark:text-neutral-200 hx:dark:placeholder-neutral-500"
          placeholder="Search the knowledge base"
          aria-label="Search the knowledge base">
 </div>
 
-<details class="my-8 rounded-md border border-neutral-300/80 bg-white/60 px-4 py-3 dark:border-neutral-700 dark:bg-neutral-900/50">
-  <summary class="cursor-pointer font-bold text-primary-600 hover:text-primary-500 dark:text-primary-400">Share your own tip</summary>
-  <div class="mt-3 text-sm">
+<details class="hx:mt-8 hx:rounded-md hx:border hx:border-gray-200 hx:bg-gray-50 hx:dark:border-neutral-800 hx:dark:bg-neutral-900 hx:px-4 hx:py-3 not-prose">
+  <summary class="hx:cursor-pointer hx:select-none hx:font-medium hx:text-primary-600 hx:dark:text-primary-500">Share your own tip</summary>
+  <div class="hx:mt-3 hx:text-sm">
     <p>
       A knowledge base tip aims to help users answer a specific question.
     </p>
@@ -45,7 +45,7 @@ Once you finish writing the article, simply save it to a local branch and
 send a pull request.</code></pre>
     <a href="https://github.com/Velocidex/velociraptor-docs/new/master/content/knowledge_base/tips"
        target="_blank" rel="noopener"
-       class="inline-flex items-center gap-2 rounded-md bg-primary-600 px-4 py-2 font-bold text-white hover:bg-primary-500">
+       class="hx:mt-4 hx:inline-flex hx:items-center hx:gap-2 hx:rounded-md hx:bg-primary-600 hx:px-4 hx:py-2 hx:font-bold hx:text-white hx:hover:bg-primary-500">
       Contribute
     </a>
   </div>

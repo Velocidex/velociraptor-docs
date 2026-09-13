@@ -1,5 +1,5 @@
 {{- /* Port of the learn-theme children shortcode: lists child pages of the
-       current section. Default style renders Blowfish-styled link tiles;
+       current section. Default style renders Hextra-style link cards;
        style="hN" preserves the old heading-based rendering (used for TOC). */ -}}
 {{- $_hugo_config := `{ "version": 1 }` -}}
 {{- $showhidden := .Get "showhidden" -}}
@@ -27,7 +27,7 @@
 {{- if hasPrefix $style "h" }}
   {{ template "childs" dict "menu" $sorted "style" $style "showhidden" $showhidden "count" 1 "depth" $depth "description" $withDescription }}
 {{- else }}
-<div class="children children-{{ $style }} grid gap-4">
+<div class="hextra-cards hx:mt-4 hx:gap-4 hx:grid not-prose" style="--hextra-cards-grid-cols: 3;">
   {{ template "childs" dict "menu" $sorted "style" $style "showhidden" $showhidden "count" 1 "depth" $depth "description" $withDescription }}
 </div>
 {{- end }}
@@ -39,19 +39,20 @@
       {{- if not .IsHome -}}
         {{- if hasPrefix $.style "h" -}}
           {{- $numn := add (sub (int (trim $.style "h") ) 1) $.count -}}
-          <h{{ $numn }}><a href="{{ .RelPermalink }}" class="decoration-primary-500 hover:underline hover:underline-offset-2">{{ .Title }}</a></h{{ $numn }}>
+          <h{{ $numn }}><a href="{{ .RelPermalink }}" class="hx:text-primary-600 hx:hover:underline hx:underline-offset-4 hx:decoration-primary-500">{{ .Title }}</a></h{{ $numn }}>
         {{- else -}}
-          <a href="{{ .RelPermalink }}"
-             class="group relative flex items-center justify-between gap-4 rounded-lg border border-neutral-300/80 bg-white/60 px-5 py-4 shadow-sm backdrop-blur-xl transition duration-200 hover:border-primary-300 hover:shadow-xl dark:border-neutral-800 dark:bg-neutral-900/50 dark:hover:border-primary-700">
-            <span class="block">
-              <span class="block text-base font-bold text-neutral-800 dark:text-neutral-200">{{ .Title }}</span>
+          <a href="{{ .RelPermalink }}" class="hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900">
+            <div class="hx:mt-auto">
+              <span class="hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:pt-4 hx:px-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50">
+                <span>{{ .Title }}</span>
+                <span class="hx:ml-auto hx:shrink-0 hx:opacity-60 hx:group-hover:opacity-100">{{ partial "utils/icon.html" (dict "name" "chevron-right") }}</span>
+              </span>
               {{- if $.description -}}
                 {{- $desc := "" -}}
                 {{- if .Summary }}{{ $desc = .Summary | plainify }}{{ else }}{{ $desc = .Description | plainify }}{{ end -}}
-                {{- if $desc }}<span class="block mt-1 text-sm leading-6 text-neutral-600 dark:text-neutral-400">{{ $desc }}</span>{{ end -}}
+                {{- if $desc }}<div class="hextra-card-subtitle hx:line-clamp-3 hx:text-sm hx:font-normal hx:text-gray-500 hx:dark:text-gray-400 hx:px-4 hx:mb-4 hx:mt-2">{{ $desc }}</div>{{ end -}}
               {{- end -}}
-            </span>
-            <span class="shrink-0 text-primary-500">{{ partial "icon.html" "chevron-right" }}</span>
+            </div>
           </a>
         {{- end -}}
       {{- end -}}
@@ -59,7 +60,7 @@
         {{- $sub := .Pages -}}
         {{- if .Sections }}{{ $sub = .Pages | union .Sections }}{{ end -}}
         {{- if gt (len $sub) 0 -}}
-          <div class="{{ if eq $.style "li" }}ml-2{{ end }}">
+          <div class="hx:ltr:pl-4 hx:rtl:pr-4">
             {{ template "childs" dict "menu" $sub "style" $.style "showhidden" $.showhidden "count" (add $.count 1) "depth" $.depth "description" $.description }}
           </div>
         {{- end -}}

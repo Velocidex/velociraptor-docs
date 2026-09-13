@@ -1,1 +1,169 @@
-/* Site-wide custom styles (Hextra). Will be filled during theme migration. */
+/* Custom styles for the Velociraptor documentation site (Hextra).
+   Plain CSS; Hextra-specific utilities use the hx: prefix in templates,
+   this file covers legacy widget markup that has no hx: classes.
+   Dark mode via the `.dark` class on <html>. */
+
+/* Hidden easter egg in the artifact exchange "Share your own Artifact" box. */
+p.egg {
+  display: none;
+}
+
+/* --- Generated config reference page (docs/deployment/references) --- */
+.document-comment,
+.item-comment {
+  margin-top: 20px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: #f5f5f5;
+  color: #171717;
+}
+
+.dark .document-comment,
+.dark .item-comment {
+  background: #262626;
+  color: #f5f5f5;
+}
+
+.item-name {
+  display: inline-block;
+  margin-top: 12px;
+}
+
+.category-icon {
+  margin: 0 6px;
+}
+
+.reference-key {
+  padding-right: 1ex;
+}
+
+.reference-key,
+.reference-value-sequence,
+.reference-value-mapping {
+  display: inline;
+}
+
+.reference-value-mapping,
+.reference-value-sequence {
+  color: #737373;
+}
+
+.dark .reference-value-mapping,
+.dark .reference-value-sequence {
+  color: #a3a3a3;
+}
+
+.reference-document {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", monospace;
+  font-size: 0.95em;
+}
+
+.reference-document ul {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0.5em;
+}
+
+.bullet-placeholder {
+  padding: 10px;
+  display: inline;
+}
+
+.anchorlink {
+  float: right;
+  padding-right: 20px;
+  color: #737373;
+}
+
+.dark .anchorlink {
+  color: #a3a3a3;
+}
+
+.multiline-value {
+  display: block;
+  unicode-bidi: embed;
+  font-family: inherit;
+  white-space: pre;
+  padding-left: 40px;
+}
+
+/* --- CVE widget (include-cve shortcode) --- */
+.cve {
+  font-size: 0.95em;
+}
+
+.cve .published {
+  display: block;
+  margin: 8px 0;
+  color: #737373;
+}
+
+.dark .cve .published {
+  color: #a3a3a3;
+}
+
+.pull-right {
+  float: right;
+  margin-left: 8px;
+}
+
+.cve details.popup {
+  margin: 12px 0;
+}
+
+.cve details.popup summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.cve details.popup .pop {
+  margin-top: 8px;
+  padding: 8px;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+}
+
+.dark .cve details.popup .pop {
+  border-color: #404040;
+}
+
+.cve .desc-text,
+.cve .problem-text,
+.cve .configuration-text,
+.cve .workaround-text {
+  margin: 4px 0 12px 0;
+}
+
+.cve .problem,
+.cve .impact,
+.cve .configurations,
+.cve .workaround,
+.cve .credit,
+.cve .references {
+  margin: 12px 0;
+}
+
+.cve .references ul li {
+  overflow-wrap: anywhere;
+}
+
+/* --- Release download table (release_download shortcode) --- */
+.platform svg {
+  width: 1.1em;
+  height: 1.1em;
+  vertical-align: -0.2em;
+}
+
+/* Brand SVGs ship with `body.dark path` rules that don't match Hextra's
+   html.dark; force the light/dark switch here. */
+html.dark .platform svg path {
+  fill: #fff !important;
+}
+
+.hash {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", monospace;
+  font-size: 0.85em;
+  overflow-wrap: anywhere;
+}
