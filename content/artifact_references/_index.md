@@ -1,4 +1,7 @@
 ---
+type: docs
+cascade:
+  type: docs
 menutitle: "Artifact Reference"
 title: "Artifact Reference"
 date: 2021-06-12T14:03:59Z

@@ -1,0 +1,13 @@
+{{- /*
+Compatibility shim for `partial "icon.html" <name>` calls from legacy
+shortcodes (children, include-cve, notice, render-image). Renders Hextra's
+SVG icon set without erroring on unknown names.
+*/ -}}
+{{- $name := . -}}
+{{- $siteData := partial "utils/hugo-compat/site-data.html" (dict "name" $name) -}}
+{{- $icon := index $siteData.icons $name -}}
+{{- if $icon -}}
+  {{- $icon | safeHTML -}}
+{{- else -}}
+  <span aria-hidden="true">▸</span>
+{{- end -}}

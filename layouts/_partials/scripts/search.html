@@ -1,0 +1,10 @@
+{{- /* Search script (Pagefind): replaces Hextra's FlexSearch loader.
+Assets (pagefind-ui.css/js + index) are generated at build time by
+`make pagefind` (bunx pagefind --site public). */ -}}
+{{- if (site.Params.search.enable | default true) -}}
+  {{- $jsSearch := resources.Get "js/search.js" -}}
+  {{- if hugo.IsProduction -}}
+    {{- $jsSearch = $jsSearch | minify | fingerprint -}}
+  {{- end -}}
+  <script defer src="{{ $jsSearch.RelPermalink }}" integrity="{{ $jsSearch.Data.Integrity }}"></script>
+{{- end -}}

@@ -1,4 +1,7 @@
 ---
+type: docs
+cascade:
+  type: docs
 menutitle: "Knowledge Base"
 title: "Knowledge Base"
 draft: false

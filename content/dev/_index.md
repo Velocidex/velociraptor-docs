@@ -1,4 +1,9 @@
 ---
+type: wide
+cascade:
+  type: wide
+sidebar:
+  exclude: true
 title: Documentation Development Guidelines
 no_menu: true
 description: |

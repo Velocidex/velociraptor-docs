@@ -1,4 +1,9 @@
 ---
+type: wide
+cascade:
+  type: wide
+sidebar:
+  exclude: true
 menutitle: "Training"
 title: "Training Resources"
 date: 2021-06-12T14:03:59Z

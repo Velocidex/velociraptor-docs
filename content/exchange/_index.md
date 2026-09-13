@@ -1,4 +1,7 @@
 ---
+type: docs
+cascade:
+  type: docs
 menutitle: "Artifact Exchange"
 title: "Artifact Exchange"
 date: 2021-06-12T14:03:59Z

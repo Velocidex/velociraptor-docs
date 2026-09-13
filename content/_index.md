@@ -1,4 +1,5 @@
 ---
+type: docs
 title: "Velociraptor - Digging deeper!"
 date: 2021-06-12T07:11:04Z
 draft: false

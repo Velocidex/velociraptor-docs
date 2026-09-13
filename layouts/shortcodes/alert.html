@@ -1,0 +1,34 @@
+{{- /*
+A GitHub-alert-style callout compatible with the legacy Blowfish `alert`
+shortcode used on landing pages. Renders through Hextra's callout partial.
+@param {string} icon The legacy icon name (triangle-exclamation, etc).
+*/ -}}
+{{- $icon := .Get "icon" -}}
+{{- $type := "info" -}}
+{{- if eq $icon "triangle-exclamation" }}{{ $type = "warning" }}{{ end -}}
+
+{{- $styles := newScratch -}}
+{{- $styles.Set "default" (dict
+  "icon" "light-bulb"
+  "style" "hx:border-green-200 hx:bg-green-100 hx:text-green-900 hx:dark:border-green-200/30 hx:dark:bg-green-900/30 hx:dark:text-green-200"
+  )
+-}}
+{{- $styles.Set "info" (dict
+  "icon" "information-circle"
+  "style" "hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"
+  )
+-}}
+{{- $styles.Set "warning" (dict
+  "icon" "exclamation"
+  "style" "hx:border-amber-200 hx:bg-amber-100 hx:text-amber-900 hx:dark:border-amber-200/30 hx:dark:bg-amber-900/30 hx:dark:text-amber-200"
+  )
+-}}
+{{- $style := or ($styles.Get $type) ($styles.Get "default") -}}
+{{- $content := .Inner | markdownify -}}
+
+{{- partial "shortcodes/callout.html" (dict
+  "content" $content
+  "icon" $style.icon
+  "class" $style.style
+  )
+-}}

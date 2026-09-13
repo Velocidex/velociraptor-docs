@@ -1,4 +1,9 @@
 ---
+type: wide
+cascade:
+  type: wide
+sidebar:
+  exclude: true
 menutitle: "Blog"
 title: "Velociraptor Blog"
 weight: 120

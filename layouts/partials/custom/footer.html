@@ -1,0 +1,15 @@
+{{- /*
+Footer link bar, rendered inside Hextra's footer (custom/footer.html hook).
+The powered-by / copyright blocks stay with the theme's default footer.
+*/ -}}
+{{- with site.Menus.footer -}}
+  <nav class="hextra-footer-menu hx:flex hx:flex-wrap hx:gap-x-6 hx:gap-y-2 hx:py-8" aria-label="Footer">
+    {{- range . -}}
+      {{- $link := .URL -}}
+      {{- with .PageRef -}}
+        {{- if hasPrefix . "/" -}}{{- $link = relLangURL (strings.TrimPrefix "/" .) -}}{{- end -}}
+      {{- end -}}
+      <a class="hx:text-sm hx:text-gray-600 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100" href="{{ $link }}">{{ or (T .Identifier) .Name }}</a>
+    {{- end -}}
+  </nav>
+{{- end -}}

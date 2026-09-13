@@ -1,4 +1,9 @@
 ---
+type: wide
+cascade:
+  type: wide
+sidebar:
+  exclude: true
 menutitle: "RSS"
 title: "RSS Feeds"
 draft: false

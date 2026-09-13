@@ -1,4 +1,7 @@
 ---
+type: docs
+cascade:
+  type: docs
 title: "VQL Reference"
 menutitle: VQL Reference
 date: 2021-06-12T05:12:26Z

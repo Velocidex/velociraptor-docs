@@ -1,4 +1,9 @@
 ---
+type: wide
+cascade:
+  type: wide
+sidebar:
+  exclude: true
 menutitle: "Search"
 date: 2021-06-12T06:14:26Z
 draft: false
