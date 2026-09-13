@@ -8,7 +8,7 @@
   {{- $copyright := (T "copyright") | default "" -}}
   {{- if $copyright -}}
     <div
-      class="hextra-max-footer-width hx:mx-auto hx:flex hx:justify-center hx:py-12 hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400 hx:md:justify-start"
+      class="hextra-max-footer-width hextra-footer-copyright hx:mx-auto hx:flex hx:justify-center hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400 hx:md:justify-start"
     >
       <div class="hx:flex hx:w-full hx:flex-col hx:items-center hx:sm:items-start">
         <div class="hx:text-xs">{{ $copyright | markdownify }}</div>

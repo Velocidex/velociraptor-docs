@@ -96,16 +96,22 @@ enableRobotsTXT = true
   name = "Docs"
   pageRef = "/docs/"
   weight = 10
+  [menus.main.params]
+    button = true
 
 [[menus.main]]
   name = "Blog"
   pageRef = "/blog/"
   weight = 20
+  [menus.main.params]
+    button = true
 
 [[menus.main]]
   name = "Downloads"
   pageRef = "/downloads/"
   weight = 30
+  [menus.main.params]
+    button = true
 
 [[menus.main]]
   name = "Search"

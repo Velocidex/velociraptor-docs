@@ -173,6 +173,76 @@ html.dark .platform svg path {
   width: auto;
 }
 
+/* Navbar title: bottom-align the brand title with the logo mark.  The
+   logo's ink fills its whole box (down to the bottom edge), so the text
+   is pulled down too: flex-end on the wrapper + a tight line-height on
+   the span (the other hx:items-end utility is never compiled by the
+   Tailwind JIT and the default 28px line box leaves a ~4px gap below the
+   glyphs). */
+.hextra-navbar-logo {
+  align-items: flex-end;
+}
+.hextra-navbar-logo span {
+  line-height: 21px;    /* ≈ glyph extent: text bottom sits on the mark's */
+}
+
+/* Footer copyright block: the theme default was py-12 (48px per side →
+   112px total footer).  1.25rem per side ≈ 56px total, a ~50% reduction.
+   (This lives here rather than as a Tailwind hx:py-5 class because the
+   JIT never compiled py-5 — it only generates utilities it has seen.) */
+.hextra-footer-copyright {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+/* Navbar link buttons (Docs / Blog / Downloads): buttons, all the same
+   width (min-width wins: every label is shorter), corner radius matching
+   the navbar search input (rounded-lg = 8px).  The display/flex classes
+   stay Tailwind hx: utilities on the element (hidden on small screens,
+   inline-flex from md up) so responsive behaviour is unchanged; this CSS
+   only adds the button chrome and colours. */
+.hextra-nav-btn {
+  min-width: 7rem;              /* equal widths for all three buttons */
+  height: 2.25rem;              /* 36px */
+  padding: 0 0.75rem;
+  border: 1px solid #d1d5db;    /* gray-300 */
+  border-radius: 8px;           /* same as the navbar search input */
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #4b5563;               /* gray-600 */
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s, background-color 0.15s;
+}
+.hextra-nav-btn:hover {
+  color: #1f2937;               /* gray-800 */
+  border-color: #9ca3af;        /* gray-400 */
+}
+/* Active button (current section): use the theme's primary colour plus a
+   very light primary tint for the background.  The vars are Tailwind-v4-
+   namespaced (--hx-color-primary-*); the dark-mode hue swap (212deg ->
+   204deg) is automatic via --primary-hue. */
+.hextra-nav-btn.active,
+.hextra-nav-btn[aria-current] {
+  color: var(--hx-color-primary-600);
+  border-color: var(--hx-color-primary-500);
+  background-color: color-mix(in oklab, var(--hx-color-primary-500) 8%, transparent);
+  font-weight: 500;
+}
+html.dark .hextra-nav-btn {
+  color: #9ca3af;               /* gray-400 */
+  border-color: #525252;        /* neutral-600 */
+}
+html.dark .hextra-nav-btn:hover {
+  color: #e5e7eb;               /* gray-200 */
+  border-color: #a3a3a3;        /* neutral-400 */
+}
+html.dark .hextra-nav-btn.active,
+html.dark .hextra-nav-btn[aria-current] {
+  color: var(--hx-color-primary-400);
+  border-color: var(--hx-color-primary-400);
+  background-color: color-mix(in oklab, var(--hx-color-primary-400) 10%, transparent);
+}
+
 /* Section search widgets (VQL Reference, Artifact Reference, Exchange,
    Knowledge Base, Blog): give the search input breathing room above and
    below, away from the page intro and the results grid. */
