@@ -39,9 +39,10 @@ installed on your machine.
 * **Linux:** `sudo apt install hugo`
 
 The site is built with the
-[Blowfish theme](https://blowfish.page/), which is committed into this
-repository as a Hugo module (_vendor/ directory), so no additional
-installation is needed to run the development server. However, the
+[Blowfish theme](https://blowfish.page/), which is pulled in as a Hugo
+module (pinned to a fixed version in `hugo.toml`) when Hugo builds the
+site. The theme is not vendored into this repository; the first build
+downloads it into Hugo's local module cache. The
 [`velociraptor-site-search`](https://github.com/Velocidex/velociraptor-site-search)
 and [`.github/vale`](https://github.com/Velocidex/velociraptor-vale)
 git `submodules` are used by the build scripts and linting respectively.
@@ -95,6 +96,12 @@ Rebuilding the reference indices with these scripts should clear
 `REF_NOT_FOUND` errors if such occur during Hugo server startup. These
 scripts need a working Python installation and generally require
 `pyyaml`.
+
+The search index is built separately with
+[Pagefind](https://pagefind.app/): run `bun install` once, then
+`make pagefind` (or `make site` after the site has been built).
+`make pagefind` works on the existing `public/` directory, so no Hugo
+rebuild is required first.
 
 {{% /notice %}}
 

@@ -1,0 +1,279 @@
+# -- Site Configuration --
+# Fresh Blowfish v3 configuration replacing the old hugo-theme-learn
+# config.yaml. Theme options live in [params]; menu definitions in [menus];
+# _vendor/ is deliberately NOT committed - the Blowfish theme is fetched
+# from its GitHub module repository at build time.
+
+baseURL = "https://docs.velociraptor.app/"
+defaultContentLanguage = "en"
+title = "Velociraptor - Digging deeper!"
+
+# Show the "Edit this page" link (uses lastmod/git info + editURL in params).
+enableGitInfo = true
+enableEmoji = true
+enableRobotsTXT = true
+
+# Anything we need to embed as-is (e.g. HTML bodies of generated pages).
+[security]
+  allowContent = ['text/html', 'text/markdown']
+
+# Google Analytics. Rendered by the Blowfish analytics partial (gtag.js)
+# in production builds only.
+[services]
+  [services.googleAnalytics]
+    ID = "G-QYH72LMYCS"
+
+# Make summary/description generation predictable.
+[imaging]
+  anchor = "Center"
+
+[pagination]
+  pagerSize = 100
+
+# Taxonomies enabled by the Blowfish theme. Only "tags" is actually
+# populated on content, the others produce no output when unused.
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+  author = "authors"
+  series = "series"
+
+[sitemap]
+  changefreq = "daily"
+  filename = "sitemap.xml"
+  priority = 0.5
+
+# Outputs: we primarily emit HTML. Sections opt into RSS via front matter
+# (see content/blog, content/exchange etc. which declare outputs: [html, RSS]).
+# JSON on the home page feeds Blowfish's built-in Fuse.js search modal - this
+# is replaced by Pagefind (statically generated index) in a later phase and
+# the JSON output will be removed then.
+[outputs]
+  home = ["HTML", "JSON"]
+  page = ["HTML"]
+  section = ["HTML"]
+  taxonomy = ["HTML"]
+  term = ["HTML"]
+
+# -- Theme Module --
+# The Blowfish v3 theme is installed as a Hugo module. To update the theme,
+# bump the version here and rebuild:
+#   hugo mod tidy && hugo
+# The theme source is resolved from Hugo's module cache; it is intentionally
+# not vendored into this repository (see _vendor/ in .gitignore).
+
+[module]
+  [[module.imports]]
+    path = "github.com/nunocoracao/blowfish/v3"
+    version = "v3.6.0"
+
+# -- Language -- (single-language site)
+
+[languages.en]
+  disabled = false
+  locale = "en-us"
+  label = "English"
+  weight = 1
+  title = "Velociraptor - Digging deeper!"
+
+  [languages.en.params]
+    displayName = "EN"
+    isoCode = "en"
+    rtl = false
+    dateFormat = "2 January 2006"
+
+# -- Menus --
+# The main navigation is deliberately compact: the top-level documentation
+# sections. Deeper navigation is provided by tiled child listings derived
+# from the section hierarchy in each section page.
+#
+# Other destinations (GitHub, Discord, YouTube, Mailing list, RSS,
+# Rapid7 docs) previously lived in the sidebar "shortcuts" menu and now
+# live in the footer menu.
+
+[[menus.main]]
+  name = "Docs"
+  pageRef = "/docs/"
+  weight = 10
+
+[[menus.main]]
+  name = "VQL Reference"
+  pageRef = "/vql_reference/"
+  weight = 20
+
+[[menus.main]]
+  name = "Artifact Exchange"
+  pageRef = "/exchange/"
+  weight = 30
+
+[[menus.main]]
+  name = "Knowledge Base"
+  pageRef = "/knowledge_base/"
+  weight = 40
+
+[[menus.main]]
+  name = "Blog"
+  pageRef = "/blog/"
+  weight = 50
+
+[[menus.main]]
+  name = "Downloads"
+  pageRef = "/downloads/"
+  weight = 60
+
+# -- Footer Menu --
+
+[[menus.footer]]
+  name = "GitHub"
+  url = "https://github.com/Velocidex/velociraptor"
+  weight = 10
+
+[[menus.footer]]
+  name = "Discord"
+  url = "/discord/"
+  weight = 20
+
+[[menus.footer]]
+  name = "YouTube"
+  url = "/youtube/"
+  weight = 30
+
+[[menus.footer]]
+  name = "Mailing List"
+  url = "mailto:velociraptor-discuss@googlegroups.com"
+  weight = 40
+
+[[menus.footer]]
+  name = "RSS"
+  pageRef = "/rss/"
+  weight = 50
+
+[[menus.footer]]
+  name = "Rapid7 Docs"
+  url = "https://docs.rapid7.com/insightidr/velociraptor-integration/"
+  weight = 60
+
+# -- Theme Options (Blowfish v3) --
+
+[params]
+  colorScheme = "blowfish"
+  defaultAppearance = "light" # valid options: light or dark
+  autoSwitchAppearance = true
+
+  enableA11y = false
+  enableSearch = true
+  enableCodeCopy = true
+  enableStructuredBreadcrumbs = false
+
+  # avoid per-request image resizing on the deploy pipeline
+  disableImageOptimization = false
+
+  [params.header]
+    layout = "basic"
+
+  [params.footer]
+    showMenu = true
+    showCopyright = true
+    showThemeAttribution = true
+    showAppearanceSwitcher = true
+    showScrollToTop = true
+
+  [params.homepage]
+    # Tile-based landing page: Blowfish's "landing" layout renders a hero
+    # plus the feature-grid in content/_index.md.
+    layout = "landing"
+    showRecent = false
+    showRecentItems = 5
+    showMoreLink = false
+
+  [params.article]
+    showDate = false
+    showDateOnlyInArticle = false
+    showDateUpdated = false
+    showViews = false
+    showAuthor = false
+    showHero = false
+    showBreadcrumbs = false
+    showDraftLabel = true
+    showEdit = true
+    editURL = "https://github.com/Velocidex/velociraptor-docs/edit/master/content/"
+    editAppendPath = true
+    showHeadingAnchors = true
+    showPagination = true
+    invertPagination = true
+    showReadingTime = false
+    showReadingProgress = false
+    showTableOfContents = true
+    showTaxonomies = false
+    showZenMode = false
+
+  [params.list]
+    showHero = false
+    showBreadcrumbs = false
+    showSummary = true
+    showViews = false
+    showTableOfContents = false
+    showCards = true
+    orderByWeight = true
+    groupByYear = false
+    cardView = false
+    cardViewScreenWidth = false
+    constrainItemsWidth = false
+
+  [params.sitemap]
+    excludedKinds = ["taxonomy", "term"]
+
+  [params.taxonomy]
+    showTermCount = true
+    showHero = false
+    showBreadcrumbs = false
+    showViews = false
+    showTableOfContents = false
+    cardView = false
+
+  [params.term]
+    showHero = false
+    showBreadcrumbs = false
+    showViews = false
+    showTableOfContents = true
+    groupByYear = false
+    cardView = false
+
+  # Google site verification (previously a hard-coded meta tag in the old
+  # custom header partial).
+  [params.verification]
+    google = "TWf2C5KkKfaG0pltB0jltq3yWk7WhtFKmlpUQu7ukRQ"
+
+# -- Markup --
+# The Blowfish theme requires the parser attributes and passthrough
+# extensions. Highlighting is entirely Chroma: vql/VQL code fences are
+# aliased to Chroma's SQL lexer by layouts/_default/_markup/render-codeblock.html
+# (VQL is SQL-derived); token colors come from Blowfish's bundled
+# github-style chroma.css.
+
+[markup.goldmark]
+  [markup.goldmark.parser]
+    wrapStandAloneImageWithinParagraph = false
+
+    [markup.goldmark.parser.attribute]
+      block = true
+
+  [markup.goldmark.renderer]
+    unsafe = true
+
+  [markup.goldmark.extensions]
+    [markup.goldmark.extensions.passthrough]
+      enable = true
+      [markup.goldmark.extensions.passthrough.delimiters]
+        block = [['\[', '\]'], ['$$', '$$']]
+        inline = [['\(', '\)']]
+
+[markup.highlight]
+  noClasses = false
+  # Chroma handles all code fences; the VQL grammar is added via
+  # render-codeblock.html in a later phase.
+  codeFences = true
+
+[markup.tableOfContents]
+  startLevel = 2
+  endLevel = 4

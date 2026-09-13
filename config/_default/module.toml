@@ -1,8 +1,0 @@
-# -- Theme Module --
-# The Blowfish v3 theme is installed as a Hugo module. Run
-# `hugo mod tidy && hugo mod vendor` after changing this file, and commit
-# the resulting go.mod/go.sum and _vendor/ directory.
-
-[imports]
-path = "github.com/nunocoracao/blowfish/v3"
-version = "v3.6.0"

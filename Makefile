@@ -37,11 +37,13 @@ clean:
 build:
 	hugo
 
+# Build the Pagefind search index. Requires `bun install` (or `npm install`)
+# once, which puts the `pagefind` binary on the PATH for `bunx`.
 pagefind:
-	pagefind --site public
+	bunx pagefind --site public
 
 site: build
-	pagefind --site public
+	bunx pagefind --site public
 
 index:
 	rm -rf /tmp/index/

@@ -1,7 +1,0 @@
-{{ $resource := .resource }}
-{{ $spec := .spec }}
-{{ $result := $resource }}
-{{ with try ($resource.Resize $spec) }}
-  {{ with .Value }}{{ $result = . }}{{ end }}
-{{ end }}
-{{ return $result }}

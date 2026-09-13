@@ -8,3 +8,4 @@ public/
 static/docs_index/
 node_modules/
 node_modules/*
+_vendor/
