@@ -197,15 +197,6 @@ html.dark .platform svg path {
   }
 }
 
-/* Sidebar menu item text: the theme's [word-break:break-word] utility on the
-   item span never made it into the compiled Tailwind output, so long soldered
-   names (e.g. deeply nested exchange artifacts) were clipped at the sidebar
-   edge instead of wrapping. Restore the intended wrapping. */
-.hextra-sidebar-item a span {
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
 .hash {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", monospace;
