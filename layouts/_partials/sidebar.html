@@ -28,10 +28,20 @@
     </div>
   {{- end -}}
   <div class="hextra-scrollbar hx:overflow-y-auto hx:overflow-x-hidden hx:p-4 hx:grow hx:md:h-[calc(100vh-var(--navbar-height)-var(--menu-height))]">
+    {{- if not $disableSidebar -}}
+      {{- /* Sidebar logo: full-colour VeloR7 mark (light/dark variants).
+             Not monochrome — unlike the navbar raptor. Full menu width. */ -}}
+      <div class="hextra-sidebar-logo hx:mb-4 hx:flex hx:justify-center">
+        <a class="hx:flex hx:justify-center" style="width:100%" href="{{ site.Home.RelPermalink }}" aria-label="{{ site.Title }}">
+          <img class="hx:block hx:dark:hidden" src="{{ "images/VeloR7_LightMode.svg" | relURL }}" alt="{{ site.Title }}" style="width:100%; height:auto" />
+          <img class="hx:hidden hx:dark:block" src="{{ "images/VeloR7_DarkMode.svg" | relURL }}" alt="{{ site.Title }}" style="width:100%; height:auto" />
+        </a>
+      </div>
+    {{- end -}}
     <ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden">
       <!-- Nav -->
       {{ template "sidebar-main" (dict "context" site.Home "pageURL" $pageURL "page" $context "toc" true) -}}
-      {{ template "sidebar-footer" }}
+      {{ template "sidebar-footer" (dict "pageURL" $pageURL) }}
     </ul>
 
     <!-- Sidebar on large screen -->
@@ -41,7 +51,7 @@
     {{- else -}}
       <ul class="hx:flex hx:flex-col hx:gap-1 hx:max-md:hidden">
         {{ template "sidebar-main" (dict "context" $navRoot "page" $context  "pageURL" $pageURL) }}
-        {{ template "sidebar-footer" }}
+        {{ template "sidebar-footer" (dict "pageURL" $pageURL) }}
       </ul>
     {{ end -}}
   </div>
@@ -274,6 +284,7 @@
 {{- end -}}
 
 {{- define "sidebar-footer" -}}
+  {{- $pageURL := default "" .pageURL -}}
   {{- range site.Menus.sidebar -}}
     {{- $name := or (T .Identifier) .Name -}}
     {{ if eq .Params.type "separator" }}
@@ -287,7 +298,8 @@
           {{- $link = relLangURL (strings.TrimPrefix "/" .) -}}
         {{- end -}}
       {{- end -}}
-      <li>{{ template "sidebar-item-link" dict "active" false "open" false "title" $name "link" $link }}</li>
+      {{- $active := and (ne $link "") (eq (strings.TrimSuffix "/" $pageURL) (strings.TrimSuffix "/" $link)) -}}
+      <li>{{ template "sidebar-item-link" dict "active" $active "open" false "title" $name "link" $link }}</li>
     {{ end }}
   {{- end -}}
 {{- end -}}

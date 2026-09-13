@@ -88,8 +88,9 @@ enableRobotsTXT = true
 # The "Search" entry is Hextra's search trigger; our Pagefind override lives
 # in layouts/_partials/search.html + _partials/scripts/search.html.
 # The icon-only entries (github/rss/mail/discord/youtube) render next to the
-# theme toggle via the theme's `params.icon` menu-item support. External
-# destinations live on the footer link bar (see menus.footer below).
+# theme toggle via the theme's `params.icon` menu-item support.
+# The dedicated /search/ page and external Rapid7 docs live at the bottom of
+# the left sidebar (see menus.sidebar below).
 
 [[menus.main]]
   name = "Docs"
@@ -160,12 +161,18 @@ enableRobotsTXT = true
   [menus.main.params]
     type = "theme-toggle"
 
-# -- Footer Menu -- (rendered by layouts/partials/custom/footer.html)
+# -- Sidebar Menu -- (bottom of the left navigation; rendered by the
+# sidebar-footer template in layouts/_partials/sidebar.html)
 
-[[menus.footer]]
+[[menus.sidebar]]
+  name = "Search"
+  pageRef = "/search/"
+  weight = 10
+
+[[menus.sidebar]]
   name = "Rapid7 Docs"
   url = "https://docs.rapid7.com/insightidr/velociraptor-integration/"
-  weight = 10
+  weight = 20
 
 # -- Theme Options (Hextra) --
 
@@ -180,6 +187,14 @@ enableRobotsTXT = true
 
   [params.navbar]
     width = "normal"      # 80rem; matches the reference docs sites
+
+    # Logo: the bare raptor mark, monochrome-filtered via assets/css/custom.css.
+    # The left-pane sidebar shows the full-colour VeloR7 mark instead
+    # (hardcoded in layouts/_partials/sidebar.html).
+    [params.navbar.logo]
+      path = "images/logo_bare_small.svg"
+      width = "28"
+      height = "28"
 
   [params.footer]
     width = "normal"
