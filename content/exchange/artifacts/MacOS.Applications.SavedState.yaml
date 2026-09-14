@@ -54,12 +54,14 @@ sources:
                                   Btime,
                                   OSPath,
                                   regex_replace(source=if(condition=OSPath[3] =~ "Daemon Containers", then=OSPath[8], else=OSPath[4]), replace="", re=".savedState") AS Name,
-                                  OSPath[1] AS _User
+                                  OSPath[1] AS _User,
+                                  OSPath + "/windows.plist" AS _WindowsPlist
                            FROM glob(globs=split(string=SavedStateGlob, sep=","))
       SELECT *,
-             if(condition = OSPath =~ "windows.plist", then=items(item=plist(file=OSPath))._value.NSDockMenu.name)[0][0] AS DockMenuName,
-             if(condition = OSPath =~ "windows.plist", then=items(item=plist(file=OSPath))._value.NSTitle)[0] AS WindowTitle,
-             if(condition = OSPath =~ "windows.plist", then=plist(file=OSPath)) AS _WindowDetails
+             plist(file=_WindowsPlist).NSDockMenu.name AS DockMenuName,
+             plist(file=_WindowsPlist).NSTitle AS WindowTitle,
+             plist(file=_WindowsPlist).NSWindowID AS WindowID,
+             plist(file=_WindowsPlist) AS _WindowDetails
       FROM foreach(row=SavedStateList)
       WHERE Name =~ NameFilter
       AND _User =~ UserFilter
