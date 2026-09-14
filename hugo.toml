@@ -188,7 +188,7 @@ enableRobotsTXT = true
     google = "TWf2C5KkKfaG0pltB0jltq3yWk7WhtFKmlpUQu7ukRQ"
 
   [params.theme]
-    default = "light"     # valid: light, dark, system
+    default = "system"    # valid: light, dark, system (system = follow OS preference for new visitors)
     displayToggle = true
 
   # Click-to-zoom on figure images (medium-zoom), as on the reference site.
