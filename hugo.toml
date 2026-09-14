@@ -62,6 +62,16 @@ enableRobotsTXT = true
     path = "github.com/imfing/hextra"
     version = "v0.12.3"
 
+  # Legacy WordPress-export posts under content/blog/html/ (2018-2019,
+  # old date-URL scheme /blog/html/YYYY/MM/DD/slug) duplicate the modern
+  # blog.  Exclude the whole subtree: it is neither rendered nor indexed.
+  # Mount filters use the `files` key; a "! " (bang-space) prefix marks an
+  # exclusion glob.
+  [[module.mounts]]
+    source = "content"
+    target = "content"
+    files = ["! blog/html/**"]
+
 # -- Language -- (single-language site)
 
 [languages.en]

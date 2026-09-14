@@ -128,8 +128,12 @@
   }
 
   // Tags are rendered as pill badges (same .tag-badge styling as
-  // search-result chips).  A tag is hyperlinked to its /tags/... taxonomy
-  // page only when that page exists (see tagSlugSet above).
+  // search-result chips).  A tag whose /tags/... taxonomy page exists (see
+  // tagSlugSet above) is clickable: it is emitted as a <span> carrying a
+  // data-tag-href (NOT a nested <a>, which is invalid inside the card
+  // <a> and would make browsers auto-close the card, leaving an empty
+  // 2px shell between cards).  Clicks are dispatched by the delegated
+  // handler installed in initAll().
   function pills(tags) {
     if (!tags || !tags.length) {
       return "";
@@ -142,7 +146,13 @@
           const label = esc(tag);
           const slugSet = getTagSlugSet();
           if (slugSet && slugSet.has(href)) {
-            return '<a href="' + esc(href) + '" class="tag-badge">' + label + "</a>";
+            return (
+              '<span class="tag-badge" data-tag-href="' +
+              esc(href) +
+              '" tabindex="0" role="link">' +
+              label +
+              "</span>"
+            );
           }
           return '<span class="tag-badge">' + label + "</span>";
         })
@@ -366,7 +376,45 @@
     input.focus();
   }
 
+  function openTag(tagEl) {
+    const href = tagEl.getAttribute("data-tag-href");
+    if (href) {
+      window.location.href = href;
+    }
+  }
+
+  var tagHandlerBound = false;
+  function bindTagHandler() {
+    if (tagHandlerBound) {
+      return;
+    }
+    tagHandlerBound = true;
+    document.addEventListener("click", function (ev) {
+      var tagEl = ev.target.closest
+        ? ev.target.closest("[data-tag-href]")
+        : null;
+      if (!tagEl) {
+        return;
+      }
+      ev.preventDefault();
+      ev.stopPropagation();
+      openTag(tagEl);
+    });
+    document.addEventListener("keydown", function (ev) {
+      var tagEl = ev.target.closest
+        ? ev.target.closest("[data-tag-href]")
+        : null;
+      if (!tagEl || (ev.key !== "Enter" && ev.key !== " ")) {
+        return;
+      }
+      ev.preventDefault();
+      ev.stopPropagation();
+      openTag(tagEl);
+    });
+  }
+
   function initAll() {
+    bindTagHandler();
     document
       .querySelectorAll("[data-section-search]")
       .forEach(function (root) {

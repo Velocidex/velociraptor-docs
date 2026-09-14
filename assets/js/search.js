@@ -165,6 +165,27 @@
     pages:               "Pages",
   };
 
+  // Every rendered page path (built at site-build time by
+  // _partials/section-breadcrumb-paths.html).  Lazy-read because this
+  // script is deferred; the JSON script tag sits later in the DOM.  The
+  // breadcrumb decorator links a segment only when its path exists here,
+  // so segments for missing intermediate levels (e.g. /blog/2024) render
+  // as plain text instead of a dead link.
+  var sitePagePaths = null;
+  function getSitePagePaths() {
+    if (sitePagePaths === null) {
+      var el = document.getElementById("site-section-paths");
+      sitePagePaths = new Set();
+      if (el) {
+        try {
+          var raw = JSON.parse(el.textContent || el.innerText || "[]");
+          (raw || []).forEach(function (p) { sitePagePaths.add(p); });
+        } catch (e) { sitePagePaths = new Set(); }
+      }
+    }
+    return sitePagePaths;
+  }
+
   function titleCase(str) {
     return str
       .replace(/[-_]/g, " ")
@@ -180,12 +201,18 @@
       var u = new URL(href, location.origin);
       var parts = u.pathname.split("/").filter(Boolean);
       if (parts.length < 2) return "";
+      var paths = getSitePagePaths();
       var segments = [];
       var path = "";
       for (var i = 0; i < parts.length - 1; i++) {
         path += "/" + parts[i];
         var name = segmentName(parts[i]);
-        segments.push("<a href=\"" + path + "/\">" + name + "</a>");
+        if (paths.has(path)) {
+          segments.push("<a href=\"" + path + "/\">" + name + "</a>");
+        } else {
+          // No real page at this level -> plain (non-hyperlink) segment.
+          segments.push("<span class=\"pagefind-ui__breadcrumb-seg\">" + name + "</span>");
+        }
       }
       return segments.join(" <span class=\"pagefind-ui__breadcrumb-sep\">\u203a</span> ");
     } catch (e) {

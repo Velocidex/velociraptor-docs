@@ -7,4 +7,6 @@ Assets (pagefind-ui.css/js + index) are generated at build time by
     {{- $jsSearch = $jsSearch | minify | fingerprint -}}
   {{- end -}}
   <script defer src="{{ $jsSearch.RelPermalink }}" integrity="{{ $jsSearch.Data.Integrity }}"></script>
+  {{/* Existing-page paths for the 404-aware breadcrumbs (Option A). */}}
+  {{ partial "section-breadcrumb-paths.html" . }}
 {{- end -}}
