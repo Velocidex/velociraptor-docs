@@ -429,3 +429,22 @@ html.dark .hextra-figure-caption {
   font-size: 0.85em;
   overflow-wrap: anywhere;
 }
+
+/* --- GitHub-style alerts (Hextra `[!NOTE]`-style blockquotes) ---
+   The theme's title paragraph is `p.hx:font-medium` (500) with a 16px
+   icon; its content wrapper carries `hx:mt-6 hx:first:mt-0`, and the
+   `first:` variant cancels the margin (it is the first child), leaving
+   zero gap between the title and the body. Restore paragraph-like
+   spacing and enliven the title. `hx:` in class names must be escaped
+   as `hx\:` in selectors. */
+.content :where(div.hx\:overflow-x-auto > p.hx\:font-medium) {
+  margin-bottom: 1.5rem; /* matches .content p margin-top (24px) */
+  font-weight: 700;
+}
+
+.content :where(div.hx\:overflow-x-auto > p.hx\:font-medium svg) {
+  width: 32px; /* 2x the theme's 16px icon */
+  height: 32px;
+  margin-right: 0.625rem;
+  flex-shrink: 0;
+}
