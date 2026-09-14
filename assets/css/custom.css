@@ -391,13 +391,21 @@ html.dark .hextra-nav-btn[aria-current] {
   background: rgba(255, 255, 255, 0.9);
   color: #374151;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-  opacity: 0.85;
+  opacity: 0;
   transition: opacity 0.15s ease;
 }
 
 html.dark .hextra-figure-download {
   background: rgba(17, 17, 17, 0.85);
   color: #d4d4d4;
+}
+
+/* Reveal the download button only while hovering the figure (or when the
+   button itself has keyboard focus), so it does not permanently obscure
+   the image. */
+.hextra-figure:hover .hextra-figure-download,
+.hextra-figure-download:focus-visible {
+  opacity: 1;
 }
 
 .hextra-figure-download:hover {
