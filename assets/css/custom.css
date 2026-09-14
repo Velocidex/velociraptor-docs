@@ -3,6 +3,70 @@
    this file covers legacy widget markup that has no hx: classes.
    Dark mode via the `.dark` class on <html>. */
 
+/* --- Site-wide font: Iosevka Term ---
+   Same subsetted font the Velociraptor GUI ships
+   (gui/velociraptor/src/fonts/). The subsets cover ASCII and Latin-1
+   (unicode-range below); any other glyphs fall back to system fonts.
+   The "bold" subset is actually Iosevka Term Extrabold, matching the
+   font-weight mapping the GUI CSS uses (700 -> extrabold file). */
+@font-face {
+  font-family: "Iosevka Term";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Iosevka Term"),
+    url("/fonts/iosevka-term-regular-subset.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+0080-00FF;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Iosevka Term";
+  font-style: normal;
+  font-weight: 500;
+  src: local("Iosevka Term"),
+    url("/fonts/iosevka-term-medium-subset.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+0080-00FF;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Iosevka Term";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Iosevka Term"),
+    url("/fonts/iosevka-term-bold-subset.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+0080-00FF;
+  font-display: swap;
+}
+
+/* Iosevka everywhere: body, UI chrome and code. Overrides Hextra/Tailwind
+   font variables (this file is concatenated last into main.css). */
+:root {
+  --hx-default-font-family: "Iosevka Term", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --hx-font-sans: "Iosevka Term", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --hx-font-mono: "Iosevka Term", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* Iosevka is a narrow font, and Hextra applies 0.9em twice to fenced code
+   blocks (wrapper + pre), which renders ~12.96px vs 16px body text. Nudge
+   fenced code back up so it stays readable next to the prose. */
+.hextra-code-block {
+  font-size: 1em;
+}
+
+/* Only size the <pre>; the inner <code> inherits its size. */
+.hextra-code-block pre {
+  font-size: 0.9375em;
+}
+
+/* Bare <pre> not wrapped in a Hextra code block (rare, legacy markup). */
+.content :where(pre):not(.hextra-code-block pre) {
+  font-size: 0.9375em;
+}
+
 /* Hidden easter egg in the artifact exchange "Share your own Artifact" box. */
 p.egg {
   display: none;
