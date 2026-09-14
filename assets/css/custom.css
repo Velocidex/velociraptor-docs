@@ -862,3 +862,47 @@ html.dark #pagefind-site-tags .search-tag-link:hover {
   margin-top: 0.125rem;
   margin-bottom: 0;
 }
+
+/* --- Markdown inside feature-card subtitles (landing page) ---
+   The cards render in a `not-prose` context (`.hextra-cards` carries the
+   class), so Hextra's prose rules for blockquote/a/code/p never reach the
+   card body.  Markdown is still processed to HTML, but unstyled --
+   a `>` quote would render as plain text.  Give the common inline/block
+   constructs minimal typographic chrome here. */
+.hextra-card-subtitle p {
+  margin: 0;
+}
+
+.hextra-card-subtitle blockquote {
+  margin: 0;
+  padding: 0 0 0 0.625rem;
+  border-left: 2px solid var(--hx-color-neutral-300, #d4d4d4);
+  color: var(--hx-color-neutral-700, #404040);
+}
+
+html.dark .hextra-card-subtitle blockquote {
+  border-left-color: var(--hx-color-neutral-600, #525252);
+  color: var(--hx-color-neutral-400, #a3a3a3);
+}
+
+.hextra-card-subtitle a {
+  color: var(--hx-color-primary-600, #2563eb);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+html.dark .hextra-card-subtitle a {
+  color: var(--hx-color-primary-400, #60a5fa);
+}
+
+.hextra-card-subtitle code {
+  padding: 0 0.25em;
+  border-radius: 0.25rem;
+  background: var(--hx-color-neutral-200, #e5e5e5);
+  font-family: var(--hx-font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 0.9em;
+}
+
+html.dark .hextra-card-subtitle code {
+  background: var(--hx-color-neutral-700, #404040);
+}

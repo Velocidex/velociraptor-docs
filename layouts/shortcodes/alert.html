@@ -29,6 +29,6 @@ shortcode used on landing pages. Renders through Hextra's callout partial.
 {{- partial "shortcodes/callout.html" (dict
   "content" $content
   "icon" $style.icon
-  "class" $style.style
+  "class" (printf "%s hx:text-sm" $style.style)
   )
 -}}

@@ -25,6 +25,10 @@ Please update to the latest release [0.77.2](/downloads/) to address
 
 {{< feature-grid >}}
 
+  {{< feature icon="calendar" title="Announcements" url="/downloads/" banner=true kicker="Releases, security advisories & community news" >}}
+    **2026-08-26 - Velociraptor 0.77.2 is now available!**
+  {{< /feature >}}
+
   {{< feature icon="book-open" title="Documentation" url="/docs/" >}}
     Everything you need to install, configure and use Velociraptor,
     from the deployment quickstart to the configuration reference.

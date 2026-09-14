@@ -1,28 +1,57 @@
 {{- /*
 Landing-page feature card: Hextra card-link with icon, title and description.
+
+The card container is a <div>, never an anchor, so the body may contain
+real links without nested-anchor breakage. A stretched-link overlay
+(absolute, inset-0) makes the whole card clickable; body links render
+above it via an injected relative/z-index style (the theme's compiled
+CSS lacks hx:inset-0 and hx:z-10 utilities).
+
 @param {string} icon Icon name (Hextra icon set).
 @param {string} title Card title.
 @param {string} url Target link.
+@param {boolean} banner Render as a full-width notice banner spanning the
+  whole grid row (used for Announcements on the landing page).
 */ -}}
 {{- $icon := .Get "icon" | default "chevron-right" -}}
 {{- if eq $icon "lightbulb" }}{{ $icon = "light-bulb" }}{{ end -}}
 {{- $title := .Get "title" -}}
 {{- $link := .Get "url" -}}
+{{- $banner := .Get "banner" | default false -}}
+{{- $kicker := .Get "kicker" | default "Latest news & releases" -}}
 {{- $href := cond (strings.HasPrefix $link "/") ($link | relURL) $link -}}
 
-<a
-  class="hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:shadow-gray-100 hx:dark:border-neutral-800 hx:hover:border-gray-300 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900 hx:transition-all hx:duration-200"
-  href="{{ $href }}"
+{{- $class := "hextra-card hx:group hx:relative hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:text-current hx:no-underline hx:shadow-gray-100 hx:transition-all hx:duration-200" -}}
+{{- if $banner -}}
+  {{- $class = printf "%s hx:border-indigo-200 hx:bg-indigo-100 hx:hover:shadow-md hx:dark:border-indigo-200 hx:dark:bg-indigo-900" $class -}}
+{{- else -}}
+  {{- $class = printf "%s hx:border-gray-200 hx:hover:border-gray-300 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:border-neutral-800 hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900" $class -}}
+{{- end -}}
+
+<div
+  class="{{ $class }}"
+  {{ if $banner }}style="grid-column: 1 / -1"{{ end }}
 >
+  <a
+    class="hextra-card-link hx:cursor-pointer"
+    href="{{ $href }}"
+    aria-label="{{ $title }}"
+    style="position: absolute; inset: 0;"
+  ></a>
   <div class="hx:mt-auto">
     <span class="hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:p-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50">
       {{- partial "utils/icon.html" (dict "name" $icon "attributes" `height=1.2em class="hx:inline-block hx:align-middle"`) -}}
       {{- $title -}}
     </span>
     {{- with .Inner }}
-    <div class="hextra-card-subtitle hx:line-clamp-3 hx:text-sm hx:font-normal hx:text-gray-500 hx:dark:text-gray-400 hx:px-4 hx:mb-4 hx:mt-2">
-      {{- . | partial "utils/dedent.html" | markdownify -}}
+    <div class="hextra-card-subtitle hx:text-sm hx:font-normal hx:text-center hx:text-gray-500 hx:dark:text-gray-400 hx:px-4{{ if $banner }} hx:mt-2 hx:mb-2{{ else }} hx:mt-2 hx:mb-4 hx:line-clamp-3{{ end }}">
+      {{- replaceRE `<a ` `<a style="position: relative; z-index: 1;" ` (. | partial "utils/dedent.html" | markdownify) | safeHTML -}}
+    </div>
+    {{- end }}
+    {{- if $banner }}
+    <div class="hx:flex hx:items-center hx:justify-center hx:gap-2 hx:px-4 hx:pt-4 hx:pb-8 hx:text-sm hx:font-semibold hx:text-indigo-900 hx:dark:text-indigo-200">
+      {{ $kicker }}
     </div>
     {{- end }}
   </div>
-</a>
+</div>
