@@ -291,6 +291,74 @@ html.dark .hextra-nav-btn[aria-current] {
   padding-bottom: 1rem;
 }
 
+/* --- Figure images (markdown render-image hook) ---
+   Port of the upstream SVG-aware image render hook (layouts/_markup/
+   render-image.html): every markdown-content image renders as a figure
+   with caption, an overlay download button (bottom-right), and Hextra
+   medium-zoom when enabled.  Images shorter than 200px render as a bare
+   inline <img> instead (no figure/zoom). */
+.hextra-figure {
+  margin: 1rem 0;
+}
+
+.hextra-figure-media {
+  position: relative;
+}
+
+.hextra-figure-img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.375rem;
+}
+
+.hextra-figure-download {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #374151;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  opacity: 0.85;
+  transition: opacity 0.15s ease;
+}
+
+html.dark .hextra-figure-download {
+  background: rgba(17, 17, 17, 0.85);
+  color: #d4d4d4;
+}
+
+.hextra-figure-download:hover {
+  opacity: 1;
+}
+
+.hextra-figure-download svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.hextra-figure-caption {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+}
+
+html.dark .hextra-figure-caption {
+  color: #9ca3af;
+}
+
+.hextra-figure-inline {
+  display: inline;
+}
+
 .hash {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", monospace;

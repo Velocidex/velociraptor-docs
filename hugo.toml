@@ -191,6 +191,15 @@ enableRobotsTXT = true
     default = "light"     # valid: light, dark, system
     displayToggle = true
 
+  # Click-to-zoom on figure images (medium-zoom), as on the reference site.
+  # Rendered via hextra's scripts/medium-zoom partial when a page sets the
+  # "hasImageZoom" store flag (file: layouts/_markup/render-image.html).
+  # The js asset is vendored locally (assets/js/medium-zoom.min.js) so
+  # builds do not depend on fetching the library from the CDN.
+  [params.imageZoom]
+    enable = true
+    js = "js/medium-zoom.min.js"
+
   [params.navbar]
     width = "normal"      # 80rem; matches the reference docs sites
 
