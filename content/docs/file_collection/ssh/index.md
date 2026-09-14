@@ -41,36 +41,33 @@ on a host _without_ SFTP in which case the SSH accessor will not work,
 and in that case Velociraptor will return an access error.
 
 
-{{% notice note "Limitations" %}}
-
-Accessing a remote system using the SSH accessor is essentially
-equivalent to using [SSHFS](https://github.com/libfuse/sshfs), which also uses
-SFTP and has similar constraints and limitations.
-
-- **No tool use**: The SSH accessor is used to read or retrieve remote
-  files. Unlike a full client, it cannot execute arbitrary tools or
-  shell commands on the endpoint. For example, the UAC collector is a
-  shell script which is pushed to the endpoint when collecting the
-  `Linux.Triage.UAC` artifact on a normal Linux client, however this
-  or other tools cannot be used via the SSH accessor.
-- **Only file-related plugins**: Plugins that return data from sources
-  other than from the filesystem, for example `pslist()`, cannot
-  produce data and should therefore be disabled via the remapping
-  config. If you accidentally use a plugin that retrieves data from
-  non-filesystem sources, then it will produce data from the local
-  system rather than the remote system.
-- **No access to virtual filesystems**: On Linux this means that
-  reading `/proc` or `/sys` won't work since SFTP doesn't expose
-  virtual filesystems.
-
-All of Velociraptor's file-related functions and plugins can be used
-with the SSH accessor. Also all other
-[accessors](/vql_reference/accessors/) can be used via
-[accessor remapping](/docs/forensic/filesystem/remapping/),
-so existing artifacts that use specific accessors will still work,
-provided that an appropriate remapping config is used.
-
-{{% /notice %}}
+> [!NOTE] Limitations
+> Accessing a remote system using the SSH accessor is essentially
+> equivalent to using [SSHFS](https://github.com/libfuse/sshfs), which also uses
+> SFTP and has similar constraints and limitations.
+>
+> - **No tool use**: The SSH accessor is used to read or retrieve remote
+>   files. Unlike a full client, it cannot execute arbitrary tools or
+>   shell commands on the endpoint. For example, the UAC collector is a
+>   shell script which is pushed to the endpoint when collecting the
+>   `Linux.Triage.UAC` artifact on a normal Linux client, however this
+>   or other tools cannot be used via the SSH accessor.
+> - **Only file-related plugins**: Plugins that return data from sources
+>   other than from the filesystem, for example `pslist()`, cannot
+>   produce data and should therefore be disabled via the remapping
+>   config. If you accidentally use a plugin that retrieves data from
+>   non-filesystem sources, then it will produce data from the local
+>   system rather than the remote system.
+> - **No access to virtual filesystems**: On Linux this means that
+>   reading `/proc` or `/sys` won't work since SFTP doesn't expose
+>   virtual filesystems.
+>
+> All of Velociraptor's file-related functions and plugins can be used
+> with the SSH accessor. Also all other
+> [accessors](/vql_reference/accessors/) can be used via
+> [accessor remapping](/docs/forensic/filesystem/remapping/),
+> so existing artifacts that use specific accessors will still work,
+> provided that an appropriate remapping config is used.
 
 ## Different approaches to using the SSH accessor
 
@@ -136,37 +133,34 @@ the note below.
 
 The accessor requires the `NETWORK` permission to operate.
 
-{{% notice warning "Avoid using credentials directly in notebooks and artifacts" %}}
-
-Unless you're just doing some testing in a non-production environment,
-you should **always use server secrets** to store credentials for SSH,
-rather than specifying them in the artifact or notebook.
-
-For notebooks this is especially important because notebook cell
-contents are saved to disk when executed, and have a default cell
-history that stores the last five versions. Even for server artifacts
-this is important as explicit credentials will be saved in
-the VQL request where other users can see them (collections are
-visible to all users in an org).
-
-Server secrets are designed to address this exact problem: You can
-create a new SSH secret, which is stored encrypted - the credentials
-in it can't be viewed, even by yourself once created and saved - and
-then selectively share it with other users. Users who have access to the
-secret can use it but cannot view its contents.
-
-Using a SSH secret also has the benefit of making your VQL more
-succinct, as you'll see below.
-
-**Enforcing secrets-only usage:**
-
-Server administrators can set `VqlMustUseSecrets` in the server
-configuration to require that all credentials be supplied via secrets.
-When this is enabled, inline credentials (like `username` and
-`private_key` in `SSH_CONFIG`) are rejected, and only `secret=`
-lookups are allowed.
-
-{{% /notice %}}
+> [!WARNING] Avoid using credentials directly in notebooks and artifacts
+> Unless you're just doing some testing in a non-production environment,
+> you should **always use server secrets** to store credentials for SSH,
+> rather than specifying them in the artifact or notebook.
+>
+> For notebooks this is especially important because notebook cell
+> contents are saved to disk when executed, and have a default cell
+> history that stores the last five versions. Even for server artifacts
+> this is important as explicit credentials will be saved in
+> the VQL request where other users can see them (collections are
+> visible to all users in an org).
+>
+> Server secrets are designed to address this exact problem: You can
+> create a new SSH secret, which is stored encrypted - the credentials
+> in it can't be viewed, even by yourself once created and saved - and
+> then selectively share it with other users. Users who have access to the
+> secret can use it but cannot view its contents.
+>
+> Using a SSH secret also has the benefit of making your VQL more
+> succinct, as you'll see below.
+>
+> **Enforcing secrets-only usage:**
+>
+> Server administrators can set `VqlMustUseSecrets` in the server
+> configuration to require that all credentials be supplied via secrets.
+> When this is enabled, inline credentials (like `username` and
+> `private_key` in `SSH_CONFIG`) are rejected, and only `secret=`
+> lookups are allowed.
 
 ### Creating SSH secrets
 
@@ -637,4 +631,3 @@ read operation, it can be slower than a local Velociraptor client.
 Consider using the
 [resumable uploads](/docs/file_collection/#resumable-uploads)
 feature for large file transfers over unstable network connections.
-

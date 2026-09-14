@@ -121,9 +121,8 @@ Every Velociraptor deployments creates an internal PKI which underpins it. The c
 The configuration file contains the CA’s X.509 certificate in the **Client.ca_certificate** parameter (it is therefore embedded in the client configuration). The private key is contained in the **CA.private_key** parameter.
 
 
-{{% notice tip %}}
-In a secure installation you should remove the **CA.private_key** section from the server config and keep it offline. You only need it to create new API keys using the *velociraptor config api_client* command, and the server does not need it in normal operations.
-{{% /notice %}}
+> [!TIP]
+> In a secure installation you should remove the **CA.private_key** section from the server config and keep it offline. You only need it to create new API keys using the *velociraptor config api_client* command, and the server does not need it in normal operations.
 
 ### Messages
 

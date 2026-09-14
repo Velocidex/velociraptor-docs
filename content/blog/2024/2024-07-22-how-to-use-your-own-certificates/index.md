@@ -131,9 +131,8 @@ tool. For example, you can run the following command:
 cat DigiCertCA.crt TrustedRoot.crt > CA_chain.pem
 ```
 
-{{% notice "note" %}}
-Ensure the order is correct: server certificate first, followed by intermediate certificates (you may have more than one), and finally the root certificate.
-{{% /notice %}}
+> [!NOTE]
+> Ensure the order is correct: server certificate first, followed by intermediate certificates (you may have more than one), and finally the root certificate.
 
 You should now have the following files in your cert folder:
 
@@ -158,13 +157,10 @@ To enable TLS encryption for the Velociraptor server and client:
 ![The velociraptor configuration generator screenshot](Configuring-Velociraptor.png)
 
 
-{{% notice "note" %}}
-
-In this configuration I set frontend to communicate over port 443 as
-most firewalls in a network will allow this traffic outbound making it
-easier for the deployment of clients.
-
-{{% /notice %}}
+> [!NOTE]
+> In this configuration I set frontend to communicate over port 443 as
+> most firewalls in a network will allow this traffic outbound making it
+> easier for the deployment of clients.
 
 ## Update the Server Configuration:
 
@@ -221,16 +217,13 @@ Crypto:
          -----END CERTIFICATE-----
 ```
 
-{{% notice "note" %}}
-
-As discussed in the certificate section, ensure that the intermediate
-and root certificates are in the correct order. The server certificate
-should come first, followed by any intermediate certs, and finally the
-root trusted authority certificate (if self-signed) for more
-information, please see
-https://www.rfc-editor.org/rfc/rfc4346#section-7.4.2
-
-{{% /notice %}}
+> [!NOTE]
+> As discussed in the certificate section, ensure that the intermediate
+> and root certificates are in the correct order. The server certificate
+> should come first, followed by any intermediate certs, and finally the
+> root trusted authority certificate (if self-signed) for more
+> information, please see
+> https://www.rfc-editor.org/rfc/rfc4346#section-7.4.2
 
 ## Testing the TLS Encryption
 

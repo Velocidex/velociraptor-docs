@@ -8,12 +8,9 @@ title: "The Velociraptor Python API"
 categories: ["Blog"]
 ---
 
-{{% notice info %}}
-
-The Python bindings described in this page have now moved to
-https://github.com/Velocidex/pyvelociraptor/
-
-{{% /notice %}}
+> [!NOTE]
+> The Python bindings described in this page have now moved to
+> https://github.com/Velocidex/pyvelociraptor/
 
 
 Velociraptor is very good at collecting artifacts from endpoints.
@@ -56,14 +53,11 @@ verify that the certificate each end presents was issued by the
 Velociraptor CA.
 
 
-{{% notice note %}}
-
-If you need to have extra security in your environment you should keep
-the original server.config.yaml file generated in an offline location,
-then deploy a redacted file (without the CA.private\_key value) on the
-server. This way api client certificates can only be issued offline.
-
-{{% /notice %}}
+> [!NOTE]
+> If you need to have extra security in your environment you should keep
+> the original server.config.yaml file generated in an offline location,
+> then deploy a redacted file (without the CA.private\_key value) on the
+> server. This way api client certificates can only be issued offline.
 
 Before the client may connect to the API server they must have a
 certificate issued by the Velociraptor CA. This is easy to generate:
@@ -286,20 +280,16 @@ is a file!).
 The python code then proceeds to launch the `analyseMFT.py` script to
 parse the \$MFT.
 
-{{% notice note %}}
-
-
-The nice thing with this scheme is that the `analyseMFT.py` is running in
-its own process and can be managed separately to the main Velociraptor
-server (e.g. we can set its execution priority or even run it on a
-separate machine). The Velociraptor server does not actually need to
-wait for post processing nor will the post processing affect its
-performance in any way. If the `analyseMFT.py` script takes a long time,
-it will just fall behind but it eventually will catch up. In the
-meantime, the Velociraptor server will continue receiving the uploads
-regardless.
-
-{{% /notice %}}
+> [!NOTE]
+> The nice thing with this scheme is that the `analyseMFT.py` is running in
+> its own process and can be managed separately to the main Velociraptor
+> server (e.g. we can set its execution priority or even run it on a
+> separate machine). The Velociraptor server does not actually need to
+> wait for post processing nor will the post processing affect its
+> performance in any way. If the `analyseMFT.py` script takes a long time,
+> it will just fall behind but it eventually will catch up. In the
+> meantime, the Velociraptor server will continue receiving the uploads
+> regardless.
 
 The above example sets up a watcher query to receive flow results in
 real time, but you can also just process the results of a specific hunt

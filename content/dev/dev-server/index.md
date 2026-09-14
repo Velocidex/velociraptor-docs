@@ -85,25 +85,22 @@ Alternatively you can run Hugo in Docker:
 docker run --rm -it -v $(pwd):/src -p 1313:1313 hugomods/hugo server
 ```
 
-{{% notice note "Build scripts" %}}
-
-For certain kinds of content, you might need to run one or more of the
-Python scripts listed in the Makefile in the project root using the
-`make` tool, although this is not necessary for normal page content
-and artifact contributions.
-
-Rebuilding the reference indices with these scripts should clear
-`REF_NOT_FOUND` errors if such occur during Hugo server startup. These
-scripts need a working Python installation and generally require
-`pyyaml`.
-
-The search index is built separately with
-[Pagefind](https://pagefind.app/): run `bun install` once, then
-`make pagefind` (or `make site` after the site has been built).
-`make pagefind` works on the existing `public/` directory, so no Hugo
-rebuild is required first.
-
-{{% /notice %}}
+> [!NOTE] Build scripts
+> For certain kinds of content, you might need to run one or more of the
+> Python scripts listed in the Makefile in the project root using the
+> `make` tool, although this is not necessary for normal page content
+> and artifact contributions.
+>
+> Rebuilding the reference indices with these scripts should clear
+> `REF_NOT_FOUND` errors if such occur during Hugo server startup. These
+> scripts need a working Python installation and generally require
+> `pyyaml`.
+>
+> The search index is built separately with
+> [Pagefind](https://pagefind.app/): run `bun install` once, then
+> `make pagefind` (or `make site` after the site has been built).
+> `make pagefind` works on the existing `public/` directory, so no Hugo
+> rebuild is required first.
 
 ###### What this does
 
@@ -142,4 +139,3 @@ serious issues, so this is a good way to do a final check.
 When you're done, you can then commit your local changes, push them to
 _your_ GitHub forked repo, and then open a pull request against the
 upstream repo.
-

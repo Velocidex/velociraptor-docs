@@ -66,33 +66,30 @@ FROM hunt_results(hunt_id=HuntId,
 WHERE Name =~ "mike"
 ```
 
-{{% notice tip "Using labels to control hunts and monitoring" %}}
-
-Labels applied to clients essentially form groups. Many features in
-Velociraptor apply to these groups and it is possible to move clients
-in and out of these during the course of an investigation.
-
-For example, client event monitoring queries are controlled via client
-labels. This allows you to assign a detection rule to a group of
-machines then simple add or remove machines from the group.  Similarly
-it is possible to restrict a hunt to a label group then simply add
-clients to the label group in order to automatically add them to the
-hunt.
-
-For a practical example of using labels with client monitoring, please see the
-artifact
-[Windows.Remediation.QuarantineMonitor](/artifact_references/pages/windows.remediation.quarantinemonitor/)
-which is used to enforce network quarantine based on the `quarantine` label.
-
-In addition, it's possible to create
-[server monitoring](/docs/server_automation/server_monitoring/)
-artifacts which automatically add or remove labels based on flow completion
-status and results. Thus we can implement event-driven label manipulation via
-VQL which in turn initiates further actions (such as assigning the client to a
-particular hunt based on a previous hunt's results). In this way we can
-accomplish very powerful multi-phased automation that is directed by labeling.
-
-{{% /notice %}}
+> [!TIP] Using labels to control hunts and monitoring
+> Labels applied to clients essentially form groups. Many features in
+> Velociraptor apply to these groups and it is possible to move clients
+> in and out of these during the course of an investigation.
+>
+> For example, client event monitoring queries are controlled via client
+> labels. This allows you to assign a detection rule to a group of
+> machines then simple add or remove machines from the group.  Similarly
+> it is possible to restrict a hunt to a label group then simply add
+> clients to the label group in order to automatically add them to the
+> hunt.
+>
+> For a practical example of using labels with client monitoring, please see the
+> artifact
+> [Windows.Remediation.QuarantineMonitor](/artifact_references/pages/windows.remediation.quarantinemonitor/)
+> which is used to enforce network quarantine based on the `quarantine` label.
+>
+> In addition, it's possible to create
+> [server monitoring](/docs/server_automation/server_monitoring/)
+> artifacts which automatically add or remove labels based on flow completion
+> status and results. Thus we can implement event-driven label manipulation via
+> VQL which in turn initiates further actions (such as assigning the client to a
+> particular hunt based on a previous hunt's results). In this way we can
+> accomplish very powerful multi-phased automation that is directed by labeling.
 
 
 ### Built-in Labels
@@ -127,17 +124,14 @@ only on the Sales OU. This will result in those clients being enrolled with the
 `Sales` label automatically.
 
 
-{{% notice note %}}
-
-Although any labels can be deleted on the server, the labels specified in the
-client config file will return after the client restarts.
-
-You can also change the labels in the client config at any time and any new
-labels will be applied when the client restarts.
-
-Labels reported by the client are applied without server-side
-verification. See the [client trust
-model](/docs/deployment/security/#client-trust-model) section for more
-about the implications of this design.
-
-{{% /notice %}}
+> [!NOTE]
+> Although any labels can be deleted on the server, the labels specified in the
+> client config file will return after the client restarts.
+>
+> You can also change the labels in the client config at any time and any new
+> labels will be applied when the client restarts.
+>
+> Labels reported by the client are applied without server-side
+> verification. See the [client trust
+> model](/docs/deployment/security/#client-trust-model) section for more
+> about the implications of this design.

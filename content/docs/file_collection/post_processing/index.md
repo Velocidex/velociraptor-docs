@@ -173,24 +173,21 @@ collections, although it is possible to manually craft remappings that function
 similarly for Linux or macOS.
 
 
-{{% notice warning %}}
-
-Post-processing files from the server's datastore is a stop-gap measure
-which can be attempted in situations where the correct artifacts were not
-collected but the associated files were uploaded to the server. Parsing
-collected files through a remapped collection is not as accurate and reliable as
-parsing files directly on the endpoint. Some artifacts depend on co-existing
-data sources that would be present on a real endpoint, and which cannot be
-emulated on the server. Such artifacts may fail or produce unexpected results.
-
-As explained [here](/docs/deployment/offline_collections/),
-if you want to run the artifacts on the endpoint just add them to the collector
-in addition to the artifacts that collect files.
-
-See
-https://docs.velociraptor.app/training/playbooks/preservation/ for more info.
-
-{{% /notice %}}
+> [!WARNING]
+> Post-processing files from the server's datastore is a stop-gap measure
+> which can be attempted in situations where the correct artifacts were not
+> collected but the associated files were uploaded to the server. Parsing
+> collected files through a remapped collection is not as accurate and reliable as
+> parsing files directly on the endpoint. Some artifacts depend on co-existing
+> data sources that would be present on a real endpoint, and which cannot be
+> emulated on the server. Such artifacts may fail or produce unexpected results.
+>
+> As explained [here](/docs/deployment/offline_collections/),
+> if you want to run the artifacts on the endpoint just add them to the collector
+> in addition to the artifacts that collect files.
+>
+> See
+> https://docs.velociraptor.app/training/playbooks/preservation/ for more info.
 
 
 
@@ -234,22 +231,19 @@ client.
 ![screenshot](post-process-collection-06.svg)
 
 
-{{% notice "Timeouts" %}}
-
-collection timeout
-
-notebook timeout
-
-The [notebook timeout]()
-can be extended via the server config, but 10 minutes is reasonable for most
-notebook cell operations and the timeout is intended to protect against
-poorly-constructed queries. In general if a cell needs longer than 10 minutes to
-complete then you should probably consider approaching your task a different
-way.
-
-Running post-processing in a server artifact
-
-{{% /notice %}}
+> [!NOTE]
+> collection timeout
+>
+> notebook timeout
+>
+> The [notebook timeout]()
+> can be extended via the server config, but 10 minutes is reasonable for most
+> notebook cell operations and the timeout is intended to protect against
+> poorly-constructed queries. In general if a cell needs longer than 10 minutes to
+> complete then you should probably consider approaching your task a different
+> way.
+>
+> Running post-processing in a server artifact
 
 
 #### Limitations

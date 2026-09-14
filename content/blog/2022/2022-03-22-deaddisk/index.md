@@ -98,36 +98,33 @@ discussion the following accessors are important:
 * The **ntfs** accessor is used to access files using the built in
   NTFS parser.
 
-{{% notice note "Supported disk image formats" %}}
-
-Velociraptor currently supports the following 4 disk image formats via built-in
-[accessors](/vql_reference/accessors/):
-
-- `EWF`: Expert Witness Compression Format, sometimes called "E01 images"
-- `VMDK`: virtual hard drive format introduced by VMware
-- `VHDX`: virtual hard drive format introduced by Microsoft
-- raw format: bit-by-bit copy of a hard drive, also know as "DD" or "flat" format
-
-The `deaddisk` command described below recognizes the first three formats based
-on *file extension* and Velociraptor is able to read these formats natively
-without any additional steps. If the target image file has any other extension
-then the `deaddisk` command will treat it as raw format.
-
-If you have any other image format then the recommended course of action is to
-"cross-mount" the image to raw format. There are several tools which can do
-this, for example [xmount](https://www.pinguin.lu/xmount). Alternatively you can
-convert the image to one of the natively-supported formats, and many tools exist
-which can do that. The downside of converting formats is that it requires a lot
-of disk space and can take a long time, therefore cross-mounting is preferable
-because it "translates" one format to another without conversion.
-
-Most virtual machine platforms can usually export to several formats. In
-particular note that VMware can export for raw format (also called "flat") but
-retains the `.vmdk` file extension. In that case you would need to remove the
-file extension so that Velociraptor's `deaddisk` command will treat it as a raw
-image instead of VMDK format.
-
-{{% /notice %}}
+> [!NOTE] Supported disk image formats
+> Velociraptor currently supports the following 4 disk image formats via built-in
+> [accessors](/vql_reference/accessors/):
+>
+> - `EWF`: Expert Witness Compression Format, sometimes called "E01 images"
+> - `VMDK`: virtual hard drive format introduced by VMware
+> - `VHDX`: virtual hard drive format introduced by Microsoft
+> - raw format: bit-by-bit copy of a hard drive, also know as "DD" or "flat" format
+>
+> The `deaddisk` command described below recognizes the first three formats based
+> on *file extension* and Velociraptor is able to read these formats natively
+> without any additional steps. If the target image file has any other extension
+> then the `deaddisk` command will treat it as raw format.
+>
+> If you have any other image format then the recommended course of action is to
+> "cross-mount" the image to raw format. There are several tools which can do
+> this, for example [xmount](https://www.pinguin.lu/xmount). Alternatively you can
+> convert the image to one of the natively-supported formats, and many tools exist
+> which can do that. The downside of converting formats is that it requires a lot
+> of disk space and can take a long time, therefore cross-mounting is preferable
+> because it "translates" one format to another without conversion.
+>
+> Most virtual machine platforms can usually export to several formats. In
+> particular note that VMware can export for raw format (also called "flat") but
+> retains the `.vmdk` file extension. In that case you would need to remove the
+> file extension so that Velociraptor's `deaddisk` command will treat it as a raw
+> image instead of VMDK format.
 
 ## Remapping configuration
 
@@ -290,19 +287,16 @@ Normally, when interacting with a live Velociraptor client, the
 through the OS API. However now we were able to mount a raw registry
 parser on top of the `registry` accessor.
 
-{{% notice note "What does remapping achieve?" %}}
-
-By remapping the traditional accessors with emulated content, we are
-effectively allowing the same VQL queries to apply to very different
-scenarios **without change**. For example, an artifact that queries
-the registry using the API will now automatically query the raw
-registry parser which accesses the hive file as recovered from parsing
-the ntfs filesystem on a dead disk image.
-
-We can apply the same artifacts to the dead disk image without any
-modification!
-
-{{% /notice %}}
+> [!NOTE] What does remapping achieve?
+> By remapping the traditional accessors with emulated content, we are
+> effectively allowing the same VQL queries to apply to very different
+> scenarios **without change**. For example, an artifact that queries
+> the registry using the API will now automatically query the raw
+> registry parser which accesses the hive file as recovered from parsing
+> the ntfs filesystem on a dead disk image.
+>
+> We can apply the same artifacts to the dead disk image without any
+> modification!
 
 ### Remapping CurrentControlSet
 
@@ -479,4 +473,3 @@ GitHub under an open source license. As always, please file issues on
 the bug tracker or ask questions on our mailing list
 velociraptor-discuss@googlegroups.com. You can also chat with us
 directly on [Discord](/discord/)..
-

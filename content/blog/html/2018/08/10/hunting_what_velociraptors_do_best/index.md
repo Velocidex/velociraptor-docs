@@ -77,13 +77,10 @@ they participated in and so they present this hunt\'s timestamp to the
 foreman. If a new hunt is available, the foreman can immediately launch
 the `CheckHuntCondition` flow on the client.
 
-{{% notice note %}}
-
-The clients themselves are actively keeping track of the hunts they
-participated in. This avoids the server having to check the client\'s DB
-record.
-
-{{% /notice %}}
+> [!NOTE]
+> The clients themselves are actively keeping track of the hunts they
+> participated in. This avoids the server having to check the client\'s DB
+> record.
 
 The `CheckHuntCondition` flow issues the client side VQL queries and then
 runs the server side query on the results. If the query matches (i.e.

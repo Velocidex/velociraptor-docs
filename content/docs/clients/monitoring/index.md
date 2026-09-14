@@ -38,21 +38,18 @@ In this page we discuss the client monitoring architecture and
 demonstrate how it can be used to feed events from the endpoint to the
 server.
 
-{{% notice tip %}}
-
-VQL event plugins generally start with the word "watch" to indicate they are
-event plugins (e.g. `watch_etw`, `watch_evtx`, `watch_usn` etc). Usually event
-plugins will have a corresponding non-event plugin, for example `watch_etvx()`
-is an event plugin that watches evtx files for new events and does not
-terminate, while `parse_evtx()` is a non-event plugin which simply parses the
-evtx files from beginning to end.
-
-You can search for all available plugins in the
-[VQL Reference](/vql_reference/),
-or browse the event plugins listed
-[here](/vql_reference/event/).
-
-{{% /notice %}}
+> [!TIP]
+> VQL event plugins generally start with the word "watch" to indicate they are
+> event plugins (e.g. `watch_etw`, `watch_evtx`, `watch_usn` etc). Usually event
+> plugins will have a corresponding non-event plugin, for example `watch_etvx()`
+> is an event plugin that watches evtx files for new events and does not
+> terminate, while `parse_evtx()` is a non-event plugin which simply parses the
+> evtx files from beginning to end.
+>
+> You can search for all available plugins in the
+> [VQL Reference](/vql_reference/),
+> or browse the event plugins listed
+> [here](/vql_reference/event/).
 
 ## Client monitoring architecture
 
@@ -98,20 +95,17 @@ client labels. We refer to the set of all clients having a specific label as a
   that label applied then the event table for that client will include
   the event artifacts assigned to that label group.
 
-{{% notice tip "Controlling event queries on clients using labels" %}}
-
-Note that label group membership is dynamic - clients may be added or
-removed from label groups at any time by applying or removing the
-relevant label. Applying a label to a client automatically updates the
-client event monitoring queries as well.
-
-In this way it is possible to assign clients to label groups that require
-different sets of monitoring queries. For example perhaps you wish to monitor
-only some of your end points for powershell or psexec executions some of the
-time. This can be done by applying the relevant label to those clients and
-removing the label when done.
-
-{{% /notice %}}
+> [!TIP] Controlling event queries on clients using labels
+> Note that label group membership is dynamic - clients may be added or
+> removed from label groups at any time by applying or removing the
+> relevant label. Applying a label to a client automatically updates the
+> client event monitoring queries as well.
+>
+> In this way it is possible to assign clients to label groups that require
+> different sets of monitoring queries. For example perhaps you wish to monitor
+> only some of your end points for powershell or psexec executions some of the
+> time. This can be done by applying the relevant label to those clients and
+> removing the label when done.
 
 ### Selecting event artifacts to apply
 
@@ -177,16 +171,13 @@ functionality applies to the visible time range only so you can fine-tune
 which events should be exported (simply zoom the visible range in or
 out to include only the desired data).
 
-{{% notice note "Client side buffering" %}}
-
-Although VQL queries emit rows in real time, the Velociraptor client does not
-immediately forward the event row to the server. This is done to avoid
-too-frequent communications with the server. Instead, the client will batch rows
-in memory (by default for 120 seconds) and send each batch in a single POST
-upload. This means that it could take up to 2 minutes for events to appear at
-the server once a new artifact is added to the client event table.
-
-{{% /notice %}}
+> [!NOTE] Client side buffering
+> Although VQL queries emit rows in real time, the Velociraptor client does not
+> immediately forward the event row to the server. This is done to avoid
+> too-frequent communications with the server. Instead, the client will batch rows
+> in memory (by default for 120 seconds) and send each batch in a single POST
+> upload. This means that it could take up to 2 minutes for events to appear at
+> the server once a new artifact is added to the client event table.
 
 ### Further processing client monitoring events.
 

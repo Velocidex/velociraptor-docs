@@ -51,24 +51,21 @@ artifacts. We call these binaries **offline collectors**.
   so that it's secure while in transit.
 
 
-{{% notice note "Terminology Note" %}}
-
-The term "offline" in this context refers to the fact that the collection is
-done without the use of an online client - that is, without the client-server
-network connectivity that is required for normal collections. The endpoint needs
-to have a running operating system, just as it would if an
-[installed](/docs/deployment/clients/#installing-the-client-as-a-service)
-or
-[non-installed](/docs/deployment/clients/#running-clients-interactively)
-client was used. Do not confuse the term with
-[deaddisk analysis](/docs/forensic/deaddisk/), which deals with
-data from computers that don't have a running operating system.
-
-It may be better to think of offline collections as _out-of-band collections_,
-since the main difference is that the VQL and collected results are not sent
-over a network-based client-server communication channel.
-
-{{% /notice %}}
+> [!NOTE] Terminology Note
+> The term "offline" in this context refers to the fact that the collection is
+> done without the use of an online client - that is, without the client-server
+> network connectivity that is required for normal collections. The endpoint needs
+> to have a running operating system, just as it would if an
+> [installed](/docs/deployment/clients/#installing-the-client-as-a-service)
+> or
+> [non-installed](/docs/deployment/clients/#running-clients-interactively)
+> client was used. Do not confuse the term with
+> [deaddisk analysis](/docs/forensic/deaddisk/), which deals with
+> data from computers that don't have a running operating system.
+>
+> It may be better to think of offline collections as _out-of-band collections_,
+> since the main difference is that the VQL and collected results are not sent
+> over a network-based client-server communication channel.
 
 
 ## Why do we need offline collections?
@@ -176,62 +173,58 @@ think about.
   under emergency conditions the resource utilization aspect may not be of much
   concern.
 
-{{% notice tip %}}
-
-In general, don't use offline collectors:
-
-- **To only collect files**: Many new users make the mistake of only collecting
-  files with the intention of analyzing them later on the server. Velociraptor
-  is not designed for centralized parsing of files - it can be done but it's
-  relatively complicated, loaded with caveats, and can add significant delays to
-  an investigation.
-
-  If you want to parse files and analyze their contents _and also
-  collect copies of the files_, then that's easily done: just add the relevant
-  parsing artifacts to your offline collector spec. Parsing of most file types
-  is very fast and can therefore be done on the endpoint at the same time that
-  the files themselves are collected. This approach makes use of the combined
-  computing resources of all endpoints rather than centralizing the workload on
-  the server. When you import a collection container on the server it's far better
-  to have data that you can immediately begin working with, and not just a dump
-  of files.
-
-  Ideally you should use the same artifacts in an offline collector as you would
-  use if you had a client running on the endpoint. Although, as mentioned
-  previously, this does require some planning.
-
-  There are certainly some situations where you might only need to collect
-  certain files, but those are typically rare. With Velociraptor it usually only
-  makes sense to copy a file if you've looked through it and found something of
-  interest.
-
-- **To avoid using clients**: If the endpoint can communicate with the server
-  then there really is no reason to use an offline collector rather than an
-  interactive online client.
-
-  - Velociraptor clients can operate
-    [without being installed](/docs/deployment/clients/#running-clients-interactively).
-
-  - Clients can immediately join hunts upon enrollment, which allows them to
-    immediately begin collecting exactly the same pre-defined set of artifacts
-    that an offline collector would have.
-
-  - Clients allow you to iterate and pivot as you investigate. Having the
-    results returned directly and almost immediately to the server allows you to
-    get answers without delays.
-
-  - The client config can be
-    [repacked](/docs/cli/commands/config/#-config-repack-)
-    into the binary, and made to
-    [auto execute](/docs/cli/autoexec/)
-    in `client` mode. That is, the convenience of a single autoexec binary can
-    be replicated for non-installable clients using the same embedding
-    mechanism that offline collectors use. In certain scenarios this may be
-    preferable to offline collectors, as explained
-    [here](/knowledge_base/tips/online_collector/).
-
-
-{{% /notice %}}
+> [!TIP]
+> In general, don't use offline collectors:
+>
+> - **To only collect files**: Many new users make the mistake of only collecting
+>   files with the intention of analyzing them later on the server. Velociraptor
+>   is not designed for centralized parsing of files - it can be done but it's
+>   relatively complicated, loaded with caveats, and can add significant delays to
+>   an investigation.
+>
+>   If you want to parse files and analyze their contents _and also
+>   collect copies of the files_, then that's easily done: just add the relevant
+>   parsing artifacts to your offline collector spec. Parsing of most file types
+>   is very fast and can therefore be done on the endpoint at the same time that
+>   the files themselves are collected. This approach makes use of the combined
+>   computing resources of all endpoints rather than centralizing the workload on
+>   the server. When you import a collection container on the server it's far better
+>   to have data that you can immediately begin working with, and not just a dump
+>   of files.
+>
+>   Ideally you should use the same artifacts in an offline collector as you would
+>   use if you had a client running on the endpoint. Although, as mentioned
+>   previously, this does require some planning.
+>
+>   There are certainly some situations where you might only need to collect
+>   certain files, but those are typically rare. With Velociraptor it usually only
+>   makes sense to copy a file if you've looked through it and found something of
+>   interest.
+>
+> - **To avoid using clients**: If the endpoint can communicate with the server
+>   then there really is no reason to use an offline collector rather than an
+>   interactive online client.
+>
+>   - Velociraptor clients can operate
+>     [without being installed](/docs/deployment/clients/#running-clients-interactively).
+>
+>   - Clients can immediately join hunts upon enrollment, which allows them to
+>     immediately begin collecting exactly the same pre-defined set of artifacts
+>     that an offline collector would have.
+>
+>   - Clients allow you to iterate and pivot as you investigate. Having the
+>     results returned directly and almost immediately to the server allows you to
+>     get answers without delays.
+>
+>   - The client config can be
+>     [repacked](/docs/cli/commands/config/#-config-repack-)
+>     into the binary, and made to
+>     [auto execute](/docs/cli/autoexec/)
+>     in `client` mode. That is, the convenience of a single autoexec binary can
+>     be replicated for non-installable clients using the same embedding
+>     mechanism that offline collectors use. In certain scenarios this may be
+>     preferable to offline collectors, as explained
+>     [here](/knowledge_base/tips/online_collector/).
 
 ## The Generic Collector
 
@@ -285,14 +278,11 @@ into account.
 Learn how to run generic offline collectors
 [here](/docs/deployment/offline_collections/running/#running-the-generic-collector).
 
-{{% notice note %}}
-
-Note that tools are not embedded in the binary and therefore do not need to be
-factored into the ~80KB limit. With both the generic collector and the offline
-collectors based on Velociraptor binaries that use config embedding, the tools
-are bundled and appended to the file.
-
-{{% /notice %}}
+> [!NOTE]
+> Note that tools are not embedded in the binary and therefore do not need to be
+> factored into the ~80KB limit. With both the generic collector and the offline
+> collectors based on Velociraptor binaries that use config embedding, the tools
+> are bundled and appended to the file.
 
 ## Collection containers
 
@@ -337,28 +327,22 @@ for encrypting the data:
    configuration. This password is passed directly to the ZIP library to encrypt
    the file.
 
-   {{% notice warning "Password encrypted ZIP files" %}}
-
-   If using a fixed password to encrypt the collection zip, the password needs
-   to be embedded within the collector itself. It is easy for anyone with access
-   to the collector binary to extract the collector configuration and view the
-   fixed password.
-
-   We therefore recommend that one of the certificate-based schemes be used in
-   practice.
-
-   {{% /notice %}}
+> [!WARNING] Password encrypted ZIP files
+>    If using a fixed password to encrypt the collection zip, the password needs
+>    to be embedded within the collector itself. It is easy for anyone with access
+>    to the collector binary to extract the collector configuration and view the
+>    fixed password.
+>
+>    We therefore recommend that one of the certificate-based schemes be used in
+>    practice.
 
 2. **X.509-secured**: a long random password is generated and encrypted with the
    server's certificate, or another X.509 certificate that you provide.
 
-   {{% notice tip "This is the recommended scheme" %}}
-
-   It's the most secure and comes with practical benefit of the server being
-   able to automatically decrypt the collection archives when they are imported
-   into the server's datastore.
-
-   {{% /notice %}}
+> [!TIP] This is the recommended scheme
+>    It's the most secure and comes with practical benefit of the server being
+>    able to automatically decrypt the collection archives when they are imported
+>    into the server's datastore.
 
    This scheme embeds the Velociraptor server's public certificate in the
    offline collector. During collection, a long random password is generated

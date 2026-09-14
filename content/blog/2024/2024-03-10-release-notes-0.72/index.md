@@ -349,19 +349,16 @@ it. For example, the `http_client()` plugin will fill the URL field,
 headers, cookies etc directly from the secret without us needing to
 bother with the details.
 
-{{% notice "warning" %}}
-
-Although `secrets` are designed to control access to the raw
-credential by preventing users from directly accessing the secrets'
-contents, those secrets are still written to disk. This means that GUI
-users with direct filesystem access can simply read the secrets from
-the disk.
-
-We recommend not granting untrusted users elevated server permissions
-like `EXECVE` or `Filesystem Read` as it can bypass the security
-measures placed on secrets.
-
-{{% /notice %}}
+> [!WARNING]
+> Although `secrets` are designed to control access to the raw
+> credential by preventing users from directly accessing the secrets'
+> contents, those secrets are still written to disk. This means that GUI
+> users with direct filesystem access can simply read the secrets from
+> the disk.
+>
+> We recommend not granting untrusted users elevated server permissions
+> like `EXECVE` or `Filesystem Read` as it can bypass the security
+> measures placed on secrets.
 
 
 ## Server improvements
@@ -598,22 +595,19 @@ support compiled yara rules. You can compile yara rules with the
 `yarac` compiler to produce a binary rule file. Simply pass the
 compiled binary data to the `yara()` plugin's `rules` parameter.
 
-{{% notice "warning" %}}
-
-We do not recommend using compiled yara rule because of their
-practical limitations:
-
-1. The compiled rules can not portable and must be used on exactly the
-   same version of the yara library as the compiler that created them
-   (Currently 4.5.0)
-2. Compiled yara rules are much larger than the text rules.
-
-Compiled yara rules pose no benefit over text based rules, except
-perhaps being more complex to decompile. This is primarily the reason
-to use compiled rules - to try to hide the rules (e.g. from commercial
-reasons).
-
-{{% /notice %}}
+> [!WARNING]
+> We do not recommend using compiled yara rule because of their
+> practical limitations:
+>
+> 1. The compiled rules can not portable and must be used on exactly the
+>    same version of the yara library as the compiler that created them
+>    (Currently 4.5.0)
+> 2. Compiled yara rules are much larger than the text rules.
+>
+> Compiled yara rules pose no benefit over text based rules, except
+> perhaps being more complex to decompile. This is primarily the reason
+> to use compiled rules - to try to hide the rules (e.g. from commercial
+> reasons).
 
 ### The Registry Hunter is launched
 

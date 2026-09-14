@@ -25,14 +25,11 @@ Logging captures discrete operational events, for example which
 clients connected, what hunts ran, which users authenticated, and any
 errors the server encountered.
 
-{{% notice tip "Centralized logging" %}}
-
-If your deployment sends logs to a central syslog server (for example
-rsyslog, Graylog, or a SIEM), you can search and alert on Velociraptor
-operational events alongside logs from other infrastructure. This is
-the recommended approach for production systems.
-
-{{% /notice %}}
+> [!TIP] Centralized logging
+> If your deployment sends logs to a central syslog server (for example
+> rsyslog, Graylog, or a SIEM), you can search and alert on Velociraptor
+> operational events alongside logs from other infrastructure. This is
+> the recommended approach for production systems.
 
 ## File-based logging
 
@@ -91,15 +88,12 @@ the same files:
     Velociraptor_error.log
 ```
 
-{{% notice note "Distributed deployments" %}}
-
-In a distributed deployment with
-[minion frontends](/docs/deployment/server/multifrontend/),
-each minion writes its logs to a subdirectory named after the node.
-This ensures that minions do not overwrite each other's or the
-master's logs.
-
-{{% /notice %}}
+> [!NOTE] Distributed deployments
+> In a distributed deployment with
+> [minion frontends](/docs/deployment/server/multifrontend/),
+> each minion writes its logs to a subdirectory named after the node.
+> This ensures that minions do not overwrite each other's or the
+> master's logs.
 
 When a log file rotates, the old file gets a timestamp suffix added
 (for example `VelociraptorAudit_info.log.202608311200`) and a symlink
@@ -168,29 +162,26 @@ regardless of other settings. As with `output_directory`, this applies
 both when the `remote_syslog_server` key is omitted entirely and when
 it is present but set to an empty value (`remote_syslog_server: ""`).
 
-{{% notice warning "Syslog forwarding and separate logs" %}}
-
-How syslog forwarding works depends on `separate_logs_per_component`:
-
-- With `separate_logs_per_component: true`, each component logs
-  separately, so every component you list in
-  `remote_syslog_components` is forwarded on its own.
-- With `separate_logs_per_component: false` (the default), all
-  components are logged together as a single `Velociraptor` stream. In
-  this mode, listing a specific component such as `VelociraptorAudit`
-  has no effect; only `Velociraptor` is forwarded. If your list does
-  not include `Velociraptor`, then nothing is forwarded at all.
-
-The simplest way to make syslog forwarding work is to set
-`separate_logs_per_component: true` and list the components you want
-to forward. If you prefer to keep all components in a single log
-stream, leave it at the default and list `Velociraptor` instead; this
-forwards everything.
-
-See [Forwarding specific components](#forwarding-specific-components)
-for details on the available logging components.
-
-{{% /notice %}}
+> [!WARNING] Syslog forwarding and separate logs
+> How syslog forwarding works depends on `separate_logs_per_component`:
+>
+> - With `separate_logs_per_component: true`, each component logs
+>   separately, so every component you list in
+>   `remote_syslog_components` is forwarded on its own.
+> - With `separate_logs_per_component: false` (the default), all
+>   components are logged together as a single `Velociraptor` stream. In
+>   this mode, listing a specific component such as `VelociraptorAudit`
+>   has no effect; only `Velociraptor` is forwarded. If your list does
+>   not include `Velociraptor`, then nothing is forwarded at all.
+>
+> The simplest way to make syslog forwarding work is to set
+> `separate_logs_per_component: true` and list the components you want
+> to forward. If you prefer to keep all components in a single log
+> stream, leave it at the default and list `Velociraptor` instead; this
+> forwards everything.
+>
+> See [Forwarding specific components](#forwarding-specific-components)
+> for details on the available logging components.
 
 
 ### What gets forwarded
@@ -225,19 +216,18 @@ the `msg` portion of each syslog line. If you ingest these logs into a
 SIEM, we recommend configuring JSON parsing on the receiving side so
 that `level`, `time`, and `msg` become queryable fields.
 
-{{% notice note "Protocol choice" %}}
-UDP is the simplest option but offers no delivery guarantee. If the
-syslog server is unreachable or the network drops packets, messages
-are lost silently and Velociraptor continues to run normally.
-
-With `tcp` or `tls`, Velociraptor establishes a connection to the
-syslog server at startup. If it cannot connect, **the server fails to
-start**. Ensure your syslog server is reachable before enabling TCP or
-TLS forwarding.
-
-If you specify `tls`, the syslog connection is encrypted. You may need
-to configure your syslog server with appropriate certificates.
-{{% /notice %}}
+> [!NOTE] Protocol choice
+> UDP is the simplest option but offers no delivery guarantee. If the
+> syslog server is unreachable or the network drops packets, messages
+> are lost silently and Velociraptor continues to run normally.
+>
+> With `tcp` or `tls`, Velociraptor establishes a connection to the
+> syslog server at startup. If it cannot connect, **the server fails to
+> start**. Ensure your syslog server is reachable before enabling TCP or
+> TLS forwarding.
+>
+> If you specify `tls`, the syslog connection is encrypted. You may need
+> to configure your syslog server with appropriate certificates.
 
 
 ### Forwarding specific components

@@ -70,9 +70,8 @@ As we can see in the above screenshot, the authenticode standard provides an exp
 
 None of the calculated hashes is the same as the “ExpectedHash” provided in the Authenticode signature! This is because Authenticode hashes do not cover the entire PE file, as regular hashes do. Authenticode hashes only cover specific PE sections, in a specific order. They specifically allow PE sections to be reordered, and some regions in the file to be modified.
 
-{{% notice info %}}
-Many people find it surprising that signed PE files can be modified without invalidating the signature.
-{{% /notice %}}
+> [!NOTE]
+> Many people find it surprising that signed PE files can be modified without invalidating the signature.
 
 This means that hash database detection commonly used in DFIR do not work to identify malicious signed binaries. I have demonstrated this recently in a [video](https://www.youtube.com/watch?v=dmmliSh91uQ) where I modified a vulnerable driver to change its file hash, maintaining it’s authenticode hash. This allowed the driver to be loaded, even through its file hash was completely different and not found on Virus Total.
 

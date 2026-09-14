@@ -26,9 +26,8 @@ The notebook approach is ideal for DFIR investigations. Since we don't typically
 
 In this article I will show how to use Jupyter to post-process some simple Velociraptor hunts to perform a typical DFIR response.
 
-{{% notice note %}}
-Note that while Jupyter and Pandas are both written in Python you do not actually need to know Python to use Jupyter with Velociraptor. Jupyter simply evaluates VQL statements on the Velociraptor server and displays their result in the notebook. Similarly you don't need to be a VQL expert — Event a basic understanding of VQL is sufficient to be able to drill down into the hunt results.
-{{% /notice %}}
+> [!NOTE]
+> Note that while Jupyter and Pandas are both written in Python you do not actually need to know Python to use Jupyter with Velociraptor. Jupyter simply evaluates VQL statements on the Velociraptor server and displays their result in the notebook. Similarly you don't need to be a VQL expert — Event a basic understanding of VQL is sufficient to be able to drill down into the hunt results.
 
 ### Configuring Jupyter access to the Velociraptor Server
 
@@ -102,11 +101,8 @@ If all goes well, the Velociraptor Python bindings will attempt to connect to th
 
 ![](../../img/1zIo1vmWBb8L_5U9LIy0_ag.png)
 
-{{% notice note %}}
-
-NOTE: The VQL queries we issue in the notebook run directly on the server. You can do anything with these queries, including collecting new artifact on any endpoint, starting and stopping hunts and inspecting any collected data. Velociraptor currently does not offer fine grained ACLs — being able to run VQL is effectively the same as having root level access everywhere. Please take care to secure the API key file on your workstation.
-
-{{% /notice %}}
+> [!NOTE]
+> NOTE: The VQL queries we issue in the notebook run directly on the server. You can do anything with these queries, including collecting new artifact on any endpoint, starting and stopping hunts and inspecting any collected data. Velociraptor currently does not offer fine grained ACLs — being able to run VQL is effectively the same as having root level access everywhere. Please take care to secure the API key file on your workstation.
 
 ### Using Jupyter to investigate a hunt
 

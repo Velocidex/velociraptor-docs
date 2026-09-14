@@ -129,10 +129,42 @@ drawn to something specific. Often the content in an admonition block
 can be rewritten as part of the normal text content, and therefore
 doesn't need to be wrapped in its own block.
 
-Currently we support 4 admonition types: `note`, `tip`, `info`,
-`warning`.
+Admonitions use the GitHub-style blockquote syntax:
 
-Admonition titles are optional but recommended.
+```md
+> [!NOTE]
+> Content of the admonition.
+```
+
+We support 5 admonition types:
+
+> [!NOTE]
+> A **note** provides supplementary information that is useful but
+> not essential to the surrounding text.
+
+> [!TIP]
+> A **tip** is a suggestion that helps the reader, such as a shortcut
+> or an alternative way of doing something.
+
+> [!IMPORTANT]
+> An **important** admonition highlights information that is critical
+> to the reader, such as a requirement that must be met.
+
+> [!WARNING]
+> A **warning** alerts the reader to a potential problem that should
+> be avoided.
+
+> [!CAUTION]
+> A **caution** is stronger than a warning: it indicates a risk of
+> serious damage or loss.
+
+Admonition titles are optional but recommended. A title is written
+after the type marker:
+
+```md
+> [!WARNING] My custom title
+> Content of the admonition.
+```
 
 ### Unordered lists
 
@@ -295,14 +327,13 @@ notes and see-also sections.
 Use `######` (Level-6) headings for examples (see the
 [examples](#examples) section above).
 
-{{% notice tip %}}
-The heading hierarchy for CLI command pages is:
-
-- `### [ command.subcommand ]` — command signature
-- `####` — major topic within the command
-- `#####` — notes, see-also, usage notes
-- `######` — examples
-{{% /notice %}}
+> [!TIP]
+> The heading hierarchy for CLI command pages is:
+>
+> - `### [ command.subcommand ]` — command signature
+> - `####` — major topic within the command
+> - `#####` — notes, see-also, usage notes
+> - `######` — examples
 
 #### Cross-references to other commands
 
@@ -324,4 +355,3 @@ This convention signals to the reader that the link refers to
 another CLI command (identifiable by the bracket style), even
 when skimming the page. This is again just an alternative to using
 inline code notation that makes things a bit more clear to the reader.
-

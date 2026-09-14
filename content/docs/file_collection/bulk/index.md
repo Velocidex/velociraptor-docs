@@ -30,38 +30,32 @@ In this section we explain how file acquisition is scaled up via
 [artifacts](/docs/artifacts/),
 making it easy to target the collection of many files in a single operation.
 
-{{% notice warning "Be careful with large file collections!" %}}
-
-When collecting many files it is often hard to determine in advance how much
-data will be collected or how long it will take.
-
-Consider the storage requirements:
-- Collecting 100 MB  from 10,000 endpoints = 1 TB!
-- A typical `$MFT` is around 300 to 400 MB, so collecting the `$MFT` from many
-  endpoints will require a huge amount of server disk space!
-
-Velociraptor is, in general, very careful to avoid causing performance and
-resource impacts on endpoints. However, many clients collecting many files can
-have significant impacts on your server, or even the network.
-
-See the section
-[Mitigating Network and Server Impacts](/docs/file_collection/#mitigating-network-and-server-impacts)
-for advice on ways to mitigate potential impacts to your server and network,
-especially when performing bulk file collections.
-
-{{% /notice %}}
+> [!WARNING] Be careful with large file collections!
+> When collecting many files it is often hard to determine in advance how much
+> data will be collected or how long it will take.
+>
+> Consider the storage requirements:
+> - Collecting 100 MB  from 10,000 endpoints = 1 TB!
+> - A typical `$MFT` is around 300 to 400 MB, so collecting the `$MFT` from many
+>   endpoints will require a huge amount of server disk space!
+>
+> Velociraptor is, in general, very careful to avoid causing performance and
+> resource impacts on endpoints. However, many clients collecting many files can
+> have significant impacts on your server, or even the network.
+>
+> See the section
+> [Mitigating Network and Server Impacts](/docs/file_collection/#mitigating-network-and-server-impacts)
+> for advice on ways to mitigate potential impacts to your server and network,
+> especially when performing bulk file collections.
 
 
-{{% notice tip "File Upload Deduplication" %}}
-
-Velociraptor automatically deduplicates files before uploading them. If
-different artifacts request the same file within the same collection on an
-endpoint, the file is only transferred and stored once. This deduplication is
-based on unique file path (including accessor) on the endpoint.
-
-Files collected in separate collections are not deduplicated.
-
-{{% /notice %}}
+> [!TIP] File Upload Deduplication
+> Velociraptor automatically deduplicates files before uploading them. If
+> different artifacts request the same file within the same collection on an
+> endpoint, the file is only transferred and stored once. This deduplication is
+> based on unique file path (including accessor) on the endpoint.
+>
+> Files collected in separate collections are not deduplicated.
 
 
 ## Bulk file collection using generic collection artifacts
@@ -134,47 +128,44 @@ to simplify
 [adding and updating externally maintained artifacts](/docs/deployment/quickstart/#step-6-import-artifacts-from-external-projects).
 
 
-{{% notice note "Triage vs. Bulk File Collection" %}}
-
-In the DFIR world, the term "triage" refers to the process of collecting
-information from an endpoint in order to assess and rank its relevance to an
-incident, particularly in high-pressure situations where time is critical.
-Usually this is an initial phase of the investigation, and is done for the
-purpose of identifying affected systems and scoping an incident. In other words,
-in Velociraptor terms "triage" is really just
-[hunting](/docs/hunting/) done with specific constraints and
-objectives in mind. Velociraptor can be used to assess an endpoint without
-copying any files.
-
-However, due to their prior experience with other DFIR tools many forensic
-practitioners tend to equate the term "triage" with bulk file acquisition
-itself, rather than the assessment and ranking process. The term is often used
-loosely to contrast the generally expeditious file acquisition approach with the
-traditional, much slower process of disk image acquisition.
-
-Users who are new to Velociraptor, especially those who have prior experience
-with solutions that centralize file processing, often want to repeat the
-familiar process that centralized solutions advocate, but using Velociraptor.
-That is, they use Velociraptor clients and/or Offline Collectors to copy files
-with the intention of analyzing/querying them later. This is not how
-Velociraptor is intended to work, as we
-[explained in the introduction](/docs/file_collection/#why-collect-files).
-Even though it is technically possible and supported, it is an inefficient and
-cumbersome approach that isn't aligned with Velociraptor's philosophy and design goals.
-
-###### The Velociraptor Way
-
-With Velociraptor, bulk file collection is usually done in parallel with
-investigating the endpoint itself. We don't collect files and then investigate -
-we investigate and _conditionally_ collect files (usually as a preservation
-action).
-
-So despite the use of "triage" in the name of these artifacts, you should keep
-in mind that they are really file preservation artifacts. You can perform triage
-on endpoints using Velociraptor artifacts such as `Windows.Hayabusa.Rules` and
-only copy files if they turn out to contain evidence that you want to preserve.
-
-{{% /notice %}}
+> [!NOTE] Triage vs. Bulk File Collection
+> In the DFIR world, the term "triage" refers to the process of collecting
+> information from an endpoint in order to assess and rank its relevance to an
+> incident, particularly in high-pressure situations where time is critical.
+> Usually this is an initial phase of the investigation, and is done for the
+> purpose of identifying affected systems and scoping an incident. In other words,
+> in Velociraptor terms "triage" is really just
+> [hunting](/docs/hunting/) done with specific constraints and
+> objectives in mind. Velociraptor can be used to assess an endpoint without
+> copying any files.
+>
+> However, due to their prior experience with other DFIR tools many forensic
+> practitioners tend to equate the term "triage" with bulk file acquisition
+> itself, rather than the assessment and ranking process. The term is often used
+> loosely to contrast the generally expeditious file acquisition approach with the
+> traditional, much slower process of disk image acquisition.
+>
+> Users who are new to Velociraptor, especially those who have prior experience
+> with solutions that centralize file processing, often want to repeat the
+> familiar process that centralized solutions advocate, but using Velociraptor.
+> That is, they use Velociraptor clients and/or Offline Collectors to copy files
+> with the intention of analyzing/querying them later. This is not how
+> Velociraptor is intended to work, as we
+> [explained in the introduction](/docs/file_collection/#why-collect-files).
+> Even though it is technically possible and supported, it is an inefficient and
+> cumbersome approach that isn't aligned with Velociraptor's philosophy and design goals.
+>
+> ###### The Velociraptor Way
+>
+> With Velociraptor, bulk file collection is usually done in parallel with
+> investigating the endpoint itself. We don't collect files and then investigate -
+> we investigate and _conditionally_ collect files (usually as a preservation
+> action).
+>
+> So despite the use of "triage" in the name of these artifacts, you should keep
+> in mind that they are really file preservation artifacts. You can perform triage
+> on endpoints using Velociraptor artifacts such as `Windows.Hayabusa.Rules` and
+> only copy files if they turn out to contain evidence that you want to preserve.
 
 ### Using the Windows.KapeFiles.Targets artifact
 
@@ -226,7 +217,6 @@ Offline Collectors, but any combination of artifacts can be used and we strongly
 recommend that you do not use Offline Collectors to _only_ perform file
 acquisition. Offline Collectors are capable of collecting any artifacts that you
 would normally collect from an online client.
-
 
 
 

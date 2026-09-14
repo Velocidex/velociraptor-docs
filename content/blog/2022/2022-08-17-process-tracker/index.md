@@ -228,34 +228,31 @@ process entry in the usual form of `pid`.
 
 ![Pid reuse causes process ID's to be suffixed with their start time](pid-reuse.png)
 
-{{% notice note "Why not use a GUID?" %}}
-
-Other tools use a unique identifier such as a `GUID` to uniquely
-identify a process. For example, `Sysmon` derives a GUID based on
-process ID, start time, machine id etc to derive a globally unique
-identifier to a process.
-
-While a GUID solves the issue of uniquely identifying a process within
-a single tool it is not a useful device for Velociraptor's queries,
-which typically enrich data from external sources.
-
-For example, if we used `GUID` to uniquely identify processes in the
-tracker, a VQL query is unable to enrich the DNS ETW source with
-process call chains. The ETW subsystem only provides a Process ID as
-an indicator of the process that made the DNS query. There is no way
-for Velociraptor to go from a process ID to a unique `GUID` directly
-(precisely because a `PID` by itself is missing critical data that
-makes it a unique identifier).
-
-Therefore Velociraptor's tracker retains the process ID in the tracker
-as the ultimate key by which we can query for a process. This way we
-can always convert a PID to a proper call chain without being confused
-by PID reuse. When the tracker detects the ID no longer represents the
-process uniquely (i.e. the PID has been reused) the tracker can update
-the ID and all references to it automatically, so a search for the
-same PID will fetch the new process not the old one.
-
-{{% /notice %}}
+> [!NOTE] Why not use a GUID?
+> Other tools use a unique identifier such as a `GUID` to uniquely
+> identify a process. For example, `Sysmon` derives a GUID based on
+> process ID, start time, machine id etc to derive a globally unique
+> identifier to a process.
+>
+> While a GUID solves the issue of uniquely identifying a process within
+> a single tool it is not a useful device for Velociraptor's queries,
+> which typically enrich data from external sources.
+>
+> For example, if we used `GUID` to uniquely identify processes in the
+> tracker, a VQL query is unable to enrich the DNS ETW source with
+> process call chains. The ETW subsystem only provides a Process ID as
+> an indicator of the process that made the DNS query. There is no way
+> for Velociraptor to go from a process ID to a unique `GUID` directly
+> (precisely because a `PID` by itself is missing critical data that
+> makes it a unique identifier).
+>
+> Therefore Velociraptor's tracker retains the process ID in the tracker
+> as the ultimate key by which we can query for a process. This way we
+> can always convert a PID to a proper call chain without being confused
+> by PID reuse. When the tracker detects the ID no longer represents the
+> process uniquely (i.e. the PID has been reused) the tracker can update
+> the ID and all references to it automatically, so a search for the
+> same PID will fetch the new process not the old one.
 
 
 ## What is stored in the process tracker.

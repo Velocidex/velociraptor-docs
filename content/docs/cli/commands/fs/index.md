@@ -49,31 +49,28 @@ velociraptor fs ls -c server.config.yaml --accessor fs "clients/*"
 ```
 
 
-{{% notice note "Handling filestore compression" %}}
-
-Since version 0.75, the default configuration instructs clients to
-compress data before sending it to the server. The server stores the
-data in compressed form, thus greatly reducing server storage
-requirements. However, this means that files read directly from the
-server's disk by external tools will still have this compression
-applied.
-
-The `fs zcat` subcommand is designed to cater for the new filestore
-compression feature. It decompresses files read from the filestore, so
-if external tools need to work with results or uploaded files then
-they should call `velociraptor fs zcat` and read it's output via a
-pipe.
-
-While all the `fs` commands can use the `fs` accessor, although it's
-only really useful for listing files and directories due to the
-compression.
-
-If you don't want the space-saving benefits of compression it can be
-disabled via the
-[`Datastore.compression`](/docs/deployment/references/#Datastore.compression)
-config setting.
-
-{{% /notice %}}
+> [!NOTE] Handling filestore compression
+> Since version 0.75, the default configuration instructs clients to
+> compress data before sending it to the server. The server stores the
+> data in compressed form, thus greatly reducing server storage
+> requirements. However, this means that files read directly from the
+> server's disk by external tools will still have this compression
+> applied.
+>
+> The `fs zcat` subcommand is designed to cater for the new filestore
+> compression feature. It decompresses files read from the filestore, so
+> if external tools need to work with results or uploaded files then
+> they should call `velociraptor fs zcat` and read it's output via a
+> pipe.
+>
+> While all the `fs` commands can use the `fs` accessor, although it's
+> only really useful for listing files and directories due to the
+> compression.
+>
+> If you don't want the space-saving benefits of compression it can be
+> disabled via the
+> [`Datastore.compression`](/docs/deployment/references/#Datastore.compression)
+> config setting.
 
 ---
 

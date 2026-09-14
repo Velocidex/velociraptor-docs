@@ -271,32 +271,29 @@ in addition to the repacked collector binary.
 You can preview the spec in the GUI or download it and possibly edit it before
 using it with the CLI `collector` command.
 
-{{% notice note %}}
-
-In versions prior to 0.75.5 a spec file was not generated when running a
-`Server.Utils.CreateCollector`. However if you upgrade to v0.75.5 or above you
-can select an old collection and use the "Copy Collection" button to re-run the
-same collector builder process. The new collection will then contain the updated
-build of the collector plus the corresponding spec file.
-
-If you haven't upgraded yet then the process is very manual:
-
-- For a previously run `Server.Utils.CreateCollector` flow you can inspect the
-  **Requests** tab to see what settings were used and then manually transcribe
-  them if needed. Generally it is easier to use the **Copy Collection** button
-  in the GUI to rebuild an offline collector, possibly tweaking some settings in
-  the process. However you might want to switch from using the GUI collector
-  builder to using the CLI `collector` command and would therefore need to
-  transcribe the settings into a spec file.
-
-- For a previously created collector you can inspect the embedded config using
-  the `config show` CLI command and then manually transcribe the settings into a
-  new spec file. While this is not the most pleasant way to do things, sometimes
-  it is the only option. For example, you might only have access to a collector
-  that someone else created and you need to rebuild it on the latest version or
-  modify some of it's settings.
-
-{{% /notice %}}
+> [!NOTE]
+> In versions prior to 0.75.5 a spec file was not generated when running a
+> `Server.Utils.CreateCollector`. However if you upgrade to v0.75.5 or above you
+> can select an old collection and use the "Copy Collection" button to re-run the
+> same collector builder process. The new collection will then contain the updated
+> build of the collector plus the corresponding spec file.
+>
+> If you haven't upgraded yet then the process is very manual:
+>
+> - For a previously run `Server.Utils.CreateCollector` flow you can inspect the
+>   **Requests** tab to see what settings were used and then manually transcribe
+>   them if needed. Generally it is easier to use the **Copy Collection** button
+>   in the GUI to rebuild an offline collector, possibly tweaking some settings in
+>   the process. However you might want to switch from using the GUI collector
+>   builder to using the CLI `collector` command and would therefore need to
+>   transcribe the settings into a spec file.
+>
+> - For a previously created collector you can inspect the embedded config using
+>   the `config show` CLI command and then manually transcribe the settings into a
+>   new spec file. While this is not the most pleasant way to do things, sometimes
+>   it is the only option. For example, you might only have access to a collector
+>   that someone else created and you need to rebuild it on the latest version or
+>   modify some of it's settings.
 
 ##### Keep your collector spec files safe!
 

@@ -11,11 +11,8 @@ tags:
   - Detection
 ---
 
-{{% notice note "" %}}
-
-This post accompanies the presentation [Advances in Detection Engineering](https://present.velocidex.com/presentations/2024-auscert-detection_engineering/index.html) presented at the annual [Auscert 2024 Conference](https://conference.auscert.org.au/program/) on the 24th May 2024
-
-{{% /notice %}}
+> [!NOTE]
+> This post accompanies the presentation [Advances in Detection Engineering](https://present.velocidex.com/presentations/2024-auscert-detection_engineering/index.html) presented at the annual [Auscert 2024 Conference](https://conference.auscert.org.au/program/) on the 24th May 2024
 
 
 As defenders, we rely on having an efficient and effective detection
@@ -308,16 +305,13 @@ authenticode hash it is not possible to modify the binary in such a
 way that its digital signature remains valid while the `ImpHash`
 changes.
 
-{{% notice note "Sysmon Hash Reporting" %}}
-
-Sadly Sysmon currently does not report the **Authenticode Hash** of
-the binary which would be ideal as it can not be changed without
-invalidating the signature and covers all the important parts of the
-executable file. Currently Sysmon only reports file hashes (which are
-easily changed) and `ImpHash` which can be easily changed as well
-but will invalidate signature.
-
-{{% /notice %}}
+> [!NOTE] Sysmon Hash Reporting
+> Sadly Sysmon currently does not report the **Authenticode Hash** of
+> the binary which would be ideal as it can not be changed without
+> invalidating the signature and covers all the important parts of the
+> executable file. Currently Sysmon only reports file hashes (which are
+> easily changed) and `ImpHash` which can be easily changed as well
+> but will invalidate signature.
 
 ## Sigma shortcomings
 
@@ -335,17 +329,14 @@ source. Replacing the log source with Sysmon provided events (which do
 technically provide the `process_creation` log source) will simply
 never fire this rule!
 
-{{% notice note "Sanitizing Sigma Rules" %}}
-
-Because the `logsource` section of the Sigma specification is not
-really specific enough, most rules have a further `detection` clause
-to better define the precise log source. Although technically it is
-not always accurate to use that clause instead of the `logsource`
-because the clause can be use in an arbitrary logical context, most of
-the time it is a filter so can be taken as a substitute for the real
-log source.
-
-{{% /notice %}}
+> [!NOTE] Sanitizing Sigma Rules
+> Because the `logsource` section of the Sigma specification is not
+> really specific enough, most rules have a further `detection` clause
+> to better define the precise log source. Although technically it is
+> not always accurate to use that clause instead of the `logsource`
+> because the clause can be use in an arbitrary logical context, most of
+> the time it is a filter so can be taken as a substitute for the real
+> log source.
 
 The `logsource` section is simply redundant at best and misleading at
 worst; a user can assume the rule will detect an attack when Sysmon

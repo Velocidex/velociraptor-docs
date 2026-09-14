@@ -11,38 +11,39 @@ components.
 
 ## Admonitions
 
-Currently we support 4 admonition types: `note`, `tip`, `info`,
-`warning`.
+Currently we support 5 admonition types: `note`, `tip`, `important`,
+`warning`, `caution`.
 
 Admonition titles are optional but recommended.
 
-{{% notice note "This is a note" %}}
-Notebooks contain cells which help the user to evaluate VQL queries
-**on the server**. Remember that notebook queries always run on the
-server and not on the original client. This post-processing query will
-parse the prefetch files on the server itself.
-{{% /notice %}}
+> [!NOTE] This is a note
+> Notebooks contain cells which help the user to evaluate VQL queries
+> **on the server**. Remember that notebook queries always run on the
+> server and not on the original client. This post-processing query will
+> parse the prefetch files on the server itself.
 
-{{% notice tip "This is a tip" %}}
-In a secure installation you should remove the **CA.private_key**
-section from the server config and keep it offline. You only need it
-to create new API keys using the *velociraptor config api_client*
-command, and the server does not need it in normal operations.
-{{% /notice %}}
+> [!TIP] This is a tip
+> In a secure installation you should remove the **CA.private_key**
+> section from the server config and keep it offline. You only need it
+> to create new API keys using the *velociraptor config api_client*
+> command, and the server does not need it in normal operations.
 
-{{% notice info "This is a recommendation (info)" %}}
-It is good practice to always make a backup copy of your config file
-both before upgrading and after upgrading, just in case changes are
-made by the upgrade!
-{{% /notice %}}
+> [!IMPORTANT] This is important
+> It is good practice to always make a backup copy of your config file
+> both before upgrading and after upgrading, just in case changes are
+> made by the upgrade!
 
-{{% notice warning "This is a warning!" %}}
-The reformatted VQL is **inserted back into the original YAML file**,
-replacing the old VQL while preserving the rest of the structure! Make
-sure you have backup copies of your artifacts before applying
-`reformat` to them, just in case you're dissatisfied with the
-resultant formatting.
-{{% /notice %}}
+> [!WARNING] This is a warning!
+> The reformatted VQL is **inserted back into the original YAML file**,
+> replacing the old VQL while preserving the rest of the structure! Make
+> sure you have backup copies of your artifacts before applying
+> `reformat` to them, just in case you're dissatisfied with the
+> resultant formatting.
+
+> [!CAUTION] This is a caution!
+> Deleting the server's private key material without a backup will make
+> it impossible to decrypt collected data and will permanently break
+> your deployment.
 
 ---
 
@@ -189,6 +190,5 @@ If you want to show a literal character that would otherwise be
 interpreted as Markdown syntax, use a backslash `\`.
 
 \*This is not italic\*
-
 
 

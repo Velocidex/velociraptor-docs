@@ -93,21 +93,18 @@ these methods. External tools or uploads are fetched separately by the
 endpoint over HTTP. The resulting request is kept small and the server
 is more efficient.
 
-{{% notice warning "Hard size limit imposed" %}}
-
-From version 0.77, Velociraptor imposes a hard size limit on flow,
-hunt or client request objects. This means that launching collections
-with very large parameters will be rejected.
-
-Although it is possible to adjust this limit using the
-[Datastore.max_object_size](/docs/deployment/references/#Datastore.max_object_size)
-parameter, it is better to identify the reason why datastore objects
-are too large.
-
-By rejecting the scheduling of very large collections, we remove
-performance issues before they even occur.
-
-{{% /notice %}}
+> [!WARNING] Hard size limit imposed
+> From version 0.77, Velociraptor imposes a hard size limit on flow,
+> hunt or client request objects. This means that launching collections
+> with very large parameters will be rejected.
+>
+> Although it is possible to adjust this limit using the
+> [Datastore.max_object_size](/docs/deployment/references/#Datastore.max_object_size)
+> parameter, it is better to identify the reason why datastore objects
+> are too large.
+>
+> By rejecting the scheduling of very large collections, we remove
+> performance issues before they even occur.
 
 
 

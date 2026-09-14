@@ -37,15 +37,12 @@ Velociraptor application with a token that allows the application to
 request information about the user (for example, the username or email
 address).
 
-{{% notice note %}}
-
-OAuth is an authentication protocol. This means Velociraptor can be
-pretty confident the user is who they claim they are. This does not
-automatically grant them access to the application! A Velociraptor
-administrator must still manually grant them access before a user may
-log in.
-
-{{% /notice %}}
+> [!NOTE]
+> OAuth is an authentication protocol. This means Velociraptor can be
+> pretty confident the user is who they claim they are. This does not
+> automatically grant them access to the application! A Velociraptor
+> administrator must still manually grant them access before a user may
+> log in.
 
 Before we can use Google for Authentication, we need to register our
 Velociraptor deployment as an OAuth App with Google. Unfortunately
@@ -87,13 +84,10 @@ Further down we need to provide an authorized domain
 In order to add an Authorized domain we need to *verify it*. Google\'s
 help pages explain it further:
 
-{{% notice tip "Authorized domains" %}}
-
-To protect you and your users, Google restricts your OAuth 2.0
-application to using Authorized Domains. If you have verified the domain
-with Google, you can use any Top Private Domain as an Authorized Domain.
-
-{{% /notice %}}
+> [!TIP] Authorized domains
+> To protect you and your users, Google restricts your OAuth 2.0
+> application to using Authorized Domains. If you have verified the domain
+> with Google, you can use any Top Private Domain as an Authorized Domain.
 
 And this links to <https://www.google.com/webmasters/tools/home> which
 again seems completely unrelated to OAuth, Velociraptor or even a web
@@ -124,14 +118,11 @@ Velociraptor accepts this redirect and uses it to log the user on.
 
 ![](6.png)
 
-{{% notice note %}}
-
-The UI is a bit confusing here - you must press enter after typing the
-redirect URL to have it registered **before** you hit *Create* otherwise
-it misses that you typed it completely. I spent some time stumped on
-this UI bug.
-
-{{% /notice %}}
+> [!NOTE]
+> The UI is a bit confusing here - you must press enter after typing the
+> redirect URL to have it registered **before** you hit *Create* otherwise
+> it misses that you typed it completely. I spent some time stumped on
+> this UI bug.
 
 If all goes well the Google cloud console will give us a client ID and a
 client secret. We can then copy those into the Velociraptor
@@ -200,9 +191,6 @@ can also see their Google avatar at the top right for some more eye
 candy :-).
 
 
-{{% notice note Thanks %}}
-
-Shouts to the folks from [Klein & Co](https://www.kleinco.com.au/) who
-sponsored this exciting feature!.
-
-{{% /notice %}}
+> [!NOTE] Thanks
+> Shouts to the folks from [Klein & Co](https://www.kleinco.com.au/) who
+> sponsored this exciting feature!.

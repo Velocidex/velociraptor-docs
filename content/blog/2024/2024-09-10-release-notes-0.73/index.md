@@ -106,21 +106,18 @@ Running the client will show the following log message:
 Make sure to disable this trace in production and only use it for
 debugging communications, as it does weaken the network security.
 
-{{% notice note "Network traffic is still encrypted" %}}
-
-Velociraptor uses two layers of encryption - messages between client
-and server are encrypted using Velociraptor's internal PKI scheme, and
-**in addition**, a HTTP over TLS connection is used to exchange those
-messages.
-
-This means that the trace file is still not really completely in plain
-text - it contains the encrypted messages in among the clear text HTTP
-messages.
-
-However this should help debug issues around reverse proxies and MITM
-proxies in production.
-
-{{% /notice %}}
+> [!NOTE] Network traffic is still encrypted
+> Velociraptor uses two layers of encryption - messages between client
+> and server are encrypted using Velociraptor's internal PKI scheme, and
+> **in addition**, a HTTP over TLS connection is used to exchange those
+> messages.
+>
+> This means that the trace file is still not really completely in plain
+> text - it contains the encrypted messages in among the clear text HTTP
+> messages.
+>
+> However this should help debug issues around reverse proxies and MITM
+> proxies in production.
 
 
 ## New Server Functionality

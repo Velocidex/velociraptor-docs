@@ -15,16 +15,13 @@ author: "Mike Cohen"
 date: 2025-02-02
 ---
 
-{{% notice note "Upcoming release 0.74" %}}
-
-This post discusses some features that will be available in the
-upcoming 0.74 release. Although the general methodology is available
-in earlier releases, some of the GUI features are new.
-
-If you want to play with these new features and provide feedback,
-please feel free to [download the latest version](https://github.com/Velocidex/velociraptor/tree/master?tab=readme-ov-file#getting-the-latest-version) for testing.
-
-{{% /notice %}}
+> [!NOTE] Upcoming release 0.74
+> This post discusses some features that will be available in the
+> upcoming 0.74 release. Although the general methodology is available
+> in earlier releases, some of the GUI features are new.
+>
+> If you want to play with these new features and provide feedback,
+> please feel free to [download the latest version](https://github.com/Velocidex/velociraptor/tree/master?tab=readme-ov-file#getting-the-latest-version) for testing.
 
 
 Recent versions of Velociraptor have incorporated a powerful Sigma
@@ -183,38 +180,35 @@ The reference page helps us write the Sigma rules by documenting
 exactly which log sources are available in this model and giving some
 example events produced by these models.
 
-{{% notice note "Sigma rules are generally not portable across operating environments!" %}}
-
-Although Sigma is in theory an interchange format between different
-SIEMs products, in practice it is difficult to port rules between
-different evaluation engines (Or different Sigma Models):
-
-1. There is no guarantee that the rule's `Log Source` is actually
-   available in a different model.
-2. Fields may not exist in other models.
-3. There may not be field mappings for the same field in different
-   models, or the mappings may clash with other fields.
-
-To achieve portability between SIEM systems we need to develop a Sigma
-Model to fully emulate another environment to be able to directly
-consume the same rules.
-
-In Velociraptor we are less concerned with portability and more
-concerned with having Sigma rules as a way of implementing an easy to
-use and powerful detection engine. Velociraptor defines a range of
-different `Sigma Models`, some are defined with the intention to
-directly consume a large set of rules from another project (For example
-the
-[Windows.Sigma.Base](https://sigma.velocidex.com/docs/models/windows_base/)
-model was written to consume Hayabusa rules for the
-[Windows.Hayabusa.Ruleset](https://sigma.velocidex.com/docs/artifacts/windows.hayabusa.rules/)
-artifact), while others are defined to make powerful telemetry events
-available to rule writers (For example the
-[Windows.ETW.Base](https://sigma.velocidex.com/docs/models/windows_etw_base/)
-model exposes ETW sources not usually available in centralized server
-based SIEM architectures).
-
-{{% /notice %}}
+> [!NOTE] Sigma rules are generally not portable across operating environments!
+> Although Sigma is in theory an interchange format between different
+> SIEMs products, in practice it is difficult to port rules between
+> different evaluation engines (Or different Sigma Models):
+>
+> 1. There is no guarantee that the rule's `Log Source` is actually
+>    available in a different model.
+> 2. Fields may not exist in other models.
+> 3. There may not be field mappings for the same field in different
+>    models, or the mappings may clash with other fields.
+>
+> To achieve portability between SIEM systems we need to develop a Sigma
+> Model to fully emulate another environment to be able to directly
+> consume the same rules.
+>
+> In Velociraptor we are less concerned with portability and more
+> concerned with having Sigma rules as a way of implementing an easy to
+> use and powerful detection engine. Velociraptor defines a range of
+> different `Sigma Models`, some are defined with the intention to
+> directly consume a large set of rules from another project (For example
+> the
+> [Windows.Sigma.Base](https://sigma.velocidex.com/docs/models/windows_base/)
+> model was written to consume Hayabusa rules for the
+> [Windows.Hayabusa.Ruleset](https://sigma.velocidex.com/docs/artifacts/windows.hayabusa.rules/)
+> artifact), while others are defined to make powerful telemetry events
+> available to rule writers (For example the
+> [Windows.ETW.Base](https://sigma.velocidex.com/docs/models/windows_etw_base/)
+> model exposes ETW sources not usually available in centralized server
+> based SIEM architectures).
 
 ## Developing custom detection rules.
 

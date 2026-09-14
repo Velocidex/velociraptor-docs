@@ -211,18 +211,15 @@ sets up the initial notebook structure and content. From there the
 user interacts with the notebook, in the same way they would work with
 collected results in a flow or hunt notebook.
 
-{{% notice warning "Beware of using `hunt()` in notebook templates" %}}
-
-If your template includes a VQL cell that calls the `hunt()` function,
-the hunt will be *created immediately* when the notebook is created -
-not when the user clicks the cell. This means a user could
-accidentally launch multiple hunts just by creating the notebook.
-Consider using `vql_suggestion` cells instead for actions that should
-require a deliberate click, or else define `output` for the cell (as
-described previously) to prevent immediate execution of that specific
-cell.
-
-{{% /notice %}}
+> [!WARNING] Beware of using `hunt()` in notebook templates
+> If your template includes a VQL cell that calls the `hunt()` function,
+> the hunt will be *created immediately* when the notebook is created -
+> not when the user clicks the cell. This means a user could
+> accidentally launch multiple hunts just by creating the notebook.
+> Consider using `vql_suggestion` cells instead for actions that should
+> require a deliberate click, or else define `output` for the cell (as
+> described previously) to prevent immediate execution of that specific
+> cell.
 
 
 ## Sharing VQL between cells (exports and imports)

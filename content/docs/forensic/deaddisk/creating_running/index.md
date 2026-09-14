@@ -43,17 +43,14 @@ built-in [accessors](/vql_reference/accessors/):
 - `VMDK`: virtual hard drive format introduced by VMware, usually having the
   `.vmdk` file extension.
 
-  {{% notice info "VMDK format variants" %}}
-
-  Most virtual machine platforms can export to several formats. In particular,
-  note that VMware can export to raw format, but it always retains the `.vmdk`
-  file extension. In that case you would need to either:
-  - remove the file extension so that Velociraptor's `deaddisk` command will
-    treat it as a raw image (which it actually is) instead of VMDK format, or
-  - specify the format accessor using the `Accessor` parameter when running the
-    `Generic.Utils.DeadDiskRemapping` artifact.
-
-  {{% /notice %}}
+> [!NOTE] VMDK format variants
+>   Most virtual machine platforms can export to several formats. In particular,
+>   note that VMware can export to raw format, but it always retains the `.vmdk`
+>   file extension. In that case you would need to either:
+>   - remove the file extension so that Velociraptor's `deaddisk` command will
+>     treat it as a raw image (which it actually is) instead of VMDK format, or
+>   - specify the format accessor using the `Accessor` parameter when running the
+>     `Generic.Utils.DeadDiskRemapping` artifact.
 
 
 The `Generic.Utils.DeadDiskRemapping` artifact (which is also used by
@@ -198,19 +195,16 @@ same `Generic.Utils.DeadDiskRemapping` artifact.
 
 ## Running a virtual client that uses the remapping
 
-{{% notice info "The remapping config contains static path information"%}}
-
-You should ensure that the disk image file or mount point has the exact same
-path when running the client as it had when you created the remapping config,
-since the remapping config contains this path.
-
-So if you move the image file or use a different mount point after generating
-the remapping then the remapping will not work!
-
-If you want to run the client on a separate system that is fine, as long as you
-replicate the path to the image / mount point on the client system.
-
-{{% /notice %}}
+> [!NOTE] The remapping config contains static path information
+> You should ensure that the disk image file or mount point has the exact same
+> path when running the client as it had when you created the remapping config,
+> since the remapping config contains this path.
+>
+> So if you move the image file or use a different mount point after generating
+> the remapping then the remapping will not work!
+>
+> If you want to run the client on a separate system that is fine, as long as you
+> replicate the path to the image / mount point on the client system.
 
 Running the virtual client is basically the same as
 [running a client interactively](/docs/deployment/clients/#running-clients-interactively).
@@ -243,20 +237,17 @@ the `--remap` flag.
    from your server's
    [Dashboard screen](/docs/gui/#the-server-dashboard).
 
-   {{% notice note %}}
-
-   Since the client will generate a writeback file on disk that contains it's
-   unique client ID. This writeback file will persist and cause the client to
-   retain the same client ID between runs. If you intend to process further
-   images on the same host then you will either need to delete the writeback
-   file before starting a new client, or else add the path to a new writeback
-   file for these subsequent clients. For the latter option, this can be done by
-   adding the path to a new writeback file to the above command line using the
-   appropriate `--config.client-writeback-<platform>` flag - for example,
-   `--config.client-writeback-linux=/path/to/writeback.yaml` for Linux or
-   `--config.client-writeback-windows="C:/path/to/writeback.yaml"` for Windows.
-
-   {{% /notice %}}
+> [!NOTE]
+>    Since the client will generate a writeback file on disk that contains it's
+>    unique client ID. This writeback file will persist and cause the client to
+>    retain the same client ID between runs. If you intend to process further
+>    images on the same host then you will either need to delete the writeback
+>    file before starting a new client, or else add the path to a new writeback
+>    file for these subsequent clients. For the latter option, this can be done by
+>    adding the path to a new writeback file to the above command line using the
+>    appropriate `--config.client-writeback-<platform>` flag - for example,
+>    `--config.client-writeback-linux=/path/to/writeback.yaml` for Linux or
+>    `--config.client-writeback-windows="C:/path/to/writeback.yaml"` for Windows.
 
 2. If you search clients for the hostname you should see that the client is now
    connected to the server:

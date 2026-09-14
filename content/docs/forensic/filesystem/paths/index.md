@@ -234,29 +234,26 @@ convention it is running on (i.e. on Windows it will create a Windows
 "flavor" of OSPath). However, were we to use another accessor, the
 string path will be interpreted differently by the accessor.
 
-{{% notice note "Interpreting paths" %}}
-
-The most important takeaway from this is that when an accessor
-receives a string path, it will parse it into an OSPath internally
-according to its own rules. However, internally OSPath objects are
-passed directly into the VQL query.
-
-When a plugin receives an already parsed OSPath object, it may
-directly use it, since no parsing is required. Therefore in general,
-once an OSPath object is produced in the query, the same OSPath object
-should be passed around to other plugins and functions.
-
-```vql
-SELECT read_file(filename=OSPath, accessor="file", length=5)
-FROM glob(globs="C:\\Windows\\notepad.exe")
-```
-
-In the above the string `C:\Windows\notepad.exe` is parsed _once_ by `glob()`
-into an OSPath object, which then passes an OSPath object to `read_file()`, so
-the latter does not need to do any path parsing. This increases efficiency in
-VQL because we avoid having to parse and serialize paths over and over again!
-
-{{% /notice %}}
+> [!NOTE] Interpreting paths
+> The most important takeaway from this is that when an accessor
+> receives a string path, it will parse it into an OSPath internally
+> according to its own rules. However, internally OSPath objects are
+> passed directly into the VQL query.
+>
+> When a plugin receives an already parsed OSPath object, it may
+> directly use it, since no parsing is required. Therefore in general,
+> once an OSPath object is produced in the query, the same OSPath object
+> should be passed around to other plugins and functions.
+>
+> ```vql
+> SELECT read_file(filename=OSPath, accessor="file", length=5)
+> FROM glob(globs="C:\\Windows\\notepad.exe")
+> ```
+>
+> In the above the string `C:\Windows\notepad.exe` is parsed _once_ by `glob()`
+> into an OSPath object, which then passes an OSPath object to `read_file()`, so
+> the latter does not need to do any path parsing. This increases efficiency in
+> VQL because we avoid having to parse and serialize paths over and over again!
 
 
 ## Nested accessors and pathspecs
@@ -349,15 +346,12 @@ The OSPath object is capable of more complex path manipulations:
    OSPath to plugins because they will automatically parse the
    string into an OSPath object.
 
-{{% notice info "Glob's root parameter" %}}
-
-When using the `glob()` plugin, remember that Glob expressions are always flat
-strings (i.e. a glob expression is _not_ a pathspec). An OSPath should be passed
-to the `root` parameter to indicate where searching should start from. This
-allows `glob()` to search inside nested containers (e.g. zip files) by
-specifying the `root` parameter inside the zip file as in the example above.
-
-{{% /notice %}}
+> [!NOTE] Glob's root parameter
+> When using the `glob()` plugin, remember that Glob expressions are always flat
+> strings (i.e. a glob expression is _not_ a pathspec). An OSPath should be passed
+> to the `root` parameter to indicate where searching should start from. This
+> allows `glob()` to search inside nested containers (e.g. zip files) by
+> specifying the `root` parameter inside the zip file as in the example above.
 
 ## Summary
 

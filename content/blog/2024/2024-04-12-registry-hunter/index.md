@@ -399,9 +399,6 @@ Registry Hunter through our GitHub repository
 https://github.com/Velocidex/registry_hunter/ and issue board. But you
 can start using it right now if you would love to test it.
 
-{{% notice "warning" %}}
-
-The Registry Hunter uses newer VQL features available since release
-0.72 and so will only work on clients newer than that version.
-
-{{% /notice %}}
+> [!WARNING]
+> The Registry Hunter uses newer VQL features available since release
+> 0.72 and so will only work on clients newer than that version.

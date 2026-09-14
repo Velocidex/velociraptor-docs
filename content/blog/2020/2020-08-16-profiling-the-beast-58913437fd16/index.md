@@ -34,9 +34,8 @@ Velociraptor is written in Golang and one of the more useful (if not well advert
 
 What makes Golang different is that **every binary** has the ability to profile itself out of the box. Obviously this capability is disabled by default (since profiling itself has a non-trivial runtime cost) but it can simply be switched on at runtime for a limited time and then switched off. This means that we do not need to restart the binary in debug mode, nor replace a running binary with a special debug build! As a developer, I can not overstate the usefulness of this!
 
-{{% notice note %}}
-If we see a Golang process running in production and want to inspect its inner working all we need to do is enable profiling for a short time (say 30 seconds) capturing execution traces **without restarting or otherwise affecting the running process!**
-{{% /notice %}}
+> [!NOTE]
+> If we see a Golang process running in production and want to inspect its inner working all we need to do is enable profiling for a short time (say 30 seconds) capturing execution traces **without restarting or otherwise affecting the running process!**
 
 Velociraptor exposes this functionality by simply offering the **profile()** VQL function. This is then utilized by two artifacts:
 
@@ -91,9 +90,8 @@ Defender’s real time scanner (which blocks `os.Open` for us as it
 scans the files on demand — Windows defender is a huge performance
 killer.).
 
-{{% notice note %}}
-Our job as Velociraptor developers is to spend as little time as possible in our own code relative to the time spent in the operating system or external libraries.
-{{% /notice %}}
+> [!NOTE]
+> Our job as Velociraptor developers is to spend as little time as possible in our own code relative to the time spent in the operating system or external libraries.
 
 The function’s source code is shown in the top right pane and we see how much time is spent at each line of code. This makes it easy to see what function calls end up taking the most time and guides our thinking into possible optimizations
 
@@ -111,8 +109,7 @@ The profiling traces are typically much smaller than full memory core dumps and 
 
 We find this extremely valuable in the Velociraptor project, but the same approach can be replicated by any Golang project:
 
-{{% notice note %}}
-By exposing profiling and debugging information to our users, in running production binaries we are able to easily get high value visibility into hard to reproduce error conditions and therefore be more effective in isolating and fixing bugs.
-{{% /notice %}}
+> [!NOTE]
+> By exposing profiling and debugging information to our users, in running production binaries we are able to easily get high value visibility into hard to reproduce error conditions and therefore be more effective in isolating and fixing bugs.
 
 If you are interested in looking inside Velociraptor’s inner workings, check out the[ GitHub](https://github.com/Velocidex/velociraptor) page and join us on Discord and our mailing list.

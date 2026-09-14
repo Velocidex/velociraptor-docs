@@ -30,13 +30,10 @@ functionality.
 | [required_permissions](#-required_permissions-) | A list of permissions required to collect this artifact. |
 | [reports](#-reports-) | A list of reports to potentially post-process this artifact. (deprecated) |
 
-{{% notice info "Field names are case-sensitive!" %}}
-
-Due to YAML keys being case-sensitive (the fields "Name" and "name" would be
-treated as different keys in a YAML document), all artifact field names are
-case-sensitive and, by convention, also lowercase.
-
-{{% /notice %}}
+> [!NOTE] Field names are case-sensitive!
+> Due to YAML keys being case-sensitive (the fields "Name" and "name" would be
+> treated as different keys in a YAML document), all artifact field names are
+> case-sensitive and, by convention, also lowercase.
 
 
 ## Fields
@@ -295,18 +292,15 @@ each tool, which allow you to perform your own tool selection logic, downloads
 The `Generic.Utils.FetchBinary` artifact makes use of these variables when
 provisioning the tool on the client.
 
-{{% notice info "Artifact tool definitions can be modified" %}}
-
-The setting described above are simply the initial defaults that are
-added to the inventory service when the artifact is first seen. These
-settings can be modified by an administrator in the tool setup
-screen. For example, the administrator may decide to serve the tool
-from a different URL with a different hash.
-
-The administrator configuration always overrides the settings in the
-artifact definition.
-
-{{% /notice %}}
+> [!NOTE] Artifact tool definitions can be modified
+> The setting described above are simply the initial defaults that are
+> added to the inventory service when the artifact is first seen. These
+> settings can be modified by an administrator in the tool setup
+> screen. For example, the administrator may decide to serve the tool
+> from a different URL with a different hash.
+>
+> The administrator configuration always overrides the settings in the
+> artifact definition.
 
 ---
 

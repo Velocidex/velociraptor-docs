@@ -69,21 +69,18 @@ In order to run powershell code from Velociraptor we will use the
 `execve()` plugin to shell out to powershell. The `execve()` plugin
 takes a list of args and builds a correctly escaped command line.
 
-{{% notice warning %}}
-
-The `execve()` plugin takes a **list** of command line arguments
-(i.e. `argv`). Velociraptor will combine this list into a valid
-command line by itself taking care to escape specific args (On
-Windows). Do not attempt to construct this list from a single command
-line string, since this will likely produce an opportunity for
-[Command Line
-Injection](https://owasp.org/www-community/attacks/Command_Injection)
-if the commandline incorporates a user provided string.
-
-Velociraptor minimizes the potential for this by requiring each
-argument to be explicitly provided.
-
-{{% /notice %}}
+> [!WARNING]
+> The `execve()` plugin takes a **list** of command line arguments
+> (i.e. `argv`). Velociraptor will combine this list into a valid
+> command line by itself taking care to escape specific args (On
+> Windows). Do not attempt to construct this list from a single command
+> line string, since this will likely produce an opportunity for
+> [Command Line
+> Injection](https://owasp.org/www-community/attacks/Command_Injection)
+> if the commandline incorporates a user provided string.
+>
+> Velociraptor minimizes the potential for this by requiring each
+> argument to be explicitly provided.
 
 Here is a simple artifact that runs the powershell script via `execve()`
 
@@ -106,28 +103,26 @@ script in an Stdout column.
 
 ![Extending VQL with Powershell - unstructured output](ps2.png)
 
-{{% notice tip "Encoding Powershell scripts" %}}
-
-In the above artifact we relied on Velociraptor to properly escape the
-powershell script to the powershell interpreter on the
-commandline. For more reliable encoding, we can base64 encode the
-script:
-
-```sql
-SELECT * FROM execve(argv=["Powershell", "-ExecutionPolicy",
- "unrestricted", "-EncodedCommand",
- base64encode(string=utf16_encode(string=PowershellScript))])
-```
-
-Alternative, we can write the Powershell script into a temporary file
-and run it from there:
-
-```sql
-LET ps1 <= tempfile(extension=".ps1", data=PowershellScript)
-SELECT * FROM execve(
-  argv=["Powershell", "-ExecutionPolicy", "unrestricted", ps1)
-```
-{{% /notice %}}
+> [!TIP] Encoding Powershell scripts
+> In the above artifact we relied on Velociraptor to properly escape the
+> powershell script to the powershell interpreter on the
+> commandline. For more reliable encoding, we can base64 encode the
+> script:
+>
+> ```sql
+> SELECT * FROM execve(argv=["Powershell", "-ExecutionPolicy",
+>  "unrestricted", "-EncodedCommand",
+>  base64encode(string=utf16_encode(string=PowershellScript))])
+> ```
+>
+> Alternative, we can write the Powershell script into a temporary file
+> and run it from there:
+>
+> ```sql
+> LET ps1 <= tempfile(extension=".ps1", data=PowershellScript)
+> SELECT * FROM execve(
+>   argv=["Powershell", "-ExecutionPolicy", "unrestricted", ps1)
+> ```
 
 ### Dealing with output
 
@@ -187,16 +182,13 @@ interference of the endpoint, remediation aims to modify the endpoint
 in order to actively remove threats and harden the endpoint against
 future compromise.
 
-{{% notice warning "Remediation is a risky operation" %}}
-
-Remediation is inherently risky! If a bug occurs that breaks the
-endpoints, it is possible to damage the network quickly. Always
-structure your artifacts so they show a dry run - what would have been
-modified before actually performing the remediation. Always test your
-remediation artifacts on selected endpoints before starting a wide
-hunt everywhere.
-
-{{% /notice %}}
+> [!WARNING] Remediation is a risky operation
+> Remediation is inherently risky! If a bug occurs that breaks the
+> endpoints, it is possible to damage the network quickly. Always
+> structure your artifacts so they show a dry run - what would have been
+> modified before actually performing the remediation. Always test your
+> remediation artifacts on selected endpoints before starting a wide
+> hunt everywhere.
 
 ###### Example: Remediate scheduled tasks
 
@@ -348,5 +340,4 @@ logs:
 4. Once the hashes agree, the endpoint will copy the executable into
    the permanent cache directory.
 5. The tool is now launched and the output parsed in VQL rows.
-
 

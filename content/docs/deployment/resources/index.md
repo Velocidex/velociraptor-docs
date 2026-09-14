@@ -132,34 +132,31 @@ of disk space available. Since Velociraptor uses a simple filesystem
 to store all its data, it is easy to manage disk space by deleting or
 archiving old data.
 
-{{% notice note "Disk usage" %}}
-
- It is very easy to fill up disk space with Velociraptor because it is
- so fast and responsive. For example issuing a large triage file
- collection for user's web browser related files might include on
- average 500Mb of Internet cache files per client - on a 10,000 machine
- deployment this will collect 5tb of data! Since Velociraptor is very
- fast, if you have excellent connectivity to your endpoints, you
- **will** fill up the disk in a matter of hours!
-
- Always be aware of the multiplicative effect of scale. In many cases
- it might require a change of mindset - if you are most familiar with
- interactive "traditional" digital forensics it might require
- re-thinking your approach when scaling up investigations and issuing
- more surgical artifact collections.
-
- If your disk fills, The Velociraptor frontend will be unable to
- receive any data from endpoints (will begin serving 500
- responses). Due to Velociraptor's architecture, clients will queue up
- outgoing messages to the server in their local buffer file (by
- default up to 1Gb).
-
- This might result in a situation where after clearing the disk space,
- Velociraptor will immediately fill it up again with more data queued
- to be sent by the clients. If this happens you need to stop active
- hunts to actively remove their results from clients' buffer files.
-
-{{% /notice %}}
+> [!NOTE] Disk usage
+>  It is very easy to fill up disk space with Velociraptor because it is
+>  so fast and responsive. For example issuing a large triage file
+>  collection for user's web browser related files might include on
+>  average 500Mb of Internet cache files per client - on a 10,000 machine
+>  deployment this will collect 5tb of data! Since Velociraptor is very
+>  fast, if you have excellent connectivity to your endpoints, you
+>  **will** fill up the disk in a matter of hours!
+>
+>  Always be aware of the multiplicative effect of scale. In many cases
+>  it might require a change of mindset - if you are most familiar with
+>  interactive "traditional" digital forensics it might require
+>  re-thinking your approach when scaling up investigations and issuing
+>  more surgical artifact collections.
+>
+>  If your disk fills, The Velociraptor frontend will be unable to
+>  receive any data from endpoints (will begin serving 500
+>  responses). Due to Velociraptor's architecture, clients will queue up
+>  outgoing messages to the server in their local buffer file (by
+>  default up to 1Gb).
+>
+>  This might result in a situation where after clearing the disk space,
+>  Velociraptor will immediately fill it up again with more data queued
+>  to be sent by the clients. If this happens you need to stop active
+>  hunts to actively remove their results from clients' buffer files.
 
 The following describes the directories one typically finds in the
 filestore directory:

@@ -66,17 +66,14 @@ to combine the data together:
 4. You can view all acquired clients in the hunt overview page, and
    create a large zip export of all preserved files.
 
-{{% notice warning "Ensure the hunt is restricted by labels!" %}}
-
-Make sure this hunt is restricted by labels! If it is not, it will be
-scheduled on all clients and may result in a lot of data being
-transferred to the server - this can result in the server's bandwidth
-being saturated, disk becoming full or server becoming unresponsive.
-
-If this happens you can stop the hunt in the GUI which will cancel all
-in-flight collections and eventually recover the server's bandwidth.
-
-{{% /notice %}}
+> [!WARNING] Ensure the hunt is restricted by labels!
+> Make sure this hunt is restricted by labels! If it is not, it will be
+> scheduled on all clients and may result in a lot of data being
+> transferred to the server - this can result in the server's bandwidth
+> being saturated, disk becoming full or server becoming unresponsive.
+>
+> If this happens you can stop the hunt in the GUI which will cancel all
+> in-flight collections and eventually recover the server's bandwidth.
 
 ### If Velociraptor is not installed on the endpoint
 

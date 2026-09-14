@@ -50,33 +50,30 @@ The rule consists of a `strings` section and a `condition`
 section. Strings represent a set of keywords which might include ASCII
 or UTF16 encoded strings, as well as regular expressions. You can refer to the [Yara rules reference page](https://yara.readthedocs.io/en/stable/) to learn about how to construct rules.
 
-{{% notice tip "The Yara plugin and accessors" %}}
-
-The `yara()` VQL plugin can accept an optional `accessor`
-parameter. If the accessor is specified, the plugin will read chunks
-of data from the accessor and apply the YARA rules on the string in
-memory. This allows you to apply YARA rules on any data that is
-available via an accessor including raw strings (using the `data`
-accessor), registry values (using the `registry` accessor) or NTFS
-parsed data (using the `ntfs` accessor) for example.
-
-While this is convenient, it means that rules that examine the entire
-file will not work as expected. For example, the YARA `pe` module
-looks at the PE header, but when the file is read in chunks, only the
-first chunk contains the PE header. Similarly YARA rules that contain
-an expression checking a file offset will not work because the rules
-are applied to buffers in memory.
-
-When an accessor is not specified, the `yara()` plugin assumes the
-filename refers to a filesystem path, and simply allows the YARA
-library to scan the file as is. The YARA library uses `mmap()` to map
-the entire file into memory and can therefore optimize the scan across
-the entire file.
-
-It is therefore much faster to not specify an accessor to the `yara()`
-plugin if you just need to scan files on disk.
-
-{{% /notice %}}
+> [!TIP] The Yara plugin and accessors
+> The `yara()` VQL plugin can accept an optional `accessor`
+> parameter. If the accessor is specified, the plugin will read chunks
+> of data from the accessor and apply the YARA rules on the string in
+> memory. This allows you to apply YARA rules on any data that is
+> available via an accessor including raw strings (using the `data`
+> accessor), registry values (using the `registry` accessor) or NTFS
+> parsed data (using the `ntfs` accessor) for example.
+>
+> While this is convenient, it means that rules that examine the entire
+> file will not work as expected. For example, the YARA `pe` module
+> looks at the PE header, but when the file is read in chunks, only the
+> first chunk contains the PE header. Similarly YARA rules that contain
+> an expression checking a file offset will not work because the rules
+> are applied to buffers in memory.
+>
+> When an accessor is not specified, the `yara()` plugin assumes the
+> filename refers to a filesystem path, and simply allows the YARA
+> library to scan the file as is. The YARA library uses `mmap()` to map
+> the entire file into memory and can therefore optimize the scan across
+> the entire file.
+>
+> It is therefore much faster to not specify an accessor to the `yara()`
+> plugin if you just need to scan files on disk.
 
 ###### Example: drive by download
 

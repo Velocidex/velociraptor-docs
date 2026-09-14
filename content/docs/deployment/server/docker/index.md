@@ -92,17 +92,14 @@ gives the container access to your existing data.
 Upgrading a Docker-based deployment is straightforward because all
 persistent data is stored on mounted volumes.
 
-{{% notice info "Keep your configuration file" %}}
-
-Your configuration file contains the cryptographic keys that establish
-trust between the server and its clients. When upgrading, you must
-reuse the same configuration file so that existing clients can
-continue to communicate with the server.
-
-Before upgrading, make a backup copy of your configuration file
-(located in the `etc/` directory). Keep it somewhere safe.
-
-{{% /notice %}}
+> [!NOTE] Keep your configuration file
+> Your configuration file contains the cryptographic keys that establish
+> trust between the server and its clients. When upgrading, you must
+> reuse the same configuration file so that existing clients can
+> continue to communicate with the server.
+>
+> Before upgrading, make a backup copy of your configuration file
+> (located in the `etc/` directory). Keep it somewhere safe.
 
 To upgrade:
 

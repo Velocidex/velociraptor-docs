@@ -28,17 +28,14 @@ When quarantining a host you can send a pop-up message to the logged on users.
 
 ![Message pop-up](quarantine_message2.png)
 
-{{% notice warning "Quarantine dependencies" %}}
-
-Velociraptor's quarantine artifacts rely on the operating system to perform the
-quarantine action. If dependencies are not met (for example nftables is a
-required dependency on Linux) or if the system is corrupted or severely
-compromised, or for many other reasons, the quarantine action may not work.
-
-We provide no guarantees or assurances for this functionality. You should
-always check for issues in the logs and outputs for quarantine artifacts.
-
-{{% /notice %}}
+> [!WARNING] Quarantine dependencies
+> Velociraptor's quarantine artifacts rely on the operating system to perform the
+> quarantine action. If dependencies are not met (for example nftables is a
+> required dependency on Linux) or if the system is corrupted or severely
+> compromised, or for many other reasons, the quarantine action may not work.
+>
+> We provide no guarantees or assurances for this functionality. You should
+> always check for issues in the logs and outputs for quarantine artifacts.
 
 The quarantine action is implemented by the following artifacts:
 

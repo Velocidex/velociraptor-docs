@@ -32,13 +32,10 @@ advantages:
   accurate and fast filtering of log files and obviate the need to
   parse unstructured text.
 
-{{% notice note "EVTX filtering in JSON" %}}
-
-While the EVTX file is actually XML based, Velociraptor converts it
-internally into a JSON object to make it easier to filter specific
-fields using VQL constructs.
-
-{{% /notice %}}
+> [!NOTE] EVTX filtering in JSON
+> While the EVTX file is actually XML based, Velociraptor converts it
+> internally into a JSON object to make it easier to filter specific
+> fields using VQL constructs.
 
 Velociraptor implements a parser for EVTX files in the `parse_evtx()`
 plugin. The plugin takes an accessor and a filename to open the EVTX
@@ -138,18 +135,15 @@ scattered across the entire system.
 Additionally, if an application is uninstalled, its message DLLs will
 be removed and earlier events are not able to be displayed any more.
 
-{{% notice tip %}}
-
-In order to improve the state of event log messages, we started
-maintaining a set of Event Message databases in the
-https://github.com/Velocidex/evtx-data repository. This repository
-contains sqlite databases of many known message tables collected from
-different systems.
-
-You can instruct Velociraptor to use one of those databases using the
-`message_db` parameter to `parse_evtx()`.
-
-{{% /notice %}}
+> [!TIP]
+> In order to improve the state of event log messages, we started
+> maintaining a set of Event Message databases in the
+> https://github.com/Velocidex/evtx-data repository. This repository
+> contains sqlite databases of many known message tables collected from
+> different systems.
+>
+> You can instruct Velociraptor to use one of those databases using the
+> `message_db` parameter to `parse_evtx()`.
 
 
 ## Disabling event logs
@@ -192,14 +186,11 @@ GUID `{1C95126E-7EEA-49A9-A3FE-A378B03DDB4D}`
 
 ![Watching for ETW events in real time](image31.png)
 
-{{% notice tip %}}
-
-ETW and event logs are just two sides of the same coin. If it possible
-to listen to events on the ETW layer before they are forwarded to the
-event log service. In this case the events are not susceptible to
-being stopped by disabling the log (as shown previously)
-
-{{% /notice %}}
+> [!TIP]
+> ETW and event logs are just two sides of the same coin. If it possible
+> to listen to events on the ETW layer before they are forwarded to the
+> event log service. In this case the events are not susceptible to
+> being stopped by disabling the log (as shown previously)
 
 ###### Example: Use ETW to monitor to DNS queries
 

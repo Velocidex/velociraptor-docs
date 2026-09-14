@@ -343,14 +343,11 @@ checking please use the `artifacts verify` command described below.
 
 This command _requires_ a server config.
 
-{{% notice warning %}}
-
-The reformatted VQL is **inserted back into the original YAML file**, replacing
-the old VQL while preserving the rest of the structure! Make sure you have
-backup copies of your artifacts before applying `reformat` to them, just in case
-you're dissatisfied with the resultant formatting.
-
-{{% /notice %}}
+> [!WARNING]
+> The reformatted VQL is **inserted back into the original YAML file**, replacing
+> the old VQL while preserving the rest of the structure! Make sure you have
+> backup copies of your artifacts before applying `reformat` to them, just in case
+> you're dissatisfied with the resultant formatting.
 
 
 ###### Example
@@ -398,4 +395,3 @@ The same static analysis can be done via VQL using the
 ```sh
 velociraptor artifacts verify ./**/*.yaml -v
 ```
-

@@ -53,38 +53,35 @@ MFT entry.
 In NTFS Each file may contain two different filenames, a long and a
 short filename. Filename attributes contain their own timestamps.
 
-{{% notice info "NTFS Long and short filenames" %}}
-
-Although NTFS long and short filenames are usually closely related
-(e.g. the short filename is the first part of the long filename with a
-suffix such as `%1`), this is not a requirement.
-
-It is very easy to create a file with a completely different short
-filename to its long filename. This can be problematic if you are
-looking for references to the long filename from e.g. registry keys.
-
-In the below example, We set the shortname of the `velociraptor.exe`
-binary to `runme.exe`. We can then create a service that launches
-`runme.exe` instead. Tools that only show the long filename of the
-directory will fail to show the file and analysis may conclude that
-the service target is missing from the filesystem.
-
-```sh
-C:\Users\test>fsutil file setshortname velociraptor.exe runme.exe
-C:\Users\test>dir /x *.exe
- Volume in drive C has no label.
- Volume Serial Number is 9459-F443
-
- Directory of C:\Users\test
-
-08/19/2018  11:37 PM        12,521,472 RUNME.EXE    velociraptor.exe
-               2 File(s)     16,140,732 bytes
-               0 Dir(s)  11,783,704,576 bytes free
-C:\Users\test>runme.exe -h
-usage: velociraptor [<flags>] <command> [<args> ...]
-```
-
-{{% /notice %}}
+> [!NOTE] NTFS Long and short filenames
+> Although NTFS long and short filenames are usually closely related
+> (e.g. the short filename is the first part of the long filename with a
+> suffix such as `%1`), this is not a requirement.
+>
+> It is very easy to create a file with a completely different short
+> filename to its long filename. This can be problematic if you are
+> looking for references to the long filename from e.g. registry keys.
+>
+> In the below example, We set the shortname of the `velociraptor.exe`
+> binary to `runme.exe`. We can then create a service that launches
+> `runme.exe` instead. Tools that only show the long filename of the
+> directory will fail to show the file and analysis may conclude that
+> the service target is missing from the filesystem.
+>
+> ```sh
+> C:\Users\test>fsutil file setshortname velociraptor.exe runme.exe
+> C:\Users\test>dir /x *.exe
+>  Volume in drive C has no label.
+>  Volume Serial Number is 9459-F443
+>
+>  Directory of C:\Users\test
+>
+> 08/19/2018  11:37 PM        12,521,472 RUNME.EXE    velociraptor.exe
+>                2 File(s)     16,140,732 bytes
+>                0 Dir(s)  11,783,704,576 bytes free
+> C:\Users\test>runme.exe -h
+> usage: velociraptor [<flags>] <command> [<args> ...]
+> ```
 
 ## The NTFS accessor
 
@@ -117,14 +114,11 @@ logical device so it can be parsed.
 This means that all paths returned from the `ntfs` accessor start with
 the device name, e.g. `\\.\C:`.
 
-{{% notice tip "NTFS parsing and full disk encryption" %}}
-
-Since Velociraptor operates on the logical device it if not affected
-by full disk encryption such as Bitlocker. Velociraptor will be able
-to parse the raw NTFS filesystem regardless of the disk encryption
-status.
-
-{{% /notice %}}
+> [!TIP] NTFS parsing and full disk encryption
+> Since Velociraptor operates on the logical device it if not affected
+> by full disk encryption such as Bitlocker. Velociraptor will be able
+> to parse the raw NTFS filesystem regardless of the disk encryption
+> status.
 
 ## Volume Shadow Copies
 
@@ -208,14 +202,11 @@ ID:
 
 The MFT ID can be take from the output of `glob()` or `parse_mft()`.
 
-{{% notice tip "What is this inode all about?" %}}
-
-In the above you will sometimes see the term `inode` referred to. This
-term traditionally comes from the Sleuthkit and is a string consisting
-of a triple of mft id, type id and stream id, e.g. `974-16-0`
-representing a stream of data
-
-{{% /notice %}}
+> [!TIP] What is this inode all about?
+> In the above you will sometimes see the term `inode` referred to. This
+> term traditionally comes from the Sleuthkit and is a string consisting
+> of a triple of mft id, type id and stream id, e.g. `974-16-0`
+> representing a stream of data
 
 ## NTFS timestamps
 
@@ -265,26 +256,23 @@ than the `$FILENAME` times.
 ![Timestomp detection](image42.png)
 
 
-{{% notice warning "Timestomping detection pitfalls" %}}
-
-Although it might appear to be a solid detection of timestomping,
-generally timestomping detections are not very reliable in
-practice. It turns out that a lot of programs set file timestamps
-after creating them into the past by design - mostly archiving
-utilities like 7zip or cab will reset the file time to the times
-stored in the archive.
-
-Conversely it might appear that the `$FILENAME` times are the most
-reliable and should be mostly relied upon in an investigation since
-they are not directly modifiable by the Win32 APIs.
-
-Unfortunately this is not the case - the `$FILENAME` attributes can be
-easily modified by simply renaming the file (after timestomping) and
-rename it back. Windows will copy the timestamps from the
-`$STANDARD_INFORMATION` attribute to the `$FILENAME` when renaming the
-file.
-
-{{% /notice %}}
+> [!WARNING] Timestomping detection pitfalls
+> Although it might appear to be a solid detection of timestomping,
+> generally timestomping detections are not very reliable in
+> practice. It turns out that a lot of programs set file timestamps
+> after creating them into the past by design - mostly archiving
+> utilities like 7zip or cab will reset the file time to the times
+> stored in the archive.
+>
+> Conversely it might appear that the `$FILENAME` times are the most
+> reliable and should be mostly relied upon in an investigation since
+> they are not directly modifiable by the Win32 APIs.
+>
+> Unfortunately this is not the case - the `$FILENAME` attributes can be
+> easily modified by simply renaming the file (after timestomping) and
+> rename it back. Windows will copy the timestamps from the
+> `$STANDARD_INFORMATION` attribute to the `$FILENAME` when renaming the
+> file.
 
 ## Timeline analysis
 
@@ -362,15 +350,12 @@ be very large, however only about 30mb was actually collected.
 ![The USN journal collected](image47.png)
 
 
-{{% notice tip %}}
-
-Downloading the file from the `Uploaded Files` tab will pad the sparse
-regions and produce a large file with ranges of 0 in it. On the other
-hand, exporting the zip file from the `Overview` tab will store the
-collected file and the `idx` range file into the zip file so will only
-store about 30mb.
-
-{{% /notice %}}
+> [!TIP]
+> Downloading the file from the `Uploaded Files` tab will pad the sparse
+> regions and produce a large file with ranges of 0 in it. On the other
+> hand, exporting the zip file from the `Overview` tab will store the
+> collected file and the `idx` range file into the zip file so will only
+> store about 30mb.
 
 ### Parsing USN journal
 
@@ -391,12 +376,9 @@ the "smoking gun" when the system was initially compromised.
 You can collect the USN journal using the `Windows.Forensics.Usn`
 artifact.
 
-{{% notice tip %}}
-
-The USN journal contains so much valuable evidence that it might be worth
-carving for USN records from the raw disk. Although this is a slow process it
-can yield very good results if your are lucky - see
-[this blog post](/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/)
-for more information.
-
-{{% /notice %}}
+> [!TIP]
+> The USN journal contains so much valuable evidence that it might be worth
+> carving for USN records from the raw disk. Although this is a slow process it
+> can yield very good results if your are lucky - see
+> [this blog post](/blog/2021/2021-06-16-carving-usn-journal-entries-72d5c66971da/)
+> for more information.

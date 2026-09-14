@@ -56,25 +56,22 @@ Many internally-generated events are sent to server event queues. For example,
 client enrollment events, flow completion events, and server audit events are
 each sent to their own queue.
 
-{{% notice info "Programmatically sending events to event queues" %}}
-
-Usually `SERVER_EVENT` and `CLIENT_EVENT` artifacts receive events
-from the VQL queries defined in their `sources` section, but this is
-not strictly necessary. Events may be sent from anywhere using the VQL
-[send_event()](/vql_reference/server/send_event/)
-function, or via the API. This way it is possible to implement push
-notification to inform the server of certain events.
-
-Some events are sent internally by the server to their event queues
-(for example `System.Flow.Completion` events are sent when a flow is
-completed). In these cases there is no need for VQL queries to be
-defined as sources, and therefore some event artifacts do not have
-sources defined.
-
-It is still possible to receive events sent to these queues using
-`watch_monitoring()`, even though they do not have VQL queries.
-
-{{% /notice %}}
+> [!NOTE] Programmatically sending events to event queues
+> Usually `SERVER_EVENT` and `CLIENT_EVENT` artifacts receive events
+> from the VQL queries defined in their `sources` section, but this is
+> not strictly necessary. Events may be sent from anywhere using the VQL
+> [send_event()](/vql_reference/server/send_event/)
+> function, or via the API. This way it is possible to implement push
+> notification to inform the server of certain events.
+>
+> Some events are sent internally by the server to their event queues
+> (for example `System.Flow.Completion` events are sent when a flow is
+> completed). In these cases there is no need for VQL queries to be
+> defined as sources, and therefore some event artifacts do not have
+> sources defined.
+>
+> It is still possible to receive events sent to these queues using
+> `watch_monitoring()`, even though they do not have VQL queries.
 
 
 ## Server event queues
@@ -96,18 +93,15 @@ server event queues. You can monitor for events sent to these queues using the
 | `Server.Internal.TimelineAdd` | Internal Artifact - Do not use |
 | `System.Hunt.Creation` | Fires an event whenever a new hunt is created on the server. |
 
-{{% notice note %}}
-
-In the latest version, most of these "internal" artifacts are
-[hidden](/docs/artifacts/security/#hidden-artifacts) from the GUI by
-default, but you can still view them in a notebook by running the VQL
-query:
-
-```vql
-SELECT name, description FROM artifact_definitions() WHERE NOT sources AND type =~ "server_event|internal"
-```
-
-{{% /notice %}}
+> [!NOTE]
+> In the latest version, most of these "internal" artifacts are
+> [hidden](/docs/artifacts/security/#hidden-artifacts) from the GUI by
+> default, but you can still view them in a notebook by running the VQL
+> query:
+>
+> ```vql
+> SELECT name, description FROM artifact_definitions() WHERE NOT sources AND type =~ "server_event|internal"
+> ```
 
 ### Sending events to server event queues.
 

@@ -15,18 +15,15 @@ all of Velociraptor's features - from artifact collections and client
 monitoring to notebook investigations and API automation. This page
 covers the core concepts you need to write and understand VQL queries.
 
-{{% notice tip "Running VQL queries in Notebooks" %}}
-
-When learning VQL, we recommend practicing in an environment where you
-can easily debug, iterate, and interactively test each query.
-Velociraptor notebooks provide a perfect playpen for learning and
-experimenting with VQL. You can read more about notebooks
-[here](/docs/notebooks/).
-
-For the purposes of this documentation, we will assume you've created
-a notebook and are typing VQL into a notebook cell.
-
-{{% /notice %}}
+> [!TIP] Running VQL queries in Notebooks
+> When learning VQL, we recommend practicing in an environment where you
+> can easily debug, iterate, and interactively test each query.
+> Velociraptor notebooks provide a perfect playpen for learning and
+> experimenting with VQL. You can read more about notebooks
+> [here](/docs/notebooks/).
+>
+> For the purposes of this documentation, we will assume you've created
+> a notebook and are typing VQL into a notebook cell.
 
 ## Basic Syntax
 
@@ -57,25 +54,22 @@ Variable names can only consist of alphanumeric characters,
 underscores (`_`), and dashes (`-`), and cannot begin with a numeric
 or a dash character. They are also case-sensitive.
 
-{{% notice tip "Throwaway variables" %}}
-
-In artifacts you might sometimes see just a `_` used as a variable
-name. This is a naming convention (not a language-enforced rule) for
-an anonymous or "throwaway" variable, where we don't care about the
-name because we don't intend to use the actual value in subsequent
-VQL, and therefore also don't care is the variable name is later
-reassigned another value.
-
-For example:
-```vql
-LET _ <= log(message="Start time %v", args=start_time)
-```
-would be used just to generate a log message and we don't intend to do
-anything with the result.
-It uses a [materialized LET expression](#materialized-let-expressions)
-so that the evaluation happens immediately.
-
-{{% /notice %}}
+> [!TIP] Throwaway variables
+> In artifacts you might sometimes see just a `_` used as a variable
+> name. This is a naming convention (not a language-enforced rule) for
+> an anonymous or "throwaway" variable, where we don't care about the
+> name because we don't intend to use the actual value in subsequent
+> VQL, and therefore also don't care is the variable name is later
+> reassigned another value.
+>
+> For example:
+> ```vql
+> LET _ <= log(message="Start time %v", args=start_time)
+> ```
+> would be used just to generate a log message and we don't intend to do
+> anything with the result.
+> It uses a [materialized LET expression](#materialized-let-expressions)
+> so that the evaluation happens immediately.
 
 A convention of using CamelCase for variable names has evolved in our
 artifacts. But you are free to use any naming convention that you
@@ -176,19 +170,16 @@ their operations. VQL Syntax requires all arguments to be provided by
 name (these are called keyword arguments). Depending on the specific
 plugins, some arguments are required while some are optional.
 
-{{% notice tip "Using the GUI suggestions" %}}
-
-You can type `?` in the Notebook interface to view a
-list of possible completions for a keyword. Completions are context sensitive. For example, since plugins must follow the `FROM` keyword, any suggestions
-after the `FROM` keyword will be for VQL plugins. Typing `?` inside
-a plugin arguments list shows the possible arguments, their
-type, and if they are required or optional.
-
-![VQL Plugin Completions](completion.png)
-
-![VQL Plugin arguments Completions](completion2.png)
-
-{{% /notice %}}
+> [!TIP] Using the GUI suggestions
+> You can type `?` in the Notebook interface to view a
+> list of possible completions for a keyword. Completions are context sensitive. For example, since plugins must follow the `FROM` keyword, any suggestions
+> after the `FROM` keyword will be for VQL plugins. Typing `?` inside
+> a plugin arguments list shows the possible arguments, their
+> type, and if they are required or optional.
+>
+> ![VQL Plugin Completions](completion.png)
+>
+> ![VQL Plugin arguments Completions](completion2.png)
 
 #### Argument unpacking
 
@@ -345,28 +336,25 @@ to resolve the symbol `OS` from the column expression, it examines the
 scope stack in reverse, checking if the symbol `OS` exists in the
 lower layer. If not, VQL checks the next layer, and so on.
 
-{{% notice warning "Masking variables in the scope" %}}
-
-Columns produced by a plugin are added to the child scope and
-therefore **mask** the same symbol name from parent scopes. This can
-sometimes unintentionally hide variables of the same name which are
-defined at a parent scope. If you find this happens to your query you
-can rename earlier symbols using the `AS` keyword to avoid this
-problem.  For example:
-
-```sql
-SELECT Pid, Name, {
-   SELECT Name FROM pslist(pid=Ppid)
-} AS ParentName
-FROM pslist()
-```
-
-In this query, the symbol `Name` in the outer query will be resolved
-from the rows emitted by `pslist()` but the second `Name` will be
-resolved from the row emitted by `pslist(pid=Ppid)` - or in other
-words, the parent's name.
-
-{{% /notice %}}
+> [!WARNING] Masking variables in the scope
+> Columns produced by a plugin are added to the child scope and
+> therefore **mask** the same symbol name from parent scopes. This can
+> sometimes unintentionally hide variables of the same name which are
+> defined at a parent scope. If you find this happens to your query you
+> can rename earlier symbols using the `AS` keyword to avoid this
+> problem.  For example:
+>
+> ```sql
+> SELECT Pid, Name, {
+>    SELECT Name FROM pslist(pid=Ppid)
+> } AS ParentName
+> FROM pslist()
+> ```
+>
+> In this query, the symbol `Name` in the outer query will be resolved
+> from the rows emitted by `pslist()` but the second `Name` will be
+> resolved from the row emitted by `pslist(pid=Ppid)` - or in other
+> words, the parent's name.
 
 ### String constants
 
@@ -671,18 +659,15 @@ LET mystat = SELECT ModTime, Size, FullPath
 SELECT * FROM foreach(row=myprocess, query=mystat)
 ```
 
-{{% notice note %}}
-
-A **Stored Query** is simply a query that is stored into a variable. It is
-not actually evaluated at the point of definition. At the point where
-the query is referred, that is where evaluation occurs. The scope at
-which the query is evaluated is derived from the point of reference.
-
-For example in the query above, `mystat` simply stores the query
-itself. Velociraptor will then re-evaluate the `mystat` query for each
-row given by `myprocess` as part of the `foreach()` plugin operation.
-
-{{% /notice %}}
+> [!NOTE]
+> A **Stored Query** is simply a query that is stored into a variable. It is
+> not actually evaluated at the point of definition. At the point where
+> the query is referred, that is where evaluation occurs. The scope at
+> which the query is evaluated is derived from the point of reference.
+>
+> For example in the query above, `mystat` simply stores the query
+> itself. Velociraptor will then re-evaluate the `mystat` query for each
+> row given by `myprocess` as part of the `foreach()` plugin operation.
 
 ### LET expressions are lazy
 
@@ -805,14 +790,11 @@ LET MyFunc(X) = X + 5
 SELECT MyFunc(X=6) FROM scope()
 ```
 
-{{% notice tip "Differences between a VQL plugin and VQL function" %}}
-
-Remember the difference between a VQL plugin and a VQL function is
-that a plugin returns multiple rows and therefore needs to appear
-between the FROM and WHERE clauses. A function simply takes several
-values and transforms them into a single value.
-
-{{% /notice %}}
+> [!TIP] Differences between a VQL plugin and VQL function
+> Remember the difference between a VQL plugin and a VQL function is
+> that a plugin returns multiple rows and therefore needs to appear
+> between the FROM and WHERE clauses. A function simply takes several
+> values and transforms them into a single value.
 
 ## VQL Operators
 
@@ -909,26 +891,23 @@ can then index the first element from the array.
 SELECT * FROM execve(argv=[binary.FullPath[0], "-flag"])
 ```
 
-{{% notice warning "Expanding queries using the associative operator" %}}
-
-While using the `.` operator is useful to apply to a stored query,
-care must be taken that the query is not too large. In VQL, stored
-queries are lazy and do not actually execute until needed because they
-can generate thousands of rows! The `.` operator expands the query
-into an array and may exhaust memory while doing so.
-
-The following query may be disastrous:
-
-```vql
-LET MFT = SELECT * FROM Artifact.Windows.NTFS.MFT()
-
-SELECT MFT.FullPath FROM scope()
-```
-
-The `Windows.NTFS.MFT` artifact typically generates millions of rows,
-and `MFT.FullPath` will expand them all into memory!
-
-{{% /notice %}}
+> [!WARNING] Expanding queries using the associative operator
+> While using the `.` operator is useful to apply to a stored query,
+> care must be taken that the query is not too large. In VQL, stored
+> queries are lazy and do not actually execute until needed because they
+> can generate thousands of rows! The `.` operator expands the query
+> into an array and may exhaust memory while doing so.
+>
+> The following query may be disastrous:
+>
+> ```vql
+> LET MFT = SELECT * FROM Artifact.Windows.NTFS.MFT()
+>
+> SELECT MFT.FullPath FROM scope()
+> ```
+>
+> The `Windows.NTFS.MFT` artifact typically generates millions of rows,
+> and `MFT.FullPath` will expand them all into memory!
 
 #### Comparison and Evaluation Logic
 
@@ -1309,22 +1288,19 @@ VQL's `=~` operator also works on data types other than plain text:
   SELECT dict(Name="Alice", Age=30) =~ "999" AS Result FROM scope()     -- FALSE
   ```
 
-{{% notice tip "Raw strings vs. character escaping" %}}
-
-VQL allows you to specify [raw (literal) strings](#string-constants)
-using the `'''` (triple single quotes) syntax. For regex expressions
-this is the preferred way of specifying them since the expression is
-passed uninterpreted to the regex parser.
-
-It's OK to use standard string syntax (with single or double quotes)
-for simple expressions, but if your expression itself requires regex
-escaping (`\`) then you'd also have to escape that escape character,
-which leads to inelegant expressions, for example `C:\\\\Windows`,
-which is also prone to typo mistakes. It's best to develop the habit
-of always using raw strings for regex unless it's a very simple
-expression.
-
-{{% /notice %}}
+> [!TIP] Raw strings vs. character escaping
+> VQL allows you to specify [raw (literal) strings](#string-constants)
+> using the `'''` (triple single quotes) syntax. For regex expressions
+> this is the preferred way of specifying them since the expression is
+> passed uninterpreted to the regex parser.
+>
+> It's OK to use standard string syntax (with single or double quotes)
+> for simple expressions, but if your expression itself requires regex
+> escaping (`\`) then you'd also have to escape that escape character,
+> which leads to inelegant expressions, for example `C:\\\\Windows`,
+> which is also prone to typo mistakes. It's best to develop the habit
+> of always using raw strings for regex unless it's a very simple
+> expression.
 
 ### Logical operators
 
@@ -1499,19 +1475,16 @@ The `GROUP BY` query will therefore return two rows (one for each
 bin). Each row will contain a single value for the `X` value and one
 of the `Y` values.
 
-{{% notice warning "Selecting columns with GROUP BY" %}}
-
-As the above diagram illustrates, it only makes sense in general to
-select the same column as is being grouped. This is because other
-columns may contain any number of values, but only a single one of
-these values will be returned.
-
-In the above example, selecting the `Y` column is not deterministic
-because the first bin contains several values for `Y`.
-
-Be careful not to rely on the order of rows in each bin.
-
-{{% /notice %}}
+> [!WARNING] Selecting columns with GROUP BY
+> As the above diagram illustrates, it only makes sense in general to
+> select the same column as is being grouped. This is because other
+> columns may contain any number of values, but only a single one of
+> these values will be returned.
+>
+> In the above example, selecting the `Y` column is not deterministic
+> because the first bin contains several values for `Y`.
+>
+> Be careful not to rely on the order of rows in each bin.
 
 ### Aggregate functions
 
@@ -1638,15 +1611,12 @@ some errors encountered. You should always take a quick look at the
 error logs to see if there is anything of concern.
 
 
-{{% notice warning "Temporary or permanent errors" %}}
-
-Note that an error may be temporary (e.g. the artifact collection
-timed out), or permanent (e.g. an error within the VQL itself, file
-not found etc).
-
-It is not a good idea to automatically retry a collection unless you
-are sure the error is temporary - if the error is more permanent the
-same thing will happen again. It is always worth checking the query
-logs to make sure there is any point in retrying the collection.
-
-{{% /notice %}}
+> [!WARNING] Temporary or permanent errors
+> Note that an error may be temporary (e.g. the artifact collection
+> timed out), or permanent (e.g. an error within the VQL itself, file
+> not found etc).
+>
+> It is not a good idea to automatically retry a collection unless you
+> are sure the error is temporary - if the error is more permanent the
+> same thing will happen again. It is always worth checking the query
+> logs to make sure there is any point in retrying the collection.

@@ -12,12 +12,9 @@ author: "Mike Cohen"
 date: 2022-01-05
 ---
 
-{{% notice tip %}}
-
-This article discusses new features appearing in Velociraptor's 0.6.3
-release. Earlier releases may not have the same features.
-
-{{% /notice %}}
+> [!TIP]
+> This article discusses new features appearing in Velociraptor's 0.6.3
+> release. Earlier releases may not have the same features.
 
 Many DFIR tasks involve simply searching the filesystem for certain
 files. In Velociraptor this capability is available through the
@@ -125,30 +122,27 @@ Unfortunately many Unix systems have separate partitions for `/home`,
 `/usr` or `/boot` and so preventing recursion into other filesystems
 can prevent finding files in those partitions.
 
-{{% notice note "Bind mounts" %}}
-
-In Linux it is possible to create a `bind` mount using the `--bind`
-flag to mount another directory again inside a mount point
-directory. This is similar to a symlink in the sense that it may point
-further up the directory tree creating extra work for the `find`
-command.
-
-For example:
-
-```
-# mkdir /root/bount
-# mount --bind / /root/bound/
-# find /root/
-...
-/root/bound/usr/i686-w64-mingw32/lib/libcabinet.a
-/root/bound/usr/i686-w64-mingw32/lib/binmode.o
-find: File system loop detected; ‘/root/bound/root’ is part of the same file system loop as ‘/root/’.
-```
-
-The `find` command is able to detect these kinds of filesystem loops
-and not get trapped but a custom program may not.
-
-{{% /notice %}}
+> [!NOTE] Bind mounts
+> In Linux it is possible to create a `bind` mount using the `--bind`
+> flag to mount another directory again inside a mount point
+> directory. This is similar to a symlink in the sense that it may point
+> further up the directory tree creating extra work for the `find`
+> command.
+>
+> For example:
+>
+> ```
+> # mkdir /root/bount
+> # mount --bind / /root/bound/
+> # find /root/
+> ...
+> /root/bound/usr/i686-w64-mingw32/lib/libcabinet.a
+> /root/bound/usr/i686-w64-mingw32/lib/binmode.o
+> find: File system loop detected; ‘/root/bound/root’ is part of the same file system loop as ‘/root/’.
+> ```
+>
+> The `find` command is able to detect these kinds of filesystem loops
+> and not get trapped but a custom program may not.
 
 # The glob plugin
 

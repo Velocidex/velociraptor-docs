@@ -57,48 +57,44 @@ velociraptor deaddisk --add_windows_directory /media/mnt/windows_c_drive/ remapp
 velociraptor client -c ./client.config.yaml --remap ./remapping.yaml
 ```
 
-{{% notice note "Currently Windows-only" %}}
-
-The `deaddisk` command, by default, only supports Windows disk/partition images,
-and Windows partitions mounted to folders.
-
-From version 0.74.4 this CLI command uses the artifact
-`Generic.Utils.DeadDiskRemapping` internally to generate the remapping
-configuration file. You can use this artifact in the GUI if you prefer - the
-resulting config will be identical since both methods use the same VQL.
-
-It's therefore essentially equivalent to running the `query` command:
-
-```sh
-velociraptor query "SELECT * FROM Artifact.Generic.Utils.DeadDiskRemapping(ImagePath='/path/to/image.dd', Hostname='Some Host')" --dump_dir .
-```
-
-or the `artifacts collect` and `unzip` commands:
-
-```sh
-velociraptor artifacts collect Generic.Utils.DeadDiskRemapping --args ImagePath='/path/to/image.dd' --args Hostname='Some Host' --output remapping.zip
-velociraptor unzip remapping.zip /uploads/data/remapping.yaml
-```
-
----
-
-**Non-Windows disk images**
-
-You can define your own customized version of the
-`Generic.Utils.DeadDiskRemapping` artifact if the default artifact does not suit
-your specific analysis requirements, for example simple (non-LVM) Linux systems
-or non-NTFS disk images.
-
-If you load your custom artifact definition from a folder using the
-`--definitions` flag then this will be used by the `deaddisk` command. Note that
-this approach would only be necessary if you have a strong reason to use the CLI
-(for example in an automated analysis pipeline) rather than the GUI, since it's
-much easier to create and use a custom version of the artifact in the GUI
-without overriding the built-in artifact.
-
-{{% /notice %}}
+> [!NOTE] Currently Windows-only
+> The `deaddisk` command, by default, only supports Windows disk/partition images,
+> and Windows partitions mounted to folders.
+>
+> From version 0.74.4 this CLI command uses the artifact
+> `Generic.Utils.DeadDiskRemapping` internally to generate the remapping
+> configuration file. You can use this artifact in the GUI if you prefer - the
+> resulting config will be identical since both methods use the same VQL.
+>
+> It's therefore essentially equivalent to running the `query` command:
+>
+> ```sh
+> velociraptor query "SELECT * FROM Artifact.Generic.Utils.DeadDiskRemapping(ImagePath='/path/to/image.dd', Hostname='Some Host')" --dump_dir .
+> ```
+>
+> or the `artifacts collect` and `unzip` commands:
+>
+> ```sh
+> velociraptor artifacts collect Generic.Utils.DeadDiskRemapping --args ImagePath='/path/to/image.dd' --args Hostname='Some Host' --output remapping.zip
+> velociraptor unzip remapping.zip /uploads/data/remapping.yaml
+> ```
+>
+> ---
+>
+> **Non-Windows disk images**
+>
+> You can define your own customized version of the
+> `Generic.Utils.DeadDiskRemapping` artifact if the default artifact does not suit
+> your specific analysis requirements, for example simple (non-LVM) Linux systems
+> or non-NTFS disk images.
+>
+> If you load your custom artifact definition from a folder using the
+> `--definitions` flag then this will be used by the `deaddisk` command. Note that
+> this approach would only be necessary if you have a strong reason to use the CLI
+> (for example in an automated analysis pipeline) rather than the GUI, since it's
+> much easier to create and use a custom version of the artifact in the GUI
+> without overriding the built-in artifact.
 
 See
 [Dead Disk Analysis](/docs/forensic/deaddisk/)
 for more information.
-

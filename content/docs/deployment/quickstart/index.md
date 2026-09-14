@@ -26,37 +26,31 @@ certificate scheme and public DNS configuration. To explore these other options
 please see the [Deployment](/docs/deployment/) section.
 
 
-{{% notice info "Production Use Disclaimer" %}}
+> [!NOTE] Production Use Disclaimer
+> Please note that in this simple configuration the Velociraptor server should
+> not be exposed to the public internet, particularly because Basic
+> authentication mode is vulnerable to brute-force attacks.
+> [SSO authentication](/knowledge_base/tips/setup_google_oauth/)
+> is recommended for production deployments, but SSO is rarely configured with
+> self-signed certificates (since it goes against the idea of a trusted
+> authentication flow), and we intend to use self-signed certificates in this
+> guide for expediency.
+>
+> If you have chosen to install the server component on a cloud VM then you should
+> leave the GUI port bound to the loopback address and use SSH tunneling to
+> connect to the local loopback address.
+>
+> Self-signed SSL with Basic authentication is most often used when Velociraptor
+> is deployed on private networks for temporary situations such as incident
+> response. For long-term deployments, the other modes of operation that
+> Velociraptor offers should be preferred.
 
-Please note that in this simple configuration the Velociraptor server should
-not be exposed to the public internet, particularly because Basic
-authentication mode is vulnerable to brute-force attacks.
-[SSO authentication](/knowledge_base/tips/setup_google_oauth/)
-is recommended for production deployments, but SSO is rarely configured with
-self-signed certificates (since it goes against the idea of a trusted
-authentication flow), and we intend to use self-signed certificates in this
-guide for expediency.
-
-If you have chosen to install the server component on a cloud VM then you should
-leave the GUI port bound to the loopback address and use SSH tunneling to
-connect to the local loopback address.
-
-Self-signed SSL with Basic authentication is most often used when Velociraptor
-is deployed on private networks for temporary situations such as incident
-response. For long-term deployments, the other modes of operation that
-Velociraptor offers should be preferred.
-
-{{% /notice %}}
-
-{{% notice tip "Need to go even quicker?" %}}
-
-If you're really in a hurry you can start a self-contained
-[Instant Velociraptor](/docs/deployment/#instant-velociraptor)
-on your local machine which will allow you to experiment and get a feel for how
-Velociraptor works, without having to deal with any of the network complexities.
-One command is all that's needed to get started!
-
-{{% /notice %}}
+> [!TIP] Need to go even quicker?
+> If you're really in a hurry you can start a self-contained
+> [Instant Velociraptor](/docs/deployment/#instant-velociraptor)
+> on your local machine which will allow you to experiment and get a feel for how
+> Velociraptor works, without having to deal with any of the network complexities.
+> One command is all that's needed to get started!
 
 ## What you'll need before you start
 
@@ -171,28 +165,25 @@ At this point you only need to download one binary (the one that matches your
 server's platform and architecture) because after installation we will use the
 server to download the Windows binary that we will use for the client.
 
-{{% notice note "One binary to rule them all!" %}}
-
-<!-- **Velociraptor only has one binary per operating system + architecture combination.** -->
-
-Velociraptor does not have separate client binaries and server binaries. The
-binary can function in either role, and perform various other utility functions.
-The command line parameters supplied to the binary tell it whether to behave as
-a server or as a client.
-
-This means that it's technically possible to run the server or the client on any
-platform that we have a binary for. However
-_please note that the server is only fully supported on Linux_,
-mainly due to performance considerations inherent in other platforms such as
-Windows. For non-production deployments (e.g. development or testing) it might
-be convenient for you to run the server on another platform and that's fine if
-you feel adventurous and confident in your troubleshooting skills. Just keep in
-mind that for production deployments we strongly recommend that the server
-should run on Linux and that issues encountered when running the server on other
-platforms will not be supported. For this reason we only describe deploying the
-server on Linux in this guide.
-
-{{% /notice %}}
+> [!NOTE] One binary to rule them all!
+> <!-- **Velociraptor only has one binary per operating system + architecture combination.** -->
+>
+> Velociraptor does not have separate client binaries and server binaries. The
+> binary can function in either role, and perform various other utility functions.
+> The command line parameters supplied to the binary tell it whether to behave as
+> a server or as a client.
+>
+> This means that it's technically possible to run the server or the client on any
+> platform that we have a binary for. However
+> _please note that the server is only fully supported on Linux_,
+> mainly due to performance considerations inherent in other platforms such as
+> Windows. For non-production deployments (e.g. development or testing) it might
+> be convenient for you to run the server on another platform and that's fine if
+> you feel adventurous and confident in your troubleshooting skills. Just keep in
+> mind that for production deployments we strongly recommend that the server
+> should run on Linux and that issues encountered when running the server on other
+> platforms will not be supported. For this reason we only describe deploying the
+> server on Linux in this guide.
 
 For these pre-installation steps you may want to create a new working directory:
 
@@ -474,12 +465,9 @@ You can learn more about the Admin GUI [here](/docs/gui/).
 
 ## Step 6: Import artifacts from external projects
 
-{{% notice note %}}
-
-This step only applies if you are using version 0.75 or above. For older
-versions you can [skip to the next step](#step-7-create-an-installation-package-for-windows-clients).
-
-{{% /notice %}}
+> [!NOTE]
+> This step only applies if you are using version 0.75 or above. For older
+> versions you can [skip to the next step](#step-7-create-an-installation-package-for-windows-clients).
 
 Over time Velociraptor has spawned many sub-projects for curating and
 managing certain larger, more complex [artifacts](/docs/artifacts/).

@@ -145,17 +145,14 @@ all cases, regardless of whether other TLS certificates are used. While it is
 possible to reissue/rotate server certificates the CA certificate can not be
 reissued without re-deploying all the clients.
 
-{{% notice warning "Protecting the CA private key" %}}
-
-In a secure installation you should remove the `CA.private_key` section from
-the server config and keep it offline. You only need it to
-[create new API keys](/docs/server_automation/server_api/#creating-an-api-client-configuration)
-and when
-[rotating server certificates](/knowledge_base/tips/rolling_certificates/)
-(typically after 1 year).
-The server does not need it during normal operations.
-
-{{% /notice %}}
+> [!WARNING] Protecting the CA private key
+> In a secure installation you should remove the `CA.private_key` section from
+> the server config and keep it offline. You only need it to
+> [create new API keys](/docs/server_automation/server_api/#creating-an-api-client-configuration)
+> and when
+> [rotating server certificates](/knowledge_base/tips/rolling_certificates/)
+> (typically after 1 year).
+> The server does not need it during normal operations.
 
 
 ### Messages
@@ -175,17 +172,14 @@ This symmetric key is encoded in a **Cipher Properties** protobuf
 which is encrypted in turn using the receiving party’s public key and
 signed using the sending party’s private key.
 
-{{% notice tip "Messages are double encrypted" %}}
-
-You might have noticed that **MessageList** protobufs are encrypted
-and signed, but they are usually still delivered within a TLS session -
-therefore there are two layers of encryption.
-
-The internal encryption scheme's main purpose is not only to encrypt
-the messages but to sign them. This prevents messages from one client
-from impersonating another client.
-
-{{% /notice %}}
+> [!TIP] Messages are double encrypted
+> You might have noticed that **MessageList** protobufs are encrypted
+> and signed, but they are usually still delivered within a TLS session -
+> therefore there are two layers of encryption.
+>
+> The internal encryption scheme's main purpose is not only to encrypt
+> the messages but to sign them. This prevents messages from one client
+> from impersonating another client.
 
 ### HTTP protocol
 
@@ -220,18 +214,15 @@ when a MITM proxy is able to decode the HTTPS connections, there is no
 visible plain text due to the included messages being encrypted again
 by the internal server certificate.
 
-{{% notice warning "Debugging clients and TLS verification" %}}
-
-The client-only setting
-[`Client.insecure_network_trace_file`](/docs/deployment/references/#Client.insecure_network_trace_file)
-is only for diagnosing connectivity issues. Any non-empty value writes
-clear text protocol traces **and disables TLS certificate
-verification** for outbound client connections — so intermediaries
-could strip the TLS tunnel even though Velociraptor’s inner protobuf
-encryption layer may remain. Never ship golden images or repacked
-clients that leave this flag configured.
-
-{{% /notice %}}
+> [!WARNING] Debugging clients and TLS verification
+> The client-only setting
+> [`Client.insecure_network_trace_file`](/docs/deployment/references/#Client.insecure_network_trace_file)
+> is only for diagnosing connectivity issues. Any non-empty value writes
+> clear text protocol traces **and disables TLS certificate
+> verification** for outbound client connections — so intermediaries
+> could strip the TLS tunnel even though Velociraptor’s inner protobuf
+> encryption layer may remain. Never ship golden images or repacked
+> clients that leave this flag configured.
 
 ## Securing Network communications
 
@@ -307,17 +298,14 @@ their servers to connect to the Velociraptor server over port 80 and
 Therefore, the server needs to be reachable over ports 80 and 443 (You
 can not serve over a non standard SSL port with Let's Encrypt).
 
-{{% notice warning "Filtering ports" %}}
-
-If you filter port 80 from the internet then Let's Encrypt will be
-unable to verify the domain and will likely blacklist the domain name
-for a period.
-
-It is crucial that port 80 and 443 be unfiltered to the world. It is
-difficult to recover from a blacklisting event other than waiting for
-a long period of time.
-
-{{% /notice %}}
+> [!WARNING] Filtering ports
+> If you filter port 80 from the internet then Let's Encrypt will be
+> unable to verify the domain and will likely blacklist the domain name
+> for a period.
+>
+> It is crucial that port 80 and 443 be unfiltered to the world. It is
+> difficult to recover from a blacklisting event other than waiting for
+> a long period of time.
 
 In this configuration:
 
@@ -436,20 +424,17 @@ Creating API client file on /tmp/dummy.api.config.yaml.
 No role added to user Client. You will need to do this later using the 'acl grant' command.
 ```
 
-{{% notice warning "API User permissions" %}}
-
-This will create an API configuration file for an API user called
-"Client", containing the key pair that we need. However the `config
-api_client` command shown above will not actually create a user on the
-Velociraptor server since we deliberately didn't specify the `--role`
-flag.
-
-It is critical that the user has no roles or permissions on the server
-to prevent this key from being used to connect to the API
-ports. Therefore the message concerning the use the `acl_grant`
-command shown above _should NOT be followed_.
-
-{{% /notice %}}
+> [!WARNING] API User permissions
+> This will create an API configuration file for an API user called
+> "Client", containing the key pair that we need. However the `config
+> api_client` command shown above will not actually create a user on the
+> Velociraptor server since we deliberately didn't specify the `--role`
+> flag.
+>
+> It is critical that the user has no roles or permissions on the server
+> to prevent this key from being used to connect to the API
+> ports. Therefore the message concerning the use the `acl_grant`
+> command shown above _should NOT be followed_.
 
 Once the key is generated you can see it in the resulting yaml file
 encoded in PEM format. Simply copy the two blocks -
@@ -478,15 +463,12 @@ Note that this client certificate will only be used if the server requests it,
 so it is fine to add the client certificate to the client config even if you
 only intend to enable mTLS later.
 
-{{% notice info %}}
-
-Client certificates generated as described above will be valid for 1 year. It is
-highly likely that you will upgrade your clients before this 1-year period
-elapses and so we recommended that you issue a new client cert during the
-upgrade process by including an updated (i.e. with a new client cert) client
-config in your client package, for example MSI for Windows clients.
-
-{{% /notice %}}
+> [!NOTE]
+> Client certificates generated as described above will be valid for 1 year. It is
+> highly likely that you will upgrade your clients before this 1-year period
+> elapses and so we recommended that you issue a new client cert during the
+> upgrade process by including an updated (i.e. with a new client cert) client
+> config in your client package, for example MSI for Windows clients.
 
 #### Requiring client side certificates
 
@@ -624,67 +606,58 @@ plugin to inspect results (because the user has the read permission).
 You can check which permission each plugin requires in the reference
 site's `VQL Reference` section.
 
-{{% notice info "Velociraptor's User Access Control" %}}
-
-Velociraptor's security model is org scoped. This means that ACLs are
-applied at the org level and are not granular to the client/flow
-level - if a user has the `READ_RESUTS` permission (given to any user
-who can log into the GUI), then they can read any file within the org,
-including all client's collections, hunts, exports and notebooks.
-
-Similarly, while notebooks can be shared with other users (or marked
-private) - **this is not a security measure** it is just for
-convenience and to clean up the interface, so each user can see only
-relevant notebooks to them.
-
-Any user that can log into the org (i.e. they have the `READ_RESUTS`
-permission), can read any notebook within the org.
-
-This underlines Velociraptor's collaborative philosophy - all users
-assigned to the org are considered trusted. Velociraptor's threat
-model does not assume untrusted or rogue users. You should always
-ensure that user access is protected via SSO, two factor and other
-best practice tools to ensure that account takeover is unlikely.
-
-{{% /notice %}}
+> [!NOTE] Velociraptor's User Access Control
+> Velociraptor's security model is org scoped. This means that ACLs are
+> applied at the org level and are not granular to the client/flow
+> level - if a user has the `READ_RESUTS` permission (given to any user
+> who can log into the GUI), then they can read any file within the org,
+> including all client's collections, hunts, exports and notebooks.
+>
+> Similarly, while notebooks can be shared with other users (or marked
+> private) - **this is not a security measure** it is just for
+> convenience and to clean up the interface, so each user can see only
+> relevant notebooks to them.
+>
+> Any user that can log into the org (i.e. they have the `READ_RESUTS`
+> permission), can read any notebook within the org.
+>
+> This underlines Velociraptor's collaborative philosophy - all users
+> assigned to the org are considered trusted. Velociraptor's threat
+> model does not assume untrusted or rogue users. You should always
+> ensure that user access is protected via SSO, two factor and other
+> best practice tools to ensure that account takeover is unlikely.
 
 ![Inspecting VQL plugin permissions](VQL_permissions_reference.png)
 
-{{% notice warning "Selecting User permissions" %}}
-
-While you can have very fine control over the user's roles and
-permissions we suggest that you stick to the built in roles and they
-way they should be used as much as possible.
-
-This is because sometimes there are unexpected escalation paths
-between permissions that you might not be aware of. For example,
-giving a user the `Server Artifact Writer` role can easily lead to
-privilege escalation as the user can modify an existing server
-artifact to run VQL to grant them other roles, and trick an
-administrator in running that artifact.
-
-This is why we say that some roles are "Administrator Equivalent"
-because it is easy to escalate from them to more powerful
-roles. Typically we try to limit access to trusted users anyway and
-not rely too much on the user roles.
-
-{{% /notice %}}
+> [!WARNING] Selecting User permissions
+> While you can have very fine control over the user's roles and
+> permissions we suggest that you stick to the built in roles and they
+> way they should be used as much as possible.
+>
+> This is because sometimes there are unexpected escalation paths
+> between permissions that you might not be aware of. For example,
+> giving a user the `Server Artifact Writer` role can easily lead to
+> privilege escalation as the user can modify an existing server
+> artifact to run VQL to grant them other roles, and trick an
+> administrator in running that artifact.
+>
+> This is why we say that some roles are "Administrator Equivalent"
+> because it is easy to escalate from them to more powerful
+> roles. Typically we try to limit access to trusted users anyway and
+> not rely too much on the user roles.
 
 
-{{% notice warning "User permissions do not apply on endpoints" %}}
-
-Velociraptor clients execute VQL queries without per-plugin ACL
-control, since they have no concept of users or ACLs.
-
-This means that once an artifact is scheduled, it can do anything on
-the client side. ACL Permissions only apply to the **ability to
-schedule** the artifact in the first place.
-
-Any hostile artifact authored into a hunt inherits full client
-privileges — defense there leans on [code review of
-artifacts](/docs/artifacts/security/).
-
-{{% /notice %}}
+> [!WARNING] User permissions do not apply on endpoints
+> Velociraptor clients execute VQL queries without per-plugin ACL
+> control, since they have no concept of users or ACLs.
+>
+> This means that once an artifact is scheduled, it can do anything on
+> the client side. ACL Permissions only apply to the **ability to
+> schedule** the artifact in the first place.
+>
+> Any hostile artifact authored into a hunt inherits full client
+> privileges — defense there leans on [code review of
+> artifacts](/docs/artifacts/security/).
 
 
 ### Auditing User actions
@@ -1122,29 +1095,25 @@ Typically we set the `required_permissions` field on client artifacts
 that can do dangerous things if misused. In particular, if the
 artifact parameter can specify running arbitrary code.
 
-{{% notice tip "Delegating artifact permissions" %}}
-
-The `required_permissions` check is only done on the artifact being
-launched. It does not apply to any dependent artifacts called from the
-launched artifact. This is deliberate as it allows you to create
-curated safe versions of the dangerous artifacts to be used by lower
-privilege users. For example, while `Windows.System.PowerShell`
-requires an `EXECVE` permission because its parameter allows arbitrary
-commands to run, we can wrap it with a safe version:
-
-```yaml
-name: Custom.SafePowershellDir
-sources:
-  - query: |
-        SELECT * FROM Artifact.Windows.System.PowerShell(Command="dir C:/")
-```
-
-This artifact can not be misused because the command passed to
-`Windows.System.PowerShell` is a fixed string and can not be changed
-by the user that initiates the collection.
-
-
-{{% /notice %}}
+> [!TIP] Delegating artifact permissions
+> The `required_permissions` check is only done on the artifact being
+> launched. It does not apply to any dependent artifacts called from the
+> launched artifact. This is deliberate as it allows you to create
+> curated safe versions of the dangerous artifacts to be used by lower
+> privilege users. For example, while `Windows.System.PowerShell`
+> requires an `EXECVE` permission because its parameter allows arbitrary
+> commands to run, we can wrap it with a safe version:
+>
+> ```yaml
+> name: Custom.SafePowershellDir
+> sources:
+>   - query: |
+>         SELECT * FROM Artifact.Windows.System.PowerShell(Command="dir C:/")
+> ```
+>
+> This artifact can not be misused because the command passed to
+> `Windows.System.PowerShell` is a fixed string and can not be changed
+> by the user that initiates the collection.
 
 
 ## Managing org access
@@ -1161,26 +1130,25 @@ If an untrusted user has access to one org but does not have access to
 another, there are multiple ways which allow the user to read/modify
 data in the other org:
 
-{{% notice warning "SAML/OIDC auto-role assignment applies to all orgs" %}}
-When you configure SAML or OIDC to automatically assign roles via
-`saml_user_roles` or `claims.roles`, those roles are granted in
-**every org** on the server, not just the org the user initially
-authenticates into. There is no way to scope SAML/OIDC
-role assignment to a subset of orgs.
-
-If your deployment uses orgs for multi-tenant isolation (for example
-MSSP deployments where orgs represent different customers), be aware
-that SAML/OIDC auto-role assignment bypasses that isolation. A user
-authenticated via SAML/OIDC receives roles in all orgs
-automatically.
-
-To avoid unintended cross-org access, either:
-
-- Manage user roles manually through the GUI instead of using
-  SAML/OIDC auto-role assignment.
-- Use separate Velociraptor instances for each tenant if true
-  data isolation is required.
-{{% /notice %}}
+> [!WARNING] SAML/OIDC auto-role assignment applies to all orgs
+> When you configure SAML or OIDC to automatically assign roles via
+> `saml_user_roles` or `claims.roles`, those roles are granted in
+> **every org** on the server, not just the org the user initially
+> authenticates into. There is no way to scope SAML/OIDC
+> role assignment to a subset of orgs.
+>
+> If your deployment uses orgs for multi-tenant isolation (for example
+> MSSP deployments where orgs represent different customers), be aware
+> that SAML/OIDC auto-role assignment bypasses that isolation. A user
+> authenticated via SAML/OIDC receives roles in all orgs
+> automatically.
+>
+> To avoid unintended cross-org access, either:
+>
+> - Manage user roles manually through the GUI instead of using
+>   SAML/OIDC auto-role assignment.
+> - Use separate Velociraptor instances for each tenant if true
+>   data isolation is required.
 
 ### Shelling out
 
@@ -1236,16 +1204,15 @@ By default, the `fs` accessor is denied access to [some filestore
 prefixes](https://github.com/Velocidex/velociraptor/blob/bb0fb04b128f791e2fb74b1008b9b7700f952e0b/services/sanity/security.go#L76),
 which are considered sensitive.
 
-{{% notice warning "Replace semantics" %}}
-When you set `security.denied_fs_accessor_prefix` in your config,
-the specified list **replaces** the default deny list entirely
-— it does not merge with it. The built-in defaults are:
-`acl`, `backups`, `config`, `orgs`, `secrets`, `users`.
-To preserve them while adding custom prefixes, you must include
-all of them explicitly in your list. This replace-on-write
-behavior applies to all list-type security settings in
-Velociraptor.
-{{% /notice %}}
+> [!WARNING] Replace semantics
+> When you set `security.denied_fs_accessor_prefix` in your config,
+> the specified list **replaces** the default deny list entirely
+> — it does not merge with it. The built-in defaults are:
+> `acl`, `backups`, `config`, `orgs`, `secrets`, `users`.
+> To preserve them while adding custom prefixes, you must include
+> all of them explicitly in your list. This replace-on-write
+> behavior applies to all list-type security settings in
+> Velociraptor.
 
 However, Velociraptor's ACL policies are such that any user with the
 `READ_RESULTS` permission, is able to real **any** client's data
@@ -1276,48 +1243,42 @@ security:
       - /proc/
 ```
 
-{{% notice tip "How do the denied and allowed sets in the above parameters interact?" %}}
-
-* If only the allowed set is specified, Velociraptor denies any prefix
-  outside the allowed set
-* If only the denied set is specified, Velociraptor denies any prefix
-  within the denied set, but allow other prefixes.
-* If both are specified, then Velociraptor will deny any files within
-  the denied set, unless they also match the allowed set.
-
-Other accessors (`ext4`, `ntfs`, raw disk plugins, archive mounts, …)
-might still expose underlying blocks when the daemon runs with root
-privileges. Continuing to run Velociraptor on Linux as a dedicated
-low-privilege user is the recommended setting to avoid risks in
-accessing the disk directly to bypass ACLs and denied paths.
-
-{{% /notice %}}
+> [!TIP] How do the denied and allowed sets in the above parameters interact?
+> * If only the allowed set is specified, Velociraptor denies any prefix
+>   outside the allowed set
+> * If only the denied set is specified, Velociraptor denies any prefix
+>   within the denied set, but allow other prefixes.
+> * If both are specified, then Velociraptor will deny any files within
+>   the denied set, unless they also match the allowed set.
+>
+> Other accessors (`ext4`, `ntfs`, raw disk plugins, archive mounts, …)
+> might still expose underlying blocks when the daemon runs with root
+> privileges. Continuing to run Velociraptor on Linux as a dedicated
+> low-privilege user is the recommended setting to avoid risks in
+> accessing the disk directly to bypass ACLs and denied paths.
 
 
-{{% notice warning "`http_client()`, Unix sockets, and server ACLs" %}}
-
-The VQL `http_client()` plugin understands URLs like
-`/var/run/docker.sock:unix/v1/version`, which relays HTTP traffic
-over local Unix domain sockets. This is useful to communicate with some servers (e.g. Docker).
-
-However, this may also pose a risk on shared
-environments. Administrators who can run unrestricted notebook queries
-(and hold the required **`NETWORK`** permission) therefore interact
-directly with anything listening on a socket—for example orchestration
-APIs commonly reachable through `/run/docker.sock`,
-`/run/podman/podman.sock`, or
-`/run/containerd/containerd.sock`.
-
-To harden access to the `http_client()` plugin, consider the
-approaches described above: **[artifact curated
-permissions](#controlling-access-to-artifacts)**, **[removing
-plugins](#removing-plugins-from-a-shared-server)**,
-[`security.denied_plugins`](/docs/deployment/references/#security.denied_plugins),
-[`security.vql_must_use_secrets`](/docs/deployment/references/#security.vql_must_use_secrets),
-and tight role hygiene so only trusted principals ever obtain those
-capabilities.
-
-{{% /notice %}}
+> [!WARNING] `http_client()`, Unix sockets, and server ACLs
+> The VQL `http_client()` plugin understands URLs like
+> `/var/run/docker.sock:unix/v1/version`, which relays HTTP traffic
+> over local Unix domain sockets. This is useful to communicate with some servers (e.g. Docker).
+>
+> However, this may also pose a risk on shared
+> environments. Administrators who can run unrestricted notebook queries
+> (and hold the required **`NETWORK`** permission) therefore interact
+> directly with anything listening on a socket—for example orchestration
+> APIs commonly reachable through `/run/docker.sock`,
+> `/run/podman/podman.sock`, or
+> `/run/containerd/containerd.sock`.
+>
+> To harden access to the `http_client()` plugin, consider the
+> approaches described above: **[artifact curated
+> permissions](#controlling-access-to-artifacts)**, **[removing
+> plugins](#removing-plugins-from-a-shared-server)**,
+> [`security.denied_plugins`](/docs/deployment/references/#security.denied_plugins),
+> [`security.vql_must_use_secrets`](/docs/deployment/references/#security.vql_must_use_secrets),
+> and tight role hygiene so only trusted principals ever obtain those
+> capabilities.
 
 In summary, although it is possible to restrict user access to
 different orgs this should be considered best effort. Much thought is
@@ -1356,5 +1317,4 @@ to this org allows them to affect other orgs. For example, any custom
 artifact created in the root org will be visible to all other orgs.
 
 You should only give trusted users access to the root org.
-
 

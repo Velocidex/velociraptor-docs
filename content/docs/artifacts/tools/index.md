@@ -151,40 +151,37 @@ If all goes well the `FetchBinary` artifact emits a single row with a
 column `OSPath` of the local path on the endpoint to the file (this
 will be in the Tools cache directory).
 
-{{% notice tip "Consuming the output of the FetchBinary artifact" %}}
-
-In the above example, we iterate over the output of the `FetchBinary`
-artifact using a `foreach()` plugin. This method is more defensive, as
-if the tool fails to be fetched, the query will just do nothing:
-
-```vql
-LET result = SELECT * FROM foreach(row={
-  SELECT OSPath
-  FROM Artifact.Generic.Utils.FetchBinary(ToolName="OSQueryLinux")
-}, query={
-  ... Do stuff with OSPath
-})
-```
-
-In many other artifacts we see a pattern like:
-
-```vql
- LET binary <= SELECT OSPath
- FROM Artifact.Generic.Utils.FetchBinary(ToolName="OSQueryLinux")
-
- SELECT * FROM execve(
-    argv=[ binary[0].OSPath, "--json", Query],
-    length=1000000)
-```
-
-This works because `binary` is a list of rows so we index the first
-row with `[0]` and take the `OSPath` column. However, this pattern is
-not robust: If the tool fails to download `binary` will be an empty
-list, and `binary[0].OSPath` will be `NULL`. This is dangerous because
-the artifact will then attempt to execute a program called `NULL`
-which is not the intention.
-
-{{% /notice %}}
+> [!TIP] Consuming the output of the FetchBinary artifact
+> In the above example, we iterate over the output of the `FetchBinary`
+> artifact using a `foreach()` plugin. This method is more defensive, as
+> if the tool fails to be fetched, the query will just do nothing:
+>
+> ```vql
+> LET result = SELECT * FROM foreach(row={
+>   SELECT OSPath
+>   FROM Artifact.Generic.Utils.FetchBinary(ToolName="OSQueryLinux")
+> }, query={
+>   ... Do stuff with OSPath
+> })
+> ```
+>
+> In many other artifacts we see a pattern like:
+>
+> ```vql
+>  LET binary <= SELECT OSPath
+>  FROM Artifact.Generic.Utils.FetchBinary(ToolName="OSQueryLinux")
+>
+>  SELECT * FROM execve(
+>     argv=[ binary[0].OSPath, "--json", Query],
+>     length=1000000)
+> ```
+>
+> This works because `binary` is a list of rows so we index the first
+> row with `[0]` and take the `OSPath` column. However, this pattern is
+> not robust: If the tool fails to download `binary` will be an empty
+> list, and `binary[0].OSPath` will be `NULL`. This is dangerous because
+> the artifact will then attempt to execute a program called `NULL`
+> which is not the intention.
 
 Usually the output of the tool is processed by the artifact somehow,
 for example, the tool may write output in JSON or CSV or simply create
@@ -279,14 +276,11 @@ The following parts of the GUI are:
    of endpoints fetch the same file. You should consider delegating
    serving to a cloud provider as described earlier.
 
-{{% notice tip "The Velociraptor Public directory" %}}
-
-There is no authentication required to fetch URLs from the
-Velociraptor public directory, only the knowledge of the obfuscated
-URL itself. This means that the URL is in itself a form of shared
-secret.
-
-{{% /notice %}}
+> [!TIP] The Velociraptor Public directory
+> There is no authentication required to fetch URLs from the
+> Velociraptor public directory, only the knowledge of the obfuscated
+> URL itself. This means that the URL is in itself a form of shared
+> secret.
 
 ### Managing tools in restricted environments.
 

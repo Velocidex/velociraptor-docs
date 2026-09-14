@@ -113,22 +113,20 @@ choices:
 ...
 ```
 
-{{% notice note "The C language" %}}
-
-Although the original program may or may not be written in C, we often
-refer to concepts as implemented in the C language simply because it
-was implemented first. Many of the common serialization primitive are
-also declarative in C - for example flags can be declared as
-[bitfields](https://en.cppreference.com/w/cpp/language/bit_field):
-
-```c
-struct FlagField {
-  uint8 Flag1: 1;
-  uint8 Flag2: 1;
-  uint8 Flag3: 1;
-}
-```
-{{% /notice %}}
+> [!NOTE] The C language
+> Although the original program may or may not be written in C, we often
+> refer to concepts as implemented in the C language simply because it
+> was implemented first. Many of the common serialization primitive are
+> also declarative in C - for example flags can be declared as
+> [bitfields](https://en.cppreference.com/w/cpp/language/bit_field):
+>
+> ```c
+> struct FlagField {
+>   uint8 Flag1: 1;
+>   uint8 Flag2: 1;
+>   uint8 Flag3: 1;
+> }
+> ```
 
 The Velociraptor binary parser is **declarative** - it consists of
 high level declarations of how the data is to be laid out in the
@@ -258,19 +256,16 @@ Note that a lambda function is just VQL and has access to any VQL
 functions or plugins available in the scope. Within an artifact lambda
 functions also have access to any artifact parameters.
 
-{{% notice note "Binary parsing is lazy!" %}}
-
-Since the binary parser is declarative, a lambda function simply
-declares that the value of the entity will be calculated based on this
-formula - lambda function are only evaluated when needed in a lazy
-fashion.
-
-There is no problem in declaring fields that are never used - they
-present no additional cost on parsing. In fact it is preferred that a
-parser be as complete as possible, even if fields are not currently
-used.
-
-{{% /notice %}}
+> [!NOTE] Binary parsing is lazy!
+> Since the binary parser is declarative, a lambda function simply
+> declares that the value of the entity will be calculated based on this
+> formula - lambda function are only evaluated when needed in a lazy
+> fashion.
+>
+> There is no problem in declaring fields that are never used - they
+> present no additional cost on parsing. In fact it is preferred that a
+> parser be as complete as possible, even if fields are not currently
+> used.
 
 ## Field types
 
@@ -359,35 +354,32 @@ An example of a use of Array can be found in the Linux `wtmp` parser:
 ]],
 ```
 
-{{% notice tip "Specifying the size of array members" %}}
-
-Normally the size of a struct can be specified as 0, however when
-using the struct in an Array, the size must be valid and non
-zero. This is because Array uses the size of the target type to
-determine how far apart each array member lies in the data.
-
-You can also use a lambda to specify the size of the item - this
-allows you to use Array to specify non uniform arrays (where each
-member has a different size).
-
-For example the following specifies a header containing a count of
-entries stored back to back, while each entry has a size specified in
-its first member.
-
-```json
-["Header", 0, [
-  ["count", 0, "uint32"],
-  ["records", 4, "Array", {
-      "type": "Entry",
-      "count": "x=>x.count",
-  }]
-]],
-["Entry", "x=>x.Length", [
-  ["Length", 0, "uint32"],
-]],
-```
-
-{{% /notice %}}
+> [!TIP] Specifying the size of array members
+> Normally the size of a struct can be specified as 0, however when
+> using the struct in an Array, the size must be valid and non
+> zero. This is because Array uses the size of the target type to
+> determine how far apart each array member lies in the data.
+>
+> You can also use a lambda to specify the size of the item - this
+> allows you to use Array to specify non uniform arrays (where each
+> member has a different size).
+>
+> For example the following specifies a header containing a count of
+> entries stored back to back, while each entry has a size specified in
+> its first member.
+>
+> ```json
+> ["Header", 0, [
+>   ["count", 0, "uint32"],
+>   ["records", 4, "Array", {
+>       "type": "Entry",
+>       "count": "x=>x.count",
+>   }]
+> ]],
+> ["Entry", "x=>x.Length", [
+>   ["Length", 0, "uint32"],
+> ]],
+> ```
 
 ### String
 
@@ -404,26 +396,24 @@ configured using the following options.
 | max_length | Max length of the string to parse                                                                                                                                       |
 
 
-{{% notice tip "String as a way to search for patterns" %}}
-
-You can use the String field as a way to search for a pattern in
-binary data - simply specify the pattern as a termination sequence and
-use the length of the string as an offset.
-
-For example the below parses an `EntryStruct` at the location of the
-first pattern of 01020304 from the start of the Header struct:
-
-```json
-[
- ["Header", 0, [
-   ["__patternBlock", 0, "String", {
-     term_hex: "01020304",
-   }],
-   ["Entry", "x=>len(x.__patternBlock)", "EntryStruct"],
- ]],
-]
-```
-{{% /notice %}}
+> [!TIP] String as a way to search for patterns
+> You can use the String field as a way to search for a pattern in
+> binary data - simply specify the pattern as a termination sequence and
+> use the length of the string as an offset.
+>
+> For example the below parses an `EntryStruct` at the location of the
+> first pattern of 01020304 from the start of the Header struct:
+>
+> ```json
+> [
+>  ["Header", 0, [
+>    ["__patternBlock", 0, "String", {
+>      term_hex: "01020304",
+>    }],
+>    ["Entry", "x=>len(x.__patternBlock)", "EntryStruct"],
+>  ]],
+> ]
+> ```
 
 
 ### Value
@@ -439,18 +429,15 @@ type. This field type takes the following options:
 Note that the offset part of the field definition is meaningless for
 value fields so it is ignored.
 
-{{% notice tip "Using value as a debugging tool" %}}
-
-You can use Value fields for debugging - just use a `log()` or
-`format()` statement in the lambda to log other fields in the struct.
-
-```json
-['Debug', 0, 'Value', {
-   "value": "x=>format(format='Field %v SizeOf %v', args=[x.Field, x.SizeOf])",
-}],
-```
-
-{{% /notice %}}
+> [!TIP] Using value as a debugging tool
+> You can use Value fields for debugging - just use a `log()` or
+> `format()` statement in the lambda to log other fields in the struct.
+>
+> ```json
+> ['Debug', 0, 'Value', {
+>    "value": "x=>format(format='Field %v SizeOf %v', args=[x.Field, x.SizeOf])",
+> }],
+> ```
 
 ### Enumeration
 
@@ -539,23 +526,20 @@ string value, while Flag may set multiple values at the same time.
 }],
 ```
 
-{{% notice warning "Flags uses bit positions" %}}
-
-When looking at procedural parsers (or header files), quite often
-flags will be presented as a MASK. For example above you might see
-something like:
-
-```
-#define FLAG1_MASK 0x01
-#define FLAG2_MASK 0x02
-#define FLAG3_MASK 0x04
-#define FLAG4_MASK 0x08
-```
-
-Remember that the bitmap above uses bit number instead, so e.g. a mask
-of 0x08 represents bit 3.
-
-{{% /notice %}}
+> [!WARNING] Flags uses bit positions
+> When looking at procedural parsers (or header files), quite often
+> flags will be presented as a MASK. For example above you might see
+> something like:
+>
+> ```
+> #define FLAG1_MASK 0x01
+> #define FLAG2_MASK 0x02
+> #define FLAG3_MASK 0x04
+> #define FLAG4_MASK 0x08
+> ```
+>
+> Remember that the bitmap above uses bit number instead, so e.g. a mask
+> of 0x08 represents bit 3.
 
 
 ### WinFileTime, FatTimestamp and Timestamp

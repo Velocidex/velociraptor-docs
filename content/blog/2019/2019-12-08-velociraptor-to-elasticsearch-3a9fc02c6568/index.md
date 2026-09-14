@@ -54,9 +54,8 @@ Expanding the view for a single document you should see something like this:
 
 And that’s how easy it is to get your data into Elastic!
 
-{{% notice note %}}
-If you have an Elasticsearch cluster that uses authentication, non-standard ports or other customizations, you can create a custom artifact by copying the **Elastic.Flows.Upload** artifact and adding [additional parameters](https://github.com/Velocidex/velociraptor/blob/4d19d37191500b5f01f064586f8940a4b1a5dccf/vql/server/elastic.go#L56) to it in order to make it suit your non-standard environment.
- {{% /notice %}}
+> [!NOTE]
+> If you have an Elasticsearch cluster that uses authentication, non-standard ports or other customizations, you can create a custom artifact by copying the **Elastic.Flows.Upload** artifact and adding [additional parameters](https://github.com/Velocidex/velociraptor/blob/4d19d37191500b5f01f064586f8940a4b1a5dccf/vql/server/elastic.go#L56) to it in order to make it suit your non-standard environment.
 
 ## Sending Client Events to Elastic
 

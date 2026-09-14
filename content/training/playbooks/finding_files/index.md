@@ -70,23 +70,20 @@ available. Velociraptor will automatically deduplicate VSS so only a
 single file match will be reported, even if the same file exists in
 multiple VSS snapshots - unless the file is changed between them.
 
-{{% notice tip "Searching the registry" %}}
-
-Although the artifact is named `File Finder`, the artifact can also be
-used to search for registry keys and values. This is because
-Velociraptor accesses files by way of an `accessor`. The accessor
-abstracts access for files and file-like objects.
-
-In Velociraptor the `registry` accessor makes the registry appear as a
-filesystem: Registry keys appear as directories and Registry Values
-appear as Files (with binary content).
-
-This allows the File Finder to search the registry as well - simply
-change the `Accessor` option from `auto` to `registry` to search the
-registry. Remember, top level directory is the registry hive, for
-example `HKLM`, or `HKEY_LOCAL_MACHINE`
-
-{{% /notice %}}
+> [!TIP] Searching the registry
+> Although the artifact is named `File Finder`, the artifact can also be
+> used to search for registry keys and values. This is because
+> Velociraptor accesses files by way of an `accessor`. The accessor
+> abstracts access for files and file-like objects.
+>
+> In Velociraptor the `registry` accessor makes the registry appear as a
+> filesystem: Registry keys appear as directories and Registry Values
+> appear as Files (with binary content).
+>
+> This allows the File Finder to search the registry as well - simply
+> change the `Accessor` option from `auto` to `registry` to search the
+> registry. Remember, top level directory is the registry hive, for
+> example `HKLM`, or `HKEY_LOCAL_MACHINE`
 
 
 ###### Example: Detect persistence
@@ -131,13 +128,10 @@ Alternate Data Streams (ADS).
 3. Enable uploading to get the data.
 4. You can preview the data within the GUI in the `Uploaded Files` tab.
 
-{{% notice tip "Using dedicated artifacts" %}}
-
-You can also use `Windows.NTFS.ADSHunter` or
-`Exchange.Windows.Detection.ZoneIdentifier` to further parse the
-contents of the `Zone.Identifier` stream.
-
-{{% /notice %}}
+> [!TIP] Using dedicated artifacts
+> You can also use `Windows.NTFS.ADSHunter` or
+> `Exchange.Windows.Detection.ZoneIdentifier` to further parse the
+> contents of the `Zone.Identifier` stream.
 
 ## Performance
 

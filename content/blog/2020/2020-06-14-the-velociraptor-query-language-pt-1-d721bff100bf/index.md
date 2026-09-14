@@ -13,9 +13,8 @@ keywords: []
 
 Velociraptor’s query language is central to the operation of Velociraptor. We find it being used in querying endpoints, collecting forensic artifacts and endpoint state and even in post processing data on the server.
 
-{{% notice note %}}
-Velociraptor is ultimately just a VQL query evaluation engine!
-{{% /notice %}}
+> [!NOTE]
+> Velociraptor is ultimately just a VQL query evaluation engine!
 
 Why should you know more about VQL? Users do not actually need to know VQL to simply collect DFIR artifacts from endpoints, hunt for malware or remediate an infection. The Velociraptor GUI is powerful and provides expert DFIR knowledge at the tip of your fingerprints through built in and community contributed artifact definitions.
 
@@ -144,5 +143,4 @@ We can now encode this VQL query in an artifact, and launch it as a hunt on our 
 ## Conclusion
 
 VQL is a very powerful way of searching for specific indicators on the end point. A good working knowledge of VQL pays dividends to the DFIR hunter. This first part in our series of articles about VQL internals hopes to provide you with the tools and confidence to forge your own VQL queries. In the next article we explore VQL’s control structures such as **if()**, **foreach()** and **switch()**.
-
 

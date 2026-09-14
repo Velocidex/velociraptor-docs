@@ -28,16 +28,13 @@ Each _called_ artifact returns it's results to the _calling_ artifact's source.
 Ultimately each source in the _calling_ artifact returns all the consolidated
 results as a single table.
 
-{{% notice info "Results may have mixed columns" %}}
-
-The consolidated result sets from called artifacts could possibly have columns
-which differ per row, due to different queries being run in each of their
-sources. In that case the GUI will likely have trouble detecting and displaying
-all columns, so specifying
-[column_types](/docs/artifacts/advanced_fields/#-column_types-)
-on the top-level artifact is highly recommended in this situation.
-
-{{% /notice %}}
+> [!NOTE] Results may have mixed columns
+> The consolidated result sets from called artifacts could possibly have columns
+> which differ per row, due to different queries being run in each of their
+> sources. In that case the GUI will likely have trouble detecting and displaying
+> all columns, so specifying
+> [column_types](/docs/artifacts/advanced_fields/#-column_types-)
+> on the top-level artifact is highly recommended in this situation.
 
 By creating an artifact that calls one or more other artifacts, you are
 essentially creating a
@@ -184,7 +181,6 @@ Evaluating preconditions is useful when customizing a default artifact like
 the correct VQL runs based on the target platform. Alternatively, conditional
 behavior can be implemented within the VQL by using `switch()` or `if()`
 functions.
-
 
 
 

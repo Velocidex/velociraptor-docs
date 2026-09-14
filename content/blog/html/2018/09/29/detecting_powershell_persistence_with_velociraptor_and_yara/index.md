@@ -9,12 +9,9 @@ title: Detecting powershell persistence with Velociraptor and Yara
 categories: ["Blog"]
 ---
 
-{{% notice warning %}}
-
-This page is written about a very old version of Velociraptor and is
-retained for historical purposes.
-
-{{% /notice %}}
+> [!WARNING]
+> This page is written about a very old version of Velociraptor and is
+> retained for historical purposes.
 
 I was watching the SANS DFIR Summit 2018 videos on YouTube and came
 across Mari DeGrazia\'s talk titled [\"Finding and Decoding Malicious

@@ -21,37 +21,34 @@ one of the best advantages of performing live response is the ability
 to access the live system's state and uncover volatile indicators that
 only exist briefly and might change in future.
 
-{{% notice note "Memory analysis and Velociraptor" %}}
-
-Traditionally volatile evidence was acquired using a full memory dump
-of the running system, and then using a number of memory analysis
-frameworks to extract some of the types of forensic artifacts we
-discuss in this page.
-
-While memory analysis is a sometimes useful technique, it is
-notoriously unreliable due to issues such as smear, stability and
-analysis shortfalls due to changing OS and application code.
-
-An important principle of volatile system analysis is to disturb the
-system as little as possible, to avoid increasing the rate at which
-the volatile evidence might change. A full memory acquisition defeats
-this requirement by causing a very large amount of data to be written
-and potentially transferred over the network. Some server class
-machines (or even high end workstations) currently contain so much
-memory that full acquisition is actually not practical (e.g. upwards
-of 64Gb of RAM is not uncommon), and produces significant amounts of
-smear.
-
-Velociraptor's approach is to use the relevant APIs to acquire
-volatile artifacts as much as possible, so the acquisition can be made
-quickly, accurately and with minimal endpoint impact. Velociraptor
-tries to maintain the same names for the common plugins used by
-popular memory analysis tools like Volatility, but gets the same
-information using APIs (e.g. Velociraptor's plugins are named
-`pslist`, `vad`, `mutants` etc and parallel Volatility's plugins of
-the same name).
-
-{{% /notice %}}
+> [!NOTE] Memory analysis and Velociraptor
+> Traditionally volatile evidence was acquired using a full memory dump
+> of the running system, and then using a number of memory analysis
+> frameworks to extract some of the types of forensic artifacts we
+> discuss in this page.
+>
+> While memory analysis is a sometimes useful technique, it is
+> notoriously unreliable due to issues such as smear, stability and
+> analysis shortfalls due to changing OS and application code.
+>
+> An important principle of volatile system analysis is to disturb the
+> system as little as possible, to avoid increasing the rate at which
+> the volatile evidence might change. A full memory acquisition defeats
+> this requirement by causing a very large amount of data to be written
+> and potentially transferred over the network. Some server class
+> machines (or even high end workstations) currently contain so much
+> memory that full acquisition is actually not practical (e.g. upwards
+> of 64Gb of RAM is not uncommon), and produces significant amounts of
+> smear.
+>
+> Velociraptor's approach is to use the relevant APIs to acquire
+> volatile artifacts as much as possible, so the acquisition can be made
+> quickly, accurately and with minimal endpoint impact. Velociraptor
+> tries to maintain the same names for the common plugins used by
+> popular memory analysis tools like Volatility, but gets the same
+> information using APIs (e.g. Velociraptor's plugins are named
+> `pslist`, `vad`, `mutants` etc and parallel Volatility's plugins of
+> the same name).
 
 ## Windows Management Instrumentation (WMI)
 
@@ -164,20 +161,17 @@ try to visualize the order of process execution.
 ![Identifying process call chains](image40.png)
 
 
-{{% notice warning "Shortfalls of process call chain tracing" %}}
-
-Currently the process chain reassembly is susceptible to some
-shortfalls:
-
-1. Since the chain uses `pslist()` to populate its tree, processes who
-   are exited will break the chain (because there will be no parent
-   shown for one process in the chain).
-
-2. Windows parent/child relationship can be easily [spoofed by
-   malware](https://attack.mitre.org/techniques/T1134/004/) and can be
-   mis-reported by the pslist() plugin.
-
-{{% /notice %}}
+> [!WARNING] Shortfalls of process call chain tracing
+> Currently the process chain reassembly is susceptible to some
+> shortfalls:
+>
+> 1. Since the chain uses `pslist()` to populate its tree, processes who
+>    are exited will break the chain (because there will be no parent
+>    shown for one process in the chain).
+>
+> 2. Windows parent/child relationship can be easily [spoofed by
+>    malware](https://attack.mitre.org/techniques/T1134/004/) and can be
+>    mis-reported by the pslist() plugin.
 
 ###### Example: Find elevated command shell
 

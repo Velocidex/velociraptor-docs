@@ -81,15 +81,12 @@ There are many other debug pages including `ETW` tracking,
 collections, `Client Monitoring Manager` reports status of client
 monitoring queries and many more.
 
-{{% notice tip "The debug server is still available with the --debug flag" %}}
-
-While in this release the debug server is always present in the GUI,
-the debug server is still available in other contexts as well. You can
-still start the debug server on a client with the `--debug` flag and
-similarly in the offline collector by starting it with
-`VelociraptorCollector.exe -- --debug`
-
-{{% /notice %}}
+> [!TIP] The debug server is still available with the --debug flag
+> While in this release the debug server is always present in the GUI,
+> the debug server is still available in other contexts as well. You can
+> still start the debug server on a client with the `--debug` flag and
+> similarly in the offline collector by starting it with
+> `VelociraptorCollector.exe -- --debug`
 
 ## Real time detection and monitoring
 

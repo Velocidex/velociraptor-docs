@@ -39,24 +39,21 @@ they belong in.
 Let's go through a quick example of how to create a new organization
 and use them in practice.
 
-{{% notice note "Preparing for new organizations" %}}
-
-Multi-Tenancy is simply a layer of abstraction in the GUI separating
-Velociraptor objects (such as clients, hunts, notebooks etc) into
-different organizational units.
-
-You **do not** need to do anything specific to prepare for a
-multi-tenant deployment. Every Velociraptor deployment can create a
-new organization at any time without affecting the current install
-base at all.
-
-By default all Velociraptor installs (including upgraded ones) have a
-**root** organization which contains their current clients, hunts,
-notebooks etc (You can see this in the screenshot above). If you
-choose to not use the multi-tenant feature, your Velociraptor install
-will continue working with the root organization without change.
-
-{{% /notice %}}
+> [!NOTE] Preparing for new organizations
+> Multi-Tenancy is simply a layer of abstraction in the GUI separating
+> Velociraptor objects (such as clients, hunts, notebooks etc) into
+> different organizational units.
+>
+> You **do not** need to do anything specific to prepare for a
+> multi-tenant deployment. Every Velociraptor deployment can create a
+> new organization at any time without affecting the current install
+> base at all.
+>
+> By default all Velociraptor installs (including upgraded ones) have a
+> **root** organization which contains their current clients, hunts,
+> notebooks etc (You can see this in the screenshot above). If you
+> choose to not use the multi-tenant feature, your Velociraptor install
+> will continue working with the root organization without change.
 
 Suppose a new customer is on-boarded but they do not have a large
 enough install base to warrant a new cloud deployment (with the
@@ -148,27 +145,24 @@ You can view all users in all orgs by collecting the
 
 ![Viewing all the users on the system](list_users.png)
 
-{{% notice warning "User permissions and organizations" %}}
-
-Although Velociraptor respects the assigned roles of users within an
-organizations, at this stage this should not be considered as an
-adequate security control. This is because there are obvious
-escalation paths between roles on the same server. For example,
-currently an `administrator` role by design has the ability to write
-arbitrary files on the server and run arbitrary commands (primarily
-this functionality allows for post processing flows with external
-tools).
-
-This is currently also the case in different organizations, so an
-organization administrator can easily add themselves to another
-organization or indeed to the root organization, change their own
-roles etc.
-
-Velociraptor is not designed to contain untrusted users to their own
-organization unit at this stage, instead allowing administrators
-flexibility and power.
-
-{{% /notice %}}
+> [!WARNING] User permissions and organizations
+> Although Velociraptor respects the assigned roles of users within an
+> organizations, at this stage this should not be considered as an
+> adequate security control. This is because there are obvious
+> escalation paths between roles on the same server. For example,
+> currently an `administrator` role by design has the ability to write
+> arbitrary files on the server and run arbitrary commands (primarily
+> this functionality allows for post processing flows with external
+> tools).
+>
+> This is currently also the case in different organizations, so an
+> organization administrator can easily add themselves to another
+> organization or indeed to the root organization, change their own
+> roles etc.
+>
+> Velociraptor is not designed to contain untrusted users to their own
+> organization unit at this stage, instead allowing administrators
+> flexibility and power.
 
 ## GUI Improvements
 

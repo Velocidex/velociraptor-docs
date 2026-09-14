@@ -91,12 +91,10 @@ Since release 0.4.6, Velociraptor has built in support for external tools. This 
 
 When building an Offline collector, Velociraptor will also embed the external tools directly into the binary without needing to do anything different with the artifact. Note that the offline collector **does not download** the tool from an external URL — the tool is already packaged in the collector binary itself.
 
-{{% notice tip %}}
-
-The artifact will run the same way when used in client/server mode or
-in offline collector mode. This makes it easier to use the same
-reusable VQL in different contexts.
-{{% /notice %}}
+> [!TIP]
+> The artifact will run the same way when used in client/server mode or
+> in offline collector mode. This makes it easier to use the same
+> reusable VQL in different contexts.
 
 Let’s try to collect the same artifact we did previously — the **hollows hunter** artifact. Just to recap the artifact is shown below
 

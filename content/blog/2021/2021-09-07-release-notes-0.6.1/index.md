@@ -35,14 +35,11 @@ simply search for them normally and select the client to interact
 with. The MRU list is sorted in most recent order so it should always
 contain relevant hosts.
 
-{{% notice note %}}
-
-Although it might appear by the search term, that you can view other
-user's most recently used list this is not the case - each user has
-their own list of hosts. The username after the `recent:` is currently
-ignored.
-
-{{% /notice %}}
+> [!NOTE]
+> Although it might appear by the search term, that you can view other
+> user's most recently used list this is not the case - each user has
+> their own list of hosts. The username after the `recent:` is currently
+> ignored.
 
 
 ### Free disk space
@@ -81,22 +78,19 @@ quarantined.
 
 ![A host is quarantined](quarantine-2.png)
 
-{{% notice note "How is quarantine status managed?" %}}
-
-Velociraptor uses labels to place host into `Label Groups`. This is
-used to control the types of monitoring artifacts that are running on
-the client. It is actually the `Quarantine` label that makes the host
-quarantine itself because the `Windows.Remediation.QuarantineMonitor`
-artifact is assigned to the Quarantine label group.
-
-The host will continuously check that it is quarantined as long as the
-label is set. This means the quarantine status also survives a reboot!
-
-To remove the host from the Quarantine group, simply remove the label
-or click the "Unquarantine Host" button. This will immediately release
-the host from the quarantine.
-
-{{% /notice %}}
+> [!NOTE] How is quarantine status managed?
+> Velociraptor uses labels to place host into `Label Groups`. This is
+> used to control the types of monitoring artifacts that are running on
+> the client. It is actually the `Quarantine` label that makes the host
+> quarantine itself because the `Windows.Remediation.QuarantineMonitor`
+> artifact is assigned to the Quarantine label group.
+>
+> The host will continuously check that it is quarantined as long as the
+> label is set. This means the quarantine status also survives a reboot!
+>
+> To remove the host from the Quarantine group, simply remove the label
+> or click the "Unquarantine Host" button. This will immediately release
+> the host from the quarantine.
 
 ### Notebook full screen
 
@@ -138,16 +132,13 @@ collection by name
 
 ![Retrieving a favorite collection](favorite-3.png)
 
-{{% notice note "How are favorites managed?" %}}
-
-Favorites are currently stored in the GUI user's profiles so each user
-can maintain their own list of favorites. However you can save a
-favorite into your own profile using the
-[favorite_save](/vql_reference/server/favorites_save/) VQL function,
-so a team may create a set of common favorites using a SERVER VQL
-artifact.
-
-{{% /notice %}}
+> [!NOTE] How are favorites managed?
+> Favorites are currently stored in the GUI user's profiles so each user
+> can maintain their own list of favorites. However you can save a
+> favorite into your own profile using the
+> [favorite_save](/vql_reference/server/favorites_save/) VQL function,
+> so a team may create a set of common favorites using a SERVER VQL
+> artifact.
 
 ### Event Monitoring tables
 

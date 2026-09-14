@@ -17,16 +17,13 @@ author: "Mike Cohen"
 date: 2021-11-09
 ---
 
-{{% notice warning "Outdated content" %}}
-
-This article describes a threat detection approach that has since been
-superseded by Velociraptor's
-[built-in Sigma functionality](/blog/2023/2023-11-15-sigma_in_velociraptor/),
-however it is retained here for historical and instructive purposes
-since it also demonstrates how the flexibility of VQL makes novel
-solutions possible.
-
-{{% /notice %}}
+> [!WARNING] Outdated content
+> This article describes a threat detection approach that has since been
+> superseded by Velociraptor's
+> [built-in Sigma functionality](/blog/2023/2023-11-15-sigma_in_velociraptor/),
+> however it is retained here for historical and instructive purposes
+> since it also demonstrates how the flexibility of VQL makes novel
+> solutions possible.
 
 If you have been following the development of Velociraptor for a while
 you are probably more than familiar with Velociraptor's flexible query
@@ -297,15 +294,12 @@ $ python3 parser/eql2vql.py -p SysmonETWProvider ~/projects/detection-rules/rule
 Created artifact 'Windows.Sysmon.EventDetection' with 1 detections
 ```
 
-{{% notice tip "Advantage of ETW" %}}
-
-We have previously discussed how event logs can be [turned off or
-disabled](/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/)
-which would interfere with tools that rely on event logs
-directly. However, ETW sources still work, even if the event log itself
-is disabled.
-
-{{% /notice %}}
+> [!TIP] Advantage of ETW
+> We have previously discussed how event logs can be [turned off or
+> disabled](/blog/2021/2021-01-29-disabled-event-log-files-a3529a08adbe/)
+> which would interfere with tools that rely on event logs
+> directly. However, ETW sources still work, even if the event log itself
+> is disabled.
 
 This time we have used the `SysmonETWProvider` to source the Sysmon
 events directly from Sysmon's ETW subsystem:

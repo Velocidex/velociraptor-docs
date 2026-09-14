@@ -9,17 +9,14 @@ to stand up storage services on the local network.
 This is made possible by the
 [upload_s3](/vql_reference/other/upload_s3/) VQL function.
 
-{{% notice "note" "Deprecation of the upload_gcs() plugin" %}}
-
-Prior to release 0.76, Velociraptor had a dedicated
-[upload_gcs](/vql_reference/other/upload_gcs/) plugin,
-however after this release that plugin was removed since it increased
-the binary size significantly. Google provides an AWS compatibility
-mode which allows us to use the
-[upload_s3](/vql_reference/other/upload_s3/)
-function instead.
-
-{{% /notice %}}
+> [!NOTE] Deprecation of the upload_gcs() plugin
+> Prior to release 0.76, Velociraptor had a dedicated
+> [upload_gcs](/vql_reference/other/upload_gcs/) plugin,
+> however after this release that plugin was removed since it increased
+> the binary size significantly. Google provides an AWS compatibility
+> mode which allows us to use the
+> [upload_s3](/vql_reference/other/upload_s3/)
+> function instead.
 
 This article explains how to set up a GCS bucket with appropriate security for
 file uploads.

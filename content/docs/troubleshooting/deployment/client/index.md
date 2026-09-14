@@ -8,19 +8,16 @@ weight: 20
 summary: |
   * Troubleshooting problems with getting clients running.
 description: |
-  {{% notice note %}}
+  Troubleshooting problems with getting clients running.
 ---
 
-{{% notice note %}}
-
-The steps in this section assume you are troubleshooting a client that
-_is not already enrolled and actively communicating with the server_.
-
-If you need to troubleshoot issues with a client that is communicating with the
-server - that is an online client - then please see the section
-[Troubleshooting Remote Client Issues](/docs/troubleshooting/operations/remote_clients/).
-
-{{% /notice %}}
+> [!NOTE]
+> The steps in this section assume you are troubleshooting a client that
+> _is not already enrolled and actively communicating with the server_.
+>
+> If you need to troubleshoot issues with a client that is communicating with the
+> server - that is an online client - then please see the section
+> [Troubleshooting Remote Client Issues](/docs/troubleshooting/operations/remote_clients/).
 
 
 ### Client fails to connect to or stops communicating with server
@@ -140,18 +137,15 @@ chown velociraptor:velociraptor new_server.config.yaml
 From here, you will need to move the updated server configuration into
 the appropriate location.
 
-{{% notice warning "CA certificate expiry" %}}
-
-The above step was able to use the internal Velociraptor CA to reissue
-the server certificate (which is normally issued for 1 year), allowing
-us to rotate the certificate.
-
-Currently there is no way to update the CA certificate without
-redeploying new clients (the CA certificate is embedded in the client
-config file). When generating the config file initially, the CA
-certificate is created with a 10 year validity.
-
-{{% /notice %}}
+> [!WARNING] CA certificate expiry
+> The above step was able to use the internal Velociraptor CA to reissue
+> the server certificate (which is normally issued for 1 year), allowing
+> us to rotate the certificate.
+>
+> Currently there is no way to update the CA certificate without
+> redeploying new clients (the CA certificate is embedded in the client
+> config file). When generating the config file initially, the CA
+> certificate is created with a 10 year validity.
 
 ### Debugging
 

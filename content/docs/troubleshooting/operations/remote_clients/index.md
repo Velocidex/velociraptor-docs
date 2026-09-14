@@ -10,24 +10,21 @@ summary: |
 aliases:
   - "/docs/troubleshooting/clients/"
 description: |
-  {{% notice note %}}
+  How to troubleshoot client issues when you don't have local access to the client.
 ---
 
-{{% notice note %}}
-
-The steps in this section assume you are troubleshooting a client that has
-already enrolled and is actively communicating with the server.
-
-If you are having problems with a client that is:
-- not communicating with the server, or
-- that has never connected to the server, or
-- is failing to start
-
-then please see the section
-[Client communications issues](/docs/troubleshooting/deployment/client/)
-within the Deployment Troubleshooting section.
-
-{{% /notice %}}
+> [!NOTE]
+> The steps in this section assume you are troubleshooting a client that has
+> already enrolled and is actively communicating with the server.
+>
+> If you are having problems with a client that is:
+> - not communicating with the server, or
+> - that has never connected to the server, or
+> - is failing to start
+>
+> then please see the section
+> [Client communications issues](/docs/troubleshooting/deployment/client/)
+> within the Deployment Troubleshooting section.
 
 ### Debugging a remote client
 

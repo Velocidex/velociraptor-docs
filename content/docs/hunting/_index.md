@@ -48,20 +48,17 @@ label.
 
 ![New Hunt](hunt_configure.svg)
 
-{{% notice note "Hunts do not complete - they expire!" %}}
-
-The total number of clients in any real network is not known in advance because
-new clients can appear at any time as new hosts get provisioned, or old hosts
-return after being powered off for some time (for example overnight).
-
-Therefore it does not make sense to think of a hunt as ever being "complete" or
-"done". As new clients are discovered, as long as they meet the hunt criteria,
-and as long as the hunt is still active, the hunt is applied to them.
-
-It is only when the hunt expires that new clients are no longer assigned to the
-hunt. Note that each client can only receive the hunt once.
-
-{{% /notice %}}
+> [!NOTE] Hunts do not complete - they expire!
+> The total number of clients in any real network is not known in advance because
+> new clients can appear at any time as new hosts get provisioned, or old hosts
+> return after being powered off for some time (for example overnight).
+>
+> Therefore it does not make sense to think of a hunt as ever being "complete" or
+> "done". As new clients are discovered, as long as they meet the hunt criteria,
+> and as long as the hunt is still active, the hunt is applied to them.
+>
+> It is only when the hunt expires that new clients are no longer assigned to the
+> hunt. Note that each client can only receive the hunt once.
 
 
 Next you need to select and configure the artifacts as before. Once
@@ -100,18 +97,15 @@ to post-process the results.
 ![Post-processing hunt results](hunt_notebook.png)
 
 
-{{% notice warning "Managing hunt data volumes" %}}
-
-When hunting large numbers of endpoints, the collected data can grow quickly.
-Even uploading a moderately sized file from many endpoints can add up very
-quickly. For example, collecting a 100Mb file from 10,000 machines results in
-over 1Tb of required storage!
-
-Be mindful of how much data you will be uploading in total. It is
-always best to use more targeted artifacts that return a few rows per
-endpoint rather than fetch raw files that need to be parsed offline.
-
-{{% /notice %}}
+> [!WARNING] Managing hunt data volumes
+> When hunting large numbers of endpoints, the collected data can grow quickly.
+> Even uploading a moderately sized file from many endpoints can add up very
+> quickly. For example, collecting a 100Mb file from 10,000 machines results in
+> over 1Tb of required storage!
+>
+> Be mindful of how much data you will be uploading in total. It is
+> always best to use more targeted artifacts that return a few rows per
+> endpoint rather than fetch raw files that need to be parsed offline.
 
 ## Hunts and labels
 

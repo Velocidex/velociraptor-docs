@@ -184,14 +184,11 @@ finally Velociraptor will store the ZIP file containing all the
 data. Adding the `--format csv` flag will also include the structured
 data in CSV format (so it can be analyzed with `Excel`).
 
-{{% notice "tip" "Encrypting the collection" %}}
-
-You can specify a collection password with the `--password` flag to
-ensure the output zip is encrypted. This is useful in cases you need
-to protect the sensitive data collected while transferring the ZIP
-file off the system.
-
-{{% /notice %}}
+> [!TIP] Encrypting the collection
+> You can specify a collection password with the `--password` flag to
+> ensure the output zip is encrypted. This is useful in cases you need
+> to protect the sensitive data collected while transferring the ZIP
+> file off the system.
 
 ## Examining the collection
 
@@ -233,21 +230,18 @@ We can see that the ZIP file contains the raw `srudb.dat` file
 (uploaded under the upload directory) as well as results collected
 under the `results` directory.
 
-{{% notice "tip" "Extracting the collection" %}}
-
-To just extract all the files from the zip file you can use the `unzip` command:
-
-```
-velociraptor  unzip c:\output\test.zip --dump_dir c:\out_dir\
-```
-
-To only extract some of the data you can use a glob expression to specify a subset of files
-
-```
-velociraptor unzip c:\output\test.zip --dump_dir c:\out_dir\ "/results/*.json"
-```
-
-{{% /notice %}}
+> [!TIP] Extracting the collection
+> To just extract all the files from the zip file you can use the `unzip` command:
+>
+> ```
+> velociraptor  unzip c:\output\test.zip --dump_dir c:\out_dir\
+> ```
+>
+> To only extract some of the data you can use a glob expression to specify a subset of files
+>
+> ```
+> velociraptor unzip c:\output\test.zip --dump_dir c:\out_dir\ "/results/*.json"
+> ```
 
 ## Extending Velociraptor with custom artifacts
 
@@ -268,17 +262,14 @@ line. For example, suppose I wanted to use the
 [Windows.Triage.Targets](https://triage.velocidex.com/docs/windows.triage.targets/)
 artifact to perform a triage acquisition.
 
-{{% notice "tip" "The Velociraptor Triage Artifacts" %}}
-
-[The Velociraptor Triage Project](https://triage.velocidex.com/) is a
-related project to develop an effective triage acquisition and
-preservation solution using VQL.
-
-Files are collected based on `Targets` which are hierarchical. Some
-high level targets include `_KapeTriage` or `_Live` which collect a
-large number of files for preservation purposes.
-
-{{% /notice %}}
+> [!TIP] The Velociraptor Triage Artifacts
+> [The Velociraptor Triage Project](https://triage.velocidex.com/) is a
+> related project to develop an effective triage acquisition and
+> preservation solution using VQL.
+>
+> Files are collected based on `Targets` which are hierarchical. Some
+> high level targets include `_KapeTriage` or `_Live` which collect a
+> large number of files for preservation purposes.
 
 Since this artifact is not built in, I will need to download the
 [Artifact Pack](https://triage.velocidex.com/docs/windows.triage.targets/Windows.Triage.Targets.zip)
@@ -392,27 +383,24 @@ The above output shows the steps that Velociraptor goes through:
 5. Collect the output CSV file
 6. Clean up various temp directories
 
-{{% notice "warning" "Running external binaries" %}}
-
-Although it is convenient to collect artifacts with external binaries,
-this can be a problem in practice.
-
-Introducing binaries to an end point may trigger security software
-alert and can present risks to stability and security, especially if
-the binary is not very trusted.
-
-Additionally running third party tools can interfere with the forensic
-evidence we usually collect. For example executables can create
-additional prefetch entries, powershell may introduce script block
-logs and USN journals may be rotated.
-
-Many external tools actually have equivalent native VQL parsers - for
-example the
-[Windows.Hayabusa.Rules](https://sigma.velocidex.com/docs/artifacts/windows.hayabusa.rules/)
-artifact uses the same rules in Hayabusa but using Velociraptor's
-built in Sigma engine.
-
-{{% /notice %}}
+> [!WARNING] Running external binaries
+> Although it is convenient to collect artifacts with external binaries,
+> this can be a problem in practice.
+>
+> Introducing binaries to an end point may trigger security software
+> alert and can present risks to stability and security, especially if
+> the binary is not very trusted.
+>
+> Additionally running third party tools can interfere with the forensic
+> evidence we usually collect. For example executables can create
+> additional prefetch entries, powershell may introduce script block
+> logs and USN journals may be rotated.
+>
+> Many external tools actually have equivalent native VQL parsers - for
+> example the
+> [Windows.Hayabusa.Rules](https://sigma.velocidex.com/docs/artifacts/windows.hayabusa.rules/)
+> artifact uses the same rules in Hayabusa but using Velociraptor's
+> built in Sigma engine.
 
 ## Using the CLI to collect artifacts remotely
 
@@ -521,36 +509,33 @@ the raw API to replicate a similar function in your own scripts, you
 can look at the source code for this command to inspect the raw API
 calls used.
 
-{{% notice "warning" "Offline clients" %}}
-
-When schedule a collection as above, the CLI waits for the collection
-to end before downloading the results. This may take a long time if
-the client is not currently online. In this case the CLI will timeout
-and exit.
-
-You can retrieve the results at a later time by knowing the flow id
-that was scheduled. Use the `artifacts fetch` command to fetch a
-collected artifact from the server.
-
-```shell
-velociraptor.exe -v  --api_config api.config.yaml  artifacts fetch --client_id C.d7f8859f5e0e01f7 --flow_id F.D744IO927Q3HM --output c:\output\test.zip
-
-[INFO] 2026-03-28T14:47:14-07:00  _    __     __           _                  __
-[INFO] 2026-03-28T14:47:14-07:00 | |  / /__  / /___  _____(_)________ _____  / /_____  _____
-[INFO] 2026-03-28T14:47:14-07:00 | | / / _ \/ / __ \/ ___/ / ___/ __ `/ __ \/ __/ __ \/ ___/
-[INFO] 2026-03-28T14:47:14-07:00 | |/ /  __/ / /_/ / /__/ / /  / /_/ / /_/ / /_/ /_/ / /
-[INFO] 2026-03-28T14:47:14-07:00 |___/\___/_/\____/\___/_/_/   \__,_/ .___/\__/\____/_/
-[INFO] 2026-03-28T14:47:14-07:00                                   /_/
-[INFO] 2026-03-28T14:47:14-07:00 Digging deeper!                  https://www.velocidex.com
-[INFO] 2026-03-28T14:47:14-07:00 This is Velociraptor 0.76.1 built on 2026-03-24T11:08:49+10:00 (90f260124)
-[INFO] 2026-03-28T14:47:14-07:00 Loaded api config from api.config.yaml
-[INFO] 2026-03-28T14:47:14-07:00 Starting query execution.
-[INFO] 2026-03-28T14:47:14-07:00 Time 0: : Sending response part 0 124 B (1 rows).
-{"Download":["downloads","C.d7f8859f5e0e01f7","F.D744IO927Q3HM","WIN-SJE0CKQO83P-C.d7f8859f5e0e01f7-F.D744IO927Q3HM.zip"]}
-[INFO] 2026-03-28T14:47:14-07:00 Storing collection in c:\output\test.zip with SHA256 hash f874e1cce6349d28ea49ce0fb00df845a5f0f6917550ee2cc867f679268f6a3c
-```
-
-{{% /notice %}}
+> [!WARNING] Offline clients
+> When schedule a collection as above, the CLI waits for the collection
+> to end before downloading the results. This may take a long time if
+> the client is not currently online. In this case the CLI will timeout
+> and exit.
+>
+> You can retrieve the results at a later time by knowing the flow id
+> that was scheduled. Use the `artifacts fetch` command to fetch a
+> collected artifact from the server.
+>
+> ```shell
+> velociraptor.exe -v  --api_config api.config.yaml  artifacts fetch --client_id C.d7f8859f5e0e01f7 --flow_id F.D744IO927Q3HM --output c:\output\test.zip
+>
+> [INFO] 2026-03-28T14:47:14-07:00  _    __     __           _                  __
+> [INFO] 2026-03-28T14:47:14-07:00 | |  / /__  / /___  _____(_)________ _____  / /_____  _____
+> [INFO] 2026-03-28T14:47:14-07:00 | | / / _ \/ / __ \/ ___/ / ___/ __ `/ __ \/ __/ __ \/ ___/
+> [INFO] 2026-03-28T14:47:14-07:00 | |/ /  __/ / /_/ / /__/ / /  / /_/ / /_/ / /_/ /_/ / /
+> [INFO] 2026-03-28T14:47:14-07:00 |___/\___/_/\____/\___/_/_/   \__,_/ .___/\__/\____/_/
+> [INFO] 2026-03-28T14:47:14-07:00                                   /_/
+> [INFO] 2026-03-28T14:47:14-07:00 Digging deeper!                  https://www.velocidex.com
+> [INFO] 2026-03-28T14:47:14-07:00 This is Velociraptor 0.76.1 built on 2026-03-24T11:08:49+10:00 (90f260124)
+> [INFO] 2026-03-28T14:47:14-07:00 Loaded api config from api.config.yaml
+> [INFO] 2026-03-28T14:47:14-07:00 Starting query execution.
+> [INFO] 2026-03-28T14:47:14-07:00 Time 0: : Sending response part 0 124 B (1 rows).
+> {"Download":["downloads","C.d7f8859f5e0e01f7","F.D744IO927Q3HM","WIN-SJE0CKQO83P-C.d7f8859f5e0e01f7-F.D744IO927Q3HM.zip"]}
+> [INFO] 2026-03-28T14:47:14-07:00 Storing collection in c:\output\test.zip with SHA256 hash f874e1cce6349d28ea49ce0fb00df845a5f0f6917550ee2cc867f679268f6a3c
+> ```
 
 ## Using the CLI to manage the server
 

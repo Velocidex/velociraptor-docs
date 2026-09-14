@@ -87,36 +87,33 @@ To unset the password protection behavior, clear the download password in your
 user preferences. However, for a particular download you can toggle the "lock"
 icon button to not apply password protection.
 
-{{% notice note "Default export timeout" %}}
-
-It takes time for the server to zip the results, and optionally pad out sparse
-files. If you are preparing exports for collections or hunts that are
-unusually large, then the default timeout (10 minutes) for this process may be
-insufficient.
-
-In that case, you may need to set a greater timeout value, which you
-can do by preparing the export via a server artifact, with an extended
-timeout value. This approach is demonstrated by the
-`Server.Utils.ExportHunt` artifact.
-
-Alternatively, if you persistently need a higher timeout value, you
-can set it globally via the
-[defaults.export_max_timeout_sec](/docs/deployment/references/#defaults.export_max_timeout_sec)
-setting in the server config. However, as with all resource limits,
-the default values are intended to protect your server from unusual
-resource consumption, so you should try to avoid changing the global
-defaults unless you've considered the potential impacts.
-
-There is also a default limit of 10 concurrent export preparation processes. If
-your server hardware is capable of more then you might need to increase this
-limit, which is done via the
-[defaults.export_concurrency](/docs/deployment/references/#defaults.export_concurrency)
-setting in the server config.
-
-As with any server config change, this will require a restart of the server
-before the changes are in effect.
-
-{{% /notice %}}
+> [!NOTE] Default export timeout
+> It takes time for the server to zip the results, and optionally pad out sparse
+> files. If you are preparing exports for collections or hunts that are
+> unusually large, then the default timeout (10 minutes) for this process may be
+> insufficient.
+>
+> In that case, you may need to set a greater timeout value, which you
+> can do by preparing the export via a server artifact, with an extended
+> timeout value. This approach is demonstrated by the
+> `Server.Utils.ExportHunt` artifact.
+>
+> Alternatively, if you persistently need a higher timeout value, you
+> can set it globally via the
+> [defaults.export_max_timeout_sec](/docs/deployment/references/#defaults.export_max_timeout_sec)
+> setting in the server config. However, as with all resource limits,
+> the default values are intended to protect your server from unusual
+> resource consumption, so you should try to avoid changing the global
+> defaults unless you've considered the potential impacts.
+>
+> There is also a default limit of 10 concurrent export preparation processes. If
+> your server hardware is capable of more then you might need to increase this
+> limit, which is done via the
+> [defaults.export_concurrency](/docs/deployment/references/#defaults.export_concurrency)
+> setting in the server config.
+>
+> As with any server config change, this will require a restart of the server
+> before the changes are in effect.
 
 ## Preparing exports via VQL
 
@@ -198,4 +195,3 @@ that your script saves the file downloads separately for each client and
 possibly also each flow. You can add additional path components to the query and
 then have your external download tool use them to construct appropriate paths
 for the downloads.
-

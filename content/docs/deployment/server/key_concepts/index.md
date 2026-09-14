@@ -150,16 +150,13 @@ the client configuration to us when needed
 The server can also use it internally, for example when generating a client
 installation package.
 
-{{% notice tip "Make client config changes centrally" %}}
-
-Because the server needs to know about the clients' settings and therefore
-maintains the client config section as part of `server.config.yaml`, it is
-recommended that you always make client config changes in the server config,
-rather than maintaining separate client config files. Then whenever you need the
-latest version of your client config use the command
-`velociraptor -c ./server.config.yaml config client` to extract it.
-
-{{% /notice %}}
+> [!TIP] Make client config changes centrally
+> Because the server needs to know about the clients' settings and therefore
+> maintains the client config section as part of `server.config.yaml`, it is
+> recommended that you always make client config changes in the server config,
+> rather than maintaining separate client config files. Then whenever you need the
+> latest version of your client config use the command
+> `velociraptor -c ./server.config.yaml config client` to extract it.
 
 ## Velociraptor Binaries
 
@@ -227,17 +224,14 @@ all cases, regardless of whether other TLS certificates are used. While it is
 possible to reissue/rotate server certificates the CA certificate can not be
 reissued without re-deploying all the clients.
 
-{{% notice warning "Protecting the CA private key" %}}
-
-In a secure installation you should remove the `CA.private_key` section from
-the server config and keep it offline. You only need it to
-[create new API keys](/docs/server_automation/server_api/#creating-an-api-client-configuration)
-and when
-[rotating server certificates](/knowledge_base/tips/rolling_certificates/)
-(typically after 1 year).
-The server does not need it during normal operations.
-
-{{% /notice %}}
+> [!WARNING] Protecting the CA private key
+> In a secure installation you should remove the `CA.private_key` section from
+> the server config and keep it offline. You only need it to
+> [create new API keys](/docs/server_automation/server_api/#creating-an-api-client-configuration)
+> and when
+> [rotating server certificates](/knowledge_base/tips/rolling_certificates/)
+> (typically after 1 year).
+> The server does not need it during normal operations.
 
 
 ## Certificate Schemes

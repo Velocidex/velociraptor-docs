@@ -31,15 +31,12 @@ Carving attempts to recover structured information from unstructured data by ide
 
 In the case of the USN journal, we can examine the raw disk and extract data that looks like a USN journal record, without regard to parsing the record from the NTFS filesystem or using any structure on the disk.
 
-{{% notice warning %}}
-
-Disclaimer: Depending on the underlying hardware carving may or may
-not be effective. For example, when running on an SSD, the hardware
-will aggressively reclaim unallocated space, making it less
-effective. We typically use carving techniques as a last resort or to
-try to gather new clues so its worth a shot anyway.
-
-{{% /notice %}}
+> [!WARNING]
+> Disclaimer: Depending on the underlying hardware carving may or may
+> not be effective. For example, when running on an SSD, the hardware
+> will aggressively reclaim unallocated space, making it less
+> effective. We typically use carving techniques as a last resort or to
+> try to gather new clues so its worth a shot anyway.
 
 ### The structure of a USN journal record
 

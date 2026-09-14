@@ -21,20 +21,17 @@ screen.
 
 ![Artifacts toolbar](artifacts_toolbar.svg)
 
-{{% notice info %}}
-
-In order to create, modify or delete artifacts your user needs to have the
-`ARTIFACT_WRITER` permission.
-
-Users with this permission are generally considered to be "admin equivalent"
-since it is easy to escalate to full admin by designing artifacts to accomplish
-that goal.
-
-This permission is not needed to _run_ artifacts, so it is common to have some
-users who can only run artifacts and some other users who can create and manage
-artifacts.
-
-{{% /notice %}}
+> [!NOTE]
+> In order to create, modify or delete artifacts your user needs to have the
+> `ARTIFACT_WRITER` permission.
+>
+> Users with this permission are generally considered to be "admin equivalent"
+> since it is easy to escalate to full admin by designing artifacts to accomplish
+> that goal.
+>
+> This permission is not needed to _run_ artifacts, so it is common to have some
+> users who can only run artifacts and some other users who can create and manage
+> artifacts.
 
 
 ### Searching Artifacts
@@ -83,11 +80,8 @@ For example:
 
 #### Searching artifacts by tag
 
-{{% notice note %}}
-
-This feature requires version 0.75 or above.
-
-{{% /notice %}}
+> [!NOTE]
+> This feature requires version 0.75 or above.
 
 Artifact [Tags](/docs/vql/artifacts/managing/#artifact-metadata)
 can be applied to selected artifacts to make finding and managing those
@@ -147,36 +141,33 @@ artifacts from these external projects.
 | Velociraptor Artifact Exchange | https://docs.velociraptor.app/exchange/ | `Server.Import.ArtifactExchange` |
 | Artifacts from previous releases | https://github.com/Velocidex/velociraptor/releases | `Server.Import.PreviousReleases` |
 
-{{% notice info %}}
-
-In version 0.75 and above, most of the artifacts listed above are consolidated
-into a single import artifact named `Server.Import.Extras`, and some
-reorganization within the related projects has been done to make these more
-manageable.
-
-The following artifacts are no longer included in the binary, and therefore need
-to be imported using `Server.Import.Extras`:
-
-- The Windows Sigma-related artifacts (including Hayabusa rules)
-- The Linux Sigma-related artifacts
-- `Generic.Forensic.SQLiteHunter`
-- `Generic.Collectors.SQLECmd`
-- `Windows.Registry.Hunter`
-- `Windows.KapeFiles.Targets` (now named `Windows.Triage.Targets`)
-
-The following import artifacts were removed as they are superseded by the new
-import artifact:
-
-- `Server.Import.UpdatedBuiltin`
-- `Server.Import.ArtifactExchange`
-- `Server.Import.RegistryHunter`
-- `Server.Import.Rapid7Labs`
-- `Server.Import.CuratedSigma`
-
-For more information please see the
-[version 0.75 release notes](/blog/2025/2025-08-30-release-notes-0.75/#removal-of-some-large-artifacts).
-
-{{% /notice %}}
+> [!NOTE]
+> In version 0.75 and above, most of the artifacts listed above are consolidated
+> into a single import artifact named `Server.Import.Extras`, and some
+> reorganization within the related projects has been done to make these more
+> manageable.
+>
+> The following artifacts are no longer included in the binary, and therefore need
+> to be imported using `Server.Import.Extras`:
+>
+> - The Windows Sigma-related artifacts (including Hayabusa rules)
+> - The Linux Sigma-related artifacts
+> - `Generic.Forensic.SQLiteHunter`
+> - `Generic.Collectors.SQLECmd`
+> - `Windows.Registry.Hunter`
+> - `Windows.KapeFiles.Targets` (now named `Windows.Triage.Targets`)
+>
+> The following import artifacts were removed as they are superseded by the new
+> import artifact:
+>
+> - `Server.Import.UpdatedBuiltin`
+> - `Server.Import.ArtifactExchange`
+> - `Server.Import.RegistryHunter`
+> - `Server.Import.Rapid7Labs`
+> - `Server.Import.CuratedSigma`
+>
+> For more information please see the
+> [version 0.75 release notes](/blog/2025/2025-08-30-release-notes-0.75/#removal-of-some-large-artifacts).
 
 
 ![Running server import artifacts](artifacts_server_import1.png)
@@ -189,13 +180,10 @@ releases.
 
 #### Server.Import.UpdatedBuiltin
 
-{{% notice info %}}
-
-This artifact is no longer included in version 0.75 and above, since the updates
-can new be done using the new `Server.Import.Extras` server artifact (see note
-in the previous section).
-
-{{% /notice %}}
+> [!NOTE]
+> This artifact is no longer included in version 0.75 and above, since the updates
+> can new be done using the new `Server.Import.Extras` server artifact (see note
+> in the previous section).
 
 The purpose of the `Server.Import.UpdatedBuiltin` artifact is to update either
 of the following 2 artifacts which may be updated between releases:
@@ -212,18 +200,15 @@ The `Server.Import.PreviousReleases` artifact allows importing the artifacts
 from older releases. This is to cater for situations where clients cannot be
 easily upgraded, yet need functionality only found in the latest artifacts.
 
-{{% notice warning "Forward compatibility is not guaranteed!" %}}
-
-While clients should have no problems running older versions of the
-standard artifacts,
-[we cannot guarantee](/docs/overview/support/)
-that the latest artifact versions will be compatible with older
-clients. This depends mainly on whether or not the latest artifact
-versions contain VQL that uses new functions or plugins which the
-older client may not have. You should always test your particular
-scenario.
-
-{{% /notice %}}
+> [!WARNING] Forward compatibility is not guaranteed!
+> While clients should have no problems running older versions of the
+> standard artifacts,
+> [we cannot guarantee](/docs/overview/support/)
+> that the latest artifact versions will be compatible with older
+> clients. This depends mainly on whether or not the latest artifact
+> versions contain VQL that uses new functions or plugins which the
+> older client may not have. You should always test your particular
+> scenario.
 
 
 ### Creating and Editing Artifacts

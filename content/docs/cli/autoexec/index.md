@@ -240,13 +240,10 @@ velociraptor_collector.exe artifacts collect Collector \
 Any global or command-specific [CLI flags](/docs/cli/flags/) can be
 used as post args.
 
-{{% notice note "Flag override limitation" %}}
-
-If a flag is specified in `autoexec.argv` then it cannot be negated
-or overridden via post args. You can only _add_ flags that have not
-already been used in the embedded command.
-
-{{% /notice %}}
+> [!NOTE] Flag override limitation
+> If a flag is specified in `autoexec.argv` then it cannot be negated
+> or overridden via post args. You can only _add_ flags that have not
+> already been used in the embedded command.
 
 ###### Example: Using custom artifacts with autoexec
 
@@ -311,18 +308,15 @@ however it's possible to include the API config in the embedded config
 and then use the `autoexec` section to preconfigure the binary to run
 in API client mode and run a specific API query against the server.
 
-{{% notice warning "API config security" %}}
-
-API configs contain cryptographic keys to authenticate against the
-server and should therefore be carefully guarded. A binary containing
-an embedded API config should be treated the with the same security
-considerations as a standalone API config file, since the embedded
-config can trivially be extracted from the binary.
-
-As with any API client, ensure that the associated user account
-adheres to the principle of least privilege.
-
-{{% /notice %}}
+> [!WARNING] API config security
+> API configs contain cryptographic keys to authenticate against the
+> server and should therefore be carefully guarded. A binary containing
+> an embedded API config should be treated the with the same security
+> considerations as a standalone API config file, since the embedded
+> config can trivially be extracted from the binary.
+>
+> As with any API client, ensure that the associated user account
+> adheres to the principle of least privilege.
 
 First create an API client config with the
 [`config api_client` command](/docs/server_automation/server_api/#creating-an-api-client-configuration),
@@ -440,28 +434,25 @@ filter and reformat the tool's output, and use VQL functions to write
 the results to a format or output destination that the tool itself
 doesn't support.
 
-{{% notice note "The Generic Collector uses autoexec mode under the hood" %}}
-
-Normally, autoexec mode requires repacking the config _into_ the
-binary. The
-[Generic Collector](/docs/deployment/offline_collections/#the-generic-collector)
-is a variation where the config is stored in a separate file and
-referenced at launch using the `--embedded_config` flag. This approach
-is required on macOS (where code signing prevents binary modification)
-and is also useful when the embedded config exceeds the embedding size
-limit (80 KB). The generic collector config file and the embedded
-config share the same format, and it is worth noting that it uses
-autoexec mode.
-
-However, Velociraptor does not currently provide a way to create a
-generic collector that runs anything other than the offline
-`Collector` artifact. The generic collector builder always generates
-an `autoexec` section that runs `artifacts collect Collector`. So
-while autoexec mode works with a generic collector config, it is only
-useful for collecting artifacts; you cannot use it to run other CLI
-commands (such as the API query or bundled tool examples above). This
-means autoexec mode is not an option in situations where you would
-otherwise need `--embedded_config` to avoid embedding a config into a
-binary.
-
-{{% /notice %}}
+> [!NOTE] The Generic Collector uses autoexec mode under the hood
+> Normally, autoexec mode requires repacking the config _into_ the
+> binary. The
+> [Generic Collector](/docs/deployment/offline_collections/#the-generic-collector)
+> is a variation where the config is stored in a separate file and
+> referenced at launch using the `--embedded_config` flag. This approach
+> is required on macOS (where code signing prevents binary modification)
+> and is also useful when the embedded config exceeds the embedding size
+> limit (80 KB). The generic collector config file and the embedded
+> config share the same format, and it is worth noting that it uses
+> autoexec mode.
+>
+> However, Velociraptor does not currently provide a way to create a
+> generic collector that runs anything other than the offline
+> `Collector` artifact. The generic collector builder always generates
+> an `autoexec` section that runs `artifacts collect Collector`. So
+> while autoexec mode works with a generic collector config, it is only
+> useful for collecting artifacts; you cannot use it to run other CLI
+> commands (such as the API query or bundled tool examples above). This
+> means autoexec mode is not an option in situations where you would
+> otherwise need `--embedded_config` to avoid embedding a config into a
+> binary.

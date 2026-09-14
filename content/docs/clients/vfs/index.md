@@ -85,19 +85,16 @@ downloads from the client, the VFS view will change. Performing an
 export of the VFS freezes in time the state of the VFS at the time of
 the collection. You can then go back to review the files at that time.
 
-{{% notice tip "Exporting files from the VFS with a password" %}}
-
-Sometimes files in the VFS will contain malware or other unwanted
-software. Often the investigator's local workstation will have AV or
-other security products that might quarantine the produced ZIP
-file. In this case it is helpful to compress the export with a
-password.
-
-See the Knowledge Base article
-["How do I enable password protected VFS downloads?"](/knowledge_base/tips/download_password/)
-for reference on setting the password for export.
-
-{{% /notice %}}
+> [!TIP] Exporting files from the VFS with a password
+> Sometimes files in the VFS will contain malware or other unwanted
+> software. Often the investigator's local workstation will have AV or
+> other security products that might quarantine the produced ZIP
+> file. In this case it is helpful to compress the export with a
+> password.
+>
+> See the Knowledge Base article
+> ["How do I enable password protected VFS downloads?"](/knowledge_base/tips/download_password/)
+> for reference on setting the password for export.
 
 ### Recursively operating on files
 
@@ -108,16 +105,13 @@ recursively sync directory button begins a recursive directory listing.
 
 ![Recursive listing a remote directory](vfs_recursive_sync.png)
 
-{{% notice tip "Cancelling large VFS operations" %}}
-
-Syncing large directories and downloading many files from the endpoint
-can take a long time and transfer large amount of data. By default
-resource limits are enforced that limit the operation to 10 minutes
-and transferring 1Gb of data. If you accidentally initiated a download
-of a very large directory you can click the button again to cancel the
-operation.
-
-{{% /notice %}}
+> [!TIP] Cancelling large VFS operations
+> Syncing large directories and downloading many files from the endpoint
+> can take a long time and transfer large amount of data. By default
+> resource limits are enforced that limit the operation to 10 minutes
+> and transferring 1Gb of data. If you accidentally initiated a download
+> of a very large directory you can click the button again to cancel the
+> operation.
 
 ### Previewing a file after download.
 

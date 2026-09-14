@@ -18,41 +18,35 @@ version along with your existing configuration file. You then apply
 the new package to your server using the appropriate package
 management tool.
 
-{{% notice info "Backing up your configuration file" %}}
-
-When the config is generated (typically using the `velociraptor config
-generate` command), new cryptographic keys are created and stored in
-the config. These keys allow the clients and server to establish trust
-and communicate.
-
-When upgrading to a new version, you must re-use your existing config
-file to preserve the key material and maintain client communication.
-
-It is good practice to always make a backup copy of your config file
-both before upgrading and after upgrading, just in case changes are
-made during the upgrade. As with all config backups, these should be
-stored somewhere safe - preferably kept offline and under version
-control.
-
-{{% /notice %}}
+> [!NOTE] Backing up your configuration file
+> When the config is generated (typically using the `velociraptor config
+> generate` command), new cryptographic keys are created and stored in
+> the config. These keys allow the clients and server to establish trust
+> and communicate.
+>
+> When upgrading to a new version, you must re-use your existing config
+> file to preserve the key material and maintain client communication.
+>
+> It is good practice to always make a backup copy of your config file
+> both before upgrading and after upgrading, just in case changes are
+> made during the upgrade. As with all config backups, these should be
+> stored somewhere safe - preferably kept offline and under version
+> control.
 
 
-{{% notice tip "Server cert expiring soon?" %}}
-
-Before upgrading, if you're using the self-signed SSL certificate
-option, then you may also want to also consider
-[rotating your server certificate](/knowledge_base/tips/rolling_certificates/)
-if it is due to expire in the near future. This is a good time to do
-so because you can then bundle the config with the reissued cert into
-your upgrade package.
-
-If you're using Let's Encrypt certificates, these are auto-renewed in
-the background and do not require manual maintenance.
-
-If you're using an externally issued server certificate then this may
-also be a good opportunity to check if the cert needs renewing.
-
-{{% /notice %}}
+> [!TIP] Server cert expiring soon?
+> Before upgrading, if you're using the self-signed SSL certificate
+> option, then you may also want to also consider
+> [rotating your server certificate](/knowledge_base/tips/rolling_certificates/)
+> if it is due to expire in the near future. This is a good time to do
+> so because you can then bundle the config with the reissued cert into
+> your upgrade package.
+>
+> If you're using Let's Encrypt certificates, these are auto-renewed in
+> the background and do not require manual maintenance.
+>
+> If you're using an externally issued server certificate then this may
+> also be a good opportunity to check if the cert needs renewing.
 
 From time to time, the schema of the configuration file may evolve
 with newer versions. For example, a new config key may be added to
@@ -69,22 +63,19 @@ have an upgraded configuration file located to the
 You can identify the version that wrote the configuration file by
 looking at the `version` section of the configuration file.
 
-{{% notice note "Client-Server Backward Compatibility" %}}
-
-The Velociraptor server is intended to be
-[backwardly-compatible with older clients](/docs/overview/support/#client-and-server-versioning)
-across the previous few releases, which allows you to upgrade the
-server and then upgrade the clients. This backward-compatibility is
-mainly in terms of client-server communication: that is, older
-clients should be able to continue communicating with a newer server
-version. However, older clients will not be able to run artifacts that
-use newer features and functionality, so ideally you should try to
-upgrade your clients to the same version as the server as soon as
-possible after upgrading the server.
-
-For this reason, you should always upgrade the server first.
-
-{{% /notice %}}
+> [!NOTE] Client-Server Backward Compatibility
+> The Velociraptor server is intended to be
+> [backwardly-compatible with older clients](/docs/overview/support/#client-and-server-versioning)
+> across the previous few releases, which allows you to upgrade the
+> server and then upgrade the clients. This backward-compatibility is
+> mainly in terms of client-server communication: that is, older
+> clients should be able to continue communicating with a newer server
+> version. However, older clients will not be able to run artifacts that
+> use newer features and functionality, so ideally you should try to
+> upgrade your clients to the same version as the server as soon as
+> possible after upgrading the server.
+>
+> For this reason, you should always upgrade the server first.
 
 ## Upgrading a server (in-place upgrade)
 
@@ -236,6 +227,5 @@ an old server to a new server by using a remote client upgrade.
 
 You should ALWAYS test any upgrade/downgrade/migration process on a
 limited scale before applying it broadly to all your clients.
-
 
 

@@ -24,35 +24,32 @@ isolated environments.
 You can access the local documentation search by clicking on the
 <i class="fas fa-circle-question"></i> icon in the app footer area.
 
-{{% notice note "Limitations" %}}
-
-The local documentation is intended for quick documentation lookups,
-or for use in situations where the Velociraptor documentation website
-is inaccessible, perhaps when you are working from a network where
-internet access is restricted or severely degraded. Such circumstances
-are sometimes encountered when responding to serious security
-incidents. So if you're planning to take your Velociraptor server into
-a bunker, you can prepare it with local documentation before you go.
-
-In other words this feature is intended for convenience or for unusual
-situations, in a similar way to how the
-[`vql list` CLI command](/docs/cli/#how-to-get-vql-help)
-allows you to quickly look up VQL-related help when you are working on
-the command line. It does not fully replicate all aspects of the
-documentation website, and it's not intended to replace it.
-
-In particular, you should be aware of the following differences:
-
-- Links within the offline docs will send you to the documentation
-  website, rather than allowing you to navigate within the local docs.
-  You should avoid clicking links in the local documentation if you
-  don't want to be sent to the documentation website.
-- Some internal navigation links that you would see on the website
-  are not shown in the offline docs.
-- Images are not stored locally and will therefore not be displayed if
-  access to the documentation website is unavailable.
-
-{{% /notice %}}
+> [!NOTE] Limitations
+> The local documentation is intended for quick documentation lookups,
+> or for use in situations where the Velociraptor documentation website
+> is inaccessible, perhaps when you are working from a network where
+> internet access is restricted or severely degraded. Such circumstances
+> are sometimes encountered when responding to serious security
+> incidents. So if you're planning to take your Velociraptor server into
+> a bunker, you can prepare it with local documentation before you go.
+>
+> In other words this feature is intended for convenience or for unusual
+> situations, in a similar way to how the
+> [`vql list` CLI command](/docs/cli/#how-to-get-vql-help)
+> allows you to quickly look up VQL-related help when you are working on
+> the command line. It does not fully replicate all aspects of the
+> documentation website, and it's not intended to replace it.
+>
+> In particular, you should be aware of the following differences:
+>
+> - Links within the offline docs will send you to the documentation
+>   website, rather than allowing you to navigate within the local docs.
+>   You should avoid clicking links in the local documentation if you
+>   don't want to be sent to the documentation website.
+> - Some internal navigation links that you would see on the website
+>   are not shown in the offline docs.
+> - Images are not stored locally and will therefore not be displayed if
+>   access to the documentation website is unavailable.
 
 ## Installing the local documentation index
 
@@ -184,4 +181,3 @@ results, regardless of tags.
 
 You can also use the query `+tags` to see all pages with tags, which
 might help you with choosing an appropriate tag.
-

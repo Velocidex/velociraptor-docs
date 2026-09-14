@@ -36,13 +36,10 @@ These fields are the basic building blocks of most artifacts.
 | [sources](#-sources-) | Defines how the artifact produces data. | No | sequence |
 
 
-{{% notice info "Field names are case-sensitive!" %}}
-
-Due to YAML keys being case-sensitive (the fields "Name" and "name" would be
-treated as different keys in a YAML document), all artifact field names are
-case-sensitive, and by convention also lowercase.
-
-{{% /notice %}}
+> [!NOTE] Field names are case-sensitive!
+> Due to YAML keys being case-sensitive (the fields "Name" and "name" would be
+> treated as different keys in a YAML document), all artifact field names are
+> case-sensitive, and by convention also lowercase.
 
 ## Artifact Identity Fields
 
@@ -351,5 +348,4 @@ Artifacts screen.
 
 For a more detailed discussion of `sources` see the
 [Sources](/docs/artifacts/sources/) section.
-
 

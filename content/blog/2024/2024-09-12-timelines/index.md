@@ -14,12 +14,9 @@ author: "Mike Cohen"
 date: 2024-09-12
 ---
 
-{{% notice note "New feature" %}}
-
-This feature is available in the 0.73 release. You can
-[Download it](/downloads/) and provide valuable feedback.
-
-{{% /notice %}}
+> [!NOTE] New feature
+> This feature is available in the 0.73 release. You can
+> [Download it](/downloads/) and provide valuable feedback.
 
 Digital forensics is about reconstructing what happened in the past
 based on available artifacts. When applying Digital Forensics to an

@@ -58,18 +58,17 @@ spring to mind readily.  In this instance I am selecting Yara.NTFS. I have
 leveraged this artifact in the field for hunting malware, searching logs or
 any other capability where both metadata and content based discovery is desired.
 
-{{% notice tip "Windows.Detection.Yara.NTFS" %}}
-* This artifact searches the MFT, returns a list of target files then runs Yara over the target list.
-* The artifact leverages `Windows.NTFS.MFT` so similar regex filters can be applied including Path, Size and date.
-* The artifact also has an option to search across all attached drives and upload any files with Yara hits.
-
-Some examples of path regex may include:
-
-* Extension at a path: `Windows/System32/.+\\.dll$`
-* More wildcards: `Windows/.+/.+\\.dll$`
-* Specific file: `Windows/System32/kernel32\.dll$`
-* Multiple extensions: `\.(php|aspx|resx|asmx)$`
-{{% /notice %}}
+> [!TIP] Windows.Detection.Yara.NTFS
+> * This artifact searches the MFT, returns a list of target files then runs Yara over the target list.
+> * The artifact leverages `Windows.NTFS.MFT` so similar regex filters can be applied including Path, Size and date.
+> * The artifact also has an option to search across all attached drives and upload any files with Yara hits.
+>
+> Some examples of path regex may include:
+>
+> * Extension at a path: `Windows/System32/.+\\.dll$`
+> * More wildcards: `Windows/.+/.+\\.dll$`
+> * Specific file: `Windows/System32/kernel32\.dll$`
+> * Multiple extensions: `\.(php|aspx|resx|asmx)$`
 
 ![Select artifact : Windows.Detection.Yara.NTFS](02_find_artifact.png)
 
@@ -117,11 +116,10 @@ as a hex formatted buffer and key in embedded C Sharp code as seen below.
 So far we have only collected files that have suspicious content. Now we want
 to post process the result and try to extract more information from the payload.
 
-{{% notice tip "Velociraptor notebook" %}}
-The Velociraptor notebook is a gui component that lets the user run VQL directly
-on the server. In this case we are leveraging the notebook attached to our hunt
-to post process results opposed to downloading the files and processing offline.
-{{% /notice %}}
+> [!TIP] Velociraptor notebook
+> The Velociraptor notebook is a gui component that lets the user run VQL directly
+> on the server. In this case we are leveraging the notebook attached to our hunt
+> to post process results opposed to downloading the files and processing offline.
 
 Our first step of decode is to examine all the files we collected in the hunt.
 The first query enumerates all the individual collections in the hunt, while the
@@ -175,13 +173,12 @@ SELECT * FROM foreach(row=targets,
 ```
 
 
-{{% notice tip "Parse records with regex" %}}
-`parse_records_with_regex()` is a VQL plugin that parses a file with a set of regexp and yields matches as records. The file is read into a large buffer. Then each regular expression is applied to the buffer, and all matches are emitted as rows.
-
-The regular expressions are specified in the Go syntax. They are expected to contain capture variables to name the matches extracted.
-
-The aim of this plugin is to split the file into records which can be further parsed. For example, if the file consists of multiple records, this plugin can be used to extract each record, while `parse_string_with_regex()` can be used to further split each record into elements. This works better than trying to write a more complex regex which tries to capture a lot of details in one pass.
-{{% /notice %}}
+> [!TIP] Parse records with regex
+> `parse_records_with_regex()` is a VQL plugin that parses a file with a set of regexp and yields matches as records. The file is read into a large buffer. Then each regular expression is applied to the buffer, and all matches are emitted as rows.
+>
+> The regular expressions are specified in the Go syntax. They are expected to contain capture variables to name the matches extracted.
+>
+> The aim of this plugin is to split the file into records which can be further parsed. For example, if the file consists of multiple records, this plugin can be used to extract each record, while `parse_string_with_regex()` can be used to further split each record into elements. This works better than trying to write a more complex regex which tries to capture a lot of details in one pass.
 
 
 ![VQL: extract data and keys](07_notebook_regex.png)

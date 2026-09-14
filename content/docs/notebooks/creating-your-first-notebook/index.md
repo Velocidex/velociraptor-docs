@@ -46,16 +46,13 @@ using the dropdown on the right side of the cell toolbar. A Markdown
 cell displays formatted text. A VQL cell runs a query and shows the
 results.
 
-{{% notice tip "Focus and appearance" %}}
-
-A notebook consists of a sequence of cells. When a cell is not in
-focus it has no visible decorations, so the document appears as a
-seamless whole. You must click a cell to bring it into focus before
-you can see its controls.
-
-![Notebook cell without focus - no decorations visible](../notebook_edit1.svg)
-
-{{% /notice %}}
+> [!TIP] Focus and appearance
+> A notebook consists of a sequence of cells. When a cell is not in
+> focus it has no visible decorations, so the document appears as a
+> seamless whole. You must click a cell to bring it into focus before
+> you can see its controls.
+>
+> ![Notebook cell without focus - no decorations visible](../notebook_edit1.svg)
 
 ## Add a VQL cell
 
@@ -90,13 +87,10 @@ SELECT * FROM info()
 
 The query returns basic information about the Velociraptor server.
 
-{{% notice tip "Context-sensitive suggestions" %}}
-
-VQL suggestions adapt to where you are in the statement. For example,
-plugins that only make sense after a `FROM` clause are suggested only
-when the cursor is positioned after one.
-
-{{% /notice %}}
+> [!TIP] Context-sensitive suggestions
+> VQL suggestions adapt to where you are in the statement. For example,
+> plugins that only make sense after a `FROM` clause are suggested only
+> when the cursor is positioned after one.
 
 ## What you have created
 

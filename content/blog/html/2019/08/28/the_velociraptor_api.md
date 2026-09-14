@@ -10,12 +10,9 @@ title: The Velociraptor API and FUSE
 categories: ["Blog"]
 ---
 
-{{% notice warning %}}
-
-This page is written about a very old version of Velociraptor and is
-retained for historical purposes. Currently the fuse feature is removed.
-
-{{% /notice %}}
+> [!WARNING]
+> This page is written about a very old version of Velociraptor and is
+> retained for historical purposes. Currently the fuse feature is removed.
 
 
 The Velociraptor GUI is very useful, but for the power user, the
@@ -90,19 +87,16 @@ You can see this process in the screenshot below:
 
 ![Image](../fuse.png)
 
-{{% notice tip %}}
-
-Do not run the fuse API command as a different user to what is
-currently logged in (e.g. do not run as Administrator). If you do then
-you will not be able to see the FUSE drive in your user's desktop
-session.
-
-For example if you are logged in as user "Test", then any FUSE drives
-created by Velociraptor running as user Test are only visible to user
-Test. If you run the above command as an elevated UAC prompt then user
-Test will be unable to see the new drive.
-
-{{% /notice %}}
+> [!TIP]
+> Do not run the fuse API command as a different user to what is
+> currently logged in (e.g. do not run as Administrator). If you do then
+> you will not be able to see the FUSE drive in your user's desktop
+> session.
+>
+> For example if you are logged in as user "Test", then any FUSE drives
+> created by Velociraptor running as user Test are only visible to user
+> Test. If you run the above command as an elevated UAC prompt then user
+> Test will be unable to see the new drive.
 
 
 ### Running the FUSE program
@@ -143,17 +137,14 @@ This kind of automated control of the Velociraptor server opens the
 door to many such applications. From automated response to
 remediation and automated evidence collection.
 
-{{% notice note %}}
-
-Some users has asked us what the difference between the FUSE program
-and other tools, e.g. F-Response which also create the illusion that
-the remote system is mounted on the analyst's workstation. The main
-difference is that Velociraptor does not export the *raw block device*
-from the endpoint - it simply exports the files and directories we
-collected already. So for example, it is not possible to run a low
-level disk analysis system (such as X-Ways) on the mounted FUSE
-drive. However you can still run specialized file parsers (such as
-Kape or log2timeline) as long as they do not require access to the raw
-devices.
-
-{{% /notice %}}
+> [!NOTE]
+> Some users has asked us what the difference between the FUSE program
+> and other tools, e.g. F-Response which also create the illusion that
+> the remote system is mounted on the analyst's workstation. The main
+> difference is that Velociraptor does not export the *raw block device*
+> from the endpoint - it simply exports the files and directories we
+> collected already. So for example, it is not possible to run a low
+> level disk analysis system (such as X-Ways) on the mounted FUSE
+> drive. However you can still run specialized file parsers (such as
+> Kape or log2timeline) as long as they do not require access to the raw
+> devices.

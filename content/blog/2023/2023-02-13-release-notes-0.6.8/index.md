@@ -36,13 +36,10 @@ a lot of the collection tracking to the client itself. This lowers the
 amount of work on the server and therefore allows more collections to
 be processed by the server at the same time.
 
-{{% notice tip "Support for older clients" %}}
-
-To maintain support with older clients, the server continues to use
-the older communication protocol with them - but will achieve the most
-improvement in performance once the newer clients are deployed.
-
-{{% /notice %}}
+> [!TIP] Support for older clients
+> To maintain support with older clients, the server continues to use
+> the older communication protocol with them - but will achieve the most
+> improvement in performance once the newer clients are deployed.
 
 ### New Virtual File System GUI
 

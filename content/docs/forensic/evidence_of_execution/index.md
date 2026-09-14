@@ -91,13 +91,10 @@ parse these timestamps using the `Windows.Forensics.Bam` artifact.
 
 ![BAM](image30.png)
 
-{{% notice note %}}
-
-The BAM artifact is stored in the registry under a key unique to the
-user SID on the system, therefore it provides valuable attribution as
-to who ran the binary (which Prefetch does not provide).
-
-{{% /notice %}}
+> [!NOTE]
+> The BAM artifact is stored in the registry under a key unique to the
+> user SID on the system, therefore it provides valuable attribution as
+> to who ran the binary (which Prefetch does not provide).
 
 ## Shim cache
 
@@ -118,9 +115,8 @@ The Shim cache database tracks the executables’ file name, file size and last 
 
 Velociraptor can parse the shim cache using the `Windows.Registry.AppCompatCache` artifact.
 
-{{% notice note %}}
-Note this is the modification time of the binary from the NTFS $STANDARD_INFORMATION stream, which might be replicated by the installer - so it might even be before the system was installed.
-{{% /notice %}}
+> [!NOTE]
+> Note this is the modification time of the binary from the NTFS $STANDARD_INFORMATION stream, which might be replicated by the installer - so it might even be before the system was installed.
 
 ## Amcache
 
@@ -138,15 +134,12 @@ uses the registry file format to store the information. We therefore
 need to parse the raw registry hive file using the raw registry
 accessor.
 
-{{% notice note %}}
-
-Note the key location is a URL - Velociraptor uses URL notation to
-access raw registry hives as described
-[here](/docs/forensic/filesystem/#raw-registry-file-parsing).
-This uses the ntfs file accessor to access the raw hive data since it
-is usually locked at runtime.
-
-{{% /notice %}}
+> [!NOTE]
+> Note the key location is a URL - Velociraptor uses URL notation to
+> access raw registry hives as described
+> [here](/docs/forensic/filesystem/#raw-registry-file-parsing).
+> This uses the ntfs file accessor to access the raw hive data since it
+> is usually locked at runtime.
 
 ## System Resource Usage Monitor (SRUM)
 

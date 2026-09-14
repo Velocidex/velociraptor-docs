@@ -68,19 +68,16 @@ streamed back to the server. The server simply splits the response table
 into directory specific tables, and then stores a single VQL response
 table for each directory in the database.
 
-{{% notice note %}}
-
-The VQL glob() plugin is guaranteed to generate results in breadth first
-order. This means that it emits information about all files in the same
-directory first, before recursing into sub directories. This feature
-makes it simple to split the result table into directory specific
-sub-tables by simply watching the FullPath column and noting when its
-directory changes.
-
-
-![](image9.png)
-
-{{% /notice %}}
+> [!NOTE]
+> The VQL glob() plugin is guaranteed to generate results in breadth first
+> order. This means that it emits information about all files in the same
+> directory first, before recursing into sub directories. This feature
+> makes it simple to split the result table into directory specific
+> sub-tables by simply watching the FullPath column and noting when its
+> directory changes.
+>
+>
+> ![](image9.png)
 
 Very large VQL queries
 ======================

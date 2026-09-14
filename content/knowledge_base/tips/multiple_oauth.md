@@ -54,12 +54,9 @@ SELECT user_create(user="mike@gmail.com", role="administrator")
 FROM scope()
 ```
 
-{{% notice warning "Trusting multiple providers" %}}
-
-Be aware that trusting multiple identity providers can result in account hijack if a user can get an account of the same name on another provider. Velociraptor just uses the account name provided by the OAuth provider to grant access and does not keep track of which provider actually identified the user.
-
-In simple terms, if a user has username "mike" on `OIDC` provider 1 and another user can get say a GitHub account for the user "mike", then the second user can impersonate the first user by logging in with the second provider.
-
-{{% /notice %}}
+> [!WARNING] Trusting multiple providers
+> Be aware that trusting multiple identity providers can result in account hijack if a user can get an account of the same name on another provider. Velociraptor just uses the account name provided by the OAuth provider to grant access and does not keep track of which provider actually identified the user.
+>
+> In simple terms, if a user has username "mike" on `OIDC` provider 1 and another user can get say a GitHub account for the user "mike", then the second user can impersonate the first user by logging in with the second provider.
 
 Tags: #configuration #sso #deployment

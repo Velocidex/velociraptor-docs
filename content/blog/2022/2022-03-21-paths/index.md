@@ -11,11 +11,8 @@ author: "Mike Cohen"
 date: 2022-03-20
 ---
 
-{{% notice note %}}
-
-This article discusses a feature available since 0.6.4 release.
-
-{{% /notice %}}
+> [!NOTE]
+> This article discusses a feature available since 0.6.4 release.
 
 Path handling is fundamental to forensic analysis, as a large amount
 of relevant information is still kept on disk within a
@@ -168,23 +165,20 @@ convention it is running on (i.e. on Windows it will create a Windows
 flavor of OSPath). However, were we to use another accessor, the
 string path will be interpreted differently by the accessor.
 
-{{% notice note "Interpreting paths" %}}
-
-The most important takeaway from this is that when an accessor
-receives a string path, it will parse it into an OSPath internally
-according to its own rules.
-
-When an accessor receives an already parsed OSPath object, it may
-directly use it (since no parsing is required). Therefore in general,
-once an OSPath object is produced in the query, the same OSPath object
-should be passed around to other plugins/vql functions.
-
-```vql
-SELECT read_file(filename=OSPath, accessor="file", length=5)
-FROM glob(globs="C:\\Windows\\notepad.exe")
-```
-
-{{% /notice %}}
+> [!NOTE] Interpreting paths
+> The most important takeaway from this is that when an accessor
+> receives a string path, it will parse it into an OSPath internally
+> according to its own rules.
+>
+> When an accessor receives an already parsed OSPath object, it may
+> directly use it (since no parsing is required). Therefore in general,
+> once an OSPath object is produced in the query, the same OSPath object
+> should be passed around to other plugins/vql functions.
+>
+> ```vql
+> SELECT read_file(filename=OSPath, accessor="file", length=5)
+> FROM glob(globs="C:\\Windows\\notepad.exe")
+> ```
 
 
 ## Nested accessors and pathspecs
@@ -263,16 +257,13 @@ The OSPath object is now capable of more complex path manipulations:
    OSPath around to plugins because they will automatically parse the
    string into an OSPath object.
 
-{{% notice warning "Glob's root parameter" %}}
-
-In previous versions of Velociraptor it was possible to pass a
-pathspec to the glob parameter (e.g. to glob within a zip file)
-however since 0.6.4 this is not allowed. Glob expressions are always
-flat strings (i.e. a glob is not a pathspec). A pathspec is allowed to
-be passed to the root parameter to indicate where searching should
-start from.
-
-{{% /notice %}}
+> [!WARNING] Glob's root parameter
+> In previous versions of Velociraptor it was possible to pass a
+> pathspec to the glob parameter (e.g. to glob within a zip file)
+> however since 0.6.4 this is not allowed. Glob expressions are always
+> flat strings (i.e. a glob is not a pathspec). A pathspec is allowed to
+> be passed to the root parameter to indicate where searching should
+> start from.
 
 ## Compatibility with previous releases
 
@@ -295,24 +286,21 @@ Previously nested paths were encoded with URLs, but this is now
 deprecated and future VQL queries should not use URLs to encode nested
 paths.
 
-{{% notice warning "Supporting older clients" %}}
-
-Many people upgrade their Velociraptor server more frequently than
-their clients. Usually, newer versions of Velociraptor maintains
-reasonable backwards compatibility with older clients so most things
-continue to work. However in 0.6.4, the introduction of the `OSPath`
-column means that newer artifacts will fail on older clients (since
-VQL is evaluated on the client).
-See our [Support Policy](/docs/overview/support/)
-
-To help with the migration process, we made the older versions of
-artifacts easily available in newer servers. If you still have older
-clients deployed, you should import older VQL artifacts into `0.6.4`
-server using the `Server.Import.PreviousReleases` server
-artifact. This will import the old artifacts under a name reflecting
-their version so they may be collected from older clients.
-
-{{% /notice %}}
+> [!WARNING] Supporting older clients
+> Many people upgrade their Velociraptor server more frequently than
+> their clients. Usually, newer versions of Velociraptor maintains
+> reasonable backwards compatibility with older clients so most things
+> continue to work. However in 0.6.4, the introduction of the `OSPath`
+> column means that newer artifacts will fail on older clients (since
+> VQL is evaluated on the client).
+> See our [Support Policy](/docs/overview/support/)
+>
+> To help with the migration process, we made the older versions of
+> artifacts easily available in newer servers. If you still have older
+> clients deployed, you should import older VQL artifacts into `0.6.4`
+> server using the `Server.Import.PreviousReleases` server
+> artifact. This will import the old artifacts under a name reflecting
+> their version so they may be collected from older clients.
 
 ## Conclusions
 

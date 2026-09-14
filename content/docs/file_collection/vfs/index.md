@@ -121,22 +121,19 @@ This may be useful if your intention is to capture point-in-time copies of
 certain files, but if used carelessly it can result in a lot of wasted disk
 space on the server.
 
-{{% notice tip "Handling 'Locked' Files with Accessors"%}}
-
-One of the most powerful features of Velociraptor's file collection is its
-ability to automatically bypass operating system file-locking and other
-restrictions on Windows endpoints. This is thanks to Velociraptor's modular
-[accessor](/docs/forensic/filesystem/#filesystem-accessors)
-architecture.
-
-By default, Velociraptor uses the `auto` accessor. On Windows, this accessor
-first tries to use standard OS APIs to read a file, but if the file is locked by
-another process (as a registry hive or the pagefile usually are, for example),
-then it automatically falls back to the `ntfs` accessor. This allows the client
-to parse the raw NTFS filesystem and extract file data directly from the disk,
-thus bypassing the OS file locks.
-
-{{% /notice %}}
+> [!TIP] Handling 'Locked' Files with Accessors
+> One of the most powerful features of Velociraptor's file collection is its
+> ability to automatically bypass operating system file-locking and other
+> restrictions on Windows endpoints. This is thanks to Velociraptor's modular
+> [accessor](/docs/forensic/filesystem/#filesystem-accessors)
+> architecture.
+>
+> By default, Velociraptor uses the `auto` accessor. On Windows, this accessor
+> first tries to use standard OS APIs to read a file, but if the file is locked by
+> another process (as a registry hive or the pagefile usually are, for example),
+> then it automatically falls back to the `ntfs` accessor. This allows the client
+> to parse the raw NTFS filesystem and extract file data directly from the disk,
+> thus bypassing the OS file locks.
 
 ## Inspecting collected files in the GUI
 

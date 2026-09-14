@@ -150,15 +150,12 @@ This policy only grants upload rights
 }
 ```
 
-{{% notice note %}}
-
-I found that I needed to give the `s3:ListBucket` permission in order
-to upload files - this seems a bit strange to me but I could not get
-upload to work without this permission. Despite having this
-permission, it is still not possible to actually list the files in the
-bucket anyway.
-
-{{% /notice %}}
+> [!NOTE]
+> I found that I needed to give the `s3:ListBucket` permission in order
+> to upload files - this seems a bit strange to me but I could not get
+> upload to work without this permission. Despite having this
+> permission, it is still not possible to actually list the files in the
+> bucket anyway.
 
 ## AWS Roles
 
@@ -232,18 +229,15 @@ configuration by simply pasting the public key I generated earlier.
 
 Finally I create the new user with the name `velouploader`
 
-{{% notice tip "Creating users with different access" %}}
-
-In our example I created a user with an upload only policy that could
-not read any of the files in the bucket. However, you can also create
-a user with full access to the bucket by removing the scope down policy
-or apply a different policy per user.
-
-This is convenient to allow the investigator the ability to download
-the collected files by creating a separate sftp user for them without
-a scope-down policy.
-
-{{% /notice %}}
+> [!TIP] Creating users with different access
+> In our example I created a user with an upload only policy that could
+> not read any of the files in the bucket. However, you can also create
+> a user with full access to the bucket by removing the scope down policy
+> or apply a different policy per user.
+>
+> This is convenient to allow the investigator the ability to download
+> the collected files by creating a separate sftp user for them without
+> a scope-down policy.
 
 ## Testing access controls
 

@@ -77,20 +77,17 @@ be redeployed onto a new server and everything should work again:
 4. After a short time, all clients will re-enroll and the system will
    become functional again.
 
-{{% notice tip "Requirements" %}}
-
-For a successful recovery the following are required:
-
-1. A backup of the server Debian/RPM package last used to upgrade the
-   server (this will contain the server configuration file).
-
-2. A backup of the server configuration file _if it was updated since
-   the last package upgrade_.
-
-3. A DNS record for the public interface of the server - this allows
-   the server to be redeployed to a new IP address easily.
-
-{{% /notice %}}
+> [!TIP] Requirements
+> For a successful recovery the following are required:
+>
+> 1. A backup of the server Debian/RPM package last used to upgrade the
+>    server (this will contain the server configuration file).
+>
+> 2. A backup of the server configuration file _if it was updated since
+>    the last package upgrade_.
+>
+> 3. A DNS record for the public interface of the server - this allows
+>    the server to be redeployed to a new IP address easily.
 
 ## Backing up the server configuration
 
@@ -179,13 +176,10 @@ they are restored along with the rest of the server state.
 
 ### Restoring a daily backup
 
-{{% notice note "The server configuration is not part of the backup" %}}
-
-Daily backups contain server state, but not the server configuration
-file itself. Keep a copy of your server config separately so you can
-fully recover a deployment.
-
-{{% /notice %}}
+> [!NOTE] The server configuration is not part of the backup
+> Daily backups contain server state, but not the server configuration
+> file itself. Keep a copy of your server config separately so you can
+> fully recover a deployment.
 
 To restore the backup, you must copy the backup file into the backups
 directory on the new server (create the directory if it does not
@@ -208,26 +202,23 @@ ORDER BY Name DESC LIMIT 1
 
 No service restart is required after restoring a backup.
 
-{{% notice warning "Restoring rolls back server state" %}}
-
-Restoring a backup restores the server state to what it was when the
-backup was taken. What this means depends on whether you restore onto
-an existing server or onto a newly built one.
-
-When restoring onto a **new (rebuilt) server**, the backup only
-contains data that existed when it was created. Anything created since
-then - such as new clients, hunts, or notebooks - will not be present
-on the restored server.
-
-When restoring onto an **existing server** using `backup_restore()`,
-the restore generally only adds objects from the backup rather than
-deleting current ones. Hunts, notebooks, and custom artifacts that
-exist on the server but not in the backup are left in place. The main
-exception is client information: restoring replaces the entire client
-store with only what is in the backup, so clients registered since the
-backup was taken are removed.
-
-{{% /notice %}}
+> [!WARNING] Restoring rolls back server state
+> Restoring a backup restores the server state to what it was when the
+> backup was taken. What this means depends on whether you restore onto
+> an existing server or onto a newly built one.
+>
+> When restoring onto a **new (rebuilt) server**, the backup only
+> contains data that existed when it was created. Anything created since
+> then - such as new clients, hunts, or notebooks - will not be present
+> on the restored server.
+>
+> When restoring onto an **existing server** using `backup_restore()`,
+> the restore generally only adds objects from the backup rather than
+> deleting current ones. Hunts, notebooks, and custom artifacts that
+> exist on the server but not in the backup are left in place. The main
+> exception is client information: restoring replaces the entire client
+> store with only what is in the backup, so clients registered since the
+> backup was taken are removed.
 
 Backups always include the data from all Providers, but when restoring
 you can choose a subset that you want to restore using the

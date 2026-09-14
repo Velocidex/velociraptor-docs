@@ -7,22 +7,20 @@ summary: |
   Guidance on scaling your deployment and using Velociraptor's (experimental)
   Multi-Frontend deployment model.
 description: |
-  {{% notice warning %}}
+  Guidance on scaling your deployment and using Velociraptor's (experimental)
+  Multi-Frontend deployment model.
 ---
 
-{{% notice warning %}}
-
-This configuration is currently considered **experimental!** We have
-reports of it working well but there may still be bugs and issues. We
-highly recommend that if you intend to run in this mode, please
-contact us at support@velocidex.com or on
-[Discord](/discord/) and provide feedback or issues.
-
-Being experimental, this feature also falls outside our [support
-policy](/docs/overview/support/) and features may change
-at any time.
-
-{{% /notice %}}
+> [!WARNING]
+> This configuration is currently considered **experimental!** We have
+> reports of it working well but there may still be bugs and issues. We
+> highly recommend that if you intend to run in this mode, please
+> contact us at support@velocidex.com or on
+> [Discord](/discord/) and provide feedback or issues.
+>
+> Being experimental, this feature also falls outside our [support
+> policy](/docs/overview/support/) and features may change
+> at any time.
 
 This page describes the challenges and concepts around scaling
 Velociraptor on multiple servers. By understanding the limitations and

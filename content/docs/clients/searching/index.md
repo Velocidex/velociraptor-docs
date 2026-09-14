@@ -55,37 +55,31 @@ equivalent to the search operator `all`, which is also the same as searching
 with an empty search expression.
 
 
-{{% notice tip "Searching clients using VQL" %}}
+> [!TIP] Searching clients using VQL
+> More complex searches can be done in a notebook using VQL.
+>
+> The GUI's search function uses a client info index. This provides performant
+> searches even when the server has many thousands of clients. The client info
+> index can also be queried via VQL using the
+> [clients()](/vql_reference/server/clients/)
+> plugin which has a `search` argument that accepts the same search syntax as
+> the GUI's search bar, for example
+> `SELECT client_id FROM clients(search="label:none")`.
+>
+> However VQL also allows you to search client info fields that aren't indexed and
+> apply more refined filtering using VQL constructs such as `WHERE` clauses.
 
-More complex searches can be done in a notebook using VQL.
-
-The GUI's search function uses a client info index. This provides performant
-searches even when the server has many thousands of clients. The client info
-index can also be queried via VQL using the
-[clients()](/vql_reference/server/clients/)
-plugin which has a `search` argument that accepts the same search syntax as
-the GUI's search bar, for example
-`SELECT client_id FROM clients(search="label:none")`.
-
-However VQL also allows you to search client info fields that aren't indexed and
-apply more refined filtering using VQL constructs such as `WHERE` clauses.
-
-{{% /notice %}}
-
-{{% notice note "Searching index update frequency" %}}
-
-The recency ("freshness") of the client info data is determined by how often
-[client interrogation](/docs/clients/interrogation/)
-is run. By default this data is updated daily but the frequency of collection
-can be changed in the client configuration file using the setting
-`Client.client_info_update_time`.
-
-The search index on the server is rebuilt periodically to avoid inconsistencies.
-By default this occurs every 5 minutes. The frequency of this process can be
-configured in the server configuration file using the setting
-`defaults.reindex_period_seconds`.
-
-{{% /notice %}}
+> [!NOTE] Searching index update frequency
+> The recency ("freshness") of the client info data is determined by how often
+> [client interrogation](/docs/clients/interrogation/)
+> is run. By default this data is updated daily but the frequency of collection
+> can be changed in the client configuration file using the setting
+> `Client.client_info_update_time`.
+>
+> The search index on the server is rebuilt periodically to avoid inconsistencies.
+> By default this occurs every 5 minutes. The frequency of this process can be
+> configured in the server configuration file using the setting
+> `defaults.reindex_period_seconds`.
 
 ## Search results
 
@@ -132,23 +126,20 @@ The table contains seven columns:
    the server only and are used for organizing clients, targeting hunts and
    other client management functions.
 
-{{% notice note "Deleting active clients" %}}
-
-You might be wondering what happens if you delete active clients?
-
-When you select one or more clients (using the selection checkboxes) and then
-delete them, this action deletes their records from the client info index and
-deletes any existing collections data associated with them from the datastore.
-
-If the client is still active, or temporarily offline and later becomes active,
-the client will continue as though nothing happened. It's old data will be gone
-due to the delete action but the client doesn't know or care about data that it
-previously sent to the server. The client still has it's Client ID.
-
-The server will re-enroll the client and instruct the client to perform a new
-interrogation flow so that it's client info record can be updated.
-
-{{% /notice %}}
+> [!NOTE] Deleting active clients
+> You might be wondering what happens if you delete active clients?
+>
+> When you select one or more clients (using the selection checkboxes) and then
+> delete them, this action deletes their records from the client info index and
+> deletes any existing collections data associated with them from the datastore.
+>
+> If the client is still active, or temporarily offline and later becomes active,
+> the client will continue as though nothing happened. It's old data will be gone
+> due to the delete action but the client doesn't know or care about data that it
+> previously sent to the server. The client still has it's Client ID.
+>
+> The server will re-enroll the client and instruct the client to perform a new
+> interrogation flow so that it's client info record can be updated.
 
 Once you select and view a particular client, as described in the next section,
 it will be automatically added to your Most Recently Used (MRU) list. The

@@ -177,20 +177,17 @@ under the `Client.Crypto.root_certs` key in the config file). This
 helps deployments that must use a MITM proxy or traffic inspection
 proxies.
 
-{{% notice note "Traffic inspection proxy" %}}
-
-When adding a Root Certificate to the configuration file, Velociraptor
-will treat that certificate as part of the public PKI roots -
-therefore you will need to have `Client.use_self_signed_ssl` as false.
-
-This allows Velociraptor to trust the TLS connection - however, bear
-in mind that Velociraptor's internal encryption channel is still
-present! The MITM proxy will not be able to actually decode the data
-nor can it interfere with the communications by injecting or modifying
-data. Only the outer layer of TLS encryption can be stripped by the
-MITM proxy.
-
-{{% /notice %}}
+> [!NOTE] Traffic inspection proxy
+> When adding a Root Certificate to the configuration file, Velociraptor
+> will treat that certificate as part of the public PKI roots -
+> therefore you will need to have `Client.use_self_signed_ssl` as false.
+>
+> This allows Velociraptor to trust the TLS connection - however, bear
+> in mind that Velociraptor's internal encryption channel is still
+> present! The MITM proxy will not be able to actually decode the data
+> nor can it interfere with the communications by injecting or modifying
+> data. Only the outer layer of TLS encryption can be stripped by the
+> MITM proxy.
 
 ## VQL Changes
 

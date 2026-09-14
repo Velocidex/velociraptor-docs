@@ -23,16 +23,13 @@ the collection that Velociraptor understands. This standardized data structure
 allows Velociraptor to import the data from it, while making use of the
 associated metadata when importing.
 
-{{% notice tip %}}
-
-Collection containers are also used when exporting collections or hunts from the
-server. So the same data format that the offline collector uses can also be used
-to transfer data from one server to another, for example
-[to copy/replicate data in testing or training environment](/knowledge_base/tips/prepopulate_server/),
-or
-[as a storage format for data backups](/artifact_references/pages/server.utils.backupdirectory/).
-
-{{% /notice %}}
+> [!TIP]
+> Collection containers are also used when exporting collections or hunts from the
+> server. So the same data format that the offline collector uses can also be used
+> to transfer data from one server to another, for example
+> [to copy/replicate data in testing or training environment](/knowledge_base/tips/prepopulate_server/),
+> or
+> [as a storage format for data backups](/artifact_references/pages/server.utils.backupdirectory/).
 
 As explained in
 [Collection Security](/docs/deployment/offline_collections/#collection-security),
@@ -297,14 +294,11 @@ results in external programs
 
 ## Importing collections into the Velociraptor server
 
-{{% notice note "Copying the collections to the server" %}}
-
-Offline collections are typically much larger than web browser uploads will
-allow, which is why we do not have a GUI facility to upload the collection zip
-file into the server. So you will need to use an appropriate transfer mechanism
-(such as SFTP or SCP) to upload the files to the server before importing them.
-
-{{% /notice %}}
+> [!NOTE] Copying the collections to the server
+> Offline collections are typically much larger than web browser uploads will
+> allow, which is why we do not have a GUI facility to upload the collection zip
+> file into the server. So you will need to use an appropriate transfer mechanism
+> (such as SFTP or SCP) to upload the files to the server before importing them.
 
 Most often we use the `Server.Utils.ImportCollection` artifact to import a
 collection container, but this is essentially just a convenience wrapper around
@@ -626,61 +620,58 @@ Velociraptor binary or external tools.
 
 ### Extraction with external tools
 
-{{% notice warning "Preserving file names and timestamps" %}}
-
-If you want to extract the collection containers without using Velociraptor at
-all, this is entirely possible. Note however that while you can extract the
-files using an external ZIP program, the program will not take into account the
-various transformations made by the offline collector.
-
-Some external tools use the acquired file timestamps in the analysis and parsing
-of the file itself (e.g. prefetch parsing). This is based on the assumption that
-the files being parsed are on the originating system, not taking into account
-that they may have been copied. By copying or manipulating files in any way
-those timestamps will change, thus increasing the chances of incorrect analysis.
-
-Some triage tools attempt to preserve these timestamps at the filesystem level -
-for example by creating a NTFS-based "virtual disk" container instead of a ZIP
-file. While this helps to preserve some timestamps by essentially timestomping
-the collected files into the correct timestamp, it is a workaround at best.
-
-Velociraptor instead relies on timestamps being stored separately in JSON
-metadata files written to the collection container, and does not attempt to use
-timestamps in the ZIP file itself to replicate the timestamps on the originating
-filesystem, for various reasons as
-[explained above](#collection-container-internal-structure).
-
-If you use external tools to extract files from the container zip, then you
-cannot rely on the timestamps for the extracted files! Depending on your use
-case this may or may not matter, but you should always be aware of this fact.
-
-If your analysis _does_ need to take filesystem timestamps into account, then
-you can use the
-[Windows.KapeFiles.Extract](/artifact_references/pages/windows.kapefiles.extract/)
-artifact to do the extraction. This artifact reads the stored timestamps and
-replicates them on the extracted files, however there are still some limitations
-as stated in the artifact's description.
-
-###### Example
-
-```sh
-velociraptor artifacts collect Windows.KapeFiles.Extract --args ContainerPath=Collection-DESKTOP-2OR51GL-2021-07-16_06_56_50_-0700_PDT.zip --args OutputDirectory=/tmp/MyOutput/
-```
-
-Note that this approach is really not ideal in most circumstances, and it will
-also be further affected by the filesystem type that you are extracting the
-files to: Windows allows 3 timestamps to be set (MAC times except for Btime),
-while Linux only allows 2 timestamps (Modified and Accessed).
-
-Since timestamps are usually very important in most types of analysis, it is
-preferable to perform the analysis directly on the source system, or work
-directly with the file metadata that Velociraptor collected from the source
-system.
-
-The `fuse container` command, which we describe below, also attempts to emulate
-the original timestamps based on metadata stored in the collection container.
-
-{{% /notice %}}
+> [!WARNING] Preserving file names and timestamps
+> If you want to extract the collection containers without using Velociraptor at
+> all, this is entirely possible. Note however that while you can extract the
+> files using an external ZIP program, the program will not take into account the
+> various transformations made by the offline collector.
+>
+> Some external tools use the acquired file timestamps in the analysis and parsing
+> of the file itself (e.g. prefetch parsing). This is based on the assumption that
+> the files being parsed are on the originating system, not taking into account
+> that they may have been copied. By copying or manipulating files in any way
+> those timestamps will change, thus increasing the chances of incorrect analysis.
+>
+> Some triage tools attempt to preserve these timestamps at the filesystem level -
+> for example by creating a NTFS-based "virtual disk" container instead of a ZIP
+> file. While this helps to preserve some timestamps by essentially timestomping
+> the collected files into the correct timestamp, it is a workaround at best.
+>
+> Velociraptor instead relies on timestamps being stored separately in JSON
+> metadata files written to the collection container, and does not attempt to use
+> timestamps in the ZIP file itself to replicate the timestamps on the originating
+> filesystem, for various reasons as
+> [explained above](#collection-container-internal-structure).
+>
+> If you use external tools to extract files from the container zip, then you
+> cannot rely on the timestamps for the extracted files! Depending on your use
+> case this may or may not matter, but you should always be aware of this fact.
+>
+> If your analysis _does_ need to take filesystem timestamps into account, then
+> you can use the
+> [Windows.KapeFiles.Extract](/artifact_references/pages/windows.kapefiles.extract/)
+> artifact to do the extraction. This artifact reads the stored timestamps and
+> replicates them on the extracted files, however there are still some limitations
+> as stated in the artifact's description.
+>
+> ###### Example
+>
+> ```sh
+> velociraptor artifacts collect Windows.KapeFiles.Extract --args ContainerPath=Collection-DESKTOP-2OR51GL-2021-07-16_06_56_50_-0700_PDT.zip --args OutputDirectory=/tmp/MyOutput/
+> ```
+>
+> Note that this approach is really not ideal in most circumstances, and it will
+> also be further affected by the filesystem type that you are extracting the
+> files to: Windows allows 3 timestamps to be set (MAC times except for Btime),
+> while Linux only allows 2 timestamps (Modified and Accessed).
+>
+> Since timestamps are usually very important in most types of analysis, it is
+> preferable to perform the analysis directly on the source system, or work
+> directly with the file metadata that Velociraptor collected from the source
+> system.
+>
+> The `fuse container` command, which we describe below, also attempts to emulate
+> the original timestamps based on metadata stored in the collection container.
 
 
 #### No encryption or password encryption
@@ -940,31 +931,28 @@ which could be running Windows or Linux.
 
 - Connecting virtual clients to non-root orgs is currently not supported.
 
-{{% notice note "Working with exported collection containers" %}}
-
-Because collection containers are a standardized format used for both exported
-collections and offline collectors, the `Windows.Collectors.Remapping` artifact
-can also be used with exported collection containers. For example, let's say
-you've exported a collection from your server and shared it with someone else
-(perhaps a semi-trusted 3rd-party analyst) so that they can work independently
-with it on their own server. They might just be using an
-[Instant Velociraptor](/docs/deployment/#instant-velociraptor)
-instance if they don't have a permanently installed server.
-Or they may choose to run artifacts or queries against the collection containers on the command line,
-as documented in the artifact itself, which doesn't require a Velociraptor
-server at all.
-
-
-![Working with an exported collection container](transfer-client-deadisk.svg)
-
-Since exported containers cannot be secured with certificates - fixed passwords
-being the only security option available - there is no need for them to require
-anything other than the collection container and the associated password.
-
-_You should never share your server keys or config with anyone who isn't already
-an admin on your server!_
-
-{{% /notice %}}
+> [!NOTE] Working with exported collection containers
+> Because collection containers are a standardized format used for both exported
+> collections and offline collectors, the `Windows.Collectors.Remapping` artifact
+> can also be used with exported collection containers. For example, let's say
+> you've exported a collection from your server and shared it with someone else
+> (perhaps a semi-trusted 3rd-party analyst) so that they can work independently
+> with it on their own server. They might just be using an
+> [Instant Velociraptor](/docs/deployment/#instant-velociraptor)
+> instance if they don't have a permanently installed server.
+> Or they may choose to run artifacts or queries against the collection containers on the command line,
+> as documented in the artifact itself, which doesn't require a Velociraptor
+> server at all.
+>
+>
+> ![Working with an exported collection container](transfer-client-deadisk.svg)
+>
+> Since exported containers cannot be secured with certificates - fixed passwords
+> being the only security option available - there is no need for them to require
+> anything other than the collection container and the associated password.
+>
+> _You should never share your server keys or config with anyone who isn't already
+> an admin on your server!_
 
 In it's description the `Windows.Collectors.Remapping` artifact provides
 instructions for it's use on the command line in a standalone server-independent
@@ -1018,21 +1006,18 @@ look and behave like a normal client.
    velociraptor client -c client.root.config.yaml --remap remapping.yaml
    ```
 
-   {{% notice note %}}
-
-   Since the client will generate a writeback file on disk that contains it's
-   unique client ID. This writeback file will persist and cause the client to
-   retain the same client ID between runs. If you intend to process further
-   collection containers from other hosts then you will either need to delete
-   the writeback file before starting a new client, or else add the path to a
-   new writeback file for these subsequent clients. For the latter option, this
-   can be done by adding the path to a new writeback file to the above command
-   line using the appropriate `--config.client-writeback-<platform>` flag - for
-   example, `--config.client-writeback-linux=/path/to/writeback.yaml` for Linux
-   or `--config.client-writeback-windows="C:/path/to/writeback.yaml"` for
-   Windows.
-
-   {{% /notice %}}
+> [!NOTE]
+>    Since the client will generate a writeback file on disk that contains it's
+>    unique client ID. This writeback file will persist and cause the client to
+>    retain the same client ID between runs. If you intend to process further
+>    collection containers from other hosts then you will either need to delete
+>    the writeback file before starting a new client, or else add the path to a
+>    new writeback file for these subsequent clients. For the latter option, this
+>    can be done by adding the path to a new writeback file to the above command
+>    line using the appropriate `--config.client-writeback-<platform>` flag - for
+>    example, `--config.client-writeback-linux=/path/to/writeback.yaml` for Linux
+>    or `--config.client-writeback-windows="C:/path/to/writeback.yaml"` for
+>    Windows.
 
    ![Virtual client connecting to the server](virtual_client_cli.png)
 
@@ -1062,4 +1047,3 @@ it after generating the remapping then it will not work. If you run
 `Windows.Collectors.Remapping` to generate the remapping and then choose to run
 the client on a separate system, then you should replicate the path to the
 container on the latter system.
-

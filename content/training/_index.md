@@ -60,13 +60,10 @@ The full video playlist is available
 [here](https://www.youtube.com/playlist?list=PLz4xB83Y3Vbjtqr_ttOkBWZZ_ewEVVPXQ)
 on YouTube.
 
-{{% notice info %}}
-
-Please note that these videos are not up to date with the
-[latest version](/downloads/).
-The slide deck above is more recent and contains additional sections which don't
-have corresponding videos.
-
-{{% /notice %}}
+> [!NOTE]
+> Please note that these videos are not up to date with the
+> [latest version](/downloads/).
+> The slide deck above is more recent and contains additional sections which don't
+> have corresponding videos.
 
 {{< youtube class="youtube" title="Velociraptor Installation and Overview" id="70CBB9MdNWM" >}}

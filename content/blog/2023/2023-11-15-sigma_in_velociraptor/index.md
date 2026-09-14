@@ -67,19 +67,16 @@ to different field names within the ECS - for example the field
 `System.TimeCreated.SystemTime` in the event log file is translated to
 the field `@timestamp` by the Elastic agent for storage in the database.
 
-{{% notice "warning" %}}
-
-It is often hard to know exactly what the translation is supposed to
-be because vendors attempt to normalize many different log sources to
-the same schema. In the case of ECS the [reference
-documentation](https://www.elastic.co/guide/en/ecs/current/ecs-field-reference.html)
-is incredibly vague and we need to resort to reading the code to
-figure out the exact field mappings to understand exactly where each
-field is gathered from. Additionally, this translation is not always a
-simple renaming, but sometimes involves a non-trivial transformation
-by the Elastic agent which is not always well documented.
-
-{{% /notice %}}
+> [!WARNING]
+> It is often hard to know exactly what the translation is supposed to
+> be because vendors attempt to normalize many different log sources to
+> the same schema. In the case of ECS the [reference
+> documentation](https://www.elastic.co/guide/en/ecs/current/ecs-field-reference.html)
+> is incredibly vague and we need to resort to reading the code to
+> figure out the exact field mappings to understand exactly where each
+> field is gathered from. Additionally, this translation is not always a
+> simple renaming, but sometimes involves a non-trivial transformation
+> by the Elastic agent which is not always well documented.
 
 ## The Sigma rule
 

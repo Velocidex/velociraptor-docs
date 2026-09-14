@@ -81,19 +81,16 @@ below shows how that looks in the windows task manager
 ![CPU control keeps Velociraptor at 15%](cpu_utilization.png)
 
 
-{{% notice tip "Choosing an appropriate CPU limit" %}}
-
-By reducing the allowed CPU utilization, Velociraptor will be slowed
-down so collections will take longer. You may need to increase the
-collection timeout to correspond with the extra time it takes.
-
-Note that the CPU limit refers to a percentage of the total CPU
-resources available on the endpoint. So for example, if the endpoint
-is a 2 core cloud instance a 50% utilization refers to 1 full
-core. But on a 32 core server a 50% utilization is allowed to use 16
-cores!
-
-{{% /notice %}}
+> [!TIP] Choosing an appropriate CPU limit
+> By reducing the allowed CPU utilization, Velociraptor will be slowed
+> down so collections will take longer. You may need to increase the
+> collection timeout to correspond with the extra time it takes.
+>
+> Note that the CPU limit refers to a percentage of the total CPU
+> resources available on the endpoint. So for example, if the endpoint
+> is a 2 core cloud instance a 50% utilization refers to 1 full
+> core. But on a 32 core server a 50% utilization is allowed to use 16
+> cores!
 
 ### Iops limits
 

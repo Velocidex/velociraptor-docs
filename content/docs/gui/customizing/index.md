@@ -49,28 +49,25 @@ all users on the server, unlike
 [user preferences](/docs/gui/user_preferences/)
 which are per-user.
 
-{{% notice info "Some web development experience is required" %}}
-
-Customizing GUI content does require a reasonable degree of
-understanding of HTML as well as of Go's templating language. Typical
-customization usually amounts to small tweaks where you might make a
-change to the layout or customize certain elements to suit your needs.
-However, extensive customization can be done if you really need to.
-
-There are many excellent guides to templating and HTML available on
-the internet and for that reason this is not intended to be a tutorial
-on those topics.
-
-If this is all new to you, you can still experiment by changing one
-small thing at a time. The customizations are implemented as custom
-artifacts, so if you mess it up you can always delete the custom
-artifact and Velociraptor will then revert to using the default
-built-in one. For obvious reasons, we recommend that all
-customizations be developed and tested on a non-production server. You
-can easily transfer your custom artifacts to a different server once
-you are happy with them.
-
-{{% /notice %}}
+> [!NOTE] Some web development experience is required
+> Customizing GUI content does require a reasonable degree of
+> understanding of HTML as well as of Go's templating language. Typical
+> customization usually amounts to small tweaks where you might make a
+> change to the layout or customize certain elements to suit your needs.
+> However, extensive customization can be done if you really need to.
+>
+> There are many excellent guides to templating and HTML available on
+> the internet and for that reason this is not intended to be a tutorial
+> on those topics.
+>
+> If this is all new to you, you can still experiment by changing one
+> small thing at a time. The customizations are implemented as custom
+> artifacts, so if you mess it up you can always delete the custom
+> artifact and Velociraptor will then revert to using the default
+> built-in one. For obvious reasons, we recommend that all
+> customizations be developed and tested on a non-production server. You
+> can easily transfer your custom artifacts to a different server once
+> you are happy with them.
 
 Currently there are 3 pages in the GUI that support full customization.
 
@@ -142,13 +139,10 @@ customized page.
 ![Custom image added](welcome3.png)
 
 
-{{% notice note "HTML security considerations" %}}
-
-For our GUI templates we use Go's text/template package, not the html/template
-package. In addition some sanitization is applied to the resultant HTML for
-security reasons, so not all HTML tags and features are available.
-
-{{% /notice %}}
+> [!NOTE] HTML security considerations
+> For our GUI templates we use Go's text/template package, not the html/template
+> package. In addition some sanitization is applied to the resultant HTML for
+> security reasons, so not all HTML tags and features are available.
 
 ## Create sidebar links and context menus for external resources
 
@@ -224,23 +218,20 @@ administrator.
 As mentioned above, user-specific links are merged with global links, including
 the default ones.
 
-{{% notice tip "Creating base64-encoded icons" %}}
-
-To include icons with your custom links they need to be added as Data URIs,
-which means the image (jpeg, png, or svg) need to be base64 encoded. While there
-are many online tools that can do this, conveniently we can also do this in a
-notebook using VQL!
-
-The following VQL will read an image file from the local filesystem, encode it,
-and output it in the format that's needed for the YAML config.
-
-```vql
-LET icon <= SELECT "data:image/svg+xml;base64," + base64encode(string=Data) AS icon_url
-            FROM read_file(filenames="/home/user/github-square.svg")
-SELECT serialize(format="yaml", item=icon[0]) AS icon_url_yaml FROM scope()
-```
-
-{{% /notice %}}
+> [!TIP] Creating base64-encoded icons
+> To include icons with your custom links they need to be added as Data URIs,
+> which means the image (jpeg, png, or svg) need to be base64 encoded. While there
+> are many online tools that can do this, conveniently we can also do this in a
+> notebook using VQL!
+>
+> The following VQL will read an image file from the local filesystem, encode it,
+> and output it in the format that's needed for the YAML config.
+>
+> ```vql
+> LET icon <= SELECT "data:image/svg+xml;base64," + base64encode(string=Data) AS icon_url
+>             FROM read_file(filenames="/home/user/github-square.svg")
+> SELECT serialize(format="yaml", item=icon[0]) AS icon_url_yaml FROM scope()
+> ```
 
 ## Developing custom themes
 
@@ -267,6 +258,5 @@ We already support English, German, Spanish, Portuguese, French, Japanese, and
 Vietnamese, but we welcome assistance in supporting other languages that we
 haven't got covered yet. If you would like to contribute towards supporting
 additional languages then please reach out to us on Discord.
-
 
 

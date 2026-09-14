@@ -127,18 +127,15 @@ products and applications, however they are all essentially static
 globs. The `Windows.KapeFiles.Targets` artifact looks for files on disk
 from this static list of pre-determined globs.
 
-{{% notice "note" "The new Windows.Triage.Targets artifact" %}}
-
-Since the Velociraptor 0.75 release, the `Windows.KapeFiles.Targets`
-artifact is no longer built into Velociraptor. Instead it is managed
-in its
-[own project](https://triage.velocidex.com/docs/windows.triage.targets/rules/).
-
-The new artifact goes beyond the using simple globs expressions, and
-has therefore been renamed to `Windows.Triage.Targets` to distinguish it from
-it's predecessor artifact.
-
-{{% /notice %}}
+> [!NOTE] The new Windows.Triage.Targets artifact
+> Since the Velociraptor 0.75 release, the `Windows.KapeFiles.Targets`
+> artifact is no longer built into Velociraptor. Instead it is managed
+> in its
+> [own project](https://triage.velocidex.com/docs/windows.triage.targets/rules/).
+>
+> The new artifact goes beyond the using simple globs expressions, and
+> has therefore been renamed to `Windows.Triage.Targets` to distinguish it from
+> it's predecessor artifact.
 
 ### Why is this not enough?
 
@@ -251,18 +248,15 @@ There are a few choices:
    adaptive collections as it will also collect system files and
    signed/trusted binaries.
 
-{{% notice note "Collection optimizations" %}}
-
-Adaptive rules will sometimes attempt to collect the same file. For
-example, if there are several `notepad` processes running, the `PsList`
-rule will attempt to collect `notepad.exe` multiple times.
-
-The triage artifact automatically caches and deduplicates these
-collections so that collecting the same file multiple times is safe
-and fast - only one copy will be acquired and it will be hashed only
-once.
-
-{{% /notice %}}
+> [!NOTE] Collection optimizations
+> Adaptive rules will sometimes attempt to collect the same file. For
+> example, if there are several `notepad` processes running, the `PsList`
+> rule will attempt to collect `notepad.exe` multiple times.
+>
+> The triage artifact automatically caches and deduplicates these
+> collections so that collecting the same file multiple times is safe
+> and fast - only one copy will be acquired and it will be hashed only
+> once.
 
 Let's look at the result of collecting the `PrefetchBinaries` target:
 

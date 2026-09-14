@@ -126,27 +126,24 @@ specify its type as `CLIENT_EVENT`
 
 ![Adding a custom event artifact](event_artifact.png)
 
-{{% notice tip "The different types of artifacts" %}}
-
-What is the difference between a `CLIENT` and a `CLIENT_EVENT` artifact?
-
-A `CLIENT` artifact is collected from the client, by sending a query,
-having the client execute the query, returning a result set
-(i.e. rows) back to the server. Therefore the `CLIENT` artifact
-normally has a limited lifetime (by default 10 minutes) over which to
-complete its work and return a result.
-
-`CLIENT_EVENT` artifacts are designed to run continuously on the
-client, streaming rows to the server when events occur. Therefore
-these are treated differently by the client: The client simply records
-the event queries it is to run in a `Client Event Table`.
-
-The client starts running all the event queries when it first
-starts. If the client table changes on the server (perhaps because the
-user added a new event artifact to the client), the client will resync
-its event table and restart all its queries.
-
-{{% /notice %}}
+> [!TIP] The different types of artifacts
+> What is the difference between a `CLIENT` and a `CLIENT_EVENT` artifact?
+>
+> A `CLIENT` artifact is collected from the client, by sending a query,
+> having the client execute the query, returning a result set
+> (i.e. rows) back to the server. Therefore the `CLIENT` artifact
+> normally has a limited lifetime (by default 10 minutes) over which to
+> complete its work and return a result.
+>
+> `CLIENT_EVENT` artifacts are designed to run continuously on the
+> client, streaming rows to the server when events occur. Therefore
+> these are treated differently by the client: The client simply records
+> the event queries it is to run in a `Client Event Table`.
+>
+> The client starts running all the event queries when it first
+> starts. If the client table changes on the server (perhaps because the
+> user added a new event artifact to the client), the client will resync
+> its event table and restart all its queries.
 
 Once Velociraptor contains the new artifact it is time to deploy the
 artifact to endpoints. Velociraptor can target different event

@@ -101,9 +101,8 @@ You can try this all on your own Velociraptor. You don’t have to do this but y
     velociraptor-v0.6.1-windows-amd64.exe gui
 ```
 
-{{% notice note %}}
-Please use the latest version: 0.6.1
-{{% /notice %}}
+> [!NOTE]
+> Please use the latest version: 0.6.1
 
 There are a few simple steps to get the artifacts and tools set up on your server:
 
@@ -147,9 +146,8 @@ The tools in this repo are all the latest release versions from the author’s r
 
 * `CAPA` binaries: [https://github.com/fireeye/capa](https://github.com/fireeye/capa)
 
-{{% notice tip %}}
-For testing purposes you can also download some evtx files from [here](https://github.com/sans-blue-team/DeepBlueCLI) which contain events from simulated malicious activity.
-{{% /notice %}}
+> [!TIP]
+> For testing purposes you can also download some evtx files from [here](https://github.com/sans-blue-team/DeepBlueCLI) which contain events from simulated malicious activity.
 
 Now we’re ready to go!
 *Поехали!*
@@ -171,9 +169,8 @@ But for the purpose of keeping this demonstration as concise as possible we will
 In addition to freeing us up from the annoying dependency on path specifications, this approach also allows us to target files that have had their file extension changed or removed. As mentioned previously, having our targeting done independent of file paths and/or file names allows us to deal with the “offline data” use case more easily. And as a bonus it also makes things relatively platform-independent.
 
 
-{{% notice note %}}
-More fancy filtering could be implemented but we’re trying to keep it simple. The goal of this artifact is to identify relevant files and report back with their path. Subsequent artifacts could apply additional targeting logic based on things like timestamps or file content for example. In this case we are going to do more in-depth analysis with [GENE](https://github.com/0xrawsec/gene) and [`CAPA`](https://github.com/fireeye/capa) and use these tools to identify a subset of files that are more significant than the rest.
-{{% /notice %}}
+> [!NOTE]
+> More fancy filtering could be implemented but we’re trying to keep it simple. The goal of this artifact is to identify relevant files and report back with their path. Subsequent artifacts could apply additional targeting logic based on things like timestamps or file content for example. In this case we are going to do more in-depth analysis with [GENE](https://github.com/0xrawsec/gene) and [`CAPA`](https://github.com/fireeye/capa) and use these tools to identify a subset of files that are more significant than the rest.
 
 
 ![](0KpOIdK2H4TRVxqQY.png)
@@ -230,9 +227,8 @@ The key things to notice about these artifacts are:
 
 1. We give them a generous timeout because we could be targeting a large set of files that were previously collected and are now being analyzed “offline”. Also `Capa` is written in Python and slow as molasses.
 
-{{% notice note %}}
-Windows Defender will probably prevent `Capa` from running. You may need to temporarily disable it’s realtime protection option or else add a realtime scanning exclusion for the folder your testing on.
-{{% /notice %}}
+> [!NOTE]
+> Windows Defender will probably prevent `Capa` from running. You may need to temporarily disable it’s realtime protection option or else add a realtime scanning exclusion for the folder your testing on.
 
 ## Step 4: Have Velociraptor server decide what the client should do next
 
@@ -270,9 +266,8 @@ This artifact provides 2 functions which are invoked by 2 buttons in the VFS GUI
 
 We would like to be able to browse around on the client machine and when we find an interesting folder we want to be able to click a button and let Velociraptor do the rest! To do that we are going to have to hijack one of those buttons. The “Download Recursive” button and corresponding VQL artifact’s function seems to be the best match for our purposes since we want to target a folder and do stuff recursively with the files in that folder.
 
-{{% notice note %}}
-It sucks that we need to hijack a built-in “system” artifact to do this, and we feel really bad about doing it (well not really), but at present there are no “custom function” buttons available in the VFS browser GUI. So for now we do this with full knowledge that it is frowned upon and that we are subverting functionality which may be needed for other purposes.
-{{% /notice %}}
+> [!NOTE]
+> It sucks that we need to hijack a built-in “system” artifact to do this, and we feel really bad about doing it (well not really), but at present there are no “custom function” buttons available in the VFS browser GUI. So for now we do this with full knowledge that it is frowned upon and that we are subverting functionality which may be needed for other purposes.
 
 ![](0EkAQm0IkMK23HT1I.png)
 

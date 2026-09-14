@@ -48,22 +48,19 @@ A global CPU limit may automatically be applied if
 Velociraptor detects it is running on a particularly low resource
 endpoint (e.g. with only a single core).
 
-{{% notice note "CPU Throttling trade-offs" %}}
-
-While we always aim to have as little CPU impact as possible on the
-endpoint, it is not appropriate to collect artifacts with artificially
-low CPU utilization limits. A low CPU limit means that the query is
-paused more often and takes longer to complete - it is a trade off
-between how long the query takes to complete and overall impact on the
-endpoint.
-
-Client artifact collections have a time limit as well (by default 10
-minutes), so reducing the CPU limit may cause the query to exceed to
-the time limit, causing collection to fail.
-
-Similarly, Client Monitoring queries may not get to run when heavier
-collections are proceeding (pushing CPU use above threshold). This may
-cause them to miss events, increasing detection latency or even
-failing to detect important events.
-
-{{% /notice %}}
+> [!NOTE] CPU Throttling trade-offs
+> While we always aim to have as little CPU impact as possible on the
+> endpoint, it is not appropriate to collect artifacts with artificially
+> low CPU utilization limits. A low CPU limit means that the query is
+> paused more often and takes longer to complete - it is a trade off
+> between how long the query takes to complete and overall impact on the
+> endpoint.
+>
+> Client artifact collections have a time limit as well (by default 10
+> minutes), so reducing the CPU limit may cause the query to exceed to
+> the time limit, causing collection to fail.
+>
+> Similarly, Client Monitoring queries may not get to run when heavier
+> collections are proceeding (pushing CPU use above threshold). This may
+> cause them to miss events, increasing detection latency or even
+> failing to detect important events.

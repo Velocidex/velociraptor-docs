@@ -162,9 +162,8 @@ Making it difficult to visually inspect the commandline.
 In this example we wish to decode such a command on the server to
 present a small subset of decoded powershell command lines.
 
-{{% notice note %}}
- Alternatively we can decode the commandline on the endpoint itself and forward the enriched event (including the decoded command line)
-{{% /notice %}}
+> [!NOTE]
+>  Alternatively we can decode the commandline on the endpoint itself and forward the enriched event (including the decoded command line)
 
 Consider the `Server.Powershell.EncodedCommand` artifact:
 

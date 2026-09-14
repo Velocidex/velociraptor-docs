@@ -128,6 +128,5 @@ We opened this article by imagining a world where experienced forensic practitio
 
 Velociraptor is available under an open source license on [GitHub](https://github.com/Velocidex/velociraptor). You can download the latest Velociraptor release and use it immediately, or clone the source repository and contribute to the project. You can also contribute VQL snippets or artifacts directly to the project in order to share commonly used artifacts with the larger community.
 
-{{% notice tip %}}
-About the author: Mike Cohen is a digital forensic researcher and senior software engineer. He has supported leading open-source DFIR projects including as a core developer of Volatility and lead developer of both Rekall and Google’s Grr Rapid Response. Mike has founded Velocidex in 2018 after working at Google for the previous 8 years in developing cutting edge DFIR tools. Velocidex is the company behind the Velociraptor open source endpoint visibility tool.
-{{% /notice %}}
+> [!TIP]
+> About the author: Mike Cohen is a digital forensic researcher and senior software engineer. He has supported leading open-source DFIR projects including as a core developer of Volatility and lead developer of both Rekall and Google’s Grr Rapid Response. Mike has founded Velocidex in 2018 after working at Google for the previous 8 years in developing cutting edge DFIR tools. Velocidex is the company behind the Velociraptor open source endpoint visibility tool.

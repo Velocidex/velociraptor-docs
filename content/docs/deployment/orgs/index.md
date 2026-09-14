@@ -94,14 +94,11 @@ least the `Reader` role in that org..
 
 ### Creating a new Org
 
-{{% notice tip "Orgs are always managed from the Root org" %}}
-
-Since the `Org Administrator` permission is only meaningful for the
-root org you should ensure that you are in the root org in the GUI before
-creating or deleting orgs. Attempting to create or delete orgs from a non-root
-org will always fail.
-
-{{% /notice %}}
+> [!TIP] Orgs are always managed from the Root org
+> Since the `Org Administrator` permission is only meaningful for the
+> root org you should ensure that you are in the root org in the GUI before
+> creating or deleting orgs. Attempting to create or delete orgs from a non-root
+> org will always fail.
 
 You can use the `Server.Orgs.NewOrg` server artifact to create a new org
 

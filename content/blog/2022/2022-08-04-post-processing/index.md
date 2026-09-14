@@ -32,16 +32,13 @@ Once files are collected, they are typically parsed using various
 parsers and single purpose tools. Traditionally using tools such as
 `Plaso`, Eric Zimmerman's tools and various specialized scripts.
 
-{{% notice note "The KapeFiles project" %}}
-
-In the following discussion we refer to the
-`Windows.KapeFiles.Targets` artifact. This artifact is not related to
-the commercial `Kape` product. The artifact is generated from the open
-source [KapeFiles](https://github.com/EricZimmerman/KapeFiles) project
-on GitHub - an effort to document the path location of many bulk file
-evidence sources.
-
-{{% /notice %}}
+> [!NOTE] The KapeFiles project
+> In the following discussion we refer to the
+> `Windows.KapeFiles.Targets` artifact. This artifact is not related to
+> the commercial `Kape` product. The artifact is generated from the open
+> source [KapeFiles](https://github.com/EricZimmerman/KapeFiles) project
+> on GitHub - an effort to document the path location of many bulk file
+> evidence sources.
 
 ## The Velociraptor approach to triage
 
@@ -118,14 +115,11 @@ The VQL then simply calls the artifact `Windows.Timeline.Prefetch`
 with the relevant glob allowing it to search for prefetch files on the
 server.
 
-{{% notice note "Notebooks queries" %}}
-
-Notebooks contain cells which help the user to evaluate VQL queries
-**on the server**. Remember that notebook queries always run on the
-server and not on the original client. This post-processing query will
-parse the prefetch files on the server itself.
-
-{{% /notice %}}
+> [!NOTE] Notebooks queries
+> Notebooks contain cells which help the user to evaluate VQL queries
+> **on the server**. Remember that notebook queries always run on the
+> server and not on the original client. This post-processing query will
+> parse the prefetch files on the server itself.
 
 ![Simple parsing of server collected files](simple_postprocessing.png)
 

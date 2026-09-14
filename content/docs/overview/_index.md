@@ -6,14 +6,11 @@ weight = 5
 chapter = false
 +++
 
-{{% notice "note" "" %}}
-
-Velociraptor is a unique, enterprise grade, open-source platform for
-endpoint monitoring, digital forensic and cyber response. Velociraptor
-covers the entirety of the attack life cycle, providing responders a
-powerful capability to address past, present and future events.
-
-{{% /notice %}}
+> [!NOTE]
+> Velociraptor is a unique, enterprise grade, open-source platform for
+> endpoint monitoring, digital forensic and cyber response. Velociraptor
+> covers the entirety of the attack life cycle, providing responders a
+> powerful capability to address past, present and future events.
 
 ## The incident response timeline
 

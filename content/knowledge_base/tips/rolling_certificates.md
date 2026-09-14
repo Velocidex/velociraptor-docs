@@ -79,13 +79,10 @@ You can generate a new config on day 1 based on the initial config using the
 `config reissue_certs` command. You can then use the new config for the new
 server installation.
 
-{{% notice tip %}}
-
-In version 0.74 and later the configuration wizard (`velociraptor config
-generate -i`) allows you to issue the server certificate with either 1-year,
-2-year or 10-year validity.
-
-{{% /notice %}}
+> [!TIP]
+> In version 0.74 and later the configuration wizard (`velociraptor config
+> generate -i`) allows you to issue the server certificate with either 1-year,
+> 2-year or 10-year validity.
 
 #### Option 1: Reissue only the server cert
 

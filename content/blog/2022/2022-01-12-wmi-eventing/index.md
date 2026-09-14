@@ -84,13 +84,11 @@ limited by visibility in root/default and root/subscription only.
 * `Windows.Persistence.PermanentWMIEvents` - recently upgraded to query
 all ROOT namespaces.
 
-{{% notice tip "Windows.Persistence.PermanentWMIEvents" %}}
-* This artifact reports currently deployed permanent WMI Event Consumers.
-* The artifact collects Binding information, then presents associated Filters and Consumers.
-* Target a specific namespace, or tick `AllRootNamespaces` to collect all
-root namespace event consumers.
-
-{{% /notice %}}
+> [!TIP] Windows.Persistence.PermanentWMIEvents
+> * This artifact reports currently deployed permanent WMI Event Consumers.
+> * The artifact collects Binding information, then presents associated Filters and Consumers.
+> * Target a specific namespace, or tick `AllRootNamespaces` to collect all
+> root namespace event consumers.
 
 ![Windows.Persistence.PermanentWMIEvents: configuration options](05collection.png)
 

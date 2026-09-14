@@ -16,23 +16,20 @@ Velociraptor API. In this page you will learn how to connect to the
 server using the API and control it using a Python script to schedule
 collections on hosts and retrieve the results of those collections.
 
-{{% notice warning "API Security is complicated!" %}}
-
-Connecting an external program to Velociraptor via the API can enable
-a SOAR-like workflow, automating the launching and reading or
-artifact data.
-
-This can increase the attack surface of the system, as compromise of
-the API keys can enable an attacker to act on the Velociraptor server
-with the permissions given to the key.
-
-Please, be aware of the implications of allowing automated collection on
-endpoints and review the information in
-[API client security](/docs/deployment/security/#api-client-security)
-and
-[Artifact Security](/docs/artifacts/security/) carefully.
-
-{{% /notice %}}
+> [!WARNING] API Security is complicated!
+> Connecting an external program to Velociraptor via the API can enable
+> a SOAR-like workflow, automating the launching and reading or
+> artifact data.
+>
+> This can increase the attack surface of the system, as compromise of
+> the API keys can enable an attacker to act on the Velociraptor server
+> with the permissions given to the key.
+>
+> Please, be aware of the implications of allowing automated collection on
+> endpoints and review the information in
+> [API client security](/docs/deployment/security/#api-client-security)
+> and
+> [Artifact Security](/docs/artifacts/security/) carefully.
 
 ## Why an API?
 
@@ -71,35 +68,32 @@ Since VQL allows for many tasks, from server administration, post
 processing of collection results and scheduling of new collections,
 the API is extremely flexible and powerful.
 
-{{% notice info "Why not a REST API?" %}}
-
-Many users ask us about a REST API for Velociraptor. Why do we choose
-gRPC rather than REST?
-
-Actually Velociraptor does have a REST API as well, which is used
-internally by the GUI. However, that API is not considered public or
-stable, and we discourage users from using it.
-
-The gRPC API is geared towards usage by an external program which is
-not a browser and needs to operate without human interaction.
-
-1. The REST API requires an `Oauth2` authentication flow. This is
-   inherently a user based flow (which requires a browser) making it
-   complicated to implement for automated scripts. In contrast the
-   gRPC API only requires a certificate to connect, making it ideal
-   for automated scripts.
-
-2. The gRPC API is streaming! This means that a query on the server
-   can start to feed data immediately and remain connected until the
-   query is complete. In fact, the gRPC API supports event queries
-   which never terminate. This is not possible to do with the REST API
-   since there is no state in the API itself.
-
-For further comparison between the gRPC API and HTTP API see [Compare
-gRPC services with HTTP
-APIs](https://learn.microsoft.com/en-us/aspnet/core/grpc/comparison?view=aspnetcore-10.0).
-
-{{% /notice %}}
+> [!NOTE] Why not a REST API?
+> Many users ask us about a REST API for Velociraptor. Why do we choose
+> gRPC rather than REST?
+>
+> Actually Velociraptor does have a REST API as well, which is used
+> internally by the GUI. However, that API is not considered public or
+> stable, and we discourage users from using it.
+>
+> The gRPC API is geared towards usage by an external program which is
+> not a browser and needs to operate without human interaction.
+>
+> 1. The REST API requires an `Oauth2` authentication flow. This is
+>    inherently a user based flow (which requires a browser) making it
+>    complicated to implement for automated scripts. In contrast the
+>    gRPC API only requires a certificate to connect, making it ideal
+>    for automated scripts.
+>
+> 2. The gRPC API is streaming! This means that a query on the server
+>    can start to feed data immediately and remain connected until the
+>    query is complete. In fact, the gRPC API supports event queries
+>    which never terminate. This is not possible to do with the REST API
+>    since there is no state in the API itself.
+>
+> For further comparison between the gRPC API and HTTP API see [Compare
+> gRPC services with HTTP
+> APIs](https://learn.microsoft.com/en-us/aspnet/core/grpc/comparison?view=aspnetcore-10.0).
 
 ### Protecting the API
 
@@ -449,17 +443,14 @@ looking for a specific flow though which was stored in the
 WHERE condition.  Finally we wish to quit the query once a single row
 is found so we specify a LIMIT of 1 row.
 
-{{% notice note "Waiting for a query" %}}
-
-Note the `LET _ <=` statement. This tells VQL to materialize the query
-and store the result in a dummy variable. This statement causes VQL to
-pause and wait for the query to complete before evaluating the next
-query.
-
-See [Materialized LET expressions](/docs/vql/fundamentals/#materialized-let-expressions)
-for more about this.
-
-{{% /notice %}}
+> [!NOTE] Waiting for a query
+> Note the `LET _ <=` statement. This tells VQL to materialize the query
+> and store the result in a dummy variable. This statement causes VQL to
+> pause and wait for the query to complete before evaluating the next
+> query.
+>
+> See [Materialized LET expressions](/docs/vql/fundamentals/#materialized-let-expressions)
+> for more about this.
 
 After this query exits we know the collection is complete. This may
 take a few seconds if the machine is online or it could take days or
@@ -493,21 +484,17 @@ Sun Nov  7 11:32:29 2021: vql: Time 0: Test: Sending response part 0 334 B (1 ro
 Sun Nov  7 11:32:29 2021: vql: Query Stats: {"RowsScanned":2,"PluginsCalled":2,"FunctionsCalled":2,"ProtocolSearch":0,"ScopeCopy":9}
 ```
 
-{{% notice tip "Triggering external code based on server events" %}}
-
-The above query demonstrates a common use case for the API - notifying
-an external script of an event occurring on the server. For example
-external python scripts can be notified when a specific artifact is
-collected, inspect its results, and upload them to further processing
-to an external system or escalate alerts for example.
-
-The API connection will simply block until an event occurs allowing
-you to create a fully automated pipeline based off Velociraptor
-collections, hunts etc.
-
-The pyvelociraptor GitHub repo contains
-[several examples](https://github.com/Velocidex/pyvelociraptor/tree/master/pyvelociraptor)
-demonstrating how to perform common tasks.
-
-{{% /notice %}}
-
+> [!TIP] Triggering external code based on server events
+> The above query demonstrates a common use case for the API - notifying
+> an external script of an event occurring on the server. For example
+> external python scripts can be notified when a specific artifact is
+> collected, inspect its results, and upload them to further processing
+> to an external system or escalate alerts for example.
+>
+> The API connection will simply block until an event occurs allowing
+> you to create a fully automated pipeline based off Velociraptor
+> collections, hunts etc.
+>
+> The pyvelociraptor GitHub repo contains
+> [several examples](https://github.com/Velocidex/pyvelociraptor/tree/master/pyvelociraptor)
+> demonstrating how to perform common tasks.

@@ -55,28 +55,25 @@ for testing, so it is generally recommended unless you have a strong preference
 for something else. If you choose to use another Linux distro then please note
 that it needs to be one that uses systemd, although most do these days.
 
-{{% notice info "Network filtering requirements" %}}
-
-The virtual machine must be able to receive connections over *both* ports 80 and
-443. Be sure to check inbound filtering Access Control Lists to ensure that
-access is allowed. When using SSL, both the client communication and the Admin
-GUI are served over the same port to benefit from SSL transport encryption. The
-Let's Encrypt protocol requires Let's Encrypt's servers to connect to the VM on
-port 80 for the purpose of certificate issuance and renewal, however
-Velociraptor will only provide services on the SSL-secured port 443.
-
-If you forgot to open port 80, Let's Encrypt will fail to issue the
-certificate and repeated failures might result in them
-[blocking the domain name](https://letsencrypt.org/docs/rate-limits/#authorization-failures-per-hostname-per-account)
-from getting an SSL certificate for several days. If you find that this has
-happened and you can't afford to wait, then you will need to change to a new
-DNS name and start again.
-
-Several Velociraptor features do require outbound access from the server to GitHub,
-although [it is possible](/artifact_references/pages/server.utils.uploadtools/)
-for the server to operate without any internet access.
-
-{{% /notice %}}
+> [!NOTE] Network filtering requirements
+> The virtual machine must be able to receive connections over *both* ports 80 and
+> 443. Be sure to check inbound filtering Access Control Lists to ensure that
+> access is allowed. When using SSL, both the client communication and the Admin
+> GUI are served over the same port to benefit from SSL transport encryption. The
+> Let's Encrypt protocol requires Let's Encrypt's servers to connect to the VM on
+> port 80 for the purpose of certificate issuance and renewal, however
+> Velociraptor will only provide services on the SSL-secured port 443.
+>
+> If you forgot to open port 80, Let's Encrypt will fail to issue the
+> certificate and repeated failures might result in them
+> [blocking the domain name](https://letsencrypt.org/docs/rate-limits/#authorization-failures-per-hostname-per-account)
+> from getting an SSL certificate for several days. If you find that this has
+> happened and you can't afford to wait, then you will need to change to a new
+> DNS name and start again.
+>
+> Several Velociraptor features do require outbound access from the server to GitHub,
+> although [it is possible](/artifact_references/pages/server.utils.uploadtools/)
+> for the server to operate without any internet access.
 
 
 #### Get a DNS name for your server
@@ -147,18 +144,15 @@ velociraptor.exe config generate -i
 {{% /tab %}}
 {{< /tabs >}}
 
-{{% notice tip %}}
-
-The aim of the wizard is to make it easy to configure Velociraptor in the most
-common deployment scenarios. Even though these scenarios will not be a perfect
-fit for everyone, most users should be able to start with these deployment modes
-and tweak the configuration to their specific needs.
-
-The end result of running the configuration wizard is a YAML configuration file.
-So there is no harm in doing "dry runs" and examining or comparing resulting
-files to better understand how the choices affect the resulting configuration.
-
-{{% /notice %}}
+> [!TIP]
+> The aim of the wizard is to make it easy to configure Velociraptor in the most
+> common deployment scenarios. Even though these scenarios will not be a perfect
+> fit for everyone, most users should be able to start with these deployment modes
+> and tweak the configuration to their specific needs.
+>
+> The end result of running the configuration wizard is a YAML configuration file.
+> So there is no harm in doing "dry runs" and examining or comparing resulting
+> files to better understand how the choices affect the resulting configuration.
 
 #### Deployment Type
 
@@ -392,16 +386,13 @@ for a different architecture, for example arm64, you must specify the binary in
 the command.
 
 
-{{% notice warning "Make sure the server installation package file is well protected!" %}}
-
-The server installation package that we created also contains a copy of the
-server config, so you should handle it with the same security considerations as
-the config file itself.
-
-A compromise of the file will allow access to private key material enabling a
-MITM attacks against Velociraptor.
-
-{{% /notice %}}
+> [!WARNING] Make sure the server installation package file is well protected!
+> The server installation package that we created also contains a copy of the
+> server config, so you should handle it with the same security considerations as
+> the config file itself.
+>
+> A compromise of the file will allow access to private key material enabling a
+> MITM attacks against Velociraptor.
 
 If you did not perform the previous steps on your server then you will need to
 copy the server installation file to your server. For example, you could push
@@ -575,4 +566,3 @@ consider:
 - [Consider creating Orgs](/docs/deployment/orgs/) for managing
   distinct sets of clients.
 - [Plan for a more durable and secure installation](/docs/deployment/server/)
-

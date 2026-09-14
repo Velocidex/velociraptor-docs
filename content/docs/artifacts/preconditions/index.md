@@ -95,18 +95,15 @@ scope for each source.
 The presence of a precondition on ANY source causes ALL sources in the artifact
 to execute in parallel.
 
-{{% notice tip %}}
-
-This means that you can force your artifact to execute in parallel mode
-by adding a precondition to any source, even if the precondition itself
-doesn't actually do anything useful! It can be a query that always evaluates as
-TRUE, for example: `precondition: SELECT TRUE FROM scope()`.
-
-Conversely, if you want sources to have access to results from prior sources
-then you need to construct your artifact logic so that it doesn't require or use
-any source-level preconditions.
-
-{{% /notice %}}
+> [!TIP]
+> This means that you can force your artifact to execute in parallel mode
+> by adding a precondition to any source, even if the precondition itself
+> doesn't actually do anything useful! It can be a query that always evaluates as
+> TRUE, for example: `precondition: SELECT TRUE FROM scope()`.
+>
+> Conversely, if you want sources to have access to results from prior sources
+> then you need to construct your artifact logic so that it doesn't require or use
+> any source-level preconditions.
 
 Artifact-level preconditions have no effect on execution mode.
 

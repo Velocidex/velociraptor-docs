@@ -44,26 +44,23 @@ You can begin the process of creating a fork of the repo, to which you
 can then add your artifact contribution, by clicking the button on the
 top-right of this page.
 
-{{% notice warning "Security of the exchange" %}}
-
-The artifact exchange is not officially supported by the Velociraptor
-team and contains contributions from the community. The quality,
-security and stability of artifacts from the exchange **is not
-guaranteed**. Some artifacts from the exchange will fetch external
-binaries and run them on your endpoints! These binaries are **not
-reviewed or endorsed** by the Velociraptor team or Rapid7!
-
-Contributions to the exchange must meet a lower quality bar than
-built-in artifacts (for example lacking tests), which means that they
-may break at any time or not work as described! Responsibility for
-maintaining exchange artifacts rests entirely with the artifact's
-author.
-
-Collecting any of the artifacts in the exchange **is purely at your
-own risk!**. **We strongly suggest users review exchange artifacts
-carefully before deploying them on their network!**
-
-{{% /notice %}}
+> [!WARNING] Security of the exchange
+> The artifact exchange is not officially supported by the Velociraptor
+> team and contains contributions from the community. The quality,
+> security and stability of artifacts from the exchange **is not
+> guaranteed**. Some artifacts from the exchange will fetch external
+> binaries and run them on your endpoints! These binaries are **not
+> reviewed or endorsed** by the Velociraptor team or Rapid7!
+>
+> Contributions to the exchange must meet a lower quality bar than
+> built-in artifacts (for example lacking tests), which means that they
+> may break at any time or not work as described! Responsibility for
+> maintaining exchange artifacts rests entirely with the artifact's
+> author.
+>
+> Collecting any of the artifacts in the exchange **is purely at your
+> own risk!**. **We strongly suggest users review exchange artifacts
+> carefully before deploying them on their network!**
 
 ### Importing the artifact exchange
 

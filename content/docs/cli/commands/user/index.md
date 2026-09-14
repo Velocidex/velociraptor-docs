@@ -16,16 +16,13 @@ Since these commands apply to user objects in the server's datastore, you will
 always need to use the `--config` (or `-c`) flag with them.
 
 
-{{% notice warning %}}
-
-Changes made using this CLI command will not be effective until the server is
-restarted!
-
-To add or modify users during runtime you should instead use the `user`,
-`user_create`, `user_delete`, or `user_grant`
-[VQL functions](/vql_reference/).
-
-{{% /notice %}}
+> [!WARNING]
+> Changes made using this CLI command will not be effective until the server is
+> restarted!
+>
+> To add or modify users during runtime you should instead use the `user`,
+> `user_create`, `user_delete`, or `user_grant`
+> [VQL functions](/vql_reference/).
 
 ---
 
