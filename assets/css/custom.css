@@ -266,9 +266,10 @@ html.dark .platform svg path {
    inline-flex from md up) so responsive behaviour is unchanged; this CSS
    only adds the button chrome and colours. */
 .hextra-nav-btn {
-  min-width: 7rem;              /* equal widths for all three buttons */
-  height: 2.25rem;              /* 36px */
-  padding: 0 0.75rem;
+   min-width: 7rem;              /* equal widths for all three buttons */
+   height: 33.5px;               /* match the navbar search input (text-sm
+                                    leading-tight + py-2), borders included */
+   padding: 0 0.75rem;
   border: 1px solid #d1d5db;    /* gray-300 */
   border-radius: 8px;           /* same as the navbar search input */
   font-size: 0.875rem;

@@ -78,9 +78,9 @@
 {{- end -}}
 
 {{- define "sidebar-tree" -}}
-  {{- if ge .level 4 -}}
-    {{- return -}}
-  {{- end -}}
+  {{- /* no_children leaf-mode (was: {{ return }} inside if, which does not
+         stop rendering in this Hugo version) */ -}}
+  {{- if not .context.Params.no_children -}}
 
   {{- $context := .context -}}
   {{- $page := .page }}
@@ -257,6 +257,7 @@
       </div>
     {{- end -}}
   {{- end -}}
+    {{- end -}}  {{/* close depth/no_children wrapper */ -}}
 {{- end -}}
 
 {{- define "sidebar-toc" -}}
@@ -309,7 +310,7 @@
   {{- $open := .open | default true -}}
   {{- $hasChildren := false -}}
   {{- $linkClass := "hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset" -}}
-  {{- with .context }}{{ if or .RegularPages .Sections }}{{ $hasChildren = true }}{{ end }}{{ end -}}
+  {{- with .context }}{{ if and (ne .Params.no_children true) (or .RegularPages .Sections) }}{{ $hasChildren = true }}{{ end }}{{ end -}}
   {{- if $hasChildren -}}
     {{- $linkClass = printf "%s hx:ltr:pr-8 hx:rtl:pl-8" $linkClass -}}
   {{- end -}}
