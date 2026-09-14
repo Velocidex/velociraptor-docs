@@ -24,33 +24,6 @@ The guidance in this document is intended to:
   consistent with existing content on the website.
 - centralize image content-related decisions.
 
----
-
-- [Image categories](#image-categories)
-- [Fonts](#fonts)
-- [Colors](#colors)
-- [Excalidraw object library](#excalidraw-object-library)
-- [Screenshots](#screenshots)
-  - [Screen size](#screen-size)
-      - [Partial screens](#partial-screens)
-        - [Framing](#framing)
-      - [Full screens](#full-screens)
-  - [Velociraptor theme](#velociraptor-theme)
-  - [Annotations](#annotations)
-      - [Arrows](#arrows)
-      - [Numbered callouts](#numbered-callouts)
-      - [Excalidraw-specific options](#excalidraw-specific-options)
-- [Line diagrams](#line-diagrams)
-- [Exporting images](#exporting-images)
-  - [Formats and settings](#formats-and-settings)
-  - [Fonts in SVG images](#fonts-in-svg-images)
-  - [File size](#file-size)
-- [GIF animations](#gif-animations)
-  - [Terminal session recordings](#terminal-session-recordings)
-
-
----
-
 ## Image categories
 
 Image content generally falls into one of these categories:

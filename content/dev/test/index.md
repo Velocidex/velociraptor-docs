@@ -9,35 +9,6 @@ description: A page for testing and previewing the presentation of common conten
 A page for testing and previewing the presentation of common content
 components.
 
----
-
-- [Admonitions](#admonitions)
-- [Images](#images)
-  - [Raster types](#raster-types)
-  - [SVG](#svg)
-  - [Fontawesome Icons](#fontawesome-icons)
-- [Explicit Links](#explicit-links)
-- [Implicit Links](#implicit-links)
-- [Headings](#headings)
-- [Level 1 Heading](#level-1-heading)
-- [Level 2 Heading](#level-2-heading)
-  - [Level 3 Heading](#level-3-heading)
-      - [Level 4 Heading](#level-4-heading)
-        - [Level 5 Heading](#level-5-heading)
-            - [Level 6 Heading](#level-6-heading)
-- [Emphasis (Bold and Italic)](#emphasis-bold-and-italic)
-- [Lists](#lists)
-  - [Unordered](#unordered)
-  - [Ordered](#ordered)
-- [Blockquotes](#blockquotes)
-- [Inline Code and Code Blocks](#inline-code-and-code-blocks)
-            - [VQL example](#vql-example)
-            - [Python example](#python-example)
-- [Horizontal Rules](#horizontal-rules)
-- [Escaping Characters](#escaping-characters)
-
----
-
 ## Admonitions
 
 Currently we support 4 admonition types: `note`, `tip`, `info`,

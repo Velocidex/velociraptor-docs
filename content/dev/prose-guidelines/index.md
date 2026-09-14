@@ -33,29 +33,6 @@ compliant during future reviews.
 This document is also a work-in-progress, and not set-in-stone
 "rules".
 
----
-
-- [Markdown flavor](#markdown-flavor)
-- [Text wrapping](#text-wrapping)
-- [HTML content](#html-content)
-  - [Inline code](#inline-code)
-  - [Block code](#block-code)
-            - [Example](#example)
-  - [Admonitions (notices)](#admonitions-notices)
-  - [Unordered lists](#unordered-lists)
-  - [Shell commands](#shell-commands)
-  - [Internal links](#internal-links)
-- [Common page structures](#common-page-structures)
-  - [Ordinary documentation pages](#ordinary-documentation-pages)
-      - [Page metadata](#page-metadata)
-  - [KB articles](#kb-articles)
-  - [VQL reference documents](#vql-reference-documents)
-  - [Examples](#examples)
-  - [UI Elements](#ui-elements)
-  - [CLI command reference pages](#cli-command-reference-pages)
-
----
-
 ## Markdown flavor
 
 Our docs website is compiled by Hugo which interprets markdown based
