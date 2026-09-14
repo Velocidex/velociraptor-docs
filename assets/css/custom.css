@@ -16,7 +16,7 @@
   src: local("Iosevka Term"),
     url("/fonts/iosevka-term-regular-subset.woff2") format("woff2");
   unicode-range: U+0020-007E, U+0080-00FF;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -26,7 +26,7 @@
   src: local("Iosevka Term"),
     url("/fonts/iosevka-term-medium-subset.woff2") format("woff2");
   unicode-range: U+0020-007E, U+0080-00FF;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -36,7 +36,7 @@
   src: local("Iosevka Term"),
     url("/fonts/iosevka-term-bold-subset.woff2") format("woff2");
   unicode-range: U+0020-007E, U+0080-00FF;
-  font-display: swap;
+  font-display: block;
 }
 
 /* Iosevka everywhere: body, UI chrome and code. Overrides Hextra/Tailwind
