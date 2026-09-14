@@ -6,6 +6,7 @@
 {{- $style := .Get "style" | default "li" -}}
 {{- $depth := .Get "depth" | default 1 -}}
 {{- $withDescription := .Get "description" | default false -}}
+{{- $gridCols := .Get "grid-cols" | default 3 -}}
 {{- $sortTerm := .Get "sort" | default "Weight" -}}
 
 {{- $pages := .Page.Pages -}}
@@ -27,7 +28,7 @@
 {{- if hasPrefix $style "h" }}
   {{ template "childs" dict "menu" $sorted "style" $style "showhidden" $showhidden "count" 1 "depth" $depth "description" $withDescription }}
 {{- else }}
-<div class="hextra-cards hx:mt-4 hx:gap-4 hx:grid not-prose" style="--hextra-cards-grid-cols: 3;">
+<div class="hextra-cards hx:mt-4 hx:gap-4 hx:grid not-prose" style="--hextra-cards-grid-cols: {{ $gridCols }};">
   {{ template "childs" dict "menu" $sorted "style" $style "showhidden" $showhidden "count" 1 "depth" $depth "description" $withDescription }}
 </div>
 {{- end }}

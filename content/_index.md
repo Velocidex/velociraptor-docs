@@ -25,7 +25,7 @@ Please update to the latest release [0.77.2](/downloads/) to address
 
 {{< feature-grid >}}
 
-  {{< feature icon="calendar" title="Announcements" url="/downloads/" banner=true kicker="Releases, security advisories & community news" >}}
+  {{< feature icon="calendar" title="Announcements" url="/announcements/" banner=true kicker="Releases, security advisories & community news" >}}
     **2026-08-26 - Velociraptor 0.77.2 is now available!**
   {{< /feature >}}
 
