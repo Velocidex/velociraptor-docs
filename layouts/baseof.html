@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Lang }}" dir="{{ partial "utils/hugo-compat/language-direction.html" .Site.Language | default `ltr` }}">
+  {{- partial "head.html" . -}}
+
+  {{/* Pagefind custom metadata & filters (indexed at build time):
+         data-pagefind-meta="tags: ..."  -> tag badge chips on search results
+         data-pagefind-filter="section:" -> filter panel on the /search/ page
+       Both are inline values (see pagefind metadata/filtering docs). */}}
+  {{- $sectionNames := dict
+      "announcements"       "Announcements"
+      "artifact_references" "Artifact Reference"
+      "blog"                "Blog"
+      "dev"                 "Developer"
+      "docs"                "Documentation"
+      "downloads"           "Downloads"
+      "exchange"            "Exchange"
+      "golang"              "Golang"
+      "knowledge_base"      "Knowledge Base"
+      "presentations"       "Presentations"
+      "rss"                 "RSS"
+      "search"              "Search"
+      "training"            "Training"
+      "vql_reference"       "VQL Reference"
+  -}}
+  {{- $rel := strings.TrimSuffix "/" .RelPermalink -}}
+  {{- $parts := split $rel "/" -}}
+  {{- $sectionKey := "" -}}
+  {{- if gt (len $parts) 1 }}{{ $sectionKey = index $parts 1 }}{{ end -}}
+  {{- $section := index $sectionNames $sectionKey -}}
+  {{- if not $section -}}
+    {{- $section = strings.Title (strings.Replace $sectionKey "_" " " -1) -}}
+  {{- end -}}
+  {{- $tags := "" -}}
+  {{- with .Params.tags }}{{ $tags = delimit . ", " }}{{ end -}}
+
+  {{/* Taxonomy label pages (/tags/*) are navigational lists of other pages;
+       exclude them from the search index (they would add a bogus
+       "Tags" value to the section filter and duplicate search results). */}}
+  {{- $indexable := not (or (eq .Kind "taxonomy") (eq .Kind "term")) -}}
+
+  <body{{ if not $indexable }} data-pagefind-ignore{{ else }}{{ with $section }} data-pagefind-filter="section: {{ . }}"{{ end }}{{ with $tags }} data-pagefind-meta="tags: {{ . }}"{{ end }}{{ end }}>
+    <a href="#content" class="hx:sr-only hx:focus-visible:not-sr-only hx:focus-visible:fixed hx:focus-visible:z-50 hx:focus-visible:top-2 hx:focus-visible:left-2 hx:focus-visible:bg-primary-500 hx:focus-visible:text-white hx:focus-visible:px-4 hx:focus-visible:py-2 hx:focus-visible:rounded-md hx:focus-visible:text-sm hx:focus-visible:font-medium">
+      {{- (T "skipToContent") | default "Skip to content" -}}
+    </a>
+    {{- partial "banner.html" . -}}
+    {{- partial "navbar.html" . -}}
+    {{- block "main" . }}{{ end -}}
+    {{- if or (eq .Site.Params.footer.enable nil) (.Site.Params.footer.enable) }}
+      {{ partial "footer.html" . }}
+    {{ end }}
+    {{ partial "scripts.html" . }}
+  </body>
+</html>

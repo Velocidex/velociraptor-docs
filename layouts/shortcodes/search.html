@@ -1,6 +1,22 @@
-{{/* Site-wide search page backed by Pagefind (built by `pagefind --site public`). */}}
+{{/* Site-wide search page backed by Pagefind (built by `pagefind --site public`).
+   The "Tags" accordion below mirrors the /tags/ taxonomy listing (same data,
+   rendered server-side as a collapsible block like the Section filter panel).
+   assets/js/search.js relocates it to sit directly under the Section filter. */}}
 <div class="search-box" data-site-search>
   <div id="pagefind-site-search"></div>
+  {{- with .Site.Taxonomies.tags.Alphabetical }}
+  <details class="search-tags-accordion" id="pagefind-site-tags" data-pagefind-ignore>
+    <summary class="pagefind-ui__filter-name search-tags-name">Tags</summary>
+    <div class="search-tags-grid">
+      {{- range . }}
+      <a href="{{ .Page.RelPermalink }}" title="{{ .Page.LinkTitle }}" class="search-tag-link">
+        <span class="search-tag-name">{{ .Page.LinkTitle }}</span>
+        <span class="search-tag-count">&nbsp;{{ .Count }}</span>
+      </a>
+      {{- end }}
+    </div>
+  </details>
+  {{- end }}
 </div>
 <script>
   (function () {

@@ -6,7 +6,6 @@
   "use strict";
 
   var searchInputs = document.querySelectorAll(".hextra-search-input");
-  var hideButton = document.getElementById("close-search-button");
   var wrapper = document.getElementById("search-wrapper");
   var modal = document.getElementById("search-modal");
 
@@ -68,11 +67,21 @@
     if (!searchVisible) {
       return;
     }
+    // Restore focus BEFORE searchVisible flips to false. If the focus
+    // target is one of our search inputs, its focus handler calls
+    // displaySearch(), which early-returns while searchVisible is still
+    // true - preventing the modal from instantly reopening. (Without
+    // this reordering, closing after typing left the navbar input
+    // focused, which fired displaySearch and re-opened the modal.)
+    if (previouslyFocused && previouslyFocused.focus) {
+      try {
+        previouslyFocused.focus();
+      } catch (e) {
+        // The element may have been removed from the DOM; ignore.
+      }
+    }
     searchVisible = false;
     wrapper.classList.add("hx:invisible");
-    if (previouslyFocused && previouslyFocused.focus) {
-      previouslyFocused.focus();
-    }
   }
 
   searchInputs.forEach(function (input) {
@@ -80,9 +89,6 @@
     input.addEventListener("focus", displaySearch);
   });
 
-  if (hideButton) {
-    hideButton.addEventListener("click", hideSearch);
-  }
   if (wrapper) {
     wrapper.addEventListener("click", hideSearch);
   }
@@ -127,5 +133,218 @@
     if (event.key === "Escape") {
       hideSearch();
     }
+  });
+
+  // --- Section breadcrumb decorator ---
+  // Derives a human-readable section path from each result URL and injects it
+  // into the result card.  Works for both the modal (#pagefind-ui) and the
+  // dedicated /search/ page (#pagefind-site-search).  A MutationObserver
+  // re-enriches results every time the Pagefind UI re-renders them.
+
+  var SECTION_NAMES = {
+    docs:                "Documentation",
+    vql_reference:       "VQL Reference",
+    artifact_references: "Artifact Reference",
+    exchange:            "Exchange",
+    knowledge_base:      "Knowledge Base",
+    blog:                "Blog",
+    training:            "Training",
+    announcements:       "Announcements",
+    presentations:       "Presentations",
+    downloads:           "Downloads",
+    dev:                 "Developer",
+    golang:              "Golang",
+    vql:                 "VQL",
+    gui:                 "Admin GUI",
+    collection_policies: "Collection Policies",
+    server:              "Server",
+    windows:             "Windows",
+    linux:               "Linux",
+    macos:               "macOS",
+    troubleshooting:     "Troubleshooting",
+    pages:               "Pages",
+  };
+
+  function titleCase(str) {
+    return str
+      .replace(/[-_]/g, " ")
+      .replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+  }
+
+  function segmentName(str) {
+    return SECTION_NAMES[str] || titleCase(str);
+  }
+
+  function deriveBreadCrumb(href) {
+    try {
+      var u = new URL(href, location.origin);
+      var parts = u.pathname.split("/").filter(Boolean);
+      if (parts.length < 2) return "";
+      var segments = [];
+      var path = "";
+      for (var i = 0; i < parts.length - 1; i++) {
+        path += "/" + parts[i];
+        var name = segmentName(parts[i]);
+        segments.push("<a href=\"" + path + "/\">" + name + "</a>");
+      }
+      return segments.join(" <span class=\"pagefind-ui__breadcrumb-sep\">\u203a</span> ");
+    } catch (e) {
+      return "";
+    }
+  }
+
+  // Normalize PagefindUI tag chips.  Custom meta is morphed by PagefindUI
+  // into one chip per meta key ("Tags: Client Artifact, Server Artifact"),
+  // but we supply the tags as a comma-separated meta value from the page
+  // frontmatter (mirrored onto <body data-pagefind-meta="tags: ...">).
+  // Split that single chip into one pill per tag.  The "Tags: " prefix is
+  // dropped so each chip shows the bare tag value.
+  function normalizeTagChips(result) {
+    result.querySelectorAll(
+      '.pagefind-ui__result-tag[data-pagefind-ui-meta="tags"]'
+    ).forEach(function (li) {
+      var text = li.textContent || "";
+      var prefix = text.match(/^[^:]*:\s*/);
+      var value = prefix ? text.slice(prefix[0].length) : text;
+      var values = value
+        .split(/[,;]/)
+        .map(function (s) { return s.trim(); })
+        .filter(Boolean);
+      if (!values.length) return;
+      var parent = li.parentNode;
+      var before = li.nextSibling;
+      values.forEach(function (v) {
+        var item = document.createElement("li");
+        item.className =
+          "pagefind-ui__result-tag pagefind-ui__result-tag--single";
+        item.textContent = v;
+        parent.insertBefore(item, before);
+      });
+      parent.removeChild(li);
+    });
+  }
+
+  // Content-page tag paragraphs: several knowledge-base / exchange pages end
+  // with a plain markdown line like "Tags: #debugging #vql".  Turn those
+  // paragraphs into a row of the same pill badges used on search results.
+  function decorateTagParagraphs(root) {
+    root.querySelectorAll(".content p").forEach(function (p) {
+      if (p.dataset.tagsDecorated) return;
+      var m = p.textContent.trim().match(/^Tags?:\s*(.*)$/i);
+      if (!m) return;
+      var values = m[1]
+        .split(/[,;]+|\s+/)
+        .map(function (s) { return s.trim().replace(/^#/, ""); })
+        .filter(Boolean);
+      if (!values.length) return;
+      p.dataset.tagsDecorated = "true";
+      p.classList.add("tags-badges");
+      p.textContent = "";
+      values.forEach(function (v) {
+        var badge = document.createElement("span");
+        badge.className = "tag-badge";
+        badge.textContent = v;
+        p.appendChild(badge);
+      });
+    });
+  }
+
+  function decoratePagefindResults(container) {
+    container.querySelectorAll(".pagefind-ui__result").forEach(function (result) {
+      if (result.closest(".pagefind-ui__result-nested")) return;
+      var link = result.querySelector(".pagefind-ui__result-link");
+      if (!link) return;
+
+      // Breadcrumb (one per top-level result), inserted just below the
+      // title so the card reads: title > breadcrumb > excerpt > tags.
+      if (!result.querySelector(".pagefind-ui__breadcrumb")) {
+        var path = deriveBreadCrumb(link.getAttribute("href"));
+        if (path) {
+          var div = document.createElement("div");
+          div.className = "pagefind-ui__breadcrumb";
+          div.innerHTML = path;
+          var inner = result.querySelector(".pagefind-ui__result-inner");
+          if (inner) {
+            var title = result.querySelector(".pagefind-ui__result-title");
+            if (title && title.nextSibling) {
+              inner.insertBefore(div, title.nextSibling);
+            } else {
+              inner.appendChild(div);
+            }
+          }
+        }
+      }
+
+      // Tag chips (split the meta chip into per-tag pills).
+      normalizeTagChips(result);
+    });
+  }
+
+  function observePagefindResults(container) {
+    decoratePagefindResults(container);
+    new MutationObserver(function () {
+      decoratePagefindResults(container);
+      positionSiteTagsPanel();
+    }).observe(container, { childList: true, subtree: true });
+  }
+
+  // /search/ page: the shortcode renders a "Tags" accordion
+  // (#pagefind-site-tags) after the search mount point with the same
+  // content as the /tags/ taxonomy page.  Once PagefindUI builds its filter
+  // drawer (fieldset.pagefind-ui__filter-panel) we move that accordion into
+  // the panel, directly under the "Section" filter block, so it reads as a
+  // second collapsible section.  Idempotent (skips when already in place).
+  function positionSiteTagsPanel() {
+    var tags = document.getElementById("pagefind-site-tags");
+    if (!tags) return;
+    var searchBox = document.querySelector(".search-box[data-site-search]");
+    var panel =
+      searchBox &&
+      searchBox.querySelector(".pagefind-ui__filter-panel");
+
+    if (panel && panel.getBoundingClientRect().height > 0) {
+      // Panel is visible — move the accordion into it (under Section).
+      if (tags.parentNode !== panel) {
+        panel.appendChild(tags);
+      }
+    } else {
+      // Panel not yet visible or hidden — keep accordion as a direct
+      // child of the search-box, below the PagefindUI mount.
+      if (searchBox && tags.parentNode !== searchBox) {
+        searchBox.appendChild(tags);
+      }
+    }
+  }
+
+  // Modal results: #pagefind-ui exists statically on every page (search-modal
+  // partial), but PagefindUI only mounts into it on first open.  Observing the
+  // container itself catches the mount and every re-render.
+  var modalResultsContainer = document.getElementById("pagefind-ui");
+  if (modalResultsContainer) {
+    observePagefindResults(modalResultsContainer);
+  }
+
+  // /search/ page: identical treatment.  search.js runs on every page; the
+  // shortcode mounts PagefindUI into #pagefind-site-search independently.
+  // Only watch when the shortcode's container ([data-site-search]) is present.
+  var siteSearchContainer = document.getElementById("pagefind-site-search");
+  if (siteSearchContainer) {
+    observePagefindResults(siteSearchContainer);
+  } else if (document.querySelector(".search-box[data-site-search]")) {
+    var siteSearchObserver = new MutationObserver(function () {
+      var container = document.getElementById("pagefind-site-search");
+      if (container && container.querySelector(".pagefind-ui")) {
+        siteSearchObserver.disconnect();
+        observePagefindResults(container);
+      }
+    });
+    siteSearchObserver.observe(document.body, { childList: true, subtree: true });
+  }
+
+  // Content pages: convert "Tags: #a #b" paragraphs into badges.  Script is
+  // deferred so the DOM is ready; also run once the initial render settles.
+  decorateTagParagraphs(document);
+  document.addEventListener("DOMContentLoaded", function () {
+    decorateTagParagraphs(document);
   });
 })();

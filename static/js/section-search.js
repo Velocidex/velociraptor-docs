@@ -35,6 +35,31 @@
 
   const dataCache = {};
 
+  // Existing /tags/<slug>/ URLs (from the build-time taxonomy partial).
+  // Used to link pill badges only when the target page really exists, so
+  // ad-hoc data.json tags (e.g. KB "Tags: #debugging" lines) don't produce
+  // dead links.  Lazily parsed: this script executes BEFORE the partial's
+  // <script type="application/json"> in the DOM, so the element is only
+  // available by the time pills() actually renders (post DOMContentLoaded).
+  let tagSlugSet = null;
+  let tagSlugSetLoaded = false;
+  function getTagSlugSet() {
+    if (tagSlugSetLoaded) return tagSlugSet;
+    tagSlugSetLoaded = true;
+    try {
+      const el = document.getElementById("section-tag-slugs");
+      if (!el) return null;
+      tagSlugSet = new Set(JSON.parse(el.textContent || el.text || "[]"));
+    } catch (e) {
+      tagSlugSet = null;
+    }
+    return tagSlugSet;
+  }
+
+  function slugify(tag) {
+    return String(tag).toLowerCase().replace(/\s+/g, "-");
+  }
+
   function esc(value) {
     return String(value == null ? "" : value)
       .replaceAll("&", "&amp;")
@@ -102,23 +127,26 @@
     return item.link;
   }
 
-  // Tags used to link to a /tags/... taxonomy page that this site does not
-  // have, so they are rendered as plain text (no dead links).
+  // Tags are rendered as pill badges (same .tag-badge styling as
+  // search-result chips).  A tag is hyperlinked to its /tags/... taxonomy
+  // page only when that page exists (see tagSlugSet above).
   function pills(tags) {
     if (!tags || !tags.length) {
       return "";
     }
     return (
-      '<div class="hx:mt-1 hx:mb-4 hx:flex hx:flex-wrap hx:gap-1 hx:px-4 hx:text-xs">' +
+      '<div class="hx:mt-1 hx:mb-4 hx:flex hx:flex-wrap hx:gap-1 hx:px-4">' +
       tags
         .map(function (tag) {
-          return (
-            '<span class="hx:font-medium hx:text-primary-800 hx:dark:text-primary-600">#' +
-            esc(tag) +
-            "</span>"
-          );
+          const href = "/tags/" + slugify(tag) + "/";
+          const label = esc(tag);
+          const slugSet = getTagSlugSet();
+          if (slugSet && slugSet.has(href)) {
+            return '<a href="' + esc(href) + '" class="tag-badge">' + label + "</a>";
+          }
+          return '<span class="tag-badge">' + label + "</span>";
         })
-        .join(" ") +
+        .join("") +
       "</div>"
     );
   }

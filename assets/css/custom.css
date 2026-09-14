@@ -448,3 +448,400 @@ html.dark .hextra-figure-caption {
   margin-right: 0.625rem;
   flex-shrink: 0;
 }
+
+/* --- Pagefind search modal (layouts/_partials/search-modal.html) ---
+   The modal's hx: utilities (hx:invisible, hx:fixed, hx:inset-0,
+   hx:z-50, hx:h-screen, hx:max-w-3xl, ...) are absent from Hextra's
+   prebuilt main.css, so the wrapper rendered in-flow, fully visible,
+   below the footer on every page. search.js toggles visibility by
+   removing/adding `hx:invisible` on #search-wrapper. */
+#search-wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: default;
+  background-color: rgb(115 115 115 / 0.5); /* neutral-500/50 */
+  padding: 1rem;
+}
+
+#search-wrapper.hx\:invisible {
+  visibility: hidden;
+}
+
+#search-wrapper #search-modal {
+  width: 80%;
+  max-width: 84rem; /* matches --hextra-max-page-width; no wider than the site column */
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  border: 1px solid var(--hx-color-neutral-200, #e5e5e5);
+  background-color: #ffffff;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+#search-wrapper #search-modal section {
+  flex: 1 1 0%;
+  overflow: auto;
+  padding-inline: 0.5rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.5rem;
+}
+
+html.dark #search-wrapper {
+  background-color: rgb(23 23 23 / 0.5); /* neutral-900/50 */
+}
+
+html.dark #search-wrapper #search-modal {
+  border-color: var(--hx-color-neutral-700, #404040);
+  background-color: var(--hx-color-neutral-800, #262626);
+}
+
+@media (min-width: 640px) {
+  #search-wrapper { padding: 1.5rem; }
+}
+@media (min-width: 768px) {
+  #search-wrapper { padding: 1rem 2rem; }
+}
+@media (min-width: 1024px) {
+  #search-wrapper { padding: 1rem 3rem; }
+}
+
+/* --- Pagefind UI font + scale override ---
+   pagefind-ui.css defines --pagefind-ui-font (a system font stack) and
+   --pagefind-ui-scale (0.8) on :root.  Because pagefind-ui.css is injected
+   dynamically *after* main.css, a :root override in this file would lose
+   the cascade battle.  Instead, declare the variables on the two mount
+   elements (#pagefind-ui inside the modal, #pagefind-site-search on the
+   /search/ page) — the higher specificity wins regardless of load order.
+   Scale 1 makes the UI body text (message, result excerpts) 16px, matching
+   the site's .content body size instead of 80% of it. */
+#pagefind-ui,
+#pagefind-site-search {
+  --pagefind-ui-font: var(--hx-font-sans, "Iosevka Term", ui-sans-serif, system-ui, sans-serif);
+  --pagefind-ui-scale: 1;
+}
+
+/* --- Pagefind result spacing ---
+   pagefind-ui.css ships generous paddings (30px/40px per result) designed
+   for full-width search pages.  Tighten them for the big modal, overriding
+   with ID-scoped selectors so the ours-win rule beats the (loaded-later)
+   pagefind classes. */
+#pagefind-ui .pagefind-ui__results-area,
+#pagefind-site-search .pagefind-ui__results-area {
+  margin-top: 0.5rem;
+}
+
+#pagefind-ui .pagefind-ui__message,
+#pagefind-site-search .pagefind-ui__message {
+  padding: 0.5rem 0;
+  height: auto;
+}
+
+#pagefind-ui .pagefind-ui__result,
+#pagefind-site-search .pagefind-ui__result {
+  padding: 1rem 0 1.25rem;
+}
+
+#pagefind-ui .pagefind-ui__result-inner,
+#pagefind-site-search .pagefind-ui__result-inner {
+  margin-top: 0.25rem; /* was 10px*scale */
+}
+
+#pagefind-ui .pagefind-ui__result-excerpt,
+#pagefind-site-search .pagefind-ui__result-excerpt {
+  margin-top: 0.25rem; /* was 4px*scale */
+}
+
+#pagefind-ui .pagefind-ui__button,
+#pagefind-site-search .pagefind-ui__button {
+  margin-top: 1.25rem; /* was 40px*scale */
+}
+
+/* --- Pagefind dark-mode palette ---
+   pagefind-ui.css sets its --pagefind-ui-* variables on :root and ships no
+   dark styles.  Override them under html.dark (higher specificity than
+   :root, so it wins even though pagefind-ui.css loads after main.css):
+   text/background/border/tag all switch to Hextra's dark palette. */
+html.dark {
+  --pagefind-ui-text: #d4d4d4;          /* neutral-300 */
+  --pagefind-ui-background: #262626;    /* neutral-800 */
+  --pagefind-ui-border: #404040;        /* neutral-700 */
+  --pagefind-ui-tag: #404040;           /* neutral-700 */
+  --pagefind-ui-primary: var(--hx-color-primary-400, #60a5fa);
+}
+
+/* Section breadcrumb injected by assets/js/search.js into each result:
+   the top-level section (and any intermediate path) derived from the
+   result URL, e.g. "Documentation > VQL".  Each segment links back to
+   its section page.  It is inserted directly below the result title.
+   NB: pagefind-ui.css's `.pagefind-ui--reset * { all: unset }` zeroes any
+   same-specificity margins, so these rules must stay ID-scoped. */
+#pagefind-ui .pagefind-ui__breadcrumb,
+#pagefind-site-search .pagefind-ui__breadcrumb {
+  display: block;
+  margin-top: 0.4rem;
+  margin-bottom: 0.375rem; /* separation from the highlighted excerpt */
+  font-size: 0.8125rem;
+  color: var(--hx-color-neutral-500, #737373);
+  line-height: 1.25rem;
+}
+#pagefind-ui .pagefind-ui__breadcrumb a,
+#pagefind-site-search .pagefind-ui__breadcrumb a {
+  color: var(--hx-color-neutral-500, #737373);
+  text-decoration: none;
+}
+#pagefind-ui .pagefind-ui__breadcrumb a:hover,
+#pagefind-site-search .pagefind-ui__breadcrumb a:hover {
+  color: var(--hx-color-primary-600, #2563eb);
+  text-decoration: underline;
+}
+#pagefind-ui .pagefind-ui__breadcrumb-sep,
+#pagefind-site-search .pagefind-ui__breadcrumb-sep {
+  margin: 0 0.25em;
+  opacity: 0.6;
+}
+html.dark #pagefind-ui .pagefind-ui__breadcrumb,
+html.dark #pagefind-site-search .pagefind-ui__breadcrumb {
+  color: var(--hx-color-neutral-400, #a3a3a3);
+}
+html.dark #pagefind-ui .pagefind-ui__breadcrumb a,
+html.dark #pagefind-site-search .pagefind-ui__breadcrumb a {
+  color: var(--hx-color-neutral-400, #a3a3a3);
+}
+html.dark #pagefind-ui .pagefind-ui__breadcrumb a:hover,
+html.dark #pagefind-site-search .pagefind-ui__breadcrumb a:hover {
+  color: var(--hx-color-primary-400, #60a5fa);
+}
+
+/* Pagefind result tag badges: custom meta renders as
+   .pagefind-ui__result-tag chips; assets/js/search.js splits the single
+   "tags" meta chip into one chip per tag.  Render them as small
+   rounded-rect pills with a subtle background. */
+/* Base pill-badge class used by search-result tag chips, content-page
+   "Tags:" badges, and section-search cards. */
+.tag-badge {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px; /* pill shape */
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  color: var(--hx-color-neutral-700, #404040);
+  background-color: var(--hx-color-neutral-100, #f5f5f5);
+  border: 1px solid var(--hx-color-neutral-200, #e5e5e5);
+}
+/* Pagefind result tag chips receive the same treatment via their own
+   class name; keep them margin-separated from the excerpt. */
+#pagefind-ui .pagefind-ui__result-tag,
+#pagefind-site-search .pagefind-ui__result-tag {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px; /* pill shape */
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  color: var(--hx-color-neutral-700, #404040);
+  background-color: var(--hx-color-neutral-100, #f5f5f5);
+  border: 1px solid var(--hx-color-neutral-200, #e5e5e5);
+  margin: 0.375rem 0.375rem 0 0; /* separation from excerpt above */
+}
+html.dark .tag-badge,
+html.dark #pagefind-ui .pagefind-ui__result-tag,
+html.dark #pagefind-site-search .pagefind-ui__result-tag {
+  color: var(--hx-color-neutral-300, #d4d4d4);
+  background-color: var(--hx-color-neutral-700, #404040);
+  border-color: var(--hx-color-neutral-600, #525252);
+}
+
+/* The chip list the PagefindUI renders around the tags: flex row, with
+   the default 20px top gap cut down so the pills sit close to the
+   excerpt, and the gap between pills handled by the badge margins. */
+#pagefind-ui .pagefind-ui__result-tags,
+#pagefind-site-search .pagefind-ui__result-tags {
+  gap: 0;
+  margin-top: 0.25rem; /* was 20px*scale */
+}
+
+/* Sub-result (anchor) cards repeat the page tags under every heading
+   match; skip them - the top-level card already shows the chips. */
+#pagefind-ui .pagefind-ui__result-nested .pagefind-ui__result-tags,
+#pagefind-site-search .pagefind-ui__result-nested .pagefind-ui__result-tags {
+  display: none;
+}
+
+/* Content-page "Tags:" paragraphs: converted by assets/js/search.js into
+   a row of .tag-badge pills (same styling as the search-result chips). */
+.content p.tags-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  align-items: center;
+}
+
+/* --- Pagefind filter panel (/search/ page) ---
+   Once the index carries data-pagefind-filter values, the old PagefindUI
+   renders a checkbox sidebar (fieldset.pagefind-ui__filter-panel) next to
+   the results.  On this site the /search/ column (~768px) wraps the drawer,
+   so the panel renders as a collapsible "Section" accordion above the
+   results - style it as such (border-bottom, no right rules). */
+#pagefind-site-search .pagefind-ui__filter-panel {
+  margin-top: 1rem;
+}
+#pagefind-site-search .pagefind-ui__filter-panel-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--hx-color-neutral-500, #737373);
+}
+#pagefind-site-search .pagefind-ui__filter-block {
+  border-bottom: 1px solid var(--hx-color-neutral-200, #e5e5e5);
+}
+#pagefind-site-search .pagefind-ui__filter-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--hx-color-neutral-900, #171717);
+}
+html.dark #pagefind-site-search .pagefind-ui__filter-name {
+  color: var(--hx-color-neutral-100, #f5f5f5);
+}
+#pagefind-site-search .pagefind-ui__filter-group {
+  gap: 0.625rem;
+  padding-top: 0.875rem;
+}
+#pagefind-site-search .pagefind-ui__filter-value {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+#pagefind-site-search .pagefind-ui__filter-label {
+  font-size: 0.875rem;
+  color: var(--hx-color-neutral-700, #404040);
+}
+html.dark #pagefind-site-search .pagefind-ui__filter-label {
+  color: var(--hx-color-neutral-300, #d4d4d4);
+}
+#pagefind-site-search .pagefind-ui__filter-checkbox {
+  border: 1px solid var(--hx-color-neutral-300, #d4d4d4);
+  background-color: transparent;
+  border-radius: 4px;
+}
+#pagefind-site-search .pagefind-ui__filter-checkbox:checked {
+  background-color: var(--hx-color-primary-600, #2563eb);
+  border-color: var(--hx-color-primary-600, #2563eb);
+}
+
+/* The search modal keeps the tag chips but not the filter sidebar
+   (filtering is a /search/ page feature). */
+#pagefind-ui .pagefind-ui__filter-panel {
+  display: none;
+}
+
+/* --- /search/ page: "Tags" accordion (shortcode renders the same
+   taxonomy listing as the /tags/ page; search.js moves it into the
+   filter panel, under the Section block).  The svelte-scoped pagefind
+   rules don't cover this element, so it needs its own chrome here.
+   The rules are scoped to the element id so they apply both before the
+   search (as a sibling of the PagefindUI mount) and once it is moved
+   into the filter panel; id specificity also beats the pagefind
+   `.pagefind-ui--reset * { all: unset }` inside the UI root. */
+#pagefind-site-tags {
+  cursor: default;
+  margin-top: 0.75rem;
+}
+/* Inside the panel, the filter-panel already carries margin-top —
+   reset so the accordion sits flush under the Section block. */
+#pagefind-site-search .pagefind-ui__filter-panel #pagefind-site-tags {
+  margin-top: 0;
+}
+#pagefind-site-tags .search-tags-name {
+  position: relative;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  height: 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--hx-color-neutral-900, #171717);
+}
+html.dark #pagefind-site-tags .search-tags-name {
+  color: var(--hx-color-neutral-100, #f5f5f5);
+}
+#pagefind-site-tags .search-tags-name::-webkit-details-marker,
+#pagefind-site-tags .search-tags-name::marker {
+  display: none;
+}
+/* Same disclosure chevron as the Section blocks (border triangle). */
+#pagefind-site-tags .search-tags-name::after {
+  content: "";
+  position: absolute;
+  right: 0.375rem;
+  top: 50%;
+  width: 0.5rem;
+  height: 0.5rem;
+  border: solid 2px currentColor;
+  border-right: 0;
+  border-top: 0;
+  transform: translateY(-70%) rotate(-45deg);
+}
+#pagefind-site-tags[open] .search-tags-name::after {
+  transform: translateY(-70%) rotate(-225deg);
+}
+/* Tag cloud: the panel column is narrow, so wrap instead of the /tags/
+   page's multi-column grid. */
+#pagefind-site-tags .search-tags-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  padding-top: 0.875rem;
+}
+#pagefind-site-tags .search-tag-link {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px; /* pill shape */
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  color: var(--hx-color-neutral-700, #404040);
+  background-color: var(--hx-color-neutral-100, #f5f5f5);
+  border: 1px solid var(--hx-color-neutral-200, #e5e5e5);
+  text-decoration: none;
+  white-space: nowrap;
+}
+#pagefind-site-tags .search-tag-link:hover {
+  color: var(--hx-color-primary-600, #2563eb);
+  background-color: var(--hx-color-primary-50, #eff6ff);
+  border-color: var(--hx-color-primary-300, #93c5fd);
+}
+#pagefind-site-tags .search-tag-count {
+  display: none; /* hide count in accordion pills — keep the tag name clean */
+}
+html.dark #pagefind-site-tags .search-tag-link {
+  color: var(--hx-color-neutral-300, #d4d4d4);
+  background-color: var(--hx-color-neutral-700, #404040);
+  border-color: var(--hx-color-neutral-600, #525252);
+}
+html.dark #pagefind-site-tags .search-tag-link:hover {
+  color: var(--hx-color-primary-400, #60a5fa);
+  background-color: var(--hx-color-primary-900, #1e3a5f);
+  border-color: var(--hx-color-primary-700, #1d4ed8);
+}
+
+/* Result spacing: keep the excerpt separated from the breadcrumb above
+   and the tag pills below so they don't run into each other. */
+#pagefind-ui .pagefind-ui__result-inner,
+#pagefind-site-search .pagefind-ui__result-inner {
+  margin-top: 0.25rem;
+}
+
+#pagefind-ui .pagefind-ui__result-excerpt,
+#pagefind-site-search .pagefind-ui__result-excerpt {
+  margin-top: 0.125rem;
+  margin-bottom: 0;
+}

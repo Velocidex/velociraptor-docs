@@ -13,21 +13,6 @@ inputs (.hextra-search-input), Ctrl/Cmd+K or "/". */ -}}
     id="search-modal"
     class="hextra-search-modal-box hx:mx-auto hx:flex hx:w-full hx:max-w-3xl hx:min-h-0 hx:flex-col hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-800"
   >
-    <header class="hx:relative hx:flex hx:flex-none hx:items-center hx:justify-between hx:px-2">
-      <div class="hx:flex hx:h-8 hx:w-8 hx:items-center hx:justify-center hx:text-gray-400">
-        {{ partial "utils/icon.html" (dict "name" "search") }}
-      </div>
-      <span class="hx:px-2 hx:text-sm hx:text-gray-500 hx:dark:text-gray-400">
-        {{ (T "searchPlaceholder") | default "Search..." }}
-      </span>
-      <button
-        id="close-search-button"
-        class="hx:flex hx:h-8 hx:w-8 hx:items-center hx:justify-center hx:text-gray-700 hx:hover:text-primary-600 hx:dark:text-neutral hx:dark:hover:text-primary-400"
-        title="{{ (T "closeSearch") | default "Close search" }}"
-      >
-        {{ partial "utils/icon.html" (dict "name" "x" "attributes" "height=16") }}
-      </button>
-    </header>
     <section class="hx:flex-auto hx:overflow-auto hx:px-2 hx:pb-2">
       <div id="search-results">
         {{- /* Pagefind UI is mounted here by assets/js/search.js on first open. */ -}}
