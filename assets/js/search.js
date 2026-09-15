@@ -186,6 +186,32 @@
     return sitePagePaths;
   }
 
+  // Existing /tags/<slug>/ pages, from the section-tag-slugs partial
+  // (ground truth = the taxonomy itself).  Tag pills in search results and
+  // content pages hyperlink to the tag page ONLY when it actually exists,
+  // so we never emit a dead tag link.
+  var tagSlugSet = null;
+  function getTagSlugSet() {
+    if (tagSlugSet) return tagSlugSet;
+    var el = document.getElementById("section-tag-slugs");
+    if (!el) return new Set(); // partial not rendered yet; retry next call
+    try {
+      var raw = JSON.parse(el.textContent || el.innerText || "[]");
+      tagSlugSet = new Set(raw || []);
+    } catch (e) {
+      tagSlugSet = new Set();
+    }
+    return tagSlugSet;
+  }
+  function slugifyTag(value) {
+    return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  }
+  function tagUrlFor(value) {
+    return getTagSlugSet().has("/tags/" + slugifyTag(value) + "/")
+      ? "/tags/" + slugifyTag(value) + "/"
+      : null;
+  }
+
   function titleCase(str) {
     return str
       .replace(/[-_]/g, " ")
@@ -244,7 +270,19 @@
         var item = document.createElement("li");
         item.className =
           "pagefind-ui__result-tag pagefind-ui__result-tag--single";
-        item.textContent = v;
+        // Result chips elsewhere link to the tag page when one exists
+        // (the /search/ page's Tags accordion is the one place a chip
+        // filters instead of linking).
+        var url = tagUrlFor(v);
+        if (url) {
+          var a = document.createElement("a");
+          a.href = url;
+          a.className = "pagefind-ui__result-tag-link";
+          a.textContent = v;
+          item.appendChild(a);
+        } else {
+          item.textContent = v;
+        }
         parent.insertBefore(item, before);
       });
       parent.removeChild(li);
@@ -268,9 +306,11 @@
       p.classList.add("tags-badges");
       p.textContent = "";
       values.forEach(function (v) {
-        var badge = document.createElement("span");
-        badge.className = "tag-badge";
+        var url = tagUrlFor(v);
+        var badge = document.createElement(url ? "a" : "span");
+        badge.className = "tag-badge" + (url ? " tag-badge--link" : "");
         badge.textContent = v;
+        if (url) badge.href = url;
         p.appendChild(badge);
       });
     });
@@ -311,8 +351,56 @@
     decoratePagefindResults(container);
     new MutationObserver(function () {
       decoratePagefindResults(container);
+      maintainTagFilters();
       positionSiteTagsPanel();
     }).observe(container, { childList: true, subtree: true });
+  }
+
+  // Tag-filter maintenance (the /search/ page only).  Native PagefindUI
+  // renders a "tags" filter block in the drawer once tags are indexed; we
+  // hide it (our custom Tags accordion serves the same purpose) and then
+  // keep the accordion pill states in sync with the underlying checkbox.
+  function maintainTagFilters() {
+    if (!document.querySelector(".search-box[data-site-search]")) return;
+    hideNativeTagFilters();
+    syncTagPills();
+  }
+
+  function tagFilterCheckbox(tag) {
+    var box = document.querySelector(".search-box[data-site-search]");
+    if (!box) return null;
+    return box.querySelector('input[name="tags"][value="' + CSS.escape(tag) + '"]');
+  }
+
+  function hideNativeTagFilters() {
+    var box = document.querySelector(".search-box[data-site-search]");
+    if (!box) return;
+    box.querySelectorAll("details.pagefind-ui__filter-block").forEach(function (block) {
+      if (block.querySelector('input[name="tags"]')) {
+        block.hidden = true;
+      }
+    });
+  }
+
+  function syncTagPills() {
+    document.querySelectorAll("#pagefind-site-tags .search-tag-link").forEach(function (pill) {
+      var cb = tagFilterCheckbox(pill.dataset.tag);
+      var active = !!(cb && cb.checked);
+      pill.classList.toggle("is-active", active);
+      pill.setAttribute("aria-pressed", String(active));
+    });
+  }
+
+  function wireTagPills() {
+    var accordion = document.getElementById("pagefind-site-tags");
+    if (!accordion || accordion.dataset.wired) return;
+    accordion.dataset.wired = "true";
+    accordion.addEventListener("click", function (event) {
+      var pill = event.target.closest(".search-tag-link");
+      if (!pill) return;
+      var cb = tagFilterCheckbox(pill.dataset.tag);
+      if (cb) cb.click();
+    });
   }
 
   // /search/ page: the shortcode renders a "Tags" accordion
@@ -371,6 +459,7 @@
   // Content pages: convert "Tags: #a #b" paragraphs into badges.  Script is
   // deferred so the DOM is ready; also run once the initial render settles.
   decorateTagParagraphs(document);
+  wireTagPills();
   document.addEventListener("DOMContentLoaded", function () {
     decorateTagParagraphs(document);
   });

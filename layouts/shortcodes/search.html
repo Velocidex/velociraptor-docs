@@ -1,6 +1,9 @@
 {{/* Site-wide search page backed by Pagefind (built by `pagefind --site public`).
    The "Tags" accordion below mirrors the /tags/ taxonomy listing (same data,
    rendered server-side as a collapsible block like the Section filter panel).
+   Unlike /tags/ pills elsewhere, each pill here is a *filter toggle*: clicking
+   it narrows the results to that tag (assets/js/search.js flips the matching
+   checkbox in Pagefind's hidden "tags" filter block) instead of navigating.
    assets/js/search.js relocates it to sit directly under the Section filter. */}}
 <div class="search-box" data-site-search>
   <div id="pagefind-site-search"></div>
@@ -9,10 +12,10 @@
     <summary class="pagefind-ui__filter-name search-tags-name">Tags</summary>
     <div class="search-tags-grid">
       {{- range . }}
-      <a href="{{ .Page.RelPermalink }}" title="{{ .Page.LinkTitle }}" class="search-tag-link">
+      <button type="button" class="search-tag-link" data-tag="{{ .Page.Title }}" aria-pressed="false" title="Filter results to '{{ .Page.LinkTitle }}'">
         <span class="search-tag-name">{{ .Page.LinkTitle }}</span>
         <span class="search-tag-count">&nbsp;{{ .Count }}</span>
-      </a>
+      </button>
       {{- end }}
     </div>
   </details>
@@ -29,16 +32,16 @@
     css.href = "/pagefind/pagefind-ui.css";
     document.head.appendChild(css);
 
-    var script = document.createElement("script");
-    script.src = "/pagefind/pagefind-ui.js";
-    script.onload = function () {
-      new PagefindUI({
-        element: "#pagefind-site-search",
-        showSubResults: true,
-        showImages: false,
-        highlightParam: "q"
-      });
-    };
-    document.head.appendChild(script);
-  })();
-</script>
+var script = document.createElement("script");
+      script.src = "/pagefind/pagefind-ui.js";
+      script.onload = function () {
+        new PagefindUI({
+          element: "#pagefind-site-search",
+          showSubResults: true,
+          showImages: false,
+          highlightParam: "q"
+        });
+      };
+      document.head.appendChild(script);
+    })();
+  </script>
