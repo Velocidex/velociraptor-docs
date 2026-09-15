@@ -18,10 +18,11 @@ heroButtons:
     style: "outline"
 ---
 
+ <!-- Disabled in favour of the global announcement banner (params.banner).
 {{< alert icon="triangle-exclamation" >}}
 Please update to the latest release [0.77.2](/downloads/) to address
 [Multiple CVEs](/announcements/advisories/v0-77-2/).
-{{< /alert >}}
+{{< /alert >}} -->
 
 {{< feature-grid >}}
 

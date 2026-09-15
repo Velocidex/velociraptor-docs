@@ -914,3 +914,22 @@ html.dark .hextra-card-subtitle a {
 html.dark .hextra-card-subtitle code {
   background: var(--hx-color-neutral-700, #404040);
 }
+/* --- Announcement banner (params.banner): green release/security strip. ---
+   Overrides the theme's neutral-900/800 background so the banner reads as a
+   security/release notice. Text stays near-white for contrast. */
+.hextra-banner {
+  background-color: #15803d; /* green-700 */
+}
+
+html.dark .hextra-banner {
+  background-color: #14532d; /* green-900 */
+}
+
+/* --- Announcements banner card (hextra-card-banner): dark mode. ---
+   The theme compiles only dark:bg-indigo-900/30 (translucent, muddy over the
+   dark page bg), so tint via a solid indigo-950 here. The --hx-color-* custom
+   property does not exist for indigo-950; hardcode the Tailwind value. */
+html.dark .hextra-card-banner {
+  background-color: #1e1b4b; /* indigo-950 */
+  border-color: #3730a3;     /* indigo-800 */
+}

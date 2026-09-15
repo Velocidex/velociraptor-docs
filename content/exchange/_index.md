@@ -29,10 +29,6 @@ description: |
   artifacts.
 ---
 
-<div style="padding-top: 50px;"></div>
-
----
-
 The Velociraptor artifact exchange is a place for sharing
 community-contributed [artifacts](/docs/artifacts/).
 You can use the Search function on this page to see if anyone has

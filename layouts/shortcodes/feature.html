@@ -23,7 +23,7 @@ CSS lacks hx:inset-0 and hx:z-10 utilities).
 
 {{- $class := "hextra-card hx:group hx:relative hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:text-current hx:no-underline hx:shadow-gray-100 hx:transition-all hx:duration-200" -}}
 {{- if $banner -}}
-  {{- $class = printf "%s hx:border-indigo-200 hx:bg-indigo-100 hx:hover:shadow-md hx:dark:border-indigo-200 hx:dark:bg-indigo-900" $class -}}
+  {{- $class = printf "%s hextra-card-banner hx:border-indigo-200 hx:bg-indigo-100 hx:hover:shadow-md" $class -}}
 {{- else -}}
   {{- $class = printf "%s hx:border-gray-200 hx:hover:border-gray-300 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:border-neutral-800 hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900" $class -}}
 {{- end -}}

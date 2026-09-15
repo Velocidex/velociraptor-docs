@@ -193,6 +193,9 @@ enableRobotsTXT = true
 # -- Theme Options (Hextra) --
 
 [params]
+  # Decorate external links with an ↗ arrow (theme render-link.html).
+  externalLinkDecoration = true
+
   # Google site verification (rendered by layouts/partials/custom/head-end.html).
   [params.verification]
     google = "TWf2C5KkKfaG0pltB0jltq3yWk7WhtFKmlpUQu7ukRQ"
@@ -239,6 +242,11 @@ enableRobotsTXT = true
   # (see the layouts/_partials/scripts/search.html override).
   [params.search]
     enable = true
+
+  # Global announcement strip above the navbar (theme banner.html); dismissible
+  # per-browser via the ✕ button (localStorage banner-closed).
+  [params.banner]
+    message = "Please update to the latest release [0.77.2](/downloads/) to address [Multiple CVEs](/announcements/advisories/v0-77-2/)."
 
   [params.toc]
     displayTags = false
