@@ -806,11 +806,13 @@ html.dark #pagefind-site-search .pagefind-ui__result-tag {
 }
 
 /* Content-page "Tags:" paragraphs: converted by assets/js/search.js into
-   a row of .tag-badge pills (same styling as the search-result chips). */
+   a row of .tag-badge pills (same styling as the search-result chips).
+   Flex gap keeps the pills separated horizontally (the search-result
+   chips use per-badge margins to achieve the same spacing). */
 .content p.tags-badges {
   display: flex;
   flex-wrap: wrap;
-  gap: 0;
+  gap: 0.375rem;
   align-items: center;
 }
 

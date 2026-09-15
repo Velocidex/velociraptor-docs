@@ -164,7 +164,7 @@ def build_markdown():
              record_with_author["author_avatar"],
              record_with_author["date"],
              json.dumps(record_with_author["tags"]),
-             org, project, md_filename, cleanContent(content)))
+             org, project, md_filename, content))
 
   index = sorted(index, key=lambda x: x["date"],
                  reverse=True)
