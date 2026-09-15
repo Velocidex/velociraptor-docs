@@ -10,6 +10,46 @@
    The "bold" subset is actually Iosevka Term Extrabold, matching the
    font-weight mapping the GUI CSS uses (700 -> extrabold file). */
 @font-face {
+  font-family: "Atkinson Hyperlegible";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Atkinson Hyperlegible"),
+    url("/fonts/AtkinsonHyperlegible-Regular.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+0080-00FF;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  font-style: italic;
+  font-weight: 400;
+  src: local("Atkinson Hyperlegible"),
+    url("/fonts/AtkinsonHyperlegible-Italic.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+0080-00FF;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Atkinson Hyperlegible"),
+    url("/fonts/AtkinsonHyperlegible-Bold.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+0080-00FF;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  font-style: italic;
+  font-weight: 700;
+  src: local("Atkinson Hyperlegible"),
+    url("/fonts/AtkinsonHyperlegible-BoldItalic.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+0080-00FF;
+  font-display: block;
+}
+
+@font-face {
   font-family: "Iosevka Term";
   font-style: normal;
   font-weight: 400;
@@ -39,15 +79,29 @@
   font-display: block;
 }
 
-/* Iosevka everywhere: body, UI chrome and code. Overrides Hextra/Tailwind
-   font variables (this file is concatenated last into main.css). */
+/* Atkinson Hyperlegible for body + UI chrome, Iosevka Term for code.
+   Overrides Hextra/Tailwind font variables (concatenated last into main.css).
+   Medium (500) UI elements fall back to the Regular face via CSS matching.
+   Atkinson x-height is 0.50; scaling to 0.53125 (Iosevka Term's ratio) makes
+   text render ~6.25% larger. Term's own ratio equals the target, so code is
+   unaffected by the inherited adjustment. */
 :root {
-  --hx-default-font-family: "Iosevka Term", ui-sans-serif, system-ui, sans-serif,
+  --hx-default-font-family: "Atkinson Hyperlegible", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --hx-font-sans: "Iosevka Term", ui-sans-serif, system-ui, sans-serif,
+  --hx-font-sans: "Atkinson Hyperlegible", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --hx-font-mono: "Iosevka Term", ui-monospace, SFMono-Regular, Menlo, Monaco,
     Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size-adjust: 0.53125;
+}
+
+/* Code stays at nominal size regardless of the inherited font-size-adjust
+   (its FontFace aspect differs slightly from the 0.53125 target). */
+code,
+kbd,
+samp,
+pre {
+  font-size-adjust: none;
 }
 
 /* Iosevka is a narrow font, and Hextra applies 0.9em twice to fenced code
@@ -531,7 +585,7 @@ html.dark #search-wrapper #search-modal {
    the site's .content body size instead of 80% of it. */
 #pagefind-ui,
 #pagefind-site-search {
-  --pagefind-ui-font: var(--hx-font-sans, "Iosevka Term", ui-sans-serif, system-ui, sans-serif);
+  --pagefind-ui-font: var(--hx-font-sans, "Atkinson Hyperlegible", ui-sans-serif, system-ui, sans-serif);
   --pagefind-ui-scale: 1;
 }
 
