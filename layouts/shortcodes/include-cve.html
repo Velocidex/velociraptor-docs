@@ -131,7 +131,7 @@
         <tr><td rowspan="1"><b class="vgi-package">{{ $affected.vendor}} {{ $affected.product }}</b><i> on </i>
             <span class="vgi-stack">{{ delimit $affected.platforms ", " }}</span>
             <br>
-            <a class="vgi-ext" href="{{ $affected.repo }}">
+            <a class="vgi-ext" href="{{ $affected.repo }}" target="_blank" rel="noopener">
               source repo
             </a>
             <br><span class="vgi-impact">Default status is {{ $affected.defaultStatus}} </span>
@@ -156,7 +156,7 @@
 <div class="references"><b class="vgi-ext">References</b>
 <ul>
   {{ range $cna.references }}
-  <li><a href="{{.url | safeURL}}">{{ .url }}</a></li>
+  <li><a href="{{.url | safeURL}}" target="_blank" rel="noopener">{{ .url }}</a></li>
   {{ end }}
 </ul>
 </div>

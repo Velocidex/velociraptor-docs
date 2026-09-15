@@ -77,5 +77,14 @@
     {{ end }}
     {{ partial "section-tag-slugs.html" . }}
     {{ partial "scripts.html" . }}
+    <script>
+    /* Make all external links open in a new tab.
+       Catches markdown links (already handled by Hextra's render-link),
+       raw HTML in content, shortcodes, and any other <a> with an http(s) href. */
+    document.querySelectorAll('a[href^="http"]:not([target])').forEach(function(a) {
+      a.target = '_blank';
+      a.rel = 'noopener';
+    });
+    </script>
   </body>
 </html>
