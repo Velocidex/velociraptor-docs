@@ -206,6 +206,12 @@
     if (!args || !args.length) {
       return "";
     }
+    // Visual styling (borders, header background, cell padding) lives in
+    // assets/css/custom.css under `#ssr-vql .hextra-cards table`: the
+    // theme's `.content` table styles can't reach into the cards, and the
+    // gray color utilities (hx:border-gray-300, hx:bg-gray-50, ...) are
+    // only emitted inside .content @apply rules - never as standalone
+    // classes.  Keep only structural markup here.
     let rows = "";
     args.forEach(function (arg) {
       let type = arg.type || "";
@@ -228,7 +234,8 @@
       rows += "<tr><td>**</td><td>Free form args</td><td></td></tr>";
     }
     return (
-      '<div class="hx:mt-2 hx:mb-4 hx:overflow-x-auto hx:px-4"><table class="hx:w-full hx:text-sm">' +
+      '<div class="hx:mt-2 hx:mb-4 hx:overflow-x-auto hx:px-4">' +
+      '<table class="hx:w-full hx:text-sm">' +
       "<thead><tr><th>Arg</th><th>Description</th><th>Type</th></tr></thead><tbody>" +
       rows +
       "</tbody></table></div>"

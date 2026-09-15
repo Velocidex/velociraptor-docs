@@ -1070,3 +1070,53 @@ html.dark .hextra-card-banner {
   background-color: #1e1b4b; /* indigo-950 */
   border-color: #3730a3;     /* indigo-800 */
 }
+
+/* --- VQL Reference search cards: argument tables ---
+   static/js/section-search.js renders each VQL card's "Arg | Description |
+   Type" table with `hx:` utility classes, but the color utilities it needs
+   (hx:border-gray-300, hx:bg-gray-50, ...) only exist inside Hextra's
+   `.content` typography selectors via @apply - they are never emitted as
+   standalone classes, so the card tables render borderless and unstyled.
+   Reapply the same look as the tables on the function/plugin/accessor
+   pages using the theme's gray CSS variables. */
+#ssr-vql .hextra-cards table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.875rem; /* text-sm */
+  line-height: 1.25rem; /* leading-5 */
+  margin: 0.5rem 0 1rem;
+}
+
+#ssr-vql .hextra-cards table thead {
+  background-color: var(--hx-color-gray-50, #f9fafb);
+}
+
+html.dark #ssr-vql .hextra-cards table thead {
+  background-color: rgb(107 114 128 / 0.2); /* gray-600/20 */
+}
+
+#ssr-vql .hextra-cards table tr {
+  margin: 0;
+  border-top: 1px solid var(--hx-color-gray-300, #d1d5db);
+  padding: 0;
+}
+
+html.dark #ssr-vql .hextra-cards table tr {
+  border-top-color: var(--hx-color-gray-600, #4b5563);
+}
+
+#ssr-vql .hextra-cards table th,
+#ssr-vql .hextra-cards table td {
+  margin: 0;
+  border: 1px solid var(--hx-color-gray-300, #d1d5db);
+  padding: 0.5rem; /* p-2 */
+}
+
+html.dark #ssr-vql .hextra-cards table th,
+html.dark #ssr-vql .hextra-cards table td {
+  border-color: var(--hx-color-gray-600, #4b5563);
+}
+
+#ssr-vql .hextra-cards table th {
+  font-weight: 600;
+}
