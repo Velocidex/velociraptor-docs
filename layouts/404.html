@@ -1,0 +1,23 @@
+{{- /* Custom 404: inherits the Hextra chrome (navbar, footer, dark mode,
+     site font) via baseof's "main" block, and centres the VeloR7 mark,
+     the error code, a message and a home button. Styling lives in
+     assets/css/custom.css under the .hextra-404 marker. */ -}}
+{{ define "main" }}
+  <main id="content" class="hextra-404">
+    <div class="hextra-404-inner">
+      <a class="hextra-404-brand" href="{{ "" | relLangURL }}" aria-label="{{ site.Title }}">
+        <img class="hx:block hx:dark:hidden" src="{{ "images/VeloR7_LightMode.svg" | relURL }}" alt="{{ site.Title }}" />
+        <img class="hx:hidden hx:dark:block" src="{{ "images/VeloR7_DarkMode.svg" | relURL }}" alt="{{ site.Title }}" />
+      </a>
+      <p class="hextra-404-code" aria-hidden="true">404</p>
+      <h1 class="hextra-404-title">Page not found</h1>
+      <p class="hextra-404-message">
+        Woops. Looks like this page doesn't exist. The link may be broken or the
+        page has moved.
+      </p>
+      <a class="hextra-404-action hx:inline-block hx:rounded-md hx:bg-primary-600 hx:px-6 hx:py-3 hx:text-white hx:no-underline hx:font-bold hx:hover:bg-primary-700" href="{{ "" | relLangURL }}">
+        Go to homepage
+      </a>
+    </div>
+  </main>
+{{ end }}
