@@ -62,7 +62,13 @@ def cleanupDate(date):
 def getTags(description):
   result = []
   for m in hash_regex.finditer(description):
-    result.append(m.group(1))
+    # Tags are normalized: lowercased, at least 2 characters long, and
+    # must contain at least one alphabetic character (so "0", "1", etc.
+    # harvested from e.g. "(#0/#1/#2/...)" prose are not turned into
+    # bogus tags).
+    tag = m.group(1).lower()
+    if len(tag) >= 2 and any(c.isalpha() for c in tag):
+      result.append(tag)
 
   return result
 
@@ -72,6 +78,9 @@ def getAuthor(record, yaml_filename):
   for item in previous_data:
     if item["title"] == title and item.get("author"):
       item["description"] = record["description"]
+      # Recompute tags too - the previous record may carry stale tags
+      # (e.g. bogus "#0/#1/#2" hashtags) that older versions harvested.
+      item["tags"] = record["tags"]
       return item
 
   # Get commit details for this file.

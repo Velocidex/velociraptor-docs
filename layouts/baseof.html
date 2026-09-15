@@ -35,18 +35,21 @@
   {{- end -}}
   {{- $tags := "" -}}
   {{- with .Params.tags }}
-    {{- $tags = delimit . ", " }}
+    {{- /* All tags are normalized to lowercase. */ -}}
+    {{- $tags = delimit (apply . "lower" ".") ", " }}
   {{- else }}
     {{- /* KB tips carry their tags as a legacy `Tags: #foo #bar` line in the
            body (no front-matter tags on the raw tips), so Pagefind gets
            nothing. Parse that line so search shows the same tag pills as the
-           KB section search (static/kb/data.json uses the same source). */ -}}
+           KB section search (static/kb/data.json uses the same source).
+           Only valid tags are kept (>= 2 chars with at least one letter),
+           lowercased - the generators apply the same rule. */ -}}
     {{- $tagsLine := "" -}}
     {{- with .RawContent -}}
       {{- with index (findRE `(?im)^\s*Tags:.*$` . 1) 0 }}{{ $tagsLine = . }}{{ end -}}
     {{- end -}}
-    {{- with findRE `#[0-9a-z_]+` $tagsLine -}}
-      {{- $tags = replaceRE "#" "" (delimit . ", ") -}}
+    {{- with findRE `(?i)#[0-9a-z_]*[a-z][0-9a-z_]+` $tagsLine -}}
+      {{- $tags = replaceRE "(?i)#" "" (delimit . ", ") | lower -}}
     {{- end -}}
   {{- end -}}
 

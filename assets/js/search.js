@@ -270,6 +270,9 @@
         var item = document.createElement("li");
         item.className =
           "pagefind-ui__result-tag pagefind-ui__result-tag--single";
+        // Tags are normalized to lowercase everywhere, so display the
+        // chip text lowercased too (the taxonomy slugs are lowercased).
+        v = v.toLowerCase();
         // Result chips elsewhere link to the tag page when one exists
         // (the /search/ page's Tags accordion is the one place a chip
         // filters instead of linking).
@@ -292,6 +295,9 @@
   // Content-page tag paragraphs: several knowledge-base / exchange pages end
   // with a plain markdown line like "Tags: #debugging #vql".  Turn those
   // paragraphs into a row of the same pill badges used on search results.
+  // Tags are lowercased and only valid tags (>= 2 chars, containing at
+  // least one alphabetic character) become pills; anything else (e.g. a
+  // bare "#0") is left as plain text.
   function decorateTagParagraphs(root) {
     root.querySelectorAll(".content p").forEach(function (p) {
       if (p.dataset.tagsDecorated) return;
@@ -306,6 +312,14 @@
       p.classList.add("tags-badges");
       p.textContent = "";
       values.forEach(function (v) {
+        if (v.length < 2 || !/[a-z]/i.test(v)) {
+          // Not a valid tag - leave the hashtag as plain text.
+          var span = document.createElement("span");
+          span.textContent = "#" + v;
+          p.appendChild(span);
+          return;
+        }
+        v = v.toLowerCase();
         var url = tagUrlFor(v);
         var badge = document.createElement(url ? "a" : "span");
         badge.className = "tag-badge" + (url ? " tag-badge--link" : "");

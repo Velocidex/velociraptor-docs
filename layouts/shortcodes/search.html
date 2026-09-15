@@ -12,8 +12,8 @@
     <summary class="pagefind-ui__filter-name search-tags-name">Tags</summary>
     <div class="search-tags-grid">
       {{- range . }}
-      <button type="button" class="search-tag-link" data-tag="{{ .Page.Title }}" aria-pressed="false" title="Filter results to '{{ .Page.LinkTitle }}'">
-        <span class="search-tag-name">{{ .Page.LinkTitle }}</span>
+      <button type="button" class="search-tag-link" data-tag="{{ .Page.Title | lower }}" aria-pressed="false" title="Filter results to '{{ .Page.LinkTitle | lower }}'">
+        <span class="search-tag-name">{{ .Page.LinkTitle | lower }}</span>
         <span class="search-tag-count">&nbsp;{{ .Count }}</span>
       </button>
       {{- end }}

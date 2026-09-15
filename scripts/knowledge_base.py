@@ -68,7 +68,11 @@ def getTags(description):
   result = []
   for line in content_regex.finditer(description):
     for m in hash_regex.finditer(line.group(0)):
-      result.append(m.group(1))
+      # Tags are normalized: lowercased, at least 2 characters long, and
+      # must contain at least one alphabetic character.
+      tag = m.group(1).lower()
+      if len(tag) >= 2 and any(c.isalpha() for c in tag):
+        result.append(tag)
 
   return result
 
