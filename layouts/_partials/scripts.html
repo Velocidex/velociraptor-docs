@@ -7,6 +7,9 @@
 {{/* Search */}}
 {{- partial "scripts/search.html" . -}}
 
+{{/* Hover-based link prefetching */}}
+{{- partial "scripts/prefetch.html" . -}}
+
 {{/* Mermaid */}}
 {{- if (.Store.Get "hasMermaid") -}}
   {{- partial "scripts/mermaid.html" . -}}
