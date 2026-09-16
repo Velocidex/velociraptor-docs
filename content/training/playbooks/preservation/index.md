@@ -1,5 +1,6 @@
 ---
 title: "Preserving Forensic Evidence"
+date: 2024-08-08
 summary: |
     As a system administrator you have a high level of confidence a
     certain endpoint is compromised. You wish to preserve critical

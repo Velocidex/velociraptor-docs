@@ -1,5 +1,6 @@
 ---
 title: "Finding Files"
+date: 2025-03-29
 weight: 50
 summary: |
     One of the most common operations in DFIR is searching for files

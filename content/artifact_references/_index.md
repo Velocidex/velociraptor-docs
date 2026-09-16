@@ -12,7 +12,7 @@ no_edit: true
 disableToc: false
 noTitle: true
 no_children: true
-rss_data_file: static/reference/data.json
+rss_data_file: static/artifact_reference/data.json
 rss_title: Velociraptor Artifact Reference
 noDisqus: true
 outputs:

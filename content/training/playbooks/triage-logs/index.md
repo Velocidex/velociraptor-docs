@@ -1,5 +1,6 @@
 ---
 title: "Triaging Logs"
+date: 2024-08-08
 summary: |
     An endpoint is suspected of being compromised but you don't know
     exactly what happened. You want to get an initial idea by examining

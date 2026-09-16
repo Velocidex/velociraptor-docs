@@ -5,6 +5,7 @@ import yaml
 import re
 import os
 import argparse
+import subprocess
 
 parser = argparse.ArgumentParser(description='Generate artifact documentation.')
 parser.add_argument('definition_path',
@@ -57,12 +58,47 @@ try:
 except:
   pass
 
+# Map repo-relative path -> first-commit date (YYYY-MM-DD) for every
+# artifact definition file in the Velociraptor git repo.
+# Runs a fast batch scan first, then falls back to per-file --follow for
+# files whose paths were renamed since their original add commit.
+def file_creation_dates(artifact_root_directory, yaml_paths):
+  repo_path = os.path.normpath(os.path.join(artifact_root_directory, "..", ".."))
+  dates = {}
+  try:
+    out = subprocess.check_output(
+      ["git", "-C", repo_path, "log",
+       "--diff-filter=A", "--name-only", "--date=short",
+       "--format=date:%ad", "--", "artifacts/definitions/"],
+      stderr=subprocess.DEVNULL, text=True)
+    current = None
+    for line in out.splitlines():
+      if line.startswith("date:"):
+        current = line.split(":", 1)[1]
+      elif line and current:
+        dates[line.strip()] = current
+  except (subprocess.CalledProcessError, FileNotFoundError):
+    pass
+
+  missing = [p for p in yaml_paths if p not in dates]
+  for p in missing:
+    try:
+      out = subprocess.check_output(
+        ["git", "-C", repo_path, "log", "--follow", "--diff-filter=A",
+         "--date=short", "--format=%ad", "--", p],
+        stderr=subprocess.DEVNULL, text=True).splitlines()
+    except (subprocess.CalledProcessError, FileNotFoundError):
+      out = []
+    if out:
+      dates[p] = out[-1].strip()
+  return dates
+
 def cleanDescription(description):
   description = description.replace("\r\n", "\n")
   top_paragraph = description.split("\n\n")[0]
   return top_paragraph
 
-def write_page(data, content, index):
+def write_page(data, content, index, creation_date=None):
   base_name = data["name"]
   filename_name = os.path.join(artifact_page_directory, base_name.lower())
 
@@ -74,6 +110,7 @@ def write_page(data, content, index):
     "link": os.path.join("/artifact_references/pages/",
                          base_name.lower()).replace("\\", "/"),
     "type": data.get("type", "client").lower(),
+    "date": creation_date or "",
   }
   record["tags"] = [getTag(record["type"])]
 
@@ -93,24 +130,29 @@ def write_page(data, content, index):
 def build_markdown(artifact_root_directory):
   index = []
 
+  all_yamls = []
   for root, dirs, files in os.walk(artifact_root_directory):
-    files.sort()
-
     for name in files:
-      if not name.endswith(".yaml"):
-        continue
+      if name.endswith(".yaml"):
+        all_yamls.append(os.path.join(root, name))
+  all_yamls.sort()
 
-      yaml_filename = os.path.join(root, name)
-      with open(yaml_filename) as stream:
-        content = stream.read()
-        data = yaml.safe_load(content)
+  repo_root = os.path.normpath(os.path.join(artifact_root_directory, "..", ".."))
+  yaml_paths = [os.path.relpath(f, repo_root) for f in all_yamls]
+  creation_dates = file_creation_dates(artifact_root_directory, yaml_paths)
 
-        write_page(data, content, index)
+  for yaml_filename in all_yamls:
+    creation_date = creation_dates.get(os.path.relpath(yaml_filename, repo_root))
+    with open(yaml_filename) as stream:
+      content = stream.read()
+      data = yaml.safe_load(content)
 
-        # Make copies for all the aliases so they can be easily found
-        for alias in data.get("aliases", []):
-          data["name"] = alias
-          write_page(data, content, index)
+      write_page(data, content, index, creation_date)
+
+      # Make copies for all the aliases so they can be easily found
+      for alias in data.get("aliases", []):
+        data["name"] = alias
+        write_page(data, content, index, creation_date)
 
   index = sorted(index, key=lambda x: x["title"])
 
