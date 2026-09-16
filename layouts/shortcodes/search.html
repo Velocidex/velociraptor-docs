@@ -29,11 +29,11 @@
     }
     var css = document.createElement("link");
     css.rel = "stylesheet";
-    css.href = "/pagefind/pagefind-ui.css";
+    css.href = "{{ "pagefind/pagefind-ui.css" | relURL }}";
     document.head.appendChild(css);
 
-var script = document.createElement("script");
-      script.src = "/pagefind/pagefind-ui.js";
+    var script = document.createElement("script");
+      script.src = "{{ "pagefind/pagefind-ui.js" | relURL }}";
       script.onload = function () {
         new PagefindUI({
           element: "#pagefind-site-search",
