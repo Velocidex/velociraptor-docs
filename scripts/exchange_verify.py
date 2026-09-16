@@ -1,4 +1,5 @@
 import urllib.request
+import os
 import os.path
 import re
 import subprocess
@@ -36,8 +37,22 @@ VELO_LOGFILE = "/tmp/velo.log"
 # Velociraptor is released on GitHub only for changes to its minor version number.
 # The same release (e.g. releases/tag/v0.76) is (re-)used for patch releases.
 # Retrieve the latest patch release for the latest release:
+def github_request(url):
+    """Build a request, authenticated with GITHUB_TOKEN when available.
+
+    The Actions workflows pass GITHUB_TOKEN in the environment to avoid the
+    unauthenticated GitHub API rate limit (60 req/hr per IP). Without it the
+    releases/latest call can fail with HTTP 403 "rate limit exceeded".
+    """
+    req = urllib.request.Request(url)
+    token = os.environ.get("GITHUB_TOKEN")
+    if token:
+        req.add_header("Authorization", "Bearer " + token)
+    return req
+
+
 def resolve_velo_url():
-    with urllib.request.urlopen(VELO_API) as r:
+    with urllib.request.urlopen(github_request(VELO_API)) as r:
         release = json.load(r)
 
     candidates = []
@@ -72,7 +87,7 @@ try:
 except OSError:
     with open(VELO_FILENAME, "wb") as fd:
         print("Download velociraptor from %s" % VELO_URL)
-        data = urllib.request.urlopen(VELO_URL).read()
+        data = urllib.request.urlopen(github_request(VELO_URL)).read()
         print("Done!")
         fd.write(data)
 
