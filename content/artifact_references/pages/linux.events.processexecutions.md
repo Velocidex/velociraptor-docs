@@ -1,13 +1,12 @@
 ---
 title: Linux.Events.ProcessExecutions
+description: "Collects process execution logs from the Linux kernel."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
 build:
   list: never
-description: |
-  Collects process execution logs from the Linux kernel.
 ---
 
 Collects process execution logs from the Linux kernel.
@@ -20,7 +19,9 @@ apt-get install auditd
 ```
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Events.ProcessExecutions
 description: |
   Collects process execution logs from the Linux kernel.
@@ -47,7 +48,7 @@ parameters:
 sources:
   - query: |
      // Install the auditd rule if possible.
-     LET _ &lt;= SELECT * FROM execve(argv=[pathToAuditctl, "-a",
+     LET _ <= SELECT * FROM execve(argv=[pathToAuditctl, "-a",
           "exit,always", "-F", "arch=b64", "-S", "execve", "-k", "procmon"])
 
      LET exec_log = SELECT timestamp(string=Timestamp) AS Time, Sequence,
@@ -61,8 +62,8 @@ sources:
        FROM audit()
        WHERE "procmon" in Tags AND Result = 'success'
 
-     // Cache Uid -&gt; Username mapping.
-     LET users &lt;= SELECT User, atoi(string=Uid) AS Uid
+     // Cache Uid -> Username mapping.
+     LET users <= SELECT User, atoi(string=Uid) AS Uid
        FROM Artifact.Linux.Sys.Users()
 
      // Enrich the original artifact with more data.
@@ -73,6 +74,6 @@ sources:
               CmdLine,
               Exe, CWD
        FROM exec_log
+````
 
-</code></pre>
 

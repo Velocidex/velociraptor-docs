@@ -1,21 +1,21 @@
 ---
 title: Generic.Client.CleanupTemp
+description: "Removes old temporary files from the Velociraptor client's temp\ndirectory.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Removes old temporary files from the Velociraptor client's temp
-  directory.
 ---
 
 Removes old temporary files from the Velociraptor client's temp
 directory.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Client.CleanupTemp
 description: |
   Removes old temporary files from the Velociraptor client's temp
@@ -37,11 +37,11 @@ required_permissions:
 
 sources:
   - query: |
-      LET Threshold &lt;= timestamp(epoch=now() - AgeSeconds )
+      LET Threshold <= timestamp(epoch=now() - AgeSeconds )
       SELECT OSPath, Size, Mtime,
          if(condition=ReadllyDoIt, then=rm(filename=OSPath)) AS Removed
       FROM glob(globs=expand(path=TempGlob))
-      WHERE NOT IsDir AND Mtime &lt; Threshold
+      WHERE NOT IsDir AND Mtime < Threshold
+````
 
-</code></pre>
 

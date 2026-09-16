@@ -1,14 +1,12 @@
 ---
 title: Server.Utils.BackupS3
+description: "Automatically zips and uploads collected flow results to an\nS3-compatible bucket."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
 build:
   list: never
-description: |
-  Automatically zips and uploads collected flow results to an
-  S3-compatible bucket.
 ---
 
 Automatically zips and uploads collected flow results to an
@@ -22,7 +20,9 @@ S3AccessSecret, S3AccessToken)
 Thanks to @shortxstack and @Recon_InfoSec
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.BackupS3
 description: |
   Automatically zips and uploads collected flow results to an
@@ -90,6 +90,6 @@ sources:
       WHERE Upload OR
         if(condition=RemoveDownloads,
            then=rm(filename=file_store(path=FlowDownload)))
+````
 
-</code></pre>
 

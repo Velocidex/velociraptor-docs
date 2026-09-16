@@ -1,19 +1,20 @@
 ---
 title: Server.Hunts.List
+description: "Enumerates scheduled hunts showing hunt IDs, artifacts, and status.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
 build:
   list: never
-description: |
-  Enumerates scheduled hunts showing hunt IDs, artifacts, and status.
 ---
 
 Enumerates scheduled hunts showing hunt IDs, artifacts, and status.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Hunts.List
 description: |
   Enumerates scheduled hunts showing hunt IDs, artifacts, and status.
@@ -27,6 +28,6 @@ sources:
              join(array=start_request.artifacts, sep=",") as Artifact,
              state
       FROM hunts()
+````
 
-</code></pre>
 

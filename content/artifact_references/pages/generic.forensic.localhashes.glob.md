@@ -1,14 +1,12 @@
 ---
 title: Generic.Forensic.LocalHashes.Glob
+description: "Calculates hashes for files matching a glob pattern and stores them\nin a SQLite database on the client."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Calculates hashes for files matching a glob pattern and stores them
-  in a SQLite database on the client.
 ---
 
 Calculates hashes for files matching a glob pattern and stores them
@@ -32,7 +30,9 @@ You can rate limit this artifact by using the ops/sec setting
 to perform a slow update of the local file hash database.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Forensic.LocalHashes.Glob
 description: |
   Calculates hashes for files matching a glob pattern and stores them
@@ -70,12 +70,12 @@ parameters:
 
 sources:
   - query: |
-      LET hash_db &lt;= SELECT OSPath
+      LET hash_db <= SELECT OSPath
       FROM Artifact.Generic.Forensic.LocalHashes.Init(HashDb=HashDb)
 
-      LET path &lt;= hash_db[0].OSPath
+      LET path <= hash_db[0].OSPath
 
-      LET _ &lt;= log(message="Will use local hash database " + path)
+      LET _ <= log(message="Will use local hash database " + path)
 
       // Crawl the files and calculate their hashes
       LET files = SELECT OSPath, Size, hash(path=OSPath).MD5 AS Hash
@@ -93,6 +93,6 @@ sources:
       SELECT OSPath, Hash, Size
       FROM insertion
       WHERE NOT SuppressOutput
+````
 
-</code></pre>
 

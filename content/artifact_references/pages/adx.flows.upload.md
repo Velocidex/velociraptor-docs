@@ -1,15 +1,12 @@
 ---
 title: ADX.Flows.Upload
+description: "This server-side event monitoring artifact waits for new artifacts\nto be collected from endpoints and automatically uploads those to an\nAzure Data Explorer (ADX) cluster."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
 build:
   list: never
-description: |
-  This server-side event monitoring artifact waits for new artifacts
-  to be collected from endpoints and automatically uploads those to an
-  Azure Data Explorer (ADX) cluster.
 ---
 
 This server-side event monitoring artifact waits for new artifacts
@@ -64,7 +61,9 @@ see: https://github.com/baseVISION/IR-Velociraptor-Artefact-KQL-Mappings
   latency requirements
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: ADX.Flows.Upload
 description: |
   This server-side event monitoring artifact waits for new artifacts
@@ -173,7 +172,7 @@ sources:
       LET completions = SELECT * FROM watch_monitoring(
                artifact="System.Flow.Completion")
                WHERE Flow.artifacts_with_results =~ ArtifactNameRegex
-      LET organization &lt;= org().name
+      LET organization <= org().name
 
       LET documents = SELECT * FROM foreach(row=completions,
           query={
@@ -207,6 +206,6 @@ sources:
             tenant_id=TenantID,
             secret=Secret)
 
+````
 
-</code></pre>
 

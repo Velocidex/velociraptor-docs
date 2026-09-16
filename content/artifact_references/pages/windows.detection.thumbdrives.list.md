@@ -1,14 +1,12 @@
 ---
 title: Windows.Detection.Thumbdrives.List
+description: "Watches for removable drive insertion and enumerates all new files\non them."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
 build:
   list: never
-description: |
-  Watches for removable drive insertion and enumerates all new files
-  on them.
 ---
 
 Watches for removable drive insertion and enumerates all new files
@@ -28,7 +26,9 @@ We exclude very large removable drives since they might have too
 many files.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.Thumbdrives.List
 description: |
   Watches for removable drive insertion and enumerates all new files
@@ -61,7 +61,7 @@ sources:
         LET removable_disks = SELECT Name AS Drive,
             atoi(string=Data.Size) AS Size
         FROM glob(globs="/*", accessor="file")
-        WHERE Data.Description =~ "Removable" AND Size &lt; atoi(string=maxDriveSize)
+        WHERE Data.Description =~ "Removable" AND Size < atoi(string=maxDriveSize)
 
         LET file_listing = SELECT OSPath,
             Mtime As Modified,
@@ -78,6 +78,6 @@ sources:
           key="OSPath",
           period=10)
           WHERE Diff = "added"
+````
 
-</code></pre>
 

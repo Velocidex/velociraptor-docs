@@ -1,13 +1,12 @@
 ---
 title: Linux.Ssh.AuthorizedKeys
+description: "Finds and parses SSH authorized keys files."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Finds and parses SSH authorized keys files.
 ---
 
 Finds and parses SSH authorized keys files.
@@ -21,18 +20,20 @@ From `man authorized_keys`:
 > field is optional.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Ssh.AuthorizedKeys
 description: |
   Finds and parses SSH authorized keys files.
 
   From `man authorized_keys`:
 
-  &gt; `AUTHORIZED_KEYS FILE FORMAT`: Each line of the file contains one
-  &gt; key (empty lines and lines starting with a ‘#’ are ignored as
-  &gt; comments). Public keys consist of the following space-separated
-  &gt; fields: options, keytype, base64-encoded key, comment. The options
-  &gt; field is optional.
+  > `AUTHORIZED_KEYS FILE FORMAT`: Each line of the file contains one
+  > key (empty lines and lines starting with a ‘#’ are ignored as
+  > comments). Public keys consist of the following space-separated
+  > fields: options, keytype, base64-encoded key, comment. The options
+  > field is optional.
 
 parameters:
   - name: sshKeyFilesGlob
@@ -83,6 +84,6 @@ sources:
         SELECT OSPath, _Upload, *
         FROM foreach(column="Parsed", row= Parse(OSPath=OSPath))
       })
+````
 
-</code></pre>
 

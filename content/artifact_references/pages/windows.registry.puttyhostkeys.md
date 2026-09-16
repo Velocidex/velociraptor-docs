@@ -1,14 +1,12 @@
 ---
 title: Windows.Registry.PuttyHostKeys
+description: "Extracts PuTTY SSH host keys stored in the Windows registry for\neach user."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Extracts PuTTY SSH host keys stored in the Windows registry for
-  each user.
 ---
 
 Extracts PuTTY SSH host keys stored in the Windows registry for
@@ -23,7 +21,9 @@ in the Windows Registry.
 - To search for a specific PORT: `TargetKeyName =~ '@\<PORT\>:.+$'`
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Registry.PuttyHostKeys
 author: Matt Green - @mgreen27
 description: |
@@ -35,8 +35,8 @@ description: |
   in the Windows Registry.
 
   - Output KeyName: `ssh-ed12345@22:27.27.27.27`
-  - To search for a specific IP: `TargetKeyName =~ ':\&lt;IP\&gt;$'`
-  - To search for a specific PORT: `TargetKeyName =~ '@\&lt;PORT\&gt;:.+$'`
+  - To search for a specific IP: `TargetKeyName =~ ':\<IP\>$'`
+  - To search for a specific PORT: `TargetKeyName =~ '@\<PORT\>:.+$'`
 
 type: CLIENT
 
@@ -55,7 +55,7 @@ sources:
       SELECT OS From info() where OS = 'windows'
 
     query: |
-      LET HKEY_USERS &lt;= pathspec(path_type="registry", Path="HKEY_USERS")
+      LET HKEY_USERS <= pathspec(path_type="registry", Path="HKEY_USERS")
 
       SELECT
         Mtime,
@@ -68,6 +68,6 @@ sources:
       WHERE KeyName =~ TargetKeyName
         AND KeyValue =~ TargetKeyValue
 
+````
 
-</code></pre>
 

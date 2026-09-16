@@ -1,19 +1,20 @@
 ---
 title: MacOS.Detection.InstallHistory
+description: "Collects entries from the InstallHistory .plist file\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Collects entries from the InstallHistory .plist file
 ---
 
 Collects entries from the InstallHistory .plist file
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: MacOS.Detection.InstallHistory
 description: |
   Collects entries from the InstallHistory .plist file
@@ -47,6 +48,6 @@ sources:
                     FROM scope()
             })
     SELECT * FROM foreach(row=SWplist, query=SoftwareDetails)
+````
 
-</code></pre>
 

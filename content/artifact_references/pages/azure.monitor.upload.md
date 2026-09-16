@@ -1,16 +1,12 @@
 ---
 title: Azure.Monitor.Upload
+description: "This server-side event monitoring artifact waits for new artifacts to\nbe collected from endpoints and automatically uploads those to an\nAzure Log Analytics workspace using the **Azure Monitor Logs Ingestion\nAPI** (the modern Data Collection Rule based API)."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
 build:
   list: never
-description: |
-  This server-side event monitoring artifact waits for new artifacts to
-  be collected from endpoints and automatically uploads those to an
-  Azure Log Analytics workspace using the **Azure Monitor Logs Ingestion
-  API** (the modern Data Collection Rule based API).
 ---
 
 This server-side event monitoring artifact waits for new artifacts to
@@ -99,7 +95,9 @@ type `Azure Monitor Creds` and referenced via the `Secret` parameter.
   `MaxMemoryBuffer` defaults well under that.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Azure.Monitor.Upload
 description: |
   This server-side event monitoring artifact waits for new artifacts to
@@ -209,7 +207,7 @@ parameters:
   - name: Table
     default: RawVelociraptorEvents_CL
     description: |
-      Only used to derive StreamName as 'Custom-&lt;Table&gt;' when StreamName
+      Only used to derive StreamName as 'Custom-<Table>' when StreamName
       is left empty. Ignored otherwise.
   - name: TenantID
     description: Azure Service Principal Tenant ID (or set AZURE_TENANT_ID).
@@ -265,14 +263,14 @@ parameters:
 sources:
   - precondition: |
       SELECT * FROM info()
-      WHERE version(plugin="azure_monitor_upload") &gt;= 1
+      WHERE version(plugin="azure_monitor_upload") >= 1
 
     query: |
       -- azure_monitor_upload() only exists in 'sumo' builds. Server
       -- monitoring does not evaluate the precondition above, so also
       -- log an actionable message here rather than leaving the user
       -- with a bare "plugin not found".
-      LET _ &lt;= if(condition=NOT version(plugin="azure_monitor_upload"),
+      LET _ <= if(condition=NOT version(plugin="azure_monitor_upload"),
           then=log(level="ERROR", dedup=-1,
                    message="Azure.Monitor.Upload requires a Velociraptor " +
                      "build with the 'sumo' tag (the official Docker image, " +
@@ -281,7 +279,7 @@ sources:
       LET completions = SELECT * FROM watch_monitoring(
                artifact="System.Flow.Completion")
                WHERE Flow.artifacts_with_results =~ ArtifactNameRegex
-      LET organization &lt;= org().name
+      LET organization <= org().name
 
       LET documents = SELECT * FROM foreach(row=completions,
           query={
@@ -320,6 +318,6 @@ sources:
             managed_identity_client_id=ManagedIdentityClientID,
             default_credential=DefaultCredential,
             secret=Secret)
+````
 
-</code></pre>
 

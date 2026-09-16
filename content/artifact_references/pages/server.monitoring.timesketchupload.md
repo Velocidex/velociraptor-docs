@@ -1,21 +1,21 @@
 ---
 title: Server.Monitoring.TimesketchUpload
+description: "Watches for creation of new Velociraptor timelines and\nautomatically uploads matching ones to Timesketch.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
 build:
   list: never
-description: |
-  Watches for creation of new Velociraptor timelines and
-  automatically uploads matching ones to Timesketch.
 ---
 
 Watches for creation of new Velociraptor timelines and
 automatically uploads matching ones to Timesketch.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Monitoring.TimesketchUpload
 description: |
    Watches for creation of new Velociraptor timelines and
@@ -63,6 +63,6 @@ sources:
              TimelineName=Timeline,
              SketchName=SuperTimelineName)
       })
+````
 
-</code></pre>
 

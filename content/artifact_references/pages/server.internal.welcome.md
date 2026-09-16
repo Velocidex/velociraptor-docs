@@ -1,14 +1,12 @@
 ---
 title: Server.Internal.Welcome
+description: "Renders the server Home page / Welcome page showing navigation links\nto common tasks and dashboards."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
 build:
   list: never
-description: |
-  Renders the server Home page / Welcome page showing navigation links
-  to common tasks and dashboards.
 ---
 
 Renders the server Home page / Welcome page showing navigation links
@@ -23,7 +21,9 @@ Simply edit this markdown and your server will display your
 customized report.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Internal.Welcome
 description: |
   Renders the server Home page / Welcome page showing navigation links
@@ -45,33 +45,33 @@ sources:
 reports:
   - type: CLIENT
     template: |
-      &lt;div class="row dashboard "&gt;
-      &lt;div class="card col-10"&gt;
-      &lt;img src="./velo.svg" height="150"&gt;
-      &lt;div class="card-body"&gt;
-      {{ $X := Query "LET DebugLink &lt;= link_to(type='debug', org='root')" | Expand }}
+      <div class="row dashboard ">
+      <div class="card col-10">
+      <img src="./velo.svg" height="150">
+      <div class="card-body">
+      {{ $X := Query "LET DebugLink <= link_to(type='debug', org='root')" | Expand }}
 
       # Welcome to Velociraptor!
 
-      &lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;
+      <table><tbody><tr><td>
 
-      * &lt;a href="#/dashboard"&gt;View server dashboard&lt;/a&gt;
-      * &lt;a href="#/collected/server/new/Server.Import.Extras"&gt;Import Extra artifacts&lt;/a&gt;
-      * &lt;a href="#/collected/server/new/Server.Utils.CreateLinuxPackages"&gt;Build Linux client packages&lt;/a&gt;
-      * &lt;a href="#/collected/server/new/Server.Utils.CreateMSI"&gt;Build Windows client MSI&lt;/a&gt;
-      * &lt;a href="#/collected/server/new/Server.Utils.CreateCollector"&gt;Build an Offline Collector&lt;/a&gt;
-      * &lt;a href="#/collected/server/new/Server.Orgs.NewOrg"&gt;Create a new Org&lt;/a&gt;
+      * <a href="#/dashboard">View server dashboard</a>
+      * <a href="#/collected/server/new/Server.Import.Extras">Import Extra artifacts</a>
+      * <a href="#/collected/server/new/Server.Utils.CreateLinuxPackages">Build Linux client packages</a>
+      * <a href="#/collected/server/new/Server.Utils.CreateMSI">Build Windows client MSI</a>
+      * <a href="#/collected/server/new/Server.Utils.CreateCollector">Build an Offline Collector</a>
+      * <a href="#/collected/server/new/Server.Orgs.NewOrg">Create a new Org</a>
 
-      &lt;/td&gt;&lt;td&gt;
+      </td><td>
 
-      * &lt;a href="#/host/server"&gt;View Server Configuration&lt;/a&gt;
-      * &lt;a href="#/events/server/Server.Audit.Logs"&gt;Inspect Server Audit Log&lt;/a&gt;
-      * &lt;a href="#/secrets"&gt;Manage Server Secrets&lt;/a&gt;
-      * &lt;a href="#/users"&gt;Manage Velociraptor Users&lt;/a&gt;
-      * &lt;a href="#/artifacts/Server.Internal.Welcome/edit"&gt;Customize this welcome screen&lt;/a&gt;
-      * &lt;a href="{{ Scope "DebugLink" }}"&gt;Debug the server&lt;/a&gt;
+      * <a href="#/host/server">View Server Configuration</a>
+      * <a href="#/events/server/Server.Audit.Logs">Inspect Server Audit Log</a>
+      * <a href="#/secrets">Manage Server Secrets</a>
+      * <a href="#/users">Manage Velociraptor Users</a>
+      * <a href="#/artifacts/Server.Internal.Welcome/edit">Customize this welcome screen</a>
+      * <a href="{{ Scope "DebugLink" }}">Debug the server</a>
 
-      &lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+      </td></tr></tbody></table>
 
       Or search for a client in the search bar above.
 
@@ -82,7 +82,7 @@ reports:
 
       1. Press `Ctrl-/` to view keyboard hotkeys.
 
-      &lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+      </div></div></div>
+````
 
-</code></pre>
 

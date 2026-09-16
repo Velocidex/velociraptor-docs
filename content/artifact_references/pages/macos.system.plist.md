@@ -1,13 +1,12 @@
 ---
 title: MacOS.System.Plist
+description: "Parses and optionally uploads macOS `.plist` files. "
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Parses and optionally uploads macOS `.plist` files.
 ---
 
 Parses and optionally uploads macOS `.plist` files. 
@@ -18,7 +17,9 @@ advanced parsing is desired, the artifact can be copied and
 modified.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: MacOS.System.Plist
 description: |
   Parses and optionally uploads macOS `.plist` files. 
@@ -55,6 +56,6 @@ sources:
                        ctime=Ctime,
                        btime=Btime)) AS Upload
       FROM glob(globs=PlistGlob)
+````
 
-</code></pre>
 

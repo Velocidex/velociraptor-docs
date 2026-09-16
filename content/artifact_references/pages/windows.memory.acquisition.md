@@ -1,13 +1,12 @@
 ---
 title: Windows.Memory.Acquisition
+description: "Acquires a full memory image by using the built-in WinPmem driver."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Acquires a full memory image by using the built-in WinPmem driver.
 ---
 
 Acquires a full memory image by using the built-in WinPmem driver.
@@ -31,7 +30,9 @@ go-winpmem.exe extract image.compressed image.raw
 ```
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Memory.Acquisition
 description: |
   Acquires a full memory image by using the built-in WinPmem driver.
@@ -61,7 +62,7 @@ precondition: |
   SELECT OS FROM info()
   WHERE OS = 'windows'
     AND Architecture = "amd64"
-    AND version(function='winpmem') &gt;= 0
+    AND version(function='winpmem') >= 0
 
 parameters:
   - name: ServiceName
@@ -81,9 +82,9 @@ parameters:
 
 sources:
   - query: |
-      LET Tempfile &lt;= tempfile(extension=".pmem")
+      LET Tempfile <= tempfile(extension=".pmem")
 
-      LET ImageInfo &lt;= winpmem(
+      LET ImageInfo <= winpmem(
          driver_path=DriverPath,
          service=ServiceName,
          image_path=Tempfile,
@@ -92,6 +93,6 @@ sources:
       SELECT ImageInfo, upload(file=Tempfile, name="PhysicalMemory.dd") AS Upload
       FROM stat(filename=Tempfile)
       WHERE log(message="Uploading %v bytes", args=Size)
+````
 
-</code></pre>
 

@@ -1,14 +1,12 @@
 ---
 title: MacOS.OSQuery.Generic
+description: "Deploys the osquery binary and runs a user-specified SQL query,\nreturning parsed JSON results."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Deploys the osquery binary and runs a user-specified SQL query,
-  returning parsed JSON results.
 ---
 
 Deploys the osquery binary and runs a user-specified SQL query,
@@ -20,7 +18,9 @@ three supported Velociraptor platform (Windows/Linux/MacOS).
 You can read more about OSQuery on https://osquery.io/
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: MacOS.OSQuery.Generic
 description: |
   Deploys the osquery binary and runs a user-specified SQL query,
@@ -52,7 +52,7 @@ parameters:
 
 sources:
   - query: |
-      LET binary &lt;= SELECT OSPath
+      LET binary <= SELECT OSPath
       FROM Artifact.Generic.Utils.FetchBinary(ToolName="OSQueryDarwin")
 
       LET result = SELECT * FROM execve(
@@ -63,6 +63,6 @@ sources:
       query={
          SELECT * FROM parse_json_array(data=Stdout)
       })
+````
 
-</code></pre>
 

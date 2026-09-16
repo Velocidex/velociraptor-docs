@@ -1,14 +1,12 @@
 ---
 title: Windows.EventLogs.AlternateLogon
+description: "Extracts alternate credential logon events (Event ID 4648) from the\nSecurity event log."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Extracts alternate credential logon events (Event ID 4648) from the
-  Security event log.
 ---
 
 Extracts alternate credential logon events (Event ID 4648) from the
@@ -19,7 +17,9 @@ destination Current logged-on User Name Alternate User Name
 Destination Host Name/IP Process Name
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.EventLogs.AlternateLogon
 description: |
   Extracts alternate credential logon events (Event ID 4648) from the
@@ -53,6 +53,6 @@ sources:
       FROM parse_evtx(filename=securityLogFile)
       WHERE System.EventID.Value = 4648
         AND EventData
+````
 
-</code></pre>
 

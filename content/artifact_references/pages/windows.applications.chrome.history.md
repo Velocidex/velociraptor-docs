@@ -1,14 +1,12 @@
 ---
 title: Windows.Applications.Chrome.History
+description: "Enumerates visited URLs, titles, and visit timestamps from\nChrome/Edge/Brave/Vivaldi/Opera history databases."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Enumerates visited URLs, titles, and visit timestamps from
-  Chrome/Edge/Brave/Vivaldi/Opera history databases.
 ---
 
 Enumerates visited URLs, titles, and visit timestamps from
@@ -28,7 +26,9 @@ https://source.chromium.org/chromium/chromium/src/+/master:components/history/co
   will be removed in future
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Applications.Chrome.History
 description: |
   Enumerates visited URLs, titles, and visit timestamps from
@@ -121,6 +121,6 @@ sources:
               query=urlSQLQuery)
           })
           WHERE visited_url =~ URLRegex
+````
 
-</code></pre>
 

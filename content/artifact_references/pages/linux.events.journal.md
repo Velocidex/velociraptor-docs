@@ -1,19 +1,20 @@
 ---
 title: Linux.Events.Journal
+description: "Forwards events from the Systemd binary journal logs.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
 build:
   list: never
-description: |
-  Forwards events from the Systemd binary journal logs.
 ---
 
 Forwards events from the Systemd binary journal logs.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Events.Journal
 description: |
   Forwards events from the Systemd binary journal logs.
@@ -34,6 +35,6 @@ sources:
       SELECT *
       FROM watch_journald(filename=OSPath)
     }, workers=100)
+````
 
-</code></pre>
 

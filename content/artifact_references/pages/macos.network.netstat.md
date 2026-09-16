@@ -1,19 +1,20 @@
 ---
 title: MacOS.Network.Netstat
+description: "Reports network connections enriched with process information.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Reports network connections enriched with process information.
 ---
 
 Reports network connections enriched with process information.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: MacOS.Network.Netstat
 description: |
   Reports network connections enriched with process information.
@@ -69,7 +70,7 @@ sources:
              Status, TypeString AS Type,
              process_tracker_get(id=Pid).Data AS ProcInfo,
              join(array=process_tracker_callchain(id=Pid).Data.Name,
-                  sep=" -&gt; ") AS CallChain,
+                  sep=" -> ") AS CallChain,
              if(condition=AlsoCollectFullProcessTree,
                 then=process_tracker_tree(id=Pid)) AS ChildrenTree
       FROM netstat()
@@ -85,6 +86,6 @@ sources:
 column_types:
   - name: ChildrenTree
     type: tree
+````
 
-</code></pre>
 

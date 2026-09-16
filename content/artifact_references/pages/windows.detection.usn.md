@@ -1,14 +1,12 @@
 ---
 title: Windows.Detection.Usn
+description: "Detects file creation and modification by polling the NTFS USN\njournal."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
 build:
   list: never
-description: |
-  Detects file creation and modification by polling the NTFS USN
-  journal.
 ---
 
 Detects file creation and modification by polling the NTFS USN
@@ -31,7 +29,9 @@ there could be a small delay between the execution and the prefetch
 being modified.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.Usn
 description: |
   Detects file creation and modification by polling the NTFS USN
@@ -78,6 +78,6 @@ sources:
   - query: |
       SELECT * FROM watch_usn(device=Device)
       WHERE OSPath =~ PathRegex
+````
 
-</code></pre>
 

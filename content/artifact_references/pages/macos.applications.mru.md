@@ -1,21 +1,21 @@
 ---
 title: MacOS.Applications.MRU
+description: "Parses Finder's `FXRecentFolders` plist entries to extract recently\naccessed items.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Parses Finder's `FXRecentFolders` plist entries to extract recently
-  accessed items.
 ---
 
 Parses Finder's `FXRecentFolders` plist entries to extract recently
 accessed items.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: MacOS.Applications.MRU
 description: |
   Parses Finder's `FXRecentFolders` plist entries to extract recently
@@ -34,7 +34,7 @@ parameters:
 
 export: |
         -- Parser for MAC Bookmark format
-        LET type_lookup &lt;= dict(
+        LET type_lookup <= dict(
            `0x100`="__DataString",
            `0x200`="__DataData",
            `0x300`="__DataUint32",
@@ -46,7 +46,7 @@ export: |
            `0x900`="__DataURL"
            )
 
-        LET MRULookup &lt;= dict(
+        LET MRULookup <= dict(
            `0x2040`="Volume Bookmark",
            `0x2002`="Volume Path",
            `0x2020`="Volume Flags",
@@ -76,8 +76,8 @@ export: |
           }],
           ["Size", 4, "uint32"],
           ["HeaderSize", 12, "uint32"],
-          ["TOCOffset", "x=&gt;x.HeaderSize", "uint32"],
-          ["TOC", "x=&gt;x.TOCOffset + x.HeaderSize", "TOC"]
+          ["TOCOffset", "x=>x.HeaderSize", "uint32"],
+          ["TOC", "x=>x.TOCOffset + x.HeaderSize", "TOC"]
          ]],
          ["TOC", 0, [
           ["SizeOfTOC", 0, "uint32"],
@@ -87,19 +87,19 @@ export: |
           ["TOCCount", 16, "uint32"],
           ["Items", 20, "Array", {
               type: "TOCItem",
-              count: "x=&gt;x.TOCCount",
+              count: "x=>x.TOCCount",
           }]
          ]],
          ["__TOCArrayPtr", 4, [
           ["Offset", 0, "uint32"],
           ["Item", 0, "Profile", {
             type: "TOCValue",
-            offset: "x=&gt;x.Offset + 48"
+            offset: "x=>x.Offset + 48"
            }]
          ]],
          ["TOCValue", 0, [
            ["MyOffset", 0, "Value", {
-               value: "x=&gt;x.StartOf",
+               value: "x=>x.StartOf",
            }],
            ["length", 0, "uint32"],
            ["subtype", 4, "BitField", {
@@ -113,38 +113,38 @@ export: |
                end_bit: 32,
             }],
             ["data", 0, "Value", {
-               value: "x=&gt;get(item=x, field=get(item=type_lookup, field=format(format='%#x', args=x.data_type)))",
+               value: "x=>get(item=x, field=get(item=type_lookup, field=format(format='%#x', args=x.data_type)))",
             }],
             ["__DataString", 8, "String", {
-               length: "x=&gt;x.length",
+               length: "x=>x.length",
                term: "",
             }],
             ["__DataData", 0, "Value", {
-               value: "x=&gt;format(format='%x', args=x.__DataStr)",
+               value: "x=>format(format='%x', args=x.__DataStr)",
             }],
             ["__DataDateFloat", 8, "float64be"],
             ["__DataDate", 0, "Value", {
-               value: "x=&gt;timestamp(cocoatime=x.__DataDateFloat)",
+               value: "x=>timestamp(cocoatime=x.__DataDateFloat)",
             }],
             ["__DataUint32", 8, "uint32"],
             ["__DataBool", 0, "Value", {
-                value: "x=&gt;if(condition=x.subtype, then=TRUE, else=FALSE)",
+                value: "x=>if(condition=x.subtype, then=TRUE, else=FALSE)",
             }],
             ["__DataURL", 0, "Value", {
-               value: "x=&gt;x.__DataString",
+               value: "x=>x.__DataString",
             }],
             ["__DataArrayOffsets", 8, "Array", {
-               count: "x=&gt;x.length / 4",
+               count: "x=>x.length / 4",
                type: "__TOCArrayPtr"
             }],
             ["__DataArray", 0, "Value", {
-               value: "x=&gt;x.__DataArrayOffsets.Item.data",
+               value: "x=>x.__DataArrayOffsets.Item.data",
             }],
          ]],
          ["TOCItem", 12, [
            ["ID", 0, "uint32"],
            ["Offset", 4, "uint32"],
-           ["TOCValue", "x=&gt;x.Offset + 48 - x.StartOf", "TOCValue"],
+           ["TOCValue", "x=>x.Offset + 48 - x.StartOf", "TOCValue"],
          ]]
         ]
         '''
@@ -180,6 +180,6 @@ sources:
             })
           })
         })
+````
 
-</code></pre>
 

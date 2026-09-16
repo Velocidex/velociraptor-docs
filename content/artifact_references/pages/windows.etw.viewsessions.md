@@ -1,21 +1,21 @@
 ---
 title: Windows.ETW.ViewSessions
+description: "Enumerates running ETW tracing sessions via logman and optionally\nkills dangling ones.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Enumerates running ETW tracing sessions via logman and optionally
-  kills dangling ones.
 ---
 
 Enumerates running ETW tracing sessions via logman and optionally
 kills dangling ones.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.ETW.ViewSessions
 description: |
   Enumerates running ETW tracing sessions via logman and optionally
@@ -48,6 +48,6 @@ sources:
              SELECT SessionName FROM scope()
          })
       })
+````
 
-</code></pre>
 

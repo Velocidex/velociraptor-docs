@@ -1,14 +1,12 @@
 ---
 title: Generic.Applications.Chrome.SessionStorage
+description: "Extracts key-value session storage entries from Chrome, Brave, and\nEdge browsers."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Extracts key-value session storage entries from Chrome, Brave, and
-  Edge browsers.
 ---
 
 Extracts key-value session storage entries from Chrome, Brave, and
@@ -21,7 +19,9 @@ and values. The data is stored per website and can vary in
 structure.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Applications.Chrome.SessionStorage
 description: |
   Extracts key-value session storage entries from Chrome, Brave, and
@@ -54,11 +54,11 @@ parameters:
 
 sources:
 - query: |
-    LET _ &lt;= log(message="Glob %v", args= [SessionGlobs.Glob, ])
+    LET _ <= log(message="Glob %v", args= [SessionGlobs.Glob, ])
     LET _GetMapping(Data, ID) = to_dict(item={
       SELECT _key AS RawKey,
              parse_string_with_regex(string=_key,
-                 regex='map-([^-]+)-(?P&lt;Key&gt;.+)').Key AS _key,
+                 regex='map-([^-]+)-(?P<Key>.+)').Key AS _key,
              utf16(string=_value) AS _value
       FROM items(item=Data)
       WHERE RawKey =~ format(format="map-%v", args=ID)
@@ -66,7 +66,7 @@ sources:
 
     LET DumpSessionStorate(Data) =
          SELECT parse_string_with_regex(string=_key,
-                    regex='''namespace-(?P&lt;GUID&gt;[^-]+)-(?P&lt;URL&gt;.+)''') AS Parsed,
+                    regex='''namespace-(?P<GUID>[^-]+)-(?P<URL>.+)''') AS Parsed,
                 _value, _GetMapping(Data=Data, ID=_value) AS Mapping
          FROM items(item=Data)
          WHERE Parsed.URL
@@ -94,6 +94,6 @@ sources:
               Mapping
        FROM DumpSessionStorate(Data=Data)
     })
+````
 
-</code></pre>
 

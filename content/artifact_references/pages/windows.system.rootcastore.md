@@ -1,28 +1,28 @@
 ---
 title: Windows.System.RootCAStore
+description: "Enumerates root CA certificates from the Windows System Certificate\nstore.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Enumerates root CA certificates from the Windows System Certificate
-  store.
 ---
 
 Enumerates root CA certificates from the Windows System Certificate
 store.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.RootCAStore
 description: |
   Enumerates root CA certificates from the Windows System Certificate
   store.
 
 reference:
-   - "ATT&amp;CK: T1553"
+   - "ATT&CK: T1553"
    - https://attack.mitre.org/techniques/T1553/004/
 
 parameters:
@@ -41,11 +41,11 @@ sources:
 
     query: |
         LET CertsProfile = '''[
-        ["Record", "x=&gt;x.Length + 12", [
+        ["Record", "x=>x.Length + 12", [
           ["Type", 0, "uint32"],
           ["Length", 8, "uint32"],
           ["Data", 12, "String", {
-              length: "x=&gt;x.Length",
+              length: "x=>x.Length",
               term: "",
           }],
           ["UnicodeString", 12, "String", {
@@ -86,6 +86,6 @@ sources:
                GetCert(CertData=Data.value)[0].Cert AS Certificate
           FROM glob(globs=Glob, accessor=Accessor)
         })
+````
 
-</code></pre>
 

@@ -1,14 +1,12 @@
 ---
 title: Windows.ETW.Registry
+description: "Monitors registry create, open, delete, and value modification\nevents via the Kernel-Registry ETW provider."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
 build:
   list: never
-description: |
-  Monitors registry create, open, delete, and value modification
-  events via the Kernel-Registry ETW provider.
 ---
 
 Monitors registry create, open, delete, and value modification
@@ -30,7 +28,9 @@ seems to miss a lot of registry events. This artifact should
 therefore be considered experimental.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.ETW.Registry
 description: |
   Monitors registry create, open, delete, and value modification
@@ -65,8 +65,8 @@ parameters:
 
 sources:
 - query: |
-    LET Cache &lt;= lru(size=1000)
-    LET EventLookup &lt;= dict(
+    LET Cache <= lru(size=1000)
+    LET EventLookup <= dict(
         `1`="CreateKey",
         `2`="OpenKey",
         `3`="DeleteKey",
@@ -104,6 +104,6 @@ sources:
        KeyName, EventData.ValueName AS ValueName
     FROM hits
     WHERE ProcessName =~ ProcessRegex
+````
 
-</code></pre>
 

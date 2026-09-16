@@ -1,15 +1,12 @@
 ---
 title: Server.Internal.HuntUpdate
+description: "Notifies hunt dispatchers across all minions when a hunt's status or\nconfiguration changes, and should be updated from the internal\ncache."
 hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
 build:
   list: never
-description: |
-  Notifies hunt dispatchers across all minions when a hunt's status or
-  configuration changes, and should be updated from the internal
-  cache.
 ---
 
 Notifies hunt dispatchers across all minions when a hunt's status or
@@ -20,7 +17,9 @@ Users can also watch this queue to be notified when hunts are
 modified (e.g. stopped, started etc).
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Internal.HuntUpdate
 description: |
   Notifies hunt dispatchers across all minions when a hunt's status or
@@ -36,6 +35,6 @@ column_types:
   - name: HuntId
   - name: Hunt
     type: json
+````
 
-</code></pre>
 

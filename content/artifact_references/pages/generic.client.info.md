@@ -1,14 +1,12 @@
 ---
 title: Generic.Client.Info
+description: "Collects basic system details including hostname, OS version,\ninterfaces, and platform info"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Collects basic system details including hostname, OS version,
-  interfaces, and platform info
 ---
 
 Collects basic system details including hostname, OS version,
@@ -26,7 +24,9 @@ NOTE: Do not modify the BasicInformation source since its results
 are required by the server in that exact format.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Client.Info
 description: |
   Collects basic system details including hostname, OS version,
@@ -84,7 +84,7 @@ sources:
     description: Windows specific information about the host
     precondition: SELECT OS From info() where OS = 'windows'
     query: |
-      LET DomainLookup &lt;= dict(
+      LET DomainLookup <= dict(
          `0`='Standalone Workstation',
          `1`='Member Workstation',
          `2`='Standalone Server',
@@ -150,16 +150,16 @@ reports:
       {{ define "pre" }}
       LET Cap(X) = upcase(string=X[0:1]) + X[1:]
 
-      LET ClientInfo &lt;= SELECT *, Cap(X=os_info.system) AS OS
+      LET ClientInfo <= SELECT *, Cap(X=os_info.system) AS OS
         FROM clients(client_id=ClientId)
         LIMIT 1
 
-      LET Hostname &lt;= ClientInfo[0].os_info.hostname
-      LET OS &lt;= Cap(X=ClientInfo[0].os_info.system)
+      LET Hostname <= ClientInfo[0].os_info.hostname
+      LET OS <= Cap(X=ClientInfo[0].os_info.system)
 
-      LET _Timestamp &lt;= SELECT timestamp(epoch=active_time) AS Timestamp
+      LET _Timestamp <= SELECT timestamp(epoch=active_time) AS Timestamp
          FROM flows(client_id=ClientId, flow_id=FlowId)
-      LET Timestamp &lt;= _Timestamp[0].Timestamp
+      LET Timestamp <= _Timestamp[0].Timestamp
 
       // Parse the env part from the notebook definitions.
       LET GetEnv(X) = to_dict(item={
@@ -198,11 +198,11 @@ reports:
       {{ $_ := Query "pre" | Expand }}
 
       {{ range Query "SELECT * FROM FindQuickLinks" | Expand -}}
-        &lt;velo-button text="{{ Get . "Env.text" }}"
+        <velo-button text="{{ Get . "Env.text" }}"
                      icon="{{ Get . "Env.icon" }}"
-                     href="{{ Get . "Link" }}"&gt;
-        &gt;
-        &lt;/velo-button&gt;
+                     href="{{ Get . "Link" }}">
+        >
+        </velo-button>
       {{- end }}
 
 
@@ -222,12 +222,12 @@ reports:
            FROM source(artifact="Generic.Client.Stats",
                        client_id=ClientId,
                        start_time=now() - 86400)
-           WHERE CPUPercent &gt;= 0
+           WHERE CPUPercent >= 0
          })
       {{ end }}
 
       {{ define "computerinfo" }}
-      LET X &lt;= SELECT *
+      LET X <= SELECT *
         FROM source(source="LinuxInfo")
         LIMIT 1
 
@@ -239,9 +239,9 @@ reports:
       FROM foreach(row=X[0].`Computer Info`)
       {{ end }}
 
-      &lt;div&gt;
+      <div>
       {{ Query "resources" | TimeChart "RSS.yaxis" 2 }}
-      &lt;/div&gt;
+      </div>
 
       {{ $windows_info := Query "SELECT * FROM source(source='WindowsInfo')" }}
       {{ if $windows_info | Expand }}
@@ -249,7 +249,7 @@ reports:
         {{ $windows_info | Table }}
       {{ end }}
 
-      {{ $linux_info := Query "LET X &lt;= SELECT * FROM source(source='LinuxInfo') LIMIT 1 SELECT * FROM X" }}
+      {{ $linux_info := Query "LET X <= SELECT * FROM source(source='LinuxInfo') LIMIT 1 SELECT * FROM X" }}
       {{ if Query "SELECT * FROM source(source='LinuxInfo')" | Expand }}
       # Linux agent information
 
@@ -270,6 +270,6 @@ column_types:
     type: timestamp
   - name: LastLogin
     type: timestamp
+````
 
-</code></pre>
 

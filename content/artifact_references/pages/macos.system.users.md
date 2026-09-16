@@ -1,13 +1,12 @@
 ---
 title: MacOS.System.Users
+description: "Collects information about the local users on the system."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Collects information about the local users on the system.
 ---
 
 Collects information about the local users on the system.
@@ -15,7 +14,9 @@ Collects information about the local users on the system.
 On macOS this information is stored in plist files.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: MacOS.System.Users
 description: |
   Collects information about the local users on the system.
@@ -58,6 +59,6 @@ sources:
          SELECT * FROM UserDetails(OSPath= OSPath)
       })
       WHERE NOT OnlyShowRealUsers OR NOT UserShell =~ 'false'
+````
 
-</code></pre>
 

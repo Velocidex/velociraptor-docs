@@ -1,19 +1,20 @@
 ---
 title: Windows.Sys.CertificateAuthorities
+description: "Enumerates certificate authorities from Windows certificate stores.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Enumerates certificate authorities from Windows certificate stores.
 ---
 
 Enumerates certificate authorities from Windows certificate stores.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Sys.CertificateAuthorities
 description: |
   Enumerates certificate authorities from Windows certificate stores.
@@ -29,6 +30,6 @@ sources:
                IsSelfSigned, SHA1, SignatureAlgorithm, PublicKeyAlgorithm, KeyStrength,
                NotBefore, NotAfter, HexSerialNumber
         FROM certificates()
+````
 
-</code></pre>
 

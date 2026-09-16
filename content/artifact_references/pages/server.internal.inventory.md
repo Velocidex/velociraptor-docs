@@ -1,27 +1,27 @@
 ---
 title: Server.Internal.Inventory
+description: "Fires an event when the server's tool inventory is updated or\nmodified.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
 build:
   list: never
-description: |
-  Fires an event when the server's tool inventory is updated or
-  modified.
 ---
 
 Fires an event when the server's tool inventory is updated or
 modified.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Internal.Inventory
 description: |
   Fires an event when the server's tool inventory is updated or
   modified.
 
 type: INTERNAL
+````
 
-</code></pre>
 

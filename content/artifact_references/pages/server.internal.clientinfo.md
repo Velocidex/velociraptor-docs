@@ -1,14 +1,12 @@
 ---
 title: Server.Internal.ClientInfo
+description: "Automatically collects and updates client info indexes from\nheartbeat messages."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
 build:
   list: never
-description: |
-  Automatically collects and updates client info indexes from
-  heartbeat messages.
 ---
 
 Automatically collects and updates client info indexes from
@@ -20,7 +18,9 @@ You do not need to enable this in the client monitoring table - it
 is client initiated.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Internal.ClientInfo
 type: CLIENT_EVENT
 description: |
@@ -31,6 +31,6 @@ description: |
 
   You do not need to enable this in the client monitoring table - it
   is client initiated.
+````
 
-</code></pre>
 

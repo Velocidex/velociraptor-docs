@@ -1,14 +1,12 @@
 ---
 title: Windows.Applications.Firefox.Downloads
+description: "Enumerates Firefox download records (file names, URLs, timestamps)\nfrom the `places.sqlite` database."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Enumerates Firefox download records (file names, URLs, timestamps)
-  from the `places.sqlite` database.
 ---
 
 Enumerates Firefox download records (file names, URLs, timestamps)
@@ -20,7 +18,9 @@ This artifact is deprecated in favor of `Generic.Forensic.SQLiteHunter`
 and will be removed in future
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Applications.Firefox.Downloads
 description: |
   Enumerates Firefox download records (file names, URLs, timestamps)
@@ -105,6 +105,6 @@ sources:
             ORDER BY last_modified DESC
           })
           WHERE url =~ URLRegex
+````
 
-</code></pre>
 

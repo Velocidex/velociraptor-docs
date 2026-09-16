@@ -1,14 +1,12 @@
 ---
 title: Windows.Detection.PsexecService
+description: "Detects PsExec execution by scanning newly created service binaries\nfor PsExec strings."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
 build:
   list: never
-description: |
-  Detects PsExec execution by scanning newly created service binaries
-  for PsExec strings.
 ---
 
 Detects PsExec execution by scanning newly created service binaries
@@ -24,7 +22,9 @@ NOTE: If the service is very quick we are unable to examine the
 service binary in time then we will miss it.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.PsexecService
 description: |
   Detects PsExec execution by scanning newly created service binaries
@@ -82,6 +82,6 @@ sources:
         SELECT * FROM foreach(
           row=service_creation,
           query=file_scan)
+````
 
-</code></pre>
 

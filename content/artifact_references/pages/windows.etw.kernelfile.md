@@ -1,14 +1,12 @@
 ---
 title: Windows.ETW.KernelFile
+description: "Monitors file create, delete, open, and rename events via the\nKernel-File ETW provider."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
 build:
   list: never
-description: |
-  Monitors file create, delete, open, and rename events via the
-  Kernel-File ETW provider.
 ---
 
 Monitors file create, delete, open, and rename events via the
@@ -20,7 +18,9 @@ NOTE: We can only attach to this provider when running as
 NT_USER/SYSTEM.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.ETW.KernelFile
 description: |
   Monitors file create, delete, open, and rename events via the
@@ -64,8 +64,8 @@ parameters:
 sources:
   - query: |
       -- KERNEL_FILE_KEYWORD_FILENAME | KERNEL_FILE_KEYWORD_CREATE | KERNEL_FILE_KEYWORD_DELETE_PATH
-      LET Keyword &lt;= 0x1490
-      LET EIDLookup &lt;= dict(
+      LET Keyword <= 0x1490
+      LET EIDLookup <= dict(
         `10`="NameCreate", `11`="NameDelete", `12`="FileOpen",
         `19`="Rename", `27`="RenamePath",`30`="CreateNewFile")
 
@@ -85,6 +85,6 @@ sources:
         AND if(condition=IgnoreProcessRegex,
                then=NOT ProcInfo.Exe =~ IgnoreProcessRegex,
                else=TRUE)
+````
 
-</code></pre>
 

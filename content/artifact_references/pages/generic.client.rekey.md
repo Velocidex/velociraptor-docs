@@ -1,13 +1,12 @@
 ---
 title: Generic.Client.Rekey
+description: "Forces the client to regenerate its client ID and restart itself."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Forces the client to regenerate its client ID and restart itself.
 ---
 
 Forces the client to regenerate its client ID and restart itself.
@@ -28,7 +27,9 @@ client. Reduce this number if you need to rekey a lot of clients
 quickly.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Client.Rekey
 description: |
   Forces the client to regenerate its client ID and restart itself.
@@ -60,6 +61,6 @@ parameters:
 sources:
   - query:
       SELECT rekey(wait=Wait) FROM scope()
+````
 
-</code></pre>
 

@@ -1,14 +1,12 @@
 ---
 title: Windows.Forensics.Amcache
+description: "Parses the Amcache.hve registry hive to enumerate executed binaries,\ninstalled programs, and drivers."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Parses the Amcache.hve registry hive to enumerate executed binaries,
-  installed programs, and drivers.
 ---
 
 Parses the Amcache.hve registry hive to enumerate executed binaries,
@@ -24,7 +22,9 @@ NOTE: potential evidence of execution must be corroborated by
 additional artifacts.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.Amcache
 author: Matthieu Chatelan, Yann Malherbe
 description: |
@@ -56,17 +56,17 @@ parameters:
     default: 1000
 
   - name: File
-    description: Version `From Windows 8/2012 to Windows 10 1709`. This key is constituted of several subkeys where each representing a volume GUID that contains subkeys looking like `Root\File\&lt;GUID&gt;\&lt;MFTId&gt;`
+    description: Version `From Windows 8/2012 to Windows 10 1709`. This key is constituted of several subkeys where each representing a volume GUID that contains subkeys looking like `Root\File\<GUID>\<MFTId>`
     type: bool
     default: Y
 
   - name: Programs
-    description: Version `From Windows 8/2012 to Windows 10 1709`, This key contains installed programs only in subkeys like `Root\Programs\&lt;AppID&gt;` which contains information about the PE in subkeys.
+    description: Version `From Windows 8/2012 to Windows 10 1709`, This key contains installed programs only in subkeys like `Root\Programs\<AppID>` which contains information about the PE in subkeys.
     type: bool
     default: Y
 
   - name: Generic
-    description: Version `From Windows 8 to Windows 10 1507`, The Generic key contains one subkey named 0, which in turn contains one subkey per driver installed on the system. Each of these subkeys is actually named as the SHA-1 of the driver it represents, preceded by ’0000’ like `\Root\Generic\0\0000&lt;SHA1&gt;`
+    description: Version `From Windows 8 to Windows 10 1507`, The Generic key contains one subkey named 0, which in turn contains one subkey per driver installed on the system. Each of these subkeys is actually named as the SHA-1 of the driver it represents, preceded by ’0000’ like `\Root\Generic\0\0000<SHA1>`
     type: bool
     default: Y
 
@@ -365,6 +365,6 @@ sources:
             })
         }
       )
+````
 
-</code></pre>
 

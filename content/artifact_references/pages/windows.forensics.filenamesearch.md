@@ -1,14 +1,12 @@
 ---
 title: Windows.Forensics.FilenameSearch
+description: "Searches the NTFS `$MFT` using YARA rules to determine if specific\nfilenames ever existed on the system."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Searches the NTFS `$MFT` using YARA rules to determine if specific
-  filenames ever existed on the system.
 ---
 
 Searches the NTFS `$MFT` using YARA rules to determine if specific
@@ -31,7 +29,9 @@ the MFT entry where the hit was found and attempts to resolve that
 to an actual filename.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.FilenameSearch
 description: |
   Searches the NTFS `$MFT` using YARA rules to determine if specific
@@ -77,6 +77,6 @@ sources:
              end=10000000000,
              number=1000,
              accessor="ntfs")
+````
 
-</code></pre>
 

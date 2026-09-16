@@ -1,14 +1,12 @@
 ---
 title: Server.Utils.AddUser
+description: "Creates a new Velociraptor GUI user with a specified role and a\nrandomly generated password."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
 build:
   list: never
-description: |
-  Creates a new Velociraptor GUI user with a specified role and a
-  randomly generated password.
 ---
 
 Creates a new Velociraptor GUI user with a specified role and a
@@ -23,7 +21,9 @@ When using SSO (e.g. oauth) this password is not used and can be
 ignored, because the SSO provider will do the authentication.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.AddUser
 description: |
   Creates a new Velociraptor GUI user with a specified role and a
@@ -62,8 +62,8 @@ parameters:
 
 sources:
   - query: |
-      LET Password &lt;= format(format="%02x", args=rand(range=0xffffffffffff))
-      LET ServerMetadataKey &lt;= "User Password " + UserName
+      LET Password <= format(format="%02x", args=rand(range=0xffffffffffff))
+      LET ServerMetadataKey <= "User Password " + UserName
 
       LET DoIt = SELECT * FROM if(condition=ResetPassword,
       then={
@@ -91,6 +91,6 @@ sources:
         SELECT * FROM scope()
         WHERE log(message="A Username must be set") AND FALSE
       })
+````
 
-</code></pre>
 

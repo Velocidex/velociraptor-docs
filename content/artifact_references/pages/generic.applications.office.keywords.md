@@ -1,14 +1,12 @@
 ---
 title: Generic.Applications.Office.Keywords
+description: "Scans Microsoft Office and LibraOffice/OpenDocument files for\nkeyword matches using YARA rules via the `zip` accessor."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Scans Microsoft Office and LibraOffice/OpenDocument files for
-  keyword matches using YARA rules via the `zip` accessor.
 ---
 
 Scans Microsoft Office and LibraOffice/OpenDocument files for
@@ -32,7 +30,9 @@ member within the document which may represent when the document was
 initially created.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Applications.Office.Keywords
 description: |
   Scans Microsoft Office and LibraOffice/OpenDocument files for
@@ -90,7 +90,7 @@ sources:
            globs="/**",
            root=pathspec(DelegatePath=OfficePath),
            accessor='zip')
-        WHERE not IsDir and Size &gt; 0
+        WHERE not IsDir and Size > 0
 
         // For each document, scan all its parts for the keyword.
         SELECT OfficePath,
@@ -110,6 +110,6 @@ sources:
                  context=200,
                  accessor='zip')
         })
+````
 
-</code></pre>
 

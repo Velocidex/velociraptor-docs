@@ -1,14 +1,12 @@
 ---
 title: MacOS.Detection.Yara.Process
+description: "Scans process memory with YARA rules, supporting URL-based or inline\nrule deployment."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Scans process memory with YARA rules, supporting URL-based or inline
-  rule deployment.
 ---
 
 Scans process memory with YARA rules, supporting URL-based or inline
@@ -30,7 +28,9 @@ Note: the YARA scan will stop after one hit. Multi-string rules will
 also only show one string in returned rows.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Detection.Yara.Process
 author: Matt Green - @mgreen27
 description: |
@@ -98,7 +98,7 @@ sources:
 
     query: |
       -- check which Yara to use
-      LET yara_rules &lt;= YaraUrl || YaraRule
+      LET yara_rules <= YaraUrl || YaraRule
 
       -- find velociraptor process
       LET me = SELECT Pid FROM pslist(pid=getpid())
@@ -163,6 +163,6 @@ sources:
 column_types:
   - name: HitContext
     type: preview_upload
+````
 
-</code></pre>
 

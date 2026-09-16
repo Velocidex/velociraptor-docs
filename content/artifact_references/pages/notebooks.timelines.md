@@ -1,14 +1,12 @@
 ---
 title: Notebooks.Timelines
+description: "Provides a notebook template for building consolidated timelines\nfrom time series data across collections."
 hidden: true
 sitemap:
   disable: true
 tags: [notebook]
 build:
   list: never
-description: |
-  Provides a notebook template for building consolidated timelines
-  from time series data across collections.
 ---
 
 Provides a notebook template for building consolidated timelines
@@ -23,7 +21,9 @@ other notebooks (e.g. Collection or Hunt notebooks) to this super
 timeline.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Notebooks.Timelines
 description: |
   Provides a notebook template for building consolidated timelines
@@ -73,6 +73,6 @@ sources:
                         components="Annotation",
                         timeline=TimelineName)
           ORDER BY Timestamp
+````
 
-</code></pre>
 

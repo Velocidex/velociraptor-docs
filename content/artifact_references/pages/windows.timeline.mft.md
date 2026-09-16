@@ -1,14 +1,12 @@
 ---
 title: Windows.Timeline.MFT
+description: "Parses the MFT and outputs file metadata in timeline format with\nanomaly detection flags and advanced filters."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Parses the MFT and outputs file metadata in timeline format with
-  anomaly detection flags and advanced filters.
 ---
 
 Parses the MFT and outputs file metadata in timeline format with
@@ -23,7 +21,9 @@ This artifact also has the same anomaly logic as AnalyzeMFT added to
 each row, to aid analysis.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Timeline.MFT
 description: |
   Parses the MFT and outputs file metadata in timeline format with
@@ -99,16 +99,16 @@ parameters:
 
 sources:
   - query: |
-        LET hostname &lt;= SELECT Fqdn FROM info()
-        LET DateAfterTime &lt;= if(condition=DateAfter,
+        LET hostname <= SELECT Fqdn FROM info()
+        LET DateAfterTime <= if(condition=DateAfter,
              then=DateAfter, else=timestamp(epoch="1600-01-01"))
-        LET DateBeforeTime &lt;= if(condition=DateBefore,
+        LET DateBeforeTime <= if(condition=DateBefore,
              then=DateBefore, else=timestamp(epoch="2200-01-01"))
         LET records = SELECT *,
-                Created0x10 &lt; Created0x30 as FNCreatedShift,
+                Created0x10 < Created0x30 as FNCreatedShift,
                 Created0x10.Unix * 1000000000 = Created0x10.UnixNano as USecZero,
-                Created0x10 &gt; LastModified0x10 as PossibleCopy,
-                ( LastAccess0x10 &gt; LastModified0x10 AND LastAccess0x10 &gt; Created0x10 ) as VolumeCopy
+                Created0x10 > LastModified0x10 as PossibleCopy,
+                ( LastAccess0x10 > LastModified0x10 AND LastAccess0x10 > Created0x10 ) as VolumeCopy
             FROM parse_mft(filename=MFTFilename, accessor=Accessor)
             WHERE
                 FileName =~ NameRegex AND
@@ -116,9 +116,9 @@ sources:
                 if(condition=Inode, then= EntryNumber=atoi(string=Inode)
                     OR ParentEntryNumber=atoi(string=Inode),
                     else=TRUE) AND
-                if(condition=SizeMax, then=FileSize &lt; SizeMax,
+                if(condition=SizeMax, then=FileSize < SizeMax,
                     else=TRUE) AND
-                if(condition=SizeMin, then=FileSize &gt; SizeMin,
+                if(condition=SizeMin, then=FileSize > SizeMin,
                     else=TRUE) AND
                 if(condition= EntryType="Both", then=TRUE,
                     else= if(condition= EntryType="File",
@@ -130,14 +130,14 @@ sources:
                         then= InUse=True,
                     else= if(condition= AllocatedType="Unallocated",
                         then= InUse=False))) AND
-                (((Created0x10 &gt; DateAfterTime) AND (Created0x10 &lt; DateBeforeTime)) OR
-                ((Created0x30 &gt; DateAfterTime) AND (Created0x30 &lt; DateBeforeTime)) OR
-                ((LastModified0x10 &gt; DateAfterTime) AND (LastModified0x10 &lt; DateBeforeTime)) OR
-                ((LastModified0x30 &gt; DateAfterTime) AND (LastModified0x30 &lt; DateBeforeTime)) OR
-                ((LastRecordChange0x10 &gt; DateAfterTime) AND (LastRecordChange0x10 &lt; DateBeforeTime)) OR
-                ((LastRecordChange0x30 &gt; DateAfterTime) AND (LastRecordChange0x30 &lt; DateBeforeTime)) OR
-                ((LastAccess0x10 &gt; DateAfterTime) AND (LastAccess0x10 &lt; DateBeforeTime)) OR
-                ((LastAccess0x30 &gt; DateAfterTime) AND (LastAccess0x30 &lt; DateBeforeTime)))
+                (((Created0x10 > DateAfterTime) AND (Created0x10 < DateBeforeTime)) OR
+                ((Created0x30 > DateAfterTime) AND (Created0x30 < DateBeforeTime)) OR
+                ((LastModified0x10 > DateAfterTime) AND (LastModified0x10 < DateBeforeTime)) OR
+                ((LastModified0x30 > DateAfterTime) AND (LastModified0x30 < DateBeforeTime)) OR
+                ((LastRecordChange0x10 > DateAfterTime) AND (LastRecordChange0x10 < DateBeforeTime)) OR
+                ((LastRecordChange0x30 > DateAfterTime) AND (LastRecordChange0x30 < DateBeforeTime)) OR
+                ((LastAccess0x10 > DateAfterTime) AND (LastAccess0x10 < DateBeforeTime)) OR
+                ((LastAccess0x30 > DateAfterTime) AND (LastAccess0x30 < DateBeforeTime)))
 
         LET common_fields = SELECT EntryNumber, ParentEntryNumber,
                 OSPath, FileName, FileSize, IsDir,InUse,
@@ -245,6 +245,6 @@ sources:
                             then=file_name_rows)
                     })
             })
+````
 
-</code></pre>
 

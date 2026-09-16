@@ -1,14 +1,12 @@
 ---
 title: Windows.System.HostsFile
+description: "Reads and parses the Windows hosts file, reporting resolution\nentries, hostnames, and comments."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Reads and parses the Windows hosts file, reporting resolution
-  entries, hostnames, and comments.
 ---
 
 Reads and parses the Windows hosts file, reporting resolution
@@ -19,7 +17,9 @@ NOTE: For Hostname search is on the hostfile line and regex ^ or $
 is not recommended.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.HostsFile
 author: Matt Green - @mgreen27
 description: |
@@ -60,9 +60,9 @@ sources:
                     SELECT parse_string_with_regex(
                         string=_value,
                         regex=[
-                            "^\\s*(?P&lt;Resolution&gt;[^\\s]+)\\s+" +
-                            "(?P&lt;Hostname&gt;[^\\#]+)\\s*" +
-                            "#*\\s*(?P&lt;Comment&gt;.*)$"
+                            "^\\s*(?P<Resolution>[^\\s]+)\\s+" +
+                            "(?P<Hostname>[^\\#]+)\\s*" +
+                            "#*\\s*(?P<Comment>.*)$"
                         ]) as Record
                     FROM foreach(row=List)
                     WHERE _value
@@ -85,6 +85,6 @@ sources:
         hostlist(string=Record.Hostname) AS Hostname,
         Record.Comment AS Comment
       FROM results
+````
 
-</code></pre>
 

@@ -1,21 +1,21 @@
 ---
 title: Linux.Events.SSHLogin
+description: "Watches the `auth.log` file for new successful SSH login events and\nforwards them to the server.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
 build:
   list: never
-description: |
-  Watches the `auth.log` file for new successful SSH login events and
-  forwards them to the server.
 ---
 
 Watches the `auth.log` file for new successful SSH login events and
 forwards them to the server.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Events.SSHLogin
 description: |
   Watches the `auth.log` file for new successful SSH login events and
@@ -32,7 +32,7 @@ parameters:
 
   - name: SSHGrok
     description: A Grok expression for parsing SSH auth lines.
-    default: &gt;-
+    default: >-
       %{SYSLOGTIMESTAMP:timestamp} (?:%{SYSLOGFACILITY} )?%{SYSLOGHOST:logsource} %{SYSLOGPROG}: %{DATA:event} %{DATA:method} for (invalid user )?%{DATA:user} from %{IPORHOST:ip} port %{NUMBER:port} ssh2(: %{GREEDYDATA:system.auth.ssh.signature})?
 
 sources:
@@ -48,6 +48,6 @@ sources:
               Event.IP AS SourceIP,
               Event.pid AS Pid
         FROM success_login
+````
 
-</code></pre>
 

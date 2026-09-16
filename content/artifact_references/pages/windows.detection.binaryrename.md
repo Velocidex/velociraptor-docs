@@ -1,13 +1,12 @@
 ---
 title: Windows.Detection.BinaryRename
+description: "Detects renamed binaries commonly abused by adversaries."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Detects renamed binaries commonly abused by adversaries.
 ---
 
 Detects renamed binaries commonly abused by adversaries.
@@ -23,7 +22,9 @@ straight detection on an Internal or Original name, the Filename
 entry can be set to an unlikely value - e.g ANY or left blank.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.BinaryRename
 author: "Matt Green - @mgreen27"
 description: |
@@ -131,7 +132,7 @@ parameters:
 
 sources:
   - query: |
-      LET bins &lt;= SELECT
+      LET bins <= SELECT
             if(condition=Filename='',then='ANY',
                 else=lowcase(string=Filename)) AS Filename,
             if(condition=Internal='',then='ANY',
@@ -155,6 +156,6 @@ sources:
         OR OSPath =~ 'C:\\\\Windows\\\\System32\\\\(osk|Magnify|Narrator|DisplaySwitch).exe$'
             AND NOT VersionInformation.OriginalFilename =~ '^(osk|SR|Narrator|ScreenMagnifier|DisplaySwitch)\.exe$'
         )
+````
 
-</code></pre>
 

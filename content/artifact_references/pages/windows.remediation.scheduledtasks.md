@@ -1,13 +1,12 @@
 ---
 title: Windows.Remediation.ScheduledTasks
+description: "Removes Windows scheduled tasks matching a command and argument regex pattern."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Removes Windows scheduled tasks matching a command and argument regex pattern.
 ---
 
 Removes Windows scheduled tasks matching a command and argument regex pattern.
@@ -16,7 +15,9 @@ WARNING: Removing scheduled tasks is potentially dangerous! You need to test
 this thoroughly before deploying this artifact widely to clients.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Remediation.ScheduledTasks
 description: |
   Removes Windows scheduled tasks matching a command and argument regex pattern.
@@ -60,7 +61,7 @@ sources:
                accessor='data',
                file=regex_replace(
                     source=utf16(string=Data),
-                    re='&lt;[?].+?&gt;',
+                    re='<[?].+?>',
                     replace='')) AS XML
       FROM read_file(filenames=OSPath)
 
@@ -89,6 +90,6 @@ sources:
               FROM scope()
             })
         })
+````
 
-</code></pre>
 

@@ -1,14 +1,12 @@
 ---
 title: Server.Internal.ClientConflict
+description: "Emits events when the server detects a client ID conflict between\nduplicate clients."
 hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
 build:
   list: never
-description: |
-  Emits events when the server detects a client ID conflict between
-  duplicate clients.
 ---
 
 Emits events when the server detects a client ID conflict between
@@ -27,7 +25,9 @@ NOTE: In multi-frontend deployments this event may not always fire
 if the duplicated clients connect to separate nodes.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Internal.ClientConflict
 description: |
   Emits events when the server detects a client ID conflict between
@@ -46,6 +46,6 @@ description: |
   if the duplicated clients connect to separate nodes.
 
 type: INTERNAL
+````
 
-</code></pre>
 

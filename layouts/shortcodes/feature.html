@@ -44,7 +44,7 @@ CSS lacks hx:inset-0 and hx:z-10 utilities).
       {{- $title -}}
     </span>
     {{- with .Inner }}
-    <div class="hextra-card-subtitle hx:text-sm hx:font-normal hx:text-center hx:text-gray-500 hx:dark:text-gray-400 hx:px-4{{ if $banner }} hx:mt-2 hx:mb-2{{ else }} hx:mt-2 hx:mb-4 hx:line-clamp-3{{ end }}">
+    <div class="hextra-card-subtitle hx:text-sm hx:font-normal hx:text-center hx:text-gray-500 hx:dark:text-gray-400 hx:px-4{{ if $banner }} hx:mt-2 hx:mb-2{{ else }} hx:mt-2 hx:mb-4 hx:line-clamp-3{{ end }}"{{ if $banner }} style="color: #E85E26; font-size: 1rem"{{ end }}>
       {{- replaceRE `<a ` `<a style="position: relative; z-index: 1;" ` (. | partial "utils/dedent.html" | markdownify) | safeHTML -}}
     </div>
     {{- end }}

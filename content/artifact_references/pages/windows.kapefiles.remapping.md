@@ -1,15 +1,12 @@
 ---
 title: Windows.KapeFiles.Remapping
+description: "Automates the creation of remapping rules to enable post-processing file\nuploads collected by the `Windows.KapeFiles.Targets` or\n`Windows.Triage.Targets` artifacts."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Automates the creation of remapping rules to enable post-processing file
-  uploads collected by the `Windows.KapeFiles.Targets` or
-  `Windows.Triage.Targets` artifacts.
 ---
 
 Automates the creation of remapping rules to enable post-processing file
@@ -33,7 +30,9 @@ The remapping config disables certain plugins for obvious reasons
 (e.g. pslist, wmi etc).
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.KapeFiles.Remapping
 description: |
   Automates the creation of remapping rules to enable post-processing file
@@ -43,7 +42,7 @@ description: |
   Use as follows in the flow notebook cell of a collection:
 
   ```vql
-  LET _ &lt;=
+  LET _ <=
     SELECT * FROM Artifact.Windows.KapeFiles.Remapping(ClientId=ClientId, FlowId=FlowId)
 
   SELECT * FROM Artifact.Windows.System.TaskScheduler()
@@ -192,6 +191,6 @@ sources:
       SELECT remap(clear=TRUE,
          config=GetRemapping(FlowId=FlowId, ClientId=ClientId)) AS Remapping
       FROM scope()
+````
 
-</code></pre>
 

@@ -1,14 +1,12 @@
 ---
 title: Windows.Detection.ForwardedImports
+description: "Scans DLLs for self-referencing forwarded imports that could\nindicate DLL hijacking."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Scans DLLs for self-referencing forwarded imports that could
-  indicate DLL hijacking.
 ---
 
 Scans DLLs for self-referencing forwarded imports that could
@@ -24,7 +22,9 @@ This artifact searches for DLLs which are named the same as the DLL
 they are forwarding to.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.ForwardedImports
 description: |
   Scans DLLs for self-referencing forwarded imports that could
@@ -61,7 +61,7 @@ sources:
 
              -- Remove the .dll extension if present to get the bare dll filename.
              lowcase(string=parse_string_with_regex(
-                  regex="^(?P&lt;BareName&gt;[^.]+)", string=Name).BareName) AS DLLBareName,
+                  regex="^(?P<BareName>[^.]+)", string=Name).BareName) AS DLLBareName,
              count() AS Total
         FROM glob(globs=DLLGlob)
         WHERE NOT OSPath =~ ExcludeRegex
@@ -95,7 +95,7 @@ sources:
            FROM foreach(row=Forwards,
              query={
                  SELECT parse_string_with_regex(
-                               regex="(?P&lt;DllPath&gt;.+)\\.(?P&lt;Export&gt;[^.]+$)",
+                               regex="(?P<DllPath>.+)\\.(?P<Export>[^.]+$)",
                                string=_value) AS Parse,
                         _value AS ForwardedImport
                  FROM scope()
@@ -104,6 +104,6 @@ sources:
           -- Only flag imports for forwarder dll name the same as its own dll.
           WHERE ExportDLLName = DLLBareName
       })
+````
 
-</code></pre>
 

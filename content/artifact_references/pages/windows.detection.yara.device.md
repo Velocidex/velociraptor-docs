@@ -1,14 +1,12 @@
 ---
 title: Windows.Detection.Yara.Device
+description: "Scans physical disk sectors with YARA rules at configurable offsets\nand uploads hit context."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Scans physical disk sectors with YARA rules at configurable offsets
-  and uploads hit context.
 ---
 
 Scans physical disk sectors with YARA rules at configurable offsets
@@ -30,7 +28,9 @@ have included an example on how to upload the MBR as the default
 YARA rule.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.Yara.Device
 author: Matt Green - @mgreen27
 description: |
@@ -90,7 +90,7 @@ parameters:
 sources:
   - query: |
       -- check which Yara to use
-      LET yara_rules &lt;= YaraUrl || YaraRule
+      LET yara_rules <= YaraUrl || YaraRule
 
       -- target yara with raw_file pachspec
       SELECT
@@ -123,6 +123,6 @@ sources:
 column_types:
   - name: HitContext
     type: upload_preview
+````
 
-</code></pre>
 

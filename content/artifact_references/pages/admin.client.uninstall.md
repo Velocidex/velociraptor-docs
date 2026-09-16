@@ -1,14 +1,12 @@
 ---
 title: Admin.Client.Uninstall
+description: "Executes uninstall commands via msiexec, dpkg, or rpm to remove the\nclient from the endpoint."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Executes uninstall commands via msiexec, dpkg, or rpm to remove the
-  client from the endpoint.
 ---
 
 Executes uninstall commands via msiexec, dpkg, or rpm to remove the
@@ -22,7 +20,9 @@ NOTE: Be careful with the `DisplayNameRegex` to ensure you do not
 uninstall another package accidentally.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Admin.Client.Uninstall
 description: |
   Executes uninstall commands via msiexec, dpkg, or rpm to remove the
@@ -109,12 +109,12 @@ sources:
       WHERE OS = 'darwin'
 
     query:  |
-      LET me &lt;= SELECT Exe FROM info()
+      LET me <= SELECT Exe FROM info()
 
       SELECT * FROM if(condition=ReallyDoIt,
       then={
         SELECT * FROM execve(argv=[me[0].Exe, "service", "remove"])
       })
+````
 
-</code></pre>
 

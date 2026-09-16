@@ -1,14 +1,12 @@
 ---
 title: Server.Slack.Clients.Online
+description: "Sends a Slack notification when clients with a target label appear\nonline."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
 build:
   list: never
-description: |
-  Sends a Slack notification when clients with a target label appear
-  online.
 ---
 
 Sends a Slack notification when clients with a target label appear
@@ -20,7 +18,9 @@ minutes, it sends a message to Slack and removes the label from the
 client.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Slack.Clients.Online
 description: |
    Sends a Slack notification when clients with a target label appear
@@ -51,7 +51,7 @@ sources:
                now() - last_seen_at / 1000000 AS LastSeen,
                label(client_id=client_id, labels=LabelGroup, op="remove")
         FROM clients(search="label:" + LabelGroup)
-        WHERE LastSeen &lt; 300
+        WHERE LastSeen < 300
 
         LET send_message = SELECT * FROM foreach(row=hits,
         query={
@@ -70,6 +70,6 @@ sources:
         SELECT * FROM foreach(
            row={SELECT * FROM clock(period=60)},
            query=send_message)
+````
 
-</code></pre>
 

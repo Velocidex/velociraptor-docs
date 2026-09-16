@@ -1,14 +1,12 @@
 ---
 title: Generic.Forensic.HashLookup
+description: "Collects file hashes from various sources into a central event\nstream for external lookups."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
 build:
   list: never
-description: |
-  Collects file hashes from various sources into a central event
-  stream for external lookups.
 ---
 
 Collects file hashes from various sources into a central event
@@ -30,7 +28,9 @@ FROM source()
 ```
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Forensic.HashLookup
 description: |
   Collects file hashes from various sources into a central event
@@ -71,6 +71,6 @@ sources:
               client_id=ClientId, flow_id=FlowId)
          })
       }, async=TRUE)
+````
 
-</code></pre>
 

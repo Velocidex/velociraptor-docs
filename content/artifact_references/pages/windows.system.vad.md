@@ -1,14 +1,12 @@
 ---
 title: Windows.System.VAD
+description: "Enumerates process memory sections using Virtual Address Descriptor\n(VAD) information."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Enumerates process memory sections using Virtual Address Descriptor
-  (VAD) information.
 ---
 
 Enumerates process memory sections using Virtual Address Descriptor
@@ -34,7 +32,9 @@ all sections and ProtectionRegex can override selection.
   scoping, then a second time once confirmed for upload.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.VAD
 author: "Matt Green - @mgreen27"
 description: |
@@ -95,7 +95,7 @@ parameters:
 export: |
   // These functions help to resolve the Kernel Device Filenames
   // into a regular filename with drive letter.
-  LET DriveReplaceLookup &lt;= SELECT
+  LET DriveReplaceLookup <= SELECT
      split(sep_string="\\", string=Name)[-1] AS Drive,
      upcase(string=SymlinkTarget) AS Target,
      len(list=SymlinkTarget) AS Len
@@ -166,15 +166,15 @@ sources:
                             name=format(format="%v-%v_%v.bin-%v-%v",
                             args=[
                                 Name, Pid, AddressRange,
-                                if(condition= String.Offset - ContextBytes &lt; 0,
+                                if(condition= String.Offset - ContextBytes < 0,
                                     then= 0,
                                     else= String.Offset - ContextBytes),
-                                if(condition= String.Offset + ContextBytes &gt; SectionSize,
+                                if(condition= String.Offset + ContextBytes > SectionSize,
                                     then= SectionSize,
                                     else= String.Offset + ContextBytes ) ])
                             ) as HitContext,
                     _PathSpec, _Address
-                FROM yara(  blocksize=if(condition= SectionSize &lt; 10000000,
+                FROM yara(  blocksize=if(condition= SectionSize < 10000000,
                                             then= SectionSize,
                                             else= 10000000 ),
                             accessor='offset',
@@ -270,6 +270,6 @@ sources:
 column_types:
   - name: HitContext
     type: preview_upload
+````
 
-</code></pre>
 

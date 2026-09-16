@@ -1,19 +1,20 @@
 ---
 title: Triage.Collection.Upload
+description: "A generic uploader used by triaging artifacts.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  A generic uploader used by triaging artifacts.
 ---
 
 A generic uploader used by triaging artifacts.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Triage.Collection.Upload
 description: |
   A generic uploader used by triaging artifacts.
@@ -43,6 +44,6 @@ sources:
                FileDetails.Md5 as Md5,
                FileDetails.Sha256 as SHA256
         FROM results
+````
 
-</code></pre>
 

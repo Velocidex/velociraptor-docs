@@ -1,19 +1,20 @@
 ---
 title: Generic.Client.VQL
+description: "Runs an arbitrary VQL query on the endpoint.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Runs an arbitrary VQL query on the endpoint.
 ---
 
 Runs an arbitrary VQL query on the endpoint.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Client.VQL
 description: |
   Runs an arbitrary VQL query on the endpoint.
@@ -34,6 +35,6 @@ sources:
     query: |
       SELECT _SessionId, timestamp(epoch=now()) AS Timestamp, Command
       FROM scope()
+````
 
-</code></pre>
 

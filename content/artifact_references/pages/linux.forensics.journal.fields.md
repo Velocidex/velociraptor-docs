@@ -1,13 +1,12 @@
 ---
 title: Linux.Forensics.Journal.Fields
+description: "Lists the fields and field values recorded in the systemd journal."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Lists the fields and field values recorded in the systemd journal.
 ---
 
 Lists the fields and field values recorded in the systemd journal.
@@ -122,17 +121,19 @@ as log level when journal files cannot be parsed or if compressed
 fields are encountered.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Forensics.Journal.Fields
 author: Andreas Misje – @misje
 description: |
   Lists the fields and field values recorded in the systemd journal.
 
   This is the enriched equivalent of `journalctl -N` and `journalctl -F
-  &lt;field&gt;`:
+  <field>`:
 
   - `-N` lists the journal's indexed field names
-  - `-F &lt;field&gt;` lists the distinct values of one field
+  - `-F <field>` lists the distinct values of one field
 
   Rather than reading every log entry (there can be millions), the
   artifact reads the journal's own index the way `journalctl` does, so
@@ -158,7 +159,7 @@ description: |
     source.
   - `JournalFieldValues`: every distinct value of `FieldName`, with its
     entry count and first/last entry time, like an enriched
-    `journalctl -F &lt;field&gt;`. The default `FieldName` is only a
+    `journalctl -F <field>`. The default `FieldName` is only a
     suggestion; set it to an empty string to drop this source.
 
   The two are independent, and you normally do not need both. Adapt
@@ -276,7 +277,7 @@ parameters:
 
 export: |
   LET JournalProfile = '''[
-  ["Header", "x=&gt;x.header_size", [
+  ["Header", "x=>x.header_size", [
     ["Signature", 0, "String", {
         "length": 8,
     }],
@@ -301,9 +302,9 @@ export: |
     ["field_hash_table_offset", 120, "uint64"],
     ["field_hash_table_size", 128, "uint64"],
     # The field hash table is an array of (head, tail) offset pairs.
-    ["Buckets", "x=&gt;x.field_hash_table_offset", "Array", {
+    ["Buckets", "x=>x.field_hash_table_offset", "Array", {
         "type": "HashItem",
-        "count": "x=&gt;x.field_hash_table_size / 16",
+        "count": "x=>x.field_hash_table_size / 16",
         "max_count": 10000000
     }]
   ]],
@@ -315,13 +316,13 @@ export: |
   # A FieldObject names one journal field (e.g. _BOOT_ID). next_hash
   # links fields that share a hash bucket. head_data points at the
   # first DataObject that holds a value for this field.
-  ["FieldObject", "x=&gt;x.size", [
+  ["FieldObject", "x=>x.size", [
     ["size", 8, "uint64"],
     ["next_hash", 24, "uint64"],
     ["head_data", 32, "uint64"],
     # See later comment about length guarding:
     ["Name", 40, "String", {
-        "length": "x=&gt;if(condition=x.size &gt; 40 AND x.size &lt; 1048576, then=x.size - 40, else=0)",
+        "length": "x=>if(condition=x.size > 40 AND x.size < 1048576, then=x.size - 40, else=0)",
     }]
   ]],
 
@@ -330,7 +331,7 @@ export: |
   # points at the first entry that references this value, and n_entries
   # counts them all. In a compact journal, tail_ea_off and tail_ea_n give
   # the last entry array and how many of its slots are used.
-  ["DataObject", "x=&gt;x.size", [
+  ["DataObject", "x=>x.size", [
     # We need to know whether a payload is compressed or not, since
     # we do not support reading compressed strings:
     ["IsCompressed", 1, "BitField", {
@@ -344,13 +345,13 @@ export: |
     ["n_entries", 56, "uint64"],
     ["tail_ea_off", 64, "uint32"],
     ["tail_ea_n", 68, "uint32"],
-    # Guard the length: a nonsensical/short size (&lt; 72) would
+    # Guard the length: a nonsensical/short size (< 72) would
     # otherwise make parse_binary compute a negative String length and
     # cause a panic (#4916), and an absurd size would try a huge
     # allocation. Real data objects are always larger than the 72-byte
     # fixed header.
     ["Payload", 72, "String", {
-        "length": "x=&gt;if(condition=x.size &gt; 72 AND x.size &lt; 1048576, then=x.size - 72, else=0)",
+        "length": "x=>if(condition=x.size > 72 AND x.size < 1048576, then=x.size - 72, else=0)",
     }]
   ]],
 
@@ -366,7 +367,7 @@ export: |
   ["Items", 0, [
     ["v", 0, "Array", {
         "type": "uint32",
-        "count": "x=&gt;ItemCount",
+        "count": "x=>ItemCount",
         "max_count": 100000,
     }]
   ]]
@@ -452,7 +453,7 @@ export: |
   // 1000. Instead we walk it in fixed-size segments:
   LET Hop(File, Accessor, Offset, Count) = if(condition=
                                                 Offset
-                                               AND Count &gt; 0,
+                                               AND Count > 0,
                                               then=Hop(
                                                 File=
                                                   File,
@@ -499,12 +500,12 @@ export: |
       SELECT DataAt(File=File, Accessor=Accessor, Offset=Offset) AS Data
       FROM scope()
       WHERE Offset
-       AND Remaining &gt; 0
+       AND Remaining > 0
     },
                rest={
       SELECT *
       FROM if(
-        condition=Remaining &gt; 1
+        condition=Remaining > 1
          AND DataAt(File=File, Accessor=Accessor, Offset=Offset).next_field,
         then=_WalkChunk(File=File,
                         Accessor=Accessor,
@@ -560,11 +561,11 @@ export: |
         Offset=Data.entry_offset) AS FirstUsec,
       Data.tail_ea_off AS TailOffset,
       if(
-        condition=Data.tail_ea_n &gt; TailWindow,
+        condition=Data.tail_ea_n > TailWindow,
         then=TailWindow,
         else=Data.tail_ea_n) AS ItemCount,
       if(
-        condition=Data.tail_ea_n &gt; TailWindow,
+        condition=Data.tail_ea_n > TailWindow,
         then=Data.tail_ea_n - TailWindow,
         else=0) AS WindowStart
     FROM foreach(
@@ -627,7 +628,7 @@ export: |
       GROUP BY Value
     })
 
-  // journalctl -F &lt;field&gt;, enriched: every distinct value of a field with
+  // journalctl -F <field>, enriched: every distinct value of a field with
   // its entry count and first/last entry times:
   LET JournalFieldValues(File, FieldName, TailWindow=64,
   Accessor='auto', LogLevel='WARN') = SELECT
@@ -668,7 +669,7 @@ sources:
 - name: JournalFields
   description: Distinct field names across the matched journals (journalctl -N).
   query: |
-    LET LogLevel &lt;= if(condition=FailIfMissing, then='ERROR', else='WARN')
+    LET LogLevel <= if(condition=FailIfMissing, then='ERROR', else='WARN')
 
     // ListFields false drops this source: there is nothing to iterate,
     // so the files are never opened.
@@ -694,7 +695,7 @@ sources:
 - name: JournalFieldValues
   description: Distinct values of FieldName with count and first/last time (journalctl -F).
   query: |
-    LET LogLevel &lt;= if(condition=FailIfMissing, then='ERROR', else='WARN')
+    LET LogLevel <= if(condition=FailIfMissing, then='ERROR', else='WARN')
 
     // An empty FieldName drops this source: with no field to list there
     // is nothing to iterate, so the files are never opened.
@@ -735,7 +736,7 @@ sources:
         Count,
         _First AS First,
         if(
-          condition=_Last &gt;= _First,
+          condition=_Last >= _First,
           then=_Last,
           else=if(
             condition=log(
@@ -746,6 +747,6 @@ sources:
             then=NULL)) AS Last
     FROM Summary
     ORDER BY Value
+````
 
-</code></pre>
 

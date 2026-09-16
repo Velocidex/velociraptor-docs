@@ -1,14 +1,12 @@
 ---
 title: Linux.Events.TrackProcesses
+description: "Subscribes to eBPF process events to track new processes and their\nparent relationships."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
 build:
   list: never
-description: |
-  Subscribes to eBPF process events to track new processes and their
-  parent relationships.
 ---
 
 Subscribes to eBPF process events to track new processes and their
@@ -29,7 +27,9 @@ already built into Velociraptor so this artifact does not depend on
 external tools.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Events.TrackProcesses
 description: |
   Subscribes to eBPF process events to track new processes and their
@@ -106,11 +106,11 @@ sources:
           })
         })
 
-        LET Tracker &lt;= process_tracker(max_size=MaxSize,
+        LET Tracker <= process_tracker(max_size=MaxSize,
            sync_query=SyncQuery, update_query=UpdateQuery, sync_period=60000)
 
         SELECT * FROM process_tracker_updates()
         WHERE update_type = "stats"  OR AlsoForwardUpdates
+````
 
-</code></pre>
 

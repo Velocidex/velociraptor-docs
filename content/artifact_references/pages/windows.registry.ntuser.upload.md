@@ -1,14 +1,12 @@
 ---
 title: Windows.Registry.NTUser.Upload
+description: "Uploads each user's NTUSER.DAT registry hive from disk by bypassing\nfile locking with raw NTFS parsing."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Uploads each user's NTUSER.DAT registry hive from disk by bypassing
-  file locking with raw NTFS parsing.
 ---
 
 Uploads each user's NTUSER.DAT registry hive from disk by bypassing
@@ -24,7 +22,9 @@ the registry hives using raw NTFS parsing. We then just upload all
 hives to the server.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Registry.NTUser.Upload
 description: |
   Uploads each user's NTUSER.DAT registry hive from disk by bypassing
@@ -57,6 +57,6 @@ sources:
         SELECT upload(file=HomeDir + "\\ntuser.dat",
                       accessor="auto") as Upload
         FROM users
+````
 
-</code></pre>
 

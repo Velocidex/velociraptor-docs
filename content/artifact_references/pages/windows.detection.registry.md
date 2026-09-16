@@ -1,21 +1,21 @@
 ---
 title: Windows.Detection.Registry
+description: "Monitors selected registry keys for changes and raises alerts on\nmodifications.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
 build:
   list: never
-description: |
-  Monitors selected registry keys for changes and raises alerts on
-  modifications.
 ---
 
 Monitors selected registry keys for changes and raises alerts on
 modifications.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.Registry
 description: |
   Monitors selected registry keys for changes and raises alerts on
@@ -85,6 +85,6 @@ sources:
               AND NOT if(condition= UntrustedAuthenticode,
                         then= Certinfo.Trusted = 'trusted',
                         else= False )
+````
 
-</code></pre>
 

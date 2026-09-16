@@ -1,14 +1,12 @@
 ---
 title: Server.Utils.CreateMSI
+description: "Builds a Windows MSI deployment package using the current org's\nclient configuration."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
 build:
   list: never
-description: |
-  Builds a Windows MSI deployment package using the current org's
-  client configuration.
 ---
 
 Builds a Windows MSI deployment package using the current org's
@@ -22,7 +20,9 @@ This artifact depends on the following tools:
 You can replace those with suitable MSI builds.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.CreateMSI
 description: |
   Builds a Windows MSI deployment package using the current org's
@@ -30,8 +30,8 @@ description: |
 
   This artifact depends on the following tools:
 
-  * &lt;velo-tool-viewer name="VelociraptorWindowsMSI" /&gt;
-  * &lt;velo-tool-viewer name="VelociraptorWindows_x86MSI" /&gt;
+  * <velo-tool-viewer name="VelociraptorWindowsMSI" />
+  * <velo-tool-viewer name="VelociraptorWindows_x86MSI" />
 
   You can replace those with suitable MSI builds.
 
@@ -51,7 +51,7 @@ sources:
           AND Config.Client.ca_certificate =~ "(?ms)-----BEGIN CERTIFICATE-----.+-----END CERTIFICATE-----"
           AND Config.Client.nonce
 
-    LET client_config &lt;= if(condition=ValidateConfig(Config=CustomConfig),
+    LET client_config <= if(condition=ValidateConfig(Config=CustomConfig),
                          then=CustomConfig,
                          else=org()._client_config)
 
@@ -70,6 +70,6 @@ sources:
        FROM scope()
        WHERE AlsoBuild_x86
     })
+````
 
-</code></pre>
 

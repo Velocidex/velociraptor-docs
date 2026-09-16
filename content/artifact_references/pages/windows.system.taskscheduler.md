@@ -1,14 +1,12 @@
 ---
 title: Windows.System.TaskScheduler
+description: "Enumerates Windows scheduled tasks and parses their XML definitions\nto extract commands and user contexts."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Enumerates Windows scheduled tasks and parses their XML definitions
-  to extract commands and user contexts.
 ---
 
 Enumerates Windows scheduled tasks and parses their XML definitions
@@ -25,7 +23,9 @@ to provide an overview of the commands executed and the user under
 which they will be run.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.TaskScheduler
 description: |
   Enumerates Windows scheduled tasks and parses their XML definitions
@@ -72,13 +72,13 @@ sources:
                accessor='data',
                file=regex_replace(
                     source=utf16(string=Data),
-                    re='&lt;[?].+?&gt;',
+                    re='<[?].+?>',
                     replace='')) AS XML
         FROM read_file(filenames=OSPath)
 
       // Extract the binary from the command line. Fix up some common
       // problems with the command specification.
-      LET _ExpandedTransforms &lt;= dict(
+      LET _ExpandedTransforms <= dict(
          `^\\\\SystemRoot\\\\`="%SystemRoot%\\",
          `^system32\\\\`="%SystemRoot%\\System32\\",
          `^{.+}.+`="\\$0",
@@ -121,6 +121,6 @@ column_types:
   type: upload_preview
 - name: Authenticode
   type: collapsed
+````
 
-</code></pre>
 

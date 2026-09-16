@@ -1,14 +1,12 @@
 ---
 title: Windows.Forensics.Usn
+description: "Parses the NTFS USN journal ($J data stream) to enumerate recent\nfile creation, modification, and deletion events."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Parses the NTFS USN journal ($J data stream) to enumerate recent
-  file creation, modification, and deletion events.
 ---
 
 Parses the NTFS USN journal ($J data stream) to enumerate recent
@@ -29,7 +27,9 @@ modified/added from the journal. This will be present even if the
 file was later removed.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.Usn
 description: |
   Parses the NTFS USN journal ($J data stream) to enumerate recent
@@ -96,13 +96,13 @@ sources:
 
     query: |
       -- firstly set timebounds for performance
-      LET DateAfterTime &lt;= if(condition=DateAfter,
+      LET DateAfterTime <= if(condition=DateAfter,
             then=timestamp(epoch=DateAfter), else=timestamp(epoch="1600-01-01"))
-      LET DateBeforeTime &lt;= if(condition=DateBefore,
+      LET DateBeforeTime <= if(condition=DateBefore,
             then=timestamp(epoch=DateBefore), else=timestamp(epoch="2200-01-01"))
 
       -- If the user specified an MFTFile then ignore the device
-      LET Device &lt;= if(condition=MFTFile OR USNFile, then="",
+      LET Device <= if(condition=MFTFile OR USNFile, then="",
           else=if(condition=Device,
           then=pathspec(parse=Device, path_type="ntfs")))
 
@@ -112,8 +112,8 @@ sources:
               WHERE Filename =~ FileNameRegex
                 AND _FileMFTID =~ MFT_ID_Regex
                 AND _ParentMFTID =~ Parent_MFT_ID_Regex
-                AND Timestamp &lt; DateBeforeTime
-                AND Timestamp &gt; DateAfterTime
+                AND Timestamp < DateBeforeTime
+                AND Timestamp > DateAfterTime
                 AND _Links =~ PathRegex
 
       LET all_drives = SELECT * FROM foreach(
@@ -177,6 +177,6 @@ sources:
                  USN=USNFile, Accessor=Accessor)
           })
       })
+````
 
-</code></pre>
 

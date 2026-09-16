@@ -1,14 +1,12 @@
 ---
 title: Windows.Sysinternals.SysmonInstall
+description: "Deploys Sysmon with a config file and ensures the Sysmon64 service\nis running."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Deploys Sysmon with a config file and ensures the Sysmon64 service
-  is running.
 ---
 
 Deploys Sysmon with a config file and ensures the Sysmon64 service
@@ -23,7 +21,9 @@ we recommend that you review the config file and, if necessary,
 override it in the GUI with one that better suits your needs.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Sysinternals.SysmonInstall
 description: |
   Deploys Sysmon with a config file and ensures the Sysmon64 service
@@ -58,7 +58,7 @@ parameters:
 
 sources:
 - query: |
-    LET bin &lt;= SELECT * FROM switch(
+    LET bin <= SELECT * FROM switch(
     a={
       SELECT * FROM glob(globs=SysmonFileLocation)
     }, b={
@@ -106,6 +106,6 @@ sources:
         ),
     then={ SELECT * FROM doit },
     else={ SELECT * FROM ensure_service_running })
+````
 
-</code></pre>
 

@@ -1,14 +1,12 @@
 ---
 title: Server.Utils.TimesketchUpload
+description: "Uploads Velociraptor timelines to Timesketch using the Timesketch\nclient library."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
 build:
   list: never
-description: |
-  Uploads Velociraptor timelines to Timesketch using the Timesketch
-  client library.
 ---
 
 Uploads Velociraptor timelines to Timesketch using the Timesketch
@@ -34,7 +32,9 @@ This artifact also assumes that the Timesketch CLI is preconfigured
 with the correct credentials in the `.timesketchrc` file.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.TimesketchUpload
 description: |
   Uploads Velociraptor timelines to Timesketch using the Timesketch
@@ -117,7 +117,7 @@ export: |
                          TimelineName=TimelineName)[0]
 
   -- Timesketch insists the file have the .csv extension.
-  LET tmp &lt;= tempfile(extension=".csv")
+  LET tmp <= tempfile(extension=".csv")
 
   -- We copy the timeline to a temp csv file then upload that. This
   -- might seem inefficient but Timesketch is written in python so it
@@ -167,6 +167,6 @@ sources:
          NotebookId=NotebookId,
          TimelineName=TimelineName,
          SketchName=SketchName)
+````
 
-</code></pre>
 

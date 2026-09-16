@@ -1,14 +1,12 @@
 ---
 title: System.VFS.ListDirectory
+description: "Lists directory contents and populates the server-side\nVFS cache to enable VFS browsing."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Lists directory contents and populates the server-side
-  VFS cache to enable VFS browsing.
 ---
 
 Lists directory contents and populates the server-side
@@ -19,7 +17,9 @@ the GUI when a user clicks the "Refresh this directory" button in
 the VFS screen.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: System.VFS.ListDirectory
 description: |
   Lists directory contents and populates the server-side
@@ -86,8 +86,8 @@ sources:
 
   - precondition: SELECT * FROM info() WHERE NOT version(plugin="vfs_ls")
     query: |
-      // Glob &gt; v2 accepts a component list for the root parameter.
-      LET Path &lt;= if(condition=version(plugin="glob") &gt; 2 AND Components,
+      // Glob > v2 accepts a component list for the root parameter.
+      LET Path <= if(condition=version(plugin="glob") > 2 AND Components,
         then=Components, else=Path)
 
       // Old versions do not have the root parameter to glob()
@@ -119,9 +119,9 @@ sources:
              accessor=Accessor)
 
       SELECT * FROM if(
-       condition=version(plugin="glob") &gt;= 1,
+       condition=version(plugin="glob") >= 1,
        then=NewQuery,
        else=LegacyQuery)
+````
 
-</code></pre>
 

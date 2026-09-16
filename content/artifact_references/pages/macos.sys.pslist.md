@@ -1,19 +1,20 @@
 ---
 title: MacOS.Sys.Pslist
+description: "Lists processes and their associated binaries.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Lists processes and their associated binaries.
 ---
 
 Lists processes and their associated binaries.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Sys.Pslist
 description: |
   Lists processes and their associated binaries.
@@ -38,6 +39,6 @@ sources:
                Exe =~ "\\(deleted\\)$" AS Deleted
         FROM process_tracker_pslist()
         WHERE Name =~ processRegex
+````
 
-</code></pre>
 

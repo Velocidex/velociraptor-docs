@@ -1,19 +1,20 @@
 ---
 title: Windows.Detection.Yara.UEFI
+description: "Scans EFI System Partition files with YARA rules for rootkit detection.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Scans EFI System Partition files with YARA rules for rootkit detection.
 ---
 
 Scans EFI System Partition files with YARA rules for rootkit detection.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.Yara.UEFI
 author: Matt Green - @mgreen27
 description: |
@@ -66,7 +67,7 @@ parameters:
                     $sequence_8 = { 4923d3 4803d1 440fb74a0c 440fb7520e }
                     $sequence_9 = { 6642837cc11010 0f859d000000 428b54c114 41bbffffff7f 4923d3 }
                 condition:
-                    7 of them and filesize &lt; 181248
+                    7 of them and filesize < 181248
             }
             rule MAL_Rootkit_CosmicStrand
             {
@@ -98,18 +99,18 @@ parameters:
 sources:
 - query: |
       -- check which Yara to use
-      LET yara_rules &lt;= YaraUrl || YaraRule
+      LET yara_rules <= YaraUrl || YaraRule
 
       -- time testing
       LET time_test(stamp) =
             if(condition= DateBefore AND DateAfter,
-                then= stamp &lt; DateBefore AND stamp &gt; DateAfter,
+                then= stamp < DateBefore AND stamp > DateAfter,
                 else=
             if(condition=DateBefore,
-                then= stamp &lt; DateBefore,
+                then= stamp < DateBefore,
                 else=
             if(condition= DateAfter,
-                then= stamp &gt; DateAfter,
+                then= stamp > DateAfter,
                 else= True
             )))
 
@@ -147,10 +148,10 @@ sources:
         FROM find_files
         WHERE NOT IsDir
             AND if(condition=SizeMin,
-                        then= SizeMin &lt; Size,
+                        then= SizeMin < Size,
                         else= True)
             AND if(condition=SizeMax,
-                        then= SizeMax &gt; Size,
+                        then= SizeMax > Size,
                         else= True)
             AND ( time_test(stamp=Mtime)
                     OR time_test(stamp=Atime)
@@ -173,10 +174,10 @@ sources:
                         name=format(format="%v-%v-%v",
                         args=[
                             OSPath.Path,
-                            if(condition= String.Offset - ContextBytes &lt; 0,
+                            if(condition= String.Offset - ContextBytes < 0,
                                 then= 0,
                                 else= String.Offset - ContextBytes),
-                            if(condition= String.Offset + ContextBytes &gt; Size,
+                            if(condition= String.Offset + ContextBytes > Size,
                                 then= Size,
                                 else= String.Offset + ContextBytes) ]
                         )) as HitContext
@@ -196,6 +197,6 @@ sources:
 
 column_types:
   - name: HitContext
-    type: preview_upload
-</code></pre>
+    type: preview_upload````
+
 

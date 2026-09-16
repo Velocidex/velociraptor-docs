@@ -1,14 +1,12 @@
 ---
 title: Windows.EventLogs.Kerberoasting
+description: "Detects Kerberoasting attempts by extracting Kerberos TGS requests\n(EID 4769) with RC4 encryption from the Security log."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Detects Kerberoasting attempts by extracting Kerberos TGS requests
-  (EID 4769) with RC4 encryption from the Security log.
 ---
 
 Detects Kerberoasting attempts by extracting Kerberos TGS requests
@@ -41,7 +39,9 @@ unexpected IP.
 source IPs and manage risk of insecure ticket generation.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.EventLogs.Kerberoasting
 author: Matt Green - @mgreen27
 
@@ -93,8 +93,8 @@ parameters:
 
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
 
       -- expand provided glob into a list of paths on the file system (fs)
       LET fspaths = SELECT OSPath
@@ -130,6 +130,6 @@ sources:
 
 
         SELECT * FROM evtxsearch(PathList=fspaths)
+````
 
-</code></pre>
 

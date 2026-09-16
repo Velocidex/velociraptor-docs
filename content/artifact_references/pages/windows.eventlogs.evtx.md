@@ -1,13 +1,12 @@
 ---
 title: Windows.EventLogs.Evtx
+description: "Parses and returns events from Windows evtx logs."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Parses and returns events from Windows evtx logs.
 ---
 
 Parses and returns events from Windows evtx logs.
@@ -44,7 +43,9 @@ Consider filtering results using path, channel, and ID regexes if necessary.
 Inspired by others in `Windows.EventLogs.*`, many by Matt Green (@mgreen27).
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.EventLogs.Evtx
 
 description: |
@@ -113,7 +114,7 @@ parameters:
     type: regex
 
 export: |
-  LET Levels &lt;= dict(
+  LET Levels <= dict(
     `0`='Always',
     `1`='Critical',
     `2`='Error',
@@ -123,8 +124,8 @@ export: |
 
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
 
       // expand provided glob into a list of paths on the file system (fs)
       LET fspaths =
@@ -144,10 +145,10 @@ sources:
               FROM parse_evtx(filename=OSPath, accessor=Accessor)
               WHERE
                 if(condition=StartDate,
-                   then=TimeCreated &gt;= timestamp(string=StartDate),
+                   then=TimeCreated >= timestamp(string=StartDate),
                    else=true)
                 AND if(condition=EndDate,
-                       then=TimeCreated &lt;= timestamp(string=EndDate),
+                       then=TimeCreated <= timestamp(string=EndDate),
                        else=true)
                 AND Channel =~ ChannelRegex
                 AND str(str=EventID) =~ IDRegex
@@ -191,7 +192,7 @@ sources:
             {{ Query "Events" | TimeChart }}
             */
 
-            LET Dummy &lt;= 42
+            LET Dummy <= 42
 
        - type: vql_suggestion
          name: Timeline
@@ -202,7 +203,7 @@ sources:
           */
           LET S = scope()
 
-          LET _ &lt;= timeline_add(key='TimeCreated',
+          LET _ <= timeline_add(key='TimeCreated',
                           name='evtx',
                           timeline='EVTX',
                           query={
@@ -215,6 +216,6 @@ sources:
                     S.EventData AS Data
               FROM source()
               ORDER BY TimeCreated
-            })
-</code></pre>
+            })````
+
 

@@ -1,21 +1,21 @@
 ---
 title: Notebooks.VQLx2
+description: "A notebook initialized with 2 VQL cells containing simple queries\nand also demonstrating initial output.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [notebook]
 build:
   list: never
-description: |
-  A notebook initialized with 2 VQL cells containing simple queries
-  and also demonstrating initial output.
 ---
 
 A notebook initialized with 2 VQL cells containing simple queries
 and also demonstrating initial output.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Notebooks.VQLx2
 description: |
   A notebook initialized with 2 VQL cells containing simple queries
@@ -28,15 +28,15 @@ sources:
     - type: vql
       name: First Cell
       output: |
-        &lt;&lt; 1st cell: Click here to edit &gt;&gt;
+        << 1st cell: Click here to edit >>
       template: |
         SELECT * FROM orgs()
     - type: vql
       name: Second Cell
       output: |
-        &lt;&lt; 2nd cell: Click here to edit &gt;&gt;
+        << 2nd cell: Click here to edit >>
       template: |
         SELECT * FROM gui_users() WHERE name = whoami()
+````
 
-</code></pre>
 

@@ -1,14 +1,12 @@
 ---
 title: System.Flow.Completion
+description: "Emits an event for every completed flow, including imported offline\ncollections, enabling post-processing automation."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
 build:
   list: never
-description: |
-  Emits an event for every completed flow, including imported offline
-  collections, enabling post-processing automation.
 ---
 
 Emits an event for every completed flow, including imported offline
@@ -23,7 +21,9 @@ trigger them (e.g. for testing or to replay them) using the
 `send_event()` VQL function.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: System.Flow.Completion
 description: |
   Emits an event for every completed flow, including imported offline
@@ -38,6 +38,6 @@ description: |
   `send_event()` VQL function.
 
 type: CLIENT_EVENT
+````
 
-</code></pre>
 

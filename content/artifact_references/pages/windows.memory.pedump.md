@@ -1,14 +1,12 @@
 ---
 title: Windows.Memory.PEDump
+description: "Extracts running executables from process memory using VAD region\nenumeration and PE dumping, and uploads the files to the server."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Extracts running executables from process memory using VAD region
-  enumeration and PE dumping, and uploads the files to the server.
 ---
 
 Extracts running executables from process memory using VAD region
@@ -28,7 +26,9 @@ out. Therefore we do not expect to have holes in the produced binary
 as is often the case in memory analysis.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Memory.PEDump
 description: |
   Extracts running executables from process memory using VAD region
@@ -77,6 +77,6 @@ sources:
                    name=GetFilename(MappingName=MappingName, BaseOffset=Address)) AS Upload
      FROM vad(pid=Pid)
      WHERE Header =~ "^MZ" AND MappingName =~ FilenameRegex
+````
 
-</code></pre>
 

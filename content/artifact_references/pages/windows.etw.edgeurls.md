@@ -1,14 +1,12 @@
 ---
 title: Windows.ETW.EdgeURLs
+description: "Captures URLs accessed by the Edge browser via the\nMicrosoft-Windows-URLMon ETW provider."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
 build:
   list: never
-description: |
-  Captures URLs accessed by the Edge browser via the
-  Microsoft-Windows-URLMon ETW provider.
 ---
 
 Captures URLs accessed by the Edge browser via the
@@ -22,7 +20,9 @@ to filter the URLs a bit and/or target collection to a narrow label
 group.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.ETW.EdgeURLs
 description: |
   Captures URLs accessed by the Edge browser via the
@@ -45,7 +45,7 @@ parameters:
 
 sources:
   - query: |
-      LET m &lt;= memoize(key="Pid", period=30, query={
+      LET m <= memoize(key="Pid", period=30, query={
           SELECT Pid, Exe, Username FROM pslist()
       })
 
@@ -57,6 +57,6 @@ sources:
         description="Microsoft-Windows-URLMon",
         guid="{245F975D-909D-49ED-B8F9-9A75691D6B6B}")
       WHERE ID = 805 AND URL =~ URLFilter
+````
 
-</code></pre>
 

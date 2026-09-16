@@ -1,14 +1,12 @@
 ---
 title: Windows.EventLogs.PowershellModule
+description: "Extracts PowerShell module logging events (EID 4103) from the\nPowerShell Operational log with context and payload filtering."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Extracts PowerShell module logging events (EID 4103) from the
-  PowerShell Operational log with context and payload filtering.
 ---
 
 Extracts PowerShell module logging events (EID 4103) from the
@@ -27,7 +25,9 @@ There are several parameters available for search leveraging regex:
 - SearchVSS enables VSS search
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.EventLogs.PowershellModule
 description: |
   Extracts PowerShell module logging events (EID 4103) from the
@@ -78,13 +78,13 @@ parameters:
 
 sources:
   - query: |
-        LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
-        LET Accessor &lt;= if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
+        LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
+        LET Accessor <= if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
 
         -- Build time bounds
-        LET DateAfterTime &lt;= if(condition=DateAfter,
+        LET DateAfterTime <= if(condition=DateAfter,
             then=timestamp(epoch=DateAfter), else=timestamp(epoch="1600-01-01"))
-        LET DateBeforeTime &lt;= if(condition=DateBefore,
+        LET DateBeforeTime <= if(condition=DateBefore,
             then=timestamp(epoch=DateBefore), else=timestamp(epoch="2200-01-01"))
 
         -- Determine target files
@@ -111,8 +111,8 @@ sources:
                 Source
               FROM parse_evtx(filename=OSPath, accessor=Accessor)
               WHERE EventID = 4103
-                AND EventTime &gt; DateAfterTime
-                AND EventTime &lt; DateBeforeTime
+                AND EventTime > DateAfterTime
+                AND EventTime < DateBeforeTime
                 AND if(condition=ContextRegex,
                     then=ContextInfo=~ContextRegex,else=TRUE)
                 AND if(condition=PayloadRegex,
@@ -135,6 +135,6 @@ sources:
             Task,
             Source
         FROM hits
+````
 
-</code></pre>
 

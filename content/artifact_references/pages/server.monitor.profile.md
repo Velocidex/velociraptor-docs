@@ -1,14 +1,12 @@
 ---
 title: Server.Monitor.Profile
+description: "Collects server profiling data including goroutine traces, memory\nheap, CPU profiles, and metrics."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
 build:
   list: never
-description: |
-  Collects server profiling data including goroutine traces, memory
-  heap, CPU profiles, and metrics.
 ---
 
 Collects server profiling data including goroutine traces, memory
@@ -41,7 +39,9 @@ goroutines and heap profiles as distinct sources in a more readable
 way.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Monitor.Profile
 description: |
   Collects server profiling data including goroutine traces, memory
@@ -181,6 +181,6 @@ sources:
 column_types:
   - name: InUseBytes
     type: mb
+````
 
-</code></pre>
 

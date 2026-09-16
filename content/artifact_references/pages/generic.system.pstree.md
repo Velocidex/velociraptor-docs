@@ -1,14 +1,12 @@
 ---
 title: Generic.System.Pstree
+description: "Shows process lineage by following parent PIDs to establish call\nchains."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Shows process lineage by following parent PIDs to establish call
-  chains.
 ---
 
 Shows process lineage by following parent PIDs to establish call
@@ -27,7 +25,9 @@ Sysmon) or `Windows.Events.TrackProcessesBasic` (does not require
 Sysmon)
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.System.Pstree
 description: |
   Shows process lineage by following parent PIDs to establish call
@@ -60,7 +60,7 @@ parameters:
     type: regex
 
   - name: CallChainSep
-    default: " -&gt; "
+    default: " -> "
 
   - name: IncludePstree
     type: bool
@@ -78,6 +78,6 @@ sources:
 column_types:
   - name: PSTree
     type: tree
+````
 
-</code></pre>
 

@@ -1,13 +1,12 @@
 ---
 title: Generic.Utils.SendEmail
+description: "A Utility artifact for sending emails."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
 build:
   list: never
-description: |
-  A Utility artifact for sending emails.
 ---
 
 A Utility artifact for sending emails.
@@ -27,7 +26,9 @@ All of the functions used to create the final body of the email are exported
 and are available for further customization when sending an email.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Utils.SendEmail
 author: Andreas Misje – @misje
 description: |
@@ -185,7 +186,7 @@ export: |
 
 sources:
 - query: |
-    LET Texts &lt;= WrapAlternative(Plain=WrapText(
+    LET Texts <= WrapAlternative(Plain=WrapText(
                                    Value=PlainTextMessage,
                                    Type='plain',
                                    Encode=EncodeText),
@@ -193,14 +194,14 @@ sources:
                                                Type='html',
                                                Encode=EncodeText))
 
-    LET Texts &lt;= if(condition=Texts, then=[Texts], else=[])
+    LET Texts <= if(condition=Texts, then=[Texts], else=[])
 
-    LET Boundary &lt;= RandomString
+    LET Boundary <= RandomString
 
-    LET Headers &lt;= dict(`Content-Type`='multipart/mixed; boundary=' + Boundary)
+    LET Headers <= dict(`Content-Type`='multipart/mixed; boundary=' + Boundary)
 
     -- Build the email parts - first the text message, then the attachments.
-    LET Message &lt;= WrapInBoundary(
+    LET Message <= WrapInBoundary(
         Boundary=Boundary,
         Sections=Texts + AttachFiles(Files=FilesToUpload).Part)
 
@@ -212,6 +213,6 @@ sources:
                 subject=Subject,
                 headers=Headers,
                 `body`=Message) AS Mail
-    FROM scope()
-</code></pre>
+    FROM scope()````
+
 

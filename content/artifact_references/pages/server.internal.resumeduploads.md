@@ -1,21 +1,21 @@
 ---
 title: Server.Internal.ResumedUploads
+description: "Displays the status and details of all resumable upload operations\non the server.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Displays the status and details of all resumable upload operations
-  on the server.
 ---
 
 Displays the status and details of all resumable upload operations
 on the server.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Internal.ResumedUploads
 description: |
   Displays the status and details of all resumable upload operations
@@ -34,6 +34,6 @@ column_types:
   type: mb
 - name: response
   type: hidden
+````
 
-</code></pre>
 

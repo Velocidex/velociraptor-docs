@@ -1,14 +1,12 @@
 ---
 title: Windows.Forensics.PartitionTable
+description: "Parses GPT and MBR partition tables from a raw disk image or\nphysical drive."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Parses GPT and MBR partition tables from a raw disk image or
-  physical drive.
 ---
 
 Parses GPT and MBR partition tables from a raw disk image or
@@ -24,7 +22,9 @@ The artifact currently handles only GPT (the most common) and
 Primary Dos (MBR) partition tables.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.PartitionTable
 description: |
   Parses GPT and MBR partition tables from a raw disk image or
@@ -94,15 +94,15 @@ export: |
          ["tab_size", 84, "uint32"],
          ["entries", 0, "Profile", {
             type: "Array",
-            offset: "x=&gt;x.tab_start_lba * 512",
+            offset: "x=>x.tab_start_lba * 512",
             type_options: {
              type: "GPTEntry",
-             count: "x=&gt;x.tab_num",
+             count: "x=>x.tab_num",
             }}]
         ]],
         ["GPTEntry", 128, [
           ["Offset", 0, "Value", {
-              value: "x=&gt;x.StartOf",
+              value: "x=>x.StartOf",
           }],
           ["type_guid", 0, GUID],
           ["id_guid", 16, GUID],
@@ -120,7 +120,7 @@ export: |
           ["__D4", 6, "String", {"term": "", "length": 2}],
           ["__D5", 8, "String", {"term": "", "length": 6}],
           ["Value", 0, "Value", {
-            "value": "x=&gt;format(format='{%08x-%04x-%04x-%02x-%02x}', args=[x.__D1, x.__D2, x.__D3, x.__D4, x.__D5])"
+            "value": "x=>format(format='{%08x-%04x-%04x-%02x-%02x}', args=[x.__D1, x.__D2, x.__D3, x.__D4, x.__D5])"
           }]
         ]]
         ]
@@ -128,13 +128,13 @@ export: |
 
 sources:
   - query: |
-        LET GPTHeader &lt;= parse_binary(filename=ImagePath,
+        LET GPTHeader <= parse_binary(filename=ImagePath,
            accessor=Accessor,
            profile=MBRProfile,
            struct="GPTHeader",
            offset=SectorSize)
 
-        LET PrimaryPartitions &lt;= parse_binary(filename=ImagePath,
+        LET PrimaryPartitions <= parse_binary(filename=ImagePath,
            accessor=Accessor,
            profile=MBRProfile,
            struct="MBRHeader",
@@ -149,7 +149,7 @@ sources:
                  humanize(bytes=(end_lba - start_lba) * SectorSize) AS Size,
                  name
           FROM foreach(row=GPTHeader.entries)
-          WHERE start_lba &gt; 0
+          WHERE start_lba > 0
         })
 
         -- Display primary partitions
@@ -158,7 +158,7 @@ sources:
             humanize(bytes=size_sec * SectorSize) AS Size,
             ptype AS name
         FROM foreach(row=PrimaryPartitions.PrimaryPartitions)
-        WHERE start_sec &gt; 0
+        WHERE start_sec > 0
 
         -- Handle the correct partition types
         LET GetAccessor(Magic) =
@@ -196,6 +196,6 @@ sources:
               PartitionPath= _PartitionPath).OSPath AS TopLevelDirectory,
             Magic, _PartitionPath
         FROM PartitionList
+````
 
-</code></pre>
 

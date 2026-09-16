@@ -1,14 +1,12 @@
 ---
 title: Generic.Client.Trace
+description: "Captures runtime trace information from the client at a specified\ninterval"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Captures runtime trace information from the client at a specified
-  interval
 ---
 
 Captures runtime trace information from the client at a specified
@@ -22,7 +20,9 @@ to cancel the collection manually since it will continue to run
 until the collection timeout is reached.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Client.Trace
 description: |
   Captures runtime trace information from the client at a specified
@@ -47,6 +47,6 @@ sources:
        SELECT trace() AS TraceFile
        FROM clock(start=0, period=FrequencySec)
     })
+````
 
-</code></pre>
 

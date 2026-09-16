@@ -1,14 +1,12 @@
 ---
 title: Windows.Events.TrackProcessesETW
+description: "Tracks process execution using ETW kernel events (CreateProcess,\nTerminateProcess, LoadImage)."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
 build:
   list: never
-description: |
-  Tracks process execution using ETW kernel events (CreateProcess,
-  TerminateProcess, LoadImage).
 ---
 
 Tracks process execution using ETW kernel events (CreateProcess,
@@ -27,7 +25,9 @@ This tracker DOES NOT require Sysmon and is **incompatible** with
 `Windows.Events.TrackProcessesBasic` (only one should be running).
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Events.TrackProcessesETW
 description: |
   Tracks process execution using ETW kernel events (CreateProcess,
@@ -66,7 +66,7 @@ export: |
       FROM watch_etw(kernel_tracer_type=["process", "image_load"],
                      guid="kernel")
 
-    LET LRU &lt;= lru(size=1000)
+    LET LRU <= lru(size=1000)
     LET S = scope()
 
     -- only used to see what is goinng on.
@@ -111,12 +111,12 @@ export: |
     ))
 
     -- Insert the event into the local LRU cache and return it.
-    LET Cache(Pid, Event) = set(item=LRU, field=str(str=Pid), value=Event) &amp;&amp; Event
+    LET Cache(Pid, Event) = set(item=LRU, field=str(str=Pid), value=Event) && Event
 
     -- Enrich the event with the new key value and return it.
     LET Enrich(Pid, Key, Value) = set(
          item=get(item=LRU, field=str(str=Pid), default=dict()).data,
-         field=Key, value=Value) &amp;&amp;
+         field=Key, value=Value) &&
          get(item=LRU, field=str(str=Pid))
 
     -- Analyze the event and emit the relevant row if needed.
@@ -125,7 +125,7 @@ export: |
       -- Enrich process data with full executable path from
       -- LoadImage. This event usually comes after the CreateProcess
       -- so we have to re-emit the same event with the updated data.
-      condition=System.KernelEventType = "LoadImage" &amp;&amp; EventData.FileName =~ ".exe$",
+      condition=System.KernelEventType = "LoadImage" && EventData.FileName =~ ".exe$",
       then=Enrich(Pid=EventData.ProcessId, Key="Exe", Value=EventData.FileName),
       else=if(
 
@@ -163,11 +163,11 @@ precondition: |
 
 sources:
 - query: |
-    LET Tracker &lt;= process_tracker(
+    LET Tracker <= process_tracker(
       max_size=MaxSize, sync_query=SyncQuery, update_query=UpdateQuery, sync_period=60000)
 
     SELECT * FROM process_tracker_updates()
       WHERE update_type = "stats" OR AlsoForwardUpdates
+````
 
-</code></pre>
 

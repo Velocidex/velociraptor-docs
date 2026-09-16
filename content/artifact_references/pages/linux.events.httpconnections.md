@@ -1,13 +1,12 @@
 ---
 title: Linux.Events.HTTPConnections
+description: "Monitors HTTP traffic on Linux systems using eBPF network tracing."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
 build:
   list: never
-description: |
-  Monitors HTTP traffic on Linux systems using eBPF network tracing.
 ---
 
 Monitors HTTP traffic on Linux systems using eBPF network tracing.
@@ -21,7 +20,9 @@ NOTES:
   about the process.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Events.HTTPConnections
 description: |
   Monitors HTTP traffic on Linux systems using eBPF network tracing.
@@ -80,6 +81,6 @@ sources:
       WHERE host =~ HostFilter
         AND uri_path =~ URLFilter
         AND ProcessName =~ ProcessNameFilter
+````
 
-</code></pre>
 

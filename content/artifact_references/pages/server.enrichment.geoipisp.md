@@ -1,14 +1,12 @@
 ---
 title: Server.Enrichment.GeoIPISP
+description: "A utility artifact that enriches an IP address with ISP,\norganization, and ASN information from a MaxMind GeoIP ISP database."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
 build:
   list: never
-description: |
-  A utility artifact that enriches an IP address with ISP,
-  organization, and ASN information from a MaxMind GeoIP ISP database.
 ---
 
 A utility artifact that enriches an IP address with ISP,
@@ -28,7 +26,9 @@ that you would import this artifact from your own artifact to gain
 access to the utility lookup functions.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Enrichment.GeoIPISP
 description: |
   A utility artifact that enriches an IP address with ISP,
@@ -67,6 +67,6 @@ sources:
              ASN(IP=_value) AS ASN,
              ASO(IP=_value) AS ASO
       FROM foreach(row=IP)
+````
 
-</code></pre>
 

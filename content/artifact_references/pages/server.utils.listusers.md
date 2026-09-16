@@ -1,13 +1,12 @@
 ---
 title: Server.Utils.ListUsers
+description: "Enumerates all users across orgs along with their roles and permissions."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
 build:
   list: never
-description: |
-  Enumerates all users across orgs along with their roles and permissions.
 ---
 
 Enumerates all users across orgs along with their roles and permissions.
@@ -17,7 +16,9 @@ current org are visible. When collected in the context of the root
 org, all users in all orgs are visible.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.ListUsers
 description: |
   Enumerates all users across orgs along with their roles and permissions.
@@ -31,6 +32,6 @@ type: SERVER
 sources:
   - query: |
       SELECT * FROM gui_users(all_orgs=TRUE)
+````
 
-</code></pre>
 

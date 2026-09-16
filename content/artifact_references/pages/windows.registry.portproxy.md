@@ -1,14 +1,12 @@
 ---
 title: Windows.Registry.PortProxy
+description: "Enumerates Windows port proxy registry entries configured via\nnetsh or attack tools for network redirection."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Enumerates Windows port proxy registry entries configured via
-  netsh or attack tools for network redirection.
 ---
 
 Enumerates Windows port proxy registry entries configured via
@@ -20,7 +18,9 @@ the LOLBin `netsh.exe`. Metasploit and other common attack tools
 also have related configuration modules.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Registry.PortProxy
 description: |
   Enumerates Windows port proxy registry entries configured via
@@ -33,7 +33,7 @@ description: |
 
 reference:
   - Port Proxy detection (http://www.dfirnotes.net/portproxy_detection/)
-  - ATT&amp;CK T1090 - Connection Proxy (https://attack.mitre.org/techniques/T1090/) \
+  - ATT&CK T1090 - Connection Proxy (https://attack.mitre.org/techniques/T1090/) \
     Adversaries may use a connection proxy to direct network traffic between
     systems or act as an intermediary for network communications to a command
     and control server to avoid direct connections to their infrastructure.
@@ -101,6 +101,6 @@ reports:
       {{ end }}
 
       {{ Query "report"  "SELECT Fqdn, ProxyType, Protocol, Listening, Destination, ModifiedTime FROM report" | Table }}
+````
 
-</code></pre>
 

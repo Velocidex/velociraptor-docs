@@ -1,14 +1,12 @@
 ---
 title: Windows.Forensics.UserAccessLogs
+description: "Parses the Windows User Access Logging (UAL) ESE database to\nenumerate client connections and server roles."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Parses the Windows User Access Logging (UAL) ESE database to
-  enumerate client connections and server roles.
 ---
 
 Parses the Windows User Access Logging (UAL) ESE database to
@@ -28,7 +26,9 @@ linked below. Velociraptor should have no trouble parsing these
 files on a live system.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.UserAccessLogs
 description: |
   Parses the Windows User Access Logging (UAL) ESE database to
@@ -60,7 +60,7 @@ export: |
         ["C", 2, "uint8"],
         ["D", 3, "uint8"],
         ["IP", 0, "Value", {
-           value: "x=&gt; format(format='%d.%d.%d.%d', args=[x.A, x.B, x.C, x.D])"
+           value: "x=> format(format='%d.%d.%d.%d', args=[x.A, x.B, x.C, x.D])"
         }]
       ]],
      ["IP6", 0, [
@@ -73,7 +73,7 @@ export: |
         ["G", 12, "uint16be"],
         ["H", 14, "uint16be"],
         ["IP", 0, "Value", {
-           value: "x=&gt; format(format='%04x:%04x:%04x:%04x:%04x:%04x:%04x:%04x', args=[x.A, x.B, x.C, x.D, x.E, x.F, x.G, x.H])"
+           value: "x=> format(format='%04x:%04x:%04x:%04x:%04x:%04x:%04x:%04x', args=[x.A, x.B, x.C, x.D, x.E, x.F, x.G, x.H])"
         }]
       ]]
     ]'''
@@ -100,7 +100,7 @@ export: |
       WHERE Name =~ "SystemIdentity.mdb"
 
     -- Prepare a Role lookup to resolve the role GUID
-    LET RoleLookup &lt;= memoize(key="RoleGuid", query={
+    LET RoleLookup <= memoize(key="RoleGuid", query={
       SELECT * FROM foreach(row=SystemIdentity, query={
          SELECT * FROM parse_ese(file=OSPath, table="ROLE_IDS")
          WHERE log(message="RoleGuid " + RoleGuid)
@@ -188,6 +188,6 @@ sources:
       query: |
         SELECT OSPath, if(condition=AlsoUpload, then=upload(file=OSPath))
         FROM glob(globs=SUMGlob)
+````
 
-</code></pre>
 

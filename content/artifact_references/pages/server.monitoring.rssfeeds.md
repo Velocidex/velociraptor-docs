@@ -1,14 +1,12 @@
 ---
 title: Server.Monitoring.RSSFeeds
+description: "Polls RSS feeds at a configurable interval and alerts users about\nnew items."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
 build:
   list: never
-description: |
-  Polls RSS feeds at a configurable interval and alerts users about
-  new items.
 ---
 
 Polls RSS feeds at a configurable interval and alerts users about
@@ -18,7 +16,9 @@ By default this artifact will monitor the Velociraptor RSS feeds to
 inform users of critical CVEs or blog posts.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Monitoring.RSSFeeds
 description: |
   Polls RSS feeds at a configurable interval and alerts users about
@@ -63,7 +63,7 @@ export: |
       WHERE Response = 200
     })
 
-  LET AgeSeconds &lt;= AgeDays * 24 * 60 * 60
+  LET AgeSeconds <= AgeDays * 24 * 60 * 60
 
   LET GetRSS(URLs) = SELECT *
       FROM foreach(row={
@@ -75,15 +75,15 @@ export: |
                link,
                timestamp(string=pubDate) AS pubDate
         FROM foreach(row=XML.rss.channel.item, column="_value")
-        WHERE now() - AgeSeconds &lt; pubDate.Unix
+        WHERE now() - AgeSeconds < pubDate.Unix
       })
 
 sources:
 - query: |
-    LET URLs &lt;= FeedURLs.URL
+    LET URLs <= FeedURLs.URL
 
     // Create the initial cache and watch for changes.
-    LET m &lt;= to_dict(item={
+    LET m <= to_dict(item={
         SELECT guid AS _key,
                dict(title=title, link=link, pubDate=pubDate) AS _value
         FROM GetRSS(URLs=URLs)
@@ -108,6 +108,6 @@ sources:
 column_types:
 - name: link
   type: url
+````
 
-</code></pre>
 

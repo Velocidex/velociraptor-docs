@@ -1,14 +1,12 @@
 ---
 title: Windows.EventLogs.ExplicitLogon
+description: "Searches the Windows Security event log for explicit logon events, that is\nEvent ID 4648: \"A logon was attempted using explicit credentials\"."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Searches the Windows Security event log for explicit logon events, that is
-  Event ID 4648: "A logon was attempted using explicit credentials".
 ---
 
 Searches the Windows Security event log for explicit logon events, that is
@@ -26,7 +24,9 @@ be activity to other machines from commonly abused LOLBins or explicit logon
 events from unusual processes.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.EventLogs.ExplicitLogon
 description: |
     Searches the Windows Security event log for explicit logon events, that is
@@ -92,13 +92,13 @@ parameters:
 
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
 
       -- firstly set timebounds for performance
-      LET DateAfterTime &lt;= if(condition=DateAfter,
+      LET DateAfterTime <= if(condition=DateAfter,
         then=timestamp(epoch=DateAfter), else=timestamp(epoch="1600-01-01"))
-      LET DateBeforeTime &lt;= if(condition=DateBefore,
+      LET DateBeforeTime <= if(condition=DateBefore,
         then=timestamp(epoch=DateBefore), else=timestamp(epoch="2200-01-01"))
 
       -- expand provided glob into a list of paths on the file system (fs)
@@ -126,8 +126,8 @@ sources:
                 FROM parse_evtx(filename=OSPath, accessor=Accessor)
                 WHERE
                     EventID = 4648
-                    AND EventTime &lt; DateBeforeTime
-                    AND EventTime &gt; DateAfterTime
+                    AND EventTime < DateBeforeTime
+                    AND EventTime > DateAfterTime
                     AND TargetUserName =~ UsernameRegex
                     AND NOT if(condition=UsernameWhitelist,
                         then= TargetUserName =~ UsernameWhitelist,
@@ -144,6 +144,6 @@ sources:
           )
 
         SELECT * FROM evtxsearch(PathList=fspaths)
+````
 
-</code></pre>
 

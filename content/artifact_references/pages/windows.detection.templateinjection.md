@@ -1,13 +1,12 @@
 ---
 title: Windows.Detection.TemplateInjection
+description: "Detects injected templates in Office and RTF documents."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Detects injected templates in Office and RTF documents.
 ---
 
 Detects injected templates in Office and RTF documents.
@@ -39,7 +38,9 @@ detections on other documents. Simply replace RtfYara with YARA
 rules of interest and modify the glob for targeting.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.TemplateInjection
 author: Matt Green - @mgreen27
 description: |
@@ -118,9 +119,9 @@ sources:
       -- Find target docs
       LET office_docs = SELECT OSPath, Mtime, Size
         FROM glob(globs=SearchGlob)
-        WHERE NOT IsDir and Size &gt; 0
+        WHERE NOT IsDir and Size > 0
 
-      LET rtf_injection &lt;= SELECT * FROM foreach(
+      LET rtf_injection <= SELECT * FROM foreach(
          row=office_docs,
          query={
                 SELECT
@@ -158,7 +159,7 @@ sources:
                   root=pathspec(DelegatePath=OfficePath),
                   accessor='zip')
                 WHERE not IsDir
-                  AND Size &gt; 0
+                  AND Size > 0
                   AND ZipMemberPath =~ TemplateFileRegex
             })
 
@@ -171,7 +172,7 @@ sources:
                 OSPath.Path as Section,
                 parse_string_with_regex(
                     string=Line,
-                    regex=['\\s+Target="(?P&lt;Target&gt;[^"]+)"\\s+TargetMode='
+                    regex=['\\s+Target="(?P<Target>[^"]+)"\\s+TargetMode='
                         ]).Target as TemplateTarget,
                 Mtime as SectionMtime,
                 Atime as SectionAtime,
@@ -213,6 +214,6 @@ sources:
       SELECT * FROM if(condition= UploadDocument,
             then= { SELECT * FROM upload_hits},
             else= { SELECT * FROM hits})
+````
 
-</code></pre>
 

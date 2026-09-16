@@ -1,14 +1,12 @@
 ---
 title: Windows.Registry.UserAssist
+description: "Decodes UserAssist registry keys from NTUSER.DAT to reveal program\nexecution counts and last run times."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Decodes UserAssist registry keys from NTUSER.DAT to reveal program
-  execution counts and last run times.
 ---
 
 Decodes UserAssist registry keys from NTUSER.DAT to reveal program
@@ -35,7 +33,9 @@ executable will not update the execution counter or time. Therefore
 there may be some executions that have a 0 time and 0 runcount.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Registry.UserAssist
 description: |
   Decodes UserAssist registry keys from NTUSER.DAT to reveal program
@@ -87,7 +87,7 @@ export:
         ]]
       ]
     '''
-  LET _ExpandedTransforms &lt;= dict(
+  LET _ExpandedTransforms <= dict(
         `^c:`="C:",
         `\\{008CA0B1-55B4-4C56-B8A8-4DE4B299D3BE\\}\\\\`="%APPDATA%\\Microsoft\\Windows\\AccountPictures\\",
         `\\{724EF170-A42D-4FEF-9F26-B60E846FBA4F\\}\\\\`="%APPDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Administrative Tools\\",
@@ -197,7 +197,7 @@ sources:
       LET TMP = SELECT OSPath.Path AS _KeyPath,
           parse_string_with_regex(
                 string=OSPath.Path,
-                regex="^.+Count\\\\\"?(?P&lt;Name&gt;.+?)\"?$") AS Name,
+                regex="^.+Count\\\\\"?(?P<Name>.+?)\"?$") AS Name,
             OSPath,
             parse_binary(
                filename=Data.value,
@@ -230,14 +230,14 @@ sources:
           get_path(path=Name) as Name,
           expand(path=get_path(path=Name)) as Expanded,
           User,
-          if(condition= LastExecution &lt; "1700-01-01",
+          if(condition= LastExecution < "1700-01-01",
                   then= "",
                   else= LastExecution ) as LastExecution,
           NumberOfExecutions
         FROM if(
             condition=ExecutionTimeAfter,
             then={
-              SELECT * FROM A1 WHERE LastExecutionTS &gt; ExecutionTimeAfter
+              SELECT * FROM A1 WHERE LastExecutionTS > ExecutionTimeAfter
             },
             else={ SELECT * FROM A1})
         WHERE NOT Name =~ '^UEME_'
@@ -250,6 +250,6 @@ sources:
         LastExecution,
         NumberOfExecutions
       FROM results
+````
 
-</code></pre>
 

@@ -1,14 +1,12 @@
 ---
 title: Linux.Network.Netstat
+description: "Reads Linux `/proc/net` files to display socket connection states\nand processes."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Reads Linux `/proc/net` files to display socket connection states
-  and processes.
 ---
 
 Reads Linux `/proc/net` files to display socket connection states
@@ -17,7 +15,9 @@ and processes.
 Also extracts corresponding process information.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Network.Netstat
 description: |
   Reads Linux `/proc/net` files to display socket connection states
@@ -60,14 +60,14 @@ sources:
                                 source=X,
                                 re="(..)",
                                 replace="$1:")))
-        WHERE _key &lt; 4
+        WHERE _key < 4
         ORDER BY _key DESC
 
       // Join them on a . and parse as an IP address
       LET ParseIP4(addr) = ip(parse=join(array=_ParseIP4(X=addr).I, sep="."))
 
       -- https://elixir.bootlin.com/linux/latest/source/include/net/tcp_states.h#L14
-      LET StateLookup &lt;= dict(`01`="Established",
+      LET StateLookup <= dict(`01`="Established",
                               `02`="Syn Sent",
                               `06`="Time Wait",
                               -- No owner process
@@ -80,12 +80,12 @@ sources:
           Data.Link AS Filename,
           parse_string_with_regex(
             string=Data.Link,
-            regex="(?P&lt;Type&gt;socket|pipe):\\[(?P&lt;inode&gt;[0-9]+)\\]") AS Details
+            regex="(?P<Type>socket|pipe):\\[(?P<inode>[0-9]+)\\]") AS Details
         FROM glob(globs="/proc/*/fd/*")
 
-      LET _ &lt;= log(message="Scanning all process handles")
+      LET _ <= log(message="Scanning all process handles")
 
-      LET AllSockets &lt;= SELECT
+      LET AllSockets <= SELECT
           atoi(string=Pid) AS Pid,
           read_file(filename="/proc/" + Pid + "/comm") AS Command,
           read_file(filename="/proc/" + Pid + "/cmdline") AS CommandLine,
@@ -136,6 +136,6 @@ sources:
         regex=" +")
       WHERE sl =~ ":"
        AND State =~ StateRegex
+````
 
-</code></pre>
 

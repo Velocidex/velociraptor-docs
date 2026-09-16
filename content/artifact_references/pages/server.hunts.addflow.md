@@ -1,14 +1,12 @@
 ---
 title: Server.Hunts.AddFlow
+description: "Links an existing flow to a hunt so it appears in the hunt's\nresults."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
 build:
   list: never
-description: |
-  Links an existing flow to a hunt so it appears in the hunt's
-  results.
 ---
 
 Links an existing flow to a hunt so it appears in the hunt's
@@ -20,7 +18,9 @@ timeout. Then they can simply click the add flow to hunt button in
 the UI to add the flow to an existing time.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Hunts.AddFlow
 description: |
   Links an existing flow to a hunt so it appears in the hunt's
@@ -48,8 +48,8 @@ sources:
          FROM scope()
       }, else={
          SELECT * FROM scope() WHERE
-         log(message="&lt;red&gt;ERROR&lt;/&gt;: You must set HuntId, ClientId and FlowId.") AND FALSE
+         log(message="<red>ERROR</>: You must set HuntId, ClientId and FlowId.") AND FALSE
       })
+````
 
-</code></pre>
 

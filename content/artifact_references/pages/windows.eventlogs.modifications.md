@@ -1,14 +1,12 @@
 ---
 title: Windows.EventLogs.Modifications
+description: "Checks registry keys for WINEVT channels and WMI autologger\nproviders to detect event log tampering."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Checks registry keys for WINEVT channels and WMI autologger
-  providers to detect event log tampering.
 ---
 
 Checks registry keys for WINEVT channels and WMI autologger
@@ -22,7 +20,9 @@ This artifact reads the state of the event log system from the
 registry and attempts to detect when event logs were disabled.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.EventLogs.Modifications
 description: |
   Checks registry keys for WINEVT channels and WMI autologger
@@ -54,9 +54,9 @@ sources:
     description: Detects status of log channels (event log files).
     query: |
       -- Build time bounds
-      LET DateAfterTime &lt;= if(condition=DateAfter,
+      LET DateAfterTime <= if(condition=DateAfter,
             then=DateAfter, else=timestamp(epoch="1600-01-01"))
-      LET DateBeforeTime &lt;= if(condition=DateBefore,
+      LET DateBeforeTime <= if(condition=DateBefore,
             then=DateBefore, else=timestamp(epoch="2200-01-01"))
 
       LET Key = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Channels\\*"
@@ -67,8 +67,8 @@ sources:
              OwningPublisher, Enabled
       FROM read_reg_key(globs=Key)
       WHERE ChannelName =~ ProviderRegex
-        AND Mtime &gt; DateAfterTime
-        AND Mtime &lt; DateBeforeTime
+        AND Mtime > DateAfterTime
+        AND Mtime < DateBeforeTime
 
   - name: Providers
     description: Inspect the state of each provider
@@ -76,7 +76,7 @@ sources:
       LET Key = "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\WMI\\Autologger\\EventLog-System\\**\\Enabled"
       LET Publishers = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Publishers\\*\\@"
 
-      LET ProviderNames &lt;= memoize(key="GUID", query={
+      LET ProviderNames <= memoize(key="GUID", query={
         SELECT OSPath.Components[-2] AS GUID,
                Data.value AS Name
         FROM glob(globs=Publishers, accessor="registry")
@@ -99,9 +99,9 @@ sources:
          Enabled, Content
       FROM X
       WHERE ProviderName =~ ProviderRegex
-        AND Mtime &gt; DateAfterTime
-        AND Mtime &lt; DateBeforeTime
+        AND Mtime > DateAfterTime
+        AND Mtime < DateBeforeTime
       ORDER BY ProviderName
+````
 
-</code></pre>
 

@@ -1,21 +1,21 @@
 ---
 title: Windows.Packs.Persistence
+description: "Aggregates results from multiple persistence-related artifacts into\na single artifact \"pack\".\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Aggregates results from multiple persistence-related artifacts into
-  a single artifact "pack".
 ---
 
 Aggregates results from multiple persistence-related artifacts into
 a single artifact "pack".
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Packs.Persistence
 description: |
   Aggregates results from multiple persistence-related artifacts into
@@ -36,6 +36,6 @@ sources:
   - name: Debug Bootstraping
     query: |
       SELECT * FROM Artifact.Windows.Persistence.Debug()
+````
 
-</code></pre>
 

@@ -1,14 +1,12 @@
 ---
 title: Server.Internal.ToolDependencies
+description: "An internal artifact that defines some tool\ndependencies. Velociraptor releases for offline collector"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  An internal artifact that defines some tool
-  dependencies. Velociraptor releases for offline collector
 ---
 
 An internal artifact that defines some tool
@@ -17,7 +15,9 @@ dependencies. Velociraptor releases for offline collector
 NOTE: Do not modify - this artifact is generated during build in magefile.go
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Internal.ToolDependencies
 description: |
   An internal artifact that defines some tool
@@ -76,6 +76,6 @@ tools:
   - name: DocsIndex
     url: https://github.com/Velocidex/velociraptor-docs/raw/refs/heads/gh-pages/docs_index/docs_index_v1.zip
     serve_locally: true
+````
 
-</code></pre>
 

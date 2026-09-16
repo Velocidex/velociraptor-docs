@@ -1,14 +1,12 @@
 ---
 title: Windows.Analysis.EvidenceOfDownload
+description: "Finds downloaded files by searching for `Zone.Identifier` alternate\ndata streams across user directories."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Finds downloaded files by searching for `Zone.Identifier` alternate
-  data streams across user directories.
 ---
 
 Finds downloaded files by searching for `Zone.Identifier` alternate
@@ -28,7 +26,9 @@ and prints the content of Zone.Identifier alternate stream as it
 could contain useful info in some cases.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Analysis.EvidenceOfDownload
 description: |
    Finds downloaded files by searching for `Zone.Identifier` alternate
@@ -87,6 +87,6 @@ sources:
         parse_string_with_regex(regex="HostUrl=([^\\r\\n]+)", string=_ZoneIdentifierContent).g1 AS HostUrl,
         parse_string_with_regex(regex="ReferrerUrl=([^\\r\\n]+)", string=_ZoneIdentifierContent).g1 AS ReferrerUrl
       FROM X
+````
 
-</code></pre>
 

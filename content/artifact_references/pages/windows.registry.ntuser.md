@@ -1,14 +1,12 @@
 ---
 title: Windows.Registry.NTUser
+description: "Searches for registry keys and values across all users' NTUSER.DAT\nhives using raw NTFS parsing."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Searches for registry keys and values across all users' NTUSER.DAT
-  hives using raw NTFS parsing.
 ---
 
 Searches for registry keys and values across all users' NTUSER.DAT
@@ -33,7 +31,9 @@ logged in users available in that hive, so if we rely on the windows
 API we will miss any settings for the users not currently logged on.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Registry.NTUser
 description: |
   Searches for registry keys and values across all users' NTUSER.DAT
@@ -135,7 +135,7 @@ export: |
         Hive="\\AppData\\Local\\Microsoft\\Windows\\UsrClass.dat",
         Subpath="\\Software\\Classes", Subpath="\\Software\\Classes").Mapping
 
-    // Use this like `LET _ &lt;= MapRawRegistryHives`
+    // Use this like `LET _ <= MapRawRegistryHives`
     LET MapRawRegistryHives =remap(config=dict(
        remappings=_user_mappings + _standard_mappings + _required_mappings))
 
@@ -171,6 +171,6 @@ sources:
                        Path="/"),
                     accessor="raw_reg")
             })
+````
 
-</code></pre>
 

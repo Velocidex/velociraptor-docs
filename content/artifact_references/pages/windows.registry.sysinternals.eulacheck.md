@@ -1,14 +1,12 @@
 ---
 title: Windows.Registry.Sysinternals.Eulacheck
+description: "Checks which Sysinternals tools have accepted EULAs by reading the\n`HKCU\\Software\\Sysinternals` registry keys."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Checks which Sysinternals tools have accepted EULAs by reading the
-  `HKCU\Software\Sysinternals` registry keys.
 ---
 
 Checks which Sysinternals tools have accepted EULAs by reading the
@@ -21,7 +19,9 @@ accepted. This writes a value called `EulaAccepted` under that key.
 detect users who are not currently logged on.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Registry.Sysinternals.Eulacheck
 description: |
   Checks which Sysinternals tools have accepted EULAs by reading the
@@ -48,7 +48,7 @@ sources:
       SELECT OS From info() where OS = 'windows'
     name: RegistryAPI
     query: |
-      LET users &lt;= SELECT Name, UUID
+      LET users <= SELECT Name, UUID
           FROM Artifact.Windows.Sys.Users()
       WHERE Name =~ userRegex
 
@@ -66,11 +66,11 @@ sources:
     description: Detect keys using Raw Registry Analysis
     query: |
       -- Apply Raw Registry Mappings
-      LET _ &lt;= MapRawRegistryHives
+      LET _ <= MapRawRegistryHives
 
       -- Make sure to call the other sources otherwise we get recursion errors!
       SELECT *
       FROM Artifact.Windows.Registry.Sysinternals.Eulacheck(source="RegistryAPI")
+````
 
-</code></pre>
 

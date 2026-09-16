@@ -1,14 +1,12 @@
 ---
 title: Windows.Forensics.UEFI
+description: "Analyzes the EFI System Partition (ESP) on a physical disk to\nenumerate and inspect EFI binaries."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Analyzes the EFI System Partition (ESP) on a physical disk to
-  enumerate and inspect EFI binaries.
 ---
 
 Analyzes the EFI System Partition (ESP) on a physical disk to
@@ -32,7 +30,9 @@ NOTE: default returns EFI files, rerun with ```TargetGlob=**/*``` glob and
 return all files.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.UEFI
 author: Matt Green - @mgreen27
 description: |
@@ -114,6 +114,6 @@ sources:
         parse_pe(accessor='fat',file=OSPath) as PEInfo,
         authenticode(accessor='fat',filename=OSPath) as Authenticode
       FROM find_files
+````
 
-</code></pre>
 

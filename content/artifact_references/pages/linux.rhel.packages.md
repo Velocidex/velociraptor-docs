@@ -1,19 +1,20 @@
 ---
 title: Linux.RHEL.Packages
+description: "Parses packages installed from `dnf` or `yum`.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Parses packages installed from `dnf` or `yum`.
 ---
 
 Parses packages installed from `dnf` or `yum`.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.RHEL.Packages
 description: |
   Parses packages installed from `dnf` or `yum`.
@@ -26,19 +27,19 @@ sources:
       SELECT OS From info() where OS = 'linux'
 
     query: |
-        LET Data &lt;= SELECT * FROM switch(
+        LET Data <= SELECT * FROM switch(
             a={ SELECT Stdout FROM execve(argv=["dnf", "--quiet", "list", "installed"], length=10000000) WHERE Stdout },
             b={ SELECT Stdout FROM execve(argv=["yum", "--quiet", "list", "installed"], length=10000000) WHERE Stdout },
             c={SELECT "" AS Stdout FROM scope() WHERE log(level="ERROR",message="Could not retrieve package list") })
 
         // Sometimes lines overflow to the next line, correct for that
-        LET Normalized &lt;= regex_replace(source=Data[0].Stdout, re='''(?sm)\n\s''', replace="")
+        LET Normalized <= regex_replace(source=Data[0].Stdout, re='''(?sm)\n\s''', replace="")
         LET Parsed = SELECT parse_string_with_regex(string=Line, regex='''([^\s]+)\s+([^\s]+)\s+([^\s]+)''') AS Parsed
         FROM parse_lines(accessor="data", filename=Normalized)
 
         SELECT Parsed.g1 AS Package, Parsed.g2 AS Version, Parsed.g3 AS Repository
         FROM Parsed
         WHERE Repository =~ "^@"
+````
 
-</code></pre>
 

@@ -1,14 +1,12 @@
 ---
 title: Windows.Persistence.PowershellRegistry
+description: "Scans NTUSER.DAT registry hives with YARA rules for PowerShell-based\npersistence signatures."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Scans NTUSER.DAT registry hives with YARA rules for PowerShell-based
-  persistence signatures.
 ---
 
 Scans NTUSER.DAT registry hives with YARA rules for PowerShell-based
@@ -25,7 +23,9 @@ by using raw NTFS parsing (in case the user is currently logged on
 and the registry hive is locked).
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Persistence.PowershellRegistry
 description: |
   Scans NTUSER.DAT registry hives with YARA rules for PowerShell-based
@@ -76,6 +76,6 @@ sources:
               files=HomeDir + "\\ntuser.dat",
               rules=yaraRule, context=50)
         })
+````
 
-</code></pre>
 

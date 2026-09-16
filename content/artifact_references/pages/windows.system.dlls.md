@@ -1,21 +1,21 @@
 ---
 title: Windows.System.DLLs
+description: "Lists DLLs loaded by running processes with optional hash\ncomputation and certificate information.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Lists DLLs loaded by running processes with optional hash
-  computation and certificate information.
 ---
 
 Lists DLLs loaded by running processes with optional hash
 computation and certificate information.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.DLLs
 description: |
   Lists DLLs loaded by running processes with optional hash
@@ -92,6 +92,6 @@ sources:
                                     else= if(condition= CertificateInfo,
                                         then= cert_nohash,
                                         else= results )))
+````
 
-</code></pre>
 

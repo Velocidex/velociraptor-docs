@@ -1,14 +1,12 @@
 ---
 title: Windows.Forensics.Timeline
+description: "Queries the Windows 10 Timeline ActivitiesCache.db SQLite database\nto extract recently used applications."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Queries the Windows 10 Timeline ActivitiesCache.db SQLite database
-  to extract recently used applications.
 ---
 
 Queries the Windows 10 Timeline ActivitiesCache.db SQLite database
@@ -24,7 +22,9 @@ This artifact is deprecated in favor of
 `Generic.Forensic.SQLiteHunter` and will be removed in future.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.Timeline
 description: |
   Queries the Windows 10 Timeline ActivitiesCache.db SQLite database
@@ -72,7 +72,7 @@ sources:
                member="0") AS Application,
              parse_string_with_regex(
                string=OSPath,
-               regex="\\\\L.(?P&lt;User&gt;[^\\\\]+)\\\\").User AS User,
+               regex="\\\\L.(?P<User>[^\\\\]+)\\\\").User AS User,
                LastModifiedTime,
                LastModifiedTime.Unix as LastExecutionTS
         FROM timeline_files
@@ -86,8 +86,8 @@ sources:
       SELECT * FROM if(
           condition=ExecutionTimeAfter,
           then={
-            SELECT * FROM A1 WHERE LastExecutionTS &gt; ExecutionTimeAfter
+            SELECT * FROM A1 WHERE LastExecutionTS > ExecutionTimeAfter
           }, else={ SELECT * FROM A1})
+````
 
-</code></pre>
 

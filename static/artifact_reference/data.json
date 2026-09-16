@@ -70,6 +70,16 @@
         ]
     },
     {
+        "title": "Azure.Monitor.Upload",
+        "description": "This server-side event monitoring artifact waits for new artifacts to\nbe collected from endpoints and automatically uploads those to an\nAzure Log Analytics workspace using the **Azure Monitor Logs Ingestion\nAPI** (the modern Data Collection Rule based API).",
+        "link": "/artifact_references/pages/azure.monitor.upload",
+        "type": "server_event",
+        "date": "2026-09-04",
+        "tags": [
+            "Server Event Artifact"
+        ]
+    },
+    {
         "title": "Demo.Plugins.Fifo",
         "description": "Demonstrates using the fifo() plugin to detect event sequences,\nusing failed logon attempts preceding a successful logon as a\nconcrete example.",
         "link": "/artifact_references/pages/demo.plugins.fifo",

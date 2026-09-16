@@ -1,19 +1,20 @@
 ---
 title: Linux.Network.NetstatEnriched
+description: "Reports network connections and enriches with process information.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Reports network connections and enriches with process information.
 ---
 
 Reports network connections and enriches with process information.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Network.NetstatEnriched
 description: |
   Reports network connections and enriches with process information.
@@ -67,7 +68,7 @@ sources:
              Pid,
              Status,
              process_tracker_get(id=Pid).Data AS ProcInfo,
-             join(array=process_tracker_callchain(id=Pid).Data.Name, sep=" -&gt; ") AS CallChain,
+             join(array=process_tracker_callchain(id=Pid).Data.Name, sep=" -> ") AS CallChain,
              process_tracker_tree(id=Pid) AS ChildrenTree
       FROM connections()
       WHERE Status =~ ConnectionStatusRegex
@@ -82,6 +83,6 @@ sources:
 column_types:
   - name: ChildrenTree
     type: tree
+````
 
-</code></pre>
 

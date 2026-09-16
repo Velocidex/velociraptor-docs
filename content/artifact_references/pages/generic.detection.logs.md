@@ -1,14 +1,12 @@
 ---
 title: Generic.Detection.Logs
+description: "Searches text-based log files for strings matching a regex pattern\nacross common web server and system log paths."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Searches text-based log files for strings matching a regex pattern
-  across common web server and system log paths.
 ---
 
 Searches text-based log files for strings matching a regex pattern
@@ -24,7 +22,9 @@ will return the whole line to assist with scoping.
 IIS and Apache groks are available as notebook suggestions.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Detection.Logs
 author: "Matt Green - @mgreen27, Apache groks thanks to Harsh Jaroli and Krishna Patel"
 description: |
@@ -108,6 +108,6 @@ sources:
 
             SELECT * FROM foreach(row=parsed,
                   query={ SELECT *, _Raw FROM GrokParsed })
+````
 
-</code></pre>
 

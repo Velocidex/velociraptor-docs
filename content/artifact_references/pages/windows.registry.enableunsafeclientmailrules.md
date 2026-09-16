@@ -1,14 +1,12 @@
 ---
 title: Windows.Registry.EnableUnsafeClientMailRules
+description: "Checks Outlook Security registry for EnableUnsafeClientMailRules set\nto 1 (enabled), indicating potential persistence."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Checks Outlook Security registry for EnableUnsafeClientMailRules set
-  to 1 (enabled), indicating potential persistence.
 ---
 
 Checks Outlook Security registry for EnableUnsafeClientMailRules set
@@ -23,7 +21,9 @@ HKEY_USERS\*\Software\Microsoft\Office\*\Outlook\Security\EnableUnsafeClientMail
 = 0 (expected)
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Registry.EnableUnsafeClientMailRules
 description: |
   Checks Outlook Security registry for EnableUnsafeClientMailRules set
@@ -79,6 +79,6 @@ sources:
                  accessor="raw_reg")
               WHERE EnableUnsafeClientMailRules = 1
            })
+````
 
-</code></pre>
 

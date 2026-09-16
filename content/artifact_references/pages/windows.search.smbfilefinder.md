@@ -1,15 +1,12 @@
 ---
 title: Windows.Search.SMBFileFinder
+description: "Searches for files on remote SMB shares using glob patterns and\ninspects file content using Yara rules, with optional hash\ncalculation and file upload."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Searches for files on remote SMB shares using glob patterns and
-  inspects file content using Yara rules, with optional hash
-  calculation and file upload.
 ---
 
 Searches for files on remote SMB shares using glob patterns and
@@ -32,7 +29,9 @@ impact on the endpoint we recommend this artifact is collected with
 a rate limited way (about 20-50 ops per second).
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Search.SMBFileFinder
 description: |
   Searches for files on remote SMB shares using glob patterns and
@@ -108,7 +107,7 @@ parameters:
 
 sources:
   - query: |
-      LET SMB_CREDENTIALS &lt;= set(item=dict(), field=ServerName,
+      LET SMB_CREDENTIALS <= set(item=dict(), field=ServerName,
          value=format(format="%s:%s", args=[Username, Password]))
 
       LET file_search = SELECT OSPath,
@@ -127,15 +126,15 @@ sources:
         condition=MoreRecentThan,
         then={
           SELECT * FROM file_search
-          WHERE MTime &gt; MoreRecentThan
+          WHERE MTime > MoreRecentThan
         }, else=file_search)
 
       LET modified_before = SELECT * FROM if(
         condition=ModifiedBefore,
         then={
           SELECT * FROM more_recent
-          WHERE MTime &lt; ModifiedBefore
-           AND  MTime &gt; MoreRecentThan
+          WHERE MTime < ModifiedBefore
+           AND  MTime > MoreRecentThan
         }, else=more_recent)
 
       LET keyword_search = SELECT * FROM if(
@@ -178,6 +177,6 @@ column_types:
     type: timestamp
   - name: Upload
     type: preview_upload
+````
 
-</code></pre>
 

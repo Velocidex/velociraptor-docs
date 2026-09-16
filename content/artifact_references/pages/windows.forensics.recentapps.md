@@ -1,14 +1,12 @@
 ---
 title: Windows.Forensics.RecentApps
+description: "Enumerates program execution history from the Windows RecentApps\nregistry key."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Enumerates program execution history from the Windows RecentApps
-  registry key.
 ---
 
 Enumerates program execution history from the Windows RecentApps
@@ -25,7 +23,9 @@ DEPRECATION: This artifact is deprecated and will be removed
 soon. It is replaced by the RegistryHunter.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.RecentApps
 description: |
   Enumerates program execution history from the Windows RecentApps
@@ -94,8 +94,8 @@ sources:
       SELECT * FROM if(
           condition=ExecutionTimeAfter,
           then={
-            SELECT * FROM A1 WHERE LastExecutionTS &gt; ExecutionTimeAfter
+            SELECT * FROM A1 WHERE LastExecutionTS > ExecutionTimeAfter
           }, else={ SELECT * FROM A1})
+````
 
-</code></pre>
 

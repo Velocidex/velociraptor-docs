@@ -1,14 +1,12 @@
 ---
 title: Windows.Forensics.NotepadParser
+description: "Parses Windows 11 Notepad TabState and WindowState files to recover\nedited file paths, timestamps, and content."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Parses Windows 11 Notepad TabState and WindowState files to recover
-  edited file paths, timestamps, and content.
 ---
 
 Parses Windows 11 Notepad TabState and WindowState files to recover
@@ -19,7 +17,9 @@ the TabState and WindowState files and also uploads them for
 preservation.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.NotepadParser
 description: |
   Parses Windows 11 Notepad TabState and WindowState files to recover
@@ -42,20 +42,20 @@ parameters:
     default: C:/Users/*/AppData/Local*/Packages/Microsoft.WindowsNotepad*/LocalState/TabState/*.bin
 
 export: |
-    LET WinNotepadProfile &lt;= '''[
+    LET WinNotepadProfile <= '''[
       [WindowStateHeader, 0, [
         [Signature, 0, String, {
             length: 2,
         }],
         [Sequence, 2, leb128],
-        [BytesToCRC, "x=&gt;x.`@Sequence`.EndOf", leb128],
-        [NumberTabs, "x=&gt;x.`@BytesToCRC`.EndOf + 1", leb128],
-        [Tabs, "x=&gt;x.NumberTabs.EndOf", Array, {
+        [BytesToCRC, "x=>x.`@Sequence`.EndOf", leb128],
+        [NumberTabs, "x=>x.`@BytesToCRC`.EndOf + 1", leb128],
+        [Tabs, "x=>x.NumberTabs.EndOf", Array, {
            type: GUID,
-           count: "x=&gt;x.NumberTabs.Value",
-           sentinel: "x=&gt;x.__D1 = 0 AND x.__D2 = 0",
+           count: "x=>x.NumberTabs.Value",
+           sentinel: "x=>x.__D1 = 0 AND x.__D2 = 0",
         }],
-        [ActiveTab, "x=&gt;x.Tabs.EndOf", leb128],
+        [ActiveTab, "x=>x.Tabs.EndOf", leb128],
       ]],
 
       ["GUID", 16, [
@@ -64,7 +64,7 @@ export: |
         ["__D3", 6, "uint16"],
         ["__D4", 8, "String", {"term": "", "length": 2}],
         ["__D5", 10, "String", {"term": "", "length": 6}],
-        ["Value", 0, "Value", { "value": "x=&gt;upcase(string=
+        ["Value", 0, "Value", { "value": "x=>upcase(string=
             format(format='%08x-%04x-%04x-%02x-%02x',
               args=[x.__D1, x.__D2, x.__D3, x.__D4, x.__D5]))" }],
       ]],
@@ -74,9 +74,9 @@ export: |
             length: 2,
         }],
         [Sequence, 2, leb128],
-        [Type, "x=&gt;x.Sequence.EndOf", leb128],
+        [Type, "x=>x.Sequence.EndOf", leb128],
         [Header, 0, Union, {
-           selector: "x=&gt;x.Type.Value",
+           selector: "x=>x.Type.Value",
            choices: {
              "0": "TabStateHeaderUnsaved",
              "1": "TabStateHeaderSaved",
@@ -89,18 +89,18 @@ export: |
             length: 2,
         }],
         [Sequence, 2, leb128],
-        [Type, "x=&gt;x.Sequence.EndOf", leb128],
+        [Type, "x=>x.Sequence.EndOf", leb128],
 
-        [CursorPosition, "x=&gt;x.Type.EndOf + 1", CursorPosition],
-        [ConfigurationBlock, "x=&gt;x.CursorPosition.EndOf", ConfigurationBlock],
-        [ContentLength, "x=&gt;x.ConfigurationBlock.EndOf", leb128],
-        [Content, "x=&gt;x.ContentLength.EndOf", String, {
+        [CursorPosition, "x=>x.Type.EndOf + 1", CursorPosition],
+        [ConfigurationBlock, "x=>x.CursorPosition.EndOf", ConfigurationBlock],
+        [ContentLength, "x=>x.ConfigurationBlock.EndOf", leb128],
+        [Content, "x=>x.ContentLength.EndOf", String, {
             encoding: "utf16",
-            length: "x=&gt;x.ContentLength.Value * 2",
+            length: "x=>x.ContentLength.Value * 2",
             max_length: 100000,
         }],
-        [Unsaved, "x=&gt;x.`@Content`.EndOf", uint8],
-        [CRC32, "x=&gt;x.`@Unsaved`.EndOf", uint32],
+        [Unsaved, "x=>x.`@Content`.EndOf", uint8],
+        [CRC32, "x=>x.`@Unsaved`.EndOf", uint32],
       ]],
 
       [TabStateHeaderSaved, 0, [
@@ -111,59 +111,59 @@ export: |
             length: 2,
         }],
         [Sequence, 2, leb128],
-        [Type, "x=&gt;x.Sequence.EndOf", leb128],
-        [FilePathLength, "x=&gt;x.Type.EndOf", leb128],
-        [FilePath, "x=&gt;x.FilePathLength.EndOf", String, {
+        [Type, "x=>x.Sequence.EndOf", leb128],
+        [FilePathLength, "x=>x.Type.EndOf", leb128],
+        [FilePath, "x=>x.FilePathLength.EndOf", String, {
             encoding: "utf16",
-            length: "x=&gt;x.FilePathLength.Value * 2",
+            length: "x=>x.FilePathLength.Value * 2",
         }],
-        [SavedFileContentLength, "x=&gt;x.`@FilePath`.EndOf", leb128],
-        [EncodingType, "x=&gt;x.SavedFileContentLength.EndOf", uint8],
-        [CarriageReturnType, "x=&gt;x.`@EncodingType`.EndOf", uint8],
-        [__Timestamp, "x=&gt;x.`@CarriageReturnType`.EndOf", leb128],
+        [SavedFileContentLength, "x=>x.`@FilePath`.EndOf", leb128],
+        [EncodingType, "x=>x.SavedFileContentLength.EndOf", uint8],
+        [CarriageReturnType, "x=>x.`@EncodingType`.EndOf", uint8],
+        [__Timestamp, "x=>x.`@CarriageReturnType`.EndOf", leb128],
         [Timestamp, 0, Value, {
-            value: "x=&gt;timestamp(winfiletime=x.__Timestamp.Value)",
+            value: "x=>timestamp(winfiletime=x.__Timestamp.Value)",
         }],
-        [FileHash, "x=&gt;x.__Timestamp.EndOf", String, {
+        [FileHash, "x=>x.__Timestamp.EndOf", String, {
             length: 32, term: "",
         }],
-        [CursorPosition, "x=&gt;x.`@FileHash`.EndOf + 2", CursorPosition],
-        [ConfigurationBlock, "x=&gt;x.CursorPosition.EndOf", ConfigurationBlock],
-        [ContentLength, "x=&gt;x.ConfigurationBlock.EndOf", leb128],
-        [Content, "x=&gt;x.ContentLength.EndOf", String, {
+        [CursorPosition, "x=>x.`@FileHash`.EndOf + 2", CursorPosition],
+        [ConfigurationBlock, "x=>x.CursorPosition.EndOf", ConfigurationBlock],
+        [ContentLength, "x=>x.ConfigurationBlock.EndOf", leb128],
+        [Content, "x=>x.ContentLength.EndOf", String, {
             encoding: "utf16",
-            length: "x=&gt;x.ContentLength.Value * 2",
+            length: "x=>x.ContentLength.Value * 2",
             max_length: 100000,
         }],
-        [Unsaved, "x=&gt;x.`@Content`.EndOf", uint8],
-        [CRC32, "x=&gt;x.`@Unsaved`.EndOf", uint32],
-        [UnsavedBuffers, "x=&gt;x.`@CRC32`.EndOf", Array, {
+        [Unsaved, "x=>x.`@Content`.EndOf", uint8],
+        [CRC32, "x=>x.`@Unsaved`.EndOf", uint32],
+        [UnsavedBuffers, "x=>x.`@CRC32`.EndOf", Array, {
            type: UnsavedBuffer,
            count: 100,
-           sentinel: "x=&gt;x.AdditionAction.Value = 0",
+           sentinel: "x=>x.AdditionAction.Value = 0",
         }],
       ]],
-      [ConfigurationBlock, "x=&gt;x.MoreOptions.EndOf + x.MoreOptions.Value - x.OffsetOf", [
+      [ConfigurationBlock, "x=>x.MoreOptions.EndOf + x.MoreOptions.Value - x.OffsetOf", [
          ["WordWrap", 0, uint8],
          ["RightToLeft", 1, uint8],
          [ShowUnicode, 2, uint8],
          [MoreOptions, 3, leb128],
       ]],
-      [CursorPosition, "x=&gt;x.SelectionEndIndex.EndOf - x.OffsetOf", [
+      [CursorPosition, "x=>x.SelectionEndIndex.EndOf - x.OffsetOf", [
         [SelectionStartIndex, 0, leb128],
-        [SelectionEndIndex, "x=&gt;x.`@SelectionStartIndex`.RelEndOf", leb128],
+        [SelectionEndIndex, "x=>x.`@SelectionStartIndex`.RelEndOf", leb128],
       ]],
 
-      [UnsavedBuffer, "x=&gt;x.`@AddedChars`.EndOf + 4 - x.OffsetOf", [
+      [UnsavedBuffer, "x=>x.`@AddedChars`.EndOf + 4 - x.OffsetOf", [
         [Offset, 0, Value, {
-          value: "x=&gt;x.OffsetOf",
+          value: "x=>x.OffsetOf",
         }],
         [CursorPosition, 0, leb128],
-        [DeletionAction, "x=&gt;x.`@CursorPosition`.RelEndOf", leb128],
-        [AdditionAction, "x=&gt;x.`@DeletionAction`.RelEndOf", leb128],
-        [AddedChars, "x=&gt;x.`@AdditionAction`.RelEndOf", String, {
+        [DeletionAction, "x=>x.`@CursorPosition`.RelEndOf", leb128],
+        [AdditionAction, "x=>x.`@DeletionAction`.RelEndOf", leb128],
+        [AddedChars, "x=>x.`@AdditionAction`.RelEndOf", String, {
             encoding: "utf16",
-            length: "x=&gt;x.AdditionAction.Value * 2",
+            length: "x=>x.AdditionAction.Value * 2",
             max_length: 100000,
         }]
       ]],
@@ -220,6 +220,6 @@ sources:
        _WindowState.ActiveTab AS ActiveTab,
        Upload
     FROM AllTabState
+````
 
-</code></pre>
 

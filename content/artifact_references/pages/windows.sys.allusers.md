@@ -1,14 +1,12 @@
 ---
 title: Windows.Sys.AllUsers
+description: "Lists all user accounts on a Windows system including domain users\nwith cached profiles."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Lists all user accounts on a Windows system including domain users
-  with cached profiles.
 ---
 
 Lists all user accounts on a Windows system including domain users
@@ -33,7 +31,9 @@ you need to obtain the full list from the AD, customize this
 artifact.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Sys.AllUsers
 description: |
   Lists all user accounts on a Windows system including domain users
@@ -88,7 +88,7 @@ sources:
                 then=timestamp(winfiletime=High * 4294967296 + Low))
 
         -- lookupSID() may not be available on deaddisk analysis
-        LET roaming_users &lt;=
+        LET roaming_users <=
           SELECT
              split(string=Key.OSPath.Basename, sep="-")[-1] as Uid,
              "" AS Gid,
@@ -111,10 +111,10 @@ sources:
            FROM read_reg_key(globs=remoteRegKey, accessor="registry")
 
 
-        LET roaming_users_lookup &lt;= memoize(query=roaming_users, key="UUID")
+        LET roaming_users_lookup <= memoize(query=roaming_users, key="UUID")
 
         -- On a DC the NetUserEnum API will return the entire domain!
-        LET local_users &lt;= select User_id as Uid,
+        LET local_users <= select User_id as Uid,
            Primary_group_id as Gid, Name,
            Comment as Description,
            get(item=roaming_users_lookup, field=User_sid) AS  RoamingData,
@@ -122,7 +122,7 @@ sources:
         FROM users()
         LIMIT 1000
 
-        LET local_users_lookup &lt;= memoize(query={
+        LET local_users_lookup <= memoize(query={
             SELECT UUID FROM local_users
         }, key="UUID")
 
@@ -138,7 +138,7 @@ sources:
 
         -- Use the existing SAM parser to catch accounts declared in SAM
         -- but absent from users() and ProfileList.
-        LET sam_records &lt;=
+        LET sam_records <=
           SELECT *
           FROM Artifact.Windows.Forensics.SAM(
               SAMPath=SAMPath,
@@ -147,7 +147,7 @@ sources:
 
         -- SAM records give us a RID. Derive the account-domain SID prefix
         -- from an existing S-1-5-21 user SID when one is available.
-        LET sid_prefix_candidates &lt;=
+        LET sid_prefix_candidates <=
           SELECT regex_replace(
               source=UUID,
               re="-[0-9]+$",
@@ -167,7 +167,7 @@ sources:
           item=roaming_users_lookup,
           field=SAMUUID(RID=RID, Hive=Hive))
 
-        LET sam_users &lt;=
+        LET sam_users <=
           SELECT
              ParsedF.RID AS Uid,
              "" AS Gid,
@@ -218,6 +218,6 @@ sources:
           */
           LET s = scope()
           SELECT Name, UUID, s.Fqdn AS Fqdn, HomedirMtime as LastMod, Data FROM source()
-          WHERE NOT UUID =~ "(-5..$|S-1-5-18|S-1-5-19|S-1-5-20)"
-</code></pre>
+          WHERE NOT UUID =~ "(-5..$|S-1-5-18|S-1-5-19|S-1-5-20)"````
+
 

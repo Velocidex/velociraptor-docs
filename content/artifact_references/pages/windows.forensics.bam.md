@@ -1,14 +1,12 @@
 ---
 title: Windows.Forensics.Bam
+description: "Parses the BAM registry key from Windows 10+ to identify program\nexecution times."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Parses the BAM registry key from Windows 10+ to identify program
-  execution times.
 ---
 
 Parses the BAM registry key from Windows 10+ to identify program
@@ -22,7 +20,9 @@ It provides full path of the executable file that was run on the
 system and last execution date/time
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.Bam
 description: |
   Parses the BAM registry key from Windows 10+ to identify program
@@ -53,7 +53,7 @@ sources:
   - precondition:
       SELECT OS from info() where OS = "windows"
     query: |
-        LET users &lt;= SELECT Name, UUID
+        LET users <= SELECT Name, UUID
             FROM Artifact.Windows.Sys.Users()
             WHERE Name =~ userRegex
 
@@ -67,6 +67,6 @@ sources:
                profile="[]", struct="int64")) AS Bam_time
         FROM glob(globs=bamKeys.KeyGlob, accessor="registry")
         WHERE Data.type =~ "BINARY"
+````
 
-</code></pre>
 

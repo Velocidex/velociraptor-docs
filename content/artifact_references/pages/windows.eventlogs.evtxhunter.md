@@ -1,14 +1,12 @@
 ---
 title: Windows.EventLogs.EvtxHunter
+description: "Searches all Windows EVTX files for events matching a regex IOC in\nmessage, EventData, or UserData fields."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Searches all Windows EVTX files for events matching a regex IOC in
-  message, EventData, or UserData fields.
 ---
 
 Searches all Windows EVTX files for events matching a regex IOC in
@@ -39,7 +37,9 @@ For EventIds with no EventData the Message field is queried and requires
 standard Velociraptor escape. E.g `C:\\FOLDER\\binary\\.exe`
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.EventLogs.EvtxHunter
 description: |
   Searches all Windows EVTX files for events matching a regex IOC in
@@ -124,13 +124,13 @@ imports:
 
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
 
       -- firstly set timebounds for performance
-      LET DateAfterTime &lt;= if(condition=DateAfter,
+      LET DateAfterTime <= if(condition=DateAfter,
         then=timestamp(epoch=DateAfter), else=timestamp(epoch="1600-01-01"))
-      LET DateBeforeTime &lt;= if(condition=DateBefore,
+      LET DateBeforeTime <= if(condition=DateBefore,
         then=timestamp(epoch=DateBefore), else=timestamp(epoch="2200-01-01"))
 
       -- expand provided glob into a list of paths on the file system (fs)
@@ -157,8 +157,8 @@ sources:
                     OSPath
                 FROM parse_evtx(filename=OSPath, accessor=Accessor, messagedb=MessageDB)
                 WHERE ( EventData OR UserData OR Message )
-                    AND EventTime &lt; DateBeforeTime
-                    AND EventTime &gt; DateAfterTime
+                    AND EventTime < DateBeforeTime
+                    AND EventTime > DateAfterTime
                     AND Channel =~ ChannelRegex
                     AND Provider =~ ProviderRegex
                     AND str(str=EventID) =~ IdRegex
@@ -172,6 +172,6 @@ sources:
           )
 
         SELECT * FROM evtxsearch(PathList=fspaths)
+````
 
-</code></pre>
 

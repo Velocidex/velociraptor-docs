@@ -1,14 +1,12 @@
 ---
 title: Windows.Search.VSS
+description: "Finds files in Volume Shadow Copies (VSS) using the `ntfs_vss`\naccessor."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Finds files in Volume Shadow Copies (VSS) using the `ntfs_vss`
-  accessor.
 ---
 
 Finds files in Volume Shadow Copies (VSS) using the `ntfs_vss`
@@ -21,7 +19,9 @@ NOTE: This used to be more complicated but now delegates to the
 `ntfs_vss` accessor to do all the hard work.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Search.VSS
 description: |
   Finds files in Volume Shadow Copies (VSS) using the `ntfs_vss`
@@ -52,6 +52,6 @@ sources:
   - query: |
       SELECT * FROM glob(globs=SearchFilesGlob, accessor="ntfs_vss")
       ORDER BY OSPath
+````
 
-</code></pre>
 

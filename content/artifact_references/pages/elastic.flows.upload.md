@@ -1,13 +1,12 @@
 ---
 title: Elastic.Flows.Upload
+description: "Uploads collected artifact results to an Elasticsearch server."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
 build:
   list: never
-description: |
-  Uploads collected artifact results to an Elasticsearch server.
 ---
 
 Uploads collected artifact results to an Elasticsearch server.
@@ -35,7 +34,9 @@ events!! This artifact is not suitable for forwarding Windows Event
 Logs!
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Elastic.Flows.Upload
 description: |
   Uploads collected artifact results to an Elasticsearch server.
@@ -95,7 +96,7 @@ sources:
       LET completions = SELECT * FROM watch_monitoring(
              artifact="System.Flow.Completion")
              WHERE Flow.artifacts_with_results =~ ArtifactNameRegex
-      LET organization &lt;= org().name
+      LET organization <= org().name
 
       LET documents = SELECT * FROM foreach(row=completions,
           query={
@@ -129,6 +130,6 @@ sources:
             root_ca=RootCA,
             disable_ssl_security=DisableSSLSecurity,
             type="artifact")
+````
 
-</code></pre>
 

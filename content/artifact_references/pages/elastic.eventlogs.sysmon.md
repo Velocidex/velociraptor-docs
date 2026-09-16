@@ -1,14 +1,12 @@
 ---
 title: Elastic.EventLogs.Sysmon
+description: "Converts Windows Sysmon event logs to ECS schema-compliant output\nfor Elasticsearch ingestion."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Converts Windows Sysmon event logs to ECS schema-compliant output
-  for Elasticsearch ingestion.
 ---
 
 Converts Windows Sysmon event logs to ECS schema-compliant output
@@ -31,7 +29,9 @@ variation, please file an issue on Velociraptor's GitHub issue
 board.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Elastic.EventLogs.Sysmon
 description: |
   Converts Windows Sysmon event logs to ECS schema-compliant output
@@ -68,7 +68,7 @@ export: |
     SELECT _key, str(str=_value) AS _value FROM items(item=EventData)
   })
 
-  LET OpcodesLookup &lt;= dict(
+  LET OpcodesLookup <= dict(
     `0`= "Info",
     `1`= "Start",
     `2`= "Stop",
@@ -80,7 +80,7 @@ export: |
     `8`= "Suspend",
     `9`= "Send")
 
-  LET LevelLookup &lt;= dict(
+  LET LevelLookup <= dict(
     `0`= "Information",
     `1`= "Critical",
     `2`= "Error",
@@ -88,7 +88,7 @@ export: |
     `4`= "Information",
     `5`= "Verbose")
 
-  LET CategoryLookup &lt;= dict(
+  LET CategoryLookup <= dict(
      `1`=["process",],
      `2`=["file",],
      `3`=["network",],
@@ -119,7 +119,7 @@ export: |
      `28`=["file",],
      `255`=["process",])
 
-  LET TypeLookup &lt;= dict(
+  LET TypeLookup <= dict(
      `1`=["start",],
      `2`=["change",],
      `3`=["start", "connection", "protocol"],
@@ -150,7 +150,7 @@ export: |
      `28`=["deletion", "denied"],
      `255`=["error",])
 
-  LET DNSLookup &lt;= dict(
+  LET DNSLookup <= dict(
         `1`= "A",
         `2`= "NS",
         `3`= "MD",
@@ -213,7 +213,7 @@ export: |
         `65282`= "WINSR"
   )
 
-  LET DnsStatusLookup &lt;= dict(
+  LET DnsStatusLookup <= dict(
     `5`= "ERROR_ACCESS_DENIED",
     `0`= "SUCCESS",
     `8`= "ERROR_NOT_ENOUGH_MEMORY",
@@ -417,7 +417,7 @@ export: |
   then=dict(
      data=parse_string_with_regex(
         string=regex_replace(source=_value, replace="", re="::ffff:"),
-        regex="(?P&lt;Data&gt;[^\\s]+)$").Data,
+        regex="(?P<Data>[^\\s]+)$").Data,
      type=get(item=DNSLookup,
        field=parse_string_with_regex(
          string=_value, regex="type:\\s+([0-9]+)").g1)),
@@ -650,6 +650,6 @@ sources:
                FROM source(artifact="Elastic.EventLogs.Sysmon")
                LIMIT 10
             })
+````
 
-</code></pre>
 

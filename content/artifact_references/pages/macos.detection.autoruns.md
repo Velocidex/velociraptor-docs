@@ -1,14 +1,12 @@
 ---
 title: MacOS.Detection.Autoruns
+description: "Gathers evidence of macOS autoruns by searching common persistence\nlocations and uploading found files."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Gathers evidence of macOS autoruns by searching common persistence
-  locations and uploading found files.
 ---
 
 Gathers evidence of macOS autoruns by searching common persistence
@@ -18,7 +16,9 @@ This code is based on
 https://github.com/CrowdStrike/automactc/blob/master/modules/mod_autoruns_v102.py
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: MacOS.Detection.Autoruns
 description: |
   Gathers evidence of macOS autoruns by searching common persistence
@@ -88,15 +88,15 @@ sources:
                string=data,
                regex=[
                  /* Regex for event (Starts with @) */
-                 "^(?P&lt;Event&gt;@[a-zA-Z]+)\\s+(?P&lt;Command&gt;.+)",
+                 "^(?P<Event>@[a-zA-Z]+)\\s+(?P<Command>.+)",
 
                  /* Regex for regular command. */
-                 "^(?P&lt;Minute&gt;[^\\s]+)\\s+"+
-                 "(?P&lt;Hour&gt;[^\\s]+)\\s+"+
-                 "(?P&lt;DayOfMonth&gt;[^\\s]+)\\s+"+
-                 "(?P&lt;Month&gt;[^\\s]+)\\s+"+
-                 "(?P&lt;DayOfWeek&gt;[^\\s]+)\\s+"+
-                 "(?P&lt;Command&gt;.+)$"]) as Record
+                 "^(?P<Minute>[^\\s]+)\\s+"+
+                 "(?P<Hour>[^\\s]+)\\s+"+
+                 "(?P<DayOfMonth>[^\\s]+)\\s+"+
+                 "(?P<Month>[^\\s]+)\\s+"+
+                 "(?P<DayOfWeek>[^\\s]+)\\s+"+
+                 "(?P<Command>.+)$"]) as Record
 
             /* Read lines from the file and filter ones that start with "#" */
             FROM split_records(
@@ -163,6 +163,6 @@ sources:
            plist(file=OSPath) AS LoginItemConfig,
            upload(file=OSPath) AS Upload
     FROM glob(globs=parse_json_array(data=LoginItemsGlobs))
+````
 
-</code></pre>
 

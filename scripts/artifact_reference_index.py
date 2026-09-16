@@ -1,6 +1,5 @@
 import urllib.request
 import json
-import html
 import yaml
 import re
 import os
@@ -22,6 +21,7 @@ project = "velociraptor-docs"
 # Each yaml file will be converted to a markdown if needed.
 template = """---
 title: %s
+description: %s
 hidden: true
 sitemap:
   disable: true
@@ -32,9 +32,9 @@ build:
 
 %s
 
-<pre><code class="language-yaml">
+---
+
 %s
-</code></pre>
 
 """
 
@@ -98,6 +98,23 @@ def cleanDescription(description):
   top_paragraph = description.split("\n\n")[0]
   return top_paragraph
 
+# Build a fenced code block for YAML content. Uses a fence with more
+# backticks than any run found in the content, so lines that consist
+# solely of backticks cannot close the fence early.
+def yaml_fence(content):
+  max_run = max((len(m) for m in re.findall(r"`+", content)), default=0)
+  fence = "`" * max(max_run + 1, 4)
+  return "%syaml\n%s%s\n" % (fence, content, fence)
+
+# Hugo's shortcode extractor runs before markdown parsing, so
+# "{{%" / "{{<" sequences inside fenced code would be expanded as
+# shortcodes. Escape them so they render as literal text (Hugo's
+# own shortcode-escape syntax round-trips to the original text).
+def escape_shortcodes(s):
+  s = re.sub(r"\{\{%\s+(.*?)\s*%\}\}", r"{{%/* \1 */%}}", s)
+  s = re.sub(r"\{\{<\s+(.*?)\s*>\}\}", r"{{</* \1 */>}}", s)
+  return s
+
 def write_page(data, content, index, creation_date=None):
   base_name = data["name"]
   filename_name = os.path.join(artifact_page_directory, base_name.lower())
@@ -118,14 +135,13 @@ def write_page(data, content, index, creation_date=None):
 
   md_filename = filename_name + ".md"
   with open(md_filename, "w") as fd:
+     desc = cleanDescription(data.get("description", ""))
      fd.write(template % (
        data["name"],
+       json.dumps(desc or data["name"]),
        getTag(record["type"]),
        data.get("description", ""),
-
-       # Escape the content into a html block to avoid bugs in
-       # markdown parsing.
-       html.escape(content, quote=False)))
+       yaml_fence(escape_shortcodes(content))))
 
 def build_markdown(artifact_root_directory):
   index = []

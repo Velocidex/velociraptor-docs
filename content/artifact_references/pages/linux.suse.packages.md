@@ -1,23 +1,23 @@
 ---
 title: Linux.SuSE.Packages
+description: "Queries `zypper` to retrieve installed packages with version and\nrepository details.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Queries `zypper` to retrieve installed packages with version and
-  repository details.
 ---
 
 Queries `zypper` to retrieve installed packages with version and
 repository details.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.SuSE.Packages
-author: Hilko Bengen &lt;bengen@hilluzination.de&gt;
+author: Hilko Bengen <bengen@hilluzination.de>
 description: |
   Queries `zypper` to retrieve installed packages with version and
   repository details.
@@ -49,6 +49,6 @@ sources:
                  Attrrepository AS Repository
           FROM _value
         })
+````
 
-</code></pre>
 

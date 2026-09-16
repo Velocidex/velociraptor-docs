@@ -1,14 +1,12 @@
 ---
 title: Generic.Client.Stats
+description: "Records CPU and memory statistics for the Velociraptor client\nprocess."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
 build:
   list: never
-description: |
-  Records CPU and memory statistics for the Velociraptor client
-  process.
 ---
 
 Records CPU and memory statistics for the Velociraptor client
@@ -18,7 +16,9 @@ To learn about managing endpoint performance with Velociraptor see
 this [blog post](https://docs.velociraptor.app/blog/html/2019/02/10/velociraptor_performance/).
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Client.Stats
 description: |
     Records CPU and memory statistics for the Velociraptor client
@@ -60,7 +60,7 @@ sources:
           LET resources = SELECT Timestamp, rate(x=CPU, y=Timestamp) * 100 As CPUPercent,
                RSS / 1000000 AS MemoryUse
           FROM source(start_time=StartTime, end_time=EndTime)
-          WHERE CPUPercent &gt;= 0
+          WHERE CPUPercent >= 0
           /*
             {{ Query "SELECT * FROM resources" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 }}
           */
@@ -90,7 +90,7 @@ reports:
            SELECT Timestamp, rate(x=CPU, y=Timestamp) * 100 As CPUPercent,
                   RSS / 1000000 AS MemoryUse
            FROM source()
-           WHERE CPUPercent &gt;= 0
+           WHERE CPUPercent >= 0
       {{ end }}
 
       {{ Query "resources" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 }}
@@ -101,7 +101,7 @@ reports:
            SELECT Timestamp, rate(x=CPU, y=Timestamp) * 100 As CPUPercent,
                   RSS / 1000000 AS MemoryUse
            FROM source()
-           WHERE CPUPercent &gt;= 0
+           WHERE CPUPercent >= 0
       {{ end }}
 
       {{ $client_info := Query "SELECT * FROM clients(client_id=ClientId) LIMIT 1" }}
@@ -121,9 +121,9 @@ reports:
       idle, but if a heavy hunt is running this might climb
       substantially.
 
-        &lt;div&gt;
+        <div>
         {{ Query "resources" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 }}
-        &lt;/div&gt;
+        </div>
 
       ## VQL Query
 
@@ -139,6 +139,6 @@ column_types:
 
   - name: ClientId
     type: client_id
+````
 
-</code></pre>
 

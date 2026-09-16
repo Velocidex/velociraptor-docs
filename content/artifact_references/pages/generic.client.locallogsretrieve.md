@@ -1,14 +1,12 @@
 ---
 title: Generic.Client.LocalLogsRetrieve
+description: "Fetches encrypted local log files from endpoints via the upload\nfunction."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Fetches encrypted local log files from endpoints via the upload
-  function.
 ---
 
 Fetches encrypted local log files from endpoints via the upload
@@ -22,7 +20,9 @@ and decrypt it on the server while not creating any information
 leakage risk.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Client.LocalLogsRetrieve
 description: |
   Fetches encrypted local log files from endpoints via the upload
@@ -59,6 +59,6 @@ sources:
         }, query={
            SELECT * FROM read_crypto_file(filename=vfs_path, accessor="fs")
         })
+````
 
-</code></pre>
 

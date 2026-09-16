@@ -1,19 +1,12 @@
 ---
 title: Server.Utils.DeleteManyFlows
+description: "Removes old or unwanted flows from the server based on configurable\nfilters with a dry-run mode.\n \nSometimes the Velociraptor server accumulates a lot of data that is\nno longer needed. This artifact will enumerate all flows from all\nclients and matches them against some criteria. Flows that match are\nthen removed."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
 build:
   list: never
-description: |
-  Removes old or unwanted flows from the server based on configurable
-  filters with a dry-run mode.
- 
-  Sometimes the Velociraptor server accumulates a lot of data that is
-  no longer needed. This artifact will enumerate all flows from all
-  clients and matches them against some criteria. Flows that match are
-  then removed.
 ---
 
 Removes old or unwanted flows from the server based on configurable
@@ -29,7 +22,9 @@ care! You should always do a dry run first to see which flows will
 match before using the `ReallyDoIt` option.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.DeleteManyFlows
 description: |
   Removes old or unwanted flows from the server based on configurable
@@ -67,7 +62,7 @@ parameters:
 
 sources:
   - query: |
-        LET DateBefore &lt;= DateBefore || timestamp(epoch=now())
+        LET DateBefore <= DateBefore || timestamp(epoch=now())
         LET hits = SELECT * FROM foreach(row={
             SELECT client_id,
                    os_info.hostname AS hostname
@@ -82,7 +77,7 @@ sources:
           FROM flows(client_id=client_id)
           WHERE creator =~ CreatorRegex
              AND artifacts =~ ArtifactRegex
-             AND created &lt; DateBefore
+             AND created < DateBefore
         }, workers=10)
 
         SELECT * FROM if(condition=ReallyDoIt,
@@ -99,6 +94,6 @@ sources:
         }, else={
             SELECT * FROM hits
         })
+````
 
-</code></pre>
 

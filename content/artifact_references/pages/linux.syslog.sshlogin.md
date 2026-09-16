@@ -1,19 +1,20 @@
 ---
 title: Linux.Syslog.SSHLogin
+description: "Parses the auth logs to identify all SSH login attempts.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Parses the auth logs to identify all SSH login attempts.
 ---
 
 Parses the auth logs to identify all SSH login attempts.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Syslog.SSHLogin
 description: |
   Parses the auth logs to identify all SSH login attempts.
@@ -29,7 +30,7 @@ parameters:
 
   - name: SSHGrok
     description: A Grok expression for parsing SSH auth lines.
-    default: &gt;-
+    default: >-
       %{SYSLOGTIMESTAMP:Timestamp} (?:%{SYSLOGFACILITY} )?%{SYSLOGHOST:logsource} %{SYSLOGPROG}: %{DATA:event} %{DATA:method} for (invalid user )?%{DATA:user} from %{IPORHOST:ip} port %{NUMBER:port} ssh2(: %{GREEDYDATA:system.auth.ssh.signature})?
 
 sources:
@@ -49,6 +50,6 @@ sources:
               FROM parse_lines(filename=OSPath)
               WHERE Event.program = "sshd"
           })
+````
 
-</code></pre>
 

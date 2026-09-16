@@ -1,14 +1,12 @@
 ---
 title: Windows.Detection.PsexecService.Kill
+description: "Kills all child processes of a detected PsExec service using\ntaskkill."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
 build:
   list: never
-description: |
-  Kills all child processes of a detected PsExec service using
-  taskkill.
 ---
 
 Kills all child processes of a detected PsExec service using
@@ -22,7 +20,9 @@ NOTE: There is an inherent race between detection and response. If
 the PsExec is very quick we will miss it.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.PsexecService.Kill
 description: |
   Kills all child processes of a detected PsExec service using
@@ -57,6 +57,6 @@ sources:
                     ServiceType, ChildProcess, Stdout, Stderr FROM execve(
                argv=["taskkill", "/PID", PID, "/T", "/F"])
         })
+````
 
-</code></pre>
 

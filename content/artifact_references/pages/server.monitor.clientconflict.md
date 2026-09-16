@@ -1,14 +1,12 @@
 ---
 title: Server.Monitor.ClientConflict
+description: "Detects client ID conflicts on the server and forces affected\nclients to rekey with a new identity."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
 build:
   list: never
-description: |
-  Detects client ID conflicts on the server and forces affected
-  clients to rekey with a new identity.
 ---
 
 Detects client ID conflicts on the server and forces affected
@@ -26,7 +24,9 @@ clients to generate a new client ID (saving their new keys into
 their writeback files) and then reconnect with the server.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Monitor.ClientConflict
 type: SERVER_EVENT
 description: |
@@ -51,6 +51,6 @@ sources:
             artifacts="Generic.Client.Rekey", env=dict())
       AS NewCollection
       FROM watch_monitoring(artifact="Server.Internal.ClientConflict")
+````
 
-</code></pre>
 

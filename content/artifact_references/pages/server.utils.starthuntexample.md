@@ -1,14 +1,12 @@
 ---
 title: Server.Utils.StartHuntExample
+description: "A template artifact, providing an example of how to grant controlled\nhigh-privilege operations to users with limited permissions."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
 build:
   list: never
-description: |
-  A template artifact, providing an example of how to grant controlled
-  high-privilege operations to users with limited permissions.
 ---
 
 A template artifact, providing an example of how to grant controlled
@@ -52,7 +50,9 @@ this artifact, but have no additional permissions to start arbitrary
 hunts or collections.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.StartHuntExample
 description: |
   A template artifact, providing an example of how to grant controlled
@@ -107,6 +107,6 @@ sources:
         description="A general hunt",
         artifacts='Generic.Client.Info')
       FROM scope()
+````
 
-</code></pre>
 

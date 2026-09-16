@@ -1,14 +1,12 @@
 ---
 title: Windows.NTFS.ADSHunter
+description: "Scans NTFS volumes for data hidden in Alternate Data Streams, using\nconfigurable filtering rules."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Scans NTFS volumes for data hidden in Alternate Data Streams, using
-  configurable filtering rules.
 ---
 
 Scans NTFS volumes for data hidden in Alternate Data Streams, using
@@ -30,7 +28,9 @@ Targeting is via mix of path globs and include/exclude regex.
   files by default.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.NTFS.ADSHunter
 author: "Matt Green - @mgreen27"
 description: |
@@ -100,10 +100,10 @@ sources:
         WHERE
             NOT OSPath =~ '''[a-z]:\\(\$Extend\\|\$Secure|\$UpCase|\$BadClus|\$Bitmap|\$Repair)'''
             AND if(condition=MinSize,
-                    then= Size &gt; MinSize,
+                    then= Size > MinSize,
                     else= True )
             AND if(condition= MaxSize,
-                    then= Size &lt; MaxSize,
+                    then= Size < MaxSize,
                     else= True )
             AND NOT if(condition=AdsNameExclusion,
                         then= AdsName =~ AdsNameExclusion,
@@ -126,6 +126,6 @@ sources:
       -- output rows
       SELECT * FROM if(condition=UploadDataStream,
                         then= upload_hits,
-                        else= hits)
-</code></pre>
+                        else= hits)````
+
 

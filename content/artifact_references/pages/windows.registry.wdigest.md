@@ -1,14 +1,12 @@
 ---
 title: Windows.Registry.WDigest
+description: "Scans HKLM\\SYSTEM ControlSets for WDigest security provider\nregistry keys that enable credential harvesting."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Scans HKLM\SYSTEM ControlSets for WDigest security provider
-  registry keys that enable credential harvesting.
 ---
 
 Scans HKLM\SYSTEM ControlSets for WDigest security provider
@@ -37,7 +35,9 @@ The existence of the key is suspicious, if not expected.
 * ATT&CK technique: T1112, T1003.001
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Registry.WDigest
 author: Eduardo Mattos - @eduardfir, Matt Green - @mgreen27
 description: |
@@ -63,8 +63,8 @@ description: |
   “UseLogonCredential” DWORD value, so the key needs to be added.
   The existence of the key is suspicious, if not expected.
 
-  * ATT&amp;CK tactic: Defense Evasion, Credential Access
-  * ATT&amp;CK technique: T1112, T1003.001
+  * ATT&CK tactic: Defense Evasion, Credential Access
+  * ATT&CK technique: T1112, T1003.001
 
 reference:
     - https://medium.com/blue-team/preventing-mimikatz-attacks-ed283e7ebdd5
@@ -103,6 +103,6 @@ sources:
 column_types:
   - name: LastModified
     type: timestamp
+````
 
-</code></pre>
 

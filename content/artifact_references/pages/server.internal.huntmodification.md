@@ -1,14 +1,12 @@
 ---
 title: Server.Internal.HuntModification
+description: "Provides an internal event queue for hunt modification notifications\nincluding stop and start events."
 hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
 build:
   list: never
-description: |
-  Provides an internal event queue for hunt modification notifications
-  including stop and start events.
 ---
 
 Provides an internal event queue for hunt modification notifications
@@ -21,7 +19,9 @@ Users can also watch this queue to be notified when hunts are
 modified (e.g. stopped, started etc).
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Internal.HuntModification
 description: |
   Provides an internal event queue for hunt modification notifications
@@ -39,6 +39,6 @@ column_types:
   - name: HuntId
   - name: Mutation
     type: json
+````
 
-</code></pre>
 

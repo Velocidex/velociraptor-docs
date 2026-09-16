@@ -1,14 +1,12 @@
 ---
 title: Windows.Detection.Mutants
+description: "Searches for named Mutant objects used by selected processes for\nmalware persistence detection."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Searches for named Mutant objects used by selected processes for
-  malware persistence detection.
 ---
 
 Searches for named Mutant objects used by selected processes for
@@ -17,7 +15,9 @@ malware persistence detection.
 Mutants are often used by malware to prevent re-infection.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.Mutants
 description: |
   Searches for named Mutant objects used by selected processes for
@@ -43,7 +43,7 @@ sources:
     query: |
         LET processes = SELECT Pid AS ProcPid, Name AS ProcName, Exe
         FROM pslist()
-        WHERE ProcName =~ processRegex AND ProcPid &gt; 0
+        WHERE ProcName =~ processRegex AND ProcPid > 0
 
         SELECT * FROM foreach(
           row=processes,
@@ -64,6 +64,6 @@ sources:
             AND if(condition= MutantWhitelistRegex,
                 then= NOT Name =~ MutantWhitelistRegex,
                 else= True )
+````
 
-</code></pre>
 

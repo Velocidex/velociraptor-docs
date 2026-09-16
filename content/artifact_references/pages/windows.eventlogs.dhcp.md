@@ -1,14 +1,12 @@
 ---
 title: Windows.EventLogs.DHCP
+description: "Parses Windows DHCP client event logs (admin and operational) to\nextract IP address lease assignments and rejections."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Parses Windows DHCP client event logs (admin and operational) to
-  extract IP address lease assignments and rejections.
 ---
 
 Parses Windows DHCP client event logs (admin and operational) to
@@ -34,7 +32,9 @@ On windows, there are two types of logs:
    by default. If it is available we can rely on the information.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.EventLogs.DHCP
 description: |
   Parses Windows DHCP client event logs (admin and operational) to
@@ -162,6 +162,6 @@ reports:
       {{ Query "rejected_dhcp" | Table }}
 
       {{ Query "SELECT _Time * 1000, ClientIP FROM source(source='RejectedDHCP')" | Timeline }}
+````
 
-</code></pre>
 

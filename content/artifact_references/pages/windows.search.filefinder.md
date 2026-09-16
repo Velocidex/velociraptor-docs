@@ -1,14 +1,12 @@
 ---
 title: Windows.Search.FileFinder
+description: "Searches for files by path glob, inspects file content via YARA, and\nprovides file hash and upload options."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Searches for files by path glob, inspects file content via YARA, and
-  provides file hash and upload options.
 ---
 
 Searches for files by path glob, inspects file content via YARA, and
@@ -41,7 +39,9 @@ recommend this artifact is collected with a rate limited applied
 (about 20-50 ops per second should be reasonable).
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Search.FileFinder
 description: |
   Searches for files by path glob, inspects file content via YARA, and
@@ -149,15 +149,15 @@ sources:
         condition=MoreRecentThan,
         then={
           SELECT * FROM file_search
-          WHERE MTime &gt; MoreRecentThan
+          WHERE MTime > MoreRecentThan
         }, else=file_search)
 
       LET modified_before = SELECT * FROM if(
         condition=ModifiedBefore,
         then={
           SELECT * FROM more_recent
-          WHERE MTime &lt; ModifiedBefore
-           AND  MTime &gt; MoreRecentThan
+          WHERE MTime < ModifiedBefore
+           AND  MTime > MoreRecentThan
         }, else=more_recent)
 
       LET keyword_search = SELECT * FROM if(
@@ -221,6 +221,6 @@ column_types:
     type: timestamp
   - name: Upload
     type: preview_upload
+````
 
-</code></pre>
 

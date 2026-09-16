@@ -1,15 +1,12 @@
 ---
 title: MacOS.System.TCC
+description: "Queries the TCC (Transparency, Consent, and Control) database, which\ncan help reveal when access to system services has been added or\nmodified for an application."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Queries the TCC (Transparency, Consent, and Control) database, which
-  can help reveal when access to system services has been added or
-  modified for an application.
 ---
 
 Queries the TCC (Transparency, Consent, and Control) database, which
@@ -22,7 +19,9 @@ in place of the `auth_value`, `auth_reason`, and `auth_version`
 columns for Catalina and prior.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: MacOS.System.TCC
 description: |
   Queries the TCC (Transparency, Consent, and Control) database, which
@@ -76,6 +75,6 @@ sources:
               }
           )
       SELECT * FROM foreach(row=TCCList, query=TCCAccessDetails)
+````
 
-</code></pre>
 

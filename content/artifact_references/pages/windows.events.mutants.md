@@ -1,21 +1,21 @@
 ---
 title: Windows.Events.Mutants
+description: "Watches for new Mutants in the Windows object manager namespace and\nalerts on detections.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
 build:
   list: never
-description: |
-  Watches for new Mutants in the Windows object manager namespace and
-  alerts on detections.
 ---
 
 Watches for new Mutants in the Windows object manager namespace and
 alerts on detections.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Events.Mutants
 description: |
   Watches for new Mutants in the Windows object manager namespace and
@@ -54,7 +54,7 @@ sources:
         LET processes = SELECT Pid AS ProcPid, Name AS ProcName, Exe
         FROM process_tracker_pslist()
         WHERE ProcName =~ processRegex
-          AND int(int=ProcPid) &gt; 0
+          AND int(int=ProcPid) > 0
 
         LET query_mutant = SELECT *
         FROM winobj()
@@ -74,6 +74,6 @@ sources:
         SELECT *, alert(name=AlertName, Name=Name, Type=Type, Exe=Exe) as AlertSent
         FROM diff(query=query_diff, period=Period, key="Name")
         WHERE Diff = DiffSense
+````
 
-</code></pre>
 

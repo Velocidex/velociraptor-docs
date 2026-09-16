@@ -1,14 +1,12 @@
 ---
 title: Windows.ETW.KernelNetwork
+description: "Monitors network events (connections, data send/receive) via the\nKernel-Network ETW provider."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
 build:
   list: never
-description: |
-  Monitors network events (connections, data send/receive) via the
-  Kernel-Network ETW provider.
 ---
 
 Monitors network events (connections, data send/receive) via the
@@ -21,7 +19,9 @@ NOTE: We can only attach to this provider when running as
 NT_USER/SYSTEM.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.ETW.KernelNetwork
 description: |
   Monitors network events (connections, data send/receive) via the
@@ -78,7 +78,7 @@ parameters:
 
 sources:
   - query: |
-      LET EIDLookup &lt;= dict(
+      LET EIDLookup <= dict(
         `10`="DataSent", `11`="DataReceived", `12`="ConnectionAttempted", `15`="ConnectionAccepted",
         `42`="DataSentOverUDPProtocol",`43`="DataReceivedOverUDPProtocol")
 
@@ -102,6 +102,6 @@ sources:
         AND if(condition=IgnoreProcessRegex,
                then=NOT EventData.ImageName =~ IgnoreProcessRegex,
                else=TRUE)
+````
 
-</code></pre>
 

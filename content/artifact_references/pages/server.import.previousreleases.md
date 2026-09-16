@@ -1,14 +1,12 @@
 ---
 title: Server.Import.PreviousReleases
+description: "Downloads and installs legacy artifact bundles from a specified\nolder Velociraptor release."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
 build:
   list: never
-description: |
-  Downloads and installs legacy artifact bundles from a specified
-  older Velociraptor release.
 ---
 
 Downloads and installs legacy artifact bundles from a specified
@@ -29,7 +27,9 @@ compatible with older clients, but may lack newer features and
 improvements that the latest artifacts have.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Import.PreviousReleases
 description: |
   Downloads and installs legacy artifact bundles from a specified
@@ -68,7 +68,7 @@ parameters:
 
 sources:
   - query: |
-      LET Prefix &lt;= regex_replace(source=VelociraptorRelease, re='\\.', replace="") + "."
+      LET Prefix <= regex_replace(source=VelociraptorRelease, re='\\.', replace="") + "."
       LET ExchangeURL = "https://docs.velociraptor.app/release_artifacts/release_artifacts_" + VelociraptorRelease + ".zip"
 
       LET X = SELECT artifact_set(
@@ -97,6 +97,6 @@ sources:
                Definition.description AS Description,
                Definition.author AS Author
         FROM X
+````
 
-</code></pre>
 

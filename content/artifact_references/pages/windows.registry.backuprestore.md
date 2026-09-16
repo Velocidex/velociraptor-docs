@@ -1,14 +1,12 @@
 ---
 title: Windows.Registry.BackupRestore
+description: "Enumerates Windows BackupRestore registry keys showing\napplications configured for backup and restore operations."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Enumerates Windows BackupRestore registry keys showing
-  applications configured for backup and restore operations.
 ---
 
 Enumerates Windows BackupRestore registry keys showing
@@ -19,7 +17,9 @@ can use these keys to communicate with each other or with features
 such as the Volume Shadow Copy Service (VSS) and Windows Backup.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Registry.BackupRestore
 author: Matt Green - @mgreen27
 description: |
@@ -51,6 +51,6 @@ sources:
       FROM glob(globs=KeyGlob, accessor="registry")
       WHERE NOT KeyType ='key'
       GROUP BY ModTime, KeyName,KeyValue,KeyType
+````
 
-</code></pre>
 

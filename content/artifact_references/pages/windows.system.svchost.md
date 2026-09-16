@@ -1,14 +1,12 @@
 ---
 title: Windows.System.SVCHost
+description: "Lists `svchost.exe` processes whose parent is not services.exe,\nindicating suspicious activity."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
 build:
   list: never
-description: |
-  Lists `svchost.exe` processes whose parent is not services.exe,
-  indicating suspicious activity.
 ---
 
 Lists `svchost.exe` processes whose parent is not services.exe,
@@ -22,7 +20,9 @@ This artifact lists all the processes named `svchost.exe` and their
 parents where the parent is NOT named `services.exe`.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.SVCHost
 description: |
   Lists `svchost.exe` processes whose parent is not services.exe,
@@ -41,10 +41,10 @@ sources:
 
     query: |
         // Cache the pslist output in memory.
-        LET processes &lt;= SELECT Pid, Ppid, Name, Exe FROM pslist()
+        LET processes <= SELECT Pid, Ppid, Name, Exe FROM pslist()
 
         // Get the pids of all procecesses named services.exe
-        LET services &lt;= SELECT Pid FROM processes where Name =~ "services.exe"
+        LET services <= SELECT Pid FROM processes where Name =~ "services.exe"
 
         // The interesting processes are those which are not spawned by services.exe
         LET suspicious = SELECT Pid As SVCHostPid,
@@ -64,6 +64,6 @@ sources:
               FROM processes
               WHERE Pid=SVCHostPpid
           })
+````
 
-</code></pre>
 

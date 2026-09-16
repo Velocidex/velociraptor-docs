@@ -1,21 +1,21 @@
 ---
 title: Server.Alerts.Notification
+description: "Sends alert notifications from the `Server.Internal.Alerts` queue to\na webhook-compatible chat service such as Slack/Teams/Discord.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
 build:
   list: never
-description: |
-  Sends alert notifications from the `Server.Internal.Alerts` queue to
-  a webhook-compatible chat service such as Slack/Teams/Discord.
 ---
 
 Sends alert notifications from the `Server.Internal.Alerts` queue to
 a webhook-compatible chat service such as Slack/Teams/Discord.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Alerts.Notification
 description: |
   Sends alert notifications from the `Server.Internal.Alerts` queue to
@@ -53,6 +53,6 @@ sources:
             method="POST",
             url=token_url)
         })
+````
 
-</code></pre>
 
