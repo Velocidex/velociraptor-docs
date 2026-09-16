@@ -293,15 +293,35 @@
   }
 
   // Content-page tag paragraphs: several knowledge-base / exchange pages end
-  // with a plain markdown line like "Tags: #debugging #vql".  Turn those
-  // paragraphs into a row of the same pill badges used on search results.
-  // Tags are lowercased and only valid tags (>= 2 chars, containing at
-  // least one alphabetic character) become pills; anything else (e.g. a
-  // bare "#0") is left as plain text.
+  // with a plain markdown line like "Tags: #debugging #vql".  Exchange
+  // artifact descriptions instead close with a bare line that is entirely
+  // hashtags ("#sigma #hayabusa #evtx"), either as its own paragraph or as
+  // the final line of the last description paragraph.  Turn all of these
+  // into the same pill badges used on search results.  Tags are lowercased
+  // and only valid tags (>= 2 chars, containing at least one alphabetic
+  // character) become pills; anything else (e.g. a bare "#0") is left as
+  // plain text.
   function decorateTagParagraphs(root) {
     root.querySelectorAll(".content p").forEach(function (p) {
       if (p.dataset.tagsDecorated) return;
-      var m = p.textContent.trim().match(/^Tags?:\s*(.*)$/i);
+      var text = p.textContent.trim();
+      var embedded = false;
+      var m = text.match(/^Tags?:\s*(.*)$/i);
+      if (!m && /^(?:#\S+\s*)+$/.test(text)) {
+        // A paragraph that consists entirely of hashtags.
+        m = [text, text];
+      } else if (!m) {
+        // A paragraph whose final line is solely hashtags (trailing tag
+        // line in an exchange description).  Keep the surrounding prose,
+        // turn only the tag line into pills.
+        var lines = text.split("\n");
+        var last = lines.length > 1 ? lines[lines.length - 1].trim() : "";
+        if (/^#\S+(\s+#\S+)*$/.test(last)) {
+          embedded = true;
+          p.textContent = lines.slice(0, -1).join("\n");
+          m = [last, last];
+        }
+      }
       if (!m) return;
       var values = m[1]
         .split(/[,;]+|\s+/)
@@ -309,24 +329,41 @@
         .filter(Boolean);
       if (!values.length) return;
       p.dataset.tagsDecorated = "true";
+      if (embedded) {
+        // Trailing tags in an exchange description: keep the prose prefix,
+        // append the tag pills inline at the end of the paragraph (spaced
+        // via .tags-badges-inline, see custom.css).
+        var wrap = document.createElement("span");
+        wrap.className = "tags-badges-inline";
+        appendTagPills(wrap, values);
+        p.appendChild(wrap);
+        return;
+      }
       p.classList.add("tags-badges");
       p.textContent = "";
-      values.forEach(function (v) {
-        if (v.length < 2 || !/[a-z]/i.test(v)) {
-          // Not a valid tag - leave the hashtag as plain text.
-          var span = document.createElement("span");
-          span.textContent = "#" + v;
-          p.appendChild(span);
-          return;
-        }
-        v = v.toLowerCase();
-        var url = tagUrlFor(v);
-        var badge = document.createElement(url ? "a" : "span");
-        badge.className = "tag-badge" + (url ? " tag-badge--link" : "");
-        badge.textContent = v;
-        if (url) badge.href = url;
-        p.appendChild(badge);
-      });
+      appendTagPills(p, values);
+    });
+  }
+
+  // Build the pill DOM for one value and append it to the paragraph.
+  // Invalid tags (shorter than 2 chars / no alphabetic character) stay as
+  // plain "#text" spans; valid tags become green .tag-badge pills that
+  // hyperlink to their /tags/ page only when that page actually exists.
+  function appendTagPills(p, values) {
+    values.forEach(function (v) {
+      if (v.length < 2 || !/[a-z]/i.test(v)) {
+        var span = document.createElement("span");
+        span.textContent = "#" + v;
+        p.appendChild(span);
+        return;
+      }
+      v = v.toLowerCase();
+      var url = tagUrlFor(v);
+      var badge = document.createElement(url ? "a" : "span");
+      badge.className = "tag-badge" + (url ? " tag-badge--link" : "");
+      badge.textContent = v;
+      if (url) badge.href = url;
+      p.appendChild(badge);
     });
   }
 

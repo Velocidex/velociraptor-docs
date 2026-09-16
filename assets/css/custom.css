@@ -816,6 +816,18 @@ html.dark #pagefind-site-search .pagefind-ui__result-tag {
   align-items: center;
 }
 
+/* Inline tag pills appended to the end of a prose paragraph (exchange
+   artifact descriptions that close with a hashtag line): same pill
+   spacing as .tags-badges, with a small gap before the first pill so
+   they read as separate from the surrounding text. */
+.content .tags-badges-inline {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  align-items: center;
+  margin-left: 0.375rem;
+}
+
 /* --- Pagefind filter panel (/search/ page) ---
    Once the index carries data-pagefind-filter values, the old PagefindUI
    renders a checkbox sidebar (fieldset.pagefind-ui__filter-panel) next to
