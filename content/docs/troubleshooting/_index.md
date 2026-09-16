@@ -23,4 +23,4 @@ issues that people encounter when deploying and using Velociraptor.
 > The current version is available from our
 > [Downloads](/downloads/) page.
 
-{{% children description=true depth=2 %}}
+{{% children description=true %}}

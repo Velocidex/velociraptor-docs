@@ -161,4 +161,4 @@ instructive to read about each profile item to understand how Velociraptor works
 internally, understand the trade-offs made, and how to get the most out of
 Velociraptor in the real world.
 
-{{% children description=true depth=2 %}}
+{{% children description=true %}}

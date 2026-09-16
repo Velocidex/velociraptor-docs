@@ -138,4 +138,4 @@ Collector.
 
 ## Learn about the commands and flags available in the CLI
 
-{{% children description=true depth=2 %}}
+{{% children description=true %}}
