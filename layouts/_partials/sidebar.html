@@ -311,7 +311,7 @@
         {{- end -}}
       {{- end -}}
       {{- $active := and (ne $link "") (eq (strings.TrimSuffix "/" $pageURL) (strings.TrimSuffix "/" $link)) -}}
-      <li>{{ template "sidebar-item-link" dict "active" $active "open" false "title" $name "link" $link }}</li>
+      <li>{{ template "sidebar-item-link" dict "active" $active "open" false "title" $name "link" $link "icon" .Params.icon }}</li>
     {{ end }}
   {{- end -}}
 {{- end -}}
@@ -320,7 +320,7 @@
   {{- $external := strings.HasPrefix .link "http" -}}
   {{- $open := .open | default true -}}
   {{- $hasChildren := false -}}
-  {{- $linkClass := "hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset" -}}
+  {{- $linkClass := "hx:flex hx:items-center hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset" -}}
   {{- with .context }}{{ if and (ne .Params.no_children true) (or .RegularPages .Sections) }}{{ $hasChildren = true }}{{ end }}{{ end -}}
   {{- if $hasChildren -}}
     {{- $linkClass = printf "%s hx:ltr:pr-8 hx:rtl:pl-8" $linkClass -}}
@@ -336,6 +336,9 @@
       href="{{ .link }}"
       {{ if $external }}target="_blank" rel="noreferrer"{{ end }}
     >
+      {{- if .icon }}
+        {{- partial "utils/icon.html" (dict "name" .icon "attributes" "height=16") -}}
+      {{- end }}
       <span class="hx:min-w-0 [word-break:break-word]">{{- .title -}}</span>
     </a>
     {{- if $hasChildren }}
