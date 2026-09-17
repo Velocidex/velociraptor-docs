@@ -1,0 +1,70 @@
+{{- /*
+llms-full.txt: the entire documentation corpus in one plain-text markdown
+file (the GitBook/Prefect "llms-full" convention), so an AI agent can fetch
+everything in a single request instead of crawling.
+
+Generated only for the home page (see [outputs] home in hugo.toml). Mirrors
+the section tree used by the concise /llms.txt index (theme template) and
+honours "llms: false" front matter to opt a section or page out, and
+"llmsFull: false" to keep a large generated catalog out of this file while
+leaving it in the concise /llms.txt index. Individual pages remain available
+as raw markdown by appending ".md" to their URL.
+*/ -}}
+# {{ .Site.Title }}
+
+> {{ site.Params.description | default "" }}
+
+Every page below is also available individually as markdown by appending
+".md" to its URL. This file is the full corpus; /llms.txt is the concise
+index.
+
+{{ range where (where site.Sections "Params.llms" "ne" false) "Params.llmsFull" "ne" false }}
+{{- template "llms-full-section" dict "context" . "level" 2 }}
+{{ end }}
+
+{{- $rootPages := where (where (where site.RegularPages "Section" "") "Params.llms" "ne" false) "Params.llmsFull" "ne" false }}
+{{- if $rootPages }}
+## Root Pages
+{{- range $rootPages }}
+{{ template "llms-full-page" dict "context" . "level" 3 }}
+{{- end }}
+{{- end }}
+
+{{- $omitted := where (where site.Sections "Params.llms" "ne" false) "Params.llmsFull" "eq" false }}
+{{- if $omitted }}
+## Omitted sections
+
+The following sections are large generated catalogs and are intentionally
+left out of this file. Fetch them directly when needed:
+
+{{- range $omitted }}
+- {{ .Title }}: {{ .Permalink }} (raw markdown at {{ .Permalink }}index.md)
+{{- end }}
+{{- end }}
+
+---
+Generated on {{ now.Format "2006-01-02 15:04:05 UTC" }}
+Site: {{ .Site.BaseURL }}
+
+{{- define "llms-full-section" -}}
+{{- $context := .context -}}
+{{- $level := .level | default 2 -}}
+{{- $headerHashes := strings.Repeat $level "#" -}}
+{{- "\n" -}}
+{{ $headerHashes }} {{ $context.Title }}
+{{- range where (where $context.RegularPages "Params.llms" "ne" false) "Params.llmsFull" "ne" false }}
+{{ template "llms-full-page" dict "context" . "level" (add $level 1) }}
+{{- end }}
+{{- range where (where $context.Sections "Params.llms" "ne" false) "Params.llmsFull" "ne" false }}
+{{ template "llms-full-section" dict "context" . "level" (add $level 1) }}
+{{- end }}
+{{- end -}}
+
+{{- define "llms-full-page" -}}
+{{- $context := .context -}}
+{{- $level := .level | default 3 -}}
+{{- $headerHashes := strings.Repeat $level "#" -}}
+{{ $headerHashes }} {{ $context.Title }}
+
+{{ $context.RawContent }}
+{{- end -}}

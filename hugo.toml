@@ -40,16 +40,32 @@ enableRobotsTXT = true
   filename = "sitemap.xml"
   priority = 0.5
 
-# Outputs: plain HTML everywhere. Sections opt into RSS via front matter
-# (see content/blog, content/exchange etc.). Hextra's FlexSearch JSON index
-# is NOT emitted here - search is provided by Pagefind (a generated static
-# index, build via `make pagefind`).
+# Outputs:
+# - HTML everywhere, plus RSS in front-matter-opted sections
+#   (see content/blog, content/exchange etc.).
+# - "llms" and "markdown" are Hextra's built-in AI-friendly output formats
+#   (defined in the theme's hugo.toml, not here):
+#     /llms.txt                     -> AI site index (llmstxt.org)
+#     <any page URL> + ".md"        -> raw markdown of that page
+# - "llms-full" is a site-defined format: a single concatenated markdown
+#   corpus in /llms-full.txt (see layouts/llms-full.txt).
+# Hextra's FlexSearch JSON index is NOT emitted here - search is provided
+# by Pagefind (a generated static index, build via `make pagefind`).
 [outputs]
-  home = ["HTML"]
-  page = ["HTML"]
-  section = ["HTML"]
+  home = ["HTML", "llms", "llms-full"]
+  page = ["HTML", "markdown"]
+  section = ["HTML", "markdown"]
   taxonomy = ["HTML"]
   term = ["HTML"]
+
+# LLM corpus: one markdown file containing every page (GitBook/Prefect-style
+# llms-full.txt). JSON-LD/OG consumers and AI agents can fetch the whole
+# corpus in one request instead of crawling page links.
+[outputFormats.llms-full]
+  name = "llms-full"
+  baseName = "llms-full"
+  mediaType = "text/plain"
+  isPlainText = true
 
 # -- Theme Module --
 # The Hextra theme is installed as a Hugo module (no vendoring).

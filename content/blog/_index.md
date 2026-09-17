@@ -17,6 +17,7 @@ noTitle: true
 outputs:
 - html
 - RSS
+- markdown
 description: |
   <div style="padding-top: 50px;"></div>
 ---

@@ -21,6 +21,8 @@ noTitle: true
 outputs:
 - html
 - RSS
+- markdown
+llmsFull: false
 summary: |
   The artifact exchange is a place for sharing community contributed
   artifacts.
