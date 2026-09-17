@@ -773,7 +773,7 @@ html.dark #pagefind-site-search .pagefind-ui__breadcrumb-seg {
   font-weight: 600;
   line-height: 1.25rem;
   color: #ffffff;
-  background-color: #5cb85c;
+  background-color: #15803d; /* green-700, matches the announcement banner */
   text-decoration: none;
   white-space: nowrap;
 }
@@ -781,7 +781,7 @@ html.dark #pagefind-site-search .pagefind-ui__breadcrumb-seg {
 a.tag-badge:hover,
 [data-tag-href]:hover {
   color: #ffffff;
-  background-color: #4cae4c;
+  background-color: #166534; /* green-800 */
 }
 [data-tag-href] {
   cursor: pointer;
@@ -797,14 +797,14 @@ a.tag-badge:hover,
   font-weight: 600;
   line-height: 1.25rem;
   color: #ffffff;
-  background-color: #5cb85c;
+  background-color: #15803d; /* green-700, matches the announcement banner */
   margin: 0.375rem 0.375rem 0 0; /* separation from excerpt above */
 }
 html.dark .tag-badge,
 html.dark #pagefind-ui .pagefind-ui__result-tag,
 html.dark #pagefind-site-search .pagefind-ui__result-tag {
   color: #ffffff;
-  background-color: #6ac268;
+  background-color: #14532d; /* green-900, matches the announcement banner */
 }
 
 /* The chip list the PagefindUI renders around the tags: flex row, with
