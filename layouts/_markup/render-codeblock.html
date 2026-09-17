@@ -1,17 +1,56 @@
-{{- /* Code fence handler (Hextra chrome + copy button).
-VQL is SQL-derived, so vql/VQL fences are aliased to Chroma's SQL lexer;
-everything else falls through to Hextra's codeblock component. */ -}}
+{{- /* Code fence render hook (Hextra chrome + copy button).
+
+VQL fences are pre-rendered at build time by scripts/vql_highlight (which
+uses a Chroma lexer whose output matches Hugo's own highlight function) and
+looked up here by sha256 of the fence content.  The generated/vql directory is
+generated content (gitignored) — run `make vql_highlight` after editing
+marked-up VQL.  If a fence has no pre-rendered file the vql/VQL language is
+aliased to Chroma's SQL lexer (VQL is SQL-derived), so pages still build
+with correct syntax highlighting; the data-vql="fallback" attribute lets CI
+detect a stale generation.
+
+Everything else falls through to Hextra's codeblock component. */ -}}
 {{- $lang := .Attributes.lang | default .Type -}}
-{{- if or (eq $lang "vql") (eq $lang "VQL") -}}
-  {{- $lang = "sql" -}}
-{{- end -}}
-{{- $filename := .Attributes.filename | default "" -}}
-{{- $baseURL := .Attributes.base_url | default "" -}}
+{{- $isVQL := or (eq $lang "vql") (eq $lang "VQL") -}}
 
-<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
-  {{- partial "components/codeblock" (dict "filename" $filename "lang" $lang "base_url" $baseURL "content" .Inner "options" .Options) -}}
-
-  {{- if or (eq site.Params.highlight.copy.enable nil) (site.Params.highlight.copy.enable) -}}
-    {{- partialCached "components/codeblock-copy-button" (dict "filename" $filename) $filename -}}
+{{- $prerendered := "" -}}
+{{- if $isVQL -}}
+  {{- $file := printf "generated/vql/%s.html" (sha256 .Inner) -}}
+  {{- with os.Stat $file -}}
+    {{- $prerendered = readFile $file -}}
   {{- end -}}
-</div>
+{{- end -}}
+
+{{- if $prerendered -}}
+  <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code" data-vql="rendered">
+    {{- with .Attributes.filename -}}
+      <div class="hextra-code-filename not-prose" dir="auto">
+        {{- with $.Attributes.base_url -}}
+          {{- $file_url := urls.JoinPath (strings.TrimSuffix "/" .) (strings.TrimPrefix "/" $) -}}
+          <a class="hx:no-underline hx:inline-flex hx:items-center hx:gap-1" href="{{ $file_url }}" target="_blank" rel="noopener noreferrer">
+            <span>{{- $ -}}</span>
+            {{- partial "utils/icon" (dict "name" "external-link" "attributes" "height=1em") -}}
+          </a>
+        {{- else -}}
+          {{- . -}}
+        {{- end -}}
+      </div>
+    {{- end -}}
+    <div>{{- $prerendered | safeHTML -}}</div>
+    {{- if or (eq site.Params.highlight.copy.enable nil) (site.Params.highlight.copy.enable) -}}
+      {{- partialCached "components/codeblock-copy-button" (dict "filename" (.Attributes.filename | default "")) (.Attributes.filename | default "") -}}
+    {{- end -}}
+  </div>
+{{- else -}}
+  {{- if $isVQL -}}
+    {{- $lang = "sql" -}}
+  {{- end -}}
+  {{- $filename := .Attributes.filename | default "" -}}
+  {{- $baseURL := .Attributes.base_url | default "" -}}
+  <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"{{ if $isVQL }} data-vql="fallback"{{ end }}>
+    {{- partial "components/codeblock" (dict "filename" $filename "lang" $lang "base_url" $baseURL "content" .Inner "options" .Options) -}}
+    {{- if or (eq site.Params.highlight.copy.enable nil) (site.Params.highlight.copy.enable) -}}
+      {{- partialCached "components/codeblock-copy-button" (dict "filename" $filename) $filename -}}
+    {{- end -}}
+  </div>
+{{- end -}}

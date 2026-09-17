@@ -41,11 +41,22 @@ jobs:
           python scripts/blog_index.py
           python scripts/knowledge_base.py
 
+      - name: VQL highlighting
+        run: make vql_highlight
+
       - name: BuildIndex
         run: make index
 
       - name: Build
         run: hugo
+
+      - name: Check VQL highlighting
+        run: |
+          if grep -rq 'data-vql="fallback"' public; then
+            echo "ERROR: some VQL code fences fell back to SQL highlighting."
+            echo "Regenerate the highlight cache with: make vql_highlight"
+            exit 1
+          fi
 
       - uses: oven-sh/setup-bun@v2
 
