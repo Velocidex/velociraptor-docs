@@ -14,3 +14,25 @@
        all.min.css declares solid/regular/brands + v4 shims; browsers only
        fetch the woff2 actually used thanks to unicode-range. */ -}}
 <link rel="stylesheet" href="/fontawesome/css/all.min.css" />
+{{- /* Mark the sidebar as not-ready while the page is still parsing. The
+       browser paints the menu at scrollTop 0 before Hextra's sidebar.js has
+       snapped it to the active item (and before assets/js/sidebar-scroll.js
+       has restored the reader's own position), so without this the menu
+       visibly jumps on every navigation. The matching CSS rule in
+       assets/css/custom.css holds it at visibility:hidden; the deferred
+       script removes the class once the position is settled. This runs
+       during <head> parse, before the sidebar markup exists, so the menu is
+       never painted in the wrong place in the first place.
+
+       The timeout is a failsafe only: if sidebar-scroll.js never runs (a
+       build that drops the asset), the menu must not stay invisible forever.
+       The flag it checks is set by that script as its first statement. */ -}}
+<script>
+  (function () {
+    var d = document.documentElement;
+    d.classList.add("sidebar-loading");
+    setTimeout(function () {
+      if (!window.__sidebarScrollInit) d.classList.remove("sidebar-loading");
+    }, 2000);
+  })();
+</script>

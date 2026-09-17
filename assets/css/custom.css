@@ -95,6 +95,22 @@
   font-size-adjust: 0.53125;
 }
 
+/* --- Root background (navigation paint) ---
+   The theme paints the page background on <body> only and leaves <html>
+   transparent. Chromium uses the root element's background-color for the
+   "base" colour it paints during a navigation or window resize, so with a
+   transparent <html> the browser falls back to white and dark-mode readers
+   see a white flash on each full page load. Mirror the body background onto
+   <html> so the base paint matches the active theme. Unlayered rules here
+   outrank the theme's @layer rules. */
+html {
+  background-color: var(--hx-color-white);
+}
+
+html:where(.dark, .dark *) {
+  background-color: var(--hx-color-dark);
+}
+
 /* Code stays at nominal size regardless of the inherited font-size-adjust
    (its FontFace aspect differs slightly from the 0.53125 target). */
 code,
@@ -472,6 +488,21 @@ html.dark .hextra-nav-btn[aria-current] {
     flex: 1 1 0%;
     min-height: 0;
   }
+}
+
+/* --- Sidebar first-paint mask (see layouts/partials/custom/head-end.html) ---
+   The menu is taller than its viewport and Hextra's sidebar.js snaps it to the
+   active item on every DOMContentLoaded. On a full page load the browser paints
+   the menu at scrollTop 0 before that snap - and before
+   assets/js/sidebar-scroll.js has restored the reader's own position - so the
+   menu visibly jumps on every navigation. The inline head script adds
+   html.sidebar-loading during <head> parse, i.e. before the sidebar is even
+   rendered; the deferred script removes the class once the position is settled,
+   so the menu is first seen already in place. visibility (not display) keeps
+   the space reserved, so nothing else on the page shifts. With JS disabled the
+   class is never added and the menu simply stays visible. */
+html.sidebar-loading .hextra-sidebar-container > .hextra-scrollbar {
+  visibility: hidden;
 }
 
 /* Navbar: no brand title anymore, so the nav is justify-start.  The

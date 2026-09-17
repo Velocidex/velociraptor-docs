@@ -1,6 +1,10 @@
 {{/* Core scripts (theme, menu, tabs, etc.) */}}
 {{- partial "scripts/core.html" . -}}
 
+{{/* Preserve the sidebar scroll position across navigations (must follow
+     core.html so it loads after the theme's main.js). */}}
+{{- partial "scripts/sidebar-scroll.html" . -}}
+
 {{/* Pagefind search modal (rendered once, opened by the Hextra search inputs). */}}
 {{- partial "search-modal.html" . -}}
 
