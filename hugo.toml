@@ -242,9 +242,12 @@ enableRobotsTXT = true
   [params.navbar]
     width = "normal"      # 80rem; matches the reference docs sites
 
-    # Logo: the bare raptor mark, monochrome-filtered via assets/css/custom.css.
-    # The left-pane sidebar shows the full-colour VeloR7 mark instead
-    # (hardcoded in layouts/_partials/sidebar.html).
+    # No navbar title: the full-colour VeloR7 mark lives pinned at the top
+    # of the left sidebar (layouts/_partials/sidebar.html).  The bare raptor
+    # mark below shows only on mobile (single-column) — the navbar-title
+    # partial override adds hx:md:hidden — and is hidden on 2/3-column
+    # layouts where the sidebar mark is visible.
+    displayTitle = false
     [params.navbar.logo]
       path = "images/logo_bare_small.svg"
       width = "28"

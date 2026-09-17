@@ -353,25 +353,12 @@ html.dark .platform svg path {
    grayscale filter.  (The source SVG should already stay legible on both
    light and dark navbar backgrounds; the 28px height is pinned below.) */
 
-/* Bootstrap size: the raptor mark is a tall/narrow glyph (~0.62 aspect).
-   A global `img { height:auto }` rule makes the height attribute moot, so
-   pin the height here (navbar stays 64px tall; 28px mark fits inside). */
+/* Navbar logo: mobile-only bare raptor mark (hx:md:hidden on the
+   navbar-title wrapper).  The 28px height is pinned here; width scales
+   from the SVG's natural 0.62 aspect ratio. */
 .hextra-navbar-logo img {
   height: 28px;
   width: auto;
-}
-
-/* Navbar title: bottom-align the brand title with the logo mark.  The
-   logo's ink fills its whole box (down to the bottom edge), so the text
-   is pulled down too: flex-end on the wrapper + a tight line-height on
-   the span (the other hx:items-end utility is never compiled by the
-   Tailwind JIT and the default 28px line box leaves a ~4px gap below the
-   glyphs). */
-.hextra-navbar-logo {
-  align-items: flex-end;
-}
-.hextra-navbar-logo span {
-  line-height: 21px;    /* ≈ glyph extent: text bottom sits on the mark's */
 }
 
 /* Footer copyright block: the theme default was py-12 (48px per side →
@@ -468,6 +455,30 @@ html.dark .hextra-nav-btn[aria-current] {
 .hextra-sidebar-container .hextra-sidebar-logo img {
   width: 80% !important;
   height: auto !important;
+}
+
+/* The whole left column is pinned below the navbar for the entire page:
+   give the sidebar a fixed height of 100vh - navbar so its sticky top-16
+   never releases (its bottom stays glued to the viewport bottom, so it
+   cannot scroll up at the end of the page).  The menu flex-fills the
+   space left after the pinned logo and the sticky footer, scrolling
+   internally. */
+@media (min-width: 768px) {
+  .hextra-sidebar-container {
+    height: calc(100vh - var(--navbar-height));
+  }
+
+  .hextra-sidebar-container > .hextra-scrollbar {
+    flex: 1 1 0%;
+    min-height: 0;
+  }
+}
+
+/* Navbar: no brand title anymore, so the nav is justify-start.  The
+   search box (and the icon cluster + theme toggle after it) keep the
+   right edge via margin-left:auto on the search wrapper. */
+.hextra-nav-container .hextra-search-wrapper {
+  margin-left: auto;
 }
 
 /* Cards without a subtitle (e.g. the children shortcode) render the icon
