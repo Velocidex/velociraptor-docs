@@ -279,7 +279,7 @@ output and converts the results to a table.
    We can also provide a URL where the binary will be downloaded from
    if required.
 
-```sql
+```yaml
 name: Windows.Sysinternals.Autoruns
 tools:
   - name: Autorun_amd64
@@ -290,7 +290,7 @@ tools:
    query in order to materialize the tool on the endpoint. In this
    case we fetch the correct tool based on the architecture.
 
-```sql
+```yaml
 sources:
   - query: |
       LET os_info <= SELECT Architecture FROM info()
