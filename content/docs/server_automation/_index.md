@@ -74,7 +74,7 @@ including its client id and labels assigned to it.
 > client index to find clients by label or hostname very quickly (This
 > is the same mechanism used in the GUI search bar).
 >
-> ```sql
+> ```vql
 > -- Use this
 > SELECT * FROM clients(search="MyHostname")
 >

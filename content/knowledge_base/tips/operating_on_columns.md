@@ -45,7 +45,7 @@ representing a single row (in this case only one row is returned):
 We can select specific columns in this using the **Column Specifiers**
 following the `SELECT` clause:
 
-```sql
+```vql
 SELECT Hostname FROM info()
 ```
 

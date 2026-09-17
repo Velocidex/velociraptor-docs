@@ -109,7 +109,7 @@ script in an Stdout column.
 > commandline. For more reliable encoding, we can base64 encode the
 > script:
 >
-> ```sql
+> ```vql
 > SELECT * FROM execve(argv=["Powershell", "-ExecutionPolicy",
 >  "unrestricted", "-EncodedCommand",
 >  base64encode(string=utf16_encode(string=PowershellScript))])
@@ -118,7 +118,7 @@ script in an Stdout column.
 > Alternative, we can write the Powershell script into a temporary file
 > and run it from there:
 >
-> ```sql
+> ```vql
 > LET ps1 <= tempfile(extension=".ps1", data=PowershellScript)
 > SELECT * FROM execve(
 >   argv=["Powershell", "-ExecutionPolicy", "unrestricted", ps1)
@@ -210,7 +210,7 @@ example of such a remediation artifact is in
 `Windows.Remediation.ScheduledTasks` artifact. Here is the relevant
 VQL from that artifact.
 
-```sql
+```vql
 SELECT * FROM foreach(row=tasks,
   query={
     SELECT * FROM if(condition= ReallyDoIt='Y',
@@ -303,7 +303,7 @@ sources:
 
 3. Next we simply run the tool and collect its output.
 
-```sql
+```vql
       LET output = SELECT * FROM execve(argv=[
            bin[0].OSPath,
            '-nobanner', '-accepteula', '-t', '-a', '*', '-c', '*'],

@@ -85,7 +85,7 @@ you have no idea of the internal structure of the browser
 cache/history etc.  Write an artifact to extract potential URLs from
 the Edge browser directory.
 
-```sql
+```vql
 LET YaraRule = '''
 rule URL {
   strings: $a = /https?:\\/\\/[a-z0-9\\/+&#:\\?.-]+/i
@@ -144,7 +144,7 @@ parameter which renames the file as sent to the server.
 This is a common use of combining a `glob()` plugin with an
 `upload()` function:
 
-```sql
+```vql
 SELECT upload(file=FullPath) AS Upload
 FROM glob(globs='''C:\Users\*\Downloads\*''')
 WHERE NOT IsDir

@@ -66,7 +66,7 @@ VQL provides direct access to WMI via the `wmi()` plugin. The plugin
 simply takes a `query` parameter which is passed to WMI and the
 results are emitted from the plugin one row at a time.
 
-```sql
+```vql
 SELECT * FROM wmi(query="SELECT * FROM Win32_DiskDrive")
 ```
 
@@ -177,7 +177,7 @@ try to visualize the order of process execution.
 
 Write an artifact to find all currently running elevated command shells
 
-```sql
+```vql
 SELECT * FROM pslist()
 WHERE TokenIsElevated
 ```
@@ -208,7 +208,7 @@ internet. By virtue of this command, the powershell process will link
 
 We can write VQL to list all the DLL modules that powershell is running.
 
-```sql
+```vql
 LET processes = SELECT Exe, CommandLine, Pid
 FROM pslist()
 WHERE Exe =~ 'PowerShell'

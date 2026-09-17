@@ -52,7 +52,7 @@ be denied because they do not have the `COLLECT_CLIENT` permission.
 However we can allow the user to collect **Some** artifacts that we
 deem to be safe.
 
-```sql
+```vql
 LET BasicArtifacts <= SELECT * FROM parse_csv(accessor="data",
 filename='''Artifacts
 Generic.Client.Info

@@ -13,7 +13,7 @@ searching through various filesystems.
 However, sometimes it is hard to know what the plugin is doing. For
 example a query such as:
 
-```sql
+```vql
 SELECT * FROM glob(globs='C:/**/*.foobar')
 ```
 

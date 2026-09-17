@@ -270,7 +270,7 @@ queries. Let's examine how this work using a series of
 experiments. For these experiments we will use the `log()` VQL
 function, which simply produces a log message when evaluated.
 
-```sql
+```vql
 -- Case 1: One row and one log message
 SELECT OS, log(message="I Ran!") AS Log
 FROM info()
@@ -312,7 +312,7 @@ functions and plugins in the query.
 
 For example, consider the query
 
-```sql
+```vql
 SELECT OS FROM info()
 ```
 
@@ -344,7 +344,7 @@ lower layer. If not, VQL checks the next layer, and so on.
 > can rename earlier symbols using the `AS` keyword to avoid this
 > problem.  For example:
 >
-> ```sql
+> ```vql
 > SELECT Pid, Name, {
 >    SELECT Name FROM pslist(pid=Ppid)
 > } AS ParentName
@@ -518,7 +518,7 @@ current scope as a single row. If you even need to write a query but
 do not want to actually run a plugin, use `scope()` as a noop
 plugin. For example
 
-```sql
+```vql
 -- Returns one row with Value=4
 SELECT 2 + 2 AS Value
 FROM scope()
@@ -552,7 +552,7 @@ plugin takes two arguments:
 
 Consider the following query:
 
-```sql
+```vql
 SELECT * FROM foreach(
     row={
         SELECT Exe FROM pslist(pid=getpid())
@@ -578,7 +578,7 @@ query in each worker thread. This allows the query to evaluate values in paralle
 For example, the following query retrieves all the
 files in the System32 directory and calculates their hash.
 
-```sql
+```vql
 SELECT FullPath, hash(path=FullPath)
 FROM glob(globs="C:/Windows/system32/*")
 WHERE NOT IsDir
@@ -596,7 +596,7 @@ all files is quite fast, but hashing the
 files can be slow. If we delegate the hashing to multiple threads, we
 can make more effective use of the CPU.
 
-```sql
+```vql
 SELECT * FROM foreach(
 row={
    SELECT FullPath
@@ -614,7 +614,7 @@ row={
 Deconstructing a dict means to take that dict and create a column for
 each field of that dict. Consider the following query:
 
-```sql
+```vql
 LET Lines = '''Foo Bar
 Hello World
 Hi There
@@ -650,7 +650,7 @@ demand. Consider the example below, where for each process, we
 evaluate the `stat()` plugin on the executable to check the
 modification time of the executable file.
 
-```sql
+```vql
 LET myprocess = SELECT Exe FROM pslist()
 
 LET mystat = SELECT ModTime, Size, FullPath
@@ -676,7 +676,7 @@ as possible.
 
 Consider the following query
 
-```sql
+```vql
 LET myhashes = SELECT FullPath, hash(path=FullPath)
 FROM glob(globs="C:/Windows/system32/*")
 
@@ -716,7 +716,7 @@ For example, consider the following query that lists all sockets on
 the machine, and attempts to resolve the process ID to a process name
 using the `pslist()` plugin.
 
-```sql
+```vql
 LET process_lookup = SELECT Pid AS ProcessPid, Name FROM pslist()
 
 SELECT Laddr, Status, Pid, {
@@ -736,7 +736,7 @@ for the entire length of the query.
 
 We recommend that you `Materialize` the query:
 
-```sql
+```vql
 LET process_lookup <= SELECT Pid AS ProcessPid, Name FROM pslist()
 
 SELECT Laddr, Status, Pid, {
@@ -766,7 +766,7 @@ variables.
 Consider the following example which is identical to the example
 above:
 
-```sql
+```vql
 LET myprocess = SELECT Exe FROM pslist()
 
 LET mystat(Exe) = SELECT ModTime, Size, FullPath
@@ -783,7 +783,7 @@ it behaves as a plugin.
 
 Similarly we can define a `VQL Local Function`.
 
-```sql
+```vql
 LET MyFunc(X) = X + 5
 
 -- Return 11
@@ -1387,7 +1387,7 @@ VQL [does not have a JOIN operator](/docs/vql/join/) - we use the
 `foreach` plugin to iterate over the results of one query and apply a
 second query on it.
 
-```sql
+```vql
 SELECT * FROM foreach(
     row={ <sub query goes here> },
     query={ <sub query goes here >})
@@ -1398,7 +1398,7 @@ SELECT * FROM foreach(
 Sometimes arrays are present in column data. We can iterate over these
 using the foreach plugin.
 
-```sql
+```vql
 SELECT * FROM foreach(
     row=<An iterable type>,
     query={ <sub query goes here >})
@@ -1411,7 +1411,7 @@ If row is an array, the value will be assigned to `_value` as a special placehol
 
 The `if()` plugin and function allows branching in VQL.
 
-```sql
+```vql
 SELECT * FROM if(
     condition=<sub query or value>,
     then={ <sub query goes here >},
@@ -1426,7 +1426,7 @@ VQL is lazy and will not evaluate the unused query or expression.
 
 The `switch()` plugin and function allows multiple branching in VQL.
 
-```sql
+```vql
 SELECT * FROM switch(
     a={ <sub query >},
     b={ <sub query >},
@@ -1444,7 +1444,7 @@ essentially free!
 
 The `chain()` plugin allows multiple queries to be combined.
 
-```sql
+```vql
 SELECT * FROM chain(
     a={ <sub query >},
     b={ <sub query >},
@@ -1500,7 +1500,7 @@ separate context for each `GROUP BY` bin. Therefore, the following
 query will produce a count of all the rows in each bin (because each
 bin has a separate state).
 
-```sql
+```vql
 SELECT X, count() AS Count
 FROM …
 GROUP BY X

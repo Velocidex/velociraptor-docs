@@ -25,7 +25,7 @@ description: |
   immediately before calling the if() plugin.
 
   For example:
-  ```sql
+  ```vql
   SELECT * FROM if(condition=FALSE, then=log(message="I ran!"))
   ```
 
@@ -35,7 +35,7 @@ description: |
   plugin.
 
   The correct way to call the if() plugin is with queries:
-  ```sql
+  ```vql
   SELECT * FROM if(condition=FALSE,
   then={
      SELECT log(message="I ran!") FROM scope()
@@ -44,7 +44,7 @@ description: |
 
   Or use stored queries
 
-  ```sql
+  ```vql
   LET LogQuery = SELECT log(message="I ran!") FROM scope()
 
   SELECT * FROM if(condition=FALSE, then=LogQuery)
@@ -107,7 +107,7 @@ materializing them. This will cause those to be evaluated
 immediately before calling the if() plugin.
 
 For example:
-```sql
+```vql
 SELECT * FROM if(condition=FALSE, then=log(message="I ran!"))
 ```
 
@@ -117,7 +117,7 @@ call into a materialized query before passing it to the if()
 plugin.
 
 The correct way to call the if() plugin is with queries:
-```sql
+```vql
 SELECT * FROM if(condition=FALSE,
 then={
    SELECT log(message="I ran!") FROM scope()
@@ -126,7 +126,7 @@ then={
 
 Or use stored queries
 
-```sql
+```vql
 LET LogQuery = SELECT log(message="I ran!") FROM scope()
 
 SELECT * FROM if(condition=FALSE, then=LogQuery)

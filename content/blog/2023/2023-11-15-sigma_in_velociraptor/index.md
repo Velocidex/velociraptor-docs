@@ -249,7 +249,7 @@ corresponding VQL queries.
 
 For example, consider the following definition:
 
-```sql
+```vql
 LET LogSources <= sigma_log_sources(
   `*/windows/taskscheduler`={
          SELECT * FROM parse_evtx(
@@ -270,7 +270,7 @@ Lambda` functions.
 
 For example consider the following field mapping definitions:
 
-```sql
+```vql
 LET FieldMapping <= dict(
   Path="x=>x.EventData.Path"
 )
@@ -408,7 +408,7 @@ The number of hits is too large to manually review, so I typically
 just want to know which rules were matched by stacking on the rule
 Title:
 
-```sql
+```vql
 SELECT * FROM source(artifact="Sigma.Windows.Hayabusa.Rules")
 GROUP BY Title
 ```

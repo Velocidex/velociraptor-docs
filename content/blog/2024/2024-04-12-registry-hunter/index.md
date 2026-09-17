@@ -370,7 +370,7 @@ the hits for each category that is relevant to the case.
 For example, suppose I was interested in anything that was related to
 `PsExec`, I would write a notebook query of the form:
 
-```sql
+```vql
 SELECT Description, Category, OSPath AS Key, Mtime, Details FROM source()
 WHERE Details =~ "psexec"
 ```

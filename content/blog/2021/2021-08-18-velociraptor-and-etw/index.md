@@ -85,7 +85,7 @@ Let's get Velociraptor to watch the provider's GUID for any
 events. VQL provides the `watch_etw()` plugin to attach Velociraptor
 to the provider.
 
-```sql
+```vql
 SELECT *
 FROM watch_etw(guid="{1C95126E-7EEA-49A9-A3FE-A378B03DDB4D}")
 ```
@@ -98,7 +98,7 @@ information, such as the event data provided. Limiting the VQL query
 to filter for event 3020 and extracting the most relevant columns
 gives a nice DNS monitoring query:
 
-```sql
+```vql
 SELECT System.TimeStamp AS Timestamp,
        EventData.QueryName AS Query,
        EventData.QueryType AS Type,

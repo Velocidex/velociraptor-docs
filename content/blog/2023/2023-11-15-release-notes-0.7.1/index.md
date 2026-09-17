@@ -295,7 +295,7 @@ You can now hide an artifact from the GUI using the
 `artifact_set_metadata()` VQL function. For example the following
 query will hide all artifacts which do not have `Linux` in their name.
 
-```sql
+```vql
 SELECT *, artifact_set_metadata(hidden=TRUE, name=name)
 FROM artifact_definitions()
 WHERE NOT name =~ "Linux"

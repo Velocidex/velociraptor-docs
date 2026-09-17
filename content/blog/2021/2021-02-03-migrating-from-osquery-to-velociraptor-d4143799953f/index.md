@@ -39,7 +39,7 @@ Velociraptor’s — we only look at the query language itself.
 ### The file table
 
 One of the most often used OSQuery table is the file table. For example we can see information about a file:
-```sql
+```vql
 SELECT * FROM file WHERE path = "C:\Windows\notepad.exe";
 ```
 
@@ -59,7 +59,7 @@ relational database, tables are implemented by code, the code must be
 able to accept arguments. Therefore VQL’s syntax requires “tables” to
 take arguments (in VQL these are termed plugins):
 
-```sql
+```vql
 SELECT * FROM glob(globs="C:\\Windows\\notepad.exe")
 ```
 
@@ -74,12 +74,12 @@ file. OSQuery allows us to specify a wildcard for filenames as well,
 however it uses the SQL **like** syntax. For example to return all
 dlls in the system32 directory:
 
-```sql
+```vql
 SELECT * FROM file WHERE path like "C:\Windows\system32\%.dll";
 ```
 
 The equivalent VQL is
-```sql
+```vql
 SELECT * FROM glob(globs="C:\\Windows\\System32\\*.dll")
 ```
 
@@ -162,7 +162,7 @@ has the `=~` operator which means a regular expression match. SQL’s
 regular expression.
 
 The following selects all user details for usernames matching “user” followed by a digit.
-```sql
+```vql
 SELECT * FROM Artifact.Windows.Sys.Users() WHERE Name =~ "user[0–9]"
 ```
 

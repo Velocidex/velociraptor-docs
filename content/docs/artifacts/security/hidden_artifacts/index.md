@@ -32,7 +32,7 @@ each artifact using the `artifact_set_metadata()` function.
 The following VQL can be run in a notebook to hide all artifacts other
 than a selected set:
 
-```sql
+```vql
 LET VisibleArtifacts <= SELECT * FROM parse_csv(accessor="data",
 filename='''Artifacts
 Windows.Search.FileFinder

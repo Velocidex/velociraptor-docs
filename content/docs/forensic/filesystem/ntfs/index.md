@@ -165,7 +165,7 @@ using the ntfs accessor, then process it offline. For example using
 the `Windows.Search.FileFinder` artifact with the `ntfs` accessor - or
 simply using the VQL:
 
-```sql
+```vql
 SELECT upload(path="C:/$MFT", accessor="ntfs")
 FROM scope()
 ```
@@ -185,7 +185,7 @@ the disk - it is more efficient than a recursive glob and might
 recover deleted files. For example to recover all the files with a
 `.exe` extension from the drive:
 
-```sql
+```vql
 SELECT * FROM parse_mft(filename="C:/$MFT", accessor="ntfs")
 WHERE FileName =~ ".exe$"
 ```
@@ -281,7 +281,7 @@ in chronological order and may reveal causal relationships.  We can
 get a timeline by sorting the table on the modified or birth
 timestamps.
 
-```sql
+```vql
 SELECT * FROM parse_mft(filename="C:/$MFT", accessor="ntfs")
 WHERE Created0x30 > "2020-01-02"
 ORDER BY Created0x30
@@ -307,7 +307,7 @@ slack using the `parse_ntfs_i30()` function as discussed in
 
 An example query:
 
-```sql
+```vql
 SELECT *
 FROM foreach(row={
     SELECT OSPath,

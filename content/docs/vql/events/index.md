@@ -52,7 +52,7 @@ the server.
 You can get the feel of event queries by typing the following query
 into a notebook
 
-```sql
+```vql
 SELECT Unix FROM clock()
 ```
 

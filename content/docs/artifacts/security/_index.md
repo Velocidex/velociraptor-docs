@@ -81,7 +81,7 @@ each artifact using the `artifact_set_metadata()` function.
 The following VQL can be run in a notebook to hide all artifacts other
 than a selected set:
 
-```sql
+```vql
 LET VisibleArtifacts <= SELECT * FROM parse_csv(accessor="data",
 filename='''Artifacts
 Windows.Search.FileFinder
@@ -144,7 +144,7 @@ be denied because they do not have the `COLLECT_CLIENT` permission.
 However we can allow the user to collect **Some** artifacts that we
 deem to be safe.
 
-```sql
+```vql
 LET BasicArtifacts <= SELECT * FROM parse_csv(accessor="data",
 filename='''Artifacts
 Generic.Client.Info
@@ -271,14 +271,14 @@ possible to restrict the use of dangerous functions. For example:
 >
 > Specifically, do not launch commands via the shell:
 >
-> ```sql
+> ```vql
 > SELECT * FROM execve(argv=["cmd.exe", "/c", "cacls " + DirectoryName])
 > ```
 >
 > Instead always directly run the target binary - Velociraptor will
 > suitable escape the command line if required.
 >
-> ```sql
+> ```vql
 > SELECT * FROM execve(argv=["cacls.exe", DirectoryName])
 > ```
 

@@ -49,7 +49,7 @@ velociraptor user add --role administrator mike@gmail.comm
 ```
 
 Or via a notebook cell:
-```sql
+```vql
 SELECT user_create(user="mike@gmail.com", role="administrator")
 FROM scope()
 ```
