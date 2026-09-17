@@ -209,6 +209,16 @@ enableRobotsTXT = true
 # -- Theme Options (Hextra) --
 
 [params]
+  # Site-wide description: used for the homepage <meta name="description"
+  # tag, llms.txt header blockquote, and og:description fallback on
+  # non-page kinds.
+  description = "Official documentation for Velociraptor, the advanced digital forensics and incident response platform. Covers installation, configuration, VQL, artifacts and more."
+
+  # Default social share image (og:image). Kept separate from the theme's
+  # "images" param so the embedded twitter_cards template stays on its
+  # existing "summary" card (no twitter changes).
+  og_image = "images/velo_small.png"
+
   # Decorate external links with an ↗ arrow (theme render-link.html).
   externalLinkDecoration = true
 

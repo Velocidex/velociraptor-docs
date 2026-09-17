@@ -1,0 +1,80 @@
+{{- /*
+Structured data (schema.org JSON-LD).
+
+Overrides Hugo's embedded internal "schema.html" partial (which the theme
+calls from head.html and which emits only microdata <meta itemprop> tags,
+no JSON-LD). Emits a single application/ld+json graph per page:
+
+  - Home:        WebSite (with SearchAction) + Organization
+  - Content:     TechArticle / BlogPosting + BreadcrumbList
+  - Taxonomies:  CollectionPage + BreadcrumbList
+
+Dates are emitted only when the page actually has them, and every string is
+passed through jsonify so escaping is handled.
+*/ -}}
+{{- $site := .Site -}}
+{{- $home := $site.Home.Permalink -}}
+{{- $orgID := printf "%s#organization" $home -}}
+{{- $siteID := printf "%s#website" $home -}}
+{{- $title := .Title | default $site.Title -}}
+{{- $desc := partial "utils/page-description.html" . | plainify | htmlUnescape | chomp -}}
+{{- $logo := "images/velo_small.png" | absURL -}}
+
+{{- $graph := slice -}}
+
+{{- if .IsHome -}}
+  {{- $org := dict
+        "@type" "Organization"
+        "@id" $orgID
+        "name" $site.Title
+        "url" $home
+        "logo" (dict "@type" "ImageObject" "url" $logo) -}}
+  {{- $website := dict
+        "@type" "WebSite"
+        "@id" $siteID
+        "url" $home
+        "name" $site.Title
+        "description" ($site.Params.description | default $desc)
+        "publisher" (dict "@id" $orgID)
+        "potentialAction" (dict
+          "@type" "SearchAction"
+          "target" (dict "@type" "EntryPoint" "urlTemplate" (printf "%ssearch/?q={search_term_string}" $home))
+          "query-input" "required name=search_term_string") -}}
+  {{- $graph = $graph | append $org $website -}}
+{{- else -}}
+  {{- $crumbs := slice -}}
+  {{- $position := 1 -}}
+  {{- range .Ancestors.Reverse -}}
+    {{- $crumbs = $crumbs | append (dict "@type" "ListItem" "position" $position "name" (.Title | default $site.Title) "item" .Permalink) -}}
+    {{- $position = add $position 1 -}}
+  {{- end -}}
+  {{- $crumbs = $crumbs | append (dict "@type" "ListItem" "position" $position "name" $title "item" .Permalink) -}}
+  {{- $graph = $graph | append (dict "@type" "BreadcrumbList" "itemListElement" $crumbs) -}}
+
+  {{- $pageType := "TechArticle" -}}
+  {{- if eq .Section "blog" -}}
+    {{- $pageType = "BlogPosting" -}}
+  {{- else if or (eq .Kind "taxonomy") (eq .Kind "term") -}}
+    {{- $pageType = "CollectionPage" -}}
+  {{- else if eq .Section "announcements" -}}
+    {{- $pageType = "Article" -}}
+  {{- end -}}
+
+  {{- $page := dict
+        "@type" $pageType
+        "@id" (printf "%s#article" .Permalink)
+        "headline" $title
+        "description" $desc
+        "url" .Permalink
+        "mainEntityOfPage" .Permalink
+        "inLanguage" $site.Language.Locale
+        "image" $logo
+        "isPartOf" (dict "@id" $siteID)
+        "author" (dict "@id" $orgID)
+        "publisher" (dict "@id" $orgID) -}}
+  {{- with .PublishDate -}}{{- $page = merge $page (dict "datePublished" (.Format "2006-01-02T15:04:05-07:00")) -}}{{- end -}}
+  {{- with .Lastmod -}}{{- $page = merge $page (dict "dateModified" (.Format "2006-01-02T15:04:05-07:00")) -}}{{- end -}}
+  {{- $graph = $graph | append $page -}}
+{{- end -}}
+
+<script type="application/ld+json">{{ (dict "@context" "https://schema.org" "@graph" $graph) | jsonify | safeJS }}</script>

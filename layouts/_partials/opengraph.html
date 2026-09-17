@@ -38,13 +38,19 @@
     {{- end }}
   {{- end }}
 {{- else -}}
-  {{- with $.Site.Params.images }}
-    {{- $image := index . 0 -}}
-    {{- if hasPrefix $image "/" -}}
-      {{- $image = relURL (strings.TrimPrefix "/" $image) -}}
+  {{- /* Site-wide fallback: prefer params.images, then params.og_image.
+         og_image is a project-specific key so that setting a share image
+         does not switch the embedded twitter_cards template to a
+         "summary_large_image" card. */ -}}
+  {{- $image := $.Site.Params.og_image -}}
+  {{- with $.Site.Params.images }}{{ $image = index . 0 }}{{ end -}}
+  {{- with $image -}}
+    {{- $img := . -}}
+    {{- if hasPrefix $img "/" -}}
+      {{- $img = relURL (strings.TrimPrefix "/" $img) -}}
     {{- end -}}
-    <meta property="og:image" content="{{ $image | absURL }}">
-  {{- end }}
+    <meta property="og:image" content="{{ $img | absURL }}">
+  {{- end -}}
 {{- end -}}
 
 
