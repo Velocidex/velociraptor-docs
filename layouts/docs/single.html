@@ -1,7 +1,12 @@
-{{/* Knowledge-base single page layout: Hextra's docs/single.html with one
-       change - the legacy `Tags: #foo #bar` metadata line is stripped from
-       the rendered body (it is consumed as pagefind search metadata, see
-       layouts/baseof.html; it must not show on the page). */}}
+{{/* Docs single-page layout: Hextra's docs/single.html with two changes:
+       1. The title H1 is suppressed when the page sets `noTitle: true` (the
+          KB generator emits noTitle on every leaf because the article body
+          already starts with its own `# H1`; without this check the page
+          shows two H1s).
+       2. On knowledge_base pages the legacy `Tags: #foo #bar` metadata line
+          is stripped from the rendered body (it is consumed as pagefind
+          search metadata, see layouts/baseof.html; it must not show on the
+          page). */}}
 {{ define "main" }}
   <div class='hx:mx-auto hx:flex hextra-max-page-width'>
     {{ partial "sidebar.html" (dict "context" .) }}
@@ -10,13 +15,16 @@
       <main id="content" class="hx:w-full hx:min-w-0 hextra-max-content-width hx:px-6 hx:pt-4 hx:md:px-12">
         {{ partial "breadcrumb.html" (dict "page" . "enable" true) }}
         <div class="content">
-          {{ if .Title }}
+          {{ if and .Title (ne .Params.noTitle true) }}
           <div class="hx:flex hx:flex-col hx:sm:flex-row hx:items-start hx:sm:items-center hx:sm:justify-between hx:gap-4 hx:mb-4">
             <h1 class="hx:mb-0">{{ .Title }}</h1>
             {{ partial "components/page-context-menu" . }}
           </div>
           {{ end }}
-          {{- $content := replaceRE `(?i)<p>Tags:.*?</p>` "" .Content -}}
+          {{- $content := .Content -}}
+          {{- if eq .Section "knowledge_base" -}}
+            {{- $content = replaceRE `(?i)<p>Tags:.*?</p>` "" $content -}}
+          {{- end -}}
           {{ $content | safeHTML }}
         </div>
         {{ partial "components/last-updated.html" . }}
