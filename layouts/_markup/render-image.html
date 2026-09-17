@@ -56,7 +56,33 @@
 {{- if $isSVG -}}
   {{- /* --- SVG diagram: re-inject fonts, emit a separate *_ .svg file --- */ -}}
   {{- $data := $res.Content -}}
-  {{- $fontCss := `<style class="style-fonts">@font-face { font-family: Excalifont; src: url("/fonts/playpen-sans-v13-latin-500.woff2"); } @font-face { font-family: Nunito; src: url("/fonts/playpen-sans-v13-latin-800.woff2"); } @font-face {  font-family: "Comic Shanns"; src: url("/fonts/SVBasicManual.woff2"); }</style>` -}}
+  {{- /* Fonts must be embedded as base64 data URIs: an SVG rendered via
+         <img> runs in an isolated context that cannot fetch external
+         resources, so url("/fonts/...") @font-face rules silently fail
+         there (only the overlay's top-level view could load them). Embed
+         the substitute fonts inline and keep the original @font-face rules
+         for fonts we do not substitute (Virgil, Cascadia) so those glyphs
+         keep rendering too. */ -}}
+  {{- $font500 := base64Encode (readFile "static/fonts/playpen-sans-v13-latin-500.woff2") -}}
+  {{- $font800 := base64Encode (readFile "static/fonts/playpen-sans-v13-latin-800.woff2") -}}
+  {{- $comic := base64Encode (readFile "static/fonts/SVBasicManual.woff2") -}}
+  {{- $preserve := "" -}}
+  {{- with index (strings.FindRESubmatch `(?ms)<style class="style-fonts">(.*?)</style>` $data 1) 0 -}}
+    {{- range $m := strings.FindRESubmatch `(?s)@font-face\s*{[^}]*font-family:\s*(Virgil|Cascadia)[^}]*}` (index . 1) -}}
+      {{- $preserve = printf "%s%s" $preserve (index $m 0) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $rules := "" -}}
+  {{- if strings.Contains $data "Excalifont" -}}
+    {{- $rules = printf `%s@font-face { font-family: Excalifont; src: url("data:font/woff2;base64,%s"); } ` $rules $font500 -}}
+  {{- end -}}
+  {{- if strings.Contains $data "Nunito" -}}
+    {{- $rules = printf `%s@font-face { font-family: Nunito; src: url("data:font/woff2;base64,%s"); } ` $rules $font800 -}}
+  {{- end -}}
+  {{- if strings.Contains $data "Comic Shanns" -}}
+    {{- $rules = printf `%s@font-face { font-family: "Comic Shanns"; src: url("data:font/woff2;base64,%s"); } ` $rules $comic -}}
+  {{- end -}}
+  {{- $fontCss := printf `<style class="style-fonts">%s%s</style>` $preserve $rules -}}
   {{- $data = strings.ReplaceRE `(?ms)<style class="style-fonts">.+?</style>` $fontCss $data -}}
   {{- $width := "" -}}
   {{- $height := "" -}}
