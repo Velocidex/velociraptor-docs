@@ -1179,3 +1179,20 @@ html.dark #ssr-vql .hextra-cards table td {
   float: right;
   height: 16px;
 }
+
+/* --- FontAwesome icons embedded in content ---
+   GUI icons appear as <i class="fas fa-..."> / <i class="fa-solid fa-...">
+   (FontAwesome 6 Free, vendored in static/fontawesome). Render them at 2x
+   the surrounding text so the small GUI glyphs stay legible. FA's own
+   classes already set line-height:1 and width:1.25em, so scaling font-size
+   alone keeps the inline box tidy; vertical-align nudges the glyph onto
+   the text baseline (FA's recommended inline-icon alignment). */
+i.fas,
+i.fa-solid,
+i.far,
+i.fa-regular,
+i.fab,
+i.fa-brands {
+  font-size: 2em;
+  vertical-align: -0.125em;
+}

@@ -9,3 +9,8 @@
 <link rel="preload" href="/fonts/iosevka-term-regular-subset.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/fonts/iosevka-term-medium-subset.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/fonts/iosevka-term-bold-subset.woff2" as="font" type="font/woff2" crossorigin />
+{{- /* FontAwesome 6 Free (vendored, self-hosted) for GUI icons embedded in
+       content as <i class="fas fa-..."> / <i class="fa-solid fa-...">.
+       all.min.css declares solid/regular/brands + v4 shims; browsers only
+       fetch the woff2 actually used thanks to unicode-range. */ -}}
+<link rel="stylesheet" href="/fontawesome/css/all.min.css" />
