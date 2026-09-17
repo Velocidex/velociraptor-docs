@@ -45,19 +45,24 @@ Please update to the latest release [0.77.2](/downloads/) to address
     write and use the ones others have shared.
   {{< /feature >}}
 
+  {{< feature icon="library" title="Artifact Reference" url="/artifact_references/" >}}
+    A copy of the artifacts built into Velociraptor and shipped with
+    every release.
+  {{< /feature >}}
+
   {{< feature icon="lightbulb" title="Knowledge Base" url="/knowledge_base/" >}}
     Short, focused articles that answer everyday questions about using
     Velociraptor.
   {{< /feature >}}
 
-  {{< feature icon="newspaper" title="Blog" url="/blog/" >}}
-    In-depth articles on using Velociraptor in different scenarios and
-    staying on top of what's new.
+  {{< feature icon="academic-cap" title="Training" url="/training/" >}}
+    Course material, slides and playbooks from official and community
+    Velociraptor training.
   {{< /feature >}}
 
-  {{< feature icon="download" title="Downloads" url="/downloads/" >}}
-    Pre-built binaries for all supported platforms, complete with hashes
-    and signatures.
+  {{< feature icon="presentation-chart-bar" title="Presentations" url="/presentations/" >}}
+    Slides and recordings from conferences and events that featured
+    Velociraptor.
   {{< /feature >}}
 
 {{< /feature-grid >}}

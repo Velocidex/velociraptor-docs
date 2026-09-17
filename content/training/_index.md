@@ -1,14 +1,10 @@
 ---
-type: wide
-cascade:
-  type: wide
-sidebar:
-  exclude: true
 menutitle: "Training"
+linkTitle: Training
 title: "Training Resources"
 date: 2021-06-12T14:03:59Z
 draft: false
-weight: 90
+weight: 260
 pre: <i class="fas fa-graduation-cap"></i>
 description: |
   ## Scheduled courses

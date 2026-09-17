@@ -181,14 +181,14 @@ enableRobotsTXT = true
 # sidebar-footer template in layouts/_partials/sidebar.html)
 
 [[menus.sidebar]]
-  name = "Search"
-  pageRef = "/search/"
-  weight = 10
-
-[[menus.sidebar]]
   name = "Rapid7 Docs"
   url = "https://docs.rapid7.com/insightidr/velociraptor-integration/"
-  weight = 20
+  weight = 50
+
+[[menus.sidebar]]
+  name = "Search"
+  pageRef = "/search/"
+  weight = 60
 
 # -- Theme Options (Hextra) --
 
