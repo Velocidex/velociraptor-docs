@@ -104,6 +104,24 @@ pre {
   font-size-adjust: none;
 }
 
+/* Code ligatures. Iosevka (like Fira Code and JetBrains Mono) assigns its
+   operator ligatures -- -> <= >= != == -- to the calt feature, so a VQL
+   "a <= b" renders as a single "≤" glyph and reads as the wrong operator.
+   Disable the features by tag: calt is what Iosevka uses, and the rest cover
+   other monospace faces so a future font swap cannot reintroduce this.
+   font-variant-ligatures is the spec-level equivalent for engines that map
+   it; letter-spacing is a belt-and-braces fallback (non-zero spacing also
+   disables optional ligatures), and at 0.01em it is under a fifth of a pixel
+   per character, so the extra tracking is invisible. */
+code,
+kbd,
+samp,
+pre {
+  font-variant-ligatures: none;
+  font-feature-settings: "calt" 0, "liga" 0, "clig" 0, "dlig" 0;
+  letter-spacing: 0.01em;
+}
+
 /* Iosevka is a narrow font, and Hextra applies 0.9em twice to fenced code
    blocks (wrapper + pre), which renders ~12.96px vs 16px body text. Nudge
    fenced code back up so it stays readable next to the prose. */
