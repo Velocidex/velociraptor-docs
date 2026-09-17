@@ -39,7 +39,7 @@
       </a>
     </div>
   {{- end -}}
-  <div class="hextra-scrollbar hx:overflow-y-auto hx:overflow-x-hidden hx:p-4">
+  <div class="hextra-scrollbar hx:grow hx:overflow-y-auto hx:overflow-x-hidden hx:p-4">
     <ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden">
       <!-- Nav -->
       {{ template "sidebar-main" (dict "context" site.Home "pageURL" $pageURL "page" $context "toc" true) -}}
