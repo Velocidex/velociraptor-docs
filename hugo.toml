@@ -251,6 +251,10 @@ enableRobotsTXT = true
       height = "28"
 
   [params.footer]
+    # Footer moved into the left sidebar (Rapid7 strip below the theme
+    # toggle, see layouts/_partials/sidebar.html); the Hextra page footer
+    # is disabled entirely.
+    enable = false
     width = "normal"
     displayPoweredBy = false
     displayCopyright = true

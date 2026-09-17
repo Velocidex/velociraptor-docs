@@ -60,15 +60,24 @@
   {{ $displayThemeToggle := (site.Params.theme.displayToggle | default true) -}}
 
   {{ if or hugo.IsMultilingual $displayThemeToggle }}
-    <div class="{{ $switchesClass }} {{ with hugo.IsMultilingual }}hx:justify-end{{ end }} hx:sticky hx:bottom-0 hx:max-h-(--menu-height) hx:bg-white hx:dark:bg-dark hx:mx-4 hx:py-4 hx:shadow-[0_-12px_16px_#fff] hx:flex hx:items-center hx:gap-2 hx:border-gray-200 hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none hx:border-t" data-toggle-animation="show">
-      {{- with hugo.IsMultilingual -}}
-        {{- partial "language-switch" (dict "context" $context "grow" true) -}}
-        {{- with $displayThemeToggle }}{{ partial "theme-toggle" (dict "hideLabel" true "location" "bottom-right") }}{{ end -}}
-      {{- else -}}
-        {{- with $displayThemeToggle -}}
-          <div class="hx:flex hx:grow hx:flex-col">{{ partial "theme-toggle" }}</div>
+    <div class="{{ $switchesClass }} {{ with hugo.IsMultilingual }}hx:justify-end{{ end }} hx:sticky hx:bottom-0 hx:bg-white hx:dark:bg-dark hx:mx-4 hx:shadow-[0_-12px_16px_#fff] hx:flex hx:flex-col hx:border-gray-200 hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none hx:border-t" data-toggle-animation="show">
+      <div class="hx:flex hx:items-center hx:gap-2 hx:py-4">
+        {{- with hugo.IsMultilingual -}}
+          {{- partial "language-switch" (dict "context" $context "grow" true) -}}
+          {{- with $displayThemeToggle }}{{ partial "theme-toggle" (dict "hideLabel" true "location" "bottom-right") }}{{ end -}}
+        {{- else -}}
+          {{- with $displayThemeToggle -}}
+            <div class="hx:flex hx:grow hx:flex-col">{{ partial "theme-toggle" }}</div>
+          {{- end -}}
         {{- end -}}
-      {{- end -}}
+      </div>
+      {{- /* Rapid7 footer strip — mirrors the legacy docs site footer. */ -}}
+      <div class="hextra-sidebar-footer">
+        Brought to you by
+        <img src="{{ "images/Rapid7_logo.svg" | relURL }}" alt="Rapid7 logo" class="rapid7" />
+        <br />
+        &copy; {{ now.Year }}
+      </div>
     </div>
   {{- end -}}
 </aside>

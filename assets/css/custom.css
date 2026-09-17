@@ -1150,3 +1150,21 @@ html.dark #ssr-vql .hextra-cards table td {
 #ssr-vql .hextra-cards table th {
   font-weight: 600;
 }
+
+/* --- Sidebar footer: "Brought to you by Rapid7" ---
+   Mirrors the legacy docs site footer: a black band pinned to the bottom
+   of the left sidebar, with the white Rapid7 logo and copyright line.
+   The negative horizontal margins cancel the theme-toggle row's mx-4 so
+   the strip spans the full sidebar width. */
+.hextra-sidebar-footer {
+  background-color: #000;
+  color: #b3b3b3;
+  font-size: 13px;
+  margin: 0 -1rem;
+  padding: 0.625rem 1rem;
+}
+
+.hextra-sidebar-footer .rapid7 {
+  float: right;
+  height: 16px;
+}
