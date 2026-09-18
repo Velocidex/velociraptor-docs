@@ -10,13 +10,13 @@ keywords: []
 
 Velociraptor is a great tool for collecting endpoint state easily and efficiently. It is so efficient, that sometimes we end up with a lot of collected data and are left with the task of making sense of the data, and documenting our investigative process.
 
-In [a previous article](../2020-03-06-velociraptor-post-processing-with-jupyter-notebook-and-pandas-8a344d05ee8c/) we have seen how post-processing of collected data can be done using [Jupyter notebooks](https://jupyter.org/). The notebook is a living document, allowing us to run analysis code interspersed among documentation which can be updates in real time, as the analyst post-processes and annotates the data.
+In [a previous article](./2020-03-06-velociraptor-post-processing-with-jupyter-notebook-and-pandas-8a344d05ee8c/) we have seen how post-processing of collected data can be done using [Jupyter notebooks](https://jupyter.org/). The notebook is a living document, allowing us to run analysis code interspersed among documentation which can be updates in real time, as the analyst post-processes and annotates the data.
 
 Although one can still use Jupyter notebooks to post process Velociraptor collected data, the latest Velociraptor release (0.4.1) added a notebook feature built in. This saves the effort of connecting Jupyter via the API and running python wrappers to manipulate VQL. Velociraptor notebooks are also better integrated into the rest of Velociraptor with native support for VQL, markdown and embedded images. In this article we will explore a typical workflow of using Velociraptor notebooks to investigate a DFIR
 
 ## Velociraptor’s notebooks
 
-In the following article we analyze the same case as in our [previous article](../2020-03-06-velociraptor-post-processing-with-jupyter-notebook-and-pandas-8a344d05ee8c/). After installing the latest [Velociraptor release](https://github.com/Velocidex/velociraptor/releases) (0.4.1) we see a new “Notebooks” menu option on the navigation sidebar.
+In the following article we analyze the same case as in our [previous article](./2020-03-06-velociraptor-post-processing-with-jupyter-notebook-and-pandas-8a344d05ee8c/). After installing the latest [Velociraptor release](https://github.com/Velocidex/velociraptor/releases) (0.4.1) we see a new “Notebooks” menu option on the navigation sidebar.
 
 ![](../../img/13sxd7Sd06lwHjBYfhVI1Sg.png)
 
