@@ -156,8 +156,9 @@ pre {
 }
 
 /* --- 404 page (layouts/404.html) ---
-   Centred under the navbar/footer chrome. The big error code uses the
-   theme accent so it inherits dark mode automatically. */
+   Centred in the column to the right of the docs sidebar, under the
+   navbar/footer chrome. The big error code uses the theme accent so it
+   inherits dark mode automatically. */
 .hextra-404 {
   display: flex;
   align-items: center;
@@ -168,16 +169,6 @@ pre {
 
 .hextra-404-inner {
   text-align: center;
-}
-
-.hextra-404-brand {
-  display: inline-block;
-  width: min(320px, 100%);
-}
-
-.hextra-404-brand img {
-  width: 100%;
-  height: auto;
 }
 
 .hextra-404-code {
