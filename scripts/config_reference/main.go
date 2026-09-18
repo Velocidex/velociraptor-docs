@@ -80,12 +80,9 @@ func is_container(node *yaml.Node) bool {
 }
 
 /* A container (mapping/sequence) renders as a collapsible <details>.
-   Top-level sections (depth 1) are open by default so the reader sees
-   the overall structure; deeper levels start collapsed. */
-func details_open(depth int) string {
-	if depth <= 1 {
-		return " open"
-	}
+   All sections start collapsed so the reader can browse the overview
+   and expand only what interests them. */
+func details_open() string {
 	return ""
 }
 
@@ -138,7 +135,7 @@ func print_node(node *yaml.Node, breadcrumb []string) string {
 `, comment,
 					make_id(item_breadcrumb),
 					depth,
-					details_open(depth),
+					details_open(),
 					chevron_svg,
 					label,
 					make_display_breadcrumb(item_breadcrumb),
@@ -201,7 +198,7 @@ func print_node(node *yaml.Node, breadcrumb []string) string {
 				id,
 				id,
 				depth,
-				details_open(depth),
+				details_open(),
 				chevron_svg,
 				fmt.Sprintf(repository_link, value.Line),
 				escape(key.Value),

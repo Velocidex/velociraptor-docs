@@ -36,11 +36,11 @@
     var q = box.value.trim().toLowerCase();
 
     if (!q) {
-      /* Restore default open state: top-level sections open, deeper closed. */
+      /* Restore the default open state: everything collapsed. */
       items.forEach(function (el) {
         el.classList.remove('filtered-out');
         var d = el.querySelector('details');
-        if (d) d.open = (parseInt(el.getAttribute('data-depth'), 10) || 1) <= 1;
+        if (d) d.open = false;
       });
       return;
     }
