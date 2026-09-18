@@ -149,6 +149,13 @@ enableRobotsTXT = true
     button = true
 
 [[menus.main]]
+  name = "Config Reference"
+  pageRef = "/docs/deployment/references/"
+  weight = 38
+  [menus.main.params]
+    button = true
+
+[[menus.main]]
   name = "Search"
   weight = 40
 

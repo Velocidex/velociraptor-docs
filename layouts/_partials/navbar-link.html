@@ -1,15 +1,20 @@
 {{- /* Override of Hextra's navbar-link partial (theme: layouts/_partials/navbar-link.html).
-       Identical to the theme default EXCEPT regular menu items with
-       params.button=true (set on Docs / Blog / Downloads / VQL Reference in
-       hugo.toml) render as equal-width pill buttons (.hextra-nav-btn styled
-       in custom.css) instead of plain text links. */ -}}
+Identical to the theme default EXCEPT regular menu items with
+        params.button=true (set on Docs / Blog / Downloads / VQL Reference /
+        Config Reference in hugo.toml) render as equal-width pill buttons
+        (.hextra-nav-btn styled in custom.css) instead of plain text links. */ -}}
 {{- $currentPage := .currentPage -}}
 {{- $link := .link -}}
 {{- $item := .item -}}
 {{- $icon := .icon -}}
 {{- $external := .external -}}
+{{- $exactMatch := default false .exactMatch -}}
 
-{{- $active := or ($currentPage.HasMenuCurrent "main" $item) ($currentPage.IsMenuCurrent "main" $item) -}}
+{{- $exact := $currentPage.IsMenuCurrent "main" $item -}}
+{{- /* When an item (e.g. Config Reference) matches the current page exactly,
+       section items (Docs) suppress their descendant highlight so two
+       adjacent pills don't both light up (see navbar.html). */ -}}
+{{- $active := or $exact (and (not $exactMatch) ($currentPage.HasMenuCurrent "main" $item)) -}}
 {{- /* Additional check for section landing pages in multilingual sites (normalize trailing slashes) */ -}}
 {{- if and (not $active) $link -}}
   {{- $currentPath := strings.TrimSuffix "/" $currentPage.RelPermalink -}}
@@ -74,9 +79,9 @@
   </ul>
 </div>
 {{- else if and (not $icon) $item.Params.button -}}
-{{- /* Regular menu item rendered as an equal-width pill button (Docs,
-       Blog, Downloads, VQL Reference). `active` gets an aria-current for
-       a11y. */ -}}
+{{- /* Regular menu item rendered as an equal-width pill button.  When
+       active this is the only highlighted pill (section parents are
+       suppressed via the exactMatch flag — see the top of this file). */ -}}
 <a
   title="{{ or (T $item.Identifier) $item.Name | safeHTML }}"
   href="{{ $link }}"
