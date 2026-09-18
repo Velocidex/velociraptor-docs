@@ -32,13 +32,27 @@
     return false;
   }
 
+  /* The generator emits each item's documentation comment as a
+     .item-comment div immediately before its .ref-item li, so hiding an
+     item must hide the orphaned comment with it. */
+  function itemComment(el) {
+    var sib = el.previousElementSibling;
+    return sib && sib.classList.contains('item-comment') ? sib : null;
+  }
+
+  function setFiltered(el, filtered) {
+    el.classList.toggle('filtered-out', filtered);
+    var c = itemComment(el);
+    if (c) c.classList.toggle('filtered-out', filtered);
+  }
+
   function applyFilter() {
     var q = box.value.trim().toLowerCase();
 
     if (!q) {
       /* Restore the default open state: everything collapsed. */
       items.forEach(function (el) {
-        el.classList.remove('filtered-out');
+        setFiltered(el, false);
         var d = el.querySelector('details');
         if (d) d.open = false;
       });
@@ -50,11 +64,11 @@
       var descendantMatch = hasMatchingDescendant(el, q);
 
       if (selfMatch || descendantMatch) {
-        el.classList.remove('filtered-out');
+        setFiltered(el, false);
         var d = el.querySelector('details');
         if (d) d.open = true;
       } else {
-        el.classList.add('filtered-out');
+        setFiltered(el, true);
       }
     });
   }

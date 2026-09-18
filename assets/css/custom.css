@@ -203,8 +203,9 @@ p.egg {
   display: none;
 }
 
-/* --- Generated config reference page (docs/deployment/references) --- */
-.document-comment,
+/* --- Generated config reference page (docs/deployment/references) ---
+   The item comments are grey callout boxes; the page intro (document-
+   comment) renders as a plain paragraph. */
 .item-comment {
   margin-top: 20px;
   padding: 12px 16px;
@@ -213,7 +214,6 @@ p.egg {
   color: #171717;
 }
 
-.dark .document-comment,
 .dark .item-comment {
   background: #262626;
   color: #f5f5f5;
@@ -331,8 +331,11 @@ p.egg {
   max-width: 30em;
 }
 
-/* Filtered-out items are hidden; containers that match stay expanded. */
-.ref-item.filtered-out {
+/* Filtered-out items are hidden; containers that match stay expanded.
+   The item's associated comment block hides with it (the filter toggles
+   filtered-out on both; see references/reference-filter script). */
+.ref-item.filtered-out,
+.item-comment.filtered-out {
   display: none;
 }
 
