@@ -220,8 +220,8 @@ p.egg {
 }
 
 .item-name {
-  display: inline-block;
-  margin-top: 12px;
+  display: flex;
+  align-items: center;
 }
 
 .category-icon {
@@ -230,10 +230,11 @@ p.egg {
 }
 
 .reference-key {
+  display: flex;
+  align-items: center;
   padding-right: 1ex;
 }
 
-.reference-key,
 .reference-value-sequence,
 .reference-value-mapping {
   display: inline;
@@ -285,11 +286,11 @@ p.egg {
 /* Each config item renders as a card so readers can visually associate
    the key, breadcrumb, comment and value as one unit.  Mirrors the
    section-search card look (rounded-lg border, hover accent). */
-.ref-item {
+.reference-document .ref-item {
   border: 1px solid #e5e7eb; /* gray-200 */
   border-radius: 0.5rem;
   padding: 0.5rem 0.75rem;
-  margin: 0.5rem 0;
+  margin: 0 0 0.5rem 0;
   background: transparent;
   transition: border-color 0.2s ease, background-color 0.2s ease;
 }
@@ -336,8 +337,21 @@ p.egg {
 }
 
 .bullet-placeholder {
-  padding: 10px;
+  padding: 0 10px;
   display: inline;
+}
+
+/* Copy-anchor button on each config item, sitting inline right after the
+   item's GitHub link (same row, left side).  The margin keeps the anchor
+   icon visually separated from the key/GitHub text it belongs to.  The
+   generated href="#<id>" also works as a plain shareable deep link. */
+.anchorlink {
+  margin-left: 0.5em;
+  text-decoration: none;
+}
+
+.anchorlink:hover {
+  color: #171717; /* neutral-900 */
 }
 
 .dark .anchorlink {

@@ -21,6 +21,15 @@ const (
 	   keep it at 1em regardless of the surrounding CSS context. */
 	chevron_svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>`
 
+	/* Small inline link icon for the copy-anchor button on each item.
+	   Clicking it copies the page URL with the item's #fragment. */
+	anchor_icon_svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`
+
+	/* Copy-anchor button markup.  The href doubles as a plain anchor link
+	   (so the fragment works without JS); the click handler copies the full
+	   page URL + fragment to the clipboard. */
+	anchor_link = `<a class="anchorlink" href="#%s" title="Copy link to this item" aria-label="Copy link to this item">%s</a>`
+
 	header = `---
 title: Configuration File Reference
 menutitle: "Config Reference"
@@ -181,9 +190,7 @@ func print_node(node *yaml.Node, breadcrumb []string) string {
  <details%s>
 <summary class="ref-summary">%s
     <div class="reference-key">
-      <a target="_blank" href="%s">
-        %s
-      </a>
+      <a target="_blank" href="%s">%s</a> %s
     </div>
   </summary>
   <div class="item-breadcrumb">%s</div>
@@ -198,6 +205,7 @@ func print_node(node *yaml.Node, breadcrumb []string) string {
 				chevron_svg,
 				fmt.Sprintf(repository_link, value.Line),
 				escape(key.Value),
+				fmt.Sprintf(anchor_link, id, anchor_icon_svg),
 				make_display_breadcrumb(next_breadcrumb),
 				print_node(value, next_breadcrumb))
 			} else {
@@ -211,9 +219,7 @@ func print_node(node *yaml.Node, breadcrumb []string) string {
 <li class="ref-item ref-leaf" id="%s" data-key="%s" data-depth="%d">
  <span class="item-name">%s
    <div class="reference-key">
-     <a target="_blank" href="%s">
-       %s
-     </a>
+     <a target="_blank" href="%s">%s</a> %s
    </div>
   </span>
   <div class="item-breadcrumb">%s</div>
@@ -226,6 +232,7 @@ func print_node(node *yaml.Node, breadcrumb []string) string {
 				`<i class="bullet-placeholder"></i>`,
 				fmt.Sprintf(repository_link, value.Line),
 				escape(key.Value),
+				fmt.Sprintf(anchor_link, id, anchor_icon_svg),
 				make_display_breadcrumb(next_breadcrumb),
 				print_node(value, next_breadcrumb))
 			}
