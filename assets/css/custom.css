@@ -226,6 +226,7 @@ p.egg {
 
 .category-icon {
   margin: 0 6px;
+  flex-shrink: 0;
 }
 
 .reference-key {
@@ -260,15 +261,83 @@ p.egg {
   padding-left: 0.5em;
 }
 
+/* Collapsible config sections: hide the native disclosure triangle and
+   style the summary like the old item-name row. */
+.reference-document details > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.reference-document details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.reference-document details > summary .category-icon {
+  transition: transform 0.15s ease;
+}
+
+.reference-document details[open] > summary .category-icon {
+  transform: rotate(90deg);
+}
+
+/* Each config item renders as a card so readers can visually associate
+   the key, breadcrumb, comment and value as one unit.  Mirrors the
+   section-search card look (rounded-lg border, hover accent). */
+.ref-item {
+  border: 1px solid #e5e7eb; /* gray-200 */
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  margin: 0.5rem 0;
+  background: transparent;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.dark .ref-item {
+  border-color: #262626; /* neutral-800 */
+}
+
+.ref-item:hover {
+  border-color: #d1d5db; /* gray-300 */
+}
+
+.dark .ref-item:hover {
+  border-color: #404040; /* neutral-700 */
+  background-color: #171717; /* neutral-900 */
+}
+
+/* Breadcrumb path shown under each key. */
+.item-breadcrumb {
+  font-size: 0.85em;
+  color: #a3a3a3;
+  margin: 2px 0 4px 0;
+  padding-left: 1.5em;
+}
+
+.dark .item-breadcrumb {
+  color: #6b7280;
+}
+
+/* Filter box at the top of the reference page: matches the section-search
+   inputs on the Artifact/VQL Reference pages (rounded-md border input).
+   The hx: utility classes on the input handle the border/bg look; this
+   rule adds breathing room around it (the section-search widgets use
+   margin: 2rem 0 on their wrapper). */
+.reference-filter {
+  margin: 2rem 0;
+  width: 100%;
+  max-width: 30em;
+}
+
+/* Filtered-out items are hidden; containers that match stay expanded. */
+.ref-item.filtered-out {
+  display: none;
+}
+
 .bullet-placeholder {
   padding: 10px;
   display: inline;
-}
-
-.anchorlink {
-  float: right;
-  padding-right: 20px;
-  color: #737373;
 }
 
 .dark .anchorlink {

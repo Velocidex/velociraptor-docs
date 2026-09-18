@@ -17,15 +17,17 @@ import (
 const (
 	repository_link = "https://github.com/Velocidex/velociraptor/blob/master/docs/references/server.config.yaml#L%d"
 
-	/* Inline SVG icons that replace the old Font Awesome <i> tags
-	   (Font Awesome was purged in the Blowfish migration). */
-	chevron_svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" fill="currentColor" class="category-icon inline h-4 w-4" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>`
-	link_svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="category-icon inline h-4 w-4" aria-hidden="true"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>`
+	/* Small inline chevron for collapsible sections.  Explicit width/height
+	   keep it at 1em regardless of the surrounding CSS context. */
+	chevron_svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="1em" height="1em" fill="currentColor" class="category-icon" aria-hidden="true"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>`
 
 	header = `---
-title: Configuration file Reference
+title: Configuration File Reference
+menutitle: "Config Reference"
 weight: 120
 no_children: true
+type: docs-no-toc
+reference_filter: true
 description: |
   This is an annotated server.config.yaml with complete explanations for all
   options currently available.
@@ -52,6 +54,10 @@ func make_id(breadcrumb []string) string {
 	return strings.Join(breadcrumb, ".")
 }
 
+func make_display_breadcrumb(breadcrumb []string) string {
+	return strings.Join(breadcrumb, " > ")
+}
+
 func escape(in string) string {
 	return html.EscapeString(in)
 }
@@ -62,6 +68,16 @@ func is_container(node *yaml.Node) bool {
 		return true
 	}
 	return false
+}
+
+/* A container (mapping/sequence) renders as a collapsible <details>.
+   Top-level sections (depth 1) are open by default so the reader sees
+   the overall structure; deeper levels start collapsed. */
+func details_open(depth int) string {
+	if depth <= 1 {
+		return " open"
+	}
+	return ""
 }
 
 func print_node(node *yaml.Node, breadcrumb []string) string {
@@ -82,25 +98,63 @@ func print_node(node *yaml.Node, breadcrumb []string) string {
 
 	case yaml.SequenceNode:
 		result += "<ul>\n"
-		for _, c := range node.Content {
-			bullet := `<i class="bullet-placeholder"></i>`
-			if is_container(c) {
-				bullet = chevron_svg
-			}
+		for i, c := range node.Content {
+			comment := strip_comments(c.HeadComment)
+			depth := len(breadcrumb)
 
-			result += fmt.Sprintf(`
+			if is_container(c) {
+				/* Sequence item that is itself a mapping/sequence:
+				   collapsible, labelled with its index. */
+				label := fmt.Sprintf("[%d]", i)
+				item_breadcrumb := append([]string{}, breadcrumb...)
+				item_breadcrumb = append(item_breadcrumb, label)
+
+				result += fmt.Sprintf(`
 <div class="item-comment">
 
 %s
 
 </div>
-<li>
+<li class="ref-item ref-container" data-key="%s" data-depth="%d">
+ <details%s>
+ <summary class="ref-summary">%s
+   <div class="reference-key">
+     %s
+   </div>
+  </summary>
+  <div class="item-breadcrumb">%s</div>
+  <div class="reference-value-sequence">%s</div>
+ </details>
+</li>
+`, comment,
+					make_id(item_breadcrumb),
+					depth,
+					details_open(depth),
+					chevron_svg,
+					label,
+					make_display_breadcrumb(item_breadcrumb),
+					print_node(c, item_breadcrumb))
+			} else {
+				/* Scalar sequence item: plain value. */
+				result += fmt.Sprintf(`
+<div class="item-comment">
+
+%s
+
+</div>
+<li class="ref-item ref-leaf" data-key="%s" data-depth="%d">
    <span class="item-name">%s
      <div class="reference-value-sequence">%s</div>
    </span>
+   <div class="item-breadcrumb">%s</div>
 </li>
-`, strip_comments(c.HeadComment), bullet,
-				print_node(c, breadcrumb))
+`, comment,
+					make_id(breadcrumb),
+					depth,
+					`<i class="bullet-placeholder"></i>`,
+					print_node(c, breadcrumb),
+					make_display_breadcrumb(breadcrumb))
+			}
 		}
 		result += "</ul>\n"
 
@@ -111,39 +165,70 @@ func print_node(node *yaml.Node, breadcrumb []string) string {
 			value := node.Content[i+1]
 
 			next_breadcrumb := add_breadcrumb(breadcrumb, escape(key.Value))
+			id := make_id(next_breadcrumb)
+			depth := len(next_breadcrumb)
+			comment := strip_comments(key.HeadComment)
 
-			bullet := `<i class="bullet-placeholder"></i>`
 			if is_container(value) {
-				bullet = chevron_svg
-			}
-
-			result += fmt.Sprintf(`
+				/* Container value: collapsible <details> section. */
+				result += fmt.Sprintf(`
 <div class="item-comment">
 
 %s
 
 </div>
-<li id="%s">
+<li class="ref-item ref-container" id="%s" data-key="%s" data-depth="%d">
+ <details%s>
+<summary class="ref-summary">%s
+    <div class="reference-key">
+      <a target="_blank" href="%s">
+        %s
+      </a>
+    </div>
+  </summary>
+  <div class="item-breadcrumb">%s</div>
+  <div class="reference-value-mapping">%s</div>
+ </details>
+</li>
+`, comment,
+				id,
+				id,
+				depth,
+				details_open(depth),
+				chevron_svg,
+				fmt.Sprintf(repository_link, value.Line),
+				escape(key.Value),
+				make_display_breadcrumb(next_breadcrumb),
+				print_node(value, next_breadcrumb))
+			} else {
+				/* Scalar value: plain leaf item. */
+				result += fmt.Sprintf(`
+<div class="item-comment">
+
+%s
+
+</div>
+<li class="ref-item ref-leaf" id="%s" data-key="%s" data-depth="%d">
  <span class="item-name">%s
    <div class="reference-key">
      <a target="_blank" href="%s">
        %s
      </a>
    </div>
-   <a href="#%s" class="anchorlink">
-      %s
-   </a>
   </span>
+  <div class="item-breadcrumb">%s</div>
   <div class="reference-value-mapping">%s</div>
 </li>
-`, strip_comments(key.HeadComment),
-				make_id(next_breadcrumb),
-				bullet,
+`, comment,
+				id,
+				id,
+				depth,
+				`<i class="bullet-placeholder"></i>`,
 				fmt.Sprintf(repository_link, value.Line),
 				escape(key.Value),
-				make_id(next_breadcrumb),
-				link_svg,
+				make_display_breadcrumb(next_breadcrumb),
 				print_node(value, next_breadcrumb))
+			}
 		}
 		result += "</ul>\n"
 	}

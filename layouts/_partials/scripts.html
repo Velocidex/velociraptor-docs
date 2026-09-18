@@ -32,3 +32,8 @@
 {{- if (.Store.Get "hasImageZoom") -}}
   {{- partial "scripts/medium-zoom.html" . -}}
 {{- end -}}
+
+{{/* Local filter for the Configuration file Reference page. */}}
+{{- if (.Store.Get "hasReferenceFilter") -}}
+  {{- partial "scripts/reference-filter.html" . -}}
+{{- end -}}
