@@ -451,9 +451,23 @@ html.dark .platform svg path {
    grayscale filter.  (The source SVG should already stay legible on both
    light and dark navbar backgrounds; the 28px height is pinned below.) */
 
-/* Navbar logo: mobile-only bare raptor mark (hx:md:hidden on the
-   navbar-title wrapper).  The 28px height is pinned here; width scales
-   from the SVG's natural 0.62 aspect ratio. */
+/* Navbar must be opaque: the theme's blur layer uses a translucent
+   background (bg-white/[.85], dark:bg-dark/80) with backdrop blur, which
+   lets page content ghost through while scrolling.  Force a solid
+   background in both themes. */
+.hextra-nav-container-blur {
+  background-color: #fff !important;
+}
+
+html.dark .hextra-nav-container-blur {
+  background-color: var(--hx-color-dark) !important;
+}
+
+/* Navbar logo: bare raptor mark.  On desktop it is hidden by default
+   (visibility, not display — see the media query further down) and only
+   appears once the sidebar logo has scrolled out of view; on mobile it
+   is the only logo and stays visible.  The 28px height is pinned here;
+   width scales from the SVG's natural 0.62 aspect ratio. */
 .hextra-navbar-logo img {
   height: 28px;
   width: auto;
@@ -551,7 +565,7 @@ html.dark .hextra-nav-btn[aria-current] {
 }
 
 .hextra-sidebar-container .hextra-sidebar-logo img {
-  width: 80% !important;
+  width: 60% !important;
   height: auto !important;
 }
 
@@ -559,8 +573,8 @@ html.dark .hextra-nav-btn[aria-current] {
    give the sidebar a fixed height of 100vh - navbar so its sticky top-16
    never releases (its bottom stays glued to the viewport bottom, so it
    cannot scroll up at the end of the page).  The menu flex-fills the
-   space left after the pinned logo and the sticky footer, scrolling
-   internally. */
+   space between the navbar and the sticky footer, scrolling internally
+   (the sidebar logo now scrolls with the menu). */
 @media (min-width: 768px) {
   .hextra-sidebar-container {
     height: calc(100vh - var(--navbar-height));
@@ -569,6 +583,21 @@ html.dark .hextra-nav-btn[aria-current] {
   .hextra-sidebar-container > .hextra-scrollbar {
     flex: 1 1 0%;
     min-height: 0;
+  }
+}
+
+/* Navbar logo (small raptor mark): on desktop it is hidden by default and
+   only appears once the sidebar logo has scrolled out of view
+   (assets/js/navbar-logo.js toggles .hextra-navbar-logo-visible).  It is
+   hidden with visibility, not display, so its slot stays reserved and the
+   always-visible navbar buttons never shift.  On mobile the sidebar logo
+   does not exist, so the navbar mark stays visible there. */
+@media (min-width: 768px) {
+  .hextra-navbar-logo {
+    visibility: hidden;
+  }
+  .hextra-navbar-logo.hextra-navbar-logo-visible {
+    visibility: visible;
   }
 }
 

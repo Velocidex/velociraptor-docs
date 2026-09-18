@@ -236,7 +236,8 @@ enableRobotsTXT = true
 
   [params.theme]
     default = "system"    # valid: light, dark, system (system = follow OS preference for new visitors)
-    displayToggle = true
+    # displayToggle is intentionally unset: the theme's footer/sidebar
+    # theme-toggle rows are removed (the switcher lives in the top navbar).
 
   # Click-to-zoom on figure images (medium-zoom), as on the reference site.
   # Rendered via hextra's scripts/medium-zoom partial when a page sets the
@@ -250,11 +251,12 @@ enableRobotsTXT = true
   [params.navbar]
     width = "normal"      # 80rem; matches the reference docs sites
 
-    # No navbar title: the full-colour VeloR7 mark lives pinned at the top
-    # of the left sidebar (layouts/_partials/sidebar.html).  The bare raptor
-    # mark below shows only on mobile (single-column) — the navbar-title
-    # partial override adds hx:md:hidden — and is hidden on 2/3-column
-    # layouts where the sidebar mark is visible.
+    # No navbar title: the full-colour VeloR7 mark lives at the top of the
+    # scrollable left sidebar (layouts/_partials/sidebar.html).  The bare
+    # raptor mark below shows on mobile (single-column) and on desktop once
+    # the sidebar mark has scrolled out of view (assets/js/navbar-logo.js);
+    # its slot stays reserved (visibility, not display) so the always-visible
+    # navbar buttons never shift.
     displayTitle = false
     [params.navbar.logo]
       path = "images/logo_bare_small.svg"

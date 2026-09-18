@@ -2,10 +2,10 @@
  *
  * The theme's scrollToActiveItem() snaps the sidebar menu to the active item
  * on every DOMContentLoaded. Our menu is tall enough to scroll on its own (the
- * pinned VeloR7 logo shrinks the scroll viewport), so on every navigation the
- * menu jumps to wherever the new active item happens to sit. Remember where
- * the reader left the menu and restore it instead, so the sidebar stays put
- * from page to page.
+ * VeloR7 logo at the top of the menu adds to its height), so on every
+ * navigation the menu jumps to wherever the new active item happens to sit.
+ * Remember where the reader left the menu and restore it instead, so the
+ * sidebar stays put from page to page.
  *
  * Restoring alone is not enough. This is a deferred script, and the browser
  * paints the menu at scrollTop 0 before deferred scripts run, so the reader

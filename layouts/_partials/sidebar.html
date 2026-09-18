@@ -27,19 +27,20 @@
       {{ partial "search.html" (dict "location" "sidebar") }}
     </div>
   {{- end -}}
+  <div class="hextra-scrollbar hx:grow hx:overflow-y-auto hx:overflow-x-hidden hx:p-4">
   {{- if not $disableSidebar -}}
     {{- /* Sidebar logo: full-colour VeloR7 mark (light/dark variants).
            Not monochrome — unlike the navbar raptor. Full menu width.
-           Pinned above the scrollable menu so it stays in view
-           independently of the sidebar scroll (like the navbar). */ -}}
-    <div class="hextra-sidebar-logo hx:mb-4 hx:flex hx:justify-center hx:shrink-0 hx:max-md:hidden">
+           Lives at the top of the scrollable menu, so it scrolls away
+           with the items; when it leaves the viewport the small navbar
+           raptor appears in its place (see assets/js/navbar-logo.js). */ -}}
+    <div class="hextra-sidebar-logo hx:mb-4 hx:flex hx:justify-center hx:max-md:hidden">
       <a class="hx:flex hx:justify-center" style="width:100%" href="{{ site.Home.RelPermalink }}" aria-label="{{ site.Title }}">
         <img class="hx:block hx:dark:hidden" src="{{ "images/VeloR7_LightMode.svg" | relURL }}" alt="{{ site.Title }}" style="width:100%; height:auto" />
         <img class="hx:hidden hx:dark:block" src="{{ "images/VeloR7_DarkMode.svg" | relURL }}" alt="{{ site.Title }}" style="width:100%; height:auto" />
       </a>
     </div>
   {{- end -}}
-  <div class="hextra-scrollbar hx:grow hx:overflow-y-auto hx:overflow-x-hidden hx:p-4">
     <ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden">
       <!-- Nav -->
       {{ template "sidebar-main" (dict "context" site.Home "pageURL" $pageURL "page" $context "toc" true) -}}
@@ -57,31 +58,21 @@
       </ul>
     {{ end -}}
   </div>
-  {{/* Hide theme switch when sidebar is disabled */}}
+  {{/* Hide the footer strip when sidebar is disabled */}}
   {{ $switchesClass := cond $disableSidebar "hx:md:hidden" "" -}}
-  {{ $displayThemeToggle := (site.Params.theme.displayToggle | default true) -}}
 
-  {{ if or hugo.IsMultilingual $displayThemeToggle }}
-    <div class="{{ $switchesClass }} {{ with hugo.IsMultilingual }}hx:justify-end{{ end }} hx:sticky hx:bottom-0 hx:shrink-0 hx:bg-white hx:dark:bg-dark hx:mx-4 hx:shadow-[0_-12px_16px_#fff] hx:flex hx:flex-col hx:border-gray-200 hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none hx:border-t" data-toggle-animation="show">
-      <div class="hx:flex hx:items-center hx:gap-2 hx:py-4">
-        {{- with hugo.IsMultilingual -}}
-          {{- partial "language-switch" (dict "context" $context "grow" true) -}}
-          {{- with $displayThemeToggle }}{{ partial "theme-toggle" (dict "hideLabel" true "location" "bottom-right") }}{{ end -}}
-        {{- else -}}
-          {{- with $displayThemeToggle -}}
-            <div class="hx:flex hx:grow hx:flex-col">{{ partial "theme-toggle" }}</div>
-          {{- end -}}
-        {{- end -}}
-      </div>
-      {{- /* Rapid7 footer strip — mirrors the legacy docs site footer. */ -}}
-      <div class="hextra-sidebar-footer">
-        Brought to you by
-        <img src="{{ "images/Rapid7_logo.svg" | relURL }}" alt="Rapid7 logo" class="rapid7" />
-        <br />
-        &copy; {{ now.Year }}
-      </div>
+  {{- /* Rapid7 footer strip — mirrors the legacy docs site footer.  The
+         theme's bottom theme-toggle row is removed: the light/dark
+         switcher lives in the top navbar, so the sidebar one is
+         redundant. */ -}}
+  <div class="{{ $switchesClass }} hx:sticky hx:bottom-0 hx:shrink-0 hx:bg-white hx:dark:bg-dark hx:mx-4 hx:shadow-[0_-12px_16px_#fff] hx:flex hx:flex-col hx:border-gray-200 hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none hx:border-t">
+    <div class="hextra-sidebar-footer">
+      Brought to you by
+      <img src="{{ "images/Rapid7_logo.svg" | relURL }}" alt="Rapid7 logo" class="rapid7" />
+      <br />
+      &copy; {{ now.Year }}
     </div>
-  {{- end -}}
+  </div>
 </aside>
 
 {{- define "sidebar-main" -}}

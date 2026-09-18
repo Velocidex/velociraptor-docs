@@ -5,6 +5,10 @@
      core.html so it loads after the theme's main.js). */}}
 {{- partial "scripts/sidebar-scroll.html" . -}}
 
+{{/* Navbar-logo visibility: shows the small navbar raptor mark on desktop
+     once the sidebar logo scrolls out of view. */}}
+{{- partial "scripts/navbar-logo.html" . -}}
+
 {{/* Pagefind search modal (rendered once, opened by the Hextra search inputs). */}}
 {{- partial "search-modal.html" . -}}
 
