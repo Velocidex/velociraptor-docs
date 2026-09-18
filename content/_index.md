@@ -35,6 +35,16 @@ Please update to the latest release [0.77.2](/downloads/) to address
     from the deployment quickstart to the configuration reference.
   {{< /feature >}}
 
+  {{< feature icon="newspaper" title="Blog" url="/blog/" >}}
+    News, release announcements and articles from the Velociraptor team
+    and community.
+  {{< /feature >}}
+
+  {{< feature icon="download" title="Downloads" url="/downloads/" >}}
+    Pre-built Velociraptor binaries for Windows, Linux and macOS, with
+    checksums and release notes.
+  {{< /feature >}}
+
   {{< feature icon="code" title="VQL Reference" url="/vql_reference/" >}}
     Every VQL plugin, function and accessor documented, cross-referenced
     and searchable.

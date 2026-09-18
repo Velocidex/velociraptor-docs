@@ -482,14 +482,14 @@ html.dark .hextra-nav-container-blur {
   padding-bottom: 1.25rem;
 }
 
-/* Navbar link buttons (Docs / Blog / Downloads): buttons, all the same
-   width (min-width wins: every label is shorter), corner radius matching
-   the navbar search input (rounded-lg = 8px).  The display/flex classes
-   stay Tailwind hx: utilities on the element (hidden on small screens,
-   inline-flex from md up) so responsive behaviour is unchanged; this CSS
-   only adds the button chrome and colours. */
+/* Navbar link buttons (Docs / Blog / Downloads / VQL Reference): buttons,
+   all the same width (min-width wins: every label is shorter), corner
+   radius matching the navbar search input (rounded-lg = 8px).  The
+   display/flex classes stay Tailwind hx: utilities on the element (hidden
+   on small screens, inline-flex from md up) so responsive behaviour is
+   unchanged; this CSS only adds the button chrome and colours. */
 .hextra-nav-btn {
-   min-width: 7rem;              /* equal widths for all three buttons */
+   min-width: 7rem;              /* equal widths for all four buttons */
    height: 33.5px;               /* match the navbar search input (text-sm
                                     leading-tight + py-2), borders included */
    padding: 0 0.75rem;

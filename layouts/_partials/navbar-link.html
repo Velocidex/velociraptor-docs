@@ -1,8 +1,8 @@
 {{- /* Override of Hextra's navbar-link partial (theme: layouts/_partials/navbar-link.html).
        Identical to the theme default EXCEPT regular menu items with
-       params.button=true (set on Docs / Blog / Downloads in hugo.toml) render
-       as equal-width pill buttons (.hextra-nav-btn styled in custom.css)
-       instead of plain text links. */ -}}
+       params.button=true (set on Docs / Blog / Downloads / VQL Reference in
+       hugo.toml) render as equal-width pill buttons (.hextra-nav-btn styled
+       in custom.css) instead of plain text links. */ -}}
 {{- $currentPage := .currentPage -}}
 {{- $link := .link -}}
 {{- $item := .item -}}
@@ -75,7 +75,8 @@
 </div>
 {{- else if and (not $icon) $item.Params.button -}}
 {{- /* Regular menu item rendered as an equal-width pill button (Docs,
-       Blog, Downloads). `active` gets an aria-current for a11y. */ -}}
+       Blog, Downloads, VQL Reference). `active` gets an aria-current for
+       a11y. */ -}}
 <a
   title="{{ or (T $item.Identifier) $item.Name | safeHTML }}"
   href="{{ $link }}"
