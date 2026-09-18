@@ -26,6 +26,13 @@
       "vql_reference"       "VQL Reference"
   -}}
   {{- $rel := strings.TrimSuffix "/" .RelPermalink -}}
+  {{- /* Strip the deploy base path (empty on a root-mounted site, e.g.
+         /velociraptor-docs/ on the gh-pages preview) so the first segment
+         below is always the real section dir. relURL "" yields the base
+         path; relURL "/" would collapse back to "/" (Hugo >= 0.132
+         embeds the base path in RelPermalink for subpath baseURLs). */ -}}
+  {{- $base := relURL "" | strings.TrimSuffix "/" | strings.TrimPrefix "/" -}}
+  {{- if $base }}{{ $rel = strings.TrimPrefix (printf "/%s" $base) $rel }}{{ end -}}
   {{- $parts := split $rel "/" -}}
   {{- $sectionKey := "" -}}
   {{- if gt (len $parts) 1 }}{{ $sectionKey = index $parts 1 }}{{ end -}}
@@ -58,7 +65,7 @@
        "Tags" value to the section filter and duplicate search results).
        The 404 page has no section (its path is just /404.html), so it would
        appear as a bogus "404.html" section filter value - skip it too. */}}
-  {{- $indexable := not (or (eq .Kind "taxonomy") (eq .Kind "term") (eq .RelPermalink "/404.html")) -}}
+  {{- $indexable := not (or (eq .Kind "taxonomy") (eq .Kind "term") (eq $rel "/404.html")) -}}
 
   <body{{ if not $indexable }} data-pagefind-ignore{{ else }}{{ with $section }} data-pagefind-filter="section: {{ . }}"{{ end }}{{ with $tags }} data-pagefind-meta="tags: {{ . }}"{{ end }}{{ end }}>
     {{- /* One hidden capture element per tag -> Pagefind filter "tags".
