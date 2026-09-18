@@ -42,8 +42,11 @@
     </div>
   {{- end -}}
     <ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden">
-      <!-- Nav -->
-      {{ template "sidebar-main" (dict "context" site.Home "pageURL" $pageURL "page" $context "toc" true) -}}
+      <!-- Nav: same full docs tree as the desktop sidebar so the mobile
+           drawer shows every top-level section (Artifact Exchange,
+           Knowledge Base, Training, Presentations, ...), not just the
+           navbar menu items. -->
+      {{ template "sidebar-main" (dict "context" $navRoot "page" $context "pageURL" $pageURL) }}
       {{ template "sidebar-footer" (dict "pageURL" $pageURL) }}
     </ul>
 
