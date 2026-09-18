@@ -1218,3 +1218,45 @@ i.fa-brands {
   font-size: 2em;
   vertical-align: -0.125em;
 }
+
+/* --- Cross-document View Transitions ---
+   Opt in to the browser's native page-to-page transition. Chrome and
+   Safari animate a same-origin navigation instead of cutting straight to
+   the new document, which removes the last of the flash on a sidebar
+   click. No JavaScript and no framework: the browser snapshots the old
+   page, swaps, snapshots the new one, and cross-fades between the two.
+
+   The navbar and the desktop sidebar are lifted out of the page snapshot
+   with their own view-transition-name so they morph in place instead of
+   cross-fading with the content. They occupy the same position on every
+   page, so the morph is near-identity and the chrome reads as static
+   while only the content and the table of contents change.
+
+   Scoped to >=768px: below that the sidebar is an off-canvas drawer that
+   Hextra translates out of view, and a named transition would try to
+   morph it while it is hidden.
+
+   Browsers without support ignore both rules and keep the current
+   behaviour. */
+@view-transition {
+  navigation: auto;
+}
+
+@media (min-width: 768px) {
+  .hextra-nav-container {
+    view-transition-name: hextra-nav;
+  }
+
+  .hextra-sidebar-container {
+    view-transition-name: hextra-sidebar;
+  }
+}
+
+/* Honour a reduced-motion preference by keeping the navigation instant. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
