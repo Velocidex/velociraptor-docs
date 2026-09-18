@@ -1,7 +1,7 @@
 ---
-type: wide
+type: docs
 cascade:
-  type: wide
+  type: docs
 sidebar:
   exclude: true
 menutitle: "Blog"
