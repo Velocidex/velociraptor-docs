@@ -30,6 +30,11 @@ Please update to the latest release [0.77.2](/downloads/) to address
     **2026-08-26 - Velociraptor 0.77.2 is now available!**
   {{< /feature >}}
 
+  {{< feature icon="fast-forward" title="Quickstart" url="/docs/deployment/quickstart/" >}}
+    Install, configure and run your own Velociraptor server in minutes,
+    from single-user trials to full enterprise deployments.
+  {{< /feature >}}
+
   {{< feature icon="book-open" title="Documentation" url="/docs/" >}}
     Everything you need to install, configure and use Velociraptor,
     from the deployment quickstart to the configuration reference.
