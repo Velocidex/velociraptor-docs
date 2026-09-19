@@ -19,7 +19,10 @@ CSS lacks hx:inset-0 and hx:z-10 utilities).
 {{- $link := .Get "url" -}}
 {{- $banner := .Get "banner" | default false -}}
 {{- $kicker := .Get "kicker" | default "Latest news & releases" -}}
-{{- $href := cond (strings.HasPrefix $link "/") ($link | relURL) $link -}}
+{{- /* relURL only prefixes unprefixed paths (relURL "/x" -> "/x", but
+         relURL "x" -> "<base>/x"), so strip the leading "/" first.  This
+         keeps tile links correct on subpath deployments like the Preview. */ -}}
+{{- $href := cond (strings.HasPrefix $link "/") (relURL (strings.TrimPrefix "/" $link)) $link -}}
 
 {{- $class := "hextra-card hx:group hx:relative hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:text-current hx:no-underline hx:shadow-gray-100 hx:transition-all hx:duration-200" -}}
 {{- if $banner -}}
