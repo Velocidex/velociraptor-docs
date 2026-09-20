@@ -11,3 +11,4 @@ Talence
 esentutl
 certutil
 Graylog
+Pagefind
