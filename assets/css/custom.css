@@ -288,19 +288,17 @@ p.egg {
 }
 
 /* --- Generated config reference page (docs/deployment/references) ---
-   The item comments are grey callout boxes; the page intro (document-
-   comment) renders as a plain paragraph. */
+   The item comments read as normal prose; each config item is the
+   code-font element on an unshaded bordered card, so the key/value lines
+   stand out from the comments around them without dual grey shading. */
 .item-comment {
-  margin-top: 20px;
-  padding: 12px 16px;
-  border-radius: 8px;
-  background: #f5f5f5;
-  color: #171717;
+  font-family: var(--hx-font-sans);
+  margin: 16px 0 6px 0;
+  color: inherit;
 }
 
 .dark .item-comment {
-  background: #262626;
-  color: #f5f5f5;
+  color: inherit;
 }
 
 .item-name {
@@ -319,9 +317,14 @@ p.egg {
   padding-right: 1ex;
 }
 
-.reference-value-sequence,
-.reference-value-mapping {
-  display: inline;
+/* Example values: same indent as the key/breadcrumb above them so the
+   value column lines up with the rest of the item.  The muted colour is
+   intentional (value < key+breadcrumb) but must not leak into the comment
+   prose nested deeper in the tree. */
+.reference-value-mapping,
+.reference-value-sequence {
+  display: block;
+  padding-left: 1.5em;
 }
 
 .reference-value-mapping,
@@ -334,10 +337,18 @@ p.egg {
   color: #a3a3a3;
 }
 
-.reference-document {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", monospace;
-  font-size: 0.95em;
+/* Comment prose nested inside a value (deeper config paths) would inherit
+   the muted value colour above; pin it back to the page's reading text
+   (black in light, var(--hx-color-gray-100) in dark, as the theme does on
+   body:where(.dark, .dark *)). */
+.reference-value-mapping .item-comment,
+.reference-value-sequence .item-comment {
+  color: #000;
+}
+
+.dark .reference-value-mapping .item-comment,
+.dark .reference-value-sequence .item-comment {
+  color: var(--hx-color-gray-100);
 }
 
 .reference-document ul {
@@ -367,15 +378,17 @@ p.egg {
   transform: rotate(90deg);
 }
 
-/* Each config item renders as a card so readers can visually associate
-   the key, breadcrumb, comment and value as one unit.  Mirrors the
-   section-search card look (rounded-lg border, hover accent). */
+/* Each config item renders as a bordered code-font card so readers can
+   visually associate the key, breadcrumb, comment and value as one unit,
+   while comments (siblings, outside the card) stay normal prose.  Mirrors
+   the section-search card look (rounded-lg border, hover accent). */
 .reference-document .ref-item {
+  font-family: var(--hx-font-mono);
+  font-size: 0.95em;
   border: 1px solid #e5e7eb; /* gray-200 */
   border-radius: 0.5rem;
   padding: 0.5rem 0.75rem;
   margin: 0 0 0.5rem 0;
-  background: transparent;
   transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
