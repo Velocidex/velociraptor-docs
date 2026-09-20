@@ -39,9 +39,12 @@
     {{ end -}}
   {{- end -}}
 {{- end -}}
-<a href="{{ $href }}"
-   {{- if $u.IsAbs }} target="_blank" {{ end -}}
+<a href="{{ $href | safeURL }}"
+   {{- if $u.IsAbs }} target="_blank" rel="noopener" {{ end -}}
    {{- with .Title }}
    title="{{ . }}"
-   {{- end }}>{{ .Text }}</a>
+   {{- end -}}
+>{{ .Text | safeHTML }}{{- if and $u.IsAbs site.Params.externalLinkDecoration -}}
+  {{- partial "utils/icon.html" (dict "name" "arrow-up-right" "attributes" `class="hx:inline hx:rtl:rotate-270 hx:align-baseline" height="1em" aria-hidden="true"`) -}}
+{{- end -}}</a>
 {{- /**/ -}}

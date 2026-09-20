@@ -173,6 +173,72 @@ html:where(.dark, .dark *) .hextra-code-filename {
   background-color: color-mix(in oklab, var(--hx-color-primary-300) 10%, var(--hx-color-dark));
 }
 
+/* VQL light-mode palette: Atom One Light tokens. Hextra ships Chroma's
+   stock GitHub Light, whose black-bold keywords and murky reds look flat next
+   to the GitHub Dark palette used in dark mode; the values below are the
+   Atom One Light tokens (purple keywords, green strings, blue functions).
+   Scoped to prerendered VQL fences only (data-vql="rendered"), so SQL/Python/
+   etc. keep the stock palette, and to light mode only (html:not(.dark)) so
+   dark mode is untouched. */
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .k,
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .kd,
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .kn,
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .kp,
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .kr {
+  color: #a626a4;
+  font-weight: 600;
+}
+
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .kt {
+  color: #a626a4;
+}
+
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .kc {
+  color: #7b3814;
+}
+
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .nf {
+  color: #4078f2;
+  font-weight: 600;
+}
+
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .nv,
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .py {
+  color: #e45649;
+}
+
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .nc {
+  color: #c18401;
+  font-weight: 600;
+}
+
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .s1,
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .s2,
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .sh {
+  color: #50a14f;
+}
+
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .m {
+  color: #986801;
+}
+
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .c1,
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .cm,
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .c,
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .ch,
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .cs {
+  color: #a0a1a7;
+  font-style: italic;
+}
+
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .o {
+  color: #0184bc;
+}
+
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .err {
+  color: #e45649;
+}
+
 /* --- 404 page (layouts/404.html) ---
    Centred in the column to the right of the docs sidebar, under the
    navbar/footer chrome. The big error code uses the theme accent so it
@@ -222,19 +288,17 @@ p.egg {
 }
 
 /* --- Generated config reference page (docs/deployment/references) ---
-   The item comments are grey callout boxes; the page intro (document-
-   comment) renders as a plain paragraph. */
+   The item comments read as normal prose; each config item is the
+   code-font element on an unshaded bordered card, so the key/value lines
+   stand out from the comments around them without dual grey shading. */
 .item-comment {
-  margin-top: 20px;
-  padding: 12px 16px;
-  border-radius: 8px;
-  background: #f5f5f5;
-  color: #171717;
+  font-family: var(--hx-font-sans);
+  margin: 16px 0 6px 0;
+  color: inherit;
 }
 
 .dark .item-comment {
-  background: #262626;
-  color: #f5f5f5;
+  color: inherit;
 }
 
 .item-name {
@@ -253,9 +317,14 @@ p.egg {
   padding-right: 1ex;
 }
 
-.reference-value-sequence,
-.reference-value-mapping {
-  display: inline;
+/* Example values: same indent as the key/breadcrumb above them so the
+   value column lines up with the rest of the item.  The muted colour is
+   intentional (value < key+breadcrumb) but must not leak into the comment
+   prose nested deeper in the tree. */
+.reference-value-mapping,
+.reference-value-sequence {
+  display: block;
+  padding-left: 1.5em;
 }
 
 .reference-value-mapping,
@@ -268,10 +337,18 @@ p.egg {
   color: #a3a3a3;
 }
 
-.reference-document {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", monospace;
-  font-size: 0.95em;
+/* Comment prose nested inside a value (deeper config paths) would inherit
+   the muted value colour above; pin it back to the page's reading text
+   (black in light, var(--hx-color-gray-100) in dark, as the theme does on
+   body:where(.dark, .dark *)). */
+.reference-value-mapping .item-comment,
+.reference-value-sequence .item-comment {
+  color: #000;
+}
+
+.dark .reference-value-mapping .item-comment,
+.dark .reference-value-sequence .item-comment {
+  color: var(--hx-color-gray-100);
 }
 
 .reference-document ul {
@@ -301,15 +378,17 @@ p.egg {
   transform: rotate(90deg);
 }
 
-/* Each config item renders as a card so readers can visually associate
-   the key, breadcrumb, comment and value as one unit.  Mirrors the
-   section-search card look (rounded-lg border, hover accent). */
+/* Each config item renders as a bordered code-font card so readers can
+   visually associate the key, breadcrumb, comment and value as one unit,
+   while comments (siblings, outside the card) stay normal prose.  Mirrors
+   the section-search card look (rounded-lg border, hover accent). */
 .reference-document .ref-item {
+  font-family: var(--hx-font-mono);
+  font-size: 0.95em;
   border: 1px solid #e5e7eb; /* gray-200 */
   border-radius: 0.5rem;
   padding: 0.5rem 0.75rem;
   margin: 0 0 0.5rem 0;
-  background: transparent;
   transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
@@ -1475,6 +1554,22 @@ i.fa-brands {
   .hextra-sidebar-container {
     view-transition-name: hextra-sidebar;
   }
+}
+
+/* --- hextra-cards descriptions (Artifact Reference / Artifact Exchange /
+   VQL Reference index pages) ---
+   The default subtitle style (text-sm, gray-500) reads too small and
+   muted for a paragraph-length description.  Render it at the site's
+   normal paragraph size and colour -- both are set on the theme in
+   body:where(.dark, .dark *), so this matches the prose reading text. */
+.hextra-card-subtitle {
+  font-size: var(--hx-text-base);
+  line-height: 1.75;
+  color: var(--hx-color-gray-800);
+}
+
+.dark .hextra-card-subtitle {
+  color: var(--hx-color-gray-100);
 }
 
 /* Honour a reduced-motion preference by keeping the navigation instant. */
