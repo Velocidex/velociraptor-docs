@@ -155,6 +155,24 @@ pre {
   font-size: 0.9375em;
 }
 
+/* Code fences always render on their own neutral background, regardless of
+   the surrounding container. Hextra's code-block background is a nearly
+   transparent tint (hx:bg-primary-700/5 light, hx:dark:bg-primary-300/10
+   dark): that reads correctly over the plain page background but inside an
+   admonition's solidly coloured panel it lets the panel colour show through,
+   so the same fence changes colour between contexts. Instead mix the same
+   tint over the page background, producing an opaque colour that matches the
+   normal code-block look everywhere. */
+.hextra-code-block pre,
+.hextra-code-filename {
+  background-color: color-mix(in oklab, var(--hx-color-primary-700) 5%, var(--hx-color-white));
+}
+
+html:where(.dark, .dark *) .hextra-code-block pre,
+html:where(.dark, .dark *) .hextra-code-filename {
+  background-color: color-mix(in oklab, var(--hx-color-primary-300) 10%, var(--hx-color-dark));
+}
+
 /* --- 404 page (layouts/404.html) ---
    Centred in the column to the right of the docs sidebar, under the
    navbar/footer chrome. The big error code uses the theme accent so it
