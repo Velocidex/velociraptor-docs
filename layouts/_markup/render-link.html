@@ -7,9 +7,9 @@
 {{- else if or (strings.HasPrefix .Destination "HAHAHUGOSHORTCODE") (strings.HasPrefix .Page.Path "/exchange/") (strings.HasPrefix $href "/blog/html/") -}}
   {{- /* Legacy/exchange pages link to static content that no Hugo page
          resolves; the raw root-relative path is kept. Prefix the deploy
-         base path on subpath sites (the gh-pages Preview), same relURL
-         semantics as feature.html (relURL prefixes only unprefixed input,
-         so strip the leading slash first). */ -}}
+         base path on subpath deployments (where --baseURL includes a path),
+         same relURL semantics as feature.html (relURL prefixes only
+         unprefixed input, so strip the leading slash first). */ -}}
   {{- if and $href (strings.HasPrefix $href "/") }}{{ $href = relURL (strings.TrimPrefix "/" $href) }}{{ end -}}
 {{- else if and $href (not $u.IsAbs) -}}
   {{- $path := strings.TrimPrefix "./" $u.Path -}}
@@ -29,9 +29,10 @@
     {{- end -}}
   {{- else -}}
     {{- /* Link does not resolve to a Hugo page: keep the static/legacy
-           target but make it base-correct on subpath deployments (the
-           gh-pages Preview). relURL only prefixes unprefixed input, so
-           strip the leading "/" first (same note as the carve-out above). */ -}}
+           target but make it base-correct on subpath deployments (where
+           --baseURL includes a path). relURL only prefixes unprefixed
+           input, so strip the leading "/" first (same note as the
+           carve-out above). */ -}}
     {{- if strings.HasPrefix $href "/" }}{{ $href = relURL (strings.TrimPrefix "/" $href) }}{{ end -}}
     {{- if not (strings.HasPrefix .Destination "/exchange/") }}
       {{ fmt.Errorf "%v: Link to %v not found" .Page .Destination }}

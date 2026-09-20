@@ -6,8 +6,9 @@
        combined with font-display: block in assets/css/custom.css this avoids
        the fallback-font flash (FOUT) on first paint. crossorigin is required
        even for same-origin font requests. relURL prefixes the deploy base
-       path on subpath sites (the gh-pages Preview); unprefixed paths only
-       resolve when the site is served at the domain root. */ -}}
+       path on subpath deployments (where --baseURL includes a path);
+       unprefixed paths only resolve when the site is served at the domain
+       root. */ -}}
 <link rel="preload" href="{{ "fonts/iosevka-term-regular-subset.woff2" | relURL }}" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="{{ "fonts/iosevka-term-medium-subset.woff2" | relURL }}" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="{{ "fonts/iosevka-term-bold-subset.woff2" | relURL }}" as="font" type="font/woff2" crossorigin />
