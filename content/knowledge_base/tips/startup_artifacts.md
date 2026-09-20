@@ -31,18 +31,15 @@ Velociraptor organizes artifacts internally using the artifact
 name. It is customary to denote custom artifacts with the `Custom.`
 prefix but this is not mandatory.
 
-{{% notice warning Overriding built in artifacts %}}
-
-Velociraptor does not allow a custom artifact to override a built in
-artifact (i.e. have the same name). Built in artifacts are protected
-because overriding built in artifacts may break the proper
-functionality of Velociraptor. If you want to customize a built in
-artifact, simply change the name when you save it.
-
-Velociraptor considers artifacts defined in the config file, or given
-in the `--definitions` directory as "built in".
-
-{{% /notice %}}
+> [!WARNING] Overriding built in artifacts
+> Velociraptor does not allow a custom artifact to override a built in
+> artifact (i.e. have the same name). Built in artifacts are protected
+> because overriding built in artifacts may break the proper
+> functionality of Velociraptor. If you want to customize a built in
+> artifact, simply change the name when you save it.
+>
+> Velociraptor considers artifacts defined in the config file, or given
+> in the `--definitions` directory as "built in".
 
 ## Specifying a startup artifact.
 
@@ -78,14 +75,11 @@ In the above snippet, we see the following parameters:
   configuration needed. The artifacts are simply scheduled and will
   appear in the usual `Server Artifacts` screen.
 
-{{% notice note %}}
-
-Currently it is not possible to specify parameters for initial
-artifacts so if you need to tweak the parameters it is best to create
-a custom artifact that in turn launches the needed artifacts with the
-correct parameters. You can find an example below.
-
-{{% /notice %}}
+> [!NOTE]
+> Currently it is not possible to specify parameters for initial
+> artifacts so if you need to tweak the parameters it is best to create
+> a custom artifact that in turn launches the needed artifacts with the
+> correct parameters. You can find an example below.
 
 ## Initializing the server using a custom artifact.
 

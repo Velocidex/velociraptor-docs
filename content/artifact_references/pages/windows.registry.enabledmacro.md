@@ -1,12 +1,12 @@
 ---
 title: Windows.Registry.EnabledMacro
+description: "Scans Office Trust Records registry entries for documents with\nmacro-enabled trust flags."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Scans Office Trust Records registry entries for documents with
-  macro-enabled trust flags.
+build:
+  list: never
 ---
 
 Scans Office Trust Records registry entries for documents with
@@ -16,7 +16,9 @@ That is `HKEY_USERS\*\Software\Microsoft\Office\*\Security\Trusted
 Documents\TrustRecords` reg keys with values ending in `FFFFFF7F`.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Registry.EnabledMacro
 description: |
   Scans Office Trust Records registry entries for documents with
@@ -69,6 +71,6 @@ sources:
             WHERE Data.type =~ "BINARY"
               and encode(string=Data.value, type="hex") =~ "ffffff7f$"
           })
+````
 
-</code></pre>
 

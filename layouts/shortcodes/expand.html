@@ -1,5 +1,6 @@
-{{ $_hugo_config := `{ "version": 1 }` }}
-<details>
-  <summary>{{ .Get 0 }}</summary>
-  {{.Inner | safeHTML}}
+{{- /* Port of the learn-theme expand shortcode with Hextra styling. */ -}}
+{{- $_hugo_config := `{ "version": 1 }` -}}
+<details class="hx:group hx:mt-6 hx:rounded-lg hx:border hx:border-gray-200 hx:bg-gray-50 hx:dark:border-neutral-800 hx:dark:bg-neutral-900 hx:px-4 hx:py-3 not-prose">
+  <summary class="hx:cursor-pointer hx:select-none hx:font-medium hx:text-gray-800 hx:dark:text-neutral-200">{{ .Get 0 | markdownify }}</summary>
+  <div class="hx:mt-4 hx:pb-1">{{ .Inner }}</div>
 </details>

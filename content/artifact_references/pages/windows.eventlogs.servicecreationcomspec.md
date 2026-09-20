@@ -1,13 +1,12 @@
 ---
 title: Windows.EventLogs.ServiceCreationComspec
+description: "Detects SCM lateral movement by searching System event log for\nservice creation events (EID 7045) with \"COMSPEC\" or \"cmd.exe\" in\nthe image path."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Detects SCM lateral movement by searching System event log for
-  service creation events (EID 7045) with "COMSPEC" or "cmd.exe" in
-  the image path.
+build:
+  list: never
 ---
 
 Detects SCM lateral movement by searching System event log for
@@ -22,7 +21,9 @@ instances for the `EventLog` path, which includes event
 deduplication.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.EventLogs.ServiceCreationComspec
 description: |
   Detects SCM lateral movement by searching System event log for
@@ -57,8 +58,8 @@ parameters:
 sources:
   - name: ServiceCreation
     query: |
-      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
 
       // Extract all target paths from glob
       LET files = SELECT OSPath
@@ -101,6 +102,6 @@ sources:
             EventRecordID,
             Source
         FROM hits
+````
 
-</code></pre>
 

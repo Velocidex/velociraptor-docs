@@ -13,12 +13,12 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: true  # Fetch Hugo themes (true OR recursive)
           fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
 
-      - uses: actions/setup-go@93397bea11091df50f3d7e59dc26a7711a8bcfbe
+      - uses: actions/setup-go@v5
         with:
           go-version: '^1.25'
 
@@ -41,11 +41,30 @@ jobs:
           python scripts/blog_index.py
           python scripts/knowledge_base.py
 
+      - name: VQL highlighting
+        run: make vql_highlight
+
       - name: BuildIndex
         run: make index
 
       - name: Build
         run: hugo
+
+      - name: Check VQL highlighting
+        run: |
+          if grep -rq 'data-vql="fallback"' public; then
+            echo "ERROR: some VQL code fences fell back to SQL highlighting."
+            echo "Regenerate the highlight cache with: make vql_highlight"
+            exit 1
+          fi
+
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: BuildSearchIndex
+        run: bun run pagefind
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4

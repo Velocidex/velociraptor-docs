@@ -1,17 +1,20 @@
 ---
 title: Linux.Proc.Arp
+description: "Parses the ARP table from /proc/net/arp.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Parses the ARP table from /proc/net/arp.
+build:
+  list: never
 ---
 
 Parses the ARP table from /proc/net/arp.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Proc.Arp
 description: |
   Parses the ARP table from /proc/net/arp.
@@ -28,6 +31,6 @@ sources:
            filenames=ProcNetArp,
            regex='\\s{3,20}',
            first_row_is_headers=true)
+````
 
-</code></pre>
 

@@ -1,12 +1,12 @@
 ---
 title: Server.Utils.ExportHunt
+description: "Exports an entire hunt's results to a downloadable zip archive with\nconfigurable data formatting options."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Exports an entire hunt's results to a downloadable zip archive with
-  configurable data formatting options.
+build:
+  list: never
 ---
 
 Exports an entire hunt's results to a downloadable zip archive with
@@ -21,7 +21,9 @@ Once this artifact is done you should see that the export is
 available as a new download item on the hunt's overview tab.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.ExportHunt
 description: |
   Exports an entire hunt's results to a downloadable zip archive with
@@ -55,7 +57,7 @@ sources:
   - query: |
       LET Base = if(condition=BaseName, then=BaseName + "-", else="")
 
-      LET FormatLookup &lt;= dict(
+      LET FormatLookup <= dict(
          Combined="",
          JSON="json",
          CVS="csv")
@@ -72,6 +74,6 @@ sources:
 
 resources:
   timeout: 6000
+````
 
-</code></pre>
 

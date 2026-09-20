@@ -26,13 +26,10 @@ If you're really in a hurry you can start a self-contained
 on your local machine which will allow you to experiment and get a feel for how
 Velociraptor works.
 
-{{% notice tip "Using Velociraptor integrated with Rapid7 InsightIDR?"%}}
-
-These deployment steps apply to open source Velociraptor only. Read the
-[InsightIDR documentation](https://docs.rapid7.com/insightidr/velociraptor-integration)
-to learn more about how Velociraptor is deployed with the Rapid7 Insight Platform.
-
-{{% /notice %}}
+> [!TIP] Using Velociraptor integrated with Rapid7 InsightIDR?
+> These deployment steps apply to open source Velociraptor only. Read the
+> [InsightIDR documentation](https://docs.rapid7.com/insightidr/velociraptor-integration)
+> to learn more about how Velociraptor is deployed with the Rapid7 Insight Platform.
 
 ## Typical Deployment
 
@@ -191,23 +188,20 @@ In this mode:
 
 ![Instant mode automatically enrolls a single client](gui_windows.svg)
 
-{{% notice info "Instant Velociraptor: Persisting your data" %}}
-
-By default the `gui` command uses the temp folder as it's data store (by default
-a subfolder named `gui_datastore`). The `gui` command also automatically creates
-new server and client configuration files in this datastore folder. This allows
-you to re-run the `gui` command and get the same working environment with
-persistent data.
-
-However some operating systems clean out the temp folder periodically or during
-a system reboot, in which case your environment and data will NOT persist (i.e.
-it will be lost). To avoid this you can specify a different data store directory
-using the `--datastore` flag and point it to a location where your data will be
-persisted. If at any time you want to start with a fresh instance you can either
-delete the old datastore folder or point it to a new folder using the
-`--datastore` flag.
-
-{{% /notice %}}
+> [!NOTE] Instant Velociraptor: Persisting your data
+> By default the `gui` command uses the temp folder as it's data store (by default
+> a subfolder named `gui_datastore`). The `gui` command also automatically creates
+> new server and client configuration files in this datastore folder. This allows
+> you to re-run the `gui` command and get the same working environment with
+> persistent data.
+>
+> However some operating systems clean out the temp folder periodically or during
+> a system reboot, in which case your environment and data will NOT persist (i.e.
+> it will be lost). To avoid this you can specify a different data store directory
+> using the `--datastore` flag and point it to a location where your data will be
+> persisted. If at any time you want to start with a fresh instance you can either
+> delete the old datastore folder or point it to a new folder using the
+> `--datastore` flag.
 
 
 ### Command line investigation tool
@@ -298,18 +292,15 @@ The `gui` command starts the server and a single client within a single process.
 This client is no different from one that's separately deployed, and can be used
 to interrogate the local system as you would do for any remote client.
 
-{{% notice warning "Minimizing data pollution"%}}
-
-Obviously this idea is not suitable for all investigation scenarios as the
-server component will need to write data to it's datastore. Also, using a web
-browser on the target machine and any other activity risks polluting the
-forensic data. If these risks are acceptable to you, you may still want to
-minimize them by:
-- locating the datastore on an external drive using the `--datastore` flag.
-- changing the writeback and tempdir locations in the client config to also be
-  on an external drive.
-
-{{% /notice %}}
+> [!WARNING] Minimizing data pollution
+> Obviously this idea is not suitable for all investigation scenarios as the
+> server component will need to write data to it's datastore. Also, using a web
+> browser on the target machine and any other activity risks polluting the
+> forensic data. If these risks are acceptable to you, you may still want to
+> minimize them by:
+> - locating the datastore on an external drive using the `--datastore` flag.
+> - changing the writeback and tempdir locations in the client config to also be
+>   on an external drive.
 
 ### "Instant Velociraptor" as an desktop environment for analysts
 

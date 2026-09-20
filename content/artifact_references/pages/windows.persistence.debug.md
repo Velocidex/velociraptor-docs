@@ -1,12 +1,12 @@
 ---
 title: Windows.Persistence.Debug
+description: "Detects programs with a debugger configured in Image File Execution\nOptions registry keys."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Detects programs with a debugger configured in Image File Execution
-  Options registry keys.
+build:
+  list: never
 ---
 
 Detects programs with a debugger configured in Image File Execution
@@ -27,7 +27,9 @@ Limitations: This queries the live registry and therefore does not
 parse data in `Windows.old` or `Regback` folders, or VSS.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Persistence.Debug
 description: |
   Detects programs with a debugger configured in Image File Execution
@@ -64,6 +66,6 @@ sources:
         FROM read_reg_key(globs=imageFileExecutionOptions)
         WHERE Debugger
         Order By KeyLastWriteTimestamp
+````
 
-</code></pre>
 

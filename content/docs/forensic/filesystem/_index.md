@@ -49,27 +49,24 @@ SELECT *
 FROM glob(globs='C:\\Users\\**\\*.exe')
 ```
 
-{{% notice info "String escaping in VQL" %}}
-
-Strings in VQL can include a
-[backslash escape sequence](/docs/vql/fundamentals/#string-constants).
-Since Windows paths use backslashes for the path separator you will need to
-escape these backslashes with backslashes, which can be confusing.
-
-Paths can alternatively be written with a forward
-slash so that they don't need to be escaped:
-```vql
-SELECT *
-FROM glob(globs='C:/Users/**/*.exe')
-```
-
-or raw string notation can be used:
-```vql
-SELECT *
-FROM glob(globs='''C:\Users\**\*.exe''')
-```
-
-{{% /notice %}}
+> [!NOTE] String escaping in VQL
+> Strings in VQL can include a
+> [backslash escape sequence](/docs/vql/fundamentals/#string-constants).
+> Since Windows paths use backslashes for the path separator you will need to
+> escape these backslashes with backslashes, which can be confusing.
+>
+> Paths can alternatively be written with a forward
+> slash so that they don't need to be escaped:
+> ```vql
+> SELECT *
+> FROM glob(globs='C:/Users/**/*.exe')
+> ```
+>
+> or raw string notation can be used:
+> ```vql
+> SELECT *
+> FROM glob(globs='''C:\Users\**\*.exe''')
+> ```
 
 The `glob()` plugin is optimized to visit files on the filesystem as
 quickly as possible. Therefore if multiple glob expressions are
@@ -275,21 +272,18 @@ when you're using artifacts such as:
 
 which already have the necessary remapping logic included.
 
-{{% notice tip %}}
-
-Any artifacts that look into the `HKEY_USERS` registry hive should use the
-`Windows.Registry.NTUser` artifact instead of accessing the hive via the Windows
-registry API. The API only makes the currently logged in users available in that
-hive, so if we rely on the Windows API we will miss any settings for users who
-are not currently logged on.
-
-If you're creating your own artifact that need to do this remapping then you can
-[import](/docs/artifacts/export_imports/#imports)
-the `export` section from
-[`Windows.Registry.NTUser`](/artifact_references/pages/windows.registry.ntuser/)
-which contains the necessary VQL remapping logic.
-
-{{% /notice %}}
+> [!TIP]
+> Any artifacts that look into the `HKEY_USERS` registry hive should use the
+> `Windows.Registry.NTUser` artifact instead of accessing the hive via the Windows
+> registry API. The API only makes the currently logged in users available in that
+> hive, so if we rely on the Windows API we will miss any settings for users who
+> are not currently logged on.
+>
+> If you're creating your own artifact that need to do this remapping then you can
+> [import](/docs/artifacts/export_imports/#imports)
+> the `export` section from
+> [`Windows.Registry.NTUser`](/artifact_references/pages/windows.registry.ntuser/)
+> which contains the necessary VQL remapping logic.
 
 
 Here, for didactic purposes only, we're going to look at a simple example that

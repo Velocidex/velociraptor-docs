@@ -1,12 +1,12 @@
 ---
 title: Server.Utils.DeleteMonitoringData
+description: "Purges historical monitoring logs from the server filestore with\ndry-run and confirmation safety."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Purges historical monitoring logs from the server filestore with
-  dry-run and confirmation safety.
+build:
+  list: never
 ---
 
 Purges historical monitoring logs from the server filestore with
@@ -24,7 +24,9 @@ You should always do a dry run first to see which flows will match
 before using the `ReallyDoIt` option.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.DeleteMonitoringData
 description: |
   Purges historical monitoring logs from the server filestore with
@@ -96,8 +98,8 @@ sources:
           root="/clients/" + ClientId
         )
         WHERE ArtifactName =~ ArtifactRegex
-          AND Timestamp &lt; DateBefore
+          AND Timestamp < DateBefore
       }, workers=10)
+````
 
-</code></pre>
 

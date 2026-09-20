@@ -4,7 +4,7 @@ references:
 	python3 scripts/descriptions.py content/vql_reference/
 
 config_references:
-	cd ./scripts/config_reference/ && go run . ~/projects/velociraptor/docs/references/server.config.yaml > ../../content/docs/deployment/references/_index.md
+	cd ./scripts/config_reference/ && go run . ~/projects/velociraptor/docs/references/server.config.yaml > ../../content/docs/deployment/references/index.md
 
 artifact_references:
 	python3 scripts/artifact_reference_index.py ~/projects/velociraptor/
@@ -24,7 +24,14 @@ highlight_js:
 	cd ../highlight.js && node tools/build.js -t browser python yaml sql json bash powershell vql text shell
 	cp ../highlight.js/build/highlight.min.js static/js/
 
-serve:
+# Pre-render every ```vql fence to data/vql/<sha256>.html using the VQL
+# Chroma lexer in scripts/vql_highlight.  The render-codeblock hook looks the
+# file up by content hash; run this after editing marked-up VQL.  Requires Go
+# on PATH (see scripts/vql_highlight/vql.go for docs).
+vql_highlight:
+	cd ./scripts/vql_highlight/ && go run . -content ../../content -out ../../generated/vql
+
+serve: vql_highlight
 	hugo serve
 
 clean_all:
@@ -36,6 +43,14 @@ clean:
 
 build:
 	hugo
+
+# Build the Pagefind search index. Requires `bun install` (or `npm install`)
+# once, which puts the `pagefind` binary on the PATH for `bunx`.
+pagefind:
+	bunx pagefind --site public
+
+site: vql_highlight build
+	bunx pagefind --site public
 
 index:
 	rm -rf /tmp/index/

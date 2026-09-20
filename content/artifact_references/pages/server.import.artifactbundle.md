@@ -1,12 +1,12 @@
 ---
 title: Server.Import.ArtifactBundle
+description: "Imports a zipped package containing Velociraptor artifacts from a\nremote web server."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Imports a zipped package containing Velociraptor artifacts from a
-  remote web server.
+build:
+  list: never
 ---
 
 Imports a zipped package containing Velociraptor artifacts from a
@@ -34,7 +34,9 @@ exchange artifacts carefully before deploying them on your
 network!
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Import.ArtifactBundle
 aliases:
 - Server.Import.ArtifactExchange
@@ -87,7 +89,7 @@ export: |
     WHERE Line =~ '''^\s*tags:'''
   }, query={
     SELECT * FROM parse_records_with_regex(
-       accessor="data", file=Line, regex="#(?P&lt;Tag&gt;[^ ]+)")
+       accessor="data", file=Line, regex="#(?P<Tag>[^ ]+)")
   })
 
   LET Tags(Data) = _Tags(Data=Data).Tag
@@ -115,6 +117,6 @@ sources:
                Definition.description AS Description,
                Definition.author AS Author
         FROM X
+````
 
-</code></pre>
 

@@ -1,17 +1,20 @@
 ---
 title: Linux.Users.RootUsers
+description: "Detects users added in the `sudo` group.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Detects users added in the `sudo` group.
+build:
+  list: never
 ---
 
 Detects users added in the `sudo` group.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Users.RootUsers
 
 description: |
@@ -48,6 +51,6 @@ sources:
           WHERE ReturnCode = 0 AND Stdout =~ "root"
         }
       )
+````
 
-</code></pre>
 

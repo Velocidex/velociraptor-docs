@@ -1,12 +1,12 @@
 ---
 title: Generic.Network.InterfaceAddresses
+description: "Collects interface addresses and metadata such as MAC, MTU, and IP\nmasks across operating systems."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Collects interface addresses and metadata such as MAC, MTU, and IP
-  masks across operating systems.
+build:
+  list: never
 ---
 
 Collects interface addresses and metadata such as MAC, MTU, and IP
@@ -15,7 +15,9 @@ masks across operating systems.
 This artifact works on all supported OSes.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Network.InterfaceAddresses
 description: |
   Collects interface addresses and metadata such as MAC, MTU, and IP
@@ -37,6 +39,6 @@ sources:
         SELECT Index, MTU, Name, HardwareAddr,
            Flags, Addrs.IP as IP, Addrs.Mask.String as Mask
         FROM flatten(query=interface_address)
+````
 
-</code></pre>
 

@@ -1,12 +1,12 @@
 ---
 title: Windows.Forensics.SAM
+description: "Parses the Windows SAM registry hive to extract user account\ndetails, RIDs, and password hashes."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Parses the Windows SAM registry hive to extract user account
-  details, RIDs, and password hashes.
+build:
+  list: never
 ---
 
 Parses the Windows SAM registry hive to extract user account
@@ -21,9 +21,11 @@ exported. See the artifact `Windows.Forensics.SAM.Enriched` for an
 artifact that presents all available data from SAM.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.SAM
-author: Mike Cohen &amp; Andreas Misje – @misje
+author: Mike Cohen & Andreas Misje – @misje
 description: |
   Parses the Windows SAM registry hive to extract user account
   details, RIDs, and password hashes.
@@ -92,75 +94,75 @@ export: |
      }],
      ["__username_offset", 12, "uint32"],
      ["__username_length", 16, "uint32"],
-     ["username", "x=&gt;x.__username_offset + 0xcc", "String", {
-         "length": "x=&gt;x.__username_length",
+     ["username", "x=>x.__username_offset + 0xcc", "String", {
+         "length": "x=>x.__username_length",
          "encoding": "utf16",
      }],
      ["__fullname_offset", 24, "uint32"],
      ["__fullname_length", 28, "uint32"],
-     ["fullname", "x=&gt;x.__fullname_offset + 0xcc", "String", {
-         "length": "x=&gt;x.__fullname_length",
+     ["fullname", "x=>x.__fullname_offset + 0xcc", "String", {
+         "length": "x=>x.__fullname_length",
          "encoding": "utf16",
      }],
      ["__comment_offset", 36, "uint32"],
      ["__comment_length", 40, "uint32"],
-     ["comment", "x=&gt;x.__comment_offset + 0xcc", "String", {
+     ["comment", "x=>x.__comment_offset + 0xcc", "String", {
          encoding: "utf16",
-         length: "x=&gt;x.__comment_length",
+         length: "x=>x.__comment_length",
      }],
 
      ["__driveletter_offset", 84, "uint32"],
      ["__driveletter_length", 88, "uint32"],
-     ["driveletter", "x=&gt;x.__driveletter_offset + 0xcc", "String", {
+     ["driveletter", "x=>x.__driveletter_offset + 0xcc", "String", {
          encoding: "utf16",
-         length: "x=&gt;x.__driveletter_length",
+         length: "x=>x.__driveletter_length",
      }],
 
      ["__logon_script_offset", 96, "uint32"],
      ["__logon_script_length", 100, "uint32"],
-     ["logon_script", "x=&gt;x.__logon_script_offset + 0xcc", "String", {
+     ["logon_script", "x=>x.__logon_script_offset + 0xcc", "String", {
          encoding: "utf16",
-         length: "x=&gt;x.__logon_script_length",
+         length: "x=>x.__logon_script_length",
      }],
 
      ["__profile_path_offset", 108, "uint32"],
      ["__profile_path_length", 112, "uint32"],
-     ["profile_path", "x=&gt;x.__profile_path_offset + 0xcc", "String", {
+     ["profile_path", "x=>x.__profile_path_offset + 0xcc", "String", {
          encoding: "utf16",
-         length: "x=&gt;x.__profile_path_length",
+         length: "x=>x.__profile_path_length",
      }],
 
      ["__workstation_offset", 120, "uint32"],
      ["__workstation_length", 124, "uint32"],
-     ["workstation", "x=&gt;x.__workstation_offset + 0xcc", "String", {
+     ["workstation", "x=>x.__workstation_offset + 0xcc", "String", {
          encoding: "utf16",
-         length: "x=&gt;x.__workstation_length",
+         length: "x=>x.__workstation_length",
      }],
 
      ["__lmpwd_hash_offset", 156, "uint32"],
      ["__lmpwd_hash_length", 160, "uint32"],
-     ["lmpwd_hash", "x=&gt;x.__lmpwd_hash_offset + 0xcc", "String", {
-         "length": "x=&gt;x.__lmpwd_hash_length",
+     ["lmpwd_hash", "x=>x.__lmpwd_hash_offset + 0xcc", "String", {
+         "length": "x=>x.__lmpwd_hash_length",
          "term": "",
      }],
 
      ["__ntpwd_hash_offset", 168, "uint32"],
      ["__ntpwd_hash_length", 172, "uint32"],
-     ["ntpwd_hash", "x=&gt;x.__ntpwd_hash_offset + 0xcc", "String", {
-         "length": "x=&gt;x.__ntpwd_hash_length",
+     ["ntpwd_hash", "x=>x.__ntpwd_hash_offset + 0xcc", "String", {
+         "length": "x=>x.__ntpwd_hash_length",
          "term": "",
      }]
     ]],
 
-    ["SID", "x=&gt;8 + 4 * x.SubAuthorityCount", [
+    ["SID", "x=>8 + 4 * x.SubAuthorityCount", [
       ["Revision", 0, "uint8"],
       ["SubAuthorityCount", 1, "uint8"],
       ["IdentifierAuthorityHigh", 2, "uint16be"],
       ["IdentifierAuthorityLow", 4, "uint32be"],
-      ["RID", "x=&gt;8 + 4 * (x.SubAuthorityCount - 1)", "uint32"],
+      ["RID", "x=>8 + 4 * (x.SubAuthorityCount - 1)", "uint32"],
       ["SubAuthority", 8, "Array", {
           "type": "uint32",
-          "count": "x=&gt;x.SubAuthorityCount",
+          "count": "x=>x.SubAuthorityCount",
       }],
     ]],
 
@@ -172,17 +174,17 @@ export: |
       ["DescriptionLength", 32, "uint32"],
       ["MembersOffset", 40, "uint32"],
       ["MembersCount", 48, "uint32"],
-      ["Name", "x=&gt;x.NameOffset + 52", "String", {
-          "length": "x=&gt;x.NameLength",
+      ["Name", "x=>x.NameOffset + 52", "String", {
+          "length": "x=>x.NameLength",
           "encoding": "utf16",
       }],
-      ["Description", "x=&gt;x.DescriptionOffset + 52", "String", {
-          "length": "x=&gt;x.DescriptionLength",
+      ["Description", "x=>x.DescriptionOffset + 52", "String", {
+          "length": "x=>x.DescriptionLength",
           "encoding": "utf16",
       }],
-      ["Members", "x=&gt;x.MembersOffset + 52", "Array", {
+      ["Members", "x=>x.MembersOffset + 52", "Array", {
           "type": "SID",
-          "count": "x=&gt;x.MembersCount",
+          "count": "x=>x.MembersCount",
       }],
     ]],
 
@@ -195,17 +197,17 @@ export: |
       ["DescriptionLength", 48, "uint32"],
       ["MembersOffset", 56, "uint32"],
       ["MembersCount", 64, "uint32"],
-      ["Name", "x=&gt;x.NameOffset + 68", "String", {
-          "length": "x=&gt;x.NameLength",
+      ["Name", "x=>x.NameOffset + 68", "String", {
+          "length": "x=>x.NameLength",
           "encoding": "utf16",
       }],
-      ["Description", "x=&gt;x.DescriptionOffset + 68", "String", {
-          "length": "x=&gt;x.DescriptionLength",
+      ["Description", "x=>x.DescriptionOffset + 68", "String", {
+          "length": "x=>x.DescriptionLength",
           "encoding": "utf16",
       }],
-      ["Members", "x=&gt;x.MembersOffset + 68", "Array", {
+      ["Members", "x=>x.MembersOffset + 68", "Array", {
           "type": "uint32",
-          "count": "x=&gt;x.MembersCount",
+          "count": "x=>x.MembersCount",
       }],
     ]],
 
@@ -255,7 +257,7 @@ export: |
   // S-1-5-32-* BUILTIN local-group SIDs (source:
   // https://learn.microsoft.com/en-us/windows/win32/secauthz/well-known-sids and
   // https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-identifiers):
-  LET WellKnownSIDs &lt;= dict(
+  LET WellKnownSIDs <= dict(
       // Universal well-known SIDs (SECURITY_NULL/WORLD/LOCAL/CREATOR_SID_AUTHORITY):
       `S-1-0-0`='NULL SID',
       `S-1-1-0`='Everyone',
@@ -295,7 +297,7 @@ export: |
       `S-1-5-64-21`='Digest Authentication',
       `S-1-5-80-0`='NT SERVICE\\ALL SERVICES',
       `S-1-5-83-0`='NT VIRTUAL MACHINE\\Virtual Machines',
-      // BUILTIN local-group SIDs (S-1-5-32-&lt;RID&gt;):
+      // BUILTIN local-group SIDs (S-1-5-32-<RID>):
       `S-1-5-32-544`='Administrators',
       `S-1-5-32-545`='Users',
       `S-1-5-32-546`='Guests',
@@ -332,7 +334,7 @@ export: |
       `S-1-5-32-585`='OpenSSH Users')
 
   // SAM\Domains\Account's own F/V values (the domain object, distinct
-  // from any SAM\Domains\Account\Users\&lt;RID&gt;\F or V):
+  // from any SAM\Domains\Account\Users\<RID>\F or V):
   LET DomainAccount(SAMPath) = SELECT get(field="F") AS DomainF,
                                       get(field="V") AS DomainV
     FROM read_reg_key(globs='SAM\\Domains\\Account',
@@ -571,6 +573,6 @@ column_types:
   - name: lmpwd_hash
     type: hex
   - name: ntpwd_hash
-    type: hex
-</code></pre>
+    type: hex````
+
 

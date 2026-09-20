@@ -1,19 +1,21 @@
 ---
 title: Windows.System.Shares
+description: "Enumerates Windows network shares via the Win32_Share WMI class\nwith regex filtering.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Enumerates Windows network shares via the Win32_Share WMI class
-  with regex filtering.
+build:
+  list: never
 ---
 
 Enumerates Windows network shares via the Win32_Share WMI class
 with regex filtering.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.Shares
 author: 'Matt Green - @mgreen27'
 description: |
@@ -40,6 +42,6 @@ sources:
         SELECT Name, Path, Caption, Status,MaximumAllowed,AllowMaximum,InstallDate
         FROM wmi(query='SELECT * FROM Win32_Share',namespace='root/cimv2')
         WHERE Name =~ NameRegex AND Path =~ PathRegex
+````
 
-</code></pre>
 

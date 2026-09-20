@@ -1,12 +1,12 @@
 ---
 title: Windows.Detection.Thumbdrives.OfficeMacros
+description: "Watches for removable drives and extracts VBA macros from newly\nadded Office files."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
-description: |
-  Watches for removable drives and extracts VBA macros from newly
-  added Office files.
+build:
+  list: never
 ---
 
 Watches for removable drives and extracts VBA macros from newly
@@ -24,7 +24,9 @@ We exclude very large removable drives since they might have too
 many files.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.Thumbdrives.OfficeMacros
 description: |
   Watches for removable drives and extracts VBA macros from newly
@@ -58,6 +60,6 @@ sources:
           query = {
             SELECT * from olevba(file=OSPath)
           })
+````
 
-</code></pre>
 

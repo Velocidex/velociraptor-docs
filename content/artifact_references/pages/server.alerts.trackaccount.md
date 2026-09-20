@@ -1,12 +1,12 @@
 ---
 title: Server.Alerts.Trackaccount
+description: "Forwards account tracking events from `Windows.Events.Trackaccount`\nas an alert to a Slack/Teams/Discord webhook."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
-description: |
-  Forwards account tracking events from `Windows.Events.Trackaccount`
-  as an alert to a Slack/Teams/Discord webhook.
+build:
+  list: never
 ---
 
 Forwards account tracking events from `Windows.Events.Trackaccount`
@@ -16,7 +16,9 @@ Note that it requires that the client event artifact
 `Windows.Events.Trackaccount` is being collected on clients.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Alerts.Trackaccount
 description: |
   Forwards account tracking events from `Windows.Events.Trackaccount`
@@ -53,6 +55,6 @@ sources:
             method="POST",
             url=token_url)
         })
+````
 
-</code></pre>
 

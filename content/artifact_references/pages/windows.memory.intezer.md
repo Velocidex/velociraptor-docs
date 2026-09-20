@@ -1,12 +1,12 @@
 ---
 title: Windows.Memory.Intezer
+description: "Runs the Intezer memory scanner to collect running code for malware\nanalysis via Intezer Analyze."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Runs the Intezer memory scanner to collect running code for malware
-  analysis via Intezer Analyze.
+build:
+  list: never
 ---
 
 Runs the Intezer memory scanner to collect running code for malware
@@ -26,7 +26,9 @@ documents or any other data that is not binary code.
   report.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Memory.Intezer
 description: |
   Runs the Intezer memory scanner to collect running code for malware
@@ -67,12 +69,12 @@ sources:
 
     query: |
       -- first get context on target binary
-      LET bin &lt;= SELECT *
+      LET bin <= SELECT *
         FROM Artifact.Generic.Utils.FetchBinary(
             ToolName="Intezer")
 
       -- execute payload
       SELECT * FROM execve(argv=[ bin.OSPath[0], '-k', ApiKey ])
+````
 
-</code></pre>
 

@@ -1,12 +1,12 @@
 ---
 title: Windows.Registry.RDP
+description: "Extracts historical RDP connection server names and MRU entries from\neach user's NTUSER.DAT registry hive."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Extracts historical RDP connection server names and MRU entries from
-  each user's NTUSER.DAT registry hive.
+build:
+  list: never
 ---
 
 Extracts historical RDP connection server names and MRU entries from
@@ -22,7 +22,9 @@ this user.
 UserRegex and SidRegex can be used to target a specific user.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Registry.RDP
 author: Matt Green - @mgreen27
 description: |
@@ -58,7 +60,7 @@ precondition: SELECT OS From info() where OS = 'windows'
 sources:
   - name: Servers
     query: |
-      LET servers &lt;= SELECT 
+      LET servers <= SELECT 
             Mtime as LastWriteTime,
             basename(path=OSPath.Dirname) as Server,
             OSPath.Basename as KeyName,
@@ -97,7 +99,7 @@ sources:
 
   - name: Mru
     query: |
-      LET mru &lt;= SELECT 
+      LET mru <= SELECT 
             Mtime as LastWriteTime,
             OSPath.Basename as KeyName,
             Data.value as KeyValue,
@@ -125,6 +127,6 @@ sources:
         Key,
         LastWriteTime,
         find_mru(sid=SID).KeyValue as Mru
-      FROM results
-</code></pre>
+      FROM results````
+
 

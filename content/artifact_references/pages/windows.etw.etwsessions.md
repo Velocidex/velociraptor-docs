@@ -1,12 +1,12 @@
 ---
 title: Windows.ETW.ETWSessions
+description: "Watches kernel event tracing ETW events to detect creation and\nremoval of ETW sessions."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
-description: |
-  Watches kernel event tracing ETW events to detect creation and
-  removal of ETW sessions.
+build:
+  list: never
 ---
 
 Watches kernel event tracing ETW events to detect creation and
@@ -20,7 +20,9 @@ This artifact monitors for all new ETW sessions and reports the
 tracing process as well as the provider that is being traced.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.ETW.ETWSessions
 description: |
   Watches kernel event tracing ETW events to detect creation and
@@ -57,6 +59,6 @@ sources:
          description='Microsoft-Windows-Kernel-EventTracing',
          guid="{B675EC37-BDB6-4648-BC92-F3FDC74D3CA2}", all=0x400)
       WHERE System.ID IN (14, 15)
+````
 
-</code></pre>
 

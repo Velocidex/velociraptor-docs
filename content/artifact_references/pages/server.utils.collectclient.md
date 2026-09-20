@@ -1,12 +1,12 @@
 ---
 title: Server.Utils.CollectClient
+description: "Automates the full collection workflow of a specified artifact:\nschedule, wait, and retrieve results from a single client."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Automates the full collection workflow of a specified artifact:
-  schedule, wait, and retrieve results from a single client.
+build:
+  list: never
 ---
 
 Automates the full collection workflow of a specified artifact:
@@ -20,7 +20,9 @@ performing all steps automatically:
 3. The results from the collection will be displayed.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.CollectClient
 description: |
   Automates the full collection workflow of a specified artifact:
@@ -51,17 +53,17 @@ sources:
       -- Find a client to collect from by applying the search
       -- critertia and picking the first hit
       LET Clients = SELECT client_id FROM clients(search=Client) LIMIT 1
-      LET client_id &lt;= Clients[0].client_id
+      LET client_id <= Clients[0].client_id
 
       -- If we found something then schedule the collection.
-      LET collection &lt;= if(condition=client_id,
+      LET collection <= if(condition=client_id,
           then=collect_client(client_id=client_id,
                               artifacts=ArtifactName, env=Parameters),
           else=log(message="No clients found to match search " + Client) AND FALSE)
 
       -- Wait for the collection to finish - if the client is
       -- currently connected this wont take long
-      LET FlowResults &lt;= SELECT * FROM if(condition=collection,
+      LET FlowResults <= SELECT * FROM if(condition=collection,
       then={
          SELECT * FROM watch_monitoring(artifact='System.Flow.Completion')
          WHERE FlowId = collection.flow_id
@@ -74,6 +76,6 @@ sources:
            SELECT *, _value AS Source, client_id
            FROM source(client_id=client_id, flow_id=collection.flow_id, artifact=_value)
       })
+````
 
-</code></pre>
 

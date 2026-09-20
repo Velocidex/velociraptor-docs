@@ -24,20 +24,14 @@ tar czf transport-<org name>.tar.gz <file store>/orgs/<org id>*
 
 1. Decompress the archive under the `<file store>/orgs` directory.
 
-{{% notice tip "No orgs folder" %}}
-
-The `orgs` directory is created with the first organization. After a fresh install of Velociraptor, it doesn't exist until you create an org. You may also simply create the directory.
-
-{{% /notice %}}
+> [!TIP] No orgs folder
+> The `orgs` directory is created with the first organization. After a fresh install of Velociraptor, it doesn't exist until you create an org. You may also simply create the directory.
 
 2. Verify file ownership and permissions are similar to other directories in the file store
 2. Start Velociraptor
 2. You should see the organization with all its content as it were on the origin server
 
-{{% notice tip "Can't see the org" %}}
-
-Upon startup, Velociraptor will run the workers linked to the organization, so you can find a trace of it in the logs, but you may only see it in GUI if you are granted permissions on it. Just edit with your favorite text editor: `<file store>/orgs/<org id>/acl/<username>.json.db` to give the access rights to an existing user (or create a user with the name of a user who was allowed to see the org),
-
-{{% /notice %}}
+> [!TIP] Can't see the org
+> Upon startup, Velociraptor will run the workers linked to the organization, so you can find a trace of it in the logs, but you may only see it in GUI if you are granted permissions on it. Just edit with your favorite text editor: `<file store>/orgs/<org id>/acl/<username>.json.db` to give the access rights to an existing user (or create a user with the name of a user who was allowed to see the org),
 
 Tags: #archiving #orgs #deployment

@@ -1,12 +1,12 @@
 ---
 title: Generic.Forensic.Carving.URLs
+description: "Extracts URLs from files in common user-related locations using\nregex carving."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Extracts URLs from files in common user-related locations using
-  regex carving.
+build:
+  list: never
 ---
 
 Extracts URLs from files in common user-related locations using
@@ -16,7 +16,9 @@ Note that it does not parse any files - it simply extracts anything
 that looks like a URL.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Forensic.Carving.URLs
 description: |
   Extracts URLs from files in common user-related locations using
@@ -50,8 +52,8 @@ sources:
           query={
             SELECT OSPath,
                    URL FROM parse_records_with_regex(file=OSPath,
-               regex="(?P&lt;URL&gt;https?:\\/\\/[\\w\\.-]+[\\/\\w \\.-]*)")
+               regex="(?P<URL>https?:\\/\\/[\\w\\.-]+[\\/\\w \\.-]*)")
           })
+````
 
-</code></pre>
 

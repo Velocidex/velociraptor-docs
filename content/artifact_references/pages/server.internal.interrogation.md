@@ -1,12 +1,12 @@
 ---
 title: Server.Internal.Interrogation
+description: "Emits an event when the interrogation service completes processing a\nclient's info update."
 hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
-description: |
-  Emits an event when the interrogation service completes processing a
-  client's info update.
+build:
+  list: never
 ---
 
 Emits an event when the interrogation service completes processing a
@@ -38,7 +38,9 @@ artifact there are some subtle differences:
   `Server.Internal.Interrogation`
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Internal.Interrogation
 description: |
   Emits an event when the interrogation service completes processing a
@@ -70,6 +72,6 @@ description: |
     `Server.Internal.Interrogation`
 
 type: INTERNAL
+````
 
-</code></pre>
 

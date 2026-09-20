@@ -1,12 +1,12 @@
 ---
 title: Server.Alerts.TheHive.Alert
+description: "Creates TheHive alerts when monitored artifact collections complete\nwith results."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
-description: |
-  Creates TheHive alerts when monitored artifact collections complete
-  with results.
+build:
+  list: never
 ---
 
 Creates TheHive alerts when monitored artifact collections complete
@@ -16,7 +16,9 @@ The artifact uses Server Metadata to store credentials, instead of storing
 these directly within the artifact.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Alerts.TheHive.Alert
 description: |
   Creates TheHive alerts when monitored artifact collections complete
@@ -74,6 +76,6 @@ sources:
           method="POST",
           url=format(format="%v/api/alert", args=[TheHiveURL]))
        })
+````
 
-</code></pre>
 

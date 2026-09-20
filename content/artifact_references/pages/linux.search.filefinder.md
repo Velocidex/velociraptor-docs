@@ -1,12 +1,12 @@
 ---
 title: Linux.Search.FileFinder
+description: "Searches for files by path glob, inspects file content via YARA, and\nprovides file hash and upload options.."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Searches for files by path glob, inspects file content via YARA, and
-  provides file hash and upload options..
+build:
+  list: never
 ---
 
 Searches for files by path glob, inspects file content via YARA, and
@@ -39,7 +39,9 @@ artifact is collected with a rate limited way (about 20-50 ops per
 second).
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Search.FileFinder
 description: |
   Searches for files by path glob, inspects file content via YARA, and
@@ -146,7 +148,7 @@ sources:
     -- This list comes from cat /proc/devices and represents actual
     -- devices. Most virtual devices like /proc, fuse and network
     -- filesystems have a major number of 0.
-    LET LocalDeviceMajor &lt;= (
+    LET LocalDeviceMajor <= (
        253,
        7,   -- loop
        8,   -- sd
@@ -176,10 +178,10 @@ sources:
     LET RecursionCallback = if(
        condition=LocalFilesystemOnly,
          then=if(condition=ExcludePathRegex,
-                 then="x=&gt;x.Data.DevMajor IN LocalDeviceMajor AND NOT x.OSPath =~ ExcludePathRegex",
-                 else="x=&gt;x.Data.DevMajor IN LocalDeviceMajor"),
+                 then="x=>x.Data.DevMajor IN LocalDeviceMajor AND NOT x.OSPath =~ ExcludePathRegex",
+                 else="x=>x.Data.DevMajor IN LocalDeviceMajor"),
          else=if(condition=ExcludePathRegex,
-                 then="x=&gt;NOT x.OSPath =~ ExcludePathRegex",
+                 then="x=>NOT x.OSPath =~ ExcludePathRegex",
                  else=""))
 
     LET file_search = SELECT OSPath,
@@ -199,7 +201,7 @@ sources:
         condition=MoreRecentThan,
         then={
           SELECT * FROM file_search
-          WHERE MTime &gt; MoreRecentThan
+          WHERE MTime > MoreRecentThan
         }, else={
           SELECT * FROM file_search
         })
@@ -208,8 +210,8 @@ sources:
         condition=ModifiedBefore,
         then={
           SELECT * FROM more_recent
-          WHERE MTime &lt; ModifiedBefore
-            AND MTime &gt; MoreRecentThan
+          WHERE MTime < ModifiedBefore
+            AND MTime > MoreRecentThan
         }, else={
           SELECT * FROM more_recent
         })
@@ -275,6 +277,6 @@ column_types:
     type: timestamp
   - name: Upload
     type: preview_upload
+````
 
-</code></pre>
 

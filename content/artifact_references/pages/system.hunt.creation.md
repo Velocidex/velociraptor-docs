@@ -1,25 +1,27 @@
 ---
 title: System.Hunt.Creation
+description: "Fires an event whenever a new hunt is created on the Velociraptor\nserver.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
-description: |
-  Fires an event whenever a new hunt is created on the Velociraptor
-  server.
+build:
+  list: never
 ---
 
 Fires an event whenever a new hunt is created on the Velociraptor
 server.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: System.Hunt.Creation
 description: |
   Fires an event whenever a new hunt is created on the Velociraptor
   server.
 
 type: SERVER_EVENT
+````
 
-</code></pre>
 

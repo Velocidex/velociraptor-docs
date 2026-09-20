@@ -1,19 +1,21 @@
 ---
 title: Server.Internal.ArtifactDescription
+description: "Renders a formatted view of any artifact's metadata, parameters,\nsources, exports, etc.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Internal Artifact]
-description: |
-  Renders a formatted view of any artifact's metadata, parameters,
-  sources, exports, etc.
+build:
+  list: never
 ---
 
 Renders a formatted view of any artifact's metadata, parameters,
 sources, exports, etc.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Internal.ArtifactDescription
 description: |
   Renders a formatted view of any artifact's metadata, parameters,
@@ -50,20 +52,20 @@ reports:
 
       {{ if $artifact.Description }}
 
-      &lt;div class="description-content"&gt;
+      <div class="description-content">
 
       {{ $artifact.Description }}
 
       {{ if $artifact.Reference }}
       ---
       References:
-      &lt;ul&gt;
+      <ul>
       {{- range $item := $artifact.Reference -}}
-      &lt;li&gt;{{ $item }}&lt;/li&gt;
+      <li>{{ $item }}</li>
       {{- end -}}
-      &lt;/ul&gt;
+      </ul>
       {{ end }}
-      &lt;/div&gt;
+      </div>
 
       {{ end }}
 
@@ -71,7 +73,7 @@ reports:
       ### Tools
 
       {{ range $artifact.Tools -}}
-      * &lt;velo-tool-viewer name="{{.Name}}" version="{{.Version}}"&gt;&lt;/velo-tool-viewer&gt;
+      * <velo-tool-viewer name="{{.Name}}" version="{{.Version}}"></velo-tool-viewer>
       {{ end }}
 
       {{ end }}
@@ -80,45 +82,45 @@ reports:
 
       ### Parameters
 
-      &lt;table class="table table-striped"&gt;
-      &lt;thead&gt;
-         &lt;tr&gt;
-           &lt;th&gt;Name&lt;/th&gt;
-           &lt;th&gt;Type&lt;/th&gt;
-           &lt;th&gt;Default&lt;/th&gt;
-           &lt;th&gt;Description&lt;/th&gt;
-         &lt;/tr&gt;
-      &lt;/thead&gt;
-      &lt;tbody&gt;
+      <table class="table table-striped">
+      <thead>
+         <tr>
+           <th>Name</th>
+           <th>Type</th>
+           <th>Default</th>
+           <th>Description</th>
+         </tr>
+      </thead>
+      <tbody>
       {{- range $item := $artifact.Parameters -}}
          {{- if not (eq $item.Type "hidden") -}}
-           &lt;tr&gt;
-             &lt;td&gt;{{ $item.Name }}&lt;/td&gt;
-             &lt;td&gt;{{ $item.Type }}&lt;/td&gt;
-             &lt;td&gt;&lt;pre&gt;{{ $item.Default }}&lt;/pre&gt;&lt;/td&gt;
-             &lt;td&gt;{{ $item.Description }}&lt;/td&gt;
-           &lt;/tr&gt;
+           <tr>
+             <td>{{ $item.Name }}</td>
+             <td>{{ $item.Type }}</td>
+             <td><pre>{{ $item.Default }}</pre></td>
+             <td>{{ $item.Description }}</td>
+           </tr>
          {{- end -}}
       {{- end -}}
-      &lt;/tbody&gt;&lt;/table&gt;
+      </tbody></table>
 
       {{ end }}
 
       {{ if $artifact.Imports }}
 
-      &lt;table class="table table-striped"&gt;
-      &lt;thead&gt;
-         &lt;tr&gt;
-           &lt;th&gt;Imports&lt;/th&gt;
-         &lt;/tr&gt;
-      &lt;/thead&gt;
-      &lt;tbody&gt;
+      <table class="table table-striped">
+      <thead>
+         <tr>
+           <th>Imports</th>
+         </tr>
+      </thead>
+      <tbody>
       {{- range $item := $artifact.Imports -}}
-        &lt;tr&gt;
-          &lt;td&gt;{{ $item }}&lt;/td&gt;
-        &lt;/tr&gt;
+        <tr>
+          <td>{{ $item }}</td>
+        </tr>
       {{- end -}}
-      &lt;/tbody&gt;&lt;/table&gt;
+      </tbody></table>
 
       {{ end }}
 
@@ -170,6 +172,6 @@ reports:
       {{ end }}
 
       {{ end }}
+````
 
-</code></pre>
 

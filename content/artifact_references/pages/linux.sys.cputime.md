@@ -1,19 +1,21 @@
 ---
 title: Linux.Sys.CPUTime
+description: "Displays information from the `/proc/stat` file about the time the\nCPU cores spent in different parts of the system.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Displays information from the `/proc/stat` file about the time the
-  CPU cores spent in different parts of the system.
+build:
+  list: never
 ---
 
 Displays information from the `/proc/stat` file about the time the
 CPU cores spent in different parts of the system.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Sys.CPUTime
 description: |
   Displays information from the `/proc/stat` file about the time the
@@ -47,6 +49,6 @@ sources:
                atoi(string=guest) as Guest,
                atoi(string=guest_nice) as GuestNice
         FROM raw
+````
 
-</code></pre>
 

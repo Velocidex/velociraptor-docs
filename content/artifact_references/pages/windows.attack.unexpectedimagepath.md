@@ -1,12 +1,12 @@
 ---
 title: Windows.Attack.UnexpectedImagePath
+description: "Detects well-known system processes running from unexpected file\npaths."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Detects well-known system processes running from unexpected file
-  paths.
+build:
+  list: never
 ---
 
 Detects well-known system processes running from unexpected file
@@ -16,7 +16,9 @@ Some malware hides in plain sight by masquerading a legitimate
 executable name.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Attack.UnexpectedImagePath
 
 description: |
@@ -61,7 +63,7 @@ sources:
       SELECT OS From info() where OS = 'windows'
 
     query: |
-      LET expected_paths_lookup &lt;= memoize(key="ProcName", query={
+      LET expected_paths_lookup <= memoize(key="ProcName", query={
         SELECT ProcName, enumerate(items=ExpectedPath) AS Path
         FROM expected_paths
         GROUP BY ProcName
@@ -69,7 +71,7 @@ sources:
 
       LET suspicious_processes = SELECT Pid AS PID, Name AS ProcessName, Ppid AS PPID,
         Exe AS ImagePath, CommandLine, Username, StartTime,
-        if(condition=EndTime&lt;StartTime, then="", else=EndTime) AS EndTime,
+        if(condition=EndTime<StartTime, then="", else=EndTime) AS EndTime,
         get(item=expected_paths_lookup, field=Name).Path AS ExpectedPaths,
         process_tracker_callchain(id=Pid) AS CallChain,
         process_tracker_get(id=Ppid) AS Parent
@@ -83,7 +85,7 @@ sources:
         Parent.Data.CommandLine As ParentCommandLine,
         Parent.Data.Username As ParentUsername,
         Parent.StartTime As ParentStartTime,
-        if(condition=Parent.EndTime&lt;Parent.StartTime, then=NULL, else=EndTime) AS ParentEndTime,
+        if(condition=Parent.EndTime<Parent.StartTime, then=NULL, else=EndTime) AS ParentEndTime,
         CallChain.Data AS _CallChain,
         { SELECT Pid, Name, Ppid, Exe,
                  CommandLine, Username, StartTime, EndTime
@@ -91,6 +93,6 @@ sources:
           foreach(row=process_tracker_children(id=PID).Data)
         } AS SubProcesses
         FROM suspicious_processes
+````
 
-</code></pre>
 

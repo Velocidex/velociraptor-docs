@@ -1,0 +1,33 @@
+---
+title: repack
+sitemap:
+  disable: true
+no_edit: true
+no_children: true
+description: |
+  Repack and upload a repacked binary or MSI to the server.
+build:
+  list: never
+---
+
+
+
+{{< badge >}}Function{{< /badge >}}
+
+Arg | Description | Type
+----|-------------|-----
+target|The name of the target OS to repack (VelociraptorWindows, VelociraptorLinux, VelociraptorDarwin)|string
+version|Velociraptor Version to repack|string
+exe|Alternative a path to the executable to repack|OSPath
+accessor|The accessor to use to read the file.|string
+binaries|List of tool names that will be repacked into the target|list of string
+config|The config to be repacked in the form of a json or yaml string|string (required)
+upload_name|The name of the upload to create|string
+dest_filename|If an upload name is not provided, the file will be written to this path|string
+
+**Required permissions:** `COLLECT_SERVER`, `FILESYSTEM_WRITE`
+
+### Description
+
+Repack and upload a repacked binary or MSI to the server.
+

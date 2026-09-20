@@ -1,11 +1,12 @@
 ---
 title: Linux.Forensics.Journal
+description: "Extracts records from systemd journal files for forensic analysis."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Extracts records from systemd journal files for forensic analysis.
+build:
+  list: never
 ---
 
 Extracts records from systemd journal files for forensic analysis.
@@ -14,7 +15,9 @@ Systemd uses a binary log format to store logs. This parses the
 binary journal logs. 
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Forensics.Journal
 description: |
   Extracts records from systemd journal files for forensic analysis.
@@ -44,7 +47,7 @@ parameters:
   description: If set we also upload the raw files.
 
 export: |
-  LET Priorities &lt;= dict(`0`='emerg',
+  LET Priorities <= dict(`0`='emerg',
                       `1`='alert',
                       `2`='crit',
                       `3`='err',
@@ -163,7 +166,7 @@ sources:
         {{ end }}
         {{ Query "Messages" | TimeChart }}
         */
-        LET Dummy &lt;= 42
+        LET Dummy <= 42
 
     - type: vql_suggestion
       name: Timeline
@@ -172,7 +175,7 @@ sources:
         # Journal timeline
         {{ Timeline "Journal" }}
         */
-        LET _ &lt;= timeline_add(key='Timestamp',
+        LET _ <= timeline_add(key='Timestamp',
                               name='journal',
                               timeline='Journal',
                               query={
@@ -186,6 +189,6 @@ sources:
                   System,
                   EventData
             FROM source()
-          })
-</code></pre>
+          })````
+
 

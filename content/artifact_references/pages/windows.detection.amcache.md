@@ -1,12 +1,12 @@
 ---
 title: Windows.Detection.Amcache
+description: "Collects AMCache entries with a SHA1 hash to enable threat\ndetection."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Collects AMCache entries with a SHA1 hash to enable threat
-  detection.
+build:
+  list: never
 ---
 
 Collects AMCache entries with a SHA1 hash to enable threat
@@ -35,7 +35,9 @@ NOTE:
     AMCache analysis please download raw artifact sets.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.Amcache
 author: Matt Green - @mgreen27
 description: |
@@ -91,7 +93,7 @@ parameters:
 
 sources:
   - query: |
-        LET files &lt;= SELECT OSPath
+        LET files <= SELECT OSPath
            FROM glob(globs=expand(path=AMCacheGlob))
 
         SELECT * FROM foreach(row=files,
@@ -169,6 +171,6 @@ sources:
                             then= Version =~ VersionRegex,
                             else= True)
             })
+````
 
-</code></pre>
 

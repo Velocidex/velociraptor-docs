@@ -1,0 +1,67 @@
+---
+title: artifact_set_metadata
+sitemap:
+  disable: true
+no_edit: true
+no_children: true
+description: |
+  Sets metadata about the artifact.
+
+  This VQL function is used to clean up the artifact search screen
+  and guide users to assist with investigations.
+
+  Velociraptor comes with a lot of built in artifacts which may be
+  confusing to some users and in specialized deployments it may be
+  preferable to guide users into a small subset of artifacts and
+  hide the rest.
+
+  For example, say you have a set of custom artifacts that you only
+  want to show. Then I would add a special keyword to their
+  description (for example a company name - say "Written by ACME
+  inc"). Then a query like this will hide the others:
+
+  ```vql
+  SELECT name, artifact_set_metadata(name=name, hidden=TRUE)
+  FROM artifact_definitions() WHERE NOT description =~ "ACME"
+  ```
+
+build:
+  list: never
+---
+
+
+
+{{< badge >}}Function{{< /badge >}}
+
+Arg | Description | Type
+----|-------------|-----
+name|The Artifact to update|string (required)
+hidden|Set to true make the artifact hidden in the GUI, false to make it visible again.|bool
+basic|Set to true make the artifact a 'basic' artifact. This allows users with the COLLECT_BASIC permission able to collect it.|bool
+tags|Optional tags to attach to the artifact.|list of string
+
+**Required permissions:** `ARTIFACT_WRITER`, `SERVER_ARTIFACT_WRITER`
+
+### Description
+
+Sets metadata about the artifact.
+
+This VQL function is used to clean up the artifact search screen
+and guide users to assist with investigations.
+
+Velociraptor comes with a lot of built in artifacts which may be
+confusing to some users and in specialized deployments it may be
+preferable to guide users into a small subset of artifacts and
+hide the rest.
+
+For example, say you have a set of custom artifacts that you only
+want to show. Then I would add a special keyword to their
+description (for example a company name - say "Written by ACME
+inc"). Then a query like this will hide the others:
+
+```vql
+SELECT name, artifact_set_metadata(name=name, hidden=TRUE)
+FROM artifact_definitions() WHERE NOT description =~ "ACME"
+```
+
+

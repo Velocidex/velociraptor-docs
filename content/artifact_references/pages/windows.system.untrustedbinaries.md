@@ -1,12 +1,12 @@
 ---
 title: Windows.System.UntrustedBinaries
+description: "Checks that common Windows system binaries are signed using\nauthenticode verification."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Checks that common Windows system binaries are signed using
-  authenticode verification.
+build:
+  list: never
 ---
 
 Checks that common Windows system binaries are signed using
@@ -26,7 +26,9 @@ Note that unfortunately Microsoft does not sign all their common
 binaries so many will not be signed (e.g. `conhost.exe`).
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.UntrustedBinaries
 description: |
   Checks that common Windows system binaries are signed using
@@ -72,6 +74,6 @@ sources:
                Authenticode.IssuerName as Issuer,
                Authenticode.SubjectName as Subject,
                Authenticode.Trusted as Trusted from auth
+````
 
-</code></pre>
 

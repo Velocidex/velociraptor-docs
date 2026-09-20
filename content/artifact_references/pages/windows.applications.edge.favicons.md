@@ -1,12 +1,12 @@
 ---
 title: Windows.Applications.Edge.Favicons
+description: "Enumerates Edge browser favicons including page URLs, favicon URLs,\nand last updated timestamps."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Enumerates Edge browser favicons including page URLs, favicon URLs,
-  and last updated timestamps.
+build:
+  list: never
 ---
 
 Enumerates Edge browser favicons including page URLs, favicon URLs,
@@ -26,7 +26,9 @@ database, within the 'favicons' table.
   and will be removed in future
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Applications.Edge.Favicons
 description: |
   Enumerates Edge browser favicons including page URLs, favicon URLs,
@@ -104,6 +106,6 @@ sources:
 column_types:
 - name: Image
   type: preview_upload
+````
 
-</code></pre>
 

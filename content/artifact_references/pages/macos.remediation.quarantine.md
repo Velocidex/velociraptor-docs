@@ -1,11 +1,12 @@
 ---
 title: MacOS.Remediation.Quarantine
+description: "Applies network quarantine to a macOS system using Packet Filter (PF)."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Applies network quarantine to a macOS system using Packet Filter (PF).
+build:
+  list: never
 ---
 
 Applies network quarantine to a macOS system using Packet Filter (PF).
@@ -107,7 +108,9 @@ Expected macOS pfctl diagnostics:
   Any non-zero ReturnCode is treated as a failure.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: MacOS.Remediation.Quarantine
 author: Matt Green - @mgreen27
 description: |
@@ -283,7 +286,7 @@ parameters:
 
 sources:
   - query: |
-      LET State &lt;= dict(installed=FALSE,
+      LET State <= dict(installed=FALSE,
                         rules_valid=FALSE,
                         anchor_loaded=FALSE,
                         anchor_flushed=FALSE,
@@ -303,14 +306,14 @@ sources:
 
       LET SetToken(Token) = set(item=State, field="token", value=Token)
 
-      LET AllURLs &lt;= filter(list=config.server_urls + VelociraptorURL, regex='.+')
+      LET AllURLs <= filter(list=config.server_urls + VelociraptorURL, regex='.+')
 
-      LET MessageBox &lt;= parse_string_with_regex(regex='^(?P&lt;Message&gt;.{0,255}).*',
+      LET MessageBox <= parse_string_with_regex(regex='^(?P<Message>.{0,255}).*',
                                                 string=MessageBox).Message
 
       LET parse_host(URL) = parse_string_with_regex(
           string=url(parse=URL).Host,
-          regex=['^\\[(?P&lt;Host&gt;[^\\]]+)\\](?::(?P&lt;Port&gt;[0-9]+))?$', '^(?P&lt;Host&gt;[^:]+)(?::(?P&lt;Port&gt;[0-9]+))?$'])
+          regex=['^\\[(?P<Host>[^\\]]+)\\](?::(?P<Port>[0-9]+))?$', '^(?P<Host>[^:]+)(?::(?P<Port>[0-9]+))?$'])
 
       LET get_domain(URL) = parse_host(URL=URL).Host
 
@@ -323,7 +326,7 @@ sources:
           then="[" + Host + "]:" + Port,
           else=Host + ":" + Port)
 
-      LET configured_frontends &lt;= SELECT _value AS URL,
+      LET configured_frontends <= SELECT _value AS URL,
                                          url(parse=_value).Scheme AS Scheme,
                                          get_domain(URL=_value) AS Host,
                                          get_port(URL=_value) AS Port
@@ -332,7 +335,7 @@ sources:
          AND Host
               AND Port =~ '^[0-9]+$'
 
-      LET resolved_frontends &lt;= SELECT *
+      LET resolved_frontends <= SELECT *
         FROM foreach(row=configured_frontends,
                      query={
           SELECT _value AS Address,
@@ -344,7 +347,7 @@ sources:
           WHERE Address
         })
 
-      LET resolved_additional &lt;= SELECT *
+      LET resolved_additional <= SELECT *
         FROM foreach(row={
           SELECT Address,
                  Port,
@@ -377,7 +380,7 @@ sources:
                   else=format(format="pass out quick from any to %v keep state",
                               args=[Address])))
 
-      LET allow_rules &lt;= SELECT Rule
+      LET allow_rules <= SELECT Rule
         FROM chain(a={
           SELECT endpoint_rule(Address=Address, Port=Port, Protocol=Protocol) AS Rule
           FROM resolved_frontends
@@ -389,14 +392,14 @@ sources:
         WHERE Rule
         GROUP BY Rule
 
-      LET Rules &lt;= join(
+      LET Rules <= join(
           array=("# Managed by Velociraptor MacOS.Remediation.Quarantine", "pass quick on lo0 all", "pass out quick proto udp from any to any port 53 keep state", "pass out quick proto tcp from any to any port 53 keep state", "pass out quick proto udp from any port 68 to any port 67 keep state", "pass in quick proto udp from any port 67 to any port 68 keep state",
               join(
                 array=allow_rules.Rule,
                 sep="\n"), "block drop quick all"),
           sep="\n") + "\n"
 
-      LET RulesFile &lt;= tempfile(extension=".pf.conf", data=Rules)
+      LET RulesFile <= tempfile(extension=".pf.conf", data=Rules)
 
       LET combine_results(Stdout, Stderr, ReturnCode, Message) =
           if(
@@ -419,7 +422,7 @@ sources:
                           Message=Message) AS Result
         FROM execve(argv=Cmd, length=10000)
 
-      LET ExistingToken &lt;= if(condition=stat(filename=TokenFile),
+      LET ExistingToken <= if(condition=stat(filename=TokenFile),
                               then=strip(string=read_file(
                                            filename=TokenFile,
                                            length=100)))
@@ -529,7 +532,7 @@ sources:
       LET enable_pf = SELECT
           *, parse_string_with_regex(
             string=Stdout + "\n" + Stderr,
-            regex='Token\\s*:\\s*(?P&lt;Token&gt;[0-9]+)').Token AS Token
+            regex='Token\\s*:\\s*(?P<Token>[0-9]+)').Token AS Token
         FROM execve(argv=enable_pf_cmd, length=10000)
 
       LET store_pf_token = SELECT
@@ -607,7 +610,7 @@ sources:
       LET console_uid = SELECT
           parse_string_with_regex(
             string=Stdout,
-            regex='^(?P&lt;UID&gt;[0-9]+)').UID AS UID
+            regex='^(?P<UID>[0-9]+)').UID AS UID
         FROM execve(argv=("/usr/bin/stat", "-f", "%u", "/dev/console"),
                     length=10000)
         WHERE ReturnCode = 0
@@ -789,6 +792,6 @@ sources:
               resolved_frontends, forbidden_test_check])
         })
         })
+````
 
-</code></pre>
 

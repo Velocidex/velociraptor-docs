@@ -1,19 +1,21 @@
 ---
 title: Windows.System.Services
+description: "Enumerates Windows services via WMI, with optional filtering\ncriteria, and enriches with hashes and authenticode signatures.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Enumerates Windows services via WMI, with optional filtering
-  criteria, and enriches with hashes and authenticode signatures.
+build:
+  list: never
 ---
 
 Enumerates Windows services via WMI, with optional filtering
 criteria, and enriches with hashes and authenticode signatures.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.Services
 description: |
   Enumerates Windows services via WMI, with optional filtering
@@ -56,9 +58,9 @@ export: |
           ["ResetPeriod", 0, "uint32"],
           ["__ActionsCount", 12, "uint32"],
           ["__lpsaActionsHeader", 16, "uint32"],
-          ["FailureAction", "x=&gt;x.__lpsaActionsHeader", "Array", {
+          ["FailureAction", "x=>x.__lpsaActionsHeader", "Array", {
               "type": "ServiceAction",
-              "count": "x=&gt;x.__ActionsCount"
+              "count": "x=>x.__ActionsCount"
           }]
         ]],
         ["ServiceAction", 8, [
@@ -71,7 +73,7 @@ export: |
                     "SC_ACTION_RUN_COMMAND": 3,
                 }}],
             ["__DelayMsec", 4, "uint32"],
-            ["Delay", 4,"Value",{ "value": "x=&gt;x.__DelayMsec/1000" }],
+            ["Delay", 4,"Value",{ "value": "x=>x.__DelayMsec/1000" }],
         ]],
       ]
       '''
@@ -81,7 +83,7 @@ sources:
       SELECT OS From info() where OS = 'windows'
 
     query: |
-      LET service &lt;= SELECT State, Name, DisplayName, Status,
+      LET service <= SELECT State, Name, DisplayName, Status,
             ProcessId as Pid, ExitCode, StartMode,
             PathName, ServiceType, StartName as UserAccount,
             {
@@ -106,7 +108,7 @@ sources:
                 FROM read_reg_key(globs=servicesKeyGlob + Name)
             } AS FailureActions,
             expand(path=parse_string_with_regex(regex=
-                ['^"(?P&lt;AbsoluteExePath&gt;[^"]+)','(?P&lt;AbsoluteExePath&gt;^[^ "]+)'],
+                ['^"(?P<AbsoluteExePath>[^"]+)','(?P<AbsoluteExePath>^[^ "]+)'],
                 string=PathName).AbsoluteExePath) as AbsoluteExePath
         FROM wmi(query="SELECT * From Win32_service", namespace="root/CIMV2")
         WHERE Name =~ NameRegex
@@ -125,6 +127,6 @@ sources:
                  if(condition=CertificateInfo,
                     then=authenticode(filename=ServiceDll || " ")) AS CertinfoServiceDll
       FROM service
+````
 
-</code></pre>
 

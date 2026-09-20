@@ -1,12 +1,12 @@
 ---
 title: Windows.Memory.ProcessDump
+description: "Captures process memory for selected processes via crash dump or\nVelociraptor-compatible sparse upload."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Captures process memory for selected processes via crash dump or
-  Velociraptor-compatible sparse upload.
+build:
+  list: never
 ---
 
 Captures process memory for selected processes via crash dump or
@@ -16,7 +16,9 @@ NOTE: This artifact was previously named
 `Windows.Triage.ProcessMemory`
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Memory.ProcessDump
 description: |
   Captures process memory for selected processes via crash dump or
@@ -74,6 +76,6 @@ sources:
           query={
              SELECT * FROM UploadDump(Pid=Pid, ProcessName = ProcessName, CommandLine = CommandLine)
           })
+````
 
-</code></pre>
 

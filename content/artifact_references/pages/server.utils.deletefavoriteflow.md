@@ -1,12 +1,12 @@
 ---
 title: Server.Utils.DeleteFavoriteFlow
+description: "Removes a specific named favorite collection spec from the current\nuser's saved templates."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Removes a specific named favorite collection spec from the current
-  user's saved templates.
+build:
+  list: never
 ---
 
 Removes a specific named favorite collection spec from the current
@@ -16,7 +16,9 @@ It allows the user to delete a previously saved favorite. It will
 only affect the current user.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.DeleteFavoriteFlow
 description: |
   Removes a specific named favorite collection spec from the current
@@ -42,6 +44,6 @@ sources:
   - query: |
       SELECT favorites_delete(name=Name, type=Type)
       FROM scope()
+````
 
-</code></pre>
 

@@ -1,12 +1,12 @@
 ---
 title: Windows.Carving.USN
+description: "Recovers USN journal entries from raw disk by carving NTFS update\nsequence number records."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Recovers USN journal entries from raw disk by carving NTFS update
-  sequence number records.
+build:
+  list: never
 ---
 
 Recovers USN journal entries from raw disk by carving NTFS update
@@ -39,7 +39,9 @@ journal file.
    Windows.Carving.USNFiles artifact instead.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Carving.USN
 description: |
   Recovers USN journal entries from raw disk by carving NTFS update
@@ -98,13 +100,13 @@ sources:
 
     query: |
         -- firstly set timebounds for performance
-        LET DateAfterTime &lt;= if(condition=DateAfter,
+        LET DateAfterTime <= if(condition=DateAfter,
              then=DateAfter, else="1600-01-01")
-        LET DateBeforeTime &lt;= if(condition=DateBefore,
+        LET DateBeforeTime <= if(condition=DateBefore,
             then=DateBefore, else="2200-01-01")
 
         -- If the user specified an MFTFile then ignore the device
-        LET Device &lt;= if(condition=MFTFile OR USNFile, then=NULL,
+        LET Device <= if(condition=MFTFile OR USNFile, then=NULL,
           else=if(condition=Device,
           then=pathspec(parse=Device, path_type="ntfs")))
 
@@ -112,8 +114,8 @@ sources:
               FROM carve_usn(accessor=Accessor,
                              mft_filename=MFT, usn_filename=USN)
               WHERE Filename =~ FileNameRegex
-                AND Timestamp &lt; DateBeforeTime
-                AND Timestamp &gt; DateAfterTime
+                AND Timestamp < DateBeforeTime
+                AND Timestamp > DateAfterTime
 
         SELECT *
         FROM if(condition=Device, then={
@@ -148,6 +150,6 @@ sources:
           FROM Parse(Accessor=Accessor,
               MFT=MFTFile, USN=USNFile)
         })
+````
 
-</code></pre>
 

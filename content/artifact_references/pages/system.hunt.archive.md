@@ -1,12 +1,12 @@
 ---
 title: System.Hunt.Archive
+description: "Fires when a hunt is archived, thus enabling post-archive\nautomation, for example cleanup or notification workflows."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
-description: |
-  Fires when a hunt is archived, thus enabling post-archive
-  automation, for example cleanup or notification workflows.
+build:
+  list: never
 ---
 
 Fires when a hunt is archived, thus enabling post-archive
@@ -17,7 +17,9 @@ hunts (like remove flows, generate zip file etc) once they are
 archived.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: System.Hunt.Archive
 description: |
   Fires when a hunt is archived, thus enabling post-archive
@@ -28,6 +30,6 @@ description: |
   archived.
 
 type: CLIENT_EVENT
+````
 
-</code></pre>
 

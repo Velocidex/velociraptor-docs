@@ -1,12 +1,12 @@
 ---
 title: Generic.Detection.HashHunter
+description: "Searches the filesystem for a list of hashes, with path file size\nand date filtering."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Searches the filesystem for a list of hashes, with path file size
-  and date filtering.
+build:
+  list: never
 ---
 
 Searches the filesystem for a list of hashes, with path file size
@@ -23,7 +23,9 @@ filters. By default the artifact uses the 'auto' data accessor but
 can also be changed as desired.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Detection.HashHunter
 author: "Matt Green - @mgreen27"
 description: |
@@ -74,15 +76,15 @@ parameters:
 sources:
   - query: |
       -- setup hash lists
-      LET MD5List &lt;= if(condition= MD5List,
+      LET MD5List <= if(condition= MD5List,
                         then= split(sep='\\s+',string=MD5List), else=Null)
-      LET SHA1List &lt;= if(condition= SHA1List,
+      LET SHA1List <= if(condition= SHA1List,
                         then= split(sep='\\s+',string=SHA1List), else=Null)
-      LET SHA256List &lt;= if(condition= SHA256List,
+      LET SHA256List <= if(condition= SHA256List,
                         then= split(sep='\\s+',string=SHA256List), else=Null)
 
       -- set hash selector for optimized hash calculation
-      LET HashSelector &lt;= SELECT * FROM chain(
+      LET HashSelector <= SELECT * FROM chain(
           a={ SELECT "MD5" AS Hash FROM scope() WHERE MD5List },
           b={ SELECT "SHA1" AS Hash FROM scope() WHERE SHA1List },
           c={ SELECT "SHA256" AS Hash FROM scope() WHERE SHA256List })
@@ -93,31 +95,31 @@ sources:
                 SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
                 FROM glob(globs=TargetGlob,accessor=Accessor,nosymlink='True')
                 WHERE NOT IsDir AND NOT IsLink
-                    AND Size &gt; SizeMin AND Size &lt; SizeMax
-                    AND ( Mtime &lt; DateBefore OR Ctime &lt; DateBefore OR Btime &lt; DateBefore )
-                    AND ( Mtime &gt; DateAfter OR Ctime &gt; DateAfter OR Btime &gt; DateAfter )
+                    AND Size > SizeMin AND Size < SizeMax
+                    AND ( Mtime < DateBefore OR Ctime < DateBefore OR Btime < DateBefore )
+                    AND ( Mtime > DateAfter OR Ctime > DateAfter OR Btime > DateAfter )
             },
             else={ SELECT * FROM  if(condition=DateBefore,
                 then={
                     SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
                     FROM glob(globs=OSPath,accessor=Accessor)
                     WHERE NOT IsDir AND NOT IsLink
-                        AND Size &gt; SizeMin AND Size &lt; SizeMax
-                        AND ( Mtime &lt; DateBefore OR Ctime &lt; DateBefore OR Btime &lt; DateBefore )
+                        AND Size > SizeMin AND Size < SizeMax
+                        AND ( Mtime < DateBefore OR Ctime < DateBefore OR Btime < DateBefore )
                 },
                 else={ SELECT * FROM  if(condition=DateAfter,
                 then={
                     SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
                     FROM glob(globs=TargetGlob,accessor=Accessor)
                     WHERE NOT IsDir AND NOT IsLink
-                        AND Size &gt; SizeMin AND Size &lt; SizeMax
-                        AND ( Mtime &gt; DateAfter OR Ctime &gt; DateAfter OR Btime &gt; DateAfter )
+                        AND Size > SizeMin AND Size < SizeMax
+                        AND ( Mtime > DateAfter OR Ctime > DateAfter OR Btime > DateAfter )
                 },
                 else={
                     SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
                     FROM glob(globs=TargetGlob,accessor=Accessor)
                     WHERE NOT IsDir AND NOT IsLink
-                        AND Size &gt; SizeMin AND Size &lt; SizeMax
+                        AND Size > SizeMin AND Size < SizeMax
                 })})})
 
 
@@ -127,6 +129,6 @@ sources:
             hash(path=OSPath,hashselect=HashSelector.Hash) as Hash
         FROM if(condition= HashSelector.Hash, then= find_files)
         WHERE
-            ( Hash.MD5 in MD5List OR Hash.SHA1 in SHA1List OR Hash.SHA256 in SHA256List )
-</code></pre>
+            ( Hash.MD5 in MD5List OR Hash.SHA1 in SHA1List OR Hash.SHA256 in SHA256List )````
+
 

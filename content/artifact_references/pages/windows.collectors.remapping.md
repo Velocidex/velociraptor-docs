@@ -1,12 +1,12 @@
 ---
 title: Windows.Collectors.Remapping
+description: "Creates filesystem and registry remappings for offline analysis of\nVelociraptor collection containers."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Creates filesystem and registry remappings for offline analysis of
-  Velociraptor collection containers.
+build:
+  list: never
 ---
 
 Creates filesystem and registry remappings for offline analysis of
@@ -99,7 +99,9 @@ serverless collections/queries as in the following example.
 - VFS browsing of the collection container currently doesn't work.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Collectors.Remapping
 description: |
   Creates filesystem and registry remappings for offline analysis of
@@ -335,17 +337,17 @@ export: |
         root=pathspec(DelegatePath=ZipPath, DelegateAccessor="file"))
       GROUP BY Drive
 
-  LET ScopeTemplate &lt;= if(condition=ZIP_PASSWORDS,
+  LET ScopeTemplate <= if(condition=ZIP_PASSWORDS,
                           then=template(template='''
-  LET OVERLAY_ACCESSOR_DELEGATES &lt;= dict(
+  LET OVERLAY_ACCESSOR_DELEGATES <= dict(
        accessor={{ .Accessor | quote }},
        paths={{"{{ .Paths }}"}})
 
-  LET ZIP_PASSWORDS &lt;= {{ .ZipPassword | quote }}
+  LET ZIP_PASSWORDS <= {{ .ZipPassword | quote }}
   ''', expansion=dict(ZipPassword=ZIP_PASSWORDS, Accessor=Accessor)),
 
        else=template(template='''
-  LET OVERLAY_ACCESSOR_DELEGATES &lt;= dict(
+  LET OVERLAY_ACCESSOR_DELEGATES <= dict(
        accessor={{ .Accessor | quote }},
        paths={{"{{ .Paths }}"}})
   ''', expansion=dict(Accessor=Accessor))
@@ -434,19 +436,19 @@ export: |
 sources:
 - name: WriteRemapping
   query: |
-    LET CalculateMappings &lt;= Remappings.remappings +
+    LET CalculateMappings <= Remappings.remappings +
       Overlays.Clauses +
       RegistryMappings.Clauses
 
     LET YamlText = serialize(format="yaml",
                               item=dict(remappings=CalculateMappings))
 
-    LET _ &lt;= log(message="Will use hostname %v for impersonation",
+    LET _ <= log(message="Will use hostname %v for impersonation",
                  args=DerivedHostname, level="INFO")
 
     SELECT CalculateMappings,
-        Upload &amp;&amp; upload(accessor="data", file=YamlText, name="remapping.yaml") AS Upload,
-        WriteRemappingPath &amp;&amp; copy(
+        Upload && upload(accessor="data", file=YamlText, name="remapping.yaml") AS Upload,
+        WriteRemappingPath && copy(
               dest=WriteRemappingPath,
               accessor='data',
               filename=YamlText) AS RemappingFile
@@ -458,16 +460,16 @@ sources:
 
 - name: TestRegistryAccess
   query: |
-    LET _ &lt;= remap(config=YamlText, clear=TRUE)
+    LET _ <= remap(config=YamlText, clear=TRUE)
     SELECT OSPath
     FROM glob(globs="HKEY_LOCAL_MACHINE/Software/*", accessor='registry')
 
 - name: TestFileAccess
   query: |
-    LET _ &lt;= remap(config=YamlText, clear=TRUE)
+    LET _ <= remap(config=YamlText, clear=TRUE)
     SELECT OSPath
     FROM glob(globs="*/**")
     LIMIT 5
+````
 
-</code></pre>
 

@@ -1,12 +1,12 @@
 ---
 title: Windows.ETW.KernelProcess
+description: "Monitors process creation, termination, and image load events via\nthe Kernel-Process ETW provider."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
-description: |
-  Monitors process creation, termination, and image load events via
-  the Kernel-Process ETW provider.
+build:
+  list: never
 ---
 
 Monitors process creation, termination, and image load events via
@@ -19,7 +19,9 @@ NOTE: We can only attach to this provider when running as
 NT_USER/SYSTEM.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.ETW.KernelProcess
 description: |
   Monitors process creation, termination, and image load events via
@@ -58,7 +60,7 @@ type: CLIENT_EVENT
 
 sources:
   - query: |
-      LET EIDLookup &lt;= dict(
+      LET EIDLookup <= dict(
         `1`="ProcessStart", `2`="ProcessStop",
         `5`="ImageLoad", `6`="ImageUnload")
 
@@ -77,6 +79,6 @@ sources:
         AND if(condition=IgnoreProcessRegex,
                then=NOT EventData.ImageName =~ IgnoreProcessRegex,
                else=TRUE)
+````
 
-</code></pre>
 

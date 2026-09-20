@@ -1,12 +1,12 @@
 ---
 title: Windows.Events.Trackaccount
+description: "Watches Windows security event logs for successful logon events\n(4624) which also match additional configurable criteria."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
-description: |
-  Watches Windows security event logs for successful logon events
-  (4624) which also match additional configurable criteria.
+build:
+  list: never
 ---
 
 Watches Windows security event logs for successful logon events
@@ -16,7 +16,9 @@ If you want to receive Slack/Teams/Discord/etc alerts you can enable
 the server_event artifact named `Server.Alerts.Trackaccount`.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Events.Trackaccount
 description: |
   Watches Windows security event logs for successful logon events
@@ -67,6 +69,6 @@ sources:
                 AND EventData.TargetUserName =~ UserRegex
                 AND EventData.LogonType in LogonTypeRegex
         })
+````
 
-</code></pre>
 

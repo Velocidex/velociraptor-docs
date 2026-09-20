@@ -1,19 +1,21 @@
 ---
 title: Notebooks.Sigma.Studio
+description: "Sets up a Sigma rule development workspace with live testing against\nsample events.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [notebook]
-description: |
-  Sets up a Sigma rule development workspace with live testing against
-  sample events.
+build:
+  list: never
 ---
 
 Sets up a Sigma rule development workspace with live testing against
 sample events.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Notebooks.Sigma.Studio
 description: |
   Sets up a Sigma rule development workspace with live testing against
@@ -119,7 +121,7 @@ sources:
         name: Sigma Studio Interactive Cell
         template: |
           {{ define "Setup" }}
-          LET ProfileType &lt;= dict(
+          LET ProfileType <= dict(
              Windows="Windows.Sigma.Base",
              Linux="Linux.Sigma.Base",
              WindowsEvents="Windows.Sigma.BaseEvents",
@@ -127,17 +129,17 @@ sources:
 
           // We need to store the profile in the datastore because it
           // is too large to pass in a HTML tag.
-          LET Rows &lt;= SELECT upload(
+          LET Rows <= SELECT upload(
              accessor='data', file=Content,
              name='profile.json') AS Upload
           FROM http_client(url=Tool_SigmaProfiles_URL)
 
           // This is where it is.
-          LET ProfileComponents &lt;= Rows[0].Upload.Components
+          LET ProfileComponents <= Rows[0].Upload.Components
 
-          LET ProfileName &lt;= get(item=ProfileType,
+          LET ProfileName <= get(item=ProfileType,
               field=BaseType || "Windows")
-          LET _ &lt;= import(artifact= ProfileName)
+          LET _ <= import(artifact= ProfileName)
 
           // Build the Sigma rules into a downloadable rule set.
           LET Rules = SELECT read_file(
@@ -145,11 +147,11 @@ sources:
              filename=vfs_path) AS Data FROM uploads()
           WHERE vfs_path =~ '.yaml'
 
-          LET TestSigmaRules &lt;= join(array=Rules.Data, sep='\n---\n')
+          LET TestSigmaRules <= join(array=Rules.Data, sep='\n---\n')
 
-          LET Upload &lt;= upload(name='sigma_rules.yaml', accessor='data',
+          LET Upload <= upload(name='sigma_rules.yaml', accessor='data',
                                                         file=TestSigmaRules)
-          LET Link &lt;= link_to(upload=Upload, text='sigma ruleset')
+          LET Link <= link_to(upload=Upload, text='sigma ruleset')
 
           SELECT * FROM scope()
           {{ end }}
@@ -175,13 +177,13 @@ sources:
             SELECT * FROM parse_jsonl(accessor='fs', filename=vfs_path)
           })
 
-          LET TestingLogSourceDict &lt;= to_dict(item={
+          LET TestingLogSourceDict <= to_dict(item={
             SELECT _key, AllRows AS _value
             FROM items(item=LogSources)
           })
 
           // Build the log sources automatically.
-          LET TestingLogSources &lt;= sigma_log_sources(`**`=TestingLogSourceDict)
+          LET TestingLogSources <= sigma_log_sources(`**`=TestingLogSourceDict)
 
           // Apply the Sigma Rules on the samples.
           SELECT  _Rule.Title AS Rule ,
@@ -212,6 +214,6 @@ sources:
           ## View the test set
 
           {{ Query "SELECT * FROM AllRows " | Table}}
+````
 
-</code></pre>
 

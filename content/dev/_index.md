@@ -1,4 +1,9 @@
 ---
+type: docs
+cascade:
+  type: docs
+sidebar:
+  exclude: true
 title: Documentation Development Guidelines
 no_menu: true
 description: |

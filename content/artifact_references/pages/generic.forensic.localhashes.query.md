@@ -1,12 +1,12 @@
 ---
 title: Generic.Forensic.LocalHashes.Query
+description: "Searches the local SQLite hash database for files matching a\nuser-supplied hash list."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Searches the local SQLite hash database for files matching a
-  user-supplied hash list.
+build:
+  list: never
 ---
 
 Searches the local SQLite hash database for files matching a
@@ -25,7 +25,9 @@ encode carriage returns like this:
 ```
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Forensic.LocalHashes.Query
 description: |
   Searches the local SQLite hash database for files matching a
@@ -61,7 +63,7 @@ parameters:
 
 sources:
   - query: |
-      LET hash_db &lt;= SELECT OSPath
+      LET hash_db <= SELECT OSPath
       FROM Artifact.Generic.Forensic.LocalHashes.Init(HashDb=HashDb)
 
       -- Check hashes from the CSV or comma delimited input
@@ -84,6 +86,6 @@ sources:
                      query="SELECT path, md5, size, timestamp AS time FROM hashes WHERE md5 = ?",
                      args=Hash)
       })
+````
 
-</code></pre>
 

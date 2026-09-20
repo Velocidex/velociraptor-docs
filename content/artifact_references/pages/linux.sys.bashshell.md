@@ -1,12 +1,12 @@
 ---
 title: Linux.Sys.BashShell
+description: "This artifact allows running arbitrary commands through the system\nshell."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  This artifact allows running arbitrary commands through the system
-  shell.
+build:
+  list: never
 ---
 
 This artifact allows running arbitrary commands through the system
@@ -24,7 +24,9 @@ In recent Velociraptor releases, the artifact will create a
 persistent session.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Sys.BashShell
 description: |
   This artifact allows running arbitrary commands through the system
@@ -70,15 +72,15 @@ sources:
 
     query: |
       // Get the core flow id to key a unique session off.
-      LET FLOWID &lt;= split(string=_SessionId, sep="/")[0]
+      LET FLOWID <= split(string=_SessionId, sep="/")[0]
 
       // Newer clients have support for true shell sessions.
-      LET Session &lt;= shell_session(name=FLOWID, argv=["bash"])
-      LET _ &lt;= if(condition=NOT Session.IsRunning,
+      LET Session <= shell_session(name=FLOWID, argv=["bash"])
+      LET _ <= if(condition=NOT Session.IsRunning,
         then=log(message="Started session %v with command %v and timeout %v",
                  args=[FLOWID, Command, Timeout]))
 
-      LET _ &lt;= shell_session_control(name=FLOWID, stdin=Command + "\n")
+      LET _ <= shell_session_control(name=FLOWID, stdin=Command + "\n")
 
       // Shut the session down gracefully without timing out the flow.
       LET SessionSink = SELECT Stdin AS Command,
@@ -131,21 +133,21 @@ sources:
     notebook:
       - type: none
     query: |
-      LET SizeLimit &lt;= 4096
+      LET SizeLimit <= 4096
       LET Now = str(str=now())
 
       LET Output = SELECT "" AS Command,
              "" AS CommandId,
              timestamp(epoch=now()) AS Timestamp,
-             if(condition=len(list=Stdout) &lt; SizeLimit,
+             if(condition=len(list=Stdout) < SizeLimit,
                 then=Stdout) AS Stdout,
-             if(condition=len(list=Stdout) &gt;= SizeLimit,
+             if(condition=len(list=Stdout) >= SizeLimit,
                 then=upload(accessor="data",
                             file=Stdout,
                             name="Stdout/" + Now)) AS StdoutUpload,
-             if(condition=len(list=Stderr) &lt; SizeLimit,
+             if(condition=len(list=Stderr) < SizeLimit,
                 then=Stderr) AS Stderr,
-             if(condition=len(list=Stderr) &gt;= SizeLimit,
+             if(condition=len(list=Stderr) >= SizeLimit,
                 then=upload(accessor="data",
                             file=Stderr,
                             name="Stderr/" + Now)) AS StderrUpload
@@ -186,6 +188,6 @@ column_types:
   type: preview_upload
 - name: Transcript
   type: preview_upload
+````
 
-</code></pre>
 

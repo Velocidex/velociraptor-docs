@@ -1,19 +1,21 @@
 ---
 title: MacOS.System.TimeMachine
+description: "Collects Time Machine backup settings including volume, auto-backup\nstatus, and destinations.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Collects Time Machine backup settings including volume, auto-backup
-  status, and destinations.
+build:
+  list: never
 ---
 
 Collects Time Machine backup settings including volume, auto-backup
 status, and destinations.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: MacOS.System.TimeMachine
 description: |
   Collects Time Machine backup settings including volume, auto-backup
@@ -43,6 +45,6 @@ sources:
                 }
             )
       SELECT * FROM foreach(row=TMPlist, query=TMDetails)
+````
 
-</code></pre>
 

@@ -1,12 +1,12 @@
 ---
 title: Windows.Forensics.JumpLists
+description: "Parses Windows AutomaticDestinations JumpList files to extract LNK\nentries with application IDs and target paths."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Parses Windows AutomaticDestinations JumpList files to extract LNK
-  entries with application IDs and target paths.
+build:
+  list: never
 ---
 
 Parses Windows AutomaticDestinations JumpList files to extract LNK
@@ -16,7 +16,9 @@ The automaticdestinations jumplist is an OLE2 container containing
 LNK files as individual streams.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.JumpLists
 description: |
   Parses Windows AutomaticDestinations JumpList files to extract LNK
@@ -35,7 +37,7 @@ parameters:
 sources:
   - query: |
       // https://raw.githubusercontent.com/EricZimmerman/JumpList/a72a510b01922f60ce550c307e5f04131272448f/JumpList/Resources/AppIDs.txt
-      LET AppIdTable &lt;= '''AppId|Description
+      LET AppIdTable <= '''AppId|Description
       0006f647f9488d7a|AIM 7.5.11.9 (custom AppID + JL support)
       00098b0ef1c84088|fulDC 6.78
       012dc1ea8e34b5a6|Microsoft Paint 6.1
@@ -643,7 +645,7 @@ sources:
       fe9e0f7260000a12|RealVNC Server 5.3.0 64-bit (Connect+File Transfer)
       ff103e2cc310d0d|Adobe Reader XI
       ff224628f0e8103c|Morpheus 3.0.3.6
-      4cb9c5750d51c07f|Microsoft Movies &amp; TV (Build 10.19031.11411.0)
+      4cb9c5750d51c07f|Microsoft Movies & TV (Build 10.19031.11411.0)
       ae6df75df512bd06|Microsoft Groove Music (Build 10.19031.1141.0)
       959668a81d4f220e|Sublime Text 3.2.1 (Build 3207)
       9eff0b23d51fe003|XMind 201807140020
@@ -664,8 +666,8 @@ sources:
       352fd027c0e8f0e5|Zoom
       8bce06a9e923e1f9|Slack 4.10.3
       a55ed4fbb973aefb|Microsoft Teams
-      1c7a9be1b15a03ba|Microsoft Snip &amp; Sketch
-      466d339d8f21cfbf|Microsoft Snip &amp; Sketch
+      1c7a9be1b15a03ba|Microsoft Snip & Sketch
+      466d339d8f21cfbf|Microsoft Snip & Sketch
       9a165f62edbfa161|Microsoft Store
       573770283dc3d854|Windows Defender
       f18460fded109990|Windows Connected Devices
@@ -695,7 +697,7 @@ sources:
       ad57bd0f4825cce|WinRAR 6.01 Russian 64 bit
       '''
 
-      LET AppIdLookup &lt;= memoize(key="AppId", query={
+      LET AppIdLookup <= memoize(key="AppId", query={
          SELECT *
          FROM parse_csv(accessor='data', separator="|",
                         filename=AppIdTable)
@@ -710,7 +712,7 @@ sources:
                          profile=Profile, struct="ShellLinkHeader")  AS Parsed
         FROM glob(globs='*', accessor="mscfb",
             root=pathspec(DelegatePath=AutomaticDestinationsPath))
-        WHERE Size &gt; 0 AND NOT IsDir AND Name =~ "^\\d+$"
+        WHERE Size > 0 AND NOT IsDir AND Name =~ "^\\d+$"
       })
 
       LET Y = SELECT AutomaticDestinationsPath, Name AS Stream,
@@ -731,6 +733,6 @@ sources:
              _ShellLinkHeader.AccessTime AS AccessTime,
              _ShellLinkHeader.WriteTime AS WriteTime
       FROM Y
+````
 
-</code></pre>
 

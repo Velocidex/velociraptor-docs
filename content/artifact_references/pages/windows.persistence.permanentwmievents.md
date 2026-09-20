@@ -1,12 +1,12 @@
 ---
 title: Windows.Persistence.PermanentWMIEvents
+description: "Enumerates permanent WMI event subscriptions including filters,\nconsumers, and their bindings across namespaces."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Enumerates permanent WMI event subscriptions including filters,
-  consumers, and their bindings across namespaces.
+build:
+  list: never
 ---
 
 Enumerates permanent WMI event subscriptions including filters,
@@ -26,7 +26,9 @@ WMI Eventing components:
 - __EventConsumer - payload
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Persistence.PermanentWMIEvents
 author: Matt Green - @mgreen27
 description: |
@@ -66,7 +68,7 @@ sources:
       SELECT OS From info() where OS = 'windows'
 
     query: |
-      LET namespaces &lt;= SELECT * FROM if(condition=AllRootNamespaces,
+      LET namespaces <= SELECT * FROM if(condition=AllRootNamespaces,
             then= {
                 SELECT 'root/' + Name as namespace
                 FROM wmi(namespace='ROOT',query='SELECT * FROM __namespace' )
@@ -74,12 +76,12 @@ sources:
             },
             else= Namespaces )
 
-      LET FilterToConsumerBinding &lt;= SELECT * FROM foreach(
+      LET FilterToConsumerBinding <= SELECT * FROM foreach(
             row=namespaces,
             query={
                 SELECT parse_string_with_regex(string=Consumer,
-                    regex=['((?P&lt;namespace&gt;^[^:]+):)?(?P&lt;Type&gt;.+?)\\.Name="(?P&lt;Name&gt;.+)"']) as Consumer,
-                    parse_string_with_regex(string=Filter,regex=['((?P&lt;namespace&gt;^[^:]+):)?(?P&lt;Type&gt;.+?)\\.Name="(?P&lt;Name&gt;.+)"']) as Filter
+                    regex=['((?P<namespace>^[^:]+):)?(?P<Type>.+?)\\.Name="(?P<Name>.+)"']) as Consumer,
+                    parse_string_with_regex(string=Filter,regex=['((?P<namespace>^[^:]+):)?(?P<Type>.+?)\\.Name="(?P<Name>.+)"']) as Filter
                 FROM wmi(
                     query="SELECT * FROM __FilterToConsumerBinding",namespace=namespace)
         },workers=len(list=namespaces))
@@ -104,6 +106,6 @@ sources:
                    namespace as Namespace
                  FROM FilterToConsumerBinding
                  WHERE (FilterDetails OR ConsumerDetails)
-            },workers=len(list=namespaces))
-</code></pre>
+            },workers=len(list=namespaces))````
+
 

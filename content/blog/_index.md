@@ -1,4 +1,9 @@
 ---
+type: docs
+cascade:
+  type: docs
+sidebar:
+  exclude: true
 menutitle: "Blog"
 title: "Velociraptor Blog"
 weight: 120
@@ -12,10 +17,11 @@ noTitle: true
 outputs:
 - html
 - RSS
+- markdown
 description: |
   <div style="padding-top: 50px;"></div>
 ---
 
 <div style="padding-top: 50px;"></div>
 
-{{% blog %}}
+{{< blog >}}

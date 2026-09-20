@@ -1,65 +1,34 @@
+{{/* Self-contained artifact exchange search over /exchange/data.json. */}}
+<div class="search-box" data-section-search="exchange">
+  <input type="search" class="hx:block hx:w-full hx:rounded-md hx:border hx:border-gray-200 hx:bg-white hx:px-4 hx:py-2 hx:text-gray-800 hx:placeholder-gray-400 hx:dark:border-neutral-800 hx:dark:bg-neutral-900 hx:dark:text-neutral-200 hx:dark:placeholder-neutral-500"
+         placeholder="Search for an exchange artifact"
+         aria-label="Search for an exchange artifact">
+</div>
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js">
-</script>
-
-<div class="search-box">
-<div class="input-group">
-  <input type="text" id="myInput" onkeyup="doSearchExchange()" class="form-control" placeholder="Search for an exchange artifact" aria-describedby="basic-addon2">
-  <span class="input-group-addon" id="basic-addon2"><i class="fas fa-search"></i></span>
-
-  <div class="col-lg-3 pull-right exchange-contribute">
-    <button type="button" class="btn btn-default btn-lg pull-right" id="contribute-button"
-            data-toggle="modal" data-target="#myModal">
-      <i class="fas fa-external-link-alt"></i>
-      Share your own Artifact
-    </button>
+<details class="hx:mt-8 hx:rounded-md hx:border hx:border-gray-200 hx:bg-gray-50 hx:dark:border-neutral-800 hx:dark:bg-neutral-900 hx:px-4 hx:py-3 not-prose">
+  <summary class="hx:cursor-pointer hx:select-none hx:font-medium hx:text-primary-800 hx:dark:text-primary-600">Share your own Artifact</summary>
+  <div class="hx:mt-3 hx:text-sm">
+    <p class="egg" aria-hidden="true">The darkside is strong with you...</p>
+    <p>
+      The artifact exchange is a central place for you to share your own
+      artifacts with the Velociraptor community and search for artifacts you
+      can use in your own work.
+    </p>
+    <p>
+      Clicking "Contribute" below will allow you to add a new artifact yaml
+      file to this repository. Please choose a good name for the yaml file,
+      and add a good description.
+    </p>
+    <p>
+      You can also add tags to your artifact by adding hash tags to the
+      description field.
+    </p>
+    <a href="https://github.com/Velocidex/velociraptor-docs/new/master/content/exchange/artifacts"
+       target="_blank" rel="noopener"
+       class="hx:mt-4 hx:inline-flex hx:items-center hx:gap-2 hx:rounded-md hx:bg-primary-600 hx:px-4 hx:py-2 hx:font-bold hx:text-white hx:hover:bg-primary-500">
+      Contribute
+    </a>
   </div>
-</div>
-</div>
+</details>
 
-<!-- Modal -->
-<div class="modal fade E" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog E" role="document">
-    <div class="modal-content E">
-      <div class="modal-header E">
-        <button type="button" class="close"
-                data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title E">Share an artifact</h4>
-      </div>
-      <div class="modal-body E">
-        <p class="egg">The darkside is strong with you...</p>
-        <p>
-          The artifact exchange is a central place for you to share
-          your own artifacts with the Velociraptor community and
-          search for artifacts you can use in your own work.
-        </p>
-        <p>
-          Clicking "Contribute" below will allow you to add a new
-          artifact yaml file to this repository. Please choose a good
-          name for the yaml file, and add a good description.
-        </p>
-        <p>
-          You can also add tags to your artifact by adding hash tags
-          to the description field.
-        </p>
-      </div>
-      <div class="modal-footer">
-        <a href="https://github.com/Velocidex/velociraptor-docs/new/master/content/exchange/artifacts"
-           class="btn btn-primary btn-lg right">
-          <i class="fab fa-github"></i>&nbsp;Contribute
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<hr />
-<div class="row search_results"></div>
-
-<script>
-  initExchange();
-
-  $("#top-bar").addClass("hidden");
-</script>
+<script src="/js/section-search.js"></script>

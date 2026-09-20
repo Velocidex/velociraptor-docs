@@ -1,12 +1,12 @@
 ---
 title: Windows.System.Powershell.PSReadline
+description: "Extracts PowerShell command history from PSReadline\n`ConsoleHost_history.txt` files."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Extracts PowerShell command history from PSReadline
-  `ConsoleHost_history.txt` files.
+build:
+  list: never
 ---
 
 Extracts PowerShell command history from PSReadline
@@ -24,7 +24,9 @@ There are several parameters available for search leveraging regex:
 - UploadFiles enables upload ConsoleHost_history.txt in scope
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.Powershell.PSReadline
 description: |
   Extracts PowerShell command history from PSReadline
@@ -104,6 +106,6 @@ sources:
                     upload(file=Stat.OSPath) as ConsoleHost_history
                 FROM targets
             })
+````
 
-</code></pre>
 

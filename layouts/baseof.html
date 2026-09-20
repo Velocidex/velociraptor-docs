@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Lang }}" dir="{{ partial "utils/hugo-compat/language-direction.html" .Site.Language | default `ltr` }}">
+  {{- partial "head.html" . -}}
+
+  {{/* Pagefind custom metadata & filters (indexed at build time):
+         data-pagefind-meta="tags: ..."  -> tag badge chips on search results
+         data-pagefind-filter="section:" -> filter panel on the /search/ page
+       Tags are also exposed as a second filter named "tags"; Pagefind treats
+       each data-pagefind-filter attribute as ONE capture, so one hidden
+       element per tag (see the captures below the body tag). The /search/
+       page's Tags accordion toggles these as result filters. */}}
+  {{- $sectionNames := dict
+      "announcements"       "Announcements"
+      "artifact_references" "Artifact Reference"
+      "blog"                "Blog"
+      "dev"                 "Developer"
+      "docs"                "Documentation"
+      "downloads"           "Downloads"
+      "exchange"            "Exchange"
+      "golang"              "Golang"
+      "knowledge_base"      "Knowledge Base"
+      "presentations"       "Presentations"
+      "rss"                 "RSS"
+      "search"              "Search"
+      "training"            "Training"
+      "vql_reference"       "VQL Reference"
+  -}}
+  {{- $rel := strings.TrimSuffix "/" .RelPermalink -}}
+  {{- /* Strip the deploy base path (empty on a root-mounted site, e.g.
+         /velociraptor-docs/ on the gh-pages preview) so the first segment
+         below is always the real section dir. relURL "" yields the base
+         path; relURL "/" would collapse back to "/" (Hugo >= 0.132
+         embeds the base path in RelPermalink for subpath baseURLs). */ -}}
+  {{- $base := relURL "" | strings.TrimSuffix "/" | strings.TrimPrefix "/" -}}
+  {{- if $base }}{{ $rel = strings.TrimPrefix (printf "/%s" $base) $rel }}{{ end -}}
+  {{- $parts := split $rel "/" -}}
+  {{- $sectionKey := "" -}}
+  {{- if gt (len $parts) 1 }}{{ $sectionKey = index $parts 1 }}{{ end -}}
+  {{- $section := index $sectionNames $sectionKey -}}
+  {{- if not $section -}}
+    {{- $section = strings.Title (strings.Replace $sectionKey "_" " " -1) -}}
+  {{- end -}}
+  {{- $tags := "" -}}
+  {{- with .Params.tags }}
+    {{- /* All tags are normalized to lowercase. */ -}}
+    {{- $tags = delimit (apply . "lower" ".") ", " }}
+  {{- else }}
+    {{- /* KB tips carry their tags as a legacy `Tags: #foo #bar` line in the
+           body (no front-matter tags on the raw tips), so Pagefind gets
+           nothing. Parse that line so search shows the same tag pills as the
+           KB section search (static/kb/data.json uses the same source).
+           Only valid tags are kept (>= 2 chars with at least one letter),
+           lowercased - the generators apply the same rule. */ -}}
+    {{- $tagsLine := "" -}}
+    {{- with .RawContent -}}
+      {{- with index (findRE `(?im)^\s*Tags:.*$` . 1) 0 }}{{ $tagsLine = . }}{{ end -}}
+    {{- end -}}
+    {{- with findRE `(?i)#[0-9a-z_]*[a-z][0-9a-z_]+` $tagsLine -}}
+      {{- $tags = replaceRE "(?i)#" "" (delimit . ", ") | lower -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{/* Taxonomy label pages (/tags/*) are navigational lists of other pages;
+       exclude them from the search index (they would add a bogus
+       "Tags" value to the section filter and duplicate search results).
+       The 404 page has no section (its path is just /404.html), so it would
+       appear as a bogus "404.html" section filter value - skip it too. */}}
+  {{- $indexable := not (or (eq .Kind "taxonomy") (eq .Kind "term") (eq $rel "/404.html")) -}}
+
+  <body{{ if not $indexable }} data-pagefind-ignore{{ else }}{{ with $section }} data-pagefind-filter="section: {{ . }}"{{ end }}{{ with $tags }} data-pagefind-meta="tags: {{ . }}"{{ end }}{{ end }}>
+    {{- /* One hidden capture element per tag -> Pagefind filter "tags".
+           (Repeated data-pagefind-filter attributes collapse in the indexer,
+           so each value needs its own element.) Ignored pages are not
+           indexed at all, so the empty $tags case here is harmless. */ -}}
+    {{- with $tags }}{{ range $t := split . ", " }}<span hidden data-pagefind-filter="tags[data-value]" data-value="{{ $t }}"></span>{{ end }}{{ end -}}
+    <a href="#content" class="hx:sr-only hx:focus-visible:not-sr-only hx:focus-visible:fixed hx:focus-visible:z-50 hx:focus-visible:top-2 hx:focus-visible:left-2 hx:focus-visible:bg-primary-500 hx:focus-visible:text-white hx:focus-visible:px-4 hx:focus-visible:py-2 hx:focus-visible:rounded-md hx:focus-visible:text-sm hx:focus-visible:font-medium">
+      {{- (T "skipToContent") | default "Skip to content" -}}
+    </a>
+    {{- partial "banner.html" . -}}
+    {{- partial "navbar.html" . -}}
+    {{- block "main" . }}{{ end -}}
+    {{- if or (eq .Site.Params.footer.enable nil) (.Site.Params.footer.enable) }}
+      {{ partial "footer.html" . }}
+    {{ end }}
+    {{ partial "section-tag-slugs.html" . }}
+    {{ partial "scripts.html" . }}
+    <script>
+    /* Make all external links open in a new tab.
+       Catches markdown links (already handled by Hextra's render-link),
+       raw HTML in content, shortcodes, and any other <a> with an http(s) href. */
+    document.querySelectorAll('a[href^="http"]:not([target])').forEach(function(a) {
+      a.target = '_blank';
+      a.rel = 'noopener';
+    });
+    </script>
+  </body>
+</html>

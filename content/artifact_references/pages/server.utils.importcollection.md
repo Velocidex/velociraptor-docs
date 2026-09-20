@@ -1,12 +1,12 @@
 ---
 title: Server.Utils.ImportCollection
+description: "Imports offline collector results (in zipped collection containers)\ninto the server so they appear alongside regular client collections."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Imports offline collector results (in zipped collection containers)
-  into the server so they appear alongside regular client collections.
+build:
+  list: never
 ---
 
 Imports offline collector results (in zipped collection containers)
@@ -31,7 +31,9 @@ filesystem. It is up to you to arrange for the file to be stored on
 the server (e.g. SCP it over).
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.ImportCollection
 description: |
   Imports offline collector results (in zipped collection containers)
@@ -70,7 +72,7 @@ parameters:
 
 sources:
   - query: |
-      LET result &lt;= SELECT import_collection(
+      LET result <= SELECT import_collection(
                client_id=ClientId, hostname=Hostname,
                filename=Path) AS Import
       FROM scope()
@@ -95,6 +97,6 @@ sources:
         FROM result
         WHERE HuntId
       })
+````
 
-</code></pre>
 

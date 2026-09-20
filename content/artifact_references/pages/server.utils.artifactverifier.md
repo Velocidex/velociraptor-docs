@@ -1,12 +1,12 @@
 ---
 title: Server.Utils.ArtifactVerifier
+description: "Validates artifact YAML definitions from a file glob and reports\nerrors and warnings in a structured format."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Validates artifact YAML definitions from a file glob and reports
-  errors and warnings in a structured format.
+build:
+  list: never
 ---
 
 Validates artifact YAML definitions from a file glob and reports
@@ -18,7 +18,9 @@ velociraptor -r Server.Utils.ArtifactVerifier --SearchGlob '/path/to/*.yaml'
 ```
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.ArtifactVerifier
 description: |
   Validates artifact YAML definitions from a file glob and reports
@@ -65,11 +67,11 @@ sources:
                        read_file(filename=OSPath) AS Data
       FROM glob(globs=SearchGlob)
 
-    LET Artifacts &lt;= SELECT *,
+    LET Artifacts <= SELECT *,
        artifact_set(definition=Data, repository="local") AS Definition
     FROM Files
 
-    LET Results &lt;= SELECT name,
+    LET Results <= SELECT name,
            path,
            PassLogError(Verify=Verify, Path=path) AS passed,
            Stringify(X=Verify.Errors) AS errors,
@@ -87,13 +89,13 @@ sources:
        config.version as metadata,
        dict(
          total=len(list=Results),
-         passed=len(list=filter(list=Results, condition="x=&gt;x.passed")),
-         failed=len(list=filter(list=Results, condition="x=&gt;NOT x.passed")),
-         warnings=len(list=filter(list=Results, condition="x=&gt;x.warnings"))
+         passed=len(list=filter(list=Results, condition="x=>x.passed")),
+         failed=len(list=filter(list=Results, condition="x=>NOT x.passed")),
+         warnings=len(list=filter(list=Results, condition="x=>x.warnings"))
        ) AS summary,
        { SELECT name FROM Results } as artifacts,
        Results as results
     FROM scope()
+````
 
-</code></pre>
 

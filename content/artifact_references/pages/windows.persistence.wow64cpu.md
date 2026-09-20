@@ -1,19 +1,21 @@
 ---
 title: Windows.Persistence.Wow64cpu
+description: "Checks for wow64cpu.dll replacement Autorun in Windows 10.\nhttp://www.hexacorn.com/blog/2019/07/11/beyond-good-ol-run-key-part-108-2/\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Checks for wow64cpu.dll replacement Autorun in Windows 10.
-  http://www.hexacorn.com/blog/2019/07/11/beyond-good-ol-run-key-part-108-2/
+build:
+  list: never
 ---
 
 Checks for wow64cpu.dll replacement Autorun in Windows 10.
 http://www.hexacorn.com/blog/2019/07/11/beyond-good-ol-run-key-part-108-2/
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Persistence.Wow64cpu
 description: |
   Checks for wow64cpu.dll replacement Autorun in Windows 10.
@@ -36,6 +38,6 @@ sources:
       FROM glob(globs=split(string=TargetRegKey, sep=","), accessor="registry")
       WHERE Data.value and
         not (Name = "@" and (Data.value =~ "(wow64cpu.dll|wowarmhw.dll|xtajit.dll)"))
+````
 
-</code></pre>
 

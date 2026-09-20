@@ -1,11 +1,12 @@
 ---
 title: Windows.Detection.BinaryHunter
+description: "This artifact enables hunting for binary attributes."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  This artifact enables hunting for binary attributes.
+build:
+  list: never
 ---
 
 This artifact enables hunting for binary attributes.
@@ -28,7 +29,9 @@ the artifact uses the 'auto' data accessor but can also be changed
 as desired.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.BinaryHunter
 author: "Matt Green - @mgreen27"
 description: |
@@ -116,9 +119,9 @@ parameters:
 sources:
   - query: |
       -- setup hash lists if needed
-      LET MD5Array &lt;= split(sep='\\s+',string=MD5List)
-      LET SHA1Array &lt;=  split(sep='\\s+',string=SHA1List)
-      LET SHA256Array &lt;= split(sep='\\s+',string=SHA256List)
+      LET MD5Array <= split(sep='\\s+',string=MD5List)
+      LET SHA1Array <=  split(sep='\\s+',string=SHA1List)
+      LET SHA256Array <= split(sep='\\s+',string=SHA256List)
 
       -- firstly find files in scope with performance
       LET find_files = SELECT *,
@@ -128,31 +131,31 @@ sources:
                 SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
                 FROM glob(globs=TargetGlob,accessor=Accessor)
                 WHERE NOT IsDir AND NOT IsLink
-                    AND Size &gt; SizeMin AND Size &lt; SizeMax
-                    AND ( Mtime &lt; DateBefore OR Ctime &lt; DateBefore OR Btime &lt; DateBefore )
-                    AND ( Mtime &gt; DateAfter OR Ctime &gt; DateAfter OR Btime &gt; DateAfter )
+                    AND Size > SizeMin AND Size < SizeMax
+                    AND ( Mtime < DateBefore OR Ctime < DateBefore OR Btime < DateBefore )
+                    AND ( Mtime > DateAfter OR Ctime > DateAfter OR Btime > DateAfter )
             },
             else={ SELECT * FROM  if(condition=DateBefore,
                 then={
                     SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
                     FROM glob(globs=OSPath,accessor=Accessor)
                     WHERE NOT IsDir AND NOT IsLink
-                        AND Size &gt; SizeMin AND Size &lt; SizeMax
-                        AND ( Mtime &lt; DateBefore OR Ctime &lt; DateBefore OR Btime &lt; DateBefore )
+                        AND Size > SizeMin AND Size < SizeMax
+                        AND ( Mtime < DateBefore OR Ctime < DateBefore OR Btime < DateBefore )
                 },
                 else={ SELECT * FROM  if(condition=DateAfter,
                 then={
                     SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
                     FROM glob(globs=TargetGlob,accessor=Accessor)
                     WHERE NOT IsDir AND NOT IsLink
-                        AND Size &gt; SizeMin AND Size &lt; SizeMax
-                        AND ( Mtime &gt; DateAfter OR Ctime &gt; DateAfter OR Btime &gt; DateAfter )
+                        AND Size > SizeMin AND Size < SizeMax
+                        AND ( Mtime > DateAfter OR Ctime > DateAfter OR Btime > DateAfter )
                 },
                 else={
                     SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
                     FROM glob(globs=TargetGlob,accessor=Accessor)
                     WHERE NOT IsDir AND NOT IsLink
-                        AND Size &gt; SizeMin AND Size &lt; SizeMax
+                        AND Size > SizeMin AND Size < SizeMax
                 })})})
         WHERE _Header = 'MZ'
             AND if(condition= UnexpectedExtension,
@@ -198,6 +201,6 @@ sources:
       SELECT * FROM if(condition= UploadFiles,
                         then= upload_files,
                         else= results)
+````
 
-</code></pre>
 

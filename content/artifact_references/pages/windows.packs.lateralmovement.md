@@ -1,19 +1,21 @@
 ---
 title: Windows.Packs.LateralMovement
+description: "Queries multiple data sources (event logs, prefetch, shimcache, BAM)\nfor signs of lateral movement.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Queries multiple data sources (event logs, prefetch, shimcache, BAM)
-  for signs of lateral movement.
+build:
+  list: never
 ---
 
 Queries multiple data sources (event logs, prefetch, shimcache, BAM)
 for signs of lateral movement.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Packs.LateralMovement
 description: |
   Queries multiple data sources (event logs, prefetch, shimcache, BAM)
@@ -44,6 +46,6 @@ sources:
   - name: AmCache
     query: |
       SELECT * FROM Artifact.Windows.Detection.Amcache()
-      WHERE EntryPath =~ "wmic.exe"
-</code></pre>
+      WHERE EntryPath =~ "wmic.exe"````
+
 

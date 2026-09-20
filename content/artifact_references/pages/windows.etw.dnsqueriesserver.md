@@ -1,12 +1,12 @@
 ---
 title: Windows.ETW.DNSQueriesServer
+description: "Captures DNS server query events from the\n`Microsoft-Windows-DNSServer` ETW provider."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
-description: |
-  Captures DNS server query events from the
-  `Microsoft-Windows-DNSServer` ETW provider.
+build:
+  list: never
 ---
 
 Captures DNS server query events from the
@@ -21,7 +21,9 @@ consumption is very low. This is still a lot less than enabling DNS
 debug logging.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.ETW.DNSQueriesServer
 type: CLIENT_EVENT
 
@@ -70,6 +72,6 @@ sources:
         WHERE EventData AND
               QNAME =~ QueryNameRegex AND
               Source =~ SourceIPRegex
+````
 
-</code></pre>
 

@@ -1,13 +1,12 @@
 ---
 title: Windows.NTFS.I30
+description: "Carves the $I30 index stream from NTFS directories to recover\npreviously deleted file entries, and optionally upload the $I30\nstream to the server"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Carves the $I30 index stream from NTFS directories to recover
-  previously deleted file entries, and optionally upload the $I30
-  stream to the server
+build:
+  list: never
 ---
 
 Carves the $I30 index stream from NTFS directories to recover
@@ -17,7 +16,9 @@ stream to the server
 This can reveal previously deleted files.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.NTFS.I30
 description: |
   Carves the $I30 index stream from NTFS directories to recover
@@ -86,6 +87,6 @@ sources:
             FROM parse_ntfs_i30(device=MFTInfo.Device, inode=MFT)
             WHERE IsSlack = true or NOT SlackOnly
        })
+````
 
-</code></pre>
 

@@ -1,12 +1,12 @@
 ---
 title: Windows.System.WMIQuery
+description: "Runs a configurable WMI query on Windows and outputs the result\nrows."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Runs a configurable WMI query on Windows and outputs the result
-  rows.
+build:
+  list: never
 ---
 
 Runs a configurable WMI query on Windows and outputs the result
@@ -25,7 +25,9 @@ Please see the second reference link for an example of built-in
 system classes.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.WMIQuery
 author: Matt Green - @mgreen27
 description: |
@@ -53,7 +55,7 @@ required_permissions:
 
 parameters:
   - name: WMIQuery
-    description: "Add target WMI query: e.g SELECT * FROM &lt;CLASSNAME&gt;"
+    description: "Add target WMI query: e.g SELECT * FROM <CLASSNAME>"
     default: "SELECT * FROM Win32_Process"
 
   - name: Namespace
@@ -66,6 +68,6 @@ sources:
 
     query: |
        SELECT * FROM wmi(namespace=Namespace,query=WMIQuery)
+````
 
-</code></pre>
 

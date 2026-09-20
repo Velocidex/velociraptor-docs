@@ -1,19 +1,21 @@
 ---
 title: Server.Hunts.Results
+description: "Returns the collected data rows for a specified artifact within a\nhunt.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Returns the collected data rows for a specified artifact within a
-  hunt.
+build:
+  list: never
 ---
 
 Returns the collected data rows for a specified artifact within a
 hunt.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Hunts.Results
 description: |
   Returns the collected data rows for a specified artifact within a
@@ -30,6 +32,6 @@ type: SERVER
 sources:
   - query: |
       SELECT * FROM hunt_results(hunt_id=huntId, artifact=ArtifactName)
+````
 
-</code></pre>
 

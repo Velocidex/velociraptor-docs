@@ -1,12 +1,12 @@
 ---
 title: Windows.Applications.Chrome.Extensions
+description: "Parses Chrome extension manifest files to identify installed\nextensions and their permissions."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Parses Chrome extension manifest files to identify installed
-  extensions and their permissions.
+build:
+  list: never
 ---
 
 Parses Chrome extension manifest files to identify installed
@@ -28,7 +28,9 @@ This artifact is deprecated in favor of
 Generic.Forensic.SQLiteHunter and will be removed in future
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Applications.Chrome.Extensions
 description: |
   Parses Chrome extension manifest files to identify installed
@@ -166,6 +168,6 @@ sources:
                Manifest.key as Key
 
         FROM parsed_manifest_files
+````
 
-</code></pre>
 

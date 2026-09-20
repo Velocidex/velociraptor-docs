@@ -1,12 +1,12 @@
 ---
 title: MacOS.Network.PacketCapture
+description: "Captures network packets using tcpdump and uploads the resulting\npcap file."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Captures network packets using tcpdump and uploads the resulting
-  pcap file.
+build:
+  list: never
 ---
 
 Captures network packets using tcpdump and uploads the resulting
@@ -24,7 +24,9 @@ Read more about BPF expressions here:
 https://biot.com/capstats/bpf.html
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: MacOS.Network.PacketCapture
 author: Wes Lambert, @therealwlambert
 description: |
@@ -67,9 +69,9 @@ precondition:
 
 sources:
     - query: |
-            LET pcap &lt;= tempfile(extension=".pcap")
+            LET pcap <= tempfile(extension=".pcap")
             SELECT *, upload(file=pcap) AS PCAP
-              FROM execve(argv=['bash', '-c', format(format='''(tcpdump -nni %v -w %v %v) &amp; sleep %v; kill $!''', args=[Interface, pcap, BPF, Duration])], length=1000000)
+              FROM execve(argv=['bash', '-c', format(format='''(tcpdump -nni %v -w %v %v) & sleep %v; kill $!''', args=[Interface, pcap, BPF, Duration])], length=1000000)
+````
 
-</code></pre>
 

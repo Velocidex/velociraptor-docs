@@ -1,11 +1,12 @@
 ---
 title: Generic.System.HostsFile
+description: "Parses the system hosts file to extract hostname-to-IP mappings."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Parses the system hosts file to extract hostname-to-IP mappings.
+build:
+  list: never
 ---
 
 Parses the system hosts file to extract hostname-to-IP mappings.
@@ -43,7 +44,9 @@ This artifact also exports a function `parse_hostsfile()` that
 returns Hostname and Aliases individually.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.System.HostsFile
 description: |
   Parses the system hosts file to extract hostname-to-IP mappings.
@@ -86,7 +89,7 @@ reference:
 export: |
   LET _parse_hostsfile(OSPath) = SELECT parse_string_with_regex(
      string=Line,
-     regex='''^[\t ]*(?P&lt;Address&gt;[^\s#]+)[\t ]+(?P&lt;Hostname&gt;[^\s#]+)(?P&lt;Aliases&gt;[^#\n\r]+)?(?:[\t ]*#(?P&lt;Comment&gt;.+))?''') AS Parsed
+     regex='''^[\t ]*(?P<Address>[^\s#]+)[\t ]+(?P<Hostname>[^\s#]+)(?P<Aliases>[^#\n\r]+)?(?:[\t ]*#(?P<Comment>.+))?''') AS Parsed
   FROM parse_lines(filename=OSPath)
   WHERE Parsed.Address
 
@@ -141,6 +144,6 @@ sources:
       })
       WHERE Address =~ AddressRegex
         AND Hostname =~ HostnameRegex
+````
 
-</code></pre>
 

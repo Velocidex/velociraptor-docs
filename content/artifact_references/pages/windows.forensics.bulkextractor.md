@@ -1,12 +1,12 @@
 ---
 title: Windows.Forensics.BulkExtractor
+description: "Deploys the bulk_extractor binary onto the endpoint and runs it\nagainst selected drives or directories for data carving."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Deploys the bulk_extractor binary onto the endpoint and runs it
-  against selected drives or directories for data carving.
+build:
+  list: never
 ---
 
 Deploys the bulk_extractor binary onto the endpoint and runs it
@@ -54,7 +54,9 @@ to parse `find.txt` output.
    is not ideal from a forensic viewpoint.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.BulkExtractor
 description: |
   Deploys the bulk_extractor binary onto the endpoint and runs it
@@ -141,10 +143,10 @@ parameters:
 
 sources:
   - query: |
-      LET bin &lt;= SELECT *
+      LET bin <= SELECT *
         FROM Artifact.Generic.Utils.FetchBinary(ToolName="Bulk_Extractor_Binary")
-      LET tempfolder &lt;= tempdir()
-      LET ExePath &lt;= tempfile(extension=".exe")
+      LET tempfolder <= tempdir()
+      LET ExePath <= tempfile(extension=".exe")
 
       LET target = SELECT
             DeviceID,
@@ -239,6 +241,6 @@ sources:
                     name=strip(string=OSPath,prefix=tempfolder)) AS Upload
       FROM glob(globs="/**", root=tempfolder)
       WHERE Upload
+````
 
-</code></pre>
 

@@ -1,12 +1,12 @@
 ---
 title: Server.Orgs.ListOrgs
+description: "Lists all configured organizations on the Velociraptor server with\noptional downloadable client config for each org."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Lists all configured organizations on the Velociraptor server with
-  optional downloadable client config for each org.
+build:
+  list: never
 ---
 
 Lists all configured organizations on the Velociraptor server with
@@ -19,7 +19,9 @@ to switch to the root org in the GUI before collecting this
 artifact).
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Orgs.ListOrgs
 description: |
   Lists all configured organizations on the Velociraptor server with
@@ -49,6 +51,6 @@ sources:
     }, else={
       SELECT * FROM orgs()
     })
+````
 
-</code></pre>
 

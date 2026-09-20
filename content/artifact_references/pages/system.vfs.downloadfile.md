@@ -1,12 +1,12 @@
 ---
 title: System.VFS.DownloadFile
+description: "Uploads a single file or recursively uploads directory contents from\na client to populate information in the VFS screen."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Uploads a single file or recursively uploads directory contents from
-  a client to populate information in the VFS screen.
+build:
+  list: never
 ---
 
 Uploads a single file or recursively uploads directory contents from
@@ -20,7 +20,9 @@ If you run it yourself (or via the API) the results will also be
 visible in the VFS view.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: System.VFS.DownloadFile
 description: |
   Uploads a single file or recursively uploads directory contents from
@@ -55,7 +57,7 @@ parameters:
 sources:
   - query: |
       LET download_one_file = if(
-         condition=version(plugin="stat") &gt; 1,
+         condition=version(plugin="stat") > 1,
          then= {
            SELECT OSPath AS Path, Accessor,
               Size, upload(file=OSPath, accessor=Accessor) AS Upload
@@ -68,7 +70,7 @@ sources:
         })
 
       LET download_recursive = if(
-         condition=version(plugin="stat") &gt; 1,
+         condition=version(plugin="stat") > 1,
          then= {
            SELECT OSPath AS Path, Accessor,
               Size, upload(file=OSPath, accessor=Accessor) AS Upload
@@ -93,6 +95,6 @@ sources:
       FROM if(condition=Recursively,
         then={ SELECT * FROM download_recursive},
         else={ SELECT * FROM download_one_file})
+````
 
-</code></pre>
 

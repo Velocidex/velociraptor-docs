@@ -24,42 +24,39 @@ many features that allow you to do this quickly and efficiently. This section
 covers Velociraptor's features that support file acquisition, and explains how
 to work with these files after you acquire them.
 
-{{% notice tip "Understanding Collections vs. File Acquisition" %}}
-
-We refer to the process of running an artifact as "a collection", regardless of
-whether the process copies files from the target system. While VQL queries _can_
-copy files, this is only one of many available actions.
-
-Velociraptor queries are written in VQL (Velociraptor Query Language) and
-packaged inside a YAML data structure which we call an
-[artifact](/docs/artifacts/). You then **collect** these artifacts
-on one or more target endpoints.
-
-VQL artifacts can combine data from multiple sources to create a more complete
-picture of an event than traditional "offline" file analysis can provide. For
-example, on a live endpoint, Velociraptor can:
-- Combine file and API data: VQL queries can extract information from static
-  files, system APIs, and volatile (memory) sources simultaneously. An example
-  of this is parsing Windows event logs. While traditional tools might just look
-  at the `.evtx` file, VQL can simultaneously query the Registry API to find
-  specific DLLs that translate raw event codes into human-readable messages.
-- Access live context, such as active system state data that is unavailable when
-  examining an isolated file or a disk image.
-
-While other DFIR tools often use "collection" to imply file acquisition,
-Velociraptor collections usually return only parsed data.
-
-In Velociraptor we perform **file acquisition** (to use the more accurate term)
-primarily for the purpose of preserving evidence. Centralized file processing
-can be done, but it is significantly more complicated and less efficient than
-just querying the data sources directly on the endpoint.
-
-You might also notice that we sometimes use the term "flow" as an alternative to
-the term "collection". This is for historical reasons, but it might also be
-helpful to think in terms of this neutral term since it isn't colloquially
-associated with the process of copying files.
-
-{{% /notice %}}
+> [!TIP] Understanding Collections vs. File Acquisition
+> We refer to the process of running an artifact as "a collection", regardless of
+> whether the process copies files from the target system. While VQL queries _can_
+> copy files, this is only one of many available actions.
+>
+> Velociraptor queries are written in VQL (Velociraptor Query Language) and
+> packaged inside a YAML data structure which we call an
+> [artifact](/docs/artifacts/). You then **collect** these artifacts
+> on one or more target endpoints.
+>
+> VQL artifacts can combine data from multiple sources to create a more complete
+> picture of an event than traditional "offline" file analysis can provide. For
+> example, on a live endpoint, Velociraptor can:
+> - Combine file and API data: VQL queries can extract information from static
+>   files, system APIs, and volatile (memory) sources simultaneously. An example
+>   of this is parsing Windows event logs. While traditional tools might just look
+>   at the `.evtx` file, VQL can simultaneously query the Registry API to find
+>   specific DLLs that translate raw event codes into human-readable messages.
+> - Access live context, such as active system state data that is unavailable when
+>   examining an isolated file or a disk image.
+>
+> While other DFIR tools often use "collection" to imply file acquisition,
+> Velociraptor collections usually return only parsed data.
+>
+> In Velociraptor we perform **file acquisition** (to use the more accurate term)
+> primarily for the purpose of preserving evidence. Centralized file processing
+> can be done, but it is significantly more complicated and less efficient than
+> just querying the data sources directly on the endpoint.
+>
+> You might also notice that we sometimes use the term "flow" as an alternative to
+> the term "collection". This is for historical reasons, but it might also be
+> helpful to think in terms of this neutral term since it isn't colloquially
+> associated with the process of copying files.
 
 ## Why collect files?
 
@@ -139,31 +136,28 @@ Beyond uploading files to the server, specialized plugins like `upload_s3()`,
 data
 [directly to external cloud storage providers or remote servers](#remote-upload-destinations).
 
-{{% notice tip "Terminology note"%}}
-
-New users might find the "upload" and "download" terminology a bit confusing.
-
-- In the context of Velociraptor we generally use the term **upload** to refer
-  to a file transfer _from the client_ to the server (or other destination).
-- In general we use the term **download** to refer to the act of transferring
-  files _from the server_ to your local workstation, usually via the
-  Velociraptor GUI.
-
-Note that in the Velociraptor GUI, particularly in the VFS browser, uploading
-from the client is sometimes described using the term "download" because the VFS
-browser presents actions from the server's perspective (the server is
-"downloading" from the client). Technically, the client always initiates the
-upload to the server: _By design, the Velociraptor server never accesses the
-client directly!_
-
-To summarize the terminology conventions used in our documentation:
-- **Collect:** Artifact execution and data transfer, which _might_ include file
-  uploads.
-- **Upload:** Client → Server or another remote storage destination (File
-  transfer)
-- **Download/Export:** Server → User Workstation (File transfer)
-
-{{% /notice %}}
+> [!TIP] Terminology note
+> New users might find the "upload" and "download" terminology a bit confusing.
+>
+> - In the context of Velociraptor we generally use the term **upload** to refer
+>   to a file transfer _from the client_ to the server (or other destination).
+> - In general we use the term **download** to refer to the act of transferring
+>   files _from the server_ to your local workstation, usually via the
+>   Velociraptor GUI.
+>
+> Note that in the Velociraptor GUI, particularly in the VFS browser, uploading
+> from the client is sometimes described using the term "download" because the VFS
+> browser presents actions from the server's perspective (the server is
+> "downloading" from the client). Technically, the client always initiates the
+> upload to the server: _By design, the Velociraptor server never accesses the
+> client directly!_
+>
+> To summarize the terminology conventions used in our documentation:
+> - **Collect:** Artifact execution and data transfer, which _might_ include file
+>   uploads.
+> - **Upload:** Client → Server or another remote storage destination (File
+>   transfer)
+> - **Download/Export:** Server → User Workstation (File transfer)
 
 
 ## The VQL upload function
@@ -400,25 +394,22 @@ off after a network or client interruption. Whether the client crashes, the
 system reboots, the network goes down, or the collection simply times out, the
 transfer progress that has already been made is preserved on the server.
 
-{{% notice info "Experimental feature" %}}
-
-Resumable Uploads is considered an advanced and still slightly experimental
-feature and is therefore "opt-in" via a boolean VQL variable. It's not enabled
-by default.
-
-In addition, enabling this feature comes with some caveats and changes to upload
-behavior that might be confusing to the user (see the
-[upload function documentation](/vql_reference/popular/upload/)
-for more details).
-
-As with any advanced feature, Resumable Uploads have seen continuous refinement.
-While it was a major highlight of the 0.72 release, some stability issues were
-noted in subsequent versions, leading to the feature being disabled in certain
-releases to ensure that server performance wasn't impacted during high-load
-scenarios. You should use the latest stable release for the most reliable
-experience, especially if you intend to use this feature.
-
-{{% /notice %}}
+> [!NOTE] Experimental feature
+> Resumable Uploads is considered an advanced and still slightly experimental
+> feature and is therefore "opt-in" via a boolean VQL variable. It's not enabled
+> by default.
+>
+> In addition, enabling this feature comes with some caveats and changes to upload
+> behavior that might be confusing to the user (see the
+> [upload function documentation](/vql_reference/popular/upload/)
+> for more details).
+>
+> As with any advanced feature, Resumable Uploads have seen continuous refinement.
+> While it was a major highlight of the 0.72 release, some stability issues were
+> noted in subsequent versions, leading to the feature being disabled in certain
+> releases to ensure that server performance wasn't impacted during high-load
+> scenarios. You should use the latest stable release for the most reliable
+> experience, especially if you intend to use this feature.
 
 Resumable uploads are enabled by setting the VQL variable `UPLOAD_IS_RESUMABLE`
 in a query. Note that this means that the feature is enabled _per query_ - it is
@@ -619,20 +610,17 @@ Velociraptor currently supports the following remote upload destinations:
   [documentation](/vql_reference/popular/http_client/#example---uploading-files)
   for examples.
 
-{{% notice note "Differences from the upload function" %}}
-
-Note that unlike the `upload()` function, these plugins do not support resumable
-uploads, or any features that rely on server-side functionality. Uploads to the
-remote destinations are not tracked by the server, although the function's
-results will be included in the data and logs that are returned, as with any
-other collection.
-
-Each remote destination type offers its own particular options and you should
-refer to the function-specific documentation in the
-[VQL reference](/vql_reference/), and the vendor documentation for
-the supported cloud storage providers.
-
-{{% /notice %}}
+> [!NOTE] Differences from the upload function
+> Note that unlike the `upload()` function, these plugins do not support resumable
+> uploads, or any features that rely on server-side functionality. Uploads to the
+> remote destinations are not tracked by the server, although the function's
+> results will be included in the data and logs that are returned, as with any
+> other collection.
+>
+> Each remote destination type offers its own particular options and you should
+> refer to the function-specific documentation in the
+> [VQL reference](/vql_reference/), and the vendor documentation for
+> the supported cloud storage providers.
 
 
 ## More topics...

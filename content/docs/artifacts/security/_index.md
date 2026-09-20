@@ -32,32 +32,29 @@ Most users develop their own operating procedures specifying:
 In the below page we discuss how Velociraptor enabled each of these
 goals.
 
-{{% notice warning "Artifact Security is complicated!" %}}
-
-Being able to collect sensitive forensic information from endpoints at
-all is a very powerful permissions. It is important to emphasize that
-the below security measures are **not comprehensive**! There are many
-escalation paths for an `investigator` role to take over the
-endpoints - for example, acquiring `lsass.exe` memory or downloading
-the `SAM` or `NTDS.dit`
-
-You should consider the restrictions described below as best effort to
-avoid accidental errors - the true security boundary is in the ability
-to collect artifacts at all.
-
-Do not grant the `investigator` role to users you do not trust!
-
-Similarly, do not grant the `reader` role to users you do not trust to
-view all collected data (including PII and security sensitive data
-that is collected as part of the forensic process).
-
-Be especially careful with the implementation of `SOAR` like
-functionality via the API - extending the API to external programs
-increases the attack surface, especially if the `SOAR` application is
-able to schedule collections on endpoints. You can mitigate this to
-some extent using `Basic Artifacts` (see below).
-
-{{% /notice %}}
+> [!WARNING] Artifact Security is complicated!
+> Being able to collect sensitive forensic information from endpoints at
+> all is a very powerful permissions. It is important to emphasize that
+> the below security measures are **not comprehensive**! There are many
+> escalation paths for an `investigator` role to take over the
+> endpoints - for example, acquiring `lsass.exe` memory or downloading
+> the `SAM` or `NTDS.dit`
+>
+> You should consider the restrictions described below as best effort to
+> avoid accidental errors - the true security boundary is in the ability
+> to collect artifacts at all.
+>
+> Do not grant the `investigator` role to users you do not trust!
+>
+> Similarly, do not grant the `reader` role to users you do not trust to
+> view all collected data (including PII and security sensitive data
+> that is collected as part of the forensic process).
+>
+> Be especially careful with the implementation of `SOAR` like
+> functionality via the API - extending the API to external programs
+> increases the attack surface, especially if the `SOAR` application is
+> able to schedule collections on endpoints. You can mitigate this to
+> some extent using `Basic Artifacts` (see below).
 
 ## Hidden artifacts
 
@@ -84,7 +81,7 @@ each artifact using the `artifact_set_metadata()` function.
 The following VQL can be run in a notebook to hide all artifacts other
 than a selected set:
 
-```sql
+```vql
 LET VisibleArtifacts <= SELECT * FROM parse_csv(accessor="data",
 filename='''Artifacts
 Windows.Search.FileFinder
@@ -147,7 +144,7 @@ be denied because they do not have the `COLLECT_CLIENT` permission.
 However we can allow the user to collect **Some** artifacts that we
 deem to be safe.
 
-```sql
+```vql
 LET BasicArtifacts <= SELECT * FROM parse_csv(accessor="data",
 filename='''Artifacts
 Generic.Client.Info
@@ -205,16 +202,13 @@ for users:
 * Setting those artifacts as basic can allow users to use a reduced
   functionality version of the artifacts safely.
 
-{{% notice warning "Allowing users to modify artifacts" %}}
-
-Users with the `ARTIFACT_WRITER` permission are allowed to modify the
-artifact itself. Therefore, if the user can change the artifact the
-above access control is bypassed.
-
-We consider users with `ARTIFACT_WRITER` as admin equivalent since it
-is easy to escalate to full admin with that permission.
-
-{{% /notice %}}
+> [!WARNING] Allowing users to modify artifacts
+> Users with the `ARTIFACT_WRITER` permission are allowed to modify the
+> artifact itself. Therefore, if the user can change the artifact the
+> above access control is bypassed.
+>
+> We consider users with `ARTIFACT_WRITER` as admin equivalent since it
+> is easy to escalate to full admin with that permission.
 
 ### Restricting dangerous client artifacts
 
@@ -268,28 +262,25 @@ possible to restrict the use of dangerous functions. For example:
    e.g. write startup locations and take over the endpoint. Similar
    advice applies to writing registry keys, deleting files etc.
 
-{{% notice tip "Safely using execve()" %}}
-
-The `execve()` plugin allows artifacts to launch external
-commands. This plugin accepts a list of parameters (called `argv`)
-instead of a single command line. The plugin will construct a safe
-command line by escaping single arguments if necessary, so you should
-not need to worry about escaping.
-
-Specifically, do not launch commands via the shell:
-
-```sql
-SELECT * FROM execve(argv=["cmd.exe", "/c", "cacls " + DirectoryName])
-```
-
-Instead always directly run the target binary - Velociraptor will
-suitable escape the command line if required.
-
-```sql
-SELECT * FROM execve(argv=["cacls.exe", DirectoryName])
-```
-
-{{% /notice %}}
+> [!TIP] Safely using execve()
+> The `execve()` plugin allows artifacts to launch external
+> commands. This plugin accepts a list of parameters (called `argv`)
+> instead of a single command line. The plugin will construct a safe
+> command line by escaping single arguments if necessary, so you should
+> not need to worry about escaping.
+>
+> Specifically, do not launch commands via the shell:
+>
+> ```vql
+> SELECT * FROM execve(argv=["cmd.exe", "/c", "cacls " + DirectoryName])
+> ```
+>
+> Instead always directly run the target binary - Velociraptor will
+> suitable escape the command line if required.
+>
+> ```vql
+> SELECT * FROM execve(argv=["cacls.exe", DirectoryName])
+> ```
 
 
 How can we tell if a client artifact gives extra permissions to users?

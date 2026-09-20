@@ -1,12 +1,12 @@
 ---
 title: Windows.System.CriticalServices
+description: "Checks that important Windows services like antivirus and update\nservices are currently running."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Checks that important Windows services like antivirus and update
-  services are currently running.
+build:
+  list: never
 ---
 
 Checks that important Windows services like antivirus and update
@@ -16,7 +16,9 @@ The default list contains virus scanners. If the software is not
 installed at all, it will not be shown.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.CriticalServices
 description: |
   Checks that important Windows services like antivirus and update
@@ -26,7 +28,7 @@ description: |
   installed at all, it will not be shown.
 
 reference:
-  - "ATT&amp;CK: T1089"
+  - "ATT&CK: T1089"
   - https://github.com/teoseller/osquery-attck/blob/master/windows_critical_service_status.conf
 
 precondition: SELECT OS From info() where OS = 'windows'
@@ -51,6 +53,6 @@ sources:
          } AS Critical
          FROM Artifact.Windows.System.Services()
          WHERE Critical AND State != "Running"
+````
 
-</code></pre>
 

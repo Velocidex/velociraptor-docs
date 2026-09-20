@@ -1,13 +1,12 @@
 ---
 title: Windows.Events.ProcessCreation
+description: "Monitors for Windows process creation events using WMI\nWin32_ProcessStartTrace and enriches them with parent and call chain\ninformation."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
-description: |
-  Monitors for Windows process creation events using WMI
-  Win32_ProcessStartTrace and enriches them with parent and call chain
-  information.
+build:
+  list: never
 ---
 
 Monitors for Windows process creation events using WMI
@@ -19,7 +18,9 @@ It is more reliable to use Sysmon instead via the
 `Windows.Sysinternals.SysmonLogForward` artifact.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Events.ProcessCreation
 description: |
   Monitors for Windows process creation events using WMI
@@ -53,8 +54,8 @@ sources:
           process_tracker_get(id=Parse.ProcessID).Data.CommandLine AS CommandLine,
           process_tracker_get(id=Parse.ParentProcessID).Data.CommandLine AS ParentCommandLine,
           join(array=process_tracker_callchain(id=Parse.ProcessID).Data.Name,
-               sep=" &lt;- ") AS CallChain
+               sep=" <- ") AS CallChain
       FROM Delayed
+````
 
-</code></pre>
 

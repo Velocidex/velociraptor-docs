@@ -1,19 +1,21 @@
 ---
 title: Linux.Triage.ProcessMemory
+description: "Dumps process memory from a selected process and uploads it to the\nserver.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Dumps process memory from a selected process and uploads it to the
-  server.
+build:
+  list: never
 ---
 
 Dumps process memory from a selected process and uploads it to the
 server.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Triage.ProcessMemory
 description: |
   Dumps process memory from a selected process and uploads it to the
@@ -36,6 +38,6 @@ sources:
              upload(file=format(format="/%d", args=processPid),
                     accessor="process") as CrashDump
       FROM pslist(pid=processPid)
+````
 
-</code></pre>
 

@@ -1,12 +1,12 @@
 ---
 title: Server.Utils.DeleteClient
+description: "Removes one or more clients by ID from the server, deleting all\nassociated collection data permanently."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Removes one or more clients by ID from the server, deleting all
-  associated collection data permanently.
+build:
+  list: never
 ---
 
 Removes one or more clients by ID from the server, deleting all
@@ -19,7 +19,9 @@ able to talk to it, it is just that old collected data will be
 deleted.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.DeleteClient
 description: |
   Removes one or more clients by ID from the server, deleting all
@@ -47,7 +49,7 @@ sources:
       let clients_list = SELECT ClientId
       FROM parse_records_with_regex(
           accessor="data", file=ClientIdList,
-          regex="(?P&lt;ClientId&gt;C\\.[0-9a-z-]+)")
+          regex="(?P<ClientId>C\\.[0-9a-z-]+)")
       WHERE log(message="Deleting client " + ClientId)
 
       SELECT * FROM foreach(row=clients_list,
@@ -55,6 +57,6 @@ sources:
          SELECT * FROM client_delete(client_id=ClientId,
             really_do_it=ReallyDoIt)
       })
+````
 
-</code></pre>
 

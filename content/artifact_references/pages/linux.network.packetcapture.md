@@ -1,11 +1,12 @@
 ---
 title: Linux.Network.PacketCapture
+description: "Runs tcpdump to capture network packets and upload the PCAP file."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Runs tcpdump to capture network packets and upload the PCAP file.
+build:
+  list: never
 ---
 
 Runs tcpdump to capture network packets and upload the PCAP file.
@@ -22,7 +23,9 @@ Read more about BPF expressions here:
 https://biot.com/capstats/bpf.html
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Network.PacketCapture
 author: Wes Lambert, @therealwlambert
 description: |
@@ -64,9 +67,9 @@ precondition:
 
 sources:
     - query: |
-            LET pcap &lt;= tempfile(extension=".pcap")
+            LET pcap <= tempfile(extension=".pcap")
             SELECT *, upload(file=pcap) AS PCAP
-              FROM execve(argv=['bash', '-c', format(format='''(tcpdump -nni %v -w %v %v) &amp; sleep %v; kill $!''', args=[Interface, pcap, BPF, Duration])], length=1000000)
+              FROM execve(argv=['bash', '-c', format(format='''(tcpdump -nni %v -w %v %v) & sleep %v; kill $!''', args=[Interface, pcap, BPF, Duration])], length=1000000)
+````
 
-</code></pre>
 

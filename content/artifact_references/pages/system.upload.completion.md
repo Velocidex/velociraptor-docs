@@ -1,12 +1,12 @@
 ---
 title: System.Upload.Completion
+description: "Emits an event for every uploaded file, including offline collection\nimports, enabling post-upload automation."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
-description: |
-  Emits an event for every uploaded file, including offline collection
-  imports, enabling post-upload automation.
+build:
+  list: never
 ---
 
 Emits an event for every uploaded file, including offline collection
@@ -21,7 +21,9 @@ trigger them (e.g. for testing or to replay them) using the
 `send_event()` VQL function.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: System.Upload.Completion
 description: |
   Emits an event for every uploaded file, including offline collection
@@ -36,6 +38,6 @@ description: |
   `send_event()` VQL function.
 
 type: CLIENT_EVENT
+````
 
-</code></pre>
 

@@ -1,17 +1,20 @@
 ---
 title: Linux.Users.InteractiveUsers
+description: "Gets the interactive users from a Linux host.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Gets the interactive users from a Linux host.
+build:
+  list: never
 ---
 
 Gets the interactive users from a Linux host.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Users.InteractiveUsers
 
 description: |
@@ -42,6 +45,6 @@ sources:
              Shell 
       FROM Artifact.Linux.Sys.Users()
       WHERE NOT Shell IN split(string=NonInteractiveExecutables, sep_string=",")
+````
 
-</code></pre>
 

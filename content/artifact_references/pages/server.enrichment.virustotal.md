@@ -1,12 +1,12 @@
 ---
 title: Server.Enrichment.Virustotal
+description: "Enriches a file hash or IP address with VirusTotal threat\nintelligence results."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Enriches a file hash or IP address with VirusTotal threat
-  intelligence results.
+build:
+  list: never
 ---
 
 Enriches a file hash or IP address with VirusTotal threat
@@ -26,7 +26,9 @@ for files) to enrich the data made available by that artifact.
 TODO: Implement a timer to spread out requests
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Enrichment.Virustotal
 author: Wes Lambert -- @therealwlambert, Whitney Champion -- @shortxstack
 description: |
@@ -99,6 +101,6 @@ sources:
             VTData.data.attributes.crowdsourced_yara_results AS YARAResults,
             VTData AS _Data
         FROM Data
+````
 
-</code></pre>
 

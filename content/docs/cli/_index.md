@@ -23,21 +23,18 @@ described in the [deployment options](/docs/deployment/#command-line-investigati
 [artifact collection](/docs/cli/commands/artifacts/#-artifacts-collect-), and
 [query command](/docs/cli/commands/query/) page.
 
-{{% notice info "Filesystem permissions on the command line" %}}
-
-When installed as a service, Velociraptor's datastore directory is owned by the
-service account named `velociraptor` and accessible to the `velociraptor` user
-group. New users often aren't aware of this fact and run CLI commands on the
-server which accidentally create files in the datastore using their own user
-account or the `root` account. These files are subsequently inaccessible to the
-Velociraptor service which may then fail to start.
-
-Some CLI commands work directly with files in the datastore, which can result in
-them being inadvertently owned by your user account. You can avoid creating
-permissions problems by switching to the `velociraptor` user. On most Linux
-systems this can be done with the command `sudo -u velociraptor bash`.
-
-{{% /notice %}}
+> [!NOTE] Filesystem permissions on the command line
+> When installed as a service, Velociraptor's datastore directory is owned by the
+> service account named `velociraptor` and accessible to the `velociraptor` user
+> group. New users often aren't aware of this fact and run CLI commands on the
+> server which accidentally create files in the datastore using their own user
+> account or the `root` account. These files are subsequently inaccessible to the
+> Velociraptor service which may then fail to start.
+>
+> Some CLI commands work directly with files in the datastore, which can result in
+> them being inadvertently owned by your user account. You can avoid creating
+> permissions problems by switching to the `velociraptor` user. On most Linux
+> systems this can be done with the command `sudo -u velociraptor bash`.
 
 ## General command syntax
 
@@ -141,4 +138,4 @@ Collector.
 
 ## Learn about the commands and flags available in the CLI
 
-{{% children description=true depth=2 %}}
+{{% children description=true %}}

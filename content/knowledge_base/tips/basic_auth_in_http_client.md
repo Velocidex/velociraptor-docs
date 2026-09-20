@@ -22,12 +22,9 @@ Mode`)
 
 Then paste the header into the secrets interface.
 
-{{% notice warning "Do not paste credentials into third party websites" %}}
-
-Using the dev console ensures that the javascript is running in a
-trusted browser tab. Do not use third party sites offering to
-calculate the credentials.
-
-{{% /notice %}}
+> [!WARNING] Do not paste credentials into third party websites
+> Using the dev console ensures that the javascript is running in a
+> trusted browser tab. Do not use third party sites offering to
+> calculate the credentials.
 
 Tags: #secrets #configuration

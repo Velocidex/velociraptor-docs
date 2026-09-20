@@ -1,19 +1,21 @@
 ---
 title: Notebooks.Default
+description: "Creates a new notebook with a welcome message and placeholder VQL\ncell.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [notebook]
-description: |
-  Creates a new notebook with a welcome message and placeholder VQL
-  cell.
+build:
+  list: never
 ---
 
 Creates a new notebook with a welcome message and placeholder VQL
 cell.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Notebooks.Default
 description: |
   Creates a new notebook with a welcome message and placeholder VQL
@@ -38,6 +40,6 @@ sources:
         # This is a cell suggestion
         */
         SELECT * FROM info()
+````
 
-</code></pre>
 

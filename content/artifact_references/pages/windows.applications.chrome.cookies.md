@@ -1,12 +1,12 @@
 ---
 title: Windows.Applications.Chrome.Cookies
+description: "Enumerates Chrome browser cookies including host key, name,\ntimestamps, and encrypted values."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Enumerates Chrome browser cookies including host key, name,
-  timestamps, and encrypted values.
+build:
+  list: never
 ---
 
 Enumerates Chrome browser cookies including host key, name,
@@ -27,7 +27,9 @@ This artifact is deprecated in favor of
 `Generic.Forensic.SQLiteHunter` and will be removed in future.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Applications.Chrome.Cookies
 description: |
   Enumerates Chrome browser cookies including host key, name,
@@ -86,6 +88,6 @@ sources:
               file=OSPath,
               query=cookieSQLQuery)
           })
+````
 
-</code></pre>
 

@@ -1,12 +1,12 @@
 ---
 title: Linux.Debian.AptSources
+description: "Extracts package repository configuration from Debian-based systems\nby parsing apt sources."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Extracts package repository configuration from Debian-based systems
-  by parsing apt sources.
+build:
+  list: never
 ---
 
 Extracts package repository configuration from Debian-based systems
@@ -87,7 +87,9 @@ metadata. The modification timestamps may tell when the package
 lists where last updated.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Debian.AptSources
 description: |
   Extracts package repository configuration from Debian-based systems
@@ -227,7 +229,7 @@ export: |
            the -/+ operator is captured in Op: */
         LET OptStringToKeyValues__(string) = SELECT *
             FROM parse_records_with_regex(
-                regex='''(?P&lt;Key&gt;[^ ]+?)(?P&lt;Op&gt;-|\+)?=(?P&lt;Value&gt;[^ ]+)''',
+                regex='''(?P<Key>[^ ]+?)(?P<Op>-|\+)?=(?P<Value>[^ ]+)''',
                 accessor='data', file=string
         )
 
@@ -281,7 +283,7 @@ export: |
                    is not expected to be found in the wild. The exception is
                    "cdrom:[word word…]", which is capture correctly in order
                    to not end up with incorrectly captured words: */
-                regex='''(?m)^\s*(?P&lt;Type&gt;deb(-src)?)(?:\s+\[(?P&lt;Options&gt;[^\]#]+)(?:#[^\]]+)?\])?\s+"?(?P&lt;URI&gt;(?P&lt;Transport&gt;[^:]+):(?://)?(?P&lt;URIBase&gt;\[.+?\]|\S+?))"?\s+(?P&lt;Suite&gt;\S+)\s+(?P&lt;Components&gt;[^\n#]+)'''
+                regex='''(?m)^\s*(?P<Type>deb(-src)?)(?:\s+\[(?P<Options>[^\]#]+)(?:#[^\]]+)?\])?\s+"?(?P<URI>(?P<Transport>[^:]+):(?://)?(?P<URIBase>\[.+?\]|\S+?))"?\s+(?P<Suite>\S+)\s+(?P<Components>[^\n#]+)'''
             )
 
         /* Parse a one-line deb sources.list file and output a dict: */
@@ -314,7 +316,7 @@ export: |
 
         /* Extract the transport/protocol and base from a URI: */
         LET URIComponents(URI) = parse_string_with_regex(
-            regex='''(?P&lt;Transport&gt;[^:]+):(?://)?(?P&lt;URIBase&gt;[^\s]+)''',
+            regex='''(?P<Transport>[^:]+):(?://)?(?P<URIBase>[^\s]+)''',
             string=URI
         )
 
@@ -362,7 +364,7 @@ export: |
                    Values can continue on several lines, but only if the following
                    lines are indented with whitespace
                 */
-                regex='''(?m)^(?P&lt;Key&gt;[^#:\s]+)\s*:[^\S\n]*(?P&lt;Value&gt;[^\n]*(?:\n[^\S\n]+[^\n]+)*)''',
+                regex='''(?m)^(?P<Key>[^#:\s]+)\s*:[^\S\n]*(?P<Value>[^\n]*(?:\n[^\S\n]+[^\n]+)*)''',
                 /* Before parsing the key–values, remove all comments from the file
                    (otherwise forming a regex without lookarounds would be very
                    difficult, if not impossible), Luckily, comments follow strict
@@ -544,12 +546,12 @@ sources:
                 string=regex_replace(source=Record,
                     re='(?m)^Version: GnuPG v.+$', replace=''
                 ),
-                regex=["Codename: (?P&lt;Release&gt;[^\\n]+)",
-                       "Version: (?P&lt;Version&gt;[^\\n]+)",
-                       "Origin: (?P&lt;Origin&gt;[^\\n]+)",
-                       "Architectures: (?P&lt;Architectures&gt;[^\\n]+)",
-                       "Components: (?P&lt;Components&gt;[^\\n]+)"]) as Record
-           FROM parse_records_with_regex(file=file, regex="(?sm)(?P&lt;Record&gt;.+)")
+                regex=["Codename: (?P<Release>[^\\n]+)",
+                       "Version: (?P<Version>[^\\n]+)",
+                       "Origin: (?P<Origin>[^\\n]+)",
+                       "Architectures: (?P<Architectures>[^\\n]+)",
+                       "Components: (?P<Components>[^\\n]+)"]) as Record
+           FROM parse_records_with_regex(file=file, regex="(?sm)(?P<Record>.+)")
 
          // Foreach row in the parsed cache file, collect the FileInfo too.
          LET add_stat_to_parsed_cache_file(file) = SELECT * from foreach(
@@ -591,6 +593,6 @@ sources:
              query={
                 SELECT * FROM parse_cache_or_pass
               })
+````
 
-</code></pre>
 

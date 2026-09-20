@@ -1,4 +1,9 @@
 ---
+type: wide
+cascade:
+  type: wide
+sidebar:
+  exclude: true
 title: "Downloads"
 date: 2021-06-23T08:29:57Z
 draft: false
@@ -109,38 +114,35 @@ regular build uses the light weight Minio client library. If your
 server needs AWS integration (particularly around credentials) you
 will probably need to use the Sumo build.
 
-{{% notice note "Support for Windows 7" %}}
-
-Golang has officially [ended support for Windows
-7](https://github.com/golang/go/issues/57003) with the Go 1.20
-release. Current builds do not support this platform.
-
-The Windows 7 binaries mentioned above are built with the deprecated
-Go 1.20 release which is known to work on Windows 7.
-
-However, note the following caveats:
-
-* To build under this unsupported Go version we had to freeze
-  dependencies. Therefore this build includes known buggy and
-  unsupported dependencies.
-
-* This build may be insecure! since it includes unsupported
-  dependencies.
-
-* We might disable some feature (VQL plugins) that can not be easily
-  updated. These builds may miss some specific functionality.
-
-* If you need to use these builds for an offline collector we
-  recommend using [the generic collector](/docs/deployment/offline_collections/#the-generic-collector).
-
-
-**Do not use this build in a general deployment!** Only use it for
-deploying on deprecated, unsupported operating systems:
-
-* Windows 7
-* Windows 8, 8.1
-
-{{% /notice %}}
+> [!NOTE] Support for Windows 7
+> Golang has officially [ended support for Windows
+> 7](https://github.com/golang/go/issues/57003) with the Go 1.20
+> release. Current builds do not support this platform.
+>
+> The Windows 7 binaries mentioned above are built with the deprecated
+> Go 1.20 release which is known to work on Windows 7.
+>
+> However, note the following caveats:
+>
+> * To build under this unsupported Go version we had to freeze
+>   dependencies. Therefore this build includes known buggy and
+>   unsupported dependencies.
+>
+> * This build may be insecure! since it includes unsupported
+>   dependencies.
+>
+> * We might disable some feature (VQL plugins) that can not be easily
+>   updated. These builds may miss some specific functionality.
+>
+> * If you need to use these builds for an offline collector we
+>   recommend using [the generic collector](/docs/deployment/offline_collections/#the-generic-collector).
+>
+>
+> **Do not use this build in a general deployment!** Only use it for
+> deploying on deprecated, unsupported operating systems:
+>
+> * Windows 7
+> * Windows 8, 8.1
 
 
 ## Verifying your download

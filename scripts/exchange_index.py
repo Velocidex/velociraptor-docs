@@ -1,6 +1,5 @@
 import urllib.request
 import json
-import html
 import yaml
 import re
 import os
@@ -20,6 +19,7 @@ project = "velociraptor-docs"
 # Each yaml file will be converted to a markdown if needed.
 template = """---
 title: %s
+description: %s
 hidden: true
 tags: %s
 sitemap:
@@ -29,9 +29,9 @@ editURL: https://github.com/%s/%s/edit/master/%s
 
 %s
 
-<pre><code class="language-yaml">
+---
+
 %s
-</code></pre>
 
 """
 
@@ -50,6 +50,23 @@ def cleanDescription(description):
   top_paragraph = description.split("\n\n")[0]
   return top_paragraph
 
+# Build a fenced code block for YAML content. Uses a fence with more
+# backticks than any run found in the content, so lines that consist
+# solely of backticks cannot close the fence early.
+def yaml_fence(content):
+  max_run = max((len(m) for m in re.findall(r"`+", content)), default=0)
+  fence = "`" * max(max_run + 1, 4)
+  return "%syaml\n%s%s\n" % (fence, content, fence)
+
+# Hugo's shortcode extractor runs before markdown parsing, so
+# "{{%" / "{{<" sequences inside fenced code would be expanded as
+# shortcodes. Escape them so they render as literal text (Hugo's
+# own shortcode-escape syntax round-trips to the original text).
+def escape_shortcodes(s):
+  s = re.sub(r"\{\{%\s+(.*?)\s*%\}\}", r"{{%/* \1 */%}}", s)
+  s = re.sub(r"\{\{<\s+(.*?)\s*>\}\}", r"{{</* \1 */>}}", s)
+  return s
+
 def cleanupDate(date):
   try:
     return date.strftime("%Y-%m-%d")
@@ -62,7 +79,13 @@ def cleanupDate(date):
 def getTags(description):
   result = []
   for m in hash_regex.finditer(description):
-    result.append(m.group(1))
+    # Tags are normalized: lowercased, at least 2 characters long, and
+    # must contain at least one alphabetic character (so "0", "1", etc.
+    # harvested from e.g. "(#0/#1/#2/...)" prose are not turned into
+    # bogus tags).
+    tag = m.group(1).lower()
+    if len(tag) >= 2 and any(c.isalpha() for c in tag):
+      result.append(tag)
 
   return result
 
@@ -72,6 +95,9 @@ def getAuthor(record, yaml_filename):
   for item in previous_data:
     if item["title"] == title and item.get("author"):
       item["description"] = record["description"]
+      # Recompute tags too - the previous record may carry stale tags
+      # (e.g. bogus "#0/#1/#2" hashtags) that older versions harvested.
+      item["tags"] = record["tags"]
       return item
 
   # Get commit details for this file.
@@ -186,13 +212,15 @@ def build_markdown():
 
         md_filename = filename_name + ".md"
         with open(md_filename, "w") as fd:
+           desc = record_with_author["description"]
            fd.write(template % (
              data["name"],
+             json.dumps(desc or data["name"]),
              json.dumps(record_with_author["tags"]),
              org, project,
              yaml_filename,
              data["description"],
-             html.escape(content, quote=False)))
+             yaml_fence(escape_shortcodes(content))))
 
   index = sorted(index, key=lambda x: x["date"],
                  reverse=True)

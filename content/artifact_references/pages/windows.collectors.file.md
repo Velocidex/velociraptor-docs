@@ -1,12 +1,12 @@
 ---
 title: Windows.Collectors.File
+description: "Searches a filesystem using a set of glob patterns and uploads\nmatching files to the server."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Searches a filesystem using a set of glob patterns and uploads
-  matching files to the server.
+build:
+  list: never
 ---
 
 Searches a filesystem using a set of glob patterns and uploads
@@ -16,7 +16,9 @@ All globs must be on the same device. The globs will be searched in
 one pass - so you can provide many globs at the same time.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Collectors.File
 description: |
    Searches a filesystem using a set of glob patterns and uploads
@@ -72,7 +74,7 @@ parameters:
 sources:
    - name: All Matches Metadata
      query: |
-        LET RootPath &lt;= pathspec(Path=Root, accessor=Accessor)
+        LET RootPath <= pathspec(Path=Root, accessor=Accessor)
 
         -- Generate the collection globs for each device
         LET specs = SELECT RootPath + Glob AS Glob
@@ -91,13 +93,13 @@ sources:
           FROM glob(globs=specs.Glob, accessor=Accessor)
           WHERE NOT IsDir
            AND log(message="Found " + SourceFile)
-           AND ( Size &lt;= MaxFileSize OR
+           AND ( Size <= MaxFileSize OR
                  ( log(message="Skipping file " + SourceFile + " Due to MaxFileSize")
                    AND FALSE ))
 
         -- Pass all the results to the next query. This will serialize
         -- to disk if there are too many results.
-        LET all_results &lt;= SELECT Created,
+        LET all_results <= SELECT Created,
                                   Changed,
                                   LastAccessed,
                                   Modified,
@@ -140,6 +142,6 @@ sources:
                Modified,
                LastAccessed
         FROM uploaded_files
+````
 
-</code></pre>
 

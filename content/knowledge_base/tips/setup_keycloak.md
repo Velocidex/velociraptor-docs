@@ -10,21 +10,18 @@ providers is not practical or possible. Most of the steps shown here would be
 the same or similar for other self-hosted OIDC solutions (for example Zitadel or
 Authentik), so it may be useful even if you are not using Keycloak.
 
-{{% notice warning "Production deployment of Keycloak" %}}
-
-Keycloak is a Java application which can be installed manually or deployed via
-several officially documented container-based methods. This guide partly mirrors Keycloak's
-[Getting started guide](https://www.keycloak.org/getting-started/getting-started-docker)
-which uses Docker to create a _"development mode" instance_ of Keycloak. This
-method starts a working Keycloak instance but does not create a persistent
-database or a production-ready secured server, since the goal here is only to
-demonstrate the integration with Velociraptor.
-
-For production-ready deployment guidance we refer you to
-[Configuring Keycloak for production](https://www.keycloak.org/server/configuration-production)
-and the official [Keycloak documentation](https://www.keycloak.org/documentation).
-
-{{% /notice %}}
+> [!WARNING] Production deployment of Keycloak
+> Keycloak is a Java application which can be installed manually or deployed via
+> several officially documented container-based methods. This guide partly mirrors Keycloak's
+> [Getting started guide](https://www.keycloak.org/getting-started/getting-started-docker)
+> which uses Docker to create a _"development mode" instance_ of Keycloak. This
+> method starts a working Keycloak instance but does not create a persistent
+> database or a production-ready secured server, since the goal here is only to
+> demonstrate the integration with Velociraptor.
+>
+> For production-ready deployment guidance we refer you to
+> [Configuring Keycloak for production](https://www.keycloak.org/server/configuration-production)
+> and the official [Keycloak documentation](https://www.keycloak.org/documentation).
 
 As mentioned above, the goal of this guide is to demonstrate a working SSO
 configuration for Velociraptor using Keycloak. The basic steps and configuration
@@ -212,22 +209,19 @@ Now we are ready to move to configuring the Velociraptor side of things.
 
 ## Configure Velociraptor
 
-{{% notice tip %}}
-
-While configuring, testing and potentially troubleshooting problems, it's
-easier if you can see Velociraptor's log messages. You can stop the server
-service and then run the server manually on the command line by using the
-following commands:
-
-```bash
-sudo systemctl stop velociraptor_server
-sudo -u velociraptor bash
-velociraptor -c /etc/velociraptor/server.config.yaml frontend -v
-```
-
-This will display the log messages in the terminal.
-
-{{% /notice %}}
+> [!TIP]
+> While configuring, testing and potentially troubleshooting problems, it's
+> easier if you can see Velociraptor's log messages. You can stop the server
+> service and then run the server manually on the command line by using the
+> following commands:
+>
+> ```bash
+> sudo systemctl stop velociraptor_server
+> sudo -u velociraptor bash
+> velociraptor -c /etc/velociraptor/server.config.yaml frontend -v
+> ```
+>
+> This will display the log messages in the terminal.
 
 **6. Add the authenticator settings to your Velociraptor config**
 
@@ -352,18 +346,15 @@ You will be required to change the password because we configured
 The same process applies to `fred@local` except that we can verify in
 Velociraptor that the user has the read-only role.
 
-{{% notice tip %}}
-
-For testing multiple users in the same web browser you may have trouble
-fully logging a user out because while logged out of Velociraptor the OIDC
-session is still active.
-
-Logout of the OIDC session can be achieved by
-navigating to the endpoint
-`https://keycloak.local/realms/myrealm/protocol/openid-connect/logout`
-from within the same web browser and choosing to log out.
-
-{{% /notice %}}
+> [!TIP]
+> For testing multiple users in the same web browser you may have trouble
+> fully logging a user out because while logged out of Velociraptor the OIDC
+> session is still active.
+>
+> Logout of the OIDC session can be achieved by
+> navigating to the endpoint
+> `https://keycloak.local/realms/myrealm/protocol/openid-connect/logout`
+> from within the same web browser and choosing to log out.
 
 ## What next?
 

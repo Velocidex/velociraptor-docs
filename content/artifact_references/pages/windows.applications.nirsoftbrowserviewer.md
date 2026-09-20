@@ -1,12 +1,12 @@
 ---
 title: Windows.Applications.NirsoftBrowserViewer
+description: "Wraps the Nirsoft BrowsingHistoryView tool to parse browsing history\nfrom Chrome, Firefox, IE, and Safari."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Wraps the Nirsoft BrowsingHistoryView tool to parse browsing history
-  from Chrome, Firefox, IE, and Safari.
+build:
+  list: never
 ---
 
 Wraps the Nirsoft BrowsingHistoryView tool to parse browsing history
@@ -24,7 +24,9 @@ BrowsingHistoryView v2.55 - View browsing history of your Web
 browsers Copyright (c) 2012 - 2023 Nir Sofer
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Applications.NirsoftBrowserViewer
 description: |
   Wraps the Nirsoft BrowsingHistoryView tool to parse browsing history
@@ -76,12 +78,12 @@ sources:
 
     query: |
       -- firstly set timebounds for performance
-      LET DateAfterTime &lt;= if(condition=DateAfter,
+      LET DateAfterTime <= if(condition=DateAfter,
         then=timestamp(epoch=DateAfter), else=timestamp(epoch="1600-01-01"))
-      LET DateBeforeTime &lt;= if(condition=DateBefore,
+      LET DateBeforeTime <= if(condition=DateBefore,
         then=timestamp(epoch=DateBefore), else=timestamp(epoch="2200-01-01"))
 
-      LET CSVFile &lt;= tempfile(extension='.csv')
+      LET CSVFile <= tempfile(extension='.csv')
 
       -- Download the binary and create a csv file to write on.
       LET tmp_exe = SELECT OSPath AS BinPath
@@ -113,8 +115,8 @@ sources:
         FROM parse_csv(filename=CSVFile)
       })
       WHERE URL =~ URLRegex AND
-            Visited &gt; DateAfterTime AND
-            Visited &lt; DateBeforeTime
+            Visited > DateAfterTime AND
+            Visited < DateBeforeTime
+````
 
-</code></pre>
 

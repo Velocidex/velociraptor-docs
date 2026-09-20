@@ -1,17 +1,20 @@
 ---
 title: Server.Internal.ClientDelete
+description: "Provides an internal event stream for client deletion notifications.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
-description: |
-  Provides an internal event stream for client deletion notifications.
+build:
+  list: never
 ---
 
 Provides an internal event stream for client deletion notifications.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Internal.ClientDelete
 description: |
   Provides an internal event stream for client deletion notifications.
@@ -23,6 +26,6 @@ column_types:
     description: The client that was deleted.
   - name: Principal
     description: The principal who initiated the deletion.
+````
 
-</code></pre>
 

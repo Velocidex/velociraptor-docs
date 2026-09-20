@@ -1,41 +1,47 @@
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js">
-</script>
-
-<div class="search-box">
-<div class="input-group">
-  <span class="input-group-addon" id="prev-page"><i class="fas fa-arrow-left"></i></span>
-  <span class="input-group-addon" id="start-count"></span>
-  <input type="text" id="myInput" onkeyup="doSearchDelay()" class="form-control" placeholder="Search site" aria-describedby="basic-addon2">
-  <span class="input-group-addon" id="page-count"></span>
-  <span class="input-group-addon" id="next-page"><i class="fas fa-arrow-right"></i></span>
+{{/* Site-wide search page backed by Pagefind (built by `pagefind --site public`).
+   The "Tags" accordion below mirrors the /tags/ taxonomy listing (same data,
+   rendered server-side as a collapsible block like the Section filter panel).
+   Unlike /tags/ pills elsewhere, each pill here is a *filter toggle*: clicking
+   it narrows the results to that tag (assets/js/search.js flips the matching
+   checkbox in Pagefind's hidden "tags" filter block) instead of navigating.
+   assets/js/search.js relocates it to sit directly under the Section filter. */}}
+<div class="search-box" data-site-search>
+  <div id="pagefind-site-search"></div>
+  {{- with .Site.Taxonomies.tags.Alphabetical }}
+  <details class="search-tags-accordion" id="pagefind-site-tags" data-pagefind-ignore>
+    <summary class="pagefind-ui__filter-name search-tags-name">Tags</summary>
+    <div class="search-tags-grid">
+      {{- range . }}
+      <button type="button" class="search-tag-link" data-tag="{{ .Page.Title | lower }}" aria-pressed="false" title="Filter results to '{{ .Page.LinkTitle | lower }}'">
+        <span class="search-tag-name">{{ .Page.LinkTitle | lower }}</span>
+        <span class="search-tag-count">&nbsp;{{ .Count }}</span>
+      </button>
+      {{- end }}
+    </div>
+  </details>
+  {{- end }}
 </div>
-<div class="search-shortcuts">
-  <a class="space tag" onclick="searchShortcutTag('Blog')">
-    <i class="linkcolour label label-success">Blog</i></a>
-  <a class="space tag" onclick="searchShortcutTag('Docs')">
-    <i class="linkcolour label label-success">Docs</i></a>
-  <a class="space tag" onclick="searchShortcutTag('KB')">
-    <i class="linkcolour label label-success">KB</i></a>
-  <a class="space tag" onclick="searchShortcutTag('Artifacts')">
-    <i class="linkcolour label label-success">Artifacts</i></a>
-  <a class="space tag" onclick="searchShortcutTag('VQLReference')">
-    <i class="linkcolour label label-success">VQLReference</i></a>
-  <a class="space tag" onclick="searchShortcutMust()">
-    <i class="linkcolour label label-success">Must Contain All terms</i></a>
-
-</div>
-</div>
-
-<div class="search_results search-pad">
-Search this website by entering keywords above.
-</div>
-
 <script>
-  searchUrl = "{{ .Site.Params.searchURL }}";
+  (function () {
+    var el = document.getElementById("pagefind-site-search");
+    if (!el) {
+      return;
+    }
+    var css = document.createElement("link");
+    css.rel = "stylesheet";
+    css.href = "{{ "pagefind/pagefind-ui.css" | relURL }}";
+    document.head.appendChild(css);
 
-  initSearch();
-  $("#next-page").click(SearchPageForward);
-  $("#prev-page").click(SearchPageBack);
-  $("#top-bar").addClass("hidden");
-</script>
+    var script = document.createElement("script");
+      script.src = "{{ "pagefind/pagefind-ui.js" | relURL }}";
+      script.onload = function () {
+        new PagefindUI({
+          element: "#pagefind-site-search",
+          showSubResults: true,
+          showImages: false,
+          highlightParam: "q"
+        });
+      };
+      document.head.appendChild(script);
+    })();
+  </script>

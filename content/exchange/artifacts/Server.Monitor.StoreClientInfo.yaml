@@ -24,10 +24,9 @@ description: |
   `Field` can refer to a nested field, including arrays. This means
   that field names containing a period (".") are not supported.
 
-  {{% notice info %}}
-  The sources referred to in `InfoMetadata` should only return a
-  single row. If more rows are returned, only the first is used.
-  {{% /notice %}}
+  > [!NOTE]
+  > The sources referred to in `InfoMetadata` should only return a
+  > single row. If more rows are returned, only the first is used.
 
   ## See also
 

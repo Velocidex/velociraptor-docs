@@ -1,9 +1,10 @@
 ---
 menutitle: "Training"
+linkTitle: Training
 title: "Training Resources"
 date: 2021-06-12T14:03:59Z
 draft: false
-weight: 90
+weight: 260
 pre: <i class="fas fa-graduation-cap"></i>
 description: |
   ## Scheduled courses
@@ -55,13 +56,10 @@ The full video playlist is available
 [here](https://www.youtube.com/playlist?list=PLz4xB83Y3Vbjtqr_ttOkBWZZ_ewEVVPXQ)
 on YouTube.
 
-{{% notice info %}}
-
-Please note that these videos are not up to date with the
-[latest version](/downloads/).
-The slide deck above is more recent and contains additional sections which don't
-have corresponding videos.
-
-{{% /notice %}}
+> [!NOTE]
+> Please note that these videos are not up to date with the
+> [latest version](/downloads/).
+> The slide deck above is more recent and contains additional sections which don't
+> have corresponding videos.
 
 {{< youtube class="youtube" title="Velociraptor Installation and Overview" id="70CBB9MdNWM" >}}

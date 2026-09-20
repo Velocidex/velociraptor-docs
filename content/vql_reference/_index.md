@@ -1,4 +1,7 @@
 ---
+type: docs
+cascade:
+  type: docs
 title: "VQL Reference"
 menutitle: VQL Reference
 date: 2021-06-12T05:12:26Z
@@ -30,24 +33,18 @@ return (transformed) values, not rows.
 - **Accessors** are used to access bulk data from various sources using a
 standard file-like interface.
 
-{{% notice note %}}
+> [!NOTE]
+> VQL _plugins_ are not the same as VQL _functions_. A helpful 'rule of thumb' is
+> that plugins always follow the `FROM` keyword because they generate a table
+> consisting of rows from the data source, while functions (which return a single
+> value instead of a sequence of rows) are only present in column specifications
+> (i.e. after `SELECT`) or in condition clauses (i.e. after the `WHERE` keyword).
 
-VQL _plugins_ are not the same as VQL _functions_. A helpful 'rule of thumb' is
-that plugins always follow the `FROM` keyword because they generate a table
-consisting of rows from the data source, while functions (which return a single
-value instead of a sequence of rows) are only present in column specifications
-(i.e. after `SELECT`) or in condition clauses (i.e. after the `WHERE` keyword).
-
-{{% /notice %}}
-
-{{% notice tip %}}
-
-If you are not exactly sure what you're looking for or just want to browse
-what's available, we have also provided listings by general categories [which you
-can access in the sidebar](/vql_reference/popular/).
-
-{{% /notice %}}
+> [!TIP]
+> If you are not exactly sure what you're looking for or just want to browse
+> what's available, we have also provided listings by general categories [which you
+> can access in the sidebar](/vql_reference/popular/).
 
 {{% /expand %}}
 
-{{% reference %}}
+{{< reference >}}

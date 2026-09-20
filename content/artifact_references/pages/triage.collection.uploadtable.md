@@ -1,19 +1,21 @@
 ---
 title: Triage.Collection.UploadTable
+description: "A generic uploader used by triaging artifacts. This is similar to\n`Triage.Collection.Upload` but uses a CSV table to drive it.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  A generic uploader used by triaging artifacts. This is similar to
-  `Triage.Collection.Upload` but uses a CSV table to drive it.
+build:
+  list: never
 ---
 
 A generic uploader used by triaging artifacts. This is similar to
 `Triage.Collection.Upload` but uses a CSV table to drive it.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Triage.Collection.UploadTable
 description: |
   A generic uploader used by triaging artifacts. This is similar to
@@ -47,6 +49,6 @@ sources:
                FileDetails.Sha256 as SHA256
           FROM results
         })
+````
 
-</code></pre>
 

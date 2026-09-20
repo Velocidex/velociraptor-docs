@@ -1,11 +1,12 @@
 ---
 title: Server.Utils.CreateLinuxPackages
+description: "Builds Debian (.deb) and RPM packages with embedded client config for the current organization."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Builds Debian (.deb) and RPM packages with embedded client config for the current organization.
+build:
+  list: never
 ---
 
 Builds Debian (.deb) and RPM packages with embedded client config for the current organization.
@@ -24,15 +25,17 @@ Use the following shell commands to inspect the resulting RPM and Deb:
 - dpkg-deb -I velociraptor.deb
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.CreateLinuxPackages
 description: |
   Builds Debian (.deb) and RPM packages with embedded client config for the current organization.
 
   This artifact depends on the following tools:
 
-  * Clients &lt;velo-tool-viewer name="VelociraptorLinux" /&gt;
-  * Server &lt;velo-tool-viewer name="VelociraptorLinuxSumo" /&gt;
+  * Clients <velo-tool-viewer name="VelociraptorLinux" />
+  * Server <velo-tool-viewer name="VelociraptorLinuxSumo" />
 
   You can replace this with suitable Velociraptor Linux build, or else
   the current release binary will be used by default.
@@ -69,19 +72,19 @@ sources:
           AND Config.Client.ca_certificate =~ "(?ms)-----BEGIN CERTIFICATE-----.+-----END CERTIFICATE-----"
           AND Config.Client.nonce
 
-    LET client_config &lt;= if(condition=ValidateConfig(Config=CustomConfig),
+    LET client_config <= if(condition=ValidateConfig(Config=CustomConfig),
                          then=CustomConfig,
                          else=org()._client_config)
 
-    LET TmpDir &lt;= tempdir()
+    LET TmpDir <= tempdir()
 
     // This is an example of how to modify the spec to customize the
     // creation of the RPM. The default template does not set the
     // vendor property in the RPM, so we just update the metadata
     // template while preserving all the other fields.
     // See https://github.com/google/rpmpack/blob/2467806670a618497006ff8d8623b0430c7605a9/rpm.go#L56
-    LET _RPMSpec &lt;= SELECT Spec FROM rpm_create(show_spec=TRUE)
-    LET RPMSpec &lt;= _RPMSpec[0].Spec + dict(Templates=_RPMSpec[0].Spec.Templates +
+    LET _RPMSpec <= SELECT Spec FROM rpm_create(show_spec=TRUE)
+    LET RPMSpec <= _RPMSpec[0].Spec + dict(Templates=_RPMSpec[0].Spec.Templates +
      dict(Metadata=format(format='''
        {"Name": "{{ .SysvService }}",
         "Vendor": "%v",
@@ -92,8 +95,8 @@ sources:
        }
        ''', args=[Vendor, timestamp(epoch=now())])))
 
-    LET _DebSpec &lt;= SELECT Spec FROM deb_create(show_spec=TRUE)
-    LET DebSpec &lt;= _DebSpec[0].Spec
+    LET _DebSpec <= SELECT Spec FROM deb_create(show_spec=TRUE)
+    LET DebSpec <= _DebSpec[0].Spec
 
     LET UpdateExpansion(Expansion) = Expansion + dict(
        Name=ServiceName || Expansion.Name,
@@ -126,6 +129,6 @@ sources:
 column_types:
   - name: Upload
     type: upload_preview
+````
 
-</code></pre>
 

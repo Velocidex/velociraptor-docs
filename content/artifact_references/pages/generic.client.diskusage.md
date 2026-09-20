@@ -1,12 +1,12 @@
 ---
 title: Generic.Client.DiskUsage
+description: "Computes disk usage per directory recursively, similar to the `du`\ncommand."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Computes disk usage per directory recursively, similar to the `du`
-  command.
+build:
+  list: never
 ---
 
 Computes disk usage per directory recursively, similar to the `du`
@@ -20,7 +20,9 @@ If you change the `TopLevelDirectory` to the drive letter
 examine every file on the drive.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Client.DiskUsage
 description: |
   Computes disk usage per directory recursively, similar to the `du`
@@ -48,7 +50,7 @@ parameters:
 
 sources:
   - query: |
-      LET Res &lt;= dict()
+      LET Res <= dict()
 
       LET _DirInfo(DirPath) = SELECT DirPath, Size, sum(item=Size) AS TotalSize
       FROM chain(a={
@@ -71,13 +73,13 @@ sources:
 
       -- Recurse into the TopLevelDirectory and rely on the set()
       -- above to store the results.
-      LET _ &lt;= SELECT * FROM DirInfo(DirPath=TopLevelDirectory)
+      LET _ <= SELECT * FROM DirInfo(DirPath=TopLevelDirectory)
 
       SELECT *, humanize(bytes=TotalSize) AS TotalSizeHuman
       FROM foreach(row={
         SELECT * FROM items(item=Res)
       }, column="_value")
       ORDER BY TotalSize DESC
+````
 
-</code></pre>
 

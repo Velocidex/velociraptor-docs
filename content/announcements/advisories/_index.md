@@ -1,4 +1,5 @@
 ---
+type: docs-no-toc
 menutitle: "Security Advisories"
 title: "Security Advisories"
 summary: |
@@ -12,13 +13,19 @@ pre: <i class="fas fa-exclamation-triangle"></i>
 outputs:
 - html
 - RSS
+cascade:
+  # CVE detail pages: keep the left sidebar but drop the right TOC column
+  # so the include-cve widget gets the full content width.
+  type: docs-no-toc
 ---
 
 The following CVEs have been noted.
 
 Please upgrade to [the current release](/downloads/).
 
-{{% children description=true style="h4" %}}
-
 Please consider subscribing to our
 [Security Advisories RSS feed](/rss/) to receive timely notifications.
+
+{{% children description=false grid-cols=1 %}}
+
+

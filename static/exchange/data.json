@@ -1,5 +1,62 @@
 [
     {
+        "title": "Windows.ADCS.CertificateAuthority.EDB",
+        "author": "sec-pc",
+        "description": "Parses the Active Directory Certificate Services (ADCS) ESE database\ndirectly from disk.\nReads the CA database at C:\\Windows\\System32\\CertLog\\*.edb using the\nntfs accessor to handle the file lock while CertSvc is running.\nReturns all certificate requests with key forensic fields including\ndisposition (issued/revoked/failed/pending), requester and caller\nidentity, subject DN, template, timestamps, and serial number.\nJoins the Requests, Certificates, and RequestAttributes tables on\nRequestID to produce a single complete row per certificate.\nCertificateTemplate is resolved to the human-readable display name\nusing a three-stage lookup:\n  1. Display name from RequestAttributes for this RequestID\n  2. Inline $RequestAttributes text CertificateTemplate:Name\n  3. Raw OID from the Certificates table as last resort\nUPN is resolved with two-stage fallback:\n  1. $UPN from the issued certificate (Certificates table)\n  2. Requested UPN from SAN attribute (RequestAttributes table)\nRequires a build of Velociraptor compiled against the patched go-ese\nlibrary (https://github.com/Velocidex/go-ese) where DateTime columns\nare always decoded as Windows FILETIMEs regardless of column Flags.\nWithout the patch, all DateTime fields return 1899-12-30.\nTransaction log recovery: the CA service buffers writes in ESE\ntransaction logs. esentutl /r is used to replay those logs into a\ntemp copy of the EDB before parsing, ensuring all committed rows are\nvisible and matching certutil output.\nDisposition values:\n  9  = Issued\n  11 = Pending\n  15 = Revoked\n  16 = Error\n  20 = Failed\n  21 = Denied\n",
+        "link": "/exchange/artifacts/pages/windows.adcs.certificateauthority.edb",
+        "tags": [],
+        "author_link": "https://github.com/sec-pc",
+        "author_avatar": "https://avatars.githubusercontent.com/u/227598139?v=4",
+        "date": "2026-09-08"
+    },
+    {
+        "title": "Generic.Applications.ZeroTier",
+        "author": "misje",
+        "description": "Collects ZeroTier installation artefacts from the client file system without\nrequiring the ZeroTier service to be running.",
+        "link": "/exchange/artifacts/pages/generic.applications.zerotier",
+        "tags": [
+            "vpn",
+            "network",
+            "zerotier",
+            "forensics"
+        ],
+        "author_link": "https://github.com/misje",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4006538?v=4",
+        "date": "2026-09-02"
+    },
+    {
+        "title": "Server.Analysis.Windows.EventLogs.Hayabusa",
+        "author": "ecapuano",
+        "description": "Runs the curated Hayabusa Sigma ruleset against Windows event logs\nthat were already uploaded to the server by a completed collection\nflow, using Velociraptor's built-in Sigma engine. No Hayabusa binary\nis deployed to the endpoint or the server - the entire analysis runs\nin VQL on the server side.",
+        "link": "/exchange/artifacts/pages/server.analysis.windows.eventlogs.hayabusa",
+        "tags": [
+            "sigma",
+            "hayabusa",
+            "evtx",
+            "triage",
+            "postprocessing"
+        ],
+        "author_link": "https://github.com/ecapuano",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4219694?v=4",
+        "date": "2026-08-02"
+    },
+    {
+        "title": "Server.Monitor.Windows.EventLogs.Hayabusa",
+        "author": "ecapuano",
+        "description": "Watches for completed client collections whose artifacts match\n`ArtifactRegex` and automatically runs\n`Server.Analysis.Windows.EventLogs.Hayabusa` against the EVTX files\nuploaded by each flow. Detection results appear under Server Events\nfor this artifact.",
+        "link": "/exchange/artifacts/pages/server.monitor.windows.eventlogs.hayabusa",
+        "tags": [
+            "sigma",
+            "hayabusa",
+            "evtx",
+            "triage",
+            "postprocessing"
+        ],
+        "author_link": "https://github.com/ecapuano",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4219694?v=4",
+        "date": "2026-08-02"
+    },
+    {
         "title": "Windows.Memory.DotnetDumper",
         "author": "mgreen27",
         "description": "Response artifact to triage Windows .NET processes and collect .NET assemblies from \nmemory using DotnetDumper.",
@@ -250,11 +307,7 @@
         "author": "dciftci",
         "description": "It analyzes klist output to identify Kerberos tickets with unusually long lifetimes as well as tickets where the Kdc Called field is empty.",
         "link": "/exchange/artifacts/pages/windows.kerberos.goldentickettriage",
-        "tags": [
-            "0",
-            "1",
-            "2"
-        ],
+        "tags": [],
         "author_link": "https://github.com/dciftci",
         "author_avatar": "https://avatars.githubusercontent.com/u/23119194?v=4",
         "date": "2026-01-12"
@@ -435,25 +488,26 @@
         "description": "Post-process collection results using [Fluent Bit](https://fluentbit.io/).",
         "link": "/exchange/artifacts/pages/fluentbit",
         "tags": [
+            "storing",
             "post",
-            "Elasticsearch",
-            "OpenSearch",
-            "Splunk",
-            "Graylog",
-            "BigQuery",
-            "Chronicle",
-            "CloudWatch",
-            "Amazon",
-            "S3",
-            "Azure",
-            "Datadog",
-            "Dynatrace",
-            "InfluxDB",
-            "Kafka",
-            "LogDNA",
-            "Loki",
-            "Oracle",
-            "PostgreSQL"
+            "elasticsearch",
+            "opensearch",
+            "splunk",
+            "graylog",
+            "bigquery",
+            "chronicle",
+            "cloudwatch",
+            "amazon",
+            "s3",
+            "azure",
+            "datadog",
+            "dynatrace",
+            "influxdb",
+            "kafka",
+            "logdna",
+            "loki",
+            "oracle",
+            "postgresql"
         ],
         "author_link": "https://github.com/predictiple",
         "author_avatar": "https://avatars.githubusercontent.com/u/9843422?v=4",
@@ -816,7 +870,7 @@
     {
         "title": "Windows.System.Recall.AllWindowEvents",
         "author": "zachstanford-cybercx",
-        "description": "This artefact will read and correlate several tables to do with Microsoft Recall.",
+        "description": "This artifact will read and correlate several tables to do with Microsoft Recall.",
         "link": "/exchange/artifacts/pages/windows.system.recall.allwindowevents",
         "tags": [],
         "author_link": "https://github.com/zachstanford-cybercx",
@@ -826,7 +880,7 @@
     {
         "title": "Windows.System.Recall.WindowCaptureEvent",
         "author": "zachstanford-cybercx",
-        "description": "This artefact will read and correlate several tables to do with Microsoft Recall.",
+        "description": "This artifact will read and correlate several tables to do with Microsoft Recall.",
         "link": "/exchange/artifacts/pages/windows.system.recall.windowcaptureevent",
         "tags": [],
         "author_link": "https://github.com/zachstanford-cybercx",
@@ -976,7 +1030,7 @@
     {
         "title": "Windows.Registry.ScheduledTasks",
         "author": "mgreen27",
-        "description": "This artefact will collect Scheduled task information from the registry without\nrelying on the existence of an XML file in C:\\\\Windows\\\\System32\\\\Tasks.",
+        "description": "This artifact will collect Scheduled task information from the registry without\nrelying on the existence of an XML file in C:\\\\Windows\\\\System32\\\\Tasks.",
         "link": "/exchange/artifacts/pages/scheduledtasks",
         "tags": [],
         "author_link": "https://github.com/mgreen27",
@@ -1076,7 +1130,7 @@
     {
         "title": "Windows.Applications.FreeFileSync",
         "author": "freeze-syn",
-        "description": "This artefact can be used to retrieve and parse some FreeFileSync file in order to:\n- Identify the latest account used to transfer data and the remote ip adresse destination in the case of SFTP protocol with the query GlobalInfo\n- Identify the latest transferred files with Latest Data Transfer\n- Identify the presence of others interesting logs about previous or attempt of files transfer",
+        "description": "This artifact can be used to retrieve and parse some FreeFileSync file in order to:\n- Identify the latest account used to transfer data and the remote ip adresse destination in the case of SFTP protocol with the query GlobalInfo\n- Identify the latest transferred files with Latest Data Transfer\n- Identify the presence of others interesting logs about previous or attempt of files transfer",
         "link": "/exchange/artifacts/pages/windows.applications.freefilesync",
         "tags": [],
         "author_link": "https://github.com/freeze-syn",
@@ -1086,7 +1140,7 @@
     {
         "title": "Windows.Applications.GoodSync",
         "author": "freeze-syn",
-        "description": "This artefact can be used to retrieve and parse some GoodSync file in order to\n- identify configured Good Sync account;\n- identify data and time of transferred files.",
+        "description": "This artifact can be used to retrieve and parse some GoodSync file in order to\n- identify configured Good Sync account;\n- identify data and time of transferred files.",
         "link": "/exchange/artifacts/pages/windows.applications.goodsync",
         "tags": [],
         "author_link": "https://github.com/freeze-syn",
@@ -1199,7 +1253,7 @@
     {
         "title": "Linux.Network.NM.Connections",
         "author": "misje",
-        "description": "NetworkManager is a popular high-level interface for configuring\nnetworks in Linux systems, in particular Ubuntu and other Debian-based\nflavours. This artifact lists the NetworkManager state, all configured\nconnections and their settings, as well as when the connections were\nlast activated. A list of BSSIDs per connection is also retrieved.",
+        "description": "NetworkManager is a popular high-level interface for configuring\nnetworks in Linux systems, in particular Ubuntu and other Debian-based\nflavors. This artifact lists the NetworkManager state, all configured\nconnections and their settings, as well as when the connections were\nlast activated. A list of BSSIDs per connection is also retrieved.",
         "link": "/exchange/artifacts/pages/linux.network.nm.connections",
         "tags": [],
         "author_link": "https://github.com/misje",
@@ -1654,8 +1708,8 @@
         "description": "Checks for exploitation of vRealize Log Insight VMSA-2023-0001 exploitation \nartifacts. The presence of a path traversal in the FileName field\nis evidence of compromise. There is still a path to exploitation without\nleveraging the path traversal vuln. Any attempt to run\nREMOTE_PAK_DOWNLOAD_COMMAND from a non-vRealize server is malicious.\n#VMWare #vRealize #exploit\n",
         "link": "/exchange/artifacts/pages/linux.detection.vrealizeloginsightexploitation",
         "tags": [
-            "VMWare",
-            "vRealize",
+            "vmware",
+            "vrealize",
             "exploit"
         ],
         "author_link": "https://github.com/acedef",
@@ -2375,7 +2429,7 @@
     {
         "title": "Windows.System.Services.SliverPsexec",
         "author": "svch0stz",
-        "description": "This pack detects various artefacts left behind by default configurations of the C2 framework Sliver PsExec module",
+        "description": "This pack detects various artifacts left behind by default configurations of the C2 framework Sliver PsExec module",
         "link": "/exchange/artifacts/pages/windows.system.services.sliverpsexec",
         "tags": [],
         "author_link": "https://github.com/svch0stz",
@@ -2665,7 +2719,7 @@
     {
         "title": "Windows.Registry.TaskCache.HiddenTasks",
         "author": "svch0stz",
-        "description": "This artefact will highlight any scheduled tasks missing the Security Descriptor (SD) value in the task cache. Without this value, the task is hidden from common query methods.",
+        "description": "This artifact will highlight any scheduled tasks missing the Security Descriptor (SD) value in the task cache. Without this value, the task is hidden from common query methods.",
         "link": "/exchange/artifacts/pages/windows.registry.taskcache.hiddentasks",
         "tags": [],
         "author_link": "https://github.com/svch0stz",
@@ -2929,7 +2983,7 @@
     {
         "title": "Windows.Registry.CapabilityAccessManager",
         "author": "scudette",
-        "description": "The ConsentStore in CapabilityAccessManager can provide insight to\nwhat resources binaries have had access to, such as the microphone\nand webcam. This artefact returns non-Microsoft executables (ie:\nentries listed in the `NonPackaged` path).",
+        "description": "The ConsentStore in CapabilityAccessManager can provide insight to\nwhat resources binaries have had access to, such as the microphone\nand webcam. This artifact returns non-Microsoft executables (ie:\nentries listed in the `NonPackaged` path).",
         "link": "/exchange/artifacts/pages/windows.registry.capabilityaccessmanager",
         "tags": [
             "windows",

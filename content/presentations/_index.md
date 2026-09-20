@@ -1,7 +1,8 @@
 ---
 menutitle: "Presentations"
 title: "Presentations"
-weight: 120
+weight: 270
+no_children: true
 no_edit: true
 pre: <i class="fas fa-chalkboard-teacher"></i>
 description: |

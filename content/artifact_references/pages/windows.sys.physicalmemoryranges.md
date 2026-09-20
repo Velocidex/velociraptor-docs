@@ -1,19 +1,21 @@
 ---
 title: Windows.Sys.PhysicalMemoryRanges
+description: "Parses the CM_RESOURCE_LIST from the registry to list physical\nmemory range descriptors.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Parses the CM_RESOURCE_LIST from the registry to list physical
-  memory range descriptors.
+build:
+  list: never
 ---
 
 Parses the CM_RESOURCE_LIST from the registry to list physical
 memory range descriptors.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Sys.PhysicalMemoryRanges
 description: |
   Parses the CM_RESOURCE_LIST from the registry to list physical
@@ -43,7 +45,7 @@ export: |
            ["Count", 4, "uint32"],
            ["PartialDescriptors", 8, "Array", {
               "type": "CM_PARTIAL_RESOURCE_DESCRIPTOR",
-              "count": "x=&gt;x.Count"
+              "count": "x=>x.Count"
            }]
         ]],
 
@@ -77,6 +79,6 @@ sources:
                   FROM scope()
               })
       })
+````
 
-</code></pre>
 

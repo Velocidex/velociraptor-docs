@@ -1,12 +1,12 @@
 ---
 title: Windows.ActiveDirectory.SharpHound
+description: "Deploys the SharpHound tool to collect Active Directory relationship\ndata for BloodHound."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Deploys the SharpHound tool to collect Active Directory relationship
-  data for BloodHound.
+build:
+  list: never
 ---
 
 Deploys the SharpHound tool to collect Active Directory relationship
@@ -25,7 +25,9 @@ NOTE:
  
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.ActiveDirectory.SharpHound
 author: Matt Green - @mgreen27
 description: |
@@ -64,22 +66,22 @@ sources:
 
     query: |
       -- obtain hostname for output prefix
-      LET hostname &lt;= SELECT Fqdn FROM info()
+      LET hostname <= SELECT Fqdn FROM info()
       
       -- get context on target binary
-      LET payload &lt;= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
+      LET payload <= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
                     ToolName="SharpHound",IsExecutable='N')
 
       -- build tempfolder for output
-      LET tempfolder &lt;= tempdir()
+      LET tempfolder <= tempdir()
       
-      LET unzipped &lt;= SELECT NewPath as OSPath FROM unzip(filename=payload.OSPath[0],filename_filter='\.exe$',output_directory=tempfolder)
+      LET unzipped <= SELECT NewPath as OSPath FROM unzip(filename=payload.OSPath[0],filename_filter='\.exe$',output_directory=tempfolder)
 
       -- execute payload
-      LET deploy &lt;= SELECT * FROM execve(argv=[unzipped.OSPath[0],'--outputdirectory',
+      LET deploy <= SELECT * FROM execve(argv=[unzipped.OSPath[0],'--outputdirectory',
                 tempfolder,'--nozip'])
                 
-      LET collection &lt;= SELECT OSPath, Name, Size--, upload(file=OSPath,name=Name) as UploadInfo
+      LET collection <= SELECT OSPath, Name, Size--, upload(file=OSPath,name=Name) as UploadInfo
         FROM glob(globs="/*.json",root=tempfolder) 
       
       LET results = SELECT * FROM foreach(row=collection, query={ SELECT Name, * FROM parse_jsonl(filename=OSPath) })
@@ -156,6 +158,6 @@ sources:
             SELECT * FROM foreach(row=Users, query={
                 SELECT Name, * FROM foreach(row=data)
                 })
+````
 
-</code></pre>
 

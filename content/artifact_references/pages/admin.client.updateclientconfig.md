@@ -1,11 +1,12 @@
 ---
 title: Admin.Client.UpdateClientConfig
+description: "Replaces client configuration and optionally rekeys the client ID."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Replaces client configuration and optionally rekeys the client ID.
+build:
+  list: never
 ---
 
 Replaces client configuration and optionally rekeys the client ID.
@@ -23,7 +24,9 @@ This artifact has a notebook suggestion that allows a client to be
 changed to a different org.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Admin.Client.UpdateClientConfig
 description: |
   Replaces client configuration and optionally rekeys the client ID.
@@ -66,7 +69,7 @@ sources:
 
         LET ExpandedConfigPath = expand(path=ConfigPath)
         LET CheckConfigPath(ConfigPath) = SELECT * FROM stat(filename=ConfigPath)
-        LET Config &lt;=  parse_yaml(accessor="data", filename=ConfigYaml)
+        LET Config <=  parse_yaml(accessor="data", filename=ConfigYaml)
 
         LET DoIt = if(condition=ValidateConfig(Config=Config),
           else=log(level="ERROR", message="Config is invalid") AND FALSE,
@@ -100,6 +103,6 @@ sources:
         FROM orgs()
         WHERE OrgId = RequiredOrgId
         LIMIT 1
+````
 
-</code></pre>
 

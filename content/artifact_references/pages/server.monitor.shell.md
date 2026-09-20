@@ -1,12 +1,12 @@
 ---
 title: Server.Monitor.Shell
+description: "Captures stdout, stderr, and command details from shell command\nexecutions across all clients for auditing purposes."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
-description: |
-  Captures stdout, stderr, and command details from shell command
-  executions across all clients for auditing purposes.
+build:
+  list: never
 ---
 
 Captures stdout, stderr, and command details from shell command
@@ -27,7 +27,9 @@ This server event artifact centralizes all shell access events from
 all clients into a single audit log.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Monitor.Shell
 description: |
    Captures stdout, stderr, and command details from shell command
@@ -92,6 +94,6 @@ reports:
       ```
 
       {{end}}
+````
 
-</code></pre>
 

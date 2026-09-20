@@ -1,19 +1,21 @@
 ---
 title: Linux.Sys.LogGrep
+description: "Provides zgrep-like search capabilities across log files, including\ngzipped log files, matching a glob for lines matching a regex.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Provides zgrep-like search capabilities across log files, including
-  gzipped log files, matching a glob for lines matching a regex.
+build:
+  list: never
 ---
 
 Provides zgrep-like search capabilities across log files, including
 gzipped log files, matching a glob for lines matching a regex.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Sys.LogGrep
 author: "Matt Green - @mgreen27"
 description: |
@@ -46,6 +48,6 @@ sources:
                     then= Line =~ WhitelistRegex,
                     else= FALSE)
           })
+````
 
-</code></pre>
 

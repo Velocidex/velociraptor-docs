@@ -1,12 +1,12 @@
 ---
 title: Windows.Registry.RecentDocs
+description: "Extracts Recent Documents MRU entries from Windows NTUSER.DAT\nregistry hives for each user."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Extracts Recent Documents MRU entries from Windows NTUSER.DAT
-  registry hives for each user.
+build:
+  list: never
 ---
 
 Extracts Recent Documents MRU entries from Windows NTUSER.DAT
@@ -32,7 +32,9 @@ Note: both UserRegex and SidRegex does not work when using HiveGlob
 and all MRU will be returned.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Registry.RecentDocs
 author: Matt Green - @mgreen27
 description: |
@@ -95,13 +97,13 @@ sources:
       -- time testing
       LET time_test(stamp) =
             if(condition= DateBefore AND DateAfter,
-                then= stamp &lt; DateBefore AND stamp &gt; DateAfter,
+                then= stamp < DateBefore AND stamp > DateAfter,
                 else=
             if(condition=DateBefore,
-                then= stamp &lt; DateBefore,
+                then= stamp < DateBefore,
                 else=
             if(condition= DateAfter,
-                then= stamp &gt; DateAfter,
+                then= stamp > DateAfter,
                 else= True
             )))
 
@@ -158,14 +160,14 @@ sources:
         WHERE Data.type =~ 'BINARY'
 
       -- precalculate all hive values for performance
-      LET AllValues &lt;= SELECT * FROM if(condition= HiveGlob,
+      LET AllValues <= SELECT * FROM if(condition= HiveGlob,
                                         then={ SELECT * FROM GlobValues},
                                         else={ SELECT * FROM NTUserValues} )
             WHERE time_test(stamp=Mtime)
 
 
       -- memorise for lookup / performance
-      LET Items &lt;= memoize(query={
+      LET Items <= memoize(query={
             SELECT Type, Name, Value,
                 Type + ':' + Name + ':' + HiveName  AS Key
             FROM AllValues
@@ -218,6 +220,6 @@ sources:
             FROM results
         })
       WHERE format(format='%v', args=MruEntries) =~ EntryRegex
+````
 
-</code></pre>
 

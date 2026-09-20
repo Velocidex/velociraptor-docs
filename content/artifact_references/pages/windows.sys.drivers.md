@@ -1,11 +1,12 @@
 ---
 title: Windows.Sys.Drivers
+description: "Enumerates running Windows device drivers with optional authenticode signature checking."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Enumerates running Windows device drivers with optional authenticode signature checking.
+build:
+  list: never
 ---
 
 Enumerates running Windows device drivers with optional authenticode signature checking.
@@ -13,7 +14,9 @@ Enumerates running Windows device drivers with optional authenticode signature c
 This does not display installed-but-unused drivers.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Sys.Drivers
 description: |
   Enumerates running Windows device drivers with optional authenticode signature checking.
@@ -69,6 +72,6 @@ sources:
           FROM source(artifact="Windows.Sys.Drivers/RunningDrivers")
           WHERE NOT Issuer =~ "Microsoft"
           GROUP BY Issuer
+````
 
-</code></pre>
 

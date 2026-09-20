@@ -1,0 +1,8 @@
+{{- /* Sidebar scroll-position persistence (assets/js/sidebar-scroll.js).
+       Must load after the theme's main.js so its DOMContentLoaded listener
+       (and scrollToActiveItem override) runs after the theme's snap. */ -}}
+{{- $jsSidebarScroll := resources.Get "js/sidebar-scroll.js" -}}
+{{- if hugo.IsProduction -}}
+  {{- $jsSidebarScroll = $jsSidebarScroll | minify | fingerprint -}}
+{{- end -}}
+<script defer src="{{ $jsSidebarScroll.RelPermalink }}" integrity="{{ $jsSidebarScroll.Data.Integrity }}"></script>

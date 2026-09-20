@@ -1,13 +1,12 @@
 ---
 title: Windows.Search.WSLFileFinder
+description: "Searches for files inside Windows Subsystem for Linux (WSL) VHDX\ndisk images. Supports glob filtering, file content inspection using\nYara, and provides optional file hash calculation and upload.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Searches for files inside Windows Subsystem for Linux (WSL) VHDX
-  disk images. Supports glob filtering, file content inspection using
-  Yara, and provides optional file hash calculation and upload.
+build:
+  list: never
 ---
 
 Searches for files inside Windows Subsystem for Linux (WSL) VHDX
@@ -15,7 +14,9 @@ disk images. Supports glob filtering, file content inspection using
 Yara, and provides optional file hash calculation and upload.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Search.WSLFileFinder
 description: |
   Searches for files inside Windows Subsystem for Linux (WSL) VHDX
@@ -93,6 +94,6 @@ sources:
            ACCESSOR="raw_ext4",
            ROOT=pathspec(DelegateAccessor="vhdx", DelegatePath=VHDXPath))
       })
+````
 
-</code></pre>
 

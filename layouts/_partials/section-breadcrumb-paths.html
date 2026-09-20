@@ -1,0 +1,11 @@
+{{- /* Build-time list of every rendered page path (relpermalink minus the
+       trailing slash), emitted as JSON for the /search/ search.js breadcrumb
+       decorator.  The client links a breadcrumb segment only when its path
+       resolves to a real page; segments for missing intermediate levels
+       (e.g. /blog/2024 when no year index exists) render as plain text.
+       Mirrors the section-tag-slugs.html pattern (jsonify + safeJS). */ -}}
+{{- $paths := slice -}}
+{{- range .Site.Pages -}}
+  {{- $paths = $paths | append (strings.TrimSuffix "/" .RelPermalink) -}}
+{{- end -}}
+<script type="application/json" id="site-section-paths">{{- $paths | jsonify | safeJS -}}</script>

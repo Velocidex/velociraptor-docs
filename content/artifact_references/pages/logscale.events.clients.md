@@ -1,12 +1,12 @@
 ---
 title: LogScale.Events.Clients
+description: "Forwards selected client monitoring events to a LogScale ingestion\nendpoint."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
-description: |
-  Forwards selected client monitoring events to a LogScale ingestion
-  endpoint.
+build:
+  list: never
 ---
 
 Forwards selected client monitoring events to a LogScale ingestion
@@ -17,7 +17,9 @@ artifacts from the clients by adding them to the "Client Events"
 GUI.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: LogScale.Events.Clients
 description: |
   Forwards selected client monitoring events to a LogScale ingestion
@@ -38,7 +40,7 @@ parameters:
     description: Ingest token for API
     type: string
   - name: tagFields
-    description: Comma-separated list of field names to use as tags in the message; Can be renamed with &lt;oldname&gt;=&lt;newname&gt;.
+    description: Comma-separated list of field names to use as tags in the message; Can be renamed with <oldname>=<newname>.
     default:
     type: string
   - name: numThreads
@@ -94,6 +96,6 @@ sources:
           http_timeout=httpTimeout,
           debug=debug,
           stats_interval=statsInterval)
+````
 
-</code></pre>
 

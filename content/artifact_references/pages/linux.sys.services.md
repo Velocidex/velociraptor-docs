@@ -1,17 +1,20 @@
 ---
 title: Linux.Sys.Services
+description: "Parses services output from `systemctl`.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Parses services output from `systemctl`.
+build:
+  list: never
 ---
 
 Parses services output from `systemctl`.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Sys.Services
 description: |
   Parses services output from `systemctl`.
@@ -30,6 +33,6 @@ sources:
         FROM parse_lines(accessor="data", filename=services.Stdout)
 
         SELECT * FROM foreach(row=all_services, column="Parsed") WHERE Unit =~ ".service"
+````
 
-</code></pre>
 

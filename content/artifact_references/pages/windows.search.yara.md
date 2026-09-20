@@ -1,19 +1,21 @@
 ---
 title: Windows.Search.Yara
+description: "Scans the NTFS filesystem for files matching a YARA rule by first\nparsing the MFT to enumerate files.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Scans the NTFS filesystem for files matching a YARA rule by first
-  parsing the MFT to enumerate files.
+build:
+  list: never
 ---
 
 Scans the NTFS filesystem for files matching a YARA rule by first
 parsing the MFT to enumerate files.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Search.Yara
 description: |
   Scans the NTFS filesystem for files matching a YARA rule by first
@@ -51,7 +53,7 @@ sources:
         LET Root = pathspec(parse="C:", path_type="ntfs")
 
         -- Progress logging for newer clients
-        LET fileList = SELECT * FROM if(condition=version(function="log") &gt; 1,
+        LET fileList = SELECT * FROM if(condition=version(function="log") > 1,
         then={
           SELECT Root + OSPath AS OSPath
           FROM parse_mft(accessor="ntfs",filename=Root+"$MFT")
@@ -82,6 +84,6 @@ sources:
 
         SELECT *, if(condition=AlsoUpload, then=upload(file=FileName)) AS Upload
         FROM foreach(row=fileList, query=search)
+````
 
-</code></pre>
 

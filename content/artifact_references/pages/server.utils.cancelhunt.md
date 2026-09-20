@@ -1,11 +1,12 @@
 ---
 title: Server.Utils.CancelHunt
+description: "Cancels all in-progress flows for one or more specified hunts."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Cancels all in-progress flows for one or more specified hunts.
+build:
+  list: never
 ---
 
 Cancels all in-progress flows for one or more specified hunts.
@@ -19,7 +20,9 @@ This artifact enumerates all flows in the hunt and actively cancels
 each one of them.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.CancelHunt
 description: |
   Cancels all in-progress flows for one or more specified hunts.
@@ -51,7 +54,7 @@ sources:
              cancel_flow(client_id=client_id, flow_id=flow_id) AS Cancellation
       FROM all_flows(HuntId=HuntId)
 
-      LET AllHunts &lt;= if(condition=HuntId, then=Hunts + HuntId, else=Hunts)
+      LET AllHunts <= if(condition=HuntId, then=Hunts + HuntId, else=Hunts)
 
       SELECT * FROM foreach(row={
         SELECT _value AS HuntId
@@ -60,6 +63,6 @@ sources:
         SELECT * FROM cancellations(HuntId=HuntId)
       }, workers=50
       )
+````
 
-</code></pre>
 

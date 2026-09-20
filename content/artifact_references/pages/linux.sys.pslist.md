@@ -1,17 +1,20 @@
 ---
 title: Linux.Sys.Pslist
+description: "Lists processes and their associated binaries.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Lists processes and their associated binaries.
+build:
+  list: never
 ---
 
 Lists processes and their associated binaries.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Sys.Pslist
 description: |
   Lists processes and their associated binaries.
@@ -36,6 +39,6 @@ sources:
                Exe =~ "\\(deleted\\)$" AS Deleted
         FROM process_tracker_pslist()
         WHERE Name =~ processRegex
+````
 
-</code></pre>
 

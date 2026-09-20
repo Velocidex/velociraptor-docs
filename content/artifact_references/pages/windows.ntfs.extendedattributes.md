@@ -1,12 +1,12 @@
 ---
 title: Windows.NTFS.ExtendedAttributes
+description: "Parses NTFS Extended Attributes ($EA) from the MFT to detect hidden\ndata."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Parses NTFS Extended Attributes ($EA) from the MFT to detect hidden
-  data.
+build:
+  list: never
 ---
 
 Parses NTFS Extended Attributes ($EA) from the MFT to detect hidden
@@ -25,7 +25,9 @@ discard $EA_INFORMATION. $EA_INFORMATION typically is very small and
 available in NtfsMetadata field of output.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.NTFS.ExtendedAttributes
 author: "Matt Green - @mgreen27"
 description: |
@@ -97,17 +99,17 @@ sources:
                 "type": "EA",
                 "count": 99 }],
          ]],
-         ["EA", "x=&gt;x.__NextOffset", [
+         ["EA", "x=>x.__NextOffset", [
             ["__NextOffset", 0, "uint32"],
             ["__NameLength", 5, "uint8"],
             ["__ValueLength", 6, "uint16"],
             ["Name", 8, String, {
-                length: "x=&gt;x.__NameLength" }],
+                length: "x=>x.__NameLength" }],
             ["Flags", 4, "uint8"],
             ["ValueLength", 6, "uint16"],
-            ["Value", "x=&gt;9 + x.__NameLength", "String",{
+            ["Value", "x=>9 + x.__NameLength", "String",{
                 term: "********** NO TERM **********",
-                length: "x=&gt;x.__ValueLength",
+                length: "x=>x.__ValueLength",
                 max_length: 10000 }],
        ]]
        ]'''
@@ -130,7 +132,7 @@ sources:
             --{ SELECT * FROM NtfsMetadata.Attributes WHERE Type = '$EA_INFORMATION'} as _EA_INFORMATION_Metadata,
             { SELECT * FROM NtfsMetadata.Attributes WHERE Type = '$EA'} as _EA_Metadata
         FROM mft_entries
-        WHERE _EA_Metadata.Size &gt; SizeMin AND _EA_Metadata.Size &lt; SizeMax
+        WHERE _EA_Metadata.Size > SizeMin AND _EA_Metadata.Size < SizeMax
 
       -- parse EA attribute
       LET parse_ea = SELECT OSPath, NtfsMetadata, _EA_Metadata,
@@ -167,6 +169,6 @@ sources:
       FROM if(condition=UploadHits,
         then=upload_hits,
         else=flatten_results)
+````
 
-</code></pre>
 

@@ -1,19 +1,21 @@
 ---
 title: System.VFS.Export
+description: "Exports files from the VFS (Virtual Filesystem) by globbing under a\nspecified path in the server-side VFS cache.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Exports files from the VFS (Virtual Filesystem) by globbing under a
-  specified path in the server-side VFS cache.
+build:
+  list: never
 ---
 
 Exports files from the VFS (Virtual Filesystem) by globbing under a
 specified path in the server-side VFS cache.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: System.VFS.Export
 description: |
   Exports files from the VFS (Virtual Filesystem) by globbing under a
@@ -42,13 +44,13 @@ parameters:
 
 sources:
   - query: |
-      LET components &lt;= Components || pathspec(parse=Path).Components
+      LET components <= Components || pathspec(parse=Path).Components
       SELECT Name, OSPath, Size, IsDir,
              Data.DownloadInfo.flow_id AS FlowId,
              if(condition=Data.DownloadInfo.flow_id,
                 then=upload(accessor="vfs", file=OSPath)) AS Upload
       FROM glob(globs=FileGlob, root=components, accessor="vfs")
       WHERE NOT IsDir
+````
 
-</code></pre>
 

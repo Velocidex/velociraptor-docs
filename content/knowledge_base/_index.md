@@ -1,4 +1,7 @@
 ---
+type: docs
+cascade:
+  type: docs
 menutitle: "Knowledge Base"
 title: "Knowledge Base"
 draft: false
@@ -13,6 +16,7 @@ rss_title: Velociraptor Knowledge Base
 outputs:
 - html
 - RSS
+- markdown
 description: |
   Velociraptor is a powerful but very flexible tool. Sometimes getting
   up to speed with Velociraptor is challenging and sometimes it can do
@@ -31,4 +35,4 @@ to achieve?"
 Search the below questions to read a short knowledge base article of
 how to answer the question.
 
-{{% knowledge_base %}}
+{{< knowledge_base >}}

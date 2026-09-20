@@ -1,0 +1,79 @@
+{{/* Local filter for the Configuration file Reference page. The page
+     sets `reference_filter: true` in its frontmatter (emitted by the
+     config_reference generator). Filters the .ref-item tree by key
+     path; matching containers are expanded, non-matching items hidden. */}}
+{{- if (.Store.Get "hasReferenceFilter") -}}
+<script>
+(function () {
+  var doc = document.querySelector('.reference-document');
+  if (!doc) return;
+
+  var box = document.createElement('input');
+  box.type = 'search';
+  box.placeholder = 'Filter keys, e.g. tls or Client.Crypto...';
+  /* Same look as the section-search inputs on the Artifact/VQL Reference
+     pages (see layouts/shortcodes/artifact_reference.html). */
+  box.className = 'reference-filter hx:block hx:w-full hx:rounded-md hx:border hx:border-gray-200 hx:bg-white hx:px-4 hx:py-2 hx:text-gray-800 hx:placeholder-gray-400 hx:dark:border-neutral-800 hx:dark:bg-neutral-900 hx:dark:text-neutral-200 hx:dark:placeholder-neutral-500';
+  box.setAttribute('aria-label', 'Filter configuration keys');
+  doc.parentNode.insertBefore(box, doc);
+
+  var items = Array.prototype.slice.call(doc.querySelectorAll('.ref-item'));
+
+  function matches(el, q) {
+    return (el.getAttribute('data-key') || '').toLowerCase().indexOf(q) !== -1;
+  }
+
+  /* Does this item have a descendant that matches the query? */
+  function hasMatchingDescendant(el, q) {
+    var kids = el.querySelectorAll('.ref-item');
+    for (var i = 0; i < kids.length; i++) {
+      if (matches(kids[i], q)) return true;
+    }
+    return false;
+  }
+
+  /* The generator emits each item's documentation comment as a
+     .item-comment div immediately before its .ref-item li, so hiding an
+     item must hide the orphaned comment with it. */
+  function itemComment(el) {
+    var sib = el.previousElementSibling;
+    return sib && sib.classList.contains('item-comment') ? sib : null;
+  }
+
+  function setFiltered(el, filtered) {
+    el.classList.toggle('filtered-out', filtered);
+    var c = itemComment(el);
+    if (c) c.classList.toggle('filtered-out', filtered);
+  }
+
+  function applyFilter() {
+    var q = box.value.trim().toLowerCase();
+
+    if (!q) {
+      /* Restore the default open state: everything collapsed. */
+      items.forEach(function (el) {
+        setFiltered(el, false);
+        var d = el.querySelector('details');
+        if (d) d.open = false;
+      });
+      return;
+    }
+
+    items.forEach(function (el) {
+      var selfMatch = matches(el, q);
+      var descendantMatch = hasMatchingDescendant(el, q);
+
+      if (selfMatch || descendantMatch) {
+        setFiltered(el, false);
+        var d = el.querySelector('details');
+        if (d) d.open = true;
+      } else {
+        setFiltered(el, true);
+      }
+    });
+  }
+
+  box.addEventListener('input', applyFilter);
+})();
+</script>
+{{- end -}}

@@ -1,12 +1,12 @@
 ---
 title: Server.Utils.DeleteEvents
+description: "Permanently deletes client event or monitoring event data within a\nspecified time range."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Permanently deletes client event or monitoring event data within a
-  specified time range.
+build:
+  list: never
 ---
 
 Permanently deletes client event or monitoring event data within a
@@ -17,7 +17,9 @@ permanently. Since this is a sensitive operation, only users with
 the administrator role can run it.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.DeleteEvents
 description: |
   Permanently deletes client event or monitoring event data within a
@@ -56,6 +58,6 @@ sources:
          artifact=Artifact, client_id=ClientId,
          start_time=StartTime, end_time=EndTime,
          really_do_it=ReallyDoIt)
+````
 
-</code></pre>
 

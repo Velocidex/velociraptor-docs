@@ -1,12 +1,12 @@
 ---
 title: Generic.Utils.DeadDiskRemapping
+description: "Inspects a disk image and produces an appropriate YAML remapping\nconfig for transparent filesystem access."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Inspects a disk image and produces an appropriate YAML remapping
-  config for transparent filesystem access.
+build:
+  list: never
 ---
 
 Inspects a disk image and produces an appropriate YAML remapping
@@ -32,7 +32,9 @@ The following cases are handled:
   drive.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Utils.DeadDiskRemapping
 description: |
   Inspects a disk image and produces an appropriate YAML remapping
@@ -187,7 +189,7 @@ export: |
                  message="Searching for Windows directory: %#x-%#x (%v) %v - Magic %v",
                  args=[StartOffset, EndOffset, Size, name, Magic])
          AND TopLevelDirectory =~ "Windows"
-         AND log(message="&lt;green&gt;Found Windows Partition&lt;/&gt; at offset %#x with top level directory %v",
+         AND log(message="<green>Found Windows Partition</> at offset %#x with top level directory %v",
                  args=[StartOffset, TopLevelDirectory])
        LIMIT 1
      })
@@ -200,7 +202,7 @@ export: |
      if(condition=ImagePath =~ 'e01$', then='ewf')
 
    LET _MapHiveToKey(Hive, Key, Name, ImagePath) = log(dedup=-1,
-      message="&lt;green&gt;Adding hive %v&lt;/&gt;", args=Hive) &amp;&amp;
+      message="<green>Adding hive %v</>", args=Hive) &&
    dict(type="mount",
     `description`=Name,
     `from`=dict(accessor="raw_reg",
@@ -212,7 +214,7 @@ export: |
     on=dict(accessor="registry", prefix=Key, path_type="registry"))
 
    LET _MapDirHiveToKey(Hive, Key, Name) = log(dedup=-1,
-      message="&lt;green&gt;Adding hive %v&lt;/&gt;", args=Hive) &amp;&amp;
+      message="<green>Adding hive %v</>", args=Hive) &&
    dict(type="mount",
     `description`=Name,
     `from`=dict(accessor="raw_reg",
@@ -233,7 +235,7 @@ export: |
       FROM glob(globs='/Users/*/NTUser.DAT',
                 accessor="raw_ntfs",
                 root=ImagePath)
-      WHERE log(dedup=-1, message="&lt;green&gt;Found User Hive at %v&lt;/&gt;", args=OSPath.Path)
+      WHERE log(dedup=-1, message="<green>Found User Hive at %v</>", args=OSPath.Path)
 
     LET _FindDirUserHives(ImagePath) = SELECT _MapDirHiveToKey(
            Name="Map User hive for " + OSPath[-2],
@@ -241,7 +243,7 @@ export: |
            Key="HKEY_USERS\\" + OSPath[-2]) AS Map
       FROM glob(globs='/Users/*/NTUser.DAT',
                 root=ImagePath)
-      WHERE log(dedup=-1, message="&lt;green&gt;Found User Hive at %v&lt;/&gt;", args=OSPath.Path)
+      WHERE log(dedup=-1, message="<green>Found User Hive at %v</>", args=OSPath.Path)
 
     LET CalculateWindowsMappings(ImagePath) = Remappings.remappings + (
        dict(type="mount",
@@ -311,21 +313,21 @@ export: |
 
 sources:
 - query: |
-    LET WindowsPartition &lt;=
+    LET WindowsPartition <=
       _FindWindowsPartition(ImagePath=ImagePath, Accessor=Accessor)[0]
 
-    LET Remappings &lt;= parse_yaml(
+    LET Remappings <= parse_yaml(
       filename=template(template=CommonRemapping,
                         expansion=dict(Hostname=Hostname)),
       accessor="data")
 
     -- Select the type of mapping to calculate depending on what ImagePath is.
     LET CalculateMappings =
-       ( stat(filename=ImagePath).IsDir &amp;&amp;
+       ( stat(filename=ImagePath).IsDir &&
          CalculateWindowsDirMappings(ImagePath=ImagePath) ) ||
-       ( WindowsPartition.PartitionPath &amp;&amp;
+       ( WindowsPartition.PartitionPath &&
          CalculateWindowsMappings(ImagePath=WindowsPartition.PartitionPath) ) ||
-         log(message="&lt;red&gt;No suitable mapping found&lt;/&gt;")
+         log(message="<red>No suitable mapping found</>")
 
     LET YamlText = serialize(format="yaml",
          item=dict(remappings=CalculateMappings))
@@ -338,6 +340,6 @@ sources:
 column_types:
 - name: Remapping
   type: upload_preview
+````
 
-</code></pre>
 

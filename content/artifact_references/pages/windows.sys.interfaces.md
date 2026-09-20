@@ -1,11 +1,12 @@
 ---
 title: Windows.Sys.Interfaces
+description: "Report information about the system's network interfaces."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Report information about the system's network interfaces.
+build:
+  list: never
 ---
 
 Report information about the system's network interfaces.
@@ -13,7 +14,9 @@ Report information about the system's network interfaces.
 This artifact simply parses the output from `ipconfig /all`.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Sys.Interfaces
 description: |
   Report information about the system's network interfaces.
@@ -34,20 +37,20 @@ sources:
      LET interfaces = SELECT Name, Data FROM parse_records_with_regex(
         file=ipconfig.Stdout,
         accessor='data',      // This makes the data appear as a file.
-        regex='(?s)Ethernet adapter (?P&lt;Name&gt;[^:]+?):\r\n\r\n(?P&lt;Data&gt;.+?)\r\n(\r\n|$)')
+        regex='(?s)Ethernet adapter (?P<Name>[^:]+?):\r\n\r\n(?P<Data>.+?)\r\n(\r\n|$)')
 
      // Now extract interesting things from each interface definition.
      SELECT Name, parse_string_with_regex(
         string=Data,
         regex=[
-          "Description[^:]+: (?P&lt;Description&gt;.+)\r\n",
-          "Physical Address[^:]+: (?P&lt;MAC&gt;.+)\r\n",
-          "IPv4 Address[^:]+: (?P&lt;IP&gt;[0-9.]+)",
-          "Default Gateway[^:]+: (?P&lt;Gateway&gt;.+)\r\n",
-          "DNS Servers[^:]+: (?P&lt;DNS&gt;.+)\r\n   [^ ]",
-          "DHCP Server[^:]+: (?P&lt;DHCP&gt;.+)\r\n"
+          "Description[^:]+: (?P<Description>.+)\r\n",
+          "Physical Address[^:]+: (?P<MAC>.+)\r\n",
+          "IPv4 Address[^:]+: (?P<IP>[0-9.]+)",
+          "Default Gateway[^:]+: (?P<Gateway>.+)\r\n",
+          "DNS Servers[^:]+: (?P<DNS>.+)\r\n   [^ ]",
+          "DHCP Server[^:]+: (?P<DHCP>.+)\r\n"
         ]
      ) As Details FROM interfaces
+````
 
-</code></pre>
 

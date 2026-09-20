@@ -1,16 +1,19 @@
 ---
 title: Linux.Ssh.KnownHosts
+description: "Finds and parses SSH known hosts files."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Finds and parses SSH known hosts files.
+build:
+  list: never
 ---
 
 Finds and parses SSH known hosts files.
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Ssh.KnownHosts
 description: Finds and parses SSH known hosts files.
 
@@ -48,7 +51,7 @@ sources:
 
   - name: HostPublicKeys
     query: |
-      LET Me &lt;= SELECT * FROM info()
+      LET Me <= SELECT * FROM info()
 
       SELECT * FROM foreach(row={
         SELECT OSPath
@@ -79,7 +82,7 @@ sources:
           one machine to another machine.
           */
 
-          LET lookup &lt;= memoize(
+          LET lookup <= memoize(
              key="PublicKey",
              query={
                SELECT *
@@ -88,6 +91,6 @@ sources:
 
           SELECT *, get(item=lookup, field=PublicKey) AS Hostname
           FROM source(artifact="Linux.Ssh.KnownHosts")
+````
 
-</code></pre>
 

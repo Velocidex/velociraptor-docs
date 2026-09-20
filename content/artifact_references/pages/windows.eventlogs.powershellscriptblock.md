@@ -1,12 +1,12 @@
 ---
 title: Windows.EventLogs.PowershellScriptblock
+description: "Parses PowerShell script block logging entries (Event ID 4104) to\ndetect potentially malicious script content."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Parses PowerShell script block logging entries (Event ID 4104) to
-  detect potentially malicious script content.
+build:
+  list: never
 ---
 
 Parses PowerShell script block logging entries (Event ID 4104) to
@@ -29,7 +29,9 @@ There are several parameters available for search leveraging regex:
 - SearchVSS enables VSS search.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.EventLogs.PowershellScriptblock
 author: Matt Green - @mgreen27
 
@@ -102,17 +104,17 @@ parameters:
 
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
 
       -- firstly set timebounds for performance
-      LET DateAfterTime &lt;= if(condition=DateAfter,
+      LET DateAfterTime <= if(condition=DateAfter,
         then=timestamp(epoch=DateAfter), else=timestamp(epoch="1600-01-01"))
-      LET DateBeforeTime &lt;= if(condition=DateBefore,
+      LET DateBeforeTime <= if(condition=DateBefore,
         then=timestamp(epoch=DateBefore), else=timestamp(epoch="2200-01-01"))
 
       -- Parse Log level dropdown selection
-      LET LogLevelRegex &lt;= SELECT format(format="%v", args=Regex) as value
+      LET LogLevelRegex <= SELECT format(format="%v", args=Regex) as value
         FROM parse_csv(filename=LogLevelMap, accessor="data")
         WHERE Choice=LogLevel LIMIT 1
 
@@ -141,8 +143,8 @@ sources:
                   OSPath
                 FROM parse_evtx(filename=OSPath, accessor=Accessor)
                 WHERE System.EventID.Value = 4104
-                    AND EventTime &lt; DateBeforeTime
-                    AND EventTime &gt; DateAfterTime
+                    AND EventTime < DateBeforeTime
+                    AND EventTime > DateAfterTime
                     AND  format(format="%d", args=System.Level) =~ LogLevelRegex.value[0]
                     AND if(condition=SearchStrings,
                       then=ScriptBlockText =~ SearchStrings,
@@ -156,6 +158,6 @@ sources:
           })
 
         SELECT * FROM evtxsearch(PathList=fspaths)
+````
 
-</code></pre>
 

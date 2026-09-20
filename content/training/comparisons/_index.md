@@ -17,16 +17,13 @@ Many users have been using other popular tools before trying
 Velociraptor. These pages compare how certain tasks are done in
 Velociraptor in comparison with other tools.
 
-{{% notice "note" "Contributing to these pages" %}}
-
-Velociraptor is an open source project! We would love for people to
-contribute to these pages. These pages are still a work in progress!
-
-If you know of a popular DFIR tool that is not well covered or maybe
-we missed some cool feature, please open an issue or contribute a PR
-by pressing the `Edit this page` button at the top of this page.
-
-{{% /notice %}}
+> [!NOTE] Contributing to these pages
+> Velociraptor is an open source project! We would love for people to
+> contribute to these pages. These pages are still a work in progress!
+>
+> If you know of a popular DFIR tool that is not well covered or maybe
+> we missed some cool feature, please open an issue or contribute a PR
+> by pressing the `Edit this page` button at the top of this page.
 
 The following pages serve a number of goals:
 

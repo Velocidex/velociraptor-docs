@@ -1,56 +1,35 @@
-<!DOCTYPE html>
-<html lang="{{ .Page.Language | default "en" }}" class="js csstransforms3d">
+{{- /* Custom 404: inherits the Hextra chrome (navbar, footer, dark mode,
+     site font) via baseof's "main" block, and centres the error code, a
+     message and a home button. Styling lives in assets/css/custom.css
+     under the .hextra-404 marker.
 
-<head>
-  <meta charset="utf-8"> {{ partial "meta.html" . }} {{ partial "favicon.html" . }} {{ .Scratch.Add "title" "" }}{{ if eq hugo.Data.titles .Title }}{{ .Scratch.Set "title" (index hugo.Data.titles .Title).title }}{{ else }}{{ .Scratch.Set "title" .Title}}{{end}}
-  <title>{{ .Scratch.Get "title" }}</title>
-
-   {{ $assetBusting := not .Site.Params.disableAssetsBusting }}
-    <link href="{{"css/nucleus.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
-    <link href="{{"css/fontawesome-all.min.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
-    <link href="{{"css/hybrid.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
-    <link href="{{"css/featherlight.min.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
-    <link href="{{"css/perfect-scrollbar.min.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
-    <link href="{{"css/theme.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
-    <link href="{{"css/hugo-theme.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
-    {{with .Site.Params.themeVariant}}
-      <link href="{{(printf "css/theme-%s.css" .) | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
-    {{end}}
-<style>
-    :root #header + #content > #left > #rlblock_left {
-      display: none !important;
-    }
-
-    p,
-    li,
-    ul {
-      text-align: center
-    }
-
-    ul {
-      list-style-type: none;
-    }
-</style>
-{{ partial "custom-header.html" . }}
-</head>
-
-  <body class="" data-url="/">
-
-    <section id="body" style="margin-left:0px;">
-      <div id="overlay"></div>
-      <div id="chapter">
-        <div id="body-inner">
-          <h1>{{T "title-404"}}</h1>
-          <p>
-          </p>
-          <p>{{T "message-404"}}</p>
-          <p></p>
-          <p><a href='{{ "" | relLangURL }}'>{{T "Go-to-homepage"}}</a></p>
-          <p><img src='{{ "/images/velo_small.svg" | relURL }}' style="width:50%" alt="Page not found!"></p>
-        </div>
+     The docs sidebar is rendered here as well. That is not only for
+     navigation: Hextra's core/menu.js wires the mobile hamburger on
+     DOMContentLoaded with no null guard, calling
+     sidebarContainer.setAttribute/removeAttribute('aria-hidden')
+     unconditionally. With no .hextra-sidebar-container in the DOM that
+     throws and aborts the rest of the handler, which leaves the hamburger
+     button dead on this page. Hextra's own 404 is a standalone document
+     with no navbar or scripts, so upstream never hits this; this layout
+     inherits baseof. Rendering the real sidebar fixes it at the source and
+     gives the reader somewhere to go, so the standalone VeloR7 mark that
+     used to sit above the error code is gone - the sidebar logo is the
+     same asset. */ -}}
+{{ define "main" }}
+  <div class="hx:mx-auto hx:flex hextra-max-page-width">
+    {{ partial "sidebar.html" (dict "context" .) }}
+    <main id="content" class="hextra-404 hx:w-full hx:min-w-0">
+      <div class="hextra-404-inner">
+        <p class="hextra-404-code" aria-hidden="true">404</p>
+        <h1 class="hextra-404-title">Page not found</h1>
+        <p class="hextra-404-message">
+          Woops. Looks like this page doesn't exist. The link may be broken or the
+          page has moved.
+        </p>
+        <a class="hextra-404-action hx:inline-block hx:rounded-md hx:bg-primary-600 hx:px-6 hx:py-3 hx:text-white hx:no-underline hx:font-bold hx:hover:bg-primary-700" href="{{ "" | relLangURL }}">
+          Go to homepage
+        </a>
       </div>
-
-    </section>
-  </body>
-
-</html>
+    </main>
+  </div>
+{{ end }}

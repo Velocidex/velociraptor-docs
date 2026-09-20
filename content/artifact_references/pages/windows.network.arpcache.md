@@ -1,19 +1,21 @@
 ---
 title: Windows.Network.ArpCache
+description: "Enumerates the Windows network neighbor cache (ARP/NDP) showing\nresolved IP and MAC address pairs.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Enumerates the Windows network neighbor cache (ARP/NDP) showing
-  resolved IP and MAC address pairs.
+build:
+  list: never
 ---
 
 Enumerates the Windows network neighbor cache (ARP/NDP) showing
 resolved IP and MAC address pairs.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Network.ArpCache
 description: |
   Enumerates the Windows network neighbor cache (ARP/NDP) showing
@@ -45,7 +47,7 @@ sources:
   - precondition:
       SELECT OS From info() where OS = 'windows'
     query: |
-        LET interfaces &lt;=
+        LET interfaces <=
           SELECT Index, HardwareAddr, IP
           FROM Artifact.Windows.Network.InterfaceAddresses()
 
@@ -77,6 +79,6 @@ sources:
              FROM interfaces
              WHERE InterfaceIndex = Index
           })
+````
 
-</code></pre>
 

@@ -1,12 +1,12 @@
 ---
 title: Windows.System.PowerShell
+description: "Executes arbitrary commands through PowerShell with output capture\nand upload support."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Executes arbitrary commands through PowerShell with output capture
-  and upload support.
+build:
+  list: never
 ---
 
 Executes arbitrary commands through PowerShell with output capture
@@ -38,7 +38,9 @@ spaces in it:
 ```
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.PowerShell
 description: |
   Executes arbitrary commands through PowerShell with output capture
@@ -66,7 +68,7 @@ description: |
   spaces in it:
 
   ```
-    &amp; 'C:\Program Files\Windows Defender\MpCmdRun.exe' -Scan -ScanType 1
+    & 'C:\Program Files\Windows Defender\MpCmdRun.exe' -Scan -ScanType 1
   ```
 
 required_permissions:
@@ -99,13 +101,13 @@ sources:
 
     query: |
       // Get the core flow id to key a unique session off.
-      LET FLOWID &lt;= split(string=_SessionId, sep="/")[0]
+      LET FLOWID <= split(string=_SessionId, sep="/")[0]
 
       // Newer clients have support for true shell sessions.
-      LET Session &lt;= shell_session(name=FLOWID,
+      LET Session <= shell_session(name=FLOWID,
       argv=[PowerShellExe, "-ExecutionPolicy", "Unrestricted"])
 
-      LET _ &lt;= shell_session_control(name=FLOWID, stdin=Command + "\n")
+      LET _ <= shell_session_control(name=FLOWID, stdin=Command + "\n")
 
       // Shut the session down gracefully without timing out the flow.
       LET SessionSink = SELECT Stdin AS Command,
@@ -159,21 +161,21 @@ sources:
     notebook:
       - type: none
     query: |
-      LET SizeLimit &lt;= 4096
-      LET Now &lt;= str(str=now())
+      LET SizeLimit <= 4096
+      LET Now <= str(str=now())
 
       LET Output = SELECT "" AS Command,
              "" AS CommandId,
              timestamp(epoch=now()) AS Timestamp,
-             if(condition=len(list=Stdout) &lt; SizeLimit,
+             if(condition=len(list=Stdout) < SizeLimit,
                 then=Stdout) AS Stdout,
-             if(condition=len(list=Stdout) &gt;= SizeLimit,
+             if(condition=len(list=Stdout) >= SizeLimit,
                 then=upload(accessor="data",
                             file=Stdout,
                             name="Stdout/" + Now)) AS StdoutUpload,
-             if(condition=len(list=Stderr) &lt; SizeLimit,
+             if(condition=len(list=Stderr) < SizeLimit,
                 then=Stderr) AS Stderr,
-             if(condition=len(list=Stderr) &gt;= SizeLimit,
+             if(condition=len(list=Stderr) >= SizeLimit,
                 then=upload(accessor="data",
                             file=Stderr,
                             name="Stderr/" + Now)) AS StderrUpload,
@@ -210,6 +212,6 @@ resources:
   # By default the shell session is up for an hour or until cancelled
   # by the GUI.
   timeout: 3600
+````
 
-</code></pre>
 

@@ -1,17 +1,20 @@
 ---
 title: Linux.Sys.LastUserLogin
+description: "Parses system WTMP files. These indicate when users last logged in.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Parses system WTMP files. These indicate when users last logged in.
+build:
+  list: never
 ---
 
 Parses system WTMP files. These indicate when users last logged in.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Sys.LastUserLogin
 description: |
   Parses system WTMP files. These indicate when users last logged in.
@@ -52,13 +55,13 @@ export: |
      `Interactive Sessions`="USER_PROCESS|LOGIN_PROCESS",
      `All Sessions`="RUN_LVL|BOOT_TIME|INIT_PROCESS|LOGIN_PROCESS|USER_PROCESS")
 
-  LET wtmpProfile &lt;= '''
+  LET wtmpProfile <= '''
   [
     ["Header", 0, [
 
     ["records", 0, "Array", {
         "type": "utmp",
-        "count": "x=&gt;MaxCount",
+        "count": "x=>MaxCount",
         "max_count": 100000,
     }],
     ]],
@@ -96,10 +99,10 @@ sources:
       SELECT OS From info() where OS = 'linux'
 
     query: |
-      LET LoginType &lt;= get(item=FilterLookup, field=LoginType) || LoginType
-      LET start_time &lt;= timestamp(epoch=now() - recent_x_days * 3600 * 24)
+      LET LoginType <= get(item=FilterLookup, field=LoginType) || LoginType
+      LET start_time <= timestamp(epoch=now() - recent_x_days * 3600 * 24)
 
-      LET _ &lt;= log(message="Start time %v", args=start_time)
+      LET _ <= log(message="Start time %v", args=start_time)
 
       LET parsed = SELECT OSPath, parse_binary(
                    filename=OSPath,
@@ -110,7 +113,7 @@ sources:
 
       // To combine Login/Logout into one Table, we create a
       // logout table first
-      LET logout_table &lt;= SELECT * FROM foreach(row=parsed,
+      LET logout_table <= SELECT * FROM foreach(row=parsed,
       query={
          SELECT * FROM foreach(row=Parsed.records,
          query={
@@ -120,7 +123,7 @@ sources:
               ut_timestamp as logout_time
            FROM scope()
            WHERE logout_Type = "DEAD_PROCESS"
-             AND logout_time &gt; start_time
+             AND logout_time > start_time
         })
       })
       Order by logout_time DESC
@@ -142,15 +145,15 @@ sources:
                 FROM logout_table
                 WHERE ut_pid = logout_PID
                   AND ut_terminal = logout_Terminal
-                  AND ut_timestamp &lt; logout_time
+                  AND ut_timestamp < logout_time
                 LIMIT 1
               } AS logout_time
           FROM scope()
           WHERE login_Type =~ LoginType
             AND NOT login_User =~ excluded_users
-            AND login_time &gt; start_time
+            AND login_time > start_time
         })
       })
+````
 
-</code></pre>
 

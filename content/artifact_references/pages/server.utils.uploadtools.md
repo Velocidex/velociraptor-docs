@@ -1,13 +1,12 @@
 ---
 title: Server.Utils.UploadTools
+description: "Generates a download script for tool binaries and then uploads them\nfrom a local directory to the server inventory (in separate runs of\nthis artifact)."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Generates a download script for tool binaries and then uploads them
-  from a local directory to the server inventory (in separate runs of
-  this artifact).
+build:
+  list: never
 ---
 
 Generates a download script for tool binaries and then uploads them
@@ -36,7 +35,9 @@ NOTE that in Velociraptor each org is completely separated, so you
 will need to re-upload the binaries for each org.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.UploadTools
 description: |
   Generates a download script for tool binaries and then uploads them
@@ -83,14 +84,14 @@ sources:
         WHERE url
           AND NOT admin_override
 
-      LET Script &lt;= join(sep="\r\n", array=AllCurlCommands.Curl)
+      LET Script <= join(sep="\r\n", array=AllCurlCommands.Curl)
 
       SELECT upload(accessor="scope", file="Script", name="Script.bat") AS Script
       FROM scope()
 
   - name:
     query: |
-      LET BasePath &lt;= pathspec(parse=BasePath)
+      LET BasePath <= pathspec(parse=BasePath)
 
       SELECT name,
              filename,
@@ -99,11 +100,11 @@ sources:
       FROM inventory()
       WHERE url
         AND NOT admin_override
-        AND stat(filename=BasePath + filename).Size &gt; 100
+        AND stat(filename=BasePath + filename).Size > 100
 
 column_types:
   - name: Script
     type: preview_upload
+````
 
-</code></pre>
 

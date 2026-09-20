@@ -1,19 +1,21 @@
 ---
 title: Windows.EventLogs.Cleared
+description: "Detects event log clearing events from the Security (EID 1102) and\nSystem (EID 104) logs.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Detects event log clearing events from the Security (EID 1102) and
-  System (EID 104) logs.
+build:
+  list: never
 ---
 
 Detects event log clearing events from the Security (EID 1102) and
 System (EID 104) logs.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.EventLogs.Cleared
 author: Matt Green - @mgreen27
 
@@ -69,6 +71,6 @@ sources:
             DateAfter=DateAfter,
             DateBefore=DateBefore,
             VSSAnalysisAge=VSSAnalysisAge)
+````
 
-</code></pre>
 

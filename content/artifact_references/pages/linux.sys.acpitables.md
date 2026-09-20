@@ -1,19 +1,21 @@
 ---
 title: Linux.Sys.ACPITables
+description: "Lists ACPI firmware tables with their sizes and cryptographic\nhashes.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Lists ACPI firmware tables with their sizes and cryptographic
-  hashes.
+build:
+  list: never
 ---
 
 Lists ACPI firmware tables with their sizes and cryptographic
 hashes.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Sys.ACPITables
 description: |
   Lists ACPI firmware tables with their sizes and cryptographic
@@ -32,6 +34,6 @@ sources:
                      FROM glob(globs="*", root=kLinuxACPIPath)
 
         SELECT Name, Size, Hash.MD5, Hash.SHA1, Hash.SHA256 from hashes
+````
 
-</code></pre>
 

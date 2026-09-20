@@ -1,11 +1,12 @@
 ---
 title: Windows.Forensics.SAM.Enriched
+description: "Extracts everything usefully derivable from the SAM registry hive"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Extracts everything usefully derivable from the SAM registry hive
+build:
+  list: never
 ---
 
 Extracts everything usefully derivable from the SAM registry hive
@@ -30,7 +31,9 @@ Sources:
   creation time, from `SAM\Domains\Account`.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.SAM.Enriched
 author: Andreas Misje – @misje
 description: |
@@ -85,7 +88,7 @@ sources:
               filename="HKEY_LOCAL_MACHINE/Software/Microsoft/Windows NT/CurrentVersion/ProfileList/" +
                 SID + "/ProfileImagePath").Data.value).Basename || "")
 
-      LET LocalAdminRIDs &lt;= to_dict(item={
+      LET LocalAdminRIDs <= to_dict(item={
           SELECT str(str=MemberRID) AS _key,
                  true AS _value
           FROM GroupMembers(SAMPath=SAMPath)
@@ -207,44 +210,44 @@ sources:
 
 column_types:
   - name: NextRID
-    description: &gt;-
+    description: >-
       Next RID this domain will assign to a newly created user or
       group. Useful for estimating how many accounts have ever existed,
       since RIDs are never reused after an account is deleted.
   - name: LockoutThreshold
-    description: &gt;-
+    description: >-
       Number of failed logon attempts allowed before an account is
       locked out. 0 means account lockout is disabled entirely.
   - name: IsLocalAdmin
-    description: &gt;-
+    description: >-
       True only if the account is a direct member of the local
       Administrators group. Does not detect admin rights gained through
       nested/transitive group membership.
   - name: GroupDomain
-    description: &gt;-
+    description: >-
       Which SAM sub-hive this group is defined in ("Builtin" or
       "Account") — not an Active Directory domain name.
   - name: MemberClass
-    description: &gt;-
+    description: >-
       How the member SID was classified: "Local account" (resolved
       against this machine's own users/groups), "Domain account" (an
       S-1-5-21 SID), or "Well-known SID" (a fixed OS-defined SID).
   - name: Member
-    description: &gt;-
+    description: >-
       Best-effort resolved name: local username/groupname if resolvable,
       else a live SID lookup, else the bare SID.
   - name: PrimaryGroupID
-    description: &gt;-
+    description: >-
       The RID (not full SID) of the account's primary group, e.g. 513
       for the default "Domain Users"/"None" group. Cross-reference
       against GroupRID in the Groups source to resolve a name.
   - name: _PasswordFailDate
-    description: &gt;-
+    description: >-
       Timestamp of the last failed logon attempt (wrong password) for
       this account.
   - name: _LMHash
     type: hex
   - name: _NTHash
-    type: hex
-</code></pre>
+    type: hex````
+
 

@@ -1,17 +1,20 @@
 ---
 title: Server.Utils.DeleteNotebook
+description: "Completely removes a notebook from the server including all its cells, attachments etc.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Completely removes a notebook from the server including all its cells, attachments etc.
+build:
+  list: never
 ---
 
 Completely removes a notebook from the server including all its cells, attachments etc.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.DeleteNotebook
 description: |
   Completely removes a notebook from the server including all its cells, attachments etc.
@@ -29,6 +32,6 @@ sources:
   - query: |
       SELECT * FROM notebook_delete(
           notebook_id=NotebookId, really_do_it=ReallyDoIt)
+````
 
-</code></pre>
 

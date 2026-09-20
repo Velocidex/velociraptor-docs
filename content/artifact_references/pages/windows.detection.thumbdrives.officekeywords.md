@@ -1,12 +1,12 @@
 ---
 title: Windows.Detection.Thumbdrives.OfficeKeywords
+description: "Detects potentially-sensitive content exfiltration by\nkeyword-scanning Office documents on USB drives."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
-description: |
-  Detects potentially-sensitive content exfiltration by
-  keyword-scanning Office documents on USB drives.
+build:
+  list: never
 ---
 
 Detects potentially-sensitive content exfiltration by
@@ -25,7 +25,9 @@ We exclude very large removable drives since they might have too
 many files.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.Thumbdrives.OfficeKeywords
 description: |
   Detects potentially-sensitive content exfiltration by
@@ -74,6 +76,6 @@ sources:
             SELECT * FROM Artifact.Generic.Applications.Office.Keywords(
               yaraRule=yaraRule, searchGlob=OSPath, documentGlobs="")
           })
+````
 
-</code></pre>
 

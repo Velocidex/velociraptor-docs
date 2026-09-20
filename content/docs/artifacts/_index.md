@@ -39,15 +39,12 @@ Here is the basic structure of a simple artifact:
 
 ![Artifacts are YAML but they can contain VQL](artifact_concept.svg)
 
-{{% notice note %}}
-
-Don't confuse Velociraptor Artifacts with forensic artifacts! Although they are
-historically somewhat related, and there is also a correspondence in the sense
-that Velociraptor Artifacts usually (but don't have to) target specific
-information sources on endpoints which are traditionally described as
-["forensic artifacts"](https://github.com/ForensicArtifacts).
-
-{{% /notice %}}
+> [!NOTE]
+> Don't confuse Velociraptor Artifacts with forensic artifacts! Although they are
+> historically somewhat related, and there is also a correspondence in the sense
+> that Velociraptor Artifacts usually (but don't have to) target specific
+> information sources on endpoints which are traditionally described as
+> ["forensic artifacts"](https://github.com/ForensicArtifacts).
 
 ## Why use Artifacts instead of just running VQL queries directly?
 
@@ -281,24 +278,21 @@ artifacts as a single file, such as an
 downloaded from the
 [Artifact Exchange](/exchange/).
 
-{{% notice info "Be aware of filesystem permissions" %}}
-
-When installed as a service, Velociraptor's datastore directory is owned by the
-service account named `velociraptor` and accessible to the `velociraptor` user
-group. New users often overlook this fact and create files in the datastore
-using their own user account or the `root` account, which means that the
-Velociraptor service cannot read them.
-
-Working directly with artifact files in the datastore is discouraged, but if you
-need to do this you can avoid creating permissions problems by switching to the
-`velociraptor` user. On most Linux systems this can be done with the command
-`sudo -u velociraptor bash`.
-
-For other files that the service account needs to read, such as the additional
-artifact definitions directories mentioned above, you need to ensure that the
-`velociraptor` user has read access to these directories.
-
-{{% /notice %}}
+> [!NOTE] Be aware of filesystem permissions
+> When installed as a service, Velociraptor's datastore directory is owned by the
+> service account named `velociraptor` and accessible to the `velociraptor` user
+> group. New users often overlook this fact and create files in the datastore
+> using their own user account or the `root` account, which means that the
+> Velociraptor service cannot read them.
+>
+> Working directly with artifact files in the datastore is discouraged, but if you
+> need to do this you can avoid creating permissions problems by switching to the
+> `velociraptor` user. On most Linux systems this can be done with the command
+> `sudo -u velociraptor bash`.
+>
+> For other files that the service account needs to read, such as the additional
+> artifact definitions directories mentioned above, you need to ensure that the
+> `velociraptor` user has read access to these directories.
 
 
 ### Built-in vs. Compiled-in vs. Custom Artifacts

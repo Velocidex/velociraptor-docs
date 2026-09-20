@@ -1,12 +1,12 @@
 ---
 title: Windows.Events.TrackProcessesBasic
+description: "Tracks running and exited processes by polling pslist() at a\nconfigurable interval."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
-description: |
-  Tracks running and exited processes by polling pslist() at a
-  configurable interval.
+build:
+  list: never
 ---
 
 Tracks running and exited processes by polling pslist() at a
@@ -25,7 +25,9 @@ This tracker DOES NOT require Sysmon and is **incompatible** with
 `Windows.Events.TrackProcessesETW` (only one should be running).
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Events.TrackProcessesBasic
 description: |
   Tracks running and exited processes by polling pslist() at a
@@ -67,11 +69,11 @@ sources:
                    CommandLine=CommandLine) AS data
               FROM pslist()
 
-      LET Tracker &lt;= process_tracker(
+      LET Tracker <= process_tracker(
         sync_query=SyncQuery, sync_period=1000 * PollPeriod)
 
       SELECT * FROM process_tracker_updates()
       WHERE update_type = "stats"
+````
 
-</code></pre>
 

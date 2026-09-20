@@ -1,13 +1,12 @@
 ---
 title: Windows.KapeFiles.Extract
+description: "Extracts files collected by the `Windows.KapeFiles.Targets` or\n`Windows.Triage.Targets` artifacts, and restores the original\ntimestamps on the extracted files."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Extracts files collected by the `Windows.KapeFiles.Targets` or
-  `Windows.Triage.Targets` artifacts, and restores the original
-  timestamps on the extracted files.
+build:
+  list: never
 ---
 
 Extracts files collected by the `Windows.KapeFiles.Targets` or
@@ -42,7 +41,9 @@ velociraptor artifacts collect Windows.KapeFiles.Extract --args ContainerPath=Co
 ```
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.KapeFiles.Extract
 description: |
   Extracts files collected by the `Windows.KapeFiles.Targets` or
@@ -99,7 +100,7 @@ sources:
 
       // Memoize the metadata stored in the container file so we can
       // quickly extract the file times.
-      LET AllFileMetadata &lt;= memoize(
+      LET AllFileMetadata <= memoize(
           key="SourceFile",
           query={
             SELECT *
@@ -124,6 +125,6 @@ sources:
           name=Dest,
           file=RootPathSpec + _Components) AS UploadedFile
       FROM ALLUploads
+````
 
-</code></pre>
 

@@ -1,12 +1,12 @@
 ---
 title: Windows.Applications.OfficeMacros
+description: "Scans directories for Office documents (xls, xlsm, doc, docx, ppt,\npptm) and extracts embedded VBA macros via OLE parsing."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Scans directories for Office documents (xls, xlsm, doc, docx, ppt,
-  pptm) and extracts embedded VBA macros via OLE parsing.
+build:
+  list: never
 ---
 
 Scans directories for Office documents (xls, xlsm, doc, docx, ppt,
@@ -19,7 +19,9 @@ If you find that any macro calls an external program (e.g.
 PowerShell) that is very suspicious!
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Applications.OfficeMacros
 description: |
   Scans directories for Office documents (xls, xlsm, doc, docx, ppt,
@@ -47,6 +49,6 @@ sources:
            query={
                SELECT * from olevba(file=OSPath)
            })
+````
 
-</code></pre>
 

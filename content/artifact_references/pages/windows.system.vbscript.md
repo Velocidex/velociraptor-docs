@@ -1,12 +1,12 @@
 ---
 title: Windows.System.VBScript
+description: "Runs VBScript code on Windows endpoints using the Windows Script\nHost (cscript.exe)."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Runs VBScript code on Windows endpoints using the Windows Script
-  Host (cscript.exe).
+build:
+  list: never
 ---
 
 Runs VBScript code on Windows endpoints using the Windows Script
@@ -25,7 +25,9 @@ substituted. Copy script into a notepad, save as ASCII then try
 again.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.VBScript
 author: Matt Green - @mgreen27
 description: |
@@ -59,10 +61,10 @@ parameters:
 
 sources:
   - query: |
-      LET temp_script &lt;= tempfile(extension='.vbs', data=str(str=Script))
+      LET temp_script <= tempfile(extension='.vbs', data=str(str=Script))
 
       SELECT Stdout
       FROM execve(argv=['cscript.exe','//NoLogo','/E:vbs',temp_script], sep='\n')
+````
 
-</code></pre>
 

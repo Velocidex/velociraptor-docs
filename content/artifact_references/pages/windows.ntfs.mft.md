@@ -1,11 +1,12 @@
 ---
 title: Windows.NTFS.MFT
+description: "Parses $MFT files and returns rows of each in-scope MFT record."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Parses $MFT files and returns rows of each in-scope MFT record.
+build:
+  list: never
 ---
 
 Parses $MFT files and returns rows of each in-scope MFT record.
@@ -37,7 +38,9 @@ Available filters include:
 - OSPath output now uses expected Windows backslash "`\`".
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.NTFS.MFT
 author: "Matt Green - @mgreen27"
 description: |
@@ -114,7 +117,7 @@ sources:
   - query: |
       -- Cater for older clients which do not have the Links column.
       LET parse_mft_version(filename, accessor, prefix) = SELECT *
-      FROM if(condition=version(plugin="parse_mft") &gt; 1,
+      FROM if(condition=version(plugin="parse_mft") > 1,
               then={ SELECT *
                      FROM parse_mft(
                          filename=filename, accessor=accessor, prefix=prefix)
@@ -131,18 +134,18 @@ sources:
               })
 
       -- The path to the drive that holds the MFT file (can be a pathspec)
-      LET Drive &lt;= pathspec(parse=MFTDrive, path_type="ntfs")
+      LET Drive <= pathspec(parse=MFTDrive, path_type="ntfs")
 
       -- time testing
       LET time_test(stamp) =
             if(condition= DateBefore AND DateAfter,
-                then= stamp &lt; DateBefore AND stamp &gt; DateAfter,
+                then= stamp < DateBefore AND stamp > DateAfter,
                 else=
             if(condition=DateBefore,
-                then= stamp &lt; DateBefore,
+                then= stamp < DateBefore,
                 else=
             if(condition= DateAfter,
-                then= stamp &gt; DateAfter,
+                then= stamp > DateAfter,
                 else= True
             )))
 
@@ -187,12 +190,12 @@ sources:
         FROM parse_mft_version(filename=MFTPath,
                        accessor=Accessor, prefix=Drive)
         WHERE
-             ( Created0x10 &gt; DateAfter
-              OR Created0x30 &gt; DateAfter
-              OR LastModified0x10 &gt; DateAfter
-              OR LastModified0x30 &gt; DateAfter
-              OR LastRecordChange0x10 &gt; DateAfter
-              OR LastRecordChange0x30 &gt; DateAfter)
+             ( Created0x10 > DateAfter
+              OR Created0x30 > DateAfter
+              OR LastModified0x10 > DateAfter
+              OR LastModified0x30 > DateAfter
+              OR LastRecordChange0x10 > DateAfter
+              OR LastRecordChange0x30 > DateAfter)
             AND FileName =~ FileRegex
             AND Links =~ PathRegex
 
@@ -210,12 +213,12 @@ sources:
         FROM parse_mft_version(filename=MFTPath,
                        accessor=Accessor, prefix=Drive)
         WHERE
-             ( Created0x10 &lt; DateBefore
-              OR Created0x30 &lt; DateBefore
-              OR LastModified0x10 &lt; DateBefore
-              OR LastModified0x30 &lt; DateBefore
-              OR LastRecordChange0x10 &lt; DateBefore
-              OR LastRecordChange0x30 &lt; DateBefore)
+             ( Created0x10 < DateBefore
+              OR Created0x30 < DateBefore
+              OR LastModified0x10 < DateBefore
+              OR LastModified0x30 < DateBefore
+              OR LastRecordChange0x10 < DateBefore
+              OR LastRecordChange0x30 < DateBefore)
             AND FileName =~ FileRegex
             AND Links =~ PathRegex
 
@@ -236,10 +239,10 @@ sources:
         WHERE FileName =~ FileRegex
             AND Links =~ PathRegex
             AND if(condition=SizeMax,
-                then=FileSize &lt; atoi(string=SizeMax),
+                then=FileSize < atoi(string=SizeMax),
                 else=TRUE)
             AND if(condition=SizeMin,
-                then=FileSize &gt; atoi(string=SizeMin),
+                then=FileSize > atoi(string=SizeMin),
                 else=TRUE)
             AND
              ( time_test(stamp=Created0x10)
@@ -306,6 +309,6 @@ sources:
       SELECT * FROM if(condition=AllNtfs,
         then= enriched_results,
         else= results)
+````
 
-</code></pre>
 

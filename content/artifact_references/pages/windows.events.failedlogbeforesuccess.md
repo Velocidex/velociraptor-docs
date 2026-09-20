@@ -1,12 +1,12 @@
 ---
 title: Windows.Events.FailedLogBeforeSuccess
+description: "Detects successful logons preceded by multiple failed logon attempts\nwithin a configurable time window."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
-description: |
-  Detects successful logons preceded by multiple failed logon attempts
-  within a configurable time window.
+build:
+  list: never
 ---
 
 Detects successful logons preceded by multiple failed logon attempts
@@ -35,7 +35,9 @@ You can set the policy in Group Policy Management Console (GPMC):
 Policies\Audit Policy`.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Events.FailedLogBeforeSuccess
 description: |
   Detects successful logons preceded by multiple failed logon attempts
@@ -67,7 +69,7 @@ type: CLIENT_EVENT
 
 parameters:
   - name: securityLogFile
-    default: &gt;-
+    default: >-
       C:/Windows/System32/Winevt/Logs/Security.evtx
 
   - name: failureCount
@@ -93,7 +95,7 @@ sources:
                       max_age=atoi(string=failedLogonTimeWindow))
 
       // Force the fifo to materialize.
-      LET foo &lt;= SELECT * FROM last_5_events
+      LET foo <= SELECT * FROM last_5_events
 
       LET success_logon = SELECT EventData as SuccessEventData,
            System as SuccessSystem
@@ -110,7 +112,7 @@ sources:
            FROM last_5_events
            WHERE FailedEventData.SubjectUserName = SuccessEventData.SubjectUserName
            GROUP BY LogonTime
-          })  WHERE Count &gt; atoi(string=failureCount)
+          })  WHERE Count > atoi(string=failureCount)
+````
 
-</code></pre>
 

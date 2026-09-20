@@ -1,17 +1,20 @@
 ---
 title: Linux.Sys.Crontab
+description: "Displays parsed information from crontab.\n"
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Displays parsed information from crontab.
+build:
+  list: never
 ---
 
 Displays parsed information from crontab.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Sys.Crontab
 description: |
   Displays parsed information from crontab.
@@ -39,16 +42,16 @@ sources:
               string=data,
               regex=[
                  /* Regex for event (Starts with @) */
-                 "^(?P&lt;Event&gt;@[a-zA-Z]+)\\s+(?P&lt;Command&gt;.+)",
+                 "^(?P<Event>@[a-zA-Z]+)\\s+(?P<Command>.+)",
 
                  /* Regex for regular command. */
-                 "^(?P&lt;Minute&gt;[^\\s]+)\\s+"+
-                 "(?P&lt;Hour&gt;[^\\s]+)\\s+"+
-                 "(?P&lt;DayOfMonth&gt;[^\\s]+)\\s+"+
-                 "(?P&lt;Month&gt;[^\\s]+)\\s+"+
-                 "(?P&lt;DayOfWeek&gt;[^\\s]+)\\s+"+
-                 "(?P&lt;User&gt;[^\\s]+)\\s+"+
-                 "(?P&lt;Command&gt;.+)$"]) as Record
+                 "^(?P<Minute>[^\\s]+)\\s+"+
+                 "(?P<Hour>[^\\s]+)\\s+"+
+                 "(?P<DayOfMonth>[^\\s]+)\\s+"+
+                 "(?P<Month>[^\\s]+)\\s+"+
+                 "(?P<DayOfWeek>[^\\s]+)\\s+"+
+                 "(?P<User>[^\\s]+)\\s+"+
+                 "(?P<Command>.+)$"]) as Record
 
             /* Read lines from the file and filter ones that start with "#" */
             FROM split_records(
@@ -74,6 +77,6 @@ sources:
     query: |
       SELECT OSPath, upload(file=OSPath) AS Upload
       FROM glob(globs=split(string=cronTabGlob + "," + cronTabScripts, sep=","))
+````
 
-</code></pre>
 

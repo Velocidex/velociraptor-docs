@@ -1,12 +1,12 @@
 ---
 title: Server.Monitoring.ClientCount
+description: "Emails deployment statistics, including the connected client count,\non a configurable schedule."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
-description: |
-  Emails deployment statistics, including the connected client count,
-  on a configurable schedule.
+build:
+  list: never
 ---
 
 Emails deployment statistics, including the connected client count,
@@ -16,7 +16,9 @@ By default, this artifact sends an email every hour summarizing the
 current state of the deployment.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Monitoring.ClientCount
 
 description: |
@@ -60,6 +62,6 @@ sources:
                      args=[metrics.client_comms_current_connections])
             )
         })
+````
 
-</code></pre>
 

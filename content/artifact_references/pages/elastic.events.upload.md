@@ -1,12 +1,12 @@
 ---
 title: Elastic.Events.Upload
+description: "Forwards real-time monitoring events from selected artifacts to an\nElasticsearch index."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Event Artifact]
-description: |
-  Forwards real-time monitoring events from selected artifacts to an
-  Elasticsearch index.
+build:
+  list: never
 ---
 
 Forwards real-time monitoring events from selected artifacts to an
@@ -21,7 +21,9 @@ clients by adding them to the "Client Events" GUI, or for server
 artifacts, the "Server Events" GUI.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Elastic.Events.Upload
 aliases:
 - Elastic.Events.Clients
@@ -110,6 +112,6 @@ sources:
           root_ca=RootCA,
           disable_ssl_security=DisableSSLSecurity,
           type="ClientEvents")
+````
 
-</code></pre>
 

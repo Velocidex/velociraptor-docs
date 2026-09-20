@@ -1,11 +1,12 @@
 ---
 title: Linux.Debian.Packages
+description: "Queries `dpkg` and `snapd` to list installed deb and snap packages."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Queries `dpkg` and `snapd` to list installed deb and snap packages.
+build:
+  list: never
 ---
 
 Queries `dpkg` and `snapd` to list installed deb and snap packages.
@@ -44,7 +45,9 @@ Both package sources provide more information than this and, and the artifact
 can easily be modified to include more details.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Debian.Packages
 author: Andreas Misje – @Misje
 description: |
@@ -109,7 +112,7 @@ sources:
       - type: none
 
     query: |
-      LET ColumnTypes &lt;= dict(`_Description`='nobreak')
+      LET ColumnTypes <= dict(`_Description`='nobreak')
 
 
       /* First pass - split file into records starting with
@@ -119,16 +122,16 @@ sources:
       LET packages = SELECT
           parse_string_with_regex(
             string=Record,
-            regex=['''Package:\s(?P&lt;Package&gt;.+)''',
-                   '''Status:\s(?P&lt;SelectionState&gt;\S+)\s(?P&lt;Flag&gt;\S+)\s(?P&lt;State&gt;\S+)''',
-                   '''Installed-Size:\s(?P&lt;InstalledSize&gt;.+)''',
-                   '''Version:\s(?P&lt;Version&gt;.+)''',
-                   '''Source:\s(?P&lt;Source&gt;.+)''',
-                   '''Description:\s+(?P&lt;Description&gt;.+(\n\s+.+)*)''',
-                   '''Architecture:\s(?P&lt;Architecture&gt;.+)''']) AS Record
+            regex=['''Package:\s(?P<Package>.+)''',
+                   '''Status:\s(?P<SelectionState>\S+)\s(?P<Flag>\S+)\s(?P<State>\S+)''',
+                   '''Installed-Size:\s(?P<InstalledSize>.+)''',
+                   '''Version:\s(?P<Version>.+)''',
+                   '''Source:\s(?P<Source>.+)''',
+                   '''Description:\s+(?P<Description>.+(\n\s+.+)*)''',
+                   '''Architecture:\s(?P<Architecture>.+)''']) AS Record
         FROM parse_records_with_regex(
           file=linuxDpkgStatus,
-          regex='''(?sm)^(?P&lt;Record&gt;Package:.+?)\n\n''')
+          regex='''(?sm)^(?P<Record>Package:.+?)\n\n''')
 
       SELECT
           Record.Package AS Package,
@@ -144,7 +147,7 @@ sources:
 
   - name: Snaps
     query: |
-      LET ColumnTypes &lt;= dict(`_Summary`='nobreak', `_Description`='nobreak')
+      LET ColumnTypes <= dict(`_Summary`='nobreak', `_Description`='nobreak')
 
       LET SnapSocketCheck = SELECT parse_json(data=Content).result AS Result
         FROM http_client(url=snapdSocket + ':unix/v2/snaps')
@@ -171,7 +174,7 @@ sources:
     notebook:
       - type: vql
         template: |
-          LET ColumnTypes &lt;= dict(`_Description`='nobreak')
+          LET ColumnTypes <= dict(`_Description`='nobreak')
 
           /*
           # All traces of installed deb packages
@@ -243,6 +246,6 @@ sources:
                 source="Snaps")
               WHERE Status IN ("installed", "active")
             })
+````
 
-</code></pre>
 

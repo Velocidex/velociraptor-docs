@@ -1,12 +1,12 @@
 ---
 title: Windows.Sys.Programs
+description: "Enumerates installed Windows applications by reading registry\nuninstall keys."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Artifact]
-description: |
-  Enumerates installed Windows applications by reading registry
-  uninstall keys.
+build:
+  list: never
 ---
 
 Enumerates installed Windows applications by reading registry
@@ -22,7 +22,9 @@ therefore you should instead parse the hives on disk (including
 within VSS/`Regback`).
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Sys.Programs
 description: |
   Enumerates installed Windows applications by reading registry
@@ -42,7 +44,7 @@ reference:
 
 parameters:
   - name: programKeys
-    default: &gt;-
+    default: >-
       HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*,
       HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*,
       HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Uninstall\*
@@ -65,6 +67,6 @@ sources:
                Key.OSPath as KeyPath
         FROM read_reg_key(globs=split(string=programKeys, sep=',[\\s]*'),
                           accessor="registry")
+````
 
-</code></pre>
 

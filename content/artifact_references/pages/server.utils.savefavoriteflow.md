@@ -1,12 +1,12 @@
 ---
 title: Server.Utils.SaveFavoriteFlow
+description: "Saves a collection configuration spec as a named favorite template\nfor reuse across client or server collections."
 hidden: true
 sitemap:
   disable: true
 tags: [Server Artifact]
-description: |
-  Saves a collection configuration spec as a named favorite template
-  for reuse across client or server collections.
+build:
+  list: never
 ---
 
 Saves a collection configuration spec as a named favorite template
@@ -24,7 +24,9 @@ An example of a Favorites spec is
 ```
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.SaveFavoriteFlow
 description: |
   Saves a collection configuration spec as a named favorite template
@@ -95,6 +97,6 @@ sources:
 
       SELECT * FROM if(condition=AllUsers,
          then=AddToAllOrgs, else=AddToOneUser)
+````
 
-</code></pre>
 

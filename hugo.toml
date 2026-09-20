@@ -1,0 +1,345 @@
+# -- Site Configuration --
+# Hextra theme (github.com/imfing/hextra) as a Hugo module, matching the
+# three-column docs layout of the goreleaser / MCP reference sites:
+#   sticky header, left sidebar tree, center content, right "On this page" TOC.
+# Pagefind (statically built search index) replaces Hextra's built-in
+# FlexSearch - see layouts/_partials/scripts/search.html override and the
+# Makefile `pagefind` target.
+
+baseURL = "https://docs.velociraptor.app/"
+defaultContentLanguage = "en"
+title = "Velociraptor - Digging deeper!"
+
+enableGitInfo = true
+enableEmoji = true
+enableRobotsTXT = true
+
+# Anything we need to embed as-is (e.g. HTML bodies of generated pages).
+[security]
+  allowContent = ['text/html', 'text/markdown']
+
+# Google Analytics. Rendered by Hextra's analytics partial (gtag.js)
+# in production builds only.
+[services]
+  [services.googleAnalytics]
+    ID = "G-QYH72LMYCS"
+
+# Make summary/description generation predictable.
+[imaging]
+  anchor = "Center"
+
+[pagination]
+  pagerSize = 100
+
+# Only "tags" is populated on content; Hextra renders tag pages if present.
+[taxonomies]
+  tag = "tags"
+
+[sitemap]
+  changefreq = "daily"
+  filename = "sitemap.xml"
+  priority = 0.5
+
+# Outputs:
+# - HTML everywhere, plus RSS in front-matter-opted sections
+#   (see content/blog, content/exchange etc.).
+# - "llms" and "markdown" are Hextra's built-in AI-friendly output formats
+#   (defined in the theme's hugo.toml, not here):
+#     /llms.txt                     -> AI site index (llmstxt.org)
+#     <any page URL> + ".md"        -> raw markdown of that page
+# - "llms-full" is a site-defined format: a single concatenated markdown
+#   corpus in /llms-full.txt (see layouts/llms-full.txt).
+# Hextra's FlexSearch JSON index is NOT emitted here - search is provided
+# by Pagefind (a generated static index, build via `make pagefind`).
+[outputs]
+  home = ["HTML", "llms", "llms-full"]
+  page = ["HTML", "markdown"]
+  section = ["HTML", "markdown"]
+  taxonomy = ["HTML"]
+  term = ["HTML"]
+
+# LLM corpus: one markdown file containing every page (GitBook/Prefect-style
+# llms-full.txt). JSON-LD/OG consumers and AI agents can fetch the whole
+# corpus in one request instead of crawling page links.
+[outputFormats.llms-full]
+  name = "llms-full"
+  baseName = "llms-full"
+  mediaType = "text/plain"
+  isPlainText = true
+
+# -- Theme Module --
+# The Hextra theme is installed as a Hugo module (no vendoring).
+# To update: bump the version here and run `hugo mod get` + rebuild.
+[module]
+  [module.hugoVersion]
+    min = "0.146.0"
+
+  [[module.imports]]
+    path = "github.com/imfing/hextra"
+    version = "v0.12.3"
+
+  # Legacy WordPress-export posts under content/blog/html/ (2018-2019,
+  # old date-URL scheme /blog/html/YYYY/MM/DD/slug) duplicate the modern
+  # blog.  Exclude the whole subtree: it is neither rendered nor indexed.
+  # Mount filters use the `files` key; a "! " (bang-space) prefix marks an
+  # exclusion glob.
+  [[module.mounts]]
+    source = "content"
+    target = "content"
+    files = ["! blog/html/**"]
+
+# -- Language -- (single-language site)
+
+[languages.en]
+  disabled = false
+  locale = "en-us"
+  label = "English"
+  weight = 1
+  title = "Velociraptor - Digging deeper!"
+
+  [languages.en.params]
+    displayName = "EN"
+    isoCode = "en"
+    rtl = false
+    dateFormat = "2 January 2006"
+
+# -- Menus --
+# Main navigation: the top-level sections. The left sidebar on docs pages is
+# the combined tree of the sidebar-scope sections (docs, vql_reference,
+# artifact_references, exchange, knowledge_base) - see content section front
+# matter (`type: docs` + `cascade`) and the sidebar-related params below.
+# VQL Reference is promoted to the top navbar as a button; its sidebar entry
+# remains (the sidebar tree is built from the sections, not from menus.main).
+# Artifact Exchange and Knowledge Base are reachable from the sidebar, so
+# they are intentionally not duplicated in the top navbar.
+#
+# The "Search" entry is Hextra's search trigger; our Pagefind override lives
+# in layouts/_partials/search.html + _partials/scripts/search.html.
+# The icon-only entries (github/rss/mail/discord/youtube) render next to the
+# theme toggle via the theme's `params.icon` menu-item support.
+# The dedicated /search/ page and external Rapid7 docs live at the bottom of
+# the left sidebar (see menus.sidebar below).
+
+[[menus.main]]
+  name = "Docs"
+  pageRef = "/docs/"
+  weight = 10
+  [menus.main.params]
+    button = true
+
+[[menus.main]]
+  name = "Blog"
+  pageRef = "/blog/"
+  weight = 20
+  [menus.main.params]
+    button = true
+
+[[menus.main]]
+  name = "Downloads"
+  pageRef = "/downloads/"
+  weight = 30
+  [menus.main.params]
+    button = true
+
+[[menus.main]]
+  name = "VQL Reference"
+  pageRef = "/vql_reference/"
+  weight = 35
+  [menus.main.params]
+    button = true
+
+[[menus.main]]
+  name = "Config Reference"
+  pageRef = "/docs/deployment/references/"
+  weight = 38
+  [menus.main.params]
+    button = true
+
+[[menus.main]]
+  name = "Search"
+  weight = 40
+
+  [menus.main.params]
+    type = "search"
+
+[[menus.main]]
+  name = "GitHub"
+  url = "https://github.com/Velocidex/velociraptor"
+  weight = 55
+
+  [menus.main.params]
+    icon = "github"
+
+[[menus.main]]
+  name = "Theme"
+  weight = 60
+
+  [menus.main.params]
+    type = "theme-toggle"
+
+# -- Sidebar Menu -- (bottom of the left navigation; rendered by the
+# sidebar-footer template in layouts/_partials/sidebar.html)
+# Icon entries (params.icon) render as a compact icon row between the
+# nav tree and the link entries below.
+
+[[menus.sidebar]]
+  name = "RSS"
+  pageRef = "/rss/"
+  weight = 10
+
+  [menus.sidebar.params]
+    icon = "rss"
+
+[[menus.sidebar]]
+  name = "Mailing List"
+  url = "mailto:velociraptor-discuss@googlegroups.com"
+  weight = 20
+
+  [menus.sidebar.params]
+    icon = "mail"
+
+[[menus.sidebar]]
+  name = "Discord"
+  url = "/discord/"
+  weight = 30
+
+  [menus.sidebar.params]
+    icon = "discord"
+
+[[menus.sidebar]]
+  name = "YouTube"
+  url = "/youtube/"
+  weight = 40
+
+  [menus.sidebar.params]
+    icon = "youtube"
+
+[[menus.sidebar]]
+  name = "Rapid7 Docs"
+  url = "https://docs.rapid7.com/insightidr/velociraptor-integration/"
+  weight = 50
+
+  [menus.sidebar.params]
+    icon = "book-open"
+
+[[menus.sidebar]]
+  name = "Search"
+  pageRef = "/search/"
+  weight = 60
+
+  [menus.sidebar.params]
+    icon = "search"
+
+# -- Theme Options (Hextra) --
+
+[params]
+  # Site-wide description: used for the homepage <meta name="description"
+  # tag, llms.txt header blockquote, and og:description fallback on
+  # non-page kinds.
+  description = "Official documentation for Velociraptor, the advanced digital forensics and incident response platform. Covers installation, configuration, VQL, artifacts and more."
+
+  # Default social share image (og:image). Kept separate from the theme's
+  # "images" param so the embedded twitter_cards template stays on its
+  # existing "summary" card (no twitter changes).
+  og_image = "images/velo_small.png"
+
+  # Decorate external links with an ↗ arrow (theme render-link.html).
+  externalLinkDecoration = true
+
+  # Google site verification (rendered by layouts/partials/custom/head-end.html).
+  [params.verification]
+    google = "TWf2C5KkKfaG0pltB0jltq3yWk7WhtFKmlpUQu7ukRQ"
+
+  [params.theme]
+    default = "system"    # valid: light, dark, system (system = follow OS preference for new visitors)
+    # displayToggle is intentionally unset: the theme's footer/sidebar
+    # theme-toggle rows are removed (the switcher lives in the top navbar).
+
+  # Click-to-zoom on figure images (medium-zoom), as on the reference site.
+  # Rendered via hextra's scripts/medium-zoom partial when a page sets the
+  # "hasImageZoom" store flag (file: layouts/_markup/render-image.html).
+  # The js asset is vendored locally (assets/js/medium-zoom.min.js) so
+  # builds do not depend on fetching the library from the CDN.
+  [params.imageZoom]
+    enable = true
+    js = "js/medium-zoom.min.js"
+
+  [params.navbar]
+    width = "normal"      # 80rem; matches the reference docs sites
+
+    # No navbar title: the full-colour VeloR7 mark lives at the top of the
+    # scrollable left sidebar (layouts/_partials/sidebar.html).  The bare
+    # raptor mark below shows on mobile (single-column) and on desktop once
+    # the sidebar mark has scrolled out of view (assets/js/navbar-logo.js);
+    # its slot stays reserved (visibility, not display) so the always-visible
+    # navbar buttons never shift.
+    displayTitle = false
+    [params.navbar.logo]
+      path = "images/logo_bare_small.svg"
+      width = "28"
+      height = "28"
+
+  [params.footer]
+    # Footer moved into the left sidebar (Rapid7 strip below the theme
+    # toggle, see layouts/_partials/sidebar.html); the Hextra page footer
+    # is disabled entirely.
+    enable = false
+    width = "normal"
+    displayPoweredBy = false
+    displayCopyright = true
+
+  [params.page]
+    width = "normal"
+    displayPagination = true
+
+  # "Edit this page" link in the right-hand TOC column.
+  [params.editURL]
+    enable = true
+    base = "https://github.com/Velocidex/velociraptor-docs/edit/master/content/"
+
+  # Search entry point. Hextra ships FlexSearch; this site keeps Pagefind
+  # (see the layouts/_partials/scripts/search.html override).
+  [params.search]
+    enable = true
+
+  # Global announcement strip above the navbar (theme banner.html); dismissible
+  # per-browser via the ✕ button (localStorage banner-closed).
+  [params.banner]
+    message = "Please update to the latest release [0.77.2](/downloads/) to address [Multiple CVEs](/announcements/advisories/v0-77-2/)."
+
+  [params.toc]
+    displayTags = false
+
+  [params.math]
+    engine = "katex"
+
+# -- Markup --
+# Chroma handles all code fences; the VQL grammar is aliased to Chroma's SQL
+# lexer by layouts/_default/_markup/render-codeblock.html (VQL is SQL-derived);
+# Hextra ships Chroma styles under assets/css/chroma.
+# Passthrough delimiters drive Hextra's built-in KaTeX math support.
+
+[markup.goldmark]
+  [markup.goldmark.parser]
+    wrapStandAloneImageWithinParagraph = false
+
+    [markup.goldmark.parser.attribute]
+      block = true
+
+  [markup.goldmark.renderer]
+    unsafe = true
+
+  [markup.goldmark.extensions]
+    [markup.goldmark.extensions.passthrough]
+      enable = true
+      [markup.goldmark.extensions.passthrough.delimiters]
+        block = [['\[', '\]'], ['$$', '$$']]
+        inline = [['\(', '\)']]
+
+[markup.highlight]
+  noClasses = false
+  codeFences = true
+
+[markup.tableOfContents]
+  startLevel = 2
+  endLevel = 4

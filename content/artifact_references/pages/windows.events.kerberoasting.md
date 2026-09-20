@@ -1,12 +1,12 @@
 ---
 title: Windows.Events.Kerberoasting
+description: "Monitors Kerberos TGS ticket requests (EventID 4769) with RC4 (weak)\nencryption as indicators of Kerberoasting attacks."
 hidden: true
 sitemap:
   disable: true
 tags: [Client Event Artifact]
-description: |
-  Monitors Kerberos TGS ticket requests (EventID 4769) with RC4 (weak)
-  encryption as indicators of Kerberoasting attacks.
+build:
+  list: never
 ---
 
 Monitors Kerberos TGS ticket requests (EventID 4769) with RC4 (weak)
@@ -39,7 +39,9 @@ Note: There are potential false positives so whitelist normal source
 IPs and manage risk of insecure ticket generation.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Events.Kerberoasting
 description: |
   Monitors Kerberos TGS ticket requests (EventID 4769) with RC4 (weak)
@@ -48,7 +50,7 @@ description: |
   These tickets are vulnerable to brute force attack and this event is
   an indicator of a Kerberoasting attack.
 
-  **ATT&amp;CK**: [T1208 -
+  **ATT&CK**: [T1208 -
   Kerberoasting](https://attack.mitre.org/techniques/T1208/) Typical
   attacker methodology is to firstly request accounts in the domain
   with SPN attributes, then request an insecure TGS ticket for brute
@@ -109,6 +111,6 @@ sources:
                 AND NOT EventData.ServiceName =~ "krbtgt|\\$$"
                 AND NOT EventData.TargetUserName =~ "\\$@"
         })
+````
 
-</code></pre>
 

@@ -1,0 +1,1487 @@
+/* Custom styles for the Velociraptor documentation site (Hextra).
+   Plain CSS; Hextra-specific utilities use the hx: prefix in templates,
+   this file covers legacy widget markup that has no hx: classes.
+   Dark mode via the `.dark` class on <html>. */
+
+/* --- Site-wide font: Iosevka Term ---
+   Same subsetted font the Velociraptor GUI ships
+   (gui/velociraptor/src/fonts/). The subsets cover ASCII and Latin-1
+   (unicode-range below); any other glyphs fall back to system fonts.
+   The "bold" subset is actually Iosevka Term Extrabold, matching the
+   font-weight mapping the GUI CSS uses (700 -> extrabold file). */
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Atkinson Hyperlegible"),
+    url("/fonts/AtkinsonHyperlegible-Regular.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+0080-00FF;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  font-style: italic;
+  font-weight: 400;
+  src: local("Atkinson Hyperlegible"),
+    url("/fonts/AtkinsonHyperlegible-Italic.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+0080-00FF;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Atkinson Hyperlegible"),
+    url("/fonts/AtkinsonHyperlegible-Bold.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+0080-00FF;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  font-style: italic;
+  font-weight: 700;
+  src: local("Atkinson Hyperlegible"),
+    url("/fonts/AtkinsonHyperlegible-BoldItalic.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+0080-00FF;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Iosevka Term";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Iosevka Term"),
+    url("/fonts/iosevka-term-regular-subset.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+0080-00FF;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Iosevka Term";
+  font-style: normal;
+  font-weight: 500;
+  src: local("Iosevka Term"),
+    url("/fonts/iosevka-term-medium-subset.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+0080-00FF;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Iosevka Term";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Iosevka Term"),
+    url("/fonts/iosevka-term-bold-subset.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+0080-00FF;
+  font-display: block;
+}
+
+/* Atkinson Hyperlegible for body + UI chrome, Iosevka Term for code.
+   Overrides Hextra/Tailwind font variables (concatenated last into main.css).
+   Medium (500) UI elements fall back to the Regular face via CSS matching.
+   Atkinson x-height is 0.50; scaling to 0.53125 (Iosevka Term's ratio) makes
+   text render ~6.25% larger. Term's own ratio equals the target, so code is
+   unaffected by the inherited adjustment. */
+:root {
+  --hx-default-font-family: "Atkinson Hyperlegible", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --hx-font-sans: "Atkinson Hyperlegible", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --hx-font-mono: "Iosevka Term", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size-adjust: 0.53125;
+}
+
+/* --- Root background (navigation paint) ---
+   The theme paints the page background on <body> only and leaves <html>
+   transparent. Chromium uses the root element's background-color for the
+   "base" colour it paints during a navigation or window resize, so with a
+   transparent <html> the browser falls back to white and dark-mode readers
+   see a white flash on each full page load. Mirror the body background onto
+   <html> so the base paint matches the active theme. Unlayered rules here
+   outrank the theme's @layer rules. */
+html {
+  background-color: var(--hx-color-white);
+}
+
+html:where(.dark, .dark *) {
+  background-color: var(--hx-color-dark);
+}
+
+/* Code stays at nominal size regardless of the inherited font-size-adjust
+   (its FontFace aspect differs slightly from the 0.53125 target). */
+code,
+kbd,
+samp,
+pre {
+  font-size-adjust: none;
+}
+
+/* Code ligatures. Iosevka (like Fira Code and JetBrains Mono) assigns its
+   operator ligatures -- -> <= >= != == -- to the calt feature, so a VQL
+   "a <= b" renders as a single "≤" glyph and reads as the wrong operator.
+   Disable the features by tag: calt is what Iosevka uses, and the rest cover
+   other monospace faces so a future font swap cannot reintroduce this.
+   font-variant-ligatures is the spec-level equivalent for engines that map
+   it; letter-spacing is a belt-and-braces fallback (non-zero spacing also
+   disables optional ligatures), and at 0.01em it is under a fifth of a pixel
+   per character, so the extra tracking is invisible. */
+code,
+kbd,
+samp,
+pre {
+  font-variant-ligatures: none;
+  font-feature-settings: "calt" 0, "liga" 0, "clig" 0, "dlig" 0;
+  letter-spacing: 0.01em;
+}
+
+/* Iosevka is a narrow font, and Hextra applies 0.9em twice to fenced code
+   blocks (wrapper + pre), which renders ~12.96px vs 16px body text. Nudge
+   fenced code back up so it stays readable next to the prose. */
+.hextra-code-block {
+  font-size: 1em;
+}
+
+/* Only size the <pre>; the inner <code> inherits its size. */
+.hextra-code-block pre {
+  font-size: 0.9375em;
+}
+
+/* Bare <pre> not wrapped in a Hextra code block (rare, legacy markup). */
+.content :where(pre):not(.hextra-code-block pre) {
+  font-size: 0.9375em;
+}
+
+/* Code fences always render on their own neutral background, regardless of
+   the surrounding container. Hextra's code-block background is a nearly
+   transparent tint (hx:bg-primary-700/5 light, hx:dark:bg-primary-300/10
+   dark): that reads correctly over the plain page background but inside an
+   admonition's solidly coloured panel it lets the panel colour show through,
+   so the same fence changes colour between contexts. Instead mix the same
+   tint over the page background, producing an opaque colour that matches the
+   normal code-block look everywhere. */
+.hextra-code-block pre,
+.hextra-code-filename {
+  background-color: color-mix(in oklab, var(--hx-color-primary-700) 5%, var(--hx-color-white));
+}
+
+html:where(.dark, .dark *) .hextra-code-block pre,
+html:where(.dark, .dark *) .hextra-code-filename {
+  background-color: color-mix(in oklab, var(--hx-color-primary-300) 10%, var(--hx-color-dark));
+}
+
+/* --- 404 page (layouts/404.html) ---
+   Centred in the column to the right of the docs sidebar, under the
+   navbar/footer chrome. The big error code uses the theme accent so it
+   inherits dark mode automatically. */
+.hextra-404 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - var(--navbar-height));
+  padding: 2rem 1.5rem;
+}
+
+.hextra-404-inner {
+  text-align: center;
+}
+
+.hextra-404-code {
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  margin: 1.5rem 0 0.25rem;
+  color: var(--hx-color-primary-600);
+}
+
+.hextra-404-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 0.5rem;
+  color: var(--hx-color-neutral-800);
+}
+
+html.dark .hextra-404-title {
+  color: var(--hx-color-neutral-200);
+}
+
+.hextra-404-message {
+  margin: 0 auto 1.75rem;
+  max-width: 40ch;
+  color: var(--hx-color-neutral-500);
+}
+
+/* Hidden easter egg in the artifact exchange "Share your own Artifact" box. */
+p.egg {
+  display: none;
+}
+
+/* --- Generated config reference page (docs/deployment/references) ---
+   The item comments are grey callout boxes; the page intro (document-
+   comment) renders as a plain paragraph. */
+.item-comment {
+  margin-top: 20px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: #f5f5f5;
+  color: #171717;
+}
+
+.dark .item-comment {
+  background: #262626;
+  color: #f5f5f5;
+}
+
+.item-name {
+  display: flex;
+  align-items: center;
+}
+
+.category-icon {
+  margin: 0 6px;
+  flex-shrink: 0;
+}
+
+.reference-key {
+  display: flex;
+  align-items: center;
+  padding-right: 1ex;
+}
+
+.reference-value-sequence,
+.reference-value-mapping {
+  display: inline;
+}
+
+.reference-value-mapping,
+.reference-value-sequence {
+  color: #737373;
+}
+
+.dark .reference-value-mapping,
+.dark .reference-value-sequence {
+  color: #a3a3a3;
+}
+
+.reference-document {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", monospace;
+  font-size: 0.95em;
+}
+
+.reference-document ul {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0.5em;
+}
+
+/* Collapsible config sections: hide the native disclosure triangle and
+   style the summary like the old item-name row. */
+.reference-document details > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.reference-document details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.reference-document details > summary .category-icon {
+  transition: transform 0.15s ease;
+}
+
+.reference-document details[open] > summary .category-icon {
+  transform: rotate(90deg);
+}
+
+/* Each config item renders as a card so readers can visually associate
+   the key, breadcrumb, comment and value as one unit.  Mirrors the
+   section-search card look (rounded-lg border, hover accent). */
+.reference-document .ref-item {
+  border: 1px solid #e5e7eb; /* gray-200 */
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  margin: 0 0 0.5rem 0;
+  background: transparent;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.dark .ref-item {
+  border-color: #262626; /* neutral-800 */
+}
+
+.ref-item:hover {
+  border-color: #d1d5db; /* gray-300 */
+}
+
+.dark .ref-item:hover {
+  border-color: #404040; /* neutral-700 */
+  background-color: #171717; /* neutral-900 */
+}
+
+/* Breadcrumb path shown under each key. */
+.item-breadcrumb {
+  font-size: 0.85em;
+  color: #a3a3a3;
+  margin: 2px 0 4px 0;
+  padding-left: 1.5em;
+}
+
+.dark .item-breadcrumb {
+  color: #6b7280;
+}
+
+/* Filter box at the top of the reference page: matches the section-search
+   inputs on the Artifact/VQL Reference pages (rounded-md border input).
+   The hx: utility classes on the input handle the border/bg look; this
+   rule adds breathing room around it (the section-search widgets use
+   margin: 2rem 0 on their wrapper). */
+.reference-filter {
+  margin: 2rem 0;
+  width: 100%;
+  max-width: 30em;
+}
+
+/* Filtered-out items are hidden; containers that match stay expanded.
+   The item's associated comment block hides with it (the filter toggles
+   filtered-out on both; see references/reference-filter script). */
+.ref-item.filtered-out,
+.item-comment.filtered-out {
+  display: none;
+}
+
+.bullet-placeholder {
+  padding: 0 10px;
+  display: inline;
+}
+
+/* Copy-anchor button on each config item, sitting inline right after the
+   item's GitHub link (same row, left side).  The margin keeps the anchor
+   icon visually separated from the key/GitHub text it belongs to.  The
+   generated href="#<id>" also works as a plain shareable deep link. */
+.anchorlink {
+  margin-left: 0.5em;
+  text-decoration: none;
+}
+
+.anchorlink:hover {
+  color: #171717; /* neutral-900 */
+}
+
+.dark .anchorlink {
+  color: #a3a3a3;
+}
+
+.multiline-value {
+  display: block;
+  unicode-bidi: embed;
+  font-family: inherit;
+  white-space: pre;
+  padding-left: 40px;
+}
+
+/* --- CVE widget (include-cve shortcode) --- */
+.cve {
+  font-size: 0.95em;
+}
+
+.cve .published {
+  display: block;
+  margin: 8px 0;
+  color: #737373;
+}
+
+.dark .cve .published {
+  color: #a3a3a3;
+}
+
+.pull-right {
+  float: right;
+  margin-left: 8px;
+}
+
+/* Download icon in the pull-right toolbar: the Hextra SVG icon has no
+   intrinsic size and would otherwise render at its default 300px-ish
+   box; pin it to the surrounding text size (the legacy site used a
+   FontAwesome icon at 1em).  display:inline-block overrides Hextra's
+   block-level svg rule so the icon sits on the same line as the
+   Vulnogram link. */
+.cve .pull-right svg {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+}
+
+.cve details.popup {
+  margin: 12px 0;
+}
+
+.cve details.popup summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.cve details.popup .pop {
+  margin-top: 8px;
+  padding: 8px;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+}
+
+.dark .cve details.popup .pop {
+  border-color: #404040;
+}
+
+.cve .desc-text,
+.cve .configuration-text,
+.cve .credits-text,
+.cve .workaround-text {
+  padding-left: 50px;
+  padding-bottom: 10px;
+  display: block;
+}
+
+.cve .problem {
+  padding-bottom: 10px;
+}
+
+.cve .problem-text {
+  padding-left: 10px;
+}
+
+.cve .problem,
+.cve .impact,
+.cve .configurations,
+.cve .workaround,
+.cve .credit,
+.cve .references {
+  margin: 12px 0;
+}
+
+.cve .references ul li {
+  overflow-wrap: anywhere;
+}
+
+/* Affected-versions table: the second column (versions before the fix)
+   carries .affectedCol; give it the same orange border the legacy site
+   used so the "affected" column reads as the warning it is. */
+.cve .affectedCol {
+  border: 4px solid #fa582d;
+}
+
+/* --- CVE widget icons (vgi-*) ---
+   Legacy inline icons: each class is a 10x10 SVG data-URI background
+   drawn at 1.3em, with 2em of left padding for the label text.  Ported
+   verbatim from the legacy theme-mine.css so advisory pages keep their
+   iconography. */
+[class*=" vgi-"],
+[class^="vgi-"] {
+  display: inline-flex;
+  vertical-align: middle;
+  min-width: 1em;
+  min-height: 1em;
+  background-position: 0.5em 50%;
+  background-repeat: no-repeat;
+  padding-left: 2em;
+  background-size: 1.3em 1.3em;
+}
+
+.vgi-ext {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAgMTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgc3Ryb2tlLXdpZHRoPSIuNSI+PHBhdGggZD0iTTcuNSA2LjIzM3YxLjA4YzAgLjM4LS4zMDcuNjg3LS42ODguNjg3SDIuNjg4QS42ODYuNjg2IDAgMCAxIDIgNy4zMTJWMy4xODhjMC0uMzguMzA3LS42ODcuNjg4LS42ODdoMS4wOTRtLjk4Ny0uNUg4VjUuMjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Im03LjggMi4yNS0zLjAwMiAzIiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAiLz48cGF0aCBkPSJNMy4zIDYuNWgzIiBmaWxsPSIjNzI5ZmNmIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIHN0cm9rZT0iIzU4OWNmNyIvPjwvZz48L3N2Zz4=);
+}
+
+.vgi-package {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCAxMCI+PHBhdGggc3Ryb2tlLXdpZHRoPSIuNDM3IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiIGZpbGw9IiNmZmYiIGQ9Ik01LjAwNSA5LjMzMyAxLjIyMyA3LjE1VjIuNzgzTDUuMDA1LjZsMy43ODIgMi4xODNWNy4xNXoiIHN0cm9rZT0iIzAwMCIvPjxwYXRoIHN0cm9rZS13aWR0aD0iLjQzNyIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBmaWxsPSIjZTBlOGU3IiBkPSJNNC45OTUgNS4wMzNWOS40TDEuMjEzIDcuMjE3VjIuODV2MHoiIHN0cm9rZT0iIzAwMCIvPjxwYXRoIHN0cm9rZS13aWR0aD0iLjUiIGZpbGw9Im5vbmUiIGQ9Ik01LjAyNSA1LjAzMyA4LjczOSAyLjg5bS01LjYzNC45NDNMNi44MTkgMS42OSIgc3Ryb2tlPSIjMDAwIi8+PC9zdmc+);
+}
+
+.vgi-stack {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCAxMCI+PGcgc3Ryb2tlLXdpZHRoPSIuNTU2IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZT0iIzAwMCI+PHBhdGggZmlsbD0iIzZkNzc2MyIgdHJhbnNmb3JtPSJzY2FsZSgxLjI2MDkxIC42NDAzOCkgcm90YXRlKC00NSAyLjU3NiAxLjA2MykiIGQ9Ik0tNC45MTkgNi40MTZoNC4xMDd2NC4xMDdoLTQuMTA3eiIvPjxwYXRoIHRyYW5zZm9ybT0ic2NhbGUoMS4yNjA5MSAuNjQwMzgpIHJvdGF0ZSgtNDUgMi41NzYgMS4wNjMpIiBmaWxsPSIjOTdhMThlIiBkPSJNLTMuMjY5IDQuNzY2SC44Mzh2NC4xMDdoLTQuMTA3eiIvPjxwYXRoIHRyYW5zZm9ybT0ic2NhbGUoMS4yNjA5MSAuNjQwMzgpIHJvdGF0ZSgtNDUgMi41NzYgMS4wNjMpIiBmaWxsPSIjZDNkN2NmIiBkPSJNLTEuNjA5IDMuMTA2aDQuMTA3djQuMTA3aC00LjEwN3oiLz48L2c+PC9zdmc+);
+}
+
+.vgi-text {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCAxMCI+PHBhdGggZD0iTTguMjUgMS4yNXY3LjVoLTYuNXYtNy41eiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9Ii41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMyAzLjJoNE0zIDQuN2g0TTMgNi4yaDQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIuNSIvPjwvc3ZnPg==);
+}
+
+.vgi-impact {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCAxMCI+PHBhdGggZmlsbD0iI2ZjMCIgZD0ibTcuNzIzIDYuMDgxLjM5NCAxLjk0Nkw2LjE2IDcuNjkgNS4wNjMgOS4zNDUgMy45MiA3LjcyM2wtMS45NDYuMzk0LjMzNy0xLjk1NkwuNjU1IDUuMDYzIDIuMjc3IDMuOTJsLS4zOTQtMS45NDYgMS45NTcuMzM3TDQuOTM3LjY1NWwxLjE0NSAxLjYyMiAxLjk0Ni0uMzk0TDcuNjkgMy44NGwxLjY1NSAxLjA5N3oiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTQuNTkyIDYuNTY4aC43ODR2LjcxNWgtLjc4NHptLjM3MS0zLjYzNmMuMjAyIDAgLjU2My4yMDMuNTQ4LjQwNGwtLjEzNSAxLjg0Mi0uMDc3IDEuMDA0aC0uNjI2bC0uMDgtMS4wMDQtLjE1NC0xLjg0MmMtLjAxNi0uMTk0LjMzLS40MDQuNTI0LS40MDR6Ii8+PC9zdmc+);
+}
+
+.vgi-avoid {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCAxMCI+PHBhdGggZD0iTTkuMDc1IDQuMTQxSDcuNTgyTDYuMzQ1IDIuMDRDNS42MzguODA4IDMuODYuODA4IDMuMTUxIDIuMDRMMS45MSA0LjE0MUguMjciIGNvbG9yPSIjMDAwIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9Ii40OTEiIHN0eWxlPSJ0ZXh0LWluZGVudDowO3RleHQtZGVjb3JhdGlvbi1saW5lOm5vbmU7dGV4dC1kZWNvcmF0aW9uLXN0eWxlOnNvbGlkO3RleHQtZGVjb3JhdGlvbi1jb2xvcjojMDAwO3RleHQtdHJhbnNmb3JtOm5vbmU7d2hpdGUtc3BhY2U6bm9ybWFsO2lzb2xhdGlvbjphdXRvO21peC1ibGVuZC1tb2RlOm5vcm1hbCIgc3Ryb2tlPSIjMDAwIi8+PHBhdGggc3Ryb2tlLXdpZHRoPSIuNSIgc3Ryb2tlPSIjMDAwIiBmaWxsPSJub25lIiBkPSJNOC4yODUgNS4yNDFsMS4wOS0xLjA4NS0xLjA5LTEuMDg1Ii8+PHBhdGggZD0iTTEuNzI1IDguMjQxYS42ODQuNjg0IDAgMDAuNjg0LjYzMWg0LjczN2MuNTI3IDAgLjg1Ny0uNTcuNTkzLTEuMDI2TDUuMzcxIDMuNzRhLjY4NC42ODQgMCAwMC0xLjE4NyAwTDEuODE2IDcuODQ2YS42OS42OSAwIDAwLS4wOS4zOTV6IiBjb2xvcj0iIzAwMCIgZmlsbD0iI2ZjMCIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iLjUiIHN0eWxlPSJ0ZXh0LWluZGVudDowO3RleHQtZGVjb3JhdGlvbi1saW5lOm5vbmU7dGV4dC1kZWNvcmF0aW9uLXN0eWxlOnNvbGlkO3RleHQtZGVjb3JhdGlvbi1jb2xvcjojMDAwO3RleHQtdHJhbnNmb3JtOm5vbmU7d2hpdGUtc3BhY2U6bm9ybWFsO2lzb2xhdGlvbjphdXRvO21peC1ibGVuZC1tb2RlOm5vcm1hbCIvPjxwYXRoIGQ9Ik00LjQ4IDcuNTYzaC41OTh2LjU0NmgtLjU5OXptLjI3OC0yLjgyM2MuMTk2IDAgLjU0Ny4xNDkuNTMzLjI5NWwtLjEzMiAxLjM0My0uMDc1LjczMmgtLjYwOGwtLjA3OC0uNzMyLS4xNS0xLjM0M2MtLjAxNS0uMTQxLjMyMS0uMjk1LjUxLS4yOTV6Ii8+PC9zdmc+);
+}
+
+.vgi-bug {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCAxMCI+PGcgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9Ii41Ij48cGF0aCBmaWxsPSJub25lIiBkPSJNMy41MS41YTEuNjQgMS42NCAwIDAgMCAuMjY2IDEuNDEzYy4zLjM5Ni43OS42NCAxLjI4OC42NGExLjY0IDEuNjQgMCAwIDAgMS4yODctLjY0Yy4zLS4zOTYuNDAxLS45MzUuMjY2LTEuNDEzIi8+PGVsbGlwc2Ugc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InNxdWFyZSIgZmlsbD0iI2ZmOTY3NCIgcnk9IjEuMDQyIiByeD0iMS41MjgiIGN5PSIyLjIiIGN4PSI1Ii8+PHBhdGggZD0iTTMuMjQgNC40Yy0xLjAxNS0uMDE5LTEuMDcuNTEtMi43MzguNTE3TTYuNzYgNC40YzEuMDE1LS4wMTkgMS4wNy41MSAyLjczOS41MTdNMy41NSA2Yy0zLjU0Ni0uMDYzLTIgLjk4MS0yLjAzIDIuOTU3TTYuNTEgNmMzLjQ5LS4wOCAyIC45ODEgMi4wMyAyLjk1N00zLjUzIDRjLTEgLjAxOS0yLS45ODEtMi4wMy0yLjk1N002LjUxIDMuOWMxIC4wMTkgMi0uOTgxIDIuMDMtMi45NTciIGZpbGw9Im5vbmUiLz48cGF0aCBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZmlsbD0iI2ZmOTY3NCIgZD0ibTIuOTEgNy44LS41OTUtMy41MjNjLjY4Ny0xLjMzMyAxLjA5OC0xLjI1MyAyLjY5Ny0xLjI0MyAxLjU5OS0uMDEgMS45OS0uMDkgMi43MzQgMS4yNDNsLS42NTEgMy41ODdDNi4wMDIgOC45NDQgNC4wMDIgOC45NDQgMi45MSA3Ljh6Ii8+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTUgOVYzIi8+PC9nPjwvc3ZnPg==);
+}
+
+.vgi-dial {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCAxMCI+PGNpcmNsZSByPSI0IiBjeT0iNSIgY3g9IjUiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIuNSIvPjxwYXRoIGQ9Ik00LjkgMWE0IDQgMCAwIDAtMy4yMzQgNi4yMDloNi42NjZjMS4wNjUtMS42ODQuNzgtMy45NjctLjczOS01LjI1OEE0LjA0MiA0LjA0MiAwIDAgMCA0Ljg5MyAxeiIgZmlsbD0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iLjUiLz48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Im0zIDMgMiAzaDFWNXoiLz48L3N2Zz4=);
+}
+
+.vgi-safe {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCAxMCI+PHBhdGggZD0iTTggMS44MTJ2NGMwIDEtMSAyLTIuOTk0IDMuMTExLTIuMDEtMS4xLTMuMDEtMi4xLTMuMDEtMy4xdi00YzItMSA0LTEgNiAweiIgZmlsbD0iIzljMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9Ii41IiBzdHJva2U9IiMwMDAiLz48cGF0aCBkPSJtMy43NCA0LjcxMiAxIDEgMi4wMjgtMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIi8+PC9zdmc+);
+}
+
+.vgi-like {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCAxMCI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTMuNTcgNC4xMzNjLjg4NS4wMTQgMS45OC0uNzE3IDIuNzQyLTIuMjY3IDEgMCAuOTQzLjcyNS45NDMuNzI1bC0uMzgzIDEuNDY2cy44NzYgMCAxLjAxNi4wMzZjLjE0LjAzNC4yNjguMTE1LjM2Mi4yMjQuMDk0LjExLjI5Mi40OTIuMjc5LjYzNi0uMDc0LjgzNy0uMzA4IDEuNTgyLS42IDIuNTkyYS43NjguNzY4IDAgMCAxLS4xOTYuMzU3Ljc3My43NzMgMCAwIDEtLjM1OC4xOTcgMS43MDggMS43MDggMCAwIDEtLjQxLjAzNWgtMy41IiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iLjUiLz48cGF0aCBzdHJva2Utd2lkdGg9Ii41IiBzdHJva2U9IiMwMDAiIGZpbGw9IiNkM2Q3Y2YiIGQ9Ik0xLjQ3IDQuMTMzaDJ2NGgtMnoiLz48Y2lyY2xlIHI9Ii4yNSIgY3k9IjcuMjMzIiBjeD0iMi40NSIvPjwvc3ZnPg==);
+}
+
+.vgi-cog {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCAxMCI+PHBhdGggZD0iTTQuNTU3IDEuMjU0Yy0uMTUyLjM2My0uMzA0LjcyNi0uNDI2Ljk0NS0uMTIyLjIyLS4yNTQuMjM0LS4zNTguMjk3bC0xLjExOS0uNDUtLjYxNy42MTguNDU3IDEuMTFjLS4wNjUuMTA0LS4wOC4yMzgtLjE1OC4zMzNsLTEuMDgyLjQ2M3YuODczbDEuMTA3LjQ2MWMuMDMuMTIuMTEuMjMuMTIzLjM1bC0uNDM3IDEuMDkyLjYxNy42MTcgMS4xMTEtLjQ2Yy4xMDMuMDY0LjIzOC4wNzguMzMuMTUzbC40NjUgMS4wOWguODczbC40NjctMS4xMTljLjExMy0uMDMuMjE1LS4xMDYuMzMtLjExN2wxLjEwNi40NDEuNjE3LS42MTctLjQ2NS0xLjEyM2MuMDYtLjA5OS4wNzItLjIyNS4xNDctLjMxM2wxLjEwMS0uNDY4di0uODczbC0xLjEyNS0uNDdjLS4wMjctLjExMS0uMTAyLS4yMTQtLjExMy0uMzI3bC40NDMtMS4xMDYtLjYxNy0uNjE3Yy0uMzc0LjE1NC0uNzQ3LjMxLTEuMTIxLjQ2My0uMS0uMDYyLS4yMjctLjA3OC0uMzE3LS4xNTJMNS40MyAxLjI1NGgtLjg3M3pNNSAzLjc1MkExLjI0OSAxLjI0OSAwIDAxNi4yNDggNSAxLjI0OSAxLjI0OSAwIDAxNSA2LjI0OCAxLjI0OSAxLjI0OSAwIDAxMy43NTIgNSAxLjI0OSAxLjI0OSAwIDAxNSAzLjc1MnoiIHN0cm9rZS13aWR0aD0iLjUiIGZpbGw9IiNhY2JhY2MiIHN0cm9rZT0iIzAwMCIvPjwvc3ZnPg==);
+}
+
+/* --- Release download table (release_download shortcode) --- */
+.platform svg {
+  width: 1.65em;
+  height: 1.65em;
+  vertical-align: -0.2em;
+}
+
+/* Brand SVGs ship with `body.dark path` rules that don't match Hextra's
+   html.dark; force the light/dark switch here. */
+html.dark .platform svg path {
+  fill: #fff !important;
+}
+
+/* Navbar logo: show the brand SVG in its full colour as shipped; no
+   grayscale filter.  (The source SVG should already stay legible on both
+   light and dark navbar backgrounds; the 28px height is pinned below.) */
+
+/* Navbar must be opaque: the theme's blur layer uses a translucent
+   background (bg-white/[.85], dark:bg-dark/80) with backdrop blur, which
+   lets page content ghost through while scrolling.  Force a solid
+   background in both themes. */
+.hextra-nav-container-blur {
+  background-color: #fff !important;
+}
+
+html.dark .hextra-nav-container-blur {
+  background-color: var(--hx-color-dark) !important;
+}
+
+/* Navbar logo: bare raptor mark.  On desktop it is hidden by default
+   (visibility, not display — see the media query further down) and only
+   appears once the sidebar logo has scrolled out of view; on mobile it
+   is the only logo and stays visible.  The 28px height is pinned here;
+   width scales from the SVG's natural 0.62 aspect ratio. */
+.hextra-navbar-logo img {
+  height: 28px;
+  width: auto;
+}
+
+/* Footer copyright block: the theme default was py-12 (48px per side →
+   112px total footer).  1.25rem per side ≈ 56px total, a ~50% reduction.
+   (This lives here rather than as a Tailwind hx:py-5 class because the
+   JIT never compiled py-5 — it only generates utilities it has seen.) */
+.hextra-footer-copyright {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+/* Navbar link buttons (Docs / Blog / Downloads / VQL Reference /
+   Config Reference): buttons, all the same width (min-width wins: every
+   label is shorter), corner radius matching the navbar search input
+   (rounded-lg = 8px).  The display/flex classes stay Tailwind hx:
+   utilities on the element (hidden on small screens, inline-flex from
+   md up) so responsive behaviour is unchanged; this CSS only adds the
+   button chrome and colours. */
+.hextra-nav-btn {
+   min-width: 7rem;              /* equal widths for all five buttons */
+   height: 33.5px;               /* match the navbar search input (text-sm
+                                    leading-tight + py-2), borders included */
+   padding: 0 0.75rem;
+  border: 1px solid #d1d5db;    /* gray-300 */
+  border-radius: 8px;           /* same as the navbar search input */
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #4b5563;               /* gray-600 */
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s, background-color 0.15s;
+}
+.hextra-nav-btn:hover {
+  color: #1f2937;               /* gray-800 */
+  border-color: #9ca3af;        /* gray-400 */
+}
+/* Active button (current section): use the theme's primary colour plus a
+   very light primary tint for the background.  The vars are Tailwind-v4-
+   namespaced (--hx-color-primary-*); the dark-mode hue swap (212deg ->
+   204deg) is automatic via --primary-hue. */
+.hextra-nav-btn.active,
+.hextra-nav-btn[aria-current] {
+  color: var(--hx-color-primary-600);
+  border-color: var(--hx-color-primary-500);
+  background-color: color-mix(in oklab, var(--hx-color-primary-500) 8%, transparent);
+  font-weight: 500;
+}
+html.dark .hextra-nav-btn {
+  color: #9ca3af;               /* gray-400 */
+  border-color: #525252;        /* neutral-600 */
+}
+html.dark .hextra-nav-btn:hover {
+  color: #e5e7eb;               /* gray-200 */
+  border-color: #a3a3a3;        /* neutral-400 */
+}
+html.dark .hextra-nav-btn.active,
+html.dark .hextra-nav-btn[aria-current] {
+  color: var(--hx-color-primary-400);
+  border-color: var(--hx-color-primary-400);
+  background-color: color-mix(in oklab, var(--hx-color-primary-400) 10%, transparent);
+}
+
+/* Section search widgets (VQL Reference, Artifact Reference, Exchange,
+   Knowledge Base, Blog): give the search input breathing room above and
+   below, away from the page intro and the results grid. */
+.search-box[data-section-search] {
+  margin: 2rem 0;
+}
+
+/* --- Sidebar / page width: widen the left sidebar 25% (16rem→20rem) ---
+   The page container grows by the same 4rem (80→84rem) so the article
+   column and right TOC widths are unchanged; the sidebar absorbs the
+   extra space from both outer margins equally.  Navbar and footer are
+   bumped to match so the header/content edges stay aligned. */
+:root {
+  --hextra-max-page-width: 84rem;
+  --hextra-max-navbar-width: 84rem;
+  --hextra-max-footer-width: 84rem;
+}
+
+@media (min-width: 768px) {
+  .hextra-sidebar-container {
+    width: 20rem;
+  }
+}
+
+/* Sidebar logo: scale to ~80% and center horizontally.  The theme wraps
+   the logo in two shrink-to-fit flex containers and left-aligns the outer
+   one, so give them the full content width and let their existing
+   justify-center utilities do the centering. */
+.hextra-sidebar-container .hextra-sidebar-logo,
+.hextra-sidebar-container .hextra-sidebar-logo a {
+  width: 100%;
+}
+
+.hextra-sidebar-container .hextra-sidebar-logo img {
+  width: 60% !important;
+  height: auto !important;
+}
+
+/* The whole left column is pinned below the navbar for the entire page:
+   give the sidebar a fixed height of 100vh - navbar so its sticky top-16
+   never releases (its bottom stays glued to the viewport bottom, so it
+   cannot scroll up at the end of the page).  The menu flex-fills the
+   space between the navbar and the sticky footer, scrolling internally
+   (the sidebar logo now scrolls with the menu). */
+@media (min-width: 768px) {
+  .hextra-sidebar-container {
+    height: calc(100vh - var(--navbar-height));
+  }
+
+  .hextra-sidebar-container > .hextra-scrollbar {
+    flex: 1 1 0%;
+    min-height: 0;
+  }
+}
+
+/* Navbar logo (small raptor mark): on desktop it is hidden by default and
+   only appears once the sidebar logo has scrolled out of view
+   (assets/js/navbar-logo.js toggles .hextra-navbar-logo-visible).  It is
+   hidden with visibility, not display, so its slot stays reserved and the
+   always-visible navbar buttons never shift.  On mobile the sidebar logo
+   does not exist, so the navbar mark stays visible there. */
+@media (min-width: 768px) {
+  .hextra-navbar-logo {
+    visibility: hidden;
+  }
+  .hextra-navbar-logo.hextra-navbar-logo-visible {
+    visibility: visible;
+  }
+}
+
+/* --- Sidebar first-paint mask (see layouts/partials/custom/head-end.html) ---
+   The menu is taller than its viewport and Hextra's sidebar.js snaps it to the
+   active item on every DOMContentLoaded. On a full page load the browser paints
+   the menu at scrollTop 0 before that snap - and before
+   assets/js/sidebar-scroll.js has restored the reader's own position - so the
+   menu visibly jumps on every navigation. The inline head script adds
+   html.sidebar-loading during <head> parse, i.e. before the sidebar is even
+   rendered; the deferred script removes the class once the position is settled,
+   so the menu is first seen already in place. visibility (not display) keeps
+   the space reserved, so nothing else on the page shifts. With JS disabled the
+   class is never added and the menu simply stays visible. */
+html.sidebar-loading .hextra-sidebar-container > .hextra-scrollbar {
+  visibility: hidden;
+}
+
+/* Navbar: no brand title anymore, so the nav is justify-start.  The
+   search box (and the icon cluster + theme toggle after it) keep the
+   right edge via margin-left:auto on the search wrapper. */
+.hextra-nav-container .hextra-search-wrapper {
+  margin-left: auto;
+}
+
+/* Cards without a subtitle (e.g. the children shortcode) render the icon
+   row with top padding only (pt-4 px-4), pinning the text to the bottom
+   edge of the card.  Balance it with matching bottom padding.  Cards that
+   have a subtitle are excluded -- their subtitle provides the bottom space
+   (mb-4), and theme cards without subtitles already use p-4, so this
+   selector only changes the children shortcode's output. */
+.hextra-card:not(:has(.hextra-card-subtitle)) .hextra-card-icon {
+  padding-bottom: 1rem;
+}
+
+/* --- Figure images (markdown render-image hook) ---
+   Port of the upstream SVG-aware image render hook (layouts/_markup/
+   render-image.html): every markdown-content image renders as a figure
+   with caption, an overlay download button (bottom-right), and Hextra
+   medium-zoom when enabled.  Images shorter than 200px render as a bare
+   inline <img> instead (no figure/zoom). */
+.hextra-figure {
+  margin: 1rem 0;
+}
+
+.hextra-figure-media {
+  position: relative;
+}
+
+.hextra-figure-img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.375rem;
+}
+
+.hextra-figure-download {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #374151;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+html.dark .hextra-figure-download {
+  background: rgba(17, 17, 17, 0.85);
+  color: #d4d4d4;
+}
+
+/* Reveal the download button only while hovering the figure (or when the
+   button itself has keyboard focus), so it does not permanently obscure
+   the image. */
+.hextra-figure:hover .hextra-figure-download,
+.hextra-figure-download:focus-visible {
+  opacity: 1;
+}
+
+.hextra-figure-download:hover {
+  opacity: 1;
+}
+
+.hextra-figure-download svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.hextra-figure-caption {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+}
+
+html.dark .hextra-figure-caption {
+  color: #9ca3af;
+}
+
+.hextra-figure-inline {
+  display: inline;
+}
+
+.hash {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", monospace;
+  font-size: 0.85em;
+  overflow-wrap: anywhere;
+}
+
+/* --- GitHub-style alerts (Hextra `[!NOTE]`-style blockquotes) ---
+   The theme's title paragraph is `p.hx:font-medium` (500) with a 16px
+   icon; its content wrapper carries `hx:mt-6 hx:first:mt-0`, and the
+   `first:` variant cancels the margin (it is the first child), leaving
+   zero gap between the title and the body. Restore paragraph-like
+   spacing and enliven the title. `hx:` in class names must be escaped
+   as `hx\:` in selectors. */
+.content :where(div.hx\:overflow-x-auto > p.hx\:font-medium) {
+  margin-bottom: 1.5rem; /* matches .content p margin-top (24px) */
+  font-weight: 700;
+}
+
+.content :where(div.hx\:overflow-x-auto > p.hx\:font-medium svg) {
+  width: 32px; /* 2x the theme's 16px icon */
+  height: 32px;
+  margin-right: 0.625rem;
+  flex-shrink: 0;
+}
+
+/* --- Pagefind search modal (layouts/_partials/search-modal.html) ---
+   The modal's hx: utilities (hx:invisible, hx:fixed, hx:inset-0,
+   hx:z-50, hx:h-screen, hx:max-w-3xl, ...) are absent from Hextra's
+   prebuilt main.css, so the wrapper rendered in-flow, fully visible,
+   below the footer on every page. search.js toggles visibility by
+   removing/adding `hx:invisible` on #search-wrapper. */
+#search-wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: default;
+  background-color: rgb(115 115 115 / 0.5); /* neutral-500/50 */
+  padding: 1rem;
+}
+
+#search-wrapper.hx\:invisible {
+  visibility: hidden;
+}
+
+#search-wrapper #search-modal {
+  width: 80%;
+  max-width: 84rem; /* matches --hextra-max-page-width; no wider than the site column */
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  border: 1px solid var(--hx-color-neutral-200, #e5e5e5);
+  background-color: #ffffff;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+#search-wrapper #search-modal section {
+  flex: 1 1 0%;
+  overflow: auto;
+  padding-inline: 0.5rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.5rem;
+}
+
+html.dark #search-wrapper {
+  background-color: rgb(23 23 23 / 0.5); /* neutral-900/50 */
+}
+
+html.dark #search-wrapper #search-modal {
+  border-color: var(--hx-color-neutral-700, #404040);
+  background-color: var(--hx-color-neutral-800, #262626);
+}
+
+@media (min-width: 640px) {
+  #search-wrapper { padding: 1.5rem; }
+}
+@media (min-width: 768px) {
+  #search-wrapper { padding: 1rem 2rem; }
+}
+@media (min-width: 1024px) {
+  #search-wrapper { padding: 1rem 3rem; }
+}
+
+/* --- Pagefind UI font + scale override ---
+   pagefind-ui.css defines --pagefind-ui-font (a system font stack) and
+   --pagefind-ui-scale (0.8) on :root.  Because pagefind-ui.css is injected
+   dynamically *after* main.css, a :root override in this file would lose
+   the cascade battle.  Instead, declare the variables on the two mount
+   elements (#pagefind-ui inside the modal, #pagefind-site-search on the
+   /search/ page) — the higher specificity wins regardless of load order.
+   Scale 1 makes the UI body text (message, result excerpts) 16px, matching
+   the site's .content body size instead of 80% of it. */
+#pagefind-ui,
+#pagefind-site-search {
+  --pagefind-ui-font: var(--hx-font-sans, "Atkinson Hyperlegible", ui-sans-serif, system-ui, sans-serif);
+  --pagefind-ui-scale: 1;
+}
+
+/* --- Pagefind result spacing ---
+   pagefind-ui.css ships generous paddings (30px/40px per result) designed
+   for full-width search pages.  Tighten them for the big modal, overriding
+   with ID-scoped selectors so the ours-win rule beats the (loaded-later)
+   pagefind classes. */
+#pagefind-ui .pagefind-ui__results-area,
+#pagefind-site-search .pagefind-ui__results-area {
+  margin-top: 0.5rem;
+}
+
+#pagefind-ui .pagefind-ui__message,
+#pagefind-site-search .pagefind-ui__message {
+  padding: 0.5rem 0;
+  height: auto;
+}
+
+#pagefind-ui .pagefind-ui__result,
+#pagefind-site-search .pagefind-ui__result {
+  padding: 1rem 0 1.25rem;
+}
+
+#pagefind-ui .pagefind-ui__result-inner,
+#pagefind-site-search .pagefind-ui__result-inner {
+  margin-top: 0.25rem; /* was 10px*scale */
+}
+
+#pagefind-ui .pagefind-ui__result-excerpt,
+#pagefind-site-search .pagefind-ui__result-excerpt {
+  margin-top: 0.25rem; /* was 4px*scale */
+}
+
+#pagefind-ui .pagefind-ui__button,
+#pagefind-site-search .pagefind-ui__button {
+  margin-top: 1.25rem; /* was 40px*scale */
+}
+
+/* --- Pagefind dark-mode palette ---
+   pagefind-ui.css sets its --pagefind-ui-* variables on :root and ships no
+   dark styles.  Override them under html.dark (higher specificity than
+   :root, so it wins even though pagefind-ui.css loads after main.css):
+   text/background/border/tag all switch to Hextra's dark palette. */
+html.dark {
+  --pagefind-ui-text: #d4d4d4;          /* neutral-300 */
+  --pagefind-ui-background: #262626;    /* neutral-800 */
+  --pagefind-ui-border: #404040;        /* neutral-700 */
+  --pagefind-ui-tag: #404040;           /* neutral-700 */
+  --pagefind-ui-primary: var(--hx-color-primary-400, #60a5fa);
+}
+
+/* Section breadcrumb injected by assets/js/search.js into each result:
+   the top-level section (and any intermediate path) derived from the
+   result URL, e.g. "Documentation > VQL".  Each segment links back to
+   its section page.  It is inserted directly below the result title.
+   NB: pagefind-ui.css's `.pagefind-ui--reset * { all: unset }` zeroes any
+   same-specificity margins, so these rules must stay ID-scoped. */
+#pagefind-ui .pagefind-ui__breadcrumb,
+#pagefind-site-search .pagefind-ui__breadcrumb {
+  display: block;
+  margin-top: 0.4rem;
+  margin-bottom: 0.375rem; /* separation from the highlighted excerpt */
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+}
+#pagefind-ui .pagefind-ui__breadcrumb a,
+#pagefind-site-search .pagefind-ui__breadcrumb a {
+  color: var(--hx-color-primary-600, #2563eb);
+  text-decoration: none;
+}
+#pagefind-ui .pagefind-ui__breadcrumb a:hover,
+#pagefind-site-search .pagefind-ui__breadcrumb a:hover {
+  color: var(--hx-color-primary-700, #1d4ed8);
+  text-decoration: underline;
+}
+/* Non-hyperlink segment (missing intermediate level, e.g. /blog/2024):
+   same weight as the clickable links but muted so it reads as part of
+   the path without implying a destination. */
+#pagefind-ui .pagefind-ui__breadcrumb-seg,
+#pagefind-site-search .pagefind-ui__breadcrumb-seg {
+  color: var(--hx-color-neutral-500, #737373);
+  cursor: default;
+}
+#pagefind-ui .pagefind-ui__breadcrumb-sep,
+#pagefind-site-search .pagefind-ui__breadcrumb-sep {
+  margin: 0 0.25em;
+  opacity: 0.6;
+}
+html.dark #pagefind-ui .pagefind-ui__breadcrumb a,
+html.dark #pagefind-site-search .pagefind-ui__breadcrumb a {
+  color: var(--hx-color-primary-400, #60a5fa);
+}
+html.dark #pagefind-ui .pagefind-ui__breadcrumb a:hover,
+html.dark #pagefind-site-search .pagefind-ui__breadcrumb a:hover {
+  color: var(--hx-color-primary-300, #93c5fd);
+}
+html.dark #pagefind-ui .pagefind-ui__breadcrumb-seg,
+html.dark #pagefind-site-search .pagefind-ui__breadcrumb-seg {
+  color: var(--hx-color-neutral-400, #a3a3a3);
+}
+
+/* Pagefind result tag badges: custom meta renders as
+   .pagefind-ui__result-tag chips; assets/js/search.js splits the single
+   "tags" meta chip into one chip per tag.  Render them as small
+   rounded-rect pills with a subtle background. */
+/* Base pill-badge class used by search-result tag chips, content-page
+   "Tags:" badges, and section-search cards. */
+.tag-badge {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.375rem; /* near-rectangular */
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  color: #ffffff;
+  background-color: #15803d; /* green-700, matches the announcement banner */
+  text-decoration: none;
+  white-space: nowrap;
+}
+/* Linked pills (section search cards): darker green on hover. */
+a.tag-badge:hover,
+[data-tag-href]:hover {
+  color: #ffffff;
+  background-color: #166534; /* green-800 */
+}
+[data-tag-href] {
+  cursor: pointer;
+}
+/* Pagefind result tag chips receive the same treatment via their own
+   class name; keep them margin-separated from the excerpt. */
+#pagefind-ui .pagefind-ui__result-tag,
+#pagefind-site-search .pagefind-ui__result-tag {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.375rem; /* near-rectangular */
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  color: #ffffff;
+  background-color: #15803d; /* green-700, matches the announcement banner */
+  margin: 0.375rem 0.375rem 0 0; /* separation from excerpt above */
+}
+html.dark .tag-badge,
+html.dark #pagefind-ui .pagefind-ui__result-tag,
+html.dark #pagefind-site-search .pagefind-ui__result-tag {
+  color: #ffffff;
+  background-color: #14532d; /* green-900, matches the announcement banner */
+}
+
+/* The chip list the PagefindUI renders around the tags: flex row, with
+   the default 20px top gap cut down so the pills sit close to the
+   excerpt, and the gap between pills handled by the badge margins. */
+#pagefind-ui .pagefind-ui__result-tags,
+#pagefind-site-search .pagefind-ui__result-tags {
+  gap: 0;
+  margin-top: 0.25rem; /* was 20px*scale */
+}
+
+/* Sub-result (anchor) cards repeat the page tags under every heading
+   match; skip them - the top-level card already shows the chips. */
+#pagefind-ui .pagefind-ui__result-nested .pagefind-ui__result-tags,
+#pagefind-site-search .pagefind-ui__result-nested .pagefind-ui__result-tags {
+  display: none;
+}
+
+/* Content-page "Tags:" paragraphs: converted by assets/js/search.js into
+   a row of .tag-badge pills (same styling as the search-result chips).
+   Flex gap keeps the pills separated horizontally (the search-result
+   chips use per-badge margins to achieve the same spacing). */
+.content p.tags-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  align-items: center;
+}
+
+/* Inline tag pills appended to the end of a prose paragraph (exchange
+   artifact descriptions that close with a hashtag line): same pill
+   spacing as .tags-badges, with a small gap before the first pill so
+   they read as separate from the surrounding text. */
+.content .tags-badges-inline {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  align-items: center;
+  margin-left: 0.375rem;
+}
+
+/* --- Pagefind filter panel (/search/ page) ---
+   Once the index carries data-pagefind-filter values, the old PagefindUI
+   renders a checkbox sidebar (fieldset.pagefind-ui__filter-panel) next to
+   the results.  On this site the /search/ column (~768px) wraps the drawer,
+   so the panel renders as a collapsible "Section" accordion above the
+   results - style it as such (border-bottom, no right rules). */
+#pagefind-site-search .pagefind-ui__filter-panel {
+  margin-top: 1rem;
+}
+#pagefind-site-search .pagefind-ui__filter-panel-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--hx-color-neutral-500, #737373);
+}
+#pagefind-site-search .pagefind-ui__filter-block {
+  border-bottom: 1px solid var(--hx-color-neutral-200, #e5e5e5);
+}
+#pagefind-site-search .pagefind-ui__filter-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--hx-color-neutral-900, #171717);
+}
+html.dark #pagefind-site-search .pagefind-ui__filter-name {
+  color: var(--hx-color-neutral-100, #f5f5f5);
+}
+#pagefind-site-search .pagefind-ui__filter-group {
+  gap: 0.625rem;
+  padding-top: 0.875rem;
+}
+#pagefind-site-search .pagefind-ui__filter-value {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+#pagefind-site-search .pagefind-ui__filter-label {
+  font-size: 0.875rem;
+  color: var(--hx-color-neutral-700, #404040);
+}
+html.dark #pagefind-site-search .pagefind-ui__filter-label {
+  color: var(--hx-color-neutral-300, #d4d4d4);
+}
+#pagefind-site-search .pagefind-ui__filter-checkbox {
+  border: 1px solid var(--hx-color-neutral-300, #d4d4d4);
+  background-color: transparent;
+  border-radius: 4px;
+}
+#pagefind-site-search .pagefind-ui__filter-checkbox:checked {
+  background-color: var(--hx-color-primary-600, #2563eb);
+  border-color: var(--hx-color-primary-600, #2563eb);
+}
+
+/* The search modal keeps the tag chips but not the filter sidebar
+   (filtering is a /search/ page feature). */
+#pagefind-ui .pagefind-ui__filter-panel {
+  display: none;
+}
+
+/* --- /search/ page: "Tags" accordion (shortcode renders the same
+   taxonomy listing as the /tags/ page; search.js moves it into the
+   filter panel, under the Section block).  The svelte-scoped pagefind
+   rules don't cover this element, so it needs its own chrome here.
+   The rules are scoped to the element id so they apply both before the
+   search (as a sibling of the PagefindUI mount) and once it is moved
+   into the filter panel; id specificity also beats the pagefind
+   `.pagefind-ui--reset * { all: unset }` inside the UI root. */
+#pagefind-site-tags {
+  cursor: default;
+  margin-top: 0.75rem;
+}
+/* Inside the panel, the filter-panel already carries margin-top —
+   reset so the accordion sits flush under the Section block. */
+#pagefind-site-search .pagefind-ui__filter-panel #pagefind-site-tags {
+  margin-top: 0;
+}
+#pagefind-site-tags .search-tags-name {
+  position: relative;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  height: 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--hx-color-neutral-900, #171717);
+}
+html.dark #pagefind-site-tags .search-tags-name {
+  color: var(--hx-color-neutral-100, #f5f5f5);
+}
+#pagefind-site-tags .search-tags-name::-webkit-details-marker,
+#pagefind-site-tags .search-tags-name::marker {
+  display: none;
+}
+/* Same disclosure chevron as the Section blocks (border triangle). */
+#pagefind-site-tags .search-tags-name::after {
+  content: "";
+  position: absolute;
+  right: 0.375rem;
+  top: 50%;
+  width: 0.5rem;
+  height: 0.5rem;
+  border: solid 2px currentColor;
+  border-right: 0;
+  border-top: 0;
+  transform: translateY(-70%) rotate(-45deg);
+}
+#pagefind-site-tags[open] .search-tags-name::after {
+  transform: translateY(-70%) rotate(-225deg);
+}
+/* Tag cloud: the panel column is narrow, so wrap instead of the /tags/
+   page's multi-column grid. */
+#pagefind-site-tags .search-tags-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  padding-top: 0.875rem;
+}
+/* Filter-toggle pills in the /search/ Tags accordion.
+   Originally styled for <a> elements; now rendered as <button> so a click
+   toggles a Pagefind filter instead of navigating.  appearance:none keeps
+   the pill chrome; :is-active marks an armed filter. */
+#pagefind-site-tags .search-tag-link {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.375rem;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  color: var(--hx-color-neutral-700, #404040);
+  background-color: var(--hx-color-neutral-100, #f5f5f5);
+  border: 1px solid var(--hx-color-neutral-200, #e5e5e5);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+#pagefind-site-tags .search-tag-link:hover {
+  color: var(--hx-color-primary-600, #2563eb);
+  background-color: var(--hx-color-primary-50, #eff6ff);
+  border-color: var(--hx-color-primary-300, #93c5fd);
+}
+#pagefind-site-tags .search-tag-link.is-active {
+  color: var(--hx-color-primary-600, #2563eb);
+  background-color: var(--hx-color-primary-50, #eff6ff);
+  border-color: var(--hx-color-primary-300, #93c5fd);
+}
+#pagefind-site-tags .search-tag-count {
+  display: none;
+}
+html.dark #pagefind-site-tags .search-tag-link {
+  color: var(--hx-color-neutral-300, #d4d4d4);
+  background-color: var(--hx-color-neutral-700, #404040);
+  border-color: var(--hx-color-neutral-600, #525252);
+}
+html.dark #pagefind-site-tags .search-tag-link:hover {
+  color: var(--hx-color-primary-400, #60a5fa);
+  background-color: var(--hx-color-primary-900, #1e3a5f);
+  border-color: var(--hx-color-primary-700, #1d4ed8);
+}
+html.dark #pagefind-site-tags .search-tag-link.is-active {
+  color: var(--hx-color-primary-400, #60a5fa);
+  background-color: var(--hx-color-primary-900, #1e3a5f);
+  border-color: var(--hx-color-primary-700, #1d4ed8);
+}
+/* Result chip links inherit the chip styling; dark-mode overrides live
+   below where .pagefind-ui__result-tag dark rules are declared. */
+.pagefind-ui__result-tag-link {
+  text-decoration: none;
+  color: inherit;
+}
+/* Ensure the hidden attribute (used to suppress native PagefindUI tag
+   filter blocks) isn't overridden by Pagefind's own display rules. */
+#pagefind-site-search .pagefind-ui__filter-block[hidden] {
+  display: none !important;
+}
+
+/* Result spacing: keep the excerpt separated from the breadcrumb above
+   and the tag pills below so they don't run into each other. */
+#pagefind-ui .pagefind-ui__result-inner,
+#pagefind-site-search .pagefind-ui__result-inner {
+  margin-top: 0.25rem;
+}
+
+#pagefind-ui .pagefind-ui__result-excerpt,
+#pagefind-site-search .pagefind-ui__result-excerpt {
+  margin-top: 0.125rem;
+  margin-bottom: 0;
+}
+
+/* --- Markdown inside feature-card subtitles (landing page) ---
+   The cards render in a `not-prose` context (`.hextra-cards` carries the
+   class), so Hextra's prose rules for blockquote/a/code/p never reach the
+   card body.  Markdown is still processed to HTML, but unstyled --
+   a `>` quote would render as plain text.  Give the common inline/block
+   constructs minimal typographic chrome here. */
+.hextra-card-subtitle p {
+  margin: 0;
+}
+
+.hextra-card-subtitle blockquote {
+  margin: 0;
+  padding: 0 0 0 0.625rem;
+  border-left: 2px solid var(--hx-color-neutral-300, #d4d4d4);
+  color: var(--hx-color-neutral-700, #404040);
+}
+
+html.dark .hextra-card-subtitle blockquote {
+  border-left-color: var(--hx-color-neutral-600, #525252);
+  color: var(--hx-color-neutral-400, #a3a3a3);
+}
+
+.hextra-card-subtitle a {
+  color: var(--hx-color-primary-600, #2563eb);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+html.dark .hextra-card-subtitle a {
+  color: var(--hx-color-primary-400, #60a5fa);
+}
+
+.hextra-card-subtitle code {
+  padding: 0 0.25em;
+  border-radius: 0.25rem;
+  background: var(--hx-color-neutral-200, #e5e5e5);
+  font-family: var(--hx-font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 0.9em;
+}
+
+html.dark .hextra-card-subtitle code {
+  background: var(--hx-color-neutral-700, #404040);
+}
+/* --- Announcement banner (params.banner): green release/security strip. ---
+   Overrides the theme's neutral-900/800 background so the banner reads as a
+   security/release notice. Text stays near-white for contrast. */
+.hextra-banner {
+  background-color: #15803d; /* green-700 */
+}
+
+html.dark .hextra-banner {
+  background-color: #14532d; /* green-900 */
+}
+
+/* --- Announcements banner card (hextra-card-banner): dark mode. ---
+   The theme compiles only dark:bg-indigo-900/30 (translucent, muddy over the
+   dark page bg), so tint via a solid indigo-950 here. The --hx-color-* custom
+   property does not exist for indigo-950; hardcode the Tailwind value. */
+html.dark .hextra-card-banner {
+  background-color: #1e1b4b; /* indigo-950 */
+  border-color: #3730a3;     /* indigo-800 */
+}
+
+/* --- VQL Reference search cards: argument tables ---
+   static/js/section-search.js renders each VQL card's "Arg | Description |
+   Type" table with `hx:` utility classes, but the color utilities it needs
+   (hx:border-gray-300, hx:bg-gray-50, ...) only exist inside Hextra's
+   `.content` typography selectors via @apply - they are never emitted as
+   standalone classes, so the card tables render borderless and unstyled.
+   Reapply the same look as the tables on the function/plugin/accessor
+   pages using the theme's gray CSS variables. */
+#ssr-vql .hextra-cards table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.875rem; /* text-sm */
+  line-height: 1.25rem; /* leading-5 */
+  margin: 0.5rem 0 1rem;
+}
+
+#ssr-vql .hextra-cards table thead {
+  background-color: var(--hx-color-gray-50, #f9fafb);
+}
+
+html.dark #ssr-vql .hextra-cards table thead {
+  background-color: rgb(107 114 128 / 0.2); /* gray-600/20 */
+}
+
+#ssr-vql .hextra-cards table tr {
+  margin: 0;
+  border-top: 1px solid var(--hx-color-gray-300, #d1d5db);
+  padding: 0;
+}
+
+html.dark #ssr-vql .hextra-cards table tr {
+  border-top-color: var(--hx-color-gray-600, #4b5563);
+}
+
+#ssr-vql .hextra-cards table th,
+#ssr-vql .hextra-cards table td {
+  margin: 0;
+  border: 1px solid var(--hx-color-gray-300, #d1d5db);
+  padding: 0.5rem; /* p-2 */
+}
+
+html.dark #ssr-vql .hextra-cards table th,
+html.dark #ssr-vql .hextra-cards table td {
+  border-color: var(--hx-color-gray-600, #4b5563);
+}
+
+#ssr-vql .hextra-cards table th {
+  font-weight: 600;
+}
+
+/* --- Sidebar footer: "Brought to you by Rapid7" ---
+   Mirrors the legacy docs site footer: a black band pinned to the bottom
+   of the left sidebar, with the white Rapid7 logo and copyright line.
+   The negative horizontal margins cancel the theme-toggle row's mx-4 so
+   the strip spans the full sidebar width. */
+.hextra-sidebar-footer {
+  background-color: #000;
+  color: #b3b3b3;
+  font-size: 13px;
+  margin: 0 -1rem;
+  padding: 0.625rem 1rem;
+}
+
+.hextra-sidebar-footer .rapid7 {
+  float: right;
+  height: 16px;
+}
+
+/* --- FontAwesome icons embedded in content ---
+   GUI icons appear as <i class="fas fa-..."> / <i class="fa-solid fa-...">
+   (FontAwesome 6 Free, vendored in static/fontawesome). Render them at 2x
+   the surrounding text so the small GUI glyphs stay legible. FA's own
+   classes already set line-height:1 and width:1.25em, so scaling font-size
+   alone keeps the inline box tidy; vertical-align nudges the glyph onto
+   the text baseline (FA's recommended inline-icon alignment). */
+i.fas,
+i.fa-solid,
+i.far,
+i.fa-regular,
+i.fab,
+i.fa-brands {
+  font-size: 2em;
+  vertical-align: -0.125em;
+}
+
+/* --- Cross-document View Transitions ---
+   Opt in to the browser's native page-to-page transition. Chrome and
+   Safari animate a same-origin navigation instead of cutting straight to
+   the new document, which removes the last of the flash on a sidebar
+   click. No JavaScript and no framework: the browser snapshots the old
+   page, swaps, snapshots the new one, and cross-fades between the two.
+
+   The navbar and the desktop sidebar are lifted out of the page snapshot
+   with their own view-transition-name so they morph in place instead of
+   cross-fading with the content. They occupy the same position on every
+   page, so the morph is near-identity and the chrome reads as static
+   while only the content and the table of contents change.
+
+   Scoped to >=768px: below that the sidebar is an off-canvas drawer that
+   Hextra translates out of view, and a named transition would try to
+   morph it while it is hidden.
+
+   Browsers without support ignore both rules and keep the current
+   behaviour. */
+@view-transition {
+  navigation: auto;
+}
+
+@media (min-width: 768px) {
+  .hextra-nav-container {
+    view-transition-name: hextra-nav;
+  }
+
+  .hextra-sidebar-container {
+    view-transition-name: hextra-sidebar;
+  }
+}
+
+/* Honour a reduced-motion preference by keeping the navigation instant. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
