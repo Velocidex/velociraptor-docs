@@ -173,6 +173,72 @@ html:where(.dark, .dark *) .hextra-code-filename {
   background-color: color-mix(in oklab, var(--hx-color-primary-300) 10%, var(--hx-color-dark));
 }
 
+/* VQL light-mode palette: Atom One Light tokens. Hextra ships Chroma's
+   stock GitHub Light, whose black-bold keywords and murky reds look flat next
+   to the GitHub Dark palette used in dark mode; the values below are the
+   Atom One Light tokens (purple keywords, green strings, blue functions).
+   Scoped to prerendered VQL fences only (data-vql="rendered"), so SQL/Python/
+   etc. keep the stock palette, and to light mode only (html:not(.dark)) so
+   dark mode is untouched. */
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .k,
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .kd,
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .kn,
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .kp,
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .kr {
+  color: #a626a4;
+  font-weight: 600;
+}
+
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .kt {
+  color: #a626a4;
+}
+
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .kc {
+  color: #7b3814;
+}
+
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .nf {
+  color: #4078f2;
+  font-weight: 600;
+}
+
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .nv,
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .py {
+  color: #e45649;
+}
+
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .nc {
+  color: #c18401;
+  font-weight: 600;
+}
+
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .s1,
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .s2,
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .sh {
+  color: #50a14f;
+}
+
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .m {
+  color: #986801;
+}
+
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .c1,
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .cm,
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .c,
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .ch,
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .cs {
+  color: #a0a1a7;
+  font-style: italic;
+}
+
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .o {
+  color: #0184bc;
+}
+
+html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .err {
+  color: #e45649;
+}
+
 /* --- 404 page (layouts/404.html) ---
    Centred in the column to the right of the docs sidebar, under the
    navbar/footer chrome. The big error code uses the theme accent so it
