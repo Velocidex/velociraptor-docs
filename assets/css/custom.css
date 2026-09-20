@@ -1556,6 +1556,22 @@ i.fa-brands {
   }
 }
 
+/* --- hextra-cards descriptions (Artifact Reference / Artifact Exchange /
+   VQL Reference index pages) ---
+   The default subtitle style (text-sm, gray-500) reads too small and
+   muted for a paragraph-length description.  Render it at the site's
+   normal paragraph size and colour -- both are set on the theme in
+   body:where(.dark, .dark *), so this matches the prose reading text. */
+.hextra-card-subtitle {
+  font-size: var(--hx-text-base);
+  line-height: 1.75;
+  color: var(--hx-color-gray-800);
+}
+
+.dark .hextra-card-subtitle {
+  color: var(--hx-color-gray-100);
+}
+
 /* Honour a reduced-motion preference by keeping the navigation instant. */
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*),
