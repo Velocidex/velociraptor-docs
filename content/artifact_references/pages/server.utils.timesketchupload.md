@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.TimesketchUpload
 description: "Uploads Velociraptor timelines to Timesketch using the Timesketch\nclient library."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

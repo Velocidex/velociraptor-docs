@@ -1,6 +1,7 @@
 ---
 title: Windows.Events.TrackProcessesBasic
 description: "Tracks running and exited processes by polling pslist() at a\nconfigurable interval."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

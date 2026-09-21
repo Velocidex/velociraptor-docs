@@ -1,6 +1,7 @@
 ---
 title: Windows.System.SVCHost
 description: "Lists `svchost.exe` processes whose parent is not services.exe,\nindicating suspicious activity."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

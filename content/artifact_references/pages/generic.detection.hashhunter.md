@@ -1,6 +1,7 @@
 ---
 title: Generic.Detection.HashHunter
 description: "Searches the filesystem for a list of hashes, with path file size\nand date filtering."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

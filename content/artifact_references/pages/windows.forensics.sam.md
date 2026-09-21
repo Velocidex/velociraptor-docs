@@ -1,6 +1,7 @@
 ---
 title: Windows.Forensics.SAM
 description: "Parses the Windows SAM registry hive to extract user account\ndetails, RIDs, and password hashes."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

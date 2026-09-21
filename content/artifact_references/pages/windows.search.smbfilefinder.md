@@ -1,6 +1,7 @@
 ---
 title: Windows.Search.SMBFileFinder
 description: "Searches for files on remote SMB shares using glob patterns and\ninspects file content using Yara rules, with optional hash\ncalculation and file upload."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

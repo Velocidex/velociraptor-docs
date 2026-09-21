@@ -1,6 +1,7 @@
 ---
 title: Linux.Network.NetstatEnriched
 description: "Reports network connections and enriches with process information.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

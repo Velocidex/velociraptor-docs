@@ -1,6 +1,7 @@
 ---
 title: Windows.NTFS.I30
 description: "Carves the $I30 index stream from NTFS directories to recover\npreviously deleted file entries, and optionally upload the $I30\nstream to the server"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

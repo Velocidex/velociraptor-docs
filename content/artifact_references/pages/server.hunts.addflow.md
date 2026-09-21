@@ -1,6 +1,7 @@
 ---
 title: Server.Hunts.AddFlow
 description: "Links an existing flow to a hunt so it appears in the hunt's\nresults."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

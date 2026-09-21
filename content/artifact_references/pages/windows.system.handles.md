@@ -1,6 +1,7 @@
 ---
 title: Windows.System.Handles
 description: "Lists open handles (files, registry keys, etc.) for processes\nmatching a regex pattern."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

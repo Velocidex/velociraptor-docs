@@ -1,6 +1,7 @@
 ---
 title: Windows.Forensics.RecycleBin
 description: "Parses Recycle Bin `$I` metadata files to recover deleted file names,\noriginal paths, and deletion timestamps."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

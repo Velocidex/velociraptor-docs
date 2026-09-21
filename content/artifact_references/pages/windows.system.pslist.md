@@ -1,6 +1,7 @@
 ---
 title: Windows.System.Pslist
 description: "Enumerates running processes along with their executable paths and\nassociated details, with optional authenticode trust verification\nand binary hashing.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

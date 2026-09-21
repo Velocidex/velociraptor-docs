@@ -1,6 +1,7 @@
 ---
 title: Windows.System.CriticalServices
 description: "Checks that important Windows services like antivirus and update\nservices are currently running."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

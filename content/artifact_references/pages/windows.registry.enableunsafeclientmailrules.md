@@ -1,6 +1,7 @@
 ---
 title: Windows.Registry.EnableUnsafeClientMailRules
 description: "Checks Outlook Security registry for EnableUnsafeClientMailRules set\nto 1 (enabled), indicating potential persistence."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
@@ -75,7 +76,7 @@ sources:
                 OutlookSecureTempFolder
               FROM read_reg_key(
                  globs=KeyGlob,
-                 root=pathspec(DelegatePath=OSPath),
+                 root=pathspec(DelegatePath=NTUser),
                  accessor="raw_reg")
               WHERE EnableUnsafeClientMailRules = 1
            })

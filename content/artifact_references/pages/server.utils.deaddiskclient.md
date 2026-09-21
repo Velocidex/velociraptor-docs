@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.DeadDiskClient
 description: "Automates the preparatory steps for dead disk analysis by inspecting\nthe disk image, building an appropriate remapping config, and then\nlaunching a virtual Velociraptor client which uses that remapping\nconfig."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

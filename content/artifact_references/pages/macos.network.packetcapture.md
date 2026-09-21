@@ -1,6 +1,7 @@
 ---
 title: MacOS.Network.PacketCapture
 description: "Captures network packets using tcpdump and uploads the resulting\npcap file."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Windows.Registry.NTUser.Upload
 description: "Uploads each user's NTUSER.DAT registry hive from disk by bypassing\nfile locking with raw NTFS parsing."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

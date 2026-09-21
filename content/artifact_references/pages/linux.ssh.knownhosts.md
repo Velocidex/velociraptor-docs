@@ -1,6 +1,7 @@
 ---
 title: Linux.Ssh.KnownHosts
 description: "Finds and parses SSH known hosts files."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

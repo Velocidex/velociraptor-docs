@@ -1,6 +1,7 @@
 ---
 title: Windows.Applications.Edge.Favicons
 description: "Enumerates Edge browser favicons including page URLs, favicon URLs,\nand last updated timestamps."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

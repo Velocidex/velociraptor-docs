@@ -1,6 +1,7 @@
 ---
 title: Windows.Remediation.Sinkhole
 description: "Configures DNS sinkholing by editing the Windows hosts file (with a\nprovided backup and restore mechanism)."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

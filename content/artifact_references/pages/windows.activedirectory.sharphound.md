@@ -1,6 +1,7 @@
 ---
 title: Windows.ActiveDirectory.SharpHound
 description: "Deploys the SharpHound tool to collect Active Directory relationship\ndata for BloodHound."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

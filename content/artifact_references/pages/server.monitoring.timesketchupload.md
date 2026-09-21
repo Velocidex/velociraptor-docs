@@ -1,6 +1,7 @@
 ---
 title: Server.Monitoring.TimesketchUpload
 description: "Watches for creation of new Velociraptor timelines and\nautomatically uploads matching ones to Timesketch.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

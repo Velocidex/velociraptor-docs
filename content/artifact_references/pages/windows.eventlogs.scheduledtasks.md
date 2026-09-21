@@ -1,6 +1,7 @@
 ---
 title: Windows.EventLogs.ScheduledTasks
 description: "Extracts and formats Windows scheduled task events from the\nTaskScheduler operational and Security logs."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

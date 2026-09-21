@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.AddUser
 description: "Creates a new Velociraptor GUI user with a specified role and a\nrandomly generated password."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

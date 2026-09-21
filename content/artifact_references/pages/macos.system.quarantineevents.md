@@ -1,6 +1,7 @@
 ---
 title: MacOS.System.QuarantineEvents
 description: "Parses the QuarantineEventsV2 database, which provides information\non when a file was downloaded from the internet.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

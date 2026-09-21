@@ -1,6 +1,7 @@
 ---
 title: Server.Internal.ClientConflict
 description: "Emits events when the server detects a client ID conflict between\nduplicate clients."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

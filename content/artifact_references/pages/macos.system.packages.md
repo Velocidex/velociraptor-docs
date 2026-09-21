@@ -1,6 +1,7 @@
 ---
 title: MacOS.System.Packages
 description: "Parses `system_profiler` output to enumerate installed macOS\napplications with metadata.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

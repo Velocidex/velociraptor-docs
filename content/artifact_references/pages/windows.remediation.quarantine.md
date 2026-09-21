@@ -1,6 +1,7 @@
 ---
 title: Windows.Remediation.Quarantine
 description: "Configures Windows IPsec policy to block network traffic except for\nDNS, DHCP, and Velociraptor server access."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Windows.EventLogs.ServiceCreationComspec
 description: "Detects SCM lateral movement by searching System event log for\nservice creation events (EID 7045) with \"COMSPEC\" or \"cmd.exe\" in\nthe image path."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

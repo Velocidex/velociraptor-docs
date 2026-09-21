@@ -1,6 +1,7 @@
 ---
 title: Server.Slack.Clients.Online
 description: "Sends a Slack notification when clients with a target label appear\nonline."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

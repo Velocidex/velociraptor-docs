@@ -1,6 +1,7 @@
 ---
 title: Server.Hunts.List
 description: "Enumerates scheduled hunts showing hunt IDs, artifacts, and status.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

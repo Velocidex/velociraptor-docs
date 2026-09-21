@@ -1,6 +1,7 @@
 ---
 title: Generic.Client.Stats
 description: "Records CPU and memory statistics for the Velociraptor client\nprocess."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

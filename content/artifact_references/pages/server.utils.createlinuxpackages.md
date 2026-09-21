@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.CreateLinuxPackages
 description: "Builds Debian (.deb) and RPM packages with embedded client config for the current organization."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

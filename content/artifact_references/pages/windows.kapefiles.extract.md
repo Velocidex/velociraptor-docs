@@ -1,6 +1,7 @@
 ---
 title: Windows.KapeFiles.Extract
 description: "Extracts files collected by the `Windows.KapeFiles.Targets` or\n`Windows.Triage.Targets` artifacts, and restores the original\ntimestamps on the extracted files."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

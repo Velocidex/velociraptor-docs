@@ -1,6 +1,7 @@
 ---
 title: LogScale.Flows.Upload
 description: "Forwards completed flow results to LogScale with configurable\nbatching and artifact filtering.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

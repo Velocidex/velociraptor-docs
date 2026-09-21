@@ -1,6 +1,7 @@
 ---
 title: Windows.System.VBScript
 description: "Runs VBScript code on Windows endpoints using the Windows Script\nHost (cscript.exe)."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

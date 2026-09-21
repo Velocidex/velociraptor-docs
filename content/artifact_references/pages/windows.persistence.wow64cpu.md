@@ -1,6 +1,7 @@
 ---
 title: Windows.Persistence.Wow64cpu
 description: "Checks for wow64cpu.dll replacement Autorun in Windows 10.\nhttp://www.hexacorn.com/blog/2019/07/11/beyond-good-ol-run-key-part-108-2/\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

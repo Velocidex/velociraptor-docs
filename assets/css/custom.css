@@ -3,6 +3,26 @@
    this file covers legacy widget markup that has no hx: classes.
    Dark mode via the `.dark` class on <html>. */
 
+/* --- Brand accent: Velociraptor green ---
+   Hextra derives the whole primary-* shade scale from --primary-hue and
+   --primary-lightness (the theme defaults are a blue, 212/204deg, at 50%
+   lightness, which renders as a garish neon green here).  Hue 130deg, a
+   teal-leaning take on the green of the #00aa00 Velociraptor logo, at 37%
+   lightness: primary-600 resolves to #00aa1c and the rest of the scale is
+   softer light and dark shades of the same hue.  Chosen by comparing
+   seven hue/lightness variants side by side.  Every primary-accented
+   element - active nav buttons, active sidebar item, links, buttons,
+   focus rings - follows automatically. */
+:root {
+  --primary-hue: 130deg;
+  --primary-lightness: 37%;
+}
+
+.dark {
+  --primary-hue: 130deg;
+  --primary-lightness: 37%;
+}
+
 /* --- Site-wide font: Iosevka Term ---
    Same subsetted font the Velociraptor GUI ships
    (gui/velociraptor/src/fonts/). The subsets cover ASCII and Latin-1
@@ -161,16 +181,19 @@ pre {
    dark): that reads correctly over the plain page background but inside an
    admonition's solidly coloured panel it lets the panel colour show through,
    so the same fence changes colour between contexts. Instead mix the same
-   tint over the page background, producing an opaque colour that matches the
-   normal code-block look everywhere. */
+   rough tint over the page background, producing an opaque colour that
+   matches the normal code-block look everywhere.  The tint is neutral-*
+   (grey), NOT primary-*: the accent has been rebranded green, and a green
+   code-block background reads as an error/design leak, so the substrate
+   stays achromatic while only the accent chrome is green. */
 .hextra-code-block pre,
 .hextra-code-filename {
-  background-color: color-mix(in oklab, var(--hx-color-primary-700) 5%, var(--hx-color-white));
+  background-color: color-mix(in oklab, var(--hx-color-neutral-700) 5%, var(--hx-color-white));
 }
 
 html:where(.dark, .dark *) .hextra-code-block pre,
 html:where(.dark, .dark *) .hextra-code-filename {
-  background-color: color-mix(in oklab, var(--hx-color-primary-300) 10%, var(--hx-color-dark));
+  background-color: color-mix(in oklab, var(--hx-color-neutral-300) 10%, var(--hx-color-dark));
 }
 
 /* VQL light-mode palette: Atom One Light tokens. Hextra ships Chroma's
@@ -255,13 +278,34 @@ html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .err {
   text-align: center;
 }
 
+.hextra-404-brand {
+  display: inline-block;
+  width: min(320px, 100%);
+}
+
+.hextra-404-brand img {
+  width: 100%;
+  height: auto;
+}
+
+/* "Go to homepage" button and 404 code use the Velociraptor green
+   (#00aa00) from the logo, not the site's Hextra accent.  Overrides the
+   hx:bg-primary-* utilities on the link. */
+.hextra-404-action {
+  background-color: #00aa00;
+}
+
+.hextra-404-action:hover {
+  background-color: #008a00;
+}
+
 .hextra-404-code {
   font-size: clamp(3rem, 8vw, 5rem);
   font-weight: 700;
   line-height: 1;
   font-variant-numeric: tabular-nums;
   margin: 1.5rem 0 0.25rem;
-  color: var(--hx-color-primary-600);
+  color: #00aa00;
 }
 
 .hextra-404-title {
@@ -647,13 +691,20 @@ html.dark .hextra-nav-container-blur {
 }
 
 /* Navbar logo: bare raptor mark.  On desktop it is hidden by default
-   (visibility, not display — see the media query further down) and only
-   appears once the sidebar logo has scrolled out of view; on mobile it
-   is the only logo and stays visible.  The 28px height is pinned here;
-   width scales from the SVG's natural 0.62 aspect ratio. */
-.hextra-navbar-logo img {
-  height: 28px;
-  width: auto;
+(visibility, not display — see the media query further down) and only
+    appears once the sidebar logo has scrolled out of view; on mobile it
+    is the only logo and stays visible.  The 34px height is pinned here;
+    width scales from the SVG's natural 0.62 aspect ratio. */
+ .hextra-navbar-logo img {
+   height: 34px;
+   width: auto;
+ }
+
+/* Admonitions (GitHub-style alerts, layouts/_partials/components/
+   github-style-alert.html): drop the 1px border around the block.
+   The coloured background and icon already delineate it. */
+.hextra-admonition {
+  border: none;
 }
 
 /* Footer copyright block: the theme default was py-12 (48px per side →

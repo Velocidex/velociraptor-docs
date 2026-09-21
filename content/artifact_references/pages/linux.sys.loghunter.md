@@ -1,6 +1,7 @@
 ---
 title: Linux.Sys.LogHunter
 description: "Provides grep-like search capabilities for Linux, MacOS and Windows\nlogs."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Server.Monitor.VeloMetrics
 description: "Collects Velociraptor server performance metrics from the Prometheus\nendpoint with CPU and memory stats.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Generic.Applications.Office.Keywords
 description: "Scans Microsoft Office and LibraOffice/OpenDocument files for\nkeyword matches using YARA rules via the `zip` accessor."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

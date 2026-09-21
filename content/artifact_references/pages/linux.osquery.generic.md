@@ -1,6 +1,7 @@
 ---
 title: Linux.OSQuery.Generic
 description: "Deploys the osquery binary and runs a user-specified SQL query,\nreturning parsed JSON results."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

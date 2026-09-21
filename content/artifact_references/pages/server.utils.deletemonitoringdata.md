@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.DeleteMonitoringData
 description: "Purges historical monitoring logs from the server filestore with\ndry-run and confirmation safety."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

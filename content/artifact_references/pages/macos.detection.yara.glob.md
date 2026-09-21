@@ -1,6 +1,7 @@
 ---
 title: MacOS.Detection.Yara.Glob
 description: "Runs YARA rules against files discovered via glob search with\nconfigurable filters and optional upload of hit context."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

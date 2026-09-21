@@ -1,6 +1,7 @@
 ---
 title: Windows.Registry.AppCompatCache
 description: "Parses the AppCompatCache (Shimcache) registry value to enumerate\nrecently executed application paths."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

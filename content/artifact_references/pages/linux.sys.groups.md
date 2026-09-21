@@ -1,6 +1,7 @@
 ---
 title: Linux.Sys.Groups
 description: "Lists system group IDs, names and memberships from `/etc/group`.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

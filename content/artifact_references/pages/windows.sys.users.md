@@ -1,6 +1,7 @@
 ---
 title: Windows.Sys.Users
 description: "Lists user accounts that have logged on locally by inspecting\nregistry profile list keys for locally-created profiles."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

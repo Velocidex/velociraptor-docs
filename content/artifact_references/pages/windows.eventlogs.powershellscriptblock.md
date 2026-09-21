@@ -1,6 +1,7 @@
 ---
 title: Windows.EventLogs.PowershellScriptblock
 description: "Parses PowerShell script block logging entries (Event ID 4104) to\ndetect potentially malicious script content."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

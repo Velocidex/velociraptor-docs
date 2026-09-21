@@ -1,6 +1,7 @@
 ---
 title: Windows.System.Powershell.PSReadline
 description: "Extracts PowerShell command history from PSReadline\n`ConsoleHost_history.txt` files."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

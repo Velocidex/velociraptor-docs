@@ -1,6 +1,7 @@
 ---
 title: Windows.Memory.Intezer
 description: "Runs the Intezer memory scanner to collect running code for malware\nanalysis via Intezer Analyze."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

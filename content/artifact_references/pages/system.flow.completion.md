@@ -1,6 +1,7 @@
 ---
 title: System.Flow.Completion
 description: "Emits an event for every completed flow, including imported offline\ncollections, enabling post-processing automation."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

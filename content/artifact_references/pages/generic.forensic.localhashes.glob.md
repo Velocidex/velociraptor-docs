@@ -1,6 +1,7 @@
 ---
 title: Generic.Forensic.LocalHashes.Glob
 description: "Calculates hashes for files matching a glob pattern and stores them\nin a SQLite database on the client."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

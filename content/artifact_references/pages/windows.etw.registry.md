@@ -1,6 +1,7 @@
 ---
 title: Windows.ETW.Registry
 description: "Monitors registry create, open, delete, and value modification\nevents via the Kernel-Registry ETW provider."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

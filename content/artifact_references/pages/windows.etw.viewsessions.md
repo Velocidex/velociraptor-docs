@@ -1,6 +1,7 @@
 ---
 title: Windows.ETW.ViewSessions
 description: "Enumerates running ETW tracing sessions via logman and optionally\nkills dangling ones.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

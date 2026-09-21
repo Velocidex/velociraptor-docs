@@ -1,6 +1,7 @@
 ---
 title: Windows.Detection.ProcessCreation
 description: "Deploys Sysmon and watches the Sysmon ETW provider for specific\nprocess creation events, which are then forwarded to the server.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

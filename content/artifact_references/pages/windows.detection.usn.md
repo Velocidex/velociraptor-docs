@@ -1,6 +1,7 @@
 ---
 title: Windows.Detection.Usn
 description: "Detects file creation and modification by polling the NTFS USN\njournal."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

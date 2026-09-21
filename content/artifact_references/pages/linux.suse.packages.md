@@ -1,6 +1,7 @@
 ---
 title: Linux.SuSE.Packages
 description: "Queries `zypper` to retrieve installed packages with version and\nrepository details.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

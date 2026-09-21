@@ -1,6 +1,7 @@
 ---
 title: Server.Monitor.Profile
 description: "Collects server profiling data including goroutine traces, memory\nheap, CPU profiles, and metrics."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

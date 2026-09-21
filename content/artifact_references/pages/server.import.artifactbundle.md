@@ -1,6 +1,7 @@
 ---
 title: Server.Import.ArtifactBundle
 description: "Imports a zipped package containing Velociraptor artifacts from a\nremote web server."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

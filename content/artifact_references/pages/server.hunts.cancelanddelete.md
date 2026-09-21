@@ -1,6 +1,7 @@
 ---
 title: Server.Hunts.CancelAndDelete
 description: "Cancels all in-flight flows in a hunt, deletes the hunt, and\noptionally removes collected data."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

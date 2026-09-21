@@ -1,6 +1,7 @@
 ---
 title: Windows.ETW.KernelProcess
 description: "Monitors process creation, termination, and image load events via\nthe Kernel-Process ETW provider."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

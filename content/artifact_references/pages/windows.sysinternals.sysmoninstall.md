@@ -1,6 +1,7 @@
 ---
 title: Windows.Sysinternals.SysmonInstall
 description: "Deploys Sysmon with a config file and ensures the Sysmon64 service\nis running."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

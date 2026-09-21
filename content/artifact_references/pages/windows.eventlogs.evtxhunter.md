@@ -1,6 +1,7 @@
 ---
 title: Windows.EventLogs.EvtxHunter
 description: "Searches all Windows EVTX files for events matching a regex IOC in\nmessage, EventData, or UserData fields."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

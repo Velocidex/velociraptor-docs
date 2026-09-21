@@ -1,6 +1,7 @@
 ---
 title: Windows.Detection.Yara.Device
 description: "Scans physical disk sectors with YARA rules at configurable offsets\nand uploads hit context."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

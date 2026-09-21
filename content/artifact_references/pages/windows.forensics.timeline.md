@@ -1,6 +1,7 @@
 ---
 title: Windows.Forensics.Timeline
 description: "Queries the Windows 10 Timeline ActivitiesCache.db SQLite database\nto extract recently used applications."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

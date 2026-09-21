@@ -1,6 +1,7 @@
 ---
 title: Windows.Sys.Drivers
 description: "Enumerates running Windows device drivers with optional authenticode signature checking."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

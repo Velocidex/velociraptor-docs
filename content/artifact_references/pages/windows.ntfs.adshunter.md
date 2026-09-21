@@ -1,6 +1,7 @@
 ---
 title: Windows.NTFS.ADSHunter
 description: "Scans NTFS volumes for data hidden in Alternate Data Streams, using\nconfigurable filtering rules."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Windows.Registry.EnabledMacro
 description: "Scans Office Trust Records registry entries for documents with\nmacro-enabled trust flags."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

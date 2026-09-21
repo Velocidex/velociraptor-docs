@@ -1,6 +1,7 @@
 ---
 title: Windows.Sigma.EventLogs
 description: "Evaluates Windows event log entries against inline or uploaded Sigma\nrules for threat detection."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

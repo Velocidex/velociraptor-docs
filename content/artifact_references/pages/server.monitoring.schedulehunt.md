@@ -1,6 +1,7 @@
 ---
 title: Server.Monitoring.ScheduleHunt
 description: "Runs client interrogation periodically."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

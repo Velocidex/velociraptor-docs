@@ -1,6 +1,7 @@
 ---
 title: Elastic.Events.Clients
 description: "Forwards real-time monitoring events from selected artifacts to an\nElasticsearch index."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

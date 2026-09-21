@@ -1,6 +1,7 @@
 ---
 title: Linux.Sys.Maps
 description: "Extracts mapped library and file information from `/proc/<pid>/maps`\nfor running processes."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

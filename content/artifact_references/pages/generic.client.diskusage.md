@@ -1,6 +1,7 @@
 ---
 title: Generic.Client.DiskUsage
 description: "Computes disk usage per directory recursively, similar to the `du`\ncommand."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

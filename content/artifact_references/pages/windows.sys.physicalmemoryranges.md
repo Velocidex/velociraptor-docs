@@ -1,6 +1,7 @@
 ---
 title: Windows.Sys.PhysicalMemoryRanges
 description: "Parses the CM_RESOURCE_LIST from the registry to list physical\nmemory range descriptors.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

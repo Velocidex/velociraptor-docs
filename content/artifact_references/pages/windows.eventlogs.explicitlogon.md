@@ -1,6 +1,7 @@
 ---
 title: Windows.EventLogs.ExplicitLogon
 description: "Searches the Windows Security event log for explicit logon events, that is\nEvent ID 4648: \"A logon was attempted using explicit credentials\"."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

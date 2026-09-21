@@ -1,6 +1,7 @@
 ---
 title: Windows.System.Shares
 description: "Enumerates Windows network shares via the Win32_Share WMI class\nwith regex filtering.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

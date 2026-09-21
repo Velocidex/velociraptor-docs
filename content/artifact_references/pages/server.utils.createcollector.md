@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.CreateCollector
 description: "A utility artifact to create a standalone Velociraptor offline\ncollector binary with specified artifacts and output target."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
@@ -39,7 +40,7 @@ parameters:
     type: choices
     choices:
       - Windows
-      - Windows_x86
+      - WindowsArm64
       - Linux
       - MacOS
       - MacOSArm
@@ -456,7 +457,7 @@ export: |
     "properties": {
         "OS": {
            "description": "OS Target to use",
-           "enum": ["Generic", "Windows", "Linux", "Windows_x86", "MacOS", "MacOSArm"],
+           "enum": ["Generic", "Windows", "Linux", "WindowsArm64", "MacOS", "MacOSArm"],
            "default": "Generic"
         },
         "Artifacts": {
@@ -706,7 +707,7 @@ sources:
       // Choose the right target binary depending on the target OS
       LET tool_name = SELECT * FROM switch(
        a={ SELECT "VelociraptorWindows" AS Type FROM scope() WHERE OS = "Windows"},
-       b={ SELECT "VelociraptorWindows_x86" AS Type FROM scope() WHERE OS = "Windows_x86"},
+       b={ SELECT "VelociraptorWindowsArm64" AS Type FROM scope() WHERE OS = "WindowsArm64"},
        c={ SELECT "VelociraptorLinux" AS Type FROM scope() WHERE OS = "Linux"},
        d={ SELECT "VelociraptorCollector" AS Type FROM scope() WHERE OS = "MacOS"},
        e={ SELECT "VelociraptorCollector" AS Type FROM scope() WHERE OS = "MacOSArm"},

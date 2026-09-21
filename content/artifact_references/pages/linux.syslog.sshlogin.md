@@ -1,6 +1,7 @@
 ---
 title: Linux.Syslog.SSHLogin
 description: "Parses the auth logs to identify all SSH login attempts.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

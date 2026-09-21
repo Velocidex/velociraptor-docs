@@ -1,6 +1,7 @@
 ---
 title: Notebooks.Default
 description: "Creates a new notebook with a welcome message and placeholder VQL\ncell.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

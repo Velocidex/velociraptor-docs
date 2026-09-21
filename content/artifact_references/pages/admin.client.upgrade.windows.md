@@ -1,6 +1,7 @@
 ---
 title: Admin.Client.Upgrade.Windows
 description: "Upgrades Velociraptor clients on Windows hosts by running msiexec\nwith the provided MSI."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

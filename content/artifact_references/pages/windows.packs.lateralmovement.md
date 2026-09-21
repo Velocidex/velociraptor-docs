@@ -1,6 +1,7 @@
 ---
 title: Windows.Packs.LateralMovement
 description: "Queries multiple data sources (event logs, prefetch, shimcache, BAM)\nfor signs of lateral movement.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

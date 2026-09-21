@@ -1,6 +1,7 @@
 ---
 title: Windows.Detection.Service.Upload
 description: "Uploads the service binary to the server when a new service is\ninstalled.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

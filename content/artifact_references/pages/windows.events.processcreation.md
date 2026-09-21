@@ -1,6 +1,7 @@
 ---
 title: Windows.Events.ProcessCreation
 description: "Monitors for Windows process creation events using WMI\nWin32_ProcessStartTrace and enriches them with parent and call chain\ninformation."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

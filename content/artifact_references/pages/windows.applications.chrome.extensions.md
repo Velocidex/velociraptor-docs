@@ -1,6 +1,7 @@
 ---
 title: Windows.Applications.Chrome.Extensions
 description: "Parses Chrome extension manifest files to identify installed\nextensions and their permissions."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

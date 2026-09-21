@@ -1,6 +1,7 @@
 ---
 title: Windows.NTFS.MFT
 description: "Parses $MFT files and returns rows of each in-scope MFT record."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

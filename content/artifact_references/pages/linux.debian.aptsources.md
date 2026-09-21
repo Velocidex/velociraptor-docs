@@ -1,6 +1,7 @@
 ---
 title: Linux.Debian.AptSources
 description: "Extracts package repository configuration from Debian-based systems\nby parsing apt sources."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

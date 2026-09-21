@@ -1,6 +1,7 @@
 ---
 title: Windows.KapeFiles.Remapping
 description: "Automates the creation of remapping rules to enable post-processing file\nuploads collected by the `Windows.KapeFiles.Targets` or\n`Windows.Triage.Targets` artifacts."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

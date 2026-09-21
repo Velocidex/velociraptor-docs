@@ -1,6 +1,7 @@
 ---
 title: Windows.Timeline.MFT
 description: "Parses the MFT and outputs file metadata in timeline format with\nanomaly detection flags and advanced filters."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

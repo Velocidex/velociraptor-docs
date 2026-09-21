@@ -1,6 +1,7 @@
 ---
 title: Windows.ETW.ETWSessions
 description: "Watches kernel event tracing ETW events to detect creation and\nremoval of ETW sessions."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.UploadTools
 description: "Generates a download script for tool binaries and then uploads them\nfrom a local directory to the server inventory (in separate runs of\nthis artifact)."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

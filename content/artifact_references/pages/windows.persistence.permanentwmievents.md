@@ -1,6 +1,7 @@
 ---
 title: Windows.Persistence.PermanentWMIEvents
 description: "Enumerates permanent WMI event subscriptions including filters,\nconsumers, and their bindings across namespaces."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

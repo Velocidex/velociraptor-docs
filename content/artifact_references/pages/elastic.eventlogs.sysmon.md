@@ -1,6 +1,7 @@
 ---
 title: Elastic.EventLogs.Sysmon
 description: "Converts Windows Sysmon event logs to ECS schema-compliant output\nfor Elasticsearch ingestion."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

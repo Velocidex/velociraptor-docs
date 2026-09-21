@@ -1,6 +1,7 @@
 ---
 title: Windows.System.CatFiles
 description: "Parses Windows `.cat` catalog files and extracts certificate trust\nlist hashes with signer information."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

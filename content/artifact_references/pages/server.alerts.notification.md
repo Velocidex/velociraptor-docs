@@ -1,6 +1,7 @@
 ---
 title: Server.Alerts.Notification
 description: "Sends alert notifications from the `Server.Internal.Alerts` queue to\na webhook-compatible chat service such as Slack/Teams/Discord.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

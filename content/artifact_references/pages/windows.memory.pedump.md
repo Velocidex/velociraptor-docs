@@ -1,6 +1,7 @@
 ---
 title: Windows.Memory.PEDump
 description: "Extracts running executables from process memory using VAD region\nenumeration and PE dumping, and uploads the files to the server."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

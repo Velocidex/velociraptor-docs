@@ -1,6 +1,7 @@
 ---
 title: Linux.Sys.BashHistory
 description: "Provides grep-like searching of Bash and alternate shell history log\nfiles."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

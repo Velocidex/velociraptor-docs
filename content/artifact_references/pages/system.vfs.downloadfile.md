@@ -1,6 +1,7 @@
 ---
 title: System.VFS.DownloadFile
 description: "Uploads a single file or recursively uploads directory contents from\na client to populate information in the VFS screen."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Linux.Network.PacketCapture
 description: "Runs tcpdump to capture network packets and upload the PCAP file."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

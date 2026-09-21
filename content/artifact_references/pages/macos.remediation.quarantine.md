@@ -1,6 +1,7 @@
 ---
 title: MacOS.Remediation.Quarantine
 description: "Applies network quarantine to a macOS system using Packet Filter (PF)."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

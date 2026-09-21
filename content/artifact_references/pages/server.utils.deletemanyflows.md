@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.DeleteManyFlows
 description: "Removes old or unwanted flows from the server based on configurable\nfilters with a dry-run mode.\n \nSometimes the Velociraptor server accumulates a lot of data that is\nno longer needed. This artifact will enumerate all flows from all\nclients and matches them against some criteria. Flows that match are\nthen removed."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

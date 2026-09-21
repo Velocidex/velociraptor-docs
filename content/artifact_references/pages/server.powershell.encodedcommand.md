@@ -1,6 +1,7 @@
 ---
 title: Server.Powershell.EncodedCommand
 description: "Intercepts PowerShell `-EncodedCommand` scripts in events that are\ncollected via client monitoring and decodes them."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

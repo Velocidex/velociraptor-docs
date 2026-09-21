@@ -1,6 +1,7 @@
 ---
 title: Windows.Detection.YaraX.Glob
 description: "Deploys YARA-X and scans files matching a glob pattern. Supports\nURL-based or inline rule deployment."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Windows.System.PowerShell
 description: "Executes arbitrary commands through PowerShell with output capture\nand upload support."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

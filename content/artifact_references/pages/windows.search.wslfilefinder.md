@@ -1,6 +1,7 @@
 ---
 title: Windows.Search.WSLFileFinder
 description: "Searches for files inside Windows Subsystem for Linux (WSL) VHDX\ndisk images. Supports glob filtering, file content inspection using\nYara, and provides optional file hash calculation and upload.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

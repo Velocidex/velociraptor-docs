@@ -1,6 +1,7 @@
 ---
 title: Server.Internal.Welcome
 description: "Renders the server Home page / Welcome page showing navigation links\nto common tasks and dashboards."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

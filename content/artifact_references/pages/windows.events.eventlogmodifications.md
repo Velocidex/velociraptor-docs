@@ -1,6 +1,7 @@
 ---
 title: Windows.Events.EventLogModifications
 description: "Monitors the Windows event log registry channels to detect when logs\nare disabled."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

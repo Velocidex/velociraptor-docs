@@ -1,6 +1,7 @@
 ---
 title: Generic.Client.LocalLogsRetrieve
 description: "Fetches encrypted local log files from endpoints via the upload\nfunction."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

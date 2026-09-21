@@ -4,6 +4,13 @@
 public/
 .wordlist.dict
 .hugo_build.lock
+
+# Hugo module checksum lock files. Module checksums are tracked in go.mod/
+# go.sum, and Hugo rewrites these to empty on every build, so they are
+# churn only.
+hugo.direct.sum
+hugo.sum
+
 .idea
 static/docs_index/
 node_modules/

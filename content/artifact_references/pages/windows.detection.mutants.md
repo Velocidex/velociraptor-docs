@@ -1,6 +1,7 @@
 ---
 title: Windows.Detection.Mutants
 description: "Searches for named Mutant objects used by selected processes for\nmalware persistence detection."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

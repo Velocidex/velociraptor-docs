@@ -1,6 +1,7 @@
 ---
 title: Linux.Detection.AnomalousFiles
 description: "Detects anomalous files in a Linux filesystem."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

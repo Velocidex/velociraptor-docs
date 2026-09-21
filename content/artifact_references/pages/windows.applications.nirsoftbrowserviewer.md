@@ -1,6 +1,7 @@
 ---
 title: Windows.Applications.NirsoftBrowserViewer
 description: "Wraps the Nirsoft BrowsingHistoryView tool to parse browsing history\nfrom Chrome, Firefox, IE, and Safari."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

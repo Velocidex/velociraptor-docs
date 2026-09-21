@@ -1,6 +1,7 @@
 ---
 title: Windows.Events.Kerberoasting
 description: "Monitors Kerberos TGS ticket requests (EventID 4769) with RC4 (weak)\nencryption as indicators of Kerberoasting attacks."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
@@ -46,7 +47,7 @@ name: Windows.Events.Kerberoasting
 description: |
   Monitors Kerberos TGS ticket requests (EventID 4769) with RC4 (weak)
   encryption as indicators of Kerberoasting attacks.
-  
+
   These tickets are vulnerable to brute force attack and this event is
   an indicator of a Kerberoasting attack.
 
@@ -92,10 +93,10 @@ sources:
               EventData.ServiceName as ServiceName,
               EventData.ServiceSid as ServiceSid,
               EventData.TargetUserName as TargetUserName,
-              "0x" + format(format="%x", args=EventData.Status) as Status,
+              EventData.Status as Status,
               EventData.TargetDomainName as TargetDomainName,
-              "0x" + format(format="%x", args=EventData.TicketEncryptionType) as TicketEncryptionType,
-              "0x" + format(format="%x", args=EventData.TicketOptions) as TicketOptions,
+              EventData.TicketEncryptionType as TicketEncryptionType,
+              EventData.TicketOptions as TicketOptions,
               EventData.TransmittedServices as TransmittedServices,
               EventData.IpAddress as IpAddress,
               EventData.IpPort as IpPort

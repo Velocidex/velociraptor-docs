@@ -1,6 +1,7 @@
 ---
 title: Elastic.Flows.Upload
 description: "Uploads collected artifact results to an Elasticsearch server."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

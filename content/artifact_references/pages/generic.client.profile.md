@@ -1,6 +1,7 @@
 ---
 title: Generic.Client.Profile
 description: "Collects runtime profiling data including goroutines, memory, CPU,\nand metrics from the client."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

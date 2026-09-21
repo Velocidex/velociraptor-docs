@@ -1,6 +1,7 @@
 ---
 title: Windows.Forensics.BulkExtractor
 description: "Deploys the bulk_extractor binary onto the endpoint and runs it\nagainst selected drives or directories for data carving."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

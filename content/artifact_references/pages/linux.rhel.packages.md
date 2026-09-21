@@ -1,6 +1,7 @@
 ---
 title: Linux.RHEL.Packages
 description: "Parses packages installed from `dnf` or `yum`.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

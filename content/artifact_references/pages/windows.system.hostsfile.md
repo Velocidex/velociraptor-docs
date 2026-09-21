@@ -1,6 +1,7 @@
 ---
 title: Windows.System.HostsFile
 description: "Reads and parses the Windows hosts file, reporting resolution\nentries, hostnames, and comments."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

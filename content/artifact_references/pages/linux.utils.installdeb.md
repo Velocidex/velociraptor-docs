@@ -1,6 +1,7 @@
 ---
 title: Linux.Utils.InstallDeb
 description: "Installs .deb packages on Debian-based systems with optional debconf\nanswers configuration."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

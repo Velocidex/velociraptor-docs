@@ -1,6 +1,7 @@
 ---
 title: Server.Monitor.Health
 description: "Provides the server overview dashboard showing performance metrics,\ndisk space, and user permissions."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

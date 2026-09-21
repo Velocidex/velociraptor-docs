@@ -1,6 +1,7 @@
 ---
 title: Windows.Detection.Yara.PhysicalMemory
 description: "Scans physical memory for YARA matches using the WinPmem driver."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

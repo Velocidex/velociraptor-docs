@@ -1,6 +1,7 @@
 ---
 title: Windows.ETW.DNSQueriesServer
 description: "Captures DNS server query events from the\n`Microsoft-Windows-DNSServer` ETW provider."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -16,6 +16,9 @@ heroButtons:
   - label: "Downloads"
     url: "/downloads/"
     style: "outline"
+description: |
+  Official documentation for Velociraptor, the advanced digital forensic
+  and incident response (DFIR) tool.
 ---
 
  <!-- Disabled in favour of the global announcement banner (params.banner).

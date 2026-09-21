@@ -1,6 +1,7 @@
 ---
 title: Windows.Network.Netstat
 description: "Reports open network sockets on Windows including binding time,\nconnection state, and owning process name.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

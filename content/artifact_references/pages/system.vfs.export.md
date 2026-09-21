@@ -1,6 +1,7 @@
 ---
 title: System.VFS.Export
 description: "Exports files from the VFS (Virtual Filesystem) by globbing under a\nspecified path in the server-side VFS cache.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

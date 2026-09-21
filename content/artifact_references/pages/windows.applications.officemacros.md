@@ -1,6 +1,7 @@
 ---
 title: Windows.Applications.OfficeMacros
 description: "Scans directories for Office documents (xls, xlsm, doc, docx, ppt,\npptm) and extracts embedded VBA macros via OLE parsing."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

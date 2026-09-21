@@ -1,6 +1,7 @@
 ---
 title: Generic.Forensic.Timeline
 description: "Creates a bodyfile-format timeline of files matching a glob pattern."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

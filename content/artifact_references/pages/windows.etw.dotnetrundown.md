@@ -1,6 +1,7 @@
 ---
 title: Windows.ETW.DotNetRundown
 description: "Queries the Microsoft-Windows-DotNETRuntimeRundown provider to\ncollect a list of DotNet modules loaded into a process. This can be\nuseful when responding to reflectively loaded DotNet malware."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

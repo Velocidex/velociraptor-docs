@@ -1,6 +1,7 @@
 ---
 title: Windows.Persistence.PowershellRegistry
 description: "Scans NTUSER.DAT registry hives with YARA rules for PowerShell-based\npersistence signatures."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

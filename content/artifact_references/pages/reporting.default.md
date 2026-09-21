@@ -1,6 +1,7 @@
 ---
 title: Reporting.Default
 description: "Provides the default HTML template for exporting notebook and report\ncontent."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

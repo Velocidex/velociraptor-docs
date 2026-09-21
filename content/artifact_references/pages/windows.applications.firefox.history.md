@@ -1,6 +1,7 @@
 ---
 title: Windows.Applications.Firefox.History
 description: "Queries Firefox `places.sqlite` files to extract browsing history."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

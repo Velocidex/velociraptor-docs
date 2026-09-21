@@ -1,6 +1,7 @@
 ---
 title: Linux.Forensics.ImmutableFiles
 description: "Locates immutable files on Linux by checking ext4 filesystem flags."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

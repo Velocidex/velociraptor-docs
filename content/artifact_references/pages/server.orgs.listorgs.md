@@ -1,6 +1,7 @@
 ---
 title: Server.Orgs.ListOrgs
 description: "Lists all configured organizations on the Velociraptor server with\noptional downloadable client config for each org."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Server.Internal.MasterRegistrations
 description: "Advertises event subscriptions from the master node to all minions\nin a multi-frontend deployment."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

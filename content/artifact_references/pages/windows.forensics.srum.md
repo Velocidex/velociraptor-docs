@@ -1,6 +1,7 @@
 ---
 title: Windows.Forensics.SRUM
 description: "Parses the Windows SRUM database (srudb.dat) to extract execution\nstats, resource usage, and network activity."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

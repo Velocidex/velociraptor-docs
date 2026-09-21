@@ -1,6 +1,7 @@
 ---
 title: Windows.Registry.WDigest
 description: "Scans HKLM\\SYSTEM ControlSets for WDigest security provider\nregistry keys that enable credential harvesting."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

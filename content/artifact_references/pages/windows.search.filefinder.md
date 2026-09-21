@@ -1,6 +1,7 @@
 ---
 title: Windows.Search.FileFinder
 description: "Searches for files by path glob, inspects file content via YARA, and\nprovides file hash and upload options."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

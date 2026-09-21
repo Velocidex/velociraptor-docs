@@ -1,6 +1,7 @@
 ---
 title: Linux.Remediation.Quarantine
 description: "Applies network quarantine to a Linux system using nftables."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

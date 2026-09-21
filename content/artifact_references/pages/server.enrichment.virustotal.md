@@ -1,6 +1,7 @@
 ---
 title: Server.Enrichment.Virustotal
 description: "Enriches a file hash or IP address with VirusTotal threat\nintelligence results."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

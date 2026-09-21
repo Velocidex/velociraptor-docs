@@ -1,6 +1,7 @@
 ---
 title: Windows.EventLogs.AlternateLogon
 description: "Extracts alternate credential logon events (Event ID 4648) from the\nSecurity event log."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

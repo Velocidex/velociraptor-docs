@@ -1,6 +1,7 @@
 ---
 title: Windows.Carving.CobaltStrike
 description: "Extracts Cobalt Strike beacon configuration from byte streams,\nprocess memory, or files on disk such as a process dump."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

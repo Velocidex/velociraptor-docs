@@ -1,6 +1,7 @@
 ---
 title: Windows.Applications.Firefox.Downloads
 description: "Enumerates Firefox download records (file names, URLs, timestamps)\nfrom the `places.sqlite` database."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

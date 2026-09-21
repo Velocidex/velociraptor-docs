@@ -1,6 +1,7 @@
 ---
 title: Generic.Client.Trace
 description: "Captures runtime trace information from the client at a specified\ninterval"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

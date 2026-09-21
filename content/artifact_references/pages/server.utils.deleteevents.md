@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.DeleteEvents
 description: "Permanently deletes client event or monitoring event data within a\nspecified time range."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

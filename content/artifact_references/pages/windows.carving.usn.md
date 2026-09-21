@@ -1,6 +1,7 @@
 ---
 title: Windows.Carving.USN
 description: "Recovers USN journal entries from raw disk by carving NTFS update\nsequence number records."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

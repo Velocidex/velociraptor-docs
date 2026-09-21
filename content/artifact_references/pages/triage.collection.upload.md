@@ -1,6 +1,7 @@
 ---
 title: Triage.Collection.Upload
 description: "A generic uploader used by triaging artifacts.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

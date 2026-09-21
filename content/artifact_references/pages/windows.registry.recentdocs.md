@@ -1,6 +1,7 @@
 ---
 title: Windows.Registry.RecentDocs
 description: "Extracts Recent Documents MRU entries from Windows NTUSER.DAT\nregistry hives for each user."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

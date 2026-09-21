@@ -1,6 +1,7 @@
 ---
 title: MacOS.Applications.MRU
 description: "Parses Finder's `FXRecentFolders` plist entries to extract recently\naccessed items.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

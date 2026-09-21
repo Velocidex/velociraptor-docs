@@ -1,6 +1,7 @@
 ---
 title: Windows.Sys.CertificateAuthorities
 description: "Enumerates certificate authorities from Windows certificate stores.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

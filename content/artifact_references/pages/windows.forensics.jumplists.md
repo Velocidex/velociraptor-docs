@@ -1,6 +1,7 @@
 ---
 title: Windows.Forensics.JumpLists
 description: "Parses Windows AutomaticDestinations JumpList files to extract LNK\nentries with application IDs and target paths."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: MacOS.System.Wifi
 description: "Parses the macOS airport preferences to enumerate previously joined\nWiFi networks."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

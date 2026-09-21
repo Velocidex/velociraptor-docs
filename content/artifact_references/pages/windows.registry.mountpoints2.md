@@ -1,6 +1,7 @@
 ---
 title: Windows.Registry.MountPoints2
 description: "Extracts MountPoints2 registry entries with ADMIN$ share paths to\nidentify lateral movement via mapped drives."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

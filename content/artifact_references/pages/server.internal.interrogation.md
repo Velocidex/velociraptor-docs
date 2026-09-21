@@ -1,6 +1,7 @@
 ---
 title: Server.Internal.Interrogation
 description: "Emits an event when the interrogation service completes processing a\nclient's info update."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

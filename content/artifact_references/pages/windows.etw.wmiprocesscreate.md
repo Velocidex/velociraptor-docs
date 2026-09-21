@@ -1,6 +1,7 @@
 ---
 title: Windows.ETW.WMIProcessCreate
 description: "Monitors process creation events triggered via WMI using the\nMicrosoft-Windows-WMI-Activity ETW provider."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

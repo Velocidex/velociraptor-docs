@@ -1,6 +1,7 @@
 ---
 title: Windows.ETW.DNS
 description: "Watches real-time DNS queries via ETW and reports query names,\ntypes, and answers."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

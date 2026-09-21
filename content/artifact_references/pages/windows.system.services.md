@@ -1,6 +1,7 @@
 ---
 title: Windows.System.Services
 description: "Enumerates Windows services via WMI, with optional filtering\ncriteria, and enriches with hashes and authenticode signatures.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

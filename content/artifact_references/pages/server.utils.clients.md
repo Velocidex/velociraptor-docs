@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.Clients
 description: "Provides an interactive notebook for searching and inspecting client\ndetails."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

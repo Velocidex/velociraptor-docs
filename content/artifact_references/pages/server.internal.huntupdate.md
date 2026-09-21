@@ -1,6 +1,7 @@
 ---
 title: Server.Internal.HuntUpdate
 description: "Notifies hunt dispatchers across all minions when a hunt's status or\nconfiguration changes, and should be updated from the internal\ncache."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

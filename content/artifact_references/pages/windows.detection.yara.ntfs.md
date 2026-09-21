@@ -1,6 +1,7 @@
 ---
 title: Windows.Detection.Yara.NTFS
 description: "Searches the MFT, returns a list of target files, and then runs YARA\nover the target list."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

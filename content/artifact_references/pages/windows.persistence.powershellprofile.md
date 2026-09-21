@@ -1,6 +1,7 @@
 ---
 title: Windows.Persistence.PowershellProfile
 description: "Searches for and parses PowerShell profile scripts across user and\nsystem directories for persistence detection."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

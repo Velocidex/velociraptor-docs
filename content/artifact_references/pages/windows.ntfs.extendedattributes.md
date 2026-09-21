@@ -1,6 +1,7 @@
 ---
 title: Windows.NTFS.ExtendedAttributes
 description: "Parses NTFS Extended Attributes ($EA) from the MFT to detect hidden\ndata."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

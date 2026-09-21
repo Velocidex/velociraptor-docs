@@ -1,6 +1,7 @@
 ---
 title: Linux.Sys.SUID
 description: "Searches for applications that have the `setuid` or `setgid` bits\nset."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

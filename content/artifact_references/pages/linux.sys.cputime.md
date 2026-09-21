@@ -1,6 +1,7 @@
 ---
 title: Linux.Sys.CPUTime
 description: "Displays information from the `/proc/stat` file about the time the\nCPU cores spent in different parts of the system.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

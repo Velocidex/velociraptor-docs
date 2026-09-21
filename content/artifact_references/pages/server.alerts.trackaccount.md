@@ -1,6 +1,7 @@
 ---
 title: Server.Alerts.Trackaccount
 description: "Forwards account tracking events from `Windows.Events.Trackaccount`\nas an alert to a Slack/Teams/Discord webhook."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

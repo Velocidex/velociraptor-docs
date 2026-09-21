@@ -1,6 +1,7 @@
 ---
 title: Linux.Applications.Docker.Info
 description: "Connects to the Docker socket and retrieves daemon information\nincluding containers, images, and driver settings.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

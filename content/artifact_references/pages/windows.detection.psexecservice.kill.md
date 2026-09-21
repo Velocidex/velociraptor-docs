@@ -1,6 +1,7 @@
 ---
 title: Windows.Detection.PsexecService.Kill
 description: "Kills all child processes of a detected PsExec service using\ntaskkill."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

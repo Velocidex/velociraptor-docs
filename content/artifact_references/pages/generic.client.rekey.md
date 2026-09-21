@@ -1,6 +1,7 @@
 ---
 title: Generic.Client.Rekey
 description: "Forces the client to regenerate its client ID and restart itself."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

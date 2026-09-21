@@ -1,6 +1,7 @@
 ---
 title: Linux.Mounts
 description: "Lists mounted filesystems by reading `/proc/mounts`.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

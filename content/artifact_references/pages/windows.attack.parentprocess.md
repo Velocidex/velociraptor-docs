@@ -1,6 +1,7 @@
 ---
 title: Windows.Attack.ParentProcess
 description: "Flags processes whose parent process does not match the expected\nparent per the ATT&CK framework mapping."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

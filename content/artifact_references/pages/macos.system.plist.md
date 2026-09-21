@@ -1,6 +1,7 @@
 ---
 title: MacOS.System.Plist
 description: "Parses and optionally uploads macOS `.plist` files. "
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

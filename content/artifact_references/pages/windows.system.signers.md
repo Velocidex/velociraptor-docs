@@ -1,6 +1,7 @@
 ---
 title: Windows.System.Signers
 description: "Scans executable files and groups them by their authenticode signer\nsubject.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

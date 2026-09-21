@@ -1,6 +1,7 @@
 ---
 title: Windows.Applications.Chrome.History
 description: "Enumerates visited URLs, titles, and visit timestamps from\nChrome/Edge/Brave/Vivaldi/Opera history databases."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

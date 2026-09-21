@@ -1,6 +1,7 @@
 ---
 title: Linux.Applications.Docker.Version
 description: "Connects to the Docker socket and retrieves daemon version details\nincluding API and kernel versions.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

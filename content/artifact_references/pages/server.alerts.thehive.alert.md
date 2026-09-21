@@ -1,6 +1,7 @@
 ---
 title: Server.Alerts.TheHive.Alert
 description: "Creates TheHive alerts when monitored artifact collections complete\nwith results."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

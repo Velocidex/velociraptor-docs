@@ -1,6 +1,7 @@
 ---
 title: Demo.Plugins.GUI
 description: "Provides test cases for GUI elements, parameter validation, and\nnotebook rendering.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Windows.Detection.Impersonation
 description: "Enumerates threads with impersonation tokens that differ from their\nparent process."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

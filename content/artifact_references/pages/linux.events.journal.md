@@ -1,6 +1,7 @@
 ---
 title: Linux.Events.Journal
 description: "Forwards events from the Systemd binary journal logs.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

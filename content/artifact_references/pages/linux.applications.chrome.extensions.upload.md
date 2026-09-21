@@ -1,6 +1,7 @@
 ---
 title: Linux.Applications.Chrome.Extensions.Upload
 description: "Uploads the Chrome extension files from each user's home directory."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

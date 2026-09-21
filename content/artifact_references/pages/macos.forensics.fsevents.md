@@ -1,6 +1,7 @@
 ---
 title: MacOS.Forensics.FSEvents
 description: "Reads macOS FSEvents logs to enumerate file creation, deletion,\nrename, and modification events."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

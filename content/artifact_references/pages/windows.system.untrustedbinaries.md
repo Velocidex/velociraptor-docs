@@ -1,6 +1,7 @@
 ---
 title: Windows.System.UntrustedBinaries
 description: "Checks that common Windows system binaries are signed using\nauthenticode verification."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

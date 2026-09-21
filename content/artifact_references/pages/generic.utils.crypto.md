@@ -1,6 +1,7 @@
 ---
 title: Generic.Utils.Crypto
 description: "A utility artifact that provides HMAC-SHA256 and other custom hash\nfunctions."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

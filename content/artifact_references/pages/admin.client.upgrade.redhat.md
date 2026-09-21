@@ -1,6 +1,7 @@
 ---
 title: Admin.Client.Upgrade.RedHat
 description: "Upgrades Velociraptor clients on Red Hat hosts by installing a new RPM package"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

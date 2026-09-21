@@ -1,6 +1,7 @@
 ---
 title: Windows.Forensics.LocalHashes.Usn
 description: "Watches the NTFS USN journal for file modifications and records file\nhashes in a local database."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Windows.Detection.TemplateInjection
 description: "Detects injected templates in Office and RTF documents."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

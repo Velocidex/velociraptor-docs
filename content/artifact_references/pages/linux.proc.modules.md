@@ -1,6 +1,7 @@
 ---
 title: Linux.Proc.Modules
 description: "Parses `/proc/modules` to enumerate loaded kernel modules with their\ndetails.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

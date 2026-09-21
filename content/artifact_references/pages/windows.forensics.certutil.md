@@ -1,6 +1,7 @@
 ---
 title: Windows.Forensics.CertUtil
 description: "Extracts download metadata from the Windows Certutil\nCryptnetUrlCache to reveal LOLBin downloads."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.BackupDirectory
 description: "Automatically exports and backs up completed flow results to a\nspecified directory on the server.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

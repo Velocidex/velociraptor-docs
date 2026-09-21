@@ -1,6 +1,7 @@
 ---
 title: Server.Internal.MetadataModifications
 description: "Emits an event when server metadata (such as client labels or host\ninfo) is modified.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

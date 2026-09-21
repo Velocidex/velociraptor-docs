@@ -1,6 +1,7 @@
 ---
 title: Windows.Attack.UnexpectedImagePath
 description: "Detects well-known system processes running from unexpected file\npaths."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

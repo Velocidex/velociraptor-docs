@@ -1,6 +1,7 @@
 ---
 title: Windows.System.RootCAStore
 description: "Enumerates root CA certificates from the Windows System Certificate\nstore.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
