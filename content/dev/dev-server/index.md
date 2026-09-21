@@ -1,4 +1,5 @@
 ---
+icon: server
 title: Setting up a Hugo development server
 weight: 20
 last_reviewed: 2026-04-29

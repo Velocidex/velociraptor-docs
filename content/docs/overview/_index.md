@@ -4,6 +4,7 @@ menutitle = "Velociraptor Overview"
 date = 2021-06-09T02:33:37Z
 weight = 5
 chapter = false
+icon = "globe"
 +++
 
 > [!NOTE]

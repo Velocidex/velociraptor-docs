@@ -1,5 +1,7 @@
 
 ---
+
+icon: copy
 title: "RawCopy"
 menutitle: RawCopy
 ---

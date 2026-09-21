@@ -1,4 +1,5 @@
 ---
+icon: video-camera
 menutitle: "2022 VeloCon"
 title: "The 2022 Velociraptor Conference - Digging together..."
 description: |

@@ -8,7 +8,6 @@ noDisqus: true
 no_edit: true
 disableToc: true
 chapter: false
-pre: <i class="fas fa-book"></i>
 summary: "Search our library of built-in artifacts"
 ---
 

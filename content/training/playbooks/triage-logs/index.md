@@ -1,4 +1,5 @@
 ---
+icon: document-text
 title: "Triaging Logs"
 date: 2024-08-08
 summary: |

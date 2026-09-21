@@ -1,4 +1,5 @@
 ---
+icon: photograph
 title: Guidelines for creating image content
 last_reviewed: 2026-04-29
 weight: 40

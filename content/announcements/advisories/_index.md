@@ -1,4 +1,5 @@
 ---
+icon: shield-exclamation
 type: docs-no-toc
 menutitle: "Security Advisories"
 title: "Security Advisories"
@@ -9,7 +10,6 @@ description: |
 weight: 10
 no_edit: true
 noTitle: true
-pre: <i class="fas fa-exclamation-triangle"></i>
 outputs:
 - html
 - RSS

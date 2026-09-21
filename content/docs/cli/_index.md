@@ -1,4 +1,5 @@
 ---
+icon: terminal
 menutitle: "CLI"
 title: "The Velociraptor CLI"
 date: 2025-05-14

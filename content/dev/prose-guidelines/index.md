@@ -1,4 +1,5 @@
 ---
+icon: pencil
 title: Guidelines for prose (written content)
 weight: 30
 last_reviewed: 2026-04-29

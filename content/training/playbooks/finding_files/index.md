@@ -1,4 +1,5 @@
 ---
+icon: search
 title: "Finding Files"
 date: 2025-03-29
 weight: 50

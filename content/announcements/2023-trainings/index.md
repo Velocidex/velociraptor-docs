@@ -1,4 +1,5 @@
 ---
+icon: academic-cap
 menutitle: "Trainings"
 title: "Upcoming Training Events"
 description: |

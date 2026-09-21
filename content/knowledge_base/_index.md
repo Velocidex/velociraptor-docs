@@ -6,7 +6,6 @@ menutitle: "Knowledge Base"
 title: "Knowledge Base"
 draft: false
 weight: 250
-pre: <i class="fas fa-brain"></i>
 no_edit: true
 disableToc: false
 no_children: true

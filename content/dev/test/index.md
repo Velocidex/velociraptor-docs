@@ -1,4 +1,5 @@
 ---
+icon: beaker
 title: Test Content
 weight: 50
 last_reviewed: 2026-04-29

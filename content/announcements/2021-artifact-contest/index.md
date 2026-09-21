@@ -1,4 +1,5 @@
 ---
+icon: gift
 menutitle: "2021 Contest"
 title: "2021 Velociraptor Contributor Competition"
 description: |

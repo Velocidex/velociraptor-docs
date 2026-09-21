@@ -1,4 +1,5 @@
 ---
+icon: book-open
 title: Notebooks
 date: 2021-06-11T15:32:04Z
 last_reviewed: 2026-06-10
