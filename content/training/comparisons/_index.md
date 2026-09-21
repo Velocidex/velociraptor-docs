@@ -45,4 +45,4 @@ The following pages serve a number of goals:
 
 ## Tool comparison
 
-{{% children %}}
+{{% children grid-cols=1 %}}
