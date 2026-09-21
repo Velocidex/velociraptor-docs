@@ -181,16 +181,19 @@ pre {
    dark): that reads correctly over the plain page background but inside an
    admonition's solidly coloured panel it lets the panel colour show through,
    so the same fence changes colour between contexts. Instead mix the same
-   tint over the page background, producing an opaque colour that matches the
-   normal code-block look everywhere. */
+   rough tint over the page background, producing an opaque colour that
+   matches the normal code-block look everywhere.  The tint is neutral-*
+   (grey), NOT primary-*: the accent has been rebranded green, and a green
+   code-block background reads as an error/design leak, so the substrate
+   stays achromatic while only the accent chrome is green. */
 .hextra-code-block pre,
 .hextra-code-filename {
-  background-color: color-mix(in oklab, var(--hx-color-primary-700) 5%, var(--hx-color-white));
+  background-color: color-mix(in oklab, var(--hx-color-neutral-700) 5%, var(--hx-color-white));
 }
 
 html:where(.dark, .dark *) .hextra-code-block pre,
 html:where(.dark, .dark *) .hextra-code-filename {
-  background-color: color-mix(in oklab, var(--hx-color-primary-300) 10%, var(--hx-color-dark));
+  background-color: color-mix(in oklab, var(--hx-color-neutral-300) 10%, var(--hx-color-dark));
 }
 
 /* VQL light-mode palette: Atom One Light tokens. Hextra ships Chroma's
