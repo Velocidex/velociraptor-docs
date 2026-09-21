@@ -24,4 +24,4 @@ to know where to start. This page aims to help newcomers to
 Velociraptor by presenting a set of playbooks to use when faced with
 certain tasks.
 
-{{% children description=true style="h2" %}}
+{{% children description=true grid-cols=1 %}}
