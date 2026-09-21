@@ -647,14 +647,14 @@ html.dark .hextra-nav-container-blur {
 }
 
 /* Navbar logo: bare raptor mark.  On desktop it is hidden by default
-   (visibility, not display — see the media query further down) and only
-   appears once the sidebar logo has scrolled out of view; on mobile it
-   is the only logo and stays visible.  The 28px height is pinned here;
-   width scales from the SVG's natural 0.62 aspect ratio. */
-.hextra-navbar-logo img {
-  height: 28px;
-  width: auto;
-}
+(visibility, not display — see the media query further down) and only
+    appears once the sidebar logo has scrolled out of view; on mobile it
+    is the only logo and stays visible.  The 34px height is pinned here;
+    width scales from the SVG's natural 0.62 aspect ratio. */
+ .hextra-navbar-logo img {
+   height: 34px;
+   width: auto;
+ }
 
 /* Footer copyright block: the theme default was py-12 (48px per side →
    112px total footer).  1.25rem per side ≈ 56px total, a ~50% reduction.

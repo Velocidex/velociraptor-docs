@@ -276,8 +276,8 @@ enableRobotsTXT = true
     displayTitle = false
     [params.navbar.logo]
       path = "images/logo_bare_small.svg"
-      width = "28"
-      height = "28"
+      width = "22"
+      height = "34"
 
   [params.footer]
     # Footer moved into the left sidebar (Rapid7 strip below the theme
