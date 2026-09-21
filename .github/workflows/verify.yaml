@@ -20,6 +20,12 @@ jobs:
           # Set to true when we want to start having errors fail the pipeline.
           fail_on_error: true
 
+          # Pin the Vale version. 3.22.0 regressed inline-HTML/markdown-link
+          # tokenization (concatenating adjacent words into single tokens,
+          # e.g. "<span>Published</span>on" -> "Publishedon"), failing the
+          # build on long-unchanged content. Bump intentionally.
+          version: 3.21.0
+
           # Only check lines touched by the PR to avoid reviewdog's
           # "too many annotations" failures on full-corpus scans.
           filter_mode: added
