@@ -3,6 +3,25 @@
    this file covers legacy widget markup that has no hx: classes.
    Dark mode via the `.dark` class on <html>. */
 
+/* --- Brand accent: Velociraptor green ---
+   Hextra derives the whole primary-* shade scale from --primary-hue and
+   --primary-lightness (the theme defaults are a blue, 212/204deg, at 50%
+   lightness, which renders as a garish neon green here).  Setting the hue
+   to 120deg (the hue of the #00aa00 Velociraptor logo green) and the
+   lightness to 37% makes primary-600 resolve to exactly #00aa00, with the
+   rest of the scale as softer light and dark shades of the same hue.
+   Every primary-accented element - active nav buttons, active sidebar
+   item, links, buttons, focus rings - follows automatically. */
+:root {
+  --primary-hue: 120deg;
+  --primary-lightness: 37%;
+}
+
+.dark {
+  --primary-hue: 120deg;
+  --primary-lightness: 37%;
+}
+
 /* --- Site-wide font: Iosevka Term ---
    Same subsetted font the Velociraptor GUI ships
    (gui/velociraptor/src/fonts/). The subsets cover ASCII and Latin-1
@@ -265,8 +284,8 @@ html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .err {
   height: auto;
 }
 
-/* "Go to homepage" button and 404 code use The R7 green (#00aa00) from
-   the VeloR7 mark, not the site's Hextra accent.  Overrides the
+/* "Go to homepage" button and 404 code use the Velociraptor green
+   (#00aa00) from the logo, not the site's Hextra accent.  Overrides the
    hx:bg-primary-* utilities on the link. */
 .hextra-404-action {
   background-color: #00aa00;
