@@ -656,6 +656,13 @@ html.dark .hextra-nav-container-blur {
    width: auto;
  }
 
+/* Admonitions (GitHub-style alerts, layouts/_partials/components/
+   github-style-alert.html): drop the 1px border around the block.
+   The coloured background and icon already delineate it. */
+.hextra-admonition {
+  border: none;
+}
+
 /* Footer copyright block: the theme default was py-12 (48px per side →
    112px total footer).  1.25rem per side ≈ 56px total, a ~50% reduction.
    (This lives here rather than as a Tailwind hx:py-5 class because the
