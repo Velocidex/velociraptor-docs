@@ -6,6 +6,7 @@ sidebar:
   exclude: true
 menutitle: "Blog"
 title: "Velociraptor Blog"
+date: 2021-06-10
 weight: 120
 no_edit: true
 disableToc: false

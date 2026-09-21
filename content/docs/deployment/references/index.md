@@ -1,5 +1,6 @@
 ---
 title: Configuration File Reference
+date: 2026-09-20
 menutitle: "Config Reference"
 weight: 120
 no_children: true

@@ -1,5 +1,6 @@
 ---
 title: "ETW"
+date: 2025-03-29
 weight: 10
 description: Shows the current state of the ETW subsystem on Windows
 aliases:

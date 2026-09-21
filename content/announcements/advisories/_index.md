@@ -3,6 +3,7 @@ icon: shield-exclamation
 type: docs-no-toc
 menutitle: "Security Advisories"
 title: "Security Advisories"
+date: 2024-11-22
 summary: |
     CVEs and other security advisories.
 description: |

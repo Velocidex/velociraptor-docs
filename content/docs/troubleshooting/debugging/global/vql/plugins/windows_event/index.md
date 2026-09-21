@@ -1,5 +1,6 @@
 ---
 title: Windows Event Log Watcher
+date: 2025-03-28
 weight: 50
 description: Records Statistics about the Windows Event Log Watcher Subsystem.
 aliases:

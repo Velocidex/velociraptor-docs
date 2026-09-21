@@ -1,6 +1,7 @@
 ---
 menutitle: Multi-Frontend
 title: Multi-Frontend Configuration
+date: 2022-01-02
 draft: false
 weight: 40
 summary: |

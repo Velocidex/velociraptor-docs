@@ -1,5 +1,6 @@
 ---
 title: "Open-close"
+date: 2025-09-29
 weight: 40
 description: Track open items that should be closed.
 aliases:

@@ -1,5 +1,6 @@
 ---
 title: "Golang"
+date: 2025-03-28
 weight: 20
 description: Show built in Go Profiles
 aliases:

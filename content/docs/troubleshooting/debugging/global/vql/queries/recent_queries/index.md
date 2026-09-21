@@ -1,5 +1,6 @@
 ---
 title: "Recent Queries"
+date: 2025-09-29
 description:  Report Currently Active queries.
 weight: 30
 ---

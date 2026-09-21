@@ -1,5 +1,6 @@
 ---
 title: "Queries"
+date: 2025-09-29
 description:  See currently and recently running VQL queries.
 weight: 10
 aliases:

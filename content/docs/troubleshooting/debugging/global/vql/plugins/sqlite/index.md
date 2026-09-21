@@ -1,5 +1,6 @@
 ---
 title: Sqlite
+date: 2025-03-29
 description: Track SQLite handles used by the process.
 weight: 70
 aliases:

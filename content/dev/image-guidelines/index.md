@@ -1,6 +1,7 @@
 ---
 icon: photograph
 title: Guidelines for creating image content
+date: 2024-11-25
 last_reviewed: 2026-04-29
 weight: 40
 summary: |

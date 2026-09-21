@@ -1,5 +1,6 @@
 ---
 title: "Monitoring"
+date: 2025-03-28
 weight: 10
 description:  Report stats on client monitoring artifacts
 aliases:

@@ -6,6 +6,7 @@ sidebar:
   exclude: true
 menutitle: "Announcements"
 title: "Announcements"
+date: 2021-07-23
 weight: 5
 no_edit: true
 description: |

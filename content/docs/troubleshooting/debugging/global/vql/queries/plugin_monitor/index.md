@@ -1,5 +1,6 @@
 ---
 title: "Plugin Monitor"
+date: 2025-03-28
 description:  See currently running VQL plugins.
 weight: 10
 ---

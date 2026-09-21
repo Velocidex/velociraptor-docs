@@ -1,5 +1,6 @@
 ---
 title: "worker"
+date: 2025-09-29
 weight: 60
 description: Reporting information about current worker tasks.
 ---

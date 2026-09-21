@@ -1,6 +1,7 @@
 ---
 icon: server
 title: Setting up a Hugo development server
+date: 2026-05-25
 weight: 20
 last_reviewed: 2026-04-29
 summary: |

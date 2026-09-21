@@ -1,6 +1,7 @@
 ---
 menutitle: "Support Policy"
 title: "The Velociraptor Support Policy"
+date: 2021-12-20
 weight: 10
 draft: false
 description: |

@@ -1,6 +1,7 @@
 ---
 menutitle: Security
 title: Velociraptor Security Configuration
+date: 2024-01-17
 weight: 46
 summary: |
   Velociraptor is a highly privileged service with elevated access to thousands

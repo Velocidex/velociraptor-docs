@@ -1,5 +1,6 @@
 ---
 title: "Metrics"
+date: 2025-03-28
 weight: 10
 description: Report all the current process running metrics.
 aliases:

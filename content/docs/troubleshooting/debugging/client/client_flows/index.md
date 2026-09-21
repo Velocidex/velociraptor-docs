@@ -1,5 +1,6 @@
 ---
 title: "Flows"
+date: 2025-03-28
 description:  Report the state of the client's flow manager
 weight: 50
 aliases:
