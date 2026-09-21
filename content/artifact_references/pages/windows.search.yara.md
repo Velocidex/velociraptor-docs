@@ -1,6 +1,7 @@
 ---
 title: Windows.Search.Yara
 description: "Scans the NTFS filesystem for files matching a YARA rule by first\nparsing the MFT to enumerate files.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

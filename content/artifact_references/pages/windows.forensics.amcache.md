@@ -1,6 +1,7 @@
 ---
 title: Windows.Forensics.Amcache
 description: "Parses the Amcache.hve registry hive to enumerate executed binaries,\ninstalled programs, and drivers."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

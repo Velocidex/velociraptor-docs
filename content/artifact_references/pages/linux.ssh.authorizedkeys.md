@@ -1,6 +1,7 @@
 ---
 title: Linux.Ssh.AuthorizedKeys
 description: "Finds and parses SSH authorized keys files."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Windows.Detection.BinaryRename
 description: "Detects renamed binaries commonly abused by adversaries."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

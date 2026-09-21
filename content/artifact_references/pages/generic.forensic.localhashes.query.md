@@ -1,6 +1,7 @@
 ---
 title: Generic.Forensic.LocalHashes.Query
 description: "Searches the local SQLite hash database for files matching a\nuser-supplied hash list."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

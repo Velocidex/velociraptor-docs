@@ -1,6 +1,7 @@
 ---
 title: Linux.Sys.Users
 description: "Gets user-specific information like homedir, group, etc. from\n`/etc/passwd`.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

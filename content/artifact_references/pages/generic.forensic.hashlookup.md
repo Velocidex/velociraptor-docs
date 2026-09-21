@@ -1,6 +1,7 @@
 ---
 title: Generic.Forensic.HashLookup
 description: "Collects file hashes from various sources into a central event\nstream for external lookups."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

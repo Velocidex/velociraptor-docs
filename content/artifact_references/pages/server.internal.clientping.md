@@ -1,6 +1,7 @@
 ---
 title: Server.Internal.ClientPing
 description: "Provides an internal event channel for client ping notifications\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

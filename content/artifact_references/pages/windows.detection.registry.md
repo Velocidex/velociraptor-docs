@@ -1,6 +1,7 @@
 ---
 title: Windows.Detection.Registry
 description: "Monitors selected registry keys for changes and raises alerts on\nmodifications.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

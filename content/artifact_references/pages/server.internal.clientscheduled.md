@@ -1,6 +1,7 @@
 ---
 title: Server.Internal.ClientScheduled
 description: "Fires an event when new flows are scheduled for a client to process.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

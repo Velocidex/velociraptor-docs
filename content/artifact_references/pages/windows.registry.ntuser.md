@@ -1,6 +1,7 @@
 ---
 title: Windows.Registry.NTUser
 description: "Searches for registry keys and values across all users' NTUSER.DAT\nhives using raw NTFS parsing."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

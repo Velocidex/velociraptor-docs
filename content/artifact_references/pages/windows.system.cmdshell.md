@@ -1,6 +1,7 @@
 ---
 title: Windows.System.CmdShell
 description: "Runs shell commands through cmd.exe and captures or uploads stdout\noutput."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

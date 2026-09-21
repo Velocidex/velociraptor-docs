@@ -1,6 +1,7 @@
 ---
 title: Windows.Applications.MegaSync
 description: "Parses MEGASync logs and allows using regular expressions to search for\nentries of interest."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

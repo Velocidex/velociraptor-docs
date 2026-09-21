@@ -1,6 +1,7 @@
 ---
 title: Server.Monitoring.RSSFeeds
 description: "Polls RSS feeds at a configurable interval and alerts users about\nnew items."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

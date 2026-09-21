@@ -1,6 +1,7 @@
 ---
 title: Linux.Users.RootUsers
 description: "Detects users added in the `sudo` group.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

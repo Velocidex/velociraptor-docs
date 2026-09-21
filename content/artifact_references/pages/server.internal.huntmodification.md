@@ -1,6 +1,7 @@
 ---
 title: Server.Internal.HuntModification
 description: "Provides an internal event queue for hunt modification notifications\nincluding stop and start events."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

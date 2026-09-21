@@ -1,6 +1,7 @@
 ---
 title: Windows.Memory.Acquisition
 description: "Acquires a full memory image by using the built-in WinPmem driver."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

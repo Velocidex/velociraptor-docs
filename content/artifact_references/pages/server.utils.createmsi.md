@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.CreateMSI
 description: "Builds a Windows MSI deployment package using the current org's\nclient configuration."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
@@ -15,7 +16,7 @@ client configuration.
 This artifact depends on the following tools:
 
 * <velo-tool-viewer name="VelociraptorWindowsMSI" />
-* <velo-tool-viewer name="VelociraptorWindows_x86MSI" />
+* <velo-tool-viewer name="VelociraptorWindowsArm64MSI" />
 
 You can replace those with suitable MSI builds.
 
@@ -31,7 +32,7 @@ description: |
   This artifact depends on the following tools:
 
   * <velo-tool-viewer name="VelociraptorWindowsMSI" />
-  * <velo-tool-viewer name="VelociraptorWindows_x86MSI" />
+  * <velo-tool-viewer name="VelociraptorWindowsArm64MSI" />
 
   You can replace those with suitable MSI builds.
 
@@ -41,8 +42,8 @@ parameters:
   - name: CustomConfig
     description: Supply a custom client config instead of using the one from the current org
     type: yaml
-  - name: AlsoBuild_x86
-    description: Also build 32 bit MSI for deployment.
+  - name: AlsoBuildArm64
+    description: Also build Arm64 bit MSI for deployment.
     type: bool
 
 sources:
@@ -66,9 +67,9 @@ sources:
        SELECT Build(Target="VelociraptorWindowsMSI") AS VelociraptorWindowsMSI
        FROM scope()
     }, b={
-       SELECT Build(Target="VelociraptorWindows_x86MSI") AS VelociraptorWindows_x86MSI
+       SELECT Build(Target="VelociraptorWindowsArm64MSI") AS VelociraptorWindowsArm64MSI
        FROM scope()
-       WHERE AlsoBuild_x86
+       WHERE AlsoBuildArm64
     })
 ````
 

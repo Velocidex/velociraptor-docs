@@ -1,6 +1,7 @@
 ---
 title: Windows.EventLogs.Modifications
 description: "Checks registry keys for WINEVT channels and WMI autologger\nproviders to detect event log tampering."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

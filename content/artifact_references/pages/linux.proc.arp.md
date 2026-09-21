@@ -1,6 +1,7 @@
 ---
 title: Linux.Proc.Arp
 description: "Parses the ARP table from /proc/net/arp.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

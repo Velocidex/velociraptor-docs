@@ -1,6 +1,7 @@
 ---
 title: MacOS.Forensics.AppleDoubleZip
 description: "Searches for zip files containing download URLs inadvertently\nincluded in the zip contents."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

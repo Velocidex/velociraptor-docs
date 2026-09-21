@@ -1,6 +1,7 @@
 ---
 title: Server.Enrichment.GeoIP
 description: "A utility artifact that enriches an IP address with country, state,\nand city information from a MaxMind GeoIP database."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

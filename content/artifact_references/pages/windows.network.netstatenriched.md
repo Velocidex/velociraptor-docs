@@ -1,6 +1,7 @@
 ---
 title: Windows.Network.NetstatEnriched
 description: "NetstatEnriched adds data enrichment to the Netstat artifact and\nprovides extensive filtering options."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Generic.Utils.FetchBinary
 description: "A utility artifact which fetches a binary (or data file) from a URL\nand caches it on disk."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

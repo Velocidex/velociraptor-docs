@@ -1,6 +1,7 @@
 ---
 title: Windows.Sys.Programs
 description: "Enumerates installed Windows applications by reading registry\nuninstall keys."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

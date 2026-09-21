@@ -1,6 +1,7 @@
 ---
 title: Generic.Utils.SendEmail
 description: "A Utility artifact for sending emails."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

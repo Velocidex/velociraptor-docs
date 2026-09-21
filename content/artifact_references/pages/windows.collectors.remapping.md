@@ -1,6 +1,7 @@
 ---
 title: Windows.Collectors.Remapping
 description: "Creates filesystem and registry remappings for offline analysis of\nVelociraptor collection containers."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

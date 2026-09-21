@@ -1,6 +1,7 @@
 ---
 title: Windows.Timeline.Registry.RunMRU
 description: "Extracts RunMRU registry entries from user hives and outputs them\nin timeline format."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

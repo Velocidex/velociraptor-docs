@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.KillClient
 description: "Aggressively terminates a Velociraptor client process by sending a\nkill signal to the specified client ID."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

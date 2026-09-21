@@ -1,6 +1,7 @@
 ---
 title: Linux.Sys.ACPITables
 description: "Lists ACPI firmware tables with their sizes and cryptographic\nhashes.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

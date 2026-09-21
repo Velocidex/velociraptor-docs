@@ -1,6 +1,7 @@
 ---
 title: Windows.EventLogs.Evtx
 description: "Parses and returns events from Windows evtx logs."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

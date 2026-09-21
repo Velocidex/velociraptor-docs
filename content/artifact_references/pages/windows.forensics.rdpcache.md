@@ -1,6 +1,7 @@
 ---
 title: Windows.Forensics.RDPCache
 description: "Parses RDP Bitmap Cache (.BIN) files to extract and reconstruct\ncached remote desktop screen images."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: System.Upload.Completion
 description: "Emits an event for every uploaded file, including offline collection\nimports, enabling post-upload automation."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Windows.Sys.AllUsers
 description: "Lists all user accounts on a Windows system including domain users\nwith cached profiles."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

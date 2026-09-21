@@ -1,6 +1,7 @@
 ---
 title: Windows.Forensics.Prefetch
 description: "Parses Windows prefetch (.pf) files to extract executable execution\nhistory and run counts."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

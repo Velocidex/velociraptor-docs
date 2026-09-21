@@ -1,6 +1,7 @@
 ---
 title: Windows.Events.TrackProcessesETW
 description: "Tracks process execution using ETW kernel events (CreateProcess,\nTerminateProcess, LoadImage)."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

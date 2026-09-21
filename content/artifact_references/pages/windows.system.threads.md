@@ -1,6 +1,7 @@
 ---
 title: Windows.System.Threads
 description: "Lists threads for selected processes, matching by name or PID regex\nfilters."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

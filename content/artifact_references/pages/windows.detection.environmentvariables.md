@@ -1,6 +1,7 @@
 ---
 title: Windows.Detection.EnvironmentVariables
 description: "Find processes which have the specified environment variables.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

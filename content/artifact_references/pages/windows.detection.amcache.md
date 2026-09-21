@@ -1,6 +1,7 @@
 ---
 title: Windows.Detection.Amcache
 description: "Collects AMCache entries with a SHA1 hash to enable threat\ndetection."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Windows.System.AuditPolicy
 description: "Collects Windows Audit Policy configuration data from Windows\nsystems via auditpol."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

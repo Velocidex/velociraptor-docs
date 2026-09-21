@@ -9,6 +9,9 @@ title: "Announcements"
 weight: 5
 no_edit: true
 pre: <i class="fas fa-bullhorn"></i>
+description: |
+  Release announcements, security advisories and community news for
+  Velociraptor.
 ---
 
 - 2026-08-26 - Velociraptor 0.77.2 is now [available](/downloads/)!

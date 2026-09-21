@@ -1,6 +1,7 @@
 ---
 title: Demo.Plugins.Fifo
 description: "Demonstrates using the fifo() plugin to detect event sequences,\nusing failed logon attempts preceding a successful logon as a\nconcrete example."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Notebooks.Timelines
 description: "Provides a notebook template for building consolidated timelines\nfrom time series data across collections."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

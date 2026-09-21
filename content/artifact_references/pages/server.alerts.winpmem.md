@@ -1,6 +1,7 @@
 ---
 title: Server.Alerts.WinPmem
 description: "Sends an alert via email when the pmem service installation is\ndetected by `Windows.Events.ServiceCreation`."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

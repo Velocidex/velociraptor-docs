@@ -1,6 +1,7 @@
 ---
 title: Windows.Forensics.RecentApps
 description: "Enumerates program execution history from the Windows RecentApps\nregistry key."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

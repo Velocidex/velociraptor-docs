@@ -1,6 +1,7 @@
 ---
 title: Windows.ETW.KernelNetwork
 description: "Monitors network events (connections, data send/receive) via the\nKernel-Network ETW provider."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

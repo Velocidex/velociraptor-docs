@@ -1,6 +1,7 @@
 ---
 title: Server.Internal.ClientInfo
 description: "Automatically collects and updates client info indexes from\nheartbeat messages."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

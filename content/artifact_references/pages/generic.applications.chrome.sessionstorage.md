@@ -1,6 +1,7 @@
 ---
 title: Generic.Applications.Chrome.SessionStorage
 description: "Extracts key-value session storage entries from Chrome, Brave, and\nEdge browsers."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

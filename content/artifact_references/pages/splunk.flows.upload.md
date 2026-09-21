@@ -1,6 +1,7 @@
 ---
 title: Splunk.Flows.Upload
 description: "Sends Velociraptor collected data to Splunk for indexing and\nanalysis."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

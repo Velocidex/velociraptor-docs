@@ -1,6 +1,7 @@
 ---
 title: Linux.Events.EBPF
 description: "Forwards selected EBPF events generated on the endpoint.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

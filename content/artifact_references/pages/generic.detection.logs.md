@@ -1,6 +1,7 @@
 ---
 title: Generic.Detection.Logs
 description: "Searches text-based log files for strings matching a regex pattern\nacross common web server and system log paths."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

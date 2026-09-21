@@ -22,6 +22,7 @@ project = "velociraptor-docs"
 template = """---
 title: %s
 description: %s
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

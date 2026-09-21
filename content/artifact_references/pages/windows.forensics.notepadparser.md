@@ -1,6 +1,7 @@
 ---
 title: Windows.Forensics.NotepadParser
 description: "Parses Windows 11 Notepad TabState and WindowState files to recover\nedited file paths, timestamps, and content."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Windows.Packs.Persistence
 description: "Aggregates results from multiple persistence-related artifacts into\na single artifact \"pack\".\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

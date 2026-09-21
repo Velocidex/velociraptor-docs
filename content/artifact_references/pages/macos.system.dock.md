@@ -1,6 +1,7 @@
 ---
 title: MacOS.System.Dock
 description: "Lists docked applications and their metadata from each user's Dock\nplist."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

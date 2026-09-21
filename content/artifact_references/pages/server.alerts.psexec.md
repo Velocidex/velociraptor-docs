@@ -1,6 +1,7 @@
 ---
 title: Server.Alerts.PsExec
 description: "Sends an email alert when PsExec service execution is detected on a\nmonitored client."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

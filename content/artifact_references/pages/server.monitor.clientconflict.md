@@ -1,6 +1,7 @@
 ---
 title: Server.Monitor.ClientConflict
 description: "Detects client ID conflicts on the server and forces affected\nclients to rekey with a new identity."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

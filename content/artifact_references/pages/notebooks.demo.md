@@ -1,6 +1,7 @@
 ---
 title: Notebooks.Demo
 description: "Demonstrates notebook functionality with sample VQL and tool\nreferences.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Windows.Forensics.PartitionTable
 description: "Parses GPT and MBR partition tables from a raw disk image or\nphysical drive."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

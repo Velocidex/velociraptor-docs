@@ -1,6 +1,7 @@
 ---
 title: Linux.Network.Netstat
 description: "Reads Linux `/proc/net` files to display socket connection states\nand processes."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

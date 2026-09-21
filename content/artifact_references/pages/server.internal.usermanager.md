@@ -1,6 +1,7 @@
 ---
 title: Server.Internal.UserManager
 description: "Fires an event when Velociraptor user accounts are created, modified, or deleted.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

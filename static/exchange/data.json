@@ -1,5 +1,15 @@
 [
     {
+        "title": "Linux.Detection.CVE202685706.GitLabFileRead",
+        "author": "ecapuano",
+        "description": "Hunts self-managed GitLab hosts for exploitation of CVE-2026-85706, an\nunauthenticated arbitrary file read in the repository upload endpoints\n(CVSS 10.0, CISA KEV 2026-09-11, flagged for forensic triage under\nBOD 26-04). Patching alone does not answer whether files were read first.\nThis artifact answers that from the host's own logs.",
+        "link": "/exchange/artifacts/pages/linux.detection.cve202685706.gitlabfileread",
+        "tags": [],
+        "author_link": "https://github.com/ecapuano",
+        "author_avatar": "https://avatars.githubusercontent.com/u/4219694?v=4",
+        "date": "2026-09-15"
+    },
+    {
         "title": "Windows.ADCS.CertificateAuthority.EDB",
         "author": "sec-pc",
         "description": "Parses the Active Directory Certificate Services (ADCS) ESE database\ndirectly from disk.\nReads the CA database at C:\\Windows\\System32\\CertLog\\*.edb using the\nntfs accessor to handle the file lock while CertSvc is running.\nReturns all certificate requests with key forensic fields including\ndisposition (issued/revoked/failed/pending), requester and caller\nidentity, subject DN, template, timestamps, and serial number.\nJoins the Requests, Certificates, and RequestAttributes tables on\nRequestID to produce a single complete row per certificate.\nCertificateTemplate is resolved to the human-readable display name\nusing a three-stage lookup:\n  1. Display name from RequestAttributes for this RequestID\n  2. Inline $RequestAttributes text CertificateTemplate:Name\n  3. Raw OID from the Certificates table as last resort\nUPN is resolved with two-stage fallback:\n  1. $UPN from the issued certificate (Certificates table)\n  2. Requested UPN from SAN attribute (RequestAttributes table)\nRequires a build of Velociraptor compiled against the patched go-ese\nlibrary (https://github.com/Velocidex/go-ese) where DateTime columns\nare always decoded as Windows FILETIMEs regardless of column Flags.\nWithout the patch, all DateTime fields return 1899-12-30.\nTransaction log recovery: the CA service buffers writes in ESE\ntransaction logs. esentutl /r is used to replay those logs into a\ntemp copy of the EDB before parsing, ensuring all committed rows are\nvisible and matching certutil output.\nDisposition values:\n  9  = Issued\n  11 = Pending\n  15 = Revoked\n  16 = Error\n  20 = Failed\n  21 = Denied\n",

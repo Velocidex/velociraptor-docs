@@ -1,6 +1,7 @@
 ---
 title: Windows.Forensics.Shellbags
 description: "Extracts Shellbag data from NTUSER.DAT and UsrClass.dat to recover\nfolder navigation history."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

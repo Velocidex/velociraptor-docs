@@ -1,6 +1,7 @@
 ---
 title: Windows.Forensics.Pst
 description: "Parses Outlook PST files to extract email messages, attachments, and\nmetadata with regex-based targeting.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

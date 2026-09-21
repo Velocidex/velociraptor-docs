@@ -1,6 +1,7 @@
 ---
 title: Windows.Detection.BinaryHunter
 description: "This artifact enables hunting for binary attributes."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

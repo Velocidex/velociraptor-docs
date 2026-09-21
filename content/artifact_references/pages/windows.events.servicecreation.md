@@ -1,6 +1,7 @@
 ---
 title: Windows.Events.ServiceCreation
 description: "Detects new Windows service installations by monitoring System event\nlog for EventID 7045."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Windows.Applications.Chrome.Cookies
 description: "Enumerates Chrome browser cookies including host key, name,\ntimestamps, and encrypted values."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

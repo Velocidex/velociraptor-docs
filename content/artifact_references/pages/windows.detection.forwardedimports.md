@@ -1,6 +1,7 @@
 ---
 title: Windows.Detection.ForwardedImports
 description: "Scans DLLs for self-referencing forwarded imports that could\nindicate DLL hijacking."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

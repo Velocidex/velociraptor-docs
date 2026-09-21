@@ -1,6 +1,7 @@
 ---
 title: Admin.Client.Uninstall
 description: "Executes uninstall commands via msiexec, dpkg, or rpm to remove the\nclient from the endpoint."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

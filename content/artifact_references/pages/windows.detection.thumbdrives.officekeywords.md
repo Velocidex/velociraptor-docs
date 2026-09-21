@@ -1,6 +1,7 @@
 ---
 title: Windows.Detection.Thumbdrives.OfficeKeywords
 description: "Detects potentially-sensitive content exfiltration by\nkeyword-scanning Office documents on USB drives."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

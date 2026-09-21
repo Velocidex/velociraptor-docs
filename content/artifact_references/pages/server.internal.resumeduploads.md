@@ -1,6 +1,7 @@
 ---
 title: Server.Internal.ResumedUploads
 description: "Displays the status and details of all resumable upload operations\non the server.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

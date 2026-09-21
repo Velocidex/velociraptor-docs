@@ -1,6 +1,7 @@
 ---
 title: Linux.Forensics.Journal.Fields
 description: "Lists the fields and field values recorded in the systemd journal."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

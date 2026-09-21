@@ -1,6 +1,7 @@
 ---
 title: Windows.ETW.EdgeURLs
 description: "Captures URLs accessed by the Edge browser via the\nMicrosoft-Windows-URLMon ETW provider."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

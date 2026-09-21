@@ -1,6 +1,7 @@
 ---
 title: Server.Enrichment.CortexAnalyzer
 description: "A utility artifact that runs Cortex analyzer jobs on observables and\nretrieves the results from all applicable analyzers."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

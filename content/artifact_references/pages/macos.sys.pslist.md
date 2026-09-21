@@ -1,6 +1,7 @@
 ---
 title: MacOS.Sys.Pslist
 description: "Lists processes and their associated binaries.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

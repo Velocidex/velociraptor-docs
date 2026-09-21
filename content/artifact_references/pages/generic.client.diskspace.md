@@ -1,6 +1,7 @@
 ---
 title: Generic.Client.DiskSpace
 description: "Reports disk usage and free disk space on Linux, macOS, and Windows\nusing platform-specific commands."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

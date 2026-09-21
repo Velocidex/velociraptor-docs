@@ -1,6 +1,7 @@
 ---
 title: Windows.Detection.Thumbdrives.OfficeMacros
 description: "Watches for removable drives and extracts VBA macros from newly\nadded Office files."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

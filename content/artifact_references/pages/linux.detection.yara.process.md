@@ -1,6 +1,7 @@
 ---
 title: Linux.Detection.Yara.Process
 description: "Scans process memory with YARA rules, supporting URL-based or inline\nrule deployment."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

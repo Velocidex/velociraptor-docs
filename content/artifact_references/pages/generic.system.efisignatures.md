@@ -1,6 +1,7 @@
 ---
 title: Generic.System.EfiSignatures
 description: "Collects UEFI Secure Boot signature variables including PK, db, and\ndbx from the client.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

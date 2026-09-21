@@ -1,6 +1,7 @@
 ---
 title: Generic.Client.CleanupTemp
 description: "Removes old temporary files from the Velociraptor client's temp\ndirectory.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

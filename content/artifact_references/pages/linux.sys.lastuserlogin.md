@@ -1,6 +1,7 @@
 ---
 title: Linux.Sys.LastUserLogin
 description: "Parses system WTMP files. These indicate when users last logged in.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

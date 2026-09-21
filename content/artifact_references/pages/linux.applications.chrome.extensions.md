@@ -1,6 +1,7 @@
 ---
 title: Linux.Applications.Chrome.Extensions
 description: "Enumerates installed Chrome extensions by locating and parsing\n`manifest.json` files for all users."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

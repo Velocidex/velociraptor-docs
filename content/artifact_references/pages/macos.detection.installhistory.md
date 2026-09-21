@@ -1,6 +1,7 @@
 ---
 title: MacOS.Detection.InstallHistory
 description: "Collects entries from the InstallHistory .plist file\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

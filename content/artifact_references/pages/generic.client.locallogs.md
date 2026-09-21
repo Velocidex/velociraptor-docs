@@ -1,6 +1,7 @@
 ---
 title: Generic.Client.LocalLogs
 description: "Writes client logs to an encrypted local container file with\nconfigurable row limit (with flush) and size limit."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

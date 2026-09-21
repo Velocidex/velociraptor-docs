@@ -1,6 +1,7 @@
 ---
 title: Server.Internal.ClientTasks
 description: "Fires an event when the server schedules new tasks for a client.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

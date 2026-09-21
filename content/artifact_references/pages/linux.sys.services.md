@@ -1,6 +1,7 @@
 ---
 title: Linux.Sys.Services
 description: "Parses services output from `systemctl`.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

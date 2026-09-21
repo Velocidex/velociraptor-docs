@@ -1,6 +1,7 @@
 ---
 title: System.Flow.Archive
 description: "Emits an event when a flow is archived, enabling post-archival\nprocessing workflows.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

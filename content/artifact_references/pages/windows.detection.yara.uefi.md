@@ -1,6 +1,7 @@
 ---
 title: Windows.Detection.Yara.UEFI
 description: "Scans EFI System Partition files with YARA rules for rootkit detection.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

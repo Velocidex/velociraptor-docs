@@ -1,6 +1,7 @@
 ---
 title: Generic.Forensic.Carving.URLs
 description: "Extracts URLs from files in common user-related locations using\nregex carving."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

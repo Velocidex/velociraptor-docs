@@ -1,6 +1,7 @@
 ---
 title: System.Hunt.Archive
 description: "Fires when a hunt is archived, thus enabling post-archive\nautomation, for example cleanup or notification workflows."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

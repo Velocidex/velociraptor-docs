@@ -1,6 +1,7 @@
 ---
 title: Generic.System.ProcessSiblings
 description: "Lists sibling processes from the process tracker to reveal related\nprocess activity."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

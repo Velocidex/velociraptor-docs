@@ -1,6 +1,7 @@
 ---
 title: Server.Information.Users
 description: "Lists user names and SIDs from collected `Windows.Sys.Users` results\nacross all clients."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

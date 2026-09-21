@@ -1,6 +1,7 @@
 ---
 title: MacOS.System.TCC
 description: "Queries the TCC (Transparency, Consent, and Control) database, which\ncan help reveal when access to system services has been added or\nmodified for an application."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

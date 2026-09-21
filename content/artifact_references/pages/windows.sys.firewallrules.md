@@ -1,6 +1,7 @@
 ---
 title: Windows.Sys.FirewallRules
 description: "Lists Windows firewall rules by parsing the registry FirewallRules\nkey.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

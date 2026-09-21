@@ -1,6 +1,7 @@
 ---
 title: Windows.Sysinternals.Autoruns
 description: "Installs and runs Sysinternals `autorunsc` to enumerate autostart\npersistence mechanisms.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

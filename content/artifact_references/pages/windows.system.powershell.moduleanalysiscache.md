@@ -1,6 +1,7 @@
 ---
 title: Windows.System.Powershell.ModuleAnalysisCache
 description: "Parses the PowerShell ModuleAnalysisCache file to enumerate loaded\nmodules and their functions.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

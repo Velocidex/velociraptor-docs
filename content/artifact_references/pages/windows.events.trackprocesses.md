@@ -1,6 +1,7 @@
 ---
 title: Windows.Events.TrackProcesses
 description: "Tracks processes using Sysmon ETW events (process creation and\ntermination) with pslist sync."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

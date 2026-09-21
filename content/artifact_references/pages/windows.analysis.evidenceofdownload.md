@@ -1,6 +1,7 @@
 ---
 title: Windows.Analysis.EvidenceOfDownload
 description: "Finds downloaded files by searching for `Zone.Identifier` alternate\ndata streams across user directories."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

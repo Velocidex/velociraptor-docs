@@ -1,6 +1,7 @@
 ---
 title: Windows.Forensics.UEFI
 description: "Analyzes the EFI System Partition (ESP) on a physical disk to\nenumerate and inspect EFI binaries."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

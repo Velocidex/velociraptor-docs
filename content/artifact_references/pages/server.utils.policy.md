@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.Policy
 description: "Automates the configuration of Velociraptor server security policies\nincluding IP-based GUI access control, plugin restrictions, secrets\nenforcement, and lockdown mode.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

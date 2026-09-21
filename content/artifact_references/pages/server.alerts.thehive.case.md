@@ -1,6 +1,7 @@
 ---
 title: Server.Alerts.TheHive.Case
 description: "Generates TheHive cases from completed artifact flows using\nClientId, FlowId, and FQDN as tags. Also adds FQDN as an observable."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

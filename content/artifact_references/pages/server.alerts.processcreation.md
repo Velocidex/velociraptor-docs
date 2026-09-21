@@ -1,6 +1,7 @@
 ---
 title: Server.Alerts.ProcessCreation
 description: "Forwards process creation detections to Slack, Teams, or Discord via\nwebhook."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

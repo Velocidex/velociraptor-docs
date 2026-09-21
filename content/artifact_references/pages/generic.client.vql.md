@@ -1,6 +1,7 @@
 ---
 title: Generic.Client.VQL
 description: "Runs an arbitrary VQL query on the endpoint.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

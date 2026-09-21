@@ -1,6 +1,7 @@
 ---
 title: Generic.Network.InterfaceAddresses
 description: "Collects interface addresses and metadata such as MAC, MTU, and IP\nmasks across operating systems."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Windows.Events.Mutants
 description: "Watches for new Mutants in the Windows object manager namespace and\nalerts on detections.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

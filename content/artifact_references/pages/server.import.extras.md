@@ -1,6 +1,7 @@
 ---
 title: Server.Import.Extras
 description: "Downloads and imports artifact bundles from predefined external\nrepositories."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

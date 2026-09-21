@@ -1,6 +1,7 @@
 ---
 title: Generic.Collectors.File
 description: "Searches a filesystem using a set of glob patterns and uploads\nmatching files to the server."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

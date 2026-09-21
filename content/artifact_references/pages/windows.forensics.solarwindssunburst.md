@@ -1,6 +1,7 @@
 ---
 title: Windows.Forensics.SolarwindsSunburst
 description: "Searches for SolarWinds Sunburst backdoor\n(SolarWinds.Orion.Core.BusinessLayer.dll) across all NTFS drives\nusing YARA."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: System.VFS.ListDirectory
 description: "Lists directory contents and populates the server-side\nVFS cache to enable VFS browsing."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Windows.System.DNSCache
 description: "Queries the Windows DNS client cache via WMI and reports cached DNS\nrecords with types and status."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

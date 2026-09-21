@@ -1,6 +1,7 @@
 ---
 title: Windows.EventLogs.Telerik
 description: "Searches Windows Application Event Log for Telerik exploitation\nindicators (Event ID 1309)."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Windows.Forensics.Bam
 description: "Parses the BAM registry key from Windows 10+ to identify program\nexecution times."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

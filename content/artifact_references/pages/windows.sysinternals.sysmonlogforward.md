@@ -1,6 +1,7 @@
 ---
 title: Windows.Sysinternals.SysmonLogForward
 description: "Reads Sysmon operational events from ETW and forwards them to the\nserver for analysis.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

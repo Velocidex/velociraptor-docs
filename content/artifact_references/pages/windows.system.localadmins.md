@@ -1,6 +1,7 @@
 ---
 title: Windows.System.LocalAdmins
 description: "Retrieves local administrator accounts from a Windows system via\nPowerShell.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

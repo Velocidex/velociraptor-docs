@@ -1,6 +1,7 @@
 ---
 title: Windows.Attack.Prefetch
 description: "Enumerates Windows Prefetch directory entries and correlates them\nwith known ATT&CK techniques."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

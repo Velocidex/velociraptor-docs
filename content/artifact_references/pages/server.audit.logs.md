@@ -1,6 +1,7 @@
 ---
 title: Server.Audit.Logs
 description: "Collects server audit events for significant user actions such as\nstarting a new collection, creating a new hunt, updating an artifact\ndefinition etc.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

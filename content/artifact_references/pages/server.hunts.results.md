@@ -1,6 +1,7 @@
 ---
 title: Server.Hunts.Results
 description: "Returns the collected data rows for a specified artifact within a\nhunt.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

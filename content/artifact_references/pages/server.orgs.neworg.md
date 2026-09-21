@@ -1,6 +1,7 @@
 ---
 title: Server.Orgs.NewOrg
 description: "Creates a new Velociraptor organization and assigns the current user\nas the org administrator."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

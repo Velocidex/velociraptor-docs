@@ -1,6 +1,7 @@
 ---
 title: Windows.Forensics.FilenameSearch
 description: "Searches the NTFS `$MFT` using YARA rules to determine if specific\nfilenames ever existed on the system."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

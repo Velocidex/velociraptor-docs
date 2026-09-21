@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.CollectClient
 description: "Automates the full collection workflow of a specified artifact:\nschedule, wait, and retrieve results from a single client."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

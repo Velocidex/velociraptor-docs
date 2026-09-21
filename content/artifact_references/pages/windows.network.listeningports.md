@@ -1,6 +1,7 @@
 ---
 title: Windows.Network.ListeningPorts
 description: "Reports processes that have open listening ports with address,\nprotocol, and PID details.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

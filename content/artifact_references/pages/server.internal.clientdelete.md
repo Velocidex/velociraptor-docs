@@ -1,6 +1,7 @@
 ---
 title: Server.Internal.ClientDelete
 description: "Provides an internal event stream for client deletion notifications.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

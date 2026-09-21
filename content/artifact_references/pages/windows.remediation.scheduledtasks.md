@@ -1,6 +1,7 @@
 ---
 title: Windows.Remediation.ScheduledTasks
 description: "Removes Windows scheduled tasks matching a command and argument regex pattern."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

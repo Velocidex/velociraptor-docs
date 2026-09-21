@@ -1,6 +1,7 @@
 ---
 title: Linux.Debian.Packages
 description: "Queries `dpkg` and `snapd` to list installed deb and snap packages."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

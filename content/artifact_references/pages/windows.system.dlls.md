@@ -1,6 +1,7 @@
 ---
 title: Windows.System.DLLs
 description: "Lists DLLs loaded by running processes with optional hash\ncomputation and certificate information.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

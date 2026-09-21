@@ -1,6 +1,7 @@
 ---
 title: Linux.Events.SSHBruteforce
 description: "Monitors SSH authentication logs to detect successful logins\nfollowing multiple failed attempts within a 1-hour time window."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

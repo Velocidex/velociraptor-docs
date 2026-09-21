@@ -1,6 +1,7 @@
 ---
 title: Linux.Sys.BashShell
 description: "This artifact allows running arbitrary commands through the system\nshell."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

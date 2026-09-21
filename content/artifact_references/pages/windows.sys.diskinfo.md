@@ -1,6 +1,7 @@
 ---
 title: Windows.Sys.DiskInfo
 description: "Collects physical disk drive information including model, serial\nnumber, size, and interface type via WMI.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

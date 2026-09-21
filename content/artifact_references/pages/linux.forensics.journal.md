@@ -1,6 +1,7 @@
 ---
 title: Linux.Forensics.Journal
 description: "Extracts records from systemd journal files for forensic analysis."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

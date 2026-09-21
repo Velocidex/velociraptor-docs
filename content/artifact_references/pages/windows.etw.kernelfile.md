@@ -1,6 +1,7 @@
 ---
 title: Windows.ETW.KernelFile
 description: "Monitors file create, delete, open, and rename events via the\nKernel-File ETW provider."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

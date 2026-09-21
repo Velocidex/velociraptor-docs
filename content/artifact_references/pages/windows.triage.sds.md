@@ -1,6 +1,7 @@
 ---
 title: Windows.Triage.SDS
 description: "Extracts the $Secure:$SDS NTFS stream from a specified drive volume\nusing raw MFT parsing."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Windows.EventLogs.RDPAuth
 description: "Extracts RDP authentication and session events from Security,\nSystem, and Terminal Services event logs."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

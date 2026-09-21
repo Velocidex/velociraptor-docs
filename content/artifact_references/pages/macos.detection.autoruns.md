@@ -1,6 +1,7 @@
 ---
 title: MacOS.Detection.Autoruns
 description: "Gathers evidence of macOS autoruns by searching common persistence\nlocations and uploading found files."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

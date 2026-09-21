@@ -1,6 +1,7 @@
 ---
 title: Windows.Applications.SBECmd
 description: "Executes Eric Zimmerman's SBECmd tool to parse Shellbags and capture\nthe results."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

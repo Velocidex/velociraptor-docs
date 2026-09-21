@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.DeleteFlow
 description: "Permanently deletes a flow, plus all its associated metadata and\nuploaded files, from the server."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

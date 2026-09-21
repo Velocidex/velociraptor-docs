@@ -1,6 +1,7 @@
 ---
 title: Server.Import.PreviousReleases
 description: "Downloads and installs legacy artifact bundles from a specified\nolder Velociraptor release."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

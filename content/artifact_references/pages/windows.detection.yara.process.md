@@ -1,6 +1,7 @@
 ---
 title: Windows.Detection.Yara.Process
 description: "Runs YARA over processes in memory and optionally uploads process\ndumps."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

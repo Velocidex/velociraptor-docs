@@ -1,6 +1,7 @@
 ---
 title: Admin.Client.Upgrade.Debian
 description: "Upgrades Velociraptor clients on Debian hosts by installing a new\nDebian package."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

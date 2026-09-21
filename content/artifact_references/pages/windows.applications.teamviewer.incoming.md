@@ -1,6 +1,7 @@
 ---
 title: Windows.Applications.TeamViewer.Incoming
 description: "Parses TeamViewer incoming connection logs to identify remote\naccess events."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Windows.Registry.UserAssist
 description: "Decodes UserAssist registry keys from NTUSER.DAT to reveal program\nexecution counts and last run times."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Windows.Applications.ChocolateyPackages
 description: "Lists Chocolatey packages installed on a Windows system by parsing\n.nuspec files.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

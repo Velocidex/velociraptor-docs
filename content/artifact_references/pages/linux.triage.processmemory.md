@@ -1,6 +1,7 @@
 ---
 title: Linux.Triage.ProcessMemory
 description: "Dumps process memory from a selected process and uploads it to the\nserver.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

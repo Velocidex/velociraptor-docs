@@ -1,6 +1,7 @@
 ---
 title: Server.Internal.ArtifactDescription
 description: "Renders a formatted view of any artifact's metadata, parameters,\nsources, exports, etc.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

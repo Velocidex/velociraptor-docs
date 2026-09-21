@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.ArtifactVerifier
 description: "Validates artifact YAML definitions from a file glob and reports\nerrors and warnings in a structured format."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

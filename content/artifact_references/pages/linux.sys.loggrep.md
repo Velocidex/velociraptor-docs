@@ -1,6 +1,7 @@
 ---
 title: Linux.Sys.LogGrep
 description: "Provides zgrep-like search capabilities across log files, including\ngzipped log files, matching a glob for lines matching a regex.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

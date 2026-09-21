@@ -1,6 +1,7 @@
 ---
 title: Windows.Registry.Sysinternals.Eulacheck
 description: "Checks which Sysinternals tools have accepted EULAs by reading the\n`HKCU\\Software\\Sysinternals` registry keys."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.SaveFavoriteFlow
 description: "Saves a collection configuration spec as a named favorite template\nfor reuse across client or server collections."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

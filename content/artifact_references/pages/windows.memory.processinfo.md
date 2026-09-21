@@ -1,6 +1,7 @@
 ---
 title: Windows.Memory.ProcessInfo
 description: "Extracts process information by parsing the Process Environment\nBlock (PEB) directly for each running process."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

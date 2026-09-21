@@ -1,6 +1,7 @@
 ---
 title: Azure.Monitor.Upload
 description: "This server-side event monitoring artifact waits for new artifacts to\nbe collected from endpoints and automatically uploads those to an\nAzure Log Analytics workspace using the **Azure Monitor Logs Ingestion\nAPI** (the modern Data Collection Rule based API)."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

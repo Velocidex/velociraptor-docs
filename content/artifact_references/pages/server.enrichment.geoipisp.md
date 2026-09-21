@@ -1,6 +1,7 @@
 ---
 title: Server.Enrichment.GeoIPISP
 description: "A utility artifact that enriches an IP address with ISP,\norganization, and ASN information from a MaxMind GeoIP ISP database."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

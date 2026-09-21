@@ -1,6 +1,7 @@
 ---
 title: Admin.Client.UpdateClientConfig
 description: "Replaces client configuration and optionally rekeys the client ID."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

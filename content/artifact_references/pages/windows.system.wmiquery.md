@@ -1,6 +1,7 @@
 ---
 title: Windows.System.WMIQuery
 description: "Runs a configurable WMI query on Windows and outputs the result\nrows."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

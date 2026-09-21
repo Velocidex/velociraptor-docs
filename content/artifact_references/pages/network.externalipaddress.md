@@ -1,6 +1,7 @@
 ---
 title: Network.ExternalIpAddress
 description: "Identifies the external IP address of the endpoint using an external\nweb service.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

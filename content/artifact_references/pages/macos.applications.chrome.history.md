@@ -1,6 +1,7 @@
 ---
 title: MacOS.Applications.Chrome.History
 description: "Enumerates visited URLs, titles, and visit timestamps from Chrome\nhistory databases on macOS."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

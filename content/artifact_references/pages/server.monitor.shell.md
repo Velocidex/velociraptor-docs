@@ -1,6 +1,7 @@
 ---
 title: Server.Monitor.Shell
 description: "Captures stdout, stderr, and command details from shell command\nexecutions across all clients for auditing purposes."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

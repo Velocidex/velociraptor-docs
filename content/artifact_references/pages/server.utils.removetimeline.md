@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.RemoveTimeline
 description: "Deletes a child timeline from a specified super-timeline in a\nnotebook.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

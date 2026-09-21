@@ -1,6 +1,7 @@
 ---
 title: Windows.Detection.PsexecService
 description: "Detects PsExec execution by scanning newly created service binaries\nfor PsExec strings."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

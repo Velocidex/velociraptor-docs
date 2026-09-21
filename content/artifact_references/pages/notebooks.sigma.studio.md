@@ -1,6 +1,7 @@
 ---
 title: Notebooks.Sigma.Studio
 description: "Sets up a Sigma rule development workspace with live testing against\nsample events.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

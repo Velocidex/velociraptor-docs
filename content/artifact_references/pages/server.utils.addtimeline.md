@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.AddTimeline
 description: "Adds a new timeline entry to a notebook super-timeline with results\nfrom a provided VQL query.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

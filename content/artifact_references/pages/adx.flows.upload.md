@@ -1,6 +1,7 @@
 ---
 title: ADX.Flows.Upload
 description: "This server-side event monitoring artifact waits for new artifacts\nto be collected from endpoints and automatically uploads those to an\nAzure Data Explorer (ADX) cluster."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

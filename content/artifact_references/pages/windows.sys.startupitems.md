@@ -1,6 +1,7 @@
 ---
 title: Windows.Sys.StartupItems
 description: "Enumerates startup applications from registry Run keys and Startup\nfolder locations.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Windows.Forensics.SAM.Enriched
 description: "Extracts everything usefully derivable from the SAM registry hive"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

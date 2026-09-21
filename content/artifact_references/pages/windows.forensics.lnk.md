@@ -1,6 +1,7 @@
 ---
 title: Windows.Forensics.Lnk
 description: "Parses Windows LNK shortcut files to extract target paths,\narguments, timestamps, and metadata."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

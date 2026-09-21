@@ -1,6 +1,7 @@
 ---
 title: Windows.Remediation.QuarantineMonitor
 description: "Periodically applies and maintains Windows IPsec quarantine policy\non the endpoint via an event query that will ensure the client stays\nquarantined."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

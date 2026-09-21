@@ -1,6 +1,7 @@
 ---
 title: Linux.Events.TrackProcesses
 description: "Subscribes to eBPF process events to track new processes and their\nparent relationships."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

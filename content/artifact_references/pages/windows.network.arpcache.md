@@ -1,6 +1,7 @@
 ---
 title: Windows.Network.ArpCache
 description: "Enumerates the Windows network neighbor cache (ARP/NDP) showing\nresolved IP and MAC address pairs.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

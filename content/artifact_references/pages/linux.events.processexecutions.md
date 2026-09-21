@@ -1,6 +1,7 @@
 ---
 title: Linux.Events.ProcessExecutions
 description: "Collects process execution logs from the Linux kernel."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

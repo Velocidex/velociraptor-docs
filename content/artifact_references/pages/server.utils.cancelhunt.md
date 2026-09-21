@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.CancelHunt
 description: "Cancels all in-progress flows for one or more specified hunts."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

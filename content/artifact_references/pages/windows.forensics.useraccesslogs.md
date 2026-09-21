@@ -1,6 +1,7 @@
 ---
 title: Windows.Forensics.UserAccessLogs
 description: "Parses the Windows User Access Logging (UAL) ESE database to\nenumerate client connections and server roles."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

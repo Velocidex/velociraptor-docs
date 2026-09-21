@@ -1,6 +1,7 @@
 ---
 title: Server.Internal.Interrogate
 description: "Captures client interrogation results (OS, hostname, architecture)\nwhen clients complete the client info collection.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

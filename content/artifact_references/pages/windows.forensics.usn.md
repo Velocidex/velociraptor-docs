@@ -1,6 +1,7 @@
 ---
 title: Windows.Forensics.Usn
 description: "Parses the NTFS USN journal ($J data stream) to enumerate recent\nfile creation, modification, and deletion events."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

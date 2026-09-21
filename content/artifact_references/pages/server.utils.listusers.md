@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.ListUsers
 description: "Enumerates all users across orgs along with their roles and permissions."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

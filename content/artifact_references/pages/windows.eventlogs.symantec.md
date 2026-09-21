@@ -1,6 +1,7 @@
 ---
 title: Windows.EventLogs.Symantec
 description: "Searches Symantec Endpoint Protection event logs for\nhigh-value detection events like infostealers, backdoors, and\nexploits."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

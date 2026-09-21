@@ -1,6 +1,7 @@
 ---
 title: Windows.Detection.Thumbdrives.List
 description: "Watches for removable drive insertion and enumerates all new files\non them."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

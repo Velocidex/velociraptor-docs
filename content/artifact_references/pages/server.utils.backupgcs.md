@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.BackupGCS
 description: "Automatically zips and uploads collected flow results to a Google\nCloud Storage bucket."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Linux.Ssh.PrivateKeys
 description: "Searches filesystem for SSH private keys and detects encryption\nstatus."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

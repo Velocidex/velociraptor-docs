@@ -1,6 +1,7 @@
 ---
 title: Admin.Client.Remove
 description: "Purges inactive clients based on a configurable age threshold."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

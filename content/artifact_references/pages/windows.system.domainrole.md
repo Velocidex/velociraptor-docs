@@ -1,6 +1,7 @@
 ---
 title: Windows.System.DomainRole
 description: "Extracts and categorizes the domain role of Windows systems based\non `Win32_ComputerSystem` WMI data.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

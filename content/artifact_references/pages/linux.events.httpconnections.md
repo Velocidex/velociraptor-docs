@@ -1,6 +1,7 @@
 ---
 title: Linux.Events.HTTPConnections
 description: "Monitors HTTP traffic on Linux systems using eBPF network tracing."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

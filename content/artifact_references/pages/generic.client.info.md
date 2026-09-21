@@ -1,6 +1,7 @@
 ---
 title: Generic.Client.Info
 description: "Collects basic system details including hostname, OS version,\ninterfaces, and platform info"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

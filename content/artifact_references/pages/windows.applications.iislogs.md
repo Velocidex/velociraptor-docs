@@ -1,6 +1,7 @@
 ---
 title: Windows.Applications.IISLogs
 description: "Provides grep-like search of IIS log files in specified directories\nwith optional whitelist filtering."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

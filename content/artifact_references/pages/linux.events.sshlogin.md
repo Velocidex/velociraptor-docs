@@ -1,6 +1,7 @@
 ---
 title: Linux.Events.SSHLogin
 description: "Watches the `auth.log` file for new successful SSH login events and\nforwards them to the server.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

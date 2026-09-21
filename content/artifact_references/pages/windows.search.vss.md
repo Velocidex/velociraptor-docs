@@ -1,6 +1,7 @@
 ---
 title: Windows.Search.VSS
 description: "Finds files in Volume Shadow Copies (VSS) using the `ntfs_vss`\naccessor."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

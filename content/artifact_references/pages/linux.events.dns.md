@@ -1,6 +1,7 @@
 ---
 title: Linux.Events.DNS
 description: "Monitors DNS requests in real time using eBPF, with filtering by\nprocess and destination."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

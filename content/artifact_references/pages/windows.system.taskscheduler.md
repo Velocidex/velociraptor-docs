@@ -1,6 +1,7 @@
 ---
 title: Windows.System.TaskScheduler
 description: "Enumerates Windows scheduled tasks and parses their XML definitions\nto extract commands and user contexts."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

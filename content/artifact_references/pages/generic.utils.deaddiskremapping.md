@@ -1,6 +1,7 @@
 ---
 title: Generic.Utils.DeadDiskRemapping
 description: "Inspects a disk image and produces an appropriate YAML remapping\nconfig for transparent filesystem access."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

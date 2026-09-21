@@ -1,6 +1,7 @@
 ---
 title: MacOS.System.TimeMachine
 description: "Collects Time Machine backup settings including volume, auto-backup\nstatus, and destinations.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

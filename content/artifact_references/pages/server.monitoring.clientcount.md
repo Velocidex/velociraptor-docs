@@ -1,6 +1,7 @@
 ---
 title: Server.Monitoring.ClientCount
 description: "Emails deployment statistics, including the connected client count,\non a configurable schedule."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

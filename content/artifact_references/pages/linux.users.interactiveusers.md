@@ -1,6 +1,7 @@
 ---
 title: Linux.Users.InteractiveUsers
 description: "Gets the interactive users from a Linux host.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

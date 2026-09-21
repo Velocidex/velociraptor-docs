@@ -1,6 +1,7 @@
 ---
 title: Windows.Memory.ProcessDump
 description: "Captures process memory for selected processes via crash dump or\nVelociraptor-compatible sparse upload."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

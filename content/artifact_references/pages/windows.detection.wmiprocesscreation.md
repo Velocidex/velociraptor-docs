@@ -1,6 +1,7 @@
 ---
 title: Windows.Detection.WMIProcessCreation
 description: "Captures WMI calls to the Win32_Process.Create method as a lateral\nmovement indicator."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

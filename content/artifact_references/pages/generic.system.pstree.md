@@ -1,6 +1,7 @@
 ---
 title: Generic.System.Pstree
 description: "Shows process lineage by following parent PIDs to establish call\nchains."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

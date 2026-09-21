@@ -1,6 +1,7 @@
 ---
 title: Windows.Network.PacketCapture
 description: "Captures network packets on Windows using netsh trace and then\nconverts these ETL traces to PCAP format."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

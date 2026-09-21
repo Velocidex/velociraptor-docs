@@ -1,6 +1,7 @@
 ---
 title: Windows.Registry.PortProxy
 description: "Enumerates Windows port proxy registry entries configured via\nnetsh or attack tools for network redirection."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

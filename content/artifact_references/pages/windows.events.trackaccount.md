@@ -1,6 +1,7 @@
 ---
 title: Windows.Events.Trackaccount
 description: "Watches Windows security event logs for successful logon events\n(4624) which also match additional configurable criteria."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Windows.NTFS.Recover
 description: "Uploads all data streams from a specified MFT ID on an NTFS volume\nfor deleted file recovery purposes."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

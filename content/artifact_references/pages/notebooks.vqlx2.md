@@ -1,6 +1,7 @@
 ---
 title: Notebooks.VQLx2
 description: "A notebook initialized with 2 VQL cells containing simple queries\nand also demonstrating initial output.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

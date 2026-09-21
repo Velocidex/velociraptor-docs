@@ -1,6 +1,7 @@
 ---
 title: Server.Internal.ClientInfoSnapshot
 description: "Notifies minion nodes to refresh their client info cache when the\nmaster writes a new snapshot."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

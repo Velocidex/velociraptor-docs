@@ -1,6 +1,7 @@
 ---
 title: MacOS.Network.Netstat
 description: "Reports network connections enriched with process information.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

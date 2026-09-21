@@ -1,6 +1,7 @@
 ---
 title: Windows.Persistence.Debug
 description: "Detects programs with a debugger configured in Image File Execution\nOptions registry keys."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

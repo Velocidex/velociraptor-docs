@@ -1,6 +1,7 @@
 ---
 title: Windows.Timeline.Prefetch
 description: "Extracts execution timestamps from prefetch files and outputs them\nin timeline format."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

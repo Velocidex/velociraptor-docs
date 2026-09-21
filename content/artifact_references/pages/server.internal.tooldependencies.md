@@ -1,6 +1,7 @@
 ---
 title: Server.Internal.ToolDependencies
 description: "An internal artifact that defines some tool\ndependencies. Velociraptor releases for offline collector"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
@@ -33,10 +34,10 @@ tools:
     download_transform: gunzip
     version: 0.77.2
 
-  - name: VelociraptorWindows_x86
-    url: https://github.com/Velocidex/velociraptor/releases/download/v0.77.2/velociraptor-v0.77.2-windows-386.exe.gz
+  - name: VelociraptorWindowsArm64
+    url: https://github.com/Velocidex/velociraptor/releases/download/v0.77.2/velociraptor-v0.77.2-windows-arm64.exe.gz
     serve_locally: true
-    filename: velociraptor-v0.77.2-windows-386.exe
+    filename: velociraptor-v0.77.2-windows-arm64.exe
     download_transform: gunzip
     version: 0.77.2
 
@@ -68,8 +69,8 @@ tools:
     serve_locally: true
     version: 0.77.2
 
-  - name: VelociraptorWindows_x86MSI
-    url: https://github.com/Velocidex/velociraptor/releases/download/v0.77.2/velociraptor-v0.77.2-windows-386.msi
+  - name: VelociraptorWindows_Arm64MSI
+    url: https://github.com/Velocidex/velociraptor/releases/download/v0.77.2/velociraptor-v0.77.2-windows-arm64.msi
     serve_locally: true
     version: 0.77.2
 

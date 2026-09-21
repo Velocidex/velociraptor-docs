@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.ImportCollection
 description: "Imports offline collector results (in zipped collection containers)\ninto the server so they appear alongside regular client collections."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

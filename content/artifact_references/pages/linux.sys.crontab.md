@@ -1,6 +1,7 @@
 ---
 title: Linux.Sys.Crontab
 description: "Displays parsed information from crontab.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

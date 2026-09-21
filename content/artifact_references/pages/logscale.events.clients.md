@@ -1,6 +1,7 @@
 ---
 title: LogScale.Events.Clients
 description: "Forwards selected client monitoring events to a LogScale ingestion\nendpoint."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

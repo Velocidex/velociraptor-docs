@@ -1,6 +1,7 @@
 ---
 title: Server.Internal.ArtifactModification
 description: "Provides an internal event stream for artifact modification\nnotifications."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

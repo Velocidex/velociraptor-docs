@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.ExportHunt
 description: "Exports an entire hunt's results to a downloadable zip archive with\nconfigurable data formatting options."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

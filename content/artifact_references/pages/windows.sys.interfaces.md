@@ -1,6 +1,7 @@
 ---
 title: Windows.Sys.Interfaces
 description: "Report information about the system's network interfaces."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

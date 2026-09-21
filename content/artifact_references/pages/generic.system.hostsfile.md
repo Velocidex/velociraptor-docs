@@ -1,6 +1,7 @@
 ---
 title: Generic.System.HostsFile
 description: "Parses the system hosts file to extract hostname-to-IP mappings."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Server.Enrichment.GreyNoise
 description: "Enriches an IP address with GreyNoise threat intelligence including\nclassification and noise status."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

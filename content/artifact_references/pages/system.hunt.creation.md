@@ -1,6 +1,7 @@
 ---
 title: System.Hunt.Creation
 description: "Fires an event whenever a new hunt is created on the Velociraptor\nserver.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Windows.EventLogs.PowershellModule
 description: "Extracts PowerShell module logging events (EID 4103) from the\nPowerShell Operational log with context and payload filtering."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

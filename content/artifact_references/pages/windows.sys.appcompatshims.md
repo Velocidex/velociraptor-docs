@@ -1,6 +1,7 @@
 ---
 title: Windows.Sys.AppcompatShims
 description: "Queries the Windows registry for Application Compatibility shim\ndatabase entries and their associated executables."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.DeleteNotebook
 description: "Completely removes a notebook from the server including all its cells, attachments etc.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

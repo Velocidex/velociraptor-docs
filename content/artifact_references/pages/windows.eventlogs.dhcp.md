@@ -1,6 +1,7 @@
 ---
 title: Windows.EventLogs.DHCP
 description: "Parses Windows DHCP client event logs (admin and operational) to\nextract IP address lease assignments and rejections."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

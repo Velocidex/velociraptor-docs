@@ -1,6 +1,7 @@
 ---
 title: Windows.Registry.BackupRestore
 description: "Enumerates Windows BackupRestore registry keys showing\napplications configured for backup and restore operations."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

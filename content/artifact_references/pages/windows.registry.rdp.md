@@ -1,6 +1,7 @@
 ---
 title: Windows.Registry.RDP
 description: "Extracts historical RDP connection server names and MRU entries from\neach user's NTUSER.DAT registry hive."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

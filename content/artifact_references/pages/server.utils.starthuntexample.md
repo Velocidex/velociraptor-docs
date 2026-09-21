@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.StartHuntExample
 description: "A template artifact, providing an example of how to grant controlled\nhigh-privilege operations to users with limited permissions."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

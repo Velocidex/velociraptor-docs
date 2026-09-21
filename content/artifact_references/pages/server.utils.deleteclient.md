@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.DeleteClient
 description: "Removes one or more clients by ID from the server, deleting all\nassociated collection data permanently."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

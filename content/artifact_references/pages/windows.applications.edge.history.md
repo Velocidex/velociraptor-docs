@@ -1,6 +1,7 @@
 ---
 title: Windows.Applications.Edge.History
 description: "Enumerates Edge browsing history (URLs, visit times, titles) from\nuser profiles.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

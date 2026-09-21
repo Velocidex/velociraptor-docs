@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.DeleteFavoriteFlow
 description: "Removes a specific named favorite collection spec from the current\nuser's saved templates."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

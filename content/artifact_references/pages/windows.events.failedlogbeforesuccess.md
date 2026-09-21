@@ -1,6 +1,7 @@
 ---
 title: Windows.Events.FailedLogBeforeSuccess
 description: "Detects successful logons preceded by multiple failed logon attempts\nwithin a configurable time window."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

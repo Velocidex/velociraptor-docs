@@ -1,6 +1,7 @@
 ---
 title: Reporting.Hunts.Details
 description: "Reports hunt execution details including client participation,\nduration, and completion status.\n"
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

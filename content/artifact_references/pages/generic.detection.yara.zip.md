@@ -1,6 +1,7 @@
 ---
 title: Generic.Detection.Yara.Zip
 description: "Searches for YARA matches inside nested compressed archives up to a\nconfigurable recursion depth."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

@@ -1,6 +1,7 @@
 ---
 title: MacOS.System.Users
 description: "Collects information about the local users on the system."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

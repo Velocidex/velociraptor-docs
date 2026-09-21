@@ -1,6 +1,7 @@
 ---
 title: Windows.Registry.PuttyHostKeys
 description: "Extracts PuTTY SSH host keys stored in the Windows registry for\neach user."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

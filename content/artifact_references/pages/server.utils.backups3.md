@@ -1,6 +1,7 @@
 ---
 title: Server.Utils.BackupS3
 description: "Automatically zips and uploads collected flow results to an\nS3-compatible bucket."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true

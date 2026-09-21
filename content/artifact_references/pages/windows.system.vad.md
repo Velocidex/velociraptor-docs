@@ -1,6 +1,7 @@
 ---
 title: Windows.System.VAD
 description: "Enumerates process memory sections using Virtual Address Descriptor\n(VAD) information."
+type: docs-no-toc
 hidden: true
 sitemap:
   disable: true
