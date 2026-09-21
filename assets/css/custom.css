@@ -255,13 +255,34 @@ html:not(.dark) .hextra-code-block[data-vql="rendered"] .chroma .err {
   text-align: center;
 }
 
+.hextra-404-brand {
+  display: inline-block;
+  width: min(320px, 100%);
+}
+
+.hextra-404-brand img {
+  width: 100%;
+  height: auto;
+}
+
+/* "Go to homepage" button and 404 code use The R7 green (#00aa00) from
+   the VeloR7 mark, not the site's Hextra accent.  Overrides the
+   hx:bg-primary-* utilities on the link. */
+.hextra-404-action {
+  background-color: #00aa00;
+}
+
+.hextra-404-action:hover {
+  background-color: #008a00;
+}
+
 .hextra-404-code {
   font-size: clamp(3rem, 8vw, 5rem);
   font-weight: 700;
   line-height: 1;
   font-variant-numeric: tabular-nums;
   margin: 1.5rem 0 0.25rem;
-  color: var(--hx-color-primary-600);
+  color: #00aa00;
 }
 
 .hextra-404-title {

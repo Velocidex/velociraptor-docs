@@ -12,14 +12,21 @@
      button dead on this page. Hextra's own 404 is a standalone document
      with no navbar or scripts, so upstream never hits this; this layout
      inherits baseof. Rendering the real sidebar fixes it at the source and
-     gives the reader somewhere to go, so the standalone VeloR7 mark that
-     used to sit above the error code is gone - the sidebar logo is the
-     same asset. */ -}}
+     gives the reader somewhere to go. The centred VeloR7 mark above the
+     error code is the page's branding: on desktop the small navbar mark
+     stays hidden (it only appears once the sidebar logo scrolls out of
+     view, and this page is too short to scroll) and on mobile the sidebar
+     is hidden too, so it would otherwise be the only unbranded page in
+     the site. */ -}}
 {{ define "main" }}
   <div class="hx:mx-auto hx:flex hextra-max-page-width">
     {{ partial "sidebar.html" (dict "context" .) }}
     <main id="content" class="hextra-404 hx:w-full hx:min-w-0">
       <div class="hextra-404-inner">
+        <a class="hextra-404-brand" href="{{ "" | relLangURL }}" aria-label="{{ site.Title }}">
+          <img class="hx:block hx:dark:hidden" src="{{ "images/VeloR7_LightMode.svg" | relURL }}" alt="{{ site.Title }}" />
+          <img class="hx:hidden hx:dark:block" src="{{ "images/VeloR7_DarkMode.svg" | relURL }}" alt="{{ site.Title }}" />
+        </a>
         <p class="hextra-404-code" aria-hidden="true">404</p>
         <h1 class="hextra-404-title">Page not found</h1>
         <p class="hextra-404-message">
