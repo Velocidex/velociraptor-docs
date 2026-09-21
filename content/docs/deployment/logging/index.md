@@ -1,5 +1,6 @@
 ---
 title: Server Logging
+date: 2026-09-01
 menutitle: Logging
 weight: 55
 last_reviewed: 2026-08-31

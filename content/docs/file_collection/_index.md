@@ -1,4 +1,5 @@
 ---
+icon: folder-open
 title: "File Acquisition"
 date: 2021-06-27T04:31:24Z
 last_reviewed: 2026-01-29

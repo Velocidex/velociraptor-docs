@@ -1,4 +1,5 @@
 ---
+icon: check-circle
 title: "Linting with Vale"
 menutitle: "Linting"
 date: 2026-05-01

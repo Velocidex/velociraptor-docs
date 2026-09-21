@@ -1,6 +1,8 @@
 {{- /* Port of the learn-theme children shortcode: lists child pages of the
        current section. Default style renders Hextra-style link cards;
-       style="hN" preserves the old heading-based rendering (used for TOC). */ -}}
+       style="hN" preserves the old heading-based rendering (used for TOC).
+       Cards may show an icon taken from each child page's `icon:` front
+       matter parameter (a name from the theme's data/icons.yaml set). */ -}}
 {{- $_hugo_config := `{ "version": 1 }` -}}
 {{- $showhidden := .Get "showhidden" -}}
 {{- $style := .Get "style" | default "li" -}}
@@ -45,6 +47,11 @@
           <a href="{{ .RelPermalink }}" class="hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900">
             <div class="hx:mt-auto">
               <span class="hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:pt-4 hx:px-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50">
+                {{- with .Params.icon -}}
+                  <span class="hextra-card-icon-img hx:shrink-0 hx:opacity-80 hx:group-hover:opacity-100 hx:mt-0.5 hx:text-primary-600 hx:dark:text-primary-600">
+                    {{- partial "utils/icon.html" (dict "name" . "attributes" "height=1.5rem") -}}
+                  </span>
+                {{- end -}}
                 <span>{{ .Title }}</span>
                 <span class="hx:ml-auto hx:shrink-0 hx:opacity-60 hx:group-hover:opacity-100">{{ partial "utils/icon.html" (dict "name" "chevron-right") }}</span>
               </span>

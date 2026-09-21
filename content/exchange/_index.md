@@ -8,7 +8,6 @@ date: 2021-06-12T14:03:59Z
 last_reviewed: 2026-07-26
 draft: false
 weight: 150
-pre: <i class="fas fa-code"></i>
 no_edit: true
 sitemap:
  disable: true

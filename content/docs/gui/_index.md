@@ -1,5 +1,7 @@
 ---
+icon: view-boards
 title: "The Admin GUI"
+date: 2021-06-10
 last_reviewed: 2025-09-29
 weight: 15
 description: |

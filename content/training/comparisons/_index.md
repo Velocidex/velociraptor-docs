@@ -1,5 +1,6 @@
 ---
 title: "Comparisons"
+date: 2026-03-26
 description: |
    Velociraptor is a powerful forensic tool. These pages
    compare Velociraptor to other popular tools.
@@ -45,4 +46,4 @@ The following pages serve a number of goals:
 
 ## Tool comparison
 
-{{% children %}}
+{{% children grid-cols=1 %}}

@@ -4,7 +4,6 @@ title: "Presentations"
 weight: 270
 no_children: true
 no_edit: true
-pre: <i class="fas fa-chalkboard-teacher"></i>
 description: |
   The following are various presentations and events that featured
   Velociraptor in some way.

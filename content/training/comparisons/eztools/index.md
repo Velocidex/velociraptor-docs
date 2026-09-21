@@ -1,5 +1,7 @@
 
 ---
+
+icon: cursor-click
 title: "EZ Tools"
 menutitle: EZ Tools
 ---

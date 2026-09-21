@@ -1,5 +1,6 @@
 ---
 title: Deploying Clients
+date: 2021-06-09
 weight: 25
 last_reviewed: 2024-11-30
 summary: |

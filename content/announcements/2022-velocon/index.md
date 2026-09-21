@@ -1,6 +1,8 @@
 ---
+icon: video-camera
 menutitle: "2022 VeloCon"
 title: "The 2022 Velociraptor Conference - Digging together..."
+date: 2022-04-28
 description: |
     Join us in our annual Velociraptor conference to discuss and share your experiences with Velociraptor!
 

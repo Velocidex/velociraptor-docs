@@ -3,6 +3,7 @@ sidebar:
   exclude: true
 menutitle: "RSS"
 title: "RSS Feeds"
+date: 2022-03-26
 draft: false
 weight: 250
 no_edit: true

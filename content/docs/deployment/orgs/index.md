@@ -1,6 +1,7 @@
 ---
 menutitle: Organizations
 title: Organizations and Multi-tenancy
+date: 2024-01-24
 last_reviewed: 2025-02-24
 draft: false
 weight: 20

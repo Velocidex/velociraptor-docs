@@ -1,4 +1,5 @@
 ---
+icon: shield-check
 menutitle: "Sigma rules"
 title: "Sigma rules"
 date: 2025-05-12

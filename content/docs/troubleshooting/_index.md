@@ -1,4 +1,5 @@
 ---
+icon: adjustments
 title: Troubleshooting Guide
 menutitle: Troubleshooting
 date: 2025-02-18

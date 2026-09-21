@@ -8,7 +8,6 @@ draft: false
 noDisqus: true
 noTitle: true
 weight: 400
-pre: "<i class='fas fa-search'></i>"
 ---
 
 {{< search >}}

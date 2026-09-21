@@ -1,6 +1,8 @@
 ---
+icon: academic-cap
 menutitle: "Trainings"
 title: "Upcoming Training Events"
+date: 2023-03-31
 description: |
     The Velociraptor team will be at BlackHat this year!
 

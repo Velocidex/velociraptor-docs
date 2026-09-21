@@ -8,7 +8,6 @@ noDisqus: true
 no_edit: true
 disableToc: false
 chapter: false
-pre: <i class="fas fa-book"></i>
 ---
 
 {{% include-page "/vql_reference/" %}}

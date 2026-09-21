@@ -1,4 +1,5 @@
 ---
+icon: server
 menutitle: "Deployment"
 title: "Deployment Overview"
 date: 2021-06-09T03:52:24Z

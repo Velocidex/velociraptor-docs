@@ -1,5 +1,6 @@
 ---
 title: "Binary parsing"
+date: 2022-01-08
 summary: |
     Velociraptor uses VQL to provide the flexibility for users to be able
     to craft a VQL query in order to retrieve valuable machine state

@@ -1,4 +1,5 @@
 ---
+icon: finger-print
 title: "Forensic Analysis"
 date: 2021-06-12
 draft: false

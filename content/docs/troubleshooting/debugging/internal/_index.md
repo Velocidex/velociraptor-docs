@@ -1,5 +1,6 @@
 ---
 title: "Internal"
+date: 2025-03-28
 description: "Profiles provided by Golang"
 weight: 10
 aliases:

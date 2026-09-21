@@ -1,4 +1,5 @@
 ---
+icon: document-search
 menutitle: "Artifacts"
 title: "Velociraptor Artifacts"
 date: 2021-06-12

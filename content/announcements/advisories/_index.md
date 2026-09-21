@@ -1,7 +1,9 @@
 ---
+icon: shield-exclamation
 type: docs-no-toc
 menutitle: "Security Advisories"
 title: "Security Advisories"
+date: 2024-11-22
 summary: |
     CVEs and other security advisories.
 description: |
@@ -9,7 +11,6 @@ description: |
 weight: 10
 no_edit: true
 noTitle: true
-pre: <i class="fas fa-exclamation-triangle"></i>
 outputs:
 - html
 - RSS

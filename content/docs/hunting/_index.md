@@ -1,4 +1,5 @@
 ---
+icon: cursor-click
 title: "Hunting"
 date: 2021-06-09T04:13:25Z
 last_reviewed: 2025-12-29

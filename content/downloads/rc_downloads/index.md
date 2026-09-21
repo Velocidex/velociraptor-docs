@@ -1,10 +1,10 @@
 ---
+type: wide
 title: "Release Candidates"
 date: 2021-06-23T08:29:57Z
 draft: false
 weight: 25
 no_children: true
-pre: <i class="fas fa-download"></i>
 release: 0.77.1-rc1
 base_release: 0.77.1-rc1
 arches:

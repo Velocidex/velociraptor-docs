@@ -1,5 +1,7 @@
 ---
+icon: beaker
 title: Test Content
+date: 2026-03-28
 weight: 50
 last_reviewed: 2026-04-29
 summary: A page for testing and previewing the presentation of common content components

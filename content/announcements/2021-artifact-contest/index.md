@@ -1,6 +1,8 @@
 ---
+icon: gift
 menutitle: "2021 Contest"
 title: "2021 Velociraptor Contributor Competition"
+date: 2021-07-23
 description: |
     Were you planning to try Velociraptor in the past? You can now win some awesome prizes by learning and applying Velociraptor to your own network.
 

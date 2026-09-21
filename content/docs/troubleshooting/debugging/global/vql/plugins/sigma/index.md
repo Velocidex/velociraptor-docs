@@ -1,5 +1,6 @@
 ---
 title: Sigma Tracker
+date: 2025-03-28
 description: Track current Sigma operations
 weight: 40
 aliases:

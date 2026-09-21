@@ -4,9 +4,9 @@ cascade:
   type: docs
 menutitle: "Knowledge Base"
 title: "Knowledge Base"
+date: 2022-03-21
 draft: false
 weight: 250
-pre: <i class="fas fa-brain"></i>
 no_edit: true
 disableToc: false
 no_children: true

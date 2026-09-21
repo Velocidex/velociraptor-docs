@@ -10,7 +10,6 @@ noDisqus: true
 no_edit: true
 disableToc: false
 chapter: false
-pre: <i class="fas fa-code"></i>
 summary: "Search our library of community-contributed artifacts"
 ---
 
