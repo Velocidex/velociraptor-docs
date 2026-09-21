@@ -6,19 +6,20 @@
 /* --- Brand accent: Velociraptor green ---
    Hextra derives the whole primary-* shade scale from --primary-hue and
    --primary-lightness (the theme defaults are a blue, 212/204deg, at 50%
-   lightness, which renders as a garish neon green here).  Setting the hue
-   to 120deg (the hue of the #00aa00 Velociraptor logo green) and the
-   lightness to 37% makes primary-600 resolve to exactly #00aa00, with the
-   rest of the scale as softer light and dark shades of the same hue.
-   Every primary-accented element - active nav buttons, active sidebar
-   item, links, buttons, focus rings - follows automatically. */
+   lightness, which renders as a garish neon green here).  Hue 130deg, a
+   teal-leaning take on the green of the #00aa00 Velociraptor logo, at 37%
+   lightness: primary-600 resolves to #00aa1c and the rest of the scale is
+   softer light and dark shades of the same hue.  Chosen by comparing
+   seven hue/lightness variants side by side.  Every primary-accented
+   element - active nav buttons, active sidebar item, links, buttons,
+   focus rings - follows automatically. */
 :root {
-  --primary-hue: 120deg;
+  --primary-hue: 130deg;
   --primary-lightness: 37%;
 }
 
 .dark {
-  --primary-hue: 120deg;
+  --primary-hue: 130deg;
   --primary-lightness: 37%;
 }
 
