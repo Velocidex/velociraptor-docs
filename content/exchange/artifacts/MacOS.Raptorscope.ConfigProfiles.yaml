@@ -1,0 +1,59 @@
+name: MacOS.Raptorscope.ConfigProfiles
+author: cac0ns3c (https://github.com/cac0ns3c/Raptorscope)
+description: |
+  Enumerate installed macOS configuration/MDM profiles with signing status and
+  payload identity — an unsigned profile carrying a content-filter/proxy/
+  certificate payload is a persistence and traffic-interception risk. No standard
+  built-in dumps these.
+  Keywords: configuration profile, MDM, PayloadType, signing, macOS. MITRE T1547 / T1176.
+
+  Source: `profiles show -output stdout-xml`, the supported macOS CLI for reading
+  installed profiles. The earlier on-disk approach (globbing
+  `/var/db/ConfigurationProfiles/Store/*.plist`) is unusable — that store is
+  SIP-restricted and returns "Operation not permitted" even to root/FDA. `profiles`
+  runs without elevation for user profiles; run as root (the usual Velociraptor
+  client context) to also see device-level (`_computerlevel`) profiles.
+
+  ### Output
+  One row per installed profile (ProfileIdentifier, PayloadType, Signed,
+  InstallDate, ProfileName).
+
+  NOTE: field mapping follows Apple's documented `profiles` plist schema but is
+  NOT yet validated against a populated host (see docs/real-capture-validation).
+type: CLIENT
+reference:
+  - https://attack.mitre.org/techniques/T1176/
+  - https://support.apple.com/guide/deployment/intro-to-configuration-profiles-depc0aadd3fe/web
+column_types:
+  - name: InstallDate
+    type: timestamp
+sources:
+  - name: ConfigProfiles
+    precondition: SELECT OS FROM info() WHERE OS = 'darwin'
+    query: |
+      -- `profiles show -output stdout-xml` writes a plist to stdout; parse it in
+      -- memory (accessor="data"). macOS has no `timeout` binary, so bound the run
+      -- with a shell background-kill (30s), degrading to empty instead of stalling.
+      LET raw = SELECT plist(accessor="data", file=Stdout) AS P
+        FROM execve(argv=["/bin/sh", "-c",
+          "profiles show -output stdout-xml 2>/dev/null & P=$!; (sleep 30; kill -9 $P 2>/dev/null) & K=$!; wait $P 2>/dev/null; kill $K 2>/dev/null"])
+
+      -- The top-level plist dict groups profiles by scope (`_computerlevel`,
+      -- `_userlevel`); each value is an array of profile dicts. Flatten every
+      -- scope's array into one profile per row.
+      LET scopes = SELECT _value AS profiles
+        FROM foreach(row=raw, query={ SELECT _key, _value FROM items(item=P) })
+      LET flat = SELECT * FROM foreach(row=scopes,
+        query={ SELECT * FROM foreach(row=profiles) })
+
+      SELECT
+        ProfileIdentifier AS ProfileIdentifier,
+        ProfileDisplayProfileName AS ProfileName,
+        ProfileInstallDate AS InstallDate,
+        -- First payload's type is the discriminating one for our detections.
+        ProfileItems[0].PayloadType AS PayloadType,
+        ProfileVerificationState AS VerificationState,
+        -- `profiles` reports verification; a signed+valid profile is "verified".
+        if(condition=ProfileVerificationState = "verified",
+           then=TRUE, else=FALSE) AS Signed
+      FROM flat
