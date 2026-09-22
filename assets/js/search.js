@@ -50,7 +50,11 @@
             element: "#pagefind-ui",
             showSubResults: true,
             showImages: false,
-            highlightParam: "q"
+            // "" disables the highlight param. With it set (default is "q")
+            // Pagefind appends "?q=<query>" to every result link so terms
+            // can be highlighted on the destination page. That pollutes the
+            // URLs users share/bookmark, so we keep the links clean.
+            highlightParam: ""
           });
         }
         var input = document.querySelector("#pagefind-ui input");
@@ -368,6 +372,22 @@
   }
 
   function decoratePagefindResults(container) {
+    // Belt-and-suspenders: normalize every result link (top-level AND nested)
+    // so no query string survives, regardless of Pagefind bundle behaviour.
+    // Pagefind's default UI only appends the query when highlightParam is set,
+    // but this guard also covers nested sub-result links and future bundles.
+    container
+      .querySelectorAll("a.pagefind-ui__result-link")
+      .forEach(function (link) {
+        var href = link.getAttribute("href");
+        if (!href || href.indexOf("?") === -1) return;
+        try {
+          var u = new URL(href, location.origin);
+          u.search = "";
+          link.setAttribute("href", u.pathname + u.hash);
+        } catch (e) {}
+      });
+
     container.querySelectorAll(".pagefind-ui__result").forEach(function (result) {
       if (result.closest(".pagefind-ui__result-nested")) return;
       var link = result.querySelector(".pagefind-ui__result-link");
@@ -402,84 +422,198 @@
     decoratePagefindResults(container);
     new MutationObserver(function () {
       decoratePagefindResults(container);
-      maintainTagFilters();
-      positionSiteTagsPanel();
+      maintainSiteFilters();
     }).observe(container, { childList: true, subtree: true });
   }
 
-  // Tag-filter maintenance (the /search/ page only).  Native PagefindUI
-  // renders a "tags" filter block in the drawer once tags are indexed; we
-  // hide it (our custom Tags accordion serves the same purpose) and then
-  // keep the accordion pill states in sync with the underlying checkbox.
-  function maintainTagFilters() {
+  // Site-filter maintenance (the /search/ page only).  The shortcode renders
+  // "Filter by Section" and "Filter by Tag" accordions server-side so the full
+  // lists are visible before any query.  PagefindUI's native per-query filter
+  // panel is hidden (custom.css); its checkboxes are still the source of truth
+  // the pills toggle.  On every results re-render we: (1) hide the native
+  // blocks, (2) keep pill is-active state in sync with the checkbox, and
+  // (3) prune both accordions to the values present in the current results,
+  // restoring the full lists (and static Section counts) when idle.
+  //
+  // Pagefind only renders its native blocks once a query has been typed, so a
+  // pill clicked BEFORE the first search has no checkbox to toggle.  That
+  // selection lives in pendingSiteFilters until the first result render
+  // materializes the native blocks, at which point applyPendingSiteFilters()
+  // clicks the matching checkbox (which is what actually drives Pagefind).
+  var pendingSiteFilters = { section: {}, tags: {} };
+
+  function maintainSiteFilters() {
     if (!document.querySelector(".search-box[data-site-search]")) return;
-    hideNativeTagFilters();
-    syncTagPills();
+    hideNativeFilterBlocks();
+    applyPendingSiteFilters();
+    syncPills();
+    pruneSitePills();
   }
 
-  function tagFilterCheckbox(tag) {
-    var box = document.querySelector(".search-box[data-site-search]");
-    if (!box) return null;
-    return box.querySelector('input[name="tags"][value="' + CSS.escape(tag) + '"]');
-  }
-
-  function hideNativeTagFilters() {
+  // Reconcile pre-search pill selections against the native checkboxes once
+  // they exist.  Clicking an unchecked matching checkbox applies the filter
+  // (and re-renders results).  Already-checked entries were applied on a
+  // previous pass and are dropped so we never re-click them.
+  function applyPendingSiteFilters() {
     var box = document.querySelector(".search-box[data-site-search]");
     if (!box) return;
-    box.querySelectorAll("details.pagefind-ui__filter-block").forEach(function (block) {
-      if (block.querySelector('input[name="tags"]')) {
-        block.hidden = true;
-      }
+    ["section", "tags"].forEach(function (filterName) {
+      var pending = pendingSiteFilters[filterName];
+      Object.keys(pending).forEach(function (value) {
+        if (!pending[value]) {
+          delete pending[value];
+          return;
+        }
+        var cb = filterCheckbox(filterName, value);
+        if (!cb) return; // native block not rendered (first keystroke pending)
+        if (cb.checked) {
+          delete pending[value]; // applied on an earlier pass
+        } else {
+          cb.click(); // applies the filter; next re-render confirms it
+        }
+      });
     });
   }
 
-  function syncTagPills() {
-    document.querySelectorAll("#pagefind-site-tags .search-tag-link").forEach(function (pill) {
-      var cb = tagFilterCheckbox(pill.dataset.tag);
-      var active = !!(cb && cb.checked);
+  function filterCheckbox(name, value) {
+    var box = document.querySelector(".search-box[data-site-search]");
+    if (!box) return null;
+    return box.querySelector('input[name="' + name + '"][value="' + CSS.escape(value) + '"]');
+  }
+
+  function hideNativeFilterBlocks() {
+    var box = document.querySelector(".search-box[data-site-search]");
+    if (!box) return;
+    box.querySelectorAll("details.pagefind-ui__filter-block").forEach(function (block) {
+      block.hidden = true;
+    });
+  }
+
+  function syncPills() {
+    syncPillSet("#pagefind-site-sections .search-section-link", "section");
+    syncPillSet("#pagefind-site-tags .search-tag-link", "tags");
+  }
+
+  function syncPillSet(selector, filterName) {
+    document.querySelectorAll(selector).forEach(function (pill) {
+      var value = pill.closest("#pagefind-site-sections")
+        ? pill.dataset.section
+        : pill.dataset.tag;
+      var cb = filterCheckbox(filterName, value);
+      // is-active covers checkboxes driven by Pagefind, plus selections made
+      // before the first search (pendingSiteFilters) that have no checkbox yet.
+      var active = !!pendingSiteFilters[filterName][value] ||
+        !!(cb && cb.checked);
       pill.classList.toggle("is-active", active);
       pill.setAttribute("aria-pressed", String(active));
     });
   }
 
-  function wireTagPills() {
-    var accordion = document.getElementById("pagefind-site-tags");
+  function wireFilterPills() {
+    wirePillSet("pagefind-site-sections", ".search-section-link", "section");
+    wirePillSet("pagefind-site-tags", ".search-tag-link", "tags");
+  }
+
+  function wirePillSet(accordionId, selector, filterName) {
+    var accordion = document.getElementById(accordionId);
     if (!accordion || accordion.dataset.wired) return;
     accordion.dataset.wired = "true";
     accordion.addEventListener("click", function (event) {
-      var pill = event.target.closest(".search-tag-link");
+      var pill = event.target.closest(selector);
       if (!pill) return;
-      var cb = tagFilterCheckbox(pill.dataset.tag);
-      if (cb) cb.click();
+      var value = pill.closest("#pagefind-site-sections")
+        ? pill.dataset.section
+        : pill.dataset.tag;
+      var cb = filterCheckbox(filterName, value);
+      if (cb) {
+        cb.click();
+        // Keep the pending view aligned with the real checkbox state so
+        // syncPillSet and applyPendingSiteFilters stay consistent.
+        pendingSiteFilters[filterName][value] = cb.checked;
+      } else {
+        // No query yet, so Pagefind has no checkbox to toggle.  Record the
+        // selection locally; the first result render applies it.
+        pendingSiteFilters[filterName][value] = !pendingSiteFilters[filterName][value];
+        syncPillSet(selector, filterName);
+      }
     });
   }
 
-  // /search/ page: the shortcode renders a "Tags" accordion
-  // (#pagefind-site-tags) after the search mount point with the same
-  // content as the /tags/ taxonomy page.  Once PagefindUI builds its filter
-  // drawer (fieldset.pagefind-ui__filter-panel) we move that accordion into
-  // the panel, directly under the "Section" filter block, so it reads as a
-  // second collapsible section.  Idempotent (skips when already in place).
-  function positionSiteTagsPanel() {
-    var tags = document.getElementById("pagefind-site-tags");
-    if (!tags) return;
-    var searchBox = document.querySelector(".search-box[data-site-search]");
-    var panel =
-      searchBox &&
-      searchBox.querySelector(".pagefind-ui__filter-panel");
+  // Prune the Section/Tag accordions to values present in the current result
+  // set.  The native block for a filter lists every value with a per-query
+  // count, so "present" means its option shows a count > 0.  When the search
+  // input is empty the full lists (and server-rendered static Section counts)
+  // are restored.  Note Pagefind keeps the last query's filter blocks in the
+  // DOM even after the input is cleared, so the input itself - not block
+  // presence - is the idle signal.
+  function pruneSitePills() {
+    var box = document.querySelector(".search-box[data-site-search]");
+    if (!box) return;
 
-    if (panel && panel.getBoundingClientRect().height > 0) {
-      // Panel is visible — move the accordion into it (under Section).
-      if (tags.parentNode !== panel) {
-        panel.appendChild(tags);
-      }
-    } else {
-      // Panel not yet visible or hidden — keep accordion as a direct
-      // child of the search-box, below the PagefindUI mount.
-      if (searchBox && tags.parentNode !== searchBox) {
-        searchBox.appendChild(tags);
-      }
+    var input = box.querySelector("#pagefind-site-search input");
+    var idle = !input || !input.value.trim();
+
+    if (idle) {
+      ["section", "tags"].forEach(function (filterName) {
+        var selector = filterName === "section"
+          ? "#pagefind-site-sections .search-section-link"
+          : "#pagefind-site-tags .search-tag-link";
+        document.querySelectorAll(selector).forEach(function (pill) {
+          pill.classList.remove("is-absent");
+          var countSpan = pill.querySelector(".search-section-count");
+          if (countSpan && pill.dataset.count !== undefined) {
+            countSpan.textContent = "\u00A0" + pill.dataset.count;
+          }
+        });
+      });
+      return;
     }
+
+    ["section", "tags"].forEach(function (filterName) {
+      var selector = filterName === "section"
+        ? "#pagefind-site-sections .search-section-link"
+        : "#pagefind-site-tags .search-tag-link";
+      var pills = document.querySelectorAll(selector);
+      if (!pills.length) return;
+
+      var nativeBlock = Array.prototype.filter.call(
+        box.querySelectorAll("details.pagefind-ui__filter-block"),
+        function (block) { return block.querySelector('input[name="' + filterName + '"]'); }
+      )[0];
+
+      // A query is active but the native block isn't rendered yet (first
+      // keystroke).  Leave the pills untouched until it appears.
+      if (!nativeBlock) return;
+
+      var counts = {};
+      nativeBlock
+        .querySelectorAll('.pagefind-ui__filter-value input[name="' + filterName + '"]')
+        .forEach(function (cb) {
+          var label = cb.closest(".pagefind-ui__filter-value")
+            .querySelector(".pagefind-ui__filter-label");
+          var m = label && label.textContent.match(/\((\d+)\)\s*$/);
+          counts[cb.value] = m ? parseInt(m[1], 10) : 0;
+        });
+
+      pills.forEach(function (pill) {
+        var value = pill.closest("#pagefind-site-sections")
+          ? pill.dataset.section
+          : pill.dataset.tag;
+        var count = counts[value] | 0;
+
+        // Rewrite the Section pill count to the result-relative number.
+        var countSpan = pill.querySelector(".search-section-count");
+        if (countSpan) {
+          countSpan.textContent = "\u00A0" + count;
+        }
+
+        var present = count > 0;
+        var active = pill.classList.contains("is-active");
+        // Keep an armed pill visible even if it shows 0 (user must be able to
+        // uncheck it); anything absent and unarmed gets pruned.
+        pill.classList.toggle("is-absent", !present && !active);
+      });
+    });
   }
 
   // Modal results: #pagefind-ui exists statically on every page (search-modal
@@ -510,7 +644,8 @@
   // Content pages: convert "Tags: #a #b" paragraphs into badges.  Script is
   // deferred so the DOM is ready; also run once the initial render settles.
   decorateTagParagraphs(document);
-  wireTagPills();
+  wireFilterPills();
+  maintainSiteFilters();
   document.addEventListener("DOMContentLoaded", function () {
     decorateTagParagraphs(document);
   });

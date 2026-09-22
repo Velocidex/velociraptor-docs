@@ -18,6 +18,9 @@
 {{/* Hover-based link prefetching */}}
 {{- partial "scripts/prefetch.html" . -}}
 
+{{/* Heading-permalink copy: clicking a heading anchor copies the section URL. */}}
+{{- partial "scripts/heading-anchor-copy.html" . -}}
+
 {{/* Mermaid */}}
 {{- if (.Store.Get "hasMermaid") -}}
   {{- partial "scripts/mermaid.html" . -}}
