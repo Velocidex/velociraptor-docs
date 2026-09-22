@@ -332,12 +332,20 @@ p.egg {
 }
 
 /* --- Generated config reference page (docs/deployment/references) ---
-   The item comments read as normal prose; each config item is the
-   code-font element on an unshaded bordered card, so the key/value lines
-   stand out from the comments around them without dual grey shading. */
+   Each config item and its documentation comment are wrapped together in
+   a .ref-block div. The item renders as a code-font bordered card with
+   the key/breadcrumb/value as code; its comment reads as normal prose
+   beside the key, so key/value lines stand out without dual grey
+   shading. Leaf comments sit under the card; container comments sit
+   inside the <summary> right under the key row so they stay put. */
+.ref-block {
+  display: block;
+  margin: 0 0 1rem 0;
+}
+
 .item-comment {
   font-family: var(--hx-font-sans);
-  margin: 16px 0 6px 0;
+  margin: 6px 0 0 0;
   color: inherit;
 }
 
@@ -359,6 +367,7 @@ p.egg {
   display: flex;
   align-items: center;
   padding-right: 1ex;
+  font-weight: 700;
 }
 
 /* Example values: same indent as the key/breadcrumb above them so the
@@ -407,7 +416,15 @@ p.egg {
   list-style: none;
   cursor: pointer;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+}
+
+/* A container's own comment lives inside the summary right under its key
+   row, so it stays "under the ref-item" on every line regardless of
+   expansion depth.  Force it to its own line below the key. */
+.reference-document details > summary .item-comment {
+  flex-basis: 100%;
 }
 
 .reference-document details > summary::-webkit-details-marker {
@@ -472,11 +489,9 @@ p.egg {
   max-width: 30em;
 }
 
-/* Filtered-out items are hidden; containers that match stay expanded.
-   The item's associated comment block hides with it (the filter toggles
-   filtered-out on both; see references/reference-filter script). */
-.ref-item.filtered-out,
-.item-comment.filtered-out {
+/* Each config item and its documentation comment are wrapped in one
+   .ref-block div, so hiding a block hides both. */
+.ref-block.filtered-out {
   display: none;
 }
 

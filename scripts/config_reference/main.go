@@ -116,50 +116,54 @@ func print_node(node *yaml.Node, breadcrumb []string) string {
 				item_breadcrumb = append(item_breadcrumb, label)
 
 				result += fmt.Sprintf(`
-<div class="item-comment">
-
-%s
-
-</div>
+<div class="ref-block">
 <li class="ref-item ref-container" data-key="%s" data-depth="%d">
  <details%s>
  <summary class="ref-summary">%s
    <div class="reference-key">
      %s
    </div>
-  </summary>
-  <div class="item-breadcrumb">%s</div>
-  <div class="reference-value-sequence">%s</div>
- </details>
-</li>
-`, comment,
-					make_id(item_breadcrumb),
-					depth,
-					details_open(),
-					chevron_svg,
-					label,
-					make_display_breadcrumb(item_breadcrumb),
-					print_node(c, item_breadcrumb))
-			} else {
-				/* Scalar sequence item: plain value. */
-				result += fmt.Sprintf(`
 <div class="item-comment">
 
 %s
 
 </div>
+  </summary>
+  <div class="item-breadcrumb">%s</div>
+  <div class="reference-value-sequence">%s</div>
+ </details>
+</li>
+</div>
+`, make_id(item_breadcrumb),
+					depth,
+					details_open(),
+					chevron_svg,
+					label,
+					comment,
+					make_display_breadcrumb(item_breadcrumb),
+					print_node(c, item_breadcrumb))
+			} else {
+				/* Scalar sequence item: plain value. */
+				result += fmt.Sprintf(`
+<div class="ref-block">
 <li class="ref-item ref-leaf" data-key="%s" data-depth="%d">
    <span class="item-name">%s
      <div class="reference-value-sequence">%s</div>
    </span>
    <div class="item-breadcrumb">%s</div>
 </li>
-`, comment,
-					make_id(breadcrumb),
+<div class="item-comment">
+
+%s
+
+</div>
+</div>
+`, make_id(breadcrumb),
 					depth,
 					`<i class="bullet-placeholder"></i>`,
 					print_node(c, breadcrumb),
-					make_display_breadcrumb(breadcrumb))
+					make_display_breadcrumb(breadcrumb),
+					comment)
 			}
 		}
 		result += "</ul>\n"
@@ -178,24 +182,25 @@ func print_node(node *yaml.Node, breadcrumb []string) string {
 			if is_container(value) {
 				/* Container value: collapsible <details> section. */
 				result += fmt.Sprintf(`
-<div class="item-comment">
-
-%s
-
-</div>
+<div class="ref-block">
 <li class="ref-item ref-container" id="%s" data-key="%s" data-depth="%d">
  <details%s>
 <summary class="ref-summary">%s
     <div class="reference-key">
       <a target="_blank" href="%s">%s</a> %s
     </div>
+<div class="item-comment">
+
+%s
+
+</div>
   </summary>
   <div class="item-breadcrumb">%s</div>
   <div class="reference-value-mapping">%s</div>
  </details>
 </li>
-`, comment,
-				id,
+</div>
+`, id,
 				id,
 				depth,
 				details_open(),
@@ -203,16 +208,13 @@ func print_node(node *yaml.Node, breadcrumb []string) string {
 				fmt.Sprintf(repository_link, value.Line),
 				escape(key.Value),
 				fmt.Sprintf(anchor_link, id, anchor_icon_svg),
+				comment,
 				make_display_breadcrumb(next_breadcrumb),
 				print_node(value, next_breadcrumb))
 			} else {
 				/* Scalar value: plain leaf item. */
 				result += fmt.Sprintf(`
-<div class="item-comment">
-
-%s
-
-</div>
+<div class="ref-block">
 <li class="ref-item ref-leaf" id="%s" data-key="%s" data-depth="%d">
  <span class="item-name">%s
    <div class="reference-key">
@@ -222,8 +224,13 @@ func print_node(node *yaml.Node, breadcrumb []string) string {
   <div class="item-breadcrumb">%s</div>
   <div class="reference-value-mapping">%s</div>
 </li>
-`, comment,
-				id,
+<div class="item-comment">
+
+%s
+
+</div>
+</div>
+`, id,
 				id,
 				depth,
 				`<i class="bullet-placeholder"></i>`,
@@ -231,7 +238,8 @@ func print_node(node *yaml.Node, breadcrumb []string) string {
 				escape(key.Value),
 				fmt.Sprintf(anchor_link, id, anchor_icon_svg),
 				make_display_breadcrumb(next_breadcrumb),
-				print_node(value, next_breadcrumb))
+				print_node(value, next_breadcrumb),
+				comment)
 			}
 		}
 		result += "</ul>\n"
