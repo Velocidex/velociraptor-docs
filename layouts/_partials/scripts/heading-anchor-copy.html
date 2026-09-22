@@ -1,0 +1,7 @@
+{{- /* Heading-permalink copy (assets/js/heading-anchor-copy.js): clicking a
+     .subheading-anchor copies the page URL including the section fragment. */ -}}
+{{- $jsHeadingCopy := resources.Get "js/heading-anchor-copy.js" -}}
+{{- if hugo.IsProduction -}}
+  {{- $jsHeadingCopy = $jsHeadingCopy | minify | fingerprint -}}
+{{- end -}}
+<script defer src="{{ $jsHeadingCopy.RelPermalink }}" integrity="{{ $jsHeadingCopy.Data.Integrity }}"></script>
