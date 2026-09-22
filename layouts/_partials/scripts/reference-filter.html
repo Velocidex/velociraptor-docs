@@ -32,18 +32,17 @@
     return false;
   }
 
-  /* The generator emits each item's documentation comment as a
-     .item-comment div immediately before its .ref-item li, so hiding an
-     item must hide the orphaned comment with it. */
-  function itemComment(el) {
-    var sib = el.previousElementSibling;
-    return sib && sib.classList.contains('item-comment') ? sib : null;
+  /* The generator wraps each item and its documentation comment in a
+     single .ref-block div (item first, comment inside the same block),
+     so hiding an item hides its own block. */
+  function refBlock(el) {
+    var p = el.parentElement;
+    return p && p.classList.contains('ref-block') ? p : null;
   }
 
   function setFiltered(el, filtered) {
-    el.classList.toggle('filtered-out', filtered);
-    var c = itemComment(el);
-    if (c) c.classList.toggle('filtered-out', filtered);
+    var b = refBlock(el);
+    (b || el).classList.toggle('filtered-out', filtered);
   }
 
   function applyFilter() {

@@ -39,3 +39,21 @@
     }, 2000);
   })();
 </script>
+
+{{- /* Collapsed right TOC column (assets/js/toc-collapse.js): apply the
+       reader's persisted state before the page paints, so the column is
+       already hidden on first sight - the deferred script only handles clicks
+       from then on. localStorage reads are not available during <head>
+       rendering (Hugo does not evaluate them), so this must live in an inline
+       script. */ -}}
+<script>
+  (function () {
+    try {
+      if (localStorage.getItem("hextra-toc-collapsed") === "1") {
+        document.documentElement.classList.add("hextra-toc-collapsed");
+      }
+    } catch (e) {
+      // Ignore: persistence is best-effort.
+    }
+  })();
+</script>

@@ -7,8 +7,11 @@
 {{- $backToTop := (T "backToTop") | default "Scroll to top" -}}
 
 <nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="{{ (T "tableOfContents") | default "Table of contents" }}">
+  {{/* Collapse/expand buttons float outside this nav (see below): collapsing
+       hides the column entirely, and a display:none column would hide any
+       button inside it. Styling: assets/css/custom.css. */}}
   {{- if $toc }}
-    <div class="hextra-scrollbar hx:sticky hx:top-16 hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4">
+    <div class="hextra-scrollbar hx:sticky hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4">
       {{- with .Fragments -}}
         {{- with .Headings -}}
           <p class="hx:mb-4 hx:font-semibold hx:tracking-tight">{{ $onThisPage }}</p>
@@ -65,6 +68,20 @@
     </div>
   {{ end -}}
 </nav>
+
+{{/* Floating collapse/expand controls: overlay buttons parked at the
+     article column's top-right corner, just below the navbar. Each is shown
+     in the matching state - the right-facing chevron collapses the column,
+     the left-facing one reopens it. They live outside the nav (a display:none
+     column would hide them along with the rest of the column) and float over
+     the article's edge via fixed positioning, so they stay reachable
+     mid-scroll. Styling is in assets/css/custom.css. */}}
+<button type="button" class="hextra-toc-floating hextra-toc-collapse hextra-toc-btn hx:cursor-pointer" data-toc-collapse aria-expanded="true" title="{{ (T "hideTableOfContents") | default "Hide table of contents" }}" aria-label="{{ (T "hideTableOfContents") | default "Hide table of contents" }}">
+  {{- partial "utils/icon.html" (dict "name" "chevron-double-right" "attributes" `height=16 width=16 class="hx:pointer-events-none"`) -}}
+</button>
+<button type="button" class="hextra-toc-floating hextra-toc-expand hextra-toc-btn hx:cursor-pointer" data-toc-expand aria-expanded="false" title="{{ (T "showTableOfContents") | default "Show table of contents" }}" aria-label="{{ (T "showTableOfContents") | default "Show table of contents" }}">
+  {{- partial "utils/icon.html" (dict "name" "chevron-double-left" "attributes" `height=16 width=16 class="hx:pointer-events-none"`) -}}
+</button>
 
 {{/* TOC subheadings component. This is a recursive component that renders a list of headings. */}}
 {{- define "toc-subheading" -}}

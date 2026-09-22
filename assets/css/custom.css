@@ -332,12 +332,20 @@ p.egg {
 }
 
 /* --- Generated config reference page (docs/deployment/references) ---
-   The item comments read as normal prose; each config item is the
-   code-font element on an unshaded bordered card, so the key/value lines
-   stand out from the comments around them without dual grey shading. */
+   Each config item and its documentation comment are wrapped together in
+   a .ref-block div. The item renders as a code-font bordered card with
+   the key/breadcrumb/value as code; its comment reads as normal prose
+   beside the key, so key/value lines stand out without dual grey
+   shading. Leaf comments sit under the card; container comments sit
+   inside the <summary> right under the key row so they stay put. */
+.ref-block {
+  display: block;
+  margin: 0 0 1rem 0;
+}
+
 .item-comment {
   font-family: var(--hx-font-sans);
-  margin: 16px 0 6px 0;
+  margin: 6px 0 0 0;
   color: inherit;
 }
 
@@ -359,6 +367,7 @@ p.egg {
   display: flex;
   align-items: center;
   padding-right: 1ex;
+  font-weight: 700;
 }
 
 /* Example values: same indent as the key/breadcrumb above them so the
@@ -407,7 +416,15 @@ p.egg {
   list-style: none;
   cursor: pointer;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+}
+
+/* A container's own comment lives inside the summary right under its key
+   row, so it stays "under the ref-item" on every line regardless of
+   expansion depth.  Force it to its own line below the key. */
+.reference-document details > summary .item-comment {
+  flex-basis: 100%;
 }
 
 .reference-document details > summary::-webkit-details-marker {
@@ -434,6 +451,9 @@ p.egg {
   padding: 0.5rem 0.75rem;
   margin: 0 0 0.5rem 0;
   transition: border-color 0.2s ease, background-color 0.2s ease;
+  /* Anchor targets: offset item cards below the sticky top navbar when a
+     shared #fragment link is opened, so the item is not hidden under it. */
+  scroll-margin-top: calc(var(--navbar-height) + 1rem);
 }
 
 .dark .ref-item {
@@ -472,11 +492,9 @@ p.egg {
   max-width: 30em;
 }
 
-/* Filtered-out items are hidden; containers that match stay expanded.
-   The item's associated comment block hides with it (the filter toggles
-   filtered-out on both; see references/reference-filter script). */
-.ref-item.filtered-out,
-.item-comment.filtered-out {
+/* Each config item and its documentation comment are wrapped in one
+   .ref-block div, so hiding a block hides both. */
+.ref-block.filtered-out {
   display: none;
 }
 
@@ -782,6 +800,14 @@ html.dark .hextra-nav-btn[aria-current] {
   --hextra-max-page-width: 84rem;
   --hextra-max-navbar-width: 84rem;
   --hextra-max-footer-width: 84rem;
+  /* The theme's static default --hextra-banner-height: 2rem is smaller than
+     the real banner (its h-10 close button makes it 2.5rem tall), and the
+     theme only re-measures that variable in deferred core/banner.js.  Pre-set
+     the correct height here so first paint is already right and the floating
+     TOC chevrons (which offset by this variable) don't jump once the script
+     runs.  When the banner is dismissed, head/banner.js sets the variable to
+     0 inline before paint, which overrides this default. */
+  --hextra-banner-height: 2.5rem;
 }
 
 @media (min-width: 768px) {
@@ -1604,5 +1630,122 @@ i.fa-brands {
   ::view-transition-old(*),
   ::view-transition-new(*) {
     animation: none !important;
+  }
+}
+
+/* --- Collapsible right TOC column (layouts/_partials/toc.html and
+   assets/js/toc-collapse.js) ---
+   Two floating chevron buttons (right-facing collapse, left-facing expand)
+   park at the article column's top-right corner, just below the navbar.
+   Collapsing hides the "On this page" column entirely, so the article gains
+   the width; the expand chevron floats over the edge to reopen it. The choice
+   persists in localStorage, applied before first paint by an inline script in
+   head-end.html.
+
+   This lives in custom.css rather than hx: utilities because Hextra's
+   prebuilt main.css is static: new utility classes are not generated, so the
+   buttons and the collapsed state are styled as plain CSS.  The breakpoint is
+   the theme's xl (80rem): below it the TOC column is not rendered at all,
+   so the buttons stay hidden there too. */
+.hextra-toc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.375rem;
+  color: var(--hx-color-gray-500);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.hextra-toc-btn:hover {
+  color: var(--hx-color-gray-900);
+  background: var(--hx-color-gray-100);
+}
+
+html.dark .hextra-toc-btn:hover {
+  color: var(--hx-color-gray-100);
+  background: var(--hx-color-neutral-800);
+}
+
+/* The floating chevrons park ~0.75rem from the article column's right edge
+   (see the fixed-position rules below).  The article's own right padding is
+   only 3rem (hx:md:px-12), so text can skim the buttons while scrolling.
+   At the xl breakpoint (where the buttons render) give the text column a
+   little extra room on that side.  Scoped to the TOC layouts' container so
+   the wide (no-TOC) pages keep their own padding. */
+@media (min-width: 80rem) {
+  .hextra-max-page-width article > main#content {
+    padding-right: 3.75rem;
+  }
+}
+
+/* Both the collapse and expand chevrons are overlay buttons pinned at the
+   article column's top-right corner, just below the navbar, so the control
+   never moves when the TOC column folds and unfolds.  They live outside the
+   nav (see layouts/_partials/toc.html) and use fixed positioning to stay
+   reachable mid-scroll.  The page container is centered at
+   --hextra-max-page-width (84rem here), so right: max(0px, ...) glues them
+   to the container on wide screens and to the viewport edge on narrow ones.
+   The TOC column is 16rem wide: when it is expanded the collapse chevron must
+   sit 16rem further in (the article's right edge); when it is collapsed the
+   expand chevron takes that same corner, now flush with the container.
+   Only one button shows at a time: the collapse chevron while the column is
+   expanded, the expand chevron while it is collapsed.  Below the xl breakpoint
+   the TOC column is not rendered at all, so the floating buttons stay hidden
+   there too. */
+.hextra-toc-btn[data-toc-collapse],
+.hextra-toc-btn[data-toc-expand] {
+  display: none;
+}
+
+@media (min-width: 80rem) {
+  .hextra-toc-collapse.hextra-toc-btn {
+    display: inline-flex;
+    position: fixed;
+    right: calc(max(0px, (100vw - var(--hextra-max-page-width)) / 2) + 16rem + 0.75rem);
+    top: calc(var(--hextra-banner-height, 0px) + var(--navbar-height) + 0.375rem);
+    z-index: 10;
+    background: var(--hx-color-neutral-50);
+    border: 1px solid var(--hx-color-neutral-200);
+    box-shadow: 0 4px 12px rgb(0 0 0 / 0.08);
+  }
+
+  .hextra-toc-expand.hextra-toc-btn {
+    display: none;
+  }
+
+  html.hextra-toc-collapsed .hextra-toc {
+    display: none;
+  }
+
+  html.hextra-toc-collapsed .hextra-toc-collapse.hextra-toc-btn {
+    display: none;
+  }
+
+  html.hextra-toc-collapsed .hextra-toc-expand.hextra-toc-btn {
+    display: inline-flex;
+    position: fixed;
+    right: calc(max(0px, (100vw - var(--hextra-max-page-width)) / 2) + 0.75rem);
+    top: calc(var(--hextra-banner-height, 0px) + var(--navbar-height) + 0.375rem);
+    z-index: 10;
+    background: var(--hx-color-neutral-50);
+    border: 1px solid var(--hx-color-neutral-200);
+    box-shadow: 0 4px 12px rgb(0 0 0 / 0.08);
+  }
+
+  html.dark .hextra-toc-btn[data-toc-collapse],
+  html.dark .hextra-toc-btn[data-toc-expand] {
+    background: var(--hx-color-neutral-900);
+    border-color: var(--hx-color-neutral-700);
+  }
+}
+
+@media print {
+  .hextra-toc-btn[data-toc-collapse],
+  .hextra-toc-btn[data-toc-expand] {
+    display: none !important;
   }
 }
