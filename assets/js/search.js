@@ -50,7 +50,11 @@
             element: "#pagefind-ui",
             showSubResults: true,
             showImages: false,
-            highlightParam: "q"
+            // "" disables the highlight param. With it set (default is "q")
+            // Pagefind appends "?q=<query>" to every result link so terms
+            // can be highlighted on the destination page. That pollutes the
+            // URLs users share/bookmark, so we keep the links clean.
+            highlightParam: ""
           });
         }
         var input = document.querySelector("#pagefind-ui input");
@@ -368,6 +372,22 @@
   }
 
   function decoratePagefindResults(container) {
+    // Belt-and-suspenders: normalize every result link (top-level AND nested)
+    // so no query string survives, regardless of Pagefind bundle behaviour.
+    // Pagefind's default UI only appends the query when highlightParam is set,
+    // but this guard also covers nested sub-result links and future bundles.
+    container
+      .querySelectorAll("a.pagefind-ui__result-link")
+      .forEach(function (link) {
+        var href = link.getAttribute("href");
+        if (!href || href.indexOf("?") === -1) return;
+        try {
+          var u = new URL(href, location.origin);
+          u.search = "";
+          link.setAttribute("href", u.pathname + u.hash);
+        } catch (e) {}
+      });
+
     container.querySelectorAll(".pagefind-ui__result").forEach(function (result) {
       if (result.closest(".pagefind-ui__result-nested")) return;
       var link = result.querySelector(".pagefind-ui__result-link");
