@@ -1234,82 +1234,42 @@ html.dark #pagefind-site-search .pagefind-ui__result-tag {
   margin-left: 0.375rem;
 }
 
-/* --- Pagefind filter panel (/search/ page) ---
-   Once the index carries data-pagefind-filter values, the old PagefindUI
-   renders a checkbox sidebar (fieldset.pagefind-ui__filter-panel) next to
-   the results.  On this site the /search/ column (~768px) wraps the drawer,
-   so the panel renders as a collapsible "Section" accordion above the
-   results - style it as such (border-bottom, no right rules). */
-#pagefind-site-search .pagefind-ui__filter-panel {
-  margin-top: 1rem;
-}
-#pagefind-site-search .pagefind-ui__filter-panel-label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--hx-color-neutral-500, #737373);
-}
-#pagefind-site-search .pagefind-ui__filter-block {
-  border-bottom: 1px solid var(--hx-color-neutral-200, #e5e5e5);
-}
-#pagefind-site-search .pagefind-ui__filter-name {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--hx-color-neutral-900, #171717);
-}
-html.dark #pagefind-site-search .pagefind-ui__filter-name {
-  color: var(--hx-color-neutral-100, #f5f5f5);
-}
-#pagefind-site-search .pagefind-ui__filter-group {
-  gap: 0.625rem;
-  padding-top: 0.875rem;
-}
-#pagefind-site-search .pagefind-ui__filter-value {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-#pagefind-site-search .pagefind-ui__filter-label {
-  font-size: 0.875rem;
-  color: var(--hx-color-neutral-700, #404040);
-}
-html.dark #pagefind-site-search .pagefind-ui__filter-label {
-  color: var(--hx-color-neutral-300, #d4d4d4);
-}
-#pagefind-site-search .pagefind-ui__filter-checkbox {
-  border: 1px solid var(--hx-color-neutral-300, #d4d4d4);
-  background-color: transparent;
-  border-radius: 4px;
-}
-#pagefind-site-search .pagefind-ui__filter-checkbox:checked {
-  background-color: var(--hx-color-primary-600, #2563eb);
-  border-color: var(--hx-color-primary-600, #2563eb);
-}
-
-/* The search modal keeps the tag chips but not the filter sidebar
-   (filtering is a /search/ page feature). */
+/* --- /search/ page: native Pagefind filter panel is hidden ---
+   PagefindUI renders a checkbox "Section"/"Tags" filter panel per query once
+   the index carries data-pagefind-filter values.  On this site the /search/
+   column (~768px) would wrap it next to the results, and the shortcode already
+   renders its own server-side "Filter by Section" / "Filter by Tag"
+   accordions (visible before any query is typed).  The native panel is
+   therefore hidden and used only as a source of truth: search.js reads its
+   per-value counts to prune the accordion pills and toggles its checkboxes
+   on pill click.  The search modal keeps the tag chips but not the filter
+   sidebar (filtering is a /search/ page feature). */
+#pagefind-site-search .pagefind-ui__filter-panel,
 #pagefind-ui .pagefind-ui__filter-panel {
   display: none;
 }
+/* The native filter blocks are left in the DOM (search.js reads their
+   counts) but must never paint. */
+#pagefind-site-search .pagefind-ui__filter-block[hidden] {
+  display: none !important;
+}
 
-/* --- /search/ page: "Tags" accordion (shortcode renders the same
-   taxonomy listing as the /tags/ page; search.js moves it into the
-   filter panel, under the Section block).  The svelte-scoped pagefind
-   rules don't cover this element, so it needs its own chrome here.
-   The rules are scoped to the element id so they apply both before the
-   search (as a sibling of the PagefindUI mount) and once it is moved
-   into the filter panel; id specificity also beats the pagefind
-   `.pagefind-ui--reset * { all: unset }` inside the UI root. */
+/* --- /search/ page: "Filter by Section" and "Filter by Tag" accordions
+   (shortcode renders both, with the full server-side lists, so they are
+   visible before any query).  The pagefind rules don't cover these elements,
+   so they need their own chrome here.  The rules are scoped to the element
+   ids so they apply independently of the PagefindUI mount; id specificity
+   also beats the pagefind `.pagefind-ui--reset * { all: unset }`. */
+#pagefind-site-sections,
 #pagefind-site-tags {
   cursor: default;
   margin-top: 0.75rem;
 }
-/* Inside the panel, the filter-panel already carries margin-top —
-   reset so the accordion sits flush under the Section block. */
-#pagefind-site-search .pagefind-ui__filter-panel #pagefind-site-tags {
-  margin-top: 0;
+/* Keep the accordions visually separate from the PagefindUI input below. */
+.search-box[data-site-search] #pagefind-site-search {
+  margin-top: 1rem;
 }
+#pagefind-site-sections .search-sections-name,
 #pagefind-site-tags .search-tags-name {
   position: relative;
   cursor: pointer;
@@ -1321,14 +1281,18 @@ html.dark #pagefind-site-search .pagefind-ui__filter-label {
   font-weight: 600;
   color: var(--hx-color-neutral-900, #171717);
 }
+html.dark #pagefind-site-sections .search-sections-name,
 html.dark #pagefind-site-tags .search-tags-name {
   color: var(--hx-color-neutral-100, #f5f5f5);
 }
+#pagefind-site-sections .search-sections-name::-webkit-details-marker,
+#pagefind-site-sections .search-sections-name::marker,
 #pagefind-site-tags .search-tags-name::-webkit-details-marker,
 #pagefind-site-tags .search-tags-name::marker {
   display: none;
 }
 /* Same disclosure chevron as the Section blocks (border triangle). */
+#pagefind-site-sections .search-sections-name::after,
 #pagefind-site-tags .search-tags-name::after {
   content: "";
   position: absolute;
@@ -1341,21 +1305,29 @@ html.dark #pagefind-site-tags .search-tags-name {
   border-top: 0;
   transform: translateY(-70%) rotate(-45deg);
 }
+#pagefind-site-sections[open] .search-sections-name::after,
 #pagefind-site-tags[open] .search-tags-name::after {
   transform: translateY(-70%) rotate(-225deg);
 }
-/* Tag cloud: the panel column is narrow, so wrap instead of the /tags/
+/* Pill clouds: the panel column is narrow, so wrap instead of the /tags/
    page's multi-column grid. */
+#pagefind-site-sections .search-sections-grid,
 #pagefind-site-tags .search-tags-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem 1.5rem;
   padding-top: 0.875rem;
 }
-/* Filter-toggle pills in the /search/ Tags accordion.
-   Originally styled for <a> elements; now rendered as <button> so a click
-   toggles a Pagefind filter instead of navigating.  appearance:none keeps
-   the pill chrome; :is-active marks an armed filter. */
+/* Pill pruned from the current result set (search.js). */
+#pagefind-site-sections .search-section-link.is-absent,
+#pagefind-site-tags .search-tag-link.is-absent {
+  display: none;
+}
+/* Filter-toggle pills in the /search/ accordions.  Rendered as <button> so
+   a click toggles a Pagefind filter instead of navigating.  appearance:none
+   keeps the pill chrome; :is-active marks an armed filter; :is-absent hides
+   a value pruned from the current result set. */
+#pagefind-site-sections .search-section-link,
 #pagefind-site-tags .search-tag-link {
   appearance: none;
   -webkit-appearance: none;
@@ -1373,44 +1345,47 @@ html.dark #pagefind-site-tags .search-tags-name {
   white-space: nowrap;
   cursor: pointer;
 }
-#pagefind-site-tags .search-tag-link:hover {
-  color: var(--hx-color-primary-600, #2563eb);
-  background-color: var(--hx-color-primary-50, #eff6ff);
-  border-color: var(--hx-color-primary-300, #93c5fd);
-}
+#pagefind-site-sections .search-section-link:hover,
+#pagefind-site-tags .search-tag-link:hover,
+#pagefind-site-sections .search-section-link.is-active,
 #pagefind-site-tags .search-tag-link.is-active {
   color: var(--hx-color-primary-600, #2563eb);
   background-color: var(--hx-color-primary-50, #eff6ff);
   border-color: var(--hx-color-primary-300, #93c5fd);
 }
-#pagefind-site-tags .search-tag-count {
-  display: none;
-}
+html.dark #pagefind-site-sections .search-section-link,
 html.dark #pagefind-site-tags .search-tag-link {
   color: var(--hx-color-neutral-300, #d4d4d4);
   background-color: var(--hx-color-neutral-700, #404040);
   border-color: var(--hx-color-neutral-600, #525252);
 }
-html.dark #pagefind-site-tags .search-tag-link:hover {
-  color: var(--hx-color-primary-400, #60a5fa);
-  background-color: var(--hx-color-primary-900, #1e3a5f);
-  border-color: var(--hx-color-primary-700, #1d4ed8);
-}
+html.dark #pagefind-site-sections .search-section-link:hover,
+html.dark #pagefind-site-tags .search-tag-link:hover,
+html.dark #pagefind-site-sections .search-section-link.is-active,
 html.dark #pagefind-site-tags .search-tag-link.is-active {
   color: var(--hx-color-primary-400, #60a5fa);
   background-color: var(--hx-color-primary-900, #1e3a5f);
   border-color: var(--hx-color-primary-700, #1d4ed8);
+}
+/* Section pills show the matching count (result-relative once a query is
+   active; search.js rewrites the span from the hidden native block).  Tag
+   counts stay suppressed - the pill reads as a plain name. */
+#pagefind-site-sections .search-section-count {
+  font-weight: 400;
+  color: var(--hx-color-neutral-500, #737373);
+}
+html.dark #pagefind-site-sections .search-section-count,
+html.dark #pagefind-site-sections .search-section-count::before {
+  color: var(--hx-color-neutral-400, #a3a3a3);
+}
+#pagefind-site-tags .search-tag-count {
+  display: none;
 }
 /* Result chip links inherit the chip styling; dark-mode overrides live
    below where .pagefind-ui__result-tag dark rules are declared. */
 .pagefind-ui__result-tag-link {
   text-decoration: none;
   color: inherit;
-}
-/* Ensure the hidden attribute (used to suppress native PagefindUI tag
-   filter blocks) isn't overridden by Pagefind's own display rules. */
-#pagefind-site-search .pagefind-ui__filter-block[hidden] {
-  display: none !important;
 }
 
 /* Result spacing: keep the excerpt separated from the breadcrumb above

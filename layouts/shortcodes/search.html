@@ -1,15 +1,51 @@
 {{/* Site-wide search page backed by Pagefind (built by `pagefind --site public`).
-   The "Tags" accordion below mirrors the /tags/ taxonomy listing (same data,
-   rendered server-side as a collapsible block like the Section filter panel).
-   Unlike /tags/ pills elsewhere, each pill here is a *filter toggle*: clicking
-   it narrows the results to that tag (assets/js/search.js flips the matching
-   checkbox in Pagefind's hidden "tags" filter block) instead of navigating.
-   assets/js/search.js relocates it to sit directly under the Section filter. */}}
+   The "Filter by Section" and "Filter by Tag" accordions below are rendered
+   server-side so the full lists are visible before any query is typed.  They
+   sit OUTSIDE the PagefindUI mount: PagefindUI's own per-query filter panel is
+   hidden (custom.css) and used only as a source of truth - assets/js/search.js
+   prunes each accordion's pills to the values present in the current results,
+   updates the Section counts to be result-relative, and toggles the underlying
+   native checkboxes when a pill is clicked.  Data values must match the
+   Pagefind "section:" / "tags" filter values exactly. */}}
+{{- $sectionNames := partial "section-names.html" . -}}
+{{- $sectionExclusions := partial "section-exclusions.html" . -}}
+{{- /* Mirror baseof.html's per-page section derivation (same base-path strip,
+        first-segment key, name fallback) and tally indexable pages so the idle
+        Section list matches the Pagefind index.  Excluded section keys never
+        appear. */ -}}
+{{- $sections := dict -}}
+{{- range site.Pages -}}
+  {{- if or (eq .Kind "taxonomy") (eq .Kind "term") }}{{ continue }}{{ end -}}
+  {{- $rel := strings.TrimSuffix "/" .RelPermalink -}}
+  {{- if eq $rel "/404.html" }}{{ continue }}{{ end -}}
+  {{- $base := relURL "" | strings.TrimSuffix "/" | strings.TrimPrefix "/" -}}
+  {{- if $base }}{{ $rel = strings.TrimPrefix (printf "/%s" $base) $rel }}{{ end -}}
+  {{- $parts := split $rel "/" -}}
+  {{- $key := "" -}}
+  {{- if gt (len $parts) 1 }}{{ $key = index $parts 1 }}{{ end -}}
+  {{- if in $sectionExclusions $key }}{{ continue }}{{ end -}}
+  {{- $name := index $sectionNames $key -}}
+  {{- if not $name }}{{ $name = strings.Title (strings.Replace $key "_" " " -1) }}{{ end -}}
+  {{- if $name }}{{ $sections = merge $sections (dict $name (add (index $sections $name | default 0) 1)) }}{{ end -}}
+{{- end -}}
+{{- $sectionList := slice -}}
+{{- range $name, $count := $sections }}{{ $sectionList = $sectionList | append (dict "name" $name "count" $count) }}{{ end -}}
+{{- $sectionList = sort $sectionList "name" -}}
 <div class="search-box" data-site-search>
-  <div id="pagefind-site-search"></div>
+  <details class="search-sections-accordion" id="pagefind-site-sections" data-pagefind-ignore>
+    <summary class="search-sections-name">Filter by Section</summary>
+    <div class="search-sections-grid">
+      {{- range $sectionList }}
+      <button type="button" class="search-section-link" data-section="{{ .name }}" data-count="{{ .count }}" aria-pressed="false" title="Filter results to '{{ .name }}'">
+        <span class="search-section-name">{{ .name }}</span>
+        <span class="search-section-count">&nbsp;{{ .count }}</span>
+      </button>
+      {{- end }}
+    </div>
+  </details>
   {{- with .Site.Taxonomies.tags.Alphabetical }}
   <details class="search-tags-accordion" id="pagefind-site-tags" data-pagefind-ignore>
-    <summary class="pagefind-ui__filter-name search-tags-name">Tags</summary>
+    <summary class="search-tags-name">Filter by Tag</summary>
     <div class="search-tags-grid">
       {{- range . }}
       <button type="button" class="search-tag-link" data-tag="{{ .Page.Title | lower }}" aria-pressed="false" title="Filter results to '{{ .Page.LinkTitle | lower }}'">
@@ -20,6 +56,7 @@
     </div>
   </details>
   {{- end }}
+  <div id="pagefind-site-search"></div>
 </div>
 <script>
   (function () {

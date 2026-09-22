@@ -9,22 +9,7 @@
        each data-pagefind-filter attribute as ONE capture, so one hidden
        element per tag (see the captures below the body tag). The /search/
        page's Tags accordion toggles these as result filters. */}}
-  {{- $sectionNames := dict
-      "announcements"       "Announcements"
-      "artifact_references" "Artifact Reference"
-      "blog"                "Blog"
-      "dev"                 "Developer"
-      "docs"                "Documentation"
-      "downloads"           "Downloads"
-      "exchange"            "Exchange"
-      "golang"              "Golang"
-      "knowledge_base"      "Knowledge Base"
-      "presentations"       "Presentations"
-      "rss"                 "RSS"
-      "search"              "Search"
-      "training"            "Training"
-      "vql_reference"       "VQL Reference"
-  -}}
+  {{- $sectionNames := partial "section-names.html" . -}}
   {{- $rel := strings.TrimSuffix "/" .RelPermalink -}}
   {{- /* Strip the deploy base path (empty on a root-mounted site, e.g.
          /velociraptor-docs/ on the gh-pages preview) so the first segment
@@ -64,8 +49,12 @@
        exclude them from the search index (they would add a bogus
        "Tags" value to the section filter and duplicate search results).
        The 404 page has no section (its path is just /404.html), so it would
-       appear as a bogus "404.html" section filter value - skip it too. */}}
-  {{- $indexable := not (or (eq .Kind "taxonomy") (eq .Kind "term") (eq $rel "/404.html")) -}}
+       appear as a bogus "404.html" section filter value - skip it too.
+       Also skip the sections that must never appear in search results:
+       standalone redirect pages (Discord, YouTube), the search page itself,
+       and the golang library docs (section-exclusions.html holds the keys). */}}
+  {{- $sectionExclusions := partial "section-exclusions.html" . -}}
+  {{- $indexable := not (or (eq .Kind "taxonomy") (eq .Kind "term") (eq $rel "/404.html") (in $sectionExclusions $sectionKey)) -}}
 
   <body{{ if not $indexable }} data-pagefind-ignore{{ else }}{{ with $section }} data-pagefind-filter="section: {{ . }}"{{ end }}{{ with $tags }} data-pagefind-meta="tags: {{ . }}"{{ end }}{{ end }}>
     {{- /* One hidden capture element per tag -> Pagefind filter "tags".
