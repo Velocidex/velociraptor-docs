@@ -2,7 +2,7 @@ name: MacOS.Applications.SavedState
 description: |
    On macOS, certain application state is saved in `/Users/*/Library/Saved Application State/`. 
 
-   Since macOS 15 the per-application directories for many apps instead live under the `talagentd` daemon container, at `/Users/*/Library/Daemon Containers/*/Data/Library/Saved Application State/`. Both locations are globbed by default, and both return one row per application state directory. Note the daemon container directories are named with an application uuid rather than a bundle id, so that entry cannot be scoped to a vendor prefix the way the legacy `com.apple.` one is. Reading the daemon container path requires Full Disk Access, so a collection without it will come back empty even on a host where the data exists.
+   Since macOS 15 the per-application directories for many apps instead live under the `talagentd` daemon container, at `/Users/*/Library/Daemon Containers/*/Data/Library/Saved Application State/`. Both locations are searched by default, and both return one row per application state directory. Note the daemon container directories are named with a unique identifier rather than a bundle id, so that entry cannot be scoped to a vendor prefix the way the legacy `com.apple.` one is. Reading the daemon container path requires Full Disk Access, so a collection without it will come back empty even on a host where the data exists.
 
    We can check these files to determine the last time an application was opened, the title of the application window, and when the application/window was later restored, such as after login or reboot.
    
@@ -27,7 +27,7 @@ description: |
    - The file is append-only, so current state is the LAST record for each (window id, `NSUserInterfaceItemIdentifier`) pair rather than the first.
    - `window_N.data` files are encrypted window bitmaps under a separate keychain key, NOT `NSDataKey`.
 
-   Under the daemon container path the per-application directory is named with an application uuid rather than a bundle id. `ApplicationMapping.plist`, in the same `Saved Application State` directory, maps them: it is a flat array alternating a dictionary carrying `protected.signingIdentifier` with the uuid string that follows it.
+   Under the daemon container path the per-application directory is named with a unique identifier rather than a bundle id. `ApplicationMapping.plist`, in the same `Saved Application State` directory, maps them: it is a flat array alternating a dictionary carrying `protected.signingIdentifier` with the identifier string that follows it.
 reference:
   - https://www.sans.org/blog/osx-lion-user-interface-preservation-analysis/
   - https://www.crowdstrike.com/blog/reconstructing-command-line-activity-on-macos/
