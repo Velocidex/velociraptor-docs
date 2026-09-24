@@ -1,0 +1,75 @@
+name: Windows.Applications.Tailscale
+description: |
+  Decodes the configuration file, pulls log files, and uploads any partial file transfers for Tailscale.
+  
+  ### History 
+  
+  - 1.0 - Creation
+  
+reference:
+  - https://ogmini.github.io/tags.html#Tailscale
+
+author: ogmini https://ogmini.github.io
+
+parameters:
+  - name: tailscaleProgramDataLocation
+    default: C:\\ProgramData\\Tailscale\\
+    description: ProgramData Folder for Tailscale
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+sources:
+  - name: Configuration 
+    description: Configuration lines
+    query: |
+        SELECT
+            _key AS Key,
+            base64decode(string=_value) AS Decoded_Value,
+            _value AS OriginalValue
+        FROM foreach(
+            row={
+                SELECT read_file(filename=OSPath) as Data
+                FROM glob(globs="server-state.conf", root=tailscaleProgramDataLocation)
+            },
+            query={
+                SELECT
+                    _key, 
+                    _value
+                FROM items(
+                    item=parse_json(data=Data)
+                )
+            }
+        )
+  - name: Logs
+    description: Log lines
+    query: |
+        LET files = SELECT OSPath
+            FROM glob(globs="Logs\\tailscale-service*.txt", root=tailscaleProgramDataLocation)
+
+        SELECT
+            OSPath,
+            Line,
+            parse_string_with_regex(string=Line, regex='^(\\d{4}-\\d{2}-\\d{2}[T]\\d{2}:\\d{2}:\\d{2}[.]\\d{3}[-]\\d{2}[:]\\d{2})(.+)').g1 AS Timestamp,
+            parse_string_with_regex(string=Line, regex='^(\\d{4}-\\d{2}-\\d{2}[T]\\d{2}:\\d{2}:\\d{2}[.]\\d{3}[-]\\d{2}[:]\\d{2})(.+)').g2 AS ParsedLog
+        FROM foreach(
+            row=files,
+            query={
+                SELECT
+                    OSPath,
+                    Line
+                FROM parse_lines(filename=OSPath)
+            }
+        )
+  - name: Partial File Transfers
+    description: Partial File Transfers to this machine
+    query: |
+      LET pFiles = SELECT OSPath
+               FROM glob(globs="files\\*\\*.partial", root=tailscaleProgramDataLocation)
+  
+      SELECT *
+      FROM foreach(
+          row=pFiles,
+          query={
+              SELECT upload(file=OSPath) as Upload FROM scope()
+          }
+      )

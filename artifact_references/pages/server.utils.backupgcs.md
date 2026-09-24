@@ -1,0 +1,78 @@
+# Server.Utils.BackupGCS
+
+Automatically zips and uploads collected flow results to a Google
+Cloud Storage bucket.
+
+You will need to provide credentials to upload to the bucket. The
+credentials can be provided as parameters or they will be taken from
+the server metadata (as DefaultBucket, DefaultGCSProject,
+DefaultGCSKey)
+
+Thanks to @shortxstack and @Recon_InfoSec
+
+
+---
+
+````yaml
+name: Server.Utils.BackupGCS
+description: |
+  Automatically zips and uploads collected flow results to a Google
+  Cloud Storage bucket.
+
+  You will need to provide credentials to upload to the bucket. The
+  credentials can be provided as parameters or they will be taken from
+  the server metadata (as DefaultBucket, DefaultGCSProject,
+  DefaultGCSKey)
+
+  Thanks to @shortxstack and @Recon_InfoSec
+
+type: SERVER_EVENT
+
+parameters:
+   - name: ArtifactNameRegex
+     default: "."
+     description: A regular expression to select which artifacts to upload
+     type: regex
+
+   - name: Bucket
+     description: The bucket to upload to (blank to use server metadata)
+   - name: Project
+   - name: GCSKey
+
+   - name: RemoveDownloads
+     type: bool
+     description: If set, remove the flow export files after upload
+
+sources:
+  - query: |
+      -- Allow these settings to be set by the artifact parameter or the server metadata.
+      LET bucket <= if(condition=Bucket, then=Bucket,
+           else=server_metadata().DefaultBucket)
+      LET project <= if(condition=Project, then=Project,
+           else=server_metadata().DefaultGCSProject)
+      LET gcskey <= if(condition=GCSKey, then=GCSKey,
+           else=server_metadata().DefaultGCSKey)
+
+      LET completions = SELECT *,
+         client_info(client_id=ClientId).os_info.fqdn AS Fqdn,
+         create_flow_download(client_id=ClientId,
+             flow_id=FlowId, wait=TRUE) AS FlowDownload
+      FROM watch_monitoring(artifact="System.Flow.Completion")
+      WHERE Flow.artifacts_with_results =~ ArtifactNameRegex
+
+      SELECT upload_gcs(
+         bucket=bucket,
+         project=project,
+         credentials=gcskey,
+         file=FlowDownload,
+         accessor="fs",
+         name=format(format="Host %v %v %v.zip",
+                     args=[Fqdn, FlowId, timestamp(epoch=now())])) AS Upload
+      FROM completions
+      WHERE Upload OR
+        if(condition=RemoveDownloads,
+           then=rm(filename=file_store(path=FlowDownload)))
+````
+
+
+

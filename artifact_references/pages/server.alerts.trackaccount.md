@@ -1,0 +1,52 @@
+# Server.Alerts.Trackaccount
+
+Forwards account tracking events from `Windows.Events.Trackaccount`
+as an alert to a Slack/Teams/Discord webhook.
+
+Note that it requires that the client event artifact
+`Windows.Events.Trackaccount` is being collected on clients.
+
+
+---
+
+````yaml
+name: Server.Alerts.Trackaccount
+description: |
+  Forwards account tracking events from `Windows.Events.Trackaccount`
+  as an alert to a Slack/Teams/Discord webhook.
+
+  Note that it requires that the client event artifact
+  `Windows.Events.Trackaccount` is being collected on clients.
+
+author: Jos Clephas - @DfirJos
+
+type: SERVER_EVENT
+
+parameters:
+  - name: SlackToken
+    description: The token URL obtained from Slack/Teams/Discord (or basically any communication-service that supports webhooks). Leave blank to use server metadata. e.g. https://hooks.slack.com/services/XXXX/YYYY/ZZZZ
+
+sources:
+  - query: |
+        LET token_url = if(
+           condition=SlackToken,
+           then=SlackToken,
+           else=server_metadata().SlackToken)
+
+        LET hits = SELECT * from watch_monitoring(artifact='Windows.Events.Trackaccount')
+
+        SELECT * FROM foreach(row=hits,
+        query={
+           SELECT EventRecordID, EventID, TargetUserName, TargetWorkstationName, SourceComputer, LogonType, EventTime, ClientId, Url, Content, Response FROM http_client(
+            data=serialize(item=dict(
+                text=format(format="EventID: %v - Account '%v' authenticated from system '%v' to '%v' with LogonType %v at %v on client %v (EventRecordID: %v)",
+                            args=[EventID, TargetUserName, TargetWorkstationName, SourceComputer, LogonType, EventTime, ClientId, EventRecordID])),
+                format="json"),
+            headers=dict(`Content-Type`="application/json"),
+            method="POST",
+            url=token_url)
+        })
+````
+
+
+

@@ -1,0 +1,178 @@
+# Windows.System.CmdShell
+
+Runs shell commands through cmd.exe and captures or uploads stdout
+output.
+
+Since Velociraptor clients typically runs as SYSTEM, the commands
+will also run as SYSTEM.
+
+This is a very powerful artifact since it allows for arbitrary
+command execution on the endpoints. Therefore this artifact requires
+elevated permissions (specifically the `EXECVE`
+permission). Typically it is only available with the `administrator`
+role.
+
+Note there are some limitations with passing commands to the cmd.exe
+shell, such as when specifying quoted paths or command-line
+arguments with special characters. Using Windows.System.PowerShell
+artifact is likely a better option in these cases.
+
+
+---
+
+````yaml
+name: Windows.System.CmdShell
+description: |
+  Runs shell commands through cmd.exe and captures or uploads stdout
+  output.
+
+  Since Velociraptor clients typically runs as SYSTEM, the commands
+  will also run as SYSTEM.
+
+  This is a very powerful artifact since it allows for arbitrary
+  command execution on the endpoints. Therefore this artifact requires
+  elevated permissions (specifically the `EXECVE`
+  permission). Typically it is only available with the `administrator`
+  role.
+
+  Note there are some limitations with passing commands to the cmd.exe
+  shell, such as when specifying quoted paths or command-line
+  arguments with special characters. Using Windows.System.PowerShell
+  artifact is likely a better option in these cases.
+
+required_permissions:
+  - EXECVE
+
+implied_permissions:
+  - IMPERSONATION
+
+parameters:
+  - name: Command
+    default: "dir C:\\"
+
+  - name: Timeout
+    type: int
+    default: "3500"
+    description: How long to leave the session running for.
+
+  - name: Stateful
+    default: "Y"
+    type: bool
+
+  - name: CommandId
+    default: 0
+
+sources:
+  - precondition: |
+      SELECT * FROM info()
+      WHERE OS = 'windows'
+        AND version(function="shell_session")
+        AND Stateful
+
+    query: |
+      // Get the core flow id to key a unique session off.
+      LET FLOWID <= split(string=_SessionId, sep="/")[0]
+
+      // Newer clients have support for true shell sessions.
+      LET Session <= shell_session(name=FLOWID, argv=["cmd.exe"])
+
+      LET _ <= shell_session_control(name=FLOWID, stdin=Command + "\n")
+
+      // Shut the session down gracefully without timing out the flow.
+      LET SessionSink = SELECT Stdin AS Command,
+             timestamp(epoch=now(ns=TRUE)) AS Timestamp,
+             Stdout,
+             NULL AS StdoutUpload,
+             Stderr,
+             NULL AS StderrUpload
+         FROM foreach(row=Session.Query)
+
+      LET Result = SELECT * FROM if(condition=NOT Session.IsRunning,
+      then={
+        SELECT *
+        FROM query(query=SessionSink, timeout=Timeout, inherit=TRUE)
+      })
+
+      // Always send the command id to ack we received the command.
+      SELECT * FROM chain(a={
+         SELECT "" AS Command,
+                CommandId,
+                timestamp(epoch=now(ns=TRUE)) AS Timestamp,
+                "" AS Stdout,
+                NULL AS StdoutUpload,
+                "" AS Stderr,
+                NULL AS StderrUpload
+         FROM scope()
+      }, b=Result)
+
+    notebook:
+      - type: vql
+        name: Transcript
+        template: |
+          /*
+          # View session transcript
+          */
+          LET Transcript = pipe(query={
+             SELECT Command + Stdout AS Line
+             FROM source()
+             WHERE Line
+          })
+
+          SELECT upload(accessor="pipe",
+               file="Transcript", name="transcript.txt") AS Transcript
+          FROM scope()
+
+  - precondition: |
+      SELECT * FROM info()
+      WHERE OS = "windows"
+        AND NOT ( version(function="shell_session") AND Stateful )
+    notebook:
+      - type: none
+    query: |
+      LET SizeLimit <= 4096
+      LET Now <= str(str=now())
+
+      LET Output = SELECT "" AS Command,
+             "" AS CommandId,
+             timestamp(epoch=now()) AS Timestamp,
+             if(condition=len(list=Stdout) < SizeLimit,
+                then=Stdout) AS Stdout,
+             if(condition=len(list=Stdout) >= SizeLimit,
+                then=upload(accessor="data",
+                            file=Stdout,
+                            name="Stdout/" + Now)) AS StdoutUpload,
+             if(condition=len(list=Stderr) < SizeLimit,
+                then=Stdout) AS Stderr,
+             if(condition=len(list=Stderr) >= SizeLimit,
+                then=upload(accessor="data",
+                            file=Stdout,
+                            name="Stderr/" + Now)) AS StderrUpload
+      FROM execve(argv=["cmd.exe", "/c", Command], length=10000000)
+
+      SELECT * FROM chain(a={
+         SELECT Command,
+                CommandId,
+                timestamp(epoch=now()) AS Timestamp,
+                "" AS Stdout,
+                NULL AS StdoutUpload,
+                "" AS Stderr,
+                NULL AS StderrUpload
+         FROM scope()
+      }, b=Output)
+
+column_types:
+- name: StdoutUpload
+  type: preview_upload
+- name: StderrUpload
+  type: preview_upload
+- name: Transcript
+  type: preview_upload
+
+resources:
+  # By default the shell session is up for an hour or until cancelled
+  # by the GUI.
+  timeout: 3600
+````
+
+
+

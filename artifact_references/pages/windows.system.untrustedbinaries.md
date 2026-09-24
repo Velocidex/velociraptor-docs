@@ -1,0 +1,71 @@
+# Windows.System.UntrustedBinaries
+
+Checks that common Windows system binaries are signed using
+authenticode verification.
+
+Windows runs several services and binaries as part of the operating
+system. Sometimes malware pretends to run as those well known names
+to hide itself in plain sight. For example, a malware service might
+call itself `svchost.exe` so it shows up in the process listing as a
+benign service.
+
+This artifact checks that the common system binaries are signed. If
+a malware replaces these files or names itself in this way their
+signature might not be correct.
+
+Note that unfortunately Microsoft does not sign all their common
+binaries so many will not be signed (e.g. `conhost.exe`).
+
+
+---
+
+````yaml
+name: Windows.System.UntrustedBinaries
+description: |
+  Checks that common Windows system binaries are signed using
+  authenticode verification.
+  
+  Windows runs several services and binaries as part of the operating
+  system. Sometimes malware pretends to run as those well known names
+  to hide itself in plain sight. For example, a malware service might
+  call itself `svchost.exe` so it shows up in the process listing as a
+  benign service.
+
+  This artifact checks that the common system binaries are signed. If
+  a malware replaces these files or names itself in this way their
+  signature might not be correct.
+
+  Note that unfortunately Microsoft does not sign all their common
+  binaries so many will not be signed (e.g. `conhost.exe`).
+
+parameters:
+  - name: processNamesRegex
+    description: A regex to select running processes which we consider should be trusted.
+    default: "lsass|svchost|conhost|taskmgr|winlogon|wmiprv|dwm|csrss|velociraptor"
+    type: regex
+  - name: DISABLE_DANGEROUS_API_CALLS
+    type: bool
+    description: |
+      Enable this to disable potentially flakey APIs which may cause
+      crashes.
+
+sources:
+  - precondition: |
+      SELECT OS From info() where OS = 'windows'
+    query: |
+        LET binaries = SELECT lowcase(string=Exe) As Binary
+          FROM pslist()
+          WHERE Exe =~ processNamesRegex
+          GROUP BY Binary
+
+        LET auth = SELECT authenticode(filename=Binary) As Authenticode
+        FROM binaries
+
+        SELECT Authenticode.Filename As Filename,
+               Authenticode.IssuerName as Issuer,
+               Authenticode.SubjectName as Subject,
+               Authenticode.Trusted as Trusted from auth
+````
+
+
+

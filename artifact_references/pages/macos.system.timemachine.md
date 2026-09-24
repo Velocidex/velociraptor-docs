@@ -1,0 +1,42 @@
+# MacOS.System.TimeMachine
+
+Collects Time Machine backup settings including volume, auto-backup
+status, and destinations.
+
+
+---
+
+````yaml
+name: MacOS.System.TimeMachine
+description: |
+  Collects Time Machine backup settings including volume, auto-backup
+  status, and destinations.
+
+type: CLIENT
+
+author: Wes Lambert - @therealwlambert
+
+parameters:
+  - name: TimeMachineGlob
+    default: /Library/Preferences/com.apple.TimeMachine.plist
+
+sources:
+  - query: |
+      LET TMPlist = SELECT OSPath FROM glob(globs=TimeMachineGlob)
+      LET TMDetails =
+            SELECT * FROM foreach(
+                row=plist(file=OSPath),
+                query={ SELECT
+                    plist(file=OSPath).LocalizedDiskImageVolumeName AS VolumeName,
+                    plist(file=OSPath).AutoBackup AS AutoBackup,
+                    plist(file=OSPath).LastDestinationID AS LastDestination,
+                    plist(file=OSPath).HostUUIDs[0] AS HostUUID,
+                    plist(file=OSPath).Destinations AS Destinations
+                    FROM scope()
+                }
+            )
+      SELECT * FROM foreach(row=TMPlist, query=TMDetails)
+````
+
+
+

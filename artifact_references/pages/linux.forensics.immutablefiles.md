@@ -1,0 +1,67 @@
+# Linux.Forensics.ImmutableFiles
+
+Locates immutable files on Linux by checking ext4 filesystem flags.
+
+Attackers sometimes enable immutable files in Linux. This prevents
+files from being modified. However this is sometimes a strong
+signal.
+
+NOTE: Uses the `ext4` accessor to parse the low level filesystem.
+
+
+---
+
+````yaml
+name: Linux.Forensics.ImmutableFiles
+description: |
+  Locates immutable files on Linux by checking ext4 filesystem flags.
+
+  Attackers sometimes enable immutable files in Linux. This prevents
+  files from being modified. However this is sometimes a strong
+  signal.
+
+  NOTE: Uses the `ext4` accessor to parse the low level filesystem.
+
+precondition: |
+  SELECT * FROM info() where OS = 'linux'
+
+parameters:
+  - name: SearchFilesGlob
+    default: /home/*
+    description: Use a glob to define the files that will be searched.
+  - name: OneFilesystem
+    default: N
+    type: bool
+    description: When set we do not follow a link to go on to a different filesystem.
+
+  - name: DoNotFollowSymlinks
+    type: bool
+    default: N
+    description: If specified we are allowed to follow symlinks while globbing
+
+column_types:
+  - name: ATime
+    type: timestamp
+  - name: MTime
+    type: timestamp
+  - name: CTime
+    type: timestamp
+
+
+sources:
+- query: |
+    SELECT OSPath,
+           Sys.mft as Inode,
+           Mode.String AS Mode, Size,
+           Mtime AS MTime,
+           Atime AS ATime,
+           Ctime AS CTime,
+           IsDir, Mode, Data
+    FROM glob(globs=SearchFilesGlob,
+              one_filesystem=OneFilesystem,
+              accessor="ext4", nosymlink=DoNotFollowSymlinks)
+    WHERE Data.Flags =~ "IMMUTABLE"
+````
+
+
+

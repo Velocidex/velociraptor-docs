@@ -1,0 +1,54 @@
+# Windows.Registry.NTUser.Upload
+
+Uploads each user's NTUSER.DAT registry hive from disk by bypassing
+file locking with raw NTFS parsing.
+
+When a user logs into a windows machine the system creates their own
+"profile" which consists of a registry hive mapped into the
+HKEY_USERS hive. This hive file is locked while the user is logged
+in.
+
+This artifact bypasses the OS file-locking mechanism by extracting
+the registry hives using raw NTFS parsing. We then just upload all
+hives to the server.
+
+
+---
+
+````yaml
+name: Windows.Registry.NTUser.Upload
+description: |
+  Uploads each user's NTUSER.DAT registry hive from disk by bypassing
+  file locking with raw NTFS parsing.
+
+  When a user logs into a windows machine the system creates their own
+  "profile" which consists of a registry hive mapped into the
+  HKEY_USERS hive. This hive file is locked while the user is logged
+  in.
+
+  This artifact bypasses the OS file-locking mechanism by extracting
+  the registry hives using raw NTFS parsing. We then just upload all
+  hives to the server.
+
+parameters:
+  - name: userRegex
+    default: .
+    type: regex
+
+sources:
+  - precondition: |
+      SELECT OS From info() where OS = 'windows'
+    query: |
+        LET users = SELECT
+            Name,
+            expand(path=Directory) AS HomeDir
+        FROM Artifact.Windows.Sys.Users()
+        WHERE HomeDir AND Name =~ userRegex
+
+        SELECT upload(file=HomeDir + "\\ntuser.dat",
+                      accessor="auto") as Upload
+        FROM users
+````
+
+
+

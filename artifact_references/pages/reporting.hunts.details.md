@@ -1,0 +1,55 @@
+# Reporting.Hunts.Details
+
+Reports hunt execution details including client participation,
+duration, and completion status.
+
+
+---
+
+````yaml
+name: Reporting.Hunts.Details
+description: |
+  Reports hunt execution details including client participation,
+  duration, and completion status.
+
+type: SERVER
+
+parameters:
+  - name: ArtifactRegex
+    type: regex
+    default: .
+    description: Filter hunts by this
+
+  - name: DescriptionRegex
+    type: regex
+    default: .
+    description: Filter hunts by this description
+
+sources:
+  - query: |
+      LET Hunts = SELECT hunt_id,
+                         create_time,
+                         hunt_description
+        FROM hunts()
+        WHERE artifacts =~ ArtifactRegex AND hunt_description =~ DescriptionRegex
+        ORDER BY create_time DESC
+
+      LET Flows = SELECT hunt_id,
+                         hunt_description,
+                         client_info(client_id=ClientId).os_info.fqdn AS FQDN,
+                         ClientId,
+                         client_info(client_id=ClientId).os_info.system AS OS,
+                         timestamp(epoch=Flow.create_time) AS create_time,
+                         timestamp(epoch=Flow.start_time) AS start_time,
+                         timestamp(epoch=Flow.active_time) AS active_time,
+                         FlowId AS flow_id,
+                         Flow.execution_duration / 1000000000 AS Duration,
+                         Flow.state AS State
+        FROM hunt_flows(hunt_id=hunt_id)
+        ORDER BY create_time DESC
+
+      SELECT * FROM foreach(row=Hunts, query=Flows)
+````
+
+
+

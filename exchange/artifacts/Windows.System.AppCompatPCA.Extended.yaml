@@ -1,0 +1,168 @@
+name: Windows.System.AppCompatPCAExtend
+description: |
+  Parse the Program Compatibility Assistant (PCA) databases for executable
+  launch history and abnormal exit events.
+
+  Two log files are parsed:
+    - PcaAppLaunchDic.txt : last execution timestamps per executable
+    - PcaGeneralDb0.txt : runtime events with status, vendor, version, program ID (Amcache)
+
+  Both files may be encoded in UTF-16 LE (null bytes between characters).
+  This artifact strips null bytes before parsing to ensure clean field extraction.
+
+  Supports VSS (Volume Shadow Copy) enumeration for historical data recovery.
+
+author: Ismail ACAR
+reference:
+  - https://thelocalh0st.com/posts/pca-artifact/
+
+type: CLIENT
+parameters:
+  - name: FileGlobAppLaunch
+    description: "Path to PcaAppLaunchDic.txt (last execution timestamps)."
+    default: C:\Windows\appcompat\pca\PcaAppLaunchDic.txt
+
+  - name: FileGlobGeneral
+    description: "Path to PcaGeneralDb0.txt (runtime events with status)."
+    default: C:\Windows\appcompat\pca\PcaGeneralDb0.txt
+
+  - name: ExecutableRegex
+    description: "Filter results by executable path (regex). Default matches all."
+    default: .
+
+  - name: SearchVSS
+    description: "Also search Volume Shadow Copies (VSS) for historical data."
+    type: bool
+    default: false
+
+sources:
+  # ============================================================
+  # SOURCE 1: PcaAppLaunchDic.txt
+  # Format: ExePath|LastExecutedTimestamp
+  # ============================================================
+  - name: AppLaunchDic
+    query: |
+      -- Resolve glob to actual filesystem paths (OSPath replaces deprecated FullPath)
+      LET general_paths <= SELECT OSPath
+        FROM glob(globs=expand(path=FileGlobAppLaunch))
+
+      -- Resolve VSS copies for a given path
+      LET vsspaths(path) = SELECT OSPath
+        FROM Artifact.Windows.Search.VSS(SearchFilesGlob=path)
+
+      -- Strip null bytes (UTF-16 LE artefact) from a string
+      LET clean(s) = regex_replace(source=s, re="\\x00", replace="")
+
+      -- Parse a single AppLaunchDic file line by line
+      LET parse_general(OSPath) = SELECT OSPath AS SourceFile,
+          parse_string_with_regex(
+            string=regex_replace(source=Line, re="\\x00", replace=""),
+            regex="^(?P<ExePath>[^|]+)\\|(?P<LastExecuted>.*)$"
+          ) AS Record
+        FROM parse_lines(filename=OSPath)
+        WHERE Line AND Record.ExePath =~ ExecutableRegex
+
+      -- Iterate over a list of paths and parse each file
+      LET search_general(PathList) = SELECT *
+        FROM foreach(
+          row=PathList,
+          query={ SELECT * FROM parse_general(OSPath=OSPath) })
+
+      -- VSS-aware path resolution: enumerate shadow copies for each base path
+      LET include_vss_general = SELECT *
+        FROM foreach(
+          row=general_paths,
+          query={
+            SELECT * FROM search_general(PathList={
+              SELECT OSPath FROM vsspaths(path=OSPath)
+            })
+            GROUP BY Record
+          })
+
+      -- Standard (non-VSS) search
+      LET exclude_vss_general = SELECT *
+        FROM search_general(PathList={ SELECT OSPath FROM general_paths })
+
+      -- Final output: choose VSS or standard path based on parameter
+      SELECT
+        SourceFile,
+        clean(s=Record.ExePath)      AS ExePath,
+        clean(s=Record.LastExecuted) AS LastExecuted
+      FROM if(
+        condition=SearchVSS,
+        then=include_vss_general,
+        else=exclude_vss_general)
+
+  # ============================================================
+  # SOURCE 2: PcaGeneralDb0.txt
+  # Format: RuntimeTimestamp|RunStatus|ExePath|Description|Vendor|FileVersion|ProgramID|Status
+  # ============================================================
+  - name: GeneralDB
+    query: |
+      -- Resolve glob to actual filesystem paths (OSPath replaces deprecated FullPath)
+      LET launch_paths <= SELECT OSPath
+        FROM glob(globs=expand(path=FileGlobGeneral))
+
+      -- Resolve VSS copies for a given path
+      LET vsspaths(path) = SELECT OSPath
+        FROM Artifact.Windows.Search.VSS(SearchFilesGlob=path)
+
+      -- Strip null bytes (UTF-16 LE artefact) from a string
+      LET clean(s) = regex_replace(source=s, re="\\x00", replace="")
+
+      -- Map numeric RunStatus codes to human-readable labels
+      LET status_label(code) = get(
+        item=dict(
+          `1`="Launched",
+          `2`="Abnormal Exit",
+          `3`="PCA Resolved"
+        ),
+        field=code,
+        default="Unknown")
+
+      -- Parse a single GeneralDB file line by line
+      LET parse_launch(OSPath) = SELECT OSPath AS SourceFile,
+          parse_string_with_regex(
+            string=regex_replace(source=Line, re="\\x00", replace=""),
+            regex="^(?P<RuntimeTimestamp>[^|]+)\\|(?P<RunStatus>[^|]+)\\|(?P<ExePath>[^|]+)\\|(?P<Description>[^|]+)\\|(?P<Vendor>[^|]+)\\|(?P<FileVersion>[^|]+)\\|(?P<ProgramID>[^|]*)\\|(?P<Status>.*)$"
+          ) AS Record
+        FROM parse_lines(filename=OSPath)
+        WHERE Line AND Record.ExePath =~ ExecutableRegex
+
+      -- Iterate over a list of paths and parse each file
+      LET search_launch(PathList) = SELECT *
+        FROM foreach(
+          row=PathList,
+          query={ SELECT * FROM parse_launch(OSPath=OSPath) })
+
+      -- VSS-aware path resolution
+      LET include_vss_launch = SELECT *
+        FROM foreach(
+          row=launch_paths,
+          query={
+            SELECT * FROM search_launch(PathList={
+              SELECT OSPath FROM vsspaths(path=OSPath)
+            })
+            GROUP BY Record
+          })
+
+      -- Standard (non-VSS) search
+      LET exclude_vss_launch = SELECT *
+        FROM search_launch(PathList={ SELECT OSPath FROM launch_paths })
+
+      -- Final output: choose VSS or standard path based on parameter
+      SELECT
+        SourceFile,
+        clean(s=Record.RuntimeTimestamp)             AS RuntimeTimestamp,
+        clean(s=Record.RunStatus)                    AS RunStatus,
+        status_label(code=clean(s=Record.RunStatus)) AS RunStatusLabel,
+        clean(s=Record.ExePath)                      AS ExePath,
+        clean(s=Record.Description)                  AS Description,
+        clean(s=Record.Vendor)                       AS Vendor,
+        clean(s=Record.FileVersion)                  AS FileVersion,
+        clean(s=Record.ProgramID)                    AS ProgramID,
+        clean(s=Record.Status)                       AS Status
+      FROM if(
+        condition=SearchVSS,
+        then=include_vss_launch,
+        else=exclude_vss_launch)

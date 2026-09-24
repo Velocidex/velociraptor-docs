@@ -1,0 +1,83 @@
+name: Server.Monitor.Alerts.UserMessage
+author: Andreas Misje – @misje
+description: |
+  Send an in-app user notification when an alert is created.
+
+  This artifact watches
+  [`Server.Internal.Alerts`](/artifact_references/pages/server.internal.alerts/)
+  and creates a [user message](/vql_reference/other/user_message/) for each
+  alert.
+
+  See also
+  [`Server.Monitor.Alerts`](/exchange/artifacts/pages/server.monitor.alerts/)
+  for richer e-mail notifications with plenty of extra context.
+
+  #monitoring #alerts #notifications
+
+type: SERVER_EVENT
+
+parameters:
+  - name: Recipients
+    type: regex
+    description: |
+      Regex matching usernames that will receive the in-app message.
+      Matched against the `name` column of `gui_users()`. See also
+      `RecipientRoles`.
+    default: .+
+
+  - name: RecipientRoles
+    type: regex
+    description: |
+      Only notify users with at least one role matching this regex. Set
+      to `.+` to ignore roles. See also `Recipients`.
+    default: ^administrator$
+
+  - name: AlertMsgInclude
+    type: regex
+    description: |
+      Only forward alerts whose `name` matches this regex.
+    default: .+
+
+  - name: AlertMsgExclude
+    type: regex
+    description: |
+      Ignore alerts whose `name` matches this regex.
+
+sources:
+  - query: |
+      LET S = scope()
+
+      LET IncludeMsg = NOT AlertMsgInclude OR name =~ AlertMsgInclude
+
+      LET ExcludeMsg = AlertMsgExclude
+         AND name =~ AlertMsgExclude
+
+      LET MsgMatched = IncludeMsg
+         AND NOT ExcludeMsg
+
+      LET RemoveEmpties(Obj) = to_dict(item={
+          SELECT _key,
+                 _value
+          FROM items(item=Obj)
+          WHERE _value
+        })
+
+      LET Alerts = SELECT
+          RemoveEmpties(Obj=dict(AlertTime=timestamp(epoch=timestamp),
+                                 Message=name,
+                                 ClientId=S.client_id,
+                                 FlowId=S.flow_id,
+                                 ArtifactName=S.artifact,
+                                 ArtifactType=S.artifact_type)) +
+            dict(Alert=event_data) AS Info
+        FROM watch_monitoring(artifact='Server.Internal.Alerts')
+        WHERE MsgMatched
+
+      SELECT *
+      FROM foreach(row=Alerts,
+                   query={
+          SELECT user_message(user=name, message=Info) AS Message
+          FROM gui_users()
+          WHERE name =~ Recipients
+           AND roles =~ RecipientRoles
+        })

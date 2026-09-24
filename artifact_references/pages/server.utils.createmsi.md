@@ -1,0 +1,67 @@
+# Server.Utils.CreateMSI
+
+Builds a Windows MSI deployment package using the current org's
+client configuration.
+
+This artifact depends on the following tools:
+
+* <velo-tool-viewer name="VelociraptorWindowsMSI" />
+* <velo-tool-viewer name="VelociraptorWindowsArm64MSI" />
+
+You can replace those with suitable MSI builds.
+
+
+---
+
+````yaml
+name: Server.Utils.CreateMSI
+description: |
+  Builds a Windows MSI deployment package using the current org's
+  client configuration.
+
+  This artifact depends on the following tools:
+
+  * <velo-tool-viewer name="VelociraptorWindowsMSI" />
+  * <velo-tool-viewer name="VelociraptorWindowsArm64MSI" />
+
+  You can replace those with suitable MSI builds.
+
+type: SERVER
+
+parameters:
+  - name: CustomConfig
+    description: Supply a custom client config instead of using the one from the current org
+    type: yaml
+  - name: AlsoBuildArm64
+    description: Also build Arm64 bit MSI for deployment.
+    type: bool
+
+sources:
+- query: |
+    LET ValidateConfig(Config) = Config.Client.server_urls
+          AND Config.Client.ca_certificate =~ "(?ms)-----BEGIN CERTIFICATE-----.+-----END CERTIFICATE-----"
+          AND Config.Client.nonce
+
+    LET client_config <= if(condition=ValidateConfig(Config=CustomConfig),
+                         then=CustomConfig,
+                         else=org()._client_config)
+
+    LET Build(Target) = repack(
+        upload_name=format(
+          format='Org_%v_%v',
+          args=[org().name, inventory_get(tool=Target).Definition.filename]),
+        target=Target,
+        config=serialize(format='yaml', item=client_config))
+
+    SELECT * FROM chain(a={
+       SELECT Build(Target="VelociraptorWindowsMSI") AS VelociraptorWindowsMSI
+       FROM scope()
+    }, b={
+       SELECT Build(Target="VelociraptorWindowsArm64MSI") AS VelociraptorWindowsArm64MSI
+       FROM scope()
+       WHERE AlsoBuildArm64
+    })
+````
+
+
+

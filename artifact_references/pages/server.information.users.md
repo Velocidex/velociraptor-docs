@@ -1,0 +1,61 @@
+# Server.Information.Users
+
+Lists user names and SIDs from collected `Windows.Sys.Users` results
+across all clients.
+
+This artifact uses the previously collected data from
+`Windows.Sys.Users`. If it was never collected for any endpoints
+then this artifact will not produce any results.
+
+
+---
+
+````yaml
+name: Server.Information.Users
+description: |
+  Lists user names and SIDs from collected `Windows.Sys.Users` results
+  across all clients.
+
+  This artifact uses the previously collected data from
+  `Windows.Sys.Users`. If it was never collected for any endpoints
+  then this artifact will not produce any results.
+
+type: SERVER
+
+parameters:
+  - name: StandardUserAccounts
+    description: Well known SIDs to hide from the output.
+    default: "(-5..$|S-1-5-18|S-1-5-19|S-1-5-20)"
+    type: regex
+
+sources:
+  - query: |
+        LET Clients = SELECT client_id, os_info.fqdn AS Fqdn FROM clients()
+
+        // Get the most recent collection of our user listing.
+        LET last_user_listing = SELECT
+               session_id AS flow_id,
+               active_time, client_id, Fqdn
+           FROM flows(client_id=client_id)
+           WHERE artifacts_with_results =~'Windows.Sys.Users'
+           ORDER BY active_time
+           DESC LIMIT 1
+
+        /* For each Windows.Sys.Users collection, extract the user
+           names, but hide standard SIDs.
+        */
+        LET Users = SELECT * FROM foreach(
+            row=last_user_listing,
+            query={
+              SELECT Name, UUID, client_id, Fqdn from source(
+                 flow_id=flow_id,
+                 artifact='Windows.Sys.Users',
+                 client_id=client_id)
+              WHERE NOT UUID =~ StandardUserAccounts
+            })
+
+        SELECT * FROM foreach(row=Clients, query=Users)
+````
+
+
+

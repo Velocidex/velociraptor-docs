@@ -1,0 +1,34 @@
+# Notebooks.VQLx2
+
+A notebook initialized with 2 VQL cells containing simple queries
+and also demonstrating initial output.
+
+
+---
+
+````yaml
+name: Notebooks.VQLx2
+description: |
+  A notebook initialized with 2 VQL cells containing simple queries
+  and also demonstrating initial output.
+
+type: NOTEBOOK
+
+sources:
+  - notebook:
+    - type: vql
+      name: First Cell
+      output: |
+        << 1st cell: Click here to edit >>
+      template: |
+        SELECT * FROM orgs()
+    - type: vql
+      name: Second Cell
+      output: |
+        << 2nd cell: Click here to edit >>
+      template: |
+        SELECT * FROM gui_users() WHERE name = whoami()
+````
+
+
+

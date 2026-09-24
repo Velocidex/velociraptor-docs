@@ -1,0 +1,60 @@
+# Server.Monitoring.TimesketchUpload
+
+Watches for creation of new Velociraptor timelines and
+automatically uploads matching ones to Timesketch.
+
+
+---
+
+````yaml
+name: Server.Monitoring.TimesketchUpload
+description: |
+   Watches for creation of new Velociraptor timelines and
+   automatically uploads matching ones to Timesketch.
+
+type: SERVER_EVENT
+
+parameters:
+  - name: SketchRegex
+    description: |
+      Only upload Super timelines matching this regex to their
+      corresponding Sketches.
+    default: .
+
+  - name: TimelineRegex
+    default: .
+    description: |
+      Only upload Timelines with a name matching this regex to
+      Timesketch.
+
+  - name: TimesketchCLICommand
+    default: "timesketch"
+    description: |
+      The path to the Timesketch CLI binary. If you installed in a
+      virtual environment this will be inside that environment.
+
+required_permissions:
+  - EXECVE
+
+imports:
+  - Server.Utils.TimesketchUpload
+
+sources:
+  - query: |
+      SELECT * FROM foreach(row={
+         SELECT NotebookId, SuperTimelineName, Timeline
+         FROM watch_monitoring(artifact="Server.Internal.TimelineAdd")
+         WHERE Action = "AddTimeline"
+           AND SuperTimelineName =~ SketchRegex
+           AND Timeline =~ TimelineRegex
+      }, query={
+         SELECT * FROM ImportToTS(
+             SuperTimelineName=SuperTimelineName,
+             NotebookId=NotebookId,
+             TimelineName=Timeline,
+             SketchName=SuperTimelineName)
+      })
+````
+
+
+
