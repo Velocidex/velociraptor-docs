@@ -181,6 +181,10 @@ signed using the sending party’s private key.
 > The internal encryption scheme's main purpose is not only to encrypt
 > the messages but to sign them. This prevents messages from one client
 > from impersonating another client.
+>
+> The inner envelope uses SHA-1 for its RSA-OAEP and HMAC operations.
+> This is acceptable because the envelope is always delivered inside a
+> TLS session, which provides the primary cryptographic protection.
 
 ### HTTP protocol
 
