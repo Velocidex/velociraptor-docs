@@ -1,0 +1,36 @@
+# Server.Internal.HuntModification
+
+Provides an internal event queue for hunt modification notifications
+including stop and start events.
+
+The hunt dispatcher from all nodes sends this mutation to the hunt
+manager which applies it.
+
+Users can also watch this queue to be notified when hunts are
+modified (e.g. stopped, started etc).
+
+
+---
+
+````yaml
+name: Server.Internal.HuntModification
+description: |
+  Provides an internal event queue for hunt modification notifications
+  including stop and start events.
+  
+  The hunt dispatcher from all nodes sends this mutation to the hunt
+  manager which applies it.
+
+  Users can also watch this queue to be notified when hunts are
+  modified (e.g. stopped, started etc).
+
+type: INTERNAL
+
+column_types:
+  - name: HuntId
+  - name: Mutation
+    type: json
+````
+
+
+

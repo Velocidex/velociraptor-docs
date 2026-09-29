@@ -1,0 +1,2287 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Velociraptor Artifact Exchange</title>
+    <link>https://docs.velociraptor.app/exchange/</link>
+    <description>Recent content in Artifact Exchange on Velociraptor - Digging deeper!</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 15 Sep 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://docs.velociraptor.app/exchange/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux.Detection.CVE202685706.GitLabFileRead</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.detection.cve202685706.gitlabfileread</link>
+      <pubDate>Tue, 15 Sep 2026 00:00:00 +0000</pubDate><author>ecapuano</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.detection.cve202685706.gitlabfileread</guid>
+      <description>Hunts self-managed GitLab hosts for exploitation of CVE-2026-85706, an&#xA;unauthenticated arbitrary file read in the repository upload endpoints&#xA;(CVSS 10.0, CISA KEV 2026-09-11, flagged for forensic triage under&#xA;BOD 26-04). Patching alone does not answer whether files were read first.&#xA;This artifact answers that from the host&#39;s own logs.</description>
+    </item>
+    <item>
+      <title>Windows.ADCS.CertificateAuthority.EDB</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.adcs.certificateauthority.edb</link>
+      <pubDate>Tue, 08 Sep 2026 00:00:00 +0000</pubDate><author>sec-pc</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.adcs.certificateauthority.edb</guid>
+      <description>Parses the Active Directory Certificate Services (ADCS) ESE database&#xA;directly from disk.&#xA;Reads the CA database at C:\Windows\System32\CertLog\*.edb using the&#xA;ntfs accessor to handle the file lock while CertSvc is running.&#xA;Returns all certificate requests with key forensic fields including&#xA;disposition (issued/revoked/failed/pending), requester and caller&#xA;identity, subject DN, template, timestamps, and serial number.&#xA;Joins the Requests, Certificates, and RequestAttributes tables on&#xA;RequestID to produce a single complete row per certificate.&#xA;CertificateTemplate is resolved to the human-readable display name&#xA;using a three-stage lookup:&#xA;  1. Display name from RequestAttributes for this RequestID&#xA;  2. Inline $RequestAttributes text CertificateTemplate:Name&#xA;  3. Raw OID from the Certificates table as last resort&#xA;UPN is resolved with two-stage fallback:&#xA;  1. $UPN from the issued certificate (Certificates table)&#xA;  2. Requested UPN from SAN attribute (RequestAttributes table)&#xA;Requires a build of Velociraptor compiled against the patched go-ese&#xA;library (https://github.com/Velocidex/go-ese) where DateTime columns&#xA;are always decoded as Windows FILETIMEs regardless of column Flags.&#xA;Without the patch, all DateTime fields return 1899-12-30.&#xA;Transaction log recovery: the CA service buffers writes in ESE&#xA;transaction logs. esentutl /r is used to replay those logs into a&#xA;temp copy of the EDB before parsing, ensuring all committed rows are&#xA;visible and matching certutil output.&#xA;Disposition values:&#xA;  9  = Issued&#xA;  11 = Pending&#xA;  15 = Revoked&#xA;  16 = Error&#xA;  20 = Failed&#xA;  21 = Denied&#xA;</description>
+    </item>
+    <item>
+      <title>Generic.Applications.ZeroTier</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/generic.applications.zerotier</link>
+      <pubDate>Wed, 02 Sep 2026 00:00:00 +0000</pubDate><author>misje</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/generic.applications.zerotier</guid>
+      <description>Collects ZeroTier installation artefacts from the client file system without&#xA;requiring the ZeroTier service to be running.</description>
+    </item>
+    <item>
+      <title>Server.Analysis.Windows.EventLogs.Hayabusa</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.analysis.windows.eventlogs.hayabusa</link>
+      <pubDate>Sun, 02 Aug 2026 00:00:00 +0000</pubDate><author>ecapuano</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.analysis.windows.eventlogs.hayabusa</guid>
+      <description>Runs the curated Hayabusa Sigma ruleset against Windows event logs&#xA;that were already uploaded to the server by a completed collection&#xA;flow, using Velociraptor&#39;s built-in Sigma engine. No Hayabusa binary&#xA;is deployed to the endpoint or the server - the entire analysis runs&#xA;in VQL on the server side.</description>
+    </item>
+    <item>
+      <title>Server.Monitor.Windows.EventLogs.Hayabusa</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.monitor.windows.eventlogs.hayabusa</link>
+      <pubDate>Sun, 02 Aug 2026 00:00:00 +0000</pubDate><author>ecapuano</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.monitor.windows.eventlogs.hayabusa</guid>
+      <description>Watches for completed client collections whose artifacts match&#xA;`ArtifactRegex` and automatically runs&#xA;`Server.Analysis.Windows.EventLogs.Hayabusa` against the EVTX files&#xA;uploaded by each flow. Detection results appear under Server Events&#xA;for this artifact.</description>
+    </item>
+    <item>
+      <title>Windows.Memory.DotnetDumper</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/dotnetdumper</link>
+      <pubDate>Wed, 27 May 2026 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/dotnetdumper</guid>
+      <description>Response artifact to triage Windows .NET processes and collect .NET assemblies from &#xA;memory using DotnetDumper.</description>
+    </item>
+    <item>
+      <title>Generic.Client.ADStatus</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/generic.client.adstatus</link>
+      <pubDate>Wed, 27 May 2026 00:00:00 +0000</pubDate><author>misje</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/generic.client.adstatus</guid>
+      <description>Get Active Directory join status from a computer.</description>
+    </item>
+    <item>
+      <title>Generic.Client.Defender.Health</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/generic.client.defender.health</link>
+      <pubDate>Wed, 27 May 2026 00:00:00 +0000</pubDate><author>misje</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/generic.client.defender.health</guid>
+      <description>Get Microsoft Defender for Endpoint (MDATP) health and configuration.</description>
+    </item>
+    <item>
+      <title>Generic.Client.HW.Identification</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/generic.client.hw.identification</link>
+      <pubDate>Wed, 27 May 2026 00:00:00 +0000</pubDate><author>misje</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/generic.client.hw.identification</guid>
+      <description>Extract product serial and other identification strings from the system.</description>
+    </item>
+    <item>
+      <title>Server.Monitor.StoreClientHWInfo</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.monitor.storeclienthwinfo</link>
+      <pubDate>Wed, 27 May 2026 00:00:00 +0000</pubDate><author>misje</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.monitor.storeclienthwinfo</guid>
+      <description>Save hardware identification data from client interrogation as&#xA;client metadata.</description>
+    </item>
+    <item>
+      <title>Server.Monitor.StoreClientInfo</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.monitor.storeclientinfo</link>
+      <pubDate>Wed, 27 May 2026 00:00:00 +0000</pubDate><author>misje</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.monitor.storeclientinfo</guid>
+      <description>Save data from client interrogation as client metadata.</description>
+    </item>
+    <item>
+      <title>Windows.Applications.Tailscale</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.applications.tailscale</link>
+      <pubDate>Fri, 22 May 2026 00:00:00 +0000</pubDate><author>ogmini</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.applications.tailscale</guid>
+      <description>Decodes the configuration file, pulls log files, and uploads any partial file transfers for Tailscale.</description>
+    </item>
+    <item>
+      <title>Windows.Forensics.OneNoteHunt</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.forensics.onenotehunt</link>
+      <pubDate>Fri, 22 May 2026 00:00:00 +0000</pubDate><author>SwiftSecur</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.forensics.onenotehunt</guid>
+      <description>Hunt OneNote files, search ASCII and UTF-16LE content,&#xA;detect embedded image signatures, report keyword hits,&#xA;and optionally upload files.&#xA;Note: the BMP signature uses a 10-byte header pattern to reduce false positives.&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Monitor.Alerts.UserMessage</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.monitor.alerts.usermessage</link>
+      <pubDate>Tue, 12 May 2026 00:00:00 +0000</pubDate><author>misje</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.monitor.alerts.usermessage</guid>
+      <description>Send an in-app user notification when an alert is created.</description>
+    </item>
+    <item>
+      <title>Server.Monitor.Alerts</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.monitor.alerts</link>
+      <pubDate>Tue, 12 May 2026 00:00:00 +0000</pubDate><author>misje</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.monitor.alerts</guid>
+      <description>Send an e-mail when an alert is created.</description>
+    </item>
+    <item>
+      <title>Server.Monitor.Client.Errors.Alert</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.monitor.client.errors.alert</link>
+      <pubDate>Tue, 12 May 2026 00:00:00 +0000</pubDate><author>misje</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.monitor.client.errors.alert</guid>
+      <description>Create alerts from errors logged by client event queries.</description>
+    </item>
+    <item>
+      <title>Server.Monitor.Errors.Alert</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.monitor.errors.alert</link>
+      <pubDate>Tue, 12 May 2026 00:00:00 +0000</pubDate><author>misje</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.monitor.errors.alert</guid>
+      <description>Create alerts from errors logged by server event queries.</description>
+    </item>
+    <item>
+      <title>Server.Monitor.FlowCompletion</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.monitor.flowcompletion</link>
+      <pubDate>Tue, 12 May 2026 00:00:00 +0000</pubDate><author>misje</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.monitor.flowcompletion</guid>
+      <description>Send an e-mail when a client flow completes (success or failure), with optional&#xA;HTML formatting, result tables, and file attachments.</description>
+    </item>
+    <item>
+      <title>Windows.Install.Wazuh.Agent</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.install.wazuh.agent</link>
+      <pubDate>Thu, 07 May 2026 00:00:00 +0000</pubDate><author>julianghill</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.install.wazuh.agent</guid>
+      <description>Installs the Wazuh Windows agent and configures it to use the supplied&#xA;Wazuh manager IP address or hostname.</description>
+    </item>
+    <item>
+      <title>Linux.Detection.CopyFail.Exploitation</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/detection.copyfail.cve-2026-31431.exploitation</link>
+      <pubDate>Mon, 04 May 2026 00:00:00 +0000</pubDate><author>yanivg-dfir</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/detection.copyfail.cve-2026-31431.exploitation</guid>
+      <description>Hunts for signs of successful Copy Fail (CVE-2026-31431) exploitation.&#xA;Targets kernel log messages regarding &#39;null argv&#39; shells and suspicious &#39;PF_ALG&#39; registration.&#xA;</description>
+    </item>
+    <item>
+      <title>Custom.MacOS.Detection.DylibHijacking</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/custom.macos.detection.dylibhijacking</link>
+      <pubDate>Wed, 29 Apr 2026 00:00:00 +0000</pubDate><author>flarman-r7</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/custom.macos.detection.dylibhijacking</guid>
+      <description>This artifact is intended to alert on executables susceptible to dylib injection and highjacking. This includes checking the executable for library validation issues such as `com.apple.security.cs.disable-library-validation` and `com.apple.security.cs.allow-dyld-environment-variables`, multiple (relative) `@executable_path`&#39;s and `LC_LOAD_WEAK_DYLIB` entries. The artifact `TargetPath` looks at the default installation path for MacOS binaries (MachO). To run the artifact against a binary in a non-standard location, add it to the csv `TargetPath` parameter. Results will be displayed in two parts, `dylibloads` and `libraryvalidation`. Only duplicate entries will be displayed for `dylibloads`.</description>
+    </item>
+    <item>
+      <title>Windows.System.AppCompatPCAExtend</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.system.appcompatpca.extended</link>
+      <pubDate>Wed, 29 Apr 2026 00:00:00 +0000</pubDate><author>Kaitoramac</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.system.appcompatpca.extended</guid>
+      <description>Parse the Program Compatibility Assistant (PCA) databases for executable&#xA;launch history and abnormal exit events.</description>
+    </item>
+    <item>
+      <title>Generic.VSCode.Extensions</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/generic.vscode.extensions</link>
+      <pubDate>Sat, 21 Mar 2026 00:00:00 +0000</pubDate><author>misje</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/generic.vscode.extensions</guid>
+      <description>List all installed Visual Studio code extensions</description>
+    </item>
+    <item>
+      <title>Generic.Forensics.VMWareInventory</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/generic.forensics.vmwareinventory</link>
+      <pubDate>Thu, 05 Mar 2026 00:00:00 +0000</pubDate><author>klehri-r7</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/generic.forensics.vmwareinventory</guid>
+      <description>Finds and parses VMware VM configuration files (.vmx) on Mac and Windows. &#xA;It turns text into an organized list (dictionary) so you can easily &#xA;search for settings like RAM size, Guest OS, or network modes.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Detection.LotusBlossom.Chrysalis</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/chrysalis</link>
+      <pubDate>Tue, 03 Feb 2026 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/chrysalis</guid>
+      <description>Assists scoping IOCs related to the recent publicly disclosed Notepad++ &#xA;supply chain attack. </description>
+    </item>
+    <item>
+      <title>Linux.Events.EBPFEnriched</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.events.ebpfenriched</link>
+      <pubDate>Thu, 22 Jan 2026 00:00:00 +0000</pubDate><author>zaneGittins</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.events.ebpfenriched</guid>
+      <description>This artifact forwards EBPF events generated on the endpoint and enriches events with:</description>
+    </item>
+    <item>
+      <title>Windows.Kerberos.GoldenTicketTriage</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.kerberos.goldentickettriage</link>
+      <pubDate>Mon, 12 Jan 2026 00:00:00 +0000</pubDate><author>dciftci</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.kerberos.goldentickettriage</guid>
+      <description>It analyzes klist output to identify Kerberos tickets with unusually long lifetimes as well as tickets where the Kdc Called field is empty.</description>
+    </item>
+    <item>
+      <title>Linux.Detection.CVE202514847.MongoBleed</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.detection.cve202514847.mongobleed</link>
+      <pubDate>Sat, 27 Dec 2025 00:00:00 +0000</pubDate><author>ecapuano</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.detection.cve202514847.mongobleed</guid>
+      <description>Hunts for evidence of CVE-2025-14847 (MongoBleed) exploitation on MongoDB servers.</description>
+    </item>
+    <item>
+      <title>Windows.System.AutoLoggerDiagtrackListener</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/autologgerdiagtracklistener</link>
+      <pubDate>Fri, 12 Dec 2025 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/autologgerdiagtracklistener</guid>
+      <description>AutoLogger-Diagtrack-Listener.etl is a potential source of evidence of &#xA;execution and other system diagnostic data.</description>
+    </item>
+    <item>
+      <title>Windows.System.IsClrProcess</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/isclrprocess</link>
+      <pubDate>Tue, 02 Dec 2025 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/isclrprocess</guid>
+      <description>Identify running processes that host the .NET Common Language Runtime (CLR) and&#xA;highlight suspicious processes where CLR visibility may be reduced, downgraded,&#xA;or disabled.</description>
+    </item>
+    <item>
+      <title>Windows.Detection.ReflectedAssemblies</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/reflectedassemblies</link>
+      <pubDate>Tue, 02 Dec 2025 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/reflectedassemblies</guid>
+      <description>Collects current running .NET assemblies and replicates ProcessHacker&#39;s .NET&#xA;Assemblies view.</description>
+    </item>
+    <item>
+      <title>Windows.Memory.Mem2Disk</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.memory.mem2disk</link>
+      <pubDate>Fri, 14 Nov 2025 00:00:00 +0000</pubDate><author>lautarolecumberry</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.memory.mem2disk</guid>
+      <description>This artifact compares executables in memory (RAM) with those&#xA;on hard disk. This way, RAM injections are detected. This rarely&#xA;happens legitimately and is mostly used by malware.&#xA;This check is executed without dumping the memory and works live&#xA;on the target system(s).&#xA;See also https://github.com/lautarolecumberry/DetectingFilelessMalware</description>
+    </item>
+    <item>
+      <title>Windows.Detection.HyperV</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/hyperv</link>
+      <pubDate>Fri, 07 Nov 2025 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/hyperv</guid>
+      <description>Scope suspicious Hyper-V worker process and activity on Windows workstations.</description>
+    </item>
+    <item>
+      <title>Windows.Vhdx.RemapConfigBuilder</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.vhdx.remapconfigbuilder</link>
+      <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate><author>mirwitch</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.vhdx.remapconfigbuilder</guid>
+      <description>Create remapping configuration YAML file(s) to virtually mount  &#xA;VHDX profiles into virtual Velociraptor clients.</description>
+    </item>
+    <item>
+      <title>Windows.Vhdx.Sys.Users</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.vhdx.sys.users</link>
+      <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate><author>mirwitch</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.vhdx.sys.users</guid>
+      <description>List User accounts by inspecting registry keys. This method is a&#xA;reliable indicator for users who have physically logged into the&#xA;system and thereby created local profiles.</description>
+    </item>
+    <item>
+      <title>Windows.Vhdx.VirtualClientRemover</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.vhdx.virtualclientremover</link>
+      <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate><author>mirwitch</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.vhdx.virtualclientremover</guid>
+      <description>Kill the Velociraptor agent used for the VHDX profiles virtual host.   </description>
+    </item>
+    <item>
+      <title>Windows.Vhdx.VirtualClientRunner</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.vhdx.virtualclientrunner</link>
+      <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate><author>mirwitch</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.vhdx.virtualclientrunner</guid>
+      <description>Run the Velociraptor agent using the remapping configuration created. This&#xA;agent allow to virtually map the VHDX profiles into virtual Velociraptor agents.</description>
+    </item>
+    <item>
+      <title>Generic.File.LineScan.RegexHunter</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/generic.file.linescan.regexhunter</link>
+      <pubDate>Wed, 08 Oct 2025 00:00:00 +0000</pubDate><author>klehri-r7</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/generic.file.linescan.regexhunter</guid>
+      <description>A versatile artifact that scans the contents of text files line by line and reports &#xA;any line that matches a user-supplied regular expression.&#xA;This artifact is designed for flexible content inspection across any operating system—&#xA;Linux, Windows. It can be used to detect indicators of compromise, identify &#xA;suspicious commands in configuration files, or validate specific text patterns.</description>
+    </item>
+    <item>
+      <title>Linux.Network.Netstat.Watcher</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.network.netstat.watcher</link>
+      <pubDate>Wed, 03 Sep 2025 00:00:00 +0000</pubDate><author>ablescia</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.network.netstat.watcher</guid>
+      <description>Collects a one-time snapshot of current non-LISTEN remote connections and a continuous diff stream of added/removed/changed connections. Loopback destinations are excluded by default (127.0.0.1 and ::1) via a configurable regex.  The sampling interval (SampleIntervalSec) and the overall monitoring window (MonitorDurationSec) are fully parameterized. Each record includes process metadata via process_tracker_get&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Forensics.WindowsNotepadParser</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.forensics.windowsnotepadparser</link>
+      <pubDate>Fri, 01 Aug 2025 00:00:00 +0000</pubDate><author>ogmini</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.forensics.windowsnotepadparser</guid>
+      <description>Runs the WindowsNotepadParser (https://github.com/ogmini/Notepad-State-Library) tool to collect and parse&#xA;forensic artifacts related to Windows Notepad on Windows 11.</description>
+    </item>
+    <item>
+      <title>Generic.CommonLogFormat.AccessLogs</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/generic.commonlogformat.accesslogs</link>
+      <pubDate>Wed, 30 Jul 2025 00:00:00 +0000</pubDate><author>ablescia</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/generic.commonlogformat.accesslogs</guid>
+      <description>Parses Apache access logs to extract detailed request information.&#xA;</description>
+    </item>
+    <item>
+      <title>Linux.Persistence.LdPreload</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/ldpreload</link>
+      <pubDate>Wed, 23 Jul 2025 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/ldpreload</guid>
+      <description>Parses the GNU glibc **LD_PRELOAD** mechanism. Any path listed in &#xA;`/etc/ld.so.preload` or assigned to `LD_PRELOAD` is force‑loaded into every &#xA;dynamically linked executable. A single &#xA;rogue entry therefore grants system‑wide code execution and persistence at&#xA;process start‑up.</description>
+    </item>
+    <item>
+      <title>Windows.Applications.MouseWithoutBorders</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.applications.mousewithoutborders</link>
+      <pubDate>Wed, 23 Jul 2025 00:00:00 +0000</pubDate><author>0xSultan</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.applications.mousewithoutborders</guid>
+      <description>This artifact parses Microsoft Mouse Without Borders (MWB) runtime logs, module interface logs and the settings file.</description>
+    </item>
+    <item>
+      <title>Linux.Sys.Modinfo</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/modinfo</link>
+      <pubDate>Thu, 17 Jul 2025 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/modinfo</guid>
+      <description>Collects detailed metadata about Linux kernel modules using modinfo. Useful for &#xA;malicious kernel module hunting.</description>
+    </item>
+    <item>
+      <title>Server.PostProcess.FluentBit</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/fluentbit</link>
+      <pubDate>Sun, 13 Jul 2025 00:00:00 +0000</pubDate><author>predictiple</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/fluentbit</guid>
+      <description>Post-process collection results using [Fluent Bit](https://fluentbit.io/).</description>
+    </item>
+    <item>
+      <title>Windows.Hunter.Yara.LOLDrivers</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.hunter.yara.loldrivers</link>
+      <pubDate>Wed, 18 Jun 2025 00:00:00 +0000</pubDate><author>klehri-r7</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.hunter.yara.loldrivers</guid>
+      <description>This artifact scans system driver directories using two user-supplied YARA rules:</description>
+    </item>
+    <item>
+      <title>Linux.Sys.Getcap</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/getcap</link>
+      <pubDate>Wed, 11 Jun 2025 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/getcap</guid>
+      <description>Inspects extended file capabilities with getcap.  &#xA;Since Linux 2.6.24, setcap can attach fine-grained privilege bits to &#xA;executables, letting them perform the specific privileged actions they &#xA;require instead of running as root.   &#xA;If a binary that’s writable or executable by non-privileged users is granted &#xA;excessive capabilities, attackers can exploit it for privilege escalation.&#xA;</description>
+    </item>
+    <item>
+      <title>CyberTriage.Collector</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/cybertriagecollector</link>
+      <pubDate>Tue, 10 Jun 2025 00:00:00 +0000</pubDate><author>bcarrier</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/cybertriagecollector</guid>
+      <description>Runs the Cyber Triage (https://cybertriage.com) Collector to copy&#xA;forensic artifacts for automated analysis. The Dynamic collection&#xA;will include EXEs, DLLs, and other files referenced by artifacts.</description>
+    </item>
+    <item>
+      <title>Server.Enrichment.AI.Gemini</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/gemini</link>
+      <pubDate>Thu, 01 May 2025 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/gemini</guid>
+      <description>Query Gemini AI for analysis of data.</description>
+    </item>
+    <item>
+      <title>Server.Enrichment.AI.Anthropic</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/anthropic</link>
+      <pubDate>Wed, 30 Apr 2025 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/anthropic</guid>
+      <description>Query Anthropic AI for analysis of data.</description>
+    </item>
+    <item>
+      <title>Server.Enrichment.AI.Ollama</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/ollama</link>
+      <pubDate>Mon, 14 Apr 2025 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/ollama</guid>
+      <description>This artifact allows enrichment using Ollama AI.</description>
+    </item>
+    <item>
+      <title>Server.Enrichment.SecureAnnex</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.enrichment.secureannex</link>
+      <pubDate>Sun, 30 Mar 2025 00:00:00 +0000</pubDate><author>shortstack</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.enrichment.secureannex</guid>
+      <description>Submit an extension to the Secure Annex API.</description>
+    </item>
+    <item>
+      <title>Windows.Detection.Keylogger</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.detection.keylogger</link>
+      <pubDate>Tue, 25 Mar 2025 00:00:00 +0000</pubDate><author>zaneGittins</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.detection.keylogger</guid>
+      <description>This artifact is my attempt at implementing keylogger detection based on research presented by [Asuka Nakajima at NULLCON](https://speakerdeck.com/asuna_jp/nullcon-goa-2025-windows-keylogger-detection-targeting-past-and-present-keylogging-techniques) using the Microsoft-Windows-Win32k ETW provider.</description>
+    </item>
+    <item>
+      <title>Windows.ETW.ScreenshotTaken</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.etw.screenshottaken</link>
+      <pubDate>Tue, 25 Mar 2025 00:00:00 +0000</pubDate><author>zaneGittins</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.etw.screenshottaken</guid>
+      <description>This artifact detects screen captures by correlating events from the Microsoft-Windows-Win32k ETW provider which are triggered by common Windows API calls made when taking a screenshot. This can be useful for detecting remote access trojans, infostealers, and data exfiltration. Tested against Sliver, Meterpreter, and Empire. This will also trigger on legitimate tools such as ZoomIt, Greenshot, MsTeams, etc. which can be excluded on a case by case basis via the ProcessExceptionsRegex parameter.&#xA;</description>
+    </item>
+    <item>
+      <title>Linux.Detection.Honeyfiles</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.detection.honeyfiles</link>
+      <pubDate>Tue, 18 Mar 2025 00:00:00 +0000</pubDate><author>zaneGittins</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.detection.honeyfiles</guid>
+      <description>This artifact deploys honeyfiles according to the Honeyfiles CSV parameter. It then monitors access to these files using eBPF.  The process tracker must be enabled, we use this to enrich events. You also must be using Velociraptor &gt;= 0.74 to support eBPF. Honeyfiles created by this artifact are removed at exit.</description>
+    </item>
+    <item>
+      <title>Windows.Detection.Honeyfiles</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.detection.honeyfile</link>
+      <pubDate>Tue, 18 Mar 2025 00:00:00 +0000</pubDate><author>zaneGittins</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.detection.honeyfile</guid>
+      <description>This artifact deploys honeyfiles according to the Honeyfiles CSV parameter. It then monitors access to these files using etw.  The process tracker must be enabled, we use this to enrich etw events. Honeyfiles created by this artifact are removed at exit.&#xA;</description>
+    </item>
+    <item>
+      <title>MacOS.Forensics.ASL</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.forensics.asl</link>
+      <pubDate>Wed, 19 Feb 2025 00:00:00 +0000</pubDate><author>ydkhatri</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.forensics.asl</guid>
+      <description>This artifact parses the ASL (Apple System Log) v2 files located at &#xA;/private/var/log/asl/*.asl&#xA;</description>
+    </item>
+    <item>
+      <title>Linux.Forensics.Targets</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.forensics.targets</link>
+      <pubDate>Fri, 27 Dec 2024 00:00:00 +0000</pubDate><author>kidrek</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.forensics.targets</guid>
+      <description>This artifact collects all necessary artifacts files and directories from Linux operating system. &#xA;</description>
+    </item>
+    <item>
+      <title>Docker.Image.Export</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/docker.image.export</link>
+      <pubDate>Mon, 09 Dec 2024 00:00:00 +0000</pubDate><author>DoppioRistretto</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/docker.image.export</guid>
+      <description>Uses the Docker UNIX socket to export a Docker image to a&#xA;tempfile and upload to Velociraptor.</description>
+    </item>
+    <item>
+      <title>Windows.Forensics.NotificationsDatabase</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.forensics.notificationsdatabase</link>
+      <pubDate>Fri, 06 Dec 2024 00:00:00 +0000</pubDate><author>zaneGittins</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.forensics.notificationsdatabase</guid>
+      <description>Parses the Win10/11 notifications database, which contains events for badges, tiles, and toasts shown to each user.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.ESET.Logs</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/esetlogs</link>
+      <pubDate>Sun, 01 Dec 2024 00:00:00 +0000</pubDate><author>j91321</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/esetlogs</guid>
+      <description>Parse logs from ESET antivirus products. This log contains information about detections made by the ESET modules such as Real-time filesystem protection, Firewall, HIPS, Device Control, HTTP filter, AMSI Scanner etc.&#xA;</description>
+    </item>
+    <item>
+      <title>Linux.Forensics.ProcFD</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.forensics.procfd</link>
+      <pubDate>Mon, 14 Oct 2024 00:00:00 +0000</pubDate><author>chrisdfir</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.forensics.procfd</guid>
+      <description>This artifact collects metadata about open file descriptors from active processes on a Linux system. &#xA;Outputs include regular files, sockets, device files, and deleted files used by each process.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.LastDomainUsers</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.lastdomainusers</link>
+      <pubDate>Wed, 09 Oct 2024 00:00:00 +0000</pubDate><author>AnthoLaMalice</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.lastdomainusers</guid>
+      <description>Enumerate Domain Users by creation date. This artifact can be used to quickly detect new domain accounts that may have been created by attackers. This artifact must be run on Domain Joined systems with the PowerShell Active Directory module installed.</description>
+    </item>
+    <item>
+      <title>FreeBSD.Sys.Utx</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/freebsd.sys.utx</link>
+      <pubDate>Sun, 08 Sep 2024 00:00:00 +0000</pubDate><author>Herbert-Karl</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/freebsd.sys.utx</guid>
+      <description>Parse the utx file of the system (similar to wtmp on Linux). This covers user sessions, boots, shutdowns and system time changes.&#xA;Because FreeBSD discards fields for the entries of the utx file based on type (see `man getutxent`), no direct parsing of the file using &#34;vtypes&#34; is done (too complicated for me to define a structure for parsing), but rather native tools are used for accessing the data.</description>
+    </item>
+    <item>
+      <title>Server.Hunt.Comparison</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.hunt.comparison</link>
+      <pubDate>Wed, 28 Aug 2024 00:00:00 +0000</pubDate><author>DenKi42</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.hunt.comparison</guid>
+      <description>This artifact is used to compare other artifacts from two different hunts. The basic idea is that a baseline (Hunt 1) is created from selected artifacts before an attack. A second hunt (Hunt 2) can then be carried out after the attack using the same artifacts. Now, using this script, artifacts from both hunts can be compared. This allows legitimate activities to be filtered out and makes it easier to identify malicious activities in Hunt2.</description>
+    </item>
+    <item>
+      <title>Windows.Sysinternals.PSShutdown</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.sysinternals.psshutdown</link>
+      <pubDate>Wed, 28 Aug 2024 00:00:00 +0000</pubDate><author>iboje</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.sysinternals.psshutdown</guid>
+      <description>PsShutdown is a command-line utility similar to the shutdown utility from the Windows 2000 Resource Kit, but with the ability to do much more. In addition to supporting the same options for shutting down or rebooting the local or a remote computer, PsShutdown can logoff the console user or lock the console (locking requires Windows 2000 or higher). PsShutdown requires no manual installation of client software.&#xA;</description>
+    </item>
+    <item>
+      <title>Linux.ExtractKthread</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.collection.kthread</link>
+      <pubDate>Thu, 22 Aug 2024 00:00:00 +0000</pubDate><author>andy99998</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.collection.kthread</guid>
+      <description>This artifact parses `/proc/[0-9]*/status` files and extracts the `ProcessName` and `Kthread` values. Helpful for identifying imposter processes.&#xA;</description>
+    </item>
+    <item>
+      <title>Linux.Forensics.EnvironmentVariables</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.forensics.environmentvariables</link>
+      <pubDate>Thu, 22 Aug 2024 00:00:00 +0000</pubDate><author>ibyf0r3ns1cs</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.forensics.environmentvariables</guid>
+      <description>This artifact detects potential persistence mechanisms on Linux systems by analyzing environment variable files and login scripts.  </description>
+    </item>
+    <item>
+      <title>Windows.Veeam.RestorePoints.BackupFiles</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.veeam.restorepoints.backupfiles</link>
+      <pubDate>Thu, 22 Aug 2024 00:00:00 +0000</pubDate><author>cybiosity-syn</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.veeam.restorepoints.backupfiles</guid>
+      <description>Parses the metadata found in Veeam full backup files (`.vbk`), Veeam incremental backup files (`.vib`) and Veeam reverse incremental backup files (`.vrb`) to extract relevant fields for each Restore Point.</description>
+    </item>
+    <item>
+      <title>Windows.Utils.DefenderExclusion</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/defenderexclusion</link>
+      <pubDate>Sun, 18 Aug 2024 00:00:00 +0000</pubDate><author>predictiple</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/defenderexclusion</guid>
+      <description>**Adds a Microsoft Defender real-time scanning process exclusion for&#xA;Velociraptor.**</description>
+    </item>
+    <item>
+      <title>Linux.Event.Network.Nethogs</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.event.network.nethogs</link>
+      <pubDate>Tue, 23 Jul 2024 00:00:00 +0000</pubDate><author>misje</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.event.network.nethogs</guid>
+      <description>Monitor network use per process using the tool &#34;nethogs&#34;. This artifact will&#xA;list all processes that produces (non-local) network traffic on the client.&#xA;The NetstatEnriched artifact is used to provide detailed information about the&#xA;process using netstat and the process tracker, along with the bytes received&#xA;and sent in bytes per second.</description>
+    </item>
+    <item>
+      <title>Linux.Network.Nethogs</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.network.nethogs</link>
+      <pubDate>Tue, 23 Jul 2024 00:00:00 +0000</pubDate><author>misje</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.network.nethogs</guid>
+      <description>Monitor network use per process using the tool &#34;nethogs&#34;. This artifact will&#xA;list all processes that produces (non-local) network traffic on the client.&#xA;The NetstatEnriched artifact is used to provide detailed information about the&#xA;process using netstat and the process tracker, along with the bytes received&#xA;and sent in bytes per second.</description>
+    </item>
+    <item>
+      <title>Linux.Applications.Docker.Ps</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.applications.docker.ps</link>
+      <pubDate>Mon, 15 Jul 2024 00:00:00 +0000</pubDate><author>j91321</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.applications.docker.ps</guid>
+      <description>Get Docker containers by connecting to the docker.socket. Same as running `docker ps`</description>
+    </item>
+    <item>
+      <title>Notebooks.Admin.Flows</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/notebooks.admin.flows</link>
+      <pubDate>Mon, 15 Jul 2024 00:00:00 +0000</pubDate><author>misje</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/notebooks.admin.flows</guid>
+      <description>This notebooks lists all recent flows/collections across all orgs on the&#xA;platform. It may be used for auditing or as a means of finding a collection&#xA;previously scheduled.</description>
+    </item>
+    <item>
+      <title>Generic.Events.TrackNetworkConnections</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/generic.events.tracknetworkconnections</link>
+      <pubDate>Wed, 10 Jul 2024 00:00:00 +0000</pubDate><author>sec-hbaer</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/generic.events.tracknetworkconnections</guid>
+      <description>This artifact is meant for monitoring network connections on clients.&#xA;It periodically queries the existing network connections and emits lines for differences (new connections and missing/removed ones).&#xA;Network connections are tracked and compared based on following elements: process id, layer 3 protocol, layer 4 protocol, local address used, local port used, remote address used, remote port used.</description>
+    </item>
+    <item>
+      <title>Server.Alerts.TrackNetworkConnections</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.alerts.tracknetworkconnections</link>
+      <pubDate>Wed, 10 Jul 2024 00:00:00 +0000</pubDate><author>sec-hbaer</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.alerts.tracknetworkconnections</guid>
+      <description>This artifact alerts on network connections tracked by Velociraptor on clients.&#xA;Requires the client_event artifact &#39;Generic.Events.TrackNetworkConnections&#39; to be enabled.</description>
+    </item>
+    <item>
+      <title>Windows.EventLogs.DeepBlueCLI</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.deepbluecli</link>
+      <pubDate>Wed, 10 Jul 2024 00:00:00 +0000</pubDate><author>AnthoLaMalice</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.deepbluecli</guid>
+      <description>DeepBlueCLI - a PowerShell Module for Threat Hunting via Windows Event Logs</description>
+    </item>
+    <item>
+      <title>Windows.Ssh.AuthorizedKeys</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.ssh.authorizedkeys</link>
+      <pubDate>Wed, 10 Jul 2024 00:00:00 +0000</pubDate><author>j91321</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.ssh.authorizedkeys</guid>
+      <description>Find and parse ssh authorized keys files on Windows running OpenSSH service.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.EventLogs.SysmonProcessEnriched.yaml</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.eventlogs.sysmonprocessenriched</link>
+      <pubDate>Fri, 28 Jun 2024 00:00:00 +0000</pubDate><author>zaneGittins</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.eventlogs.sysmonprocessenriched</guid>
+      <description>Collects sysmon process creation events and enriches with authenticode signature, tlsh hash, and call chain. Requires Sysmon and the process tracker.&#xA;</description>
+    </item>
+    <item>
+      <title>Linux.Detection.BruteForce</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.detection.bruteforce</link>
+      <pubDate>Tue, 25 Jun 2024 00:00:00 +0000</pubDate><author>RCarras</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.detection.bruteforce</guid>
+      <description>&#xA;Linux detection brute force module.&#xA;This code is based on https://github.com/RCarras/linforce/blob/main/linforce.sh&#xA;   &#xA;This module uses btmp/wtmp files to search for possible brute force attacks comparing:</description>
+    </item>
+    <item>
+      <title>Windows.System.Recall.AllWindowEvents</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.system.recall.allwindowevents</link>
+      <pubDate>Mon, 03 Jun 2024 00:00:00 +0000</pubDate><author>zachstanford-cybercx</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.system.recall.allwindowevents</guid>
+      <description>This artifact will read and correlate several tables to do with Microsoft Recall.</description>
+    </item>
+    <item>
+      <title>Windows.System.Recall.WindowCaptureEvent</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.system.recall.windowcaptureevent</link>
+      <pubDate>Mon, 03 Jun 2024 00:00:00 +0000</pubDate><author>zachstanford-cybercx</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.system.recall.windowcaptureevent</guid>
+      <description>This artifact will read and correlate several tables to do with Microsoft Recall.</description>
+    </item>
+    <item>
+      <title>Exchange.Windows.EventLogs.Hayabusa.Takajo</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/exchange.windows.eventlogs.hayabusa.takajo</link>
+      <pubDate>Mon, 08 Apr 2024 00:00:00 +0000</pubDate><author>x0rPE</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/exchange.windows.eventlogs.hayabusa.takajo</guid>
+      <description>[Takajo] (https://github.com/Yamato-Security/takajo) is a fast forensics analyzer&#xA;for Hayabusa results written in Nim. Takajō means &#34;Falconer&#34; in Japanese&#xA;and was chosen as it analyzes Hayabusa&#39;s &#34;catches&#34; (results).</description>
+    </item>
+    <item>
+      <title>Exchange.Windows.System.PowerShell.DetectResponder</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/exchange.windows.system.powershell.detectresponder</link>
+      <pubDate>Fri, 05 Apr 2024 00:00:00 +0000</pubDate><author>Jbhoohe</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/exchange.windows.system.powershell.detectresponder</guid>
+      <description>This artifact allows to detect responder in the environment&#xA;https://tcm-sec.com/llmnr-poisoning-and-how-to-prevent-it/&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Forensics.Trawler</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/trawler</link>
+      <pubDate>Thu, 04 Apr 2024 00:00:00 +0000</pubDate><author>joeavanzato</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/trawler</guid>
+      <description>Trawler [https://github.com/joeavanzato/Trawler] is a PowerShell script designed to help Incident&#xA;Responders rapidly identify potential adversary persistence mechanisms on Windows.  It is similar&#xA;in nature to PersistenceSniper with additional targeted checks as well as the capability to operate&#xA;against a &#39;dead box&#39; (mounted drive). The output is simplified compared to PersistenceSniper, providing&#xA;the user with the details needed to kick off an investigation into any identified mechanisms.&#xA;Think of these tools as autoruns on steroids.</description>
+    </item>
+    <item>
+      <title>Windows.Scanner.Yara.Parsed</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.detection.yara.yara64</link>
+      <pubDate>Sun, 24 Mar 2024 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.detection.yara.yara64</guid>
+      <description>Instructions: Upload a yara signature file (signature file must be named yara.yas) and yara64.exe in a single zip file called yara.zip.&#xA;This artifact is an alternative way to scan processes, or recursively scan the C:\ with a yara file containing multiple yara rules, utilizing the official yara tool. </description>
+    </item>
+    <item>
+      <title>Windows.Forensics.AdvancedPortScanner</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.forensics.advancedportscanner</link>
+      <pubDate>Sun, 24 Mar 2024 00:00:00 +0000</pubDate><author>y0sh1mitsu</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.forensics.advancedportscanner</guid>
+      <description>This Velociraptor artifact is tailored for forensics analysis of Angry IP Scanner usage on Windows platforms. This facilitates the identification of how Angry IP Scanner was configured and used, aiding in DFIR investigations. It examines registry keys HKEY_USERS\\*\\SOFTWARE\\Famatech\\advanced_port_scanner and HKEY_USERS\\*\\SOFTWARE\\Famatech\\advanced_port_scanner\\State for retrieve some informations about:&#xA;   &#xA;- run: Displays the version of Advanced Port Scanner&#xA;- locale_timestamp: Indicates the time in EPOCH (UTC +0) at which the application was first launched&#xA;- locale: Displays the language chosen for the graphical interface, may prove useful to have an idea of the native language of a threat actor (it is necessary to correlate with a modus operandi in order not to fall into the trap of a false flag)&#xA;- LastPortsUsed: Displays the last ports used in the last scan&#xA;- LastRangeUsed: Displays the last IP range used in the last scan&#xA;- IpRangesMruList: Displays all the IP ranges scanned by the tool, the first digit of each prefix in this list indicates the frequency of scans for each range&#xA;- PortsMruList: Displays all the ports that have been scanned by the tool, the first digit of each prefix in this list indicates the frequency of scans for each port&#xA;- SearchMruList: Displays all the IP addresses or hostnames that have been searched using the GUI&#39;s &#34;search&#34; feature&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Forensics.AngryIPScanner</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.forensics.angryipscanner</link>
+      <pubDate>Sun, 24 Mar 2024 00:00:00 +0000</pubDate><author>y0sh1mitsu</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.forensics.angryipscanner</guid>
+      <description>This Velociraptor artifact is tailored for forensic analysis of Angry IP Scanner usage on Windows platforms. This facilitates the identification of how Angry IP Scanner was configured and used, aiding in DFIR investigations. It examines HKEY_USERS\\*\\SOFTWARE\\JavaSoft\\Prefs\\ipscan from the registry for retrieve some informations about:&#xA;  &#xA;  - language: Displays the language used in the GUI, may prove useful to have an idea of the language used by a threat actor (it is necessary to correlate with a modus operandi in order not to fall into the trap of a false flag)&#xA;  - Version: Displays the version of Angry IP Scanner&#xA;  - LastVersionCheck: Captures the last time (EPOCH format in UTC +0) when the application checked for an update&#xA;  - PortScanConfiguration: Displays the selected ports for scanning&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Forensics.SoftPerfectNetworkScanner</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.forensics.softperfectnetworkscanner</link>
+      <pubDate>Sun, 24 Mar 2024 00:00:00 +0000</pubDate><author>y0sh1mitsu</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.forensics.softperfectnetworkscanner</guid>
+      <description>This Velociraptor artifact is tailored for forensic analysis of SoftPerfect Network Scanner (NetScan) usage on Windows platforms. This facilitates the identification of how SoftPerfect Network Scanner was configured and used, aiding in DFIR investigations. It parse the MFT to search and retrieve the content of two files:</description>
+    </item>
+    <item>
+      <title>Windows.Forensics.ThumbCache</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/thumbcache</link>
+      <pubDate>Sat, 16 Mar 2024 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/thumbcache</guid>
+      <description>ThumbCache_xx.db parser. </description>
+    </item>
+    <item>
+      <title>Windows.Forensics.TabState</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/tabstate</link>
+      <pubDate>Sun, 03 Mar 2024 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/tabstate</guid>
+      <description>This artifact parses notepad TabState files in available in Windows 11.</description>
+    </item>
+    <item>
+      <title>Windows.Triage.ScreenConnect</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/screenconnect</link>
+      <pubDate>Fri, 23 Feb 2024 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/screenconnect</guid>
+      <description>This artifact extracts useful data for triage of ConnectWise ScreenConnect&#xA;CVE-2024-1709 and CVE-2024-1708 impacting versions 23.9.7 and prior.</description>
+    </item>
+    <item>
+      <title>Windows.Audit.CISCat_Lite</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.audit.ciscat_lite</link>
+      <pubDate>Sun, 18 Feb 2024 00:00:00 +0000</pubDate><author>ablescia</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.audit.ciscat_lite</guid>
+      <description>This artifact runs the CISCat-Lite tool on the target machine and&#xA;uploads the html output on the velociraptor server.</description>
+    </item>
+    <item>
+      <title>Generic.Detection.WebShells</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/generic.detection.webshells</link>
+      <pubDate>Wed, 14 Feb 2024 00:00:00 +0000</pubDate><author>sec-hbaer</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/generic.detection.webshells</guid>
+      <description>This artifact looks for evidence of a web shell being present on the system. It targets Windows and Linux hosts.&#xA;The artifact should be run on web servers, be it dedicated web servers or systems with integrated web servers. &#xA;For such machines, find the root directory of the web server and change the artifact parameters as needed.</description>
+    </item>
+    <item>
+      <title>Windows.Forensics.Jumplists_JLECmd</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.forensics.jumplists_jlecmd</link>
+      <pubDate>Wed, 14 Feb 2024 00:00:00 +0000</pubDate><author>orhan-emre</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.forensics.jumplists_jlecmd</guid>
+      <description>* Execute Eric Zimmerman&#39;s JLECmd to parse AUTOMATICDESTINATIONS-MS and CUSTOMDESTINATIONS-MS files in C:\ drive recursively and return output for analysis. (jlecmd.exe -d C:/ --csvf -csv tmpdir results.csv).&#xA;* JLECmd.zip is downloaded from the URL to &#39;C:\Program Files\Velociraptor\Tools&#39; folder.&#xA;* JLECmd.zip can be uploaded to Velociraptor Server in order to copy it to the clients in case there is no internet connection.&#xA;* Created using @carlos_cajigas LECmd VQL as a quide.&#xA;* JLECmd is a CLI tool for analyzing Custom Destinations jump list data. Learn more - https://github.com/EricZimmerman/JLECmd&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Mounted.Mass.Storage</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.mounted.mass.storage</link>
+      <pubDate>Tue, 13 Feb 2024 00:00:00 +0000</pubDate><author>hasamba</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.mounted.mass.storage</guid>
+      <description>Find drives/usb mass storage that were mounted&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Registry.ScheduledTasks</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/scheduledtasks</link>
+      <pubDate>Mon, 12 Feb 2024 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/scheduledtasks</guid>
+      <description>This artifact will collect Scheduled task information from the registry without&#xA;relying on the existence of an XML file in C:\\Windows\\System32\\Tasks.</description>
+    </item>
+    <item>
+      <title>Generic.Detection.Yara.SSH</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/sshyara</link>
+      <pubDate>Tue, 06 Feb 2024 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/sshyara</guid>
+      <description>This is a server artifact that enables running Generic.Detection.Yara.Glob &#xA;over ssh.</description>
+    </item>
+    <item>
+      <title>Windows.Veeam.RestorePoints.MetadataFiles</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.veeam.restorepoints.metadatafiles</link>
+      <pubDate>Mon, 29 Jan 2024 00:00:00 +0000</pubDate><author>cybiosity-syn</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.veeam.restorepoints.metadatafiles</guid>
+      <description>Parses the metadata found in Veeam backup chain metadata files (`.vbm`) to extract relevant fields for each Restore Point.</description>
+    </item>
+    <item>
+      <title>Generic.Detection.Confluence_CVE_2023_22527</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/confluence_cve_2023_22527</link>
+      <pubDate>Fri, 26 Jan 2024 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/confluence_cve_2023_22527</guid>
+      <description>This artifact detects evidence of exploitation of Confluence RCE CVE-2023-22527.</description>
+    </item>
+    <item>
+      <title>Windows.Forensics.PersistenceSniper</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.forensics.persistencesniper</link>
+      <pubDate>Sun, 21 Jan 2024 00:00:00 +0000</pubDate><author>ablescia</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.forensics.persistencesniper</guid>
+      <description>PersistenceSniper is a Powershell module that can be used by Blue Teams, Incident&#xA;Responders and System Administrators to hunt persistences implanted in Windows machines.&#xA;It is also available on Powershell Gallery and it is digitally signed with a valid code&#xA;signing certificate. The tool is under active development with new releases coming out&#xA;regularly, so make sure to use the up-to-date version.&#xA;https://github.com/last-byte/PersistenceSniper</description>
+    </item>
+    <item>
+      <title>Generic.Detection.EffluenceWebshell</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/effluencewebshell</link>
+      <pubDate>Sun, 12 Nov 2023 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/effluencewebshell</guid>
+      <description>This artifact detects Effluence Webshell observed deployed during exploitation &#xA;of Atlassian Confluence CVE-2023-22515.&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Import.WatchLocalDirectory</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.import.watchlocaldirectory</link>
+      <pubDate>Thu, 09 Nov 2023 00:00:00 +0000</pubDate><author>bmcder02</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.import.watchlocaldirectory</guid>
+      <description>This is an artifact that will monitor a local path for collections, &#xA;which it will then ingest. &#xA;</description>
+    </item>
+    <item>
+      <title>Server.Import.WatchS3Directory</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.import.watchs3directory</link>
+      <pubDate>Thu, 09 Nov 2023 00:00:00 +0000</pubDate><author>bmcder02</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.import.watchs3directory</guid>
+      <description>This is an artifact that will monitor an S3 path for collections, &#xA;which it will then ingest. &#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Detection.SysAid</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/sysaid</link>
+      <pubDate>Thu, 09 Nov 2023 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/sysaid</guid>
+      <description>Detects artifacts associated with post exploitation activity of &#xA;LaceTempest related to the SysAid 0day.</description>
+    </item>
+    <item>
+      <title>Windows.Sys.BitLocker</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.sys.bitlocker</link>
+      <pubDate>Thu, 09 Nov 2023 00:00:00 +0000</pubDate><author>zaneGittins</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.sys.bitlocker</guid>
+      <description>This artifact gets all Bitlocker volumes using PowerShell, including the recovery password.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Applications.FreeFileSync</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.applications.freefilesync</link>
+      <pubDate>Tue, 07 Nov 2023 00:00:00 +0000</pubDate><author>freeze-syn</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.applications.freefilesync</guid>
+      <description>This artifact can be used to retrieve and parse some FreeFileSync file in order to:&#xA;- Identify the latest account used to transfer data and the remote ip adresse destination in the case of SFTP protocol with the query GlobalInfo&#xA;- Identify the latest transferred files with Latest Data Transfer&#xA;- Identify the presence of others interesting logs about previous or attempt of files transfer</description>
+    </item>
+    <item>
+      <title>Windows.Applications.GoodSync</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.applications.goodsync</link>
+      <pubDate>Tue, 07 Nov 2023 00:00:00 +0000</pubDate><author>freeze-syn</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.applications.goodsync</guid>
+      <description>This artifact can be used to retrieve and parse some GoodSync file in order to&#xA;- identify configured Good Sync account;&#xA;- identify data and time of transferred files.</description>
+    </item>
+    <item>
+      <title>Windows.Sys.LoggedInUsers</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.sys.loggedinusers</link>
+      <pubDate>Sun, 05 Nov 2023 00:00:00 +0000</pubDate><author>zaneGittins</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.sys.loggedinusers</guid>
+      <description>Get all currently logged in users via wmi.&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Utils.ScheduledDeletion</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.utils.scheduleddeletion</link>
+      <pubDate>Fri, 03 Nov 2023 00:00:00 +0000</pubDate><author>zaneGittins</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.utils.scheduleddeletion</guid>
+      <description>Schedules Server.Utils.DeleteMonitoringData to cleanup server monitoring data.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Detection.Network.Changed</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.detection.network.changed</link>
+      <pubDate>Fri, 03 Nov 2023 00:00:00 +0000</pubDate><author>zaneGittins</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.detection.network.changed</guid>
+      <description>Detects when a new network is added or removed from the system via the NetworkList registry keys.&#xA;</description>
+    </item>
+    <item>
+      <title>Linux.Memory.AVML</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.memory.avml</link>
+      <pubDate>Tue, 31 Oct 2023 00:00:00 +0000</pubDate><author>Zawadidone</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.memory.avml</guid>
+      <description>Acquires a full memory image in LiME output format. We download&#xA;avml and use it to acquire a full memory image.&#xA;NOTE: This artifact usually transfers a lot of data. You should&#xA;increase the default timeout to allow it to complete.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Services.Hijacking</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.services.hijacking</link>
+      <pubDate>Tue, 31 Oct 2023 00:00:00 +0000</pubDate><author>Sam0rai</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.services.hijacking</guid>
+      <description>Service Executable Hijacking is a misconfiguration flaw, where a service runs an executable which has &#xA;overly permissive permissions on it (for example: &#34;Full Control&#34; permissions to &#34;Authenticated Users&#34;).&#xA;If a service runs under the security context of a user with high permissions (such as: NT Authority\SYSTEM), &#xA;and an attacker with low privileges is able to modify the executable that service is running (such as &#xA;replacing it with their own) - the service could run that executable with high privileges.</description>
+    </item>
+    <item>
+      <title>Windows.Forensics.UEFI.BootApplication</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/bootapplication</link>
+      <pubDate>Sun, 29 Oct 2023 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/bootapplication</guid>
+      <description>This artifact parses Windows MeasuredBoot TCGLogs to extract PathName of&#xA;EV_EFI_Boot_Services_Application events, which can assist detection of&#xA;potential ESP based persistence.</description>
+    </item>
+    <item>
+      <title>Linux.Detection.IncorrectPermissions</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.detection.incorrectpermissions</link>
+      <pubDate>Sun, 29 Oct 2023 00:00:00 +0000</pubDate><author>misje</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.detection.incorrectpermissions</guid>
+      <description>NOTE: Requires velociraptor 0.7.1 or higher. – Alternatively, import the&#xA;artifact dependency Linux.Sys.Groups manually into your installation.</description>
+    </item>
+    <item>
+      <title>Windows.Registry.HVCI</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/hvci</link>
+      <pubDate>Fri, 27 Oct 2023 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/hvci</guid>
+      <description>This artifact will return the Enabled KeyValue in the Hypervisor-protected Code &#xA;Integrity (HVCI) registry path. An adversary may set the Enabled key to 0 &#xA;if they intend to manipulate UEFI boot process.</description>
+    </item>
+    <item>
+      <title>MacOS.Forensics.KnockKnock</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/knockknock</link>
+      <pubDate>Fri, 20 Oct 2023 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/knockknock</guid>
+      <description>This artifact will run Knocknock to collect autorun output.&#xA;</description>
+    </item>
+    <item>
+      <title>IPCheck.Virustotal</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/ipcheck.virustotal</link>
+      <pubDate>Thu, 19 Oct 2023 00:00:00 +0000</pubDate><author>AdrianX21</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/ipcheck.virustotal</guid>
+      <description>Submit a IP to Virustotal. Default Public API restriction is 4 requests/min (Inspired on Virustotal file Check created by Wes Lambert -- @therealwlambert).</description>
+    </item>
+    <item>
+      <title>Linux.Network.NM.Connections</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.network.nm.connections</link>
+      <pubDate>Thu, 12 Oct 2023 00:00:00 +0000</pubDate><author>misje</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.network.nm.connections</guid>
+      <description>NetworkManager is a popular high-level interface for configuring&#xA;networks in Linux systems, in particular Ubuntu and other Debian-based&#xA;flavors. This artifact lists the NetworkManager state, all configured&#xA;connections and their settings, as well as when the connections were&#xA;last activated. A list of BSSIDs per connection is also retrieved.</description>
+    </item>
+    <item>
+      <title>Windows.Timeline.Prefetch.Improved</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.timeline.prefetch.improved</link>
+      <pubDate>Mon, 02 Oct 2023 00:00:00 +0000</pubDate><author>scudette</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.timeline.prefetch.improved</guid>
+      <description>NOTE: This is a fixed version of Windows.Timeline.Prefetch which is&#xA;available in the release binary after 0.7.0-3.</description>
+    </item>
+    <item>
+      <title>Windows.Detection.WS_FTP</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/ws_ftp</link>
+      <pubDate>Sun, 01 Oct 2023 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/ws_ftp</guid>
+      <description>This is an artifact to detect exploitation of a Progress Software&#39;s WS_FTP &#xA;critical vulnerability observed in the wild.</description>
+    </item>
+    <item>
+      <title>Windows.Detection.IdatLoader</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/idatloader</link>
+      <pubDate>Fri, 01 Sep 2023 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/idatloader</guid>
+      <description>This artifact enables running Yara over processes in memory.&#xA;Targeting detection of IDAT Loader and final payloads &#xA;observed in field.  </description>
+    </item>
+    <item>
+      <title>Server.Utils.BackupAzure</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.utils.backupazure</link>
+      <pubDate>Tue, 29 Aug 2023 00:00:00 +0000</pubDate><author>zaneGittins</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.utils.backupazure</guid>
+      <description>This server monitoring artifact will automatically zip and backup&#xA;any collected artifacts to Azure blob storage.</description>
+    </item>
+    <item>
+      <title>Windows.EventLogs.RemoteAccessVPN</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.eventlogs.remoteaccessvpn</link>
+      <pubDate>Tue, 29 Aug 2023 00:00:00 +0000</pubDate><author>ekt0-syn</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.eventlogs.remoteaccessvpn</guid>
+      <description>This Artifact enables scoping EventLogs from Microsoft VPN, served by&#xA;Remote Access Service server role.&#xA;It is designed to assist in identifying VPN connections on organizations that&#xA;are using Microsoft VPN service. It targets both server and client side logs.</description>
+    </item>
+    <item>
+      <title>Linux.Debian.GPGKeys</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.debian.gpgkeys</link>
+      <pubDate>Fri, 18 Aug 2023 00:00:00 +0000</pubDate><author>misje</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.debian.gpgkeys</guid>
+      <description>Extract keys, fingerprints and identities from GPG keys.</description>
+    </item>
+    <item>
+      <title>Windows.Events.TrackProcesses.UseExistingSysmonOnly</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.events.trackprocesses.useexistingsysmononly</link>
+      <pubDate>Mon, 14 Aug 2023 00:00:00 +0000</pubDate><author>SBattaglia-R7</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.events.trackprocesses.useexistingsysmononly</guid>
+      <description>**This is a modified version of Windows.Events.TrackProcesses for servers&#xA;that do not use the Inventory service.  It assumes that Sysmon&#xA;is already installed and running. The option to forward updates to the server&#xA;is also removed.**</description>
+    </item>
+    <item>
+      <title>Generic.Forensics.CyLR</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/generic.forensics.cylr</link>
+      <pubDate>Sat, 29 Jul 2023 00:00:00 +0000</pubDate><author>tsauter</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/generic.forensics.cylr</guid>
+      <description>Uses CyLR tool to do live forensic on the host.</description>
+    </item>
+    <item>
+      <title>Windows.Registry.DefenderConfig</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/defenderconfig</link>
+      <pubDate>Tue, 25 Jul 2023 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/defenderconfig</guid>
+      <description>This artifact enables extracting Windows Defender configuration from&#xA;SOFTWARE registry hive.</description>
+    </item>
+    <item>
+      <title>Server.Alerts.Mattermost</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.alerts.mattermost</link>
+      <pubDate>Sun, 16 Jul 2023 00:00:00 +0000</pubDate><author>misje</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.alerts.mattermost</guid>
+      <description>Create a Slack/Mattermost notification when a client Flow (with artifacts of interest) has finished. Cancelled collections and collections with artifacts that don&#39;t satisfy preconditions do not create notifications when they are stopped.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Nirsoft.LastActivityView</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.nirsoft.lastactivityview</link>
+      <pubDate>Sun, 16 Jul 2023 00:00:00 +0000</pubDate><author>hasamba</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.nirsoft.lastactivityview</guid>
+      <description>LastActivityView is a tool for Windows operating system that&#xA;collects information from various sources on a running system, and&#xA;displays a log of actions made by the user and events occurred on&#xA;this computer. The activity displayed by LastActivityView includes:&#xA;Running .exe file, Opening open/save dialog-box, Opening file/folder&#xA;from Explorer or other software, software installation, system&#xA;shutdown/start, application or system crash, network&#xA;connection/disconnection and more...&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Registry.PrintNightmare</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.registry.printnightmare</link>
+      <pubDate>Mon, 03 Jul 2023 00:00:00 +0000</pubDate><author>DakshGajjar</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.registry.printnightmare</guid>
+      <description>CVE-2021-34527 or Windows Print Spooler Remote Code Execution Vulnerability</description>
+    </item>
+    <item>
+      <title>Exchange.Linux.Kunai</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.kunai</link>
+      <pubDate>Fri, 30 Jun 2023 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.kunai</guid>
+      <description>Kunai is a Linux-based security monitoring and threat hunting tool written in Rust.  This artifact parses the Kunai log file. &#xA;</description>
+    </item>
+    <item>
+      <title>Linux.Detection.SSHKeyFileCmd</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.detection.sshkeyfilecmd</link>
+      <pubDate>Mon, 19 Jun 2023 00:00:00 +0000</pubDate><author>4ltern4te</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.detection.sshkeyfilecmd</guid>
+      <description>This artifact will parse ~/.ssh/authorized_keys and ~/.ssh/id_*.pub looking for the command option&#xA;to detect potential persistence&#xA;</description>
+    </item>
+    <item>
+      <title>Linux.Detection.MemFD</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.detection.memfd</link>
+      <pubDate>Mon, 12 Jun 2023 00:00:00 +0000</pubDate><author>4ltern4te</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.detection.memfd</guid>
+      <description>This artifact will parse /proc/*/exe files and look for processes &#xA; that have been executed from memory via memfd_create()&#xA;</description>
+    </item>
+    <item>
+      <title>IRIS.Timeline.Add</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/iris.timeline.add</link>
+      <pubDate>Fri, 09 Jun 2023 00:00:00 +0000</pubDate><author>BadBloopZ</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/iris.timeline.add</guid>
+      <description>Adds Velociraptor rows as timeline entries to [DFIR-IRIS](https://dfir-iris.org/).</description>
+    </item>
+    <item>
+      <title>Windows.EventLogs.MoveIt</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/moveitevtx</link>
+      <pubDate>Mon, 05 Jun 2023 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/moveitevtx</guid>
+      <description>This Artifact enables scoping EventLogs from Progress Software&#39;s MoveIT File&#xA;Transfer. It is designed to assist in identifying exfiltration resulting from&#xA;the exploitation of CVE-2023-34362</description>
+    </item>
+    <item>
+      <title>Windows.Detection.MoveIt</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/moveit</link>
+      <pubDate>Fri, 02 Jun 2023 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/moveit</guid>
+      <description>This is an artifact to detect exploitation of a MoveIt critical vulnerability &#xA;observed in the wild. CVE-2023-34362</description>
+    </item>
+    <item>
+      <title>Server.Enrichment.Strelka.FileScan</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.enrichment.strelka.filescan</link>
+      <pubDate>Tue, 23 May 2023 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.enrichment.strelka.filescan</guid>
+      <description>Submit a file to Strelka for analysis using `strelka-oneshot`.</description>
+    </item>
+    <item>
+      <title>Windows.Forensics.RecentFileCache</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.forensics.recentfilecache</link>
+      <pubDate>Tue, 23 May 2023 00:00:00 +0000</pubDate><author>BadBloopZ</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.forensics.recentfilecache</guid>
+      <description>Parses the RecentFileCache as evidence of execution artifact existing on older Windows systems (&lt;= Win 7).</description>
+    </item>
+    <item>
+      <title>Windows.Applications.LECmd</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.applications.lecmd</link>
+      <pubDate>Sat, 20 May 2023 00:00:00 +0000</pubDate><author>CarlosCajigas</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.applications.lecmd</guid>
+      <description>Execute Eric Zimmerman&#39;s LECmd and return output for analysis.&#xA;Created using @eduardfir SBECmd VQL as a quide.  &#xA;LECmd is a CLI tool for analyzing lnk data. Learn more - https://github.com/EricZimmerman/LECmd&#xA;</description>
+    </item>
+    <item>
+      <title>PSList.VTLookup</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/pslist.vtlookup</link>
+      <pubDate>Thu, 18 May 2023 00:00:00 +0000</pubDate><author>Shad0wCell</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/pslist.vtlookup</guid>
+      <description>Combination of PSList with Virus Total reputation lookup using the Virus Total Server Enrichment Artifact by Wes Lambert.&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Alerts.Monitor.IRIS</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.alerts.monitor.iris</link>
+      <pubDate>Thu, 18 May 2023 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.alerts.monitor.iris</guid>
+      <description>Create an IRIS alert when monitored artifacts complete with results. Alerts are available starting in version 2.1.0 of IRIS.&#xA;https://github.com/dfir-iris/iris-web/releases/tag/v2.1.0</description>
+    </item>
+    <item>
+      <title>Server.Notification.Mattermost</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.notification.mattermost</link>
+      <pubDate>Thu, 18 May 2023 00:00:00 +0000</pubDate><author>hillu</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.notification.mattermost</guid>
+      <description>Send notification via Mattermost webhook as described in &lt;https://developers.mattermost.com/integrate/webhooks/incoming/&gt;&#xA;</description>
+    </item>
+    <item>
+      <title>MacOS.System.Man</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.system.man</link>
+      <pubDate>Tue, 16 May 2023 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.system.man</guid>
+      <description>`man` is typically used to provide information about how to use various commands. It&#39;s configuration file is located at `/private/etc/man.conf` on most macOS systems.</description>
+    </item>
+    <item>
+      <title>Windows.Generic.Internet.BlockAccess</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.generic.internet.blockaccess</link>
+      <pubDate>Fri, 05 May 2023 00:00:00 +0000</pubDate><author>tuedenn</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.generic.internet.blockaccess</guid>
+      <description>Simply adds a new inbound or outbound firewall rule that filters traffic by allowing or blocking network packets that match the specified criteria via `netsh advfirewall add rule` command. Applicable in case of blocking Internet access.</description>
+    </item>
+    <item>
+      <title>Windows.Forensics.Clipboard</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.forensics.clipboard</link>
+      <pubDate>Fri, 28 Apr 2023 00:00:00 +0000</pubDate><author>h-adwan</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.forensics.clipboard</guid>
+      <description>This artifact will show the Clipboard activity.</description>
+    </item>
+    <item>
+      <title>MacOS.Logs.MacMonitor</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.logs.macmonitor</link>
+      <pubDate>Thu, 20 Apr 2023 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.logs.macmonitor</guid>
+      <description>This artifact parses JSONL-formatted logs generated by MacMonitor.&#xA;</description>
+    </item>
+    <item>
+      <title>Alert.Windows.EVTX.PowerPickHostVersion</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/powerpickhostversion</link>
+      <pubDate>Thu, 20 Apr 2023 00:00:00 +0000</pubDate><author>SBattaglia-R7</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/powerpickhostversion</guid>
+      <description>&#xA;This artifact by itself only indicates that the PowerPick tool may have&#xA;been invoked on the client. To capture additional context, ensure that&#xA;Powershell script block and module logging are enabled on the clients and&#xA;deploy the Windows.ETW.Powershell artifact from the Exchange.</description>
+    </item>
+    <item>
+      <title>Windows.Carving.BumbleBee</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/bumblebee</link>
+      <pubDate>Wed, 12 Apr 2023 00:00:00 +0000</pubDate><author>angelovioletti</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/bumblebee</guid>
+      <description>This artifact will detect running BumbleBee processes and subsequently extract the command and control servers with the destination port 443.&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Telegram.Clients.Enrolled</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.telegram.clients.enrolled</link>
+      <pubDate>Tue, 11 Apr 2023 00:00:00 +0000</pubDate><author>tuedenn</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.telegram.clients.enrolled</guid>
+      <description>Send a message to telegram when clients become enrolled.</description>
+    </item>
+    <item>
+      <title>Windows.Registry.Domain</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.registry.domainname</link>
+      <pubDate>Wed, 05 Apr 2023 00:00:00 +0000</pubDate><author>angry-bender</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.registry.domainname</guid>
+      <description>Checks the configured domain name on each endpoint</description>
+    </item>
+    <item>
+      <title>Windows.Carving.Qakbot</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/qakbot</link>
+      <pubDate>Mon, 03 Apr 2023 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/qakbot</guid>
+      <description>This artifact enables Qakbot payload detection and configuration extraction&#xA;from a byte stream, process or file on disk. The artifact runs a yara scan&#xA;as a detection step, then attempts to process the payload to extract&#xA;configuration.</description>
+    </item>
+    <item>
+      <title>MacOS.Applications.Firefox.History</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.applications.firefox.history</link>
+      <pubDate>Fri, 31 Mar 2023 00:00:00 +0000</pubDate><author>x64-julian</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.applications.firefox.history</guid>
+      <description>Read all Users Firefox history.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Detection.SmoothOperator</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/smoothoperator</link>
+      <pubDate>Thu, 30 Mar 2023 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/smoothoperator</guid>
+      <description>This artifact searches for evidence of trojanized 3CXDesktopApp.</description>
+    </item>
+    <item>
+      <title>Detection.Application.CursedChrome</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/detection.application.cursedchrome</link>
+      <pubDate>Wed, 22 Mar 2023 00:00:00 +0000</pubDate><author>mattdri-ir</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/detection.application.cursedchrome</guid>
+      <description>Detects the [Cursed Chrome](https://github.com/mandatoryprogrammer/CursedChrome) extension. Starts by searching for permissive extensions configured within `Secure Preferences`. Locates the path of the extensions and scans using Yara.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Detection.RemoteIconForcedAuth</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/remoteiconforcedauth</link>
+      <pubDate>Fri, 17 Mar 2023 00:00:00 +0000</pubDate><author>acedef</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/remoteiconforcedauth</guid>
+      <description>Attackers plant SCF, URL, and LNK files with malicious icon file paths&#xA;on file shares to escalate privileges or maintain persistence. This attack&#xA;only requires the user to browse to the location of the malicious file.&#xA;This artifact enumerates file shares and returns an event for each file with a&#xA;remote icon. It can also scan a target root directory since attackers commonly&#xA;use other locations like desktops.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Registry.Bulk.ComputerName</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.registry.bulk.computername</link>
+      <pubDate>Tue, 14 Mar 2023 00:00:00 +0000</pubDate><author>angry-bender</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.registry.bulk.computername</guid>
+      <description>This looks through registry on all disks to determine the hostname for cases where multiple disks are mounted&#xA;</description>
+    </item>
+    <item>
+      <title>Linux.LogAnalysis.ChopChopGo</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.loganalysis.chopchopgo</link>
+      <pubDate>Wed, 08 Mar 2023 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.loganalysis.chopchopgo</guid>
+      <description>&#xA;This artifact leverages ChopChopGo to enable usage of Sigma rules to facilitate detection within Linux logs.</description>
+    </item>
+    <item>
+      <title>Windows.Detection.ScmanagerBackdoor</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.detection.scmanagerbackdoor</link>
+      <pubDate>Sat, 25 Feb 2023 00:00:00 +0000</pubDate><author>acedef</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.detection.scmanagerbackdoor</guid>
+      <description>Checks for overly permissive DACLs on scmanager. Low priv Users with&#xA;KA - SDDL_KEY_ALL could launch SYSTEM services. &#xA;</description>
+    </item>
+    <item>
+      <title>Server.Enrichment.Sublime.EmailAnalysis</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.enrichment.sublime.emailanalysis</link>
+      <pubDate>Wed, 22 Feb 2023 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.enrichment.sublime.emailanalysis</guid>
+      <description>Submit an email to Sublime for analysis.</description>
+    </item>
+    <item>
+      <title>Windows.Memory.InjectedThreadEx</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/injectedthreadex</link>
+      <pubDate>Tue, 21 Feb 2023 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/injectedthreadex</guid>
+      <description>This artifact runs Get-InjetedThreadEx to detect process injection and hooking.</description>
+    </item>
+    <item>
+      <title>Generic.Collection.UAC</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/generic.collection.uac</link>
+      <pubDate>Sun, 19 Feb 2023 00:00:00 +0000</pubDate><author>tclahr</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/generic.collection.uac</guid>
+      <description>This artifact leverages UAC (Unix-like Artifacts Collector) to collect artifacts&#xA;from Unix-like systems, and then upload the output to the Velociraptor server.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Detection.PipeHunter</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.detection.pipehunter</link>
+      <pubDate>Sun, 19 Feb 2023 00:00:00 +0000</pubDate><author>acedef</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.detection.pipehunter</guid>
+      <description>Takes a pipe name and returns the owning process and access rights. The primary&#xA;motivation for this artifact is a vulnerability in RemCom. RemCom is most &#xA;notably used by impacket psexec.py. It creates a null DACL for its &#xA;communication pipe. This means a low privileged user&#xA;could use a stale pipe to get remote execution as SYSTEM. If you uncover any&#xA;named pipes with the name RemCom_communication, investigate the owning proc&#xA;and remove it from the system.&#xA;#impacket&#xA;</description>
+    </item>
+    <item>
+      <title>Linux.Detection.vRealizeLogInsightExploitation</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.detection.vrealizeloginsightexploitation</link>
+      <pubDate>Thu, 09 Feb 2023 00:00:00 +0000</pubDate><author>acedef</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.detection.vrealizeloginsightexploitation</guid>
+      <description>Checks for exploitation of vRealize Log Insight VMSA-2023-0001 exploitation &#xA;artifacts. The presence of a path traversal in the FileName field&#xA;is evidence of compromise. There is still a path to exploitation without&#xA;leveraging the path traversal vuln. Any attempt to run&#xA;REMOTE_PAK_DOWNLOAD_COMMAND from a non-vRealize server is malicious.&#xA;#VMWare #vRealize #exploit&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Detection.Onenote</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/onenote</link>
+      <pubDate>Mon, 30 Jan 2023 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/onenote</guid>
+      <description>This artifact enables detection of malicious .one files and can also be used &#xA;as an embedded file and metadata parser.</description>
+    </item>
+    <item>
+      <title>Windows.Persistence.VscodeTasks</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/vscodetasks</link>
+      <pubDate>Wed, 25 Jan 2023 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/vscodetasks</guid>
+      <description>This artifact parses VSCode configuration files to find potential&#xA;persistence.</description>
+    </item>
+    <item>
+      <title>Windows.MobaXterm.Passwords</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/custom.windows.mobaxterm.passwords</link>
+      <pubDate>Tue, 24 Jan 2023 00:00:00 +0000</pubDate><author>Sam0rai</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/custom.windows.mobaxterm.passwords</guid>
+      <description>Extract MobaXterm encrypted saved Master Passwords, Passwords and Credentials from registry.&#xA;Further information regarding decryption can be found here: https://www.xmcyber.com/blog/extracting-encrypted-credentials-from-common-tools-2/&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Utils.DeleteClientLabel</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/deleteclientlabel</link>
+      <pubDate>Tue, 24 Jan 2023 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/deleteclientlabel</guid>
+      <description>This artifact completely removes a client from the data store if a configured&#xA;label is set.</description>
+    </item>
+    <item>
+      <title>Windows.Detection.PublicIP</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/publicip</link>
+      <pubDate>Mon, 23 Jan 2023 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/publicip</guid>
+      <description>This artifact queries for RDP and Authentication events with a Public IP&#xA;source. The artifact uses Windows.EventLogs.RDPAuth and has several built in&#xA;notebooks for analysis.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.WinSCP.Passwords</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/custom.windows.winscp.passwords</link>
+      <pubDate>Fri, 20 Jan 2023 00:00:00 +0000</pubDate><author>Sam0rai</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/custom.windows.winscp.passwords</guid>
+      <description>Extract WinSCP obfuscated saved passwords from registry.&#xA;Further information regarding deobfuscation can be found here: https://www.xmcyber.com/blog/extracting-encrypted-credentials-from-common-tools-2/&#xA;</description>
+    </item>
+    <item>
+      <title>Generic.Detection.ManageEngineLog</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/manageenginelog</link>
+      <pubDate>Fri, 20 Jan 2023 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/manageenginelog</guid>
+      <description>This artifact will enable discovery of logs associated with observed exploitation &#xA;of critical ManageEngine vulnerability: CVE-2022-47966.</description>
+    </item>
+    <item>
+      <title>Windows.Detection.ProxyHunter</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/proxyhunter</link>
+      <pubDate>Fri, 20 Jan 2023 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/proxyhunter</guid>
+      <description>This artifact detects evidence of several common proxy tools.</description>
+    </item>
+    <item>
+      <title>Windows.Applications.KACE_SW_Process</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/kace_sw_process</link>
+      <pubDate>Wed, 18 Jan 2023 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/kace_sw_process</guid>
+      <description>This artifact parses the KACE software monitoring sqlite database - ksw_process.db&#xA;which provides excellent third party evidence of execution that may &#xA;be useful during investigation or detection work.  </description>
+    </item>
+    <item>
+      <title>Linux.Collection.Autoruns</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.collection.autoruns</link>
+      <pubDate>Wed, 11 Jan 2023 00:00:00 +0000</pubDate><author>4ltern4te</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.collection.autoruns</guid>
+      <description>This artifact collects various autorun files for upload.&#xA;Based on TriagePersistence from forensicartifacts.com&#xA;</description>
+    </item>
+    <item>
+      <title>Linux.Collection.BrowserExtensions</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.collection.browserextensions</link>
+      <pubDate>Wed, 11 Jan 2023 00:00:00 +0000</pubDate><author>4ltern4te</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.collection.browserextensions</guid>
+      <description>Collect Browser Extensions and upload them.&#xA;Based on TriageWebBrowserExtensions from forensicartifacts.com&#xA;</description>
+    </item>
+    <item>
+      <title>Linux.Collection.BrowserHistory</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.collection.browserhistory</link>
+      <pubDate>Wed, 11 Jan 2023 00:00:00 +0000</pubDate><author>4ltern4te</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.collection.browserhistory</guid>
+      <description>Collect Browser History and upload them.&#xA;Based on TriageWebBrowserHistory from forensicartifacts.com&#xA;</description>
+    </item>
+    <item>
+      <title>Linux.Collection.DBConfig</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.collection.dbconfig</link>
+      <pubDate>Wed, 11 Jan 2023 00:00:00 +0000</pubDate><author>4ltern4te</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.collection.dbconfig</guid>
+      <description>Collect database configurations and upload them.&#xA;Based on TriageDatabaseConfigsAndLogs from forensicartifacts.com&#xA;</description>
+    </item>
+    <item>
+      <title>Linux.Collection.History</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.collection.historyfiles</link>
+      <pubDate>Wed, 11 Jan 2023 00:00:00 +0000</pubDate><author>4ltern4te</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.collection.historyfiles</guid>
+      <description>Collect history files from unix/linux utilities and upload them.&#xA;Based on TriageHistory from forensicartifacts.com&#xA;</description>
+    </item>
+    <item>
+      <title>Linux.Collection.NetworkConfig</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.collection.networkconfig</link>
+      <pubDate>Wed, 11 Jan 2023 00:00:00 +0000</pubDate><author>4ltern4te</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.collection.networkconfig</guid>
+      <description>Collect network config files and upload them.&#xA;Based on TriageNetwork from forensicartifacts.com&#xA;</description>
+    </item>
+    <item>
+      <title>Linux.Collection.SysConfig</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.collection.sysconfig</link>
+      <pubDate>Wed, 11 Jan 2023 00:00:00 +0000</pubDate><author>4ltern4te</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.collection.sysconfig</guid>
+      <description>Collect system configurations and upload them.&#xA;Based on TriageSystemConfiguration from forensicartifacts.com&#xA;</description>
+    </item>
+    <item>
+      <title>Linux.Collection.SysLogs</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.collection.syslogs</link>
+      <pubDate>Wed, 11 Jan 2023 00:00:00 +0000</pubDate><author>4ltern4te</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.collection.syslogs</guid>
+      <description>Collect system logs and upload them.&#xA;Based on TriageSystemLogs from forensicartifacts.com&#xA;</description>
+    </item>
+    <item>
+      <title>Linux.Collection.UserConfig</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.collection.userconfig</link>
+      <pubDate>Wed, 11 Jan 2023 00:00:00 +0000</pubDate><author>4ltern4te</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.collection.userconfig</guid>
+      <description>Collect user configurations and upload them.&#xA;Based on TriageUserConfiguration from forensicartifacts.com&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.System.AppCompatPCA</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.system.appcompatpca</link>
+      <pubDate>Wed, 04 Jan 2023 00:00:00 +0000</pubDate><author>ecapuano</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.system.appcompatpca</guid>
+      <description>Parse the Program Compatibility Assistant launch dictionary for executable launch times.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Detection.WonkaVision</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.detection.wonkavision</link>
+      <pubDate>Thu, 22 Dec 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.detection.wonkavision</guid>
+      <description>&#xA;This artifact analyzes Kerberos tickets and attempts to determine if they are forged, using WonkaVision by @4ndr3w6s and @exploitph.</description>
+    </item>
+    <item>
+      <title>Windows.EventLogs.WonkaVision</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.eventlogs.wonkavision</link>
+      <pubDate>Thu, 22 Dec 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.eventlogs.wonkavision</guid>
+      <description>Collect WonkaVision logs from Windows hosts.</description>
+    </item>
+    <item>
+      <title>MacOS.UnifiedLogHunter</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.unifiedloghunter</link>
+      <pubDate>Wed, 21 Dec 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.unifiedloghunter</guid>
+      <description>This artifact allows for live hunting through Apple&#39;s Unified Logs using the native `log` command.</description>
+    </item>
+    <item>
+      <title>Linux.System.BashLogout</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.system.bashlogout</link>
+      <pubDate>Sat, 17 Dec 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.system.bashlogout</guid>
+      <description>Capture Bash logout files for examination of abnormal activity. </description>
+    </item>
+    <item>
+      <title>MacOS.Applications.Notes</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.applications.notes</link>
+      <pubDate>Fri, 16 Dec 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.applications.notes</guid>
+      <description>This artifact provides details about notes taken using the default Notes application on macOS.  These notes can be useful during an investigation, especially if tied to interesting files.  </description>
+    </item>
+    <item>
+      <title>Windows.Detection.TeamViewerLanguage</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/teamviewerlanguage</link>
+      <pubDate>Mon, 12 Dec 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/teamviewerlanguage</guid>
+      <description>This artifact enables collection of TeamViewer log entries for keyboard layout&#xA;changes.</description>
+    </item>
+    <item>
+      <title>MacOS.Network.DHCP</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.network.dhcp</link>
+      <pubDate>Sat, 10 Dec 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.network.dhcp</guid>
+      <description>It can be useful to view DHCP lease information on an endpoint.  If the  `LeaseLength`, `RouterIPAddress`, `SSID`, or other values are not as expected,  it could potentially indicate a rogue DHCP server on the network, or just misconfiguration.</description>
+    </item>
+    <item>
+      <title>IRIS.Sync.Asset</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/iris.sync.asset</link>
+      <pubDate>Thu, 08 Dec 2022 00:00:00 +0000</pubDate><author>BadBloopZ</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/iris.sync.asset</guid>
+      <description>Synchronizes client information from Velociraptor to [DFIR-IRIS](https://dfir-iris.org/).</description>
+    </item>
+    <item>
+      <title>Linux.Forensics.RecentlyUsed</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.forensics.recentlyused</link>
+      <pubDate>Thu, 08 Dec 2022 00:00:00 +0000</pubDate><author>Seeps</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.forensics.recentlyused</guid>
+      <description>Parses the &#39;recently-used.xbel&#39; XML file for all standard Linux users.</description>
+    </item>
+    <item>
+      <title>Linux.System.PAM</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.system.pam</link>
+      <pubDate>Thu, 08 Dec 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.system.pam</guid>
+      <description>This artifact enumerates applicable lines from the files that reside in `/etc/PAM.d/`. This information can be useful for auditing and compliance purposes, or to identify suspicious activity on Linux systems.</description>
+    </item>
+    <item>
+      <title>MacOS.Applications.SavedState</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.applications.savedstate</link>
+      <pubDate>Tue, 06 Dec 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.applications.savedstate</guid>
+      <description>On macOS, certain application state is saved in `/Users/*/Library/Saved Application State/`. </description>
+    </item>
+    <item>
+      <title>Server.Enrichment.AI.OpenAI</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.enrichment.openai</link>
+      <pubDate>Tue, 06 Dec 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.enrichment.openai</guid>
+      <description>Query OpenAI for analysis of data.</description>
+    </item>
+    <item>
+      <title>Server.Alerts.GenericMonitor</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/genericmonitor</link>
+      <pubDate>Sat, 03 Dec 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/genericmonitor</guid>
+      <description>This is a template artifact to allow alerting on a monitoring artifact.</description>
+    </item>
+    <item>
+      <title>Linux.Sys.APTHistory</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.sys.apthistory</link>
+      <pubDate>Sat, 03 Dec 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.sys.apthistory</guid>
+      <description>APT (Advanced Package Tool) maintains a log of software installation/removal/upgrades, as well as associated command-line invocations.</description>
+    </item>
+    <item>
+      <title>MacOS.System.MountedDiskImages</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.system.mounteddiskimages</link>
+      <pubDate>Sat, 03 Dec 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.system.mounteddiskimages</guid>
+      <description>This artifact checks for mounted disk images using the `hdiutil` command.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Remediation.Glob</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/globremediation</link>
+      <pubDate>Mon, 28 Nov 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/globremediation</guid>
+      <description>This artifact uses glob to remove a file or folder.  &#xA;To recursively target a folder: ```C:\folder\path{,\**}```  &#xA;To target multiple folders: ```C:\{folder2\path2{,\**},folder\path{,\**}}``` &#xA;however advised to just run 2 collections...   &#xA;  &#xA; WARNING: There has been a bug in older versions of Velociraptor that ```\**```&#xA; glob path will select all files. PLEASE SCOPE FIRST and use appropriate targeting.&#xA; &#xA;</description>
+    </item>
+    <item>
+      <title>Linux.Sys.JournalCtl</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.sys.journalctl</link>
+      <pubDate>Mon, 28 Nov 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.sys.journalctl</guid>
+      <description>Parse the output of the journalctl command. Journalctl is an interface to the systemd journal, which records information about system events.&#xA;</description>
+    </item>
+    <item>
+      <title>MacOS.Applications.NetworkUsage</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.applications.networkusage</link>
+      <pubDate>Mon, 28 Nov 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.applications.networkusage</guid>
+      <description>On macOS, the NetUsage DB can provide various details around application network utilization. With this artifact, we can get an idea of what applications are utilizing the network for communications and to what degree. We can also identify if usage has occurred through a WIFI network or a wired network.</description>
+    </item>
+    <item>
+      <title>Windows.Remediation.Process</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/processremediation</link>
+      <pubDate>Mon, 28 Nov 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/processremediation</guid>
+      <description>This artifact enables killing a process by Name, Path or PID.</description>
+    </item>
+    <item>
+      <title>Windows.Remediation.Registry</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/registryremediation</link>
+      <pubDate>Mon, 28 Nov 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/registryremediation</guid>
+      <description>This artifact uses glob to remove a registry key.</description>
+    </item>
+    <item>
+      <title>MacOS.Applications.KnowledgeC</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.applications.knowledgec</link>
+      <pubDate>Fri, 25 Nov 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.applications.knowledgec</guid>
+      <description>On macOS, the KnowledgeC DB can provide various details around application activities and usage, as well as device power status.</description>
+    </item>
+    <item>
+      <title>Windows.EventLogs.EvtxHussar</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.eventlogs.evtxhussar</link>
+      <pubDate>Fri, 25 Nov 2022 00:00:00 +0000</pubDate><author>yarox24</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.eventlogs.evtxhussar</guid>
+      <description>Grab important events from Windows logs (.evtx) using [EvtxHussar](https://github.com/yarox24/EvtxHussar).&#xA;Also upload PowerShell ScriptBlocks (reconstructed as files).</description>
+    </item>
+    <item>
+      <title>Server.Notification.Mastodon</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.notification.mastodon</link>
+      <pubDate>Thu, 24 Nov 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.notification.mastodon</guid>
+      <description>Create a post on a Mastodon server. This could be used for automated alerting purposes, sharing IOCs, etc.</description>
+    </item>
+    <item>
+      <title>MacOS.Applications.Cache</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.applications.cache</link>
+      <pubDate>Mon, 21 Nov 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.applications.cache</guid>
+      <description>Applications can use the NSURL cache to store specific data that is useful to the operation of the application in a `Cache.db` file on disk. The data contained within this file could potentially be useful to investigators or incident responders, such as URLs that were accessed, as well as data requested or returned.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Triage.Sysmon</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/sysmontriage</link>
+      <pubDate>Mon, 21 Nov 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/sysmontriage</guid>
+      <description>This artifact allows collecting Sysmon Events for Triage around a timestamp.</description>
+    </item>
+    <item>
+      <title>Server.Import.DetectRaptor</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/detectraptor</link>
+      <pubDate>Thu, 17 Nov 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/detectraptor</guid>
+      <description>DetectRaptor is a collection of publicly available Velociraptor detection content.&#xA;Most content is managed by a series of csv files and artifacts are automatically updated.</description>
+    </item>
+    <item>
+      <title>MacOS.Sys.BashHistory</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.sys.bashhistory</link>
+      <pubDate>Wed, 16 Nov 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.sys.bashhistory</guid>
+      <description>This artifact is a modified version of the Linux.Sys.BashHistory artifact that enables grep of Bash and alternate shell history and *session* files.</description>
+    </item>
+    <item>
+      <title>Windows.Detection.Termsrv</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/termsrv</link>
+      <pubDate>Tue, 15 Nov 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/termsrv</guid>
+      <description>This artifact detects patched TerminalService / Remote Desktop (RDP) dynamic link library or ServiceDll -&#xA;termsrv.dll.</description>
+    </item>
+    <item>
+      <title>MacOS.Sys.Automator</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.sys.automator</link>
+      <pubDate>Fri, 11 Nov 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.sys.automator</guid>
+      <description>This artifact collects information about Automator actions and workflows. </description>
+    </item>
+    <item>
+      <title>Linux.Sys.SystemdTimer</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.sys.systemdtimer</link>
+      <pubDate>Mon, 07 Nov 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.sys.systemdtimer</guid>
+      <description>List and parse content of Systemd timers.</description>
+    </item>
+    <item>
+      <title>Windows.EventLogs.RPCFirewall</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.eventlogs.rpcfirewall</link>
+      <pubDate>Sat, 05 Nov 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.eventlogs.rpcfirewall</guid>
+      <description>Collect RPC Firewall logs from Windows hosts&#xA;</description>
+    </item>
+    <item>
+      <title>MacOS.Network.ApplicationLayerFirewall</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.network.applicationlayerfirewall</link>
+      <pubDate>Thu, 03 Nov 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.network.applicationlayerfirewall</guid>
+      <description>This artifact provides information around the configuration of the application firewall for a macOS host. </description>
+    </item>
+    <item>
+      <title>Server.Utils.QuerySummary</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.utils.querysummary</link>
+      <pubDate>Wed, 02 Nov 2022 00:00:00 +0000</pubDate><author>clayscode</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.utils.querysummary</guid>
+      <description>Takes a query and outputs number of unique items per column, as well as the top 10 most frequently occurring items</description>
+    </item>
+    <item>
+      <title>Windows.EventLogs.Aurora</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.eventlogs.aurora</link>
+      <pubDate>Tue, 01 Nov 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.eventlogs.aurora</guid>
+      <description>This artifact is a wrapper around the Windows.EventLogs.EvtxHunter artifact. It searches the Windows Application event log for logs being written by Nextron System&#39;s Aurora/Aurora Lite (&#39;AuroraAgent&#39; provider).&#xA;</description>
+    </item>
+    <item>
+      <title>MacOS.Network.Bluetooth</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.network.bluetooth</link>
+      <pubDate>Mon, 31 Oct 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.network.bluetooth</guid>
+      <description>Collect information about connected or paired Bluetooth-enabled devices.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Carving.SystemBC</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/systembc</link>
+      <pubDate>Fri, 28 Oct 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/systembc</guid>
+      <description>This artifact extracts SystemBC RAT configuration from a byte stream, &#xA;process or file on disk.</description>
+    </item>
+    <item>
+      <title>MacOS.Network.RecentWifiNetworks</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.network.recentwifinetworks</link>
+      <pubDate>Mon, 24 Oct 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.network.recentwifinetworks</guid>
+      <description>This artifact looks for recent Wifi networks to which a host has joined. This can be useful in determining where a machine has been, or if a user has joined an illegitimate or unauthorized wireless network.&#xA;*Tested on macOS Monterey</description>
+    </item>
+    <item>
+      <title>Server.Monitor.Autolabeling.Clients</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.monitor.autolabeling.clients</link>
+      <pubDate>Sun, 23 Oct 2022 00:00:00 +0000</pubDate><author>BadBloopZ</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.monitor.autolabeling.clients</guid>
+      <description>This server side event monitoring artifact watches for new client enrollments and automatically labels them according to their domain roles.</description>
+    </item>
+    <item>
+      <title>Windows.Applications.AnyDesk</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.applications.anydesk</link>
+      <pubDate>Sun, 23 Oct 2022 00:00:00 +0000</pubDate><author>DfirJos</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.applications.anydesk</guid>
+      <description>This parses AnyDesk logs to retrieve information about AnyDesk usage. It includes source IP addresses, AnyDesk ID&#39;s, and file transfers.</description>
+    </item>
+    <item>
+      <title>Windows.Carving.BRc4</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/brc4</link>
+      <pubDate>Thu, 13 Oct 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/brc4</guid>
+      <description>This artifact extracts Brute Ratel C4 (BRc4) configuration from a byte stream,&#xA;process or file on disk. BRc4 is an emerging red-teaming and adversarial&#xA;attack simulation tool.</description>
+    </item>
+    <item>
+      <title>MacOS.Collection.Aftermath</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.collection.aftermath</link>
+      <pubDate>Fri, 07 Oct 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.collection.aftermath</guid>
+      <description>This is a simple artifact that leverages Aftermath to collect many different forensic artifacts from a macOS host, then uploads the results to the Velociraptor server.</description>
+    </item>
+    <item>
+      <title>Windows.Triage.HighValueMemory</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.triage.highvaluememory</link>
+      <pubDate>Fri, 07 Oct 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.triage.highvaluememory</guid>
+      <description>Dump process memory and upload to the server</description>
+    </item>
+    <item>
+      <title>Windows.Detection.ISOMount</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.detection.isomount</link>
+      <pubDate>Tue, 04 Oct 2022 00:00:00 +0000</pubDate><author>cquinn-r7</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.detection.isomount</guid>
+      <description>Following Microsoft&#39;s decision to block macros by default on MS&#xA;Office applications, threat actors are increasingly using container&#xA;files such as ISO files to distribute malware.  This artifact will&#xA;extract evidence of container files being mounted that may be&#xA;malicious from the Microsoft-Windows-VHDMP-Operational EventLog.&#xA;The artifact targets the string &#34;.(iso|vhd|vhdx|img)$&#34; in event&#xA;IDs: 1 (mount), 2 (unmount) and 12 (type, path, handle).&#xA;</description>
+    </item>
+    <item>
+      <title>MacOS.ParallelsVM.SuspendedMemory</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.parallelsvm.suspendedmemory</link>
+      <pubDate>Sat, 01 Oct 2022 00:00:00 +0000</pubDate><author>DoppioRistretto</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.parallelsvm.suspendedmemory</guid>
+      <description>Looks for suspended Parallels VM owned by any user on a MacOS system. Can automatically upload the virtual memory files if found.</description>
+    </item>
+    <item>
+      <title>Windows.Detection.Malfind</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/malfind</link>
+      <pubDate>Fri, 30 Sep 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/malfind</guid>
+      <description>This artifact checks the VAD for executable sections that are not mapped to disk&#xA;and has suspicious content which may indicate process injection.</description>
+    </item>
+    <item>
+      <title>Windows.ETW.Powershell</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/powershellmonitoring</link>
+      <pubDate>Thu, 15 Sep 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/powershellmonitoring</guid>
+      <description>This artifact enables Powershell scriptblock and commandlet load monitoring.  &#xA;It uses the ETW provider: Microsoft-Windows-PowerShell  </description>
+    </item>
+    <item>
+      <title>MacOS.UnifiedLogParser</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.unifiedlogparser</link>
+      <pubDate>Wed, 07 Sep 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.unifiedlogparser</guid>
+      <description>&#xA;This is a simple, un-optimized artifact that leverages Mandiant&#39;s `macos-unifiedlogs`/`unifiedlog_parser` to obtain parsed log information from macOS&#39;s Unified Log.</description>
+    </item>
+    <item>
+      <title>Windows.ETW.DNSOfflineCollector</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.etw.dnsofflinecollector</link>
+      <pubDate>Mon, 29 Aug 2022 00:00:00 +0000</pubDate><author>DfirJos</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.etw.dnsofflinecollector</guid>
+      <description>This artifact collects DNS queries for a specified duration. It can be used &#xA;with an Offline Collector (which is not the case with Windows.ETW.DNS).&#xA;It uses the artifact (Windows.ETW.DNS) that was built by Matt Green - @mgreen27&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Alerts.IRIS.Case.Create</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.alerts.iris.case.create</link>
+      <pubDate>Sat, 27 Aug 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.alerts.iris.case.create</guid>
+      <description>Create an IRIS case when monitored artifacts complete with results.  Adds the ClientId, FlowId as tags to the case.  Adds the FQDN as an asset.</description>
+    </item>
+    <item>
+      <title>Server.Enrichment.IRIS.IOCLookup</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.enrichment.iris.ioclookup</link>
+      <pubDate>Sat, 27 Aug 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.enrichment.iris.ioclookup</guid>
+      <description>Query an IRIS instance for an indicator.</description>
+    </item>
+    <item>
+      <title>Windows.Registry.COMAutoApprovalList</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.registry.comautoapprovallist</link>
+      <pubDate>Fri, 26 Aug 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.registry.comautoapprovallist</guid>
+      <description>This artifact will return COM objects that auto-elevate and bypass UAC (these could potentially be used by adversaries/malware to elevate privileges), and cross-reference the class ID with a name where able.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Detection.MagicWeb</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/magicweb</link>
+      <pubDate>Thu, 25 Aug 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/magicweb</guid>
+      <description>This artifact will find evidence of NOBELIUM’s MagicWeb.</description>
+    </item>
+    <item>
+      <title>Windows.System.Services.SliverPsexec</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.system.services.sliverpsexec</link>
+      <pubDate>Thu, 25 Aug 2022 00:00:00 +0000</pubDate><author>svch0stz</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.system.services.sliverpsexec</guid>
+      <description>This pack detects various artifacts left behind by default configurations of the C2 framework Sliver PsExec module</description>
+    </item>
+    <item>
+      <title>Windows.Detection.UnattendXML</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/unattendxml</link>
+      <pubDate>Mon, 22 Aug 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/unattendxml</guid>
+      <description>This artifact will find unscrubbed passwords in unattend.xml answer files. This &#xA;file is used for non interactive Windows installation.&#xA;</description>
+    </item>
+    <item>
+      <title>Linux.Remediation.Quarantine.IPTables</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.remediation.quarantine</link>
+      <pubDate>Thu, 18 Aug 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.remediation.quarantine</guid>
+      <description>Quarantine a Linux host using iptables rules.</description>
+    </item>
+    <item>
+      <title>MacOS.Files.FileMonitor</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.files.filemonitor</link>
+      <pubDate>Fri, 12 Aug 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.files.filemonitor</guid>
+      <description>This artifact parses Objective-See&#39;s FileMonitor log.</description>
+    </item>
+    <item>
+      <title>MacOS.Network.LittleSnitch</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.network.littlesnitch</link>
+      <pubDate>Fri, 12 Aug 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.network.littlesnitch</guid>
+      <description>This is artifact parses Little Snitch&#39;s network traffic log.</description>
+    </item>
+    <item>
+      <title>Windows.Detection.Ntdsutil</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/ntdsutil</link>
+      <pubDate>Fri, 12 Aug 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/ntdsutil</guid>
+      <description>This artifact will extract evidence of Ntdsutil abuse from the application&#xA;eventlog. The artifact targets the string &#34;ntds.dit&#34; in event IDs: 216, 325,&#xA;326 and 327.&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Enrichment.MalwareBazaar</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.enrichment.malwarebazaar</link>
+      <pubDate>Fri, 29 Jul 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.enrichment.malwarebazaar</guid>
+      <description>Query MalwareBazaar for a hash.</description>
+    </item>
+    <item>
+      <title>Server.Enrichment.ThreatFox</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.enrichment.threatfox</link>
+      <pubDate>Fri, 29 Jul 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.enrichment.threatfox</guid>
+      <description>Query ThreatFox for an indicator.</description>
+    </item>
+    <item>
+      <title>Windows.Sysinternals.SysmonArchive</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/sysmonarchive</link>
+      <pubDate>Fri, 29 Jul 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/sysmonarchive</guid>
+      <description>If configured, Sysmon EID 23: FileDelete enables archiving file deletes on &#xA;disk. The challenges of this configuration is management of the archive &#xA;folder which can grow to be significant size and use up disk space.  </description>
+    </item>
+    <item>
+      <title>Windows.Events.SysmonArchiveMonitor</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/sysmonarchivemonitor</link>
+      <pubDate>Fri, 29 Jul 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/sysmonarchivemonitor</guid>
+      <description>This artifact enables automatic management of the Sysmon archive folder.</description>
+    </item>
+    <item>
+      <title>Server.Utils.OrphanedFlows</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.utils.orphanedflows</link>
+      <pubDate>Tue, 26 Jul 2022 00:00:00 +0000</pubDate><author>scudette</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.utils.orphanedflows</guid>
+      <description>Sometimes flows are deleted but there is still outstanding data for&#xA;them in flight. The server will continue to save this data after the&#xA;flow is deleted.</description>
+    </item>
+    <item>
+      <title>Windows.System.WindowsErrorReporting</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.system.windowserrorreporting</link>
+      <pubDate>Sat, 23 Jul 2022 00:00:00 +0000</pubDate><author>svch0stz</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.system.windowserrorreporting</guid>
+      <description>Parses several Windows Error Reporting (WER) files that contain information about crashed programs.</description>
+    </item>
+    <item>
+      <title>Windows.Analysis.SuspiciousWMIConsumers</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/suspiciouswmiconsumers</link>
+      <pubDate>Mon, 18 Jul 2022 00:00:00 +0000</pubDate><author>AmgdGocha</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/suspiciouswmiconsumers</guid>
+      <description>This artifact reports suspicious WMI Event Consumers and their associated Filters&#xA;that may indicate a malicious abuse for persistence.</description>
+    </item>
+    <item>
+      <title>Windows.Detection.BruteRatel</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.detection.bruteratel</link>
+      <pubDate>Tue, 12 Jul 2022 00:00:00 +0000</pubDate><author>flukes86</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.detection.bruteratel</guid>
+      <description>This hunt runts the [Immersive Labs yara rule](https://github.com/Immersive-Labs-Sec/BruteRatel-DetectionTools/blob/main/BruteRatel.yar) across select files to identify the known Brute Ratel config strings.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Remediation.KillProcess</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/killprocess</link>
+      <pubDate>Mon, 11 Jul 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/killprocess</guid>
+      <description>Quick and dirty monitoring artifact to kill a process by Image Name.&#xA;We monitor the Microsoft-Windows-Kernel-Process ETW provider and leverage &#xA;taskkill to kill the process.</description>
+    </item>
+    <item>
+      <title>Windows.Events.SysmonRegistry</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/sysmonregistry</link>
+      <pubDate>Thu, 07 Jul 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/sysmonregistry</guid>
+      <description>This artifact enables monitoring for registry events of interest via the Sysmon&#xA;ETW provider.</description>
+    </item>
+    <item>
+      <title>Exchange.Server.Enrichment.Gimphash</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/exchange.server.enrichment.gimphash</link>
+      <pubDate>Wed, 06 Jul 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/exchange.server.enrichment.gimphash</guid>
+      <description>Calculate the Gimphash for a Golang binary.</description>
+    </item>
+    <item>
+      <title>Windows.Forensics.FileZilla</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/filezilla</link>
+      <pubDate>Wed, 06 Jul 2022 00:00:00 +0000</pubDate><author>dkelly-r7</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/filezilla</guid>
+      <description>This artifact enumerates all user directories on a system and will&#xA;parse three files within a users AppData\Roaming\FileZilla&#xA;directory: filezilla.xml, recentservers.xml, and queue.sqlite3</description>
+    </item>
+    <item>
+      <title>Server.Enrichment.EchoTrail</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.enrichment.echotrail</link>
+      <pubDate>Fri, 24 Jun 2022 00:00:00 +0000</pubDate><author>ecapuano</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.enrichment.echotrail</guid>
+      <description>&#xA;This is a process execution enrichment artifact that can be called from within another artifact (such as one looking at running processes) to enrich the&#xA;data made available by that artifact. We are calling the EchoTrail v2 API which is still in beta.</description>
+    </item>
+    <item>
+      <title>Label.DomainController</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/label.domaincontroller</link>
+      <pubDate>Sun, 19 Jun 2022 00:00:00 +0000</pubDate><author>scudette</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/label.domaincontroller</guid>
+      <description>This artifact watches for completion of the `watchArtifact`&#xA;and assigns the given `setLabel` if the `WHERE` condition is matched.</description>
+    </item>
+    <item>
+      <title>Windows.EventLogs.Hayabusa</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.eventlogs.hayabusa</link>
+      <pubDate>Sun, 19 Jun 2022 00:00:00 +0000</pubDate><author>ecapuano</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.eventlogs.hayabusa</guid>
+      <description>[Hayabusa](https://github.com/Yamato-Security/hayabusa) is a&#xA;Windows event log fast forensics timeline generator and threat&#xA;hunting tool.</description>
+    </item>
+    <item>
+      <title>Windows.EventLogs.Bitsadmin</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/bitsadmin</link>
+      <pubDate>Fri, 10 Jun 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/bitsadmin</guid>
+      <description>This content will extract BITS Transfer events and enable filtering by URL &#xA;and TLD.&#xA;</description>
+    </item>
+    <item>
+      <title>Linux.Detection.ConfluenceLogs</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/confluencelogs</link>
+      <pubDate>Tue, 07 Jun 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/confluencelogs</guid>
+      <description>This artifact enables grep of Linux logs and targets strings observed in &#xA;exploitation of CVE-2022-26134.</description>
+    </item>
+    <item>
+      <title>Windows.Detection.MsdtFollina</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/msdtfollina</link>
+      <pubDate>Thu, 02 Jun 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/msdtfollina</guid>
+      <description>This artifact will search Microsoft Support Diagnostic Tool logs for evidence &#xA;of ms-msdt Follina exploitation (CVE-2022-30190).</description>
+    </item>
+    <item>
+      <title>Windows.Registry.NetshHelperDLLs</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.registry.netshhelperdlls</link>
+      <pubDate>Wed, 01 Jun 2022 00:00:00 +0000</pubDate><author>ecapuano</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.registry.netshhelperdlls</guid>
+      <description># Enumerate all NetSh Helper DLLs</description>
+    </item>
+    <item>
+      <title>Windows.EventLogs.LogonSessions</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.eventlogs.logonsessions</link>
+      <pubDate>Tue, 31 May 2022 00:00:00 +0000</pubDate><author>NorthwaveCERT</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.eventlogs.logonsessions</guid>
+      <description>This artifact searches for logon and logoff events within Security event logs identified&#xA;by Event ID 4624 and 4634. These logon/logoff events are grouped by &#34;TargetLogonId&#34; field&#xA;into &#34;logon sessions&#34;. For each of these logon sessions, start, end and duration&#xA;are derived&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.System.Powershell.ISEAutoSave</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/iseautosave</link>
+      <pubDate>Thu, 26 May 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/iseautosave</guid>
+      <description>This artifact hunts for Powershell ISE autosave files and extracts ISE user &#xA;config.</description>
+    </item>
+    <item>
+      <title>Server.Enrichment.Virustotal.FileScan</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.enrichment.virustotal.filescan</link>
+      <pubDate>Tue, 24 May 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.enrichment.virustotal.filescan</guid>
+      <description>Submit a file to Virustotal for analysis.  </description>
+    </item>
+    <item>
+      <title>Windows.Detection.PrefetchHunter</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/prefetchhunter</link>
+      <pubDate>Wed, 27 Apr 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/prefetchhunter</guid>
+      <description>This artifact enables hunting prefetch entries for accessed files of interest. </description>
+    </item>
+    <item>
+      <title>Windows.Registry.TaskCache.HiddenTasks</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.registry.taskcache.hiddentasks</link>
+      <pubDate>Thu, 21 Apr 2022 00:00:00 +0000</pubDate><author>svch0stz</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.registry.taskcache.hiddentasks</guid>
+      <description>This artifact will highlight any scheduled tasks missing the Security Descriptor (SD) value in the task cache. Without this value, the task is hidden from common query methods.</description>
+    </item>
+    <item>
+      <title>Windows.NTFS.Timestomp</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/timestomp</link>
+      <pubDate>Fri, 15 Apr 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/timestomp</guid>
+      <description>This artifact enables triage to detect potential time stomped files.</description>
+    </item>
+    <item>
+      <title>Windows.Applications.DefenderQuarantineExtract</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/defenderquarantineextract</link>
+      <pubDate>Thu, 14 Apr 2022 00:00:00 +0000</pubDate><author>eduardomcm</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/defenderquarantineextract</guid>
+      <description>Extracts Quarantine Files from Windows Defender.</description>
+    </item>
+    <item>
+      <title>Windows.Registry.CortexEDRDisabled</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.registry.disabledcortexxdr</link>
+      <pubDate>Thu, 14 Apr 2022 00:00:00 +0000</pubDate><author>Rhysistance</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.registry.disabledcortexxdr</guid>
+      <description>This artifact will attempt to identify Cortex EDR that has been disabled via regkey&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Applications.DefenderHistory</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.applications.defenderhistory</link>
+      <pubDate>Tue, 12 Apr 2022 00:00:00 +0000</pubDate><author>rmakuch</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.applications.defenderhistory</guid>
+      <description>This artifact parses the Windows Defender files generated on threat detection and returns&#xA;the contained parameters created by Windows Defender about the detected threat. </description>
+    </item>
+    <item>
+      <title>MacOS.Applications.Safari.Downloads</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.applications.safari.downloads</link>
+      <pubDate>Tue, 29 Mar 2022 00:00:00 +0000</pubDate><author>Seeps</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.applications.safari.downloads</guid>
+      <description>Parses Safari downloads for all standard macOS users</description>
+    </item>
+    <item>
+      <title>Windows.EventLogs.RDPClientActivity</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.eventlogs.rdpclientactivity</link>
+      <pubDate>Thu, 24 Mar 2022 00:00:00 +0000</pubDate><author>NorthwaveCERT</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.eventlogs.rdpclientactivity</guid>
+      <description>This artifact retrieves outgoing RDP session activity from the&#xA;Microsoft-Windows-TerminalServices-RDPClient event logs. It aggregates&#xA;sessions based on ActivityID and outputs hostname, timeframe and disconnect reasons.&#xA;The latter is filled using a dict that was taken from MS Docs (see references)&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Office.MRU</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.office.mru</link>
+      <pubDate>Thu, 24 Mar 2022 00:00:00 +0000</pubDate><author>Sam0rai</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.office.mru</guid>
+      <description>This artifact enables hunting for recently used Office Documents.</description>
+    </item>
+    <item>
+      <title>MacOS.Applications.Safari.History</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.applications.safari.history</link>
+      <pubDate>Mon, 21 Mar 2022 00:00:00 +0000</pubDate><author>Seeps</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.applications.safari.history</guid>
+      <description>Parses Safari history database&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.System.PowerEfficiencyDiagnostics</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/powerefficiencydiagnostics</link>
+      <pubDate>Sun, 13 Mar 2022 00:00:00 +0000</pubDate><author>eduardomcm</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/powerefficiencydiagnostics</guid>
+      <description>This artifact parses the XML Energy Reports from the Power Efficiency &#xA;Diagnostics feature of Windows, returning the processes which had high &#xA;CPU usage, including which </description>
+    </item>
+    <item>
+      <title>Windows.Registry.HiddenUsers</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/hiddenusers</link>
+      <pubDate>Mon, 07 Mar 2022 00:00:00 +0000</pubDate><author>eduardomcm</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/hiddenusers</guid>
+      <description>Find hidden user accounts through registry values on the filesystem.</description>
+    </item>
+    <item>
+      <title>Windows.Applications.AnyDesk.LogParser</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.applications.anydesk.logparser</link>
+      <pubDate>Wed, 16 Feb 2022 00:00:00 +0000</pubDate><author>RHinDFIR</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.applications.anydesk.logparser</guid>
+      <description>Parses the AnyDesk ad.trace log file.</description>
+    </item>
+    <item>
+      <title>Windows.EventLogs.CondensedAccountUsage</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/condensedaccountusage</link>
+      <pubDate>Wed, 09 Feb 2022 00:00:00 +0000</pubDate><author>Qazeer</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/condensedaccountusage</guid>
+      <description>This artifact will extract condensed information on logon / logoff events.</description>
+    </item>
+    <item>
+      <title>MacOS.System.LocationServices</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macos.system.locationservices</link>
+      <pubDate>Tue, 01 Feb 2022 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macos.system.locationservices</guid>
+      <description>This artifact looks for applications that are registered and allowed for use of location services by checking the plist file in `/var/db/locationd/clients.plist`.  &#xA;This can be useful to help determine if these settings have been modified by an attacker to perform location tracking.</description>
+    </item>
+    <item>
+      <title>Linux.Detection.CVE20214034</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.detection.cve20214034</link>
+      <pubDate>Wed, 26 Jan 2022 00:00:00 +0000</pubDate><author>scudette</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.detection.cve20214034</guid>
+      <description>This artifact lists processes running as root that were spawns by processes that are not&#xA;running as root. This kind of behavior is normal for things like sudo or su but for other&#xA;processes (especially /bin/bash) it could represent a process launched via CVE-2021-4034.</description>
+    </item>
+    <item>
+      <title>Windows.Applications.DefenderDHParser</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/defenderdhparser</link>
+      <pubDate>Mon, 24 Jan 2022 00:00:00 +0000</pubDate><author>eduardomcm</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/defenderdhparser</guid>
+      <description>This artifact leverages Windows Defender DetectionHistory tool to parse and return&#xA;the parameters of Windows Defender detections contained in Detection History files.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.System.WMIProviders</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.system.wmiproviders</link>
+      <pubDate>Mon, 24 Jan 2022 00:00:00 +0000</pubDate><author>scudette</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.system.wmiproviders</guid>
+      <description>List the WMI providers in the system.</description>
+    </item>
+    <item>
+      <title>Windows.ETW.WMIEventing</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/wmieventing</link>
+      <pubDate>Sat, 15 Jan 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/wmieventing</guid>
+      <description>This artifact collects events associated with creation and deletion of WMI &#xA;Event Consumers. All Event Consumers created under any namespace will &#xA;generate events which are filtered on event consumer classes.  </description>
+    </item>
+    <item>
+      <title>Linux.Carving.SSHLogs</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.carving.sshlogs</link>
+      <pubDate>Fri, 14 Jan 2022 00:00:00 +0000</pubDate><author>scudette</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.carving.sshlogs</guid>
+      <description>Linux systems typically store audit events in syslog. In particular successful &#xA;ssh logins are especially important for some investigations.</description>
+    </item>
+    <item>
+      <title>Linux.Sysinternals.SysmonEvent</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.sysinternals.sysmonevent</link>
+      <pubDate>Fri, 14 Jan 2022 00:00:00 +0000</pubDate><author>scudette</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.sysinternals.sysmonevent</guid>
+      <description>Parses syslog for Sysmon events on Linux using a unix domain socket.</description>
+    </item>
+    <item>
+      <title>Windows.Registry.AteraNetworks</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/ateranetworks</link>
+      <pubDate>Wed, 12 Jan 2022 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/ateranetworks</guid>
+      <description>Find AteraNetworks configuration details in the registry.&#xA;This artifact is best combined with Windows.Forensics.FilenameSearch &#xA;searching for the string &#34;atera&#34;.&#xA;</description>
+    </item>
+    <item>
+      <title>Exchange.Label.User</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/exchange.label.user</link>
+      <pubDate>Wed, 12 Jan 2022 00:00:00 +0000</pubDate><author>scudette</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/exchange.label.user</guid>
+      <description>This artifact watches for new client enrollments and automatically&#xA;label the client with the required label if the user exists.</description>
+    </item>
+    <item>
+      <title>Generic.Detection.LunasecLog4shell</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/generic.detection.lunaseclog4shell</link>
+      <pubDate>Wed, 12 Jan 2022 00:00:00 +0000</pubDate><author>scudette</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/generic.detection.lunaseclog4shell</guid>
+      <description>Uses the Log4Shell scanner of Lunasec to scan the file systems of&#xA;all drives of the host for any sign of vulnerabilities related to&#xA;Log4shell&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Slack.Clients.Enrolled</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/server.slack.clients.enrolled</link>
+      <pubDate>Wed, 12 Jan 2022 00:00:00 +0000</pubDate><author>scudette</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/server.slack.clients.enrolled</guid>
+      <description>Send a message to slack when clients become enrolled.</description>
+    </item>
+    <item>
+      <title>Windows.System.AccessControlList</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.system.accesscontrollist</link>
+      <pubDate>Wed, 12 Jan 2022 00:00:00 +0000</pubDate><author>scudette</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.system.accesscontrollist</guid>
+      <description>This artifact displays the access control lists of files.</description>
+    </item>
+    <item>
+      <title>Windows.Detection.ProxyLogon.ProxyShell</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.detection.proxylogon.proxyshell</link>
+      <pubDate>Tue, 11 Jan 2022 00:00:00 +0000</pubDate><author>Seeps</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.detection.proxylogon.proxyshell</guid>
+      <description>This artifact hunts for CVE-2021-27065 (Microsoft Exchange ProxyLogon RCE)&#xA;and CVE-2021-31207 (Microsoft Exchange ProxyShell RCE) exploitation by parsing &#xA;entries in the &#39;MSExchange Management.evtx&#39; log.</description>
+    </item>
+    <item>
+      <title>Windows.Registry.CapabilityAccessManager</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.registry.capabilityaccessmanager</link>
+      <pubDate>Sat, 08 Jan 2022 00:00:00 +0000</pubDate><author>scudette</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.registry.capabilityaccessmanager</guid>
+      <description>The ConsentStore in CapabilityAccessManager can provide insight to&#xA;what resources binaries have had access to, such as the microphone&#xA;and webcam. This artifact returns non-Microsoft executables (ie:&#xA;entries listed in the `NonPackaged` path).</description>
+    </item>
+    <item>
+      <title>Generic.Detection.log4jRCE</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/log4jrce</link>
+      <pubDate>Fri, 10 Dec 2021 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/log4jrce</guid>
+      <description>Detection for exploitation attempts against log4j RCE&#xA;vulnerability CVE-2021-44228.</description>
+    </item>
+    <item>
+      <title>Splunk.Events.Clients</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/splunk.events.clients</link>
+      <pubDate>Wed, 08 Dec 2021 00:00:00 +0000</pubDate><author>jurelou</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/splunk.events.clients</guid>
+      <description>This server monitoring artifact will watch a selection of client&#xA;monitoring artifacts for new events and push those to a splunk&#xA;index.</description>
+    </item>
+    <item>
+      <title>Windows.Monitor.USBPlugIn</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/usbplugin</link>
+      <pubDate>Mon, 29 Nov 2021 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/usbplugin</guid>
+      <description>Monitor for plug in of USB volume.  Output drive letter for&#xA;additional enrichment artifacts&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Detection.USBYara</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/usbyara</link>
+      <pubDate>Mon, 29 Nov 2021 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/usbyara</guid>
+      <description>Run yara over usb when USB is plugged into machine.  Return context&#xA;and hit details.</description>
+    </item>
+    <item>
+      <title>Windows.EventLogs.Zircolite</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.eventlogs.zircolite</link>
+      <pubDate>Wed, 24 Nov 2021 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.eventlogs.zircolite</guid>
+      <description>Zircolite is a standalone tool that can be used to apply Sigma rules to EVTX files on endpoints in an effort to quickly parse large datasets and surface detections.&#xA;            &#xA;You can read more about Zircolite below:&#xA;    &#xA;https://github.com/wagga40/Zircolite&#xA;    &#xA;NOTE: This artifact may take several minutes to run, depending on the size of EVTX files being analyzed.&#xA;</description>
+    </item>
+    <item>
+      <title>Server.Findflows</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/findflows</link>
+      <pubDate>Tue, 23 Nov 2021 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/findflows</guid>
+      <description>This artifact enables searching over client flow results with regex&#xA;and returns a link to the Flow for follow-up.&#xA;</description>
+    </item>
+    <item>
+      <title>Linux.Collection.CatScale</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.collection.catscale</link>
+      <pubDate>Thu, 11 Nov 2021 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.collection.catscale</guid>
+      <description>This is a simple artifact that leverages Cat-Scale to collect many&#xA;different artifacts from a Linux host, then uploads the results to&#xA;the Velociraptor server.</description>
+    </item>
+    <item>
+      <title>Windows.Applications.DIEC</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/diec</link>
+      <pubDate>Tue, 09 Nov 2021 00:00:00 +0000</pubDate><author>eduardomcm</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/diec</guid>
+      <description>Execute DetectItEasy (console version) on specified paths and&#xA;return rows of results to hunt/filter on binaries based types of&#xA;files (E.g.: Packed binaries and its packers)&#xA;</description>
+    </item>
+    <item>
+      <title>Linux.Sysinternals.Sysmon</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.sysinternals.sysmon</link>
+      <pubDate>Sat, 23 Oct 2021 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.sysinternals.sysmon</guid>
+      <description>Parses syslog for Sysmon events on Linux</description>
+    </item>
+    <item>
+      <title>Server.Analysis.CyberChefServer</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/cyberchefserver</link>
+      <pubDate>Wed, 20 Oct 2021 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/cyberchefserver</guid>
+      <description>Analyze/transform data with CyberChef-server.</description>
+    </item>
+    <item>
+      <title>Windows.Carving.SquirrelWaffle</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/squirrelwaffle</link>
+      <pubDate>Sat, 02 Oct 2021 00:00:00 +0000</pubDate><author>eduardomcm</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/squirrelwaffle</guid>
+      <description>This artifact yara-scans memory or process dumps for unpacked&#xA;SquirrelWaffle Dlls, decodes the configuration and returns the C2s&#xA;and the payload.</description>
+    </item>
+    <item>
+      <title>Windows.Binary.Exports</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/exports</link>
+      <pubDate>Fri, 24 Sep 2021 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/exports</guid>
+      <description>This artifact can be used to extract all binary exports to research&#xA;potential lolbins.  Selecting the AllBinaryInfo tickbox will return&#xA;complete Binary information.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Applications.Cylance</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/cylance</link>
+      <pubDate>Tue, 21 Sep 2021 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/cylance</guid>
+      <description>Parse Cylance logs.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Applications.OfficeMacros.MacroRaptor</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/macroraptor</link>
+      <pubDate>Tue, 21 Sep 2021 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/macroraptor</guid>
+      <description>This artifact implements OleTools MacroRaptor capability in VQL.</description>
+    </item>
+    <item>
+      <title>Windows.Bulk.File</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/bulkfile</link>
+      <pubDate>Tue, 21 Sep 2021 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/bulkfile</guid>
+      <description>Search for some simple bulk File IOCs and upload if desired.&#xA;Typical upload workflow may be to firstly search, then if returned&#xA;rows match expectations rerun query with upload tickbox selected.</description>
+    </item>
+    <item>
+      <title>Windows.System.BinaryVersion</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/binaryversion</link>
+      <pubDate>Thu, 16 Sep 2021 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/binaryversion</guid>
+      <description>This artifact will search the MFT for any matching filenames and return&#xA;binary details. This artifact can be used to find all instances of a&#xA;binary on disk so its great for scoping both legitimate and illegitimate&#xA;files.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Analysis.Capa</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.analysis.capa</link>
+      <pubDate>Wed, 15 Sep 2021 00:00:00 +0000</pubDate><author>weslambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.analysis.capa</guid>
+      <description>Analyze PE, ELF, or shellcode files with capa.</description>
+    </item>
+    <item>
+      <title>Windows.Applications.OfficeServerCache</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/officeservercache</link>
+      <pubDate>Fri, 10 Sep 2021 00:00:00 +0000</pubDate><author>eduardomcm</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/officeservercache</guid>
+      <description>Return Office Internet Server Cache Registry keys and values in&#xA;order to identify possible C2 URLs from malicious opened Office&#xA;documents.</description>
+    </item>
+    <item>
+      <title>Linux.Applications.WgetHSTS</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/linux.applications.wgethsts</link>
+      <pubDate>Thu, 09 Sep 2021 00:00:00 +0000</pubDate><author>scudette</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/linux.applications.wgethsts</guid>
+      <description>Wget creates a HSTS log file in a user&#39;s home directory.  This can&#xA;contain forensically relevant information.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.EventLogs.RecordIDCheck</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/recordidcheck</link>
+      <pubDate>Thu, 09 Sep 2021 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/recordidcheck</guid>
+      <description>This artifact will compare EventLog records and report on&#xA;abnormalities in RecordID sequence and optional time gap. The&#xA;artifact can be used for both hunting, remote or local analysis.</description>
+    </item>
+    <item>
+      <title>Windows.Registry.CVE_2021_40444</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/cve_2021_40444</link>
+      <pubDate>Wed, 08 Sep 2021 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/cve_2021_40444</guid>
+      <description>This artifact will enable both application and removal of the&#xA;recommended mitigation for CVE-2021-40444.</description>
+    </item>
+    <item>
+      <title>Windows.ETW.DetectProcessSpoofing</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.etw.detectprocessspoofing</link>
+      <pubDate>Fri, 03 Sep 2021 00:00:00 +0000</pubDate><author>scudette</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.etw.detectprocessspoofing</guid>
+      <description>Detects Process parent spoofing such as SelectMyParent.exe or&#xA;Cobalt Strike select PPID.</description>
+    </item>
+    <item>
+      <title>Windows.EventLogs.Chainsaw</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.eventlogs.chainsaw</link>
+      <pubDate>Fri, 03 Sep 2021 00:00:00 +0000</pubDate><author>Wes Lambert - @therealwlambert</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.eventlogs.chainsaw</guid>
+      <description>&#xA;This artifact leverages Chainsaw to enable usage of Sigma rules&#xA;(in addition to built-in rules) to facilitate detection within&#xA;Windows Event Logs.</description>
+    </item>
+    <item>
+      <title>Windows.ActiveDirectory.PrivilegedUsers</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/activedirectoryprivilegedusers</link>
+      <pubDate>Sat, 28 Aug 2021 00:00:00 +0000</pubDate><author>liteman</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/activedirectoryprivilegedusers</guid>
+      <description>If on a Domain Controller (ProductType = 2), recursively enumerate&#xA;membership of privileged groups, then for each user, collect&#xA;details relevant to an investigation: Create Date, Last Logon,&#xA;Group Membership, SID</description>
+    </item>
+    <item>
+      <title>Windows.NTFS.MFT.HiveNightmare</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/windows.ntfs.mft.hivenightmare</link>
+      <pubDate>Sun, 25 Jul 2021 00:00:00 +0000</pubDate><author>svch0stz</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/windows.ntfs.mft.hivenightmare</guid>
+      <description>This artifact uses Windows.NTFS.MFT (By Matt Green - @mgreen27) to&#xA;find several files created as part of the POC tooling for&#xA;HiveNightmare (CVE-2021-36934):</description>
+    </item>
+    <item>
+      <title>Windows.Memory.HollowsHunter</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/hollowshunter</link>
+      <pubDate>Wed, 14 Jul 2021 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/hollowshunter</guid>
+      <description>Use hollows_hunter to detect suspicious process injections.</description>
+    </item>
+    <item>
+      <title>Windows.Monitoring.PrintNightmare</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/printnightmaremonitor</link>
+      <pubDate>Thu, 08 Jul 2021 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/printnightmaremonitor</guid>
+      <description>This artifact returns ETW PrintService events for potential&#xA;PrintNightmare activity.  CVE-2021-1675 and CVE-2021-34527</description>
+    </item>
+    <item>
+      <title>Windows.System.PrinterDriver</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/printerdriver</link>
+      <pubDate>Wed, 07 Jul 2021 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/printerdriver</guid>
+      <description>This artifact will enumerate installed PrintDrivers using the&#xA;Win32_PrinterDriver wmi class and parse each DriverPath, ConfigFile&#xA;and DataFile.</description>
+    </item>
+    <item>
+      <title>Windows.Remediation.PrintSpooler</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/printspoolerremediation</link>
+      <pubDate>Tue, 06 Jul 2021 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/printspoolerremediation</guid>
+      <description>This artifact will enable mitigation of PrintSpooler exploitation&#xA;used by PrintNightmare - CVE-2021-34527 and CVE-2021-1675.</description>
+    </item>
+    <item>
+      <title>Linux.Volatility.Create.Profile</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/volatility_profile</link>
+      <pubDate>Fri, 02 Jul 2021 00:00:00 +0000</pubDate><author>makhno4n6</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/volatility_profile</guid>
+      <description>This artifact is used to create the profile to the environments Debian / Ubuntu.&#xA;</description>
+    </item>
+    <item>
+      <title>Windows.Detection.PrintNightmare</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/printnightmare</link>
+      <pubDate>Thu, 01 Jul 2021 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/printnightmare</guid>
+      <description>This artifact returns any binaries in the Windows/spool/drivers/**&#xA;folders with an untrusted Authenticode entry.</description>
+    </item>
+    <item>
+      <title>Windows.Applications.FTKImager</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/ftkimager</link>
+      <pubDate>Fri, 25 Jun 2021 00:00:00 +0000</pubDate><author>eduardomcm</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/ftkimager</guid>
+      <description>Create an E01 Image of the C drive using FTK Imager (Command Line&#xA;Version)</description>
+    </item>
+    <item>
+      <title>Windows.ETW.AMSI</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/amsi</link>
+      <pubDate>Fri, 25 Jun 2021 00:00:00 +0000</pubDate><author>mgreen27</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/amsi</guid>
+      <description>This artifact uses the ETW provider:&#xA;    (Microsoft-Antimalware-Scan-Interface - {2A576B87-09A7-520E-C21A-4942F0271D67}&#xA;</description>
+    </item>
+    <item>
+      <title>HashRunKeys</title>
+      <link>https://docs.velociraptor.app/exchange/artifacts/pages/hash_run_keys</link>
+      <pubDate>Wed, 23 Jun 2021 00:00:00 +0000</pubDate><author>ffh571</author>
+      <guid>https://docs.velociraptor.app/exchange/artifacts/pages/hash_run_keys</guid>
+      <description>Iterate over all the run keys and locate their binary then hash it.</description>
+    </item>
+  </channel>
+</rss>

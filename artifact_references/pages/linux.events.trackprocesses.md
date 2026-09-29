@@ -1,0 +1,108 @@
+# Linux.Events.TrackProcesses
+
+Subscribes to eBPF process events to track new processes and their
+parent relationships.
+
+Uses eBPF and pslist to keep track of running processes via the
+Velociraptor process tracker.
+
+The process tracker keeps track of exited processes, and resolves
+process call chains from it in memory cache.
+
+This event artifact enables the global process tracker and makes it
+possible to run many other artifacts that depend on the process
+tracker.
+
+NOTE: Unlike `Windows.Events.TrackProcesses`, the eBPF program is
+already built into Velociraptor so this artifact does not depend on
+external tools.
+
+
+---
+
+````yaml
+name: Linux.Events.TrackProcesses
+description: |
+  Subscribes to eBPF process events to track new processes and their
+  parent relationships.
+  
+  Uses eBPF and pslist to keep track of running processes via the
+  Velociraptor process tracker.
+
+  The process tracker keeps track of exited processes, and resolves
+  process call chains from it in memory cache.
+
+  This event artifact enables the global process tracker and makes it
+  possible to run many other artifacts that depend on the process
+  tracker.
+
+  NOTE: Unlike `Windows.Events.TrackProcesses`, the eBPF program is
+  already built into Velociraptor so this artifact does not depend on
+  external tools.
+
+precondition: |
+  SELECT OS From info() where OS = 'linux'
+
+type: CLIENT_EVENT
+
+parameters:
+  - name: AlsoForwardUpdates
+    type: bool
+    description: Upload all tracker state updates to the server
+  - name: MaxSize
+    type: int64
+    description: Maximum size of the in-memory process cache (default 10k)
+
+sources:
+  - query: |
+      LET SyncQuery = SELECT
+         Pid AS id,
+         Ppid AS parent_id,
+         CreateTime AS start_time,
+         dict(Name=Name,
+              Username=Username,
+              Exe=Exe,
+              CreateTime=CreateTime,
+              CommandLine=CommandLine) AS data
+      FROM pslist()
+
+      LET UpdateQuery = SELECT * FROM foreach(
+        row={
+          SELECT * FROM watch_ebpf(events=["sched_process_exit", "sched_process_exec"])
+        }, query={
+          SELECT * FROM switch(a={
+            SELECT System.HostProcessID AS id,
+                    System.HostParentProcessID AS parent_id,
+                    "start" AS update_type,
+                    dict(Pid=System.HostProcessID,
+                         Ppid=System.HostParentProcessID,
+                         Name=System.ProcessName,
+                         Username=System.UserID,
+                         Exe=EventData.cmdpath,
+                         CommandLine=join(array=EventData.argv, sep=" ")) AS data,
+
+                    System.Timestamp AS start_time,
+                    NULL AS end_time
+            FROM scope()
+            WHERE System.EventName =~ "exec"
+          }, end={
+            SELECT System.HostProcessID AS id,
+                   NULL AS parent_id,
+                   "exit" AS update_type,
+                   dict() AS data,
+                   NULL AS start_time,
+                   System.Timestamp AS end_time
+            FROM scope()
+            WHERE System.EventName =~ "exit"
+          })
+        })
+
+        LET Tracker <= process_tracker(max_size=MaxSize,
+           sync_query=SyncQuery, update_query=UpdateQuery, sync_period=60000)
+
+        SELECT * FROM process_tracker_updates()
+        WHERE update_type = "stats"  OR AlsoForwardUpdates
+````
+
+
+

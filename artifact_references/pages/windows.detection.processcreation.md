@@ -1,0 +1,86 @@
+# Windows.Detection.ProcessCreation
+
+Deploys Sysmon and watches the Sysmon ETW provider for specific
+process creation events, which are then forwarded to the server.
+
+
+---
+
+````yaml
+name: Windows.Detection.ProcessCreation
+description: |
+  Deploys Sysmon and watches the Sysmon ETW provider for specific
+  process creation events, which are then forwarded to the server.
+
+author: Jos Clephas - @DfirJos
+
+type: CLIENT_EVENT
+
+tools:
+  - name: SysmonBinary
+    url: https://live.sysinternals.com/tools/sysmon64.exe
+    serve_locally: true
+
+  - name: SysmonConfig
+    url: https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/master/sysmonconfig-export.xml
+    serve_locally: true
+
+parameters:
+  - name: ImageRegex
+    default: .
+  - name: CommandLineRegex
+    default: .
+  - name: ParentImageRegex
+    default: .
+  - name: OriginalFileNameRegex
+    default: .
+  - name: ParentUserRegex
+    default: .
+  - name: UserRegex
+    default: .
+  - name: HashesRegex
+    default: .
+  - name: ParentCommandLineRegex
+    default: .
+  - name: IntegrityLevelRegex
+    default: .
+  - name: ProductRegex
+    default: .
+  - name: CompanyRegex
+    default: .
+  - name: DescriptionRegex
+    default: .
+  - name: FileVersionRegex
+    default: .
+  - name: SysmonFileLocation
+    description: If set, we check this location first for sysmon installed.
+    default: C:/Windows/sysmon64.exe
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+      // Ensure that sysmon is installed.
+      LET _ <= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
+         SysmonFileLocation=SysmonFileLocation)
+
+      SELECT *, { SELECT Hostname FROM info() } as Hostname FROM Artifact.Windows.Sysinternals.SysmonLogForward()
+      WHERE ID = 1 AND
+        EventData.Image =~ ImageRegex AND
+        EventData.CommandLine =~ CommandLineRegex AND
+        EventData.ParentImage =~ ParentImageRegex AND
+        EventData.OriginalFileName =~ OriginalFileNameRegex AND
+        EventData.ParentUser =~ ParentUserRegex AND
+        EventData.User =~ UserRegex AND
+        EventData.Hashes =~ HashesRegex AND
+        EventData.ParentCommandLine =~ ParentCommandLineRegex AND
+        EventData.IntegrityLevel =~ IntegrityLevelRegex AND
+        EventData.Product =~ ProductRegex AND
+        EventData.Company =~ CompanyRegex AND
+        EventData.Description =~ DescriptionRegex AND
+        EventData.FileVersion =~ FileVersionRegex
+````
+
+
+

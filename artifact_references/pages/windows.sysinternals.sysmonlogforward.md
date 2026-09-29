@@ -1,0 +1,50 @@
+# Windows.Sysinternals.SysmonLogForward
+
+Reads Sysmon operational events from ETW and forwards them to the
+server for analysis.
+
+
+---
+
+````yaml
+name: Windows.Sysinternals.SysmonLogForward
+description: |
+  Reads Sysmon operational events from ETW and forwards them to the
+  server for analysis.
+
+type: CLIENT_EVENT
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+tools:
+  - name: SysmonBinary
+    url: https://live.sysinternals.com/tools/sysmon64.exe
+    serve_locally: true
+
+  - name: SysmonConfig
+    url: https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/master/sysmonconfig-export.xml
+    serve_locally: true
+
+parameters:
+  - name: SysmonFileLocation
+    description: If set, we check this location first for sysmon installed.
+    default: C:/Windows/sysmon64.exe
+
+sources:
+- query: |
+    // First ensure that sysmon is actually installed.
+    LET _ <= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
+        SysmonFileLocation=SysmonFileLocation)
+
+    // Just parse and forward events. Use ETW rather than watch_evtx()
+    // because it is a little bit faster.
+    SELECT System.ID AS ID,
+           System.TimeStamp AS Timestamp,
+           get(member='EventData') AS EventData
+    FROM watch_etw(
+       description='Microsoft-Windows-Sysmon/Operational',
+       guid='{5770385f-c22a-43e0-bf4c-06f5698ffbd9}')
+````
+
+
+

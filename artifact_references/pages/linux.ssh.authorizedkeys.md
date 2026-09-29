@@ -1,0 +1,81 @@
+# Linux.Ssh.AuthorizedKeys
+
+Finds and parses SSH authorized keys files.
+
+From `man authorized_keys`:
+
+> `AUTHORIZED_KEYS FILE FORMAT`: Each line of the file contains one
+> key (empty lines and lines starting with a ‘#’ are ignored as
+> comments). Public keys consist of the following space-separated
+> fields: options, keytype, base64-encoded key, comment. The options
+> field is optional.
+
+
+---
+
+````yaml
+name: Linux.Ssh.AuthorizedKeys
+description: |
+  Finds and parses SSH authorized keys files.
+
+  From `man authorized_keys`:
+
+  > `AUTHORIZED_KEYS FILE FORMAT`: Each line of the file contains one
+  > key (empty lines and lines starting with a ‘#’ are ignored as
+  > comments). Public keys consist of the following space-separated
+  > fields: options, keytype, base64-encoded key, comment. The options
+  > field is optional.
+
+parameters:
+  - name: sshKeyFilesGlob
+    default: '/home/*/.ssh/authorized_keys*'
+    description: Glob of authorized_keys files.
+  - name: keyTypes
+    type: regex
+    description: A regex to identify supported key types
+    default: "sk-ecdsa-sha2-nistp256|ecdsa-sha2-nistp256|ecdsa-sha2-nistp384|ecdsa-sha2-nistp521|sk-ssh-ed25519|ssh-ed25519|ssh-dss|ssh-rsa"
+
+  - name: AlsoUpload
+    type: bool
+    description: Also upload the raw files for closer inspection.
+
+sources:
+  - precondition: |
+      SELECT OS From info() where OS = 'linux'
+
+    query: |
+      -- Find all eligible files.
+      LET authorized_keys = SELECT OSPath,
+        if(condition=AlsoUpload, then=upload(file=OSPath)) AS _Upload,
+        Mtime, Ctime
+      FROM glob(globs=sshKeyFilesGlob)
+      WHERE log(message="Parsing file %v", args=OSPath, dedup=-1)
+
+      -- Split each line into parts considering possible quoting
+      LET Parse(OSPath) =
+         -- Pad a bit so index does not wrap.
+         SELECT ParseParts(Parts=commandline_split(command=Line, bash_style=TRUE) + ("", "", "", "", "")) AS Parsed
+         FROM parse_lines(filename=OSPath)
+         WHERE NOT Line =~ "^#" AND Parsed.keytype =~ keyTypes
+
+      -- The option may or may not be there - determine by the key regex
+      LET ParseParts(Parts) = if(condition= Parts[0] =~ keyTypes,
+        -- No options
+        then=dict(options="", keytype=Parts[0], base64key=Parts[1], comment=Parts[2] || ""),
+
+        -- The line has options
+        else=dict(options=ParseOptions(Opts=Parts[0]),
+                  keytype=Parts[1], base64key=Parts[2], comment=Parts[3] || ""))
+
+      -- Option can have value or just be bare
+      LET ParseOptions(Opts) = split(string=Opts, sep_string=",")
+
+      SELECT * FROM foreach(row=authorized_keys,
+      query={
+        SELECT OSPath, _Upload, *
+        FROM foreach(column="Parsed", row= Parse(OSPath=OSPath))
+      })
+````
+
+
+

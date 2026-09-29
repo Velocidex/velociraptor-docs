@@ -1,0 +1,88 @@
+# Server.Enrichment.GreyNoise
+
+Enriches an IP address with GreyNoise threat intelligence including
+classification and noise status.
+
+This is a utility artifact that can be called from within another
+artifact (such as one looking for network connections) to enrich the
+data made available by that artifact.
+
+**Example**
+
+`SELECT * from Artifact.Server.Enrichment.GreyNoise(IP=$YOURIP)`
+
+
+---
+
+````yaml
+name: Server.Enrichment.GreyNoise
+author: Wes Lambert -- @therealwlambert
+description: |
+  Enriches an IP address with GreyNoise threat intelligence including
+  classification and noise status.
+
+  This is a utility artifact that can be called from within another
+  artifact (such as one looking for network connections) to enrich the
+  data made available by that artifact.
+
+  **Example**
+
+  `SELECT * from Artifact.Server.Enrichment.GreyNoise(IP=$YOURIP)`
+
+reference:
+  - https://developer.greynoise.io/reference/community-api
+
+type: SERVER
+
+parameters:
+    - name: IP
+      type: string
+      description: The IP to submit to GreyNoise.
+      default:
+    - name: ApiKey
+      type: string
+      description: The API key to submit to GreyNoise.
+      default: ''
+    - name: AccountType
+      type: choices
+      description: The GreyNoise account type - enterprise or community.
+      default: community
+      choices:
+        - community
+        - enterprise
+    - name: CommunityURL
+      type: string
+      description: The GreyNoise community API URL.
+      default: https://api.greynoise.io/v3/community/
+    - name: EnterpriseURL
+      type: string
+      description: The GreyNoise enterprise API URL.
+      default: https://api.greynoise.io/v2/noise/quick/
+
+sources:
+  - query: |
+        LET URL <= if(condition= AccountType='community', then=CommunityURL, else=EnterpriseURL)
+
+        LET Data = if(condition= ApiKey!='', 
+        then={
+            SELECT parse_json(data=Content) AS GreyNoiseLookup
+            FROM http_client(url=URL + IP, headers=dict(`Accept`="application/json",`key`=ApiKey), method='GET')
+        }, else={
+            SELECT parse_json(data=Content) AS GreyNoiseLookup
+            FROM http_client(url=URL + IP, headers=dict(`Accept`="application/json"), method='GET')
+        })
+
+        SELECT
+            GreyNoiseLookup.ip AS IP,
+            GreyNoiseLookup.classification AS Classification,
+            GreyNoiseLookup.name AS Name,
+            GreyNoiseLookup.riot AS Riot,
+            GreyNoiseLookup.noise AS Noise,
+            GreyNoiseLookup.last_seen AS LastSeen,
+            GreyNoiseLookup.link AS Link,
+            GreyNoiseLookup AS _GreyNoiseLookup
+        FROM Data
+````
+
+
+

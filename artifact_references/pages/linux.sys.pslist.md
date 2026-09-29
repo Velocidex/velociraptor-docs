@@ -1,0 +1,36 @@
+# Linux.Sys.Pslist
+
+Lists processes and their associated binaries.
+
+
+---
+
+````yaml
+name: Linux.Sys.Pslist
+description: |
+  Lists processes and their associated binaries.
+
+aliases:
+  - MacOS.Sys.Pslist
+
+parameters:
+  - name: processRegex
+    default: .
+    type: regex
+
+precondition: |
+  SELECT OS From info() where OS =~ 'linux|darwin'
+
+sources:
+  - query: |
+        SELECT Pid, Ppid, Name, CommandLine, Exe,
+               hash(path=Exe) as Hash,
+               Username, CreateTime,
+               MemoryInfo.rss AS RSS,
+               Exe =~ "\\(deleted\\)$" AS Deleted
+        FROM process_tracker_pslist()
+        WHERE Name =~ processRegex
+````
+
+
+

@@ -1,0 +1,71 @@
+# Windows.Events.TrackProcessesBasic
+
+Tracks running and exited processes by polling pslist() at a
+configurable interval.
+
+This is a basic process tracker which uses a simple polled pslist().
+It keeps track of exited processes, and resolves process call
+chains from its in-memory cache.
+
+Using this event artifact enables the global process tracker which
+makes it possible to run many other artifacts that depend on the
+process tracker.
+
+This tracker DOES NOT require Sysmon and is **incompatible** with
+`Windows.Events.TrackProcesses` and
+`Windows.Events.TrackProcessesETW` (only one should be running).
+
+
+---
+
+````yaml
+name: Windows.Events.TrackProcessesBasic
+description: |
+  Tracks running and exited processes by polling pslist() at a
+  configurable interval.
+
+  This is a basic process tracker which uses a simple polled pslist().
+  It keeps track of exited processes, and resolves process call
+  chains from its in-memory cache.
+
+  Using this event artifact enables the global process tracker which
+  makes it possible to run many other artifacts that depend on the
+  process tracker.
+
+  This tracker DOES NOT require Sysmon and is **incompatible** with
+  `Windows.Events.TrackProcesses` and
+  `Windows.Events.TrackProcessesETW` (only one should be running).
+
+type: CLIENT_EVENT
+
+parameters:
+  - name: MaxSize
+    type: int64
+    description: Maximum size of the in memory process cache (default 10k)
+  - name: PollPeriod
+    type: int64
+    description: How often to run pslist to track processes (in Seconds)
+    default: 60
+
+sources:
+  - query: |
+      LET SyncQuery =
+              SELECT Pid AS id,
+                 Ppid AS parent_id,
+                 CreateTime AS start_time,
+                 dict(
+                   Name=Name,
+                   Username=Username,
+                   Exe=Exe,
+                   CommandLine=CommandLine) AS data
+              FROM pslist()
+
+      LET Tracker <= process_tracker(
+        sync_query=SyncQuery, sync_period=1000 * PollPeriod)
+
+      SELECT * FROM process_tracker_updates()
+      WHERE update_type = "stats"
+````
+
+
+

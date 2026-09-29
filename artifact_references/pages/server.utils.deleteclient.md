@@ -1,0 +1,54 @@
+# Server.Utils.DeleteClient
+
+Removes one or more clients by ID from the server, deleting all
+associated collection data permanently.
+
+Be careful with this one: there is no way to recover old data.
+However, if the client itself still exists, it will just
+automatically re-enroll when it next connects. You will still be
+able to talk to it, it is just that old collected data will be
+deleted.
+
+
+---
+
+````yaml
+name: Server.Utils.DeleteClient
+description: |
+  Removes one or more clients by ID from the server, deleting all
+  associated collection data permanently.
+
+  Be careful with this one: there is no way to recover old data.
+  However, if the client itself still exists, it will just
+  automatically re-enroll when it next connects. You will still be
+  able to talk to it, it is just that old collected data will be
+  deleted.
+
+type: SERVER
+
+parameters:
+  - name: ClientIdList
+    description: A list of client ids to delete.
+    default:
+
+  - name: ReallyDoIt
+    description: If you really want to delete the client, check this.
+    type: bool
+
+sources:
+  - query: |
+      let clients_list = SELECT ClientId
+      FROM parse_records_with_regex(
+          accessor="data", file=ClientIdList,
+          regex="(?P<ClientId>C\\.[0-9a-z-]+)")
+      WHERE log(message="Deleting client " + ClientId)
+
+      SELECT * FROM foreach(row=clients_list,
+      query={
+         SELECT * FROM client_delete(client_id=ClientId,
+            really_do_it=ReallyDoIt)
+      })
+````
+
+
+

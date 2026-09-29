@@ -1,0 +1,60 @@
+# Windows.System.Handles
+
+Lists open handles (files, registry keys, etc.) for processes
+matching a regex pattern.
+
+Uncheck all the handle types below to fetch all handle types.
+
+
+---
+
+````yaml
+name: Windows.System.Handles
+description: |
+  Lists open handles (files, registry keys, etc.) for processes
+  matching a regex pattern.
+
+  Uncheck all the handle types below to fetch all handle types.
+
+parameters:
+  - name: processRegex
+    description: A regex applied to process names.
+    default: .
+    type: regex
+
+  - name: Files
+    description: Search for File Handles
+    type: bool
+    default: Y
+
+  - name: Key
+    description: Search for Key Handles
+    type: bool
+
+  - name: IncludeAccessMasks
+    type: bool
+
+sources:
+  - query: |
+      LET tokens <= SELECT * FROM chain(
+          a={SELECT "File" AS Type FROM scope() WHERE Files = 'Y'},
+          a2={SELECT "Section" AS Type FROM scope() WHERE Files = 'Y'},
+          b={SELECT "Key" AS Type FROM scope() WHERE Key = 'Y'}
+        )
+
+      LET processes = SELECT Pid AS ProcPid, Name AS ProcName, Exe
+        FROM pslist()
+        WHERE ProcName =~ processRegex AND ProcPid > 0
+
+      SELECT * FROM foreach(
+          row=processes,
+          query={
+            SELECT ProcPid, ProcName, Exe, Type, Name, Handle,
+                   if(condition=IncludeAccessMasks,
+                      then=AccessMaskPerms) AS AccessMaskPerms
+            FROM handles(pid=ProcPid, types=tokens.Type)
+          })
+````
+
+
+

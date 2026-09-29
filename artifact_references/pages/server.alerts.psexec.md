@@ -1,0 +1,55 @@
+# Server.Alerts.PsExec
+
+Sends an email alert when PsExec service execution is detected on a
+monitored client.
+
+Note this requires that the `Windows.Event.ProcessCreation`
+monitoring artifact is being collected from clients.
+
+
+---
+
+````yaml
+name: Server.Alerts.PsExec
+description: |
+  Sends an email alert when PsExec service execution is detected on a
+  monitored client.
+
+  Note this requires that the `Windows.Event.ProcessCreation`
+  monitoring artifact is being collected from clients.
+
+type: SERVER_EVENT
+
+parameters:
+  - name: EmailAddress
+    default: admin@example.com
+  - name: SkipVerify
+    type: bool
+    description: If set we skip TLS verification.
+  - name: MessageTemplate
+    default: |
+      PsExec execution detected at %v: %v for client %v
+
+sources:
+  - query: |
+        SELECT * FROM foreach(
+          row={
+            SELECT * from watch_monitoring(
+              artifact='Windows.Events.ProcessCreation')
+            WHERE Name =~ 'psexesvc'
+          },
+          query={
+            SELECT * FROM mail(
+              to=EmailAddress,
+              subject='PsExec launched on host',
+              period=60,
+              skip_verify=SkipVerify,
+              body=format(
+              format=MessageTemplate,
+              args=[Timestamp, CommandLine, ClientId])
+          )
+        })
+````
+
+
+

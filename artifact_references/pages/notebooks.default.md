@@ -1,0 +1,37 @@
+# Notebooks.Default
+
+Creates a new notebook with a welcome message and placeholder VQL
+cell.
+
+
+---
+
+````yaml
+name: Notebooks.Default
+description: |
+  Creates a new notebook with a welcome message and placeholder VQL
+  cell.
+
+type: NOTEBOOK
+
+sources:
+  - notebook:
+    - type: markdown
+      name: Welcome page
+      template: |
+        # Welcome to Velociraptor notebooks!
+
+        * Update this notebook with any VQL or markdown cells.
+        * You can copy cells into this notebook from other collection or hunt notebooks.
+
+    - type: vql_suggestion
+      name: A Cell Suggestion
+      template: |
+        /*
+        # This is a cell suggestion
+        */
+        SELECT * FROM info()
+````
+
+
+
