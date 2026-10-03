@@ -1,0 +1,86 @@
+name: Server.Enrichment.IsMalicious
+author: Jean-Vincent, IsMalicious
+description: |
+  Look up one IP address, domain, URL or MD5/SHA-1/SHA-256 hash with
+  IsMalicious. Runs on the server and retains the raw reputation report,
+  evidence verdict, risk score, confidence and provenance where available.
+  This is enrichment only: it does not block devices or apply a clean verdict
+  when an indicator is unknown. A false malicious flag does not prove safety.
+
+  Before running, create a managed secret of type HTTP Secrets named
+  ismalicious (or set SecretName). Configure its URL as
+  https://api.ismalicious.com/check, method GET, and extra_headers as:
+
+      {"Authorization":"Basic <Base64(apiKey:apiSecret)>",
+       "Accept":"application/json"}
+
+  Create your own account/key pair at https://ismalicious.com/app/account.
+  Grant secret access only to the server analyst who runs this artifact.
+  Keep TLS verification enabled. The credential remains in the secret store
+  and is not an artifact parameter. IsMalicious accepts HTTP Basic with the
+  key/secret pair; the API key component alone is insufficient.
+
+  Run from a server notebook, for example:
+
+      SELECT * FROM Artifact.Server.Enrichment.IsMalicious(
+        Indicator="192.0.2.1")
+
+  Replace the documentation IP with an IOC from your investigation. To enrich
+  hunt results, deduplicate first and pace requests according to your account:
+
+      SELECT * FROM foreach(
+        row={SELECT Indicator FROM source() GROUP BY Indicator},
+        query={SELECT * FROM Artifact.Server.Enrichment.IsMalicious(
+          Indicator=Indicator) WHERE sleep(time=1)})
+
+  Each indicator consumes one API lookup. No automatic retries are made.
+  HTTP errors are returned as Error/HTTPStatus, rather than clean reports.
+  Missing secrets and transport failures also generate collection diagnostics.
+  Set a collection timeout suitable for your notebook or batch. The native
+  HTTP client handles redirects and transport; Basic authentication is used
+  to avoid forwarding a custom API-key header to an unrelated redirect host.
+
+  Interpret evidence.verdict and reasons/contradictions in Report. Unknown
+  hashes stay unknown even with a risk score of zero. Risk score and confidence
+  are separate; contextual source rows are not a count of threat detections.
+  Standard enrichment is requested. This artifact does not consume or
+  redistribute TAXII feeds. API reference: https://ismalicious.com/api-docs.
+
+type: SERVER
+
+parameters:
+  - name: Indicator
+    type: string
+    description: Indicator to look up. The API detects the type.
+  - name: SecretName
+    type: string
+    default: ismalicious
+    description: Name of the server-managed HTTP Secrets credential.
+
+sources:
+  - precondition: SELECT * FROM scope() WHERE Indicator =~ "\\S"
+    query: |
+      LET Result = SELECT Response AS HTTPStatus,
+          if(condition=Response = 200,
+             then=parse_json(data=Content)) AS Report
+      FROM if(condition=Indicator =~ "\\S", then={
+          SELECT * FROM http_client(
+              url="https://api.ismalicious.com/check",
+              secret=SecretName,
+              method="GET",
+              params=dict(query=Indicator, enrichment="standard"))
+      })
+
+      SELECT Indicator, HTTPStatus,
+          if(condition=HTTPStatus != 200,
+             then=format(format="IsMalicious returned HTTP %v; check authentication or quota.",
+                         args=[HTTPStatus]),
+             else=if(condition=Report.malicious = NULL,
+                     then="IsMalicious returned an invalid JSON report.")) AS Error,
+          Report.evidence.verdict AS Verdict,
+          Report.riskScore.score AS RiskScore,
+          Report.confidence AS Confidence,
+          Report,
+          url(scheme="https", host="ismalicious.com", path="/report",
+              query=dict(query=Indicator)).String AS ReportURL
+      FROM Result
