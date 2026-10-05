@@ -4,6 +4,7 @@ import yaml
 import re
 import os
 import zipfile
+import subprocess
 
 # Where we generate the search index.
 commits_url = "https://api.github.com/repos/Velocidex/velociraptor-docs/commits"
@@ -118,7 +119,11 @@ def getAuthor(record, yaml_filename):
     record["author"] = ""
     record["author_link"] = ""
     record["author_avatar"] = ""
-    record["date"] = ""
+    # A PR's new artifact has no upstream history yet. Use its actual local
+    # creation commit so the generated RSS record has a publication date.
+    record["date"] = cleanupDate(subprocess.check_output(
+      ["git", "log", "--follow", "--diff-filter=A", "--format=%aI", "-1", "--", path],
+      text=True).strip())
     return record
 
   first_commit = commits[-1]
