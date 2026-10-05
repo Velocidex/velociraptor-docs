@@ -45,16 +45,17 @@ jobs:
           # Retrieve the latest patch release for the latest release:
           mkdir -p tests
           url=$(gh api repos/Velocidex/velociraptor/releases/latest \
-            --jq '[.assets[] | select(.name | test("^velociraptor-v\\d+\\.\\d+\\.\\d+-linux-amd64-musl$"))]
+            --jq '[.assets[] | select(.name | test("^velociraptor-v\\d+\\.\\d+\\.\\d+-linux-amd64-musl.gz$"))]
                   | sort_by(.name | capture("v(?<maj>\\d+)\\.(?<min>\\d+)\\.(?<patch>\\d+)")
                   | [.maj, .min, .patch] | map(tonumber))
                   | last.browser_download_url')
           if [ -z "$url" ] || [ "$url" = "null" ]; then
-            echo "No matching velociraptor-vX.Y.Z-linux-amd64-musl asset in latest release" >&2
+            echo "No matching velociraptor-vX.Y.Z-linux-amd64-musl.gz asset in latest release" >&2
             exit 1
           fi
           echo "Downloading $url"
-          curl -fsSL "$url" -o tests/velociraptor
+          curl -fsSL "$url" -o tests/velociraptor.gz
+          gunzip tests/velociraptor.gz
           chmod +x tests/velociraptor
 
       - name: Verify Exchange Artifacts
