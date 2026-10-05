@@ -20,7 +20,7 @@ researchers shared their findings and thorough reviews with our team.
 
 This release fixed a number of authorization bugs:
 
-* [CVE-2026-78413](./CVE-2026-78413) Velociraptor priviledge escalation via SysmonLogForward client monitoring artifact
+* [CVE-2026-78413](./CVE-2026-78413) Velociraptor privilege escalation via SysmonLogForward client monitoring artifact
 * [CVE-2026-78412](./CVE-2026-78412) WatchEvent API streams another organization's live events
 * [CVE-2026-78411](./CVE-2026-78411) Velociraptor Server Metadata update with Insufficient Permission Check
 
