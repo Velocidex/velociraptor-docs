@@ -9,7 +9,7 @@ tags:
 ---
 
 I am very excited to announce that the latest Velociraptor release
-0.77 RC1 is now available for testing.
+0.77 now available.
 
 In this post I will discuss some of the new features introduced by
 this release.

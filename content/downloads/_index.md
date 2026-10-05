@@ -9,57 +9,57 @@ date: 2021-06-23T08:29:57Z
 draft: false
 weight: 25
 no_children: true
-release: 0.77.2
-base_release: 0.77.2
+release: 0.77.3
+base_release: 0.77.3
 arches:
   - desc: Windows AMD64 (64-bit) Executable
-    name: windows-amd64.exe
-    hash: 686e4f5888fdd66d07ace3b6c1cbd7d2dd0d8d5fb4d3b5d905a7df3341dfb86f
+    name: windows-amd64.exe.gz
+    hash: 3d20a5a2d272e3eb2bccae4a80ebe469fc1a6f63eb4a8f8a586dbae356437d32
     platform: windows
 
   - desc: Windows AMD64 (64-bit) MSI
     name: windows-amd64.msi
-    hash: 7965d63d7c7434db425dba9dc7430f3e12c60e914017da9ac3617d0f3c9991e9
+    hash: 9eb216523824c34f9000ee7d8da58d37c55a7997525f1f6df2719467c162b953
     platform: windows
 
-  - desc: Windows 32-bit Executable
-    name: windows-386.exe
-    hash: 294e0fdc9e0cc623ad7f615b1b8772c9a7feb9e8bda9e50e3fe8041c8f0b934f
+  - desc: Windows ARM64 Executable
+    name: windows-arm64.exe.gz
+    hash: 278987e47e4016e8895a1eecd467f52bf3ab657178cb5bbf01310ba39cbd50bf
     platform: windows
 
-  - desc: Windows 32-bit MSI
-    name: windows-386.msi
-    hash: 5b0dd9c0fbea1ab23e66135f4525226f36f7175c3d25226a09c073049a684b0f
+  - desc: Windows ARM64 MSI
+    name: windows-arm64.msi
+    hash: 0e8e64276b2da06f4baf001b52daf2ef3df4f5eed890785112009d639e5fc72e
     platform: windows
 
   - desc: Linux Ubuntu 22.04 AMD64 and later. Recommended for servers.
-    name: linux-amd64
-    hash: 6c4c23c466d892788ff56ddcd3a31f844e4c0d797ade454c5e2625eb9e427077
+    name: linux-amd64.gz
+    hash: c216b7be6f104da551c302d707a7e5a7126e97db33d3f1fc9d2c3b76cfa00093
     platform: linux
 
   - desc: Linux Ubuntu 22.04 ARM and later. Recommended for servers or containers.
-    name: linux-arm64
-    hash: 54d36c23f374a572a4a60106d896e0e39bc6fcafd0d6150cf56aec6c49454ea0
+    name: linux-arm64.gz
+    hash: 4190869e5a25e0ff6f73751a08e9de113a347a006276659e453e67b408e8df84
     platform: linux
 
   - desc: Linux Static Build (Older Releases, e.g. RHEL, Centos) Recommended for clients.
-    name: linux-amd64-musl
-    hash: f3ffe0ed9942975214c1b7ba7a24b201eaff4ad827575342b43544158b64c524
+    name: linux-amd64-musl.gz
+    hash: 93171158fa081c07e3dd6b2cfc194f1a1db3eb30861639ad16eae6092afa42f7
     platform: linux
 
   - desc: Linux Sumo build. Recommended for servers.
-    name: linux-amd64-sumo-musl
-    hash: 16ba95c8556fa0340f62a97420db76863fe6b8a18575da58439c33fa759c5b11
+    name: linux-amd64-sumo-musl.gz
+    hash: f5909e2510c3b70427e34295a79a486478aa29924f844855633021cea2f2c090
     platform: linux
 
   - desc: MacOS AMD64
-    name: darwin-amd64
-    hash: 900efb29154939e6f594446096975439fc19c59fd74f5433d67bc15cacb4cd99
+    name: darwin-amd64.gz
+    hash: a6ba220c291706bf88237bb0d194e9edede01d0933fe7995e9ce7a20bf484b0e
     platform: apple
 
   - desc: MacOS ARM (M1, M2 chipsets)
-    name: darwin-arm64
-    hash: 3ec2df0c19726b92e27c51ec4b6239aee3e4e40425de39781859eb200987070e
+    name: darwin-arm64.gz
+    hash: 258ea35a3a718e2e6d40371fffd27ba434a2758191df795fd678aa10a5e30a18
     platform: apple
 
   - desc: FreeBSD AMD64
@@ -71,17 +71,17 @@ arches:
 
   - desc: Windows AMD64 (64 bits) Executable For Windows 7 Only
     name: windows-amd64-legacy.exe
-    hash: 4b56a1c082024e765a70e8c0f75e0cc3873a29f07402dac1d9beba08a424fb85
+    hash: 7b699a6670e0caaf8ce951225dff479c141580a9fe8d9d0a1a7c5e83d32e1698
     platform: windows
-    release: 0.77.1
-    base_release: 0.77.1
+    release: 0.77.3
+    base_release: 0.77.3
 
   - desc: Windows 32 bits Executable For Windows 7 Only
     name: windows-386-legacy.exe
-    hash: 828f0c295eebb01edb18e29bacdd1b14751446f9b43e969906b4fda50e0c53fe
+    hash: 89034042c0b956ce071cc5c23c0409702a2a3a463c7fd935c888ff7f3f26fb4f
     platform: windows
-    release: 0.77.1
-    base_release: 0.77.1
+    release: 0.77.3
+    base_release: 0.77.3
 
 description: |
   Velociraptor is open source software and is free for anyone to use under the
@@ -97,7 +97,12 @@ This page is for the current release. [The previous Release is 0.76.7](/download
 
 ## Release notes
 
-Full release notes are published in our [release blog post](/blog/2026/2026-05-31-release-notes-0.77/)
+* Full release notes are published in our [release blog post](/blog/2026/2026-05-31-release-notes-0.77/)
+
+* From this release we no longer publish 32 bit Windows
+  binaries. Instead we added ARM64 Windows binaries and MSI. If you
+  need 32 bit binaries you can build from source using `make
+  windowsx86` at the top level of the repository.
 
 ## The Sumo build
 
