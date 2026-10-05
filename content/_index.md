@@ -30,7 +30,7 @@ Please update to the latest release [0.77.2](/downloads/) to address
 {{< feature-grid >}}
 
   {{< feature icon="calendar" title="Announcements" url="/announcements/" banner=true kicker="Releases, security advisories & community news" >}}
-    **2026-08-26 - Velociraptor 0.77.2 is now available!**
+    **2026-10-05 - Velociraptor 0.77.3 is now available!**
   {{< /feature >}}
 
   {{< feature icon="fast-forward" title="Quickstart" url="/docs/deployment/quickstart/" >}}

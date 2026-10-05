@@ -1,9 +1,9 @@
 ---
-title: "Security Advisories fixed in release 0.77.2"
+title: "Security Advisories fixed in release 0.77.3"
 summary: |
-   Velociraptor 0.77.2 release fixed a number of CVEs.
+   Velociraptor 0.77.3 release fixed a number of CVEs.
 description: |
-   Velociraptor 0.77.2 release fixed a number of CVEs.
+   Velociraptor 0.77.3 release fixed a number of CVEs.
 weight: 10
 date: 2026-08-09T00:00:00Z
 no_edit: true
@@ -15,6 +15,17 @@ no_menu: true
 The Velociraptor project was lucky to receive a number of security
 advisories recently. A number of talented and experienced security
 researchers shared their findings and thorough reviews with our team.
+
+## Fixed in release 0.77.3
+
+This release fixed a number of authorization bugs:
+
+* [CVE-2026-78413](./CVE-2026-78413) Velociraptor priviledge escalation via SysmonLogForward client monitoring artifact
+* [CVE-2026-78412](./CVE-2026-78412) WatchEvent API streams another organization's live events
+* [CVE-2026-78411](./CVE-2026-78411) Velociraptor Server Metadata update with Insufficient Permission Check
+
+
+## Fixed in release 0.77.2
 
 We would like to extend our gratitude to the following researchers for
 responsibly sharing their findings:
