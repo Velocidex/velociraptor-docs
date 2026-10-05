@@ -8,7 +8,7 @@ description: |
   when an indicator is unknown. A false malicious flag does not prove safety.
 
   Before running, create a managed secret of type HTTP Secrets named
-  ismalicious (or set SecretName). Configure its URL as
+  `ismalicious` (or set SecretName). Configure its URL as
   https://api.ismalicious.com/check, method GET, and extra_headers as:
 
       {"Authorization":"Basic <Base64(apiKey:apiSecret)>",
