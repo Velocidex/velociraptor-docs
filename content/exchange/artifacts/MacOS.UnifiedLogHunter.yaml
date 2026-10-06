@@ -100,7 +100,7 @@ parameters:
     description: Look for XProtect scanning activity
   - name: XProtect Remediator detections
     type: bool
-    description: Look for XProtect Remediator results other than a clean scan (excludes NoThreatDetected and Success results with no cause)
+    description: Look for XProtect scan results other than a clean scan (excludes NoThreatDetected and Success results with no cause)
   - name: Browser Safe Storage Keychain Prompt
     type: bool
     description: Look for keychain prompts raised when a process other than the browser requests a browser "Safe Storage" key (Chrome, Brave, Edge, Opera, Arc). The message names the requesting binary and PID. Common macOS infostealer behavior.
