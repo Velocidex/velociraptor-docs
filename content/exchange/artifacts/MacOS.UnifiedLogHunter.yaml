@@ -98,6 +98,15 @@ parameters:
   - name: XProtect Remediator scanning activity
     type: bool
     description: Look for XProtect scanning activity
+  - name: XProtect Remediator detections
+    type: bool
+    description: Look for XProtect Remediator results other than a clean scan (excludes NoThreatDetected and Success results with no cause)
+  - name: Browser Safe Storage Keychain Prompt
+    type: bool
+    description: Look for keychain prompts raised when a process other than the browser requests a browser "Safe Storage" key (Chrome, Brave, Edge, Opera, Arc). The message names the requesting binary and PID. Common macOS infostealer behavior.
+  - name: Browser Safe Storage Keychain Access Denied
+    type: bool
+    description: Look for denied access to a browser "Safe Storage" keychain item (the user clicked Deny on the prompt)
   - name: Length
     type: int
     default: 10000000
@@ -110,6 +119,8 @@ sources:
             QueryName,Q
             Airdrop Transfer Outbound,subsystem == "com.apple.sharing" AND process == "AirDrop" AND processImagePath BEGINSWITH "/System/Library" AND eventMessage BEGINSWITH "Successfully issued sandbox extension for"
             Application Firewall Logging,subsystem == "com.apple.alf"
+            Browser Safe Storage Keychain Access Denied,process == "securityd" AND eventMessage BEGINSWITH "ObjectAcl REJECTS" AND eventMessage CONTAINS[c] "Safe Storage"
+            Browser Safe Storage Keychain Prompt,process == "securityd" AND category == "kcacl" AND eventMessage BEGINSWITH "displaying keychain prompt" AND eventMessage CONTAINS[c] "Safe Storage"
             Configuration Profile - Manual Install,subsystem == "com.apple.ManagedClient" AND process == "mdmclient" AND category == "MDMDaemon" and eventMessage CONTAINS "Installed configuration profile:" AND eventMessage CONTAINS "Source: Manual"
             Configuration Profile - Manual Removal,subsystem == "com.apple.ManagedClient" AND process == "mdmclient" AND category == "MDMDaemon" and eventMessage CONTAINS "Removed configuration profile:" AND eventMessage CONTAINS "Source: Manual"
             DNS configuration changes,subsystem == "com.apple.networkextension" and process == "nehelper" and eventMessage CONTAINS "DNS settings are enabled" OR subsystem == "com.apple.networkextension" and process == "nesessionmanager" and eventMessage contains "status changed to disconnected, last stop reason Configuration was disabled"'
@@ -132,7 +143,8 @@ sources:
             Successful Local Password Login,processImagePath BEGINSWITH "/System/Library/CoreServices" AND process == "loginwindow" AND subsystem == "com.apple.loginwindow.logging" AND eventMessage CONTAINS "[Login1 doLogin] | shortUsername"
             Successful Local TouchID Login,process == "loginwindow" AND eventMessage CONTAINS[c] "APEventTouchIDMatch"
             Successful Local User Password Change,subsystem == "com.apple.opendirectoryd" AND process == "opendirectoryd" AND category == "auth" AND eventMessage CONTAINS "Password changed for"
-            XProtect Remediator scanning activity,subsystem == "com.apple.XProtectFramework.PluginAPI" && category == "XPEvent.structured"''')
+            XProtect Remediator scanning activity,subsystem == "com.apple.XProtectFramework.PluginAPI" && category == "XPEvent.structured"
+            XProtect Remediator detections,subsystem == "com.apple.XProtectFramework.PluginAPI" AND category == "XPEvent.structured" AND NOT (eventMessage CONTAINS '"caused_by":[]' AND (eventMessage CONTAINS 'NoThreatDetected' OR eventMessage CONTAINS '"Success"'))''')
 
       LET QueriesToRun <= SELECT Q FROM QueryTable WHERE if(condition=RunAllQueries, then=QueryName, else=get(field=QueryName))
 
