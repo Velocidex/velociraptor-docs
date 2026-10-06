@@ -21,7 +21,7 @@ This artifact simply parses the output from `ipconfig /all`.
 name: Windows.Sys.Interfaces
 description: |
   Report information about the system's network interfaces.
-  
+
   This artifact simply parses the output from `ipconfig /all`.
 
 implied_permissions:
@@ -35,7 +35,7 @@ sources:
      LET ipconfig = SELECT * FROM execve(argv=['ipconfig', '/all'])
 
      // This produces a single row per interface.
-     LET interfaces = SELECT Name, Data FROM parse_records_with_regex(
+     LET sys_interfaces = SELECT Name, Data FROM parse_records_with_regex(
         file=ipconfig.Stdout,
         accessor='data',      // This makes the data appear as a file.
         regex='(?s)Ethernet adapter (?P<Name>[^:]+?):\r\n\r\n(?P<Data>.+?)\r\n(\r\n|$)')
@@ -51,7 +51,7 @@ sources:
           "DNS Servers[^:]+: (?P<DNS>.+)\r\n   [^ ]",
           "DHCP Server[^:]+: (?P<DHCP>.+)\r\n"
         ]
-     ) As Details FROM interfaces
+     ) As Details FROM sys_interfaces
 ````
 
 

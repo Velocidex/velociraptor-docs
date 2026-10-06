@@ -43,6 +43,8 @@ description: |
   tracker.
 
 type: CLIENT_EVENT
+required_permissions:
+  - EXECVE
 
 tools:
   - name: SysmonBinary

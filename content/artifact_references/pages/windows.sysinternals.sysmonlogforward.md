@@ -26,6 +26,9 @@ type: CLIENT_EVENT
 
 precondition: SELECT OS From info() where OS = 'windows'
 
+required_permissions:
+  - EXECVE
+
 tools:
   - name: SysmonBinary
     url: https://live.sysinternals.com/tools/sysmon64.exe

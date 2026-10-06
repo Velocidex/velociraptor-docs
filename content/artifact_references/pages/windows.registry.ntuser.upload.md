@@ -49,7 +49,7 @@ sources:
   - precondition: |
       SELECT OS From info() where OS = 'windows'
     query: |
-        LET users = SELECT
+        LET system_users = SELECT
             Name,
             expand(path=Directory) AS HomeDir
         FROM Artifact.Windows.Sys.Users()
@@ -57,7 +57,7 @@ sources:
 
         SELECT upload(file=HomeDir + "\\ntuser.dat",
                       accessor="auto") as Upload
-        FROM users
+        FROM system_users
 ````
 
 

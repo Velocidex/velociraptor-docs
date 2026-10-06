@@ -29,6 +29,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "COLLECT_CLIENT"
         },
         "platforms": [
@@ -58,6 +59,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "COLLECT_SERVER"
         },
         "platforms": [
@@ -291,6 +293,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "READ_RESULTS"
         },
         "platforms": [
@@ -314,6 +317,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "ARTIFACT_WRITER,SERVER_ARTIFACT_WRITER"
         },
         "platforms": [
@@ -354,6 +358,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "ARTIFACT_WRITER,SERVER_ARTIFACT_WRITER"
         },
         "platforms": [
@@ -668,6 +673,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "SERVER_ADMIN"
         },
         "platforms": [
@@ -703,6 +709,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "SERVER_ADMIN"
         },
         "platforms": [
@@ -949,6 +956,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "COLLECT_SERVER,COLLECT_CLIENT"
         },
         "platforms": [
@@ -1140,6 +1148,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "SERVER_ADMIN"
         },
         "platforms": [
@@ -1167,6 +1176,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "DELETE_RESULTS"
         },
         "platforms": [
@@ -1191,6 +1201,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "READ_RESULTS"
         },
         "platforms": [
@@ -1214,6 +1225,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "READ_RESULTS,SERVER_ADMIN"
         },
         "platforms": [
@@ -1248,6 +1260,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "COLLECT_CLIENT,SERVER_ADMIN"
         },
         "platforms": [
@@ -1276,6 +1289,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "READ_RESULTS"
         },
         "platforms": [
@@ -1308,6 +1322,9 @@
             }
         ],
         "category": "event",
+        "metadata": {
+            "event": "true"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -1430,7 +1447,7 @@
             {
                 "name": "client_id",
                 "type": "string",
-                "description": "The client id to schedule a collection on",
+                "description": "The client id to schedule a collection on. The use 'server' to schedule a server artifact collection.",
                 "required": true
             },
             {
@@ -1498,6 +1515,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "COLLECT_CLIENT,COLLECT_SERVER,COLLECT_BASIC"
         },
         "platforms": [
@@ -1862,6 +1880,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "PREPARE_RESULTS"
         },
         "platforms": [
@@ -2130,6 +2149,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "DELETE_RESULTS"
         },
         "platforms": [
@@ -2203,6 +2223,9 @@
             }
         ],
         "category": "event",
+        "metadata": {
+            "event": "true"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -2477,6 +2500,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "READ_RESULTS"
         },
         "platforms": [
@@ -2785,6 +2809,9 @@
             }
         ],
         "category": "event",
+        "metadata": {
+            "event": "true"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -3038,6 +3065,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "READ_RESULTS"
         },
         "platforms": [
@@ -3361,6 +3389,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "COLLECT_CLIENT,COLLECT_SERVER"
         },
         "platforms": [
@@ -3502,6 +3531,9 @@
             }
         ],
         "category": "server",
+        "metadata": {
+            "execution": "master"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -4431,6 +4463,7 @@
         "type": "Plugin",
         "category": "popular",
         "metadata": {
+            "execution": "master",
             "permissions": "MACHINE_STATE"
         },
         "platforms": [
@@ -5046,6 +5079,7 @@
         ],
         "category": "server",
         "metadata": {
+            "event": "true",
             "permissions": "SERVER_ADMIN"
         },
         "platforms": [
@@ -5902,6 +5936,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "COLLECT_SERVER"
         },
         "platforms": [
@@ -5929,6 +5964,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "SERVER_ADMIN"
         },
         "platforms": [
@@ -5963,6 +5999,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "PREPARE_RESULTS"
         },
         "platforms": [
@@ -5993,6 +6030,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "READ_RESULTS"
         },
         "platforms": [
@@ -6043,6 +6081,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "COLLECT_SERVER"
         },
         "platforms": [
@@ -6092,6 +6131,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "COLLECT_SERVER"
         },
         "platforms": [
@@ -6114,6 +6154,7 @@
             }
         ],
         "metadata": {
+            "execution": "master",
             "permissions": "SERVER_ADMIN,READ_RESULTS"
         },
         "platforms": [
@@ -6241,6 +6282,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "ORG_ADMIN"
         },
         "platforms": [
@@ -6271,6 +6313,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "ORG_ADMIN"
         },
         "platforms": [
@@ -6286,6 +6329,9 @@
         "description": "Retrieve the list of orgs on this server.",
         "type": "Plugin",
         "category": "server",
+        "metadata": {
+            "execution": "master"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -6445,6 +6491,9 @@
             }
         ],
         "category": "parsers",
+        "metadata": {
+            "permissions": "FILESYSTEM_READ"
+        },
         "platforms": [
             "linux_amd64_cgo"
         ]
@@ -7421,6 +7470,9 @@
             }
         ],
         "category": "server",
+        "metadata": {
+            "execution": "master"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -9366,6 +9418,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "SERVER_ADMIN"
         },
         "platforms": [
@@ -9428,6 +9481,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "SERVER_ADMIN"
         },
         "platforms": [
@@ -9440,6 +9494,9 @@
         "description": "Retrieve the list of secrets on the server.",
         "type": "Plugin",
         "category": "server",
+        "metadata": {
+            "execution": "master"
+        },
         "platforms": [
             "linux_amd64_cgo",
             "windows_amd64_cgo"
@@ -9583,6 +9640,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "SERVER_ADMIN"
         },
         "platforms": [
@@ -9606,6 +9664,10 @@
             }
         ],
         "category": "server",
+        "metadata": {
+            "execution": "master",
+            "permissions": "SERVER_ADMIN"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -10358,6 +10420,7 @@
         "name": "ssh",
         "description": "Access a remote system's filesystem via `SSH/SFTP`.",
         "type": "Accessor",
+        "version": 1,
         "args": [
             {
                 "name": "secret",
@@ -10383,6 +10446,11 @@
                 "name": "hostname",
                 "type": "string",
                 "description": "The hostname to log into."
+            },
+            {
+                "name": "hostkey",
+                "type": "string",
+                "description": "A base64 encoded host key. If specified we reject connections that do not present this host key."
             }
         ],
         "metadata": {
@@ -10762,6 +10830,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "READ_RESULTS"
         },
         "platforms": [
@@ -10820,6 +10889,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "READ_RESULTS"
         },
         "platforms": [
@@ -10855,6 +10925,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "NOTEBOOK_EDITOR"
         },
         "platforms": [
@@ -10877,6 +10948,7 @@
         ],
         "category": "server",
         "metadata": {
+            "execution": "master",
             "permissions": "READ_RESULTS"
         },
         "platforms": [
@@ -11733,6 +11805,9 @@
             }
         ],
         "category": "server",
+        "metadata": {
+            "execution": "master"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -11778,6 +11853,10 @@
             }
         ],
         "category": "server",
+        "metadata": {
+            "execution": "master",
+            "permissions": "SERVER_ADMIN"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -11811,6 +11890,10 @@
             }
         ],
         "category": "server",
+        "metadata": {
+            "execution": "master",
+            "permissions": "SERVER_ADMIN"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -11850,6 +11933,10 @@
             }
         ],
         "category": "server",
+        "metadata": {
+            "execution": "master",
+            "permissions": "SERVER_ADMIN"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",
@@ -11876,6 +11963,9 @@
                 "description": "The message to deliver to the user."
             }
         ],
+        "metadata": {
+            "execution": "master"
+        },
         "platforms": [
             "linux_amd64_cgo"
         ],
@@ -11898,6 +11988,9 @@
                 "description": "If set we read another user's messages (must be admin)."
             }
         ],
+        "metadata": {
+            "execution": "master"
+        },
         "platforms": [
             "linux_amd64_cgo"
         ]
@@ -11945,6 +12038,9 @@
             }
         ],
         "category": "server",
+        "metadata": {
+            "execution": "master"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "linux_amd64_cgo",
@@ -12189,6 +12285,10 @@
             }
         ],
         "category": "event",
+        "metadata": {
+            "event": "true",
+            "permissions": "MACHINE_STATE"
+        },
         "platforms": [
             "linux_amd64_cgo"
         ]
@@ -12234,6 +12334,7 @@
         ],
         "category": "event",
         "metadata": {
+            "event": "true",
             "permissions": "FILESYSTEM_READ"
         },
         "platforms": [
@@ -12274,6 +12375,7 @@
         ],
         "category": "linux",
         "metadata": {
+            "event": "true",
             "permissions": "MACHINE_STATE"
         },
         "platforms": [
@@ -12387,6 +12489,7 @@
         ],
         "category": "event",
         "metadata": {
+            "event": "true",
             "permissions": "FILESYSTEM_READ"
         },
         "platforms": [
@@ -12422,6 +12525,7 @@
         ],
         "category": "event",
         "metadata": {
+            "event": "true",
             "permissions": "FILESYSTEM_READ"
         },
         "platforms": [
@@ -12457,6 +12561,7 @@
         ],
         "category": "event",
         "metadata": {
+            "event": "true",
             "permissions": "FILESYSTEM_READ"
         },
         "platforms": [
@@ -12481,6 +12586,8 @@
         ],
         "category": "event",
         "metadata": {
+            "event": "true",
+            "execution": "master",
             "permissions": "READ_RESULTS"
         },
         "platforms": [
@@ -12521,6 +12628,7 @@
         ],
         "category": "event",
         "metadata": {
+            "event": "true",
             "permissions": "FILESYSTEM_READ"
         },
         "platforms": [
@@ -12544,6 +12652,10 @@
             }
         ],
         "category": "event",
+        "metadata": {
+            "event": "true",
+            "permissions": "FILESYSTEM_READ"
+        },
         "platforms": [
             "darwin_amd64_cgo",
             "darwin_arm64_cgo",

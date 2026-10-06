@@ -19,7 +19,7 @@ arches:
 
   - desc: Windows AMD64 (64-bit) MSI
     name: windows-amd64.msi
-    hash: 9eb216523824c34f9000ee7d8da58d37c55a7997525f1f6df2719467c162b953
+    hash: 097dbfa7b0c15d90c051b4f58852cfbe427130d5a8387210833ccaaf86652ddc
     platform: windows
 
   - desc: Windows ARM64 Executable
@@ -32,12 +32,12 @@ arches:
     hash: 0e8e64276b2da06f4baf001b52daf2ef3df4f5eed890785112009d639e5fc72e
     platform: windows
 
-  - desc: Linux Ubuntu 22.04 AMD64 and later. Recommended for servers.
+  - desc: Linux Ubuntu 26.04 AMD64 and later. Recommended for servers.
     name: linux-amd64.gz
     hash: c216b7be6f104da551c302d707a7e5a7126e97db33d3f1fc9d2c3b76cfa00093
     platform: linux
 
-  - desc: Linux Ubuntu 22.04 ARM and later. Recommended for servers or containers.
+  - desc: Linux Ubuntu 26.04 ARM and later. Recommended for servers or containers.
     name: linux-arm64.gz
     hash: 4190869e5a25e0ff6f73751a08e9de113a347a006276659e453e67b408e8df84
     platform: linux

@@ -91,7 +91,7 @@ build:
 
 Arg | Description | Type
 ----|-------------|-----
-client_id|The client id to schedule a collection on|string (required)
+client_id|The client id to schedule a collection on. The use 'server' to schedule a server artifact collection.|string (required)
 flow_id|If a flow id is specified we do not create a new flow, but instead add the collection to this flow.|string
 artifacts|A list of artifacts to collect|list of string (required)
 env|Parameters to apply to the artifact (an alternative to a full spec)|ordereddict.Dict
