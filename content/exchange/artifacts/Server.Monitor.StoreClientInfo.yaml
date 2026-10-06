@@ -4,7 +4,7 @@ description: |
   Save data from client interrogation as client metadata.
 
   This artifact listens for completions of an interrogation artifact —
-  typically `Custom.Generic.Client.Info`, your own override of
+  typically your own `Custom.`-prefixed override of
   [`Generic.Client.Info`](/artifact_references/pages/generic.client.info/)
   — and stores selected fields from the result as client metadata, so
   they can be indexed and searched.
