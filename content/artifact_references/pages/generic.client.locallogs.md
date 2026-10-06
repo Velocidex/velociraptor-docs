@@ -30,6 +30,12 @@ description: |
 
 type: CLIENT_EVENT
 
+required_permissions:
+  - FILESYSTEM_WRITE
+
+implied_permissions:
+  - SERVER_ADMIN
+
 parameters:
 - name: LocalFilename
   default: "%TEMP%/locallogs.log"

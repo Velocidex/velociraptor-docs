@@ -2001,7 +2001,7 @@
     },
     {
         "title": "Server.Utils.CreateLinuxPackages",
-        "description": "Builds Debian (.deb) and RPM packages with embedded client config for the current organization.",
+        "description": "Builds Debian (.deb) and RPM client packages with embedded client\nconfig for the current organization.",
         "link": "/artifact_references/pages/server.utils.createlinuxpackages",
         "type": "server",
         "date": "2025-06-16",

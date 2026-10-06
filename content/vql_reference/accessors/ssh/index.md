@@ -31,6 +31,12 @@ description: |
      password parameter to the `SSH_CONFIG`
   3. The private_key parameter must contain an unencrypted PEM encoded
      SSH private key pair.
+  4. The hostkey parameter is a base64 encoded SSH host key. When it is
+     specified, connections to a remote system that does not present
+     that exact host key are rejected. When it is not specified, the
+     host key presented by the remote system is written to the query
+     log instead. A hostkey provided by the secret takes precedence
+     over the hostkey parameter.
 
   It is more convenient to use the [secrets support]({{< ref
   "/blog/2024/2024-03-10-release-notes-0.72/#secret-management" >}}) in
@@ -51,6 +57,7 @@ username|The username to use to log into the remote system.|string
 password|The password to use to log into the remote system.|string
 private_key|A private key to use to log into the remote system instead of a password.|string
 hostname|The hostname to log into.|string
+hostkey|A base64 encoded host key. If specified we reject connections that do not present this host key.|string
 
 **Required permissions:** `NETWORK`
 
@@ -82,6 +89,12 @@ SELECT OSPath FROM glob(accessor="ssh", globs="/*")
    password parameter to the `SSH_CONFIG`
 3. The private_key parameter must contain an unencrypted PEM encoded
    SSH private key pair.
+4. The hostkey parameter is a base64 encoded SSH host key. When it is
+   specified, connections to a remote system that does not present
+   that exact host key are rejected. When it is not specified, the
+   host key presented by the remote system is written to the query
+   log instead. A hostkey provided by the secret takes precedence
+   over the hostkey parameter.
 
 It is more convenient to use the [secrets support]({{< ref
 "/blog/2024/2024-03-10-release-notes-0.72/#secret-management" >}}) in

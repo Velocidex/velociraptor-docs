@@ -36,6 +36,7 @@ type: CLIENT_EVENT
 
 required_permissions:
   - EXECVE
+  - NETWORK
 
 parameters:
   - name: PolicyName

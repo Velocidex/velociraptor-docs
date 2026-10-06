@@ -29,6 +29,9 @@ build:
 Arg | Description | Type
 ----|-------------|-----
 metadata|A dict containing metadata. If not specified we use kwargs.|ordereddict.Dict
+
+**Required permissions:** `SERVER_ADMIN`
+
 ### Description
 
 Sets server metadata. Server metadata is a set of free form

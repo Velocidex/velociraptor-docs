@@ -38,6 +38,9 @@ description: |
 
 type: CLIENT_EVENT
 
+implied_permissions:
+  - EXECVE
+
 parameters:
   - name: yaraRule
     type: yara

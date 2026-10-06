@@ -796,6 +796,17 @@ SELECT MyFunc(X=6) FROM scope()
 > between the FROM and WHERE clauses. A function simply takes several
 > values and transforms them into a single value.
 
+Local functions may define a default value for a parameter. If the
+caller does not specify the parameter, the default value is used.
+
+```vql
+LET MyFunc(X=5) = X + 5
+
+-- Return 11
+SELECT MyFunc(X=6), MyFunc() FROM scope()
+```
+
+
 ## VQL Operators
 
 In VQL an operator represents an operation to be taken on

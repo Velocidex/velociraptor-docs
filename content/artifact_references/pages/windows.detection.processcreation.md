@@ -26,6 +26,9 @@ author: Jos Clephas - @DfirJos
 
 type: CLIENT_EVENT
 
+required_permissions:
+  - EXECVE
+
 tools:
   - name: SysmonBinary
     url: https://live.sysinternals.com/tools/sysmon64.exe
