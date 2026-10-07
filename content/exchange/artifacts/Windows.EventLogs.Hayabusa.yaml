@@ -74,16 +74,16 @@ parameters:
      - timesketch-verbose
  - name: OutputTimeFormat
    description: "Choose the format of timestamp"
-   default: ISO-8601
+   default: iso-8601
    type: choices
    choices:
-     - European-time
-     - ISO-8601
-     - RFC-2822
-     - RFC-3339
-     - US-military-time
-     - US-time
-     - UTC
+     - european-time
+     - iso-8601
+     - rfc-2822
+     - rfc-3339
+     - us-military-time
+     - us-time
+     - utc
  - name: Threads
    description: "Number of threads"
    type: int
