@@ -1,0 +1,325 @@
+name: Windows.Detection.LocalAIAgents
+author: Deniz Ciftci
+reference:
+  - https://learn.microsoft.com/en-us/defender-endpoint/discover-local-ai-agents
+
+description: |
+  This hunt inventories locally-installed AI agents on Windows endpoints:
+  CLI coding agents, desktop apps, AI-powered IDEs, VS Code
+  extensions, Claw-family agents, and local LLM runtimes that people install on
+  their own without going through IT.
+
+  The design keeps the detection logic simple and puts all the knowledge in
+  editable lookup tables. Each agent is identified by the files it
+  leaves on disk and the way its process looks at runtime.
+
+  Four sources, each answering a different question:
+
+    InstalledFootprint: Is the agent on disk? Globs a table of known install,
+    config, and extension paths under each user profile. It only checks whether
+    the path exists (path, mtime, size) and does not open any file.
+
+    RunningAgents: Is it running now, and who is running it? Walks pslist() and
+    matches process name, command line, and exe path against a signature table.
+    It also reports the Authenticode signer of the exe so a spoofed binary
+    stands out. The signer is reported, not used to filter, so baseline your
+    fleet's normal signers first.
+
+    MCPInventory: What can the agent reach? Not just whether it is installed,
+    but which tools and endpoints it can talk to. It reads each agent's MCP
+    config and extracts the defined servers (name, command, args, url). A single
+    MCPConfigLookup table carries a Format column: JSON configs are parsed
+    directly, while Codex (TOML) and Goose (YAML) are read with regex.
+
+    UsageEvidence: When was it last used? Globs each agent's session and history
+    files and reports mtime and size only.
+
+  False positives: 'warp' collides with Cloudflare WARP, so it is excluded
+  explicitly.
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+parameters:
+  - name: UsersGlob
+    default: C:/Users/*
+    description: Root path for user profiles. Profiles of logged-off users are included.
+
+  - name: FootprintLookup
+    description: "Filesystem traces: install, config, and extension paths per agent. Checks path existence only; files are not opened. Scope=home joins the path to each profile dir, Scope=abs is used as-is."
+    type: csv
+    default: |
+      Agent,Category,Signal,Scope,RelGlob,Confidence
+      Claude Code,CLI,Config,home,.claude.json,known
+      Claude Code,CLI,Config,home,.claude/settings.json,known
+      Claude Code,CLI,Install,home,AppData/Roaming/npm/node_modules/@anthropic-ai/claude-code/package.json,known
+      Claude Code,CLI,Install,home,.local/bin/claude.exe,vm-verify
+      Codex CLI+Desktop,CLI,Config,home,.codex/config.toml,known
+      Codex CLI+Desktop,CLI,Credential,home,.codex/auth.json,known
+      Codex CLI+Desktop,CLI,Install,home,AppData/Roaming/npm/node_modules/@openai/codex/package.json,known
+      Codex CLI+Desktop,Desktop,Install,home,AppData/Local/Packages/OpenAI.Codex_*/*,verified-doc
+      Codex CLI+Desktop,Desktop,Install,abs,C:/Program Files/WindowsApps/OpenAI.Codex_*/*,verified-doc
+      ChatGPT Desktop,Desktop,Install,home,AppData/Local/Packages/OpenAI.ChatGPT-Desktop_*/*,known
+      Gemini CLI,CLI,Config,home,.gemini/settings.json,known
+      Gemini CLI,CLI,Credential,home,.gemini/oauth_creds.json,known
+      Gemini CLI,CLI,Install,home,AppData/Roaming/npm/node_modules/@google/gemini-cli/package.json,known
+      GitHub Copilot CLI,CLI,Config,home,.copilot/config.json,known
+      GitHub Copilot CLI,CLI,MCPConfig,home,.copilot/mcp-config.json,known
+      GitHub Copilot CLI,CLI,Install,home,AppData/Roaming/npm/node_modules/@github/copilot/package.json,known
+      Junie CLI,CLI,Config,home,.junie/config.json,vm-verify
+      Junie CLI,CLI,Config,home,.junie/allowlist.json,vm-verify
+      Kiro CLI,CLI,MCPConfig,home,.kiro/settings/mcp.json,vm-verify
+      Kiro CLI,CLI,Legacy,home,.aws/amazonq/*,verified-doc
+      Kiro IDE,IDE,Install,home,AppData/Local/Programs/Kiro/Kiro.exe,known
+      Kiro IDE,IDE,Config,home,AppData/Roaming/Kiro/User/*,vm-verify
+      OpenCode,CLI,Config,home,.config/opencode/*,vm-verify
+      OpenCode,CLI,Install,home,AppData/Roaming/npm/node_modules/opencode-ai/package.json,known
+      Warp,CLI,Session,home,"AppData/Local/{warp,Warp}/**/warp.sqlite",vm-verify
+      Antigravity IDE,IDE,Install,home,AppData/Local/Programs/Antigravity/Antigravity.exe,vm-verify
+      Antigravity IDE,IDE,Config,home,AppData/Roaming/Antigravity/User/*,vm-verify
+      Antigravity IDE,IDE,Extension,home,.antigravity/extensions/*/package.json,vm-verify
+      Claude Desktop,Desktop,Install,home,AppData/Local/AnthropicClaude/claude.exe,known
+      Claude Desktop,Desktop,MCPConfig,home,AppData/Roaming/Claude/claude_desktop_config.json,known
+      Claude Desktop,Desktop,Session,home,AppData/Roaming/Claude/logs/mcp*.log,vm-verify
+      Goose,CLI+Desktop,Install,home,AppData/Local/Programs/Goose/*,vm-verify
+      Goose,CLI+Desktop,Config,home,.config/goose/config.yaml,vm-verify
+      Hermes Agent,CLI+Desktop,Install,home,AppData/Local/hermes/*,verified-doc
+      Hermes Agent,CLI+Desktop,Config,home,.hermes/config.yaml,vm-verify
+      Hermes Agent,CLI+Desktop,Credential,home,.hermes/.env,vm-verify
+      Ollama,Runtime,Install,home,AppData/Local/Programs/Ollama/*,known
+      Ollama,Runtime,Model,home,.ollama/models/manifests/**,known
+      Ollama,Runtime,Session,home,.ollama/history,known
+      Ollama,Runtime,Credential,home,.ollama/id_ed25519,known
+      Perplexity Desktop,Desktop,Install,home,AppData/Local/Packages/*Perplexity*/*,vm-verify
+      Poe Desktop,Desktop,Install,home,"AppData/Local/Programs/{Poe,poe-desktop}/*",vm-verify
+      Cursor,IDE,Install,home,AppData/Local/Programs/cursor/Cursor.exe,known
+      Cursor,IDE,MCPConfig,home,.cursor/mcp.json,known
+      Cursor,IDE,Extension,home,.cursor/extensions/*/package.json,known
+      Cursor,IDE,Session,home,AppData/Roaming/Cursor/User/globalStorage/state.vscdb,known
+      Devin (ex-Windsurf),IDE,Install,home,"AppData/Local/Programs/{Devin,Windsurf}/*",vm-verify
+      Devin (ex-Windsurf),IDE,Config,home,"AppData/Roaming/{Devin,Windsurf}/User/*",vm-verify
+      Devin (ex-Windsurf),IDE,MCPConfig,home,.codeium/windsurf/mcp_config.json,known
+      Devin (ex-Windsurf),IDE,Config,home,.devin/*,verified-doc
+      Devin (ex-Windsurf),IDE,Legacy,home,.windsurf/*,verified-doc
+      VSCode Ext: Claude Code,VSCodeExt,Extension,home,.vscode/extensions/anthropic.claude-code-*/package.json,known
+      VSCode Ext: Cline,VSCodeExt,Extension,home,.vscode/extensions/saoudrizwan.claude-dev-*/package.json,known
+      VSCode Ext: Cline,VSCodeExt,Session,home,AppData/Roaming/Code*/User/globalStorage/saoudrizwan.claude-dev/*,known
+      VSCode Ext: Codex,VSCodeExt,Extension,home,.vscode/extensions/openai.chatgpt-*/package.json,known
+      VSCode Ext: Gemini Code Assist,VSCodeExt,Extension,home,.vscode/extensions/google.geminicodeassist-*/package.json,known
+      VSCode Ext: GitHub Copilot,VSCodeExt,Extension,home,.vscode/extensions/github.copilot-*/package.json,known
+      VSCode Ext: Roo Code,VSCodeExt,Extension,home,.vscode/extensions/rooveterinaryinc.roo-cline-*/package.json,known
+      VSCode Ext: Roo Code,VSCodeExt,Session,home,AppData/Roaming/Code*/User/globalStorage/rooveterinaryinc.roo-cline/*,known
+      VSCode Ext: Continue,VSCodeExt,Config,home,".continue/config.{json,yaml}",known
+      VSCode Ext: Amp,VSCodeExt,Extension,home,.vscode/extensions/sourcegraph.amp-*/package.json,known
+      VSCode User MCP,VSCodeExt,MCPConfig,home,AppData/Roaming/Code*/User/mcp.json,known
+      OpenClaw,ClawFamily,Config,home,.openclaw/openclaw.json,vm-verify
+      OpenClaw,ClawFamily,Config,home,.openclaw/cron/jobs.json,vm-verify
+      OpenClaw,ClawFamily,Legacy,home,"{.clawdbot,.moltbot}/*",vm-verify
+      OpenClaw,ClawFamily,Install,home,AppData/Roaming/npm/node_modules/openclaw/package.json,known
+      QClaw (QuantumClaw),ClawFamily,Install,home,AppData/Roaming/npm/node_modules/quantumclaw/package.json,verified-doc
+      QClaw (QuantumClaw),ClawFamily,Config,home,.qclaw/*,vm-verify
+      QClaw Desktop (Tencent),ClawFamily,Install,home,AppData/Local/Programs/QClaw*/*,vm-verify
+      ClawPilot Desktop,ClawFamily,Install,home,AppData/Local/Programs/Clawpilot*/*,vm-verify
+      Nanobot,ClawFamily,Config,home,.nanobot/*,vm-verify
+      Aider,CLI,Config,home,.aider.conf.yml,known
+      Aider,CLI,Session,home,.aider/*,known
+      Amp,CLI,Config,home,.config/amp/*,vm-verify
+      Amp,CLI,Install,home,AppData/Roaming/npm/node_modules/@sourcegraph/amp/package.json,known
+      Trae,IDE,Install,home,AppData/Local/Programs/Trae*/*,known
+      Trae,IDE,Config,home,AppData/Roaming/Trae*/User/*,known
+      Trae,IDE,MCPConfig,home,.trae/mcp.json,vm-verify
+      Zed,IDE,Config,home,AppData/Local/Zed/*,vm-verify
+      OpenHands,CLI,Config,home,.openhands/*,known
+      LM Studio,Runtime,Config,home,.lmstudio/*,known
+      LM Studio,Runtime,MCPConfig,home,.lmstudio/mcp.json,known
+      LM Studio,Runtime,Install,home,AppData/Local/Programs/LM Studio/*,vm-verify
+      Jan,Runtime,Config,home,"{jan,AppData/Roaming/Jan}/*",vm-verify
+      GPT4All,Runtime,Config,home,AppData/Local/nomic.ai/GPT4All/*,known
+      npm shims (any agent),CLI,Install,home,"AppData/Roaming/npm/{claude,codex,gemini,copilot,opencode,openclaw,qclaw,amp}*.cmd",known
+      WSL present (blind spot),Info,Install,home,AppData/Local/Packages/*Ubuntu*/LocalState/ext4.vhdx,known
+
+  - name: ProcessLookup
+    description: "Process signatures matched against a running process by name, command line, and exe path. A match requires NameRegex AND (CmdlineRegex OR PathRegex)."
+    type: csv
+    default: |
+      Agent,NameRegex,CmdlineRegex,PathRegex,Ports
+      Claude Code,(?i)^(node|claude)(\.exe)?$,@anthropic-ai[\\/]claude-code,[\\/]\.claude[\\/],
+      Claude Desktop,(?i)^claude\.exe$,,AnthropicClaude,
+      Codex CLI,(?i)^(node|codex)(\.exe)?$,@openai[\\/]codex|codex (exec|resume),[\\/]\.codex[\\/],
+      Codex Desktop,(?i)^Codex\.exe$,,OpenAI\.Codex,
+      ChatGPT Desktop,(?i)^ChatGPT\.exe$,,ChatGPT-Desktop,
+      Gemini CLI,(?i)^(node|gemini)(\.exe)?$,@google[\\/]gemini-cli,@google[\\/]gemini-cli,
+      GitHub Copilot CLI,(?i)^(node|copilot)(\.exe)?$,@github[\\/]copilot,@github[\\/]copilot,
+      Junie CLI,(?i)^junie(\.exe)?$,junie,[\\/]\.junie[\\/],
+      Kiro CLI,(?i)^(kiro-cli|q)(\.exe)?$,kiro-cli|amazonq,[\\/](kiro-cli|q)(\.exe)?$,
+      Kiro IDE,(?i)^Kiro\.exe$,,Programs[\\/]Kiro,
+      OpenCode,(?i)^opencode(\.exe)?$,opencode,opencode,
+      Warp,(?i)^warp\.exe$,,AppData[\\/]Local[\\/][Ww]arp,
+      Antigravity IDE,(?i)^Antigravity\.exe$,,Antigravity,
+      Devin (ex-Windsurf),(?i)^(Devin|Windsurf)\.exe$,,(Devin|Windsurf),
+      Cursor,(?i)^Cursor\.exe$,,Programs[\\/]cursor,
+      Cursor CLI,(?i)^cursor-agent(\.exe)?$,cursor-agent,cursor-agent,
+      Trae,(?i)^Trae(CN)?\.exe$,,Trae,
+      Goose,(?i)^goose(\.exe)?$,goose (session|run|web),[Gg]oose,
+      Hermes Agent,(?i)^(python[0-9.]*|hermes)(\.exe)?$,hermes (gateway|chat|setup)|hermes-agent,[\\/](\.hermes|hermes)[\\/],8642
+      Ollama,(?i)^(ollama|ollama app)\.exe$,ollama (serve|run|pull),Ollama,11434
+      LM Studio,(?i)^(LM Studio|lms)(\.exe)?$,lms (server|load),LM Studio|\.lmstudio,1234
+      Jan,(?i)^Jan\.exe$,,[\\/]Jan[\\/],1337
+      GPT4All,(?i)^(gpt4all|chat)\.exe$,gpt4all,GPT4All,
+      Zed,(?i)^zed\.exe$,,Zed,
+      Perplexity Desktop,(?i)^Perplexity\.exe$,,Perplexity,
+      Poe Desktop,(?i)^Poe\.exe$,,Poe,
+      OpenClaw,(?i)^node(\.exe)?$,openclaw,openclaw,18789
+      QClaw,(?i)^(node|qclaw)(\.exe)?$,quantumclaw|qclaw,[Qq]Claw|quantumclaw,3000
+      Nanobot,(?i)^nanobot(\.exe)?$,nanobot,nanobot,
+      Aider,(?i)^(python[0-9.]*|aider)(\.exe)?$,aider,aider,
+      OpenHands,(?i)^(python[0-9.]*|uvx?)(\.exe)?$,openhands,openhands,
+      Amp,(?i)^(node|amp)(\.exe)?$,@sourcegraph[\\/]amp,@sourcegraph[\\/]amp,
+
+  - name: MCPConfigLookup
+    description: "MCP config files, used to extract the MCP servers each agent can reach. Format=json is parsed directly; toml (Codex) and yaml (Goose) are read with regex (VQL has no native TOML/YAML parser). The ExtractionMethod column shows which method was used."
+    type: csv
+    default: |
+      Agent,Format,RelGlob
+      Claude Desktop,json,AppData/Roaming/Claude/claude_desktop_config.json
+      Claude Code,json,.claude.json
+      Cursor,json,.cursor/mcp.json
+      GitHub Copilot CLI,json,.copilot/mcp-config.json
+      Kiro CLI,json,.kiro/settings/mcp.json
+      Kiro CLI (legacy Q),json,.aws/amazonq/mcp.json
+      Devin (ex-Windsurf),json,.codeium/windsurf/mcp_config.json
+      Cline,json,AppData/Roaming/Code*/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+      Roo Code,json,AppData/Roaming/Code*/User/globalStorage/rooveterinaryinc.roo-cline/settings/mcp_settings.json
+      VSCode User,json,AppData/Roaming/Code*/User/mcp.json
+      LM Studio,json,.lmstudio/mcp.json
+      Trae,json,.trae/mcp.json
+      Codex,toml,.codex/config.toml
+      Goose,yaml,.config/goose/config.yaml
+
+  - name: UsageLookup
+    description: "Usage evidence: each agent's session/history files. The file mtime gives the last-used date; contents are not read."
+    type: csv
+    default: |
+      Agent,RelGlob
+      Claude Code,.claude/projects/*/*.jsonl
+      Codex,.codex/sessions/**/*.jsonl
+      Gemini CLI,.gemini/tmp/*/logs.json
+      Cline,AppData/Roaming/Code*/User/globalStorage/saoudrizwan.claude-dev/tasks/*
+      Roo Code,AppData/Roaming/Code*/User/globalStorage/rooveterinaryinc.roo-cline/tasks/*
+      Ollama,.ollama/history
+      OpenClaw,.openclaw/agents/**
+      Continue,.continue/sessions/*
+      Aider,.aider/**
+      Hermes Agent,.hermes/logs/**
+
+sources:
+  - name: InstalledFootprint
+    query: |
+      LET Homes = SELECT OSPath AS HomeDir, OSPath.Basename AS Profile
+        FROM glob(globs=UsersGlob)
+        WHERE IsDir
+
+      SELECT * FROM foreach(row=Homes, query={
+        SELECT * FROM foreach(row=FootprintLookup, query={
+          SELECT Agent, Category, Signal, Confidence, Profile,
+                 OSPath AS Hit, Mtime, Size
+          FROM glob(globs=if(condition=Scope = 'abs',
+                             then=RelGlob,
+                             else=HomeDir + '/' + RelGlob))
+        })
+      })
+
+  - name: RunningAgents
+    query: |
+      LET procs = SELECT Pid, Ppid, Name, Exe, CommandLine, Username, CreateTime
+        FROM pslist()
+        WHERE NOT Exe =~ '(?i)cloudflare'
+
+      SELECT * FROM foreach(row=procs, query={
+        SELECT Agent, Ports, Pid, Ppid, Username, Name, Exe, CommandLine,
+               CreateTime,
+               authenticode(filename=Exe).Trusted AS SignerTrusted,
+               authenticode(filename=Exe).SubjectName AS SignerSubject
+        FROM ProcessLookup
+        WHERE Name =~ NameRegex
+          AND ( (CmdlineRegex AND CommandLine =~ CmdlineRegex)
+             OR (PathRegex AND Exe =~ PathRegex)
+             OR (PathRegex AND CommandLine =~ PathRegex) )
+      })
+
+  - name: MCPInventory
+    query: |
+      LET Homes = SELECT OSPath AS HomeDir, OSPath.Basename AS Profile
+        FROM glob(globs=UsersGlob) WHERE IsDir
+
+      LET Hits = SELECT * FROM foreach(row=Homes, query={
+        SELECT * FROM foreach(row=MCPConfigLookup, query={
+          SELECT Agent, Format, Profile, OSPath AS ConfigPath, Mtime
+          FROM glob(globs=HomeDir + '/' + RelGlob)
+        })
+      })
+
+      LET JsonServers = SELECT * FROM foreach(
+        row={ SELECT * FROM Hits WHERE Format = 'json' },
+        query={
+          SELECT * FROM foreach(
+            row={
+              SELECT parse_json(data=read_file(filename=ConfigPath,
+                                               length=1000000)) AS Doc
+              FROM scope()
+            },
+            query={
+              SELECT Agent, Profile, ConfigPath, Mtime,
+                     _key AS ServerName,
+                     _value.command AS Command,
+                     _value.args AS Args,
+                     _value.url AS Url,
+                     'json' AS ExtractionMethod
+              FROM items(item=Doc.mcpServers || Doc.servers)
+            })
+        })
+
+      LET TomlServers = SELECT * FROM foreach(
+        row={ SELECT * FROM Hits WHERE Format = 'toml' },
+        query={
+          SELECT Agent, Profile, ConfigPath, Mtime,
+                 ServerName, '' AS Command, '' AS Args, '' AS Url,
+                 'toml-regex' AS ExtractionMethod
+          FROM parse_records_with_regex(file=ConfigPath,
+                 regex='\\[mcp_servers\\.(?P<ServerName>[^\\]]+)\\]')
+        })
+
+      LET YamlServers = SELECT * FROM foreach(
+        row={ SELECT * FROM Hits WHERE Format = 'yaml' },
+        query={
+          SELECT Agent, Profile, ConfigPath, Mtime,
+                 '' AS ServerName, Line AS Command, '' AS Args, '' AS Url,
+                 'yaml-regex' AS ExtractionMethod
+          FROM parse_records_with_regex(file=ConfigPath,
+                 regex='(?m)^(?P<Line>\\s+(cmd|command|uri|url):\\s*.+)$')
+        })
+
+      SELECT * FROM chain(a=JsonServers, b=TomlServers, c=YamlServers)
+
+  - name: UsageEvidence
+    query: |
+      LET Homes = SELECT OSPath AS HomeDir, OSPath.Basename AS Profile
+        FROM glob(globs=UsersGlob) WHERE IsDir
+
+      SELECT * FROM foreach(row=Homes, query={
+        SELECT * FROM foreach(row=UsageLookup, query={
+          SELECT Agent, Profile,
+                 OSPath AS SessionFile,
+                 Mtime AS LastUsed, Size
+          FROM glob(globs=HomeDir + '/' + RelGlob)
+          WHERE NOT IsDir
+        })
+      })
+      ORDER BY LastUsed DESC
+
+column_types:
+  - name: Mtime
+    type: timestamp
+  - name: CreateTime
+    type: timestamp
+  - name: LastUsed
+    type: timestamp
