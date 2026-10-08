@@ -1,0 +1,79 @@
+# Windows.Detection.PsexecService
+
+Detects PsExec execution by scanning newly created service binaries
+for PsExec strings.
+
+PsExec works by installing a new service in the system. The service
+can be renamed by using the `-r` flag and therefore it is not enough
+to just watch for a new service called `psexecsvc.exe`. This
+artifact improves on this by scanning the service binary to detect
+the original PsExec binary.
+
+NOTE: If the service is very quick we are unable to examine the
+service binary in time then we will miss it.
+
+
+---
+
+````yaml
+name: Windows.Detection.PsexecService
+description: |
+  Detects PsExec execution by scanning newly created service binaries
+  for PsExec strings.
+  
+  PsExec works by installing a new service in the system. The service
+  can be renamed by using the `-r` flag and therefore it is not enough
+  to just watch for a new service called `psexecsvc.exe`. This
+  artifact improves on this by scanning the service binary to detect
+  the original PsExec binary.
+
+  NOTE: If the service is very quick we are unable to examine the
+  service binary in time then we will miss it.
+
+type: CLIENT_EVENT
+
+parameters:
+  - name: yaraRule
+    type: yara
+    default: |
+        rule Hit {
+           strings:
+             $a = "psexec" nocase wide ascii
+           condition:
+             any of them
+        }
+
+sources:
+  - query: |
+        LET file_scan = SELECT  Name AS ServiceName,
+               PathName, File.ModTime AS Modified,
+               File.Size AS FileSize,
+               String.Offset AS StringOffset,
+               String.HexData AS StringContext,
+               now() AS Timestamp,
+               ServiceType, PID,
+               {
+                  SELECT Name, Exe, CommandLine
+                  FROM pslist() WHERE Ppid = PID
+                  LIMIT 2
+               } AS ChildProcess
+        FROM yara(rules=yaraRule, files=PathName)
+        WHERE Rule
+
+        LET service_creation = SELECT Parse,
+            Parse.TargetInstance.Name AS Name,
+            Parse.TargetInstance.PathName As PathName,
+            Parse.TargetInstance.ServiceType As ServiceType,
+            Parse.TargetInstance.ProcessId AS PID
+        FROM wmi_events(
+           query="SELECT * FROM __InstanceCreationEvent WITHIN 1 WHERE TargetInstance ISA 'Win32_Service'",
+           wait=5000000,
+           namespace="ROOT/CIMV2")
+
+        SELECT * FROM foreach(
+          row=service_creation,
+          query=file_scan)
+````
+
+
+

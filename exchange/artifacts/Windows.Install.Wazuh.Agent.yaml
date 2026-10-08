@@ -1,0 +1,185 @@
+name: Windows.Install.Wazuh.Agent
+description: |
+  Installs the Wazuh Windows agent and configures it to use the supplied
+  Wazuh manager IP address or hostname.
+
+  By default this artifact downloads the Wazuh agent MSI listed below and uses
+  it for installation. If your manager needs a different agent version, override
+  WazuhAgentMSI with the MSI you want to deploy.
+
+author: Julian Hill - @julianghill
+type: CLIENT
+
+tools:
+  - name: WazuhAgentMSI
+    url: https://packages.wazuh.com/4.x/windows/wazuh-agent-4.14.5-1.msi
+    expected_hash: bf35197fee30092d78aad648299e8fd3aba8a0f9bc7d5edebce483a0b2c8e38e
+    version: 4.14.5
+    serve_locally: true
+
+required_permissions:
+  - EXECVE
+  - FILESYSTEM_READ
+  - FILESYSTEM_WRITE
+
+precondition: SELECT OS From info() where OS = 'windows'
+
+parameters:
+  - name: ManagerIP
+    type: csv
+    description: Wazuh manager IP address or hostname. This is required. Add one manager per row.
+    default: |
+      IP
+      127.0.0.1
+  - name: RegistrationServer
+    description: Optional Wazuh registration server. If empty, the first ManagerIP address is used.
+    default: ""
+  - name: RegistrationPassword
+    description: Optional Wazuh enrollment password. If empty, WAZUH_REGISTRATION_PASSWORD is not passed to the installer.
+    default: ""
+  - name: AgentName
+    description: Optional Wazuh agent name. If empty, Wazuh uses its default agent naming behavior.
+    default: ""
+  - name: AgentGroup
+    type: csv
+    description: Optional Wazuh agent groups. Add one group per row.
+    default: |
+      Group
+      ""
+  - name: ReinstallExistingAgent
+    type: bool
+    description: Reapply MSI properties when the Wazuh agent is already installed.
+    default: N
+  - name: StartService
+    type: bool
+    description: Start or restart WazuhSvc after installation and configuration.
+    default: Y
+  - name: UploadInstallLog
+    type: bool
+    description: Upload the msiexec install log.
+    default: Y
+
+sources:
+  - name: Install
+    query: |
+      LET TempDir <= tempdir()
+      LET LogPath <= TempDir + "\\wazuh-agent-install.log"
+
+      LET WazuhMSI = SELECT FullPath, Name, DownloadStatus, Hash
+      FROM Artifact.Generic.Utils.FetchBinary(
+        ToolName="WazuhAgentMSI",
+        IsExecutable=FALSE
+      )
+
+      LET Trim(Value) = regex_replace(
+        source=Value,
+        re="^\\s+|\\s+$",
+        replace="")
+
+      LET ManagerAddresses = SELECT Trim(Value=IP) AS IP
+      FROM ManagerIP
+      WHERE IP
+
+      LET RegistrationServerFinal = if(
+        condition=Trim(Value=RegistrationServer),
+        then=Trim(Value=RegistrationServer),
+        else=ManagerAddresses.IP[0])
+
+      LET AgentGroups = SELECT Trim(Value=Group) AS Group
+      FROM AgentGroup
+      WHERE Group
+
+      LET ManagerFinal = join(array=ManagerAddresses.IP, sep=",")
+      LET AgentGroupFinal = join(array=AgentGroups.Group, sep=",")
+
+      LET ValidationError = if(
+        condition=NOT ManagerFinal,
+        then="ManagerIP is required.",
+        else=if(
+          condition=NOT WazuhMSI.FullPath[0],
+          then="WazuhAgentMSI tool was not fetched."))
+
+      LET MsiArgs = filter(list=(
+        "msiexec.exe",
+        "/i",
+        WazuhMSI.FullPath[0],
+        "/qn",
+        "/norestart",
+        "/l*v",
+        LogPath,
+        "WAZUH_MANAGER=" + ManagerFinal,
+        "WAZUH_REGISTRATION_SERVER=" + RegistrationServerFinal,
+        ReinstallExistingAgent && "REINSTALL=ALL",
+        ReinstallExistingAgent && "REINSTALLMODE=vomus",
+        RegistrationPassword && "WAZUH_REGISTRATION_PASSWORD=" + RegistrationPassword,
+        AgentName && "WAZUH_AGENT_NAME=" + AgentName,
+        AgentGroupFinal && "WAZUH_AGENT_GROUP=" + AgentGroupFinal
+      ), regex=".+")
+
+      LET Run = SELECT *
+      FROM if(
+        condition=ValidationError,
+        then={
+          SELECT "" AS Stdout,
+            ValidationError AS Stderr,
+            1 AS ReturnCode,
+            true AS Complete
+          FROM scope()
+        },
+        else={
+          SELECT *
+          FROM execve(argv=MsiArgs, length=1000000)
+        })
+
+      LET ServiceActions = SELECT *
+      FROM if(
+        condition=StartService AND Run.ReturnCode[0] = 0,
+        then={
+          SELECT *
+          FROM chain(
+            stop={
+              SELECT "stop" AS Action, Stdout, Stderr, ReturnCode, Complete
+              FROM execve(argv=["sc.exe", "stop", "WazuhSvc"], length=100000)
+              WHERE sleep(time=6)
+            },
+            start={
+              SELECT "start" AS Action, Stdout, Stderr, ReturnCode, Complete
+              FROM execve(argv=["sc.exe", "start", "WazuhSvc"], length=100000)
+            },
+            query={
+              SELECT "query" AS Action, Stdout, Stderr, ReturnCode, Complete
+              FROM execve(argv=["sc.exe", "query", "WazuhSvc"], length=100000)
+            })
+        })
+
+      LET ServiceSummary = SELECT *
+      FROM foreach(row=ServiceActions)
+
+      LET ServiceStatus = if(
+        condition=StartService AND Run.ReturnCode[0] = 0,
+        then=ServiceSummary.Stdout[-1],
+        else="not_requested")
+
+      LET LogUpload = SELECT upload(file=OSPath) AS Upload
+      FROM glob(globs=LogPath)
+      WHERE UploadInstallLog
+
+      SELECT Stdout, Stderr, ReturnCode, Complete,
+        LogUpload.Upload[0] AS InstallLog,
+        ServiceSummary AS ServiceActions,
+        dict(
+          ManagerIP=ManagerFinal,
+          RegistrationServer=RegistrationServerFinal,
+          RegistrationPasswordSupplied=if(condition=RegistrationPassword, then=true, else=false),
+          AgentName=AgentName,
+          AgentGroup=AgentGroupFinal,
+          WazuhAgentMSI=dict(
+            Name=WazuhMSI.Name[0],
+            DownloadStatus=WazuhMSI.DownloadStatus[0],
+            Sha256=WazuhMSI.Hash[0].SHA256
+          ),
+          ReinstallExistingAgent=ReinstallExistingAgent,
+          StartService=StartService,
+          ServiceStatus=ServiceStatus
+        ) AS RequestedSettings
+      FROM Run

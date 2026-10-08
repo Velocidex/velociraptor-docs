@@ -1,0 +1,33 @@
+# Windows.Packs.Persistence
+
+Aggregates results from multiple persistence-related artifacts into
+a single artifact "pack".
+
+
+---
+
+````yaml
+name: Windows.Packs.Persistence
+description: |
+  Aggregates results from multiple persistence-related artifacts into
+  a single artifact "pack".
+
+precondition:
+  SELECT OS from info() where OS = "windows"
+
+sources:
+  - name: WMI Event Filters
+    query: |
+        SELECT * FROM Artifact.Windows.Persistence.PermanentWMIEvents()
+
+  - name: Startup Items
+    query: |
+        SELECT * FROM Artifact.Windows.Sys.StartupItems()
+
+  - name: Debug Bootstraping
+    query: |
+      SELECT * FROM Artifact.Windows.Persistence.Debug()
+````
+
+
+

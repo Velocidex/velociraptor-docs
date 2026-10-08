@@ -1,0 +1,31 @@
+# Linux.Sys.ACPITables
+
+Lists ACPI firmware tables with their sizes and cryptographic
+hashes.
+
+
+---
+
+````yaml
+name: Linux.Sys.ACPITables
+description: |
+  Lists ACPI firmware tables with their sizes and cryptographic
+  hashes.
+
+reference:
+  - https://osquery.io/schema/3.2.6#acpi_tables
+parameters:
+  - name: kLinuxACPIPath
+    default: /sys/firmware/acpi/tables
+sources:
+  - precondition: |
+      SELECT OS From info() where OS = 'linux'
+    query: |
+        LET hashes = SELECT Name, Size, hash(path=OSPath) as Hash
+                     FROM glob(globs="*", root=kLinuxACPIPath)
+
+        SELECT Name, Size, Hash.MD5, Hash.SHA1, Hash.SHA256 from hashes
+````
+
+
+

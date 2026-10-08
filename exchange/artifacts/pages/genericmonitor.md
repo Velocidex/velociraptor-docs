@@ -1,0 +1,30 @@
+# Server.Alerts.GenericMonitor
+
+This is a template artifact to allow alerting on a monitoring artifact.
+
+Simply enter ArtifactName and modify VQL as desired.
+
+
+---
+
+````yaml
+name: Server.Alerts.GenericMonitor
+description: |
+   This is a template artifact to allow alerting on a monitoring artifact.
+   
+   Simply enter ArtifactName and modify VQL as desired.
+   
+   
+type: SERVER_EVENT
+
+parameters:
+  - name: ArtifactName
+    default: Windows.ETW.ETWSessions
+
+sources:
+  - query: |
+        SELECT * from watch_monitoring(artifact=ArtifactName)
+````
+
+
+
