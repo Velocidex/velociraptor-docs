@@ -1,5 +1,6 @@
-{{- /* Heading-permalink copy (assets/js/heading-anchor-copy.js): clicking a
-     .subheading-anchor copies the page URL including the section fragment. */ -}}
+{{- /* Permalink copy (assets/js/heading-anchor-copy.js): clicking a
+     .subheading-anchor (heading link) or .anchorlink (config reference
+     item icon) copies the page URL including the fragment. */ -}}
 {{- $jsHeadingCopy := resources.Get "js/heading-anchor-copy.js" -}}
 {{- if hugo.IsProduction -}}
   {{- $jsHeadingCopy = $jsHeadingCopy | minify | fingerprint -}}
