@@ -520,6 +520,34 @@ p.egg {
   color: #a3a3a3;
 }
 
+/* "Link copied to clipboard!" toast created by heading-anchor-copy.js when
+   a .anchorlink (config reference item) or .subheading-anchor (page heading)
+   is clicked.  Sits just below the fixed navbar; fades out after ~1.8s via
+   the opacity transition.  Inverted in dark mode: light pill, dark text. */
+.anchor-copy-toast {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  top: calc(var(--hextra-banner-height, 0px) + var(--navbar-height) + 0.375rem);
+  z-index: 10000;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.4;
+  background: rgba(20, 20, 20, 0.92);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.dark .anchor-copy-toast {
+  background: rgba(245, 245, 245, 0.95);
+  color: var(--hx-color-neutral-900, #171717);
+  box-shadow: 0 4px 14px rgb(0 0 0 / 0.5);
+}
+
 .multiline-value {
   display: block;
   unicode-bidi: embed;

@@ -1,8 +1,10 @@
-// Velociraptor docs: copy heading permalink URLs to the clipboard.
-// Hextra renders every h2+ heading with a .subheading-anchor link that points
-// at the heading's id. Clicking it updates the URL hash (default anchor
-// behaviour, left untouched here) and additionally copies the full page URL -
-// fragment included - to the clipboard so it can be shared directly.
+// Velociraptor docs: copy permalink URLs to the clipboard.
+// Hextra renders every h2+ heading with a .subheading-anchor link, and the
+// config reference page renders an .anchorlink icon on every item (see
+// scripts/config_reference/main.go). Clicking either updates the URL hash
+// (default anchor behaviour, left untouched here) and additionally copies
+// the full page URL - fragment included - to the clipboard so it can be
+// shared directly. A small transient toast confirms the copy.
 (function () {
   "use strict";
 
@@ -32,9 +34,40 @@
     }
   }
 
+  // Transient "Link copied to clipboard!" toast. One shared element is
+  // reused so rapid clicks on several anchors restart the same toast
+  // instead of stacking copies.  Position and colours live in
+  // assets/css/custom.css (.anchor-copy-toast), including the dark-mode
+  // inversion; only the opacity fade is driven from here.
+  var toastEl = null;
+  var toastTimer = null;
+
+  function showCopied() {
+    if (!toastEl) {
+      toastEl = document.createElement("div");
+      toastEl.id = "anchor-copy-toast";
+      toastEl.className = "anchor-copy-toast";
+      toastEl.textContent = "Link copied to clipboard!";
+      toastEl.setAttribute("role", "status");
+      toastEl.setAttribute("aria-live", "polite");
+      document.body.appendChild(toastEl);
+    }
+    // Restart the fade-in even if the toast is mid-fade.
+    toastEl.style.opacity = "0";
+    void toastEl.offsetWidth; // force reflow
+    toastEl.style.opacity = "1";
+    if (toastTimer) {
+      clearTimeout(toastTimer);
+    }
+    toastTimer = setTimeout(function () {
+      toastEl.style.opacity = "0";
+    }, 1800);
+  }
+
   document.addEventListener("click", function (event) {
     var anchor =
-      event.target.closest && event.target.closest(".subheading-anchor");
+      event.target.closest &&
+      event.target.closest(".subheading-anchor, .anchorlink");
     if (!anchor) {
       return;
     }
@@ -58,5 +91,6 @@
     // plus the anchor fragment - exactly what the default click's hash set.
     var base = window.location.href.split("#")[0];
     copyText(base + href);
+    showCopied();
   });
 })();
