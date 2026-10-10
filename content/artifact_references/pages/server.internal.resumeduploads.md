@@ -1,16 +1,26 @@
 ---
 title: Server.Internal.ResumedUploads
+description: "Displays the status and details of all resumable upload operations\non the server.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-An internal artifact that display all resumed uploads
+Displays the status and details of all resumable upload operations
+on the server.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Internal.ResumedUploads
 description: |
-  An internal artifact that display all resumed uploads
+  Displays the status and details of all resumable upload operations
+  on the server.
 
 column_types:
 - name: mtime
@@ -25,6 +35,6 @@ column_types:
   type: mb
 - name: response
   type: hidden
+````
 
-</code></pre>
 

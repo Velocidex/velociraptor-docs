@@ -1,10 +1,17 @@
 ---
 title: Windows.Attack.ParentProcess
+description: "Flags processes whose parent process does not match the expected\nparent per the ATT&CK framework mapping."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Maps the MITRE Att&ck framework process executions into artifacts.
+Flags processes whose parent process does not match the expected
+parent per the ATT&CK framework mapping.
 
 NOTE: This artifact uses the process tracker. If you also enable the
 Windows.Events.TrackProcesses or Windows.Events.TrackProcessesBasic
@@ -12,11 +19,14 @@ artifacts, this will be able to retrieve information about exited
 processes.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Attack.ParentProcess
 description: |
-  Maps the MITRE Att&amp;ck framework process executions into artifacts.
-
+  Flags processes whose parent process does not match the expected
+  parent per the ATT&CK framework mapping.
+  
   NOTE: This artifact uses the process tracker. If you also enable the
   Windows.Events.TrackProcesses or Windows.Events.TrackProcessesBasic
   artifacts, this will be able to retrieve information about exited
@@ -65,12 +75,12 @@ sources:
                   ParentRegex as ExpectedParentName,
                   Username,
                   join(array=process_tracker_callchain(id=Pid).Data.Name,
-                       sep=" -&gt; ") AS CallChain
+                       sep=" -> ") AS CallChain
            FROM process_tracker_pslist()
            WHERE ActualProcessName =~ ProcessName
              AND ActualParentName
              AND NOT ActualParentName =~ ParentRegex
          })
+````
 
-</code></pre>
 

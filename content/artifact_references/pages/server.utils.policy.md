@@ -1,16 +1,28 @@
 ---
 title: Server.Utils.Policy
+description: "Automates the configuration of Velociraptor server security policies\nincluding IP-based GUI access control, plugin restrictions, secrets\nenforcement, and lockdown mode.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
 
-This artifact defines a set of security policies.
+Automates the configuration of Velociraptor server security policies
+including IP-based GUI access control, plugin restrictions, secrets
+enforcement, and lockdown mode.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.Policy
 description: |
-  This artifact defines a set of security policies.
+  Automates the configuration of Velociraptor server security policies
+  including IP-based GUI access control, plugin restrictions, secrets
+  enforcement, and lockdown mode.
 
 type: SERVER
 
@@ -49,7 +61,7 @@ parameters:
   type: bool
   description: |
     Disable server plugins which allow connecting to external
-    resources over the network. These include for exaxmple:
+    resources over the network. These include for example:
     1. http_client()
     2. upload_elastic()
     3. upload_s3()
@@ -72,37 +84,50 @@ parameters:
 
 
 export: |
-  LET PluginsWithFileWrite &lt;= SELECT name, metadata.permissions as perms
+  LET PluginsWithFileWrite = SELECT name, metadata.permissions as perms
       FROM help()
       WHERE type =~ "Plugin" AND perms =~ "FILESYSTEM_WRITE|MACHINE_STATE"
       ORDER BY name
 
-  LET FunctionsWithFileWrite &lt;= SELECT name, metadata.permissions as perms
+  LET FunctionsWithFileWrite = SELECT name, metadata.permissions as perms
       FROM help()
       WHERE type =~ "Function" AND perms =~ "FILESYSTEM_WRITE|MACHINE_STATE"
       ORDER BY name
 
+  // Utility functions to manipulate config files
+
+  // Checks if the client config looks right.
+  LET ValidateClientConfig(Config) = Config.Client.server_urls
+    AND Config.Client.ca_certificate =~ "(?ms)-----BEGIN CERTIFICATE-----.+-----END CERTIFICATE-----"
+    AND Config.Client.nonce
+
+  // Add labels and proxy settings to the config.
+  LET AddLabelsToConfig(Config, Labels, Proxy="") =
+     Config + dict(Client=Config.Client + dict(labels=Labels, proxy=Proxy))
+
+  LET ToDict(item) = parse_json(data=serialize(item=item))
+
 sources:
 - query: |
-    LET config &lt;= parse_yaml(filename=ServerConfigFile)
-    LET GUIAccessByIP &lt;= SELECT * FROM foreach(row= GUIAccessByIP)
+    LET config <= parse_yaml(filename=ServerConfigFile)
+    LET GUIAccessByIP <= SELECT * FROM foreach(row= GUIAccessByIP)
       WHERE NOT Description =~ "Skip"
        AND CIDR =~ '''\d+\.\d+\.\d+\.\d+/\d{1,2}''' OR (
         log(message="GUIAccessByIP: Invalid CIDR %v - rejecting",
             args=CIDR, dedup= -1) AND FALSE )
 
-    LET _ &lt;= GUIAccessByIP.CIDR &amp;&amp; set(item=config.GUI,
+    LET _ <= GUIAccessByIP.CIDR && set(item=config.GUI,
                field='allowed_cidr',
                value=GUIAccessByIP.CIDR)
 
-    LET _ &lt;= LockDown &amp;&amp;
+    LET _ <= LockDown &&
         set(item=config, field="lockdown", value=TRUE)
 
     -- Make sure the security section exists
-    LET _ &lt;= NOT config.security &amp;&amp; set(item=config,
+    LET _ <= NOT config.security && set(item=config,
        field="security", value=dict())
 
-    LET _ &lt;= DisableServerPlugins_Write &amp;&amp;
+    LET _ <= DisableServerPlugins_Write &&
         set(item=config.security,
             field="denied_plugins",
             value=PluginsWithFileWrite.name ) AND
@@ -110,7 +135,7 @@ sources:
             field="denied_functions",
             value=FunctionsWithFileWrite.name)
 
-    LET _ &lt;= ForceSecrets &amp;&amp;
+    LET _ <= ForceSecrets &&
         set(item=config.security,
             field="vql_must_use_secrets",
             value=TRUE )
@@ -118,6 +143,6 @@ sources:
     SELECT copy(dest= OutputFilePath, accessor="data",
                 filename=serialize(item=config, format='yaml'))
     FROM scope()
+````
 
-</code></pre>
 

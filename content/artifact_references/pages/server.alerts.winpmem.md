@@ -1,24 +1,34 @@
 ---
 title: Server.Alerts.WinPmem
+description: "Sends an alert via email when the pmem service installation is\ndetected by `Windows.Events.ServiceCreation`."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 ---
 
-Send an email if the pmem service has been installed on any of the
-endpoints.
+Sends an alert via email when the pmem service installation is
+detected by `Windows.Events.ServiceCreation`.
 
-Note this requires that the Windows.Event.ServiceCreation
-monitoring artifact be collected from clients.
+Note that this artifact requires that the
+`Windows.Event.ServiceCreation` monitoring artifact is being
+collected from clients.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Alerts.WinPmem
 description: |
-   Send an email if the pmem service has been installed on any of the
-   endpoints.
+  Sends an alert via email when the pmem service installation is
+  detected by `Windows.Events.ServiceCreation`.
 
-   Note this requires that the Windows.Event.ServiceCreation
-   monitoring artifact be collected from clients.
+  Note that this artifact requires that the
+  `Windows.Event.ServiceCreation` monitoring artifact is being
+  collected from clients.
 
 type: SERVER_EVENT
 
@@ -49,6 +59,6 @@ sources:
               )
           )
         })
+````
 
-</code></pre>
 

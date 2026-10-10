@@ -1,24 +1,42 @@
 ---
 title: Server.Powershell.EncodedCommand
+description: "Intercepts PowerShell `-EncodedCommand` scripts in events that are\ncollected via client monitoring and decodes them."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 ---
 
-It is possible to pass PowerShell an encoded script. This artifact
-decodes such scripts.
+Intercepts PowerShell `-EncodedCommand` scripts in events that are
+collected via client monitoring and decodes them.
 
-NOTE: The client must be running the Windows.Events.ProcessCreation
-event artifact to retrieve process execution logs.
+It is possible to pass PowerShell an encoded script which then gets
+stored in the Windows event log in encoded form. This artifact
+decodes such script blocks on the server.
+
+NOTE: The client must be running the
+`Windows.Events.ProcessCreation` event artifact to retrieve the
+process execution logs that this artifact intercepts.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Powershell.EncodedCommand
 description: |
-  It is possible to pass PowerShell an encoded script. This artifact
-  decodes such scripts.
+  Intercepts PowerShell `-EncodedCommand` scripts in events that are
+  collected via client monitoring and decodes them.
+  
+  It is possible to pass PowerShell an encoded script which then gets
+  stored in the Windows event log in encoded form. This artifact
+  decodes such script blocks on the server.
 
-  NOTE: The client must be running the Windows.Events.ProcessCreation
-  event artifact to retrieve process execution logs.
+  NOTE: The client must be running the
+  `Windows.Events.ProcessCreation` event artifact to retrieve the
+  process execution logs that this artifact intercepts.
 
 type: SERVER_EVENT
 
@@ -28,7 +46,7 @@ sources:
           string=base64decode(
              string=parse_string_with_regex(
                 string=CommandLine,
-                regex='-((?i)(en|enc|encode|encodedCommand)) (?P&lt;Encoded&gt;[^ ]+)'
+                regex='-((?i)(en|enc|encode|encodedCommand)) (?P<Encoded>[^ ]+)'
              ).Encoded)) AS Script
         FROM watch_monitoring(artifact='Windows.Events.ProcessCreation')
         WHERE CommandLine =~ '-(en|enc|encode|encodedCommand)'
@@ -45,6 +63,6 @@ reports:
       ## Decoded Powershell commands.
 
       {{ Query "SELECT ClientId, { SELECT os_info.fqdn from clients(client_id=ClientId) } AS FQDN, Script FROM source()" | Table }}
+````
 
-</code></pre>
 

@@ -1,17 +1,17 @@
 name: Windows.Persistence.VscodeTasks
 author: Matt Green - @mgreen27
 description: |
-   This artifact parses VSCode configuration files to find potenital 
+   This artifact parses VSCode configuration files to find potential
    persistence.
-   
-   Terminal Profiles via settings.json  
-   Visual Studio tasks via tasks.json  
 
-   The artifact has configurable options to Include all tasks and settings for 
-   visibility. 
-   
+   Terminal Profiles via settings.json
+   Visual Studio tasks via tasks.json
+
+   The artifact has configurable options to Include all tasks and settings for
+   visibility.
+
    NOTE: experimental - additional research may include Visual Studio Code Extensions
-   
+
 reference:
     - https://twitter.com/nas_bench/status/1618021415852335105
     - https://twitter.com/nas_bench/status/1618021838407495681
@@ -31,12 +31,12 @@ sources:
 
     query: |
       SELECT
-            OSPath,	
+            OSPath,
             FileSize,
-            FileName,	
+            FileName,
             parse_json(data=regex_replace(source=read_file(filename=OSPath) , re='''//.+\n''', replace='')) As Parsed,
             dict(
-                Created0x10=Created0x10,	
+                Created0x10=Created0x10,
                 Created0x30=Created0x30,
                 LastModified0x10=LastModified0x10,
                 LastModified0x30=LastModified0x30,

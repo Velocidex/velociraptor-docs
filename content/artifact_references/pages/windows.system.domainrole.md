@@ -1,17 +1,27 @@
 ---
 title: Windows.System.DomainRole
+description: "Extracts and categorizes the domain role of Windows systems based\non `Win32_ComputerSystem` WMI data.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact will extract Domain Role per machine.
+Extracts and categorizes the domain role of Windows systems based
+on `Win32_ComputerSystem` WMI data.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.DomainRole
 author: 'Matt Green - @mgreen27'
 description: |
-   This artifact will extract Domain Role per machine.
+    Extracts and categorizes the domain role of Windows systems based
+    on `Win32_ComputerSystem` WMI data.
 
 type: CLIENT
 
@@ -52,6 +62,6 @@ sources:
         WHERE 
             DNSHostName =~ HostNameRegex
             AND Domain =~ DomainRegex
-            AND DomainRole =~ RoleRegex
-</code></pre>
+            AND DomainRole =~ RoleRegex````
+
 

@@ -1,14 +1,30 @@
+{{- /* Port of the learn-theme notice shortcode to Hextra's GitHub-style alert.
+       {{% notice warning %}} / {{% notice note "Custom title" %}} etc. */ -}}
 {{- $_hugo_config := `{ "version": 1 }` -}}
-{{ if len .Params | eq 2 }}
-<div class="mynotices {{ .Get 0 }}">
-  <div heading="{{ if len .Params | eq 2 }} {{ .Get 1 }} {{ end }}">
+{{- $tone := .Get 0 | default "note" -}}
+{{- $heading := title $tone -}}
+{{- if gt (len .Params) 1 }}{{ $heading = .Get 1 }}{{ end -}}
+{{- $icon := "information-circle" -}}
+{{- $style := "hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200" -}}
+{{- if eq $tone "tip" }}
+  {{- $icon = "light-bulb" -}}
+  {{- $style = "hx:border-green-200 hx:bg-green-100 hx:text-green-900 hx:dark:border-green-200/30 hx:dark:bg-green-900/30 hx:dark:text-green-200" -}}
+{{- else if eq $tone "warning" }}
+  {{- $icon = "exclamation" -}}
+  {{- $style = "hx:border-amber-200 hx:bg-amber-100 hx:text-amber-900 hx:dark:border-amber-200/30 hx:dark:bg-amber-900/30 hx:dark:text-amber-200" -}}
+{{- else if eq $tone "error" }}
+  {{- $icon = "exclamation-circle" -}}
+  {{- $style = "hx:border-red-200 hx:bg-red-100 hx:text-red-900 hx:dark:border-red-200/30 hx:dark:bg-red-900/30 hx:dark:text-red-200" -}}
+{{- end -}}
+
+<div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current {{ $style }}">
+  <p class="hx:flex hx:items-center hx:font-medium">
+    {{- partial "utils/icon.html" (dict "name" $icon "attributes" `height=16px class="hx:inline-block hx:align-middle hx:mr-2"`) -}}
+    {{- $heading | markdownify -}}
+  </p>
+  <div class="hx:w-full hx:min-w-0 hx:leading-7">
+    <div class="hx:mt-6 hx:leading-7 hx:first:mt-0">
       {{- .Inner -}}
+    </div>
   </div>
 </div>
-{{ else }}
-<div class="mynotices {{ .Get 0 }}">
-  <div heading="{{ .Get 0 }}">
-      {{- .Inner -}}
-  </div>
-</div>
-{{ end }}

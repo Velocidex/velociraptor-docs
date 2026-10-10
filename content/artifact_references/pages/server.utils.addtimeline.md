@@ -1,16 +1,26 @@
 ---
 title: Server.Utils.AddTimeline
+description: "Adds a new timeline entry to a notebook super-timeline with results\nfrom a provided VQL query.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
 
-Adds a new timeline to a super timeline.
+Adds a new timeline entry to a notebook super-timeline with results
+from a provided VQL query.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.AddTimeline
 description: |
-  Adds a new timeline to a super timeline.
+  Adds a new timeline entry to a notebook super-timeline with results
+  from a provided VQL query.
 
 type: SERVER
 
@@ -46,6 +56,6 @@ sources:
          },
          key=Key), RemoveLimit
       FROM scope()
+````
 
-</code></pre>
 

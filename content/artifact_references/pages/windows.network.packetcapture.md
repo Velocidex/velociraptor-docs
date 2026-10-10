@@ -1,8 +1,17 @@
 ---
 title: Windows.Network.PacketCapture
+description: "Captures network packets on Windows using netsh trace and then\nconverts these ETL traces to PCAP format."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
+
+Captures network packets on Windows using netsh trace and then
+converts these ETL traces to PCAP format.
 
 Run this artifact twice, the first time, set the StartTrace flag to
 True to start the PCAP collection, this will have the VQL return a
@@ -13,10 +22,15 @@ created in the previous step in the TraceFile. This will then
 convert the .etl to a PCAP and upload it.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Network.PacketCapture
-author: Cybereason &lt;omer.yampel@cybereason.com&gt;
+author: Cybereason <omer.yampel@cybereason.com>
 description: |
+  Captures network packets on Windows using netsh trace and then
+  converts these ETL traces to PCAP format.
+  
   Run this artifact twice, the first time, set the StartTrace flag to
   True to start the PCAP collection, this will have the VQL return a
   single row (the TraceFile generated) When you want to stop
@@ -48,9 +62,9 @@ sources:
         LET tool_zip = SELECT * FROM Artifact.Generic.Utils.FetchBinary(
             ToolName="etl2pcapng", IsExecutable=FALSE)
 
-        LET ExePath &lt;= tempfile(extension='.exe')
+        LET ExePath <= tempfile(extension='.exe')
 
-        LET etl2pcapbin &lt;= SELECT
+        LET etl2pcapbin <= SELECT
             copy(
               filename=pathspec(
                  DelegatePath=tool_zip[0].OSPath,
@@ -60,7 +74,7 @@ sources:
             ) AS file
         FROM scope()
 
-        LET outfile &lt;= tempfile(extension=".pcapng")
+        LET outfile <= tempfile(extension=".pcapng")
 
         LET stop_trace = SELECT * FROM execve(
              argv=['netsh', 'trace', 'stop'])
@@ -89,6 +103,6 @@ sources:
                 then={ SELECT * FROM launch_trace},
                 else={ SELECT * FROM end_trace }
         )
+````
 
-</code></pre>
 

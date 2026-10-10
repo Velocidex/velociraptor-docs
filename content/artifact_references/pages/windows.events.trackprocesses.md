@@ -1,34 +1,50 @@
 ---
 title: Windows.Events.TrackProcesses
+description: "Tracks processes using Sysmon ETW events (process creation and\ntermination) with pslist sync."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
+
+Tracks processes using Sysmon ETW events (process creation and
+termination) with pslist sync.
 
 Uses Sysmon and pslist to keep track of running processes by using the
 Velociraptor Process Tracker.
 
 The Process Tracker keeps track of exited processes, and resolves
-process call chains from it in memory cache.
+process call chains from its in-memory cache.
 
 This event artifact enables the global process tracker and makes it
 possible to run many other artifacts that depend on the process
 tracker.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Events.TrackProcesses
 description: |
+  Tracks processes using Sysmon ETW events (process creation and
+  termination) with pslist sync.
+
   Uses Sysmon and pslist to keep track of running processes by using the
   Velociraptor Process Tracker.
 
   The Process Tracker keeps track of exited processes, and resolves
-  process call chains from it in memory cache.
+  process call chains from its in-memory cache.
 
   This event artifact enables the global process tracker and makes it
   possible to run many other artifacts that depend on the process
   tracker.
 
 type: CLIENT_EVENT
+required_permissions:
+  - EXECVE
 
 tools:
   - name: SysmonBinary
@@ -57,13 +73,18 @@ parameters:
     type: bool
     description: Add process information enrichments (can use more resources)
 
+  - name: PROCESS_TRACKER_CACHE
+    default: '%TEMP%/processes.sqlite'
+    description: |
+      Cache file for process tracker.
+
 sources:
   - precondition:
       SELECT OS From info() where OS = 'windows'
 
     query: |
       // Ensure that sysmon is installed.
-      LET _ &lt;= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
+      LET _ <= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
          SysmonFileLocation=SysmonFileLocation)
 
       LET UpdateQuery =
@@ -101,9 +122,9 @@ sources:
                            TerminalSessionId= EventData.TerminalSessionId,
                            IntegrityLevel= EventData.IntegrityLevel,
                            Hashes=parse_string_with_regex(regex=[
-                             "SHA256=(?P&lt;SHA256&gt;[^,]+)",
-                             "MD5=(?P&lt;MD5&gt;[^,]+)",
-                             "IMPHASH=(?P&lt;IMPHASH&gt;[^,]+)"],
+                             "SHA256=(?P<SHA256>[^,]+)",
+                             "MD5=(?P<MD5>[^,]+)",
+                             "IMPHASH=(?P<IMPHASH>[^,]+)"],
                            string=EventData.Hashes)
                        ) AS data,
                        EventData.UtcTime AS start_time,
@@ -134,14 +155,14 @@ sources:
                    CommandLine=CommandLine) AS data
               FROM pslist()
 
-      LET Tracker &lt;= process_tracker(
+      LET Tracker <= process_tracker(
          max_size=MaxSize,
          enrichments=if(condition=AddEnrichments, then=[
-           '''x=&gt;if(
+           '''x=>if(
                 condition=NOT x.Data.VersionInformation AND x.Data.Image,
                 then=dict(VersionInformation=parse_pe(file=x.Data.Image).VersionInformation))
            ''',
-           '''x=&gt;if(
+           '''x=>if(
                 condition=NOT x.Data.OriginalFilename OR x.Data.OriginalFilename = '-',
                 then=dict(OriginalFilename=x.Data.VersionInformation.OriginalFilename))
            '''], else=[]),
@@ -149,6 +170,6 @@ sources:
 
       SELECT * FROM process_tracker_updates()
       WHERE update_type = "stats" OR AlsoForwardUpdates
+````
 
-</code></pre>
 

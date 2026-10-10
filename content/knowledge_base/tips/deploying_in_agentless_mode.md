@@ -7,7 +7,7 @@ it permanently as a service.
 
 It is possible to deploy the client using Group Policy by using
 `Scheduled task` feature to cause domain connected machines to run the
-client. See details [here]({{< ref "/blog/html/2019/03/02/agentless_hunting_with_velociraptor/" >}}).
+client. See details [here](/blog/html/2019/03/02/agentless_hunting_with_velociraptor/).
 
 1. The first step is to place the client and the generated
    `client.config.yaml` on a public read only windows share.
@@ -26,15 +26,12 @@ client. See details [here]({{< ref "/blog/html/2019/03/02/agentless_hunting_with
 ```
 
 
-{{% notice warning "Controlling number of instances" %}}
-
-Window's Group Policy allows setting only a single instance of the
-program to run at the time, however we found in practice this is not
-reliable and sometimes GPO will launch dozens of copies of
-Velociraptor over time. To avoid this we use the `--mutant` flag which
-will exit if a mutant of this name already exists.
-
-{{% /notice %}}
+> [!WARNING] Controlling number of instances
+> Window's Group Policy allows setting only a single instance of the
+> program to run at the time, however we found in practice this is not
+> reliable and sometimes GPO will launch dozens of copies of
+> Velociraptor over time. To avoid this we use the `--mutant` flag which
+> will exit if a mutant of this name already exists.
 
 ## Linux Environments
 
@@ -54,12 +51,9 @@ You can manually terminate the service with: ```systemctl stop velociraptor_tmp.
 
 You can check it's status with: ```systemctl status velociraptor_tmp.service```
 
-{{% notice warning "Temporary locations" %}}
-
-On Linux /tmp is cleaned up by a service, which gets triggered on shutdown.
-You will need to arrange for the Velociraptor binary and configuration file to be transferred again if the host reboots.
-
-{{% /notice %}}
+> [!WARNING] Temporary locations
+> On Linux /tmp is cleaned up by a service, which gets triggered on shutdown.
+> You will need to arrange for the Velociraptor binary and configuration file to be transferred again if the host reboots.
 
 You can read more about the ```systemd-run``` here for flags etc: https://www.freedesktop.org/software/systemd/man/systemd-run.html
 

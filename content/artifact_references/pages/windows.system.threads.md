@@ -1,16 +1,30 @@
 ---
 title: Windows.System.Threads
+description: "Lists threads for selected processes, matching by name or PID regex\nfilters."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Enumerates all threads in selected processes.
+Lists threads for selected processes, matching by name or PID regex
+filters.
+
+This uses Velociraptor's threads plugin.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.Threads
 description: |
-  Enumerates all threads in selected processes.
+  Lists threads for selected processes, matching by name or PID regex
+  filters.
+  
+  This uses Velociraptor's threads plugin.
 
 parameters:
   - name: ProcessRegex
@@ -44,6 +58,6 @@ sources:
                  filename AS Filename
           FROM threads(pid=Pid)
       })
+````
 
-</code></pre>
 

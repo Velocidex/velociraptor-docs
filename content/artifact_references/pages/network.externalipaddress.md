@@ -1,14 +1,22 @@
 ---
 title: Network.ExternalIpAddress
+description: "Identifies the external IP address of the endpoint using an external\nweb service.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
 Identifies the external IP address of the endpoint using an external
 web service.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Network.ExternalIpAddress
 description: |
   Identifies the external IP address of the endpoint using an external
@@ -26,6 +34,6 @@ sources:
   - precondition: SELECT * from info()
     query: |
         SELECT Content as IP from http_client(url=externalUrl)
+````
 
-</code></pre>
 

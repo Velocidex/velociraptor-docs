@@ -1,14 +1,27 @@
 ---
 title: Windows.Network.ArpCache
+description: "Enumerates the Windows network neighbor cache (ARP/NDP) showing\nresolved IP and MAC address pairs.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Address resolution cache, both static and dynamic (from ARP, NDP).
+Enumerates the Windows network neighbor cache (ARP/NDP) showing
+resolved IP and MAC address pairs.
 
-<pre><code class="language-yaml">
+
+---
+
+````yaml
 name: Windows.Network.ArpCache
-description: Address resolution cache, both static and dynamic (from ARP, NDP).
+description: |
+  Enumerates the Windows network neighbor cache (ARP/NDP) showing
+  resolved IP and MAC address pairs.
+
 parameters:
   - name: wmiQuery
     default: |
@@ -35,7 +48,7 @@ sources:
   - precondition:
       SELECT OS From info() where OS = 'windows'
     query: |
-        LET interfaces &lt;=
+        LET sys_interfaces <=
           SELECT Index, HardwareAddr, IP
           FROM Artifact.Windows.Network.InterfaceAddresses()
 
@@ -52,7 +65,8 @@ sources:
                   else="?")) as Store,
 
                get(item=parse_json(data=kMapOfState),
-                   member=encode(string=State, type='string')) AS State,
+                   member=str(str=State)) AS State,
+
                InterfaceIndex, IPAddress,
                InterfaceAlias, LinkLayerAddress
             FROM wmi(query=wmiQuery, namespace=wmiNamespace)
@@ -63,9 +77,9 @@ sources:
              SELECT AddressFamily, Store, State, InterfaceIndex,
                     IP AS LocalAddress, HardwareAddr, IPAddress as RemoteAddress,
                     InterfaceAlias, LinkLayerAddress AS RemoteMACAddress
-             FROM interfaces
+             FROM sys_interfaces
              WHERE InterfaceIndex = Index
           })
+````
 
-</code></pre>
 

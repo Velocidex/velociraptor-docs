@@ -1,10 +1,16 @@
 ---
 title: Windows.Detection.Yara.NTFS
+description: "Searches the MFT, returns a list of target files, and then runs YARA\nover the target list."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact searches the MFT, returns a list of target files then runs YARA
+Searches the MFT, returns a list of target files, and then runs YARA
 over the target list.
 
 There are 3 kinds of YARA rules that can be deployed:
@@ -13,11 +19,13 @@ There are 3 kinds of YARA rules that can be deployed:
 2. Shorthand YARA in the format `wide nocase ascii:string1,string2,string3`.
 3. or a Standard YARA rule attached as a parameter.
 
-Only one method of YARA will be applied and search order is as above.
+Only one method of YARA will be applied and search order is as
+above.
 
-The artifact uses Windows.NTFS.MFT so similar regex filters can be applied
-including Path, Size and date. The artifact also has an option to search across
-all attached drives and upload any files with YARA hits.
+The artifact uses Windows.NTFS.MFT so similar regex filters can be
+applied including Path, Size and date. The artifact also has an
+option to search across all attached drives and upload any files
+with YARA hits.
 
 Some examples of path regex may include:
 
@@ -27,16 +35,18 @@ Some examples of path regex may include:
 * Multiple extensions: `\.(php|aspx|resx|asmx)$`
 
 Note: no drive and forward slashes - these expressions are for paths
-relative to the root of the filesystem.
-If upload is selected NumberOfHits is redundant and not advised as hits are
-grouped by path to ensure files only downloaded once.
+relative to the root of the filesystem. If upload is selected
+NumberOfHits is redundant and not advised as hits are grouped by
+path to ensure files only downloaded once.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.Yara.NTFS
 author: Matt Green - @mgreen27
 description: |
-  This artifact searches the MFT, returns a list of target files then runs YARA
+  Searches the MFT, returns a list of target files, and then runs YARA
   over the target list.
 
   There are 3 kinds of YARA rules that can be deployed:
@@ -45,11 +55,13 @@ description: |
   2. Shorthand YARA in the format `wide nocase ascii:string1,string2,string3`.
   3. or a Standard YARA rule attached as a parameter.
 
-  Only one method of YARA will be applied and search order is as above.
+  Only one method of YARA will be applied and search order is as
+  above.
 
-  The artifact uses Windows.NTFS.MFT so similar regex filters can be applied
-  including Path, Size and date. The artifact also has an option to search across
-  all attached drives and upload any files with YARA hits.
+  The artifact uses Windows.NTFS.MFT so similar regex filters can be
+  applied including Path, Size and date. The artifact also has an
+  option to search across all attached drives and upload any files
+  with YARA hits.
 
   Some examples of path regex may include:
 
@@ -59,9 +71,9 @@ description: |
   * Multiple extensions: `\.(php|aspx|resx|asmx)$`
 
   Note: no drive and forward slashes - these expressions are for paths
-  relative to the root of the filesystem.
-  If upload is selected NumberOfHits is redundant and not advised as hits are
-  grouped by path to ensure files only downloaded once.
+  relative to the root of the filesystem. If upload is selected
+  NumberOfHits is redundant and not advised as hits are grouped by
+  path to ensure files only downloaded once.
 
 type: CLIENT
 parameters:
@@ -133,18 +145,18 @@ sources:
             FileRegex=FileNameRegex,PathRegex=PathRegex,
             SizeMax=SizeMax, SizeMin=SizeMin)
         WHERE NOT IsDir
-            AND NOT OSPath =~ '''\\\\.\\.:\\&lt;Err&gt;\\'''
+            AND NOT OSPath =~ '''\\\\.\\.:\\<Err>\\'''
             AND if(condition=EarliestSILastChanged,
-                then= LastRecordChange0x10 &gt; EarliestSILastChanged,
+                then= LastRecordChange0x10 > EarliestSILastChanged,
                 else= True)
             AND if(condition=LatestSILastChanged,
-                then= LastRecordChange0x10 &lt; LatestSILastChanged,
+                then= LastRecordChange0x10 < LatestSILastChanged,
                 else= True)
             AND if(condition=EarliestFNCreated,
-                then= Created0x30 &gt; EarliestFNCreation,
+                then= Created0x30 > EarliestFNCreation,
                 else= True)
             AND if(condition=LatestFNCreated,
-                then= Created0x30 &lt; LatestFNCreation,
+                then= Created0x30 < LatestFNCreation,
                 else= True)
 
       -- scan files and only report a single hit.
@@ -164,10 +176,10 @@ sources:
                             name=format(format="%v-%v-%v",
                             args=[
                                 OSPath,
-                                if(condition= String.Offset - ContextBytes &lt; 0,
+                                if(condition= String.Offset - ContextBytes < 0,
                                     then= 0,
                                     else= String.Offset - ContextBytes),
-                                if(condition= String.Offset + ContextBytes &gt; File.Size,
+                                if(condition= String.Offset + ContextBytes > File.Size,
                                     then= File.Size,
                                     else= String.Offset + ContextBytes) ]
                             ))) as HitContext
@@ -189,6 +201,6 @@ sources:
 column_types:
   - name: HitContext
     type: preview_upload
+````
 
-</code></pre>
 

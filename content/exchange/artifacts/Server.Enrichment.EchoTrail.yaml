@@ -1,10 +1,10 @@
 name: Server.Enrichment.EchoTrail
 author: Eric Capuano - @eric_capuano
 description: |
-  
-  This is a process execution enrichment artifact that can be called from within another artifact (such as one looking at running processes) to enrich the 
-  data made available by that artifact. We are calling the EchoTrail v2 API which is still in beta. 
-  
+
+  This is a process execution enrichment artifact that can be called from within another artifact (such as one looking at running processes) to enrich the
+  data made available by that artifact. We are calling the EchoTrail v2 API which is still in beta.
+
   NOTE: The EchoTrail free API is limited to 25 queries per day which is very low for most use cases. This artifact may send more than 25 queries at the API!
 
   Ex.
@@ -13,8 +13,8 @@ description: |
 
   Additional lookup parameters that can be passed:
 
-    - `lookup_hostname`: The hostname which the execution occurred on (for host-specific prevelance metrics)
-    - `lookup_image_hash`: The SHA256 hash of the process image 
+    - `lookup_hostname`: The hostname which the execution occurred on (for host-specific prevalence metrics)
+    - `lookup_image_hash`: The SHA256 hash of the process image
     - `lookup_parent_image_hash`: The SHA256 hash of the process parent image
     - `lookup_commandline`: Command line arguments of the process
 
@@ -31,11 +31,11 @@ parameters:
       default:
     - name: lookup_image
       type: string
-      description: The full path to the process image 
+      description: The full path to the process image
       default:
     - name: lookup_image_hash
       type: string
-      description: The SHA256 hash of the process image 
+      description: The SHA256 hash of the process image
       default:
     - name: lookup_parent_image
       type: string
@@ -43,7 +43,7 @@ parameters:
       default:
     - name: lookup_parent_image_hash
       type: string
-      description: The SHA256 hash of the process parent image 
+      description: The SHA256 hash of the process parent image
       default:
     - name: lookup_commandline
       type: string
@@ -51,15 +51,15 @@ parameters:
       default:
     - name: lookup_include_scores
       type: bool
-      description: 
+      description:
       default: true
     - name: lookup_include_description
       type: bool
-      description: 
+      description:
       default: true
     - name: lookup_include_detections
       type: bool
-      description: 
+      description:
       default: true
     - name: record_this_execution
       type: bool
@@ -85,11 +85,11 @@ sources:
                           method='POST',
                           data=serialize(item=dict(
                             hostname=lookup_hostname,
-                            image=lookup_image, 
+                            image=lookup_image,
                             hash=lookup_image_hash,
-                            parent_image=lookup_parent_image, 
+                            parent_image=lookup_parent_image,
                             parent_hash=lookup_parent_image_hash,
-                            commandline=lookup_commandline, 
+                            commandline=lookup_commandline,
                             include_scores=lookup_include_scores,
                             include_description=lookup_include_description,
                             include_detections=lookup_include_detections,

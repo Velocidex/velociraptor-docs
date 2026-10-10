@@ -1,18 +1,26 @@
 ---
 title: Server.Internal.Interrogate
+description: "Captures client interrogation results (OS, hostname, architecture)\nwhen clients complete the client info collection.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 ---
 
-An internal artifact used track new client interrogations by the
-Interrogation service.
+Captures client interrogation results (OS, hostname, architecture)
+when clients complete the client info collection.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Internal.Interrogate
 description: |
-  An internal artifact used track new client interrogations by the
-  Interrogation service.
+  Captures client interrogation results (OS, hostname, architecture)
+  when clients complete the client info collection.
 
 type: SERVER_EVENT
 
@@ -65,6 +73,6 @@ sources:
                   artifact="Generic.Client.Info")
             })
           })
+````
 
-</code></pre>
 

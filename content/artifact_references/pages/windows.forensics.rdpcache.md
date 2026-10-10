@@ -1,11 +1,17 @@
 ---
 title: Windows.Forensics.RDPCache
+description: "Parses RDP Bitmap Cache (.BIN) files to extract and reconstruct\ncached remote desktop screen images."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact parses, views and enables simplified upload of RDP
-cache files.
+Parses RDP Bitmap Cache (.BIN) files to extract and reconstruct
+cached remote desktop screen images.
 
 By default the artifact will parse .BIN RDPcache files.
 
@@ -14,26 +20,28 @@ VSS via ntfs_vss.
 
 Best combined with:
 
-   - Windows.EventLogs.RDPAuth to collect RDP focused event logs.
-   - Windows.Registry.RDP to collect user RDP MRU and server info
+- `Windows.EventLogs.RDPAuth` to collect RDP focused event logs.
+- `Windows.Registry.RDP` to collect user RDP MRU and server info.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.RDPCache
 author: Matt Green - @mgreen27
 description: |
-    This artifact parses, views and enables simplified upload of RDP
-    cache files.
+  Parses RDP Bitmap Cache (.BIN) files to extract and reconstruct
+  cached remote desktop screen images.
 
-    By default the artifact will parse .BIN RDPcache files.
+  By default the artifact will parse .BIN RDPcache files.
 
-    Filters include `UserRegex` to target a user and `Accessor` to target
-    VSS via ntfs_vss.
+  Filters include `UserRegex` to target a user and `Accessor` to target
+  VSS via ntfs_vss.
 
-    Best combined with:
+  Best combined with:
 
-       - Windows.EventLogs.RDPAuth to collect RDP focused event logs.
-       - Windows.Registry.RDP to collect user RDP MRU and server info
+  - `Windows.EventLogs.RDPAuth` to collect RDP focused event logs.
+  - `Windows.Registry.RDP` to collect user RDP MRU and server info.
 
 reference:
    - https://github.com/ANSSI-FR/bmc-tools
@@ -43,7 +51,7 @@ parameters:
    - name: RDPCacheGlob
      default: C:\{{Users,Windows.old\Users}\*\AppData\Local,Documents and Settings\*\Local Settings\Application Data}\Microsoft\Terminal Server Client\Cache\*
    - name: Accessor
-     description: Set accessor to use. blank is default, file for api, ntfs for raw, ntfs_vss for vss
+     description: Set accessor to use. Blank is default, file for api, ntfs for raw, ntfs_vss for VSS
    - name: UserRegex
      default: .
      description: Regex filter of user to target. StartOf(^) and EndOf($)) regex may behave unexpectedly.
@@ -70,16 +78,16 @@ sources:
     description: RDP BitmapCache files in scope.
     query: |
       -- firstly set timebounds for performance
-      LET DateAfterTime &lt;= if(condition=DateAfter,
+      LET DateAfterTime <= if(condition=DateAfter,
         then=DateAfter, else=timestamp(epoch="1600-01-01"))
-      LET DateBeforeTime &lt;= if(condition=DateBefore,
+      LET DateBeforeTime <= if(condition=DateBefore,
         then=DateBefore, else=timestamp(epoch="2200-01-01"))
-            
+
       LET results = SELECT OSPath, Size, Mtime, Atime, Ctime, Btime
         FROM glob(globs=RDPCacheGlob,accessor=Accessor)
         WHERE OSPath =~ UserRegex
-            AND Mtime &gt; DateAfterTime
-            AND Mtime &lt; DateBeforeTime
+            AND Mtime > DateAfterTime
+            AND Mtime < DateBeforeTime
 
       LET upload_results = SELECT *, upload(file=OSPath) as CacheUpload
         FROM results
@@ -91,6 +99,12 @@ sources:
   - name: Parsed
     description: Parsed RDP BitmapCache files.
     query: |
+      -- Scope parsing to the requested DateAfter/DateBefore window.
+      LET DateAfterTime <= if(condition=DateAfter,
+        then=DateAfter, else=timestamp(epoch="1600-01-01"))
+      LET DateBeforeTime <= if(condition=DateBefore,
+        then=DateBefore, else=timestamp(epoch="2200-01-01"))
+
       LET PROFILE = '''[
         ["BIN_CONTAINER", 0, [
             [Magic, 0, String, {length: 8, term_hex : "FFFFFF" }],
@@ -99,18 +113,18 @@ sources:
                 "type": "rgb32b",
                 "count": 10000,
                 "max_count": 2000,
-                "sentinel": "x=&gt;x.__Size &lt; 15",
+                "sentinel": "x=>x.__Size < 15",
             }],
         ]],
-        ["rgb32b","x=&gt;x.__Size",[
+        ["rgb32b","x=>x.__Size",[
             [__key1, 0, uint32],
             [__key1, 4, uint32],
             ["Width", 8, "uint16"],
             ["Height", 10, "uint16"],
-            [DataLength, 0, Value,{ value: "x=&gt; 4 * x.Width * x.Height"}],
-            [DataOffset, 0, Value,{ "value": "x=&gt;x.StartOf + 12"}],
-            ["__Size", 0, Value,{ "value": "x=&gt;x.DataLength + 12"}],
-            ["Index", 0, Value,{ "value": "x=&gt;count() - 1 "}],
+            [DataLength, 0, Value,{ value: "x=> 4 * x.Width * x.Height"}],
+            [DataOffset, 0, Value,{ "value": "x=>x.StartOf + 12"}],
+            ["__Size", 0, Value,{ "value": "x=>x.DataLength + 12"}],
+            ["Index", 0, Value,{ "value": "x=>count() - 1 "}],
         ]]]'''
 
       LET parse_rgb32b(data) = SELECT
@@ -135,6 +149,8 @@ sources:
             WHERE OSPath =~ '\.bin$'
                 AND OSPath =~ UserRegex
                 AND NOT IsDir
+                AND Mtime > DateAfterTime
+                AND Mtime < DateBeforeTime
         })
 
       LET find_index_differential = SELECT *, 0 - Parsed.CachedFiles.Index[0] as IndexDif
@@ -200,6 +216,6 @@ column_types:
     type: upload_preview
   - name: CacheUpload
     type: upload_preview
+````
 
-</code></pre>
 

@@ -1,28 +1,38 @@
 ---
 title: Windows.Registry.Sysinternals.Eulacheck
+description: "Checks which Sysinternals tools have accepted EULAs by reading the\n`HKCU\\Software\\Sysinternals` registry keys."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Checks for the Accepted Sysinternals EULA from the registry key
-"HKCU\Software\Sysinternals\[TOOL]\".  When a Sysinternals tool is
-first run on a system, the EULA must be accepted. This writes a
-value called EulaAccepted under that key.
+Checks which Sysinternals tools have accepted EULAs by reading the
+`HKCU\Software\Sysinternals` registry keys.
 
-Note: This artifact uses HKEY_USERS and therefore will not detect
-users that are not currently logged on.
+When a Sysinternals tool is first run on a system, the EULA must be
+accepted. This writes a value called `EulaAccepted` under that key.
+
+**NOTE:** This artifact uses HKEY_USERS and therefore will not
+detect users who are not currently logged on.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Registry.Sysinternals.Eulacheck
 description: |
-  Checks for the Accepted Sysinternals EULA from the registry key
-  "HKCU\Software\Sysinternals\[TOOL]\".  When a Sysinternals tool is
-  first run on a system, the EULA must be accepted. This writes a
-  value called EulaAccepted under that key.
+  Checks which Sysinternals tools have accepted EULAs by reading the
+  `HKCU\Software\Sysinternals` registry keys.
 
-  Note: This artifact uses HKEY_USERS and therefore will not detect
-  users that are not currently logged on.
+  When a Sysinternals tool is first run on a system, the EULA must be
+  accepted. This writes a value called `EulaAccepted` under that key.
+
+  **NOTE:** This artifact uses HKEY_USERS and therefore will not
+  detect users who are not currently logged on.
 
 parameters:
    - name: Sysinternals_Reg_Key
@@ -39,7 +49,7 @@ sources:
       SELECT OS From info() where OS = 'windows'
     name: RegistryAPI
     query: |
-      LET users &lt;= SELECT Name, UUID
+      LET system_users <= SELECT Name, UUID
           FROM Artifact.Windows.Sys.Users()
       WHERE Name =~ userRegex
 
@@ -47,7 +57,7 @@ sources:
              Key.OSPath as Key,
              Key.Mtime AS TimeAccepted,
              {
-                SELECT Name FROM users WHERE UUID=regex_replace(
+                SELECT Name FROM system_users WHERE UUID=regex_replace(
                    source=Key.OSPath, re=".+\\\\(S-[^\\\\]+)\\\\.+", replace="$1")
              } as User,
              EulaAccepted
@@ -57,11 +67,11 @@ sources:
     description: Detect keys using Raw Registry Analysis
     query: |
       -- Apply Raw Registry Mappings
-      LET _ &lt;= MapRawRegistryHives
+      LET _ <= MapRawRegistryHives
 
       -- Make sure to call the other sources otherwise we get recursion errors!
       SELECT *
       FROM Artifact.Windows.Registry.Sysinternals.Eulacheck(source="RegistryAPI")
+````
 
-</code></pre>
 

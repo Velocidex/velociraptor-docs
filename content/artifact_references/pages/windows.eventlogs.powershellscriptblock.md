@@ -1,50 +1,60 @@
 ---
 title: Windows.EventLogs.PowershellScriptblock
+description: "Parses PowerShell script block logging entries (Event ID 4104) to\ndetect potentially malicious script content."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This Artifact will search and extract ScriptBlock events (Event ID 4104) from
-Powershell-Operational Event Logs.
+Parses PowerShell script block logging entries (Event ID 4104) to
+detect potentially malicious script content.
 
 PowerShell is commonly used by attackers across all stages of the attack
 lifecycle. A valuable hunt is to search Scriptblock logs for signs of
 malicious content.
 
-There are several parameters available for search leveraging regex.
+There are several parameters available for search leveraging regex:
+
+- DateAfter enables search for events after this date.
+- DateBefore enables search for events before this date.
+- SearchStrings enables regex search over scriptblock text field.
+- StringWhiteList enables a regex whitelist for scriptblock text field.
+- PathWhitelist enables a regex whitelist for path of scriptblock.
+- LogLevel enables searching on type of log. Default is Warning level which
+  is logged even if ScriptBlock logging is turned off when suspicious keywords
+  detected in PowerShell interpreter. See second reference for list of keywords.
+- SearchVSS enables VSS search.
+
+
+---
+
+````yaml
+name: Windows.EventLogs.PowershellScriptblock
+author: Matt Green - @mgreen27
+
+description: |
+  Parses PowerShell script block logging entries (Event ID 4104) to
+  detect potentially malicious script content.
+
+  PowerShell is commonly used by attackers across all stages of the attack
+  lifecycle. A valuable hunt is to search Scriptblock logs for signs of
+  malicious content.
+
+  There are several parameters available for search leveraging regex:
+
   - DateAfter enables search for events after this date.
   - DateBefore enables search for events before this date.
   - SearchStrings enables regex search over scriptblock text field.
   - StringWhiteList enables a regex whitelist for scriptblock text field.
   - PathWhitelist enables a regex whitelist for path of scriptblock.
   - LogLevel enables searching on type of log. Default is Warning level which
-  is logged even if ScriptBlock logging is turned off when suspicious keywords
-  detected in PowerShell interpreter. See second reference for list of keywords.
-  - SearchVSS enables VSS search.
-
-
-<pre><code class="language-yaml">
-name: Windows.EventLogs.PowershellScriptblock
-author: Matt Green - @mgreen27
-
-description: |
-  This Artifact will search and extract ScriptBlock events (Event ID 4104) from
-  Powershell-Operational Event Logs.
-
-  PowerShell is commonly used by attackers across all stages of the attack
-  lifecycle. A valuable hunt is to search Scriptblock logs for signs of
-  malicious content.
-
-  There are several parameters available for search leveraging regex.
-    - DateAfter enables search for events after this date.
-    - DateBefore enables search for events before this date.
-    - SearchStrings enables regex search over scriptblock text field.
-    - StringWhiteList enables a regex whitelist for scriptblock text field.
-    - PathWhitelist enables a regex whitelist for path of scriptblock.
-    - LogLevel enables searching on type of log. Default is Warning level which
     is logged even if ScriptBlock logging is turned off when suspicious keywords
     detected in PowerShell interpreter. See second reference for list of keywords.
-    - SearchVSS enables VSS search.
+  - SearchVSS enables VSS search.
 
 reference:
   - https://attack.mitre.org/techniques/T1059/001/
@@ -95,17 +105,17 @@ parameters:
 
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
 
       -- firstly set timebounds for performance
-      LET DateAfterTime &lt;= if(condition=DateAfter,
+      LET DateAfterTime <= if(condition=DateAfter,
         then=timestamp(epoch=DateAfter), else=timestamp(epoch="1600-01-01"))
-      LET DateBeforeTime &lt;= if(condition=DateBefore,
+      LET DateBeforeTime <= if(condition=DateBefore,
         then=timestamp(epoch=DateBefore), else=timestamp(epoch="2200-01-01"))
 
       -- Parse Log level dropdown selection
-      LET LogLevelRegex &lt;= SELECT format(format="%v", args=Regex) as value
+      LET LogLevelRegex <= SELECT format(format="%v", args=Regex) as value
         FROM parse_csv(filename=LogLevelMap, accessor="data")
         WHERE Choice=LogLevel LIMIT 1
 
@@ -134,8 +144,8 @@ sources:
                   OSPath
                 FROM parse_evtx(filename=OSPath, accessor=Accessor)
                 WHERE System.EventID.Value = 4104
-                    AND EventTime &lt; DateBeforeTime
-                    AND EventTime &gt; DateAfterTime
+                    AND EventTime < DateBeforeTime
+                    AND EventTime > DateAfterTime
                     AND  format(format="%d", args=System.Level) =~ LogLevelRegex.value[0]
                     AND if(condition=SearchStrings,
                       then=ScriptBlockText =~ SearchStrings,
@@ -149,6 +159,6 @@ sources:
           })
 
         SELECT * FROM evtxsearch(PathList=fspaths)
+````
 
-</code></pre>
 

@@ -1,38 +1,52 @@
 ---
 title: Windows.Forensics.UserAccessLogs
+description: "Parses the Windows User Access Logging (UAL) ESE database to\nenumerate client connections and server roles."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Parse and collect the SUM database
+Parses the Windows User Access Logging (UAL) ESE database to
+enumerate client connections and server roles.
 
-UAL is a feature that can help server administrators quantify the number of
-unique client requests of roles and services on a local server.
+UAL is a feature that can help server administrators quantify the
+number of unique client requests of roles and services on a local
+server.
 
 The UAL only exists on Windows Server edition 2012 and above.
 
-NOTE: Unlike other tools, Velociraptor DOES NOT use the JET API to access the
-database because it has a built-in ESE parser. This means that **you do not
-need to repair the files using `eseutil.exe`** even though this is a commonly
-recommended step in the references linked below. Velociraptor should have no
-trouble parsing these files on a live system.
+NOTE: Unlike other tools, Velociraptor DOES NOT use the JET API to
+access the database because it has a built-in ESE parser. This means
+that **you do not need to repair the files using `eseutil.exe`**
+even though this is a commonly recommended step in the references
+linked below. Velociraptor should have no trouble parsing these
+files on a live system.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.UserAccessLogs
 description: |
-  Parse and collect the SUM database
+  Parses the Windows User Access Logging (UAL) ESE database to
+  enumerate client connections and server roles.
 
-  UAL is a feature that can help server administrators quantify the number of
-  unique client requests of roles and services on a local server.
+  UAL is a feature that can help server administrators quantify the
+  number of unique client requests of roles and services on a local
+  server.
 
   The UAL only exists on Windows Server edition 2012 and above.
 
-  NOTE: Unlike other tools, Velociraptor DOES NOT use the JET API to access the
-  database because it has a built-in ESE parser. This means that **you do not
-  need to repair the files using `eseutil.exe`** even though this is a commonly
-  recommended step in the references linked below. Velociraptor should have no
-  trouble parsing these files on a live system.
+  NOTE: Unlike other tools, Velociraptor DOES NOT use the JET API to
+  access the database because it has a built-in ESE parser. This means
+  that **you do not need to repair the files using `eseutil.exe`**
+  even though this is a commonly recommended step in the references
+  linked below. Velociraptor should have no trouble parsing these
+  files on a live system.
 
 reference:
   - https://advisory.kpmg.us/blog/2021/digital-forensics-incident-response.html
@@ -47,7 +61,7 @@ export: |
         ["C", 2, "uint8"],
         ["D", 3, "uint8"],
         ["IP", 0, "Value", {
-           value: "x=&gt; format(format='%d.%d.%d.%d', args=[x.A, x.B, x.C, x.D])"
+           value: "x=> format(format='%d.%d.%d.%d', args=[x.A, x.B, x.C, x.D])"
         }]
       ]],
      ["IP6", 0, [
@@ -60,7 +74,7 @@ export: |
         ["G", 12, "uint16be"],
         ["H", 14, "uint16be"],
         ["IP", 0, "Value", {
-           value: "x=&gt; format(format='%04x:%04x:%04x:%04x:%04x:%04x:%04x:%04x', args=[x.A, x.B, x.C, x.D, x.E, x.F, x.G, x.H])"
+           value: "x=> format(format='%04x:%04x:%04x:%04x:%04x:%04x:%04x:%04x', args=[x.A, x.B, x.C, x.D, x.E, x.F, x.G, x.H])"
         }]
       ]]
     ]'''
@@ -87,7 +101,7 @@ export: |
       WHERE Name =~ "SystemIdentity.mdb"
 
     -- Prepare a Role lookup to resolve the role GUID
-    LET RoleLookup &lt;= memoize(key="RoleGuid", query={
+    LET RoleLookup <= memoize(key="RoleGuid", query={
       SELECT * FROM foreach(row=SystemIdentity, query={
          SELECT * FROM parse_ese(file=OSPath, table="ROLE_IDS")
          WHERE log(message="RoleGuid " + RoleGuid)
@@ -175,6 +189,6 @@ sources:
       query: |
         SELECT OSPath, if(condition=AlsoUpload, then=upload(file=OSPath))
         FROM glob(globs=SUMGlob)
+````
 
-</code></pre>
 

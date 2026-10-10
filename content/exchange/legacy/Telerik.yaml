@@ -28,7 +28,7 @@ parameters:
     description: "IOC Regex"
     default: telerik.*\\?type=rau
   - name: WhitelistRegex
-    description: "Regex of string to witelist"
+    description: "Regex of string to whitelist"
   - name: SearchVSS
     description: "Add VSS into query."
     type: bool

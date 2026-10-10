@@ -1,31 +1,45 @@
 ---
 title: Generic.Detection.Logs
+description: "Searches text-based log files for strings matching a regex pattern\nacross common web server and system log paths."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact enables grep of Logs to hunt for strings of interest. Default
-target glob includes /var/log/, Apache and Windows IIS paths.
+Searches text-based log files for strings matching a regex pattern
+across common web server and system log paths.
 
-Parameters include SearchRegex and WhitelistRegex as regex terms and will
-return the whole line to assist with scoping.
+This artifact enables grep-like searching of logs to hunt for
+strings of interest. Default target globs include `/var/log/`,
+Apache web server and Windows IIS paths.
 
-IIS and Apache Groks are available as notebook suggestions - please feel free to PR
-additions!
+Parameters include SearchRegex and WhitelistRegex as regex terms and
+will return the whole line to assist with scoping.
+
+IIS and Apache groks are available as notebook suggestions.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Detection.Logs
 author: "Matt Green - @mgreen27, Apache groks thanks to Harsh Jaroli and Krishna Patel"
 description: |
-  This artifact enables grep of Logs to hunt for strings of interest. Default
-  target glob includes /var/log/, Apache and Windows IIS paths.
+  Searches text-based log files for strings matching a regex pattern
+  across common web server and system log paths.
 
-  Parameters include SearchRegex and WhitelistRegex as regex terms and will
-  return the whole line to assist with scoping.
+  This artifact enables grep-like searching of logs to hunt for
+  strings of interest. Default target globs include `/var/log/`,
+  Apache web server and Windows IIS paths.
 
-  IIS and Apache Groks are available as notebook suggestions - please feel free to PR
-  additions!
+  Parameters include SearchRegex and WhitelistRegex as regex terms and
+  will return the whole line to assist with scoping.
+
+  IIS and Apache groks are available as notebook suggestions.
 
 
 parameters:
@@ -95,6 +109,6 @@ sources:
 
             SELECT * FROM foreach(row=parsed,
                   query={ SELECT *, _Raw FROM GrokParsed })
+````
 
-</code></pre>
 

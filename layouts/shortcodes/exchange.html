@@ -1,136 +1,34 @@
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js">
-</script>
-
-<div class="row searchbar">
-  <div class="input-group col-lg-8 pull-left">
-    <input type="text" id="myInput" onkeyup="doSearch()" class="form-control"
-           placeholder="Search for an artifact" aria-describedby="basic-addon2">
-    <span class="input-group-addon" id="basic-addon2"><i class="fas fa-search"></i></span>
-  </div>
-  <div class="col-lg-3 pull-right exchange-contribute">
-    <button type="button" class="btn btn-default btn-lg pull-right"
-            data-toggle="modal" data-target="#myModal">
-      <i class="fas fa-external-link-alt"></i>
-      Share your own Artifact
-    </button>
-  </div>
+{{/* Self-contained artifact exchange search over /exchange/data.json. */}}
+<div class="search-box" data-section-search="exchange">
+  <input type="search" class="hx:block hx:w-full hx:rounded-md hx:border hx:border-gray-200 hx:bg-white hx:px-4 hx:py-2 hx:text-gray-800 hx:placeholder-gray-400 hx:dark:border-neutral-800 hx:dark:bg-neutral-900 hx:dark:text-neutral-200 hx:dark:placeholder-neutral-500"
+         placeholder="Search for an exchange artifact"
+         aria-label="Search for an exchange artifact">
 </div>
 
-<!-- Modal -->
-<div class="modal fade E" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog E" role="document">
-    <div class="modal-content E">
-      <div class="modal-header E">
-        <button type="button" class="close"
-                data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title E">Share an artifact</h4>
-      </div>
-      <div class="modal-body E">
-        <p class="egg">The darkside is strong with you...</p>
-        <p>
-          The artifact exchange is a central place for you to share
-          your own artifacts with the Velociraptor community and
-          search for artifacts you can use in your own work.
-        </p>
-        <p>
-          Clicking "Contribute" below will allow you to add a new
-          artifact yaml file to this repository. Please choose a good
-          name for the yaml file, and add a good description.
-        </p>
-        <p>
-          You can also add tags to your artifact by adding hash tags
-          to the description field.
-        </p>
-      </div>
-      <div class="modal-footer">
-        <a href="https://github.com/Velocidex/velociraptor-docs/new/master/content/exchange/artifacts"
-           class="btn btn-primary btn-lg right">
-          <i class="fab fa-github"></i>&nbsp;Contribute
-        </a>
-      </div>
-    </div>
+<details class="hx:mt-8 hx:rounded-md hx:border hx:border-gray-200 hx:bg-gray-50 hx:dark:border-neutral-800 hx:dark:bg-neutral-900 hx:px-4 hx:py-3 not-prose">
+  <summary class="hx:cursor-pointer hx:select-none hx:font-medium hx:text-primary-800 hx:dark:text-primary-600">Share your own Artifact</summary>
+  <div class="hx:mt-3 hx:text-sm">
+    <p class="egg" aria-hidden="true">The darkside is strong with you...</p>
+    <p>
+      The artifact exchange is a central place for you to share your own
+      artifacts with the Velociraptor community and search for artifacts you
+      can use in your own work.
+    </p>
+    <p>
+      Clicking "Contribute" below will allow you to add a new artifact yaml
+      file to this repository. Please choose a good name for the yaml file,
+      and add a good description.
+    </p>
+    <p>
+      You can also add tags to your artifact by adding hash tags to the
+      description field.
+    </p>
+    <a href="https://github.com/Velocidex/velociraptor-docs/new/master/content/exchange/artifacts"
+       target="_blank" rel="noopener"
+       class="hx:mt-4 hx:inline-flex hx:items-center hx:gap-2 hx:rounded-md hx:bg-primary-600 hx:px-4 hx:py-2 hx:font-bold hx:text-white hx:hover:bg-primary-500">
+      Contribute
+    </a>
   </div>
-</div>
+</details>
 
-<hr />
-<div class="row search_results"></div>
-
-<script>
-let all_data = [];
-
-$.ajax({
-  url: "/exchange/data.json",
-}).done(function( data ) {
-  all_data = data;
-  DrawResults(data);
-});
-
-$(document).ready(function () {
-    $('#myInput').focus();
-});
-
-function doSearch() {
-  // Declare variables
-  let input = document.getElementById('myInput');
-  let filter = input.value.toUpperCase();
-
-  let result = [];
-  for(let i=0;i<all_data.length; i++) {
-    let item = all_data[i];
-
-    if (item.title.toUpperCase().includes(filter)) {
-      result.push(item);
-    } else if(item.description &&
-              item.description.toUpperCase().includes(filter)) {
-        result.push(item);
-    }
-  };
-  DrawResults(result);
-}
-
-function DrawResults(data) {
-  $(".search_results").empty();
-
-  for(let i=0;i<data.length; i++) {
-    let item = data[i];
-    let template = $(`<div class="panel panel-default color">
-  <div class="panel-heading color">
-    <a class="title" href=""><h3 class="panel-title color " ></h3></a>
-    <div class="date pull-right"></div>
-  </div>
-  <div class="panel-body color">
-   <div class="border color">
-     <div class="border color">
-      <div class="idea-inner-text-main color">
-        <p class="description"></p>
-        <span class="user-name" href="">Contributed by <a class="user-name-link"></a>
-          <img class="user-avatar inline">
-        </span>
-
-        <p class="idea-tag space"/>
-      </div>
-     </div>
-   </div>
-  </div>`);
-
-    template.find(".title").append(item.title);
-    template.find(".user-name-link").append(item.author);
-    template.find(".description").append(item.description);
-    template.find(".user-name-link").attr("href", item.author_link);
-    template.find(".user-avatar").attr("src", item.author_avatar);
-    template.find(".title").attr("href", item.link);
-    template.find(".date").append(item.date)
-
-    for (let j=0; j<item.tags.length; j++) {
-        let tag = item.tags[j];
-        template.find(".idea-tag").
-            append($(`<a class="tag">`).attr("href", "/tags/" + tag).
-                   append(`<i class="linkcolour tag label label-success">` + tag + `</i>&nbsp;`));
-    }
-    let new_item = $(".search_results").append(template);
-  }
-};
-</script>
+<script src="/js/section-search.js"></script>

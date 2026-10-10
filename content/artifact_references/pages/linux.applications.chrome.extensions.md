@@ -1,33 +1,45 @@
 ---
 title: Linux.Applications.Chrome.Extensions
+description: "Enumerates installed Chrome extensions by locating and parsing\n`manifest.json` files for all users."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Fetch Chrome extensions.
+Enumerates installed Chrome extensions by locating and parsing
+`manifest.json` files for all users.
 
-Chrome extensions are installed into the user's home directory.  We
-search for manifest.json files in a known path within each system
-user's home directory. We then parse the manifest file as JSON.
+Chrome extensions are installed into the user's home directory. This
+artifact searches for manifest.json files in a known path within
+each system user's home directory. It then parses the manifest file
+as JSON.
 
 Many extensions use locale packs to resolve strings like name and
-description. In this case we detect the default locale and load
-those locale files. We then resolve the extension's name and
+description. In this case it detects the default locale and loads
+those locale files. It then resolves the extensions name and
 description from there.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Applications.Chrome.Extensions
 description: |
-  Fetch Chrome extensions.
+  Enumerates installed Chrome extensions by locating and parsing
+  `manifest.json` files for all users.
 
-  Chrome extensions are installed into the user's home directory.  We
-  search for manifest.json files in a known path within each system
-  user's home directory. We then parse the manifest file as JSON.
+  Chrome extensions are installed into the user's home directory. This
+  artifact searches for manifest.json files in a known path within
+  each system user's home directory. It then parses the manifest file
+  as JSON.
 
   Many extensions use locale packs to resolve strings like name and
-  description. In this case we detect the default locale and load
-  those locale files. We then resolve the extension's name and
+  description. In this case it detects the default locale and loads
+  those locale files. It then resolves the extensions name and
   description from there.
 
 parameters:
@@ -143,6 +155,6 @@ sources:
                Manifest.key as Key
 
         FROM parsed_manifest_files
+````
 
-</code></pre>
 

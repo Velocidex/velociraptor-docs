@@ -1,39 +1,59 @@
 ---
 title: Windows.Detection.BinaryHunter
+description: "This artifact enables hunting for binary attributes."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
 This artifact enables hunting for binary attributes.
 
-The artifact takes a glob targeting input, then checks each file in scope for an MZ header.
-The artifact also queries Authenticode details and parses out PE attributes.
+The artifact takes a glob targeting input, then checks each file in
+scope for an MZ header. The artifact also queries Authenticode
+details and parses out PE attributes.
 
-Both PE and Authenticode output can be queried for relevant strings by using a regex filter and whitelist to hunt with.
-This enables unique capability to hunt for specific things such as PE imports, exports or other attributes.
+Both PE and Authenticode output can be queried for relevant strings
+by using a regex filter and whitelist to hunt with. This enables
+unique capability to hunt for specific things such as PE imports,
+exports or other attributes.
 
-Note: this artifacts filters are cumulative so a hash based hit will return
-no results if the file is filtered out by other filters.
-For most performant searches use path, size and and date filters. By default
-the artifact uses the 'auto' data accessor but can also be changed as desired.
+Note:
+
+This artifacts filters are cumulative so a hash based hit will
+return no results if the file is filtered out by other filters. For
+most performant searches use path, size and date filters. By default
+the artifact uses the 'auto' data accessor but can also be changed
+as desired.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.BinaryHunter
 author: "Matt Green - @mgreen27"
 description: |
-    This artifact enables hunting for binary attributes.
+  This artifact enables hunting for binary attributes.
 
-    The artifact takes a glob targeting input, then checks each file in scope for an MZ header.
-    The artifact also queries Authenticode details and parses out PE attributes.
+  The artifact takes a glob targeting input, then checks each file in
+  scope for an MZ header. The artifact also queries Authenticode
+  details and parses out PE attributes.
 
-    Both PE and Authenticode output can be queried for relevant strings by using a regex filter and whitelist to hunt with.
-    This enables unique capability to hunt for specific things such as PE imports, exports or other attributes.
+  Both PE and Authenticode output can be queried for relevant strings
+  by using a regex filter and whitelist to hunt with. This enables
+  unique capability to hunt for specific things such as PE imports,
+  exports or other attributes.
 
-    Note: this artifacts filters are cumulative so a hash based hit will return
-    no results if the file is filtered out by other filters.
-    For most performant searches use path, size and and date filters. By default
-    the artifact uses the 'auto' data accessor but can also be changed as desired.
+  Note:
+  
+  This artifacts filters are cumulative so a hash based hit will
+  return no results if the file is filtered out by other filters. For
+  most performant searches use path, size and date filters. By default
+  the artifact uses the 'auto' data accessor but can also be changed
+  as desired.
 
 parameters:
   - name: TargetGlob
@@ -49,7 +69,7 @@ parameters:
     description: Exclude binaries with Trusted Authenticode certificates.
     type: bool
   - name: AuthenticodeRegex
-    description: Regex to search through all authenrticode data.
+    description: Regex to search through all authenticode data.
     default: .
     type: regex
   - name: AuthenticodeWhitelistRegex
@@ -100,9 +120,9 @@ parameters:
 sources:
   - query: |
       -- setup hash lists if needed
-      LET MD5Array &lt;= split(sep='\\s+',string=MD5List)
-      LET SHA1Array &lt;=  split(sep='\\s+',string=SHA1List)
-      LET SHA256Array &lt;= split(sep='\\s+',string=SHA256List)
+      LET MD5Array <= split(sep='\\s+',string=MD5List)
+      LET SHA1Array <=  split(sep='\\s+',string=SHA1List)
+      LET SHA256Array <= split(sep='\\s+',string=SHA256List)
 
       -- firstly find files in scope with performance
       LET find_files = SELECT *,
@@ -112,31 +132,31 @@ sources:
                 SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
                 FROM glob(globs=TargetGlob,accessor=Accessor)
                 WHERE NOT IsDir AND NOT IsLink
-                    AND Size &gt; SizeMin AND Size &lt; SizeMax
-                    AND ( Mtime &lt; DateBefore OR Ctime &lt; DateBefore OR Btime &lt; DateBefore )
-                    AND ( Mtime &gt; DateAfter OR Ctime &gt; DateAfter OR Btime &gt; DateAfter )
+                    AND Size > SizeMin AND Size < SizeMax
+                    AND ( Mtime < DateBefore OR Ctime < DateBefore OR Btime < DateBefore )
+                    AND ( Mtime > DateAfter OR Ctime > DateAfter OR Btime > DateAfter )
             },
             else={ SELECT * FROM  if(condition=DateBefore,
                 then={
                     SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
                     FROM glob(globs=OSPath,accessor=Accessor)
                     WHERE NOT IsDir AND NOT IsLink
-                        AND Size &gt; SizeMin AND Size &lt; SizeMax
-                        AND ( Mtime &lt; DateBefore OR Ctime &lt; DateBefore OR Btime &lt; DateBefore )
+                        AND Size > SizeMin AND Size < SizeMax
+                        AND ( Mtime < DateBefore OR Ctime < DateBefore OR Btime < DateBefore )
                 },
                 else={ SELECT * FROM  if(condition=DateAfter,
                 then={
                     SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
                     FROM glob(globs=TargetGlob,accessor=Accessor)
                     WHERE NOT IsDir AND NOT IsLink
-                        AND Size &gt; SizeMin AND Size &lt; SizeMax
-                        AND ( Mtime &gt; DateAfter OR Ctime &gt; DateAfter OR Btime &gt; DateAfter )
+                        AND Size > SizeMin AND Size < SizeMax
+                        AND ( Mtime > DateAfter OR Ctime > DateAfter OR Btime > DateAfter )
                 },
                 else={
                     SELECT OSPath, Name, Size,Mtime,Atime,Ctime,Btime
                     FROM glob(globs=TargetGlob,accessor=Accessor)
                     WHERE NOT IsDir AND NOT IsLink
-                        AND Size &gt; SizeMin AND Size &lt; SizeMax
+                        AND Size > SizeMin AND Size < SizeMax
                 })})})
         WHERE _Header = 'MZ'
             AND if(condition= UnexpectedExtension,
@@ -174,14 +194,14 @@ sources:
                  OR if(condition= SHA256List,
                         then= Hash.SHA256 in SHA256Array)
             ), else = True )
-      
+
       LET upload_files= SELECT *,
             upload(file=File.OSPath) as UploadFile
       FROM results
-      
+
       SELECT * FROM if(condition= UploadFiles,
                         then= upload_files,
                         else= results)
+````
 
-</code></pre>
 

@@ -1,37 +1,51 @@
 ---
 title: Windows.System.WMIQuery
+description: "Runs a configurable WMI query on Windows and outputs the result\nrows."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact enables querying Windows Management Instrumentation (WMI).
+Runs a configurable WMI query on Windows and outputs the result
+rows.
 
-Windows Management Instrumentation (WMI) is the Microsoft implementation of
-Web-Based Enterprise Management (WBEM), which is an industry initiative to
-develop a standard technology for accessing management information in an
-enterprise environment. WMI uses the Common Information Model (CIM) industry
-standard to represent systems, applications, networks, devices, and other
-managed components. CIM is developed and maintained by the Distributed
-Management Task Force (DMTF).
+Windows Management Instrumentation (WMI) is the Microsoft
+implementation of Web-Based Enterprise Management (WBEM), which is
+an industry initiative to develop a standard technology for
+accessing management information in an enterprise environment. WMI
+uses the Common Information Model (CIM) industry standard to
+represent systems, applications, networks, devices, and other
+managed components. CIM is developed and maintained by the
+Distributed Management Task Force (DMTF).
 
-Please see the second reference link for an example of built-in system classes.
+Please see the second reference link for an example of built-in
+system classes.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.WMIQuery
 author: Matt Green - @mgreen27
 description: |
-    This artifact enables querying Windows Management Instrumentation (WMI).
+    Runs a configurable WMI query on Windows and outputs the result
+    rows.
+    
+    Windows Management Instrumentation (WMI) is the Microsoft
+    implementation of Web-Based Enterprise Management (WBEM), which is
+    an industry initiative to develop a standard technology for
+    accessing management information in an enterprise environment. WMI
+    uses the Common Information Model (CIM) industry standard to
+    represent systems, applications, networks, devices, and other
+    managed components. CIM is developed and maintained by the
+    Distributed Management Task Force (DMTF).
 
-    Windows Management Instrumentation (WMI) is the Microsoft implementation of
-    Web-Based Enterprise Management (WBEM), which is an industry initiative to
-    develop a standard technology for accessing management information in an
-    enterprise environment. WMI uses the Common Information Model (CIM) industry
-    standard to represent systems, applications, networks, devices, and other
-    managed components. CIM is developed and maintained by the Distributed
-    Management Task Force (DMTF).
-
-    Please see the second reference link for an example of built-in system classes.
+    Please see the second reference link for an example of built-in
+    system classes.
 
 reference:
     - https://docs.microsoft.com/en-us/windows/win32/wmisdk/wmi-start-page
@@ -42,7 +56,7 @@ required_permissions:
 
 parameters:
   - name: WMIQuery
-    description: "Add target WMI query: e.g SELECT * FROM &lt;CLASSNAME&gt;"
+    description: "Add target WMI query: e.g SELECT * FROM <CLASSNAME>"
     default: "SELECT * FROM Win32_Process"
 
   - name: Namespace
@@ -55,6 +69,6 @@ sources:
 
     query: |
        SELECT * FROM wmi(namespace=Namespace,query=WMIQuery)
+````
 
-</code></pre>
 

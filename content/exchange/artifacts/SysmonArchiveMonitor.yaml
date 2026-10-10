@@ -3,11 +3,11 @@ author: Matt Green - @mgreen27
 description: |
    This artifact enables automatic management of the Sysmon archive folder.
 
-   FileDelete is a super usefuil capability offered by Sysmon enabling archive
+   FileDelete is a super-useful capability offered by Sysmon enabling archive
    of deleted files. It is typically used to archive interesting files or to target
    collection during an active engagement.
 
-   Requrements: Windows.Sysinternals.SysmonArchive
+   Requirements: Windows.Sysinternals.SysmonArchive
 
 reference:
     - https://github.com/trustedsec/SysmonCommunityGuide/blob/master/chapters/file-delete.md

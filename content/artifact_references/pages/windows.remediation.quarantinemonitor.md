@@ -1,29 +1,42 @@
 ---
 title: Windows.Remediation.QuarantineMonitor
+description: "Periodically applies and maintains Windows IPsec quarantine policy\non the endpoint via an event query that will ensure the client stays\nquarantined."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
 
-An event query that will ensure the client is quarantined.
+Periodically applies and maintains Windows IPsec quarantine policy
+on the endpoint via an event query that will ensure the client stays
+quarantined.
 
-We re-calculate the quarantine every 10 minutes by default to
+Re-calculates the quarantine every 10 minutes, by default, to
 account for changes in DNS/connectivity details. When the query is
-terminated, we undo the quarantine.
+terminated, the quarantine is undone.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Remediation.QuarantineMonitor
 description: |
-  An event query that will ensure the client is quarantined.
+  Periodically applies and maintains Windows IPsec quarantine policy
+  on the endpoint via an event query that will ensure the client stays
+  quarantined.
 
-  We re-calculate the quarantine every 10 minutes by default to
+  Re-calculates the quarantine every 10 minutes, by default, to
   account for changes in DNS/connectivity details. When the query is
-  terminated, we undo the quarantine.
+  terminated, the quarantine is undone.
 
 type: CLIENT_EVENT
 
 required_permissions:
   - EXECVE
+  - NETWORK
 
 parameters:
   - name: PolicyName
@@ -47,12 +60,12 @@ parameters:
 
 precondition:
   SELECT OS FROM info() WHERE OS = "windows"
-     AND version(function="atexit") &gt;= 0
+     AND version(function="atexit") >= 0
 
 sources:
   - query: |
       -- When the query is done we unset the policy.
-      LET _ &lt;= atexit(query={
+      LET _ <= atexit(query={
          SELECT * FROM Artifact.Windows.Remediation.Quarantine(
            PolicyName=PolicyName, RemovePolicy=TRUE)
       })
@@ -67,6 +80,6 @@ sources:
             PolicyName=PolicyName, RuleLookupTable=RuleLookupTable,
             MessageBox=MessageBox)
        })
+````
 
-</code></pre>
 

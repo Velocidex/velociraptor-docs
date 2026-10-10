@@ -2,12 +2,12 @@ name: Windows.Remediation.Registry
 author: Matt Green - @mgreen27
 description: |
     This artifact uses glob to remove a registry key.
-    
-    TypeRegex allows targeting of key or value. For service remediation key, for 
-    run key remediation SZ or .   
-    
+
+    TypeRegex allows targeting of key or value. For service remediation key, for
+    run key remediation SZ or .
+
     WARNING: PLEASE SCOPE FIRST and use appropriate targeting.
-    
+
 type: CLIENT
 
 precondition:
@@ -16,7 +16,7 @@ precondition:
 parameters:
   - name: TargetRegistryGlob
     default: HKEY_LOCAL_MACHINE\SYSTEM\{CurrentControlSet,ControlSet*}\Services\ServiceName
-    description: Use a glob to define the keys that will be targetted.
+    description: Use a glob to define the keys that will be targeted.
   - name: TypeRegex
     default: key
     description: Regex for Registry type. Usually key or SZ or .
@@ -26,7 +26,7 @@ parameters:
 
 sources:
   - query: |
-        SELECT  OSPath, 
+        SELECT  OSPath,
                 Name,
                 Data.type as Type,
                 Data.value as Value,
@@ -38,7 +38,7 @@ sources:
                     else= FALSE ) as Deleted
         FROM glob(globs=TargetRegistryGlob, accessor='registry')
         WHERE Type =~ TypeRegex
-        
+
 column_types:
   - name: Modified
     type: timestamp

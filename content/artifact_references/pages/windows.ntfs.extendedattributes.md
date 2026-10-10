@@ -1,38 +1,51 @@
 ---
 title: Windows.NTFS.ExtendedAttributes
+description: "Parses NTFS Extended Attributes ($EA) from the MFT to detect hidden\ndata."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Adversaries may use NTFS file attributes for defense evasion to hide malicious
-data. This artifact parses NTFS Extended attributes ($EA).
-The artifact firstly queries the MFT, then enriches NTFS data to check for
-Extended Attributes. Several filters can be applied such as file search,
-Extended Attribute size, name or content.
+Parses NTFS Extended Attributes ($EA) from the MFT to detect hidden
+data.
 
-NOTE:
-By default an EAName exclusion has been applied to filter some common $EA names
-found on Windows System. Recommended hunt would be by rare name or $EA size.
-By default we only parse $EA and discard $EA_INFORMATION. $EA_INFORMATION
-typically is very small and available in NtfsMetadata field of output.
+Adversaries may use NTFS file attributes for defense evasion to hide
+malicious data. This artifact parses NTFS Extended attributes ($EA).
+The artifact firstly queries the MFT, then enriches NTFS data to
+check for Extended Attributes. Several filters can be applied such
+as file search, Extended Attribute size, name or content.
+
+NOTE: By default an EAName exclusion has been applied to filter.
+Some common $EA names found on Windows System. Recommended hunt
+would be by rare name or $EA size. By default we only parse $EA and
+discard $EA_INFORMATION. $EA_INFORMATION typically is very small and
+available in NtfsMetadata field of output.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.NTFS.ExtendedAttributes
 author: "Matt Green - @mgreen27"
 description: |
-  Adversaries may use NTFS file attributes for defense evasion to hide malicious
-  data. This artifact parses NTFS Extended attributes ($EA).
-  The artifact firstly queries the MFT, then enriches NTFS data to check for
-  Extended Attributes. Several filters can be applied such as file search,
-  Extended Attribute size, name or content.
+  Parses NTFS Extended Attributes ($EA) from the MFT to detect hidden
+  data.
+  
+  Adversaries may use NTFS file attributes for defense evasion to hide
+  malicious data. This artifact parses NTFS Extended attributes ($EA).
+  The artifact firstly queries the MFT, then enriches NTFS data to
+  check for Extended Attributes. Several filters can be applied such
+  as file search, Extended Attribute size, name or content.
 
-  NOTE:
-  By default an EAName exclusion has been applied to filter some common $EA names
-  found on Windows System. Recommended hunt would be by rare name or $EA size.
-  By default we only parse $EA and discard $EA_INFORMATION. $EA_INFORMATION
-  typically is very small and available in NtfsMetadata field of output.
-
+  NOTE: By default an EAName exclusion has been applied to filter.
+  Some common $EA names found on Windows System. Recommended hunt
+  would be by rare name or $EA size. By default we only parse $EA and
+  discard $EA_INFORMATION. $EA_INFORMATION typically is very small and
+  available in NtfsMetadata field of output.
 
 reference:
   - https://attack.mitre.org/techniques/T1564/004/
@@ -77,7 +90,7 @@ parameters:
     default: 0
   - name: UploadHits
     type: bool
-    description: "Upload complete complete attribute data."
+    description: "Upload complete attribute data."
 
 sources:
   - query: |
@@ -87,17 +100,17 @@ sources:
                 "type": "EA",
                 "count": 99 }],
          ]],
-         ["EA", "x=&gt;x.__NextOffset", [
+         ["EA", "x=>x.__NextOffset", [
             ["__NextOffset", 0, "uint32"],
             ["__NameLength", 5, "uint8"],
             ["__ValueLength", 6, "uint16"],
             ["Name", 8, String, {
-                length: "x=&gt;x.__NameLength" }],
+                length: "x=>x.__NameLength" }],
             ["Flags", 4, "uint8"],
             ["ValueLength", 6, "uint16"],
-            ["Value", "x=&gt;9 + x.__NameLength", "String",{
+            ["Value", "x=>9 + x.__NameLength", "String",{
                 term: "********** NO TERM **********",
-                length: "x=&gt;x.__ValueLength",
+                length: "x=>x.__ValueLength",
                 max_length: 10000 }],
        ]]
        ]'''
@@ -120,7 +133,7 @@ sources:
             --{ SELECT * FROM NtfsMetadata.Attributes WHERE Type = '$EA_INFORMATION'} as _EA_INFORMATION_Metadata,
             { SELECT * FROM NtfsMetadata.Attributes WHERE Type = '$EA'} as _EA_Metadata
         FROM mft_entries
-        WHERE _EA_Metadata.Size &gt; SizeMin AND _EA_Metadata.Size &lt; SizeMax
+        WHERE _EA_Metadata.Size > SizeMin AND _EA_Metadata.Size < SizeMax
 
       -- parse EA attribute
       LET parse_ea = SELECT OSPath, NtfsMetadata, _EA_Metadata,
@@ -157,6 +170,6 @@ sources:
       FROM if(condition=UploadHits,
         then=upload_hits,
         else=flatten_results)
+````
 
-</code></pre>
 

@@ -1,13 +1,37 @@
 ---
 title: Linux.Search.FileFinder
+description: "Searches for files by path glob, inspects file content via YARA, and\nprovides file hash and upload options.."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Find files on the filesystem using the filename or content.
+Searches for files by path glob, inspects file content via YARA, and
+provides file hash and upload options..
 
+This artifact is useful in the following scenarios:
 
-## Performance Note
+* We need to locate all the places on our network where customer
+  data has been copied.
+
+* We’ve identified malware in a data breach, named using short
+  random strings in specific folders and need to search for other
+  instances across the network.
+
+* We believe our user account credentials have been dumped and
+  need to locate them.
+
+* We need to search for exposed credit card data to satisfy PCI
+  requirements.
+
+* We have a sample of data that has been disclosed and need to
+  locate other similar files
+
+**Performance Note**
 
 This artifact can be quite expensive, especially if we search file
 content. It will require opening each file and reading its entire
@@ -15,7 +39,16 @@ content. To minimize the impact on the endpoint we recommend this
 artifact is collected with a rate limited way (about 20-50 ops per
 second).
 
-This artifact is useful in the following scenarios:
+
+---
+
+````yaml
+name: Linux.Search.FileFinder
+description: |
+  Searches for files by path glob, inspects file content via YARA, and
+  provides file hash and upload options..
+
+  This artifact is useful in the following scenarios:
 
   * We need to locate all the places on our network where customer
     data has been copied.
@@ -33,39 +66,13 @@ This artifact is useful in the following scenarios:
   * We have a sample of data that has been disclosed and need to
     locate other similar files
 
-
-<pre><code class="language-yaml">
-name: Linux.Search.FileFinder
-description: |
-  Find files on the filesystem using the filename or content.
-
-
-  ## Performance Note
+  **Performance Note**
 
   This artifact can be quite expensive, especially if we search file
   content. It will require opening each file and reading its entire
   content. To minimize the impact on the endpoint we recommend this
   artifact is collected with a rate limited way (about 20-50 ops per
   second).
-
-  This artifact is useful in the following scenarios:
-
-    * We need to locate all the places on our network where customer
-      data has been copied.
-
-    * We’ve identified malware in a data breach, named using short
-      random strings in specific folders and need to search for other
-      instances across the network.
-
-    * We believe our user account credentials have been dumped and
-      need to locate them.
-
-    * We need to search for exposed credit card data to satisfy PCI
-      requirements.
-
-    * We have a sample of data that has been disclosed and need to
-      locate other similar files
-
 
 precondition:
   SELECT * FROM info() where OS = 'linux'
@@ -133,15 +140,16 @@ parameters:
 
   - name: UPLOAD_IS_RESUMABLE
     type: bool
-    default: Y
-    description: If set the uploads can be resumed if the flow times out or errors.
+    default: N
+    description: |
+      If set the uploads can be resumed if the flow times out or errors.
 
 sources:
 - query: |
     -- This list comes from cat /proc/devices and represents actual
     -- devices. Most virtual devices like /proc, fuse and network
     -- filesystems have a major number of 0.
-    LET LocalDeviceMajor &lt;= (
+    LET LocalDeviceMajor <= (
        253,
        7,   -- loop
        8,   -- sd
@@ -171,10 +179,10 @@ sources:
     LET RecursionCallback = if(
        condition=LocalFilesystemOnly,
          then=if(condition=ExcludePathRegex,
-                 then="x=&gt;x.Data.DevMajor IN LocalDeviceMajor AND NOT x.OSPath =~ ExcludePathRegex",
-                 else="x=&gt;x.Data.DevMajor IN LocalDeviceMajor"),
+                 then="x=>x.Data.DevMajor IN LocalDeviceMajor AND NOT x.OSPath =~ ExcludePathRegex",
+                 else="x=>x.Data.DevMajor IN LocalDeviceMajor"),
          else=if(condition=ExcludePathRegex,
-                 then="x=&gt;NOT x.OSPath =~ ExcludePathRegex",
+                 then="x=>NOT x.OSPath =~ ExcludePathRegex",
                  else=""))
 
     LET file_search = SELECT OSPath,
@@ -194,7 +202,7 @@ sources:
         condition=MoreRecentThan,
         then={
           SELECT * FROM file_search
-          WHERE MTime &gt; MoreRecentThan
+          WHERE MTime > MoreRecentThan
         }, else={
           SELECT * FROM file_search
         })
@@ -203,8 +211,8 @@ sources:
         condition=ModifiedBefore,
         then={
           SELECT * FROM more_recent
-          WHERE MTime &lt; ModifiedBefore
-            AND MTime &gt; MoreRecentThan
+          WHERE MTime < ModifiedBefore
+            AND MTime > MoreRecentThan
         }, else={
           SELECT * FROM more_recent
         })
@@ -240,6 +248,26 @@ sources:
                   then=hash(path=OSPath,
                             accessor=ACCESSOR)) AS Hash
     FROM keyword_search
+  notebook:
+    - type: none
+      name: quick_link
+      env:
+        - key: text
+          value: Search Files
+        - key: icon
+          value: search
+        - key: os_filter
+          value: Linux
+        - key: weight
+          value: "010"
+    - type: vql
+      template: |
+        /*
+        # Linux.Search.FileFinder
+        */
+
+        SELECT * FROM source()
+        LIMIT 50
 
 column_types:
   - name: ATime
@@ -250,6 +278,6 @@ column_types:
     type: timestamp
   - name: Upload
     type: preview_upload
+````
 
-</code></pre>
 

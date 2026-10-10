@@ -1,44 +1,56 @@
 ---
 title: Windows.ETW.Registry
+description: "Monitors registry create, open, delete, and value modification\nevents via the Kernel-Registry ETW provider."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
 
-Windows Registry access is a great source of visibility into system
-activity.
+Monitors registry create, open, delete, and value modification
+events via the Kernel-Registry ETW provider.
 
-There are many ways of gaining visibility into this, the most
-reliable being Sysmon. However it is also possible to gain some
-visibility using ETW. The Microsoft-Windows-Kernel-Registry provides
-ETW events for registry modifications.
+The Windows Registry access is a great source of visibility into
+system activity. There are many ways of gaining visibility into
+this, the most reliable being Sysmon. However it is also possible to
+gain some visibility using ETW. The
+`Microsoft-Windows-Kernel-Registry` provider provides ETW events for
+registry modifications.
 
 This artifact parses these events and ties them back to the
 accessing process. We recommend running this artifact with the
 process tracker.
 
-NOTE: Experience shows this ETW provider is not very reliable and seems to
-miss a lot of registry events. This artifact should therefore be considered
-experimental.
+NOTE: Experience shows this ETW provider is not very reliable and
+seems to miss a lot of registry events. This artifact should
+therefore be considered experimental.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.ETW.Registry
 description: |
-  Windows Registry access is a great source of visibility into system
-  activity.
-
-  There are many ways of gaining visibility into this, the most
-  reliable being Sysmon. However it is also possible to gain some
-  visibility using ETW. The Microsoft-Windows-Kernel-Registry provides
-  ETW events for registry modifications.
+  Monitors registry create, open, delete, and value modification
+  events via the Kernel-Registry ETW provider.
+  
+  The Windows Registry access is a great source of visibility into
+  system activity. There are many ways of gaining visibility into
+  this, the most reliable being Sysmon. However it is also possible to
+  gain some visibility using ETW. The
+  `Microsoft-Windows-Kernel-Registry` provider provides ETW events for
+  registry modifications.
 
   This artifact parses these events and ties them back to the
   accessing process. We recommend running this artifact with the
   process tracker.
 
-  NOTE: Experience shows this ETW provider is not very reliable and seems to
-  miss a lot of registry events. This artifact should therefore be considered
-  experimental.
+  NOTE: Experience shows this ETW provider is not very reliable and
+  seems to miss a lot of registry events. This artifact should
+  therefore be considered experimental.
 
 type: CLIENT_EVENT
 
@@ -54,8 +66,8 @@ parameters:
 
 sources:
 - query: |
-    LET Cache &lt;= lru(size=1000)
-    LET EventLookup &lt;= dict(
+    LET Cache <= lru(size=1000)
+    LET EventLookup <= dict(
         `1`="CreateKey",
         `2`="OpenKey",
         `3`="DeleteKey",
@@ -93,6 +105,6 @@ sources:
        KeyName, EventData.ValueName AS ValueName
     FROM hits
     WHERE ProcessName =~ ProcessRegex
+````
 
-</code></pre>
 

@@ -1,22 +1,36 @@
 ---
 title: Windows.Events.EventLogModifications
+description: "Monitors the Windows event log registry channels to detect when logs\nare disabled."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
 
-It is possible to disable windows event logs on a per channel or per
-provider basis. Attackers may disable critical log sources to
+Monitors the Windows event log registry channels to detect when logs
+are disabled.
+
+It is possible to disable windows event logs on a per channel or
+per-provider basis. Attackers may disable critical log sources to
 prevent detections.
 
 This artifact monitors the state of the event log system from the
 registry and attempts to detect when event logs were disabled.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Events.EventLogModifications
 description: |
-  It is possible to disable windows event logs on a per channel or per
-  provider basis. Attackers may disable critical log sources to
+  Monitors the Windows event log registry channels to detect when logs
+  are disabled.
+  
+  It is possible to disable windows event logs on a per channel or
+  per-provider basis. Attackers may disable critical log sources to
   prevent detections.
 
   This artifact monitors the state of the event log system from the
@@ -36,7 +50,7 @@ sources:
   - query: |
       LET Publishers = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Publishers\\*\\@"
 
-      LET ProviderNames &lt;= memoize(key="GUID", query={
+      LET ProviderNames <= memoize(key="GUID", query={
         SELECT OSPath.Components[-2] AS GUID,
                Data.value AS Name
         FROM glob(globs=Publishers, accessor="registry")
@@ -53,6 +67,6 @@ sources:
 
       SELECT * FROM diff(query=Query, period=Period, key="QueryKey")
       WHERE Diff =~ "added"
+````
 
-</code></pre>
 

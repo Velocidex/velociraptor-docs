@@ -1,25 +1,33 @@
 ---
 title: Windows.System.AuditPolicy
+description: "Collects Windows Audit Policy configuration data from Windows\nsystems via auditpol."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Uses auditpol to retrieve the logging settings defined in the Windows Audit
-Policy.
+Collects Windows Audit Policy configuration data from Windows
+systems via auditpol.
 
 Use this artifact to determine which Windows event logs are audited and
 identify audit configuration discrepancies across the environment.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.AuditPolicy
 
 description: |
-   Uses auditpol to retrieve the logging settings defined in the Windows Audit
-   Policy.
+  Collects Windows Audit Policy configuration data from Windows
+  systems via auditpol.
 
-   Use this artifact to determine which Windows event logs are audited and
-   identify audit configuration discrepancies across the environment.
+  Use this artifact to determine which Windows event logs are audited and
+  identify audit configuration discrepancies across the environment.
 
 type: CLIENT
 
@@ -42,6 +50,6 @@ sources:
             SELECT * FROM parse_csv(filename=Stdout,accessor="data")
         }
       )
+````
 
-</code></pre>
 

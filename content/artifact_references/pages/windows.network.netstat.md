@@ -1,23 +1,31 @@
 ---
 title: Windows.Network.Netstat
+description: "Reports open network sockets on Windows including binding time,\nconnection state, and owning process name.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Show information about open sockets. On windows the time when the
-socket was first bound is also shown.
+Reports open network sockets on Windows including binding time,
+connection state, and owning process name.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Network.Netstat
 description: |
-  Show information about open sockets. On windows the time when the
-  socket was first bound is also shown.
+  Reports open network sockets on Windows including binding time,
+  connection state, and owning process name.
 
 sources:
 - precondition: SELECT OS From info() where OS = 'windows'
   query: |
-    LET processes &lt;= SELECT Name, Pid AS ProcPid FROM pslist()
+    LET processes <= SELECT Name, Pid AS ProcPid FROM pslist()
     SELECT Pid, {
         SELECT Name from processes
         WHERE Pid = ProcPid
@@ -28,6 +36,6 @@ sources:
       Raddr.IP, Raddr.Port,
       Timestamp
     FROM netstat()
+````
 
-</code></pre>
 

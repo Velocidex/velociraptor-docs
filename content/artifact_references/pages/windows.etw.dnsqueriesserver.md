@@ -1,32 +1,44 @@
 ---
 title: Windows.ETW.DNSQueriesServer
+description: "Captures DNS server query events from the\n`Microsoft-Windows-DNSServer` ETW provider."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
 
-Logs DNS queries on DNS servers.
+Captures DNS server query events from the
+`Microsoft-Windows-DNSServer` ETW provider.
 
-This is useful for identifying the true source system that is initiating
-malicious DNS requests that you may have observed.
+This is useful for identifying the true source system that is
+initiating malicious DNS requests that you may have observed.
 
-Note that this can be resource intensive for the CPU on busy DNS servers -
-from 5% to 70% CPU load of one core, but memory consumption is very low. This
-is still a lot less than enabling DNS debug logging.
+Note that this can be resource intensive for the CPU on busy DNS
+servers - from 5% to 70% CPU load of one core, but memory
+consumption is very low. This is still a lot less than enabling DNS
+debug logging.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.ETW.DNSQueriesServer
 type: CLIENT_EVENT
 
 description: |
-   Logs DNS queries on DNS servers.
+  Captures DNS server query events from the
+  `Microsoft-Windows-DNSServer` ETW provider.
 
-   This is useful for identifying the true source system that is initiating
-   malicious DNS requests that you may have observed.
+  This is useful for identifying the true source system that is
+  initiating malicious DNS requests that you may have observed.
 
-   Note that this can be resource intensive for the CPU on busy DNS servers -
-   from 5% to 70% CPU load of one core, but memory consumption is very low. This
-   is still a lot less than enabling DNS debug logging.
+  Note that this can be resource intensive for the CPU on busy DNS
+  servers - from 5% to 70% CPU load of one core, but memory
+  consumption is very low. This is still a lot less than enabling DNS
+  debug logging.
 
 author: "Jos Clephas - jos-ir"
 
@@ -61,6 +73,6 @@ sources:
         WHERE EventData AND
               QNAME =~ QueryNameRegex AND
               Source =~ SourceIPRegex
+````
 
-</code></pre>
 

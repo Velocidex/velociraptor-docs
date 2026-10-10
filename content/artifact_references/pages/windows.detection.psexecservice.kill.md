@@ -1,8 +1,17 @@
 ---
 title: Windows.Detection.PsexecService.Kill
+description: "Kills all child processes of a detected PsExec service using\ntaskkill."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
+
+Kills all child processes of a detected PsExec service using
+taskkill.
 
 Psexec can launch a service remotely. This artifact implements a
 client side response plan whereby all the child processes of the
@@ -12,17 +21,25 @@ NOTE: There is an inherent race between detection and response. If
 the PsExec is very quick we will miss it.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.PsexecService.Kill
 description: |
-    Psexec can launch a service remotely. This artifact implements a
-    client side response plan whereby all the child processes of the
-    service are killed.
+  Kills all child processes of a detected PsExec service using
+  taskkill.
 
-    NOTE: There is an inherent race between detection and response. If
-    the PsExec is very quick we will miss it.
+  Psexec can launch a service remotely. This artifact implements a
+  client side response plan whereby all the child processes of the
+  service are killed.
+
+  NOTE: There is an inherent race between detection and response. If
+  the PsExec is very quick we will miss it.
 
 type: CLIENT_EVENT
+
+implied_permissions:
+  - EXECVE
 
 parameters:
   - name: yaraRule
@@ -44,6 +61,6 @@ sources:
                     ServiceType, ChildProcess, Stdout, Stderr FROM execve(
                argv=["taskkill", "/PID", PID, "/T", "/F"])
         })
+````
 
-</code></pre>
 

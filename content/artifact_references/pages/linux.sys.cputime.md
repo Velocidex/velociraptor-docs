@@ -1,18 +1,27 @@
 ---
 title: Linux.Sys.CPUTime
+description: "Displays information from the `/proc/stat` file about the time the\nCPU cores spent in different parts of the system.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Displays information from /proc/stat file about the time the cpu
-cores spent in different parts of the system.
+Displays information from the `/proc/stat` file about the time the
+CPU cores spent in different parts of the system.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Sys.CPUTime
 description: |
-  Displays information from /proc/stat file about the time the cpu
-  cores spent in different parts of the system.
+  Displays information from the `/proc/stat` file about the time the
+  CPU cores spent in different parts of the system.
+
 parameters:
   - name: procStat
     default: /proc/stat
@@ -28,6 +37,7 @@ sources:
                     'steal', 'guest', 'guest_nice'])
         WHERE core =~ 'cpu.+'
 
+        // linter: symbol_mask_warn:user
         SELECT core AS Core,
                atoi(string=user) as User,
                atoi(string=nice) as Nice,
@@ -38,7 +48,8 @@ sources:
                atoi(string=softirq) as SoftIRQ,
                atoi(string=steal) as Steal,
                atoi(string=guest) as Guest,
-               atoi(string=guest_nice) as GuestNice FROM raw
+               atoi(string=guest_nice) as GuestNice
+        FROM raw
+````
 
-</code></pre>
 

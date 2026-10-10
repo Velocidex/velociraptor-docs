@@ -1,15 +1,22 @@
 ---
 title: Windows.Forensics.Usn
+description: "Parses the NTFS USN journal ($J data stream) to enumerate recent\nfile creation, modification, and deletion events."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact parses the NTFS USN journal and allows filters to
-assist investigative workflow.
+Parses the NTFS USN journal ($J data stream) to enumerate recent
+file creation, modification, and deletion events.
 
-NTFS is a journal filesystem. This means that it maintains a journal
-file where intended filesystem changes are written first, then the
-filesystem is changed. This journal is called the USN journal in NTFS.
+NTFS is a journaled filesystem. This means that it maintains a
+journal file where intended filesystem changes are written first,
+then the filesystem is changed. This journal is called the USN
+journal in NTFS.
 
 Velociraptor can parse the USN journal from the filesystem. This
 provides an indication of recent file changes. Typically the system
@@ -20,18 +27,19 @@ Use this artifact to determine the times when a file was
 modified/added from the journal. This will be present even if the
 file was later removed.
 
-Availible filters are Filename, OSPath, MFT/Parent ID and time bounds.
 
+---
 
-<pre><code class="language-yaml">
+````yaml
 name: Windows.Forensics.Usn
 description: |
-  This artifact parses the NTFS USN journal and allows filters to
-  assist investigative workflow.
+  Parses the NTFS USN journal ($J data stream) to enumerate recent
+  file creation, modification, and deletion events.
 
-  NTFS is a journal filesystem. This means that it maintains a journal
-  file where intended filesystem changes are written first, then the
-  filesystem is changed. This journal is called the USN journal in NTFS.
+  NTFS is a journaled filesystem. This means that it maintains a
+  journal file where intended filesystem changes are written first,
+  then the filesystem is changed. This journal is called the USN
+  journal in NTFS.
 
   Velociraptor can parse the USN journal from the filesystem. This
   provides an indication of recent file changes. Typically the system
@@ -41,8 +49,6 @@ description: |
   Use this artifact to determine the times when a file was
   modified/added from the journal. This will be present even if the
   file was later removed.
-
-  Availible filters are Filename, OSPath, MFT/Parent ID and time bounds.
 
 type: CLIENT
 
@@ -91,13 +97,13 @@ sources:
 
     query: |
       -- firstly set timebounds for performance
-      LET DateAfterTime &lt;= if(condition=DateAfter,
+      LET DateAfterTime <= if(condition=DateAfter,
             then=timestamp(epoch=DateAfter), else=timestamp(epoch="1600-01-01"))
-      LET DateBeforeTime &lt;= if(condition=DateBefore,
+      LET DateBeforeTime <= if(condition=DateBefore,
             then=timestamp(epoch=DateBefore), else=timestamp(epoch="2200-01-01"))
 
       -- If the user specified an MFTFile then ignore the device
-      LET Device &lt;= if(condition=MFTFile OR USNFile, then="",
+      LET Device <= if(condition=MFTFile OR USNFile, then="",
           else=if(condition=Device,
           then=pathspec(parse=Device, path_type="ntfs")))
 
@@ -107,8 +113,8 @@ sources:
               WHERE Filename =~ FileNameRegex
                 AND _FileMFTID =~ MFT_ID_Regex
                 AND _ParentMFTID =~ Parent_MFT_ID_Regex
-                AND Timestamp &lt; DateBeforeTime
-                AND Timestamp &gt; DateAfterTime
+                AND Timestamp < DateBeforeTime
+                AND Timestamp > DateAfterTime
                 AND _Links =~ PathRegex
 
       LET all_drives = SELECT * FROM foreach(
@@ -172,6 +178,6 @@ sources:
                  USN=USNFile, Accessor=Accessor)
           })
       })
+````
 
-</code></pre>
 

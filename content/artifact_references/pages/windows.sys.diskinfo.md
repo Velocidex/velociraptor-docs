@@ -1,14 +1,27 @@
 ---
 title: Windows.Sys.DiskInfo
+description: "Collects physical disk drive information including model, serial\nnumber, size, and interface type via WMI.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Retrieve basic information about the physical disks of a system.
+Collects physical disk drive information including model, serial
+number, size, and interface type via WMI.
 
-<pre><code class="language-yaml">
+
+---
+
+````yaml
 name: Windows.Sys.DiskInfo
-description: Retrieve basic information about the physical disks of a system.
+description: |
+  Collects physical disk drive information including model, serial
+  number, size, and interface type via WMI.
+
 sources:
   - precondition:
       SELECT OS From info() where OS = 'windows'
@@ -27,6 +40,6 @@ sources:
         FROM wmi(
            query="SELECT * from Win32_DiskDrive",
            namespace="ROOT\\CIMV2")
+````
 
-</code></pre>
 

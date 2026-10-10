@@ -1,16 +1,28 @@
 ---
 title: Windows.System.Pslist
+description: "Enumerates running processes along with their executable paths and\nassociated details, with optional authenticode trust verification\nand binary hashing.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-List processes and their running binaries.
+Enumerates running processes along with their executable paths and
+associated details, with optional authenticode trust verification
+and binary hashing.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.Pslist
 description: |
-  List processes and their running binaries.
+  Enumerates running processes along with their executable paths and
+  associated details, with optional authenticode trust verification
+  and binary hashing.
 
 parameters:
   - name: ProcessRegex
@@ -66,6 +78,6 @@ sources:
             AND Username =~ UsernameRegex
             AND NOT if(condition= UntrustedAuthenticode,
                         then= Authenticode.Trusted = 'trusted' OR NOT Exe,
-                        else= False )
-</code></pre>
+                        else= False )````
+
 

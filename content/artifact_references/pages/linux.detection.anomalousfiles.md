@@ -1,7 +1,13 @@
 ---
 title: Linux.Detection.AnomalousFiles
+description: "Detects anomalous files in a Linux filesystem."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
 Detects anomalous files in a Linux filesystem.
@@ -15,7 +21,9 @@ An anomalous file is considered one that matches at least one criteria:
 - With SUID bit set.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Detection.AnomalousFiles
 
 description: |
@@ -54,11 +62,11 @@ sources:
              OSPath,
              substr(str=Name, start=0, end=1) = "." AS IsHidden,
              Size,
-             Size &gt; MaxNormalSize AS IsLarge,
+             Size > MaxNormalSize AS IsLarge,
              Mode.String AS Mode,
              Mode =~ "^u" as HasSUID
       FROM glob(globs=split(string=PathsToSearch, sep_string=","))
       WHERE IsHidden OR IsLarge OR HasSUID
+````
 
-</code></pre>
 

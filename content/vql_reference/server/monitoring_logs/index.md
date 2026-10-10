@@ -1,0 +1,30 @@
+---
+title: monitoring_logs
+sitemap:
+  disable: true
+no_edit: true
+no_children: true
+description: |
+  Retrieve log messages from client event monitoring for the specified client id and artifact
+build:
+  list: never
+---
+
+
+
+{{< badge >}}Plugin{{< /badge >}}
+
+Arg | Description | Type
+----|-------------|-----
+client_id|The client id to extract|string (required)
+artifact|The name of the artifact collection to fetch|string (required)
+source|An optional named source within the artifact|string
+start_time|Start return events from this date (for event sources)|Any
+end_time|Stop end events reach this time (event sources).|Any
+
+**Required permissions:** `READ_RESULTS`
+
+### Description
+
+Retrieve log messages from client event monitoring for the specified client id and artifact
+

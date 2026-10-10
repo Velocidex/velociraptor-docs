@@ -1,26 +1,34 @@
 ---
 title: Linux.Sys.Maps
+description: "Extracts mapped library and file information from `/proc/<pid>/maps`\nfor running processes."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-A running binary may link other binaries into its address
-space. These shared objects contain exported functions which may be
-used by the binary.
+Extracts mapped library and file information from `/proc/<pid>/maps`
+for running processes.
 
-This artifact parses the /proc/<pid>/maps to emit all mapped files
-into the process.
+A running binary may link other binaries into its address space.
+These shared objects contain exported functions which may be used by
+the binary.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Sys.Maps
 description: |
-  A running binary may link other binaries into its address
-  space. These shared objects contain exported functions which may be
-  used by the binary.
+  Extracts mapped library and file information from `/proc/<pid>/maps`
+  for running processes.
 
-  This artifact parses the /proc/&lt;pid&gt;/maps to emit all mapped files
-  into the process.
+  A running binary may link other binaries into its address space.
+  These shared objects contain exported functions which may be used by
+  the binary.
 
 precondition: SELECT OS From info() where OS = 'linux'
 
@@ -49,13 +57,13 @@ sources:
           query={
             SELECT parse_string_with_regex(
                     string=Line,
-                    regex="(?P&lt;Start&gt;^[^-]+)-(?P&lt;End&gt;[^\\s]+)\\s+(?P&lt;Perm&gt;[^\\s]+)\\s+(?P&lt;Size&gt;[^\\s]+)\\s+[^\\s]+\\s+(?P&lt;PermInt&gt;[^\\s]+)\\s+(?P&lt;Filename&gt;.+?)(?P&lt;Deleted&gt; \\(deleted\\))?$") AS Record,
+                    regex="(?P<Start>^[^-]+)-(?P<End>[^\\s]+)\\s+(?P<Perm>[^\\s]+)\\s+(?P<Size>[^\\s]+)\\s+[^\\s]+\\s+(?P<PermInt>[^\\s]+)\\s+(?P<Filename>.+?)(?P<Deleted> \\(deleted\\))?$") AS Record,
                   Pid, Name, Username
             FROM parse_lines(
                filename=format(format="/proc/%d/maps", args=[Pid]),
                accessor='file'
             )
           })
+````
 
-</code></pre>
 

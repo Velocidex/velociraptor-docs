@@ -2,7 +2,7 @@ name: MacOS.Network.LittleSnitch
 author: Wes Lambert -- @therealwlambert
 description: |
    This is artifact parses Little Snitch's network traffic log.
-   
+
    More information about Little Snitch can be found here:
    https://www.obdev.at/products/littlesnitch/index.html
 
@@ -21,14 +21,14 @@ parameters:
      default: .
      type: regex
    - name: ParentRegex
-     description: "Filter on parent exectuable"
+     description: "Filter on parent executable"
      default: .
      type: regex
    - name: RemoteHostnameRegex
      description: "Filter on IP remote hostname"
      default: .
      type: regex
-     
+
 sources:
 
   - precondition:
@@ -42,7 +42,7 @@ sources:
         6,TCP
         17,UDP
         ''')
-      SELECT * FROM foreach(row={ 
+      SELECT * FROM foreach(row={
         SELECT
             timestamp(string=date) AS Time,
             direction AS Direction,

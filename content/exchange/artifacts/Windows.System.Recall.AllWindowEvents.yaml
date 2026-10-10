@@ -2,12 +2,12 @@ name: Windows.System.Recall.AllWindowEvents
 author: |
   Zach Stanford @svch0st
 description: |
-   This artefact will read and correlate several tables to do with Microsoft Recall.
+   This artifact will read and correlate several tables to do with Microsoft Recall.
    
    The main database is held here:
       C:\Users\\*\AppData\Local\CoreAIPlatform.00\UKP\{DA73A0DB-DDF4-4A81-9506-CCB5DE8B0F14}\ukg.db
         
-   This artefact will join multiple tables together to enrich the Window Capture events of recall. 
+   This artifact will join multiple tables together to enrich the Window Capture events of recall. 
 
   
 parameters:

@@ -1,23 +1,35 @@
 ---
 title: Windows.ETW.DNS
+description: "Watches real-time DNS queries via ETW and reports query names,\ntypes, and answers."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
 
-Monitors DNS queries using ETW.
+Watches real-time DNS queries via ETW and reports query names,
+types, and answers.
 
-There are several filters available to filter out and/or target using regular
-expressions. By default duplicate DNSCache requests are filtered out.
+There are several filters available to filter out and/or target
+using regular expressions. By default duplicate DNSCache requests
+are filtered out.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.ETW.DNS
 author: Matt Green - @mgreen27
 description: |
-  Monitors DNS queries using ETW.
+  Watches real-time DNS queries via ETW and reports query names,
+  types, and answers.
 
-  There are several filters available to filter out and/or target using regular
-  expressions. By default duplicate DNSCache requests are filtered out.
+  There are several filters available to filter out and/or target
+  using regular expressions. By default duplicate DNSCache requests
+  are filtered out.
 
 type: CLIENT_EVENT
 
@@ -49,7 +61,7 @@ sources:
       SELECT OS From info() where OS = 'windows'
 
     query: |
-        LET TypeLookup &lt;= dict(
+        LET TypeLookup <= dict(
                         `1` = 'A',
                         `2` = 'NS',
                         `5` = 'CNAME',
@@ -113,6 +125,6 @@ sources:
            AND Process.Exe =~ ImageRegex
            AND Query =~ QueryRegex
            AND Answer =~ AnswerRegex
+````
 
-</code></pre>
 

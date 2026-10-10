@@ -1,16 +1,26 @@
 ---
 title: Windows.Forensics.Pst
+description: "Parses Outlook PST files to extract email messages, attachments, and\nmetadata with regex-based targeting.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Parses PST files.
+Parses Outlook PST files to extract email messages, attachments, and
+metadata with regex-based targeting.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.Pst
 description: |
-  Parses PST files.
+  Parses Outlook PST files to extract email messages, attachments, and
+  metadata with regex-based targeting.
 
 parameters:
   - name: PSTGlob
@@ -79,6 +89,6 @@ sources:
            AND X.Path =~ PathRegex
       })
       WHERE if(condition=AttachmentYaraRule, then=YaraHit, else=TRUE)
+````
 
-</code></pre>
 

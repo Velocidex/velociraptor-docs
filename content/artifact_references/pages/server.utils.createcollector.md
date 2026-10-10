@@ -1,24 +1,36 @@
 ---
 title: Server.Utils.CreateCollector
+description: "A utility artifact to create a standalone Velociraptor offline\ncollector binary with specified artifacts and output target."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
 
-A utility artifact to create a stand alone collector.
+A utility artifact to create a standalone Velociraptor offline
+collector binary with specified artifacts and output target.
 
-This artifact is actually invoked by the Offline collector GUI and
-that is the recommended way to launch it. You can find the Offline
-collector builder in the `Server Artifacts` section of the GUI.
+This artifact is invoked via the GUI's offline collector builder
+wizard and that is the recommended way to launch it. You can find
+the Offline collector builder in the `Server Artifacts` section of
+the GUI.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.CreateCollector
 description: |
-  A utility artifact to create a stand alone collector.
+  A utility artifact to create a standalone Velociraptor offline
+  collector binary with specified artifacts and output target.
 
-  This artifact is actually invoked by the Offline collector GUI and
-  that is the recommended way to launch it. You can find the Offline
-  collector builder in the `Server Artifacts` section of the GUI.
+  This artifact is invoked via the GUI's offline collector builder
+  wizard and that is the recommended way to launch it. You can find
+  the Offline collector builder in the `Server Artifacts` section of
+  the GUI.
 
 type: SERVER
 
@@ -28,7 +40,7 @@ parameters:
     type: choices
     choices:
       - Windows
-      - Windows_x86
+      - WindowsArm64
       - Linux
       - MacOS
       - MacOSArm
@@ -68,6 +80,7 @@ parameters:
       - SFTP
       - Azure
       - SMBShare
+      - WebDAV
 
   - name: target_args
     description: Type Dependent args
@@ -155,7 +168,7 @@ parameters:
     description: |
       If specified the collection will be packed with the specified
       version of the binary. NOTE: This is rarely what you want
-      because the packed builtin artifacts are only compatible with
+      because the packed built-in artifacts are only compatible with
       the current release version.
 
   - name: opt_delete_at_exit
@@ -171,7 +184,7 @@ parameters:
   - name: StandardCollection
     type: hidden
     default: |
-      LET _ &lt;= log(message="Will collect package %v", args=zip_filename)
+      LET _ <= log(message="Will collect package %v", args=zip_filename)
 
       SELECT * FROM collect(artifacts=Artifacts,
             args=Parameters, output=zip_filename,
@@ -207,7 +220,7 @@ parameters:
   - name: GCSCollection
     type: hidden
     default: |
-      LET GCSBlob &lt;= parse_json(data=target_args.GCSKey)
+      LET GCSBlob <= parse_json(data=target_args.GCSKey)
 
       // A utility function to upload the file.
       LET upload_file(filename, name, accessor) = upload_gcs(
@@ -253,32 +266,44 @@ parameters:
         endpoint=TargetArgs.endpoint,
         hostkey = TargetArgs.hostkey)
 
+  - name: WebDAVCollection
+    type: hidden
+    default : |
+      LET upload_file(filename, name, accessor) = upload_webdav(
+        file=filename,
+        accessor=accessor,
+        name=name,
+        url=TargetArgs.url,
+        basic_auth_user=TargetArgs.basic_auth_user,
+        basic_auth_password=TargetArgs.basic_auth_password,
+        user_agent=TargetArgs.user_agent)
+
   - name: CommonCollections
     type: hidden
     default: |
       LET S = scope()
-      LET Remapping &lt;= if(condition=Remapping,
-          then=log(message="Will load remapping rules from %v", args=Remapping) &amp;&amp;
+      LET Remapping <= if(condition=Remapping,
+          then=log(message="Will load remapping rules from %v", args=Remapping) &&
                read_file(filename=Remapping),
           else="")
 
       // Add all the tools we are going to use to the inventory.
-      LET _ &lt;= SELECT inventory_add(tool=ToolName, hash=ExpectedHash, version=S.Version)
+      LET _ <= SELECT inventory_add(tool=ToolName, hash=ExpectedHash, version=S.Version)
        FROM parse_csv(filename="/uploads/inventory.csv", accessor="me")
        WHERE log(message="Adding tool " + ToolName +
              " version " + (S.Version || "Unknown"))
 
-      LET baseline &lt;= SELECT Fqdn, dirname(path=Exe) AS ExePath, Exe,
+      LET baseline <= SELECT Fqdn, dirname(path=Exe) AS ExePath, Exe,
          scope().CWD AS CWD, Hostname
       FROM info()
 
-      LET OutputPrefix &lt;= if(condition= OutputPrefix,
+      LET OutputPrefix <= if(condition= OutputPrefix,
         then=pathspec(parse=OutputPrefix),
         else= if(condition= baseline[0].CWD,
           then=pathspec(parse= baseline[0].CWD),
           else=pathspec(parse= baseline[0].ExePath)))
 
-      LET _ &lt;= log(message="Output Prefix : %v", args= OutputPrefix)
+      LET _ <= log(message="Output Prefix : %v", args= OutputPrefix)
 
       LET FormatMessage(Message) = regex_transform(
           map=dict(`%FQDN%`=baseline[0].Fqdn,
@@ -288,37 +313,37 @@ parameters:
 
       // Format the filename safely according to the filename
       // template. This will be the name uploaded to the bucket.
-      LET formatted_zip_name &lt;= regex_replace(
+      LET formatted_zip_name <= regex_replace(
           source=expand(path=FormatMessage(Message=FilenameTemplate)),
           re="[^0-9A-Za-z\\-]", replace="_")
 
       // This is where we write the files on the endpoint.
-      LET zip_filename &lt;= OutputPrefix + ( formatted_zip_name + ".zip" )
-      LET LogFile &lt;= OutputPrefix + ( formatted_zip_name + ".log" )
+      LET zip_filename <= OutputPrefix + ( formatted_zip_name + ".zip" )
+      LET LogFile <= OutputPrefix + ( formatted_zip_name + ".log" )
 
-      LET _ &lt;= log(message="Log file is at %v", args=LogFile)
+      LET _ <= log(message="Log file is at %v", args=LogFile)
 
       // Create the log file and start writing into it
       // Just forward output from the logging() plugin
-      LET LogPipe &lt;= pipe(query={
+      LET LogPipe <= pipe(query={
         SELECT format(format="[%v] %v %v\n",
                       args=(level, time, msg)) AS Line
         FROM logging(prelog=TRUE)
       })
 
-      LET _ &lt;= background(query={
+      LET _ <= background(query={
           SELECT copy(accessor="pipe", filename="LogPipe", dest=LogFile) AS C
           FROM scope()
       })
 
       -- Remove the zip file and log file when done if the user asked for it.
-      LET _ &lt;= if(condition=DeleteOnExit, then=atexit(query={
+      LET _ <= if(condition=DeleteOnExit, then=atexit(query={
          SELECT rm(filename=zip_filename), rm(filename=log_filename) FROM scope()
          WHERE log(message="Removed Zip file %v", args=zip_filename)
       }, env=dict(zip_filename=zip_filename, log_filename=LogFile)))
 
       -- Make a random hex string as a random password
-      LET RandomPassword &lt;= SELECT format(format="%02x",
+      LET RandomPassword <= SELECT format(format="%02x",
             args=rand(range=255)) AS A
       FROM range(end=25)
 
@@ -356,19 +381,19 @@ parameters:
   - name: CloudCollection
     type: hidden
     default: |
-      LET TargetArgs &lt;= target_args
+      LET TargetArgs <= target_args
 
       // When uploading to the cloud it is allowed to use directory //
       // separators and we trust the filename template to be a valid
       // filename.
-      LET upload_name &lt;= regex_replace(
+      LET upload_name <= regex_replace(
           source=expand(path=FormatMessage(Message=FilenameTemplate)),
           re="[^0-9A-Za-z\\-/]", replace="_")
 
-      LET _ &lt;= log(message="Will collect package %v and upload to cloud bucket %v",
+      LET _ <= log(message="Will collect package %v and upload to cloud bucket %v",
          args=[zip_filename, TargetArgs.bucket])
 
-      LET Result &lt;= SELECT
+      LET Result <= SELECT
           upload_file(filename=Container,
                       name= upload_name + ".zip",
                       accessor="file") AS Upload,
@@ -389,9 +414,9 @@ parameters:
           remapping=Remapping,
           metadata=ContainerMetadata)
 
-      LET _ &lt;= if(condition=NOT Result[0].Upload.Path,
-         then=log(message="&lt;red&gt;Failed to upload to cloud bucket!&lt;/&gt; Leaving the collection behind for manual upload!"),
-         else=log(message="&lt;green&gt;Collection Complete!&lt;/&gt; Please remove %v when you are sure it was properly transferred", args=zip_filename))
+      LET _ <= if(condition=NOT Result[0].Upload.Path,
+         then=log(message="<red>Failed to upload to cloud bucket!</> Leaving the collection behind for manual upload!"),
+         else=log(message="<green>Collection Complete!</> Please remove %v when you are sure it was properly transferred", args=zip_filename))
 
       SELECT * FROM Result
 
@@ -403,17 +428,17 @@ parameters:
        grabs files from the local archive.
 
     default: |
-       LET RequiredTool &lt;= ToolName
+       LET RequiredTool <= ToolName
        LET S = scope()
 
-       LET matching_tools &lt;= SELECT ToolName, Filename
+       LET matching_tools <= SELECT ToolName, Filename
        FROM parse_csv(filename="/uploads/inventory.csv", accessor="me")
        WHERE RequiredTool = ToolName
 
        LET get_ext(filename) = parse_string_with_regex(
              regex="(\\.[a-z0-9]+)$", string=filename).g1
 
-        LET FullPath &lt;= if(condition=matching_tools,
+        LET FullPath <= if(condition=matching_tools,
         then=copy(filename=matching_tools[0].Filename,
              accessor="me", dest=tempfile(
                  extension=get_ext(filename=matching_tools[0].Filename),
@@ -426,13 +451,13 @@ parameters:
 
 export: |
   // Use this JSON schema to validate an offline collector spec.yaml
-  LET SpecSchema &lt;= '''
+  LET SpecSchema <= '''
   {
     "type": "object",
     "properties": {
         "OS": {
            "description": "OS Target to use",
-           "enum": ["Generic", "Windows", "Linux", "Windows_x86", "MacOS", "MacOSArm"],
+           "enum": ["Generic", "Windows", "Linux", "WindowsArm64", "MacOS", "MacOSArm"],
            "default": "Generic"
         },
         "Artifacts": {
@@ -451,7 +476,7 @@ export: |
         },
         "Target": {
            "description": "The type of collector to use",
-           "enum": ["ZIP", "GCS", "S3", "Azure", "SMBShare", "SFTP"]
+           "enum": ["ZIP", "GCS", "S3", "Azure", "SMBShare", "SFTP", "WebDAV"]
         },
         "EncryptionScheme": {
            "enum": ["None", "X509", "Password", "PGP"],
@@ -615,6 +640,26 @@ export: |
            }
         }
       },
+      { "description": "Target Args for WebDAVCollection",
+        "if": {
+           "properties": { "Target": { "const": "WebDAV" } }
+        },
+        "then": {
+           "properties": {
+              "TargetArgs": {
+                 "type": "object",
+                  "properties": {
+                     "url": {"type": "string"},
+                     "basic_auth_user": {"type": "string"},
+                     "basic_auth_password": {"type": "string"},
+                     "user_agent": {"type": "string"}
+                  },
+                  "additionalProperties": false,
+                  "required": ["url"]
+              }
+           }
+        }
+      },
       { "description": "Target Args for ZIP",
         "if": {
            "properties": { "Target": { "const": "ZIP" } }
@@ -636,20 +681,20 @@ export: |
 
 sources:
   - query: |
-      LET ParameterSpec &lt;= to_dict(item={
+      LET ParameterSpec <= to_dict(item={
          SELECT _value AS _key, dict() AS _value
          FROM foreach(row=artifacts)
       }) + parameters
 
       -- Check for errors in the Spec
-      LET _ &lt;= SELECT {
+      LET _ <= SELECT {
          SELECT name FROM artifact_definitions(names=_key)
       } AS Def
       FROM items(item=ParameterSpec)
-      WHERE Def || log(message="Artifact &lt;red&gt;%v&lt;/&gt; not found",
+      WHERE Def || log(message="Artifact <red>%v</> not found",
            args=_key, dedup= -1, level="ERROR")
 
-      LET Binaries &lt;= SELECT * FROM foreach(
+      LET Binaries <= SELECT * FROM foreach(
           row={
              SELECT tools FROM artifact_definitions(deps=TRUE, names=artifacts)
           }, query={
@@ -662,7 +707,7 @@ sources:
       // Choose the right target binary depending on the target OS
       LET tool_name = SELECT * FROM switch(
        a={ SELECT "VelociraptorWindows" AS Type FROM scope() WHERE OS = "Windows"},
-       b={ SELECT "VelociraptorWindows_x86" AS Type FROM scope() WHERE OS = "Windows_x86"},
+       b={ SELECT "VelociraptorWindowsArm64" AS Type FROM scope() WHERE OS = "WindowsArm64"},
        c={ SELECT "VelociraptorLinux" AS Type FROM scope() WHERE OS = "Linux"},
        d={ SELECT "VelociraptorCollector" AS Type FROM scope() WHERE OS = "MacOS"},
        e={ SELECT "VelociraptorCollector" AS Type FROM scope() WHERE OS = "MacOSArm"},
@@ -671,13 +716,13 @@ sources:
            WHERE NOT log(message="Unknown target type " + OS) }
       )
 
-      LET Target &lt;= tool_name[0].Type
+      LET Target <= tool_name[0].Type
 
       // This is what we will call it.
-      LET CollectorName &lt;= opt_collector_filename ||
+      LET CollectorName <= opt_collector_filename ||
           format(format='Collector_%v', args=inventory_get(tool=Target).Definition.filename)
 
-      LET CollectionArtifact &lt;= SELECT Value FROM switch(
+      LET CollectionArtifact <= SELECT Value FROM switch(
         a = { SELECT CommonCollections + StandardCollection AS Value
               FROM scope()
               WHERE target = "ZIP" },
@@ -696,6 +741,9 @@ sources:
         f = { SELECT SMBCollection + CommonCollections + CloudCollection AS Value
               FROM scope()
               WHERE target = "SMBShare" },
+        g = { SELECT WebDAVCollection + CommonCollections + CloudCollection AS Value
+              FROM scope()
+              WHERE target = "WebDAV" },
         z = { SELECT "" AS Value  FROM scope()
               WHERE log(message="Unknown collection type " + target) }
       )
@@ -707,7 +755,7 @@ sources:
       -- For x509, if no public key cert is specified, we use the
       -- server's own key. This makes it easy for the server to import
       -- the file again.
-      LET updated_encryption_args &lt;= if(
+      LET updated_encryption_args <= if(
          condition=use_server_cert,
          then=dict(public_key=server_frontend_cert(),
                    scheme="x509"),
@@ -715,7 +763,7 @@ sources:
       )
 
       -- Add custom definition if needed. Built in definitions are not added
-      LET definitions &lt;= SELECT * FROM chain(
+      LET definitions <= SELECT * FROM chain(
       a = { SELECT name, description, tools, export, parameters, sources
             FROM artifact_definitions(deps=TRUE, names=artifacts)
             WHERE NOT compiled_in AND
@@ -781,12 +829,12 @@ sources:
 
       // Build the autoexec config file depending on the user's
       // collection type choices.
-      LET autoexec &lt;= dict(autoexec=dict(
+      LET autoexec <= dict(autoexec=dict(
           argv=("artifacts", "collect", "Collector") + optional_cmdline.Opt,
           artifact_definitions=definitions)
       )
 
-      LET _ &lt;= upload(accessor="data", file=serialize(format="yaml",
+      LET _ <= upload(accessor="data", file=serialize(format="yaml",
         item=dict(
           OS=OS,
           Artifacts=ParameterSpec,
@@ -818,6 +866,6 @@ sources:
            version=opt_version,
            config=serialize(format='json', item=autoexec)) AS Repacked
       FROM scope()
+````
 
-</code></pre>
 

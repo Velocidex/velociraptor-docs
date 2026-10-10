@@ -72,7 +72,7 @@ parameters:
         single,\System32\WindowsPowerShel1\v1.0\powershel1.exe
         single,\System32\WindowsPowerShell\v1.0\powershell.exe
   - name: Workers
-    description: Number of workers to run. For bulk usecase increase to improve performance.
+    description: Number of workers to run. For bulk use case increase to improve performance.
     default: 1
     type: int
   - name: YaraRule

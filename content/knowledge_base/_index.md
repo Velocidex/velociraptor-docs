@@ -1,11 +1,14 @@
 ---
+type: docs
+cascade:
+  type: docs
 menutitle: "Knowledge Base"
 title: "Knowledge Base"
+date: 2022-03-21
 draft: false
 weight: 250
-pre: <i class="fas fa-brain"></i>
 no_edit: true
-disableToc: true
+disableToc: false
 no_children: true
 noDisqus: true
 rss_data_file: static/kb/data.json
@@ -13,6 +16,11 @@ rss_title: Velociraptor Knowledge Base
 outputs:
 - html
 - RSS
+- markdown
+description: |
+  Velociraptor is a powerful but very flexible tool. Sometimes getting
+  up to speed with Velociraptor is challenging and sometimes it can do
+  things that you have never even imagined was possible!
 ---
 
 Velociraptor is a powerful but very flexible tool. Sometimes getting
@@ -27,4 +35,4 @@ to achieve?"
 Search the below questions to read a short knowledge base article of
 how to answer the question.
 
-{{% knowledge_base %}}
+{{< knowledge_base >}}

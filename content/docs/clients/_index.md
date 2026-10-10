@@ -1,9 +1,13 @@
 ---
+icon: desktop-computer
 title: "Managing Clients"
 date: 2024-12-19
 draft: false
 weight: 20
 last_reviewed: 2024-12-29
+description: |
+  Velociraptor **clients** are endpoints with the Velociraptor agent running on
+  them.
 ---
 
 Velociraptor **clients** are endpoints with the Velociraptor agent running on

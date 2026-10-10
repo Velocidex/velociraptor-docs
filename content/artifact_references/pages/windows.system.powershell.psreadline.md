@@ -1,39 +1,48 @@
 ---
 title: Windows.System.Powershell.PSReadline
+description: "Extracts PowerShell command history from PSReadline\n`ConsoleHost_history.txt` files."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This Artifact will search and extract lines from PSReadline history file.
+Extracts PowerShell command history from PSReadline
+`ConsoleHost_history.txt` files.
 
-PowerShell is commonly used by attackers across all stages of the attack
-lifecycle. The PSReadline module is responsible for command history and from
-PowerShell 5 on Windows 10, the default configuration saves a copy of the console
-history to disk.
+PowerShell is commonly used by attackers across all stages of the
+attack lifecycle. The PSReadline module is responsible for command
+history and from PowerShell 5 on Windows 10, the default
+configuration saves a copy of the console history to disk.
 
-There are several parameters available for search leveraging regex.
+There are several parameters available for search leveraging regex:
 - SearchStrings enables regex search over a PSReadline line.
 - StringWhiteList enables a regex whitelist for results.
 - UserRegex enables a regex search on Username
 - UploadFiles enables upload ConsoleHost_history.txt in scope
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.Powershell.PSReadline
 description: |
-  This Artifact will search and extract lines from PSReadline history file.
+  Extracts PowerShell command history from PSReadline
+  `ConsoleHost_history.txt` files.
 
-  PowerShell is commonly used by attackers across all stages of the attack
-  lifecycle. The PSReadline module is responsible for command history and from
-  PowerShell 5 on Windows 10, the default configuration saves a copy of the console
-  history to disk.
+  PowerShell is commonly used by attackers across all stages of the
+  attack lifecycle. The PSReadline module is responsible for command
+  history and from PowerShell 5 on Windows 10, the default
+  configuration saves a copy of the console history to disk.
 
-  There are several parameters available for search leveraging regex.
+  There are several parameters available for search leveraging regex:
   - SearchStrings enables regex search over a PSReadline line.
   - StringWhiteList enables a regex whitelist for results.
   - UserRegex enables a regex search on Username
   - UploadFiles enables upload ConsoleHost_history.txt in scope
-
 
 author: Matt Green - @mgreen27
 
@@ -98,6 +107,6 @@ sources:
                     upload(file=Stat.OSPath) as ConsoleHost_history
                 FROM targets
             })
+````
 
-</code></pre>
 

@@ -1,21 +1,26 @@
 ---
 title: Windows.NTFS.MFT
+description: "Parses $MFT files and returns rows of each in-scope MFT record."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Parses $MFT files and returns rows of each in scope MFT record.
+Parses $MFT files and returns rows of each in-scope MFT record.
 
-This artifact can be used as the basis for other artifacts where the MFT needs
-to be queried or for deleted file recovery.
+This artifact can be used as the basis for other artifacts where the
+MFT needs to be queried or for deleted file recovery.
 
-For deleted file recovery: Take the MFT ID of a file of interest and provide
-it to the Windows.NTFS.Recover artifact.
+For deleted file recovery: Take the MFT ID of a file of interest and
+provide it to the Windows.NTFS.Recover artifact.
 
 To query all attached NTFS drives: select the AllDrives option.
 
-I have added several filters to uplift search capabilities from the original
-MFT artifact. Due to the multi-drive features, the MFTPath will output the MFT
+Due to the multi-drive features, the MFTPath will output the MFT
 path of the entry.
 
 Available filters include:
@@ -27,29 +32,30 @@ Available filters include:
 - MFTDrive: drive to target collection and show as source in results during offline processing.
 - MFTPath: optional filter for offline MFT processing.
 
-#### NOTES
+**NOTES**
 
 - It is generally more efficient to filter on filename.
 - Multiple filters are cumulative.
 - OSPath output now uses expected Windows backslash "`\`".
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.NTFS.MFT
 author: "Matt Green - @mgreen27"
 description: |
-  Parses $MFT files and returns rows of each in scope MFT record.
+  Parses $MFT files and returns rows of each in-scope MFT record.
 
-  This artifact can be used as the basis for other artifacts where the MFT needs
-  to be queried or for deleted file recovery.
+  This artifact can be used as the basis for other artifacts where the
+  MFT needs to be queried or for deleted file recovery.
 
-  For deleted file recovery: Take the MFT ID of a file of interest and provide
-  it to the Windows.NTFS.Recover artifact.
+  For deleted file recovery: Take the MFT ID of a file of interest and
+  provide it to the Windows.NTFS.Recover artifact.
 
   To query all attached NTFS drives: select the AllDrives option.
 
-  I have added several filters to uplift search capabilities from the original
-  MFT artifact. Due to the multi-drive features, the MFTPath will output the MFT
+  Due to the multi-drive features, the MFTPath will output the MFT
   path of the entry.
 
   Available filters include:
@@ -61,7 +67,7 @@ description: |
   - MFTDrive: drive to target collection and show as source in results during offline processing.
   - MFTPath: optional filter for offline MFT processing.
 
-  #### NOTES
+  **NOTES**
 
   - It is generally more efficient to filter on filename.
   - Multiple filters are cumulative.
@@ -70,7 +76,7 @@ description: |
 parameters:
   - name: MFTDrive
     description: |
-      The path to to the drive that holds the MFT file (can be a pathspec). This
+      The path to the drive that holds the MFT file (can be a pathspec). This
       drive is also used for results for offline processing.
     default: "C:"
   - name: MFTPath
@@ -112,7 +118,7 @@ sources:
   - query: |
       -- Cater for older clients which do not have the Links column.
       LET parse_mft_version(filename, accessor, prefix) = SELECT *
-      FROM if(condition=version(plugin="parse_mft") &gt; 1,
+      FROM if(condition=version(plugin="parse_mft") > 1,
               then={ SELECT *
                      FROM parse_mft(
                          filename=filename, accessor=accessor, prefix=prefix)
@@ -128,19 +134,19 @@ sources:
                          filename=filename, accessor=accessor)
               })
 
-      -- The path to to the drive that holds the MFT file (can be a pathspec)
-      LET Drive &lt;= pathspec(parse=MFTDrive, path_type="ntfs")
+      -- The path to the drive that holds the MFT file (can be a pathspec)
+      LET Drive <= pathspec(parse=MFTDrive, path_type="ntfs")
 
       -- time testing
       LET time_test(stamp) =
             if(condition= DateBefore AND DateAfter,
-                then= stamp &lt; DateBefore AND stamp &gt; DateAfter,
+                then= stamp < DateBefore AND stamp > DateAfter,
                 else=
             if(condition=DateBefore,
-                then= stamp &lt; DateBefore,
+                then= stamp < DateBefore,
                 else=
             if(condition= DateAfter,
-                then= stamp &gt; DateAfter,
+                then= stamp > DateAfter,
                 else= True
             )))
 
@@ -185,12 +191,12 @@ sources:
         FROM parse_mft_version(filename=MFTPath,
                        accessor=Accessor, prefix=Drive)
         WHERE
-             ( Created0x10 &gt; DateAfter
-              OR Created0x30 &gt; DateAfter
-              OR LastModified0x10 &gt; DateAfter
-              OR LastModified0x30 &gt; DateAfter
-              OR LastRecordChange0x10 &gt; DateAfter
-              OR LastRecordChange0x30 &gt; DateAfter)
+             ( Created0x10 > DateAfter
+              OR Created0x30 > DateAfter
+              OR LastModified0x10 > DateAfter
+              OR LastModified0x30 > DateAfter
+              OR LastRecordChange0x10 > DateAfter
+              OR LastRecordChange0x30 > DateAfter)
             AND FileName =~ FileRegex
             AND Links =~ PathRegex
 
@@ -208,12 +214,12 @@ sources:
         FROM parse_mft_version(filename=MFTPath,
                        accessor=Accessor, prefix=Drive)
         WHERE
-             ( Created0x10 &lt; DateBefore
-              OR Created0x30 &lt; DateBefore
-              OR LastModified0x10 &lt; DateBefore
-              OR LastModified0x30 &lt; DateBefore
-              OR LastRecordChange0x10 &lt; DateBefore
-              OR LastRecordChange0x30 &lt; DateBefore)
+             ( Created0x10 < DateBefore
+              OR Created0x30 < DateBefore
+              OR LastModified0x10 < DateBefore
+              OR LastModified0x30 < DateBefore
+              OR LastRecordChange0x10 < DateBefore
+              OR LastRecordChange0x30 < DateBefore)
             AND FileName =~ FileRegex
             AND Links =~ PathRegex
 
@@ -234,10 +240,10 @@ sources:
         WHERE FileName =~ FileRegex
             AND Links =~ PathRegex
             AND if(condition=SizeMax,
-                then=FileSize &lt; atoi(string=SizeMax),
+                then=FileSize < atoi(string=SizeMax),
                 else=TRUE)
             AND if(condition=SizeMin,
-                then=FileSize &gt; atoi(string=SizeMin),
+                then=FileSize > atoi(string=SizeMin),
                 else=TRUE)
             AND
              ( time_test(stamp=Created0x10)
@@ -304,6 +310,6 @@ sources:
       SELECT * FROM if(condition=AllNtfs,
         then= enriched_results,
         else= results)
+````
 
-</code></pre>
 

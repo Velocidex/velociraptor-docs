@@ -1,30 +1,38 @@
 ---
 title: Linux.Events.SSHBruteforce
+description: "Monitors SSH authentication logs to detect successful logins\nfollowing multiple failed attempts within a 1-hour time window."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
 
-A monitoring artifact which detects a successful SSH login preceded by some
-failed attempts within the last hour.
+Monitors SSH authentication logs to detect successful logins
+following multiple failed attempts within a 1-hour time window.
 
-This is particularly important in the case of SSH brute force attacks. If one
-of the brute force password attempts succeeded, the password guessing program
-will likely report the success and move on. This alert might provide
-sufficient time for admins to lock down the account before attackers can
-exploit the weak password.
+This is particularly important in the case of SSH brute force
+attacks. If one of the brute force password attempts succeeded, the
+password guessing program will likely report the success and move
+on. This alert might provide sufficient time for admins to lock down
+the account before attackers can exploit the weak password.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Events.SSHBruteforce
 description: |
-  A monitoring artifact which detects a successful SSH login preceded by some
-  failed attempts within the last hour.
+  Monitors SSH authentication logs to detect successful logins
+  following multiple failed attempts within a 1-hour time window.
 
-  This is particularly important in the case of SSH brute force attacks. If one
-  of the brute force password attempts succeeded, the password guessing program
-  will likely report the success and move on. This alert might provide
-  sufficient time for admins to lock down the account before attackers can
-  exploit the weak password.
+  This is particularly important in the case of SSH brute force
+  attacks. If one of the brute force password attempts succeeded, the
+  password guessing program will likely report the success and move
+  on. This alert might provide sufficient time for admins to lock down
+  the account before attackers can exploit the weak password.
 
 reference:
   - https://www.elastic.co/blog/grokking-the-linux-authorization-logs
@@ -37,7 +45,7 @@ parameters:
 
   - name: SSHGrok
     description: A Grok expression for parsing SSH auth lines.
-    default: &gt;-
+    default: >-
       %{SYSLOGTIMESTAMP:timestamp} (?:%{SYSLOGFACILITY} )?%{SYSLOGHOST:logsource} %{SYSLOGPROG}: %{DATA:event} %{DATA:method} for (invalid user )?%{DATA:user} from %{IPORHOST:ip} port %{NUMBER:port} ssh2(: %{GREEDYDATA:system.auth.ssh.signature})?
 
   - name: MinimumFailedLogins
@@ -56,7 +64,7 @@ sources:
       LET last_failed_events = SELECT * FROM fifo(
               query=failed_login, max_rows=50, max_age=3600)
 
-      LET _ &lt;= SELECT * FROM last_failed_events
+      LET _ <= SELECT * FROM last_failed_events
 
       LET success_login = SELECT grok(grok=SSHGrok, data=Line) AS Event, Line
         FROM watch_syslog(filename=syslogAuthLogPath)
@@ -68,7 +76,7 @@ sources:
            WHERE Event.user = FailedEvent.user
         } AS Failures
         FROM success_login
-        WHERE len(list=Failures) &gt; int(int=MinimumFailedLogins)
+        WHERE len(list=Failures) > int(int=MinimumFailedLogins)
+````
 
-</code></pre>
 

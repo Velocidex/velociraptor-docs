@@ -1,22 +1,34 @@
 ---
 title: System.VFS.ListDirectory
+description: "Lists directory contents and populates the server-side\nVFS cache to enable VFS browsing."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This is an internal artifact used by the GUI to populate the
-VFS. You may run it manually if you like, but typically it is
-launched by the GUI when a user clicks the "Refresh this directory"
-button.
+Lists directory contents and populates the server-side
+VFS cache to enable VFS browsing.
+
+You may run it manually if you like, but typically it is launched by
+the GUI when a user clicks the "Refresh this directory" button in
+the VFS screen.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: System.VFS.ListDirectory
 description: |
-  This is an internal artifact used by the GUI to populate the
-  VFS. You may run it manually if you like, but typically it is
-  launched by the GUI when a user clicks the "Refresh this directory"
-  button.
+  Lists directory contents and populates the server-side
+  VFS cache to enable VFS browsing.
+  
+  You may run it manually if you like, but typically it is launched by
+  the GUI when a user clicks the "Refresh this directory" button in
+  the VFS screen.
 
 parameters:
   - name: Path
@@ -75,8 +87,8 @@ sources:
 
   - precondition: SELECT * FROM info() WHERE NOT version(plugin="vfs_ls")
     query: |
-      // Glob &gt; v2 accepts a component list for the root parameter.
-      LET Path &lt;= if(condition=version(plugin="glob") &gt; 2 AND Components,
+      // Glob > v2 accepts a component list for the root parameter.
+      LET Path <= if(condition=version(plugin="glob") > 2 AND Components,
         then=Components, else=Path)
 
       // Old versions do not have the root parameter to glob()
@@ -108,9 +120,9 @@ sources:
              accessor=Accessor)
 
       SELECT * FROM if(
-       condition=version(plugin="glob") &gt;= 1,
+       condition=version(plugin="glob") >= 1,
        then=NewQuery,
        else=LegacyQuery)
+````
 
-</code></pre>
 

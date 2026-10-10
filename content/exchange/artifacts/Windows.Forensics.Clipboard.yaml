@@ -3,9 +3,9 @@ author: Hisham Adwan with the help of Velo Community
 description: |
     This artifact will show the Clipboard activity.
     
-    The artefact ActivitiesCache.db has started to log clipboard activity since Windows 10 version 1803.
+    The artifact ActivitiesCache.db has started to log clipboard activity since Windows 10 version 1803.
     
-    The prerequisite for clipboard data to be logged by this artefact relies on the system having two settings checked:
+    The prerequisite for clipboard data to be logged by this artifact relies on the system having two settings checked:
         Clipboard history enabled 
         Clipboard sync across devices 
 

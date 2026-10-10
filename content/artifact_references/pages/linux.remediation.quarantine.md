@@ -1,7 +1,13 @@
 ---
 title: Linux.Remediation.Quarantine
+description: "Applies network quarantine to a Linux system using nftables."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
 Applies network quarantine to a Linux system using nftables.
@@ -22,7 +28,9 @@ as expected, so set it to a URL that should not be reachable from a
 quarantined system.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Remediation.Quarantine
 description: |
   Applies network quarantine to a Linux system using nftables.
@@ -53,7 +61,7 @@ required_permissions:
 parameters:
   - name: pathToNFT
     default: /usr/sbin/nft
-    description: We depend on nft to manage the tables, chains, and rules.
+    description: We depend on `nft` to manage the tables, chains, and rules.
 
   - name: TableName
     default: vrr_quarantine_table
@@ -74,7 +82,7 @@ parameters:
 
 sources:
   - query: |
-       LET State &lt;= dict(installed=FALSE)
+       LET State <= dict(installed=FALSE)
 
        LET SetInstalled = set(item=State, field="installed", value=TRUE)
 
@@ -88,7 +96,7 @@ sources:
          FROM execve(argv=Cmd, length=10000)
 
        // If a MessageBox configured truncate to 256 character limit
-       LET MessageBox &lt;= parse_string_with_regex(regex='^(?P&lt;Message&gt;.{0,255}).*',
+       LET MessageBox <= parse_string_with_regex(regex='^(?P<Message>.{0,255}).*',
                                                  string=MessageBox).Message
 
        // Parse a URL to get domain name.
@@ -109,11 +117,12 @@ sources:
              'tcp', 'dport', '{', DstPort, '}', 'ct', 'state', 'established,new', 'accept')
 
        // extract Velociraptor config for policy
-       LET extracted_config &lt;= SELECT get_domain(URL=_value) AS DstAddr,
-                                      get_port(URL=_value) AS DstPort,
-                                      'VelociraptorFrontEnd' AS Description,
-                                      _value AS URL
-         FROM foreach(row=config.server_urls)
+       LET extracted_config <= SELECT
+           host(name=get_domain(URL=_value))[0] || get_domain(URL=_value) AS DstAddr,
+           get_port(URL=_value) AS DstPort,
+           'VelociraptorFrontEnd' AS Description,
+           _value AS URL
+        FROM foreach(row=config.server_urls)
 
        LET send_message_box(Msg) = SELECT timestamp(epoch=now()) AS Time,
                                           Result
@@ -232,7 +241,7 @@ sources:
          FROM http_client(url=log(message="Testing forbidden connection to " +
                                     ForbiddenTestURL,
                                   dedup=-1)
-                           &amp;&amp; ForbiddenTestURL)
+                           && ForbiddenTestURL)
          WHERE NOT Response =~ '^5..$' AND log(dedup=-1,
              message="got %v for url %v", args=[Response, Url])
          LIMIT 1
@@ -251,7 +260,7 @@ sources:
                message="%v failed connection test. Removing quarantine table.",
                args=TableName,
                level="ERROR")
-              &amp;&amp; delete_table_cmd,
+              && delete_table_cmd,
              Message=TableName + ' failed connection test. Removing quarantine table.')
            WHERE ClearInstalled
          })
@@ -271,7 +280,7 @@ sources:
                message="%v failed forbidden connection test - connection to %v could be established. Removing quarantine table.",
                args=[TableName, ForbiddenTestURL],
                level="ERROR")
-              &amp;&amp; delete_table_cmd,
+              && delete_table_cmd,
              Message=TableName + ' failed forbidden connection test. Removing quarantine table.')
            WHERE ClearInstalled
          },
@@ -295,7 +304,7 @@ sources:
            SELECT *
            FROM run_command(Cmd=add_table_cmd,
                             Message=SetInstalled
-                             &amp;&amp; TableName + ' added.')
+                             && TableName + ' added.')
          },
              c={
            SELECT *
@@ -351,6 +360,6 @@ sources:
                      message="nftables is not installed - quarantine not supported")
             AND FALSE
          })
+````
 
-</code></pre>
 

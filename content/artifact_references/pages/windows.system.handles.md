@@ -1,18 +1,28 @@
 ---
 title: Windows.System.Handles
+description: "Lists open handles (files, registry keys, etc.) for processes\nmatching a regex pattern."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Enumerate the handles from selected processes.
+Lists open handles (files, registry keys, etc.) for processes
+matching a regex pattern.
 
 Uncheck all the handle types below to fetch all handle types.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.Handles
 description: |
-  Enumerate the handles from selected processes.
+  Lists open handles (files, registry keys, etc.) for processes
+  matching a regex pattern.
 
   Uncheck all the handle types below to fetch all handle types.
 
@@ -36,7 +46,7 @@ parameters:
 
 sources:
   - query: |
-      LET tokens &lt;= SELECT * FROM chain(
+      LET tokens <= SELECT * FROM chain(
           a={SELECT "File" AS Type FROM scope() WHERE Files = 'Y'},
           a2={SELECT "Section" AS Type FROM scope() WHERE Files = 'Y'},
           b={SELECT "Key" AS Type FROM scope() WHERE Key = 'Y'}
@@ -44,7 +54,7 @@ sources:
 
       LET processes = SELECT Pid AS ProcPid, Name AS ProcName, Exe
         FROM pslist()
-        WHERE ProcName =~ processRegex AND ProcPid &gt; 0
+        WHERE ProcName =~ processRegex AND ProcPid > 0
 
       SELECT * FROM foreach(
           row=processes,
@@ -54,6 +64,6 @@ sources:
                       then=AccessMaskPerms) AS AccessMaskPerms
             FROM handles(pid=ProcPid, types=tokens.Type)
           })
+````
 
-</code></pre>
 

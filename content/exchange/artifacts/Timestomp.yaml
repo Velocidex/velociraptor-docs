@@ -4,28 +4,28 @@ description: |
     This artifact enables triage to detect potential time stomped files.
 
     Checks:
-    
+
     - $STANDARD_INFORMATION “B” time prior to $FILE_NAME “B” time
-    - $STANDARD_INFORMATION “B” or "M" time has nanosecond precision. 
-    - PE compile time prior to any $STANDARD_INFORMATION time stamp.  
-    
-    Optional:  
-    
+    - $STANDARD_INFORMATION “B” or "M" time has nanosecond precision.
+    - PE compile time prior to any $STANDARD_INFORMATION time stamp.
+
+    Optional:
+
     - $STANDARD_INFORMATION “M” time prior to ShimCache timestamp
     - $STANDARD_INFORMATION times prior to $I30 slack "B" or "M" times.
     - Full PE metadata output.
-    
-    Note: If an option is selected the artifact will also output additional metadata for context.
-    
-    Available filters include:  
-      PathRegex (OSPath): e.g ^C:\\folder\\file\.ext$ or partial \\folder\\folder2\\ or string|string2|string3  
-      FileRegex: ^filename.ext$ or partial string1|string2  
 
-    
+    Note: If an option is selected the artifact will also output additional metadata for context.
+
+    Available filters include:
+      PathRegex (OSPath): e.g ^C:\\folder\\file\.ext$ or partial \\folder\\folder2\\ or string|string2|string3
+      FileRegex: ^filename.ext$ or partial string1|string2
+
+
 parameters:
   - name: MFTDrive
     description: |
-      The path to to the drive that holds the MFT file (can be a
+      The path to the drive that holds the MFT file (can be a
       pathspec).
     default: "C:"
   - name: PathRegex
@@ -37,7 +37,7 @@ parameters:
     type: regex
   - name: UploadHits
     type: bool
-    description: "Upload complete complete attribute data."
+    description: "Upload complete attribute data."
   - name: ShimcacheTest
     type: bool
     description: "If PE, check $STANDARD_INFORMATION “M” time prior to ShimCache timestamp"
@@ -59,19 +59,19 @@ sources:
             magic(path=OSPath) as Magic
         FROM Artifact.Windows.NTFS.MFT(MFTDrive=MFTDrive,PathRegex=PathRegex,FileRegex=FileRegex)
         --WHERE NOT IsDir
-      
+
       -- if MZ files collect shimcache to compare modification time
-      LET shimcache <= SELECT * 
+      LET shimcache <= SELECT *
         FROM if(condition= ShimcacheTest,
             then= { SELECT Name, ModificationTime FROM Artifact.Windows.Registry.AppCompatCache() })
-      LET shimcache_mtime(target) = SELECT Name, ModificationTime FROM shimcache 
-        WHERE Name = target 
+      LET shimcache_mtime(target) = SELECT Name, ModificationTime FROM shimcache
+        WHERE Name = target
         ORDER BY ModificationTime
-      
+
       LET i30 <= SELECT * FROM if(condition= I30Test,
-            then= { 
+            then= {
                 SELECT * FROM foreach(
-                    row={ 
+                    row={
                         SELECT dirname(path=OSPath) as Directory FROM mft_entries
                         GROUP BY Directory
                     },
@@ -83,13 +83,13 @@ sources:
                         WHERE MFTId OR FullPath
                     })
             })
-      LET find_i30_slack(inode,folder,filenames,mtime,ctime,slackcheck) = SELECT * FROM i30 
-        WHERE MFTId = str(str=inode) OR ( split(sep_string='''\\.\''',string=FullPath)[1] = folder AND Name in filenames) 
+      LET find_i30_slack(inode,folder,filenames,mtime,ctime,slackcheck) = SELECT * FROM i30
+        WHERE MFTId = str(str=inode) OR ( split(sep_string='''\\.\''',string=FullPath)[1] = folder AND Name in filenames)
             AND if(condition= slackcheck,
                 then= ( Mtime > mtime OR Btime > btime ) AND IsSlack,
                 else= True )
-                
-      LET base_results = SELECT 
+
+      LET base_results = SELECT
             OSPath,
             dict(Created0x10=Created0x10,Created0x30=Created0x30) as CreatedTimestamps,
             InUse,
@@ -116,10 +116,10 @@ sources:
                 else= False ) as SuspiciousI30,
             find_i30_slack(inode=EntryNumber,folder=dirname(path=OSPath),filenames=FileNames,mtime=LastModified0x10,ctime=Created0x10,slackcheck=False) as I30
       FROM mft_entries
-      
+
       LET results = SELECT * FROM if(condition= ShimcacheTest AND I30Test AND OutputPEInfo,
             then={
-                SELECT 
+                SELECT
                     OSPath,CreatedTimestamps,InUse,
                     `SI<FN`,USecZeros,
                     SuspiciousCompileTime,
@@ -134,7 +134,7 @@ sources:
             },
             else= if(condition= ShimcacheTest AND I30Test,
                 then={
-                SELECT 
+                SELECT
                     OSPath,CreatedTimestamps,InUse,
                     `SI<FN`,USecZeros,
                     SuspiciousCompileTime,
@@ -148,7 +148,7 @@ sources:
             },
             else= if(condition= ShimcacheTest AND OutputPEInfo,
                 then={
-                    SELECT 
+                    SELECT
                     OSPath,CreatedTimestamps,InUse,
                     `SI<FN`,USecZeros,
                     SuspiciousCompileTime,
@@ -161,7 +161,7 @@ sources:
             },
             else= if(condition= I30Test AND OutputPEInfo,
                 then={
-                    SELECT 
+                    SELECT
                     OSPath,CreatedTimestamps,InUse,
                     `SI<FN`,USecZeros,
                     SuspiciousCompileTime,
@@ -174,7 +174,7 @@ sources:
             },
             else= if(condition= ShimcacheTest,
                 then={
-                    SELECT 
+                    SELECT
                     OSPath,CreatedTimestamps,InUse,
                     `SI<FN`,USecZeros,
                     SuspiciousCompileTime,
@@ -186,7 +186,7 @@ sources:
             },
             else= if(condition= I30Test,
                 then={
-                    SELECT 
+                    SELECT
                     OSPath,CreatedTimestamps,InUse,
                     `SI<FN`,USecZeros,
                     SuspiciousCompileTime,
@@ -198,7 +198,7 @@ sources:
             },
             else= if(condition= OutputPEInfo,
                 then={
-                    SELECT 
+                    SELECT
                     OSPath,CreatedTimestamps,InUse,
                     `SI<FN`,USecZeros,
                     SuspiciousCompileTime,
@@ -208,7 +208,7 @@ sources:
                 FROM base_results
             },
                 else={
-                    SELECT 
+                    SELECT
                         OSPath,CreatedTimestamps,InUse,
                         `SI<FN`,USecZeros,
                         SuspiciousCompileTime,
@@ -219,7 +219,7 @@ sources:
             ))))))
 
       LET upload_results = SELECT *, upload(file=OSPath) as Upload FROM results
-      
+
       SELECT * FROM if(condition= UploadHits,
         then= upload_results,
         else= results)

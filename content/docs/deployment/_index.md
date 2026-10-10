@@ -1,10 +1,14 @@
 ---
+icon: server
 menutitle: "Deployment"
 title: "Deployment Overview"
 date: 2021-06-09T03:52:24Z
 last_reviewed: 2025-02-27
 draft: false
 weight: 10
+description: |
+  Velociraptor offers many deployment options that allow us to operate in all
+  kinds of environments.
 ---
 
 Velociraptor offers many deployment options that allow us to operate in all
@@ -16,20 +20,17 @@ We'll guide you through the main decisions that you'll need to make, and point
 you to additional resources for less commonly used features and options.
 
 If you just want to get a simple deployment up and running then please see our
-[Quickstart Guide]({{< ref "/docs/deployment/quickstart/" >}}).
+[Quickstart Guide](/docs/deployment/quickstart/).
 
 If you're really in a hurry you can start a self-contained
 [Instant Velociraptor](#instant-velociraptor)
 on your local machine which will allow you to experiment and get a feel for how
 Velociraptor works.
 
-{{% notice tip "Using Velociraptor integrated with Rapid7 InsightIDR?"%}}
-
-These deployment steps apply to open source Velociraptor only. Read the
-[InsightIDR documentation](https://docs.rapid7.com/insightidr/velociraptor-integration)
-to learn more about how Velociraptor is deployed with the Rapid7 Insight Platform.
-
-{{% /notice %}}
+> [!TIP] Using Velociraptor integrated with Rapid7 InsightIDR?
+> These deployment steps apply to open source Velociraptor only. Read the
+> [InsightIDR documentation](https://docs.rapid7.com/insightidr/velociraptor-integration)
+> to learn more about how Velociraptor is deployed with the Rapid7 Insight Platform.
 
 ## Typical Deployment
 
@@ -100,8 +101,8 @@ server on a different platform, and you may decide to do so, but please keep in
 mind that for production deployments the server should run on Linux. Issues with
 other platforms will receive limited support.
 
-Binaries for the the most common platforms and architectures are available on
-our [Downloads]({{< ref "/downloads/" >}}) page.
+Binaries for the most common platforms and architectures are available on
+our [Downloads](/downloads/) page.
 
 ## Deployment Milestones
 
@@ -109,14 +110,14 @@ At a high level, deploying Velociraptor consists of 3 tasks: setting up a
 server, deploying clients, and granting user access to the server's web UI.
 
 **Task 1: Deploy a Server**
-- [Choose the deployment options]({{< ref "/docs/deployment/server#key-deployment-decisions" >}}) that
+- [Choose the deployment options](/docs/deployment/server/key_decisions/) that
   work best for you and install your server.
 
 **Task 2: Authorize Users**
 - Grant users access to the Velociraptor server's web UI
 
 **Task 3: Deploy Clients**
-- [Deploy clients]({{< ref "/docs/deployment/clients/" >}}) on your endpoints
+- [Deploy clients](/docs/deployment/clients/) on your endpoints
   using one or possibly a combination of the following methods:
   - Run clients interactively
   - Install the client as a service using a custom installer package
@@ -174,7 +175,7 @@ this on any platform. The client capabilities do vary per platform, but the
 server component is identical across platforms. This mode is especially
 useful for testing and artifact development because it allows you to run VQL
 directly on the target operating system via
-[Velociraptor notebooks]({{< ref "/docs/notebooks/" >}}).
+[Velociraptor notebooks](/docs/notebooks/).
 
 In this mode:
 
@@ -188,23 +189,20 @@ In this mode:
 
 ![Instant mode automatically enrolls a single client](gui_windows.svg)
 
-{{% notice info "Instant Velociraptor: Persisting your data" %}}
-
-By default the `gui` command uses the temp folder as it's data store (by default
-a subfolder named `gui_datastore`). The `gui` command also automatically creates
-new server and client configuration files in this datastore folder. This allows
-you to re-run the `gui` command and get the same working environment with
-persistent data.
-
-However some operating systems clean out the temp folder periodically or during
-a system reboot, in which case your environment and data will NOT persist (i.e.
-it will be lost). To avoid this you can specify a different data store directory
-using the `--datastore` flag and point it to a location where your data will be
-persisted. If at any time you want to start with a fresh instance you can either
-delete the old datastore folder or point it to a new folder using the
-`--datastore` flag.
-
-{{% /notice %}}
+> [!NOTE] Instant Velociraptor: Persisting your data
+> By default the `gui` command uses the temp folder as it's data store (by default
+> a subfolder named `gui_datastore`). The `gui` command also automatically creates
+> new server and client configuration files in this datastore folder. This allows
+> you to re-run the `gui` command and get the same working environment with
+> persistent data.
+>
+> However some operating systems clean out the temp folder periodically or during
+> a system reboot, in which case your environment and data will NOT persist (i.e.
+> it will be lost). To avoid this you can specify a different data store directory
+> using the `--datastore` flag and point it to a location where your data will be
+> persisted. If at any time you want to start with a fresh instance you can either
+> delete the old datastore folder or point it to a new folder using the
+> `--datastore` flag.
 
 
 ### Command line investigation tool
@@ -236,7 +234,7 @@ velociraptor.exe query "SELECT * FROM pslist()" --format jsonl --output pslist.j
 
 **The artifacts command**
 
-The `artifacts collect` command runs any [Velociraptor artifact]({{< ref "/docs/artifacts/" >}})
+The `artifacts collect` command runs any [Velociraptor artifact](/docs/artifacts/)
 which can contain one or more packaged VQL queries.
 
 You can use `artifacts list` to list the available artifacts, and
@@ -287,7 +285,7 @@ velociraptor.exe artifacts collect "Windows.System.AuditPolicy" --format json --
 
 ### "Instant Velociraptor" as a local investigation tool
 
-While [Instant Velociraptor]({{< relref "#instant-velociraptor" >}}) is normally
+While [Instant Velociraptor](#instant-velociraptor) is normally
 used for testing or demonstrations, it can actually be used as a standalone
 GUI-based forensic tool.
 
@@ -295,26 +293,23 @@ The `gui` command starts the server and a single client within a single process.
 This client is no different from one that's separately deployed, and can be used
 to interrogate the local system as you would do for any remote client.
 
-{{% notice warning "Minimizing data pollution"%}}
-
-Obviously this idea is not suitable for all investigation scenarios as the
-server component will need to write data to it's datastore. Also, using a web
-browser on the target machine and any other activity risks polluting the
-forensic data. If these risks are acceptable to you, you may still want to
-minimize them by:
-- locating the datastore on an external drive using the `--datastore` flag.
-- changing the writeback and tempdir locations in the client config to also be
-  on an external drive.
-
-{{% /notice %}}
+> [!WARNING] Minimizing data pollution
+> Obviously this idea is not suitable for all investigation scenarios as the
+> server component will need to write data to it's datastore. Also, using a web
+> browser on the target machine and any other activity risks polluting the
+> forensic data. If these risks are acceptable to you, you may still want to
+> minimize them by:
+> - locating the datastore on an external drive using the `--datastore` flag.
+> - changing the writeback and tempdir locations in the client config to also be
+>   on an external drive.
 
 ### "Instant Velociraptor" as an desktop environment for analysts
 
-[Instant Velociraptor]({{< relref "#instant-velociraptor" >}}) can also be used
+[Instant Velociraptor](#instant-velociraptor) can also be used
 as a standalone graphical forensic desktop environment, for acquired forensic
 artifacts.
 
-[Velociraptor notebooks]({{< ref "/docs/notebooks/" >}}) have access to the
+[Velociraptor notebooks](/docs/notebooks/) have access to the
 local filesystem, and can therefore read any files within it and work with the
 extracted data.
 
@@ -328,20 +323,20 @@ In this mode of operation, the client component may not be needed and you can
 disable it by adding the `--no-client` flag to the `gui` command.
 
 However the client component may be useful if you want to use
-[remapping]({{< ref "/docs/forensic/filesystem/remapping/" >}}) which will allow
+[remapping](/docs/forensic/filesystem/remapping/) which will allow
 you to inspect and analyze disk image files using Velociraptor's dead disk
 feature. The `gui` command creates the client config file in the datastore
 folder, to which you can add the remapping config, if needed.
 
 ### Standalone offline collectors
 
-[Offline collectors]({{< ref "/docs/deployment/offline_collections/" >}})
+[Offline collectors](/docs/deployment/offline_collections/)
 are usually created with the expectation that the data will be imported into a
 Velociraptor server, but this doesn't have to be the case. You may just be
 interested in extracting the data and working with it elsewhere using other
 tools. In that case the only reason for having a Velociraptor server is to
 create the offline collector, and you can use an
-[Instant Velociraptor]({{< relref "#instant-velociraptor" >}}) for that purpose.
+[Instant Velociraptor](#instant-velociraptor) for that purpose.
 
 It's important to note that Velociraptor offline collectors have all the
 capabilities of a normal Velociraptor client. _They are not limited to doing
@@ -354,6 +349,12 @@ into the standalone (i.e. non-networked) Instant Velociraptor, and work with
 them the same as you would with data collected from network-connected clients.
 That is, an Instant Velociraptor deployment using only offline collectors
 amounts to a sneakernet Velociraptor deployment!
+
+### Collections Over SSH
+
+[Collections Over SSH](/docs/file_collection/ssh/)
+
+
 
 <!-- ### Sneakernet Velociraptor server
 

@@ -1,24 +1,38 @@
 ---
 title: Windows.Search.VSS
+description: "Finds files in Volume Shadow Copies (VSS) using the `ntfs_vss`\naccessor."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact will find all relevant files in the VSS. Typically
-used to out deduplicated paths for processing by other artifacts.
+Finds files in Volume Shadow Copies (VSS) using the `ntfs_vss`
+accessor.
+
+Typically used to output deduplicated paths for processing by other
+artifacts.
 
 NOTE: This used to be more complicated but now delegates to the
-"ntfs_vss" accessor to do all the work.
+`ntfs_vss` accessor to do all the hard work.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Search.VSS
 description: |
-  This artifact will find all relevant files in the VSS. Typically
-  used to out deduplicated paths for processing by other artifacts.
+  Finds files in Volume Shadow Copies (VSS) using the `ntfs_vss`
+  accessor.
+  
+  Typically used to output deduplicated paths for processing by other
+  artifacts.
 
   NOTE: This used to be more complicated but now delegates to the
-  "ntfs_vss" accessor to do all the work.
+  `ntfs_vss` accessor to do all the hard work.
 
 author: Matt Green - @mgreen27
 
@@ -39,6 +53,6 @@ sources:
   - query: |
       SELECT * FROM glob(globs=SearchFilesGlob, accessor="ntfs_vss")
       ORDER BY OSPath
+````
 
-</code></pre>
 

@@ -1,42 +1,46 @@
 ---
 title: Windows.EventLogs.Telerik
+description: "Searches Windows Application Event Log for Telerik exploitation\nindicators (Event ID 1309)."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This Artifact will hunt for evidence of Telerik exploitation in the Application
-Event Log.
+Searches Windows Application Event Log for Telerik exploitation
+indicators (Event ID 1309).
 
-Telerik is a commonly exploited component of IIS web pages that has been
-actively targeted by actors via several CVEs. Several tools and attack
-capabilities exist making exploitation of vulnerable services trivial. Due to
-the nature of the software and typical deployments the patches may require
-manual application.
+Telerik is a commonly exploited component of IIS web pages that has
+been actively targeted by actors via several CVEs. Several tools and
+attack capabilities exist making exploitation of vulnerable services
+trivial. Due to the nature of the software and typical deployments
+the patches may require manual application.
 
 IocRegex enables searching for regex in the whole EventData field.
-Output of this artifact is targeted fields from EventID 1309 to provide
-context for the hit.
-
-This Artifact will hunt for evidence of Telerik exploitation in the Application Event Log.
+Output of this artifact is targeted fields from EventID 1309 to
+provide context for the hit.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.EventLogs.Telerik
 description: |
-  This Artifact will hunt for evidence of Telerik exploitation in the Application
-  Event Log.
-
-  Telerik is a commonly exploited component of IIS web pages that has been
-  actively targeted by actors via several CVEs. Several tools and attack
-  capabilities exist making exploitation of vulnerable services trivial. Due to
-  the nature of the software and typical deployments the patches may require
-  manual application.
+  Searches Windows Application Event Log for Telerik exploitation
+  indicators (Event ID 1309).
+  
+  Telerik is a commonly exploited component of IIS web pages that has
+  been actively targeted by actors via several CVEs. Several tools and
+  attack capabilities exist making exploitation of vulnerable services
+  trivial. Due to the nature of the software and typical deployments
+  the patches may require manual application.
 
   IocRegex enables searching for regex in the whole EventData field.
-  Output of this artifact is targeted fields from EventID 1309 to provide
-  context for the hit.
-
-  This Artifact will hunt for evidence of Telerik exploitation in the Application Event Log.
+  Output of this artifact is targeted fields from EventID 1309 to
+  provide context for the hit.
 
 author: Matt Green - @mgreen27
 
@@ -48,11 +52,11 @@ parameters:
   - name: EvtxGlob
     default: '%SystemRoot%\System32\Winevt\Logs\Application.evtx'
   - name: IocRegex
-    description: "IOC Regex"
+    description: "IOC regex"
     default: telerik.*\\?type=rau
     type: regex
   - name: WhitelistRegex
-    description: "Regex of string to witelist"
+    description: "Regex of string to whitelist"
     type: regex
   - name: VSSAnalysisAge
     type: int
@@ -73,13 +77,13 @@ sources:
   - precondition: SELECT OS From info() where OS = 'windows'
 
     query: |
-      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
 
       -- firstly set timebounds for performance
-      LET DateAfterTime &lt;= if(condition=DateAfter,
+      LET DateAfterTime <= if(condition=DateAfter,
         then = DateAfter, else = "1600-01-01" )
-      LET DateBeforeTime &lt;= if(condition=DateBefore,
+      LET DateBeforeTime <= if(condition=DateBefore,
         then = DateBefore, else = "2200-01-01" )
 
       -- expand provided glob into a list of paths on the file system (fs)
@@ -110,11 +114,11 @@ sources:
                     AND NOT if(condition=WhitelistRegex,
                         then= format(format='%v',args=EventData.Data) =~ WhitelistRegex,
                         else= FALSE )
-                    AND EventTime &gt;= DateAfterTime AND EventTime &lt;= DateBeforeTime
+                    AND EventTime >= DateAfterTime AND EventTime <= DateBeforeTime
             }
           )
 
         SELECT * FROM evtxsearch(PathList=fspaths)
+````
 
-</code></pre>
 

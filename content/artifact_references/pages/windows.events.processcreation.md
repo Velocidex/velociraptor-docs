@@ -1,26 +1,36 @@
 ---
 title: Windows.Events.ProcessCreation
+description: "Monitors for Windows process creation events using WMI\nWin32_ProcessStartTrace and enriches them with parent and call chain\ninformation."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
 
-Collect all process creation events.
+Monitors for Windows process creation events using WMI
+Win32_ProcessStartTrace and enriches them with parent and call chain
+information.
 
-This artifact relies on WMI to receive process start events. This
-method is not as good as kernel mechanism used by Sysmon. It is more
-reliable to use Sysmon instead via the
-Windows.Sysinternals.SysmonLogForward artifact instead.
+This method is not as good as the kernel mechanism used by Sysmon.
+It is more reliable to use Sysmon instead via the
+`Windows.Sysinternals.SysmonLogForward` artifact.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Events.ProcessCreation
 description: |
-  Collect all process creation events.
-
-  This artifact relies on WMI to receive process start events. This
-  method is not as good as kernel mechanism used by Sysmon. It is more
-  reliable to use Sysmon instead via the
-  Windows.Sysinternals.SysmonLogForward artifact instead.
+  Monitors for Windows process creation events using WMI
+  Win32_ProcessStartTrace and enriches them with parent and call chain
+  information.
+  
+  This method is not as good as the kernel mechanism used by Sysmon.
+  It is more reliable to use Sysmon instead via the
+  `Windows.Sysinternals.SysmonLogForward` artifact.
 
 type: CLIENT_EVENT
 
@@ -45,8 +55,8 @@ sources:
           process_tracker_get(id=Parse.ProcessID).Data.CommandLine AS CommandLine,
           process_tracker_get(id=Parse.ParentProcessID).Data.CommandLine AS ParentCommandLine,
           join(array=process_tracker_callchain(id=Parse.ProcessID).Data.Name,
-               sep=" &lt;- ") AS CallChain
+               sep=" <- ") AS CallChain
       FROM Delayed
+````
 
-</code></pre>
 

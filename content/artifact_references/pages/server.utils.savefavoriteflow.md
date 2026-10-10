@@ -1,33 +1,45 @@
 ---
 title: Server.Utils.SaveFavoriteFlow
+description: "Saves a collection configuration spec as a named favorite template\nfor reuse across client or server collections."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
 
+Saves a collection configuration spec as a named favorite template
+for reuse across client or server collections.
+
 Users may collect various artifacts from hosts. Sometimes it might
-take a bit of effort to setup and configure just the perfect
-combination of parameters and artifacts to collect.
+take a bit of effort to set up and configure just the right
+combination of parameters and artifacts to collect. This artifact
+allows the user to save the collection into a Favorites selection,
+which may be used in future.
 
-This artifact allows the user to save the collection into a
-Favorites section, which may be used in future.
-
-An example of a Spec is
+An example of a Favorites spec is
 ```json
 [{"artifact":"Windows.KapeFiles.Targets", "parameters":{"env":[{"key":"EventLogs", "value":"Y"}]}}]
 ```
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.SaveFavoriteFlow
 description: |
+  Saves a collection configuration spec as a named favorite template
+  for reuse across client or server collections.
+  
   Users may collect various artifacts from hosts. Sometimes it might
-  take a bit of effort to setup and configure just the perfect
-  combination of parameters and artifacts to collect.
+  take a bit of effort to set up and configure just the right
+  combination of parameters and artifacts to collect. This artifact
+  allows the user to save the collection into a Favorites selection,
+  which may be used in future.
 
-  This artifact allows the user to save the collection into a
-  Favorites section, which may be used in future.
-
-  An example of a Spec is
+  An example of a Favorites spec is
   ```json
   [{"artifact":"Windows.KapeFiles.Targets", "parameters":{"env":[{"key":"EventLogs", "value":"Y"}]}}]
   ```
@@ -86,6 +98,6 @@ sources:
 
       SELECT * FROM if(condition=AllUsers,
          then=AddToAllOrgs, else=AddToOneUser)
+````
 
-</code></pre>
 

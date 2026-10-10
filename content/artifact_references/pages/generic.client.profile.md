@@ -1,12 +1,20 @@
 ---
 title: Generic.Client.Profile
+description: "Collects runtime profiling data including goroutines, memory, CPU,\nand metrics from the client."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact collects profiling information about the running
-client. This is useful when you notice a high CPU load in the client
-and want to know why.
+Collects runtime profiling data including goroutines, memory, CPU,
+and metrics from the client.
+
+This is useful when you notice a high CPU load in the client and
+want to understand why that's happening.
 
 The following options are most useful:
 
@@ -36,12 +44,16 @@ goroutines and heap profiles as distinct sources in a more readable
 way.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Client.Profile
 description: |
-  This artifact collects profiling information about the running
-  client. This is useful when you notice a high CPU load in the client
-  and want to know why.
+  Collects runtime profiling data including goroutines, memory, CPU,
+  and metrics from the client.
+
+  This is useful when you notice a high CPU load in the client and
+  want to understand why that's happening.
 
   The following options are most useful:
 
@@ -119,7 +131,7 @@ sources:
   - query: |
       LET X = scope()
 
-      SELECT *, X.OSPath &amp;&amp; X.Type &amp;&amp; upload(name=X.Type + ".bin", file=X.OSPath) AS File
+      SELECT *, X.OSPath && X.Type && upload(name=X.Type + ".bin", file=X.OSPath) AS File
       FROM profile(allocs=Allocs, block=Block, goroutine=Goroutine,
                    heap=Heap, mutex=Mutex, profile=Profile, trace=Trace,
                    logs=Logs, queries=QueryLogs, metrics=Metrics,
@@ -178,6 +190,6 @@ sources:
 column_types:
   - name: InUseBytes
     type: mb
+````
 
-</code></pre>
 

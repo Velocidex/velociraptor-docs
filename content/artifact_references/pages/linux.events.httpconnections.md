@@ -1,30 +1,40 @@
 ---
 title: Linux.Events.HTTPConnections
+description: "Monitors HTTP traffic on Linux systems using eBPF network tracing."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
 
-This artifact uses eBPF to track HTTP and parse connections from
-various processes.
+Monitors HTTP traffic on Linux systems using eBPF network tracing.
 
-NOTE: This event is generated from network traffic - it is unable to
-view TLS encrypted data.
+NOTES:
 
-If the process tracker is enabled we also show more information
-about the process.
-
-
-<pre><code class="language-yaml">
-name: Linux.Events.HTTPConnections
-description: |
-  This artifact uses eBPF to track HTTP and parse connections from
-  various processes.
-
-  NOTE: This event is generated from network traffic - it is unable to
+- This event is generated from network traffic - it is unable to
   view TLS encrypted data.
 
-  If the process tracker is enabled we also show more information
+- If the process tracker is enabled we also show more information
   about the process.
+
+
+---
+
+````yaml
+name: Linux.Events.HTTPConnections
+description: |
+  Monitors HTTP traffic on Linux systems using eBPF network tracing.
+
+  NOTES:
+  
+  - This event is generated from network traffic - it is unable to
+    view TLS encrypted data.
+
+  - If the process tracker is enabled we also show more information
+    about the process.
 
 type: CLIENT_EVENT
 
@@ -53,6 +63,8 @@ parameters:
 
 sources:
   - query: |
+      // linter: symbol_mask_warn:host
+
       SELECT System.Timestamp AS Timestamp,
              System.ProcessName AS ProcessName,
              System.ProcessID AS Pid,
@@ -70,6 +82,6 @@ sources:
       WHERE host =~ HostFilter
         AND uri_path =~ URLFilter
         AND ProcessName =~ ProcessNameFilter
+````
 
-</code></pre>
 

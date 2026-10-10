@@ -1,8 +1,17 @@
 ---
 title: Generic.System.ProcessSiblings
+description: "Lists sibling processes from the process tracker to reveal related\nprocess activity."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
+
+Lists sibling processes from the process tracker to reveal related
+process activity.
 
 This artifact queries the process tracker to display all known
 sibling processes of the target process (i.e. all other processes
@@ -11,20 +20,21 @@ from the same parent).
 This is useful to reveal the complete interaction that included
 the process in question (e.g. previous shell commands etc).
 
-Minimum Version: 0.6.6
 
+---
 
-<pre><code class="language-yaml">
+````yaml
 name: Generic.System.ProcessSiblings
 description: |
+  Lists sibling processes from the process tracker to reveal related
+  process activity.
+
   This artifact queries the process tracker to display all known
   sibling processes of the target process (i.e. all other processes
   from the same parent).
 
   This is useful to reveal the complete interaction that included
   the process in question (e.g. previous shell commands etc).
-
-  Minimum Version: 0.6.6
 
 parameters:
   - name: CommandlineRegex
@@ -66,6 +76,6 @@ sources:
 column_types:
   - name: ParentTree
     type: tree
+````
 
-</code></pre>
 

@@ -1,14 +1,27 @@
 ---
 title: Linux.Proc.Modules
+description: "Parses `/proc/modules` to enumerate loaded kernel modules with their\ndetails.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Module listing via /proc/modules.
+Parses `/proc/modules` to enumerate loaded kernel modules with their
+details.
 
-<pre><code class="language-yaml">
+
+---
+
+````yaml
 name: Linux.Proc.Modules
-description: Module listing via /proc/modules.
+description: |
+  Parses `/proc/modules` to enumerate loaded kernel modules with their
+  details.
+
 parameters:
   - name: ProcModules
     default: /proc/modules
@@ -21,13 +34,13 @@ sources:
         SELECT Name,
           atoi(string=Size) As Size,
           atoi(string=UseCount) As UseCount,
-          parse_string_with_regex(regex='''(?P&lt;UsedBy&gt;.*),''', string=UsedBy).UsedBy AS UsedBy,
+          parse_string_with_regex(regex='''(?P<UsedBy>.*),''', string=UsedBy).UsedBy AS UsedBy,
           Status, 
           Address
         FROM split_records(
            filenames=ProcModules,
            regex='\\s+',
            columns=['Name', 'Size', 'UseCount', 'UsedBy', 'Status', 'Address'])
+````
 
-</code></pre>
 

@@ -1,24 +1,31 @@
 ---
 title: Elastic.Flows.Upload
+description: "Uploads collected artifact results to an Elasticsearch server."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 ---
 
-This server side event monitoring artifact waits for new artifacts
+Uploads collected artifact results to an Elasticsearch server.
+
+This server-side event monitoring artifact waits for new artifacts
 to be collected from endpoints and automatically uploads those to an
-elastic server.
+Elastic server.
 
 We use the artifact name as the name of the index. This allows users
 to adjust the index size/lifetime according to the artifact it is
 holding.
 
-NOTE: Elastic is a database and still must have a stable
-schema. This means that artifacts that produce inconsistent columns
-and types will **NOT** work as expected. What will happen is that
-the first row that is inserted will create the Elastic database
-schema (In Elastic terminology "mapping") and then any subsequent
-row with a different type for these fields will be rejected by
-Elastic.
+NOTE: Elastic is a database and still must have a stable schema.
+This means that artifacts that produce inconsistent columns and
+types will **NOT** work as expected. What will happen is that the
+first row that is inserted will create the Elastic database schema
+(In Elastic terminology "mapping") and then any subsequent row with
+a different type for these fields will be rejected by Elastic.
 
 In particular this does not work with event logs because event logs
 have a varied schema (The EventData field is a free form field
@@ -28,24 +35,27 @@ events!! This artifact is not suitable for forwarding Windows Event
 Logs!
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Elastic.Flows.Upload
 description: |
-  This server side event monitoring artifact waits for new artifacts
+  Uploads collected artifact results to an Elasticsearch server.
+
+  This server-side event monitoring artifact waits for new artifacts
   to be collected from endpoints and automatically uploads those to an
-  elastic server.
+  Elastic server.
 
   We use the artifact name as the name of the index. This allows users
   to adjust the index size/lifetime according to the artifact it is
   holding.
 
-  NOTE: Elastic is a database and still must have a stable
-  schema. This means that artifacts that produce inconsistent columns
-  and types will **NOT** work as expected. What will happen is that
-  the first row that is inserted will create the Elastic database
-  schema (In Elastic terminology "mapping") and then any subsequent
-  row with a different type for these fields will be rejected by
-  Elastic.
+  NOTE: Elastic is a database and still must have a stable schema.
+  This means that artifacts that produce inconsistent columns and
+  types will **NOT** work as expected. What will happen is that the
+  first row that is inserted will create the Elastic database schema
+  (In Elastic terminology "mapping") and then any subsequent row with
+  a different type for these fields will be rejected by Elastic.
 
   In particular this does not work with event logs because event logs
   have a varied schema (The EventData field is a free form field
@@ -87,7 +97,7 @@ sources:
       LET completions = SELECT * FROM watch_monitoring(
              artifact="System.Flow.Completion")
              WHERE Flow.artifacts_with_results =~ ArtifactNameRegex
-      LET organization &lt;= org().name
+      LET organization <= org().name
 
       LET documents = SELECT * FROM foreach(row=completions,
           query={
@@ -121,6 +131,6 @@ sources:
             root_ca=RootCA,
             disable_ssl_security=DisableSSLSecurity,
             type="artifact")
+````
 
-</code></pre>
 

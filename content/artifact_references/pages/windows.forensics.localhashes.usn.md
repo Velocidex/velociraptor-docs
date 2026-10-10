@@ -1,17 +1,31 @@
 ---
 title: Windows.Forensics.LocalHashes.Usn
+description: "Watches the NTFS USN journal for file modifications and records file\nhashes in a local database."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
+
+Watches the NTFS USN journal for file modifications and records file
+hashes in a local database.
 
 This artifact maintains a local (client side) database of file
 hashes. It is then possible to query this database by using the
 `Generic.Forensic.LocalHashes.Query` artifact
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.LocalHashes.Usn
 description: |
+  Watches the NTFS USN journal for file modifications and records file
+  hashes in a local database.
+
   This artifact maintains a local (client side) database of file
   hashes. It is then possible to query this database by using the
   `Generic.Forensic.LocalHashes.Query` artifact
@@ -49,12 +63,12 @@ sources:
       LET NTFS_CACHE_TIME = 30
       LET USN_FREQUENCY = 60
 
-      LET hash_db &lt;= SELECT OSPath
+      LET hash_db <= SELECT OSPath
       FROM Artifact.Generic.Forensic.LocalHashes.Init(HashDb=HashDb)
 
-      LET path &lt;= hash_db[0].OSPath
+      LET path <= hash_db[0].OSPath
 
-      LET _ &lt;= log(message="Will use local hash database " + path)
+      LET _ <= log(message="Will use local hash database " + path)
 
       LET file_modifications = SELECT Device + OSPath AS OSPath
       FROM watch_usn(device=Device)
@@ -108,6 +122,6 @@ column_types:
 
   - name: ClientId
     type: client_id
+````
 
-</code></pre>
 

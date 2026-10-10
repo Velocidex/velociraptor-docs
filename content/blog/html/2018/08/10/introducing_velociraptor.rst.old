@@ -52,7 +52,7 @@ These are Velociraptor's design goals:
 
  * Simplify everything!  Velociraptor aims to be very simple to run
    and administer. We remove a lot of the GRR functionality that we
-   dont find we use often. Velociraptor ships as a single, statically
+   don't find we use often. Velociraptor ships as a single, statically
    linked executable which can perform all actions necessary for
    deployers.
 

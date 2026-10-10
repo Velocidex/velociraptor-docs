@@ -1,7 +1,13 @@
 ---
 title: Windows.Applications.MegaSync
+description: "Parses MEGASync logs and allows using regular expressions to search for\nentries of interest."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
 Parses MEGASync logs and allows using regular expressions to search for
@@ -12,7 +18,9 @@ With `UploadLogs` selected a copy of the logs are uploaded to the server.
 `SearchVSS` enables searching over VSS with automatic deduplication.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Applications.MegaSync
 description: |
   Parses MEGASync logs and allows using regular expressions to search for
@@ -56,8 +64,8 @@ parameters:
 
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
 
       -- Find target files
       LET files = SELECT *, OSPath as Source
@@ -100,6 +108,6 @@ sources:
             Size
         FROM output
         GROUP BY OSPath
+````
 
-</code></pre>
 

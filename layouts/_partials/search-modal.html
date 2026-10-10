@@ -1,0 +1,23 @@
+{{- /* Pagefind search modal, rendered once per page (injected via
+layouts/_partials/scripts.html override). Opened by the Hextra search
+inputs (.hextra-search-input), Ctrl/Cmd+K or "/". */ -}}
+<div
+  id="search-wrapper"
+  role="dialog"
+  aria-modal="true"
+  aria-label="{{ (T "searchPlaceholder") | default "Search..." }}"
+  class="hextra-search-modal hx:invisible hx:fixed hx:inset-0 hx:z-50 hx:flex hx:h-screen hx:w-screen hx:cursor-default hx:flex-col hx:bg-neutral-500/50 hx:p-4 hx:backdrop-blur-sm hx:dark:bg-neutral-900/50 hx:sm:p-6 hx:md:p-[10vh] hx:lg:p-[12vh]"
+  data-url='{{ "" | relLangURL }}'
+>
+  <div
+    id="search-modal"
+    class="hextra-search-modal-box hx:mx-auto hx:flex hx:w-full hx:max-w-3xl hx:min-h-0 hx:flex-col hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-800"
+  >
+    <section class="hx:flex-auto hx:overflow-auto hx:px-2 hx:pb-2">
+      <div id="search-results">
+        {{- /* Pagefind UI is mounted here by assets/js/search.js on first open. */ -}}
+        <div id="pagefind-ui"></div>
+      </div>
+    </section>
+  </div>
+</div>

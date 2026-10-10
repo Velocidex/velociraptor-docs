@@ -1,14 +1,24 @@
 ---
 title: Linux.Mounts
+description: "Lists mounted filesystems by reading `/proc/mounts`.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-List mounted filesystems by reading /proc/mounts
+Lists mounted filesystems by reading `/proc/mounts`.
 
-<pre><code class="language-yaml">
+
+---
+
+````yaml
 name: Linux.Mounts
-description: List mounted filesystems by reading /proc/mounts
+description: |
+  Lists mounted filesystems by reading `/proc/mounts`.
 
 parameters:
   - name: ProcMounts
@@ -22,8 +32,8 @@ sources:
       SELECT Device, Mount, FSType, split(string=Opts, sep=",") As Options
       FROM parse_records_with_regex(
          file=ProcMounts,
-         regex='(?m)^(?P&lt;Device&gt;[^ ]+) (?P&lt;Mount&gt;[^ ]+) (?P&lt;FSType&gt;[^ ]+) '+
-             '(?P&lt;Opts&gt;[^ ]+)')
+         regex='(?m)^(?P<Device>[^ ]+) (?P<Mount>[^ ]+) (?P<FSType>[^ ]+) '+
+             '(?P<Opts>[^ ]+)')
 
 
 reports:
@@ -32,6 +42,6 @@ reports:
       # Mounted filesystems
 
       {{ Query "SELECT * FROM source()" | Table }}
+````
 
-</code></pre>
 

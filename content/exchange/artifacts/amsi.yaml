@@ -10,12 +10,12 @@ parameters:
     description: "Regex of strings to filter for"
     default: .
   - name: WhitelistRegex
-    description: "Regex of strings to witelist"
+    description: "Regex of strings to whitelist"
   - name: AppNameRegex
     description: "Application name Regex to enable filtering on source."
     default: .
   - name: ExcludeAmsiHashList
-    description: "Line seperated list of AMSI hashes to exclude"
+    description: "Line separated list of AMSI hashes to exclude"
     default: |
         0xB95D39DB18570A2A6DB329A3FF0BB87B17720279A0AC6862C7D5BA66C8270BB1
         0x9281522E94E9F3D4FBF4F679335D8A891B1FAE9933DCD993A0E2AE7CD8789953
@@ -26,7 +26,7 @@ sources:
       LET HashExclusions <= SELECT _value as AmsiHash
         FROM foreach(row=split(sep='\\s+',string=ExcludeAmsiHashList))
         WHERE AmsiHash
-        
+
       -- watch ETW provider and first round data manipulation
       LET hits = SELECT
          timestamp(epoch=timestamp(string=System.TimeStamp).unix) as EventTime,

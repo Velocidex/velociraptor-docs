@@ -1,11 +1,17 @@
 ---
 title: MacOS.Forensics.AppleDoubleZip
+description: "Searches for zip files containing download URLs inadvertently\nincluded in the zip contents."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Search for zip files containing leaked download URLs included by
-MacOS users.
+Searches for zip files containing download URLs inadvertently
+included in the zip contents.
 
 MacOS filesystem can represent extended attributes. Similarly to
 Windows's ZoneIdentifier, when a file is downloaded on MacOS it also
@@ -22,16 +28,18 @@ This is a huge privacy leak because people often do not realize that
 the source of downloads for a file is being included inside the zip
 file, which they end up sending to other people!
 
-Therefore this artifact can also work on other platforms because Zip
+Therefore this artifact can also work on other platforms because zip
 files created by MacOS users can end up on other systems, and
 contain sensitive URLs embedded within them.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: MacOS.Forensics.AppleDoubleZip
 description: |
-  Search for zip files containing leaked download URLs included by
-  MacOS users.
+  Searches for zip files containing download URLs inadvertently
+  included in the zip contents.
 
   MacOS filesystem can represent extended attributes. Similarly to
   Windows's ZoneIdentifier, when a file is downloaded on MacOS it also
@@ -48,7 +56,7 @@ description: |
   the source of downloads for a file is being included inside the zip
   file, which they end up sending to other people!
 
-  Therefore this artifact can also work on other platforms because Zip
+  Therefore this artifact can also work on other platforms because zip
   files created by MacOS users can end up on other systems, and
   contain sensitive URLs embedded within them.
 
@@ -74,7 +82,7 @@ export: |
       }],
       ["Count", 24, "uint16b"],
       ["Items", 26, "Array", {
-          count: "x=&gt;x.Count",
+          count: "x=>x.Count",
           type: "Entry",
       }],
       ["attr_header", 84, "attr_header"]
@@ -85,7 +93,7 @@ export: |
       ["Length", 8, "uint32b"],
       ["Value", 0, "Profile", {
            type: "ASFinderInfo",
-           offset: "x=&gt;x.Offset",
+           offset: "x=>x.Offset",
       }]
     ]],
     ["attr_header", 0, [
@@ -101,25 +109,25 @@ export: |
       ["flags", 32, "uint16b"],
       ["num_attr", 34, "uint16b"],
       ["attrs", 36, "Array", {
-          count: "x=&gt;x.num_attr",
+          count: "x=>x.num_attr",
           type: "attr_t",
       }]
     ]],
-    ["attr_t", "x=&gt;Align(value=x.name_length + 11)", [
+    ["attr_t", "x=>Align(value=x.name_length + 11)", [
      ["offset", 0, "uint32b"],
      ["length", 4, "uint32b"],
      ["flags", 8, "uint16b"],
      ["name_length", 10, "uint8"],
      ["name", 11, "String", {
-         length: "x=&gt;x.name_length",
+         length: "x=>x.name_length",
      }],
      ["data", 0, "Profile", {
         type: "String",
         type_options: {
             term: "",
-            length: "x=&gt;x.length",
+            length: "x=>x.length",
         },
-        offset: "x=&gt;x.offset",
+        offset: "x=>x.offset",
      }]
     ]]
     ]
@@ -153,6 +161,6 @@ sources:
               Key, Value
        FROM ParseAppleDouble(double_data=read_file(filename=OSPath, accessor="zip"))
      })
+````
 
-</code></pre>
 

@@ -1,19 +1,29 @@
 ---
 title: Windows.System.LocalAdmins
+description: "Retrieves local administrator accounts from a Windows system via\nPowerShell.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Gets a list of local admin accounts.
+Retrieves local administrator accounts from a Windows system via
+PowerShell.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.LocalAdmins
 description: |
-   Gets a list of local admin accounts.
+  Retrieves local administrator accounts from a Windows system via
+  PowerShell.
 
 reference:
-- https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.localaccounts/get-localgroupmember?view=powershell-5.1
+  - https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.localaccounts/get-localgroupmember?view=powershell-5.1
 
 type: CLIENT
 
@@ -29,7 +39,7 @@ sources:
       SELECT OS From info() where OS = 'windows'
 
     query: |
-      LET script &lt;= 'Get-LocalGroupMember -SID S-1-5-32-544 | select -ExpandProperty SID -Property Name, PrincipalSource | select Name, Value, PrincipalSource | ConvertTo-Json'
+      LET script <= 'Get-LocalGroupMember -SID S-1-5-32-544 | select -ExpandProperty SID -Property Name, PrincipalSource | select Name, Value, PrincipalSource | ConvertTo-Json'
 
       LET out = SELECT parse_json_array(data=Stdout) AS Output
           FROM execve(argv=[PowerShellExe,
@@ -44,6 +54,6 @@ sources:
             then="Domain", else=PrincipalSource)) AS PrincipalSource
           FROM scope()
       })
+````
 
-</code></pre>
 

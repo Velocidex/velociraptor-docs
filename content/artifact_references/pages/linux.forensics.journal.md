@@ -1,30 +1,42 @@
 ---
 title: Linux.Forensics.Journal
+description: "Extracts records from systemd journal files for forensic analysis."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Parses the binary journal logs. Systemd uses a binary log format to
-store logs.
+Extracts records from systemd journal files for forensic analysis.
+
+Systemd uses a binary log format to store logs. This parses the
+binary journal logs. 
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Forensics.Journal
 description: |
-  Parses the binary journal logs. Systemd uses a binary log format to
-  store logs.
+  Extracts records from systemd journal files for forensic analysis.
+
+  Systemd uses a binary log format to store logs. This parses the
+  binary journal logs. 
 
 parameters:
 - name: JournalGlob
   type: glob
   description: A Glob expression for finding journal files.
-  default: /{run,var}/log/journal/*/*.journal
+  default: /{run,var}/log/journal/*/*.journal{,~}
 - name: IdentifierRegex
   type: regex
   description: "Regex of event source e.g sshd or kernel"
 - name: IocRegex
   type: regex
-  description: "IOC Regex in event data"
+  description: "IOC regex in event data"
 - name: DateAfter
   type: timestamp
   description: "search for events after this date. YYYY-MM-DDTmm:hh:ssZ"
@@ -34,6 +46,16 @@ parameters:
 - name: AlsoUpload
   type: bool
   description: If set we also upload the raw files.
+
+export: |
+  LET Priorities <= dict(`0`='emerg',
+                      `1`='alert',
+                      `2`='crit',
+                      `3`='err',
+                      `4`='warning',
+                      `5`='notice',
+                      `6`='info',
+                      `7`='debug')
 
 sources:
 - name: Uploads
@@ -45,7 +67,6 @@ sources:
                 upload(file=OSPath) AS Upload
          FROM glob(globs=JournalGlob)
        })
-
 
 - query: |
      LET standard = SELECT *
@@ -59,7 +80,7 @@ sources:
                              start_time=DateAfter,
                              end_time=DateBefore)
        })
-     
+
      LET identifier_only = SELECT *
        FROM foreach(row={
          SELECT OSPath
@@ -72,7 +93,7 @@ sources:
                              end_time=DateBefore)
          WHERE EventData.SYSLOG_IDENTIFIER =~ IdentifierRegex
        })
-     
+
      LET all_regex = SELECT *
        FROM foreach(row={
          SELECT OSPath
@@ -88,7 +109,7 @@ sources:
                      args=[EventData, System._CMDLINE, System._EXE]) =~
                 IocRegex
        })
-     
+
      LET ioc_only = SELECT *
        FROM foreach(row={
          SELECT OSPath
@@ -103,7 +124,7 @@ sources:
                       args=[EventData, System._CMDLINE,
                         System._EXE]) =~ IocRegex
        })
-     
+
      SELECT *
      FROM if(condition=IdentifierRegex
               AND IocRegex,
@@ -114,19 +135,61 @@ sources:
 
   notebook:
     - type: vql_suggestion
-      name: Simplified syslog-like view
+      name: Simplified view
       template: |
         /*
         # Simplified log view
         */
-        LET ColumnTypes&lt;=dict(`_ClientId`='client')
-
         SELECT System.Timestamp AS Timestamp,
-               ClientId AS _ClientId,
-               client_info(client_id=ClientId).os_info.hostname AS Hostname,
-               EventData.SYSLOG_IDENTIFIER AS Unit,
-               EventData.MESSAGE AS Message
+              EventData.SYSLOG_IDENTIFIER AS Unit,
+              get(item=Priorities, field=str(str=EventData.PRIORITY)) AS Level,
+              System._EXE AS Executable,
+              System._CMDLINE AS _Cmdline,
+              System._PID AS PID,
+              EventData.MESSAGE AS Message,
+              System AS _System,
+              EventData AS _EventData
         FROM source()
+        ORDER BY Timestamp
 
-</code></pre>
+    - name: Message count as plot
+      type: vql_suggestion
+      template: |
+        /*
+        # Message count
+
+        {{ define "Messages" }}
+        SELECT int(int=System.Timestamp.Unix / 60) * 60 AS MinBin,
+                                count() AS Count
+          FROM source()
+          GROUP BY MinBin
+          ORDER BY MinBin
+        {{ end }}
+        {{ Query "Messages" | TimeChart }}
+        */
+        LET Dummy <= 42
+
+    - type: vql_suggestion
+      name: Timeline
+      template: |
+        /*
+        # Journal timeline
+        {{ Timeline "Journal" }}
+        */
+        LET _ <= timeline_add(key='Timestamp',
+                              name='journal',
+                              timeline='Journal',
+                              query={
+            SELECT System.Timestamp AS Timestamp,
+                  EventData.SYSLOG_IDENTIFIER AS Unit,
+                  get(item=Priorities, field=str(str=EventData.PRIORITY)) AS Level,
+                  System._EXE AS Executable,
+                  System._CMDLINE AS _Cmdline,
+                  System._PID AS PID,
+                  EventData.MESSAGE AS Message,
+                  System,
+                  EventData
+            FROM source()
+          })````
+
 

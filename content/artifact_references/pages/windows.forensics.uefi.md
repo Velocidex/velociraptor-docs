@@ -1,16 +1,23 @@
 ---
 title: Windows.Forensics.UEFI
+description: "Analyzes the EFI System Partition (ESP) on a physical disk to\nenumerate and inspect EFI binaries."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact enables disk analysis over an EFI System Partition (ESP).
+Analyzes the EFI System Partition (ESP) on a physical disk to
+enumerate and inspect EFI binaries.
 
-The artifact queries the specified physical disk, parses the partition table
-to targets the ESPs File Allocation Table (FAT).
+The artifact queries the specified physical disk, parses the
+partition table to targets the ESPs File Allocation Table (FAT).
 
-The default artifact returns file information and PE enrichment, as typical
-EFI files are in the PE format.
+The default artifact behavior is to return file information and PE
+enrichment, as typical EFI files are in the PE format.
 
 We can look for anomalies in EFI such as:
 
@@ -24,17 +31,20 @@ NOTE: default returns EFI files, rerun with ```TargetGlob=**/*``` glob and
 return all files.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.UEFI
 author: Matt Green - @mgreen27
 description: |
-  This artifact enables disk analysis over an EFI System Partition (ESP).
+  Analyzes the EFI System Partition (ESP) on a physical disk to
+  enumerate and inspect EFI binaries.
 
-  The artifact queries the specified physical disk, parses the partition table
-  to targets the ESPs File Allocation Table (FAT).
+  The artifact queries the specified physical disk, parses the
+  partition table to targets the ESPs File Allocation Table (FAT).
 
-  The default artifact returns file information and PE enrichment, as typical
-  EFI files are in the PE format.
+  The default artifact behavior is to return file information and PE
+  enrichment, as typical EFI files are in the PE format.
 
   We can look for anomalies in EFI such as:
 
@@ -105,6 +115,6 @@ sources:
         parse_pe(accessor='fat',file=OSPath) as PEInfo,
         authenticode(accessor='fat',filename=OSPath) as Authenticode
       FROM find_files
+````
 
-</code></pre>
 

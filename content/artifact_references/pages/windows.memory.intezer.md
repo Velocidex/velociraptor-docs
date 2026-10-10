@@ -1,36 +1,52 @@
 ---
 title: Windows.Memory.Intezer
+description: "Runs the Intezer memory scanner to collect running code for malware\nanalysis via Intezer Analyze."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Runs an Intezer agent scan on the endpoint.
+Runs the Intezer memory scanner to collect running code for malware
+analysis via Intezer Analyze.
 
-- Scan: The scanner collects running code from memory and sends it to Intezer Analyze.
-  Scans take approximately five to ten minutes. The first scan may take additional time.
+- Scan: The scanner collects running code from memory and sends it
+  to Intezer Analyze. Scans take approximately five to ten minutes.
+  The first scan may take additional time.
 
-Please note: The scanner only collects executable code, not documents or any other
-data that is not binary code.
+Please note: The scanner only collects executable code, not
+documents or any other data that is not binary code.
 
-- Analyze: The collected modules are analyzed using Genetic Malware Analysis technology.
+- Analyze: The collected modules are analyzed using Genetic Malware
+  Analysis technology.
 
-- View results: https://analyze.intezer.com/ endpoint analysis report.
+- View results: https://analyze.intezer.com/ endpoint analysis
+  report.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Memory.Intezer
 description: |
-   Runs an Intezer agent scan on the endpoint.
+  Runs the Intezer memory scanner to collect running code for malware
+  analysis via Intezer Analyze.
 
-   - Scan: The scanner collects running code from memory and sends it to Intezer Analyze.
-     Scans take approximately five to ten minutes. The first scan may take additional time.
+  - Scan: The scanner collects running code from memory and sends it
+    to Intezer Analyze. Scans take approximately five to ten minutes.
+    The first scan may take additional time.
 
-   Please note: The scanner only collects executable code, not documents or any other
-   data that is not binary code.
+  Please note: The scanner only collects executable code, not
+  documents or any other data that is not binary code.
 
-   - Analyze: The collected modules are analyzed using Genetic Malware Analysis technology.
+  - Analyze: The collected modules are analyzed using Genetic Malware
+    Analysis technology.
 
-   - View results: https://analyze.intezer.com/ endpoint analysis report.
+  - View results: https://analyze.intezer.com/ endpoint analysis
+    report.
 
 author: Matt Green - @mgreen27
 
@@ -54,12 +70,12 @@ sources:
 
     query: |
       -- first get context on target binary
-      LET bin &lt;= SELECT *
+      LET bin <= SELECT *
         FROM Artifact.Generic.Utils.FetchBinary(
             ToolName="Intezer")
 
       -- execute payload
       SELECT * FROM execve(argv=[ bin.OSPath[0], '-k', ApiKey ])
+````
 
-</code></pre>
 

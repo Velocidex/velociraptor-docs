@@ -1,37 +1,45 @@
 ---
 title: Windows.Registry.RDP
+description: "Extracts historical RDP connection server names and MRU entries from\neach user's NTUSER.DAT registry hive."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact will collect historical RDP server names and MRU items stored 
-in each users NTUser.dat
+Extracts historical RDP connection server names and MRU entries from
+each user's NTUSER.DAT registry hive.
 
 1. Servers - list of all RDP connections that have ever been established by 
 this user.   
- UsernameHint shows the username used to connect to the RDP/RDS host.  
- CertHash variable contains the RDP server SSL certificate thumbprint.
+  - UsernameHint shows the username used to connect to the RDP/RDS host.  
+  - CertHash variable contains the RDP server SSL certificate thumbprint.
 
 2. MRU 10 - Most recently used RDP connections 
 
 UserRegex and SidRegex can be used to target a specific user.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Registry.RDP
 author: Matt Green - @mgreen27
 description: |
-   This artifact will collect historical RDP server names and MRU items stored 
-   in each users NTUser.dat
-   
-   1. Servers - list of all RDP connections that have ever been established by 
-   this user.   
-    UsernameHint shows the username used to connect to the RDP/RDS host.  
-    CertHash variable contains the RDP server SSL certificate thumbprint.
+  Extracts historical RDP connection server names and MRU entries from
+  each user's NTUSER.DAT registry hive.
 
-   2. MRU 10 - Most recently used RDP connections 
-   
-   UserRegex and SidRegex can be used to target a specific user.
+  1. Servers - list of all RDP connections that have ever been established by 
+  this user.   
+    - UsernameHint shows the username used to connect to the RDP/RDS host.  
+    - CertHash variable contains the RDP server SSL certificate thumbprint.
+
+  2. MRU 10 - Most recently used RDP connections 
+
+  UserRegex and SidRegex can be used to target a specific user.
 
 type: CLIENT
 
@@ -53,7 +61,7 @@ precondition: SELECT OS From info() where OS = 'windows'
 sources:
   - name: Servers
     query: |
-      LET servers &lt;= SELECT 
+      LET servers <= SELECT 
             Mtime as LastWriteTime,
             basename(path=OSPath.Dirname) as Server,
             OSPath.Basename as KeyName,
@@ -92,7 +100,7 @@ sources:
 
   - name: Mru
     query: |
-      LET mru &lt;= SELECT 
+      LET mru <= SELECT 
             Mtime as LastWriteTime,
             OSPath.Basename as KeyName,
             Data.value as KeyValue,
@@ -120,6 +128,6 @@ sources:
         Key,
         LastWriteTime,
         find_mru(sid=SID).KeyValue as Mru
-      FROM results
-</code></pre>
+      FROM results````
+
 

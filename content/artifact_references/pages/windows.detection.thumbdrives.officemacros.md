@@ -1,8 +1,17 @@
 ---
 title: Windows.Detection.Thumbdrives.OfficeMacros
+description: "Watches for removable drives and extracts VBA macros from newly\nadded Office files."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
+
+Watches for removable drives and extracts VBA macros from newly
+added Office files.
 
 Users inserting Thumb drives or other Removable drive pose a
 constant security risk. The external drive may contain malware or
@@ -16,9 +25,14 @@ We exclude very large removable drives since they might have too
 many files.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.Thumbdrives.OfficeMacros
 description: |
+  Watches for removable drives and extracts VBA macros from newly
+  added Office files.
+
   Users inserting Thumb drives or other Removable drive pose a
   constant security risk. The external drive may contain malware or
   other undesirable content. Additionally thumb drives are an easy way
@@ -47,6 +61,6 @@ sources:
           query = {
             SELECT * from olevba(file=OSPath)
           })
+````
 
-</code></pre>
 

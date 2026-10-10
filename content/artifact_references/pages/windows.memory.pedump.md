@@ -1,15 +1,24 @@
 ---
 title: Windows.Memory.PEDump
+description: "Extracts running executables from process memory using VAD region\nenumeration and PE dumping, and uploads the files to the server."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact dumps a PE file from memory and uploads the file to
-the server.
+Extracts running executables from process memory using VAD region
+enumeration and PE dumping, and uploads the files to the server.
 
 NOTE: The output is not exactly the same as the original binary:
-1. Relocations are not fixed
-2. Due to ASLR the base address of the binary will not be the same as the original.
+
+1. Relocations are not fixed.
+
+2. Due to ASLR the base address of the binary will not be the same
+as the original.
 
 The result is usually much better than the binaries dumped from a
 physical memory image (using e.g. Volatility) because reading
@@ -18,15 +27,20 @@ out. Therefore we do not expect to have holes in the produced binary
 as is often the case in memory analysis.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Memory.PEDump
 description: |
-  This artifact dumps a PE file from memory and uploads the file to
-  the server.
+  Extracts running executables from process memory using VAD region
+  enumeration and PE dumping, and uploads the files to the server.
 
   NOTE: The output is not exactly the same as the original binary:
-  1. Relocations are not fixed
-  2. Due to ASLR the base address of the binary will not be the same as the original.
+  
+  1. Relocations are not fixed.
+  
+  2. Due to ASLR the base address of the binary will not be the same
+  as the original.
 
   The result is usually much better than the binaries dumped from a
   physical memory image (using e.g. Volatility) because reading
@@ -64,6 +78,6 @@ sources:
                    name=GetFilename(MappingName=MappingName, BaseOffset=Address)) AS Upload
      FROM vad(pid=Pid)
      WHERE Header =~ "^MZ" AND MappingName =~ FilenameRegex
+````
 
-</code></pre>
 

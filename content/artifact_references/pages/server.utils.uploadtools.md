@@ -1,8 +1,18 @@
 ---
 title: Server.Utils.UploadTools
+description: "Generates a download script for tool binaries and then uploads them\nfrom a local directory to the server inventory (in separate runs of\nthis artifact)."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
+
+Generates a download script for tool binaries and then uploads them
+from a local directory to the server inventory (in separate runs of
+this artifact).
 
 Velociraptor can use external tools to deploy binaries on the
 endpoint for some artifacts that require it. Usually these binaries
@@ -12,22 +22,29 @@ egress filtering implemented such that the server is unable to
 download binaries on demand.
 
 In these cases it is useful to automatically pre-populate tools into
-a server manually. This artifact simplifies the process.
+the server's tools inventory manually. This artifact simplifies the
+process.
 
-1. The artifact produces a curl based script that helps to download
-   required binaries on an internet connect system.
+1. The artifact first produces a curl based script that helps to
+   downloadrequired binaries on an internet connect system.
 
-2. When binaries are placed on a directory in the server's
-   filesystem, the artifact can then be used to automatically upload
-   the binaries as tools to the server.
+2. When the downloaded binaries are placed on a directory in the
+   server's filesystem, the artifact can then be used to
+   automatically upload the binaries as tools to the server.
 
 NOTE that in Velociraptor each org is completely separated, so you
-will need to re-upload the binaries when you create each org.
+will need to re-upload the binaries for each org.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.UploadTools
 description: |
+  Generates a download script for tool binaries and then uploads them
+  from a local directory to the server inventory (in separate runs of
+  this artifact).
+
   Velociraptor can use external tools to deploy binaries on the
   endpoint for some artifacts that require it. Usually these binaries
   are automatically downloaded by the server when required. However,
@@ -36,17 +53,18 @@ description: |
   download binaries on demand.
 
   In these cases it is useful to automatically pre-populate tools into
-  a server manually. This artifact simplifies the process.
+  the server's tools inventory manually. This artifact simplifies the
+  process.
 
-  1. The artifact produces a curl based script that helps to download
-     required binaries on an internet connect system.
+  1. The artifact first produces a curl based script that helps to
+     downloadrequired binaries on an internet connect system.
 
-  2. When binaries are placed on a directory in the server's
-     filesystem, the artifact can then be used to automatically upload
-     the binaries as tools to the server.
+  2. When the downloaded binaries are placed on a directory in the
+     server's filesystem, the artifact can then be used to
+     automatically upload the binaries as tools to the server.
 
   NOTE that in Velociraptor each org is completely separated, so you
-  will need to re-upload the binaries when you create each org.
+  will need to re-upload the binaries for each org.
 
 type: SERVER
 
@@ -59,20 +77,22 @@ parameters:
 sources:
   - name: DownloaderScript
     query: |
+      // linter: symbol_mask_warn:url
+
       LET AllCurlCommands =
         SELECT format(format="curl -O -L -C - %v", args=url) AS Curl
         FROM inventory()
         WHERE url
           AND NOT admin_override
 
-      LET Script &lt;= join(sep="\r\n", array=AllCurlCommands.Curl)
+      LET Script <= join(sep="\r\n", array=AllCurlCommands.Curl)
 
       SELECT upload(accessor="scope", file="Script", name="Script.bat") AS Script
       FROM scope()
 
   - name:
     query: |
-      LET BasePath &lt;= pathspec(parse=BasePath)
+      LET BasePath <= pathspec(parse=BasePath)
 
       SELECT name,
              filename,
@@ -81,11 +101,11 @@ sources:
       FROM inventory()
       WHERE url
         AND NOT admin_override
-        AND stat(filename=BasePath + filename).Size &gt; 100
+        AND stat(filename=BasePath + filename).Size > 100
 
 column_types:
   - name: Script
     type: preview_upload
+````
 
-</code></pre>
 

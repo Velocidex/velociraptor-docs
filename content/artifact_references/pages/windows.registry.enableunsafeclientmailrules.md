@@ -1,26 +1,45 @@
 ---
 title: Windows.Registry.EnableUnsafeClientMailRules
+description: "Checks Outlook Security registry for EnableUnsafeClientMailRules set\nto 1 (enabled), indicating potential persistence."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Checks for Outlook EnableUnsafeClientMailRules = 1 (turned on).
-This registry key enables execution from Outlook inbox rules which can be used as a persistence mechanism.
-Microsoft has released a patch to disable execution but attackers can reenable by changing this value to 1.
+Checks Outlook Security registry for EnableUnsafeClientMailRules set
+to 1 (enabled), indicating potential persistence.
 
-HKEY_USERS\*\Software\Microsoft\Office\*\Outlook\Security\EnableUnsafeClientMailRules = 0 (expected)
-https://support.microsoft.com/en-us/help/3191893/how-to-control-the-rule-actions-to-start-an-application-or-run-a-macro
+This registry key enables execution from Outlook inbox rules which
+can be used as a persistence mechanism. Microsoft has released a
+patch to disable execution but attackers can reenable it by changing
+this value to 1.
+
+HKEY_USERS\*\Software\Microsoft\Office\*\Outlook\Security\EnableUnsafeClientMailRules
+= 0 (expected)
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Registry.EnableUnsafeClientMailRules
 description: |
-  Checks for Outlook EnableUnsafeClientMailRules = 1 (turned on).
-  This registry key enables execution from Outlook inbox rules which can be used as a persistence mechanism.
-  Microsoft has released a patch to disable execution but attackers can reenable by changing this value to 1.
+  Checks Outlook Security registry for EnableUnsafeClientMailRules set
+  to 1 (enabled), indicating potential persistence.
+  
+  This registry key enables execution from Outlook inbox rules which
+  can be used as a persistence mechanism. Microsoft has released a
+  patch to disable execution but attackers can reenable it by changing
+  this value to 1.
 
-  HKEY_USERS\*\Software\Microsoft\Office\*\Outlook\Security\EnableUnsafeClientMailRules = 0 (expected)
-  https://support.microsoft.com/en-us/help/3191893/how-to-control-the-rule-actions-to-start-an-application-or-run-a-macro
+  HKEY_USERS\*\Software\Microsoft\Office\*\Outlook\Security\EnableUnsafeClientMailRules
+  = 0 (expected)
+  
+reference:
+  - https://support.microsoft.com/en-us/help/3191893/how-to-control-the-rule-actions-to-start-an-application-or-run-a-macro
 
 author: "@mgreen27"
 
@@ -57,10 +76,10 @@ sources:
                 OutlookSecureTempFolder
               FROM read_reg_key(
                  globs=KeyGlob,
-                 root=pathspec(DelegatePath=OSPath),
+                 root=pathspec(DelegatePath=NTUser),
                  accessor="raw_reg")
               WHERE EnableUnsafeClientMailRules = 1
            })
+````
 
-</code></pre>
 

@@ -1,10 +1,17 @@
 ---
+icon: document-search
 menutitle: "Artifacts"
 title: "Velociraptor Artifacts"
 date: 2021-06-12
 draft: false
 weight: 30
 last_reviewed: 2025-06-21
+summary: |
+  Velociraptor Artifacts are structured YAML files that encapsulate
+  VQL queries to streamline digital forensics and incident response tasks
+description: |
+  Velociraptor Artifacts are a key component of the platform, providing numerous
+  benefits for digital forensics and incident response workflows.
 ---
 
 Velociraptor Artifacts are a key component of the platform, providing numerous
@@ -33,15 +40,12 @@ Here is the basic structure of a simple artifact:
 
 ![Artifacts are YAML but they can contain VQL](artifact_concept.svg)
 
-{{% notice note %}}
-
-Don't confuse Velociraptor Artifacts with forensic artifacts! Although they are
-historically somewhat related, and there is also a correspondence in the sense
-that Velociraptor Artifacts usually (but don't have to) target specific
-information sources on endpoints which are traditionally described as
-["forensic artifacts"](https://github.com/ForensicArtifacts).
-
-{{% /notice %}}
+> [!NOTE]
+> Don't confuse Velociraptor Artifacts with forensic artifacts! Although they are
+> historically somewhat related, and there is also a correspondence in the sense
+> that Velociraptor Artifacts usually (but don't have to) target specific
+> information sources on endpoints which are traditionally described as
+> ["forensic artifacts"](https://github.com/ForensicArtifacts).
 
 ## Why use Artifacts instead of just running VQL queries directly?
 
@@ -49,7 +53,7 @@ VQL queries are typically packaged in a type of logical container which we call 
 directly on clients.
 
 The Velociraptor CLI does have the ability to run queries directly using the
-[`query` command]({{< ref "/docs/deployment/#command-line-investigation-tool" >}})
+[`query` command](/docs/deployment/#command-line-investigation-tool)
 however in client-server mode VQL queries are always delivered to the client in the
 form of artifacts.
 
@@ -74,8 +78,8 @@ Here are some of the key benefits of Velociraptor Artifacts:
   Artifacts bundle VQL statements and related configurations into a single,
   reusable unit. Once an artifact is written, the user does not need to remember
   or re-enter the query. Artifacts can be
-  [called from other VQL queries]({{< ref "/docs/vql/artifacts/calling/" >}})
-  as if they were [standard plugins]({{< ref "/vql_reference/" >}}),
+  [called from other VQL queries](/docs/vql/artifacts/calling/)
+  as if they were [standard plugins](/vql_reference/),
   encouraging the development of reusable components that can be combined like
   Lego bricks.
 
@@ -84,10 +88,10 @@ Here are some of the key benefits of Velociraptor Artifacts:
   do not need to understand the query itself in order to use it. This
   facilitates knowledge sharing between users with varying skill
   levels, as well as documenting and sharing knowledge about forensic
-  evidence amongst experts.  Platforms like the [Velociraptor Artifact
-  Exchange]({{< ref "/exchange/">}}) exist for this purpose, promoting
-  knowledge sharing and code reusability within the Velociraptor and
-  broader DFIR community.
+  evidence amongst experts.  Platforms like the
+  [Velociraptor Artifact Exchange](/exchange/) exist for
+  this purpose, promoting knowledge sharing and code reusability
+  within the Velociraptor and broader DFIR community.
 
 - **Extending Velociraptor Functionality**: \
   Artifacts offer a powerful way to extend Velociraptor's capabilities. They can
@@ -229,9 +233,9 @@ Velociraptor ships with hundreds of built-in artifacts which are compiled into
 the binary itself.
 
 You can use the
-[`artifacts` CLI command]({{< ref "/docs/artifacts/managing/" >}}), the
-[Artifacts screen in the GUI]({{< ref "/docs/gui/artifacts/" >}}), or
-[VQL's `artifact_definitions()` plugin]({{< ref "/vql_reference/server/artifact_definitions/" >}})
+[`artifacts` CLI command](/docs/artifacts/managing/), the
+[Artifacts screen in the GUI](/docs/gui/artifacts/), or
+[VQL's `artifact_definitions()` plugin](/vql_reference/server/artifact_definitions/)
 to list and examine these artifacts.
 
 When Velociraptor is run, its built-in artifacts are read directly from the
@@ -243,16 +247,16 @@ datastore.
 
 The default location for custom artifacts is the server's datastore. This is the
 location used when artifacts are
-[imported, created or edited during runtime]({{< ref "/docs/gui/artifacts/" >}}).
+[imported, created or edited during runtime](/docs/gui/artifacts/).
 
 - For the root org's artifact repository this is: `<datastore>/artifact_definitions`
 
-- For [other orgs]({{< ref "/docs/deployment/orgs/" >}}), each org has its own
+- For [other orgs](/docs/deployment/orgs/), each org has its own
 artifact repository: `<datastore>/orgs/<org_id>/artifact_definitions`
 
 The server's datastore location is specified by the
 `Frontend.Datastore.location` key in the
-[config]({{< ref "/docs/deployment/references/" >}}).
+[config](/docs/deployment/references/).
 
 In addition to the default location, other artifact sources can be specified
 that Velociraptor should try to load artifacts from. The following config keys
@@ -268,24 +272,28 @@ If you are running the server manually in a terminal, you can use the
 Velociraptor will search these locations recursively for any `.yaml` or `.yml`
 files and try to parse them as artifacts.
 
-{{% notice info "Be aware of filesystem permissions" %}}
+The `--definitions` flag also accepts a ZIP file containing artifact
+definitions. This is useful for distributing or sharing collections of
+artifacts as a single file, such as an
+[artifact pack](/docs/gui/artifacts/#importing-artifact-packs)
+downloaded from the
+[Artifact Exchange](/exchange/).
 
-When installed as a service, Velociraptor's datastore directory is owned by the
-service account named `velociraptor` and accessible to the `velociraptor` user
-group. New users often overlook this fact and create files in the datastore
-using their own user account or the `root` account, which means that the
-Velociraptor service cannot read them.
-
-Working directly with artifact files in the datastore is discouraged, but if you
-need to do this you can avoid creating permissions problems by switching to the
-`velociraptor` user. On most Linux systems this can be done with the command
-`sudo -u velociraptor bash`.
-
-For other files that the service account needs to read, such as the additional
-artifact definitions directories mentioned above, you need to ensure that the
-`velociraptor` user has read access to these directories.
-
-{{% /notice %}}
+> [!NOTE] Be aware of filesystem permissions
+> When installed as a service, Velociraptor's datastore directory is owned by the
+> service account named `velociraptor` and accessible to the `velociraptor` user
+> group. New users often overlook this fact and create files in the datastore
+> using their own user account or the `root` account, which means that the
+> Velociraptor service cannot read them.
+>
+> Working directly with artifact files in the datastore is discouraged, but if you
+> need to do this you can avoid creating permissions problems by switching to the
+> `velociraptor` user. On most Linux systems this can be done with the command
+> `sudo -u velociraptor bash`.
+>
+> For other files that the service account needs to read, such as the additional
+> artifact definitions directories mentioned above, you need to ensure that the
+> `velociraptor` user has read access to these directories.
 
 
 ### Built-in vs. Compiled-in vs. Custom Artifacts
@@ -347,7 +355,7 @@ wins):
 5. compiled into binary
 
 This is similar to the artifact masking which occurs for orgs, which we describe
-[here]({{< ref "/docs/artifacts/#orgs-artifact-inheritance-and-masking" >}}).
+[here](/docs/artifacts/#orgs-artifact-inheritance-and-masking).
 
 Artifacts which are not assigned the built-in designation are considered
 **custom**. In the GUI's artifact screen these artifacts are shown with the
@@ -359,19 +367,20 @@ Now that you know where artifacts are loaded from when the server starts, you
 might be wondering: how you create new artifacts in Velociraptor? There are
 several ways...
 
-In the GUI, as explained in more detail [here]({{< ref "/docs/gui/artifacts/" >}}),
+In the GUI, as explained in more detail [here](/docs/gui/artifacts/),
 the available methods are:
 
-- creating or editing an artifact [using the artifact editor]({{< ref "/docs/gui/artifacts/#creating-and-editing-artifacts" >}})
+- creating or editing an artifact [using the artifact editor](/docs/gui/artifacts/#creating-and-editing-artifacts)
 
-- importing [artifact packs]({{< ref "/docs/gui/artifacts/#importing-artifact-packs" >}})
+- importing [artifact packs](/docs/gui/artifacts/#importing-artifact-packs)
 
-- importing artifacts [using server import artifacts]({{< ref "/docs/gui/artifacts/#importing-artifacts-using-server-artifacts" >}})
+- importing artifacts
+  [using server import artifacts](/docs/gui/artifacts/#importing-artifacts-from-velociraptors-specialized-artifact-projects)
 
 In VQL we can create artifacts using the
-[artifact_set()]({{< ref "/vql_reference/server/artifact_set/" >}}) function,
+[artifact_set()](/vql_reference/server/artifact_set/) function,
 and delete them using the
-[artifact_delete()]({{< ref "/vql_reference/server/artifact_delete/" >}}) function.
+[artifact_delete()](/vql_reference/server/artifact_delete/) function.
 
 
 All artifacts created during runtime are saved to the `artifact_definitions`
@@ -380,7 +389,7 @@ writable, which means they can be edited or deleted.
 
 When the server starts it reads all artifacts stored in the
 `artifact_definitions` directory and marks these as "custom" (i.e. "not
-built-in). In the GUI's artifact previews these artifacts are labelled with
+built-in). In the GUI's artifact previews these artifacts are labeled with
 "Custom Artifact". Note that the artifact name does not need to start with the
 word "Custom" - it's just a helpful convention to use.
 
@@ -389,7 +398,7 @@ word "Custom" - it's just a helpful convention to use.
 
 ## Orgs, artifact inheritance, and masking
 
-If you use Velociraptor's [orgs]({{< ref "/docs/deployment/orgs/" >}})
+If you use Velociraptor's [orgs](/docs/deployment/orgs/)
 (multi-tenancy) feature then things can get a little confusing.
 
 The important thing to remember is that the root org serves as a
@@ -447,13 +456,13 @@ for customization.
 
 The built-in artifact `Generic.Client.Info` is used to gather host information
 when a client enrolls or on-demand when clicking the
-[Interrogate]({{< ref "/docs/clients/interrogation/" >}})
+[Interrogate](/docs/clients/interrogation/)
 button on the host Overview page in the GUI. If a custom artifact name
 `Custom.Generic.Client.Info` exists in the artifact repository then it will be
 used instead when clients enroll or are interrogated. This override capability
 allows you to create a custom version of the artifact which gathers additional
 information and then have it work seamlessly via the GUI. This override
-behaviour does _not_ occur when either artifact is collected explicitly.
+behavior does _not_ occur when either artifact is collected explicitly.
 
 **Custom.Server.Monitor.Health**
 

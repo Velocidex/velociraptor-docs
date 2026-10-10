@@ -1,23 +1,30 @@
 ---
 title: MacOS.Detection.Yara.Glob
+description: "Runs YARA rules against files discovered via glob search with\nconfigurable filters and optional upload of hit context."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact returns a list of target files then runs YARA over the target
-list.
+Runs YARA rules against files discovered via glob search with
+configurable filters and optional upload of hit context.
 
 There are 2 kinds of YARA rules that can be deployed:
 
 1. Url link to a YARA rule.
 2. or a Standard YARA rule attached as a parameter.
 
-Only one method of YARA will be applied and search order is as above.
+Only one method of YARA will be applied and search order is as
+above.
 
 The artifact uses Glob for search so relevant filters can be applied
-including Glob, Size and date. Date filters will target files with a timestamp
-before LatestTime and after EarliestTime. The artifact also has an option to
-upload any files with YARA hits.
+including Glob, Size and date. Date filters will target files with a
+timestamp before LatestTime and after EarliestTime. The artifact
+also has an option to upload any files with YARA hits.
 
 Some examples of path glob may include:
 
@@ -28,31 +35,34 @@ Some examples of path glob may include:
 * Windows: `C:/Users/**/*.{exe,dll,ps1,bat}`
 * Windows: `C:\Users\**\*.{exe,dll,ps1,bat}`
 
-NOTE: this artifact runs the glob plugin with the nosymlink switch turned on.
-This will NOT follow any symlinks and may cause unexpected results if
-unknowingly targeting a folder with symlinks.
-If upload is selected NumberOfHits is redundant and not advised as hits are
-grouped by path to ensure files only downloaded once.
+NOTE: this artifact runs the glob plugin with the `nosymlink` switch
+turned on. This will NOT follow any symlinks and may cause
+unexpected results if unknowingly targeting a folder with symlinks.
+If upload is selected NumberOfHits is redundant and not advised as
+hits are grouped by path to ensure files only downloaded once.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Detection.Yara.Glob
 author: Matt Green - @mgreen27
 description: |
-  This artifact returns a list of target files then runs YARA over the target
-  list.
+  Runs YARA rules against files discovered via glob search with
+  configurable filters and optional upload of hit context.
 
   There are 2 kinds of YARA rules that can be deployed:
 
   1. Url link to a YARA rule.
   2. or a Standard YARA rule attached as a parameter.
 
-  Only one method of YARA will be applied and search order is as above.
+  Only one method of YARA will be applied and search order is as
+  above.
 
   The artifact uses Glob for search so relevant filters can be applied
-  including Glob, Size and date. Date filters will target files with a timestamp
-  before LatestTime and after EarliestTime. The artifact also has an option to
-  upload any files with YARA hits.
+  including Glob, Size and date. Date filters will target files with a
+  timestamp before LatestTime and after EarliestTime. The artifact
+  also has an option to upload any files with YARA hits.
 
   Some examples of path glob may include:
 
@@ -63,11 +73,11 @@ description: |
   * Windows: `C:/Users/**/*.{exe,dll,ps1,bat}`
   * Windows: `C:\Users\**\*.{exe,dll,ps1,bat}`
 
-  NOTE: this artifact runs the glob plugin with the nosymlink switch turned on.
-  This will NOT follow any symlinks and may cause unexpected results if
-  unknowingly targeting a folder with symlinks.
-  If upload is selected NumberOfHits is redundant and not advised as hits are
-  grouped by path to ensure files only downloaded once.
+  NOTE: this artifact runs the glob plugin with the `nosymlink` switch
+  turned on. This will NOT follow any symlinks and may cause
+  unexpected results if unknowingly targeting a folder with symlinks.
+  If upload is selected NumberOfHits is redundant and not advised as
+  hits are grouped by path to ensure files only downloaded once.
 
 aliases:
   - Windows.Detection.Yara.Glob
@@ -120,18 +130,18 @@ parameters:
 sources:
   - query: |
       -- check which Yara to use
-      LET yara_rules &lt;= YaraUrl || YaraRule
+      LET yara_rules <= YaraUrl || YaraRule
 
       -- time testing
       LET time_test(stamp) =
             if(condition= DateBefore AND DateAfter,
-                then= stamp &lt; DateBefore AND stamp &gt; DateAfter,
+                then= stamp < DateBefore AND stamp > DateAfter,
                 else=
             if(condition=DateBefore,
-                then= stamp &lt; DateBefore,
+                then= stamp < DateBefore,
                 else=
             if(condition= DateAfter,
-                then= stamp &gt; DateAfter,
+                then= stamp > DateAfter,
                 else= True
             )))
 
@@ -141,10 +151,10 @@ sources:
         WHERE
           NOT IsDir AND NOT IsLink
           AND if(condition=SizeMin,
-            then= SizeMin &lt; Size,
+            then= SizeMin < Size,
             else= True)
           AND if(condition=SizeMax,
-            then=SizeMax &gt; Size,
+            then=SizeMax > Size,
             else= True)
           AND
              ( time_test(stamp=Mtime)
@@ -167,10 +177,10 @@ sources:
                             name=format(format="%v-%v-%v",
                             args=[
                                 OSPath,
-                                if(condition= String.Offset - ContextBytes &lt; 0,
+                                if(condition= String.Offset - ContextBytes < 0,
                                     then= 0,
                                     else= String.Offset - ContextBytes),
-                                if(condition= String.Offset + ContextBytes &gt; Size,
+                                if(condition= String.Offset + ContextBytes > Size,
                                     then= Size,
                                     else= String.Offset + ContextBytes) ]
                             )) as HitContext
@@ -188,6 +198,6 @@ sources:
 
 column_types:
   - name: HitContext
-    type: preview_upload
-</code></pre>
+    type: preview_upload````
+
 

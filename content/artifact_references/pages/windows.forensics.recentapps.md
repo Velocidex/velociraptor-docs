@@ -1,8 +1,17 @@
 ---
 title: Windows.Forensics.RecentApps
+description: "Enumerates program execution history from the Windows RecentApps\nregistry key."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
+
+Enumerates program execution history from the Windows RecentApps
+registry key.
 
 GUI Program execution launched on the Win10 system is tracked in the
 RecentApps key.
@@ -12,12 +21,17 @@ After that, the RecentApps key is no longer populated in the
 referenced location. Previously existing data is not removed.
 
 DEPRECATION: This artifact is deprecated and will be removed
-soon. It is replaced by the registry hunter.
+soon. It is replaced by the RegistryHunter.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.RecentApps
 description: |
+  Enumerates program execution history from the Windows RecentApps
+  registry key.
+
   GUI Program execution launched on the Win10 system is tracked in the
   RecentApps key.
 
@@ -26,7 +40,7 @@ description: |
   referenced location. Previously existing data is not removed.
 
   DEPRECATION: This artifact is deprecated and will be removed
-  soon. It is replaced by the registry hunter.
+  soon. It is replaced by the RegistryHunter.
 
 reference:
   - https://www.sans.org/security-resources/posters/windows-forensics-evidence-of/75/download
@@ -81,8 +95,8 @@ sources:
       SELECT * FROM if(
           condition=ExecutionTimeAfter,
           then={
-            SELECT * FROM A1 WHERE LastExecutionTS &gt; ExecutionTimeAfter
+            SELECT * FROM A1 WHERE LastExecutionTS > ExecutionTimeAfter
           }, else={ SELECT * FROM A1})
+````
 
-</code></pre>
 

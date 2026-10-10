@@ -1,29 +1,49 @@
 ---
 title: MacOS.Network.PacketCapture
+description: "Captures network packets using tcpdump and uploads the resulting\npcap file."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact uses tcpdump to natively capture packets.
+Captures network packets using tcpdump and uploads the resulting
+pcap file.
 
-The `Duration` parameter is used to define how long (in seconds) the capture should be.  Specific interfaces can be defined by using the `Interface` parameter, otherwise the artifact defaults to an interface assignment of `any`.
+The `Duration` parameter is used to define how long (in seconds) the
+capture should be.  Specific interfaces can be defined by using the
+`Interface` parameter, otherwise the artifact defaults to an
+interface assignment of `any`.
 
-A `BPF` (Berkeley Packet Filter) expression can also be supplied to filter the captured traffic as desired.
+A `BPF` (Berkeley Packet Filter) expression can also be supplied to
+filter the captured traffic as desired.
 
-Read more about BPF expressions here: https://biot.com/capstats/bpf.html
+Read more about BPF expressions here:
+https://biot.com/capstats/bpf.html
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: MacOS.Network.PacketCapture
 author: Wes Lambert, @therealwlambert
 description: |
-  This artifact uses tcpdump to natively capture packets.
+  Captures network packets using tcpdump and uploads the resulting
+  pcap file.
 
-  The `Duration` parameter is used to define how long (in seconds) the capture should be.  Specific interfaces can be defined by using the `Interface` parameter, otherwise the artifact defaults to an interface assignment of `any`.
+  The `Duration` parameter is used to define how long (in seconds) the
+  capture should be.  Specific interfaces can be defined by using the
+  `Interface` parameter, otherwise the artifact defaults to an
+  interface assignment of `any`.
 
-  A `BPF` (Berkeley Packet Filter) expression can also be supplied to filter the captured traffic as desired.
+  A `BPF` (Berkeley Packet Filter) expression can also be supplied to
+  filter the captured traffic as desired.
 
-  Read more about BPF expressions here: https://biot.com/capstats/bpf.html
+  Read more about BPF expressions here:
+  https://biot.com/capstats/bpf.html
 
 required_permissions:
   - EXECVE
@@ -50,9 +70,9 @@ precondition:
 
 sources:
     - query: |
-            LET pcap &lt;= tempfile(extension=".pcap")
+            LET pcap <= tempfile(extension=".pcap")
             SELECT *, upload(file=pcap) AS PCAP
-              FROM execve(argv=['bash', '-c', format(format='''(tcpdump -nni %v -w %v %v) &amp; sleep %v; kill $!''', args=[Interface, pcap, BPF, Duration])], length=1000000)
+              FROM execve(argv=['bash', '-c', format(format='''(tcpdump -nni %v -w %v %v) & sleep %v; kill $!''', args=[Interface, pcap, BPF, Duration])], length=1000000)
+````
 
-</code></pre>
 

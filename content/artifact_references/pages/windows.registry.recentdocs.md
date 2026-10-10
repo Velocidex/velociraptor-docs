@@ -1,51 +1,65 @@
 ---
 title: Windows.Registry.RecentDocs
+description: "Extracts Recent Documents MRU entries from Windows NTUSER.DAT\nregistry hives for each user."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact extracts RecentDocs MRU from the target.
+Extracts Recent Documents MRU entries from Windows NTUSER.DAT
+registry hives for each user.
 
-By default the artifact will target all users on the machine when run in
-live mode but can be targeted directly using the HiveGlob parameter.
+By default the artifact will target all users on the machine when
+run in live mode but can be targeted directly using the HiveGlob
+parameter.
 
 Output includes LastWriteTime of key and a list of MRU items in the
 order specified in the MRUListEx key value.
 MruEntries has the format: [KeyName] := [Parsed Key value]
 
 Available filters include:
-    - Time bounds to select LastWrite timestamp within time ranges.
-    - EntryRegex to target specific entry values
-    - UserRegex to target specific users. Note: this filter does not work
-    when using HiveGlob.
-    - SidRegex to target a specific SID.
+
+- Time bounds to select LastWrite timestamp within time ranges.
+- EntryRegex to target specific entry values
+- UserRegex to target specific users. Note: this filter does not work
+  when using HiveGlob.
+- SidRegex to target a specific SID.
 
 Note: both UserRegex and SidRegex does not work when using HiveGlob
-     and all MRU will be returned.
+and all MRU will be returned.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Registry.RecentDocs
 author: Matt Green - @mgreen27
 description: |
-    This artifact extracts RecentDocs MRU from the target.
+  Extracts Recent Documents MRU entries from Windows NTUSER.DAT
+  registry hives for each user.
+  
+  By default the artifact will target all users on the machine when
+  run in live mode but can be targeted directly using the HiveGlob
+  parameter.
 
-    By default the artifact will target all users on the machine when run in
-    live mode but can be targeted directly using the HiveGlob parameter.
+  Output includes LastWriteTime of key and a list of MRU items in the
+  order specified in the MRUListEx key value.
+  MruEntries has the format: [KeyName] := [Parsed Key value]
 
-    Output includes LastWriteTime of key and a list of MRU items in the
-    order specified in the MRUListEx key value.
-    MruEntries has the format: [KeyName] := [Parsed Key value]
+  Available filters include:
+  
+  - Time bounds to select LastWrite timestamp within time ranges.
+  - EntryRegex to target specific entry values
+  - UserRegex to target specific users. Note: this filter does not work
+    when using HiveGlob.
+  - SidRegex to target a specific SID.
 
-    Available filters include:
-        - Time bounds to select LastWrite timestamp within time ranges.
-        - EntryRegex to target specific entry values
-        - UserRegex to target specific users. Note: this filter does not work
-        when using HiveGlob.
-        - SidRegex to target a specific SID.
-
-    Note: both UserRegex and SidRegex does not work when using HiveGlob
-         and all MRU will be returned.
+  Note: both UserRegex and SidRegex does not work when using HiveGlob
+  and all MRU will be returned.
 
 parameters:
   - name: KeyGlob
@@ -84,13 +98,13 @@ sources:
       -- time testing
       LET time_test(stamp) =
             if(condition= DateBefore AND DateAfter,
-                then= stamp &lt; DateBefore AND stamp &gt; DateAfter,
+                then= stamp < DateBefore AND stamp > DateAfter,
                 else=
             if(condition=DateBefore,
-                then= stamp &lt; DateBefore,
+                then= stamp < DateBefore,
                 else=
             if(condition= DateAfter,
-                then= stamp &gt; DateAfter,
+                then= stamp > DateAfter,
                 else= True
             )))
 
@@ -147,14 +161,14 @@ sources:
         WHERE Data.type =~ 'BINARY'
 
       -- precalculate all hive values for performance
-      LET AllValues &lt;= SELECT * FROM if(condition= HiveGlob,
+      LET AllValues <= SELECT * FROM if(condition= HiveGlob,
                                         then={ SELECT * FROM GlobValues},
                                         else={ SELECT * FROM NTUserValues} )
             WHERE time_test(stamp=Mtime)
 
 
       -- memorise for lookup / performance
-      LET Items &lt;= memoize(query={
+      LET Items <= memoize(query={
             SELECT Type, Name, Value,
                 Type + ':' + Name + ':' + HiveName  AS Key
             FROM AllValues
@@ -207,6 +221,6 @@ sources:
             FROM results
         })
       WHERE format(format='%v', args=MruEntries) =~ EntryRegex
+````
 
-</code></pre>
 

@@ -1,24 +1,36 @@
 ---
 title: Server.Slack.Clients.Online
+description: "Sends a Slack notification when clients with a target label appear\nonline."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 ---
 
-Send a message to slack when clients come online.
+Sends a Slack notification when clients with a target label appear
+online.
 
-This artifact searches for all clients that carry the label "Slack"
-by default, and if they have appeared online in the last 5 minutes,
-sends a message to Slack and removed the label from the client.
+By default, this artifact searches for all clients that carry the
+label "Slack", and if they have appeared online in the last 5
+minutes, it sends a message to Slack and removes the label from the
+client.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Slack.Clients.Online
 description: |
-   Send a message to slack when clients come online.
+   Sends a Slack notification when clients with a target label appear
+   online.
 
-   This artifact searches for all clients that carry the label "Slack"
-   by default, and if they have appeared online in the last 5 minutes,
-   sends a message to Slack and removed the label from the client.
+   By default, this artifact searches for all clients that carry the
+   label "Slack", and if they have appeared online in the last 5
+   minutes, it sends a message to Slack and removes the label from the
+   client.
 
 type: SERVER_EVENT
 
@@ -40,7 +52,7 @@ sources:
                now() - last_seen_at / 1000000 AS LastSeen,
                label(client_id=client_id, labels=LabelGroup, op="remove")
         FROM clients(search="label:" + LabelGroup)
-        WHERE LastSeen &lt; 300
+        WHERE LastSeen < 300
 
         LET send_message = SELECT * FROM foreach(row=hits,
         query={
@@ -59,6 +71,6 @@ sources:
         SELECT * FROM foreach(
            row={SELECT * FROM clock(period=60)},
            query=send_message)
+````
 
-</code></pre>
 

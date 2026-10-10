@@ -1,24 +1,32 @@
 ---
 title: Server.Alerts.PsExec
+description: "Sends an email alert when PsExec service execution is detected on a\nmonitored client."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 ---
 
-Send an email if execution of the PsExec service was detected on
-any client. This is a server side artifact.
+Sends an email alert when PsExec service execution is detected on a
+monitored client.
 
-Note this requires that the Windows.Event.ProcessCreation
-monitoring artifact be collected from clients.
+Note this requires that the `Windows.Event.ProcessCreation`
+monitoring artifact is being collected from clients.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Alerts.PsExec
 description: |
-   Send an email if execution of the PsExec service was detected on
-   any client. This is a server side artifact.
+  Sends an email alert when PsExec service execution is detected on a
+  monitored client.
 
-   Note this requires that the Windows.Event.ProcessCreation
-   monitoring artifact be collected from clients.
+  Note this requires that the `Windows.Event.ProcessCreation`
+  monitoring artifact is being collected from clients.
 
 type: SERVER_EVENT
 
@@ -51,6 +59,6 @@ sources:
               args=[Timestamp, CommandLine, ClientId])
           )
         })
+````
 
-</code></pre>
 

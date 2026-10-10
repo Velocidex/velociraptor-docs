@@ -1,20 +1,30 @@
 ---
 title: Windows.Memory.ProcessInfo
+description: "Extracts process information by parsing the Process Environment\nBlock (PEB) directly for each running process."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact returns process information obtained by parsing the PEB directly.
+Extracts process information by parsing the Process Environment
+Block (PEB) directly for each running process.
 
-Renamed Windows.Forensics.ProcessInfo
+This artifact was previously named `Windows.Forensics.ProcessInfo`.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Memory.ProcessInfo
 description: |
-   This artifact returns process information obtained by parsing the PEB directly.
-
-   Renamed Windows.Forensics.ProcessInfo
+  Extracts process information by parsing the Process Environment
+  Block (PEB) directly for each running process.
+  
+  This artifact was previously named `Windows.Forensics.ProcessInfo`.
 
 parameters:
   - name: ProcessNameRegex
@@ -32,7 +42,7 @@ parameters:
 
 sources:
 - query: |
-       LET profile = '''[
+       LET PEBprofile = '''[
        ["PEB",0 , [
            # https://docs.microsoft.com/en-us/windows/win32/api/winternl/ns-winternl-peb
            ["ProcessParameters", 32, "Pointer", {
@@ -47,7 +57,7 @@ sources:
           ["Environment", 128, "Pointer", {
               "type": "String",
               "type_options": {
-                 "length": "x=&gt;x.EnvironmentSize",
+                 "length": "x=>x.EnvironmentSize",
                  "encoding": "utf16",
                  "max_length": 10000,
                  "term": "",
@@ -62,7 +72,7 @@ sources:
               "type": "String",
               "type_options": {
                 "encoding": "utf16",
-                "length": "x=&gt;x.Length",
+                "length": "x=>x.Length",
                 "term": "",
               }}],
        ]]
@@ -72,7 +82,7 @@ sources:
            format(format="%0#x", args=PebBaseAddress) AS PebBaseAddress, Pid,
            parse_binary(accessor="process",
                         filename=format(format="/%v", args=PID),
-                        profile=profile,
+                        profile=PEBprofile,
                         struct="PEB",
                         offset=PebBaseAddress) AS Data
        FROM pslist(pid=PID)
@@ -81,7 +91,7 @@ sources:
        -- lines. Each line contains the variable name followed by an =
        -- sign and then the variable value.
        LET SplitEnv(EnvString) =  SELECT parse_string_with_regex(
-          string=_value, regex="^(?P&lt;Name&gt;[^=]*)=(?P&lt;Value&gt;.+)") AS Line
+          string=_value, regex="^(?P<Name>[^=]*)=(?P<Value>.+)") AS Line
        FROM foreach(row=split(string=EnvString, sep="\x00"))
        WHERE Line
 
@@ -106,6 +116,6 @@ sources:
         }, query={
             SELECT * FROM Calculate(PID=Pid)
         })
+````
 
-</code></pre>
 

@@ -2,12 +2,12 @@
 
 Microsoft Azure's Blob Storage service can be a useful upload destination for
 receiving files from Velociraptor clients or collection containers from
-[offline collectors]({{< ref "/docs/deployment/offline_collections" >}})
+[offline collectors](/docs/deployment/offline_collections/)
 in scenarios where the source system is internet connected and you do not want
 to stand up storage services on the local network.
 
 This is made possible by the
-[upload_azure]({{< ref "/vql_reference/other/upload_azure/" >}}) VQL function.
+[upload_azure](/vql_reference/other/upload_azure/) VQL function.
 
 Azure supports an authentication policy called
 [Shared Access Signature (SAS)](https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview)

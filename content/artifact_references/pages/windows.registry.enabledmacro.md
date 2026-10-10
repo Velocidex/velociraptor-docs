@@ -1,22 +1,35 @@
 ---
 title: Windows.Registry.EnabledMacro
+description: "Scans Office Trust Records registry entries for documents with\nmacro-enabled trust flags."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Checks for Registry key indicating macro was enabled by user.
+Scans Office Trust Records registry entries for documents with
+macro-enabled trust flags.
 
-HKEY_USERS\*\Software\Microsoft\Office\*\Security\Trusted Documents\TrustRecords reg keys for values ending in FFFFFF7F
-http://az4n6.blogspot.com/2016/02/more-on-trust-records-macros-and.html
+That is `HKEY_USERS\*\Software\Microsoft\Office\*\Security\Trusted
+Documents\TrustRecords` reg keys with values ending in `FFFFFF7F`.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Registry.EnabledMacro
 description: |
-  Checks for Registry key indicating macro was enabled by user.
+  Scans Office Trust Records registry entries for documents with
+  macro-enabled trust flags.
 
-  HKEY_USERS\*\Software\Microsoft\Office\*\Security\Trusted Documents\TrustRecords reg keys for values ending in FFFFFF7F
-  http://az4n6.blogspot.com/2016/02/more-on-trust-records-macros-and.html
+  That is `HKEY_USERS\*\Software\Microsoft\Office\*\Security\Trusted
+  Documents\TrustRecords` reg keys with values ending in `FFFFFF7F`.
+
+reference:
+  - http://az4n6.blogspot.com/2016/02/more-on-trust-records-macros-and.html
 
 author: "@mgreen27"
 
@@ -59,6 +72,6 @@ sources:
             WHERE Data.type =~ "BINARY"
               and encode(string=Data.value, type="hex") =~ "ffffff7f$"
           })
+````
 
-</code></pre>
 

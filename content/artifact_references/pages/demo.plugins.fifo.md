@@ -1,13 +1,23 @@
 ---
 title: Demo.Plugins.Fifo
+description: "Demonstrates using the fifo() plugin to detect event sequences,\nusing failed logon attempts preceding a successful logon as a\nconcrete example."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
 
-This is a demo of the fifo() plugin. The Fifo plugin collects and
-caches rows from its inner query. Every subsequent execution of the
-query then reads from the cache. The plugin will expire old rows
-depending on its expiration policy - so we always see recent rows.
+Demonstrates using the fifo() plugin to detect event sequences,
+using failed logon attempts preceding a successful logon as a
+concrete example.
+
+The Fifo plugin collects and caches rows from its inner query. Every
+subsequent execution of the query then reads from the cache. The
+plugin will expire old rows depending on its expiration policy - so
+we always see recent rows.
 
 You can use this to build queries which consider historical events
 together with current events at the same time. In this example, we
@@ -53,13 +63,19 @@ Of course in the real artifact we would want to include more
 information than just times (i.e. who logged on to where etc).
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Demo.Plugins.Fifo
 description: |
-  This is a demo of the fifo() plugin. The Fifo plugin collects and
-  caches rows from its inner query. Every subsequent execution of the
-  query then reads from the cache. The plugin will expire old rows
-  depending on its expiration policy - so we always see recent rows.
+  Demonstrates using the fifo() plugin to detect event sequences,
+  using failed logon attempts preceding a successful logon as a
+  concrete example.
+
+  The Fifo plugin collects and caches rows from its inner query. Every
+  subsequent execution of the query then reads from the cache. The
+  plugin will expire old rows depending on its expiration policy - so
+  we always see recent rows.
 
   You can use this to build queries which consider historical events
   together with current events at the same time. In this example, we
@@ -119,7 +135,7 @@ sources:
       // materializing the cache contents. Otherwise the fifo wont
       // start until it is first called (i.e. the first successful
       // login and we will miss the failed events before hand).
-       LET foo &lt;= SELECT * FROM last_5_events
+       LET foo <= SELECT * FROM last_5_events
 
       // This simulates successful logon - we assume every 3 seonds.
       LET success_logon = SELECT Unix as SuccessTime from clock(period=3)
@@ -135,7 +151,7 @@ sources:
               enumerate(items=FailedTime) as FailedTime,
               count(items=FailedTime) as Count
            FROM last_5_events GROUP BY SuccessTime
-          }) WHERE Count &gt; 3
+          }) WHERE Count > 3
+````
 
-</code></pre>
 

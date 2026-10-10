@@ -1,26 +1,40 @@
 ---
 title: Server.Enrichment.CortexAnalyzer
+description: "A utility artifact that runs Cortex analyzer jobs on observables and\nretrieves the results from all applicable analyzers."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
 
-Run Cortex analyzer jobs across all enabled and applicable analyzers (based on supported analyzer data types), then retrieve the results.
+A utility artifact that runs Cortex analyzer jobs on observables and
+retrieves the results from all applicable analyzers.
 
-This artifact can be called from within another artifact (such as one looking for files) to enrich the data made available by that artifact.
+This artifact is expected to be called from within another artifact
+(such as one looking for files) to enrich the data made available by
+that artifact.
 
-Ex.
+#### Example
 
   `SELECT * from Artifact.Server.Enrichment.CortexAnalyzer(Observable=$YOURHASH, ObservableType='hash')`
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Enrichment.CortexAnalyzer
 description: |
-  Run Cortex analyzer jobs across all enabled and applicable analyzers (based on supported analyzer data types), then retrieve the results.
+  A utility artifact that runs Cortex analyzer jobs on observables and
+  retrieves the results from all applicable analyzers.
 
-  This artifact can be called from within another artifact (such as one looking for files) to enrich the data made available by that artifact.
+  This artifact is expected to be called from within another artifact
+  (such as one looking for files) to enrich the data made available by
+  that artifact.
 
-  Ex.
+  #### Example
 
     `SELECT * from Artifact.Server.Enrichment.CortexAnalyzer(Observable=$YOURHASH, ObservableType='hash')`
 
@@ -42,10 +56,10 @@ parameters:
      description: TLP for the job submitted to Cortex
      default: 0
    - name: CortexURL
-     description: URL used for Cortex job submission. We recommend using the &lt;a href="#/host/server"&gt;server metadata store&lt;/a&gt; for this.
+     description: URL used for Cortex job submission. We recommend using the <a href="#/host/server">server metadata store</a> for this.
      default: ''
    - name: CortexKey
-     description: API key used for authentication to Cortex. We recommend using the &lt;a href="#/host/server"&gt;server metadata store&lt;/a&gt; for this.
+     description: API key used for authentication to Cortex. We recommend using the <a href="#/host/server">server metadata store</a> for this.
      default: ''
    - name: DisableSSLVerify
      type: bool
@@ -60,9 +74,9 @@ parameters:
 
 sources:
   - query: |
-        LET OBSERVABLE &lt;= Observable
-        LET OBSERVABLE_DATATYPE &lt;= ObservableType
-        LET URL &lt;= if(
+        LET OBSERVABLE <= Observable
+        LET OBSERVABLE_DATATYPE <= ObservableType
+        LET URL <= if(
                 condition=CortexURL,
             then=CortexURL,
             else=server_metadata().CortexURL)
@@ -111,6 +125,6 @@ sources:
             )
         LET REPORT = SELECT parse_json(data=Resp) AS Details FROM GETREPORT
         SELECT Observable, Details.workerName as AnalyzerName, Details as _Details, Details.report AS Report FROM foreach(row=ANALYZERS_MATCH_TYPE, query={SELECT * FROM REPORT})
+````
 
-</code></pre>
 

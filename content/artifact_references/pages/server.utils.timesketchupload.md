@@ -1,15 +1,23 @@
 ---
 title: Server.Utils.TimesketchUpload
+description: "Uploads Velociraptor timelines to Timesketch using the Timesketch\nclient library."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
 
-Timesketch is an interactive collaborative timeline analysis tool
-that can be found at https://timesketch.org/
+Uploads Velociraptor timelines to Timesketch using the Timesketch
+client library.
 
-This artifact uploads Velociraptor's timelines to Timesketch using
-the Timesketch client library. The artifact assumes the client
-library is installed and configured on the server.
+[Timesketch](https://timesketch.org/) is an interactive
+collaborative timeline analysis tool.
+
+This artifact assumes the client library is installed and configured
+on the Velociraptor server.
 
 To install the Timesketch client library:
 ```
@@ -17,22 +25,27 @@ pip install timesketch-import-client timesketch-cli-client
 ```
 
 To configure the client library to access your Timesketch instance
-see instructions https://timesketch.org/guides/user/cli-client/ and
+see the instructions at
+https://timesketch.org/guides/user/cli-client/ and
 https://timesketch.org/guides/user/upload-data/
 
-This artifact assumes that the Timesketch CLI is preconfigured with
-the correct credentials in the `.timesketchrc` file.
+This artifact also assumes that the Timesketch CLI is preconfigured
+with the correct credentials in the `.timesketchrc` file.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.TimesketchUpload
 description: |
-  Timesketch is an interactive collaborative timeline analysis tool
-  that can be found at https://timesketch.org/
+  Uploads Velociraptor timelines to Timesketch using the Timesketch
+  client library.
 
-  This artifact uploads Velociraptor's timelines to Timesketch using
-  the Timesketch client library. The artifact assumes the client
-  library is installed and configured on the server.
+  [Timesketch](https://timesketch.org/) is an interactive
+  collaborative timeline analysis tool.
+
+  This artifact assumes the client library is installed and configured
+  on the Velociraptor server.
 
   To install the Timesketch client library:
   ```
@@ -40,11 +53,12 @@ description: |
   ```
 
   To configure the client library to access your Timesketch instance
-  see instructions https://timesketch.org/guides/user/cli-client/ and
+  see the instructions at
+  https://timesketch.org/guides/user/cli-client/ and
   https://timesketch.org/guides/user/upload-data/
 
-  This artifact assumes that the Timesketch CLI is preconfigured with
-  the correct credentials in the `.timesketchrc` file.
+  This artifact also assumes that the Timesketch CLI is preconfigured
+  with the correct credentials in the `.timesketchrc` file.
 
 required_permissions:
   - EXECVE
@@ -67,6 +81,7 @@ parameters:
 type: SERVER
 
 export: |
+  // linter: symbol_mask_warn:"timelines"
   LET timesketch_import_command = TimesketchCLICommand + "_importer"
 
   -- The uploader tool can create a new "Sketch" but if we want to
@@ -104,7 +119,7 @@ export: |
                          TimelineName=TimelineName)[0]
 
   -- Timesketch insists the file have the .csv extension.
-  LET tmp &lt;= tempfile(extension=".csv")
+  LET tmp <= tempfile(extension=".csv")
 
   -- We copy the timeline to a temp csv file then upload that. This
   -- might seem inefficient but Timesketch is written in python so it
@@ -154,6 +169,6 @@ sources:
          NotebookId=NotebookId,
          TimelineName=TimelineName,
          SketchName=SketchName)
+````
 
-</code></pre>
 

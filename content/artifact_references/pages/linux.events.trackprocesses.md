@@ -1,11 +1,20 @@
 ---
 title: Linux.Events.TrackProcesses
+description: "Subscribes to eBPF process events to track new processes and their\nparent relationships."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
 
-This artifact uses eBPF and pslist to keep track of running
-processes by using the Velociraptor process tracker.
+Subscribes to eBPF process events to track new processes and their
+parent relationships.
+
+Uses eBPF and pslist to keep track of running processes via the
+Velociraptor process tracker.
 
 The process tracker keeps track of exited processes, and resolves
 process call chains from it in memory cache.
@@ -19,11 +28,16 @@ already built into Velociraptor so this artifact does not depend on
 external tools.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Events.TrackProcesses
 description: |
-  This artifact uses eBPF and pslist to keep track of running
-  processes by using the Velociraptor process tracker.
+  Subscribes to eBPF process events to track new processes and their
+  parent relationships.
+  
+  Uses eBPF and pslist to keep track of running processes via the
+  Velociraptor process tracker.
 
   The process tracker keeps track of exited processes, and resolves
   process call chains from it in memory cache.
@@ -67,11 +81,11 @@ sources:
           SELECT * FROM watch_ebpf(events=["sched_process_exit", "sched_process_exec"])
         }, query={
           SELECT * FROM switch(a={
-            SELECT System.ProcessID AS id,
-                    System.ParentProcessID AS parent_id,
+            SELECT System.HostProcessID AS id,
+                    System.HostParentProcessID AS parent_id,
                     "start" AS update_type,
-                    dict(Pid=System.ProcessID,
-                         Ppid=System.ParentProcessID,
+                    dict(Pid=System.HostProcessID,
+                         Ppid=System.HostParentProcessID,
                          Name=System.ProcessName,
                          Username=System.UserID,
                          Exe=EventData.cmdpath,
@@ -82,7 +96,7 @@ sources:
             FROM scope()
             WHERE System.EventName =~ "exec"
           }, end={
-            SELECT System.ProcessID AS id,
+            SELECT System.HostProcessID AS id,
                    NULL AS parent_id,
                    "exit" AS update_type,
                    dict() AS data,
@@ -93,11 +107,11 @@ sources:
           })
         })
 
-        LET Tracker &lt;= process_tracker(max_size=MaxSize,
+        LET Tracker <= process_tracker(max_size=MaxSize,
            sync_query=SyncQuery, update_query=UpdateQuery, sync_period=60000)
 
         SELECT * FROM process_tracker_updates()
         WHERE update_type = "stats"  OR AlsoForwardUpdates
+````
 
-</code></pre>
 

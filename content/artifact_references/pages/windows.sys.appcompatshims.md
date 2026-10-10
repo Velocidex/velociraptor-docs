@@ -1,37 +1,51 @@
 ---
 title: Windows.Sys.AppcompatShims
+description: "Queries the Windows registry for Application Compatibility shim\ndatabase entries and their associated executables."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
+Queries the Windows registry for Application Compatibility shim
+database entries and their associated executables.
+
 Application Compatibility shims are a way to persist malware. This
-table presents the AppCompat Shim information from the registry in a
-nice format.
+artifact presents the AppCompat Shim information from the registry
+in a nice human-friendly format.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Sys.AppcompatShims
 description: |
+  Queries the Windows registry for Application Compatibility shim
+  database entries and their associated executables.
+  
   Application Compatibility shims are a way to persist malware. This
-  table presents the AppCompat Shim information from the registry in a
-  nice format.
+  artifact presents the AppCompat Shim information from the registry
+  in a nice human-friendly format.
 
 reference:
   - http://files.brucon.org/2015/Tomczak_and_Ballenthin_Shims_for_the_Win.pdf
 
 parameters:
   - name: shimKeys
-    default: &gt;-
+    default: >-
       HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\InstalledSDB\*
   - name: customKeys
-    default: &gt;-
+    default: >-
       HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Custom\*\*
 
 sources:
   - precondition:
       SELECT OS From info() where OS = 'windows'
     query: |
-        LET installed_sdb &lt;=
+        LET installed_sdb <=
            SELECT Key, Key.Name as SdbGUID, DatabasePath,
                   DatabaseType, DatabaseDescription,
                   -- Convert windows file time to unix epoch.
@@ -63,6 +77,6 @@ sources:
           })
 
         SELECT * from result
+````
 
-</code></pre>
 

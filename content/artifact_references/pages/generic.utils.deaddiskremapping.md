@@ -1,10 +1,17 @@
 ---
 title: Generic.Utils.DeadDiskRemapping
+description: "Inspects a disk image and produces an appropriate YAML remapping\nconfig for transparent filesystem access."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
 
-Calculate a remapping configuration from a dead disk image.
+Inspects a disk image and produces an appropriate YAML remapping
+config for transparent filesystem access.
 
 The artifact uses some heuristics to calculate a suitable remapping
 configuration for a dead disk image:
@@ -26,10 +33,13 @@ The following cases are handled:
   drive.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Utils.DeadDiskRemapping
 description: |
-  Calculate a remapping configuration from a dead disk image.
+  Inspects a disk image and produces an appropriate YAML remapping
+  config for transparent filesystem access.
 
   The artifact uses some heuristics to calculate a suitable remapping
   configuration for a dead disk image:
@@ -125,6 +135,16 @@ parameters:
           accessor: raw_reg
       - type: shadow
         from:
+          accessor: raw_reg
+        "on":
+          accessor: raw_registry
+      - type: shadow
+        from:
+          accessor: raw_ntfs
+        "on":
+          accessor: ntfs
+      - type: shadow
+        from:
           accessor: data
         "on":
           accessor: data
@@ -140,13 +160,28 @@ export: |
        WHERE IsDir
      },
        b={
-       SELECT 0 AS StartOffset, Accessor, ImagePath AS PartitionPath
+       // Check for a partition image if there is an NTFS header at
+       // the start.
+       SELECT 0 AS StartOffset,
+              GuessAccessor(ImagePath=ImagePath) AS Accessor,
+              pathspec(
+                 DelegateAccessor="offset",
+                 Delegate=pathspec(
+                    DelegateAccessor=GuessAccessor(ImagePath=ImagePath),
+                    DelegatePath=ImagePath,
+                    Path="0")) AS PartitionPath,
+              read_file(accessor=GuessAccessor(ImagePath=ImagePath),
+                       filename=ImagePath,
+                       length=4, offset=3) AS Magic
        FROM scope()
-       WHERE read_file(accessor=Accessor, filename=ImagePath, length=4, offset=3) = "NTFS"
+       WHERE Magic = "NTFS"
         AND log(message="Detected NTFS signature at offset 0 - " +
                "assuming this is a Windows partition image")
      },
        c={
+
+       // Assume this is a disk image with a partition table - look
+       // for the first Windows OS partition
        SELECT StartOffset, Accessor, _PartitionPath AS PartitionPath
        FROM Artifact.Windows.Forensics.PartitionTable(
            ImagePath=ImagePath,
@@ -155,7 +190,7 @@ export: |
                  message="Searching for Windows directory: %#x-%#x (%v) %v - Magic %v",
                  args=[StartOffset, EndOffset, Size, name, Magic])
          AND TopLevelDirectory =~ "Windows"
-         AND log(message="&lt;green&gt;Found Windows Partition&lt;/&gt; at offset %#x with top level directory %v",
+         AND log(message="<green>Found Windows Partition</> at offset %#x with top level directory %v",
                  args=[StartOffset, TopLevelDirectory])
        LIMIT 1
      })
@@ -168,7 +203,7 @@ export: |
      if(condition=ImagePath =~ 'e01$', then='ewf')
 
    LET _MapHiveToKey(Hive, Key, Name, ImagePath) = log(dedup=-1,
-      message="&lt;green&gt;Adding hive %v&lt;/&gt;", args=Hive) &amp;&amp;
+      message="<green>Adding hive %v</>", args=Hive) &&
    dict(type="mount",
     `description`=Name,
     `from`=dict(accessor="raw_reg",
@@ -180,14 +215,14 @@ export: |
     on=dict(accessor="registry", prefix=Key, path_type="registry"))
 
    LET _MapDirHiveToKey(Hive, Key, Name) = log(dedup=-1,
-      message="&lt;green&gt;Adding hive %v&lt;/&gt;", args=Hive) &amp;&amp;
+      message="<green>Adding hive %v</>", args=Hive) &&
    dict(type="mount",
     `description`=Name,
     `from`=dict(accessor="raw_reg",
       path_type="registry",
       prefix=pathspec(
         Path="/",
-        DelegateAccessor="file",
+        DelegateAccessor="file_nocase",
         DelegatePath=Hive)),
     on=dict(accessor="registry", prefix=Key, path_type="registry"))
 
@@ -201,7 +236,7 @@ export: |
       FROM glob(globs='/Users/*/NTUser.DAT',
                 accessor="raw_ntfs",
                 root=ImagePath)
-      WHERE log(dedup=-1, message="&lt;green&gt;Found User Hive at %v&lt;/&gt;", args=OSPath.Path)
+      WHERE log(dedup=-1, message="<green>Found User Hive at %v</>", args=OSPath.Path)
 
     LET _FindDirUserHives(ImagePath) = SELECT _MapDirHiveToKey(
            Name="Map User hive for " + OSPath[-2],
@@ -209,7 +244,7 @@ export: |
            Key="HKEY_USERS\\" + OSPath[-2]) AS Map
       FROM glob(globs='/Users/*/NTUser.DAT',
                 root=ImagePath)
-      WHERE log(dedup=-1, message="&lt;green&gt;Found User Hive at %v&lt;/&gt;", args=OSPath.Path)
+      WHERE log(dedup=-1, message="<green>Found User Hive at %v</>", args=OSPath.Path)
 
     LET CalculateWindowsMappings(ImagePath) = Remappings.remappings + (
        dict(type="mount",
@@ -249,51 +284,51 @@ export: |
     LET CalculateWindowsDirMappings(ImagePath) = Remappings.remappings + (
        dict(type="mount",
             description="Mount Directory " + ImagePath + " on C: drive",
-            `from`=dict(accessor="file", prefix=ImagePath),
+            `from`=dict(accessor="file_nocase", prefix=ImagePath),
             on=dict(accessor="ntfs", prefix="\\\\.\\C:", path_type="ntfs")
       ),
       dict(type="mount",
-            `from`=dict(accessor="file", prefix=ImagePath),
+            `from`=dict(accessor="file_nocase", prefix=ImagePath),
             on=dict(accessor="file", prefix="C:", path_type="windows")
       ),
        dict(type="mount",
-            `from`=dict(accessor="file", prefix=ImagePath),
+            `from`=dict(accessor="file_nocase", prefix=ImagePath),
             on=dict(accessor="auto", prefix="C:", path_type="windows")
       ),
       _MapDirHiveToKey(Name="Map Software Hive",
-                       Hive="/Windows/System32/Config/SOFTWARE",
+                       Hive=ImagePath + "/Windows/System32/Config/SOFTWARE",
                        Key="HKEY_LOCAL_MACHINE/Software"),
       _MapDirHiveToKey(Name="Map Security Hive",
-                       Hive="/Windows/System32/Config/Security",
+                       Hive=ImagePath + "/Windows/System32/Config/Security",
                        Key="HKEY_LOCAL_MACHINE/Security"),
       _MapDirHiveToKey(Name="Map System Hive",
-                       Hive="/Windows/System32/Config/System",
+                       Hive=ImagePath + "/Windows/System32/Config/System",
                        Key="HKEY_LOCAL_MACHINE/System"),
       _MapDirHiveToKey(Name="Map SAM Hive",
-                       Hive="/Windows/System32/Config/SAM",
+                       Hive=ImagePath + "/Windows/System32/Config/SAM",
                        Key="SAM"),
       _MapDirHiveToKey(Name="Map Amcache Hive",
-                       Hive="/Windows/appcompat/Programs/Amcache.hve",
+                       Hive=ImagePath + "/Windows/appcompat/Programs/Amcache.hve",
                        Key="Amcache")
     ) + _FindDirUserHives(ImagePath=ImagePath).Map
 
 sources:
 - query: |
-    LET WindowsPartition &lt;=
+    LET WindowsPartition <=
       _FindWindowsPartition(ImagePath=ImagePath, Accessor=Accessor)[0]
 
-    LET Remappings &lt;= parse_yaml(
+    LET Remappings <= parse_yaml(
       filename=template(template=CommonRemapping,
                         expansion=dict(Hostname=Hostname)),
       accessor="data")
 
     -- Select the type of mapping to calculate depending on what ImagePath is.
     LET CalculateMappings =
-       ( stat(filename=ImagePath).IsDir &amp;&amp;
+       ( stat(filename=ImagePath).IsDir &&
          CalculateWindowsDirMappings(ImagePath=ImagePath) ) ||
-       ( WindowsPartition.PartitionPath &amp;&amp;
+       ( WindowsPartition.PartitionPath &&
          CalculateWindowsMappings(ImagePath=WindowsPartition.PartitionPath) ) ||
-         log(message="&lt;red&gt;No suitable mapping found&lt;/&gt;")
+         log(message="<red>No suitable mapping found</>")
 
     LET YamlText = serialize(format="yaml",
          item=dict(remappings=CalculateMappings))
@@ -306,6 +341,6 @@ sources:
 column_types:
 - name: Remapping
   type: upload_preview
+````
 
-</code></pre>
 

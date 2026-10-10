@@ -1,14 +1,24 @@
 ---
 title: Linux.Sys.Services
+description: "Parses services output from `systemctl`.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Parse services from systemctl
+Parses services output from `systemctl`.
 
-<pre><code class="language-yaml">
+
+---
+
+````yaml
 name: Linux.Sys.Services
-description: Parse services from systemctl
+description: |
+  Parses services output from `systemctl`.
 
 implied_permissions:
   - EXECVE
@@ -24,6 +34,6 @@ sources:
         FROM parse_lines(accessor="data", filename=services.Stdout)
 
         SELECT * FROM foreach(row=all_services, column="Parsed") WHERE Unit =~ ".service"
+````
 
-</code></pre>
 

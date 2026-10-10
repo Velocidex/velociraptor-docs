@@ -1,26 +1,34 @@
 ---
 title: Server.Utils.DeleteEvents
+description: "Permanently deletes client event or monitoring event data within a\nspecified time range."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
 
-This artifact permanently deletes Event files for client or
-monitoring events.
+Permanently deletes client event or monitoring event data within a
+specified time range.
 
 NOTE: This action cannot be undone! The event files are deleted
-permanently. Since this is a sensitive operation, typically only
-users with the administrator role can run it.
+permanently. Since this is a sensitive operation, only users with
+the administrator role can run it.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.DeleteEvents
 description: |
-  This artifact permanently deletes Event files for client or
-  monitoring events.
+  Permanently deletes client event or monitoring event data within a
+  specified time range.
 
   NOTE: This action cannot be undone! The event files are deleted
-  permanently. Since this is a sensitive operation, typically only
-  users with the administrator role can run it.
+  permanently. Since this is a sensitive operation, only users with
+  the administrator role can run it.
 
 type: SERVER
 
@@ -36,10 +44,10 @@ parameters:
     default:
   - name: StartTime
     type: timestamp
-    description: The begining time range to delete
+    description: The beginning of the time range to delete
   - name: EndTime
     type: timestamp
-    description: The ending time range to delete
+    description: The end of the time range to delete
   - name: ReallyDoIt
     description: If you really want to delete the collection, check this.
     type: bool
@@ -51,6 +59,6 @@ sources:
          artifact=Artifact, client_id=ClientId,
          start_time=StartTime, end_time=EndTime,
          really_do_it=ReallyDoIt)
+````
 
-</code></pre>
 

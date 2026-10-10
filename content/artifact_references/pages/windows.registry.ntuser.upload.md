@@ -1,34 +1,44 @@
 ---
 title: Windows.Registry.NTUser.Upload
+description: "Uploads each user's NTUSER.DAT registry hive from disk by bypassing\nfile locking with raw NTFS parsing."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact collects all the user's NTUser.dat registry hives.
+Uploads each user's NTUSER.DAT registry hive from disk by bypassing
+file locking with raw NTFS parsing.
 
 When a user logs into a windows machine the system creates their own
 "profile" which consists of a registry hive mapped into the
-HKEY_USERS hive. This hive file is locked while the user is
-logged in.
+HKEY_USERS hive. This hive file is locked while the user is logged
+in.
 
-This artifact bypasses the locking mechanism by extracting the
-registry hives using raw NTFS parsing. We then just upload all hives
-to the server.
+This artifact bypasses the OS file-locking mechanism by extracting
+the registry hives using raw NTFS parsing. We then just upload all
+hives to the server.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Registry.NTUser.Upload
 description: |
-  This artifact collects all the user's NTUser.dat registry hives.
+  Uploads each user's NTUSER.DAT registry hive from disk by bypassing
+  file locking with raw NTFS parsing.
 
   When a user logs into a windows machine the system creates their own
   "profile" which consists of a registry hive mapped into the
-  HKEY_USERS hive. This hive file is locked while the user is
-  logged in.
+  HKEY_USERS hive. This hive file is locked while the user is logged
+  in.
 
-  This artifact bypasses the locking mechanism by extracting the
-  registry hives using raw NTFS parsing. We then just upload all hives
-  to the server.
+  This artifact bypasses the OS file-locking mechanism by extracting
+  the registry hives using raw NTFS parsing. We then just upload all
+  hives to the server.
 
 parameters:
   - name: userRegex
@@ -39,7 +49,7 @@ sources:
   - precondition: |
       SELECT OS From info() where OS = 'windows'
     query: |
-        LET users = SELECT
+        LET system_users = SELECT
             Name,
             expand(path=Directory) AS HomeDir
         FROM Artifact.Windows.Sys.Users()
@@ -47,7 +57,7 @@ sources:
 
         SELECT upload(file=HomeDir + "\\ntuser.dat",
                       accessor="auto") as Upload
-        FROM users
+        FROM system_users
+````
 
-</code></pre>
 

@@ -1,10 +1,19 @@
 ---
 title: Server.Utils.DeadDiskClient
+description: "Automates the preparatory steps for dead disk analysis by inspecting\nthe disk image, building an appropriate remapping config, and then\nlaunching a virtual Velociraptor client which uses that remapping\nconfig."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
 
-Automates the analysis of dead disk images in Velociraptor
+Automates the preparatory steps for dead disk analysis by inspecting
+the disk image, building an appropriate remapping config, and then
+launching a virtual Velociraptor client which uses that remapping
+config.
 
 Velociraptor can analyze dead disk images by using accessor
 remapping. The process involves detecting a suitable remapping
@@ -23,10 +32,15 @@ for 1 hour but you can extend the time limit while launching the
 artifact using the resources tab.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.DeadDiskClient
 description: |
-  Automates the analysis of dead disk images in Velociraptor
+  Automates the preparatory steps for dead disk analysis by inspecting
+  the disk image, building an appropriate remapping config, and then
+  launching a virtual Velociraptor client which uses that remapping
+  config.
 
   Velociraptor can analyze dead disk images by using accessor
   remapping. The process involves detecting a suitable remapping
@@ -67,15 +81,15 @@ parameters:
 
 sources:
 - query: |
-     LET RemappingFile &lt;= tempfile(extension=".yaml")
+     LET RemappingFile <= tempfile(extension=".yaml")
 
-     LET ClientConfig &lt;= tempfile(extension=".yaml")
+     LET ClientConfig <= tempfile(extension=".yaml")
 
-     LET _Exe &lt;= SELECT Exe
+     LET _Exe <= SELECT Exe
        FROM info()
 
      // Our own binary we use to run.
-     LET Exe &lt;= _Exe[0].Exe
+     LET Exe <= _Exe[0].Exe
 
      LET CalculateDeadDisk = SELECT copy(accessor="data",
                                          filename=Remapping,
@@ -105,6 +119,6 @@ sources:
 column_types:
 - name: Stdout
   type: nobreak
+````
 
-</code></pre>
 

@@ -1,0 +1,34 @@
+{{ define "main" }}
+  {{/* Landing page: hero from front matter + announcement + feature grid from content. */}}
+  <div class="hextra-hero hx:mx-auto hx:flex hextra-max-page-width hx:flex-col hx:items-center hx:px-6 hx:pt-16 hx:pb-8 hx:text-center">
+    <h1 class="hx:mt-4 hx:text-5xl hx:font-bold hx:tracking-tight hx:text-slate-900 hx:dark:text-slate-100">
+      {{ .Site.Title }}
+    </h1>
+    {{- with .Params.heroCaption }}
+    <p class="hx:mt-4 hx:text-xl hx:text-gray-600 hx:dark:text-gray-400">{{ . }}</p>
+    {{- end }}
+    {{- with .Params.heroLead }}
+    <p class="hextra-hero-lead hx:mt-2 hx:max-w-2xl hx:text-base hx:text-gray-500 hx:dark:text-gray-400">{{ . | markdownify }}</p>
+    {{- end }}
+    {{- with .Params.heroButtons }}
+    <div class="hx:mt-8 hx:flex hx:flex-wrap hx:justify-center hx:gap-4">
+      {{- range . }}
+      <a
+        href="{{ .url }}"
+        class="hx:rounded-full hx:px-5 hx:py-2.5 hx:text-sm hx:font-medium hx:transition-colors {{ if eq .style "primary" }}hx:bg-primary-500 hx:text-white hx:hover:bg-primary-400{{ else }}hx:border hx:border-gray-300 hx:text-gray-700 hx:hover:bg-gray-100 hx:dark:border-neutral-700 hx:dark:text-neutral-200 hx:dark:hover:bg-neutral-800{{ end }}"
+      >
+        {{ .label }}
+      </a>
+      {{- end }}
+    </div>
+    {{- end }}
+  </div>
+
+  <div class="hx:mx-auto hextra-max-page-width hx:px-6 hx:pb-16">
+    <div class="hextra-hero-content hx:mx-auto hx:max-w-4xl">
+      <div class="content">
+        {{ .Content }}
+      </div>
+    </div>
+  </div>
+{{ end }}

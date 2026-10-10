@@ -1,14 +1,25 @@
 ---
 title: Windows.Sys.CertificateAuthorities
+description: "Enumerates certificate authorities from Windows certificate stores.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Certificate Authorities installed in Keychains/ca-bundles.
+Enumerates certificate authorities from Windows certificate stores.
 
-<pre><code class="language-yaml">
+
+---
+
+````yaml
 name: Windows.Sys.CertificateAuthorities
-description: Certificate Authorities installed in Keychains/ca-bundles.
+description: |
+  Enumerates certificate authorities from Windows certificate stores.
+
 sources:
   - precondition:
       SELECT OS From info() where OS = 'windows'
@@ -20,6 +31,6 @@ sources:
                IsSelfSigned, SHA1, SignatureAlgorithm, PublicKeyAlgorithm, KeyStrength,
                NotBefore, NotAfter, HexSerialNumber
         FROM certificates()
+````
 
-</code></pre>
 

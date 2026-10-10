@@ -1,16 +1,26 @@
 ---
 title: Windows.System.Signers
+description: "Scans executable files and groups them by their authenticode signer\nsubject.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact searches for all signed files and stacks them by signer.
+Scans executable files and groups them by their authenticode signer
+subject.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.Signers
 description: |
-   This artifact searches for all signed files and stacks them by signer.
+   Scans executable files and groups them by their authenticode signer
+   subject.
 
 parameters:
    - name: ExecutableGlobs
@@ -42,6 +52,6 @@ sources:
             GROUP BY Signer
             ORDER BY Count DESC
         })
+````
 
-</code></pre>
 

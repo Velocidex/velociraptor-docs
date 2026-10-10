@@ -1,8 +1,13 @@
 ---
+icon: cog
 title: "Server Automation"
 date: 2021-06-30T12:31:08Z
 draft: false
 weight: 70
+description: |
+  Velociraptor's unprecedented flexibility arises from the power of
+  VQL. We have seen how VQL can be used to collect artifacts on the
+  endpoint, but VQL can be used on the server too.
 ---
 
 Velociraptor's unprecedented flexibility arises from the power of
@@ -11,7 +16,7 @@ endpoint, but VQL can be used on the server too.
 
 Running VQL queries on the server allows for tasks on the server to be
 automated. In this page we will see how server artifacts can be used
-to customize server behaviour.
+to customize server behavior.
 
 Before we discuss server automation we need to clarify some of the
 terms used when discussing the server.
@@ -40,24 +45,21 @@ create a server artifact from the query you wish to run and launch it
 within the server artifacts screen. Server artifacts may be collected
 with increased time limits.
 
-{{% notice warning "Running server VQL plugins on the command line" %}}
-
-Although it is possible to run any VQL queries on the command line
-using the `velociraptor query` command, VQL plugins that change server
-state should not be run this way.
-
-This is because many administrative VQL plugins
-(e.g. `collect_client()`) will change the underlying data store but
-the running server will not be aware that these changes are made.
-
-It is only supported to run administrative VQL plugins using the
-following methods:
-
-1. The notebooks
-2. Server Artifacts
-3. Using the [Velociraptor API]({{% ref "server_api/#using-the-shell-for-automation" %}})
-
-{{% /notice %}}
+> [!WARNING] Running server VQL plugins on the command line
+> Although it is possible to run any VQL queries on the command line
+> using the `velociraptor query` command, VQL plugins that change server
+> state should not be run this way.
+>
+> This is because many administrative VQL plugins
+> (e.g. `collect_client()`) will change the underlying data store but
+> the running server will not be aware that these changes are made.
+>
+> It is only supported to run administrative VQL plugins using the
+> following methods:
+>
+> 1. Notebooks
+> 2. Server Artifacts
+> 3. Using the [Velociraptor API](/docs/server_automation/server_api/)
 
 
 ## Enumerating all clients
@@ -66,31 +68,28 @@ You can enumerate all clients using the `clients()` plugin. This
 plugin provides basic information about each client on the system,
 including its client id and labels assigned to it.
 
-{{% notice tip %}}
-
-If you do not provide any parameters to the `client()` plugin,
-Velociraptor will iterate over all the clients. This may result in a
-lot of rows. You can provide a `search` parameter, that uses the
-client index to find clients by label or hostname very quickly (This
-is the same mechanism used in the GUI search bar).
-
-```sql
--- Use this
-SELECT * FROM clients(search="MyHostname")
-
--- Rather than this
-SELECT * FROM clients()
-WHERE os_info.fqdn =~ "MyHostname"
-
--- Use this
-SELECT * FROM clients(search="label:MyLabel")
-
--- Rather than this
-SELECT * FROM clients()
-WHERE labels =~ "MyLabel"
-```
-
-{{% /notice %}}
+> [!TIP]
+> If you do not provide any parameters to the `client()` plugin,
+> Velociraptor will iterate over all the clients. This may result in a
+> lot of rows. You can provide a `search` parameter, that uses the
+> client index to find clients by label or hostname very quickly (This
+> is the same mechanism used in the GUI search bar).
+>
+> ```vql
+> -- Use this
+> SELECT * FROM clients(search="MyHostname")
+>
+> -- Rather than this
+> SELECT * FROM clients()
+> WHERE os_info.fqdn =~ "MyHostname"
+>
+> -- Use this
+> SELECT * FROM clients(search="label:MyLabel")
+>
+> -- Rather than this
+> SELECT * FROM clients()
+> WHERE labels =~ "MyLabel"
+> ```
 
 An example of a client record can be seen here
 
@@ -151,22 +150,19 @@ WHERE Name =~ "Mike"
 ![Labeling machines based on a hunt query](label_users.png)
 
 
-{{% notice tip "VQL Queries are lazy" %}}
-
-Remember that VQL queries are lazy. This means that the label()
-function will only be evaluated on rows that pass the condition `Name
-=~ "Mike"`. Rows that do not include this name will be eliminated
-without evaluating the `label()` function, and therefore will not
-cause the client to be labeled.
-
-The `source()` simply reads all the rows that were collected. It is
-context aware, so if invoked within a hunt notebook, the plugin
-generates all rows from all collected clients within the hunt. If
-evaluated within a collection notebook it generates all rows in this
-collection etc. You can also specify the exact hunt ID explicitly if
-needed.
-
-{{% /notice %}}
+> [!TIP] VQL Queries are lazy
+> Remember that VQL queries are lazy. This means that the label()
+> function will only be evaluated on rows that pass the condition `Name
+> =~ "Mike"`. Rows that do not include this name will be eliminated
+> without evaluating the `label()` function, and therefore will not
+> cause the client to be labeled.
+>
+> The `source()` simply reads all the rows that were collected. It is
+> context aware, so if invoked within a hunt notebook, the plugin
+> generates all rows from all collected clients within the hunt. If
+> evaluated within a collection notebook it generates all rows in this
+> collection etc. You can also specify the exact hunt ID explicitly if
+> needed.
 
 Using selective hunting and post processing can be used to label hosts
 based on any property of grouping that makes sense (e.g. installed

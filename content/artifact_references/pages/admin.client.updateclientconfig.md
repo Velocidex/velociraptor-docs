@@ -1,8 +1,16 @@
 ---
 title: Admin.Client.UpdateClientConfig
+description: "Replaces client configuration and optionally rekeys the client ID."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
+
+Replaces client configuration and optionally rekeys the client ID.
 
 Sometimes we wish to move a client from one org ID to another. This
 requires updating the config on the client and rekeying the client.
@@ -17,9 +25,13 @@ This artifact has a notebook suggestion that allows a client to be
 changed to a different org.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Admin.Client.UpdateClientConfig
 description: |
+  Replaces client configuration and optionally rekeys the client ID.
+
   Sometimes we wish to move a client from one org ID to another. This
   requires updating the config on the client and rekeying the client.
 
@@ -56,16 +68,17 @@ sources:
           AND Config.Client.ca_certificate =~ "(?ms)-----BEGIN CERTIFICATE-----.+-----END CERTIFICATE-----"
           AND Config.Client.nonce
 
+        LET ExpandedConfigPath = expand(path=ConfigPath)
         LET CheckConfigPath(ConfigPath) = SELECT * FROM stat(filename=ConfigPath)
-        LET Config &lt;=  parse_yaml(accessor="data", filename=ConfigYaml)
+        LET Config <=  parse_yaml(accessor="data", filename=ConfigYaml)
 
         LET DoIt = if(condition=ValidateConfig(Config=Config),
           else=log(level="ERROR", message="Config is invalid") AND FALSE,
-          then=if(condition=CheckConfigPath(ConfigPath=ConfigPath).OSPath,
+          then=if(condition=CheckConfigPath(ConfigPath=ExpandedConfigPath).OSPath,
              else=log(level="ERROR",
                       message="Config Path %v is invalid",
-                      args=ConfigPath) AND FALSE,
-             then=copy(accessor="data", filename=ConfigYaml, dest=ConfigPath)
+                      args=ExpandedConfigPath) AND FALSE,
+             then=copy(accessor="data", filename=ConfigYaml, dest=ExpandedConfigPath)
                 AND if(condition= RekeyClient,
                 then=log(message="Rekeying in %v seconds ", args=WaitPeriod)
                      AND rekey(wait=WaitPeriod),
@@ -81,7 +94,7 @@ sources:
 
         LET ClientId = "C.622d19ea21109231"
         LET RequiredOrgId = "O123"
-        LET ConfigPath = "C:/Program Files/Velociraptor/client.config.yaml"
+        LET ConfigPath = "%ProgramFiles%/Velociraptor/client.config.yaml"
 
         SELECT _client_config AS Config, OrgId ,
             collect_client(artifacts="Admin.Client.UpdateClientConfig",
@@ -91,6 +104,6 @@ sources:
         FROM orgs()
         WHERE OrgId = RequiredOrgId
         LIMIT 1
+````
 
-</code></pre>
 

@@ -1,7 +1,13 @@
 ---
 title: Windows.EventLogs.Evtx
+description: "Parses and returns events from Windows evtx logs."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
 Parses and returns events from Windows evtx logs.
@@ -38,7 +44,9 @@ Consider filtering results using path, channel, and ID regexes if necessary.
 Inspired by others in `Windows.EventLogs.*`, many by Matt Green (@mgreen27).
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.EventLogs.Evtx
 
 description: |
@@ -106,10 +114,19 @@ parameters:
     default: "."
     type: regex
 
+export: |
+  LET Levels <= dict(
+    `0`='Always',
+    `1`='Critical',
+    `2`='Error',
+    `3`='Warning',
+    `4`='Info',
+    `5`='Verbose')
+
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
 
       // expand provided glob into a list of paths on the file system (fs)
       LET fspaths =
@@ -129,10 +146,10 @@ sources:
               FROM parse_evtx(filename=OSPath, accessor=Accessor)
               WHERE
                 if(condition=StartDate,
-                   then=TimeCreated &gt;= timestamp(string=StartDate),
+                   then=TimeCreated >= timestamp(string=StartDate),
                    else=true)
                 AND if(condition=EndDate,
-                       then=TimeCreated &lt;= timestamp(string=EndDate),
+                       then=TimeCreated <= timestamp(string=EndDate),
                        else=true)
                 AND Channel =~ ChannelRegex
                 AND str(str=EventID) =~ IDRegex
@@ -141,5 +158,65 @@ sources:
 
       SELECT * FROM evtxsearch(pathList=fspaths)
 
-</code></pre>
+    notebook:
+       - name: Simplified view
+         type: vql_suggestion
+         template: |
+            /*
+            # Simplified log view
+            */
+            LET S = scope()
+
+            SELECT TimeCreated,
+                   System AS _System,
+                   EventID,
+                   get(item=Levels, field=str(str=System.Level)) AS Level,
+                   S.System.Execution.ProcessID AS PID,
+                   Message,
+                   S.EventData AS Data
+            FROM source()
+            ORDER BY TimeCreated
+
+       - name: Event count as plot
+         type: vql_suggestion
+         template: |
+            /*
+            # Event count
+
+            {{ define "Events" }}
+            SELECT int(int=TimeCreated.Unix / 60) * 60 AS MinBin,
+                                    count() AS Count
+              FROM source()
+              GROUP BY MinBin
+              ORDER BY MinBin
+            {{ end }}
+            {{ Query "Events" | TimeChart }}
+            */
+
+            LET Dummy <= 42
+
+       - type: vql_suggestion
+         name: Timeline
+         template: |
+          /*
+          # EVTX timeline
+          {{ Timeline "EVTX" }}
+          */
+          LET S = scope()
+
+          LET _ <= timeline_add(key='TimeCreated',
+                          name='evtx',
+                          timeline='EVTX',
+                          query={
+              SELECT TimeCreated,
+                    System AS _System,
+                    EventID,
+                    get(item=Levels, field=str(str=System.Level)) AS Level,
+                    S.System.Execution.ProcessID AS PID,
+                    Message,
+                    S.EventData AS Data
+              FROM source()
+              ORDER BY TimeCreated
+            })````
+
 

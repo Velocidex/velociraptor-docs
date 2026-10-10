@@ -1,12 +1,17 @@
 ---
 title: Windows.Applications.SBECmd
+description: "Executes Eric Zimmerman's SBECmd tool to parse Shellbags and capture\nthe results."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Execute Eric Zimmerman's SBECmd and return output for analysis.
-
-SBECmd is a CLI for analyzing Shellbags data.
+Executes Eric Zimmerman's SBECmd tool to parse Shellbags and capture
+the results.
 
 Objective:
 
@@ -20,40 +25,40 @@ Interpretation:
 - Stores information about which folders were most recently
   browsed by the user.
 
-NOTE: Velociraptor can now parse Shellbags natively with the
+NOTE: This artifact is deprecated and will be removed in future
+since Velociraptor can now parse Shellbags natively with the
 `Windows.Forensics.Shellbags` artifact.
 
-MITRE ATT&CK ID: TA0009 - Collection
 
+---
 
-<pre><code class="language-yaml">
+````yaml
 name: Windows.Applications.SBECmd
 description: |
-    Execute Eric Zimmerman's SBECmd and return output for analysis.
+  Executes Eric Zimmerman's SBECmd tool to parse Shellbags and capture
+  the results.
 
-    SBECmd is a CLI for analyzing Shellbags data.
+  Objective:
 
-    Objective:
+  - Find which folders were accessed on the local machine, the
+    network, and/or removable devices. Evidence of previously
+    existing folders after deletion/overwrite. When certain folders
+    were accessed.
 
-    - Find which folders were accessed on the local machine, the
-      network, and/or removable devices. Evidence of previously
-      existing folders after deletion/overwrite. When certain folders
-      were accessed.
+  Interpretation:
 
-    Interpretation:
+  - Stores information about which folders were most recently
+    browsed by the user.
 
-    - Stores information about which folders were most recently
-      browsed by the user.
-
-    NOTE: Velociraptor can now parse Shellbags natively with the
-    `Windows.Forensics.Shellbags` artifact.
-
-    MITRE ATT&amp;CK ID: TA0009 - Collection
+  NOTE: This artifact is deprecated and will be removed in future
+  since Velociraptor can now parse Shellbags natively with the
+  `Windows.Forensics.Shellbags` artifact.
 
 author: Eduardo Mattos - @eduardfir
 
 reference:
   - https://github.com/EricZimmerman
+  - "MITRE ATT&CK ID: TA0009 - Collection"
 
 type: CLIENT
 
@@ -84,11 +89,11 @@ parameters:
 sources:
   - query: |
       -- get context on target binary
-      LET payload &lt;= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
+      LET payload <= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
                     ToolName="SBECmd", IsExecutable=TRUE)
 
       -- build tempfolder for output
-      LET tempfolder &lt;= tempdir(remove_last=TRUE)
+      LET tempfolder <= tempdir(remove_last=TRUE)
 
       -- get users with profiles
       LET UserProfiles = SELECT
@@ -98,7 +103,7 @@ sources:
       WHERE Name =~ userRegex and HomeDirectory =~ "Users"
 
       -- execute payload
-      LET deploy &lt;= SELECT * FROM foreach(row=UserProfiles,
+      LET deploy <= SELECT * FROM foreach(row=UserProfiles,
                     query={
                         SELECT *, Name
                         FROM execve(argv=[
@@ -123,7 +128,7 @@ sources:
            condition=UploadFiles,
            then={
              SELECT Name, upload(file=OSPath,
-                                 name=relpath(base=tempfile, path=OSPath)) as FileDetails
+                                 name=relpath(base=tempfolder, path=OSPath)) as FileDetails
              FROM glob(globs="/**", root=tempfolder)
            })
       },
@@ -136,6 +141,6 @@ sources:
            })
       })
       WHERE Stdout =~ "SBECmd"
+````
 
-</code></pre>
 

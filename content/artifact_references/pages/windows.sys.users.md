@@ -1,24 +1,38 @@
 ---
 title: Windows.Sys.Users
+description: "Lists user accounts that have logged on locally by inspecting\nregistry profile list keys for locally-created profiles."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-List User accounts by inspecting registry keys. This method is a
-reliable indicator for users who have physically logged into the
-system and thereby created local profiles.
+Lists user accounts that have logged on locally by inspecting
+registry profile list keys for locally-created profiles.
+
+This method is a reliable way of identifying which users have
+physically logged into the system and thereby created local
+profiles.
 
 This will not include domain users or the output from `NetUserEnum`
 - you should collect the `Windows.Sys.AllUsers` artifact to get all
 possible users on the system.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Sys.Users
 description: |
-  List User accounts by inspecting registry keys. This method is a
-  reliable indicator for users who have physically logged into the
-  system and thereby created local profiles.
+  Lists user accounts that have logged on locally by inspecting
+  registry profile list keys for locally-created profiles.
+  
+  This method is a reliable way of identifying which users have
+  physically logged into the system and thereby created local
+  profiles.
 
   This will not include domain users or the output from `NetUserEnum`
   - you should collect the `Windows.Sys.AllUsers` artifact to get all
@@ -27,6 +41,9 @@ description: |
 parameters:
   - name: remoteRegKey
     default: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\*
+
+implied_permissions:
+  - FILESYSTEM_WRITE
 
 imports:
   - Windows.Sys.AllUsers
@@ -58,6 +75,6 @@ sources:
                    High=S.LocalProfileUnloadTimeHigh, Low=S.LocalProfileUnloadTimeLow)
            ) AS Data
         FROM read_reg_key(globs=remoteRegKey, accessor="registry")
+````
 
-</code></pre>
 

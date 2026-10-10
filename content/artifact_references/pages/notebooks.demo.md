@@ -1,16 +1,27 @@
 ---
 title: Notebooks.Demo
+description: "Demonstrates notebook functionality with sample VQL and tool\nreferences.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [notebook]
+build:
+  list: never
 ---
 
-A notebook demonstrating features of notebooks
+Demonstrates notebook functionality with sample VQL and tool
+references.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
+
 name: Notebooks.Demo
 description: |
-  A notebook demonstrating features of notebooks
+  Demonstrates notebook functionality with sample VQL and tool
+  references.
 
 type: NOTEBOOK
 
@@ -18,6 +29,7 @@ type: NOTEBOOK
 tools:
   - name: Autorun_amd64
     url: https://live.sysinternals.com/tools/autorunsc64.exe
+    serve_locally: true
 
 parameters:
   - name: StartDate
@@ -33,6 +45,6 @@ sources:
       template: |
         SELECT StartDate, AnInteger, Tool_Autorun_amd64_URL
         FROM scope()
+````
 
-</code></pre>
 

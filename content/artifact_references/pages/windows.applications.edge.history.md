@@ -1,16 +1,26 @@
 ---
 title: Windows.Applications.Edge.History
+description: "Enumerates Edge browsing history (URLs, visit times, titles) from\nuser profiles.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Enumerate the users chrome history.
+Enumerates Edge browsing history (URLs, visit times, titles) from
+user profiles.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Applications.Edge.History
 description: |
-  Enumerate the users chrome history.
+  Enumerates Edge browsing history (URLs, visit times, titles) from
+  user profiles.
 
 parameters:
   - name: historyGlobs
@@ -33,6 +43,6 @@ sources:
       SELECT * FROM Artifact.Windows.Applications.Chrome.History(
          historyGlobs=historyGlobs, urlSQLQuery=urlSQLQuery,
          userRegex=userRegex)
+````
 
-</code></pre>
 

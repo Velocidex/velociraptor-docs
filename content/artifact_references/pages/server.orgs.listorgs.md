@@ -1,26 +1,38 @@
 ---
 title: Server.Orgs.ListOrgs
+description: "Lists all configured organizations on the Velociraptor server with\noptional downloadable client config for each org."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
 
-This server artifact will list all currently configured orgs on the server.
+Lists all configured organizations on the Velociraptor server with
+optional downloadable client config for each org.
 
 NOTE: This artifact is only available to users with the `ORG_ADMIN`
-permission, which is normally only granted to users with the administrator
-role within the root org (that means you might need to switch to the root org
-in the GUI before collecting this artifact).
+permission, which is normally only granted to users with the
+`administrator` role within the root org (that means you might need
+to switch to the root org in the GUI before collecting this
+artifact).
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Orgs.ListOrgs
 description: |
-  This server artifact will list all currently configured orgs on the server.
+  Lists all configured organizations on the Velociraptor server with
+  optional downloadable client config for each org.
 
   NOTE: This artifact is only available to users with the `ORG_ADMIN`
-  permission, which is normally only granted to users with the administrator
-  role within the root org (that means you might need to switch to the root org
-  in the GUI before collecting this artifact).
+  permission, which is normally only granted to users with the
+  `administrator` role within the root org (that means you might need
+  to switch to the root org in the GUI before collecting this
+  artifact).
 
 type: SERVER
 
@@ -40,6 +52,6 @@ sources:
     }, else={
       SELECT * FROM orgs()
     })
+````
 
-</code></pre>
 

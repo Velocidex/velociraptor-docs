@@ -1,13 +1,20 @@
 ---
 title: Linux.Sys.BashHistory
+description: "Provides grep-like searching of Bash and alternate shell history log\nfiles."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact enables grep-like searching of Bash and alternate shell history
+Provides grep-like searching of Bash and alternate shell history log
 files.
 
-It can also be used to target other files located in the user profile such as:
+It can also be used to target other files located in user profile
+directories such as:
 
 - `*_profile` and `*rc` files.
 - shell history: `/{root,home/*}/.*_history`
@@ -17,14 +24,17 @@ It can also be used to target other files located in the user profile such as:
 Tags: .bash_history .bash_profile .bashrc
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Sys.BashHistory
 author: "Matt Green - @mgreen27"
 description: |
-  This artifact enables grep-like searching of Bash and alternate shell history
+  Provides grep-like searching of Bash and alternate shell history log
   files.
 
-  It can also be used to target other files located in the user profile such as:
+  It can also be used to target other files located in user profile
+  directories such as:
 
   - `*_profile` and `*rc` files.
   - shell history: `/{root,home/*}/.*_history`
@@ -32,7 +42,6 @@ description: |
   - `*rc` file: `/{root,home/*}/.*rc`
 
   Tags: .bash_history .bash_profile .bashrc
-
 
 parameters:
   - name: TargetGlob
@@ -59,6 +68,6 @@ sources:
                     then= Line =~ WhitelistRegex,
                     else= FALSE)
           })
+````
 
-</code></pre>
 

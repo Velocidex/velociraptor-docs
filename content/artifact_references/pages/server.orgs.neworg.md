@@ -1,38 +1,48 @@
 ---
 title: Server.Orgs.NewOrg
+description: "Creates a new Velociraptor organization and assigns the current user\nas the org administrator."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
 
-This server artifact will create a new org and assign the current user as an
-admin to it.
+Creates a new Velociraptor organization and assigns the current user
+as the org administrator.
 
 NOTE: This artifact is only available to users with the `ORG_ADMIN`
-permission, which is normally only granted to users with the administrator
-role within the root org (that means you might need to switch to the root org
-in the GUI before collecting this artifact).
+permission, which is normally only granted to users with the
+`administrator` role within the root org (that means you might need
+to switch to the root org in the GUI before collecting this
+artifact).
 
-This artifact will also run a set of server artifacts in the new org. If you
-need to run any other initialization steps in the new org, you can package
-those into one or more server artifacts and include those in the
-`InitialArtifacts` parameter.
+This artifact will also run a set of server artifacts in the new
+org. If you need to run any other initialization steps in the new
+org, you can package those into one or more server artifacts and
+include those in the `InitialArtifacts` parameter.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Orgs.NewOrg
 description: |
-  This server artifact will create a new org and assign the current user as an
-  admin to it.
+  Creates a new Velociraptor organization and assigns the current user
+  as the org administrator.
 
   NOTE: This artifact is only available to users with the `ORG_ADMIN`
-  permission, which is normally only granted to users with the administrator
-  role within the root org (that means you might need to switch to the root org
-  in the GUI before collecting this artifact).
+  permission, which is normally only granted to users with the
+  `administrator` role within the root org (that means you might need
+  to switch to the root org in the GUI before collecting this
+  artifact).
 
-  This artifact will also run a set of server artifacts in the new org. If you
-  need to run any other initialization steps in the new org, you can package
-  those into one or more server artifacts and include those in the
-  `InitialArtifacts` parameter.
+  This artifact will also run a set of server artifacts in the new
+  org. If you need to run any other initialization steps in the new
+  org, you can package those into one or more server artifacts and
+  include those in the `InitialArtifacts` parameter.
 
 type: SERVER
 
@@ -54,11 +64,11 @@ parameters:
 
 sources:
 - query: |
-    LET org_record &lt;= org_create(name=OrgName)
-    LET _ &lt;= log(message="Created New Org with ID %v", args=org_record.id)
+    LET org_record <= org_create(name=OrgName)
+    LET _ <= log(message="Created New Org with ID %v", args=org_record.id)
 
     -- Give the current user permissions to operate in the org.
-    LET _ &lt;= user_create(orgs=org_record.id,
+    LET _ <= user_create(orgs=org_record.id,
                          roles=["administrator", "org_admin"],
                          user=whoami())
 
@@ -68,6 +78,6 @@ sources:
         SELECT collect_client(artifacts=InitialArtifacts.Artifact, client_id="server")
         FROM scope()
       }, org_id=org_record.id, env=dict(InitialArtifacts=InitialArtifacts))
+````
 
-</code></pre>
 

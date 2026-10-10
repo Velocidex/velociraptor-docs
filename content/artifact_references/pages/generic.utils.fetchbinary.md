@@ -1,12 +1,20 @@
 ---
 title: Generic.Utils.FetchBinary
+description: "A utility artifact which fetches a binary (or data file) from a URL\nand caches it on disk."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-A utility artifact which fetches a binary from a URL and caches it on disk.
-We verify the hash of the binary on disk and if it does not match we fetch it again
-from the source URL.
+A utility artifact which fetches a binary (or data file) from a URL
+and caches it on disk.
+
+It verifies the hash of the binary on disk, and if it does not
+match fetches it again from the source URL.
 
 This artifact is designed to be called from other artifacts. The
 binary path will be emitted in the OSPath column.
@@ -24,12 +32,16 @@ Older server versions only supported a single URL but current
 versions send a set of URLs to try in order.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Utils.FetchBinary
 description: |
-   A utility artifact which fetches a binary from a URL and caches it on disk.
-   We verify the hash of the binary on disk and if it does not match we fetch it again
-   from the source URL.
+   A utility artifact which fetches a binary (or data file) from a URL
+   and caches it on disk.
+   
+   It verifies the hash of the binary on disk, and if it does not
+   match fetches it again from the source URL.
 
    This artifact is designed to be called from other artifacts. The
    binary path will be emitted in the OSPath column.
@@ -38,10 +50,10 @@ description: |
    field, the server will populate the following environment
    variables.
 
-   Tool_&lt;ToolName&gt;_HASH     - The hash of the binary
-   Tool_&lt;ToolName&gt;_FILENAME - The filename to store it.
-   Tool_&lt;ToolName&gt;_URL      - The URL to fetch the binary from.
-   Tool_&lt;ToolName&gt;_URLs     - A set of possible URLs to fetch the binary from.
+   Tool_<ToolName>_HASH     - The hash of the binary
+   Tool_<ToolName>_FILENAME - The filename to store it.
+   Tool_<ToolName>_URL      - The URL to fetch the binary from.
+   Tool_<ToolName>_URLs     - A set of possible URLs to fetch the binary from.
 
    Older server versions only supported a single URL but current
    versions send a set of URLs to try in order.
@@ -70,6 +82,10 @@ parameters:
       If true we use a temporary directory to hold the binary and
       remove it afterwards
 
+  - name: IgnoreErrors
+    type: bool
+    description: If set we ignore errors and let the caller handle it.
+
 implied_permissions:
   - SERVER_ADMIN
   - FILESYSTEM_WRITE
@@ -80,37 +96,37 @@ sources:
       LET S = scope()
 
       -- 1GB max
-      LET HASH_MAX_SIZE &lt;= S.HASH_MAX_SIZE || 1000000000
+      LET HASH_MAX_SIZE <= S.HASH_MAX_SIZE || 1000000000
 
       -- Optionally accepts multiple download URLs from the server
       LET ParseUrls(Url) = parse_json_array(data=Url || '[]')
 
-      LET args &lt;= dict(
+      LET args <= dict(
         ToolHash=get(field="Tool_" + ToolName + "_HASH"),
         ToolFilename=get(field="Tool_" + ToolName + "_FILENAME"),
         ToolURL=get(field="Tool_" + ToolName + "_URL"),
         ToolURLs=ParseUrls(Url=get(field="Tool_" + ToolName + "_URLs")))
 
-      LET _ &lt;= if(condition=NOT args.ToolFilename,
+      LET _ <= if(condition=NOT args.ToolFilename,
        then=log(level="ERROR",
          message="Tool %v not configured by the server. Did you define it as an artifact tool? %v", args=[ToolName, args]))
 
       // By default the temp directory is created inside a trusted directory.
-      LET TempDir &lt;= tempdir(remove_last=TRUE)
+      LET TempDir <= tempdir(remove_last=TRUE)
 
-      // Where store the file. If the user specified TemporaryOnly we
+      // Where to store the file. If the user specified TemporaryOnly we
       // remove it with the tempdir, otherwise we store it in the trusted
       // directory.
-      LET binpath &lt;= if(condition=TemporaryOnly, then=TempDir, else=dirname(path=TempDir))
+      LET binpath <= if(condition=TemporaryOnly, then=TempDir, else=dirname(path=TempDir))
 
       // Where we should save the file - use the filename as specified by the server.
-      LET ToolPath &lt;= path_join(components=[binpath, args.ToolFilename || "Unknown"])
+      LET ToolPath <= path_join(components=[binpath, args.ToolFilename || "Unknown"])
 
       // Download the file from the binary URL and store in the local
       // binary cache.
       // If http_client support multiple URLs use them.
       LET download_multiple = SELECT * FROM if(condition=args.ToolURLs
-        AND version(plugin="http_client") &gt; 2
+        AND version(plugin="http_client") > 2
         AND log(
              message="URLs for %v are at %v. The tool has a hash of %v", args=[
                  args.ToolFilename , args.ToolURLs, args.ToolHash
@@ -146,8 +162,9 @@ sources:
                 AND Hash.SHA256 = args.ToolHash
         }, else={
            SELECT * FROM scope()
-           WHERE NOT log(message="No valid setup - is tool " + ToolName +
-                        " configured in the server inventory?")
+           WHERE NOT log(
+             level="ERROR", message="No valid setup - is tool " + ToolName +
+             " configured in the server inventory?")
         })
 
       // Check if the existing file in the binary file cache matches
@@ -174,7 +191,15 @@ sources:
                  args=[timeout])) AND sleep(time=timeout) AND FALSE
         },
         d=download_multiple,
-        e=download_single)
+        e=download_single,
+        f={
+           -- Emit an error message to fail the collection.
+           SELECT *
+           FROM scope()
+           WHERE if(condition=NOT IgnoreErrors,
+                    then=log(message="tool %v not available!", level="ERROR", args=ToolName))
+             AND FALSE
+        })
+````
 
-</code></pre>
 

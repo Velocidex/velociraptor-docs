@@ -1,32 +1,40 @@
 ---
 title: Server.Utils.BackupS3
+description: "Automatically zips and uploads collected flow results to an\nS3-compatible bucket."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 ---
 
-This server monitoring artifact will automatically zip and backup
-any collected artifacts to s3.
+Automatically zips and uploads collected flow results to an
+S3-compatible bucket.
 
 You will need to provide credentials to upload to the bucket. The
-credentials can be given as parameters or they will be taken from
-the server metadata (as DefaultBucket, DefaultRegion,
-S3AccessKeyId, S3AccessSecret, S3AccessToken)
+credentials can be provided as parameters or they will be taken from
+the server metadata (as DefaultBucket, DefaultRegion, S3AccessKeyId,
+S3AccessSecret, S3AccessToken)
 
 Thanks to @shortxstack and @Recon_InfoSec
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.BackupS3
 description: |
-   This server monitoring artifact will automatically zip and backup
-   any collected artifacts to s3.
+  Automatically zips and uploads collected flow results to an
+  S3-compatible bucket.
 
-   You will need to provide credentials to upload to the bucket. The
-   credentials can be given as parameters or they will be taken from
-   the server metadata (as DefaultBucket, DefaultRegion,
-   S3AccessKeyId, S3AccessSecret, S3AccessToken)
+  You will need to provide credentials to upload to the bucket. The
+  credentials can be provided as parameters or they will be taken from
+  the server metadata (as DefaultBucket, DefaultRegion, S3AccessKeyId,
+  S3AccessSecret, S3AccessToken)
 
-   Thanks to @shortxstack and @Recon_InfoSec
+  Thanks to @shortxstack and @Recon_InfoSec
 
 type: SERVER_EVENT
 
@@ -35,23 +43,23 @@ parameters:
      default: "."
      description: A regular expression to select which artifacts to upload
      type: regex
-     
+
    - name: Bucket
      description: The bucket to upload to (blank to use server metadata)
 
    - name: Endpoint
-     
+
    - name: Region
-   
+
    - name: CredentialsKey
-   
+
    - name: CredentialsSecret
-   
+
    - name: CredentialsToken
-   
+
    - name: Secret
      description: A Secret name to use for uploading.
-     
+
    - name: RemoveDownloads
      type: bool
      description: If set, remove the flow export files after upload
@@ -60,7 +68,7 @@ sources:
   - query: |
       -- Allow these settings to be set by the artifact parameter or
       -- the server metadata.
-      LET completions = SELECT *,
+      LET completions = SELECT ClientId, FlowId,
          client_info(client_id=ClientId).os_info.fqdn AS Fqdn,
          create_flow_download(client_id=ClientId,
              flow_id=FlowId, wait=TRUE) AS FlowDownload
@@ -83,6 +91,6 @@ sources:
       WHERE Upload OR
         if(condition=RemoveDownloads,
            then=rm(filename=file_store(path=FlowDownload)))
+````
 
-</code></pre>
 

@@ -1,14 +1,27 @@
 ---
 title: Windows.Applications.ChocolateyPackages
+description: "Lists Chocolatey packages installed on a Windows system by parsing\n.nuspec files.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Chocolatey packages installed in a system.
+Lists Chocolatey packages installed on a Windows system by parsing
+.nuspec files.
 
-<pre><code class="language-yaml">
+
+---
+
+````yaml
 name: Windows.Applications.ChocolateyPackages
-description: Chocolatey packages installed in a system.
+description: |
+  Lists Chocolatey packages installed on a Windows system by parsing
+  .nuspec files.
+
 parameters:
   - name: ChocolateyInstall
     default: ""
@@ -43,6 +56,6 @@ sources:
                    Metadata.package.metadata.licenseUrl as License
             FROM files
         })
+````
 
-</code></pre>
 

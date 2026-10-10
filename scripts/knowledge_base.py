@@ -68,7 +68,11 @@ def getTags(description):
   result = []
   for line in content_regex.finditer(description):
     for m in hash_regex.finditer(line.group(0)):
-      result.append(m.group(1))
+      # Tags are normalized: lowercased, at least 2 characters long, and
+      # must contain at least one alphabetic character.
+      tag = m.group(1).lower()
+      if len(tag) >= 2 and any(c.isalpha() for c in tag):
+        result.append(tag)
 
   return result
 
@@ -88,7 +92,11 @@ def getAuthor(record, yaml_filename):
 
   commits = None
   try:
-    commits = json.loads(urllib.request.urlopen(commits_url + "?path=" + path).read())
+    req = urllib.request.Request(commits_url + "?path=" + path)
+    token = os.getenv('GITHUB_TOKEN')
+    if token:
+      req.add_header('Authorization', f'token {token}')
+    commits = json.loads(urllib.request.urlopen(req).read())
   except urllib.error.HTTPError as e:
     print("HTTPError: %s" %e)
 
@@ -120,7 +128,7 @@ def build_markdown():
 
     for name in files:
       if (not name.endswith(".md") or
-          name == '_index.md'):
+          name in ('_index.md', 'index.md')):
         continue
 
       md_filename = os.path.join(root, name)
@@ -139,7 +147,7 @@ def build_markdown():
         base_name = os.path.splitext(md_filename)[0]
         base_name = os.path.relpath(base_name, kb_root_directory)
         dirname = os.path.join(kb_root_directory, base_name)
-        filename_name = os.path.join(dirname, "_index.md")
+        filename_name = os.path.join(dirname, "index.md")
 
         ensure_dir_exists(dirname)
 

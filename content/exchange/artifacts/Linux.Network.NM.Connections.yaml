@@ -3,7 +3,7 @@ author: 'Andreas Misje - @misje'
 description: |
   NetworkManager is a popular high-level interface for configuring
   networks in Linux systems, in particular Ubuntu and other Debian-based
-  flavours. This artifact lists the NetworkManager state, all configured
+  flavors. This artifact lists the NetworkManager state, all configured
   connections and their settings, as well as when the connections were
   last activated. A list of BSSIDs per connection is also retrieved.
 
@@ -15,7 +15,7 @@ description: |
   connections defined in /etc/network/interfaces.
 
   Whether the connections are currently active is not stored in file
-  and must be queried using using nmcli or through dbus. This artifact
+  and must be queried using nmcli or through dbus. This artifact
   runs nmcli as an external program to retrieve this information.
   Information such as IP addresses, routes, DNS servers, available Wi-Fi
   networks and other settings will also be collected through nmcli.

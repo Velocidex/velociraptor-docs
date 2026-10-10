@@ -1,37 +1,49 @@
 ---
 title: Server.Monitor.ClientConflict
+description: "Detects client ID conflicts on the server and forces affected\nclients to rekey with a new identity."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 ---
 
-Forces conflicting clients to rekey themselves.
+Detects client ID conflicts on the server and forces affected
+clients to rekey with a new identity.
 
-Sometimes the Velociraptor client is installed into a VM template image with
-an existing writeback file. In this case each cloned instance will start the
-client with the same client id. When multiple clients attempt to
-simultaneously connect to the server with the same client id, the server will
-reject them with the HTTP "409 Rejected" response.
+Sometimes the Velociraptor client is installed into a VM template
+image with an existing writeback file. In this case each cloned
+instance will start the client with the same client ID. When
+multiple clients attempt to simultaneously connect to the server
+with the same client ID, the server will reject them with the HTTP
+"409 Rejected" response.
 
-This artifact detects such conflicts and instructs the affected clients to
-generate a new client id (saving their new keys into their writeback files)
-and then reconnect with the server.
+This artifact detects such conflicts and instructs the affected
+clients to generate a new client ID (saving their new keys into
+their writeback files) and then reconnect with the server.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Monitor.ClientConflict
 type: SERVER_EVENT
 description: |
-  Forces conflicting clients to rekey themselves.
+  Detects client ID conflicts on the server and forces affected
+  clients to rekey with a new identity.
 
-  Sometimes the Velociraptor client is installed into a VM template image with
-  an existing writeback file. In this case each cloned instance will start the
-  client with the same client id. When multiple clients attempt to
-  simultaneously connect to the server with the same client id, the server will
-  reject them with the HTTP "409 Rejected" response.
+  Sometimes the Velociraptor client is installed into a VM template
+  image with an existing writeback file. In this case each cloned
+  instance will start the client with the same client ID. When
+  multiple clients attempt to simultaneously connect to the server
+  with the same client ID, the server will reject them with the HTTP
+  "409 Rejected" response.
 
-  This artifact detects such conflicts and instructs the affected clients to
-  generate a new client id (saving their new keys into their writeback files)
-  and then reconnect with the server.
+  This artifact detects such conflicts and instructs the affected
+  clients to generate a new client ID (saving their new keys into
+  their writeback files) and then reconnect with the server.
 
 sources:
   - query: |
@@ -40,6 +52,6 @@ sources:
             artifacts="Generic.Client.Rekey", env=dict())
       AS NewCollection
       FROM watch_monitoring(artifact="Server.Internal.ClientConflict")
+````
 
-</code></pre>
 

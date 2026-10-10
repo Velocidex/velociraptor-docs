@@ -1,7 +1,7 @@
 name: Windows.Detection.BruteRatel
 author: Luke Fardell
 description: |
-  This hunt runts the Immersive Labs yara rule (https://github.com/Immersive-Labs-Sec/BruteRatel-DetectionTools/blob/main/BruteRatel.yar) across select files to identify the known Brute Ratel config strings.
+  This hunt runts the [Immersive Labs yara rule](https://github.com/Immersive-Labs-Sec/BruteRatel-DetectionTools/blob/main/BruteRatel.yar) across select files to identify the known Brute Ratel config strings.
 
 
 type: CLIENT

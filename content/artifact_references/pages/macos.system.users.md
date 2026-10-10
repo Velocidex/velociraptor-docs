@@ -1,18 +1,28 @@
 ---
 title: MacOS.System.Users
+description: "Collects information about the local users on the system."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact collects information about the local users on the
-system. The information is stored in plist files.
+Collects information about the local users on the system.
+
+On macOS this information is stored in plist files.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: MacOS.System.Users
 description: |
-  This artifact collects information about the local users on the
-  system. The information is stored in plist files.
+  Collects information about the local users on the system.
+  
+  On macOS this information is stored in plist files.
 
 parameters:
   - name: UserPlistGlob
@@ -50,6 +60,6 @@ sources:
          SELECT * FROM UserDetails(OSPath= OSPath)
       })
       WHERE NOT OnlyShowRealUsers OR NOT UserShell =~ 'false'
+````
 
-</code></pre>
 

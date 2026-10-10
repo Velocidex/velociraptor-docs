@@ -1,26 +1,34 @@
 ---
 title: Linux.Events.ProcessExecutions
+description: "Collects process execution logs from the Linux kernel."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
 
-This artifact collects process execution logs from the Linux kernel.
+Collects process execution logs from the Linux kernel.
 
 This artifact relies on the presence of `auditctl` usually included
-in the auditd package. On Ubuntu you can install it by using:
+in the `auditd` package. On Ubuntu you can install it using:
 
 ```
 apt-get install auditd
 ```
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Events.ProcessExecutions
 description: |
-  This artifact collects process execution logs from the Linux kernel.
+  Collects process execution logs from the Linux kernel.
 
   This artifact relies on the presence of `auditctl` usually included
-  in the auditd package. On Ubuntu you can install it by using:
+  in the `auditd` package. On Ubuntu you can install it using:
 
   ```
   apt-get install auditd
@@ -36,12 +44,12 @@ required_permissions:
 parameters:
   - name: pathToAuditctl
     default: /sbin/auditctl
-    description: We depend on auditctl to install the correct process execution rules.
+    description: We depend on `auditctl` to install the correct process execution rules.
 
 sources:
   - query: |
      // Install the auditd rule if possible.
-     LET _ &lt;= SELECT * FROM execve(argv=[pathToAuditctl, "-a",
+     LET _ <= SELECT * FROM execve(argv=[pathToAuditctl, "-a",
           "exit,always", "-F", "arch=b64", "-S", "execve", "-k", "procmon"])
 
      LET exec_log = SELECT timestamp(string=Timestamp) AS Time, Sequence,
@@ -55,18 +63,18 @@ sources:
        FROM audit()
        WHERE "procmon" in Tags AND Result = 'success'
 
-     // Cache Uid -&gt; Username mapping.
-     LET users &lt;= SELECT User, atoi(string=Uid) AS Uid
+     // Cache Uid -> Username mapping.
+     LET system_users <= SELECT User, atoi(string=Uid) AS Uid
        FROM Artifact.Linux.Sys.Users()
 
      // Enrich the original artifact with more data.
      SELECT Time, Pid, Ppid, UserId,
-              { SELECT User from users WHERE Uid = UserId} AS User,
+              { SELECT User from system_users WHERE Uid = UserId} AS User,
               regex_replace(source=read_file(filename= "/proc/" + PPID + "/cmdline"),
                             replace=" ", re="[\\0]") AS Parent,
               CmdLine,
               Exe, CWD
        FROM exec_log
+````
 
-</code></pre>
 

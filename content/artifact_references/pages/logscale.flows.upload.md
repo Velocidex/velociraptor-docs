@@ -1,20 +1,26 @@
 ---
 title: LogScale.Flows.Upload
+description: "Forwards completed flow results to LogScale with configurable\nbatching and artifact filtering.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 ---
 
-This server side event monitoring artifact waits for new artifacts
-to be collected from endpoints and automatically posts those to a
-LogScale (formerly Humio) ingestion endpoint.
+Forwards completed flow results to LogScale with configurable
+batching and artifact filtering.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: LogScale.Flows.Upload
 description: |
-  This server side event monitoring artifact waits for new artifacts
-  to be collected from endpoints and automatically posts those to a
-  LogScale (formerly Humio) ingestion endpoint.
+  Forwards completed flow results to LogScale with configurable
+  batching and artifact filtering.
 
 type: SERVER_EVENT
 
@@ -27,7 +33,7 @@ parameters:
     description: Ingest token for API
     type: string
   - name: tagFields
-    description: Comma-separated list of field names to use as tags in the message; Can be renamed with &lt;oldname&gt;=&lt;newname&gt;.
+    description: Comma-separated list of field names to use as tags in the message; Can be renamed with <oldname>=<newname>.
     default:
     type: string
   - name: numThreads
@@ -91,6 +97,6 @@ sources:
           http_timeout=httpTimeout,
           debug=debug,
           stats_interval=statsInterval)
+````
 
-</code></pre>
 

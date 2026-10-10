@@ -1,0 +1,6 @@
+{{- /* Hover-based link prefetching (assets/js/prefetch.js). */ -}}
+{{- $jsPrefetch := resources.Get "js/prefetch.js" -}}
+{{- if hugo.IsProduction -}}
+  {{- $jsPrefetch = $jsPrefetch | minify | fingerprint -}}
+{{- end -}}
+<script defer src="{{ $jsPrefetch.RelPermalink }}" integrity="{{ $jsPrefetch.Data.Integrity }}"></script>

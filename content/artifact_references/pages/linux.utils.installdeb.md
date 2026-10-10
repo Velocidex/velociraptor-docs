@@ -1,67 +1,77 @@
 ---
 title: Linux.Utils.InstallDeb
+description: "Installs .deb packages on Debian-based systems with optional debconf\nanswers configuration."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Install a deb package and configure it with debconf answers.
+Installs .deb packages on Debian-based systems with optional debconf
+answers configuration.
 
-The package may either be specified by name, as an uploaded file or as a
-"tool". If the package already exists, it may be optionally reconfigured with
-debconf answers.
+The package may either be specified by name, as an uploaded file or
+as a "tool". If the package already exists, it may be optionally
+reconfigured with debconf answers.
 
-There are three ways to specify a package (listed in order of preference if
-all are set):
+There are three ways to specify a package (listed in order of
+preference if all are set):
 
-  - DebFile: An uploaded deb package.
+- DebFile: An uploaded deb package.
 
-  - DebTool: A deb package provided as a tool, specified by tool name. Since
-    this is a utility artifact meant to be called by other artifacts, the
-    tool should be specified in the artifact calling this artifact.
-    Alternatively, configure the tool by using
-    [VQL](https://docs.velociraptor.app/vql_reference/server/inventory_add/).
+- DebTool: A deb package provided as a tool, specified by tool name.
+  Since this is a utility artifact meant to be called by other
+  artifacts, the tool should be specified in the artifact calling this
+  artifact. Alternatively, configure the tool by using
+  [VQL](https://docs.velociraptor.app/vql_reference/server/inventory_add/).
 
-  - DebName: The name of the package to install, or an absolute path to a deb
-    file to install. Each word is considered as a package name or file name.
-    `apt-get` interprets the package name, and allows you to specify a
-    specific version, architecture, or even install and remove packages in
-    the same go:
+- DebName: The name of the package to install, or an absolute path to
+  a deb file to install. Each word is considered as a package name or
+  file name. `apt-get` interprets the package name, and allows you to
+  specify a specific version, architecture, or even install and remove
+  packages in the same go:
 
-    - "foo": installs foo
-    - "foo bar- baz=1.0.0-1 qux:arm64": installs foo, removes bar, installs
-      a specific version of baz and a specific architecture of qux
+  - "foo": installs `foo`
+  - "foo bar- baz=1.0.0-1 qux:arm64": installs `foo`, removes `bar`, installs
+    a specific version of `baz` and a specific architecture of `qux`.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Utils.InstallDeb
 author: Andreas Misje – @misje
 description: |
-   Install a deb package and configure it with debconf answers.
+  Installs .deb packages on Debian-based systems with optional debconf
+  answers configuration.
 
-   The package may either be specified by name, as an uploaded file or as a
-   "tool". If the package already exists, it may be optionally reconfigured with
-   debconf answers.
+  The package may either be specified by name, as an uploaded file or
+  as a "tool". If the package already exists, it may be optionally
+  reconfigured with debconf answers.
 
-   There are three ways to specify a package (listed in order of preference if
-   all are set):
+  There are three ways to specify a package (listed in order of
+  preference if all are set):
 
-     - DebFile: An uploaded deb package.
+  - DebFile: An uploaded deb package.
 
-     - DebTool: A deb package provided as a tool, specified by tool name. Since
-       this is a utility artifact meant to be called by other artifacts, the
-       tool should be specified in the artifact calling this artifact.
-       Alternatively, configure the tool by using
-       [VQL](https://docs.velociraptor.app/vql_reference/server/inventory_add/).
+  - DebTool: A deb package provided as a tool, specified by tool name.
+    Since this is a utility artifact meant to be called by other
+    artifacts, the tool should be specified in the artifact calling this
+    artifact. Alternatively, configure the tool by using
+    [VQL](https://docs.velociraptor.app/vql_reference/server/inventory_add/).
 
-     - DebName: The name of the package to install, or an absolute path to a deb
-       file to install. Each word is considered as a package name or file name.
-       `apt-get` interprets the package name, and allows you to specify a
-       specific version, architecture, or even install and remove packages in
-       the same go:
+  - DebName: The name of the package to install, or an absolute path to
+    a deb file to install. Each word is considered as a package name or
+    file name. `apt-get` interprets the package name, and allows you to
+    specify a specific version, architecture, or even install and remove
+    packages in the same go:
 
-       - "foo": installs foo
-       - "foo bar- baz=1.0.0-1 qux:arm64": installs foo, removes bar, installs
-         a specific version of baz and a specific architecture of qux
+    - "foo": installs `foo`
+    - "foo bar- baz=1.0.0-1 qux:arm64": installs `foo`, removes `bar`, installs
+      a specific version of `baz` and a specific architecture of `qux`.
 
 type: CLIENT
 
@@ -159,7 +169,7 @@ sources:
          FROM Artifact.Generic.Utils.FetchBinary(ToolName=DebTool,
                                                  TemporaryOnly=true,
                                                  SleepDuration=ToolSleepDuration)
-       LET Package &lt;= if(
+       LET Package <= if(
            condition=DebTool,
            then=Tool[0].OSPath,
            else=if(
@@ -188,13 +198,13 @@ sources:
            array=(PackageName, Key, Type, Value)) AS Line
          FROM DebConfValues
 
-       LET PreSeedFile &lt;= tempfile(data=join(sep='\n', array=PreSeedLines.Line))
+       LET PreSeedFile <= tempfile(data=join(sep='\n', array=PreSeedLines.Line))
 
        LET AptEnv = dict(
            DEBIAN_FRONTEND='noninteractive',
            DEBCONF_NOWARNINGS='yes')
 
-       LET AptOpts &lt;= ('-f', '-y', '-o', 'Debug::pkgProblemResolver=yes',
+       LET AptOpts <= ('-f', '-y', '-o', 'Debug::pkgProblemResolver=yes',
                        '--no-install-recommends') +
            if(condition=ForceConfNew,
               then=('-o', 'Dpkg::Options::=--force-confnew'), else=[]) +
@@ -215,7 +225,7 @@ sources:
        /* Install regardless of whether package is installed or not, handing all
           the (arch-specific) version comparison logic to apt:
         */
-       LET Install &lt;= SELECT * FROM chain(
+       LET Install <= SELECT * FROM chain(
            a_update={
              SELECT 'Updating index' AS Step, *
              FROM if(condition=UpdateSources, then={
@@ -262,6 +272,6 @@ sources:
                                        args=(Step, Stderr)))
              })
          })
+````
 
-</code></pre>
 

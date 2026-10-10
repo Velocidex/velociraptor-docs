@@ -1,32 +1,46 @@
 ---
 title: Windows.System.TaskScheduler
+description: "Enumerates Windows scheduled tasks and parses their XML definitions\nto extract commands and user contexts."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
+
+Enumerates Windows scheduled tasks and parses their XML definitions
+to extract commands and user contexts.
 
 The Windows task scheduler is a common mechanism that malware uses
 for persistence. It can be used to run arbitrary programs at a later
 time. Commonly malware installs a scheduled task to run itself
 periodically to achieve persistence.
 
-This artifact enumerates all the task jobs (which are XML
-files). The artifact uploads the original XML files and then
-analyses them to provide an overview of the commands executed and
-the user under which they will be run.
+This artifact enumerates all the task jobs (which are XML files).
+The artifact uploads the original XML files and then analyses them
+to provide an overview of the commands executed and the user under
+which they will be run.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.TaskScheduler
 description: |
+  Enumerates Windows scheduled tasks and parses their XML definitions
+  to extract commands and user contexts.
+  
   The Windows task scheduler is a common mechanism that malware uses
   for persistence. It can be used to run arbitrary programs at a later
   time. Commonly malware installs a scheduled task to run itself
   periodically to achieve persistence.
 
-  This artifact enumerates all the task jobs (which are XML
-  files). The artifact uploads the original XML files and then
-  analyses them to provide an overview of the commands executed and
-  the user under which they will be run.
+  This artifact enumerates all the task jobs (which are XML files).
+  The artifact uploads the original XML files and then analyses them
+  to provide an overview of the commands executed and the user under
+  which they will be run.
 
 parameters:
   - name: TasksPath
@@ -59,13 +73,13 @@ sources:
                accessor='data',
                file=regex_replace(
                     source=utf16(string=Data),
-                    re='&lt;[?].+?&gt;',
+                    re='<[?].+?>',
                     replace='')) AS XML
         FROM read_file(filenames=OSPath)
 
       // Extract the binary from the command line. Fix up some common
       // problems with the command specification.
-      LET _ExpandedTransforms &lt;= dict(
+      LET _ExpandedTransforms <= dict(
          `^\\\\SystemRoot\\\\`="%SystemRoot%\\",
          `^system32\\\\`="%SystemRoot%\\System32\\",
          `^{.+}.+`="\\$0",
@@ -108,6 +122,6 @@ column_types:
   type: upload_preview
 - name: Authenticode
   type: collapsed
+````
 
-</code></pre>
 

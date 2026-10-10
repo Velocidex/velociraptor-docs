@@ -1,16 +1,32 @@
 ---
 title: Windows.Events.Trackaccount
+description: "Watches Windows security event logs for successful logon events\n(4624) which also match additional configurable criteria."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
 
-Artifact to detect account usage by monitoring event id 4624. This is useful for tracking attacker activity. If you want to receive Slack/Teams/Discord/etc alerts you can enable the server_event artifact named 'Server.Alerts.Trackaccount'
+Watches Windows security event logs for successful logon events
+(4624) which also match additional configurable criteria.
+
+If you want to receive Slack/Teams/Discord/etc alerts you can enable
+the server_event artifact named `Server.Alerts.Trackaccount`.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Events.Trackaccount
 description: |
-  Artifact to detect account usage by monitoring event id 4624. This is useful for tracking attacker activity. If you want to receive Slack/Teams/Discord/etc alerts you can enable the server_event artifact named 'Server.Alerts.Trackaccount'
+  Watches Windows security event logs for successful logon events
+  (4624) which also match additional configurable criteria.
+  
+  If you want to receive Slack/Teams/Discord/etc alerts you can enable
+  the server_event artifact named `Server.Alerts.Trackaccount`.
 
 author: Jos Clephas - @DfirJos
 
@@ -54,6 +70,6 @@ sources:
                 AND EventData.TargetUserName =~ UserRegex
                 AND EventData.LogonType in LogonTypeRegex
         })
+````
 
-</code></pre>
 

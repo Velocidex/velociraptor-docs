@@ -6,7 +6,7 @@ description: |
    and DataFile.
 
    Hunt by searching for untrusted binaries or suspicious removed
-   binararies for evidence of previous exploitation.
+   binaries for evidence of previous exploitation.
 
 type: CLIENT
 

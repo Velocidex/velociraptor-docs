@@ -1,28 +1,42 @@
 ---
 title: Windows.Sysinternals.SysmonInstall
+description: "Deploys Sysmon with a config file and ensures the Sysmon64 service\nis running."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Sysmon is a kernel level system monitor written by Sysinternals. While we are
-not able to distribute Sysmon ourselves, Velociraptor can help you manage its
-deployment and installation.
+Deploys Sysmon with a config file and ensures the Sysmon64 service
+is running.
 
-NOTE: By default we install the Sysmon config from SwiftOnSecurity - we
-recommend that you review the config file and, if necessary, override it in
-the GUI with one that better suits your needs.
+Sysmon is a kernel level system monitor written by Sysinternals.
+While we are not able to distribute Sysmon ourselves, Velociraptor
+can help you manage its deployment and installation.
+
+NOTE: By default we install the Sysmon config from SwiftOnSecurity -
+we recommend that you review the config file and, if necessary,
+override it in the GUI with one that better suits your needs.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Sysinternals.SysmonInstall
 description: |
-  Sysmon is a kernel level system monitor written by Sysinternals. While we are
-  not able to distribute Sysmon ourselves, Velociraptor can help you manage its
-  deployment and installation.
+  Deploys Sysmon with a config file and ensures the Sysmon64 service
+  is running.
 
-  NOTE: By default we install the Sysmon config from SwiftOnSecurity - we
-  recommend that you review the config file and, if necessary, override it in
-  the GUI with one that better suits your needs.
+  Sysmon is a kernel level system monitor written by Sysinternals.
+  While we are not able to distribute Sysmon ourselves, Velociraptor
+  can help you manage its deployment and installation.
+
+  NOTE: By default we install the Sysmon config from SwiftOnSecurity -
+  we recommend that you review the config file and, if necessary,
+  override it in the GUI with one that better suits your needs.
 
 tools:
   - name: SysmonBinary
@@ -45,7 +59,7 @@ parameters:
 
 sources:
 - query: |
-    LET bin &lt;= SELECT * FROM switch(
+    LET bin <= SELECT * FROM switch(
     a={
       SELECT * FROM glob(globs=SysmonFileLocation)
     }, b={
@@ -53,9 +67,13 @@ sources:
        ToolName="SysmonBinary")
     })
 
-    LET existing_hash = SELECT lowcase(
-       string=parse_string_with_regex(
-          string=Stdout, regex="hash:.+SHA256=([^\\n\\r]+)").g1) AS Hash
+    LET ParseHash(string) = lowcase(
+        string=parse_string_with_regex(
+            string=string, regex="hash:.+SHA256=([^\\n\\r]+)").g1
+    )
+
+    LET existing_hash = SELECT
+        ParseHash(string=utf16(string=Stdout)) || ParseHash(string=Stdout) AS Hash
     FROM execve(argv=[bin[0].OSPath, "-c"])
 
     LET sysmon_config = SELECT * FROM Artifact.Generic.Utils.FetchBinary(
@@ -89,6 +107,6 @@ sources:
         ),
     then={ SELECT * FROM doit },
     else={ SELECT * FROM ensure_service_running })
+````
 
-</code></pre>
 

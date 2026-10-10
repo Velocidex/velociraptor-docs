@@ -61,13 +61,10 @@ gpg:               imported: 1
 ```
 
 
-{{% notice warning "API limiting" %}}
-
-GitHub limits how many unauthenticated API requests are allowed per IP
-address. If you need to increase this limit, create a personal access
-token (see
-https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
-
-{{% /notice %}}
+> [!WARNING] API limiting
+> GitHub limits how many unauthenticated API requests are allowed per IP
+> address. If you need to increase this limit, create a personal access
+> token (see
+> https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
 
 Tags: #configuration #deployment

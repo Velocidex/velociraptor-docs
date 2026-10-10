@@ -1,32 +1,46 @@
 ---
 title: Windows.Events.TrackProcessesBasic
+description: "Tracks running and exited processes by polling pslist() at a\nconfigurable interval."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
 
-A basic process tracker which uses a simple polled pslist().
+Tracks running and exited processes by polling pslist() at a
+configurable interval.
 
-The Process Tracker keeps track of exited processes, and resolves process call
-chains from it in memory cache.
+This is a basic process tracker which uses a simple polled pslist().
+It keeps track of exited processes, and resolves process call
+chains from its in-memory cache.
 
-This event artifact enables the global process tracker and makes it possible
-to run many other artifacts that depend on the process tracker.
+Using this event artifact enables the global process tracker which
+makes it possible to run many other artifacts that depend on the
+process tracker.
 
 This tracker DOES NOT require Sysmon and is **incompatible** with
 `Windows.Events.TrackProcesses` and
 `Windows.Events.TrackProcessesETW` (only one should be running).
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Events.TrackProcessesBasic
 description: |
-  A basic process tracker which uses a simple polled pslist().
+  Tracks running and exited processes by polling pslist() at a
+  configurable interval.
 
-  The Process Tracker keeps track of exited processes, and resolves process call
-  chains from it in memory cache.
+  This is a basic process tracker which uses a simple polled pslist().
+  It keeps track of exited processes, and resolves process call
+  chains from its in-memory cache.
 
-  This event artifact enables the global process tracker and makes it possible
-  to run many other artifacts that depend on the process tracker.
+  Using this event artifact enables the global process tracker which
+  makes it possible to run many other artifacts that depend on the
+  process tracker.
 
   This tracker DOES NOT require Sysmon and is **incompatible** with
   `Windows.Events.TrackProcesses` and
@@ -56,11 +70,11 @@ sources:
                    CommandLine=CommandLine) AS data
               FROM pslist()
 
-      LET Tracker &lt;= process_tracker(
+      LET Tracker <= process_tracker(
         sync_query=SyncQuery, sync_period=1000 * PollPeriod)
 
       SELECT * FROM process_tracker_updates()
       WHERE update_type = "stats"
+````
 
-</code></pre>
 

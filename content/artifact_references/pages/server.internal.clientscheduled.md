@@ -1,16 +1,24 @@
 ---
 title: Server.Internal.ClientScheduled
+description: "Fires an event when new flows are scheduled for a client to process.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Internal Artifact]
+build:
+  list: never
 ---
 
-This event will be fired when a client was sent flows to process.
+Fires an event when new flows are scheduled for a client to process.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Internal.ClientScheduled
 description: |
-  This event will be fired when a client was sent flows to process.
+  Fires an event when new flows are scheduled for a client to process.
 
 type: INTERNAL
 column_types:
@@ -19,6 +27,6 @@ column_types:
     description: New flows scheduled for the client
   - name: ClearFlows
     description: If this is set we clear all in flight flows.
+````
 
-</code></pre>
 

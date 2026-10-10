@@ -1,10 +1,17 @@
 ---
 title: Windows.Remediation.Quarantine
+description: "Configures Windows IPsec policy to block network traffic except for\nDNS, DHCP, and Velociraptor server access."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Applies quarantine via Windows local IPsec policy.
+Configures Windows IPsec policy to block network traffic except for
+DNS, DHCP, and Velociraptor server access.
 
 - By default the current client configuration is applied as an
   exclusion using resolved IP address at time of application.
@@ -42,45 +49,48 @@ NOTE:
   and client.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Remediation.Quarantine
 description: |
-      Applies quarantine via Windows local IPsec policy.
+  Configures Windows IPsec policy to block network traffic except for
+  DNS, DHCP, and Velociraptor server access.
 
-      - By default the current client configuration is applied as an
-        exclusion using resolved IP address at time of application.
+  - By default the current client configuration is applied as an
+    exclusion using resolved IP address at time of application.
 
-      - A configurable lookup table is also used to generate
-        additional entries using the same syntax as `netsh ipsec`
-        configuration.
+  - A configurable lookup table is also used to generate
+    additional entries using the same syntax as `netsh ipsec`
+    configuration.
 
-        - DNS and DHCP entries are allowed by default.
+    - DNS and DHCP entries are allowed by default.
 
-      - An optional MessageBox may also be configured to alert all
-        logged in users.
+  - An optional MessageBox may also be configured to alert all
+    logged in users.
 
-        - The message will be truncated to 256 characters.
+    - The message will be truncated to 256 characters.
 
-      - After policy application, connection back to the Velociraptor
-        frontend is tested and the policy removed if connection
-        unavailable.
+  - After policy application, connection back to the Velociraptor
+    frontend is tested and the policy removed if connection
+    unavailable.
 
-      - To remove policy, select the RemovePolicy checkbox.
+  - To remove policy, select the RemovePolicy checkbox.
 
-      - To update policy, simply rerun the artifact.
+  - To update policy, simply rerun the artifact.
 
-      NOTE:
+  NOTE:
 
-      - Remember DNS resolution may change. It is highly recommended
-        to plan policy accordingly and not rely on DNS lookups.
+  - Remember DNS resolution may change. It is highly recommended
+    to plan policy accordingly and not rely on DNS lookups.
 
-      - Local IPsec policy cannot be applied when Domain IPsec policy
-        is already enforced. Please configure at GPO level in this case.
+  - Local IPsec policy cannot be applied when Domain IPsec policy
+    is already enforced. Please configure at GPO level in this case.
 
-      - This artifact deliberately does not support connecting back on
-        plain HTTP! We only support the HTTPS or WSS protocols because
-        this is the recommended connectivity mechanism between server
-        and client.
+  - This artifact deliberately does not support connecting back on
+    plain HTTP! We only support the HTTPS or WSS protocols because
+    this is the recommended connectivity mechanism between server
+    and client.
 
 author: Matt Green - @mgreen27
 
@@ -122,11 +132,11 @@ parameters:
 
 sources:
     - query: |
-        LET AllURLs &lt;= filter(list=config.server_urls + VelociraptorURL, regex='.+')
+        LET AllURLs <= filter(list=config.server_urls + VelociraptorURL, regex='.+')
 
         // If a MessageBox configured truncate to 256 character limit
-        LET MessageBox &lt;= parse_string_with_regex(
-                  regex='^(?P&lt;Message&gt;.{0,255}).*',
+        LET MessageBox <= parse_string_with_regex(
+                  regex='^(?P<Message>.{0,255}).*',
                   string=MessageBox).Message
 
         // Normalise Action
@@ -136,7 +146,7 @@ sources:
                   then= 'Block'))
 
         // extract configurable policy from lookuptable
-        LET configurable_policy &lt;= SELECT
+        LET configurable_policy <= SELECT
                   normalise_action(Action=Action) AS Action,
                   SrcAddr,SrcMask,SrcPort,
                   DstAddr,DstMask,DstPort,
@@ -153,7 +163,7 @@ sources:
             else="443")
 
         // extract Velociraptor config for policy
-        LET extracted_config &lt;= SELECT * FROM foreach(
+        LET extracted_config <= SELECT * FROM foreach(
                   row= AllURLs,
                   query={
                       SELECT
@@ -172,7 +182,7 @@ sources:
                   })
 
         // build policy with extracted config and lookuptable
-        LET policy &lt;= SELECT *
+        LET policy <= SELECT *
               FROM chain(
                   a=extracted_config,
                   b=configurable_policy
@@ -360,6 +370,6 @@ sources:
                           g=enable_policy,
                           h=final_check)
                   })
+````
 
-</code></pre>
 

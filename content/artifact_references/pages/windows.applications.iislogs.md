@@ -1,20 +1,29 @@
 ---
 title: Windows.Applications.IISLogs
+description: "Provides grep-like search of IIS log files in specified directories\nwith optional whitelist filtering."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact enables grep of IISLogs.
+Provides grep-like search of IIS log files in specified directories
+with optional whitelist filtering.
 
 Parameters include SearchRegex and WhitelistRegex as regex terms and
 MoreRecentThan as timestamp.
 
-**Hint:** Make sure to get the right location of the log files as
+**Usage tips**
+
+- Make sure to get the right location of the log files as
   they are often stored at different non-default locations.
 
-**Hint 2:** MoreRecentThan filter is only applied to the Last
+- MoreRecentThan filter is only applied to the Last
   Modified Time of files returned by the IISLogFiles glob. This
-  improves the artefact's performance on systems with many log
+  improves the artifact's performance on systems with many log
   files. Use the SearchRegex filter for filtering on a per line
   basis.
 
@@ -22,20 +31,25 @@ MoreRecentThan as timestamp.
   recover lines with ISO times between the 21st and 25th July 2025.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Applications.IISLogs
 description: |
-  This artifact enables grep of IISLogs.
+  Provides grep-like search of IIS log files in specified directories
+  with optional whitelist filtering.
 
   Parameters include SearchRegex and WhitelistRegex as regex terms and
   MoreRecentThan as timestamp.
 
-  **Hint:** Make sure to get the right location of the log files as
+  **Usage tips**
+
+  - Make sure to get the right location of the log files as
     they are often stored at different non-default locations.
 
-  **Hint 2:** MoreRecentThan filter is only applied to the Last
+  - MoreRecentThan filter is only applied to the Last
     Modified Time of files returned by the IISLogFiles glob. This
-    improves the artefact's performance on systems with many log
+    improves the artifact's performance on systems with many log
     files. Use the SearchRegex filter for filtering on a per line
     basis.
 
@@ -69,7 +83,7 @@ sources:
         condition=MoreRecentThan,
         then={
           SELECT * FROM files
-          WHERE MTime &gt; MoreRecentThan
+          WHERE MTime > MoreRecentThan
         }, else=files)
 
       SELECT * FROM foreach(row=more_recent,
@@ -104,6 +118,6 @@ sources:
 
             SELECT * FROM foreach(row=parsed,
                   query={ SELECT *, Fqdn, _Raw FROM GrokParsed })
+````
 
-</code></pre>
 

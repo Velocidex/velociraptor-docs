@@ -10,6 +10,11 @@ summary: |
   troubleshooting a broad range of issues.
 aliases:
   - "/docs/gui/debugging/"
+description: |
+  Like any piece of software, Velociraptor makes a number of engineering
+  trade-offs, and may encounter some error conditions or even bugs. When
+  faced with the prospect of an unresponsive server or client, or high
+  CPU load, users often ask: *"What is Velociraptor doing right now?"*
 ---
 
 Like any piece of software, Velociraptor makes a number of engineering
@@ -22,7 +27,7 @@ aspects of the program. These profiles exist regardless of whether Velociraptor
 is being run as a client or server or even an offline collector.
 
 You can read more about profiling in our blog article
-[Profiling the Beast]({{% ref "/blog/2020/2020-08-16-profiling-the-beast-58913437fd16/" %}}).
+[Profiling the Beast](/blog/2020/2020-08-16-profiling-the-beast-58913437fd16/).
 
 ## Collecting Profiles
 
@@ -45,20 +50,17 @@ at a specific instant in time.
 
 ![Collecting server profiles](server_profiles.svg)
 
-{{% notice note "Seeking assistance from the community" %}}
-
-If you encounter an issue that requires more thorough inspection, you
-can seek assistance from the community on Discord or the mailing
-list. In this case, you will probably be asked to attach a profile to
-your request. This helps the developers to understand issues within
-the system.
-
-Simply collect the relevant artifact (either from the server with
-`Server.Monitor.Profile` or a client with `Generic.Client.Profile`)
-and export the collection into a zip file from the GUI. You can then
-send us the Zip file for analysis.
-
-{{% /notice %}}
+> [!NOTE] Seeking assistance from the community
+> If you encounter an issue that requires more thorough inspection, you
+> can seek assistance from the community on Discord or the mailing
+> list. In this case, you will probably be asked to attach a profile to
+> your request. This helps the developers to understand issues within
+> the system.
+>
+> Simply collect the relevant artifact (either from the server with
+> `Server.Monitor.Profile` or a client with `Generic.Client.Profile`)
+> and export the collection into a zip file from the GUI. You can then
+> send us the Zip file for analysis.
 
 
 ### The Debug Console
@@ -72,7 +74,7 @@ view of the debugging profiles.
 
 On the server the Debug Console is always available by default. You can access
 it from the main Welcome page. For clients and offline collectors please see the
-[sections below]({{< relref "#starting-the-debug-console-on-clients" >}})
+[sections below](#starting-the-debug-console-on-clients)
 which explain how to enable it in those modes of operation.
 
 ![Accessing the Debug Console on the server](debug_server_gui.svg)
@@ -159,12 +161,4 @@ instructive to read about each profile item to understand how Velociraptor works
 internally, understand the trade-offs made, and how to get the most out of
 Velociraptor in the real world.
 
-{{% children description=true depth=2 %}}
-
-
-
-
-
-
-
-
+{{% children description=true %}}

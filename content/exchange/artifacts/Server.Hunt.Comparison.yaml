@@ -24,9 +24,9 @@ parameters:
   - name: Hunt_2_id
     description: id of hunt that was executed during or after an attack and is supposed to be compared to the Baseline_Hunt_1
   - name: Artifact_name
-    description: This is the artefact that should be compared and which was executed in the Baseline_Hunt_1 and Hunt_2
+    description: This is the artifact that should be compared and which was executed in the Baseline_Hunt_1 and Hunt_2
   - name: Identifying_column
-    description: column of the selected artefact that should be compared
+    description: column of the selected artifact that should be compared
 
 sources:
   - query: |

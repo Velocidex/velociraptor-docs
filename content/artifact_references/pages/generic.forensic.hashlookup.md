@@ -1,13 +1,21 @@
 ---
 title: Generic.Forensic.HashLookup
+description: "Collects file hashes from various sources into a central event\nstream for external lookups."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 ---
 
-This artifact is a server event artifact that collects hashes from
-various sources into a central location. It is possible to follow
-this artifact (e.g. with an external program using the API) to
-lookup the hashes with an external service.
+Collects file hashes from various sources into a central event
+stream for external lookups.
+
+It is possible to follow this artifact (e.g. with an external
+program via the Velociraptor API) to lookup the hashes with an
+external service.
 
 You can also send hashes to this artifact yourself by using the
 `send_event()` VQL function. For example, the following will add
@@ -21,13 +29,17 @@ FROM source()
 ```
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Forensic.HashLookup
 description: |
-  This artifact is a server event artifact that collects hashes from
-  various sources into a central location. It is possible to follow
-  this artifact (e.g. with an external program using the API) to
-  lookup the hashes with an external service.
+  Collects file hashes from various sources into a central event
+  stream for external lookups.
+  
+  It is possible to follow this artifact (e.g. with an external
+  program via the Velociraptor API) to lookup the hashes with an
+  external service.
 
   You can also send hashes to this artifact yourself by using the
   `send_event()` VQL function. For example, the following will add
@@ -60,6 +72,6 @@ sources:
               client_id=ClientId, flow_id=FlowId)
          })
       }, async=TRUE)
+````
 
-</code></pre>
 

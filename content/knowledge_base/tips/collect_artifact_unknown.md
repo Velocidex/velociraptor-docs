@@ -16,7 +16,7 @@ When the VQL compiler sees a statement like:
 SELECT * FROM Artifact.Dependant.Artifact()
 ```
 
-It will recognize the the the VQL is dependent on the artifact
+It will recognize that the VQL is dependent on the artifact
 `Dependent.Artifact` and will inject it into the VQL request. You can
 see this in the `Request` tab - the `artifacts` section of the request
 will include dependent artifact definitions (in this case the artifact

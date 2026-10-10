@@ -1,12 +1,9 @@
 # What do I do about "version GLIBC_2.xx not found" errors?
 
-{{% notice tip "TLDR - use the `musl` build" %}}
-
-Use the `musl` built binary for older Linux systems. You can
-find this build together with the others on the release page with the
-`-musl` suffix in the name.
-
-{{% /notice %}}
+> [!TIP] TLDR - use the `musl` build
+> Use the `musl` built binary for older Linux systems. You can
+> find this build together with the others on the release page with the
+> `-musl` suffix in the name.
 
 On Linux, binaries always link to the C library dynamically. This
 happens even with a static binary like Velociraptor. The C library is

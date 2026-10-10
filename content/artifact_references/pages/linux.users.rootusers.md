@@ -1,13 +1,21 @@
 ---
 title: Linux.Users.RootUsers
+description: "Detects users added in the `sudo` group.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
 Detects users added in the `sudo` group.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Users.RootUsers
 
 description: |
@@ -34,8 +42,7 @@ sources:
           FROM Artifact.Linux.Sys.Users()
         },
         query={
-          SELECT Fqdn AS Host,
-                 User,
+          SELECT User,
                  Description,
                  Uid,
                  Gid,
@@ -45,6 +52,6 @@ sources:
           WHERE ReturnCode = 0 AND Stdout =~ "root"
         }
       )
+````
 
-</code></pre>
 

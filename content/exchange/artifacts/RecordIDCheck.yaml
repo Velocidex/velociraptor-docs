@@ -7,10 +7,10 @@ description: |
 
   There are several parameter's available.
     - EvtxGlob glob of EventLogs to target. Default to all but can be targeted.
-    - PathRegex enables filtering on evtx path for specific log targetting.
+    - PathRegex enables filtering on evtx path for specific log targeting.
     - DateAfter enables search for events after this date.
     - DateBefore enables search for events before this date.
-    - MaxTimeDifference enables flaging temporal gaps between Events. Note also potential false positives on machines turned off.
+    - MaxTimeDifference enables flagging temporal gaps between Events. Note also potential false positives on machines turned off.
     - SearchVSS enables searching over VSS
 
   Note: Please use with caution this artifact can potentially be heavy

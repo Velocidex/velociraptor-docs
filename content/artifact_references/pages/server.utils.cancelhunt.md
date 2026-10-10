@@ -1,26 +1,40 @@
 ---
 title: Server.Utils.CancelHunt
+description: "Cancels all in-progress flows for one or more specified hunts."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
 
-Sometimes a hunt is issued which is no longer useful. While stopping
-the hunt from the GUI prevents new clients from receiving the hunt,
-it does not actively cancel collections currently in flight.
+Cancels all in-progress flows for one or more specified hunts.
+
+Sometimes a hunt has been scheduled but is no longer useful. While
+stopping the hunt from the GUI prevents new clients from receiving
+the hunt, it does not actively cancel collections currently in
+flight.
 
 This artifact enumerates all flows in the hunt and actively cancels
-them.
+each one of them.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.CancelHunt
 description: |
-  Sometimes a hunt is issued which is no longer useful. While stopping
-  the hunt from the GUI prevents new clients from receiving the hunt,
-  it does not actively cancel collections currently in flight.
+  Cancels all in-progress flows for one or more specified hunts.
+
+  Sometimes a hunt has been scheduled but is no longer useful. While
+  stopping the hunt from the GUI prevents new clients from receiving
+  the hunt, it does not actively cancel collections currently in
+  flight.
 
   This artifact enumerates all flows in the hunt and actively cancels
-  them.
+  each one of them.
 
 type: SERVER
 
@@ -41,13 +55,15 @@ sources:
              cancel_flow(client_id=client_id, flow_id=flow_id) AS Cancellation
       FROM all_flows(HuntId=HuntId)
 
-      LET AllHunts &lt;= if(condition=HuntId, then=Hunts + HuntId, else=Hunts)
+      LET AllHunts <= if(condition=HuntId, then=Hunts + HuntId, else=Hunts)
 
       SELECT * FROM foreach(row={
-        SELECT _value as HuntId FROM items(item=AllHunts)
+        SELECT _value AS HuntId
+        FROM items(item=AllHunts)
       }, query={
         SELECT * FROM cancellations(HuntId=HuntId)
-      })
+      }, workers=50
+      )
+````
 
-</code></pre>
 

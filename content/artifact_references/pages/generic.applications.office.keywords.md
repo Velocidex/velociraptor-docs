@@ -1,56 +1,64 @@
 ---
 title: Generic.Applications.Office.Keywords
+description: "Scans Microsoft Office and LibraOffice/OpenDocument files for\nkeyword matches using YARA rules via the `zip` accessor."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Microsoft Office documents among other document format (such as
-LibraOffice) are actually stored in zip files. The zip file contains
-the document encoded as XML in several zip members.
+Scans Microsoft Office and LibraOffice/OpenDocument files for
+keyword matches using YARA rules via the `zip` accessor.
 
-This makes it difficult to search for keywords within office
-documents because the ZIP files are typically compressed.
+Microsoft Office documents amongst other document format (such as
+LibraOffice) are actually stored in zip files. The zip file contains
+the document encoded as XML in several zip members. This makes it
+difficult to directly search for keywords within office document
+file because of the ZIP compression.
 
 This artifact searches for office documents by file extension and
-glob then uses the zip filesystem accessor to launch a YARA scan
-again the uncompressed data of the document. Keywords are more
-likely to match when scanning the decompressed XML data.
+glob pattern, then uses the `zip` filesystem accessor to launch a
+YARA scan again the uncompressed data from the document. Keywords
+are more likely to match when scanning the decompressed XML data.
 
 The artifact returns a context around the keyword hit.
 
-NOTE: The InternalMtime column shows the creation time of the zip
+NOTE: The internal Mtime column shows the creation time of the zip
 member within the document which may represent when the document was
 initially created.
 
-See
-https://en.wikipedia.org/wiki/List_of_Microsoft_Office_filename_extensions
-https://wiki.openoffice.org/wiki/Documentation/OOo3_User_Guides/Getting_Started/File_formats
 
+---
 
-<pre><code class="language-yaml">
+````yaml
 name: Generic.Applications.Office.Keywords
 description: |
-  Microsoft Office documents among other document format (such as
-  LibraOffice) are actually stored in zip files. The zip file contains
-  the document encoded as XML in several zip members.
+  Scans Microsoft Office and LibraOffice/OpenDocument files for
+  keyword matches using YARA rules via the `zip` accessor.
 
-  This makes it difficult to search for keywords within office
-  documents because the ZIP files are typically compressed.
+  Microsoft Office documents amongst other document format (such as
+  LibraOffice) are actually stored in zip files. The zip file contains
+  the document encoded as XML in several zip members. This makes it
+  difficult to directly search for keywords within office document
+  file because of the ZIP compression.
 
   This artifact searches for office documents by file extension and
-  glob then uses the zip filesystem accessor to launch a YARA scan
-  again the uncompressed data of the document. Keywords are more
-  likely to match when scanning the decompressed XML data.
+  glob pattern, then uses the `zip` filesystem accessor to launch a
+  YARA scan again the uncompressed data from the document. Keywords
+  are more likely to match when scanning the decompressed XML data.
 
   The artifact returns a context around the keyword hit.
 
-  NOTE: The InternalMtime column shows the creation time of the zip
+  NOTE: The internal Mtime column shows the creation time of the zip
   member within the document which may represent when the document was
   initially created.
 
-  See
-  https://en.wikipedia.org/wiki/List_of_Microsoft_Office_filename_extensions
-  https://wiki.openoffice.org/wiki/Documentation/OOo3_User_Guides/Getting_Started/File_formats
+reference:
+  - https://en.wikipedia.org/wiki/List_of_Microsoft_Office_filename_extensions
+  - https://wiki.openoffice.org/wiki/Documentation/OOo3_User_Guides/Getting_Started/File_formats
 
 parameters:
   - name: documentGlobs
@@ -83,7 +91,7 @@ sources:
            globs="/**",
            root=pathspec(DelegatePath=OfficePath),
            accessor='zip')
-        WHERE not IsDir and Size &gt; 0
+        WHERE not IsDir and Size > 0
 
         // For each document, scan all its parts for the keyword.
         SELECT OfficePath,
@@ -103,6 +111,6 @@ sources:
                  context=200,
                  accessor='zip')
         })
+````
 
-</code></pre>
 

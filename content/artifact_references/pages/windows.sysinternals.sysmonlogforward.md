@@ -1,20 +1,33 @@
 ---
 title: Windows.Sysinternals.SysmonLogForward
+description: "Reads Sysmon operational events from ETW and forwards them to the\nserver for analysis.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
 
-A client-side event forwarder to forward Sysmon events to the server.
+Reads Sysmon operational events from ETW and forwards them to the
+server for analysis.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Sysinternals.SysmonLogForward
 description: |
-  A client-side event forwarder to forward Sysmon events to the server.
+  Reads Sysmon operational events from ETW and forwards them to the
+  server for analysis.
 
 type: CLIENT_EVENT
 
 precondition: SELECT OS From info() where OS = 'windows'
+
+required_permissions:
+  - EXECVE
 
 tools:
   - name: SysmonBinary
@@ -33,7 +46,7 @@ parameters:
 sources:
 - query: |
     // First ensure that sysmon is actually installed.
-    LET _ &lt;= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
+    LET _ <= SELECT * FROM Artifact.Windows.Sysinternals.SysmonInstall(
         SysmonFileLocation=SysmonFileLocation)
 
     // Just parse and forward events. Use ETW rather than watch_evtx()
@@ -44,6 +57,6 @@ sources:
     FROM watch_etw(
        description='Microsoft-Windows-Sysmon/Operational',
        guid='{5770385f-c22a-43e0-bf4c-06f5698ffbd9}')
+````
 
-</code></pre>
 

@@ -1,18 +1,26 @@
 ---
 title: Windows.System.DLLs
+description: "Lists DLLs loaded by running processes with optional hash\ncomputation and certificate information.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Enumerate the DLLs loaded by a running process. It includes hash value
-and certificate information.
+Lists DLLs loaded by running processes with optional hash
+computation and certificate information.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.DLLs
 description: |
-  Enumerate the DLLs loaded by a running process. It includes hash value
-  and certificate information.
+  Lists DLLs loaded by running processes with optional hash
+  computation and certificate information.
 
 parameters:
   - name: ProcessRegex
@@ -85,6 +93,6 @@ sources:
                                     else= if(condition= CertificateInfo,
                                         then= cert_nohash,
                                         else= results )))
+````
 
-</code></pre>
 

@@ -1,16 +1,24 @@
 ---
 title: Windows.Forensics.Lnk
+description: "Parses Windows LNK shortcut files to extract target paths,\narguments, timestamps, and metadata."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact parses LNK shortcut files.
+Parses Windows LNK shortcut files to extract target paths,
+arguments, timestamps, and metadata.
 
-A LNK file is a type of Shell Item that serves as a shortcut or reference to a
-specific file, folder, or application. It contains metadata and information
-about the accessed file or location and is a valuable forensic artifact.
-LNK files can be automatically created by the Windows operating system when a
-user accesses a file from a supported application or manually created by the user.
+A LNK file is a type of Shell Item that serves as a shortcut or
+reference to a specific file, folder, or application. It contains
+metadata and information about the accessed file or location and is
+a valuable forensic artifact. LNK files can be automatically created
+by the Windows operating system when a user accesses a file from a
+supported application or manually created by the user.
 
 This artifact has several configurable options:
 
@@ -26,8 +34,87 @@ This artifact has several configurable options:
 - VmPrefixMAC: Regex to match known Virtual Machine MacAddress prefix in TrackerData.
 - RiskyExe: Regex target exe to flag as risky.
 
-
 List of fields targeted by filter regex:
+
+- StringData.TargetPath
+- StringData.Name
+- StringData.RelativePath
+- StringData.WorkingDir
+- StringData.Arguments
+- StringData.IconLocation
+- LinkTarget.LinkTarget
+- PropertyStore
+- TrackerData.MachineID
+- TrackerData.MacAddress
+
+NOTE: regex startof (^) and endof ($) line modifiers will not work.
+
+
+Windows.Forensics.Lnk also will highlight suspicious lnk attributes in a Suspicious field.
+
+* Large Size - Check for large size, default over 20000 bytes
+* Startup Path - Path with \Startup\
+* Zeroed Headers - Check for ShellHeader items zeroed.
+* Hidden window - Check for ShellLinkHeader.ShowCommand as SHOWMINNOACTIVE
+* Target Changed path - Check LNK TargetPath different from PropertyStore path.
+* Target Changed size - Check LNK ShellLinkHeader.FileSize different from PropertyStore size.
+* Risky target - Checks several LNK target paths to the RiskyExe regex.
+* WebDAV - Checks for NetworkProviderType = WNNC_NET_DAV
+* Line break in StringData.Name
+* Suspicious argument size - large sized arguments over 250 characters as default
+* Environment variable script - environment variable with a common script configured (bat|cmd|ps1|js|vbs|vbe|py)
+* No Target with environment variable - environment variable only execution
+* Suspicious hostname - some common malicious hostnames
+* Created in VM - Check TrackerData MacAddress for known VM prefix
+* Local Admin- check PropertyStore for indications LNK created by local admin UID 500
+* Cyrillic Language - check PropertyStore for Cyrillic strings
+* Chinese Language - check PropertyStore for Chinese strings
+* Korean Language - check PropertyStore for Korean strings
+* Persian Language - check PropertyStore for Persian strings
+* Vietnamese Language - check PropertyStore for Vietnamese strings
+* CodePage - checks for existence of a ExtraData code page setting. Rare enough to report on - 936:Simplified Chinese, 949:Korean, 950:Traditional Chinese
+* Has Overlay - check for overlay and extra data attached to LNK
+* Long Base64 - check for a long base64 blog over 20 decoded characters
+* Arguments have ticks - ticks are common in malicious LNK files
+* Arguments have environment variables - environment variables (%|\$env:) are common in malicious LNKs
+* Arguments have rare characters - looks for specific rare characters that may indicate obfuscation (\?|\!|\~|\@)
+* Arguments have leading space - malicious LNK files may have a many leading spaces to obfuscate some tools
+* Arguments have http strings - LNKs are regularly used as a download cradle - https?://
+* Arguments have UNC strings
+* Suspicious arguments - some common malicious arguments observed in field (with mind to False positive)
+
+
+---
+
+````yaml
+name: Windows.Forensics.Lnk
+author: Matt Green - @mgreen27
+description: |
+  Parses Windows LNK shortcut files to extract target paths,
+  arguments, timestamps, and metadata.
+
+  A LNK file is a type of Shell Item that serves as a shortcut or
+  reference to a specific file, folder, or application. It contains
+  metadata and information about the accessed file or location and is
+  a valuable forensic artifact. LNK files can be automatically created
+  by the Windows operating system when a user accesses a file from a
+  supported application or manually created by the user.
+
+  This artifact has several configurable options:
+
+  - TargetGlob: glob targeting. Default targets *.lnk files in Startup and Recent paths.
+  - IOCRegex: Regex search on key fields: StringData, TrackerData and PropertyStore.
+  - IgnoreRegex: Ignore regex filter on key fields.
+  - UploadLnk: uploads lnk hits.
+  - SuspiciousOnly: only returns LNK files reporting a suspicious attribute.
+  - SusSize: Any lnk over this size in bytes is suspicious.
+  - SusArgSize: Any lnk with Argument strings over this size is suspicious.
+  - SusArgRegex: Regex for suspicious strings in Arguments.
+  - SusHostnameRegex: Regex for suspicious TrackerData Hostname.
+  - VmPrefixMAC: Regex to match known Virtual Machine MacAddress prefix in TrackerData.
+  - RiskyExe: Regex target exe to flag as risky.
+
+  List of fields targeted by filter regex:
 
   - StringData.TargetPath
   - StringData.Name
@@ -76,84 +163,6 @@ List of fields targeted by filter regex:
   * Arguments have UNC strings
   * Suspicious arguments - some common malicious arguments observed in field (with mind to False positive)
 
-
-<pre><code class="language-yaml">
-name: Windows.Forensics.Lnk
-author: Matt Green - @mgreen27
-description: |
-  This artifact parses LNK shortcut files.
-
-  A LNK file is a type of Shell Item that serves as a shortcut or reference to a
-  specific file, folder, or application. It contains metadata and information
-  about the accessed file or location and is a valuable forensic artifact.
-  LNK files can be automatically created by the Windows operating system when a
-  user accesses a file from a supported application or manually created by the user.
-
-  This artifact has several configurable options:
-
-  - TargetGlob: glob targeting. Default targets *.lnk files in Startup and Recent paths.
-  - IOCRegex: Regex search on key fields: StringData, TrackerData and PropertyStore.
-  - IgnoreRegex: Ignore regex filter on key fields.
-  - UploadLnk: uploads lnk hits.
-  - SuspiciousOnly: only returns LNK files reporting a suspicious attribute.
-  - SusSize: Any lnk over this size in bytes is suspicious.
-  - SusArgSize: Any lnk with Argument strings over this size is suspicious.
-  - SusArgRegex: Regex for suspicious strings in Arguments.
-  - SusHostnameRegex: Regex for suspicious TrackerData Hostname.
-  - VmPrefixMAC: Regex to match known Virtual Machine MacAddress prefix in TrackerData.
-  - RiskyExe: Regex target exe to flag as risky.
-
-
-  List of fields targeted by filter regex:
-
-    - StringData.TargetPath
-    - StringData.Name
-    - StringData.RelativePath
-    - StringData.WorkingDir
-    - StringData.Arguments
-    - StringData.IconLocation
-    - LinkTarget.LinkTarget
-    - PropertyStore
-    - TrackerData.MachineID
-    - TrackerData.MacAddress
-
-    NOTE: regex startof (^) and endof ($) line modifiers will not work.
-
-
-    Windows.Forensics.Lnk also will highlight suspicious lnk attributes in a Suspicious field.
-
-    * Large Size - Check for large size, default over 20000 bytes
-    * Startup Path - Path with \Startup\
-    * Zeroed Headers - Check for ShellHeader items zeroed.
-    * Hidden window - Check for ShellLinkHeader.ShowCommand as SHOWMINNOACTIVE
-    * Target Changed path - Check LNK TargetPath different from PropertyStore path.
-    * Target Changed size - Check LNK ShellLinkHeader.FileSize different from PropertyStore size.
-    * Risky target - Checks several LNK target paths to the RiskyExe regex.
-    * WebDAV - Checks for NetworkProviderType = WNNC_NET_DAV
-    * Line break in StringData.Name
-    * Suspicious argument size - large sized arguments over 250 characters as default
-    * Environment variable script - environment variable with a common script configured (bat|cmd|ps1|js|vbs|vbe|py)
-    * No Target with environment variable - environment variable only execution
-    * Suspicious hostname - some common malicious hostnames
-    * Created in VM - Check TrackerData MacAddress for known VM prefix
-    * Local Admin- check PropertyStore for indications LNK created by local admin UID 500
-    * Cyrillic Language - check PropertyStore for Cyrillic strings
-    * Chinese Language - check PropertyStore for Chinese strings
-    * Korean Language - check PropertyStore for Korean strings
-    * Persian Language - check PropertyStore for Persian strings
-    * Vietnamese Language - check PropertyStore for Vietnamese strings
-    * CodePage - checks for existence of a ExtraData code page setting. Rare enough to report on - 936:Simplified Chinese, 949:Korean, 950:Traditional Chinese
-    * Has Overlay - check for overlay and extra data attached to LNK
-    * Long Base64 - check for a long base64 blog over 20 decoded characters
-    * Arguments have ticks - ticks are common in malicious LNK files
-    * Arguments have environment variables - environment variables (%|\$env:) are common in malicious LNKs
-    * Arguments have rare characters - looks for specific rare characters that may indicate obfuscation (\?|\!|\~|\@)
-    * Arguments have leading space - malicious LNK files may have a many leading spaces to obfuscate some tools
-    * Arguments have http strings - LNKs are regularly used as a download cradle - https?://
-    * Arguments have UNC strings
-    * Suspicious arguments - some common malicious arguments observed in field (with mind to False positive)
-
-
 reference:
   - https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink
 
@@ -165,7 +174,7 @@ parameters:
     description: A regex to filter on all fields
   - name: IgnoreRegex
     type: regex
-    description: A regex to ignore ilter all fields
+    description: A regex for fields to ignore
   - name: UploadLnk
     description: Also upload the link files themselves.
     type: bool
@@ -184,15 +193,15 @@ parameters:
     description: Any lnk with Argument strings over this size is suspicious.
     type: int
   - name: SusArgRegex
-    description: Regex for suspicious strings in Argumetns.
+    description: Regex for suspicious strings in arguments.
     type: regex
-    default: \\AppData\\|\\Users\\Public\\|\\Temp\\|comspec|&amp;cd&amp;echo| -NoP | -W Hidden | [-/]decode | -e.* (JAB|SUVYI|SQBFAFgA|aWV4I|aQBlAHgA)|start\s*[\\/]b|\.downloadstring\(|\.downloadfile\(|iex
+    default: \\AppData\\|\\Users\\Public\\|\\Temp\\|comspec|&cd&echo| -NoP | -W Hidden | [-/]decode | -e.* (JAB|SUVYI|SQBFAFgA|aWV4I|aQBlAHgA)|start\s*[\\/]b|\.downloadstring\(|\.downloadfile\(|iex
   - name: SusHostnameRegex
-    description: Regex for suspicious TrackerData Hastname.
+    description: Regex for suspicious TrackerData hostnames.
     type: regex
     default: ^(Win-|Desktop-|Commando$)
   - name: VmPrefixMAC
-    description: VM MacAddress prefix regex to compate to LNK TrackerData.
+    description: VM MacAddress prefix regex to compare to LNK TrackerData.
     type: regex
     default: ^(00:50:56|00:0C:29|00:05:69|00:1C:14|08:00:27|52:54:00|00:21:F6|00:14:4F|00:0F:4B|00:15:5D)
   - name: RiskyExe
@@ -205,7 +214,7 @@ export: |
      LET S = scope()
 
      LET GetClassName(GUID) = get(item=KnownGUIDLookup, member=GUID) || (
-        version(function="reg_set_value") != NULL &amp;&amp; stat(accessor="registry",
+        version(function="reg_set_value") != NULL && stat(accessor="registry",
         filename="HKEY_CLASSES_ROOT/CLSID/{" + GUID + "}/@").Data.value ) || GUID
 
      LET GetPropertyValues(Values) = to_dict(item={
@@ -213,7 +222,7 @@ export: |
         FROM foreach(row=Values)
       })
 
-     LET KnownGUIDLookup &lt;= dict(
+     LET KnownGUIDLookup <= dict(
        `20D04FE0-3AEA-1069-A2D8-08002B30309D`="My Computer",
        `F02C1A0D-BE21-4350-88B0-7367FC96EF3C`="Computers and Devices",
        `679F85CB-0220-4080-B29B-5540CC05AAB6`="Quick Access",
@@ -312,28 +321,28 @@ export: |
        `F86FA3AB-70D2-4FC7-9C99-FCBF05467F3A`='Videos',
        `F38BF404-1D43-42F2-9305-67DE0B28FC23`='Windows')
 
-     LET _PropertyValueDispatcher &lt;= dict(
-       `20D04FE0-3AEA-1069-A2D8-08002B30309D`="x=&gt;dict(LongName='ComputerName')",
-       `D5CDD502-2E9C-101B-9397-08002B2CF9AE`="x=&gt;x.__DocumentSummaryInformation",
-       `28636AA6-953D-11D2-B5D6-00C04FD918D0`="x=&gt;x.__SHELL_DETAILS",
-       `446D16B1-8DAD-4870-A748-402EA43D788C`="x=&gt;x.__CACHE",
-       `46588AE2-4CBC-4338-BBFC-139326986DCE`="x=&gt;x.__User",
-       `841E4F90-FF59-4D16-8947-E81BBFFAB36D`="x=&gt;x.__Software",
-       `86407DB8-9DF7-48CD-B986-F999ADC19731`="x=&gt;x.__Share",
-       `86D40B4D-9069-443C-819A-2A54090DCCEC`="x=&gt;x.__Tile",
-       `9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3`="x=&gt;x.__AppUserModel",
-       `B725F130-47EF-101A-A5F1-02608C9EEBAC`="x=&gt;x.__STORAGE",
-       `DABD30ED-0043-4789-A7F8-D013A4736622`="x=&gt;x.__FolderDisplay",
-       `E3E0584C-B788-4A5A-BB20-7F5A44C9ACDD`="x=&gt;x.__SEARCH",
-       `F29F85E0-4FF9-1068-AB91-08002B27B3D9`="x=&gt;x.__Document",
-       `DEBDA43A-37B3-4383-91E7-4498DA2995AB`="x=&gt;x.__NetworkInfo",
-       `FB8D2D7B-90D1-4E34-BF60-6EAC09922BBF`="x=&gt;x.__Hash")
+     LET _PropertyValueDispatcher <= dict(
+       `20D04FE0-3AEA-1069-A2D8-08002B30309D`="x=>dict(LongName='ComputerName')",
+       `D5CDD502-2E9C-101B-9397-08002B2CF9AE`="x=>x.__DocumentSummaryInformation",
+       `28636AA6-953D-11D2-B5D6-00C04FD918D0`="x=>x.__SHELL_DETAILS",
+       `446D16B1-8DAD-4870-A748-402EA43D788C`="x=>x.__CACHE",
+       `46588AE2-4CBC-4338-BBFC-139326986DCE`="x=>x.__User",
+       `841E4F90-FF59-4D16-8947-E81BBFFAB36D`="x=>x.__Software",
+       `86407DB8-9DF7-48CD-B986-F999ADC19731`="x=>x.__Share",
+       `86D40B4D-9069-443C-819A-2A54090DCCEC`="x=>x.__Tile",
+       `9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3`="x=>x.__AppUserModel",
+       `B725F130-47EF-101A-A5F1-02608C9EEBAC`="x=>x.__STORAGE",
+       `DABD30ED-0043-4789-A7F8-D013A4736622`="x=>x.__FolderDisplay",
+       `E3E0584C-B788-4A5A-BB20-7F5A44C9ACDD`="x=>x.__SEARCH",
+       `F29F85E0-4FF9-1068-AB91-08002B27B3D9`="x=>x.__Document",
+       `DEBDA43A-37B3-4383-91E7-4498DA2995AB`="x=>x.__NetworkInfo",
+       `FB8D2D7B-90D1-4E34-BF60-6EAC09922BBF`="x=>x.__Hash")
 
      LET PropertyValueDispatcher(x) = eval(
         args=[x,],
         func=get(item=_PropertyValueDispatcher,
                  member=x.ParentOf.Format,
-                 default='x=&gt;"GUID not known"'))
+                 default='x=>"GUID not known"'))
 
      LET Profile = '''
      [
@@ -344,7 +353,7 @@ export: |
             "term": ""
         }],
         ["LinkClsID", 0, "Value", {
-            "value": "x=&gt;format(format='%x', args=x.__LinkClsID)"
+            "value": "x=>format(format='%x', args=x.__LinkClsID)"
         }],
         ["LinkFlags", 20, "Flags", {
             "type": "uint32",
@@ -492,22 +501,22 @@ export: |
             }
         }],
         ["HotKey", 0, "Value", {
-            "value": "x=&gt;if(condition= x.__HotKeyLow=~'No key assigned',
+            "value": "x=>if(condition= x.__HotKeyLow=~'No key assigned',
                             then=x.__HotKeyLow,
                             else=x.__HotKeyLow + ' + ' + x.__HotKeyHigh)"
 
         }],
 
         # The LinkTargetIDList only exists if the Link Flag is set otherwise it is empty.
-        ["LinkTargetIDList", "x=&gt;x.HeaderSize", "Union", {
-            "selector": "x=&gt;x.LinkFlags =~ 'HasLinkTargetIDList'",
+        ["LinkTargetIDList", "x=>x.HeaderSize", "Union", {
+            "selector": "x=>x.LinkFlags =~ 'HasLinkTargetIDList'",
             "choices": {
                 "true": "LinkTargetIDList",
                 "false": "Empty"
             }
         }],
-        ["LinkInfo", "x=&gt;x.LinkTargetIDList.EndOf", "Union", {
-            "selector": "x=&gt;x.LinkFlags =~ 'HasLinkInfo'",
+        ["LinkInfo", "x=>x.LinkTargetIDList.EndOf", "Union", {
+            "selector": "x=>x.LinkFlags =~ 'HasLinkInfo'",
             "choices": {
                 "true": "LinkInfo",
                 "false": "Empty"
@@ -515,53 +524,53 @@ export: |
         }],
 
         # StringData flag checks
-        ["__Name", "x=&gt;x.LinkInfo.EndOf", "Union", {
-            "selector": "x=&gt;x.LinkFlags =~ 'HasName'",
+        ["__Name", "x=>x.LinkInfo.EndOf", "Union", {
+            "selector": "x=>x.LinkFlags =~ 'HasName'",
             "choices": {
                 "true": "Name",
                 "false": "Empty"
             }
         }],
-        ["__RelativePath", "x=&gt;x.__Name.EndOf", "Union", {
-            "selector": "x=&gt;x.LinkFlags =~ 'HasRelativePath'",
+        ["__RelativePath", "x=>x.__Name.EndOf", "Union", {
+            "selector": "x=>x.LinkFlags =~ 'HasRelativePath'",
             "choices": {
                 "true": "RelativePath",
                 "false": "Empty"
             }
         }],
-        ["__WorkingDir", "x=&gt;x.__RelativePath.EndOf", "Union", {
-            "selector": "x=&gt;x.LinkFlags =~ 'HasWorkingDir'",
+        ["__WorkingDir", "x=>x.__RelativePath.EndOf", "Union", {
+            "selector": "x=>x.LinkFlags =~ 'HasWorkingDir'",
             "choices": {
                 "true": "WorkingDir",
                 "false": "Empty"
             }
         }],
-        ["__Arguments", "x=&gt;x.__WorkingDir.EndOf", "Union", {
-            "selector": "x=&gt;x.LinkFlags =~ 'HasArguments'",
+        ["__Arguments", "x=>x.__WorkingDir.EndOf", "Union", {
+            "selector": "x=>x.LinkFlags =~ 'HasArguments'",
             "choices": {
                 "true": "Arguments",
                 "false": "Empty"
             }
         }],
-        ["__IconLocation", "x=&gt;x.__Arguments.EndOf", "Union", {
-            "selector": "x=&gt;x.LinkFlags =~ 'HasIconLocation'",
+        ["__IconLocation", "x=>x.__Arguments.EndOf", "Union", {
+            "selector": "x=>x.LinkFlags =~ 'HasIconLocation'",
             "choices": {
                 "true": "IconLocation",
                 "false": "Empty"
             }
         }],
         ["StringData",0,"StringData"],
-        ["ExtraData", "x=&gt;x.__IconLocation.EndOf", "Array", {
+        ["ExtraData", "x=>x.__IconLocation.EndOf", "Array", {
                 "type": "ExtraData",
                 "count": 1000,
-                "sentinel": "x=&gt;x.Size &lt; 0x00000004"
+                "sentinel": "x=>x.Size < 0x00000004"
             }],
-        ["Overlay", "x=&gt;x.ExtraData.EndOf", "Overlay"],
+        ["Overlay", "x=>x.ExtraData.EndOf", "Overlay"],
 
       ]],
 
       # Struct size includes the size field
-      ["LinkTargetIDList", "x=&gt;x.IDListSize + 2", [
+      ["LinkTargetIDList", "x=>x.IDListSize + 2", [
         ["IDListSize", 0, "uint16"],
         ["IDList", 2, "Array", {
            "type": "ItemIDList",
@@ -570,17 +579,17 @@ export: |
       ]],
 
       # Item List contains shell bags
-      ["ItemIDList", "x=&gt;x.ItemIDSize", [
+      ["ItemIDList", "x=>x.ItemIDSize", [
         ["ItemIDSize", 0, "uint16"],
-        ["Offset", 0, "Value", {"value": "x=&gt;x.StartOf"}],
+        ["Offset", 0, "Value", {"value": "x=>x.StartOf"}],
         ["Type", 2, "uint8"],
         ["TypeHex", 0, Value, {
-          value: "x=&gt;format(format='%#02x', args=x.Type)",
+          value: "x=>format(format='%#02x', args=x.Type)",
         }],
 
         # https://github.com/EricZimmerman/Lnk/blob/a9e6ebcf7e032efd1172ff8a88a4e870b446fa18/Lnk/LnkFile.cs#L131
         ["ShellBag", 0, "Union", {
-           "selector": "x=&gt;format(format='%#02x', args=x.Type)",
+           "selector": "x=>format(format='%#02x', args=x.Type)",
             "choices": {
                "0x00": "ShellBag0x00",
                "0x01": "ShellBag0x01",
@@ -631,27 +640,27 @@ export: |
         ["PropertySheetListSize", 10, "uint16"],
         ["IdentifierSize", 12, "uint16"],
         ["IdentifierData", 14, String, {
-          length: "x=&gt;x.IdentifierSize",
+          length: "x=>x.IdentifierSize",
         }],
-        ["PropertyList", "x=&gt;14 + x.IdentifierSize", Array, {
+        ["PropertyList", "x=>14 + x.IdentifierSize", Array, {
             type: "PropertyStorage",
             count: 10,
-            sentinel: "x=&gt;x.StorageSize = 0",
+            sentinel: "x=>x.StorageSize = 0",
         }],
         ["Properties", 0, "Value", {
-            "value": 'x=&gt;GetPropertyValues(Values=x.PropertyList.PropertyValue)'
+            "value": 'x=>GetPropertyValues(Values=x.PropertyList.PropertyValue)'
         }],
-        ["__CDBurnType", 0, Value, {value: "x=&gt;x.__Magic = 0x4d677541"}],
+        ["__CDBurnType", 0, Value, {value: "x=>x.__Magic = 0x4d677541"}],
         ["__ZipFileContents", 0, "ShellBagZipContents"],
         ["__CDBurn", 0, "ShellBagCDBurn"],
         ["__ItemNameDisplay", 0, Value, {
-            value: "x=&gt;get(item=x.Properties, field='System.ItemNameDisplay')",
+            value: "x=>get(item=x.Properties, field='System.ItemNameDisplay')",
          }],
 
         # Handle some special cases.
         ["Description", 0, "Value", {
-            value: "x=&gt; (x.__CDBurnType &amp;&amp; x.__CDBurn.Description) ||
-                        (x.__ItemNameDisplay &amp;&amp; dict(Type='Variable',
+            value: "x=> (x.__CDBurnType && x.__CDBurn.Description) ||
+                        (x.__ItemNameDisplay && dict(Type='Variable',
                                                      Properties=x.Properties,
                                                      LongName=x.__ItemNameDisplay) ) ||
                          x.__ZipFileContents.Description",
@@ -667,11 +676,11 @@ export: |
         }],
 
         # The extension tag should be immediately after the search string.
-        ["__ExtensionTag", "x=&gt;len(list=x.__pre)", "uint32"],
+        ["__ExtensionTag", "x=>len(list=x.__pre)", "uint32"],
 
         # Extension starts 4 bytes before the tag
-        ["Extension", "x=&gt;len(list=x.__pre) - 4", "Union", {
-             "selector": "x=&gt;format(format='%#x', args=x.__ExtensionTag)",
+        ["Extension", "x=>len(list=x.__pre) - 4", "Union", {
+             "selector": "x=>format(format='%#x', args=x.__ExtensionTag)",
              "choices": {
                  "0xbeef0004": "Beef0004",
              }
@@ -679,7 +688,7 @@ export: |
 
         # Put all the data together in a convenient location
         ["Description", 0, "Value", {
-            "value": 'x=&gt;dict(
+            "value": 'x=>dict(
                 Type="CDBurn",
                 LongName=x.Extension.LongName)',
         }],
@@ -689,7 +698,7 @@ export: |
         ["ItemSize", 0, "uint16"],
         ["__SpecialDataSig", 4, "uint32"],
         ["__SpecialDataSigString", 14, String, {
-           length: "x=&gt;x.ItemSize - 14",
+           length: "x=>x.ItemSize - 14",
            term: "",
         }],
         ["Category", 8, Enumeration, {
@@ -710,7 +719,7 @@ export: |
            }
         }],
         ["Description", 0, "Value", {
-            "value": 'x=&gt;dict(
+            "value": 'x=>dict(
                 Type="Control Panel",
                 LongName="Control Panel\\" + x.Category)',
         }],
@@ -719,7 +728,7 @@ export: |
       ["ShellBag0x71", 0, [
         ["GUID", 14, "GUID"],
         ["Description", 0, "Value", {
-            "value": 'x=&gt;dict(
+            "value": 'x=>dict(
                 Type="GUID: Control Panel",
                 LongName="Control Panel\\" + GetClassName(GUID=x.GUID.Value))',
         }],
@@ -735,18 +744,18 @@ export: |
         }],
 
         # The extension tag should be immediately after the search string.
-        ["__ExtensionTag", "x=&gt;len(list=x.__pre)", "uint32"],
+        ["__ExtensionTag", "x=>len(list=x.__pre)", "uint32"],
 
         # Extension starts 4 bytes before the tag
-        ["Extension", "x=&gt;len(list=x.__pre) - 4", "Union", {
-             "selector": "x=&gt;format(format='%#x', args=x.__ExtensionTag)",
+        ["Extension", "x=>len(list=x.__pre) - 4", "Union", {
+             "selector": "x=>format(format='%#x', args=x.__ExtensionTag)",
              "choices": {
                  "0xbeef0004": "Beef0004",
              }
         }],
 
         ["Description", 0, "Value", {
-            "value": 'x=&gt;dict(
+            "value": 'x=>dict(
                 Type="Users Files Folder",
                 LongName=x.Extension.LongName)',
         }],
@@ -768,14 +777,14 @@ export: |
          ["__FolderNameSize1", 84, uint32],
          ["__FolderNameSize2", 88, uint32],
          ["__FolderNameSize", 0, Value, {
-            value: "x=&gt;x.__FolderNameSize1 || x.__FolderNameSize2"
+            value: "x=>x.__FolderNameSize1 || x.__FolderNameSize2"
           }],
          ["FolderName", 92, String, {
            encoding: "utf16",
-           length: "x=&gt;x.__FolderNameSize * 2",
+           length: "x=>x.__FolderNameSize * 2",
          }],
          ["Description", 0, "Value", {
-             "value": 'x=&gt;dict(
+             "value": 'x=>dict(
                Type="Zip file contents",
                DateString=x.DateString,
                LongName=x.FolderName
@@ -791,15 +800,15 @@ export: |
          ["__ParentFolderNameSize", 88, uint32],
          ["FolderName", 92, String, {
            encoding: "utf16",
-           length: "x=&gt;x.__FolderNameSize * 2",
+           length: "x=>x.__FolderNameSize * 2",
          }],
-         ["Start", 0, Value, {value: "x=&gt;x.__FolderNameSize *2 + 94"}],
-         ["ParentFolderName", "x=&gt;x.__FolderNameSize *2 + 94", String, {
+         ["Start", 0, Value, {value: "x=>x.__FolderNameSize *2 + 94"}],
+         ["ParentFolderName", "x=>x.__FolderNameSize *2 + 94", String, {
            encoding: "utf16",
-           length: "x=&gt;x.__ParentFolderNameSize * 2",
+           length: "x=>x.__ParentFolderNameSize * 2",
          }],
          ["Description", 0, "Value", {
-             "value": 'x=&gt;dict(
+             "value": 'x=>dict(
                Type="Zip file contents",
                DateString=x.DateString,
                LongName=x.FolderName,
@@ -814,7 +823,7 @@ export: |
             encoding: "utf8",
          }],
          ["Description", 0, "Value", {
-             "value": 'x=&gt;dict(
+             "value": 'x=>dict(
                Type="NetworkLocation",
                LongName=x.Name
              )'
@@ -822,8 +831,8 @@ export: |
       ]],
 
       # A LinkInfo stores information about the destination of the link.
-      ["LinkInfo", "x=&gt;x.__LinkInfoSize", [
-        ["__LinkInfoOffset", 0, "Value", {"value": "x=&gt;x.StartOf"}],
+      ["LinkInfo", "x=>x.__LinkInfoSize", [
+        ["__LinkInfoOffset", 0, "Value", {"value": "x=>x.StartOf"}],
         ["__LinkInfoSize", 0, "uint32"],
         ["__LinkInfoHeaderSize", 4, "uint32"],
         ["LinkInfoFlags", 8, "Flags", {
@@ -837,14 +846,14 @@ export: |
         ["__LocalBasePathOffset", 16, "uint32"],
         ["__CommonNetworkRelativeLinkOffset", 20, "uint32"],
         ["__CommonPathSuffixOffset", 24, "uint32"],
-        ["__LocalBasePath", "x=&gt;x.__LocalBasePathOffset", "String", {}],
-        ["__CommonNetworkRelativePath", "x=&gt;x.__CommonNetworkRelativeLinkOffset", "String"],
-        ["__CommonPathSuffix", "x=&gt;x.__CommonPathSuffixOffset", "String"],
-        ["__VolumeID", "x=&gt;x.__VolumeIDOffset", "VolumeID"],
-        ["__CommonNetworkRelativeLink", "x=&gt;x.__CommonNetworkRelativeLinkOffset", "CommonNetworkRelativeLink"],
+        ["__LocalBasePath", "x=>x.__LocalBasePathOffset", "String", {}],
+        ["__CommonNetworkRelativePath", "x=>x.__CommonNetworkRelativeLinkOffset", "String"],
+        ["__CommonPathSuffix", "x=>x.__CommonPathSuffixOffset", "String"],
+        ["__VolumeID", "x=>x.__VolumeIDOffset", "VolumeID"],
+        ["__CommonNetworkRelativeLink", "x=>x.__CommonNetworkRelativeLinkOffset", "CommonNetworkRelativeLink"],
         ["Target", 0, "Value", { # Depending on the LinkInfoFlags this struct needs to be interpreted differently.
             "value": '
-               x=&gt;if(condition=x.LinkInfoFlags =~ "VolumeIDAndLocalBasePath",
+               x=>if(condition=x.LinkInfoFlags =~ "VolumeIDAndLocalBasePath",
                      then=dict(Path=x.__LocalBasePath,
                                VolumeInfo=x.__VolumeID),
                      else=dict(Path=format(format="%v\\%v",
@@ -912,15 +921,15 @@ export: |
         }],
         ["__NetNameOffsetUnicode", 20, "uint32"],
         ["__DeviceNameOffsetUnicode", 24, "uint32"],
-        ["__NetNameAscii", "x=&gt;x.__NetNameOffset", "String"],
-        ["__DeviceNameAscii", "x=&gt;x.__DeviceNameOffset", "String"],
-        ["__NetNameUnicode", "x=&gt;x.__NetNameOffsetUnicode", "String", {"encoding": "utf16"}],
-        ["__DeviceNameUnicode", "x=&gt;x.__DeviceNameOffsetUnicode", "String", {"encoding": "utf16"}],
+        ["__NetNameAscii", "x=>x.__NetNameOffset", "String"],
+        ["__DeviceNameAscii", "x=>x.__DeviceNameOffset", "String"],
+        ["__NetNameUnicode", "x=>x.__NetNameOffsetUnicode", "String", {"encoding": "utf16"}],
+        ["__DeviceNameUnicode", "x=>x.__DeviceNameOffsetUnicode", "String", {"encoding": "utf16"}],
         ["NetName", 0, "Value", {
-            "value": "x=&gt;if(condition=x.__NetNameOffset, then=x.__NetNameAscii, else=x.__NetNameUnicode)"
+            "value": "x=>if(condition=x.__NetNameOffset, then=x.__NetNameAscii, else=x.__NetNameUnicode)"
         }],
         ["DeviceName", 0, "Value", {
-            "value": "x=&gt;if(condition=x.__DeviceNameOffset, then=x.__DeviceNameAscii, else=x.__DeviceNameUnicode)"
+            "value": "x=>if(condition=x.__DeviceNameOffset, then=x.__DeviceNameAscii, else=x.__DeviceNameUnicode)"
         }]
       ]],
 
@@ -942,10 +951,10 @@ export: |
         ["DriveSerialNumber", 8, "uint32"],
         ["__VolumeLabelOffset", 12, "uint32"],
         ["__VolumeLabelOffsetUnicode", 16, "uint32"],
-        ["__VolumeLabelAscii", "x=&gt;x.__VolumeLabelOffset", "String"],
-        ["__VolumeLabelUnicode", "x=&gt;x.__VolumeLabelOffsetUnicode", "String", {"encoding": "utf16"}],
+        ["__VolumeLabelAscii", "x=>x.__VolumeLabelOffset", "String"],
+        ["__VolumeLabelUnicode", "x=>x.__VolumeLabelOffsetUnicode", "String", {"encoding": "utf16"}],
         ["VolumeLabel", 0, "Value", {
-            "value": 'x=&gt;if(condition=x.__VolumeLabelOffset,
+            "value": 'x=>if(condition=x.__VolumeLabelOffset,
                then=x.__VolumeLabelAscii, else=x.__VolumeLabelUnicode)'
         }]
       ]],
@@ -963,11 +972,11 @@ export: |
 
          # Name is only valid if the first bit is set.
          ["Name", 3, "Value", {
-             "value": "x=&gt;(x.__GUIDFlag = 0x80 &amp;&amp; GetClassName(GUID=x.__GUID.Value) ) ||
-                          (x.Subtype &amp;&amp; x.__Name) || ''",
+             "value": "x=>(x.__GUIDFlag = 0x80 && GetClassName(GUID=x.__GUID.Value) ) ||
+                          (x.Subtype && x.__Name) || ''",
          }],
          ["Description", 0, "Value", {
-            "value": 'x=&gt;dict(
+            "value": 'x=>dict(
                 LongName=x.Name,
                 ShortName=x.Name,
                 GUID=if(condition=x.__GUIDFlag = 0x80, then=x.__GUID.Value),
@@ -991,7 +1000,7 @@ export: |
         ["UserPropertyName", 13, "String", {length: 3}],
         ["GUID", 4, "GUID"],
         ["Description", 0, "Value", {
-            "value": 'x=&gt; ( x.UserPropertyType != 0x2f &amp;&amp;
+            "value": 'x=> ( x.UserPropertyType != 0x2f &&
               dict(
                  LongName=GetClassName(GUID=x.GUID.Value) || "My Computer",
                  GUID=x.GUID.Value,
@@ -1025,11 +1034,11 @@ export: |
         }],
 
         # The extension tag should be immediately after the search string.
-        ["__ExtensionTag", "x=&gt;len(list=x.__pre)", "uint32"],
+        ["__ExtensionTag", "x=>len(list=x.__pre)", "uint32"],
 
             # Extension starts 4 bytes before the tag
-            ["Extension", "x=&gt;len(list=x.__pre) - 4", "Union", {
-                "selector": "x=&gt;format(format='%#x', args=x.__ExtensionTag)",
+            ["Extension", "x=>len(list=x.__pre) - 4", "Union", {
+                "selector": "x=>format(format='%#x', args=x.__ExtensionTag)",
                 "choices": {
                     "0xbeef0004": "Beef0004",
                 }
@@ -1037,7 +1046,7 @@ export: |
 
             # Put all the data together in a convenient location
             ["Description", 0, "Value", {
-                "value": 'x=&gt;dict(
+                "value": 'x=>dict(
                     Type=x.SubType,
                     Modified=if(condition=x.__LastModificationTime, then=x.LastModificationTime),
                     LastAccessed=if(condition=x.Extension.__LastAccessed, then=x.Extension.LastAccessed),
@@ -1054,7 +1063,7 @@ export: |
           ["Size", 0, "uint16"],
           ["ShellBagZipContents", 0, "ShellBagZipContents"],
           ["__ShellBagZipContentsValid", 0, Value, {
-            value: "x=&gt;x.Size &gt; 0x28",
+            value: "x=>x.Size > 0x28",
            }],
 
           ["__pre", 0, "String", {
@@ -1062,18 +1071,18 @@ export: |
           }],
 
           # The extension tag should be immediately after the search string.
-          ["__ExtensionTag", "x=&gt;len(list=x.__pre)", "uint32"],
+          ["__ExtensionTag", "x=>len(list=x.__pre)", "uint32"],
 
           # Extension starts 4 bytes before the tag
-          ["Extension", "x=&gt;len(list=x.__pre) - 4", "Union", {
-             "selector": "x=&gt;format(format='%#x', args=x.__ExtensionTag)",
+          ["Extension", "x=>len(list=x.__pre) - 4", "Union", {
+             "selector": "x=>format(format='%#x', args=x.__ExtensionTag)",
              "choices": {
                  "0xbeef0004": "Beef0004",
              }
           }],
 
           ["Description", 0, "Value", {
-            "value": 'x=&gt;if(condition=x.__ShellBagZipContentsValid AND NOT x.Extension.LongName,
+            "value": 'x=>if(condition=x.__ShellBagZipContentsValid AND NOT x.Extension.LongName,
                             then=x.ShellBagZipContents.Description,
                             else=dict(Type="File",
                                       LongName=x.Extension.LongName))',
@@ -1086,7 +1095,7 @@ export: |
             ["Version", 2, "uint16"],
             ["__Signature", 4, "uint32"],
             ["Signature", 0, "Value", {
-                "value": "x=&gt;format(format='%#x', args=x.__Signature)"
+                "value": "x=>format(format='%#x', args=x.__Signature)"
             }],
             ["__CreateDate", 8, "uint32"],
             ["__LastAccessed", 12, "uint32"],
@@ -1094,7 +1103,7 @@ export: |
             ["CreateDate", 8, "FatTimestamp"],
             ["LastAccessed", 12, "FatTimestamp"],
             ["MFTReference", 20, "MFTReference"],
-            ["LongName", "x=&gt;if(condition=x.Version &gt; 8, then=46, else=42)", "String", {
+            ["LongName", "x=>if(condition=x.Version > 8, then=46, else=42)", "String", {
                 "encoding": "utf16"
             }]
         ]],
@@ -1112,77 +1121,77 @@ export: |
         ]],
 
         ["StringData",0,[
-            ["TargetPath",0,"Value",{ "value":"x=&gt; x.ParentOf.LinkInfo.Target.Path"}],
-            ["Name",0,"Value",{ "value":"x=&gt; x.ParentOf.__Name.StringData"}],
-            ["RelativePath",0,"Value",{ "value":"x=&gt; x.ParentOf.__RelativePath.StringData"}],
-            ["WorkingDir",0,"Value",{ "value":"x=&gt; x.ParentOf__WorkingDir.StringData"}],
-            ["Arguments",0,"Value",{ "value":"x=&gt; x.ParentOf.__Arguments.StringData"}],
-            ["IconLocation",0,"Value",{ "value":"x=&gt; x.ParentOf.__IconLocation.StringData"}],
+            ["TargetPath",0,"Value",{ "value":"x=> x.ParentOf.LinkInfo.Target.Path"}],
+            ["Name",0,"Value",{ "value":"x=> x.ParentOf.__Name.StringData"}],
+            ["RelativePath",0,"Value",{ "value":"x=> x.ParentOf.__RelativePath.StringData"}],
+            ["WorkingDir",0,"Value",{ "value":"x=> x.ParentOf__WorkingDir.StringData"}],
+            ["Arguments",0,"Value",{ "value":"x=> x.ParentOf.__Arguments.StringData"}],
+            ["IconLocation",0,"Value",{ "value":"x=> x.ParentOf.__IconLocation.StringData"}],
         ]],
 
         ## StringDataBlock structs
-        ["Name", "x=&gt;x.Size + 2", [
-            ["Offset", 0, "Value", {"value": "x=&gt;x.StartOf"}],
+        ["Name", "x=>x.Size + 2", [
+            ["Offset", 0, "Value", {"value": "x=>x.StartOf"}],
             ["Characters", 0, "uint16"],
-            ["Size", 0, "Value", {"value": "x=&gt;x.Characters * 2"}],
+            ["Size", 0, "Value", {"value": "x=>x.Characters * 2"}],
             ["StringData", 2, "String", {
                 "encoding": "utf16",
-                "length": "x=&gt;x.Size",
+                "length": "x=>x.Size",
                 "max_length": 10000,
                 "term": "",
             }],
         ]],
-        ["WorkingDir", "x=&gt;x.Size + 2", [
-            ["Offset", 0, "Value", {"value": "x=&gt;x.StartOf"}],
+        ["WorkingDir", "x=>x.Size + 2", [
+            ["Offset", 0, "Value", {"value": "x=>x.StartOf"}],
             ["Characters", 0, "uint16"],
-            ["Size", 0, "Value", {"value": "x=&gt;x.Characters * 2"}],
+            ["Size", 0, "Value", {"value": "x=>x.Characters * 2"}],
             ["StringData", 2, "String", {
                 "encoding": "utf16",
-                "length": "x=&gt;x.Size",
+                "length": "x=>x.Size",
                 "max_length": 10000,
                 "term": "",
             }],
         ]],
-        ["RelativePath", "x=&gt;x.Size + 2", [
-            ["Offset", 0, "Value", {"value": "x=&gt;x.StartOf"}],
+        ["RelativePath", "x=>x.Size + 2", [
+            ["Offset", 0, "Value", {"value": "x=>x.StartOf"}],
             ["Characters", 0, "uint16"],
-            ["Size", 0, "Value", {"value": "x=&gt;x.Characters * 2"}],
+            ["Size", 0, "Value", {"value": "x=>x.Characters * 2"}],
             ["StringData", 2, "String", {
                 "encoding": "utf16",
-                "length": "x=&gt;x.Size",
+                "length": "x=>x.Size",
                 "max_length": 10000,
                 "term": "",
             }],
         ]],
-        ["Arguments", "x=&gt;x.Size + 2", [
-            ["Offset", 0, "Value", {"value": "x=&gt;x.StartOf"}],
+        ["Arguments", "x=>x.Size + 2", [
+            ["Offset", 0, "Value", {"value": "x=>x.StartOf"}],
             ["Characters", 0, "uint16"],
-            ["Size", 0, "Value", {"value": "x=&gt;x.Characters * 2"}],
-            ["SizeType", 0, "Value", {"value": "x=&gt;format(format='%T',args=x.Size)"}],
+            ["Size", 0, "Value", {"value": "x=>x.Characters * 2"}],
+            ["SizeType", 0, "Value", {"value": "x=>format(format='%T',args=x.Size)"}],
             ["StringData", 2, "String", {
                 "encoding": "utf16",
-                "length": "x=&gt;x.Size",
+                "length": "x=>x.Size",
                 "max_length": 50000,
                 "term": "",
             }],
         ]],
-        ["IconLocation", "x=&gt;x.Size + 2", [
-            ["Offset", 0, "Value", {"value": "x=&gt;x.StartOf"}],
+        ["IconLocation", "x=>x.Size + 2", [
+            ["Offset", 0, "Value", {"value": "x=>x.StartOf"}],
             ["Characters", 0, "uint16"],
-            ["Size", 0, "Value", {"value": "x=&gt;x.Characters * 2"}],
+            ["Size", 0, "Value", {"value": "x=>x.Characters * 2"}],
             ["StringData", 2, "String", {
                 "encoding": "utf16",
-                "length": "x=&gt;x.Size",
+                "length": "x=>x.Size",
                 "max_length": 10000,
                 "term": "",
             }],
         ]],
-        ["ExtraData","x=&gt;x.Size",[
-            ["Offset",0,"Value",{"value":"x=&gt;x.StartOf"}],
+        ["ExtraData","x=>x.Size",[
+            ["Offset",0,"Value",{"value":"x=>x.StartOf"}],
             ["Size",0,"uint32"],
-            ["EndOf",0,"Value",{"value":"x=&gt;x.EndOf"}],
+            ["EndOf",0,"Value",{"value":"x=>x.EndOf"}],
             ["__Header",4,"uint32"],
-            ["Header",0,"Value",{"value":"x=&gt;'0x' + upcase(string=format(format='%08x',args=x.__Header))"}],
+            ["Header",0,"Value",{"value":"x=>'0x' + upcase(string=format(format='%08x',args=x.__Header))"}],
             ["BlockClass", 4, "Enumeration", {
                 "type": "uint32",
                 "map": {
@@ -1199,7 +1208,7 @@ export: |
                     "VistaAndAboveIDList": 0xA000000C,
                 }}],
             ["Data", 0, "Union", {
-               "selector": "x=&gt;x.Header",
+               "selector": "x=>x.Header",
                 "choices": {
                     "0xA0000001": "EnvironmentVariableDataBlock",
                     "0xA0000002": "ConsoleDataBlock",
@@ -1224,7 +1233,7 @@ export: |
                 "max_length": 520
             }],
             ["DataValue", 0, "Value",{
-                "value": "x=&gt;if(condition= x.__TargetAnsi=x.__TargetUnicode,
+                "value": "x=>if(condition= x.__TargetAnsi=x.__TargetUnicode,
                                     then=x.__TargetAnsi,
                                     else=dict(Ascii=x.__TargetAnsi,Unicode=x.__TargetUnicode))" }],
         ]],
@@ -1258,22 +1267,22 @@ export: |
             ["__ScreenBufferSizeX",12,"int16"],
             ["__ScreenBufferSizeY",14,"int16"],
             ["ScreenBufferSize",0,"Value",{
-                "value":"x=&gt;format(format='%v x %v',args=[x.__ScreenBufferSizeX,x.__ScreenBufferSizeY])"
+                "value":"x=>format(format='%v x %v',args=[x.__ScreenBufferSizeX,x.__ScreenBufferSizeY])"
             }],
             ["__WindowSizeX",16,"int16"],
             ["__WindowSizeY",18,"int16"],
             ["WindowSize",0,"Value",{
-                "value":"x=&gt;format(format='%v x %v',args=[x.__WindowSizeX,x.__WindowSizeY])"
+                "value":"x=>format(format='%v x %v',args=[x.__WindowSizeX,x.__WindowSizeY])"
             }],
             ["__WindowOriginX",20,"int16"],
             ["__WindowOriginY",22,"int16"],
             ["WindowOrigin",0,"Value",{
-                "value":"x=&gt;format(format='%v / %v',args=[x.__WindowOriginX,x.__WindowOriginY])"
+                "value":"x=>format(format='%v / %v',args=[x.__WindowOriginX,x.__WindowOriginY])"
             }],
             ["__FontSizeW",32,"int16"],
             ["__FontSizeH",34,"int16"],
             ["FontSize",0,"Value",{
-                "value":"x=&gt;if(condition= x.__FontSizeW=0,
+                "value":"x=>if(condition= x.__FontSizeW=0,
                         then= x.__FontSizeH,
                         else= format(format='%v / %v',args=[x.__FontSizeW,x.__FontSizeH])) "
             }],
@@ -1283,7 +1292,7 @@ export: |
                 end_bit: 31,
             }],
             ["FontFamily", 0, "Value", {
-                "value": "x=&gt;get(item=dict(
+                "value": "x=>get(item=dict(
                    `0`='DONTCARE',
                    `16`='ROMAN',
                    `32`='SWISS',
@@ -1305,11 +1314,11 @@ export: |
             }],
             # TODO: implement Flag select for FontPitch
             ["FontPitch", 0 ,"Value",{
-                "value":"x=&gt;format(format='0x%02x',args=x.__FontPitch)"
+                "value":"x=>format(format='0x%02x',args=x.__FontPitch)"
             }],
             ["__FontWeight",40,"uint32"],
             ["BoldFont", 0 ,"Value",{
-                "value":"x=&gt;if(condition= 700&lt;=x.__FontWeight,
+                "value":"x=>if(condition= 700<=x.__FontWeight,
                     then= True,
                     else= False)"
             }],
@@ -1319,35 +1328,35 @@ export: |
             }],
             ["__CursorSize",108,"uint32"],
             ["CursorSize", 0 ,"Value",{
-                "value":"x=&gt; if(condition= x.__CursorSize &lt;= 25,
+                "value":"x=> if(condition= x.__CursorSize <= 25,
                                 then= 'Small',
-                        else=if(condition= x.__CursorSize &gt;= 26 AND x.__CursorSize &lt;= 50,
+                        else=if(condition= x.__CursorSize >= 26 AND x.__CursorSize <= 50,
                                 then= 'Medium',
-                        else=if(condition= x.__CursorSize &gt;= 51 AND x.__CursorSize &lt;= 100,
+                        else=if(condition= x.__CursorSize >= 51 AND x.__CursorSize <= 100,
                                 else= 'Large',
                                 else= x.__CursorSize )))"
             }],
             ["__FullScreen",112,"uint32"],
             ["FullScreen", 0 ,"Value",{
-                "value":"x=&gt; if(condition= x.__FullScreen &gt; 0,
+                "value":"x=> if(condition= x.__FullScreen > 0,
                                 then= True,
                                 else= False )"
             }],
             ["__QuickEdit",116,"uint32"],
             ["QuickEdit", 0 ,"Value",{
-                "value":"x=&gt; if(condition= x.__QuickEdit &gt; 0,
+                "value":"x=> if(condition= x.__QuickEdit > 0,
                                 then= True,
                                 else= False )"
             }],
             ["__InsertMode",120,"uint32"],
             ["InsertMode", 0 ,"Value",{
-                "value":"x=&gt; if(condition= x.__InsertMode &gt; 0,
+                "value":"x=> if(condition= x.__InsertMode > 0,
                                 then= True,
                                 else= False )"
             }],
             ["__AutoPosition",124,"uint32"],
             ["AutoPosition", 0 ,"Value",{
-                "value":"x=&gt; if(condition= x.__AutoPosition &gt; 0,
+                "value":"x=> if(condition= x.__AutoPosition > 0,
                                 then= True,
                                 else= False )"
             }],
@@ -1355,7 +1364,7 @@ export: |
             ["NumberOfHistoryBuffers",132,"uint32"],
             ["__HistoryNoDup",136,"uint32"],
             ["HistoryDuplicatesAllowed", 0 ,"Value",{
-                "value":"x=&gt; if(condition= x.__HistoryNoDup &gt; 0,
+                "value":"x=> if(condition= x.__HistoryNoDup > 0,
                                 then= True,
                                 else= False )"
             }],
@@ -1368,31 +1377,31 @@ export: |
         ["TrackerDataBlock", 0x00000060, [
             ["__DataBlockSize",0,"uint32"],
             ["__MachineID", 16, "String"],
-            ["MachineID", 0, "Value",{ "value": "x=&gt;if(condition= x.__MachineID=~'[^ -~]+', then=Null, else=x.__MachineID )" }],
-            ["MacAddress", 0, "Value",{ "value": "x=&gt;if(condition=x.MachineID,then=strip(suffix=':',string=regex_replace(source=split(string=x.FileDroid,sep='-')[-1],re='.{2}',replace='$0:')))" }],
-            ["__CreationTimeHex", 0, "Value",{ "value": "x=&gt;if(condition=x.MachineID,then='0x' + x.FileDroid[15:18] + x.FileDroid[9:13] + x.FileDroid[0:8] )" }],
-            ["CreationTime", 0, "Value",{ "value": "x=&gt;timestamp(epoch=int(int=( int(int=x.__CreationTimeHex) - 0x01B21DD213814000) / 10000))" }],
+            ["MachineID", 0, "Value",{ "value": "x=>if(condition= x.__MachineID=~'[^ -~]+', then=Null, else=x.__MachineID )" }],
+            ["MacAddress", 0, "Value",{ "value": "x=>if(condition=x.MachineID,then=strip(suffix=':',string=regex_replace(source=split(string=x.FileDroid,sep='-')[-1],re='.{2}',replace='$0:')))" }],
+            ["__CreationTimeHex", 0, "Value",{ "value": "x=>if(condition=x.MachineID,then='0x' + x.FileDroid[15:18] + x.FileDroid[9:13] + x.FileDroid[0:8] )" }],
+            ["CreationTime", 0, "Value",{ "value": "x=>timestamp(epoch=int(int=( int(int=x.__CreationTimeHex) - 0x01B21DD213814000) / 10000))" }],
             ["__Droid0", 32, "GUID"],
             ["__Droid1", 48, "GUID"],
             ["__DroidBirth0", 64, "GUID"],
             ["__DroidBirth1", 80, "GUID"],
-            ["VolumeDroid", 0, "Value",{"value": "x=&gt;if(condition=x.MachineID,then=x.__Droid0.Value)" }],
-            ["VolumeDroidBirth", 0, "Value",{ "value": "x=&gt;if(condition=x.MachineID,then=x.__DroidBirth0.Value)" }],
-            ["FileDroid", 0, "Value",{"value": "x=&gt;if(condition=x.MachineID,then=x.__Droid1.Value)" }],
-            ["FileDroidBirth", 0, "Value",{ "value": "x=&gt;if(condition=x.MachineID,then=x.__DroidBirth1.Value)" }],
+            ["VolumeDroid", 0, "Value",{"value": "x=>if(condition=x.MachineID,then=x.__Droid0.Value)" }],
+            ["VolumeDroidBirth", 0, "Value",{ "value": "x=>if(condition=x.MachineID,then=x.__DroidBirth0.Value)" }],
+            ["FileDroid", 0, "Value",{"value": "x=>if(condition=x.MachineID,then=x.__Droid1.Value)" }],
+            ["FileDroidBirth", 0, "Value",{ "value": "x=>if(condition=x.MachineID,then=x.__DroidBirth1.Value)" }],
         ]],
         #0xA0000004
         ["ConsoleFEDataBlock", 0x0000000C, [
             ["__DataBlockSize",0,"uint32"],
             ["CodePage",8,"uint32"],
-            ["DataValue",0,"Value",{"value":"x=&gt;x.CodePage"}],
+            ["DataValue",0,"Value",{"value":"x=>x.CodePage"}],
         ]],
         #0xA0000005
         ["SpecialFolderDataBlock", 0x00000010, [
             ["__DataBlockSize",0,"uint32"],
             ["SpecialFolderId",8,"uint32"],
             ["IdOffset",12,"uint32"],
-            ["DataValue",0,"Value",{"value":"x=&gt;x.SpecialFolderId"}],
+            ["DataValue",0,"Value",{"value":"x=>x.SpecialFolderId"}],
         ]],
         #0xA0000006
         ["DarwinDataBlock", 0x00000314, [
@@ -1403,7 +1412,7 @@ export: |
                 "max_length": 520
             }],
             ["DataValue", 0, "Value",{
-                "value": "x=&gt;if(condition= x.__DarwinDataAnsi=x.__DarwinDataUnicode,
+                "value": "x=>if(condition= x.__DarwinDataAnsi=x.__DarwinDataUnicode,
                                 then=x.__DarwinDataAnsi,
                                 else=dict(Ascii=x.__DarwinDataAnsi,
                                           Unicode=x.__DarwinDataUnicode))" }],
@@ -1417,74 +1426,74 @@ export: |
                 "max_length": 520,
             }],
             ["DataValue", 0, "Value",{
-                "value": "x=&gt;if(condition= x.__TargetAnsi=x.__TargetUnicode,
+                "value": "x=>if(condition= x.__TargetAnsi=x.__TargetUnicode,
                                 then=x.__TargetAnsi,
                                 else=dict(Ascii=x.__TargetAnsi,
                                           Unicode=x.__TargetUnicode))" }],
         ]],
         #0xA0000008
-        ["ShimDataBlock", "x=&gt;x.__DataBlockSize", [
+        ["ShimDataBlock", "x=>x.__DataBlockSize", [
             ["__DataBlockSize",0,"uint32"],
             ["LayerName", 8, "String", {
                 "encoding": "utf16",
-                "length": "x=&gt;x.__DataBlockSize - 8",
+                "length": "x=>x.__DataBlockSize - 8",
                 "max_length": 10000
                 }],
-            ["DataValue",0,"Value",{"value":"x=&gt;x.LayerName"}],
+            ["DataValue",0,"Value",{"value":"x=>x.LayerName"}],
         ]],
         #0xA0000009
-        ["PropertyStoreDataBlock", "x=&gt;x.__DataBlockSize", [
+        ["PropertyStoreDataBlock", "x=>x.__DataBlockSize", [
             ["__DataBlockSize",0,"uint32"],
             ["PropertyStorage", 8, "Array", {
                 "count": 1000,
                 "type": "PropertyStorage",
-                "sentinel": "x=&gt;x.__DataBlockSize = 0"
+                "sentinel": "x=>x.__DataBlockSize = 0"
             }],
-            ["DataValue",0,"Value",{"value":"x=&gt;x.PropertyStorage.PropertyValue"}],
+            ["DataValue",0,"Value",{"value":"x=>x.PropertyStorage.PropertyValue"}],
         ]],
         #0xA000000B
         ["KnownFolderDataBlock", 0x00000314, [
             ["__DataBlockSize",0,"uint32"],
             ["__KnownFolderId", 8, "GUID"],
-            ["GUID",0,"Value",{"value":"x=&gt;x.__KnownFolderId.Value"}],
+            ["GUID",0,"Value",{"value":"x=>x.__KnownFolderId.Value"}],
             ["__Offset", 24,"uint32"],
             ["KnownFolder", 0, "Value", {
-                "value": "x=&gt; get(item=KnownGUIDLookup, field=x.GUID)"
+                "value": "x=> get(item=KnownGUIDLookup, field=x.GUID)"
             }],
         ]],
         #0xA000000C
-        ["VistaAndAboveIDListDataBlock", "x=&gt;x.__BlockSize", [
+        ["VistaAndAboveIDListDataBlock", "x=>x.__BlockSize", [
             ["__DataBlockSize",0,"uint32"],
             ["IDList", 8, "ItemIDList"],
         ]],
 
         ["DocumentSummaryInformation", 10, [
-          ["Offset", 0, "Value", {"value": "x=&gt;x.StartOf"}],
+          ["Offset", 0, "Value", {"value": "x=>x.StartOf"}],
           ["Type", 0, "uint32"],
         ]],
 
-        ["PropertyStorage","x=&gt;x.StorageSize", [
+        ["PropertyStorage","x=>x.StorageSize", [
             ["StorageSize",0,"uint32"],
-            ["Offset", 0, "Value", {"value": "x=&gt;x.StartOf"}],
+            ["Offset", 0, "Value", {"value": "x=>x.StartOf"}],
             ["Version",4,"String",{ "length":4 }], #Expect 1SPS / 0x53505331
             ["__Format", 8,"GUID"],
-            ["Format", 0, "Value",{"value": "x=&gt;x.__Format.Value" }],
+            ["Format", 0, "Value",{"value": "x=>x.__Format.Value" }],
             ["PropertyValue", 24, "Array", {
                 "type": "PropertyValue",
                 "count": 1000,
-                "sentinel": "x=&gt;x.__ValueSize = 0"
+                "sentinel": "x=>x.__ValueSize = 0"
             }],
         ]],
 
-        ["PropertyValue","x=&gt;x.__ValueSize", [
+        ["PropertyValue","x=>x.__ValueSize", [
             ["__ValueSize",0,"uint32"],
             ["ValueSize",0,"uint32"],
-            ["Offset", 0, Value, {value: "x=&gt;x.StartOf"}],
+            ["Offset", 0, Value, {value: "x=>x.StartOf"}],
             ["__ID",4,"uint32"],
-            ["GuidId",0,"Value",{"value": "x=&gt;x.ParentOf.Format + '/' + str(str=x.__ID)"}],
+            ["GuidId",0,"Value",{"value": "x=>x.ParentOf.Format + '/' + str(str=x.__ID)"}],
             # These come from https://github.com/EricZimmerman/ExtensionBlocks/blob/master/ExtensionBlocks/Utils.cs
             ["Description", 0, "Value", {
-                "value": "x=&gt;PropertyValueDispatcher(x=x)"
+                "value": "x=>PropertyValueDispatcher(x=x)"
             }],
             ["__DocumentSummaryInformation", 4, "DocumentSummaryInformation"],
             ["__NetworkInfo", 4, "Enumeration", {
@@ -1690,7 +1699,7 @@ export: |
             # https://github.com/EricZimmerman/ExtensionBlocks/blob/58e35b8457bf3006f672c972619bc0fb913fb7e4/ExtensionBlocks/PropertySheet.cs#L104
             ["Type", 9, "uint16"],
             ["__Value", 13, "Union", {
-               selector: "x=&gt;format(format='%#02x', args=x.Type)",
+               selector: "x=>format(format='%#02x', args=x.Type)",
                choices: {
                   "0x1f": "LPWSTR",
                   "0x0b": "BOOL",
@@ -1710,7 +1719,7 @@ export: |
                   "0x48": "GUID",
                }
             }],
-            ["Value", 0, "Value", { "value": "x=&gt;x.__Value.Value"}],
+            ["Value", 0, "Value", { "value": "x=>x.__Value.Value"}],
         ]],
         ["GUID", 16, [
             ["__D1", 0, "uint32"],
@@ -1718,30 +1727,30 @@ export: |
             ["__D3", 6, "uint16"],
             ["__D4", 8, "String", {"term": "", "length": 2}],
             ["__D5", 10, "String", {"term": "", "length": 6}],
-            ["Value", 0, "Value", { "value": "x=&gt;upcase(string=
+            ["Value", 0, "Value", { "value": "x=>upcase(string=
                     format(format='%08x-%04x-%04x-%02x-%02x',
                         args=[x.__D1, x.__D2, x.__D3, x.__D4, x.__D5]))" }],
         ]],
-        ["Overlay", "x=&gt;x.Length", [
-            ["Header", 0, "Value", {"value": "x=&gt;format(format='0x%08x',args=read_file(filename=OSPath,offset=x.StartOf + 4,length=4))"}],
-            ["Offset", 0, "Value", {"value": "x=&gt;x.StartOf + 4"}],
-            ["Length", 0, "Value", {"value": "x=&gt;len(list=read_file(filename=OSPath, offset=x.StartOf + 4))"}],
-            ["Entropy", 0, "Value", {"value": "x=&gt;entropy(string=read_file(filename=OSPath,offset=x.StartOf + 4))"}],
-            ["Magic", 0, "Value", {"value": "x=&gt;magic(accessor='data',path=read_file(filename=OSPath,offset=x.StartOf + 4))"}],
+        ["Overlay", "x=>x.Length", [
+            ["Header", 0, "Value", {"value": "x=>format(format='0x%08x',args=read_file(filename=OSPath,offset=x.StartOf + 4,length=4))"}],
+            ["Offset", 0, "Value", {"value": "x=>x.StartOf + 4"}],
+            ["Length", 0, "Value", {"value": "x=>len(list=read_file(filename=OSPath, offset=x.StartOf + 4))"}],
+            ["Entropy", 0, "Value", {"value": "x=>entropy(string=read_file(filename=OSPath,offset=x.StartOf + 4))"}],
+            ["Magic", 0, "Value", {"value": "x=>magic(accessor='data',path=read_file(filename=OSPath,offset=x.StartOf + 4))"}],
         ]],
 
         ["LPWSTR", 0, [
            ["Size", 0, "uint32"],
            ["String", 4, String, {
               "term_hex": "00",
-              "length": "x=&gt;x.Size * 2",
+              "length": "x=>x.Size * 2",
               "encoding": "utf16"
            }],
-           ["Value", 0, Value, {value: "x=&gt;x.String"}],
+           ["Value", 0, Value, {value: "x=>x.String"}],
         ]],
         ["BOOL", 0, [
            ["_v", 0, "uint8"],
-           ["Value", 0, Value, {value: "x=&gt;x._v != 0"}],
+           ["Value", 0, Value, {value: "x=>x._v != 0"}],
         ]],
         ["UINT8", 0, [
            ["Value", 0, "uint8"],
@@ -1759,14 +1768,14 @@ export: |
            ["Value", 0, "uint64"],
         ]],
         ["EmptyValue", 0, [
-           ["Value", 0, Value, {value: "x=&gt;0"}],
+           ["Value", 0, Value, {value: "x=>0"}],
         ]],
         ["Empty", 0, []],
      ]
      '''
 
      LET _longestName(ShortName, LongName) = if(
-         condition=len(list=LongName) &lt; len(list=ShortName),
+         condition=len(list=LongName) < len(list=ShortName),
          then=ShortName, else=LongName)
 
      LET _fixfilename(name) = regex_replace(source=name, re="\\\\$", replace="")
@@ -1808,8 +1817,8 @@ export: |
          LinkTargetIDList=Parsed.LinkTargetIDList
       )
 
-      LET ShowExtraData(Parsed) = to_dict(item={
-        SELECT  if(condition= BlockClass=~'^0x',
+      LET ShowExtraData(Parsed, OSPath) = to_dict(item={
+        SELECT if(condition= BlockClass=~'^0x',
                   then= 'Overlay',
                   else= BlockClass ) as _key,
             if(condition= Data.DataValue,
@@ -1846,7 +1855,7 @@ sources:
         Parsed.LinkInfo as LinkInfo,
         ShowLinkTarget(ShellBag=Parsed.LinkTargetIDList.IDList.ShellBag) as LinkTarget,
         Parsed.StringData as StringData,
-        ShowExtraData(Parsed=Parsed) as ExtraData,
+        ShowExtraData(Parsed=Parsed, OSPath=OSPath) as ExtraData,
         property_store(Parsed=Parsed) as PropertyStore,
         Parsed.Overlay as Overlay,
         Parsed
@@ -1867,14 +1876,14 @@ sources:
          if(condition=PropertyStore,
             then= if(condition= ExtraData.Overlay,
                      then= ExtraData + dict(PropertyStore=PropertyStore),
-                     else= if(condition= Overlay.Length &gt; 4,
+                     else= if(condition= Overlay.Length > 4,
                               then= ExtraData + dict(
                                   PropertyStore=PropertyStore
                                 ) + dict(Overlay=to_dict(item=Overlay)),
                               else= ExtraData + dict(PropertyStore=PropertyStore))),
                               else= if(condition= ExtraData.Overlay,
                               then= ExtraData,
-                              else= if(condition= Overlay.Length &gt; 4,
+                              else= if(condition= Overlay.Length > 4,
                               then= ExtraData + dict(Overlay=to_dict(item=Overlay)),
                               else= ExtraData
                               )
@@ -1929,7 +1938,7 @@ sources:
         FROM if(condition=data,
             then={
                 SELECT Base64,  len(list=Base64) as Length
-                FROM parse_records_with_regex(accessor='data',file=data, regex='''(?P&lt;Base64&gt;(https?://[^\s]+/)*[A-Za-z0-9+/]{10,}={0,2})''')
+                FROM parse_records_with_regex(accessor='data',file=data, regex='''(?P<Base64>(https?://[^\s]+/)*[A-Za-z0-9+/]{10,}={0,2})''')
                 WHERE NOT Base64 =~ '^http' -- Implementing negative regex match: We exclude b64 strings with http prefix.
                 ORDER BY Length DESC
                 LIMIT 1
@@ -1938,7 +1947,7 @@ sources:
 
 
       LET add_suspicious = SELECT *, dict(
-                `Large Size` = SourceFile.Size &gt; SusSize,
+                `Large Size` = SourceFile.Size > SusSize,
                 `Startup Path` = SourceFile.OSPath =~ '''\\Startup\\''',
                 `Zeroed Headers` = ( ShellLinkHeader.FileSize=0 AND ShellLinkHeader.CreationTime=~'^1601-01' AND len(list=LinkInfo.LinkInfoFlags)=0 ),
                 `Hidden window` = ShellLinkHeader.ShowCommand = 'SHOWMINNOACTIVE',
@@ -1947,7 +1956,7 @@ sources:
                 `Risky target` = StringData.TargetPath =~ RiskyExe || LinkInfo.Target.Path =~ RiskyExe || LinkTarget.LinkTarget =~ RiskyExe,
                 `WebDAV` = LinkInfo.Target.RelativeLink.NetworkProviderType = 'WNNC_NET_DAV',
                 `Line break in StringData.Name` = StringData.Name =~ '''\n''',
-                `Suspicious argument size` = len(list=StringData.Arguments) &gt; SusArgSize,
+                `Suspicious argument size` = len(list=StringData.Arguments) > SusArgSize,
                 `Environment variable script` = ExtraData.EnvironmentVariable =~ '''\.(bat|cmd|ps1|js|vbs|vbe|py)$''',
                 `No Target with environment variable` = ExtraData.EnvironmentVariable AND StringData.Arguments AND NOT (StringData.TargetPath OR StringData.RelativePath),
                 `Suspicious hostname` = ExtraData.TrackerData.MachineID AND SusHostnameRegex AND ExtraData.TrackerData.MachineID=~SusHostnameRegex,
@@ -1965,16 +1974,16 @@ sources:
             sus_cli(data=StringData.Arguments) as SuspiciousCli
         FROM results
         WHERE if(condition=SuspiciousOnly,
-            then= join(array=Suspicious) =~ ''':(true|0x|\d)''' OR join(array=SuspiciousCli) =~ ''':(true|0x|\d)''' OR len(list=ArgumentsDecoded) &gt; 20,
+            then= join(array=Suspicious) =~ ''':(true|0x|\d)''' OR join(array=SuspiciousCli) =~ ''':(true|0x|\d)''' OR len(list=ArgumentsDecoded) > 20,
             else= True )
 
       LET add_suspiciousb64 = SELECT *
-            if(condition= len(list=ArgumentsDecoded) &gt; 20, then = dict(`Long Base64`=True) + sus_cli(data=ArgumentsDecoded)) as SuspiciousCliB64
+            if(condition= len(list=ArgumentsDecoded) > 20, then = dict(`Long Base64`=True) + sus_cli(data=ArgumentsDecoded)) as SuspiciousCliB64
         FROM add_suspicious
 
       LET upload_results = SELECT *,
             upload(file=SourceFile.OSPath) as UploadedLnk,
-            UploadTarget &amp;&amp; upload(file=LinkTarget.LinkTarget) as UploadedTarget
+            UploadTarget && upload(file=LinkTarget.LinkTarget) as UploadedTarget
         FROM add_suspiciousb64
 
       -- finally return rows and remove suspicious attributes that are not true
@@ -2006,6 +2015,6 @@ column_types:
     type: timestamp
   - name: ShellLinkHeader.WriteTime
     type: timestamp
+````
 
-</code></pre>
 

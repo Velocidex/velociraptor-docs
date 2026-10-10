@@ -1,5 +1,6 @@
 ---
 title: "Plugins"
+date: 2025-09-29
 description:  See plugin-specific information for certain VQL plugins.
 weight: 20
 aliases:

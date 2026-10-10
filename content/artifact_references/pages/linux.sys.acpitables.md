@@ -1,14 +1,27 @@
 ---
 title: Linux.Sys.ACPITables
+description: "Lists ACPI firmware tables with their sizes and cryptographic\nhashes.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Firmware ACPI functional table common metadata and content.
+Lists ACPI firmware tables with their sizes and cryptographic
+hashes.
 
-<pre><code class="language-yaml">
+
+---
+
+````yaml
 name: Linux.Sys.ACPITables
-description: Firmware ACPI functional table common metadata and content.
+description: |
+  Lists ACPI firmware tables with their sizes and cryptographic
+  hashes.
+
 reference:
   - https://osquery.io/schema/3.2.6#acpi_tables
 parameters:
@@ -22,6 +35,6 @@ sources:
                      FROM glob(globs="*", root=kLinuxACPIPath)
 
         SELECT Name, Size, Hash.MD5, Hash.SHA1, Hash.SHA256 from hashes
+````
 
-</code></pre>
 

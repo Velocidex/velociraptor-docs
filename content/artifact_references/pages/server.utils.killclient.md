@@ -1,23 +1,35 @@
 ---
 title: Server.Utils.KillClient
+description: "Aggressively terminates a Velociraptor client process by sending a\nkill signal to the specified client ID."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
 
-This artifact aggressively kills a client.
+Aggressively terminates a Velociraptor client process by sending a
+kill signal to the specified client ID.
 
-If the client runs as a service, it will restart by the service manager.
+If the client is installed as a service, it should be automatically
+restarted by the service manager after the process is killed.
 
 NOTE: If the client is not running as a service (i.e. interactively)
 it may not restart and further communication will be lost!
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.KillClient
 description: |
-  This artifact aggressively kills a client.
+  Aggressively terminates a Velociraptor client process by sending a
+  kill signal to the specified client ID.
 
-  If the client runs as a service, it will restart by the service manager.
+  If the client is installed as a service, it should be automatically
+  restarted by the service manager after the process is killed.
 
   NOTE: If the client is not running as a service (i.e. interactively)
   it may not restart and further communication will be lost!
@@ -35,13 +47,13 @@ sources:
       let clients_list = SELECT ClientId
       FROM parse_records_with_regex(
           accessor="data", file=ClientIdList,
-          regex="(?P&lt;ClientId&gt;C\\.[0-9a-z-]+)")
+          regex="(?P<ClientId>C\\.[0-9a-z-]+)")
       WHERE log(message="Killing client " + ClientId)
 
       SELECT * FROM foreach(row=clients_list,
       query={
          SELECT killkillkill(client_id=ClientId) FROM scope()
       })
+````
 
-</code></pre>
 

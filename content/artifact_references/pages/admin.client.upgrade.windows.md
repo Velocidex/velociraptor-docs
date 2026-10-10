@@ -1,31 +1,41 @@
 ---
 title: Admin.Client.Upgrade.Windows
+description: "Upgrades Velociraptor clients on Windows hosts by running msiexec\nwith the provided MSI."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Remotely push new client updates.
+Upgrades Velociraptor clients on Windows hosts by running msiexec
+with the provided MSI.
 
-NOTE: This artifact requires that you supply a client MSI by using the
-tools interface. Simply click on the tool in the GUI and upload a
-pre-packaged MSI.
+NOTE: This artifact requires that you supply a _repacked_ client MSI
+by using the tools interface. Click on the tool button in the GUI
+and upload a repacked MSI.
 
-While typically the MSI will contain the Velociraptor windows
-client, you can install any other MSI as well by customizing this
+While typically the MSI will contain the Velociraptor Windows
+client, you can actually install any other MSI by customizing this
 artifact or uploading a different MSI file.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Admin.Client.Upgrade.Windows
 description: |
-  Remotely push new client updates.
+  Upgrades Velociraptor clients on Windows hosts by running msiexec
+  with the provided MSI.
 
-  NOTE: This artifact requires that you supply a client MSI by using the
-  tools interface. Simply click on the tool in the GUI and upload a
-  pre-packaged MSI.
+  NOTE: This artifact requires that you supply a _repacked_ client MSI
+  by using the tools interface. Click on the tool button in the GUI
+  and upload a repacked MSI.
 
-  While typically the MSI will contain the Velociraptor windows
-  client, you can install any other MSI as well by customizing this
+  While typically the MSI will contain the Velociraptor Windows
+  client, you can actually install any other MSI by customizing this
   artifact or uploading a different MSI file.
 
 tools:
@@ -51,7 +61,7 @@ sources:
     query:  |
       // Force the file to be copied to the real temp directory since
       // we are just about to remove the Tools directory.
-      LET bin &lt;= SELECT copy(filename=OSPath,
+      LET bin <= SELECT copy(filename=OSPath,
           dest=expand(path="%SYSTEMROOT%\\Temp\\") + basename(path=OSPath)) AS Dest
       FROM Artifact.Generic.Utils.FetchBinary(
          ToolName="WindowsMSI", IsExecutable=FALSE,
@@ -61,7 +71,7 @@ sources:
       // If we fail to download the binary we do not run the command.
 
       // msiexec needs some random set of commands to really force a
-      // reinstall. We dont know which one will be correct at runtime so
+      // reinstall. We don't know which one will be correct at runtime so
       // we just try them all. If we succeed then the client will get
       // killed and restarted.
       SELECT * FROM foreach(row=bin,
@@ -81,6 +91,6 @@ sources:
 
        })
       })
+````
 
-</code></pre>
 

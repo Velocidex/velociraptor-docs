@@ -4,7 +4,7 @@ description:  |
   Browsing the client's filesystem is probably the first thing
   responders do. Both GRR and Velociraptor have a nice VFS abstraction
   that allows users to browse files interactively. However, in order to
-  make Velociraptor much faster we made some tradeoffs and improved the
+  make Velociraptor much faster we made some trade-offs and improved the
   way that the VFS is stored in the datastore.
 
 title: Browsing around the filesystem.
@@ -32,7 +32,7 @@ stored in a single database row. Therefore Velociraptor stores a
 single row per directory (as compared to GRR's single row per file
 approach).  This leads to a huge reduction in database rows.
 
-The tradeoff however, is that the Velociraptor VFS view can only show
+The trade-off however, is that the Velociraptor VFS view can only show
 the state of the entire directory listing at a single point in
 time. GRR's VFS viewer can show old files (which have been removed)
 mixed in with current files because it can merge the output of

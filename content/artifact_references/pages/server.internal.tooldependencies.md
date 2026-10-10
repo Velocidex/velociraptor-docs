@@ -1,7 +1,13 @@
 ---
 title: Server.Internal.ToolDependencies
+description: "An internal artifact that defines some tool\ndependencies. Velociraptor releases for offline collector"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
 An internal artifact that defines some tool
@@ -10,7 +16,9 @@ dependencies. Velociraptor releases for offline collector
 NOTE: Do not modify - this artifact is generated during build in magefile.go
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Internal.ToolDependencies
 description: |
   An internal artifact that defines some tool
@@ -20,19 +28,32 @@ description: |
 
 tools:
   - name: VelociraptorWindows
-    url: https://github.com/Velocidex/velociraptor/releases/download/v0.75/velociraptor-v0.75.5-windows-amd64.exe
+    url: https://github.com/Velocidex/velociraptor/releases/download/v0.77.3/velociraptor-v0.77.3-windows-amd64.exe.gz
+    filename: velociraptor-v0.77.3-windows-amd64.exe
     serve_locally: true
-    version: 0.75.5
+    download_transform: gunzip
+    version: 0.77.3
 
-  - name: VelociraptorWindows_x86
-    url: https://github.com/Velocidex/velociraptor/releases/download/v0.75/velociraptor-v0.75.5-windows-386.exe
+  - name: VelociraptorWindowsArm64
+    url: https://github.com/Velocidex/velociraptor/releases/download/v0.77.3/velociraptor-v0.77.3-windows-arm64.exe.gz
     serve_locally: true
-    version: 0.75.5
+    filename: velociraptor-v0.77.3-windows-arm64.exe
+    download_transform: gunzip
+    version: 0.77.3
 
   - name: VelociraptorLinux
-    url: https://github.com/Velocidex/velociraptor/releases/download/v0.75/velociraptor-v0.75.5-linux-amd64-musl
+    url: https://github.com/Velocidex/velociraptor/releases/download/v0.77.3/velociraptor-v0.77.3-linux-amd64-musl.gz
     serve_locally: true
-    version: 0.75.5
+    filename: velociraptor-v0.77.3-linux-amd64-musl
+    download_transform: gunzip
+    version: 0.77.3
+
+  - name: VelociraptorLinuxSumo
+    url: https://github.com/Velocidex/velociraptor/releases/download/v0.77.3/velociraptor-v0.77.3-linux-amd64-sumo-musl.gz
+    serve_locally: true
+    filename: velociraptor-v0.77.3-linux-amd64-sumo-musl
+    download_transform: gunzip
+    version: 0.77.3
 
   # On MacOS we cannot embed the config in the binary so we use a
   # shell script stub instead. See
@@ -40,18 +61,22 @@ tools:
 
   # A Generic collector to be used with the --embedded_config flag.
   - name: VelociraptorCollector
-    url: https://github.com/Velocidex/velociraptor/releases/download/v0.75/velociraptor-collector
+    url: https://github.com/Velocidex/velociraptor/releases/download/v0.77.3/velociraptor-collector
     serve_locally: true
 
   - name: VelociraptorWindowsMSI
-    url: https://github.com/Velocidex/velociraptor/releases/download/v0.75/velociraptor-v0.75.5-windows-amd64.msi
+    url: https://github.com/Velocidex/velociraptor/releases/download/v0.77.3/velociraptor-v0.77.3-windows-amd64.msi
     serve_locally: true
-    version: 0.75.5
+    version: 0.77.3
 
-  - name: VelociraptorWindows_x86MSI
-    url: https://github.com/Velocidex/velociraptor/releases/download/v0.75/velociraptor-v0.75.5-windows-386.msi
+  - name: VelociraptorWindowsArm64MSI
+    url: https://github.com/Velocidex/velociraptor/releases/download/v0.77.3/velociraptor-v0.77.3-windows-arm64.msi
     serve_locally: true
-    version: 0.75.5
+    version: 0.77.3
 
-</code></pre>
+  - name: DocsIndex
+    url: https://github.com/Velocidex/velociraptor-docs/raw/refs/heads/gh-pages/docs_index/docs_index_v1.zip
+    serve_locally: true
+````
+
 

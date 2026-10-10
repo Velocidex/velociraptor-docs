@@ -1,26 +1,40 @@
 ---
 title: Windows.System.SVCHost
+description: "Lists `svchost.exe` processes whose parent is not services.exe,\nindicating suspicious activity."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Typically a windows system will have many svchost.exe
-processes. Sometimes attackers name their processes svchost.exe to
-try to hide. Typically svchost.exe is spawned by services.exe.
+Lists `svchost.exe` processes whose parent is not services.exe,
+indicating suspicious activity.
 
-This artifact lists all the processes named svchost.exe and their
-parents if the parent is not also named services.exe.
+Typically a windows system will have many `svchost.exe`
+processes. Sometimes attackers name their processes `svchost.exe` to
+try to hide. Typically `svchost.exe` is spawned by `services.exe`.
+
+This artifact lists all the processes named `svchost.exe` and their
+parents where the parent is NOT named `services.exe`.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.SVCHost
 description: |
-  Typically a windows system will have many svchost.exe
-  processes. Sometimes attackers name their processes svchost.exe to
-  try to hide. Typically svchost.exe is spawned by services.exe.
+  Lists `svchost.exe` processes whose parent is not services.exe,
+  indicating suspicious activity.
+  
+  Typically a windows system will have many `svchost.exe`
+  processes. Sometimes attackers name their processes `svchost.exe` to
+  try to hide. Typically `svchost.exe` is spawned by `services.exe`.
 
-  This artifact lists all the processes named svchost.exe and their
-  parents if the parent is not also named services.exe.
+  This artifact lists all the processes named `svchost.exe` and their
+  parents where the parent is NOT named `services.exe`.
 
 sources:
   - precondition: |
@@ -28,10 +42,10 @@ sources:
 
     query: |
         // Cache the pslist output in memory.
-        LET processes &lt;= SELECT Pid, Ppid, Name, Exe FROM pslist()
+        LET processes <= SELECT Pid, Ppid, Name, Exe FROM pslist()
 
         // Get the pids of all procecesses named services.exe
-        LET services &lt;= SELECT Pid FROM processes where Name =~ "services.exe"
+        LET services <= SELECT Pid FROM processes where Name =~ "services.exe"
 
         // The interesting processes are those which are not spawned by services.exe
         LET suspicious = SELECT Pid As SVCHostPid,
@@ -51,6 +65,6 @@ sources:
               FROM processes
               WHERE Pid=SVCHostPpid
           })
+````
 
-</code></pre>
 

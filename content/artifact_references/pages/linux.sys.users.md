@@ -1,14 +1,27 @@
 ---
 title: Linux.Sys.Users
+description: "Gets user-specific information like homedir, group, etc. from\n`/etc/passwd`.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Get User specific information like homedir, group, etc. from `/etc/passwd`.
+Gets user-specific information like homedir, group, etc. from
+`/etc/passwd`.
 
-<pre><code class="language-yaml">
+
+---
+
+````yaml
 name: Linux.Sys.Users
-description: Get User specific information like homedir, group, etc. from `/etc/passwd`.
+description: |
+  Gets user-specific information like homedir, group, etc. from
+  `/etc/passwd`.
+
 parameters:
   - name: PasswordFile
     default: /etc/passwd
@@ -22,6 +35,6 @@ sources:
             filenames=PasswordFile,
             regex=":", record_regex="\r?\n",
             columns=["User", "X", "Uid", "Gid", "Description", "Homedir", "Shell"])
+````
 
-</code></pre>
 

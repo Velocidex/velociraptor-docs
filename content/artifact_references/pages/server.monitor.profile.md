@@ -1,12 +1,20 @@
 ---
 title: Server.Monitor.Profile
+description: "Collects server profiling data including goroutine traces, memory\nheap, CPU profiles, and metrics."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
 
-This artifact collects profiling information from the running
-server. This is useful when you notice a high CPU load in the server
-and want to know why.
+Collects server profiling data including goroutine traces, memory
+heap, CPU profiles, and metrics.
+
+This is useful when you notice a high CPU load in the server
+and want to understand why it's happening.
 
 The following options are most useful:
 
@@ -32,12 +40,16 @@ goroutines and heap profiles as distinct sources in a more readable
 way.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Monitor.Profile
 description: |
-  This artifact collects profiling information from the running
-  server. This is useful when you notice a high CPU load in the server
-  and want to know why.
+  Collects server profiling data including goroutine traces, memory
+  heap, CPU profiles, and metrics.
+  
+  This is useful when you notice a high CPU load in the server
+  and want to understand why it's happening.
 
   The following options are most useful:
 
@@ -170,6 +182,6 @@ sources:
 column_types:
   - name: InUseBytes
     type: mb
+````
 
-</code></pre>
 

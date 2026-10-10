@@ -1,29 +1,49 @@
 ---
 title: Server.Enrichment.HybridAnalysis
+description: "Submits a file hash to the Hybrid Analysis threat intelligence\nservice for a verdict."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
 
-Submit a file hash to Hybrid Analysis for a verdict. Default free API restriction is 200 requests/min or 2000 requests/hour.
+Submits a file hash to the Hybrid Analysis threat intelligence
+service for a verdict.
 
-This artifact can be called from within another artifact (such as one looking for files) to enrich the data made available by that artifact.
+This artifact can be called from within another artifact (such as
+one looking for files) to enrich the data made available by that
+artifact.
 
-Ex.
+Default free API restriction apply: 200 requests/min or 2000
+requests/hour at the time of writing.
 
-  `SELECT * from Artifact.Server.Enrichment.HybridAnalysis(Hash=$YOURHASH)`
+#### Example
+
+`SELECT * from Artifact.Server.Enrichment.HybridAnalysis(Hash=$YOURHASH)`
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Enrichment.HybridAnalysis
 author: Wes Lambert -- @therealwlambert
 description: |
-  Submit a file hash to Hybrid Analysis for a verdict. Default free API restriction is 200 requests/min or 2000 requests/hour.
+  Submits a file hash to the Hybrid Analysis threat intelligence
+  service for a verdict.
 
-  This artifact can be called from within another artifact (such as one looking for files) to enrich the data made available by that artifact.
+  This artifact can be called from within another artifact (such as
+  one looking for files) to enrich the data made available by that
+  artifact.
+  
+  Default free API restriction apply: 200 requests/min or 2000
+  requests/hour at the time of writing.
 
-  Ex.
+  #### Example
 
-    `SELECT * from Artifact.Server.Enrichment.HybridAnalysis(Hash=$YOURHASH)`
+  `SELECT * from Artifact.Server.Enrichment.HybridAnalysis(Hash=$YOURHASH)`
 
 type: SERVER
 
@@ -50,7 +70,7 @@ sources:
            then=HybridAnalysisKey,
            else=server_metadata().HybridAnalysisKey)
 
-        LET URL &lt;= 'https://hybrid-analysis.com/api/v2/search/hash'
+        LET URL <= 'https://hybrid-analysis.com/api/v2/search/hash'
 
         LET Data = SELECT parse_json_array(data=Content) as Content
         FROM http_client(
@@ -68,6 +88,6 @@ sources:
                        Content.verdict[0] as Verdict
                 FROM scope()
             })
+````
 
-</code></pre>
 

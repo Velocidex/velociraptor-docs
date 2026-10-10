@@ -3,7 +3,7 @@ author: Herbert Bärschneider @SEC Consult
 description: |
    This artifact alerts on network connections tracked by Velociraptor on clients.
    Requires the client_event artifact 'Generic.Events.TrackNetworkConnections' to be enabled.
-   
+
    You can filter alerts based on FQDN of the client, process name, remote ip and remote port.
    Only created network connections are alerted on (meaning you don't get an alert when the system removes the connection).
    You should use those filters, else there be spam to be had :D
@@ -12,7 +12,7 @@ type: SERVER_EVENT
 
 parameters:
   - name: WebHook
-    description: The token URL obtained from Slack/Teams/Discord (or basicly any communication-service that supports webhooks). Leave blank to use server metadata. e.g. https://hooks.slack.com/services/XXXX/YYYY/ZZZZ
+    description: The token URL obtained from Slack/Teams/Discord (or basically any communication-service that supports webhooks). Leave blank to use server metadata. e.g. https://hooks.slack.com/services/XXXX/YYYY/ZZZZ
   - name: ClientRegex
     type: regex
     description: Regex for filtering on the client fqdn name

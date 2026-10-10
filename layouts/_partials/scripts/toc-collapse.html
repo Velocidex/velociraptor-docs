@@ -1,0 +1,9 @@
+{{- /* Collapsible right TOC column (assets/js/toc-collapse.js): the reader
+     toggle hides the "On this page" column. The persisted state is applied
+     before paint by an inline script in head-end.html; this only wires up the
+     click handlers and keeps aria-expanded in sync. */ -}}
+{{- $jsTocCollapse := resources.Get "js/toc-collapse.js" -}}
+{{- if hugo.IsProduction -}}
+  {{- $jsTocCollapse = $jsTocCollapse | minify | fingerprint -}}
+{{- end -}}
+<script defer src="{{ $jsTocCollapse.RelPermalink }}" integrity="{{ $jsTocCollapse.Data.Integrity }}"></script>

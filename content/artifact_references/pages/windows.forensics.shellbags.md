@@ -1,8 +1,17 @@
 ---
 title: Windows.Forensics.Shellbags
+description: "Extracts Shellbag data from NTUSER.DAT and UsrClass.dat to recover\nfolder navigation history."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
+
+Extracts Shellbag data from NTUSER.DAT and UsrClass.dat to recover
+folder navigation history.
 
 Windows uses the Shellbag keys to store user preferences for GUI
 folder display within Windows Explorer.
@@ -12,9 +21,14 @@ registry hives around the filesystem for BagMRU keys. Different OS
 versions may have slightly different locations for the MRU keys.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.Shellbags
 description: |
+  Extracts Shellbag data from NTUSER.DAT and UsrClass.dat to recover
+  folder navigation history.
+  
   Windows uses the Shellbag keys to store user preferences for GUI
   folder display within Windows Explorer.
 
@@ -55,7 +69,7 @@ sources:
        LET MakeKey(Hive, Components) = regex_replace(
            re="\\\\", replace="/", source=Hive) + join(array=Components, sep="/")
 
-       LET ShellValues &lt;= SELECT
+       LET ShellValues <= SELECT
            *, MakeKey(Hive=Hive, Components=Components) AS LookupKey
          FROM foreach(row=AllHives,
                       query={
@@ -75,7 +89,7 @@ sources:
             AND OSPath.Basename =~ "^[0-9]+$"
          })
 
-       LET Lookup &lt;= memoize(key="LookupKey", period=10000,
+       LET Lookup <= memoize(key="LookupKey", period=10000,
                              query={
            SELECT LookupKey,
                   _Parsed
@@ -106,7 +120,7 @@ sources:
 
        // Compute the full path to the item by traversing the parents.
        LET GetFullPath(Hive, Components) = join(
-           array=GetParents(Hive=Hive, Components=Components).Name, sep=" -&gt; ")
+           array=GetParents(Hive=Hive, Components=Components).Name, sep=" -> ")
 
        LET X = SELECT Hive,
                       dirname(path=RegValue, path_type="registry") AS KeyPath,
@@ -123,6 +137,6 @@ sources:
 column_types:
   - name: _RawData
     type: base64
+````
 
-</code></pre>
 

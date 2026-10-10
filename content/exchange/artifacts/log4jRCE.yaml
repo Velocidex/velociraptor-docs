@@ -12,10 +12,10 @@ description: |
   * Specific binary: `/var/logs/log.gz`
   * Wildcards: `/var/log/*.gz`
   * More wildcards: `/var/www/**/*.log`
-  * Multiple extentions: `/var/log/**/*\.{log,gz}`
+  * Multiple extensions: `/var/log/**/*\.{log,gz}`
   * Windows: `C:/Logs/**/*.{gz,log}` or `**/*.{gz,log}`
 
-  NOTE: this artifact runs the glob plugin with the nosymlink switch
+  NOTE: this artifact runs the glob plugin with the `nosymlink` switch
   turned on.  This will NOT follow any symlinks and may cause
   unexpected results if unknowingly targeting a folder with symlinks.
 

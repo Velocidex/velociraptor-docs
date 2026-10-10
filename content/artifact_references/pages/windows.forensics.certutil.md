@@ -1,28 +1,42 @@
 ---
 title: Windows.Forensics.CertUtil
+description: "Extracts download metadata from the Windows Certutil\nCryptnetUrlCache to reveal LOLBin downloads."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-The Windows Certutil binary is capable of downloading arbitrary files.
-Attackers typically use it to fetch tools undetected when using "Living off
-the Land" (LOL) techniques.
+Extracts download metadata from the Windows Certutil
+CryptnetUrlCache to reveal LOLBin downloads.
 
-Certutil maintains a cache of the downloaded files and this contains valuable
-metadata. The artifact parses this metadata to establish what was downloaded
-and when.
+The Windows Certutil binary is capable of downloading arbitrary
+files. Attackers typically use it to fetch tools undetected when
+using "Living off the Land" (LOL) techniques.
+
+Certutil maintains a cache of the downloaded files and this contains
+valuable metadata. The artifact parses this metadata to establish
+what was downloaded and when.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.CertUtil
 description: |
-  The Windows Certutil binary is capable of downloading arbitrary files.
-  Attackers typically use it to fetch tools undetected when using "Living off
-  the Land" (LOL) techniques.
+  Extracts download metadata from the Windows Certutil
+  CryptnetUrlCache to reveal LOLBin downloads.
 
-  Certutil maintains a cache of the downloaded files and this contains valuable
-  metadata. The artifact parses this metadata to establish what was downloaded
-  and when.
+  The Windows Certutil binary is capable of downloading arbitrary
+  files. Attackers typically use it to fetch tools undetected when
+  using "Living off the Land" (LOL) techniques.
+
+  Certutil maintains a cache of the downloaded files and this contains
+  valuable metadata. The artifact parses this metadata to establish
+  what was downloaded and when.
 
 reference:
   - https://u0041.co/blog/post/3
@@ -75,8 +89,8 @@ parameters:
 
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
 
       LET Profile = '[
         ["Header", 0, [
@@ -86,17 +100,17 @@ sources:
           ["FileSize", 112, "uint32"],
           ["URL", 116, "String", {
               "encoding": "utf16",
-              "length": "x=&gt;x.UrlSize"
+              "length": "x=>x.UrlSize"
           }],
-          ["Hash", "x=&gt;x.UrlSize + 116", "String", {
+          ["Hash", "x=>x.UrlSize + 116", "String", {
               "encoding": "utf16",
-              "length": "x=&gt;x.HashSize"
+              "length": "x=>x.HashSize"
           }]
         ]]
       ]'
 
       -- Build a whitelist regex
-      LET URLRegex &lt;= "^" + join(array=URLWhitelist.URL, sep="|")
+      LET URLRegex <= "^" + join(array=URLWhitelist.URL, sep="|")
       LET Files = SELECT OSPath,
 
           -- Parse each metadata file.
@@ -109,7 +123,7 @@ sources:
           read_file(length=4, accessor=Accessor,
                 filename=OSPath.Dirname.Dirname + "Content" + OSPath.Basename) AS ContentHeader
       FROM glob(globs=[MetadataGlobUser, MetadataGlobSystem], accessor=Accessor)
-      WHERE Header.FileSize &gt; MinSize
+      WHERE Header.FileSize > MinSize
 
       SELECT OSPath AS _MetadataFile, _ContentPath,
                if(condition=AlsoUpload, then=upload(file=OSPath, accessor=Accessor)) AS _MetdataUpload,
@@ -128,6 +142,6 @@ sources:
 
       FROM Files
       WHERE NOT URL =~ URLRegex
+````
 
-</code></pre>
 

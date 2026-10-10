@@ -1,22 +1,30 @@
 ---
 title: Linux.Applications.Chrome.Extensions.Upload
+description: "Uploads the Chrome extension files from each user's home directory."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Upload all users chrome extension.
+Uploads the Chrome extension files from each user's home directory.
 
-We don't bother actually parsing anything here, we just grab all the
-extension files in user's home directory.
+Note that this does not parse any of the files - it just grabs all
+the extension files in each user's home directory.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Applications.Chrome.Extensions.Upload
 description: |
-  Upload all users chrome extension.
+  Uploads the Chrome extension files from each user's home directory.
 
-  We don't bother actually parsing anything here, we just grab all the
-  extension files in user's home directory.
+  Note that this does not parse any of the files - it just grabs all
+  the extension files in each user's home directory.
 
 parameters:
   - name: extensionGlobs
@@ -36,6 +44,6 @@ sources:
                     upload(file=OSPath) as Upload
              FROM glob(globs=extensionGlobs, root=Homedir)
           })
+````
 
-</code></pre>
 

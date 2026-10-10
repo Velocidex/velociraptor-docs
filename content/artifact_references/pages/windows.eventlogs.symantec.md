@@ -1,32 +1,48 @@
 ---
 title: Windows.EventLogs.Symantec
+description: "Searches Symantec Endpoint Protection event logs for\nhigh-value detection events like infostealers, backdoors, and\nexploits."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Query the Symantec Endpoint Protection Event Logs. The default artifact will
-return EventId 51 and high value strings with goals bubble up some events for
-triage.
+Searches Symantec Endpoint Protection event logs for
+high-value detection events like infostealers, backdoors, and
+exploits.
 
-Note:
-EventID selection is controlled by regex to allow multiple EID selections.
-If running a hunt, consider also hunting EventId 45 - Tamper Protection
-Detection (this will be noisy so whitelist is required).
-IgnoreRegex allows filtering out events relevant to the target environment.
+By default, the artifact will return EventId 51 and high value
+strings with the goal of bubbling up some events for triage
+purposes.
+
+**NOTE:** EventID selection is controlled by regex to allow multiple
+EID selections. If running a hunt, consider also hunting EventId 45
+- Tamper Protection Detection (this will be noisy so whitelist is
+required). IgnoreRegex allows filtering out events relevant to the
+target environment.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.EventLogs.Symantec
 description: |
-  Query the Symantec Endpoint Protection Event Logs. The default artifact will
-  return EventId 51 and high value strings with goals bubble up some events for
-  triage.
+  Searches Symantec Endpoint Protection event logs for
+  high-value detection events like infostealers, backdoors, and
+  exploits.
+  
+  By default, the artifact will return EventId 51 and high value
+  strings with the goal of bubbling up some events for triage
+  purposes.
 
-  Note:
-  EventID selection is controlled by regex to allow multiple EID selections.
-  If running a hunt, consider also hunting EventId 45 - Tamper Protection
-  Detection (this will be noisy so whitelist is required).
-  IgnoreRegex allows filtering out events relevant to the target environment.
+  **NOTE:** EventID selection is controlled by regex to allow multiple
+  EID selections. If running a hunt, consider also hunting EventId 45
+  - Tamper Protection Detection (this will be noisy so whitelist is
+  required). IgnoreRegex allows filtering out events relevant to the
+  target environment.
 
 reference:
     - https://www.nextron-systems.com/wp-content/uploads/2019/10/Antivirus_Event_Analysis_CheatSheet_1.7.2.pdf
@@ -56,9 +72,9 @@ parameters:
 
 sources:
     - query: |
-       LET DateAfterTime &lt;= if(condition=DateAfter,
+       LET DateAfterTime <= if(condition=DateAfter,
             then=timestamp(epoch=DateAfter), else=timestamp(epoch="1600-01-01"))
-       LET DateBeforeTime &lt;= if(condition=DateBefore,
+       LET DateBeforeTime <= if(condition=DateBefore,
             then=timestamp(epoch=DateBefore), else=timestamp(epoch="2200-01-01"))
        SELECT timestamp(epoch=System.TimeCreated.SystemTime) As EventTime,
               System.EventID.Value as EventId,
@@ -66,13 +82,13 @@ sources:
               EventData.Data[0] as EventData
        FROM parse_evtx(filename=SymantecEventLog)
        WHERE
-            EventTime &lt; DateBeforeTime AND
-            EventTime &gt; DateAfterTime AND
+            EventTime < DateBeforeTime AND
+            EventTime > DateAfterTime AND
             format(format="%v",args=System.EventID.Value) =~ RegexEventIds AND
             EventData =~ TargetRegex AND
             if(condition=IgnoreRegex,
                 then= NOT EventData=~IgnoreRegex,
                 else= True)
+````
 
-</code></pre>
 

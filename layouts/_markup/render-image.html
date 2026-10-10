@@ -1,0 +1,159 @@
+{{- /* Project override of Hextra's render-image hook.
+
+       Ports the upstream SVG/figure image pipeline (PRs #921, #1213, #1217)
+       into the Hextra migration:
+
+       - Every local image renders as a <figure> with a caption and an
+         overlay download button, plus Hextra medium-zoom when enabled -
+         EXCEPT images shorter than 200px, which render as plain inline
+         <img> with no figure/zoom (upstream behaviour, kept verbatim).
+       - SVG diagrams get a canonical <style class="style-fonts"> injected
+         (@font-face for Excalifont / "Comic Shanns" pointing at the
+         bundled woff2 files) and are emitted as a separate "*_.svg"
+         resource instead of being inlined, keeping the HTML page small.
+*/ -}}
+{{- $alt := .PlainText | safeHTML -}}
+{{- $title := .Title | safeHTML -}}
+{{- $page := .Page -}}
+{{- $lazyLoading := .Page.Site.Params.enableImageLazyLoading | default true -}}
+{{- $enableImageZoom := .Page.Site.Params.imageZoom.enable | default false -}}
+{{- if not (eq .Page.Params.imageZoom nil) -}}
+  {{- $enableImageZoom = .Page.Params.imageZoom -}}
+{{- end -}}
+{{- $dest := .Destination -}}
+{{- $url := urls.Parse $dest -}}
+
+{{- $isLocal := not $url.Scheme -}}
+{{- $isPage := and (eq .Page.Kind "page") (not .Page.BundleType) -}}
+{{- $startsWithSlash := hasPrefix $dest "/" -}}
+{{- $startsWithRelative := hasPrefix $dest "../" -}}
+
+{{- /* Resolve the destination like Hextra does, remembering the resource
+       (if any) so we have its content and dimensions for the figure. */ -}}
+{{- $res := "" -}}
+{{- if and $dest $isLocal -}}
+  {{- if $startsWithSlash -}}
+    {{- with or (.PageInner.Resources.Get $url.Path) (resources.Get $url.Path) -}}
+      {{- $res = . -}}
+      {{- $dest = .RelPermalink -}}
+    {{- else -}}
+      {{- $dest = (relURL (strings.TrimPrefix "/" $dest)) -}}
+    {{- end -}}
+  {{- else -}}
+    {{- with .PageInner.Resources.Get (strings.TrimPrefix "./" $url.Path) -}}
+      {{- $res = . -}}
+      {{- $dest = .RelPermalink -}}
+    {{- else -}}
+      {{- if and $isPage (not $startsWithRelative) -}}
+        {{ $dest = (printf "../%s" $dest) }}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $isSVG := and $res (eq (strings.ToLower (path.Ext $url.Path)) ".svg") -}}
+
+{{- if $isSVG -}}
+  {{- /* --- SVG diagram: re-inject fonts, emit a separate *_ .svg file --- */ -}}
+  {{- $data := $res.Content -}}
+  {{- /* Fonts must be embedded as base64 data URIs: an SVG rendered via
+         <img> runs in an isolated context that cannot fetch external
+         resources, so url("/fonts/...") @font-face rules silently fail
+         there (only the overlay's top-level view could load them). Embed
+         the substitute fonts inline and keep the original @font-face rules
+         for fonts we do not substitute (Virgil, Cascadia) so those glyphs
+         keep rendering too. */ -}}
+  {{- $font500 := base64Encode (readFile "static/fonts/playpen-sans-v13-latin-500.woff2") -}}
+  {{- $font800 := base64Encode (readFile "static/fonts/playpen-sans-v13-latin-800.woff2") -}}
+  {{- $comic := base64Encode (readFile "static/fonts/SVBasicManual.woff2") -}}
+  {{- $preserve := "" -}}
+  {{- with index (strings.FindRESubmatch `(?ms)<style class="style-fonts">(.*?)</style>` $data 1) 0 -}}
+    {{- range $m := strings.FindRESubmatch `(?s)@font-face\s*{[^}]*font-family:\s*(Virgil|Cascadia)[^}]*}` (index . 1) -}}
+      {{- $preserve = printf "%s%s" $preserve (index $m 0) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $rules := "" -}}
+  {{- if strings.Contains $data "Excalifont" -}}
+    {{- $rules = printf `%s@font-face { font-family: Excalifont; src: url("data:font/woff2;base64,%s"); } ` $rules $font500 -}}
+  {{- end -}}
+  {{- if strings.Contains $data "Nunito" -}}
+    {{- $rules = printf `%s@font-face { font-family: Nunito; src: url("data:font/woff2;base64,%s"); } ` $rules $font800 -}}
+  {{- end -}}
+  {{- if strings.Contains $data "Comic Shanns" -}}
+    {{- $rules = printf `%s@font-face { font-family: "Comic Shanns"; src: url("data:font/woff2;base64,%s"); } ` $rules $comic -}}
+  {{- end -}}
+  {{- $fontCss := printf `<style class="style-fonts">%s%s</style>` $preserve $rules -}}
+  {{- $data = strings.ReplaceRE `(?ms)<style class="style-fonts">.+?</style>` $fontCss $data -}}
+  {{- $width := "" -}}
+  {{- $height := "" -}}
+  {{- with index (strings.FindRESubmatch `width="([^"]+)"` $data 1) 0 }}{{ $width = index . 1 }}{{ end -}}
+  {{- with index (strings.FindRESubmatch `height="([^"]+)"` $data 1) 0 }}{{ $height = index . 1 }}{{ end -}}
+  {{- $rel := strings.TrimPrefix "/" $res.RelPermalink -}}
+  {{- $baseNoExt := path.BaseName $url.Path -}}
+  {{- with resources.FromString (printf "%s/%s_.svg" (path.Dir $rel) $baseNoExt) $data -}}
+    <figure class="hextra-figure">
+      <div class="hextra-figure-media">
+        <img src="{{ .RelPermalink }}" alt="{{ $alt }}"
+          class="hextra-figure-img"
+          {{ with $width }}width="{{ . }}"{{ end }}
+          {{ with $height }}height="{{ . }}"{{ end }}
+          {{ if $enableImageZoom }}data-zoomable{{ end }}
+          {{ if $lazyLoading }}loading="lazy"{{ end }} />
+        <a class="hextra-figure-download" href="{{ .RelPermalink }}"
+          target="_blank" rel="noopener noreferrer" title="Download"
+          aria-label="Download">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+        </a>
+      </div>
+      <figcaption class="hextra-figure-caption">{{- if $title }}{{ $title }}{{ else }}{{ $alt }}{{ end -}}</figcaption>
+    </figure>
+    {{- if and $enableImageZoom (not ($page.Store.Get "hasImageZoom")) }}
+      {{- $page.Store.Set "hasImageZoom" true }}
+    {{- end }}
+  {{- end -}}
+{{- else if $res -}}
+  {{- /* --- Raster resource: figure unless shorter than 200px --- */ -}}
+  {{- if lt $res.Height 200 -}}
+    <img class="hextra-figure-inline" src="{{ $dest }}" alt="{{ $alt }}"
+      width="{{ $res.Width }}" height="{{ $res.Height }}"
+      {{ if $lazyLoading }}loading="lazy"{{ end }} />
+  {{- else -}}
+    <figure class="hextra-figure">
+      <div class="hextra-figure-media">
+        <img src="{{ $dest }}" alt="{{ $alt }}"
+          class="hextra-figure-img"
+          width="{{ $res.Width }}" height="{{ $res.Height }}"
+          {{ if $enableImageZoom }}data-zoomable{{ end }}
+          {{ if $lazyLoading }}loading="lazy"{{ end }} />
+        <a class="hextra-figure-download" href="{{ $res.RelPermalink }}"
+          target="_blank" rel="noopener noreferrer" title="Download original"
+          aria-label="Download original">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+        </a>
+      </div>
+      <figcaption class="hextra-figure-caption">{{- if $title }}{{ $title }}{{ else }}{{ $alt }}{{ end -}}</figcaption>
+    </figure>
+    {{- if and $enableImageZoom (not ($page.Store.Get "hasImageZoom")) }}
+      {{- $page.Store.Set "hasImageZoom" true }}
+    {{- end }}
+  {{- end -}}
+{{- else -}}
+  {{- /* --- Static file or remote URL (no page resource) --- */ -}}
+  <figure class="hextra-figure">
+    <div class="hextra-figure-media">
+      <img src="{{ $dest | safeURL }}" alt="{{ $alt }}"
+        class="hextra-figure-img"
+        {{ if $enableImageZoom }}data-zoomable{{ end }}
+        {{ if $lazyLoading }}loading="lazy"{{ end }} />
+      <a class="hextra-figure-download" href="{{ $dest | safeURL }}"
+        target="_blank" rel="noopener noreferrer" title="Download original"
+        aria-label="Download original">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+      </a>
+    </div>
+    <figcaption class="hextra-figure-caption">{{- if $title }}{{ $title }}{{ else }}{{ $alt }}{{ end -}}</figcaption>
+  </figure>
+  {{- if and $enableImageZoom (not ($page.Store.Get "hasImageZoom")) }}
+    {{- $page.Store.Set "hasImageZoom" true }}
+  {{- end }}
+{{- end -}}

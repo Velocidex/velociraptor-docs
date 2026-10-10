@@ -1,17 +1,28 @@
 ---
 title: Windows.Sys.AllUsers
+description: "Lists all user accounts on a Windows system including domain users\nwith cached profiles."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-List User accounts. We combine two data sources - the output from
-the `NetUserEnum` API (termed `local` users) and the list of SIDs in
-the registry (termed `remote` users).
+Lists all user accounts on a Windows system including domain users
+with cached profiles.
+
+Combines data from three data sources - the output from the
+`NetUserEnum` API (termed `local` users), the list of SIDs in the
+registry (termed `remote` users) and the SAM.
 
 In this artifact, 'remote' means that user profile was cached in the
 registry, but the user does not appear in the output of the
 `NetUserEnum` API - this normally happens for users remotely logging
 into the system using domain credentials.
+'sam' means that the user account was declared in
+the SAM hive but was not already listed by the other sources.
 
 On Domain Controllers the `NetUserEnum` API will return the contents
 of the entire ActiveDirectory as a list of 'local' users, however
@@ -21,17 +32,24 @@ you need to obtain the full list from the AD, customize this
 artifact.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Sys.AllUsers
 description: |
-  List User accounts. We combine two data sources - the output from
-  the `NetUserEnum` API (termed `local` users) and the list of SIDs in
-  the registry (termed `remote` users).
+  Lists all user accounts on a Windows system including domain users
+  with cached profiles.
+
+  Combines data from three data sources - the output from the
+  `NetUserEnum` API (termed `local` users), the list of SIDs in the
+  registry (termed `remote` users) and the SAM.
 
   In this artifact, 'remote' means that user profile was cached in the
   registry, but the user does not appear in the output of the
   `NetUserEnum` API - this normally happens for users remotely logging
   into the system using domain credentials.
+  'sam' means that the user account was declared in
+  the SAM hive but was not already listed by the other sources.
 
   On Domain Controllers the `NetUserEnum` API will return the contents
   of the entire ActiveDirectory as a list of 'local' users, however
@@ -43,6 +61,13 @@ description: |
 parameters:
   - name: remoteRegKey
     default: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\*
+
+  - name: SAMPath
+    description: Path to the SAM file to parse.
+    default: C:/Windows/System32/Config/SAM
+
+implied_permissions:
+  - FILESYSTEM_WRITE
 
 export: |
   -- Cache function for lookupSID
@@ -64,7 +89,7 @@ sources:
                 then=timestamp(winfiletime=High * 4294967296 + Low))
 
         -- lookupSID() may not be available on deaddisk analysis
-        LET roaming_users &lt;=
+        LET roaming_users <=
           SELECT
              split(string=Key.OSPath.Basename, sep="-")[-1] as Uid,
              "" AS Gid,
@@ -87,10 +112,10 @@ sources:
            FROM read_reg_key(globs=remoteRegKey, accessor="registry")
 
 
-        LET roaming_users_lookup &lt;= memoize(query=roaming_users, key="UUID")
+        LET roaming_users_lookup <= memoize(query=roaming_users, key="UUID")
 
         -- On a DC the NetUserEnum API will return the entire domain!
-        LET local_users &lt;= select User_id as Uid,
+        LET local_users <= select User_id as Uid,
            Primary_group_id as Gid, Name,
            Comment as Description,
            get(item=roaming_users_lookup, field=User_sid) AS  RoamingData,
@@ -98,7 +123,7 @@ sources:
         FROM users()
         LIMIT 1000
 
-        LET local_users_lookup &lt;= memoize(query={
+        LET local_users_lookup <= memoize(query={
             SELECT UUID FROM local_users
         }, key="UUID")
 
@@ -108,15 +133,75 @@ sources:
             UUID,
             RoamingData.Mtime As Mtime,
             RoamingData.HomedirMtime AS HomedirMtime,
-            RoamingData.Data || dict() AS Data
+            RoamingData.Data || dict() AS Data,
+            "api" as source
         FROM local_users
+
+        -- Use the existing SAM parser to catch accounts declared in SAM
+        -- but absent from users() and ProfileList.
+        LET sam_records <=
+          SELECT *
+          FROM Artifact.Windows.Forensics.SAM(
+              SAMPath=SAMPath,
+              source="Parsed",
+              preconditions=TRUE)
+
+        -- SAM records give us a RID. Derive the account-domain SID prefix
+        -- from an existing S-1-5-21 user SID when one is available.
+        LET sid_prefix_candidates <=
+          SELECT regex_replace(
+              source=UUID,
+              re="-[0-9]+$",
+              replace="") AS SIDPrefix
+          FROM local_users
+          WHERE UUID =~ "^S-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]+$"
+          LIMIT 1
+
+        LET sid_prefix = get(item=sid_prefix_candidates[0], field="SIDPrefix")
+
+        LET SAMUUID(RID, Hive) = if(
+          condition=sid_prefix,
+          then=format(format="%v-%v", args=[sid_prefix, RID]),
+          else=format(format="SAM:%v:%v", args=[Hive, RID]))
+
+        LET SAMRoamingData(RID, Hive) = get(
+          item=roaming_users_lookup,
+          field=SAMUUID(RID=RID, Hive=Hive))
+
+        LET sam_users <=
+          SELECT
+             ParsedF.RID AS Uid,
+             "" AS Gid,
+             ParsedV.username AS Name,
+             ParsedV.comment || ParsedV.fullname AS Description,
+             SAMRoamingData(RID=ParsedF.RID, Hive=Hive).Directory ||
+                ParsedV.profile_path AS Directory,
+             SAMUUID(RID=ParsedF.RID, Hive=Hive) AS UUID,
+             SAMRoamingData(RID=ParsedF.RID, Hive=Hive).Mtime AS Mtime,
+             SAMRoamingData(RID=ParsedF.RID, Hive=Hive).HomedirMtime AS HomedirMtime,
+             dict(
+                SAMSource="Windows.Forensics.SAM",
+                SAMKey=Key,
+                SAMHive=Hive,
+                SAMF=ParsedF,
+                SAMV=ParsedV,
+                ProfileData=SAMRoamingData(RID=ParsedF.RID, Hive=Hive).Data
+             ) AS Data
+          FROM sam_records
+          WHERE ParsedF.RID AND ParsedV.username
 
         SELECT * from chain(
            q1=local_users_with_mtime,
            q2={
-             SELECT * FROM roaming_users
+             SELECT *, "roaming" as source FROM roaming_users
              -- Only show records who were not shown before
              WHERE NOT get(item=local_users_lookup, field=UUID)
+           },
+           q3={
+             SELECT *, "sam" as source FROM sam_users
+             -- Only show SAM records if not already shown before
+             WHERE NOT get(item=local_users_lookup, field=UUID)
+               AND NOT get(item=roaming_users_lookup, field=UUID)
            })
          --ORDER BY Gid DESC
     notebook:
@@ -134,7 +219,6 @@ sources:
           */
           LET s = scope()
           SELECT Name, UUID, s.Fqdn AS Fqdn, HomedirMtime as LastMod, Data FROM source()
-          WHERE NOT UUID =~ "(-5..$|S-1-5-18|S-1-5-19|S-1-5-20)"
+          WHERE NOT UUID =~ "(-5..$|S-1-5-18|S-1-5-19|S-1-5-20)"````
 
-</code></pre>
 

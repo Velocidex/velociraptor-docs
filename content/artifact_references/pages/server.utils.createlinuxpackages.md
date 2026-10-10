@@ -1,41 +1,50 @@
 ---
 title: Server.Utils.CreateLinuxPackages
+description: "Builds Debian (.deb) and RPM client packages with embedded client\nconfig for the current organization."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
 
-Build Deb and RPM packages ready for deployment in the current org.
+Builds Debian (.deb) and RPM client packages with embedded client
+config for the current organization.
 
-This artifact depends on the following tool:
+This artifact depends on the following tools:
 
-* <velo-tool-viewer name="VelociraptorLinux" />
+* Clients <velo-tool-viewer name="VelociraptorLinux" />
 
-You can replace this with suitable Velociraptor Linux build, or the
-current release binary will be used by default.
+You can replace this with suitable Velociraptor Linux build, or else
+the current release binary will be used by default.
 
-Use the following to inspect the RPM and Deb:
+Use the following shell commands to inspect the resulting RPM and Deb:
 - rpm -qi velociraptor.rpm
 - rpm -qp --scripts velociraptor.rpm
 - dpkg-deb -I velociraptor.deb
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.CreateLinuxPackages
 description: |
-  Build Deb and RPM packages ready for deployment in the current org.
+  Builds Debian (.deb) and RPM client packages with embedded client
+  config for the current organization.
 
-  This artifact depends on the following tool:
+  This artifact depends on the following tools:
 
-  * &lt;velo-tool-viewer name="VelociraptorLinux" /&gt;
+  * Clients <velo-tool-viewer name="VelociraptorLinux" />
 
-  You can replace this with suitable Velociraptor Linux build, or the
-  current release binary will be used by default.
+  You can replace this with suitable Velociraptor Linux build, or else
+  the current release binary will be used by default.
 
-  Use the following to inspect the RPM and Deb:
+  Use the following shell commands to inspect the resulting RPM and Deb:
   - rpm -qi velociraptor.rpm
   - rpm -qp --scripts velociraptor.rpm
   - dpkg-deb -I velociraptor.deb
-
 
 type: SERVER
 
@@ -45,6 +54,8 @@ parameters:
     type: yaml
   - name: ServiceName
     description: Customize the service name
+  - name: Release
+    description: Customize the release version
   - name: Maintainer
     description: Customize the maintainer
   - name: MaintainerEmail
@@ -54,55 +65,76 @@ parameters:
   - name: Vendor
     description: The vendor
     default: The Velociraptor Team
+  - name: Labels
+    description: A list of labels to append to the config.
+    type: csv
+    default: |
+      Labels
+
+  - name: ProxyString
+    description: |
+      If a proxy is needed this should be for example: https://192.168.1.1:3128
+
+imports:
+  - Server.Utils.Policy
 
 sources:
 - query: |
-    LET ValidateConfig(Config) = Config.Client.server_urls
-          AND Config.Client.ca_certificate =~ "(?ms)-----BEGIN CERTIFICATE-----.+-----END CERTIFICATE-----"
-          AND Config.Client.nonce
+    LET client_config <=
+      if(condition=ValidateClientConfig(Config=CustomConfig),
+         then=CustomConfig,
+         else=ToDict(item=org()._client_config))
 
-    LET client_config &lt;= if(condition=ValidateConfig(Config=CustomConfig),
-                         then=CustomConfig,
-                         else=org()._client_config)
+    LET client_config <= if(condition=Labels.Labels || ProxyString,
+      then=AddLabelsToConfig(Config=client_config, Labels=Labels.Labels, Proxy=ProxyString),
+      else=client_config)
 
-    LET TmpDir &lt;= tempdir()
+    // Convert to YAML for repacking.
+    LET client_config_yaml <= serialize(format="yaml", item=client_config)
+
+    LET TmpDir <= tempdir()
 
     // This is an example of how to modify the spec to customize the
     // creation of the RPM. The default template does not set the
     // vendor property in the RPM, so we just update the metadata
     // template while preserving all the other fields.
     // See https://github.com/google/rpmpack/blob/2467806670a618497006ff8d8623b0430c7605a9/rpm.go#L56
-    LET _RPMSpec &lt;= SELECT Spec FROM rpm_create(show_spec=TRUE)
-    LET RPMSpec &lt;= _RPMSpec[0].Spec + dict(Templates=_RPMSpec[0].Spec.Templates +
+    LET _RPMSpec <= SELECT Spec FROM rpm_create(show_spec=TRUE)
+    LET RPMSpec <= _RPMSpec[0].Spec + dict(Templates=_RPMSpec[0].Spec.Templates +
      dict(Metadata=format(format='''
        {"Name": "{{ .SysvService }}",
         "Vendor": "%v",
         "Version": "{{ .Version }}",
-        "Release": "{{ .Release}}",
-        "Arch": "{{.Arch}}",
+        "Release": "{{ .Release }}",
+        "Arch": "{{ .Arch }}",
         "BuildTime": "%v"
        }
        ''', args=[Vendor, timestamp(epoch=now())])))
 
-    LET _DebSpec &lt;= SELECT Spec FROM deb_create(show_spec=TRUE)
-    LET DebSpec &lt;= _DebSpec[0].Spec
+    LET _DebSpec <= SELECT Spec FROM deb_create(show_spec=TRUE)
+    LET DebSpec <= _DebSpec[0].Spec
 
     LET UpdateExpansion(Expansion) = Expansion + dict(
        Name=ServiceName || Expansion.Name,
+       Release=Release || Expansion.Release,
        SysvService=ServiceName || Expansion.SysvService,
        Maintainer=Maintainer || Expansion.Maintainer,
        MaintainerEmail=MaintainerEmail || Expansion.MaintainerEmail,
        Homepage=Homepage || Expansion.Homepage
     )
 
-    SELECT * FROM chain(a={
+    SELECT Upload,
+           upload(accessor='data',
+                  file=client_config_yaml,
+                  name="Config") AS ClientConfig
+    FROM chain(a={
       SELECT OSPath.Basename AS Name,
              upload(file=OSPath, name=OSPath.Basename) AS Upload
       FROM deb_create(
         directory_name=TmpDir,
         package_spec=DebSpec +
             dict(Expansion=UpdateExpansion(Expansion=DebSpec.Expansion)),
-        config=serialize(item=client_config, format="yaml"))
+        config= client_config_yaml)
     }, b={
       SELECT OSPath.Basename AS Name,
              upload(file=OSPath, name=OSPath.Basename) AS Upload
@@ -110,12 +142,13 @@ sources:
         directory_name=TmpDir,
         package_spec=RPMSpec +
             dict(Expansion=UpdateExpansion(Expansion=RPMSpec.Expansion)),
-        config=serialize(item=client_config, format="yaml"))
+        release=Release || RPMSpec.Expansion.Release,
+        config= client_config_yaml)
     })
 
 column_types:
   - name: Upload
     type: upload_preview
+````
 
-</code></pre>
 

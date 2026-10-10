@@ -1,19 +1,32 @@
 ---
 title: Windows.Network.ListeningPorts
+description: "Reports processes that have open listening ports with address,\nprotocol, and PID details.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Processes with listening (bound) network sockets/ports.
+Reports processes that have open listening ports with address,
+protocol, and PID details.
 
-<pre><code class="language-yaml">
+
+---
+
+````yaml
 name: Windows.Network.ListeningPorts
-description: Processes with listening (bound) network sockets/ports.
+description: |
+  Reports processes that have open listening ports with address,
+  protocol, and PID details.
+
 sources:
   - precondition:
       SELECT OS From info() where OS = 'windows'
     query: |
-        LET process &lt;= SELECT Name, Pid from pslist()
+        LET process <= SELECT Name, Pid from pslist()
 
         SELECT * from foreach(
           row={
@@ -26,6 +39,6 @@ sources:
             SELECT Pid, Name, Port, Protocol, Family, Address
             FROM process where Pid = PortPid
           })
+````
 
-</code></pre>
 

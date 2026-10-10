@@ -1,16 +1,24 @@
 ---
 title: Windows.Detection.EnvironmentVariables
+description: "Find processes which have the specified environment variables.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Find processes with the specified environment variables.
+Find processes which have the specified environment variables.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.EnvironmentVariables
 description: |
-   Find processes with the specified environment variables.
+  Find processes which have the specified environment variables.
 
 parameters:
    - name: ProcessNameRegex
@@ -96,6 +104,6 @@ sources:
 
           SELECT * FROM source()
           LIMIT 50
+````
 
-</code></pre>
 

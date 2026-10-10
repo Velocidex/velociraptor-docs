@@ -1,18 +1,24 @@
 ---
 title: Linux.Events.Journal
+description: "Forwards events from the Systemd binary journal logs.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
 
-Watches the binary journal logs. Systemd uses a binary log format to
-store logs.
+Forwards events from the Systemd binary journal logs.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Events.Journal
 description: |
-  Watches the binary journal logs. Systemd uses a binary log format to
-  store logs.
+  Forwards events from the Systemd binary journal logs.
 
 type: CLIENT_EVENT
 
@@ -30,6 +36,6 @@ sources:
       SELECT *
       FROM watch_journald(filename=OSPath)
     }, workers=100)
+````
 
-</code></pre>
 

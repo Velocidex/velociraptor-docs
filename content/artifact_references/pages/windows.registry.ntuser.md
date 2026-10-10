@@ -1,17 +1,22 @@
 ---
 title: Windows.Registry.NTUser
+description: "Searches for registry keys and values across all users' NTUSER.DAT\nhives using raw NTFS parsing."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact searches for keys or values within the user's
-NTUser.dat registry hives.
+Searches for registry keys and values across all users' NTUSER.DAT
+hives using raw NTFS parsing.
 
 When a user logs into a windows machine the system creates their own
 "profile" which consists of a registry hive mapped into the
-HKEY_USERS hive. This hive file is locked while the user is
-logged in. If the user is not logged in, the file is not mapped at
-all.
+HKEY_USERS hive. This hive file is locked while the user is logged
+in. If the user is not logged in, the file is not mapped at all.
 
 This artifact bypasses the locking mechanism by parsing the raw NTFS
 filesystem to recover the registry hives. We then parse the registry
@@ -20,29 +25,25 @@ hives to search for the glob provided.
 This artifact is designed to be reused by other artifacts that need
 to access user data.
 
-{{% notice note %}}
-
-  Any artifacts that look into the HKEY_USERS registry hive should
-  be using the `Windows.Registry.NTUser` artifact instead of
-  accessing the hive via the API. The API only makes the currently
-  logged in users available in that hive, so if we rely on the
-  windows API we will miss any settings for the users not
-  currently logged on.
-
-{{% /notice %}}
+**NOTE:** Any artifacts that look into the HKEY_USERS registry hive
+should be using the `Windows.Registry.NTUser` artifact instead of
+accessing the hive via the API. The API only makes the currently
+logged in users available in that hive, so if we rely on the windows
+API we will miss any settings for the users not currently logged on.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Registry.NTUser
 description: |
-  This artifact searches for keys or values within the user's
-  NTUser.dat registry hives.
+  Searches for registry keys and values across all users' NTUSER.DAT
+  hives using raw NTFS parsing.
 
   When a user logs into a windows machine the system creates their own
   "profile" which consists of a registry hive mapped into the
-  HKEY_USERS hive. This hive file is locked while the user is
-  logged in. If the user is not logged in, the file is not mapped at
-  all.
+  HKEY_USERS hive. This hive file is locked while the user is logged
+  in. If the user is not logged in, the file is not mapped at all.
 
   This artifact bypasses the locking mechanism by parsing the raw NTFS
   filesystem to recover the registry hives. We then parse the registry
@@ -51,16 +52,11 @@ description: |
   This artifact is designed to be reused by other artifacts that need
   to access user data.
 
-  {{% notice note %}}
-
-    Any artifacts that look into the HKEY_USERS registry hive should
-    be using the `Windows.Registry.NTUser` artifact instead of
-    accessing the hive via the API. The API only makes the currently
-    logged in users available in that hive, so if we rely on the
-    windows API we will miss any settings for the users not
-    currently logged on.
-
-  {{% /notice %}}
+  **NOTE:** Any artifacts that look into the HKEY_USERS registry hive
+  should be using the `Windows.Registry.NTUser` artifact instead of
+  accessing the hive via the API. The API only makes the currently
+  logged in users available in that hive, so if we rely on the windows
+  API we will miss any settings for the users not currently logged on.
 
 precondition: SELECT OS From info() where OS = 'windows'
 
@@ -140,7 +136,7 @@ export: |
         Hive="\\AppData\\Local\\Microsoft\\Windows\\UsrClass.dat",
         Subpath="\\Software\\Classes", Subpath="\\Software\\Classes").Mapping
 
-    // Use this like `LET _ &lt;= MapRawRegistryHives`
+    // Use this like `LET _ <= MapRawRegistryHives`
     LET MapRawRegistryHives =remap(config=dict(
        remappings=_user_mappings + _standard_mappings + _required_mappings))
 
@@ -176,6 +172,6 @@ sources:
                        Path="/"),
                     accessor="raw_reg")
             })
+````
 
-</code></pre>
 

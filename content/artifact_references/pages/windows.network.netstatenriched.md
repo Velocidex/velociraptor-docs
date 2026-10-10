@@ -1,39 +1,47 @@
 ---
 title: Windows.Network.NetstatEnriched
+description: "NetstatEnriched adds data enrichment to the Netstat artifact and\nprovides extensive filtering options."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-NetstatEnhanced adds additional data points to the Netstat artifact and
-enables verbose search options.
+NetstatEnriched adds data enrichment to the Netstat artifact and
+provides extensive filtering options.
 
 Examples include: Process name and path, Authenticode information or
 network connection details.
 
 WARNING:
-KillProcess - attempts to use Taskill to kill the processes returned.
+KillProcess - attempts to kill the processes returned.
 DumpProcess - dumps the process as a sparse file for post-processing.
 
-Please only use these switches after scoping as there are no guardrails on
-shooting yourself in the foot.
+Please only use these switches after scoping as there are no
+guardrails on shooting yourself in the foot.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Network.NetstatEnriched
 author: "Matt Green - @mgreen27"
 description: |
-  NetstatEnhanced adds additional data points to the Netstat artifact and
-  enables verbose search options.
+  NetstatEnriched adds data enrichment to the Netstat artifact and
+  provides extensive filtering options.
 
   Examples include: Process name and path, Authenticode information or
   network connection details.
 
   WARNING:
-  KillProcess - attempts to use Taskill to kill the processes returned.
+  KillProcess - attempts to kill the processes returned.
   DumpProcess - dumps the process as a sparse file for post-processing.
 
-  Please only use these switches after scoping as there are no guardrails on
-  shooting yourself in the foot.
+  Please only use these switches after scoping as there are no
+  guardrails on shooting yourself in the foot.
 
 required_permissions:
   - EXECVE
@@ -128,7 +136,7 @@ parameters:
     default: .
     type: regex
   - name: AuthenticodeVerified
-    description: "Authenticode signiture selection"
+    description: "Authenticode signature selection"
     type: choices
     default: ALL
     choices:
@@ -159,20 +167,20 @@ parameters:
 sources:
   - name: Netstat
     query: |
-      LET VerifiedRegex &lt;= SELECT Regex
+      LET VerifiedRegex <= SELECT Regex
             FROM parse_csv(filename=AuthenticodeVerifiedMap, accessor="data")
             WHERE Choice=AuthenticodeVerified LIMIT 1
-      LET StatusRegex &lt;= SELECT Regex
+      LET StatusRegex <= SELECT Regex
             FROM parse_csv(filename=StatusMap, accessor="data")
             WHERE Choice=Status LIMIT 1
-      LET FamilyRegex &lt;= SELECT Regex
+      LET FamilyRegex <= SELECT Regex
             FROM parse_csv(filename=FamilyMap, accessor="data")
             WHERE Choice=Family LIMIT 1
-      LET TypeRegex &lt;= SELECT Regex
+      LET TypeRegex <= SELECT Regex
             FROM parse_csv(filename=TypeMap, accessor="data")
             WHERE Choice=Type LIMIT 1
 
-      LET process &lt;= SELECT Pid as PsId,
+      LET process <= SELECT Pid as PsId,
             Ppid,
             Name,
             CommandLine,
@@ -250,6 +258,6 @@ sources:
             },
             catch = results
         )
+````
 
-</code></pre>
 

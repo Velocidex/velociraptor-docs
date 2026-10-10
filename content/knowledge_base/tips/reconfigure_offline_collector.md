@@ -19,8 +19,8 @@ small tweaks to an existing offline collector this method may be quicker.
 
 Also note that you can override or append command line arguments to those
 embedded in and offline collector using
-[post-args]({{< ref "/docs/cli/#autoexec-mode-and-post-args" >}}),
-which may be sufficient when you want to change the collector behaviour on a
+[post-args](/docs/cli/autoexec/#the---pseudo-flag-post-args),
+which may be sufficient when you want to change the collector behavior on a
 once-off basis.
 
 ## General Method
@@ -49,7 +49,7 @@ You can verify that the new collector has the modified configuration using
 
 In the example above the `config repack` command repacked the collector config
 into a copy of the binary which invoked the command. This is the default
-behaviour. If you wish to repack into a different binary then please see the
+behavior. If you wish to repack into a different binary then please see the
 next section.
 
 Also note that the commands above are invoked using the offline collector binary
@@ -62,19 +62,16 @@ file (see next section).
 
 ### Repacking to a different binary
 
-{{% notice warning "Limitations" %}}
-
-Repacking the config into a different binary will not transfer any bundled tools
-to the new binary! This will cause the collection to fail if the offline
-collector can't access these tools from an alternative location, such as from a
-URL defined in the embedded artifacts' tool definitions. And even if it can
-download the tool from an external location, you may not want it to.
-
-If your collector uses artifacts which use tools then you should NOT use the
-method described here. You should instead rebuild your offline collector using
-the GUI or the CLI `collector` command.
-
-{{% /notice %}}
+> [!WARNING] Limitations
+> Repacking the config into a different binary will not transfer any bundled tools
+> to the new binary! This will cause the collection to fail if the offline
+> collector can't access these tools from an alternative location, such as from a
+> URL defined in the embedded artifacts' tool definitions. And even if it can
+> download the tool from an external location, you may not want it to.
+>
+> If your collector uses artifacts which use tools then you should NOT use the
+> method described here. You should instead rebuild your offline collector using
+> the GUI or the CLI `collector` command.
 
 You can use the `--exe` flag to specify a different target binary. This allows
 you to transfer an existing collector config to a different architecture, and/or
@@ -95,7 +92,7 @@ or
 
 ## Repacking a Generic Collector
 
-The [Generic Collector](https://docs.velociraptor.app/docs/offline_triage/#the-generic-offline-collector)
+The [Generic Collector](https://docs.velociraptor.app/docs/deployment/offline_collections/#the-generic-collector)
 is independent of any binary. It's essentially a standalone collector config
 with compression applied. This allows it to be used with any Velociraptor binary
 since it is external to the binary.
@@ -114,7 +111,7 @@ velociraptor config show --embedded_config Collector_velociraptor-collector > Co
 3. And then repack it back into the Generic Collector format using the `--exe`
 flag. In this case the "exe" can be any generic collector file including the
 default "blank" one available on our
-[Github Releases page](https://github.com/Velocidex/velociraptor/releases)
+[GitHub Releases page](https://github.com/Velocidex/velociraptor/releases)
 (named `velociraptor-collector`).
 
 ```sh

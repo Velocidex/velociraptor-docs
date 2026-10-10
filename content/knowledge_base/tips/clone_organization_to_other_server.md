@@ -11,33 +11,27 @@ Everything related to an organization is stored in a directory under `<file stor
 
 We need to transfer both to the destination server.
 
-1. Identify the org ID, either with the [`Server.Orgs.ListOrgs` Artifact](https://docs.velociraptor.app/artifact_references/pages/server.orgs.listorgs/) or scrolling down the Velociraptor *root org* home page.
-2. Archive the folder and the `json.db` file (mind the star) 
+1. Identify the org ID, either with the [`Server.Orgs.ListOrgs` Artifact](/artifact_references/pages/server.orgs.listorgs/) or scrolling down the Velociraptor *root org* home page.
+2. Archive the folder and the `json.db` file (mind the star)
 
 ```bash
-tar czf transport-<org name>.tar.gz <file store>/orgs/<org id>* 
+tar czf transport-<org name>.tar.gz <file store>/orgs/<org id>*
 ```
 
 3. Transfer the resulting archive to the destination Velociraptor server.
 
 ## Importing
 
-1. Decompress the archive under the `<file store>/orgs` directory. 
+1. Decompress the archive under the `<file store>/orgs` directory.
 
-{{% notice tip "No orgs folder" %}}
-
-The `orgs` directory is created with the first organization. After a fresh install of Velociraptor, it doesn't exist until you create an org. You may also simply create the directory.
-
-{{% /notice %}}
+> [!TIP] No orgs folder
+> The `orgs` directory is created with the first organization. After a fresh install of Velociraptor, it doesn't exist until you create an org. You may also simply create the directory.
 
 2. Verify file ownership and permissions are similar to other directories in the file store
 2. Start Velociraptor
 2. You should see the organization with all its content as it were on the origin server
 
-{{% notice tip "Can't see the org" %}}
+> [!TIP] Can't see the org
+> Upon startup, Velociraptor will run the workers linked to the organization, so you can find a trace of it in the logs, but you may only see it in GUI if you are granted permissions on it. Just edit with your favorite text editor: `<file store>/orgs/<org id>/acl/<username>.json.db` to give the access rights to an existing user (or create a user with the name of a user who was allowed to see the org),
 
-Upon startup, Velociraptor will run the workers linked to the organization, so you can find a trace of it in the logs, but you may only see it in GUI if you are granted permissions on it. Just edit with your favorite text editor: `<file store>/orgs/<org id>/acl/<username>.json.db` to give the access rights to an existing user (or create a user with the name of a user who was allowed to see the org),
-
-{{% /notice %}}
-
-Tags: #archiving #orgs #deployment 
+Tags: #archiving #orgs #deployment

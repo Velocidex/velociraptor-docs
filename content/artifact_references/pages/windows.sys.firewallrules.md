@@ -1,14 +1,27 @@
 ---
 title: Windows.Sys.FirewallRules
+description: "Lists Windows firewall rules by parsing the registry FirewallRules\nkey.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-List Windows firewall rules.
+Lists Windows firewall rules by parsing the registry FirewallRules
+key.
 
-<pre><code class="language-yaml">
+
+---
+
+````yaml
 name: Windows.Sys.FirewallRules
-description: List Windows firewall rules.
+description: |
+  Lists Windows firewall rules by parsing the registry FirewallRules
+  key.
+
 reference:
   - https://social.technet.microsoft.com/Forums/azure/en-US/aaed9c6a-fb8b-4d43-8b69-9f4e0f619a8c/how-to-check-the-windows-firewall-settings-from-netsh-command?forum=winserverGP
 
@@ -22,14 +35,14 @@ sources:
     query: |
         LET rules = SELECT Name as Value,
                parse_string_with_regex(string=Data,
-                 regex=["Action=(?P&lt;Action&gt;[^|]+)",
-                        "Active=(?P&lt;Active&gt;[^|]+)",
-                        "Dir=(?P&lt;Dir&gt;[^|]+)",
-                        "Protocol=(?P&lt;Protocol&gt;[^|]+)",
-                        "LPort=(?P&lt;LPort&gt;[^|]+)",
-                        "Name=(?P&lt;Name&gt;[^|]+)",
-                        "Desc=(?P&lt;Desc&gt;[^|]+)",
-                        "App=(?P&lt;App&gt;[^|]+)"]) as Record,
+                 regex=["Action=(?P<Action>[^|]+)",
+                        "Active=(?P<Active>[^|]+)",
+                        "Dir=(?P<Dir>[^|]+)",
+                        "Protocol=(?P<Protocol>[^|]+)",
+                        "LPort=(?P<LPort>[^|]+)",
+                        "Name=(?P<Name>[^|]+)",
+                        "Desc=(?P<Desc>[^|]+)",
+                        "App=(?P<App>[^|]+)"]) as Record,
                Data,
                OSPath
         FROM glob(globs=regKey, accessor="registry")
@@ -51,6 +64,6 @@ sources:
                   else=Record.LPort) as LPort,
                Record.Name as Name
         FROM rules
+````
 
-</code></pre>
 

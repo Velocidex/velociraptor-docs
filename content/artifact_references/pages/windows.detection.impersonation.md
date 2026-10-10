@@ -1,8 +1,17 @@
 ---
 title: Windows.Detection.Impersonation
+description: "Enumerates threads with impersonation tokens that differ from their\nparent process."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
+
+Enumerates threads with impersonation tokens that differ from their
+parent process.
 
 An access token is an object that describes the security context of
 a process or thread. The information in a token includes the
@@ -16,14 +25,14 @@ context of the user account associated with the process. By default,
 the system uses the primary token when a thread of the process
 interacts with a securable object. Moreover, a thread can
 impersonate a client account. Impersonation allows the thread to
-interact with securable objects using the client's security
-context. A thread that is impersonating a client has both a primary
-token and an impersonation token.
+interact with securable objects using the client's security context.
+A thread that is impersonating a client has both a primary token and
+an impersonation token.
 
 This artifact enumerates all threads on the system which have an
-impersonation token. That is, they are operating with a different token
-then the token the entire process has. For example Mimikatz has a
-command called `token::elevate` to do just such a thing:
+impersonation token. That is, they are operating with a different
+token then the token the entire process has. For example Mimikatz
+has a command called `token::elevate` to do just such a thing:
 
 ```
 mimikatz # privilege::debug
@@ -41,9 +50,14 @@ SID name  : NT AUTHORITY\SYSTEM
 ```
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.Impersonation
 description: |
+  Enumerates threads with impersonation tokens that differ from their
+  parent process.
+  
   An access token is an object that describes the security context of
   a process or thread. The information in a token includes the
   identity and privileges of the user account associated with the
@@ -56,14 +70,14 @@ description: |
   the system uses the primary token when a thread of the process
   interacts with a securable object. Moreover, a thread can
   impersonate a client account. Impersonation allows the thread to
-  interact with securable objects using the client's security
-  context. A thread that is impersonating a client has both a primary
-  token and an impersonation token.
+  interact with securable objects using the client's security context.
+  A thread that is impersonating a client has both a primary token and
+  an impersonation token.
 
   This artifact enumerates all threads on the system which have an
-  impersonation token. That is, they are operating with a different token
-  then the token the entire process has. For example Mimikatz has a
-  command called `token::elevate` to do just such a thing:
+  impersonation token. That is, they are operating with a different
+  token then the token the entire process has. For example Mimikatz
+  has a command called `token::elevate` to do just such a thing:
 
   ```
   mimikatz # privilege::debug
@@ -75,13 +89,13 @@ description: |
   SID name  : NT AUTHORITY\SYSTEM
 
   688     {0;000003e7} 1 D 42171          NT AUTHORITY\SYSTEM     S-1-5-18        (04g,21p)       Primary
-  -&gt; Impersonated !
+  -> Impersonated !
   * Process Token : {0;000195ad} 1 F 757658339   DESKTOP-NHNHT65\mic     S-1-5-21-2310288903-2791442386-3035081252-1001  (15g,24p)       Primary
   * Thread Token  : {0;000003e7} 1 D 759094260   NT AUTHORITY\SYSTEM     S-1-5-18        (04g,21p)       Impersonation (Delegation)
   ```
+
 reference:
   - https://github.com/kslgroup/TokenImp-Token_Impersonation_Detection/blob/master/TokenImp%20documentation.pdf
-
 
 precondition: SELECT OS From info() where OS = 'windows'
 
@@ -102,6 +116,6 @@ sources:
              FROM handles(pid=ProcPid, types='Thread')
              WHERE ImpersonationToken.User AND ImpersonationToken.User != OwnerSid
           })
+````
 
-</code></pre>
 

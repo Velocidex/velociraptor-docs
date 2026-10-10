@@ -1,26 +1,36 @@
 ---
 title: Windows.Applications.Firefox.Downloads
+description: "Enumerates Firefox download records (file names, URLs, timestamps)\nfrom the `places.sqlite` database."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Enumerate the users Firefox downloads.
+Enumerates Firefox download records (file names, URLs, timestamps)
+from the `places.sqlite` database.
 
-#### NOTES
+**NOTES**
 
-This artifact is deprecated in favor of `Generic.Forensic.SQLiteHunter` and
-will be removed in future
+This artifact is deprecated in favor of `Generic.Forensic.SQLiteHunter`
+and will be removed in future
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Applications.Firefox.Downloads
 description: |
-  Enumerate the users Firefox downloads.
+  Enumerates Firefox download records (file names, URLs, timestamps)
+  from the `places.sqlite` database.
 
-  #### NOTES
+  **NOTES**
 
-  This artifact is deprecated in favor of `Generic.Forensic.SQLiteHunter` and
-  will be removed in future
+  This artifact is deprecated in favor of `Generic.Forensic.SQLiteHunter`
+  and will be removed in future
 
 author: |
   Angry-Bender @angry-bender, based on
@@ -43,6 +53,8 @@ precondition: SELECT OS From info() where OS = 'windows'
 
 sources:
   - query: |
+        // linter: symbol_mask_warn:url
+
         LET places_files = SELECT * from foreach(
           row={
              SELECT Uid, Name AS User,
@@ -94,6 +106,6 @@ sources:
             ORDER BY last_modified DESC
           })
           WHERE url =~ URLRegex
+````
 
-</code></pre>
 

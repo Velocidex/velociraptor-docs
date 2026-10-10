@@ -1,43 +1,57 @@
 ---
 title: Windows.NTFS.ADSHunter
+description: "Scans NTFS volumes for data hidden in Alternate Data Streams, using\nconfigurable filtering rules."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact hunts
-for Alternate Data Streams on NTFS file systems.
+Scans NTFS volumes for data hidden in Alternate Data Streams, using
+configurable filtering rules.
+
 Adversaries may use NTFS file attributes for covert storage to evade
-detection.
-Alternate Data Streams (ADS) are additional $DATA attributes for an MFT entry in
-NTFS file systems. In NTFS, the primary $DATA attribute is
-never named but subsequent $DATA attributes must be named.
+detection. Alternate Data Streams (ADS) are additional $DATA
+attributes for an MFT entry in NTFS file systems. In NTFS, the
+primary $DATA attribute is never named but subsequent $DATA
+attributes must be named.
 
-Targeting is via mix of path globs and include / exclude regex.
+Targeting is via mix of path globs and include/exclude regex.
 
-- TargetGlob is a glob to target for ADS. NOTE **\* is recursive. To hit C drive we need to search for C:\*
+- TargetGlob is a glob to target for ADS. NOTE **\* is recursive. To
+  hit C drive we need to search for C:\*
 - AdsName is name in glob format: e.g *, Zone.Identifier or Zone.*.
-- AdsNameExclusion - A regex value, common ADS added to exclusions have been
-added by default. The artifact also excludes NTFS system files by default.
+- AdsNameExclusion - A regex value, common ADS added to exclusions
+  have been added by default. The artifact also excludes NTFS system
+  files by default.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.NTFS.ADSHunter
 author: "Matt Green - @mgreen27"
 description: |
-   This artifact hunts
-   for Alternate Data Streams on NTFS file systems.
-   Adversaries may use NTFS file attributes for covert storage to evade
-   detection.
-   Alternate Data Streams (ADS) are additional $DATA attributes for an MFT entry in
-   NTFS file systems. In NTFS, the primary $DATA attribute is
-   never named but subsequent $DATA attributes must be named.
+  Scans NTFS volumes for data hidden in Alternate Data Streams, using
+  configurable filtering rules.
 
-   Targeting is via mix of path globs and include / exclude regex.
+  Adversaries may use NTFS file attributes for covert storage to evade
+  detection. Alternate Data Streams (ADS) are additional $DATA
+  attributes for an MFT entry in NTFS file systems. In NTFS, the
+  primary $DATA attribute is never named but subsequent $DATA
+  attributes must be named.
 
-   - TargetGlob is a glob to target for ADS. NOTE **\* is recursive. To hit C drive we need to search for C:\*
-   - AdsName is name in glob format: e.g *, Zone.Identifier or Zone.*.
-   - AdsNameExclusion - A regex value, common ADS added to exclusions have been
-   added by default. The artifact also excludes NTFS system files by default.
+  Targeting is via mix of path globs and include/exclude regex.
+
+  - TargetGlob is a glob to target for ADS. NOTE **\* is recursive. To
+    hit C drive we need to search for C:\*
+  - AdsName is name in glob format: e.g *, Zone.Identifier or Zone.*.
+  - AdsNameExclusion - A regex value, common ADS added to exclusions
+    have been added by default. The artifact also excludes NTFS system
+    files by default.
 
 reference:
   - https://attack.mitre.org/techniques/T1564/004/
@@ -69,7 +83,7 @@ parameters:
    description: Optional - only include alternate data streams below this size in bytes.
    type: int
  - name: UploadDataStream
-   description: If selected wil upload non-resident data streams.
+   description: If selected will upload non-resident data streams.
    type: bool
 
 sources:
@@ -87,10 +101,10 @@ sources:
         WHERE
             NOT OSPath =~ '''[a-z]:\\(\$Extend\\|\$Secure|\$UpCase|\$BadClus|\$Bitmap|\$Repair)'''
             AND if(condition=MinSize,
-                    then= Size &gt; MinSize,
+                    then= Size > MinSize,
                     else= True )
             AND if(condition= MaxSize,
-                    then= Size &lt; MaxSize,
+                    then= Size < MaxSize,
                     else= True )
             AND NOT if(condition=AdsNameExclusion,
                         then= AdsName =~ AdsNameExclusion,
@@ -113,6 +127,6 @@ sources:
       -- output rows
       SELECT * FROM if(condition=UploadDataStream,
                         then= upload_hits,
-                        else= hits)
-</code></pre>
+                        else= hits)````
+
 

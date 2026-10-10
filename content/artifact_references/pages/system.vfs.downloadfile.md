@@ -1,28 +1,40 @@
 ---
 title: System.VFS.DownloadFile
+description: "Uploads a single file or recursively uploads directory contents from\na client to populate information in the VFS screen."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This is an internal artifact used by the GUI to populate the
-VFS. You may run it manually if you like, but typically it is
-launched by the GUI when the user clicks the "Collect from client"
-button at the file "Stats" tab.
+Uploads a single file or recursively uploads directory contents from
+a client to populate information in the VFS screen.
+
+You may run it manually if you like, but typically it is launched by
+the GUI when the user clicks the "Collect from client" button at the
+file "Stats" tab.
 
 If you run it yourself (or via the API) the results will also be
-shown in the VFS view.
+visible in the VFS view.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: System.VFS.DownloadFile
 description: |
-  This is an internal artifact used by the GUI to populate the
-  VFS. You may run it manually if you like, but typically it is
-  launched by the GUI when the user clicks the "Collect from client"
-  button at the file "Stats" tab.
+  Uploads a single file or recursively uploads directory contents from
+  a client to populate information in the VFS screen.
+
+  You may run it manually if you like, but typically it is launched by
+  the GUI when the user clicks the "Collect from client" button at the
+  file "Stats" tab.
 
   If you run it yourself (or via the API) the results will also be
-  shown in the VFS view.
+  visible in the VFS view.
 
 parameters:
   - name: Path
@@ -40,13 +52,13 @@ parameters:
       we download all files below it.
   - name: UPLOAD_IS_RESUMABLE
     type: bool
-    default: Y
+    default: N
     description: If set the uploads can be resumed if the flow times out or errors.
 
 sources:
   - query: |
       LET download_one_file = if(
-         condition=version(plugin="stat") &gt; 1,
+         condition=version(plugin="stat") > 1,
          then= {
            SELECT OSPath AS Path, Accessor,
               Size, upload(file=OSPath, accessor=Accessor) AS Upload
@@ -59,7 +71,7 @@ sources:
         })
 
       LET download_recursive = if(
-         condition=version(plugin="stat") &gt; 1,
+         condition=version(plugin="stat") > 1,
          then= {
            SELECT OSPath AS Path, Accessor,
               Size, upload(file=OSPath, accessor=Accessor) AS Upload
@@ -84,6 +96,6 @@ sources:
       FROM if(condition=Recursively,
         then={ SELECT * FROM download_recursive},
         else={ SELECT * FROM download_one_file})
+````
 
-</code></pre>
 

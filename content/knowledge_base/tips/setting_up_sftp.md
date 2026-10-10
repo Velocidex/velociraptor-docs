@@ -2,12 +2,12 @@
 
 There are many options for receiving file uploads from clients or collection
 archives from
-[offline collectors]({{< ref "/docs/deployment/offline_collections" >}}),
+[offline collectors](/docs/deployment/offline_collections/),
 for example
-[using S3 buckets]({{< ref "/knowledge_base/tips/dropbox_server/">}}),
-[Azure storage services]({{< ref "/knowledge_base/tips/setup_azure_storage/" >}}),
+[using S3 buckets](/knowledge_base/tips/dropbox_server/),
+[Azure storage services](/knowledge_base/tips/setup_azure_storage/),
 and even the
-[AWS SFTP transfer service]({{< ref "/blog/2021/2021-12-11-sftp-in-aws/" >}}).
+[AWS SFTP transfer service](/blog/2021/2021-12-11-sftp-in-aws/).
 
 However you might prefer to set up your own SFTP server to receive incoming
 uploads instead of using a cloud storage service.
@@ -15,16 +15,13 @@ uploads instead of using a cloud storage service.
 This article explains how to set up a SFTP server with appropriate security for
 automated remote file uploads.
 
-{{% notice warning %}}
-
-Setting up SSH and SFTP can be tricky for novice Linux users. It is easy to
-misconfigure things in ways that can leave a server open to exploitation.
-
-Unless you have a strong reason to prefer using SFTP we recommend that you
-consider more self-contained alternative options such as the one described in
-[How to set up a self-hosted S3-compatible dropbox server]({{< ref "/knowledge_base/tips/dropbox_server/">}}).
-
-{{% /notice %}}
+> [!WARNING]
+> Setting up SSH and SFTP can be tricky for novice Linux users. It is easy to
+> misconfigure things in ways that can leave a server open to exploitation.
+>
+> Unless you have a strong reason to prefer using SFTP we recommend that you
+> consider more self-contained alternative options such as the one described in
+> [How to set up a self-hosted S3-compatible dropbox server](/knowledge_base/tips/dropbox_server/).
 
 ---
 

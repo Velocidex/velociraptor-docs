@@ -1,14 +1,26 @@
 ---
 title: Linux.Applications.Docker.Version
+description: "Connects to the Docker socket and retrieves daemon version details\nincluding API and kernel versions.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Get Dockers version by connecting to its socket.
+Connects to the Docker socket and retrieves daemon version details
+including API and kernel versions.
 
-<pre><code class="language-yaml">
+
+---
+
+````yaml
 name: Linux.Applications.Docker.Version
-description: Get Dockers version by connecting to its socket.
+description: |
+  Connects to the Docker socket and retrieves daemon version details
+  including API and kernel versions.
 
 parameters:
   - name: dockerSocket
@@ -36,6 +48,6 @@ sources:
                JSON.KernelVersion as KernelVersion,
                JSON.BuildTime as BuildTime
         FROM data
+````
 
-</code></pre>
 

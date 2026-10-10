@@ -1,15 +1,15 @@
 name: Windows.Forensics.WindowsNotepadParser
 description: |
-    Runs the WindowsNotepadParser (https://github.com/ogmini/Notepad-State-Library) tool to collect and parse 
-    forensic artifacts related to Windows Notepad on Windows 11. 
-    
+    Runs the WindowsNotepadParser (https://github.com/ogmini/Notepad-State-Library) tool to collect and parse
+    forensic artifacts related to Windows Notepad on Windows 11.
+
     Documentation and details about the artifacts can be found at - https://github.com/ogmini/Notepad-State-Library
-    
+
     ### History
-    
+
     - 1.0 - Creation
-    
-reference: 
+
+reference:
   - https://github.com/ogmini/Notepad-State-Library
   - https://ogmini.github.io/tags.html#Windows-Notepad
 
@@ -53,7 +53,7 @@ sources:
       -- execute payload
       LET deploy <= SELECT *
         FROM execve(argv=[payload.NewPath[0], "-o", outputDirectory])
-        
+
       SELECT *
       FROM parse_csv(filename=outputDirectory + "NoFileTabs.csv")
 
@@ -62,19 +62,19 @@ sources:
     query: |
       SELECT *
       FROM parse_csv(filename=outputDirectory + "NoFileTabs.csv")
-      
+
   - name: StateTabs
     description: These are the *.0.bin and *.1.bin files and store extra information about the related matching GUID *.bin.
     query: |
       SELECT *
       FROM parse_csv(filename=outputDirectory + "StateTabs.csv")
-      
+
   - name: WindowStateTabs
-    description: The windowstate files store information about opened windows of Windows Notepad and files are created for each opened window. 
+    description: The `windowstate` files store information about opened windows of Windows Notepad and files are created for each opened window.
     query: |
       SELECT *
       FROM parse_csv(filename=outputDirectory + "WindowStateTabs.csv")
-      
+
   - name: UnsavedBufferChunks
     description: Unsaved changes to a tab. Will only exist while Windows Notepad is open.
     query: |
@@ -84,5 +84,5 @@ sources:
       }, query={
           SELECT *
          FROM parse_csv(filename=OSPath)
-         
+
       })

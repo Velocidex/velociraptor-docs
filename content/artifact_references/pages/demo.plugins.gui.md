@@ -1,20 +1,26 @@
 ---
 title: Demo.Plugins.GUI
+description: "Provides test cases for GUI elements, parameter validation, and\nnotebook rendering.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-A demo plugin showing some GUI features.
+Provides test cases for GUI elements, parameter validation, and
+notebook rendering.
 
-This plugin is also used for tests.
 
+---
 
-<pre><code class="language-yaml">
+````yaml
 name: Demo.Plugins.GUI
 description: |
-  A demo plugin showing some GUI features.
-
-  This plugin is also used for tests.
+  Provides test cases for GUI elements, parameter validation, and
+  notebook rendering.
 
 resources:
   timeout: 20
@@ -135,7 +141,8 @@ sources:
              OffFlag, StartDate, StartDate2, StartDate3,
              CSVData, JSONData, JSONDataWithObject,
              len(list=FileUpload1) AS FileUpload1Length,
-             stat(filename=FileUpload2) AS FileUpload2Stats
+             if(condition=FileUpload2,
+                then=stat(filename=FileUpload2)) AS FileUpload2Stats
       FROM scope()
 
     notebook:
@@ -338,7 +345,7 @@ sources:
 
           -- Add the time series into the timeline.
           SELECT timeline_add(
-              key="Timestamp", name="Time 你好世界 'line' &amp;\" ",
+              key="Timestamp", name="Time 你好世界 'line' &\" ",
               query=T1, timeline="Test \"Timeline 你好世界\""),
            timeline_add(
               key="Timestamp", name="2",
@@ -441,7 +448,7 @@ sources:
           /*
           # Test the link_to() VQL Function
           */
-          LET ColumnTypes &lt;= dict(
+          LET ColumnTypes <= dict(
             LinkToFlow="url_internal",
             LinkToHunt="url_internal",
             LinkToArtifact="url_internal",
@@ -449,7 +456,7 @@ sources:
             LinkToClient="url_internal")
 
           LET s = scope()
-          LET Uploaded &lt;= upload(accessor="data", file="Hello", name="test.txt")
+          LET Uploaded <= upload(accessor="data", file="Hello", name="test.txt")
 
           SELECT link_to(client_id=ClientId, flow_id=s.FlowId || "F.123") AS LinkToFlow,
                  link_to(client_id=ClientId) AS LinkToClient,
@@ -458,5 +465,50 @@ sources:
                  link_to(upload=Uploaded) AS Download
           FROM scope()
 
-</code></pre>
+      - type: md
+        name: Link to Predetermined collections
+        template: |
+          ## Link to a pre canned collection.
+
+          [Create a new collection]({{ Expand "              \
+            x=>link_to(client_id=ClientId, flow_id='new',    \
+                    artifact='Demo.Plugins.GUI', raw=TRUE,   \
+                    parameters=dict(YaraRule='Hello'))       \
+            " }})
+
+          [Create a new hunt]({{ Expand "                    \
+            x=>link_to(hunt_id='new',                        \
+                    artifact='Demo.Plugins.GUI', raw=TRUE,   \
+                    parameters=dict(YaraRule='Hello'))       \
+            " }})
+
+          [Create a new notebook]({{ Expand "                 \
+            x=>link_to(notebook_id='new',                     \
+                    artifact='Server.Utils.Clients', raw=TRUE,\
+                    parameters=dict(SearchTerm='WIN'))        \
+            " }})
+
+          ### Buttons!
+
+          <velo-button
+            text="Start collection"
+            icon="pencil"
+            href="{{ Expand "                                \
+            x=>link_to(client_id=ClientId, flow_id='new',    \
+                    artifact='Demo.Plugins.GUI', raw=TRUE,   \
+                    parameters=dict(YaraRule='Hello'))       \
+            " }}" />
+
+          <velo-button
+            text="Create new notebook"
+            icon="pencil"
+            href="{{ Expand "                                \
+            x=>link_to(notebook_id='new',                    \
+                    artifact='Notebooks.Demo', raw=TRUE,     \
+                    parameters=dict(name='My Notebook',     \
+                                    description='A lovely notebook', \
+                                    AnInteger='76'))         \
+            " }}" />
+````
+
 

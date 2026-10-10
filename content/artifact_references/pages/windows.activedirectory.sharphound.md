@@ -1,37 +1,50 @@
 ---
 title: Windows.ActiveDirectory.SharpHound
+description: "Deploys the SharpHound tool to collect Active Directory relationship\ndata for BloodHound."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact allows deployment of the BloodHound collection tool Sharphound.
+Deploys the SharpHound tool to collect Active Directory relationship
+data for BloodHound.
 
-BloodHound is a popular Active Directory Assessment tool that uses graph
-theory to reveal the hidden and often unintended relationships. It can also be
-used to identify and eliminate potentially risky domain configuration.
+BloodHound is a popular Active Directory Assessment tool that uses
+graph theory to reveal the hidden and often unintended
+relationships. It can also be used to identify and eliminate
+potentially risky domain configuration.
 
 NOTE: 
 
 - EDR exclusions are required.
 - General recommendation is to run this artifact on only a handful of machines 
   in a typical domain then deduplicate output.  
+ 
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.ActiveDirectory.SharpHound
 author: Matt Green - @mgreen27
 description: |
-   This artifact allows deployment of the BloodHound collection tool Sharphound.
+  Deploys the SharpHound tool to collect Active Directory relationship
+  data for BloodHound.
 
-   BloodHound is a popular Active Directory Assessment tool that uses graph
-   theory to reveal the hidden and often unintended relationships. It can also be
-   used to identify and eliminate potentially risky domain configuration.
+  BloodHound is a popular Active Directory Assessment tool that uses
+  graph theory to reveal the hidden and often unintended
+  relationships. It can also be used to identify and eliminate
+  potentially risky domain configuration.
 
-   NOTE: 
+  NOTE: 
 
-   - EDR exclusions are required.
-   - General recommendation is to run this artifact on only a handful of machines 
-     in a typical domain then deduplicate output.  
+  - EDR exclusions are required.
+  - General recommendation is to run this artifact on only a handful of machines 
+    in a typical domain then deduplicate output.  
    
 reference:
   - https://github.com/SpecterOps/SharpHound/
@@ -54,22 +67,22 @@ sources:
 
     query: |
       -- obtain hostname for output prefix
-      LET hostname &lt;= SELECT Fqdn FROM info()
+      LET hostname <= SELECT Fqdn FROM info()
       
       -- get context on target binary
-      LET payload &lt;= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
+      LET payload <= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
                     ToolName="SharpHound",IsExecutable='N')
 
       -- build tempfolder for output
-      LET tempfolder &lt;= tempdir()
+      LET tempfolder <= tempdir()
       
-      LET unzipped &lt;= SELECT NewPath as OSPath FROM unzip(filename=payload.OSPath[0],filename_filter='\.exe$',output_directory=tempfolder)
+      LET unzipped <= SELECT NewPath as OSPath FROM unzip(filename=payload.OSPath[0],filename_filter='\.exe$',output_directory=tempfolder)
 
       -- execute payload
-      LET deploy &lt;= SELECT * FROM execve(argv=[unzipped.OSPath[0],'--outputdirectory',
+      LET deploy <= SELECT * FROM execve(argv=[unzipped.OSPath[0],'--outputdirectory',
                 tempfolder,'--nozip'])
                 
-      LET collection &lt;= SELECT OSPath, Name, Size--, upload(file=OSPath,name=Name) as UploadInfo
+      LET collection <= SELECT OSPath, Name, Size--, upload(file=OSPath,name=Name) as UploadInfo
         FROM glob(globs="/*.json",root=tempfolder) 
       
       LET results = SELECT * FROM foreach(row=collection, query={ SELECT Name, * FROM parse_jsonl(filename=OSPath) })
@@ -146,6 +159,6 @@ sources:
             SELECT * FROM foreach(row=Users, query={
                 SELECT Name, * FROM foreach(row=data)
                 })
+````
 
-</code></pre>
 

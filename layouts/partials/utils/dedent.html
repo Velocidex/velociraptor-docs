@@ -1,0 +1,22 @@
+{{- /* dedent: remove the minimal common leading whitespace from each non-empty
+       line of a multi-line string. Used before markdownify/RenderString so that
+       shortcode inner content indented in the source .md does not turn into a
+       goldmark indented code block (<pre><code>) which cannot wrap.
+       @param (string) .  input text
+       @returns (string)  de-indented text (blank-only lines left as-is)
+*/ -}}
+{{- $input := default "" . -}}
+{{- $min := -1 -}}
+{{- range $line := split $input "\n" -}}
+  {{- $trimmed := strings.TrimLeft " \t" $line -}}
+  {{- if gt (len $trimmed) 0 -}}
+    {{- $indent := sub (len $line) (len $trimmed) -}}
+    {{- if or (eq $min -1) (lt $indent $min) -}}
+      {{- $min = $indent -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- if gt $min 0 -}}
+  {{- $input = strings.ReplaceRE (printf "(?m)^[ \\t]{%d}" $min) "" $input -}}
+{{- end -}}
+{{- return $input -}}

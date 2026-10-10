@@ -1,19 +1,27 @@
 ---
 title: Windows.Search.SMBFileFinder
+description: "Searches for files on remote SMB shares using glob patterns and\ninspects file content using Yara rules, with optional hash\ncalculation and file upload."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Find files on a remote filesystem using the filename or content.
+Searches for files on remote SMB shares using glob patterns and
+inspects file content using Yara rules, with optional hash
+calculation and file upload.
 
-## Security Note
+**Security Note**
 
 To access a remote share we require the credentials of a
 domain user. Currently only username/password are supported (i.e. no
-Kerberose). You should use Group Policy to create a user with read
+Kerberos). You should use Group Policy to create a user with read
 only access to the remote share.
 
-## Performance Note
+**Performance Note**
 
 This artifact can be quite expensive slow and generate a lot of
 network data, especially if we search file content. It will require
@@ -22,19 +30,23 @@ impact on the endpoint we recommend this artifact is collected with
 a rate limited way (about 20-50 ops per second).
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Search.SMBFileFinder
 description: |
-  Find files on a remote filesystem using the filename or content.
+  Searches for files on remote SMB shares using glob patterns and
+  inspects file content using Yara rules, with optional hash
+  calculation and file upload.
 
-  ## Security Note
+  **Security Note**
 
   To access a remote share we require the credentials of a
   domain user. Currently only username/password are supported (i.e. no
-  Kerberose). You should use Group Policy to create a user with read
+  Kerberos). You should use Group Policy to create a user with read
   only access to the remote share.
 
-  ## Performance Note
+  **Performance Note**
 
   This artifact can be quite expensive slow and generate a lot of
   network data, especially if we search file content. It will require
@@ -96,7 +108,7 @@ parameters:
 
 sources:
   - query: |
-      LET SMB_CREDENTIALS &lt;= set(item=dict(), field=ServerName,
+      LET SMB_CREDENTIALS <= set(item=dict(), field=ServerName,
          value=format(format="%s:%s", args=[Username, Password]))
 
       LET file_search = SELECT OSPath,
@@ -115,15 +127,15 @@ sources:
         condition=MoreRecentThan,
         then={
           SELECT * FROM file_search
-          WHERE MTime &gt; MoreRecentThan
+          WHERE MTime > MoreRecentThan
         }, else=file_search)
 
       LET modified_before = SELECT * FROM if(
         condition=ModifiedBefore,
         then={
           SELECT * FROM more_recent
-          WHERE MTime &lt; ModifiedBefore
-           AND  MTime &gt; MoreRecentThan
+          WHERE MTime < ModifiedBefore
+           AND  MTime > MoreRecentThan
         }, else=more_recent)
 
       LET keyword_search = SELECT * FROM if(
@@ -166,6 +178,6 @@ column_types:
     type: timestamp
   - name: Upload
     type: preview_upload
+````
 
-</code></pre>
 

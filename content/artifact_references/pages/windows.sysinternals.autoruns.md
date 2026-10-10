@@ -1,20 +1,26 @@
 ---
 title: Windows.Sysinternals.Autoruns
+description: "Installs and runs Sysinternals `autorunsc` to enumerate autostart\npersistence mechanisms.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Uses Sysinternals autoruns to scan the host.
+Installs and runs Sysinternals `autorunsc` to enumerate autostart
+persistence mechanisms.
 
-Note this requires syncing the Sysinternals binary from the host.
 
+---
 
-<pre><code class="language-yaml">
+````yaml
 name: Windows.Sysinternals.Autoruns
 description: |
-  Uses Sysinternals autoruns to scan the host.
-
-  Note this requires syncing the Sysinternals binary from the host.
+  Installs and runs Sysinternals `autorunsc` to enumerate autostart
+  persistence mechanisms.
 
 tools:
   - name: Autorun_386
@@ -110,10 +116,10 @@ sources:
       LET options = SELECT Option FROM parse_csv(accessor="data", filename=Options)
         WHERE get(field=Name)
 
-      LET os_info &lt;= SELECT Architecture FROM info()
+      LET os_info <= SELECT Architecture FROM info()
 
       // Get the path to the binary.
-      LET bin &lt;= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
+      LET bin <= SELECT * FROM Artifact.Generic.Utils.FetchBinary(
               ToolName= "Autorun_" + os_info[0].Architecture,
               ToolInfo=ToolInfo)
 
@@ -137,6 +143,6 @@ sources:
                                      accessor="data")
           })
       })
+````
 
-</code></pre>
 

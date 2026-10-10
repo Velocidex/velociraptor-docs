@@ -1,7 +1,13 @@
 ---
 title: Generic.Utils.SendEmail
+description: "A Utility artifact for sending emails."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
 
 A Utility artifact for sending emails.
@@ -18,10 +24,12 @@ of sending anything but simple plain-text emails. It will, among other things,
 - The whole email is sent as a multi-part message
 
 All of the functions used to create the final body of the email are exported
-and are available for further customisation when sending an email.
+and are available for further customization when sending an email.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Utils.SendEmail
 author: Andreas Misje – @misje
 description: |
@@ -39,7 +47,7 @@ description: |
   - The whole email is sent as a multi-part message
 
   All of the functions used to create the final body of the email are exported
-  and are available for further customisation when sending an email.
+  and are available for further customization when sending an email.
 
 type: SERVER
 
@@ -84,10 +92,20 @@ parameters:
     Refuse to send mails more often than this interval (in seconds). This throttling
     is applied to the whole server.
 
+- name: UseSimpleBoundary
+  type: bool
+  description: |
+    Use a barrier consisting of only [A-Za-z0-9] characters. Some e-mail clients
+    do not support / conform to the RFC 2045 standard, and cannot handle
+    boundaries with characters other than simple lower- and upper-case letters,
+    as well as numbers (i.e not ['()+_,./:=?']).
+
 export: |
   LET _RandomString = SELECT format(format="%c", args=20 + rand(range=107)) AS Ch
     FROM range(end=1000)
-    WHERE Ch =~ "[A-Za-z0-9'()+_,./:=?]"
+    WHERE Ch =~ if(condition=UseSimpleBoundary,
+                   then="[A-Za-z0-9]",
+                   else="[A-Za-z0-9'()+_,./:=?]")
     LIMIT 70
 
   -- Create a random string suitable as a MIME boundary:
@@ -102,7 +120,7 @@ export: |
 
   -- Wrap Sections in boundaries. Header may be used to create a sub-boundary,
   -- useful for multipart/alternative:
-  LET WrapInBoundary(Boundary, Sections, Header) = template(
+  LET WrapInBoundary(Boundary, Sections, Header="") = template(
       template="{{ if .header }}{{ .header }}; boundary={{ .boundary }}\r\n\r\n{{ end }}{{ range .sections }}--{{ $.boundary }}\r\n{{ . }}{{ end }}--{{ $.boundary }}--\r\n",
       expansion=dict(
         boundary=Boundary,
@@ -111,14 +129,14 @@ export: |
 
   -- Add content type ("plain" or "html") and newlines to text. If Encode is set,
   -- encode the text in Base64 and add a suitable transfer header:
-  LET WrapText(Value, Type, Encode) = if(
+  LET WrapText(Value, Type, Encode=false) = if(
       condition=Value,
       then=format(
         format='Content-Type: text/%s; charset="utf-8"%s\r\n\r\n%v\r\n',
-        args=[Type, if(condition=get(field='Encode', default=false),
+        args=[Type, if(condition=Encode,
                        then="\r\nContent-Transfer-Encoding: base64",
                        else=""), if(
-          condition=get(field='Encode', default=false),
+          condition=Encode,
           then=EncodeData(Data=Value),
           else=Value)]))
 
@@ -140,28 +158,36 @@ export: |
   LET AttachFile(Path, Filename) = template(
       template='Content-Type: application/octet-stream; name="{{ .name }}"\r\nContent-Disposition: attachment; filename="{{ .filename }}"\r\nContent-Transfer-Encoding: base64\r\n\r\n{{ .data }}\r\n\r\n',
       expansion=dict(
-        name=regex_replace(source=basename(path=Filename),
-                           re='''\..+$''',
-                           replace=''),
-        filename=basename(path=Filename),
-        data=EncodeFile(Filename=Path)))
+        name=regex_replace(
+          source=basename(
+            path=Filename),
+          re='''\..+$''',
+          replace=''),
+        filename=basename(
+          path=Filename),
+        data=EncodeFile(
+          Filename=Path)))
 
   -- Call AttachFile() for each file in Files that exist. Files must be an array
   -- of dicts with the members "Path" and an optional "Filename", which is used
   -- to replace the attachment filename. Useful for temporary files:
-  LET AttachFiles(Files) = array(_={
-     SELECT AttachFile(
-       Path=Path,
-       Filename=get(field='Filename', default= Path)) AS Part
-     FROM foreach(row=Files)
-     WHERE (stat(filename=Path).OSPath
+  LET AttachFiles(Files) = SELECT AttachFile(Path=Path,
+                                             Filename=
+                                               get(field='Filename',
+                                                   default=
+                                                     Path)) AS Part
+    FROM foreach(row=Files)
+    WHERE (stat(filename=Path).OSPath
        AND log(message="Attaching %v", args=Path, dedup=-1, level='INFO')) OR NOT
-           log(message="Fail to attach %v", args=Path, dedup=-1, level='WARN')
-  })
+      log(
+        message="Fail to attach %v",
+        args=Path,
+        dedup=-1,
+        level='WARN')
 
 sources:
 - query: |
-    LET Texts &lt;= WrapAlternative(Plain=WrapText(
+    LET Texts <= WrapAlternative(Plain=WrapText(
                                    Value=PlainTextMessage,
                                    Type='plain',
                                    Encode=EncodeText),
@@ -169,14 +195,14 @@ sources:
                                                Type='html',
                                                Encode=EncodeText))
 
-    LET Texts &lt;= if(condition=Texts, then=[Texts], else=[])
+    LET Texts <= if(condition=Texts, then=[Texts], else=[])
 
-    LET Boundary &lt;= RandomString
+    LET Boundary <= RandomString
 
-    LET Headers &lt;= dict(`Content-Type`='multipart/mixed; boundary=' + Boundary)
+    LET Headers <= dict(`Content-Type`='multipart/mixed; boundary=' + Boundary)
 
     -- Build the email parts - first the text message, then the attachments.
-    LET Message &lt;= WrapInBoundary(Header="",
+    LET Message <= WrapInBoundary(
         Boundary=Boundary,
         Sections=Texts + AttachFiles(Files=FilesToUpload).Part)
 
@@ -188,7 +214,6 @@ sources:
                 subject=Subject,
                 headers=Headers,
                 `body`=Message) AS Mail
-    FROM scope()
+    FROM scope()````
 
-</code></pre>
 

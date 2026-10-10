@@ -1,31 +1,39 @@
 ---
 title: Generic.Client.DiskUsage
+description: "Computes disk usage per directory recursively, similar to the `du`\ncommand."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact reports the amount of space used by each directory
-recursively (Similar to the `du` command).
+Computes disk usage per directory recursively, similar to the `du`
+command.
 
-Unlike the `du` command, this artifact can filter only certain file
-name patterns.
+Unlike the `du` command, this artifact can filter targets using glob
+patterns.
 
 If you change the `TopLevelDirectory` to the drive letter
-(e.g. `C:\\`) it may take a while to complete as it will need to
+(e.g. `C:\\`) it may take a long time to complete as it will need to
 examine every file on the drive.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Client.DiskUsage
 description: |
-  This artifact reports the amount of space used by each directory
-  recursively (Similar to the `du` command).
+  Computes disk usage per directory recursively, similar to the `du`
+  command.
 
-  Unlike the `du` command, this artifact can filter only certain file
-  name patterns.
+  Unlike the `du` command, this artifact can filter targets using glob
+  patterns.
 
   If you change the `TopLevelDirectory` to the drive letter
-  (e.g. `C:\\`) it may take a while to complete as it will need to
+  (e.g. `C:\\`) it may take a long time to complete as it will need to
   examine every file on the drive.
 
 parameters:
@@ -43,7 +51,7 @@ parameters:
 
 sources:
   - query: |
-      LET Res &lt;= dict()
+      LET Res <= dict()
 
       LET _DirInfo(DirPath) = SELECT DirPath, Size, sum(item=Size) AS TotalSize
       FROM chain(a={
@@ -66,13 +74,13 @@ sources:
 
       -- Recurse into the TopLevelDirectory and rely on the set()
       -- above to store the results.
-      LET _ &lt;= SELECT * FROM DirInfo(DirPath=TopLevelDirectory)
+      LET _ <= SELECT * FROM DirInfo(DirPath=TopLevelDirectory)
 
       SELECT *, humanize(bytes=TotalSize) AS TotalSizeHuman
       FROM foreach(row={
         SELECT * FROM items(item=Res)
       }, column="_value")
       ORDER BY TotalSize DESC
+````
 
-</code></pre>
 

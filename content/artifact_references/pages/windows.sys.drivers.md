@@ -1,18 +1,28 @@
 ---
 title: Windows.Sys.Drivers
+description: "Enumerates running Windows device drivers with optional authenticode signature checking."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Details for in-use Windows device drivers. This does not display
-installed but unused drivers.
+Enumerates running Windows device drivers with optional authenticode signature checking.
+
+This does not display installed-but-unused drivers.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Sys.Drivers
 description: |
-  Details for in-use Windows device drivers. This does not display
-  installed but unused drivers.
+  Enumerates running Windows device drivers with optional authenticode signature checking.
+
+  This does not display installed-but-unused drivers.
 
 precondition:
       SELECT OS From info() where OS = 'windows'
@@ -63,6 +73,6 @@ sources:
           FROM source(artifact="Windows.Sys.Drivers/RunningDrivers")
           WHERE NOT Issuer =~ "Microsoft"
           GROUP BY Issuer
+````
 
-</code></pre>
 

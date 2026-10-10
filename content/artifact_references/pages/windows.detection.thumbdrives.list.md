@@ -1,8 +1,17 @@
 ---
 title: Windows.Detection.Thumbdrives.List
+description: "Watches for removable drive insertion and enumerates all new files\non them."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
+
+Watches for removable drive insertion and enumerates all new files
+on them.
 
 Users inserting Thumb drives or other Removable drive pose a
 constant security risk. The external drive may contain malware or
@@ -18,9 +27,14 @@ We exclude very large removable drives since they might have too
 many files.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.Thumbdrives.List
 description: |
+  Watches for removable drive insertion and enumerates all new files
+  on them.
+
   Users inserting Thumb drives or other Removable drive pose a
   constant security risk. The external drive may contain malware or
   other undesirable content. Additionally thumb drives are an easy way
@@ -48,7 +62,7 @@ sources:
         LET removable_disks = SELECT Name AS Drive,
             atoi(string=Data.Size) AS Size
         FROM glob(globs="/*", accessor="file")
-        WHERE Data.Description =~ "Removable" AND Size &lt; atoi(string=maxDriveSize)
+        WHERE Data.Description =~ "Removable" AND Size < atoi(string=maxDriveSize)
 
         LET file_listing = SELECT OSPath,
             Mtime As Modified,
@@ -65,6 +79,6 @@ sources:
           key="OSPath",
           period=10)
           WHERE Diff = "added"
+````
 
-</code></pre>
 

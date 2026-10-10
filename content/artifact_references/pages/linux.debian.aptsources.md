@@ -1,10 +1,17 @@
 ---
 title: Linux.Debian.AptSources
+description: "Extracts package repository configuration from Debian-based systems\nby parsing apt sources."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Parse Debian apt sources.
+Extracts package repository configuration from Debian-based systems
+by parsing apt sources.
 
 This Artifact searches for all apt sources files and parses all
 fields in both one–line `*.list` files and `*.sources` files
@@ -81,10 +88,13 @@ metadata. The modification timestamps may tell when the package
 lists where last updated.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Debian.AptSources
 description: |
-  Parse Debian apt sources.
+  Extracts package repository configuration from Debian-based systems
+  by parsing apt sources.
 
   This Artifact searches for all apt sources files and parses all
   fields in both one–line `*.list` files and `*.sources` files
@@ -220,7 +230,7 @@ export: |
            the -/+ operator is captured in Op: */
         LET OptStringToKeyValues__(string) = SELECT *
             FROM parse_records_with_regex(
-                regex='''(?P&lt;Key&gt;[^ ]+?)(?P&lt;Op&gt;-|\+)?=(?P&lt;Value&gt;[^ ]+)''',
+                regex='''(?P<Key>[^ ]+?)(?P<Op>-|\+)?=(?P<Value>[^ ]+)''',
                 accessor='data', file=string
         )
 
@@ -253,9 +263,9 @@ export: |
 
         /* Convert a string of key–value pairs to a dict, and use consistent
            option names: */
-        LET OptStringToDict(string, flatten) = to_dict(item={
+        LET OptStringToDict(string, should_flatten) = to_dict(item={
             SELECT NormaliseOpts(string=Key)+OpName(op=Op) AS _key,
-                if(condition=flatten, then=Value,
+                if(condition=should_flatten, then=Value,
                     else=join(array=Value, sep=' ')) AS _value
             FROM OptStringToKeyValues(string=string)
         })
@@ -274,16 +284,17 @@ export: |
                    is not expected to be found in the wild. The exception is
                    "cdrom:[word word…]", which is capture correctly in order
                    to not end up with incorrectly captured words: */
-                regex='''(?m)^\s*(?P&lt;Type&gt;deb(-src)?)(?:\s+\[(?P&lt;Options&gt;[^\]#]+)(?:#[^\]]+)?\])?\s+"?(?P&lt;URI&gt;(?P&lt;Transport&gt;[^:]+):(?://)?(?P&lt;URIBase&gt;\[.+?\]|\S+?))"?\s+(?P&lt;Suite&gt;\S+)\s+(?P&lt;Components&gt;[^\n#]+)'''
+                regex='''(?m)^\s*(?P<Type>deb(-src)?)(?:\s+\[(?P<Options>[^\]#]+)(?:#[^\]]+)?\])?\s+"?(?P<URI>(?P<Transport>[^:]+):(?://)?(?P<URIBase>\[.+?\]|\S+?))"?\s+(?P<Suite>\S+)\s+(?P<Components>[^\n#]+)'''
             )
 
         /* Parse a one-line deb sources.list file and output a dict: */
-        LET DebOneLine_Dict(OSPath, flatten) = SELECT OSPath, *
+        LET DebOneLine_Dict(OSPath, should_flatten) = SELECT OSPath, *
             FROM foreach(row=DebOneLine_Opts(OSPath=OSPath),
                 query={SELECT _value +
-                        OptStringToDict(string=Options, flatten=flatten) AS Contents
+                        OptStringToDict(string=Options,
+                                        should_flatten=should_flatten) AS Contents
                     FROM items(item={SELECT Types, URIs, _Transport, _URIBase, Suites,
-                        if(condition=flatten, then=split(sep_string=' ',
+                        if(condition=should_flatten, then=split(sep_string=' ',
                             string=Components), else=Components) AS Components
                         FROM scope()
                     })
@@ -291,7 +302,7 @@ export: |
 
         /* Parse a one-line deb sources.list file with options in individual columns: */
         LET DebOneLine(OSPath) = SELECT OSPath, * FROM foreach(
-            row=DebOneLine_Dict(OSPath=OSPath, flatten=false),
+            row=DebOneLine_Dict(OSPath=OSPath, should_flatten=false),
             column='Contents'
         )
 
@@ -299,14 +310,14 @@ export: |
            columns and flatten: */
         LET DebOneLine_Flattened(OSPath) = SELECT OSPath, * FROM flatten(
             query={SELECT * FROM foreach(
-                row=DebOneLine_Dict(OSPath=OSPath, flatten=true),
+                row=DebOneLine_Dict(OSPath=OSPath, should_flatten=true),
                 column='Contents'
                 )
             })
 
         /* Extract the transport/protocol and base from a URI: */
         LET URIComponents(URI) = parse_string_with_regex(
-            regex='''(?P&lt;Transport&gt;[^:]+):(?://)?(?P&lt;URIBase&gt;[^\s]+)''',
+            regex='''(?P<Transport>[^:]+):(?://)?(?P<URIBase>[^\s]+)''',
             string=URI
         )
 
@@ -354,7 +365,7 @@ export: |
                    Values can continue on several lines, but only if the following
                    lines are indented with whitespace
                 */
-                regex='''(?m)^(?P&lt;Key&gt;[^#:\s]+)\s*:[^\S\n]*(?P&lt;Value&gt;[^\n]*(?:\n[^\S\n]+[^\n]+)*)''',
+                regex='''(?m)^(?P<Key>[^#:\s]+)\s*:[^\S\n]*(?P<Value>[^\n]*(?:\n[^\S\n]+[^\n]+)*)''',
                 /* Before parsing the key–values, remove all comments from the file
                    (otherwise forming a regex without lookarounds would be very
                    difficult, if not impossible), Luckily, comments follow strict
@@ -377,10 +388,10 @@ export: |
 
         /* Parse a deb822 sources file section into a dict with consistent option
            names: */
-        LET Deb822_KeyValues(section, flatten) = SELECT to_dict(
+        LET Deb822_KeyValues(section, should_flatten) = SELECT to_dict(
             item={
                 SELECT NormaliseOpts(string=Key) as _key,
-                    if(condition=flatten, then=Value,
+                    if(condition=should_flatten, then=Value,
                         else=join(array=Value, sep=' ')) AS _value
                 FROM Deb822_KeyValues_(section=section)
             }) AS Contents
@@ -399,7 +410,7 @@ export: |
             row=Deb822Sections(OSPath=OSPath),
             query={SELECT OSPath, * FROM flatten(query={
                 SELECT * FROM foreach(
-                    row=Deb822_KeyValues(section=Section, flatten=true),
+                    row=Deb822_KeyValues(section=Section, should_flatten=true),
                     column='Contents'
                 )
             })}
@@ -415,7 +426,7 @@ export: |
         LET Deb822(OSPath) = SELECT * FROM foreach(
             row=Deb822Sections(OSPath=OSPath),
             query={SELECT OSPath, * FROM foreach(
-                row=Deb822_KeyValues(section=Section, flatten=false),
+                row=Deb822_KeyValues(section=Section, should_flatten=false),
                 column='Contents'
             )}
         )
@@ -429,13 +440,13 @@ export: |
         })
 
         /* Parse an apt sources/list file */
-        LET parse_aptsources(OSPath, flatten) = if(
+        LET parse_aptsources(OSPath, should_flatten) = if(
             condition=OSPath=~'.list$',
-            then=if(condition=flatten,
+            then=if(condition=should_flatten,
                 then=DebOneLine_Flattened(OSPath=OSPath),
                 else=DebOneLine(OSPath=OSPath)
             ),
-            else=if(condition=flatten,
+            else=if(condition=should_flatten,
                 then=Deb822_Flattened(OSPath=OSPath),
                 else=Deb822(OSPath=OSPath)
             )
@@ -445,7 +456,7 @@ export: |
            globs=linuxAptSourcesGlobs.ListGlobs)
 
         LET deb_sources = SELECT * FROM foreach(row=files,
-            query={SELECT * FROM parse_aptsources(OSPath=OSPath, flatten=true)}
+            query={SELECT * FROM parse_aptsources(OSPath=OSPath, should_flatten=true)}
         )
 
 parameters:
@@ -469,7 +480,7 @@ sources:
     query: |
         /* Output sources in a readable format: */
         SELECT * FROM foreach(row=files,
-            query={SELECT * FROM parse_aptsources(OSPath=OSPath, flatten=false)}
+            query={SELECT * FROM parse_aptsources(OSPath=OSPath, should_flatten=false)}
         )
     notebook:
       - type: vql_suggestion
@@ -536,12 +547,12 @@ sources:
                 string=regex_replace(source=Record,
                     re='(?m)^Version: GnuPG v.+$', replace=''
                 ),
-                regex=["Codename: (?P&lt;Release&gt;[^\\n]+)",
-                       "Version: (?P&lt;Version&gt;[^\\n]+)",
-                       "Origin: (?P&lt;Origin&gt;[^\\n]+)",
-                       "Architectures: (?P&lt;Architectures&gt;[^\\n]+)",
-                       "Components: (?P&lt;Components&gt;[^\\n]+)"]) as Record
-           FROM parse_records_with_regex(file=file, regex="(?sm)(?P&lt;Record&gt;.+)")
+                regex=["Codename: (?P<Release>[^\\n]+)",
+                       "Version: (?P<Version>[^\\n]+)",
+                       "Origin: (?P<Origin>[^\\n]+)",
+                       "Architectures: (?P<Architectures>[^\\n]+)",
+                       "Components: (?P<Components>[^\\n]+)"]) as Record
+           FROM parse_records_with_regex(file=file, regex="(?sm)(?P<Record>.+)")
 
          // Foreach row in the parsed cache file, collect the FileInfo too.
          LET add_stat_to_parsed_cache_file(file) = SELECT * from foreach(
@@ -583,6 +594,6 @@ sources:
              query={
                 SELECT * FROM parse_cache_or_pass
               })
+````
 
-</code></pre>
 

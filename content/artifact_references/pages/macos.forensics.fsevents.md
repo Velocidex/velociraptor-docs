@@ -1,19 +1,26 @@
 ---
 title: MacOS.Forensics.FSEvents
+description: "Reads macOS FSEvents logs to enumerate file creation, deletion,\nrename, and modification events."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact parses the FSEvents log files.
+Reads macOS FSEvents logs to enumerate file creation, deletion,
+rename, and modification events.
 
-We can filter on Path, Flags or use time box on source file.
+OPtionally filter on Path, Flags or use time box on source file.
 
-An interesting hunt may be filter for Entries of plist files modified or
-created on a specific date. Malware often creates plist files in
-/Library/LaunchAgents, Library/Preferences, /Library/LaunchDaemons, or
-/Library/Internet Plugins.
+An interesting hunt may filter for Entries of plist files modified
+or created on a specific date. Malware often creates plist files in
+`/Library/LaunchAgents`, `Library/Preferences`,
+`/Library/LaunchDaemons`, or `/Library/Internet Plugins`.
 
-#### NOTES
+**NOTES**
 
 - FSEvents do not have timestamps so we specify source file Mtime and
   Btime.
@@ -21,24 +28,27 @@ created on a specific date. Malware often creates plist files in
   increase it to allow the collection to finish.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: MacOS.Forensics.FSEvents
 description: |
-   This artifact parses the FSEvents log files.
+  Reads macOS FSEvents logs to enumerate file creation, deletion,
+  rename, and modification events.
 
-   We can filter on Path, Flags or use time box on source file.
+  OPtionally filter on Path, Flags or use time box on source file.
 
-   An interesting hunt may be filter for Entries of plist files modified or
-   created on a specific date. Malware often creates plist files in
-   /Library/LaunchAgents, Library/Preferences, /Library/LaunchDaemons, or
-   /Library/Internet Plugins.
+  An interesting hunt may filter for Entries of plist files modified
+  or created on a specific date. Malware often creates plist files in
+  `/Library/LaunchAgents`, `Library/Preferences`,
+  `/Library/LaunchDaemons`, or `/Library/Internet Plugins`.
 
-   #### NOTES
+  **NOTES**
 
-   - FSEvents do not have timestamps so we specify source file Mtime and
-     Btime.
-   - The default timeout is only 600 seconds - you will probably need to
-     increase it to allow the collection to finish.
+  - FSEvents do not have timestamps so we specify source file Mtime and
+    Btime.
+  - The default timeout is only 600 seconds - you will probably need to
+    increase it to allow the collection to finish.
 
 author: |
   Mike Cohen, Matt Green - @mgreen27, Yogesh Khatri (@swiftforensics), CyberCX
@@ -67,6 +77,10 @@ parameters:
      description: Filter by flags
      type: regex
      default: .
+   - name: MaxFileSize
+     type: int
+     default: "10000000"
+     description: "Read up to that many bytes"
    - name: DateAfter
      type: timestamp
      description: "search for source files with Btime after this date. YYYY-MM-DDTmm:hh:ssZ"
@@ -82,7 +96,7 @@ export: |
          count: 10000,
       }],
     ]],
-    ["Header", "x=&gt;x.Info.StreamSize", [
+    ["Header", "x=>x.Info.StreamSize", [
       ["Version", 0, "Enumeration", {
          type: "unsigned int",
          choices: {
@@ -92,7 +106,7 @@ export: |
          }
       }],
       ["Info", 8, "Union", {
-         selector: "x=&gt;x.Version",
+         selector: "x=>x.Version",
          choices: {
              "V1": "FS1",
              "V2": "FS2",
@@ -100,37 +114,37 @@ export: |
          }
       }],
     ]],
-    ["FS1", "x=&gt;x.StreamSize - 8", [
+    ["FS1", "x=>x.StreamSize - 8", [
       ["StreamSize", 0, uint32],
       ["Items", 4, "Array", {
           count: 10000,
           max_count: 10000,
           type: FSEventEntry1,
-          sentinel: "x=&gt;this.EndOf &lt; x.EndOf",
+          sentinel: "x=>this.EndOf < x.EndOf",
       }],
     ]],
-    ["FS2", "x=&gt;x.StreamSize - 8", [
+    ["FS2", "x=>x.StreamSize - 8", [
       ["StreamSize", 0, uint32],
       ["Items", 4, "Array", {
           count: 10000,
           max_count: 10000,
           type: FSEventEntry2,
-          sentinel: "x=&gt;this.EndOf &lt; x.EndOf",
+          sentinel: "x=>this.EndOf < x.EndOf",
       }],
     ]],
-    ["FS3", "x=&gt;x.StreamSize - 8", [
+    ["FS3", "x=>x.StreamSize - 8", [
       ["StreamSize", 0, uint32],
       ["Items", 4, "Array", {
           count: 10000,
           max_count: 2336,
           type: FSEventEntry3,
-          sentinel: "x=&gt;this.EndOf &lt; x.EndOf",
+          sentinel: "x=>this.EndOf < x.EndOf",
       }],
     ]],
-    ["FSEventEntry1", "x=&gt;len(list=x.path) + 13", [
+    ["FSEventEntry1", "x=>len(list=x.path) + 13", [
       ["path", 0, "String"],
-      ["id", "x=&gt;len(list=x.path) + 1", "uint64"],
-      ["flags", "x=&gt;len(list=x.path) + 9", "Flags", {
+      ["id", "x=>len(list=x.path) + 1", "uint64"],
+      ["flags", "x=>len(list=x.path) + 9", "Flags", {
           type: "uint32",
           bitmap: {
             FSE_CREATE_FILE: 0,
@@ -163,10 +177,10 @@ export: |
       }],
       ["file_id", 0, "Value", {"value": ""}],
     ]],
-    ["FSEventEntry2", "x=&gt;len(list=x.path) + 21", [
+    ["FSEventEntry2", "x=>len(list=x.path) + 21", [
       ["path", 0, "String"],
-      ["id", "x=&gt;len(list=x.path) + 1", "uint64"],
-      ["flags", "x=&gt;len(list=x.path) + 9", "Flags", {
+      ["id", "x=>len(list=x.path) + 1", "uint64"],
+      ["flags", "x=>len(list=x.path) + 9", "Flags", {
           type: "uint32",
           bitmap: {
             FSE_CREATE_FILE: 0,
@@ -197,12 +211,12 @@ export: |
             EndOfTransaction: 29
           }
       }],
-      ["file_id", "x=&gt;len(list=x.path) + 13", "int64"],
+      ["file_id", "x=>len(list=x.path) + 13", "int64"],
     ]],
-    ["FSEventEntry3", "x=&gt;len(list=x.path) + 25", [
+    ["FSEventEntry3", "x=>len(list=x.path) + 25", [
       ["path", 0, "String"],
-      ["id", "x=&gt;len(list=x.path) + 1", "uint64"],
-      ["flags", "x=&gt;len(list=x.path) + 9", "Flags", {
+      ["id", "x=>len(list=x.path) + 1", "uint64"],
+      ["flags", "x=>len(list=x.path) + 9", "Flags", {
           type: "uint32",
           bitmap: {
             FSE_CREATE_FILE: 0,
@@ -233,8 +247,8 @@ export: |
             EndOfTransaction: 29
           }
       }],
-      ["file_id", "x=&gt;len(list=x.path) + 13", "int64"],
-      ["unknown_id", "x=&gt;len(list=x.path) + 21", "int32"],
+      ["file_id", "x=>len(list=x.path) + 13", "int64"],
+      ["unknown_id", "x=>len(list=x.path) + 21", "int32"],
     ]],
     ]'''
 
@@ -242,8 +256,8 @@ sources:
   - query: |
       LET files = SELECT OSPath, Mtime, Btime
         FROM glob(globs=(Glob || GlobTable.Glob))
-        WHERE   if(condition=DateAfter, then= Btime &gt; DateAfter, else= True )
-            AND if(condition=DateBefore, then= Mtime &lt; DateBefore, else= True )
+        WHERE   if(condition=DateAfter, then= Btime > DateAfter, else= True )
+            AND if(condition=DateBefore, then= Mtime < DateBefore, else= True )
             AND log(message=OSPath)
 
       LET x = SELECT * FROM foreach(row=files,
@@ -256,11 +270,10 @@ sources:
                 Btime as SourceBtime
             FROM
                 foreach(row=parse_binary(
-                    filename=read_file(filename=OSPath, accessor="gzip", length=1000000),
+                    filename=read_file(filename=OSPath, accessor="gzip", length=MaxFileSize),
                     accessor="data",
                     profile=FSEventProfile, struct="FSEventsProfile").Entries)
         })
-        WHERE EntryPath =~ PathRegex AND EntryFlags =~ FlagsRegex
 
       SELECT
         items.path as EntryPath,
@@ -273,6 +286,7 @@ sources:
         Version
       FROM
         flatten(query=x)
+      WHERE EntryPath =~ PathRegex AND EntryFlags =~ FlagsRegex
+````
 
-</code></pre>
 

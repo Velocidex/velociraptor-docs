@@ -1,32 +1,46 @@
 ---
 title: Generic.Forensic.LocalHashes.Query
+description: "Searches the local SQLite hash database for files matching a\nuser-supplied hash list."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact maintains a local (client side) database of file
-hashes. It is then possible to query this database by using the
-Generic.Forensic.LocalHashes.Query artifact.
+Searches the local SQLite hash database for files matching a
+user-supplied hash list.
 
-NOTE: This artifact expects a CSV file with one hash per line. On
-the command line you can encode carriage return by using PowerShell
-like this:
+The artifact `Generic.Forensic.LocalHashes.Glob` maintains a local
+(client side) database of file hashes. It is then possible to query
+this database using this artifact.
+
+NOTE: The `Hashes` parameter expects a CSV file with one hash per
+line. If you are running it via the CLI using PowerShell, you can
+encode carriage returns like this:
 
 ```
 .\velociraptor.exe -v artifacts collect Generic.Forensic.LocalHashes.Query --args "Hashes=Hash`ne6c1ce56e6729a0b077c0f2384726b30"
 ```
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Forensic.LocalHashes.Query
 description: |
-  This artifact maintains a local (client side) database of file
-  hashes. It is then possible to query this database by using the
-  Generic.Forensic.LocalHashes.Query artifact.
+  Searches the local SQLite hash database for files matching a
+  user-supplied hash list.
 
-  NOTE: This artifact expects a CSV file with one hash per line. On
-  the command line you can encode carriage return by using PowerShell
-  like this:
+  The artifact `Generic.Forensic.LocalHashes.Glob` maintains a local
+  (client side) database of file hashes. It is then possible to query
+  this database using this artifact.
+
+  NOTE: The `Hashes` parameter expects a CSV file with one hash per
+  line. If you are running it via the CLI using PowerShell, you can
+  encode carriage returns like this:
 
   ```
   .\velociraptor.exe -v artifacts collect Generic.Forensic.LocalHashes.Query --args "Hashes=Hash`ne6c1ce56e6729a0b077c0f2384726b30"
@@ -50,7 +64,7 @@ parameters:
 
 sources:
   - query: |
-      LET hash_db &lt;= SELECT OSPath
+      LET hash_db <= SELECT OSPath
       FROM Artifact.Generic.Forensic.LocalHashes.Init(HashDb=HashDb)
 
       -- Check hashes from the CSV or comma delimited input
@@ -73,6 +87,6 @@ sources:
                      query="SELECT path, md5, size, timestamp AS time FROM hashes WHERE md5 = ?",
                      args=Hash)
       })
+````
 
-</code></pre>
 

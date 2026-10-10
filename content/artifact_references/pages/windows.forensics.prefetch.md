@@ -1,20 +1,30 @@
 ---
 title: Windows.Forensics.Prefetch
+description: "Parses Windows prefetch (.pf) files to extract executable execution\nhistory and run counts."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
+
+Parses Windows prefetch (.pf) files to extract executable execution
+history and run counts.
 
 Windows keeps a cache of prefetch files. When an executable is run,
 the system records properties about the executable to make it faster
 to run next time. By parsing this information we are able to
 determine when binaries are run in the past. On Windows10 we can see
-the last 8 execution times and creation time (9 potential executions).
+the last 8 execution times and creation time (9 potential
+executions).
 
 There are several parameters available for this artifact.
-  - dateAfter enables search for prefetch evidence after this date.
-  - dateBefore enables search for prefetch evidence before this date.
-  - binaryRegex enables to filter on binary name, e.g evil.exe.
-  - hashRegex enables to filter on prefetch hash.
+- dateAfter enables search for prefetch evidence after this date.
+- dateBefore enables search for prefetch evidence before this date.
+- binaryRegex enables to filter on binary name, e.g evil.exe.
+- hashRegex enables to filter on prefetch hash.
 
 NOTE: The Prefetch file format is described extensively in libscca
 and painstakingly reversed by Joachim Metz (Shouts and Thank
@@ -22,20 +32,26 @@ you!). Thanks to https://github.com/secDre4mer for additional
 information.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.Prefetch
 description: |
+  Parses Windows prefetch (.pf) files to extract executable execution
+  history and run counts.
+  
   Windows keeps a cache of prefetch files. When an executable is run,
   the system records properties about the executable to make it faster
   to run next time. By parsing this information we are able to
   determine when binaries are run in the past. On Windows10 we can see
-  the last 8 execution times and creation time (9 potential executions).
+  the last 8 execution times and creation time (9 potential
+  executions).
 
   There are several parameters available for this artifact.
-    - dateAfter enables search for prefetch evidence after this date.
-    - dateBefore enables search for prefetch evidence before this date.
-    - binaryRegex enables to filter on binary name, e.g evil.exe.
-    - hashRegex enables to filter on prefetch hash.
+  - dateAfter enables search for prefetch evidence after this date.
+  - dateBefore enables search for prefetch evidence before this date.
+  - binaryRegex enables to filter on binary name, e.g evil.exe.
+  - hashRegex enables to filter on prefetch hash.
 
   NOTE: The Prefetch file format is described extensively in libscca
   and painstakingly reversed by Joachim Metz (Shouts and Thank
@@ -71,12 +87,12 @@ export: |
           ["Signature", 0, "String", {"length": 3}],
           ["UncompressedSize", 4, "unsigned long"],
           ["Data", 8, String, {
-              length: "x=&gt;x.UncompressedSize",
+              length: "x=>x.UncompressedSize",
               term: "",
               max_length: 10000000,
           }],
           ["Decompressed", 0, "Value", {
-              value: "x=&gt;lzxpress_decompress(data=x.Data)"
+              value: "x=>lzxpress_decompress(data=x.Data)"
           }],
         ]],
         ["SCCAHeader", 84, [
@@ -99,7 +115,7 @@ export: |
 
          # Hash is followed by a version specific info struct.
          ["Info", 84, "Union", {
-             selector: "x=&gt;x.Version",
+             selector: "x=>x.Version",
              choices: {
                  "WinXP (17)": "FileInformationWinXP",
                  "Vista (23)": "FileInformationVista",
@@ -130,13 +146,13 @@ export: |
          ["RunCount", 60, "unsigned long"],
 
          # Metrics offset is absolute.
-         ["Metrics", "x=&gt;x.__FileMetricsOffset - x.StartOf", "Array", {
+         ["Metrics", "x=>x.__FileMetricsOffset - x.StartOf", "Array", {
              type: "FileMetricsEntryV17",
-             count: "x=&gt;x.__NumberOfFileMetrics",
+             count: "x=>x.__NumberOfFileMetrics",
          }],
-         ["VolumeInfo", "x=&gt;x.__VolumesInformationOffset - x.StartOf", "Array", {
+         ["VolumeInfo", "x=>x.__VolumesInformationOffset - x.StartOf", "Array", {
              type: "VolumeInformation",
-             count: "x=&gt;x.__NumberOfVolumes",
+             count: "x=>x.__NumberOfVolumes",
           }],
         ]],
 
@@ -160,13 +176,13 @@ export: |
          ["RunCount", 68, "unsigned long"],
 
          # Metrics offset is absolute.
-         ["Metrics", "x=&gt;x.__FileMetricsOffset - x.StartOf", "Array", {
+         ["Metrics", "x=>x.__FileMetricsOffset - x.StartOf", "Array", {
              type: "FileMetricsEntryV23",
-             count: "x=&gt;x.__NumberOfFileMetrics",
+             count: "x=>x.__NumberOfFileMetrics",
          }],
-         ["VolumeInfo", "x=&gt;x.__VolumesInformationOffset - x.StartOf", "Array", {
+         ["VolumeInfo", "x=>x.__VolumesInformationOffset - x.StartOf", "Array", {
              type: "VolumeInformation",
-             count: "x=&gt;x.__NumberOfVolumes",
+             count: "x=>x.__NumberOfVolumes",
           }],
         ]],
 
@@ -191,13 +207,13 @@ export: |
          ["RunCount", 124, "unsigned long"],
 
          # Metrics offset is absolute.
-         ["Metrics", "x=&gt;x.__FileMetricsOffset - x.StartOf", "Array", {
+         ["Metrics", "x=>x.__FileMetricsOffset - x.StartOf", "Array", {
              type: "FileMetricsEntryV23",
-             count: "x=&gt;x.__NumberOfFileMetrics",
+             count: "x=>x.__NumberOfFileMetrics",
          }],
-         ["VolumeInfo", "x=&gt;x.__VolumesInformationOffset - x.StartOf", "Array", {
+         ["VolumeInfo", "x=>x.__VolumesInformationOffset - x.StartOf", "Array", {
              type: "VolumeInformation",
-             count: "x=&gt;x.__NumberOfVolumes",
+             count: "x=>x.__NumberOfVolumes",
           }],
         ]],
 
@@ -220,23 +236,23 @@ export: |
          ["__RunCountPre", 120, "unsigned long"],
          ["__RunCount2", 116, "unsigned long"],
          ["RunCount", 0, Value, {
-            value: "x=&gt;if(condition=x.__RunCountPre=0, then=x.__RunCount1, else=x.__RunCount2)",
+            value: "x=>if(condition=x.__RunCountPre=0, then=x.__RunCount1, else=x.__RunCount2)",
          }],
-         ["ExecutablePath", "x=&gt;x.__ExecutablePathOffset - x.OffsetOf", String, {
-            length: "x=&gt;x.__ExecutablePathSize * 2",
+         ["ExecutablePath", "x=>x.__ExecutablePathOffset - x.OffsetOf", String, {
+            length: "x=>x.__ExecutablePathSize * 2",
             encoding: "utf16",
          }],
          ["__ExecutablePathOffset", 128, "unsigned long"],
          ["__ExecutablePathSize", 132, "unsigned long"],
 
          # Metrics offset is absolute.
-         ["Metrics", "x=&gt;x.__FileMetricsOffset - x.StartOf", "Array", {
+         ["Metrics", "x=>x.__FileMetricsOffset - x.StartOf", "Array", {
              type: "FileMetricsEntryV30",
-             count: "x=&gt;x.__NumberOfFileMetrics",
+             count: "x=>x.__NumberOfFileMetrics",
          }],
-         ["VolumeInfo", "x=&gt;x.__VolumesInformationOffset - x.StartOf", "Array", {
+         ["VolumeInfo", "x=>x.__VolumesInformationOffset - x.StartOf", "Array", {
              type: "VolumeInformation",
-             count: "x=&gt;x.__NumberOfVolumes",
+             count: "x=>x.__NumberOfVolumes",
           }],
         ]],
 
@@ -249,7 +265,7 @@ export: |
           ["__FilenameOffset", 8, "unsigned long"],
            ["__FilenameLength", 12, "unsigned long"],
            ["Filename", 0, "Profile", {
-               offset: "x=&gt;x.ParentOf.__FilenameOffset + x.__FilenameOffset",
+               offset: "x=>x.ParentOf.__FilenameOffset + x.__FilenameOffset",
                type: "String",
                type_options: {
                    encoding: "utf16",
@@ -264,7 +280,7 @@ export: |
           ["__FilenameLength", 16, "unsigned long"],
           ["__MFTFileReference", 24, "unsigned long"],
           ["Filename", 0, "Profile", {
-               offset: "x=&gt;x.ParentOf.__FilenameOffset + x.__FilenameOffset",
+               offset: "x=>x.ParentOf.__FilenameOffset + x.__FilenameOffset",
                type: "String",
                type_options: {
                    encoding: "utf16",
@@ -278,7 +294,7 @@ export: |
            ["__FilenameLength", 16, "unsigned long"],
            ["__MFTFileReference", 24, "unsigned long"],
            ["Filename", 0, "Profile", {
-               offset: "x=&gt;x.ParentOf.__FilenameOffset + x.__FilenameOffset",
+               offset: "x=>x.ParentOf.__FilenameOffset + x.__FilenameOffset",
                type: "String",
                type_options: {
                    encoding: "utf16",
@@ -289,33 +305,33 @@ export: |
 
         ["VolumeInformation", 40, [
           ["__DeviceOffset", 0, "unsigned long"],
-          ["DeviceName", "x=&gt;x.__DeviceOffset", "String", {
+          ["DeviceName", "x=>x.__DeviceOffset", "String", {
               encoding: utf16,
-              length: "x=&gt;x.__DeviceSize * 2",
+              length: "x=>x.__DeviceSize * 2",
           }],
           ["__DeviceSize", 4, "unsigned long"],
           ["DeviceCreationTime", 8, "WinFileTime"],
-          ["VolumeSerialNumber", 12, "unsigned long"],
+          ["VolumeSerialNumber", 16, "unsigned long"],
           ["VolumeSerialNumberHex", 0, Value, {
-              value: "x=&gt;format(format='%#x', args=x.VolumeSerialNumber)",
+              value: "x=>format(format='%#x', args=x.VolumeSerialNumber)",
           }],
           ["__FileReferenceOffset", 20, "unsigned long"],
           ["__FileReferenceDataSize", 24, "unsigned long"],
           ["__DirectoryStringsOffset", 28, "unsigned long"],
           ["__NumDirectoryStrings", 32, "unsigned long"],
-          ["__Directories", "x=&gt;x.__DirectoryStringsOffset", "Array", {
+          ["__Directories", "x=>x.__DirectoryStringsOffset", "Array", {
               type: "DirectoryName",
-              count: "x=&gt;x.__NumDirectoryStrings",
+              count: "x=>x.__NumDirectoryStrings",
           }],
           ["Directories", 0, Value, {
-              value: "x=&gt;x.__Directories.Name"
+              value: "x=>x.__Directories.Name"
           }],
         ]],
-        ["DirectoryName", "x=&gt;x.Size * 2 + 4", [
+        ["DirectoryName", "x=>x.Size * 2 + 4", [
           ["Size", 0, "uint8"],
           ["Name", 2, "String", {
               encoding: "utf16",
-              length: "x=&gt;x.Size * 2"
+              length: "x=>x.Size * 2"
           }]
         ]]
         ]
@@ -345,7 +361,7 @@ export: |
 
         // These functions help to resolve the Kernel Device Filenames
         // into a regular filename with drive letter.
-        LET DriveReplaceLookup &lt;= SELECT
+        LET DriveReplaceLookup <= SELECT
            split(sep_string="\\", string=Name)[-1] AS Drive,
            upcase(string=SymlinkTarget) AS Target,
            len(list=SymlinkTarget) AS Len
@@ -371,7 +387,7 @@ sources:
                   SCCAHeader.FileSize AS FileSize,
                   format(format="%#X", args=SCCAHeader.Hash) AS Hash,
                   SCCAHeader.Version AS Version,
-                  filter(list=SCCAHeader.Info.LastRunTimes.Date, condition="x=&gt;x.Unix &gt; 0") AS LastRunTimes,
+                  filter(list=SCCAHeader.Info.LastRunTimes.Date, condition="x=>x.Unix > 0") AS LastRunTimes,
                   SCCAHeader.Info.RunCount AS RunCount,
                   SCCAHeader.Info.ExecutablePath AS ExecutablePath,
                   DriveReplace(Path=SCCAHeader.Info.ExecutablePath) AS ExecutableDosPath,
@@ -397,9 +413,9 @@ sources:
                     FROM pf
                 })
             WHERE
-                if(condition=dateAfter, then=ExecutionTime &gt; timestamp(string=dateAfter),
+                if(condition=dateAfter, then=ExecutionTime > timestamp(string=dateAfter),
                     else=TRUE) AND
-                if(condition=dateBefore, then=ExecutionTime &lt; timestamp(string=dateBefore),
+                if(condition=dateBefore, then=ExecutionTime < timestamp(string=dateBefore),
                     else=TRUE)
         LET creationTimes = SELECT * FROM flatten(
                 query = {
@@ -407,12 +423,12 @@ sources:
                         OSPath as FilteredPath,
                         CreationTime as ExecutionTime
                     FROM pf
-                    WHERE RunCount &gt; 8
+                    WHERE RunCount > 8
                 })
             WHERE
-                if(condition=dateAfter, then=ExecutionTime &gt; timestamp(string=dateAfter),
+                if(condition=dateAfter, then=ExecutionTime > timestamp(string=dateAfter),
                     else=TRUE) AND
-                if(condition=dateBefore, then=ExecutionTime &lt; timestamp(string=dateBefore),
+                if(condition=dateBefore, then=ExecutionTime < timestamp(string=dateBefore),
                         else=TRUE)
             GROUP BY ExecutionTime
 
@@ -444,6 +460,6 @@ column_types:
     type: timestamp
   - name: ModificationTime
     type: timestamp
+````
 
-</code></pre>
 

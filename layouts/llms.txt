@@ -1,0 +1,52 @@
+{{- /*
+llms.txt: concise AI site index (https://llmstxt.org/).
+
+Override of the Hextra theme template (layouts/llms.txt) that adds an
+agent-guidance preamble: how to retrieve a single page as markdown and where
+to find the full corpus. The section tree that follows is the theme's.
+
+Pages/sections can opt out with "llms: false" front matter.
+*/ -}}
+# {{ .Site.Title }}
+
+> {{ site.Params.description | default "" }}
+
+How to use these docs as an AI agent:
+- Fetch a single page as raw markdown by appending ".md" to its URL
+  (for example /docs/install.md).
+- Fetch this index (concise, links + summaries) at /llms.txt.
+- Fetch the entire corpus in one file at /llms-full.txt (large; may exceed
+  a context window - prefer the .md pages for targeted retrieval).
+- Prefer the linked page for exact, current details over summaries here.
+
+{{ range where site.Sections "Params.llms" "ne" false }}
+{{- template "llms-section-tree" dict "context" . "level" 2 }}
+{{ end }}
+
+{{- $rootPages := where (where site.RegularPages "Section" "") "Params.llms" "ne" false }}
+{{- if $rootPages }}
+## Root Pages
+{{- range $rootPages }}
+- [{{ .Title }}]({{ .Permalink }}): {{ .Summary | plainify | truncate 100 | strings.TrimSpace }}{{ if .Date }} - Published {{ .Date.Format "2006-01-02" }}{{ end }}
+{{- end }}
+{{- end }}
+
+---
+Generated on {{ now.Format "2006-01-02 15:04:05 UTC" }}
+Site: {{ .Site.BaseURL }}
+
+{{- define "llms-section-tree" -}}
+{{- $context := .context -}}
+{{- $level := .level | default 2 -}}
+{{- $headerHashes := strings.Repeat $level "#" -}}
+{{- "\n" -}}
+{{ $headerHashes }} {{ $context.Title }}
+
+{{- range where $context.RegularPages "Params.llms" "ne" false }}
+- [{{ .Title }}]({{ .Permalink }}): {{ .Summary | plainify | truncate 100 | strings.TrimSpace }}{{ if .Date }} - Published {{ .Date.Format "2006-01-02" }}{{ end }}
+{{- end }}
+
+{{- range where $context.Sections "Params.llms" "ne" false }}
+{{ template "llms-section-tree" dict "context" . "level" (add $level 1) }}
+{{- end }}
+{{- end -}}

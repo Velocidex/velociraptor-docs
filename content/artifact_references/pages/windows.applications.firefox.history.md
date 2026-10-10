@@ -1,27 +1,34 @@
 ---
 title: Windows.Applications.Firefox.History
+description: "Queries Firefox `places.sqlite` files to extract browsing history."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Enumerate the users Firefox history.
+Queries Firefox `places.sqlite` files to extract browsing history.
 
-## NOTES:
+**NOTES**
 
 This artifact is deprecated in favor of
 Generic.Forensic.SQLiteHunter and will be removed in future
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Applications.Firefox.History
 description: |
-  Enumerate the users Firefox history.
+  Queries Firefox `places.sqlite` files to extract browsing history.
 
-  ## NOTES:
+  **NOTES**
 
   This artifact is deprecated in favor of
   Generic.Forensic.SQLiteHunter and will be removed in future
-
 
 author: Zach Stanford @svch0st, Modified by @angry-bender
 parameters:
@@ -63,6 +70,6 @@ sources:
               query=urlSQLQuery)
           })
           WHERE url_visited =~ URLRegex
+````
 
-</code></pre>
 

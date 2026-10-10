@@ -1,39 +1,55 @@
 ---
 title: Windows.Timeline.Prefetch
+description: "Extracts execution timestamps from prefetch files and outputs them\nin timeline format."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
+
+Extracts execution timestamps from prefetch files and outputs them
+in timeline format.
 
 Windows keeps a cache of prefetch files. When an executable is run,
 the system records properties about the executable to make it faster
 to run next time. By parsing this information we are able to
 determine when binaries are run in the past. On Windows10 we can see
-the last 8 execution times and creation time (9 potential executions).
+the last 8 execution times and creation time (9 potential
+executions).
 
 This artifact is a timelined output version of the standard Prefetch
 artifact. There are several parameters available.
-  - dateAfter enables search for prefetch evidence after this date.
-  - dateBefore enables search for prefetch evidence before this date.
-  - binaryRegex enables to filter on binary name, e.g evil.exe.
-  - hashRegex enables to filter on prefetch hash.
+- dateAfter enables search for prefetch evidence after this date.
+- dateBefore enables search for prefetch evidence before this date.
+- binaryRegex enables to filter on binary name, e.g evil.exe.
+- hashRegex enables to filter on prefetch hash.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Timeline.Prefetch
 author: Matt Green - @mgreen27
 description: |
+  Extracts execution timestamps from prefetch files and outputs them
+  in timeline format.
+
   Windows keeps a cache of prefetch files. When an executable is run,
   the system records properties about the executable to make it faster
   to run next time. By parsing this information we are able to
   determine when binaries are run in the past. On Windows10 we can see
-  the last 8 execution times and creation time (9 potential executions).
+  the last 8 execution times and creation time (9 potential
+  executions).
 
   This artifact is a timelined output version of the standard Prefetch
   artifact. There are several parameters available.
-    - dateAfter enables search for prefetch evidence after this date.
-    - dateBefore enables search for prefetch evidence before this date.
-    - binaryRegex enables to filter on binary name, e.g evil.exe.
-    - hashRegex enables to filter on prefetch hash.
+  - dateAfter enables search for prefetch evidence after this date.
+  - dateBefore enables search for prefetch evidence before this date.
+  - binaryRegex enables to filter on binary name, e.g evil.exe.
+  - hashRegex enables to filter on prefetch hash.
 
 reference:
   - https://www.forensicswiki.org/wiki/Prefetch
@@ -58,7 +74,7 @@ precondition: SELECT OS From info() where OS = 'windows'
 
 sources:
   - query: |
-      LET hostname &lt;= SELECT Fqdn FROM info()
+      LET hostname <= SELECT Fqdn FROM info()
 
       SELECT  LastRunTimes as event_time,
               hostname.Fqdn[0] as hostname,
@@ -66,6 +82,7 @@ sources:
               message,
               OSPath as source,
               Executable as file_name,
+              ExecutablePath,
               CreationTime as prefetch_ctime,
               ModificationTime as prefetch_mtime,
               FileSize as prefetch_size,
@@ -93,14 +110,15 @@ sources:
                    Hash,
                    Version,
                    LastRunTimes,
-                   "Evidence of Execution: " + Executable + format(
+                   "Evidence of Execution: " + ExecutablePath + format(
                       format=" Prefetch run count %v", args=RunCount) as message,
                    RunCount,
                    OSPath,
                    PrefetchFileName,
                    CreationTime,
                    ModificationTime,
-                   Binary
+                   Binary,
+                   ExecutablePath
             FROM scope()
           })
         }, b1={
@@ -110,14 +128,15 @@ sources:
                    Hash,
                    Version,
                    CreationTime AS LastRunTimes,
-                   "Evidence of Execution (Btime): " + Executable + format(
+                   "Evidence of Execution (Btime): " + ExecutablePath + format(
                       format=" Prefetch run count %v", args=RunCount) as message,
                    RunCount,
                    OSPath,
                    PrefetchFileName,
                    CreationTime,
                    ModificationTime,
-                   Binary
+                   Binary,
+                   ExecutablePath
             FROM scope()
         })
         -- This group by applies on only a single prefetch file to
@@ -125,6 +144,6 @@ sources:
         GROUP BY LastRunTimes
       })
       ORDER BY event_time
+````
 
-</code></pre>
 

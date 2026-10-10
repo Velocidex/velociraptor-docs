@@ -1,8 +1,17 @@
 ---
 title: Windows.Events.FailedLogBeforeSuccess
+description: "Detects successful logons preceded by multiple failed logon attempts\nwithin a configurable time window."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
+
+Detects successful logons preceded by multiple failed logon attempts
+within a configurable time window.
 
 Sometimes attackers will brute force an local user's account's
 password. If the account password is strong, brute force attacks are
@@ -17,18 +26,24 @@ On the endpoint this looks like a bunch of failed logon attempts in
 quick succession followed by a successful login.
 
 NOTE: In order for this artifact to work we need Windows to be
-logging failed account login. This is not on by default and should
-be enabled via group policy.
+logging failed account logins. This is not enabled by default and
+should be enabled via group policy.
 
 https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/basic-audit-logon-events
 
 You can set the policy in Group Policy Management Console (GPMC):
-`Computer Configuration\Windows Settings\Security Settings\Local Policies\Audit Policy`.
+`Computer Configuration\Windows Settings\Security Settings\Local
+Policies\Audit Policy`.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Events.FailedLogBeforeSuccess
 description: |
+  Detects successful logons preceded by multiple failed logon attempts
+  within a configurable time window.
+  
   Sometimes attackers will brute force an local user's account's
   password. If the account password is strong, brute force attacks are
   not effective and might not represent a high value event in
@@ -42,18 +57,20 @@ description: |
   quick succession followed by a successful login.
 
   NOTE: In order for this artifact to work we need Windows to be
-  logging failed account login. This is not on by default and should
-  be enabled via group policy.
+  logging failed account logins. This is not enabled by default and
+  should be enabled via group policy.
 
   https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/basic-audit-logon-events
 
   You can set the policy in Group Policy Management Console (GPMC):
-  `Computer Configuration\Windows Settings\Security Settings\Local Policies\Audit Policy`.
+  `Computer Configuration\Windows Settings\Security Settings\Local
+  Policies\Audit Policy`.
+
 type: CLIENT_EVENT
 
 parameters:
   - name: securityLogFile
-    default: &gt;-
+    default: >-
       C:/Windows/System32/Winevt/Logs/Security.evtx
 
   - name: failureCount
@@ -79,7 +96,7 @@ sources:
                       max_age=atoi(string=failedLogonTimeWindow))
 
       // Force the fifo to materialize.
-      LET foo &lt;= SELECT * FROM last_5_events
+      LET foo <= SELECT * FROM last_5_events
 
       LET success_logon = SELECT EventData as SuccessEventData,
            System as SuccessSystem
@@ -96,7 +113,7 @@ sources:
            FROM last_5_events
            WHERE FailedEventData.SubjectUserName = SuccessEventData.SubjectUserName
            GROUP BY LogonTime
-          })  WHERE Count &gt; atoi(string=failureCount)
+          })  WHERE Count > atoi(string=failureCount)
+````
 
-</code></pre>
 

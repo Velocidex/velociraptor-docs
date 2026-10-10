@@ -1,26 +1,34 @@
 ---
 title: Server.Utils.DeleteFlow
+description: "Permanently deletes a flow, plus all its associated metadata and\nuploaded files, from the server."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
 
-This artifact permanently deletes a flow including it's metadata and
-uploaded files.
+Permanently deletes a flow, plus all its associated metadata and
+uploaded files, from the server.
 
 NOTE: This action cannot be undone! The collection is deleted
-permanently. Since this is a sensitive operation, typically only
-users with the administrator role can run it.
+permanently. Since this is a sensitive operation, only users with
+the administrator role can run it.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.DeleteFlow
 description: |
-  This artifact permanently deletes a flow including it's metadata and
-  uploaded files.
+  Permanently deletes a flow, plus all its associated metadata and
+  uploaded files, from the server.
 
   NOTE: This action cannot be undone! The collection is deleted
-  permanently. Since this is a sensitive operation, typically only
-  users with the administrator role can run it.
+  permanently. Since this is a sensitive operation, only users with
+  the administrator role can run it.
 
 type: SERVER
 
@@ -47,7 +55,7 @@ parameters:
 
 sources:
   - query: |
-       LET FlowIds &lt;= if(condition=FlowId, then=FlowIds + FlowId, else=FlowIds)
+       LET FlowIds <= if(condition=FlowId, then=FlowIds + FlowId, else=FlowIds)
 
        SELECT *
        FROM foreach(row={
@@ -59,6 +67,6 @@ sources:
          FROM delete_flow(flow_id=FlowId,
             client_id=ClientId, really_do_it=ReallyDoIt, sync=Sync)
        })
+````
 
-</code></pre>
 

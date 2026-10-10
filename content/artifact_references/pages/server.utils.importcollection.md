@@ -1,8 +1,17 @@
 ---
 title: Server.Utils.ImportCollection
+description: "Imports offline collector results (in zipped collection containers)\ninto the server so they appear alongside regular client collections."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
+
+Imports offline collector results (in zipped collection containers)
+into the server so they appear alongside regular client collections.
 
 The Velociraptor offline collector is an automated, preconfigured
 collection tool. Users can use the collector to automatically
@@ -22,13 +31,15 @@ NOTE: This artifact reads the collection ZIP from the server's
 filesystem. It is up to you to arrange for the file to be stored on
 the server (e.g. SCP it over).
 
-NOTE: This artifact is still experimental - please provide feedback
-on our issue board.
 
+---
 
-<pre><code class="language-yaml">
+````yaml
 name: Server.Utils.ImportCollection
 description: |
+  Imports offline collector results (in zipped collection containers)
+  into the server so they appear alongside regular client collections.
+  
   The Velociraptor offline collector is an automated, preconfigured
   collection tool. Users can use the collector to automatically
   collect any artifacts on endpoints that do not have the Velociraptor
@@ -47,9 +58,6 @@ description: |
   filesystem. It is up to you to arrange for the file to be stored on
   the server (e.g. SCP it over).
 
-  NOTE: This artifact is still experimental - please provide feedback
-  on our issue board.
-
 type: SERVER
 
 parameters:
@@ -65,7 +73,7 @@ parameters:
 
 sources:
   - query: |
-      LET result &lt;= SELECT import_collection(
+      LET result <= SELECT import_collection(
                client_id=ClientId, hostname=Hostname,
                filename=Path) AS Import
       FROM scope()
@@ -90,6 +98,6 @@ sources:
         FROM result
         WHERE HuntId
       })
+````
 
-</code></pre>
 

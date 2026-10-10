@@ -1,16 +1,26 @@
 ---
 title: Notebooks.Default
+description: "Creates a new notebook with a welcome message and placeholder VQL\ncell.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [notebook]
+build:
+  list: never
 ---
 
-A default notebook.
+Creates a new notebook with a welcome message and placeholder VQL
+cell.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Notebooks.Default
 description: |
-  A default notebook.
+  Creates a new notebook with a welcome message and placeholder VQL
+  cell.
 
 type: NOTEBOOK
 
@@ -31,6 +41,6 @@ sources:
         # This is a cell suggestion
         */
         SELECT * FROM info()
+````
 
-</code></pre>
 

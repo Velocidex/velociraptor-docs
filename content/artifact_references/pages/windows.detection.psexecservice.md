@@ -1,30 +1,44 @@
 ---
 title: Windows.Detection.PsexecService
+description: "Detects PsExec execution by scanning newly created service binaries\nfor PsExec strings."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
 
+Detects PsExec execution by scanning newly created service binaries
+for PsExec strings.
+
 PsExec works by installing a new service in the system. The service
-can be renamed by using the `-r` flag and therefore it is not enough to
-just watch for a new service called `psexecsvc.exe`. This artifact
-improves on this by scanning the service binary to detect the
-original PsExec binary.
+can be renamed by using the `-r` flag and therefore it is not enough
+to just watch for a new service called `psexecsvc.exe`. This
+artifact improves on this by scanning the service binary to detect
+the original PsExec binary.
 
-NOTE: If the service is very quick we are unable to examine the service binary
-in time then we will miss it.
+NOTE: If the service is very quick we are unable to examine the
+service binary in time then we will miss it.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Detection.PsexecService
 description: |
+  Detects PsExec execution by scanning newly created service binaries
+  for PsExec strings.
+  
   PsExec works by installing a new service in the system. The service
-  can be renamed by using the `-r` flag and therefore it is not enough to
-  just watch for a new service called `psexecsvc.exe`. This artifact
-  improves on this by scanning the service binary to detect the
-  original PsExec binary.
+  can be renamed by using the `-r` flag and therefore it is not enough
+  to just watch for a new service called `psexecsvc.exe`. This
+  artifact improves on this by scanning the service binary to detect
+  the original PsExec binary.
 
-  NOTE: If the service is very quick we are unable to examine the service binary
-  in time then we will miss it.
+  NOTE: If the service is very quick we are unable to examine the
+  service binary in time then we will miss it.
 
 type: CLIENT_EVENT
 
@@ -69,6 +83,6 @@ sources:
         SELECT * FROM foreach(
           row=service_creation,
           query=file_scan)
+````
 
-</code></pre>
 

@@ -1,31 +1,51 @@
 ---
 title: Windows.Sys.Programs
+description: "Enumerates installed Windows applications by reading registry\nuninstall keys."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Represents products as they are installed by Windows Installer. A product generally
-correlates to one installation package on Windows. Some fields may be blank as Windows
-installation details are left to the discretion of the product author.
+Enumerates installed Windows applications by reading registry
+uninstall keys.
 
-Limitations: This key parses the live registry hives - if a user is not logged in then their data will not be resident in HKU and therefore you should parse the hives on disk (including within VSS/Regback).
+An application generally correlates to one installation package on
+Windows. Some fields may be blank as Windows installation details
+are left to the discretion of the product author.
+
+Limitations: This key parses the live registry hives - if a user is
+not logged in then their data will not be resident in HKU and
+therefore you should instead parse the hives on disk (including
+within VSS/`Regback`).
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Sys.Programs
 description: |
-  Represents products as they are installed by Windows Installer. A product generally
-  correlates to one installation package on Windows. Some fields may be blank as Windows
-  installation details are left to the discretion of the product author.
+  Enumerates installed Windows applications by reading registry
+  uninstall keys.
 
-  Limitations: This key parses the live registry hives - if a user is not logged in then their data will not be resident in HKU and therefore you should parse the hives on disk (including within VSS/Regback).
+  An application generally correlates to one installation package on
+  Windows. Some fields may be blank as Windows installation details
+  are left to the discretion of the product author.
+
+  Limitations: This key parses the live registry hives - if a user is
+  not logged in then their data will not be resident in HKU and
+  therefore you should instead parse the hives on disk (including
+  within VSS/`Regback`).
 
 reference:
   - https://github.com/facebook/osquery/blob/master/specs/windows/programs.table
 
 parameters:
   - name: programKeys
-    default: &gt;-
+    default: >-
       HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*,
       HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*,
       HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Uninstall\*
@@ -48,6 +68,6 @@ sources:
                Key.OSPath as KeyPath
         FROM read_reg_key(globs=split(string=programKeys, sep=',[\\s]*'),
                           accessor="registry")
+````
 
-</code></pre>
 

@@ -1,8 +1,17 @@
 ---
 title: Linux.Ssh.PrivateKeys
+description: "Searches filesystem for SSH private keys and detects encryption\nstatus."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
+
+Searches filesystem for SSH private keys and detects encryption
+status.
 
 SSH Private keys can be either encrypted or unencrypted. Unencrypted
 private keys are more risky because an attacker can use them without
@@ -27,9 +36,14 @@ Change the glob to /** if you would like to search the entire filesystem.
 Be aware, this is an expensive operation.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Ssh.PrivateKeys
 description: |
+  Searches filesystem for SSH private keys and detects encryption
+  status.
+
   SSH Private keys can be either encrypted or unencrypted. Unencrypted
   private keys are more risky because an attacker can use them without
   needing to unlock them with a password.
@@ -53,7 +67,7 @@ description: |
   Be aware, this is an expensive operation.
 
 reference:
-  - https://attack.mitre.org/techniques/T1145/
+  - https://attack.mitre.org/techniques/T1552.004/
   - https://coolaj86.com/articles/the-openssh-private-key-format/
   - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
 
@@ -87,13 +101,13 @@ sources:
         }],
         ["cipher_length", 15, "uint32b"],
         ["cipher", 19, "String", {
-            "length": "x=&gt;x.cipher_length",
+            "length": "x=>x.cipher_length",
         }]
       ]]]
       '''
 
       -- Device major numbers considered local. See Linux.Search.FileFinder
-      LET LocalDeviceMajor &lt;= (NULL,
+      LET LocalDeviceMajor <= (NULL,
           253, 7, 8, 9, 11, 65, 66, 67, 68, 69, 70,
           71, 128, 129, 130, 131, 132, 133, 134, 135, 202, 253, 254, 259)
 
@@ -101,16 +115,16 @@ sources:
       LET RecursionCallback = if(
        condition=LocalFilesystemOnly,
          then=if(condition=ExcludePathRegex,
-                 then="x=&gt;x.Data.DevMajor IN LocalDeviceMajor AND NOT x.OSPath =~ ExcludePathRegex",
-                 else="x=&gt;x.Data.DevMajor IN LocalDeviceMajor"),
+                 then="x=>x.Data.DevMajor IN LocalDeviceMajor AND NOT x.OSPath =~ ExcludePathRegex",
+                 else="x=>x.Data.DevMajor IN LocalDeviceMajor"),
          else=if(condition=ExcludePathRegex,
-                 then="x=&gt;NOT x.OSPath =~ ExcludePathRegex",
+                 then="x=>NOT x.OSPath =~ ExcludePathRegex",
                  else=""))
 
       LET _Hits = SELECT OSPath,
            read_file(filename=OSPath, length=20240) AS Data
         FROM glob(globs=KeyGlobs, recursion_callback=RecursionCallback)
-        WHERE Size &lt; 20000
+        WHERE Size < 20000
 
       LET Hits = SELECT OSPath, Data,
              base64decode(
@@ -180,6 +194,6 @@ sources:
              FROM scope()
           })
       })
+````
 
-</code></pre>
 

@@ -1,14 +1,27 @@
 ---
 title: Linux.Applications.Docker.Info
+description: "Connects to the Docker socket and retrieves daemon information\nincluding containers, images, and driver settings.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Get Dockers info by connecting to its socket.
+Connects to the Docker socket and retrieves daemon information
+including containers, images, and driver settings.
 
-<pre><code class="language-yaml">
+
+---
+
+````yaml
 name: Linux.Applications.Docker.Info
-description: Get Dockers info by connecting to its socket.
+description: |
+  Connects to the Docker socket and retrieves daemon information
+  including containers, images, and driver settings.
+
 parameters:
   - name: dockerSocket
     description: |
@@ -58,6 +71,6 @@ sources:
                JSON.ServerVersion as ServerVersion,
                JSON.DockerRootDir as DockerRootDir
         FROM data
+````
 
-</code></pre>
 

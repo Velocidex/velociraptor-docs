@@ -1,36 +1,48 @@
 ---
 title: Generic.Client.Info
+description: "Collects basic system details including hostname, OS version,\ninterfaces, and platform info"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Collect basic information about the client.
+Collects basic system details including hostname, OS version,
+interfaces, and platform info
 
 This artifact is collected when any new client is enrolled into the
-system. Velociraptor will watch for this artifact and populate its
-internal indexes from this artifact as well.
+system. The Velociraptor server watches for completions of this
+artifact and populates its internal client info index from this
+artifact.
 
 You can edit this artifact to enhance the client's interrogation
 information as required, by adding new sources.
 
-NOTE: Do not modify the BasicInformation source since it is used to
-interrogate the clients.
+NOTE: Do not modify the BasicInformation source since its results
+are required by the server in that exact format.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Client.Info
 description: |
-  Collect basic information about the client.
+  Collects basic system details including hostname, OS version,
+  interfaces, and platform info
 
   This artifact is collected when any new client is enrolled into the
-  system. Velociraptor will watch for this artifact and populate its
-  internal indexes from this artifact as well.
+  system. The Velociraptor server watches for completions of this
+  artifact and populates its internal client info index from this
+  artifact.
 
   You can edit this artifact to enhance the client's interrogation
   information as required, by adding new sources.
 
-  NOTE: Do not modify the BasicInformation source since it is used to
-  interrogate the clients.
+  NOTE: Do not modify the BasicInformation source since its results
+  are required by the server in that exact format.
 
 sources:
   - name: BasicInformation
@@ -73,7 +85,7 @@ sources:
     description: Windows specific information about the host
     precondition: SELECT OS From info() where OS = 'windows'
     query: |
-      LET DomainLookup &lt;= dict(
+      LET DomainLookup <= dict(
          `0`='Standalone Workstation',
          `1`='Member Workstation',
          `2`='Standalone Server',
@@ -136,11 +148,66 @@ sources:
 reports:
   - type: CLIENT
     template: |
-      {{ $client_info := Query "SELECT * FROM clients(client_id=ClientId) LIMIT 1" | Expand }}
+      {{ define "pre" }}
+      LET Cap(X) = upcase(string=X[0:1]) + X[1:]
 
-      {{ $flow_id := Query "SELECT timestamp(epoch=active_time / 1000000) AS Timestamp FROM flows(client_id=ClientId, flow_id=FlowId)" | Expand }}
+      LET ClientInfo <= SELECT *, Cap(X=os_info.system) AS OS
+        FROM clients(client_id=ClientId)
+        LIMIT 1
 
-      # {{ Get $client_info "0.os_info.fqdn" }} ( {{ Get $client_info "0.client_id" }} ) @ {{ Get $flow_id "0.Timestamp" }}
+      LET Hostname <= ClientInfo[0].os_info.hostname
+      LET OS <= Cap(X=ClientInfo[0].os_info.system)
+
+      LET _Timestamp <= SELECT timestamp(epoch=active_time) AS Timestamp
+         FROM flows(client_id=ClientId, flow_id=FlowId)
+      LET Timestamp <= _Timestamp[0].Timestamp
+
+      // Parse the env part from the notebook definitions.
+      LET GetEnv(X) = to_dict(item={
+          SELECT key AS _key,
+                 value AS _value
+          FROM foreach(row=X)
+        })
+
+      // Look for a special notebook of name "quick_link" - we will
+      // render it here.
+      LET GetSources(X) = SELECT GetEnv(X=env) AS Env
+      FROM foreach(row=X,
+      query={
+        SELECT * FROM foreach(row=notebook)
+        WHERE notebook.name =~ "quick_link"
+      })
+
+      // Returns a list of artifact names and configuration Env
+      LET FindQuickLinks = SELECT *,
+          link_to(client_id=ClientId, flow_id='new',
+                  artifact=artifact_name, raw=TRUE) AS Link,
+          Env.weight || 10 AS Weight
+      FROM foreach(row={
+          SELECT name as artifact_name, sources
+          FROM artifact_definitions()
+          WHERE type =~ "^client$"
+        },
+                   query={
+          SELECT artifact_name, Env
+          FROM GetSources(X=sources)
+          WHERE Env.text AND OS =~ ( Env.os_filter || "." )
+        })
+      ORDER BY Weight
+
+      {{ end }}
+      {{ $_ := Query "pre" | Expand }}
+
+      {{ range Query "SELECT * FROM FindQuickLinks" | Expand -}}
+        <velo-button text="{{ Get . "Env.text" }}"
+                     icon="{{ Get . "Env.icon" }}"
+                     href="{{ Get . "Link" }}">
+        >
+        </velo-button>
+      {{- end }}
+
+
+      # {{ Scope "Hostname" }} ( {{ Scope "ClientId" }} ) @ {{ Scope "Timestamp" }}
 
       {{ Query "SELECT * FROM source(source='BasicInformation')" | Table }}
 
@@ -156,13 +223,13 @@ reports:
            FROM source(artifact="Generic.Client.Stats",
                        client_id=ClientId,
                        start_time=now() - 86400)
-           WHERE CPUPercent &gt;= 0
+           WHERE CPUPercent >= 0
          })
       {{ end }}
 
       {{ define "computerinfo" }}
-      LET X &lt;= SELECT *
-        FROM source(source="LinuxInfo')
+      LET X <= SELECT *
+        FROM source(source="LinuxInfo")
         LIMIT 1
 
       SELECT humanize(bytes=TotalPhysicalMemory) AS  TotalPhysicalMemory,
@@ -173,9 +240,9 @@ reports:
       FROM foreach(row=X[0].`Computer Info`)
       {{ end }}
 
-      &lt;div&gt;
+      <div>
       {{ Query "resources" | TimeChart "RSS.yaxis" 2 }}
-      &lt;/div&gt;
+      </div>
 
       {{ $windows_info := Query "SELECT * FROM source(source='WindowsInfo')" }}
       {{ if $windows_info | Expand }}
@@ -183,7 +250,7 @@ reports:
         {{ $windows_info | Table }}
       {{ end }}
 
-      {{ $linux_info := Query "LET X &lt;= SELECT * FROM source(source='LinuxInfo') LIMIT 1 SELECT * FROM X" }}
+      {{ $linux_info := Query "LET X <= SELECT * FROM source(source='LinuxInfo') LIMIT 1 SELECT * FROM X" }}
       {{ if Query "SELECT * FROM source(source='LinuxInfo')" | Expand }}
       # Linux agent information
 
@@ -204,6 +271,6 @@ column_types:
     type: timestamp
   - name: LastLogin
     type: timestamp
+````
 
-</code></pre>
 

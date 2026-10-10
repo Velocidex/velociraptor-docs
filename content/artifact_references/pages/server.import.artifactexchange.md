@@ -1,58 +1,70 @@
 ---
 title: Server.Import.ArtifactExchange
+description: "Imports a zipped package containing Velociraptor artifacts from a\nremote web server."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
 
-This artifact will automatically import the latest artifact
-exchange bundle into the current server.
+Imports a zipped package containing Velociraptor artifacts from a
+remote web server.
 
-## Security note
+By default this artifact will automatically import the latest
+artifact exchange bundle into the server's artifact repository.
 
-The artifact exchange is not officially supported by the
-Velociraptor team and contains contributions from the
-community. The quality, security and stability of artifacts from
-the exchange is not guaranteed. Some artifacts from the exchange
-will fetch external binaries and run them on your endpoints! These
-binaries are not reviewed or endorsed by the Velociraptor team or
-Rapid7!
+#### Security of community-contributed exchange artifacts
+
+The artifact exchange is not tested or officially supported by the
+Velociraptor team and contains contributions from the community.
+The quality, security and stability of artifacts from the exchange
+are not guaranteed. Some artifacts from the exchange will fetch
+external binaries and run them on your endpoints! These binaries
+are not reviewed or endorsed by the Velociraptor team or Rapid7!
 
 Contributions to the exchange must meet a lower quality bar than
-built-in artifacts (for example lacking tests), which means that
-they may break at any time or not work as described!
+built-in artifacts (for example lacking CI tests), which means that
+they may break at any time or not function as described!
 
-Collecting any of the artifacts in the exchange is purely at your
-own risk!.
+All artifacts in the exchange are used purely at your own risk,
+should you choose to do so! We strongly suggest that you review
+exchange artifacts carefully before deploying them on your
+network!
 
-We strongly suggest users review exchange artifacts carefully
-before deploying them on their network!
 
+---
 
-<pre><code class="language-yaml">
-name: Server.Import.ArtifactExchange
+````yaml
+name: Server.Import.ArtifactBundle
+aliases:
+- Server.Import.ArtifactExchange
 description: |
-   This artifact will automatically import the latest artifact
-   exchange bundle into the current server.
+   Imports a zipped package containing Velociraptor artifacts from a
+   remote web server.
 
-   ## Security note
+   By default this artifact will automatically import the latest
+   artifact exchange bundle into the server's artifact repository.
 
-   The artifact exchange is not officially supported by the
-   Velociraptor team and contains contributions from the
-   community. The quality, security and stability of artifacts from
-   the exchange is not guaranteed. Some artifacts from the exchange
-   will fetch external binaries and run them on your endpoints! These
-   binaries are not reviewed or endorsed by the Velociraptor team or
-   Rapid7!
+   #### Security of community-contributed exchange artifacts
+
+   The artifact exchange is not tested or officially supported by the
+   Velociraptor team and contains contributions from the community.
+   The quality, security and stability of artifacts from the exchange
+   are not guaranteed. Some artifacts from the exchange will fetch
+   external binaries and run them on your endpoints! These binaries
+   are not reviewed or endorsed by the Velociraptor team or Rapid7!
 
    Contributions to the exchange must meet a lower quality bar than
-   built-in artifacts (for example lacking tests), which means that
-   they may break at any time or not work as described!
+   built-in artifacts (for example lacking CI tests), which means that
+   they may break at any time or not function as described!
 
-   Collecting any of the artifacts in the exchange is purely at your
-   own risk!.
-
-   We strongly suggest users review exchange artifacts carefully
-   before deploying them on their network!
+   All artifacts in the exchange are used purely at your own risk,
+   should you choose to do so! We strongly suggest that you review
+   exchange artifacts carefully before deploying them on your
+   network!
 
 type: SERVER
 
@@ -60,7 +72,7 @@ required_permissions:
 - SERVER_ADMIN
 
 parameters:
-   - name: ExchangeURL
+   - name: URL
      default: https://github.com/Velocidex/velociraptor-docs/raw/gh-pages/exchange/artifact_exchange_v2.zip
    - name: ArchiveGlob
      default: "/**/*.{yaml,yml}"
@@ -78,7 +90,7 @@ export: |
     WHERE Line =~ '''^\s*tags:'''
   }, query={
     SELECT * FROM parse_records_with_regex(
-       accessor="data", file=Line, regex="#(?P&lt;Tag&gt;[^ ]+)")
+       accessor="data", file=Line, regex="#(?P<Tag>[^ ]+)")
   })
 
   LET Tags(Data) = _Tags(Data=Data).Tag
@@ -91,7 +103,7 @@ sources:
         FROM foreach(row={
           SELECT Content FROM http_client(
              remove_last=TRUE,
-             tempfile_extension=".zip", url=ExchangeURL)
+             tempfile_extension=".zip", url=URL)
         }, query={
           SELECT read_file(accessor="zip", filename=OSPath) AS Definition
           FROM glob(
@@ -106,6 +118,6 @@ sources:
                Definition.description AS Description,
                Definition.author AS Author
         FROM X
+````
 
-</code></pre>
 

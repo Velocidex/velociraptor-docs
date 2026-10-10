@@ -1,16 +1,26 @@
 ---
 title: Server.Utils.RemoveTimeline
+description: "Deletes a child timeline from a specified super-timeline in a\nnotebook.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
 
-Remove a child timeline from a super timeline.
+Deletes a child timeline from a specified super-timeline in a
+notebook.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.RemoveTimeline
 description: |
-  Remove a child timeline from a super timeline.
+   Deletes a child timeline from a specified super-timeline in a
+   notebook.
 
 type: SERVER
 
@@ -29,6 +39,6 @@ sources:
                      notebook_id=NotebookId,
                      name=ChildName)) AS Removed
       FROM scope()
+````
 
-</code></pre>
 

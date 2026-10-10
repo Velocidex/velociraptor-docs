@@ -1,20 +1,42 @@
 ---
 title: Windows.Forensics.SRUM
+description: "Parses the Windows SRUM database (srudb.dat) to extract execution\nstats, resource usage, and network activity."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Process the SRUM database.
+Parses the Windows SRUM database (srudb.dat) to extract execution
+stats, resource usage, and network activity.
+
+Update 2026-07-11:  
+Added optional SruDbIdMapTable to selection table. 
+We have found this table useful searching for binary name strings.   
+Added filters for ExecutableRegex, UserRegex and TimeStamp.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.SRUM
 description: |
-  Process the SRUM database.
+  Parses the Windows SRUM database (srudb.dat) to extract execution
+  stats, resource usage, and network activity.
+  
+  Update 2026-07-11:  
+  Added optional SruDbIdMapTable to selection table. 
+  We have found this table useful searching for binary name strings.   
+  Added filters for ExecutableRegex, UserRegex and TimeStamp.
 
 reference:
-  - https://www.sans.org/cyber-security-summit/archives/file/summit-archive-1492184583.pdf
-  - https://cyberforensicator.com/2017/08/06/windows-srum-forensics/
+  - https://medium.com/@cyberengage.org/making-sense-of-srum-data-with-srum-dump-tool-67b90402df41
+  - https://blog.elcomsoft.com/2025/08/analyzing-the-windows-srum-database/
+  - https://github.com/ReversecLabs/slide-decks/blob/main/2023-SANS_DFIR_Summit_Europe/Exploring_the_depths_of_SRUM_for_incident_response.pdf
+  - https://github.com/libyal/esedb-kb/blob/main/documentation/System%20Resource%20Usage%20Monitor%20(SRUM).asciidoc
 
 type: client
 
@@ -25,6 +47,34 @@ parameters:
     default: auto
   - name: ExecutableRegex
     default: .
+    description: |
+      Filter on application or binary name.
+  - name: UserRegex
+    default: .
+    type: regex
+    description: |
+      Filter on Username or UserSid
+  - name: TimeAfter
+    type: timestamp
+    default: 1600-01-01
+    description: "search for TimeStamp after this date. YYYY-MM-DDTmm:hh:ssZ"
+  - name: TimeBefore
+    type: timestamp
+    default: 2200-01-01
+    description: "search for TimeStamp before this date. YYYY-MM-DDTmm:hh:ssZ"
+
+  - name: Tables
+    type: multichoice
+    description: |
+      SRUM tables to parse. The four original artifact sources are
+      selected by default. Availability varies by Windows version.
+    default: '["Execution Stats", "Application Resource Usage", "Network Connections", "Network Usage"]'
+    choices:
+      - Execution Stats
+      - Application Resource Usage
+      - Network Connections
+      - Network Usage
+      - SruDbIdMapTable
   - name: NetworkConnectionsGUID
     default: "{DD6636C4-8929-4683-974E-22C046A43763}"
     type: hidden
@@ -41,11 +91,16 @@ parameters:
     description: Select to Upload the SRUM database file 'srudb.dat'
     type: bool
 
+implied_permissions:
+  - FILESYSTEM_WRITE
+
 export: |
   LET ResolveESEId(OSPath, Accessor, Id) = cache(
       name="ESE",
       func=srum_lookup_id(file=OSPath, accessor=Accessor, id=Id),
       key=format(format="%v-%v-%v", args=[OSPath, Accessor, Id]))
+
+  LET SRUMFiles = SELECT OSPath FROM glob(globs=SRUMLocation)
 
 imports:
   - Windows.Sys.AllUsers
@@ -59,36 +114,43 @@ sources:
         FROM scope()
 
   - name: Execution Stats
+    precondition:
+        SELECT * FROM scope() WHERE "Execution Stats" IN Tables
     query: |
-        LET SRUMFiles &lt;= SELECT OSPath FROM glob(globs=SRUMLocation)
-
-        SELECT  AutoIncId AS ID,
+      SELECT * FROM foreach(row=SRUMFiles,
+      query={
+           SELECT  AutoIncId AS ID,
                 TimeStamp,
-                ResolveESEId(OSPath=SRUMFiles.OSPath,
+                ResolveESEId(OSPath=OSPath,
                              Accessor=accessor, Id=AppId) AS App,
-                ResolveESEId(OSPath=SRUMFiles.OSPath,
+                ResolveESEId(OSPath=OSPath,
                              Accessor=accessor, Id=UserId) AS UserSid,
-                LookupSIDCache(SID=srum_lookup_id(
-                    file=SRUMFiles, accessor=accessor, id=UserId) || "") AS User,
+                LookupSIDCache(SID=ResolveESEId(
+                    OSPath=OSPath, Accessor=accessor, Id=UserId) || "") AS User,
                 timestamp(winfiletime=EndTime) AS EndTime,
                 DurationMS,
                 NetworkBytesRaw
-        FROM parse_ese(file=SRUMFiles.OSPath,
-                       accessor=accessor, table=ExecutionGUID)
-        WHERE App =~ ExecutableRegex
+           FROM parse_ese(file=OSPath,
+                          accessor=accessor, table=ExecutionGUID)
+           WHERE App =~ ExecutableRegex
+            AND ( UserSid =~ UserRegex OR User =~ UserRegex ) 
+            AND TimeStamp > TimeAfter
+            AND TimeStamp < TimeBefore
+      })
 
   - name: Application Resource Usage
+    precondition:
+        SELECT * FROM scope() WHERE "Application Resource Usage" IN Tables
     query: |
-        LET SRUMFiles &lt;= SELECT OSPath FROM glob(globs=SRUMLocation)
-
-        SELECT AutoIncId as SRUMId,
+      SELECT * FROM foreach(row=SRUMFiles,
+      query={
+         SELECT AutoIncId as SRUMId,
                TimeStamp,
-               ResolveESEId(OSPath=SRUMFiles.OSPath,
-                            Accessor=accessor, Id=AppId) AS App,
-               ResolveESEId(OSPath=SRUMFiles.OSPath,
+               ResolveESEId(OSPath=OSPath, Accessor=accessor, Id=AppId) AS App,
+               ResolveESEId(OSPath=OSPath,
                             Accessor=accessor, Id=UserId) AS UserSid,
-               LookupSIDCache(SID=srum_lookup_id(
-                    file=SRUMFiles, accessor=accessor, id=UserId) || "") AS User,
+               LookupSIDCache(SID=ResolveESEId(
+                    OSPath=OSPath, Accessor=accessor, Id=UserId) || "") AS User,
                ForegroundCycleTime,
                BackgroundCycleTime,
                FaceTime,
@@ -104,51 +166,65 @@ sources:
                BackgroundNumReadOperations,
                BackgroundNumWriteOperations,
                BackgroundNumberOfFlushes
-        FROM parse_ese(file=SRUMFiles.OSPath,
+          FROM parse_ese(file=SRUMFiles.OSPath,
                        accessor=accessor, table=ApplicationResourceUsageGUID)
-        WHERE App =~ ExecutableRegex
+          WHERE App =~ ExecutableRegex
+            AND ( UserSid =~ UserRegex OR User =~ UserRegex ) 
+            AND TimeStamp > TimeAfter
+            AND TimeStamp < TimeBefore
+      })
 
   - name: Network Connections
+    precondition:
+        SELECT * FROM scope() WHERE "Network Connections" IN Tables
     query: |
-        LET SRUMFiles &lt;= SELECT OSPath FROM glob(globs=SRUMLocation)
-
+      SELECT * FROM foreach(row=SRUMFiles,
+      query={
         SELECT AutoIncId as SRUMId,
              TimeStamp,
-             ResolveESEId(OSPath=SRUMFiles.OSPath,
+             ResolveESEId(OSPath=OSPath,
                           Accessor=accessor, Id=AppId) AS App,
-             ResolveESEId(OSPath=SRUMFiles.OSPath,
+             ResolveESEId(OSPath=OSPath,
                           Accessor=accessor, Id=UserId) AS UserSid,
-             LookupSIDCache(SID=srum_lookup_id(
-                    file=SRUMFiles, accessor=accessor, id=UserId) || "") AS User,
+             LookupSIDCache(SID=ResolveESEId(
+                    OSPath=OSPath, Accessor=accessor, Id=UserId) || "") AS User,
              InterfaceLuid,
              ConnectedTime,
              timestamp(winfiletime=ConnectStartTime) AS StartTime
-        FROM parse_ese(file=SRUMFiles.OSPath,
+        FROM parse_ese(file=OSPath,
                        accessor=accessor, table=NetworkConnectionsGUID)
         WHERE App =~ ExecutableRegex
+          AND ( UserSid =~ UserRegex OR User =~ UserRegex ) 
+          AND TimeStamp > TimeAfter
+          AND TimeStamp < TimeBefore
+      })
 
   - name: Network Usage
+    precondition:
+        SELECT * FROM scope() WHERE "Network Usage" IN Tables
     query: |
-        LET SRUMFiles &lt;= SELECT OSPath FROM glob(globs=SRUMLocation)
-
+      SELECT * FROM foreach(row=SRUMFiles,
+      query={
         SELECT AutoIncId as SRUMId,
              TimeStamp,
-             ResolveESEId(OSPath=SRUMFiles.OSPath,
+             ResolveESEId(OSPath=OSPath,
                           Accessor=accessor, Id=AppId) AS App,
-             ResolveESEId(OSPath=SRUMFiles.OSPath,
+             ResolveESEId(OSPath=OSPath,
                           Accessor=accessor, Id=UserId) AS UserSid,
-             LookupSIDCache(SID=srum_lookup_id(
-                    file=SRUMFiles, accessor=accessor, id=UserId) || "") AS User,
+             LookupSIDCache(SID=ResolveESEId(
+                    OSPath=OSPath, Accessor=accessor, Id=UserId) || "") AS User,
              UserId,
              BytesSent,
              BytesRecvd,
              InterfaceLuid,
              L2ProfileId,
              L2ProfileFlags
-        FROM parse_ese(file=SRUMFiles.OSPath,
-                       accessor=accessor, table=NetworkUsageGUID)
+        FROM parse_ese(file=OSPath, accessor=accessor, table=NetworkUsageGUID)
         WHERE App =~ ExecutableRegex
-
+          AND ( UserSid =~ UserRegex OR User =~ UserRegex ) 
+          AND TimeStamp > TimeAfter
+          AND TimeStamp < TimeBefore
+      })
     notebook:
         - type: vql_suggestion
           name: SRUM Network Usage summary
@@ -169,5 +245,41 @@ sources:
               GROUP BY App, User,InterfaceLuid
               ORDER BY TotalSent DESC
 
-</code></pre>
+  - name: SruDbIdMapTable
+    precondition:
+        SELECT * FROM scope() WHERE "SruDbIdMapTable" IN Tables
+    query: |
+      LET ParseSRUMIdMap(OSPath) = SELECT
+          IdIndex,
+          IdType,
+          ResolveESEId(
+              OSPath=OSPath, Accessor=accessor, Id=IdIndex) AS Value,
+          parse_string_with_regex(
+              string=ResolveESEId(
+                  OSPath=OSPath, Accessor=accessor, Id=IdIndex),
+              regex="^(?<PackageName>[^!]*)\\!(?<PackageId>[^!]*)\\!(?<Path>[^!]*)\\!((?<Timestamp>[^!]*)\\!)?((?<InstanceID>[^!]*)\\!)?((?<Args>[^!]*))?$") AS Parsed
+        FROM parse_ese(
+            file=OSPath, accessor=accessor, table="SruDbIdMapTable")
+          
+      SELECT IdIndex,
+             IdType,
+             if(condition=Parsed.Path,
+                then=Parsed.Path,
+                else=Value) AS Path,
+             Parsed.PackageName AS PackageName,
+             Parsed.PackageId AS PackageId,
+             timestamp(string=Parsed.Timestamp) AS TimeStamp,
+             Parsed.InstanceID AS InstanceID,
+             Parsed.Args AS Args,
+             Value as __RawValue
+      FROM foreach(row=SRUMFiles,
+      query={
+        SELECT * FROM ParseSRUMIdMap(OSPath=OSPath)
+      })
+      WHERE __RawValue AND IdType = 0 AND Path =~ ExecutableRegex
+        AND ( UserSid =~ UserRegex OR User =~ UserRegex ) 
+        AND TimeStamp > TimeAfter
+        AND TimeStamp < TimeBefore
+````
+
 

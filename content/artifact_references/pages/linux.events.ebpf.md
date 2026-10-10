@@ -1,16 +1,24 @@
 ---
 title: Linux.Events.EBPF
+description: "Forwards selected EBPF events generated on the endpoint.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
 
-This artifact forwards EBPF events generated on the endpoint.
+Forwards selected EBPF events generated on the endpoint.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Events.EBPF
 description: |
-  This artifact forwards EBPF events generated on the endpoint.
+  Forwards selected EBPF events generated on the endpoint.
 
 precondition: |
   SELECT OS From info() where OS = 'linux'
@@ -50,9 +58,9 @@ parameters:
 
 sources:
   - query: |
-      LET SelectedEvents &lt;= SELECT * FROM Events WHERE Enabled =~ "Y"
+      LET SelectedEvents <= SELECT * FROM Events WHERE Enabled =~ "Y"
 
       SELECT * FROM watch_ebpf(events=SelectedEvents.Event)
+````
 
-</code></pre>
 

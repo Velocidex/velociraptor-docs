@@ -1,12 +1,21 @@
 ---
 title: Server.Utils.StartHuntExample
+description: "A template artifact, providing an example of how to grant controlled\nhigh-privilege operations to users with limited permissions."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
 
-This example artifact shows how to create a utility artifact to
-provide low privileged users with a controlled ability to perform
-high privileged operations.
+A template artifact, providing an example of how to grant controlled
+high-privilege operations to users with limited permissions.
+
+It shows how to create a utility artifact that provides low
+privileged users with a controlled ability to perform high
+privileged operations.
 
 This server artifact launches a new `Generic.Client.Info` hunt, but
 the parameters for the hunt are not determined by the initiating
@@ -42,12 +51,17 @@ this artifact, but have no additional permissions to start arbitrary
 hunts or collections.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.StartHuntExample
 description: |
-  This example artifact shows how to create a utility artifact to
-  provide low privileged users with a controlled ability to perform
-  high privileged operations.
+  A template artifact, providing an example of how to grant controlled
+  high-privilege operations to users with limited permissions.
+  
+  It shows how to create a utility artifact that provides low
+  privileged users with a controlled ability to perform high
+  privileged operations.
 
   This server artifact launches a new `Generic.Client.Info` hunt, but
   the parameters for the hunt are not determined by the initiating
@@ -94,6 +108,6 @@ sources:
         description="A general hunt",
         artifacts='Generic.Client.Info')
       FROM scope()
+````
 
-</code></pre>
 

@@ -1,11 +1,17 @@
 ---
 title: Windows.EventLogs.RDPAuth
+description: "Extracts RDP authentication and session events from Security,\nSystem, and Terminal Services event logs."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact will extract Event Logs related to Remote Desktop sessions,
-logon and logoff.
+Extracts RDP authentication and session events from Security,
+System, and Terminal Services event logs.
 
 Security channel - EventID in 4624,4634 AND LogonType 3, 7, or 10.
 Security channel - EventID in 4778,4625,4779, or 4647.
@@ -13,25 +19,29 @@ System channel -  EventID 9009.
 Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational - EventID 1149.
 Microsoft-Windows-TerminalServices-LocalSessionManager/Operational - EventID 23,22,21,24,25,39, or 40.
 
-Best use of this artifact is to collect RDP and Authentication events around
-a timeframe of interest and order by EventTime to scope RDP activity.
+Best use of this artifact is to collect RDP and Authentication
+events around a timeframe of interest and order by EventTime to
+scope RDP activity.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.EventLogs.RDPAuth
 author: "Matt Green - @mgreen27"
 description: |
-    This artifact will extract Event Logs related to Remote Desktop sessions,
-    logon and logoff.
+  Extracts RDP authentication and session events from Security,
+  System, and Terminal Services event logs.
+  
+  Security channel - EventID in 4624,4634 AND LogonType 3, 7, or 10.
+  Security channel - EventID in 4778,4625,4779, or 4647.
+  System channel -  EventID 9009.
+  Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational - EventID 1149.
+  Microsoft-Windows-TerminalServices-LocalSessionManager/Operational - EventID 23,22,21,24,25,39, or 40.
 
-    Security channel - EventID in 4624,4634 AND LogonType 3, 7, or 10.
-    Security channel - EventID in 4778,4625,4779, or 4647.
-    System channel -  EventID 9009.
-    Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational - EventID 1149.
-    Microsoft-Windows-TerminalServices-LocalSessionManager/Operational - EventID 23,22,21,24,25,39, or 40.
-
-    Best use of this artifact is to collect RDP and Authentication events around
-    a timeframe of interest and order by EventTime to scope RDP activity.
+  Best use of this artifact is to collect RDP and Authentication
+  events around a timeframe of interest and order by EventTime to
+  scope RDP activity.
 
 reference:
   - https://ponderthebits.com/2018/02/windows-rdp-related-event-logs-identification-tracking-and-investigation/
@@ -77,18 +87,18 @@ parameters:
 
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
       LET S = scope()
 
       -- firstly set timebounds for performance
-      LET DateAfterTime &lt;= if(condition=DateAfter,
+      LET DateAfterTime <= if(condition=DateAfter,
         then=DateAfter, else=timestamp(epoch="1600-01-01"))
-      LET DateBeforeTime &lt;= if(condition=DateBefore,
+      LET DateBeforeTime <= if(condition=DateBefore,
         then=DateBefore, else=timestamp(epoch="2200-01-01"))
 
       -- expand provided glob into a list of paths on the file system (fs)
-      LET fspaths &lt;= SELECT OSPath
+      LET fspaths <= SELECT OSPath
         FROM glob(globs=[
             expand(path=Security),
             expand(path=System),
@@ -183,8 +193,8 @@ sources:
                         AND EventID = 1149 )
                     OR ( Channel = 'Microsoft-Windows-TerminalServices-LocalSessionManager/Operational'
                         AND EventID in (23,22,21,24,25,39,40))
-                    AND EventTime &lt; DateBeforeTime
-                    AND EventTime &gt; DateAfterTime
+                    AND EventTime < DateBeforeTime
+                    AND EventTime > DateAfterTime
                     AND if(condition= UserNameWhitelist,
                         then= NOT UserName =~ UserNameWhitelist,
                         else= True)
@@ -193,13 +203,13 @@ sources:
             }
           )
 
-      SELECT * FROM if(condition=VSSAnalysisAge &gt; 0,
+      SELECT * FROM if(condition=VSSAnalysisAge > 0,
       then={
         SELECT * FROM evtxsearch(PathList=fspaths)
         GROUP BY EventRecordID, Channel
       }, else={
         SELECT * FROM evtxsearch(PathList=fspaths)
       })
+````
 
-</code></pre>
 

@@ -1,37 +1,48 @@
 ---
 title: Windows.Events.ServiceCreation
+description: "Detects new Windows service installations by monitoring System event\nlog for EventID 7045."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
 
-Monitor for creation of new services.
+Detects new Windows service installations by monitoring System event
+log for EventID 7045.
 
 New services are typically created by installing new software or
 kernel drivers. Attackers will sometimes install a new service to
-either insert a malicious kernel driver or as a persistence
+either insert a malicious kernel driver or to act as a persistence
 mechanism.
 
 This event monitor extracts the service creation events from the
-event log and records them on the server.
+event log and forwards them to the server.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Events.ServiceCreation
 description: |
-  Monitor for creation of new services.
-
+  Detects new Windows service installations by monitoring System event
+  log for EventID 7045.
+  
   New services are typically created by installing new software or
   kernel drivers. Attackers will sometimes install a new service to
-  either insert a malicious kernel driver or as a persistence
+  either insert a malicious kernel driver or to act as a persistence
   mechanism.
 
   This event monitor extracts the service creation events from the
-  event log and records them on the server.
+  event log and forwards them to the server.
+
 type: CLIENT_EVENT
 
 parameters:
   - name: systemLogFile
-    default: &gt;-
+    default: >-
       C:/Windows/System32/Winevt/Logs/System.evtx
 
 sources:
@@ -48,6 +59,6 @@ sources:
                EventData as _EventData,
                System as _System
         FROM watch_evtx(filename=systemLogFile) WHERE EventID = 7045
+````
 
-</code></pre>
 

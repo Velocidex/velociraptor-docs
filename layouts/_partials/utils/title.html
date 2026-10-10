@@ -1,0 +1,25 @@
+{{/*
+  Override of Hextra's utils/title partial (theme: layouts/_partials/utils/title.html).
+
+  The theme resolves a page's display title as LinkTitle -> Title.  This
+  site's content uses the legacy `menutitle` front-matter field (180+ pages)
+  as the preferred short label for navigation (sidebar, breadcrumbs, pager),
+  so we check it FIRST, then fall back to the theme behaviour.
+
+  Precedence: menutitle -> linkTitle -> title -> dir/file name.
+*/ -}}
+{{- $title := "" }}
+
+{{ if .Params.menutitle }}
+  {{ $title = .Params.menutitle }}
+{{ else if .LinkTitle }}
+  {{ $title = .LinkTitle }}
+{{ else if .Title }}
+  {{ $title = .Title }}
+{{ else if and .IsSection .File }}
+  {{ $title = path.Base .File.Dir | humanize | title }}
+{{ else if and .IsPage .File }}
+  {{ $title = .File.BaseFileName | humanize | title }}
+{{ end }}
+
+{{ return $title -}}

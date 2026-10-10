@@ -1,34 +1,46 @@
 ---
 title: Windows.NTFS.Recover
+description: "Uploads all data streams from a specified MFT ID on an NTFS volume\nfor deleted file recovery purposes."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Attempt to recover deleted files.
+Uploads all data streams from a specified MFT ID on an NTFS volume
+for deleted file recovery purposes.
 
-This artifact uploads all streams from an MFTId. If the MFT entry is not
-allocated there is a chance that the cluster that contains the actual data of
-the file will still be intact on the disk. Therefore it may be possible to
-recover such deleted files, which is what this artifact attempts to do.
+If the MFT entry is not allocated there is a chance that the cluster
+that contains the actual data of the file will still be intact on
+the disk. Therefore it may be possible to recover such deleted
+files, which is what this artifact attempts to do.
 
-A common use is to recover deleted directory entries using the
-`Windows.NTFS.I30` artifact to identify MFT entries of interest. This artifact
-can then be used to attempt recovery of the file data.
+A common use case is to recover deleted directory entries using the
+`Windows.NTFS.I30` artifact first to identify MFT entries of
+interest. This artifact can then be used to attempt recovery of the
+file data.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.NTFS.Recover
 description: |
-  Attempt to recover deleted files.
+  Uploads all data streams from a specified MFT ID on an NTFS volume
+  for deleted file recovery purposes.
 
-  This artifact uploads all streams from an MFTId. If the MFT entry is not
-  allocated there is a chance that the cluster that contains the actual data of
-  the file will still be intact on the disk. Therefore it may be possible to
-  recover such deleted files, which is what this artifact attempts to do.
+  If the MFT entry is not allocated there is a chance that the cluster
+  that contains the actual data of the file will still be intact on
+  the disk. Therefore it may be possible to recover such deleted
+  files, which is what this artifact attempts to do.
 
-  A common use is to recover deleted directory entries using the
-  `Windows.NTFS.I30` artifact to identify MFT entries of interest. This artifact
-  can then be used to attempt recovery of the file data.
+  A common use case is to recover deleted directory entries using the
+  `Windows.NTFS.I30` artifact first to identify MFT entries of
+  interest. This artifact can then be used to attempt recovery of the
+  file data.
 
 parameters:
  - name: MFTId
@@ -42,7 +54,7 @@ precondition:
 sources:
   - name: Upload
     query: |
-       LET Parsed &lt;= parse_ntfs(device=Drive, inode=MFTId)
+       LET Parsed <= parse_ntfs(device=Drive, inode=MFTId)
 
        SELECT *, upload(accessor="mft", file=Drive + Inode,
                         name=Parsed.OSPath + Inode) AS IndexUpload
@@ -57,6 +69,6 @@ sources:
                      _value.Name AS Name
               FROM scope()
             })
+````
 
-</code></pre>
 

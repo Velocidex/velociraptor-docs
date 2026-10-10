@@ -1,20 +1,30 @@
 ---
 title: Windows.EventLogs.Kerberoasting
+description: "Detects Kerberoasting attempts by extracting Kerberos TGS requests\n(EID 4769) with RC4 encryption from the Security log."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This Artifact will return all successful Kerberos TGS Ticket events for
-Service Accounts (SPN attribute) implemented with weak encryption. These
-tickets are vulnerable to brute force attack and this event is an indicator
-of a Kerberoasting attack.
+Detects Kerberoasting attempts by extracting Kerberos TGS requests
+(EID 4769) with RC4 encryption from the Security log.
 
-Typical attacker methodology is to firstly request accounts in the domain
-with SPN attributes, then request an insecure TGS ticket for brute forcing.
-This attack is particularly effective as any domain credentials can be used
-to implement the attack and service accounts often have elevated privileges.
-Kerberoasting can be used for privilege escalation or persistence by adding a
-SPN attribute to an unexpected account.
+This Artifact will return all successful Kerberos TGS Ticket events
+for Service Accounts (SPN attribute) implemented with weak
+encryption. These tickets are vulnerable to brute force attack and
+this event is an indicator of a Kerberoasting attack.
+
+Typical attacker methodology is to firstly request accounts in the
+domain with SPN attributes, then request an insecure TGS ticket for
+brute forcing. This attack is particularly effective as any domain
+credentials can be used to implement the attack and service accounts
+often have elevated privileges. Kerberoasting can be used for
+privilege escalation or persistence by adding a SPN attribute to an
+unexpected account.
 
 Log Source: Windows Security Event Log (Domain Controllers).
 Event ID: 4769
@@ -23,28 +33,35 @@ Ticket Encryption: 0x17 (RC4)
 Service Name: NOT krbtgt or NOT a system account (account name ends in $)
 TargetUserName: NOT a system account (*$@*)
 
-Monitor and alert on unusual events with these conditions from an unexpected
-IP.
-Note: There are potential false positives so whitelist normal source IPs and
-manage risk of insecure ticket generation.
+Monitor and alert on unusual events with these conditions from an
+unexpected IP.
+
+**Note:** There are potential false positives so whitelist normal
+source IPs and manage risk of insecure ticket generation.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.EventLogs.Kerberoasting
 author: Matt Green - @mgreen27
 
 description: |
-  This Artifact will return all successful Kerberos TGS Ticket events for
-  Service Accounts (SPN attribute) implemented with weak encryption. These
-  tickets are vulnerable to brute force attack and this event is an indicator
-  of a Kerberoasting attack.
+  Detects Kerberoasting attempts by extracting Kerberos TGS requests
+  (EID 4769) with RC4 encryption from the Security log.
 
-  Typical attacker methodology is to firstly request accounts in the domain
-  with SPN attributes, then request an insecure TGS ticket for brute forcing.
-  This attack is particularly effective as any domain credentials can be used
-  to implement the attack and service accounts often have elevated privileges.
-  Kerberoasting can be used for privilege escalation or persistence by adding a
-  SPN attribute to an unexpected account.
+  This Artifact will return all successful Kerberos TGS Ticket events
+  for Service Accounts (SPN attribute) implemented with weak
+  encryption. These tickets are vulnerable to brute force attack and
+  this event is an indicator of a Kerberoasting attack.
+
+  Typical attacker methodology is to firstly request accounts in the
+  domain with SPN attributes, then request an insecure TGS ticket for
+  brute forcing. This attack is particularly effective as any domain
+  credentials can be used to implement the attack and service accounts
+  often have elevated privileges. Kerberoasting can be used for
+  privilege escalation or persistence by adding a SPN attribute to an
+  unexpected account.
 
   Log Source: Windows Security Event Log (Domain Controllers).
   Event ID: 4769
@@ -53,13 +70,14 @@ description: |
   Service Name: NOT krbtgt or NOT a system account (account name ends in $)
   TargetUserName: NOT a system account (*$@*)
 
-  Monitor and alert on unusual events with these conditions from an unexpected
-  IP.
-  Note: There are potential false positives so whitelist normal source IPs and
-  manage risk of insecure ticket generation.
+  Monitor and alert on unusual events with these conditions from an
+  unexpected IP.
+
+  **Note:** There are potential false positives so whitelist normal
+  source IPs and manage risk of insecure ticket generation.
 
 reference:
-  - https://attack.mitre.org/techniques/T1208/
+  - https://attack.mitre.org/techniques/T1558.003/
   - https://www.trustedsec.com/blog/art_of_kerberoast/
 
 parameters:
@@ -76,8 +94,8 @@ parameters:
 
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
 
       -- expand provided glob into a list of paths on the file system (fs)
       LET fspaths = SELECT OSPath
@@ -94,10 +112,10 @@ sources:
                     EventData.ServiceName as ServiceName,
                     EventData.ServiceSid as ServiceSid,
                     EventData.TargetUserName as TargetUserName,
-                    format(format="0x%x", args=EventData.Status) as Status,
+                    EventData.Status as Status,
                     EventData.TargetDomainName as TargetDomainName,
-                    format(format="0x%x", args=EventData.TicketEncryptionType) as TicketEncryptionType,
-                    format(format="0x%x", args=EventData.TicketOptions) as TicketOptions,
+                    EventData.TicketEncryptionType as TicketEncryptionType,
+                    EventData.TicketOptions as TicketOptions,
                     EventData.TransmittedServices as TransmittedServices,
                     EventData.IpAddress as IpAddress,
                     EventData.IpPort as IpPort,
@@ -113,6 +131,6 @@ sources:
 
 
         SELECT * FROM evtxsearch(PathList=fspaths)
+````
 
-</code></pre>
 

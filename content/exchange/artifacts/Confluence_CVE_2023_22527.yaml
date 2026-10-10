@@ -2,16 +2,16 @@ name: Generic.Detection.Confluence_CVE_2023_22527
 author: Matt Green - @mgreen27
 description: |
   This artifact detects evidence of exploitation of Confluence RCE CVE-2023-22527.
-  
-  The artifact checks conf_access logs for a malicious POST request and should 
+
+  The artifact checks conf_access logs for a malicious POST request and should
   return full line of any hit (IP address and http code).
-  
-  Note: the underlying artifact uses Generic.Detection.Yara.Glob(). 
-  Please run he notbook suggestion view hit strings for further analysis.
+
+  Note: the underlying artifact uses Generic.Detection.Yara.Glob().
+  Please run the notebook suggestion "view hit strings" for further analysis.
 
 reference:
     - https://blog.projectdiscovery.io/atlassian-confluence-ssti-remote-code-execution/
-    
+
 type: CLIENT
 
 parameters:
@@ -47,7 +47,7 @@ sources:
     notebook:
       - type: vql_suggestion
         name: View hit strings
-        template: |             
+        template: |
             /*
             ## Show all hit strings for post processing
             */
@@ -55,12 +55,12 @@ sources:
                 SELECT vfs_path.Base as Key, vfs_path
                 FROM uploads()
             }, key='Key')
-            
-            
+
+
             SELECT Fqdn,OSPath,Mtime,Rule,HitOffset,
                 read_file(accessor='fs',filename=get(item=m, field=str(str=HitContext.StoredName)).vfs_path) as HitContext
             FROM source()
-                           
+
 column_types:
   - name: HitContext
     type: preview_upload

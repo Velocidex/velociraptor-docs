@@ -1,14 +1,33 @@
 ---
 title: Generic.Client.Stats
+description: "Records CPU and memory statistics for the Velociraptor client\nprocess."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
 
-An Event artifact which generates client's CPU and memory statistics.
+Records CPU and memory statistics for the Velociraptor client
+process.
 
-<pre><code class="language-yaml">
+To learn about managing endpoint performance with Velociraptor see
+this [blog post](https://docs.velociraptor.app/blog/html/2019/02/10/velociraptor_performance/).
+
+
+---
+
+````yaml
 name: Generic.Client.Stats
-description: An Event artifact which generates client's CPU and memory statistics.
+description: |
+    Records CPU and memory statistics for the Velociraptor client
+    process.
+
+    To learn about managing endpoint performance with Velociraptor see
+    this [blog post](https://docs.velociraptor.app/blog/html/2019/02/10/velociraptor_performance/).
+
 parameters:
   - name: Frequency
     description: Return stats every this many seconds.
@@ -42,7 +61,7 @@ sources:
           LET resources = SELECT Timestamp, rate(x=CPU, y=Timestamp) * 100 As CPUPercent,
                RSS / 1000000 AS MemoryUse
           FROM source(start_time=StartTime, end_time=EndTime)
-          WHERE CPUPercent &gt;= 0
+          WHERE CPUPercent >= 0
           /*
             {{ Query "SELECT * FROM resources" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 }}
           */
@@ -72,7 +91,7 @@ reports:
            SELECT Timestamp, rate(x=CPU, y=Timestamp) * 100 As CPUPercent,
                   RSS / 1000000 AS MemoryUse
            FROM source()
-           WHERE CPUPercent &gt;= 0
+           WHERE CPUPercent >= 0
       {{ end }}
 
       {{ Query "resources" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 }}
@@ -83,7 +102,7 @@ reports:
            SELECT Timestamp, rate(x=CPU, y=Timestamp) * 100 As CPUPercent,
                   RSS / 1000000 AS MemoryUse
            FROM source()
-           WHERE CPUPercent &gt;= 0
+           WHERE CPUPercent >= 0
       {{ end }}
 
       {{ $client_info := Query "SELECT * FROM clients(client_id=ClientId) LIMIT 1" }}
@@ -103,9 +122,9 @@ reports:
       idle, but if a heavy hunt is running this might climb
       substantially.
 
-        &lt;div&gt;
+        <div>
         {{ Query "resources" | LineChart "xaxis_mode" "time" "RSS.yaxis" 2 }}
-        &lt;/div&gt;
+        </div>
 
       ## VQL Query
 
@@ -115,15 +134,12 @@ reports:
       {{ template "resources" }}
       ```
 
-      &gt; To learn about managing end point performance with Velociraptor see
-        the [blog post](https://docs.velociraptor.velocidex.com/blog/html/2019/02/10/velociraptor_performance.html).
-
 column_types:
   - name: Timestamp
     type: timestamp
 
   - name: ClientId
     type: client_id
+````
 
-</code></pre>
 

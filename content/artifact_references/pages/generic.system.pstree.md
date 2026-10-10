@@ -1,37 +1,49 @@
 ---
 title: Generic.System.Pstree
+description: "Shows process lineage by following parent PIDs to establish call\nchains."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
+
+Shows process lineage by following parent PIDs to establish call
+chains.
+
+It is useful for establishing where a process came from - for
+example, if a PowerShell process is spawned from Winword (event via
+several intermediary processes) it could mean word was compromised.
 
 This artifact displays the call chain for every process on the
 system by traversing the process's parent ID.
 
-It is useful for establishing where a process came from - for
-example, if a PowerShell process is spawned from Winword (event via
-several intermediary processes) it could mean word was
-compromised.
-
 A more accurate call chain will be available when the
-Windows.Events.TrackProcesses artifact is collected (required
-Sysmon) or Windows.Events.TrackProcessesBasic (does not require
+`Windows.Events.TrackProcesses` artifact is collected (requires
+Sysmon) or `Windows.Events.TrackProcessesBasic` (does not require
 Sysmon)
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.System.Pstree
 description: |
-  This artifact displays the call chain for every process on the
-  system by traversing the process's parent ID.
+  Shows process lineage by following parent PIDs to establish call
+  chains.
 
   It is useful for establishing where a process came from - for
   example, if a PowerShell process is spawned from Winword (event via
-  several intermediary processes) it could mean word was
-  compromised.
+  several intermediary processes) it could mean word was compromised.
+
+  This artifact displays the call chain for every process on the
+  system by traversing the process's parent ID.
 
   A more accurate call chain will be available when the
-  Windows.Events.TrackProcesses artifact is collected (required
-  Sysmon) or Windows.Events.TrackProcessesBasic (does not require
+  `Windows.Events.TrackProcesses` artifact is collected (requires
+  Sysmon) or `Windows.Events.TrackProcessesBasic` (does not require
   Sysmon)
 
 parameters:
@@ -49,7 +61,7 @@ parameters:
     type: regex
 
   - name: CallChainSep
-    default: " -&gt; "
+    default: " -> "
 
   - name: IncludePstree
     type: bool
@@ -67,6 +79,6 @@ sources:
 column_types:
   - name: PSTree
     type: tree
+````
 
-</code></pre>
 

@@ -1,18 +1,18 @@
 name: Windows.Carving.BRc4
 author: Matt Green - @mgreen27
 description: |
-  This artifact extracts Brute Ratel C4 (BRc4) configuration from a byte stream, 
-  process or file on disk. BRc4 is an emerging red-teaming and adversarial 
+  This artifact extracts Brute Ratel C4 (BRc4) configuration from a byte stream,
+  process or file on disk. BRc4 is an emerging red-teaming and adversarial
   attack simulation tool.
-  
+
   The User can define bytes, file glob, process name or pid regex as a target.
-  The artifact firstly discovers BruteRatel configuration and extracts bytes, 
+  The artifact firstly discovers BruteRatel configuration and extracts bytes,
   before parsing with Velociraptor Binary Parser.
-  
-  * BRc4's configuration consits of 8 characters inside several sections. 
+
+  * BRc4's configuration consists of 8 characters inside several sections.
   * Character lists reversed in order
-  * This list of characters is: either base64 + RC4 encoded or in clear text. 
-  
+  * This list of characters is: either base64 + RC4 encoded or in clear text.
+
   This content simply carves the configuration and does not unpack files on
   disk. That means pointing this artifact as a packed or obfuscated file may not
   obtain the expected results.
@@ -20,7 +20,7 @@ description: |
 reference:
   - https://unit42.paloaltonetworks.com/brute-ratel-c4-tool/
   - https://github.com/Immersive-Labs-Sec/BruteRatel-DetectionTools
-  
+
 
 parameters:
   - name: TargetBytes
@@ -44,7 +44,7 @@ parameters:
                 strings:
                     $config_block = { 50 48 b8 [8] 50 68}
                     $split_marker = { 50 48 b8 [8] 50 48 b8 }
-            
+
                 condition:
                     $config_block and #split_marker > 30
             }
@@ -69,7 +69,7 @@ sources:
                     ["Config",0,"Value",{ "value": "x=>if(condition= x.DecodedConfig, then=x.DecodedConfig, else=x.ConfigData)" }],
                 ]
             ]]'''
-      
+
       -- Bytes usecase: scan DataBytes for BRc4 config
       LET ByteConfiguration = SELECT
             Rule,
@@ -84,7 +84,7 @@ sources:
                 number=1,
                 context=1000
             )
-      
+
       -- Glob usecase: find target files
       LET TargetFiles = SELECT OSPath,Size
         FROM glob(globs=TargetFileGlob) WHERE NOT IsDir
@@ -92,7 +92,7 @@ sources:
       -- Glob usecase: Extract config from files in scope
       LET FileConfiguration = SELECT * FROM foreach(row=TargetFiles,
             query={
-                SELECT 
+                SELECT
                     Rule,
                     OSPath, Size,
                     hash(path=OSPath) as Hash,
@@ -105,7 +105,7 @@ sources:
                         context=1000
                     )
             })
-            
+
       -- find velociraptor process
       LET me <= SELECT * FROM if(condition= NOT ( TargetFileGlob OR TargetBytes ),
                     then = { SELECT Pid FROM pslist(pid=getpid()) })
@@ -117,7 +117,7 @@ sources:
             Name =~ ProcessRegex
             AND format(format="%d", args=Pid) =~ PidRegex
             AND NOT Pid in me.Pid
-      
+
       -- scan processes in scope with our rule, limit 1 hit and extract context to parse
       LET ProcessConfiguration = SELECT * FROM foreach(
         row=processes,
@@ -127,7 +127,7 @@ sources:
                 Pid, ProcessName, CommandLine,
                 String.Offset as HitOffset,
                 parse_binary(accessor="data",filename=String.Data,profile=PROFILE,struct='BRc4Config').Config as _RawConfig
-             FROM yara( 
+             FROM yara(
                     files=format(format="/%d", args=Pid),
                     accessor='process',
                     rules=FindConfig,
@@ -139,11 +139,11 @@ sources:
 
       -- generate results remove any FPs
       SELECT *,
-            { 
-                SELECT _value 
-                FROM foreach(row=split(string=_RawConfig,sep_string='|')) 
-                WHERE _value 
-            } as BRc4Config, 
+            {
+                SELECT _value
+                FROM foreach(row=split(string=_RawConfig,sep_string='|'))
+                WHERE _value
+            } as BRc4Config,
             _RawConfig
       FROM if(condition=TargetBytes,
             then=ByteConfiguration,

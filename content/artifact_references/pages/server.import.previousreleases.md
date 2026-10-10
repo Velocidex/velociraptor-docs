@@ -1,38 +1,54 @@
 ---
 title: Server.Import.PreviousReleases
+description: "Downloads and installs legacy artifact bundles from a specified\nolder Velociraptor release."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
 
-When upgrading the Velociraptor server, the built-in artifacts may change and
-use newer VQL features that are not present in older clients.
+Downloads and installs legacy artifact bundles from a specified
+older Velociraptor release.
 
-If you have some older clients that cannot be upgraded, sometimes collection
-of updated built-in artifacts will fail due to incompatibility. In such
-situations it is necessary to import older VQL artifacts that will work with
-these older clients.
+When upgrading the Velociraptor server, the built-in artifacts may
+change and use newer VQL features that are not present in older
+clients.
 
-This server artifact allows you to automatically import all artifacts that
-came bundled with previous versions. These should be compatible with older
-clients, but may lack newer features and improvements that the latest
-artifacts have.
+If you have some older clients that cannot be upgraded, sometimes
+collection of updated built-in artifacts will fail due to
+incompatibility. In such situations it is necessary to import older
+VQL artifacts that will work with these older clients.
+
+This server artifact allows you to automatically import all
+artifacts that came bundled with previous versions. These should be
+compatible with older clients, but may lack newer features and
+improvements that the latest artifacts have.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Import.PreviousReleases
 description: |
-  When upgrading the Velociraptor server, the built-in artifacts may change and
-  use newer VQL features that are not present in older clients.
+  Downloads and installs legacy artifact bundles from a specified
+  older Velociraptor release.
 
-  If you have some older clients that cannot be upgraded, sometimes collection
-  of updated built-in artifacts will fail due to incompatibility. In such
-  situations it is necessary to import older VQL artifacts that will work with
-  these older clients.
+  When upgrading the Velociraptor server, the built-in artifacts may
+  change and use newer VQL features that are not present in older
+  clients.
 
-  This server artifact allows you to automatically import all artifacts that
-  came bundled with previous versions. These should be compatible with older
-  clients, but may lack newer features and improvements that the latest
-  artifacts have.
+  If you have some older clients that cannot be upgraded, sometimes
+  collection of updated built-in artifacts will fail due to
+  incompatibility. In such situations it is necessary to import older
+  VQL artifacts that will work with these older clients.
+
+  This server artifact allows you to automatically import all
+  artifacts that came bundled with previous versions. These should be
+  compatible with older clients, but may lack newer features and
+  improvements that the latest artifacts have.
 
 type: SERVER
 
@@ -44,15 +60,16 @@ parameters:
     description: |
       The Velociraptor Release to import.
     type: choices
-    default: v0.74
+    default: v0.75
     choices:
       - v0.72
       - v0.73
       - v0.74
+      - v0.75
 
 sources:
   - query: |
-      LET Prefix &lt;= regex_replace(source=VelociraptorRelease, re='\\.', replace="") + "."
+      LET Prefix <= regex_replace(source=VelociraptorRelease, re='\\.', replace="") + "."
       LET ExchangeURL = "https://docs.velociraptor.app/release_artifacts/release_artifacts_" + VelociraptorRelease + ".zip"
 
       LET X = SELECT artifact_set(
@@ -81,6 +98,6 @@ sources:
                Definition.description AS Description,
                Definition.author AS Author
         FROM X
+````
 
-</code></pre>
 

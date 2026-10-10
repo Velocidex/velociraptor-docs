@@ -23,25 +23,22 @@ $ velociraptor-v0.6.4-linux-amd64 config generate > /tmp/config.yaml
 To customize the generated configuration we can apply a JSON
 merge/patch step. [JSON
 merge](https://datatracker.ietf.org/doc/html/rfc7396) and [JSON
-patch](http://jsonpatch.com/) are standard ways of specifying a
+patch](https://jsonpatch.com/) are standard ways of specifying a
 transformation on a JSON object.
 
-{{% notice tip Viewing the Configuration in JSON %}}
-
-Normally the configuration file is in YAML but you can also view it in
-JSON using the `--json` flag to the `config show` command:
-
-```
-velociraptor --config config.yaml config show --json
-```
-
-Since YAML is a superset of JSON you can also provide this JSON blob
-to Velociraptor as the actual configuration (no need to convert it
-back to YAML). This helps to prepare the JSON merge patch - simply
-remove the fields you dont want to change and change the fields you do
-want to change.
-
-{{% /notice %}}
+> [!TIP] Viewing the Configuration in JSON
+> Normally the configuration file is in YAML but you can also view it in
+> JSON using the `--json` flag to the `config show` command:
+>
+> ```
+> velociraptor --config config.yaml config show --json
+> ```
+>
+> Since YAML is a superset of JSON you can also provide this JSON blob
+> to Velociraptor as the actual configuration (no need to convert it
+> back to YAML). This helps to prepare the JSON merge patch - simply
+> remove the fields you don't want to change and change the fields you do
+> want to change.
 
 For example, imagine we want to specify a new URL for clients to
 connect to. We can merge the following JSON blob with the config:
@@ -59,16 +56,6 @@ option to provide it.
 While the `config show` command can be used to manipulate the
 configuration file, sometimes we want to change a few values at
 runtime on a temporary basis.
-
-The first option is using the `--config_override` flag to specify the
-path to a JSON merge file that overrides the configuration at
-runtime. Velociraptor will load the configuration file specified by
-the `--config` flag as normal, but then will apply the JSON merge blob
-to override specific fields.
-
-This is useful for specifying a larger configuration manipulation - it
-will not change the main config file at all, but will change the
-running configuration
 
 ## Overriding configuration via command line flags
 

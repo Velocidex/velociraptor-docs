@@ -1,7 +1,13 @@
 ---
 title: Windows.ETW.DotNetRundown
+description: "Queries the Microsoft-Windows-DotNETRuntimeRundown provider to\ncollect a list of DotNet modules loaded into a process. This can be\nuseful when responding to reflectively loaded DotNet malware."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
 Queries the Microsoft-Windows-DotNETRuntimeRundown provider to
@@ -12,7 +18,9 @@ NOTE: System.Timestamp represents when the artifact was run, NOT
 when the module was loaded.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.ETW.DotNetRundown
 author: "@bmcder02"
 description: |
@@ -64,6 +72,6 @@ sources:
       WHERE EventID =~ EventIDRegex
         AND ProcessID =~ PidRegex
         AND ProcessPath =~ ProcessRegex
+````
 
-</code></pre>
 

@@ -1,27 +1,35 @@
 ---
 title: Server.Monitor.Health
+description: "Provides the server overview dashboard showing performance metrics,\ndisk space, and user permissions."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 ---
 
-This is the main server health dashboard. It is shown on the
-homescreen and enabled by default on all new installs.
+Provides the server overview dashboard showing performance metrics,
+disk space, and user permissions.
 
 You may edit this artifact to customize your server dashboard.
 
-Alternatively, edit the Welcome screen at the
+Alternatively, customize the Welcome screen by editing the
 `Server.Internal.Welcome` artifact.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Monitor.Health
 description: |
-  This is the main server health dashboard. It is shown on the
-  homescreen and enabled by default on all new installs.
+  Provides the server overview dashboard showing performance metrics,
+  disk space, and user permissions.
 
   You may edit this artifact to customize your server dashboard.
 
-  Alternatively, edit the Welcome screen at the
+  Alternatively, customize the Welcome screen by editing the
   `Server.Internal.Welcome` artifact.
 
 type: SERVER_EVENT
@@ -41,7 +49,7 @@ reports:
 
     template: |
       {{ define "CPU" }}
-        LET SampledData &lt;= SELECT * FROM sample(
+        LET SampledData <= SELECT * FROM sample(
              n=atoi(string=Sample),
              query={
               SELECT _ts as Timestamp,
@@ -53,7 +61,7 @@ reports:
                   artifact="Server.Monitor.Health")
         })
 
-        LET Stats &lt;= SELECT count() AS Count,
+        LET Stats <= SELECT count() AS Count,
             timestamp(epoch=min(item=Timestamp)) AS MinTime,
             timestamp(epoch=max(item=Timestamp)) AS MaxTime,
             timestamp(epoch=StartTime) AS StartTime
@@ -62,7 +70,7 @@ reports:
 
         // Include a log for verification. Last data should always be
         // very recent and sample should be passed properly.
-        LET _ &lt;= log(message="Graphs cover times from %v (%v). Actual data available from %v (%v) to %v (%v) with %v rows. Data is sampled every %v samples.", args=[
+        LET _ <= log(message="Graphs cover times from %v (%v). Actual data available from %v (%v) to %v (%v) with %v rows. Data is sampled every %v samples.", args=[
            Stats[0].StartTime.String, humanize(time=Stats[0].StartTime),
            Stats[0].MinTime.String, humanize(time=Stats[0].MinTime),
            Stats[0].MaxTime.String, humanize(time=Stats[0].MaxTime),
@@ -86,23 +94,23 @@ reports:
       {{ $time_rows := Query "SELECT timestamp(epoch=now()) AS Now FROM scope()" | Expand }}
       ## Server status @ {{ Render ( Get $time_rows "0.Now" ) }}
 
-      &lt;p&gt;The following are total across all frontends.&lt;/p&gt;
-          &lt;span class="container"&gt;
-            &lt;span class="row"&gt;
-              &lt;span class="col-sm panel"&gt;
+      <p>The following are total across all frontends.</p>
+          <span class="container">
+            <span class="row">
+              <span class="col-sm panel">
                CPU and Memory Utilization
                {{- Query "CPU" | TimeChart "RSS.yaxis" 2 -}}
-              &lt;/span&gt;
-              &lt;span class="col-sm panel"&gt;
+              </span>
+              <span class="col-sm panel">
                Currently Connected Clients
                {{- Query "CurrentConnections" | TimeChart "RSS.yaxis" 2 -}}
-              &lt;/span&gt;
-            &lt;/span&gt;
-          &lt;/span&gt;
+              </span>
+            </span>
+          </span>
 
       ## Current Orgs
       {{ define "OrgsTable" }}
-         LET ColumnTypes &lt;= dict(ClientConfig='url')
+         LET ColumnTypes <= dict(ClientConfig='url')
          LET OrgsTable = SELECT Name, OrgId,
                          upload(accessor='data', file=_client_config,
                                 name='client.'+OrgId+'.config.yaml') AS _Upload
@@ -131,6 +139,6 @@ reports:
       ## Server version
 
       {{ Query "SELECT server_version FROM config" | Table }}
+````
 
-</code></pre>
 

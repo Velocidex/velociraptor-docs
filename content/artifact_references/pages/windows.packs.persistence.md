@@ -1,16 +1,26 @@
 ---
 title: Windows.Packs.Persistence
+description: "Aggregates results from multiple persistence-related artifacts into\na single artifact \"pack\".\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact pack collects various persistence mechanisms in Windows.
+Aggregates results from multiple persistence-related artifacts into
+a single artifact "pack".
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Packs.Persistence
 description: |
-  This artifact pack collects various persistence mechanisms in Windows.
+  Aggregates results from multiple persistence-related artifacts into
+  a single artifact "pack".
 
 precondition:
   SELECT OS from info() where OS = "windows"
@@ -27,6 +37,6 @@ sources:
   - name: Debug Bootstraping
     query: |
       SELECT * FROM Artifact.Windows.Persistence.Debug()
+````
 
-</code></pre>
 

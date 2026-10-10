@@ -1,31 +1,31 @@
 name: Windows.Detection.TeamViewerLanguage
 author: Matt Green - @mgreen27
 description: |
-   This artifact enables collection of TeamViewer log entries for keyboard layout 
-   changes.  
-   
-   The artifact firstly searches for TeamViewer log filenames, then applies yara 
-   to extract log lines. The artifact by default hunts for Chinese, Vietnamese 
-   and Russian language changes as priority, then uses a catch all for generic 
-   changes. You can add additional targeted yara as desired to sort output.  
-   
-   In each log entry there are two language codes, the first being keyboard 
-   layout of the connecting system and the second one the default input profile 
+   This artifact enables collection of TeamViewer log entries for keyboard layout
+   changes.
+
+   The artifact firstly searches for TeamViewer log filenames, then applies yara
+   to extract log lines. The artifact by default hunts for Chinese, Vietnamese
+   and Russian language changes as priority, then uses a catch all for generic
+   changes. You can add additional targeted yara as desired to sort output.
+
+   In each log entry there are two language codes, the first being keyboard
+   layout of the connecting system and the second one the default input profile
    of the target host. The same language codes could indicate legitimate support.
-   
-   Lookup Language codes at the Microsoft link for references. Examples below:  
-   
-   0409 - US English  
-   0419 - Russian  
-   0804 - Chinese Simplified  
-   0404 - Chinese Traditional  
-   042a - Vietnamese  
-   
+
+   Lookup Language codes at the Microsoft link for references. Examples below:
+
+   0409 - US English
+   0419 - Russian
+   0804 - Chinese Simplified
+   0404 - Chinese Traditional
+   042a - Vietnamese
+
 reference:
   - https://twitter.com/cyb3rops/status/1600157565148483584
   - https://github.com/Neo23x0/signature-base/blob/master/yara/log_teamviewer_keyboard_layouts.yar
   - https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/default-input-locales-for-windows-language-packs?view=windows-11
-  
+
 type: CLIENT
 
 parameters:
@@ -40,7 +40,7 @@ parameters:
      default: .
      description: Regex of Layout to filter for
    - name: YaraToScan
-     description: Yata to scan. High priority rules first then catch all for generic changes at end.
+     description: Yara to scan. High priority rules first then catch all for generic changes at end.
      default: |
         rule LOG_TeamViewer_Connect_Chinese_Keyboard_Layout {
            meta:
@@ -100,10 +100,10 @@ sources:
             FileNameRegex=TargetFileRegex,PathRegex='.',
             AllDrives=AllDrives,
             DriveLetter=DriveLetter,
-            NumberOfHits=9999999, 
+            NumberOfHits=9999999,
             ContextBytes=50,
             YaraRule=YaraToScan )
-      
+
 
       LET details = SELECT*,
             parse_string_with_regex(string=HitContent,
@@ -116,7 +116,7 @@ sources:
         timestamp(string=Details.EventTime) as EventTime,
         Rule,
         Details.KeyboardLayout as KeyboardLayout,
-        HitContent, 
+        HitContent,
         RuleDescription,
         OSPath
       FROM details

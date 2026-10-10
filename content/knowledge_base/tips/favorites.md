@@ -32,7 +32,7 @@ SELECT name, description, type, serialize(item=spec) AS Spec
 FROM favorites_list()
 ```
 
-It is possible however to create favorites using VQL with the [favorites_save()]({{% ref "/vql_reference/server/favorites_save/" %}}) function:
+It is possible however to create favorites using VQL with the [favorites_save()](/vql_reference/server/favorites_save/) function:
 
 ```vql
 SELECT favorites_save(type="CLIENT", name="MyFavorite",

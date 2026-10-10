@@ -1,45 +1,57 @@
 ---
 title: Linux.Detection.Yara.Process
+description: "Scans process memory with YARA rules, supporting URL-based or inline\nrule deployment."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact enables running YARA over processes in memory.
+Scans process memory with YARA rules, supporting URL-based or inline
+rule deployment.
 
 There are 2 kinds of YARA rules that can be deployed:
 
-1. Url link to a YARA rule.
+1. URL link to a YARA rule.
 2. A Standard YARA rule attached as a parameter.
 
-Only one method of YARA will be applied and search order is as above. The
-default is Cobalt Strike opcodes.
+Only one method of YARA will be applied and search order is as
+above. The default is Cobalt Strike opcodes.
 
-Regex parameters can be applied for process name and pid for targeting. The
+Regex parameters can be applied for process name and pid for
+targeting. The
 artifact also has an option to upload any process with YARA hits.
 
-Note: the YARA scan will stop after one hit. Multi-string rules will also only
-show one string in returned rows.
+Note: the YARA scan will stop after one hit. Multi-string rules will
+also only show one string in returned rows.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Detection.Yara.Process
 author: Matt Green - @mgreen27
 description: |
-  This artifact enables running YARA over processes in memory.
+  Scans process memory with YARA rules, supporting URL-based or inline
+  rule deployment.
 
   There are 2 kinds of YARA rules that can be deployed:
 
-  1. Url link to a YARA rule.
+  1. URL link to a YARA rule.
   2. A Standard YARA rule attached as a parameter.
 
-  Only one method of YARA will be applied and search order is as above. The
-  default is Cobalt Strike opcodes.
+  Only one method of YARA will be applied and search order is as
+  above. The default is Cobalt Strike opcodes.
 
-  Regex parameters can be applied for process name and pid for targeting. The
+  Regex parameters can be applied for process name and pid for
+  targeting. The
   artifact also has an option to upload any process with YARA hits.
 
-  Note: the YARA scan will stop after one hit. Multi-string rules will also only
-  show one string in returned rows.
+  Note: the YARA scan will stop after one hit. Multi-string rules will
+  also only show one string in returned rows.
 
 aliases:
 - MacOS.Detection.Yara.Process
@@ -87,7 +99,7 @@ sources:
 
     query: |
       -- check which Yara to use
-      LET yara_rules &lt;= YaraUrl || YaraRule
+      LET yara_rules <= YaraUrl || YaraRule
 
       -- find velociraptor process
       LET me = SELECT Pid FROM pslist(pid=getpid())
@@ -152,6 +164,6 @@ sources:
 column_types:
   - name: HitContext
     type: preview_upload
+````
 
-</code></pre>
 

@@ -1,18 +1,28 @@
 ---
 title: Windows.System.DNSCache
+description: "Queries the Windows DNS client cache via WMI and reports cached DNS\nrecords with types and status."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Collects DNS cache entries using the WMI class `MSFT_DNSClientCache`.
+Queries the Windows DNS client cache via WMI and reports cached DNS
+records with types and status.
 
 Windows maintains DNS lookups for a short time in the DNS cache.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.System.DNSCache
 description: |
-  Collects DNS cache entries using the WMI class `MSFT_DNSClientCache`.
+  Queries the Windows DNS client cache via WMI and reports cached DNS
+  records with types and status.
 
   Windows maintains DNS lookups for a short time in the DNS cache.
 
@@ -143,14 +153,14 @@ sources:
   - precondition: |
       SELECT OS from info() where OS = "windows"
     query: |
-      LET wmiQuery &lt;= '''
+      LET wmiQuery <= '''
          SELECT Data, Entry, Status, TimeToLive, Type, Section
          FROM MSFT_DNSClientCache
       '''
-      LET wmiNamespace &lt;= "root/StandardCimv2"
-      LET MapOfRecordType &lt;= parse_json(data=kMapOfRecordType)
-      LET MapOfStatus &lt;= parse_json(data=kMapOfStatus)
-      LET MapOfSection &lt;= parse_json(data=kMapOfSection)
+      LET wmiNamespace <= "root/StandardCimv2"
+      LET MapOfRecordType <= parse_json(data=kMapOfRecordType)
+      LET MapOfStatus <= parse_json(data=kMapOfStatus)
+      LET MapOfSection <= parse_json(data=kMapOfSection)
 
       LET dns_cache_entries = SELECT
           Entry AS Name,
@@ -168,6 +178,6 @@ sources:
       FROM wmi(query=wmiQuery, namespace=wmiNamespace)
 
       SELECT * FROM dns_cache_entries
+````
 
-</code></pre>
 

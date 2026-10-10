@@ -4,7 +4,7 @@
 
 _NOTE: The technique described in this article should no longer be necessary
 since the`http_client` plugin now
-[supports multipart uploads]({{< ref "/vql_reference/popular/http_client/#example---uploading-files" >}}).
+[supports multipart uploads](/vql_reference/popular/http_client/#example---uploading-files).
 However this information may still be useful in certain circumstances and for
 providing insight into advanced VQL._
 

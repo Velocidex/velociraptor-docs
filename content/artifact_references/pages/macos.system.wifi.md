@@ -1,22 +1,32 @@
 ---
 title: MacOS.System.Wifi
+description: "Parses the macOS airport preferences to enumerate previously joined\nWiFi networks."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact looks for all Wifi networks to which a host has
-joined.  This can be useful in determining where a machine has
-been, or if a user has joined an illegitimate or unauthorized
-wireless network.
+Parses the macOS airport preferences to enumerate previously joined
+WiFi networks.
+
+This can be useful in determining where a machine has been, or if a
+user has joined an illegitimate or unauthorized wireless network.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: MacOS.System.Wifi
 description: |
-   This artifact looks for all Wifi networks to which a host has
-   joined.  This can be useful in determining where a machine has
-   been, or if a user has joined an illegitimate or unauthorized
-   wireless network.
+  Parses the macOS airport preferences to enumerate previously joined
+  WiFi networks.
+ 
+  This can be useful in determining where a machine has been, or if a
+  user has joined an illegitimate or unauthorized wireless network.
 
 type: CLIENT
 
@@ -52,6 +62,6 @@ sources:
              Value.LastManualJoinAt AS LastManualJoinAt,
              Value AS _Data
       FROM EachNetwork
+````
 
-</code></pre>
 

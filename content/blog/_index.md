@@ -1,16 +1,27 @@
 ---
+type: docs
+cascade:
+  type: docs
+sidebar:
+  exclude: true
 menutitle: "Blog"
 title: "Velociraptor Blog"
+date: 2021-06-10
 weight: 120
 no_edit: true
-disableToc: true
+disableToc: false
 no_children: true
-pre: <i class="fas fa-newspaper"></i>
 rss_data_file: static/blog/data.json
 rss_title: Velociraptor Blog
+noTitle: true
 outputs:
 - html
 - RSS
+- markdown
+description: |
+  <div style="padding-top: 50px;"></div>
 ---
 
-{{% blog %}}
+<div style="padding-top: 50px;"></div>
+
+{{< blog >}}

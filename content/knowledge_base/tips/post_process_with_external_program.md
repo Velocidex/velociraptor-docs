@@ -16,7 +16,7 @@ Velociraptor collects artifacts in `Flows` which are stored as a
 collection of files within the VFS. You can see all the files in a
 particular flow using the `enumerate_flow()` plugin:
 
-```sql
+```vql
 SELECT * FROM enumerate_flow(client_id=ClientId, flow_id=FlowId)
 ```
 
@@ -33,7 +33,7 @@ When collecting an artifact, each source query in the artifact is
 stored in a single file on disk. In our case we want to know the file
 that contains the `BasicInformation` source:
 
-```sql
+```vql
 SELECT file_store(path=Data.VFSPath) AS Path
 FROM enumerate_flow(client_id=ClientId, flow_id=FlowId)
 WHERE Type = "Result" AND Path =~ "BasicInformation"
@@ -46,7 +46,7 @@ an external program to receive this path.
 
 Let's encapsulate the logic in a VQL function:
 
-```sql
+```vql
 LET _GetPath(ClientId, FlowId) =
   SELECT file_store(path=Data.VFSPath) AS Path
   FROM enumerate_flow(client_id=ClientId, flow_id=FlowId)
@@ -92,7 +92,7 @@ Now that I have a python program which generates a JSON object per
 line, I can expand the JSON object into a row using the `foreach()`
 plugin:
 
-```sql
+```vql
 LET _GetPath(ClientId, FlowId) =
   SELECT file_store(path=Data.VFSPath) AS Path
   FROM enumerate_flow(client_id=ClientId, flow_id=FlowId)
@@ -125,7 +125,7 @@ they found to obtain the `ClientId` and `FlowId`.
 
 Putting it all together:
 
-```sql
+```vql
 LET Completions = SELECT FlowId, ClientId
    FROM watch_monitoring(artifact='System.Flow.Completion')
    WHERE Flow.artifacts_with_results =~ "Generic.Client.Info/BasicInformation"

@@ -1,26 +1,38 @@
 ---
 title: Server.Utils.DeleteClient
+description: "Removes one or more clients by ID from the server, deleting all\nassociated collection data permanently."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Artifact]
+build:
+  list: never
 ---
 
-This artifact completely removes a client from the data store.
+Removes one or more clients by ID from the server, deleting all
+associated collection data permanently.
 
-Be careful with this one: there is no way to recover old
-data. However, if the client still exists, it will just
-automatically re-enroll when it next connects. You will still be able
-to talk to it, it is just that old collected data is deleted.
+Be careful with this one: there is no way to recover old data.
+However, if the client itself still exists, it will just
+automatically re-enroll when it next connects. You will still be
+able to talk to it, it is just that old collected data will be
+deleted.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Utils.DeleteClient
 description: |
-  This artifact completely removes a client from the data store.
+  Removes one or more clients by ID from the server, deleting all
+  associated collection data permanently.
 
-  Be careful with this one: there is no way to recover old
-  data. However, if the client still exists, it will just
-  automatically re-enroll when it next connects. You will still be able
-  to talk to it, it is just that old collected data is deleted.
+  Be careful with this one: there is no way to recover old data.
+  However, if the client itself still exists, it will just
+  automatically re-enroll when it next connects. You will still be
+  able to talk to it, it is just that old collected data will be
+  deleted.
 
 type: SERVER
 
@@ -38,7 +50,7 @@ sources:
       let clients_list = SELECT ClientId
       FROM parse_records_with_regex(
           accessor="data", file=ClientIdList,
-          regex="(?P&lt;ClientId&gt;C\\.[0-9a-z-]+)")
+          regex="(?P<ClientId>C\\.[0-9a-z-]+)")
       WHERE log(message="Deleting client " + ClientId)
 
       SELECT * FROM foreach(row=clients_list,
@@ -46,6 +58,6 @@ sources:
          SELECT * FROM client_delete(client_id=ClientId,
             really_do_it=ReallyDoIt)
       })
+````
 
-</code></pre>
 

@@ -18,7 +18,7 @@ parameters:
    default: Y
    
  - name: ThreadLimit
-   description: "How many threads to utilise?"
+   description: "How many threads to utilize?"
    type: string
    default: "2"
     

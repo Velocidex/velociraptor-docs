@@ -1,0 +1,20 @@
+{{- /* Top-level content section keys -> display names.  Shared by baseof.html
+   (Pagefind "section" filter values) and the /search/ page shortcode (which
+   renders the "Filter by Section" accordion).  Keys not listed here fall back
+   to the titlecased path segment. */ -}}
+{{- return (dict
+    "announcements"       "Announcements"
+    "artifact_references" "Artifact Reference"
+    "blog"                "Blog"
+    "dev"                 "Developer"
+    "docs"                "Documentation"
+    "downloads"           "Downloads"
+    "exchange"            "Exchange"
+    "golang"              "Golang"
+    "knowledge_base"      "Knowledge Base"
+    "presentations"       "Presentations"
+    "rss"                 "RSS"
+    "search"              "Search"
+    "training"            "Training"
+    "vql_reference"       "VQL Reference"
+) -}}

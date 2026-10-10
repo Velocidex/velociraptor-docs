@@ -1,16 +1,26 @@
 ---
 title: MacOS.System.Packages
+description: "Parses `system_profiler` output to enumerate installed macOS\napplications with metadata.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Parse packages installed on Macs
+Parses `system_profiler` output to enumerate installed macOS
+applications with metadata.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: MacOS.System.Packages
 description: |
-  Parse packages installed on Macs
+  Parses `system_profiler` output to enumerate installed macOS
+  applications with metadata.
 
 parameters:
   - name: Length
@@ -39,6 +49,6 @@ sources:
                 arch_kind AS _Architecture
         FROM foreach(
            row=packages[0].Json.SPApplicationsDataType)
+````
 
-</code></pre>
 

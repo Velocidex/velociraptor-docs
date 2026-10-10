@@ -1,16 +1,24 @@
 ---
 title: Generic.Client.VQL
+description: "Runs an arbitrary VQL query on the endpoint.\n"
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Run arbitrary VQL on the endpoint.
+Runs an arbitrary VQL query on the endpoint.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Generic.Client.VQL
 description: |
-  Run arbitrary VQL on the endpoint.
+  Runs an arbitrary VQL query on the endpoint.
 
 required_permissions:
   - IMPERSONATION
@@ -21,7 +29,13 @@ parameters:
 
 sources:
   - query: |
-      SELECT * FROM query(query=Command, env=dict(config=config))
+      SELECT _SessionId, *
+      FROM query(query=Command, env=dict(config=config))
 
-</code></pre>
+  - name: Overview
+    query: |
+      SELECT _SessionId, timestamp(epoch=now()) AS Timestamp, Command
+      FROM scope()
+````
+
 

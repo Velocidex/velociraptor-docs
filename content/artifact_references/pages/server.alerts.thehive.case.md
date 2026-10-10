@@ -1,28 +1,32 @@
 ---
 title: Server.Alerts.TheHive.Case
+description: "Generates TheHive cases from completed artifact flows using\nClientId, FlowId, and FQDN as tags. Also adds FQDN as an observable."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Server Event Artifact]
+build:
+  list: never
 ---
 
-Creates a TheHive case when monitored artifacts complete with results.
+Generates TheHive cases from completed artifact flows using
+ClientId, FlowId, and FQDN as tags. Also adds FQDN as an observable.
 
-Adds the ClientId, FlowId, and FQDN as tags to the case. Adds FQDN as an
-observable.
-
-The artifact uses Server Metadata to store credentials, instead of storing
-these directly in the artifact.
+Note that this artifact uses Server Metadata to store credentials,
+instead of storing these directly within the artifact.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Server.Alerts.TheHive.Case
 description: |
-   Creates a TheHive case when monitored artifacts complete with results.
+  Generates TheHive cases from completed artifact flows using
+  ClientId, FlowId, and FQDN as tags. Also adds FQDN as an observable.
 
-   Adds the ClientId, FlowId, and FQDN as tags to the case. Adds FQDN as an
-   observable.
-
-   The artifact uses Server Metadata to store credentials, instead of storing
-   these directly in the artifact.
+  Note that this artifact uses Server Metadata to store credentials,
+  instead of storing these directly within the artifact.
 
 type: SERVER_EVENT
 
@@ -75,6 +79,6 @@ sources:
           method="POST",
           url=format(format="%v/api/case/%v/artifact", args=[TheHiveURL, CaseID]))
        })
+````
 
-</code></pre>
 

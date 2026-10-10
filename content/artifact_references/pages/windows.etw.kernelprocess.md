@@ -1,25 +1,41 @@
 ---
 title: Windows.ETW.KernelProcess
+description: "Monitors process creation, termination, and image load events via\nthe Kernel-Process ETW provider."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
 
-This artifact follows the Microsoft-Windows-Kernel-Process provider.
+Monitors process creation, termination, and image load events via
+the Kernel-Process ETW provider.
+
+This artifact follows the `Microsoft-Windows-Kernel-Process`
+provider.
 
 NOTE: We can only attach to this provider when running as
 NT_USER/SYSTEM.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.ETW.KernelProcess
 description: |
-  This artifact follows the Microsoft-Windows-Kernel-Process provider.
+  Monitors process creation, termination, and image load events via
+  the Kernel-Process ETW provider.
+  
+  This artifact follows the `Microsoft-Windows-Kernel-Process`
+  provider.
 
   NOTE: We can only attach to this provider when running as
   NT_USER/SYSTEM.
 
 references:
-- "https://github.com/repnz/etw-providers-docs/blob/master/Manifests-Win10-18990/Microsoft-Windows-Kernel-Process.xml"
+- https://github.com/repnz/etw-providers-docs/blob/master/Manifests-Win10-18990/Microsoft-Windows-Kernel-Process.xml
 
 parameters:
   - name: ProcessRegex
@@ -45,7 +61,7 @@ type: CLIENT_EVENT
 
 sources:
   - query: |
-      LET EIDLookup &lt;= dict(
+      LET EIDLookup <= dict(
         `1`="ProcessStart", `2`="ProcessStop",
         `5`="ImageLoad", `6`="ImageUnload")
 
@@ -64,6 +80,6 @@ sources:
         AND if(condition=IgnoreProcessRegex,
                then=NOT EventData.ImageName =~ IgnoreProcessRegex,
                else=TRUE)
+````
 
-</code></pre>
 

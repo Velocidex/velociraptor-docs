@@ -1,8 +1,17 @@
 ---
 title: Windows.Forensics.Bam
+description: "Parses the BAM registry key from Windows 10+ to identify program\nexecution times."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
+
+Parses the BAM registry key from Windows 10+ to identify program
+execution times.
 
 The Background Activity Moderator (BAM) is a Windows service that
 Controls activity of background applications.  This service exists
@@ -12,9 +21,14 @@ It provides full path of the executable file that was run on the
 system and last execution date/time
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Forensics.Bam
 description: |
+  Parses the BAM registry key from Windows 10+ to identify program
+  execution times.
+
   The Background Activity Moderator (BAM) is a Windows service that
   Controls activity of background applications.  This service exists
   in Windows 10 only after Fall Creators update – version 1709.
@@ -40,12 +54,12 @@ sources:
   - precondition:
       SELECT OS from info() where OS = "windows"
     query: |
-        LET users &lt;= SELECT Name, UUID
+        LET system_users <= SELECT Name, UUID
             FROM Artifact.Windows.Sys.Users()
             WHERE Name =~ userRegex
 
         SELECT OSPath.Components[-2] as SID, {
-            SELECT Name FROM users
+            SELECT Name FROM system_users
             WHERE UUID = OSPath.Components[-2]
           } As UserName,
           Name as Binary,
@@ -54,6 +68,6 @@ sources:
                profile="[]", struct="int64")) AS Bam_time
         FROM glob(globs=bamKeys.KeyGlob, accessor="registry")
         WHERE Data.type =~ "BINARY"
+````
 
-</code></pre>
 

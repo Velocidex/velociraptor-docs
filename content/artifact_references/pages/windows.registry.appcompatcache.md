@@ -1,42 +1,51 @@
 ---
 title: Windows.Registry.AppCompatCache
+description: "Parses the AppCompatCache (Shimcache) registry value to enumerate\nrecently executed application paths."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact parses AppCompatCache (shimcache) from target hives.
+Parses the AppCompatCache (Shimcache) registry value to enumerate
+recently executed application paths.
 
-AppCompatCache, also known as Shimcache, is a component of the Application
-Compatibility Database, which was created by Microsoft and used by the Windows
-operating system to identify application compatibility issues. This helps
-developers troubleshoot legacy functions and contains data related to Windows
-features.
+AppCompatCache, also known as Shimcache, is a component of the
+Application Compatibility Database, which was created by Microsoft
+and used by the Windows operating system to identify application
+compatibility issues. This helps developers troubleshoot legacy
+functions and contains data related to Windows features.
 
-Note:
+**NOTES:**
 
 - Windows 10+ systems Execution flag of 1 indicates execution.
-- The appcompatcache artifact does not currently support execution flag in
-Windows 7 and 8 / 8.1 Systems.
+- The appcompatcache artifact does not currently support execution
+  flag in Windows 7 and 8 / 8.1 Systems.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.Registry.AppCompatCache
 author: Matt Green - @mgreen27
 description: |
-  This artifact parses AppCompatCache (shimcache) from target hives.
+  Parses the AppCompatCache (Shimcache) registry value to enumerate
+  recently executed application paths.
 
-  AppCompatCache, also known as Shimcache, is a component of the Application
-  Compatibility Database, which was created by Microsoft and used by the Windows
-  operating system to identify application compatibility issues. This helps
-  developers troubleshoot legacy functions and contains data related to Windows
-  features.
+  AppCompatCache, also known as Shimcache, is a component of the
+  Application Compatibility Database, which was created by Microsoft
+  and used by the Windows operating system to identify application
+  compatibility issues. This helps developers troubleshoot legacy
+  functions and contains data related to Windows features.
 
-  Note:
+  **NOTES:**
 
   - Windows 10+ systems Execution flag of 1 indicates execution.
-  - The appcompatcache artifact does not currently support execution flag in
-  Windows 7 and 8 / 8.1 Systems.
-
+  - The appcompatcache artifact does not currently support execution
+    flag in Windows 7 and 8 / 8.1 Systems.
 
 reference:
   - https://www.mandiant.com/resources/caching-out-the-val
@@ -48,55 +57,55 @@ parameters:
 precondition: SELECT OS From info() where OS = 'windows'
 
 export: |
-    LET AppCompatCacheParser &lt;= '''[
-    ["HeaderWin10", "x=&gt;x.HeaderSize", [
+    LET AppCompatCacheParser <= '''[
+    ["HeaderWin10", "x=>x.HeaderSize", [
       ["HeaderSize", 0, "unsigned int"],
-      ["Entries", "x=&gt;x.HeaderSize", Array, {
+      ["Entries", "x=>x.HeaderSize", Array, {
           type: "Entry",
-          sentinel: "x=&gt;x.Size = 0",
+          sentinel: "x=>x.Size = 0",
           count: 10000,
       }]
     ]],
     ["HeaderWin8", 128, [
       ["Entries", 128, Array, {
           type: "EntryWin8",
-          sentinel: "x=&gt;x.EntrySize = 0",
+          sentinel: "x=>x.EntrySize = 0",
           count: 10000,
       }]
     ]],
 
-    ["EntryWin8", "x=&gt;x.EntrySize + 12", [
+    ["EntryWin8", "x=>x.EntrySize + 12", [
       ["Signature", 0, "String", {
          length: 4,
       }],
       ["EntrySize", 8, "unsigned int"],
       ["PathSize", 12, "uint16"],
       ["Path", 14, "String", {
-          length: "x=&gt;x.PathSize",
+          length: "x=>x.PathSize",
           encoding: "utf16",
       }],
-      ["LastMod", "x=&gt;x.PathSize + 14 + 10", "WinFileTime"],
+      ["LastMod", "x=>x.PathSize + 14 + 10", "WinFileTime"],
       ["Execution", 0, "Value",{"value":"N/A"}],
     ]],
 
-    ["Entry", "x=&gt;x.Size + 12", [
+    ["Entry", "x=>x.Size + 12", [
       ["Signature", 0, "String", {
          length: 4,
       }],
       ["Size", 8, "unsigned int"],
       ["PathSize", 12, "uint16"],
       ["Path", 14, "String", {
-          length: "x=&gt;x.PathSize",
+          length: "x=>x.PathSize",
           encoding: "utf16",
       }],
-      ["LastMod", "x=&gt;x.PathSize + 14", "WinFileTime"],
-      ["DataSize", "x=&gt;x.PathSize + 14 + 8", "uint32"],
-      ["Data", "x=&gt;x.PathSize + 14 + 8 + 4" , "String", {
-          length: "x=&gt;x.DataSize",
+      ["LastMod", "x=>x.PathSize + 14", "WinFileTime"],
+      ["DataSize", "x=>x.PathSize + 14 + 8", "uint32"],
+      ["Data", "x=>x.PathSize + 14 + 8 + 4" , "String", {
+          length: "x=>x.DataSize",
       }],
 
       # The last byte of the Data block is 1 for execution
-      ["Execution", "x=&gt;x.PathSize + 14 + 8 + 4 + x.DataSize - 4", "uint32"]
+      ["Execution", "x=>x.PathSize + 14 + 8 + 4 + x.DataSize - 4", "uint32"]
     ]],
 
     # This is the Win7 parser but we don't use it right now.
@@ -104,16 +113,16 @@ export: |
       ["Signature", 0, "uint32"],
       ["Entries", 128, "Array", {
           count: 10000,
-          sentinel: "x=&gt;x.PathSize = 0",
+          sentinel: "x=>x.PathSize = 0",
           type: EntryWin7x64,
       }]
     ]],
     ["EntryWin7x64", 48, [
       ["PathSize", 0, "uint16"],
       ["PathOffset", 8, "uint32"],
-      ["Path", "x=&gt;x.PathOffset - x.StartOf", "String", {
+      ["Path", "x=>x.PathOffset - x.StartOf", "String", {
           encoding: "utf16",
-          length: "x=&gt;x.PathSize",
+          length: "x=>x.PathSize",
       }],
       ["LastMod", 16, "WinFileTime"],
       ["Execution", 0, "Value",{"value":"N/A"}],
@@ -145,12 +154,13 @@ export: |
 sources:
   - query: |
       -- first find all ControlSet Keys in scope
-      LET AppCompatKeys &lt;= SELECT OSPath FROM glob(globs=AppCompatCacheKey, accessor='registry')
+      LET AppCompatKeys <= SELECT OSPath FROM glob(globs=AppCompatCacheKey, accessor='registry')
 
       -- when greater than one key we need to extract results and order later
-      LET results &lt;= SELECT
+      LET results <= SELECT
             ModificationTime,
-            Name as Path,
+            regex_replace(source=Name,re='''^SYSVOL''',replace="%SystemRoot%") as Path,
+            expand(path=regex_replace(source=Name,re='''^SYSVOL''',replace="%SystemRoot%")) as Expanded,
             ExecutionFlag,
             ControlSet,
             Key
@@ -166,6 +176,7 @@ sources:
                   FROM AppCompatCache(Blob=read_file(
                       accessor='registry', filename=OSPath))
             })
+          WHERE ModificationTime // removes junk build in references
 
       -- find position of entry for each ControlSet. Lower numbers more recent
       LET ControlSetPosition(cs) = SELECT *, count() - 1 as Position
@@ -184,18 +195,20 @@ sources:
                     SELECT * FROM foreach(row=_value)
                 })
 
-      -- output results
+      -- include final test for Path/Expanded to cover dead disk usecases
       SELECT
         Position,
         ModificationTime,
-        Path,
-        ExecutionFlag,
-        ControlSet,
-        Key
+        if(condition = split(string=Path,sep='''%[^%]+%''')[1] = Expanded,
+                then = Path,
+                else = Expanded ) as Path,
+        ExecutionFlag
       FROM if(condition= len(list=AppCompatKeys.OSPath)=1,
         then={
             SELECT *, count() - 1 as Position FROM results
         },
         else= mutli_controlset )
-</code></pre>
+      GROUP BY Position, Path, ModificationTime
+````
+
 

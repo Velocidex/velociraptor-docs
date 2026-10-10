@@ -1,26 +1,36 @@
 ---
 title: Linux.Forensics.ImmutableFiles
+description: "Locates immutable files on Linux by checking ext4 filesystem flags."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-Searches the filesystem for immutable files.
+Locates immutable files on Linux by checking ext4 filesystem flags.
 
-Attackers sometimes enable immutable files in Linux. This prevents files from
-being modified. However this is sometimes a strong signal.
+Attackers sometimes enable immutable files in Linux. This prevents
+files from being modified. However this is sometimes a strong
+signal.
 
-NOTE: We use the ext4 accessor to parse the low level filesystem.
+NOTE: Uses the `ext4` accessor to parse the low level filesystem.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Linux.Forensics.ImmutableFiles
 description: |
-  Searches the filesystem for immutable files.
+  Locates immutable files on Linux by checking ext4 filesystem flags.
 
-  Attackers sometimes enable immutable files in Linux. This prevents files from
-  being modified. However this is sometimes a strong signal.
+  Attackers sometimes enable immutable files in Linux. This prevents
+  files from being modified. However this is sometimes a strong
+  signal.
 
-  NOTE: We use the ext4 accessor to parse the low level filesystem.
+  NOTE: Uses the `ext4` accessor to parse the low level filesystem.
 
 precondition: |
   SELECT * FROM info() where OS = 'linux'
@@ -61,6 +71,6 @@ sources:
               one_filesystem=OneFilesystem,
               accessor="ext4", nosymlink=DoNotFollowSymlinks)
     WHERE Data.Flags =~ "IMMUTABLE"
+````
 
-</code></pre>
 

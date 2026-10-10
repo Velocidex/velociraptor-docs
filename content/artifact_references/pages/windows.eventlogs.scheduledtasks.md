@@ -1,53 +1,65 @@
 ---
 title: Windows.EventLogs.ScheduledTasks
+description: "Extracts and formats Windows scheduled task events from the\nTaskScheduler operational and Security logs."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Artifact]
+build:
+  list: never
 ---
 
-This artifact will extract Event Logs related to ScheduledTasks and provide
-a nice format for simplified review.
+Extracts and formats Windows scheduled task events from the
+TaskScheduler operational and Security logs.
 
-Adversaries may abuse tasks for execution, persistence, lateral movement or
-privilege escalation. This artifact collates all events from
-Microsoft-Windows-TaskScheduler/Operational event log channel and scheduled
-task events from the Security log if configured.
+Adversaries may abuse tasks for execution, persistence, lateral
+movement or privilege escalation. This artifact collates all events
+from `Microsoft-Windows-TaskScheduler/Operational` event log channel
+and scheduled task events from the Security log if configured.
 
-A common hunting use case may be collection all deleted scheduled tasks (EID 141),
-all modified scheduled tasks (EID 140) then run frequency analysis and chase
-down any abnormalities for the environment. Similarly task execution (EID 129)
-and registration (EID 106) can be a good collection hunting for unusual paths.
+A common hunting use case may be collection all deleted scheduled
+tasks (EID 141), all modified scheduled tasks (EID 140) then run
+frequency analysis and chase down any abnormalities for the
+environment. Similarly task execution (EID 129) and registration
+(EID 106) can be a good collection hunting for unusual paths.
 
-Pivoting can be via either: TaskSchedulerEventRegex, TaskName or IOC Regex
-(e.g taskname|delete|created|update)
+Pivoting can be via either: TaskSchedulerEventRegex, TaskName or IOC
+regex (e.g taskname|delete|created|update)
 
-Note: Audit Other Object Access Events is required to be implemented to record
-scheduled tasks being registered, modified or disabled in the Security event
-log channel.
+Note: Audit Other Object Access Events is required to be implemented
+to record scheduled tasks being registered, modified or disabled in
+the Security event log channel.
+
 See: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Object Access
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.EventLogs.ScheduledTasks
 description: |
-  This artifact will extract Event Logs related to ScheduledTasks and provide
-  a nice format for simplified review.
+  Extracts and formats Windows scheduled task events from the
+  TaskScheduler operational and Security logs.
+  
+  Adversaries may abuse tasks for execution, persistence, lateral
+  movement or privilege escalation. This artifact collates all events
+  from `Microsoft-Windows-TaskScheduler/Operational` event log channel
+  and scheduled task events from the Security log if configured.
 
-  Adversaries may abuse tasks for execution, persistence, lateral movement or
-  privilege escalation. This artifact collates all events from
-  Microsoft-Windows-TaskScheduler/Operational event log channel and scheduled
-  task events from the Security log if configured.
+  A common hunting use case may be collection all deleted scheduled
+  tasks (EID 141), all modified scheduled tasks (EID 140) then run
+  frequency analysis and chase down any abnormalities for the
+  environment. Similarly task execution (EID 129) and registration
+  (EID 106) can be a good collection hunting for unusual paths.
 
-  A common hunting use case may be collection all deleted scheduled tasks (EID 141),
-  all modified scheduled tasks (EID 140) then run frequency analysis and chase
-  down any abnormalities for the environment. Similarly task execution (EID 129)
-  and registration (EID 106) can be a good collection hunting for unusual paths.
+  Pivoting can be via either: TaskSchedulerEventRegex, TaskName or IOC
+  regex (e.g taskname|delete|created|update)
 
-  Pivoting can be via either: TaskSchedulerEventRegex, TaskName or IOC Regex
-  (e.g taskname|delete|created|update)
+  Note: Audit Other Object Access Events is required to be implemented
+  to record scheduled tasks being registered, modified or disabled in
+  the Security event log channel.
 
-  Note: Audit Other Object Access Events is required to be implemented to record
-  scheduled tasks being registered, modified or disabled in the Security event
-  log channel.
   See: Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Object Access
 
 author: "@mgreen27 - Matt Green"
@@ -116,17 +128,17 @@ parameters:
 
 sources:
   - query: |
-      LET VSS_MAX_AGE_DAYS &lt;= VSSAnalysisAge
-      LET Accessor = if(condition=VSSAnalysisAge &gt; 0, then="ntfs_vss", else="auto")
+      LET VSS_MAX_AGE_DAYS <= VSSAnalysisAge
+      LET Accessor = if(condition=VSSAnalysisAge > 0, then="ntfs_vss", else="auto")
 
       -- firstly set timebounds for performance
-      LET DateAfterTime &lt;= if(condition=DateAfter,
+      LET DateAfterTime <= if(condition=DateAfter,
         then=DateAfter, else=timestamp(epoch="1600-01-01"))
-      LET DateBeforeTime &lt;= if(condition=DateBefore,
+      LET DateBeforeTime <= if(condition=DateBefore,
         then=DateBefore, else=timestamp(epoch="2200-01-01"))
 
       -- Lookup what each task ID means (sadly dict keys are always strings).
-      LET TaskIDLookup &lt;= dict(
+      LET TaskIDLookup <= dict(
         `4698`="A scheduled task was created.",
         `4699`="A scheduled task was deleted.",
         `4700`="A scheduled task was enabled.",
@@ -152,7 +164,7 @@ sources:
                  then= data.TaskContentNew,
                  else= if(condition= data.TaskContent,
                     then= data.TaskContent)),
-                       re='&lt;[?].+?&gt;',
+                       re='<[?].+?>',
                        replace='')).Task,
 
          ClientProcessStartKey=data.ClientProcessStartKey,
@@ -208,7 +220,7 @@ sources:
                     AND UserName =~ UserNameRegex
                     AND format(format='%v %v %v %v', args=[
                             EventData, UserData, Message, System]) =~ IocRegex
-                    AND EventTime &gt;= DateAfterTime AND EventTime &lt;= DateBeforeTime
+                    AND EventTime >= DateAfterTime AND EventTime <= DateBeforeTime
             }
           )
 
@@ -235,6 +247,6 @@ sources:
         EventData,
         OSPath
       FROM evtxsearch(PathList=fspaths)
+````
 
-</code></pre>
 

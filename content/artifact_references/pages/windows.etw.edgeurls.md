@@ -1,30 +1,36 @@
 ---
 title: Windows.ETW.EdgeURLs
+description: "Captures URLs accessed by the Edge browser via the\nMicrosoft-Windows-URLMon ETW provider."
+type: docs-no-toc
 hidden: true
+sitemap:
+  disable: true
 tags: [Client Event Artifact]
+build:
+  list: never
 ---
 
-Collects all URLs accessed by the Edge browser using ETW.
+Captures URLs accessed by the Edge browser via the
+Microsoft-Windows-URLMon ETW provider.
 
-It also serves as an example of an ETW artifact, in this case using the
-provider:
-
-`Microsoft-Windows-URLMon       {245F975D-909D-49ED-B8F9-9A75691D6B6B}`
+It also serves as an example of an ETW artifact, in this case using
+the provider: `Microsoft-Windows-URLMon       {245F975D-909D-49ED-B8F9-9A75691D6B6B}`
 
 NOTE: This artifact can generate a lot of data - you probably want
 to filter the URLs a bit and/or target collection to a narrow label
 group.
 
 
-<pre><code class="language-yaml">
+---
+
+````yaml
 name: Windows.ETW.EdgeURLs
 description: |
-  Collects all URLs accessed by the Edge browser using ETW.
+  Captures URLs accessed by the Edge browser via the
+  Microsoft-Windows-URLMon ETW provider.
 
-  It also serves as an example of an ETW artifact, in this case using the
-  provider:
-
-  `Microsoft-Windows-URLMon       {245F975D-909D-49ED-B8F9-9A75691D6B6B}`
+  It also serves as an example of an ETW artifact, in this case using
+  the provider: `Microsoft-Windows-URLMon       {245F975D-909D-49ED-B8F9-9A75691D6B6B}`
 
   NOTE: This artifact can generate a lot of data - you probably want
   to filter the URLs a bit and/or target collection to a narrow label
@@ -40,7 +46,7 @@ parameters:
 
 sources:
   - query: |
-      LET m &lt;= memoize(key="Pid", period=30, query={
+      LET m <= memoize(key="Pid", period=30, query={
           SELECT Pid, Exe, Username FROM pslist()
       })
 
@@ -52,6 +58,6 @@ sources:
         description="Microsoft-Windows-URLMon",
         guid="{245F975D-909D-49ED-B8F9-9A75691D6B6B}")
       WHERE ID = 805 AND URL =~ URLFilter
+````
 
-</code></pre>
 

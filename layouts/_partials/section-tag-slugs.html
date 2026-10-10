@@ -1,0 +1,11 @@
+{{/* Renders a JSON array of the site's existing /tags/<slug>/ URLs
+   (ground truth from the taxonomy itself).  static/js/section-search.js reads
+   it and only hyperlinks a tag pill when the matching /tags/ page actually
+   exists, so section-search cards never contain dead tag links. */}}
+<script type="application/json" id="section-tag-slugs">
+{{- $slugs := slice -}}
+{{- range .Site.Taxonomies.tags.Alphabetical -}}
+  {{- $slugs = $slugs | append .Page.RelPermalink -}}
+{{- end -}}
+{{- $slugs | jsonify | safeJS -}}
+</script>
