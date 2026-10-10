@@ -1,14 +1,22 @@
 name: Windows.Powershell.Timeline
-author: Mohammed Hasan, 0xHasanm
+author: Mohammed Hasan, 0xHasanM
 description: |
    This artifact extracts commands executed from each user's ConsoleHost_History.txt and correlates the timestamps of Data_Added events in the USNJRNL with those commands to construct a timeline of PowerShell command execution.
+
+   For each user, the most recent DATA_EXTEND event is paired with the
+   last line of the history file, the next most recent with the line
+   before it, and so on. Commands without a matching USN event have
+   an empty Timestamp, and USN events without a matching command show
+   "N/A" as the Command.
 
 # Can be CLIENT, CLIENT_EVENT, SERVER, SERVER_EVENT or NOTEBOOK
 type: CLIENT
 
 parameters:
    - name: user
+     description: Regex to match the profile folder name of the users to include.
      default: .
+     type: regex
 
 references:
   - https://www.linkedin.com/posts/0xhasanm_sundfirday-dfir-powershell-activity-7395908066409484288-eNSo
@@ -18,85 +26,79 @@ sources:
       SELECT OS From info() where OS = 'windows'
 
     query: |
-      LET USN_EVENTS <= SELECT
-          Timestamp,
-          split(string=OSPath, sep_string="\\")[-8] AS username,
-          Reason
+      -- The profile folder is the 8th path component from the end:
+      -- C:\Users\<user>\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+      LET USN_EVENTS <= SELECT Timestamp,
+                               OSPath[-8] AS Username
         FROM Artifact.Windows.Forensics.Usn(FileNameRegex="ConsoleHost_History.txt")
-        WHERE username =~ user
-         and len(list=Reason) = 2
-              and (Reason[0] = "DATA_EXTEND" or Reason[1] = "DATA_EXTEND")
-        ORDER BY Timestamp DESC
-      
+        WHERE Username =~ user
+          AND len(list=Reason) = 2
+          AND "DATA_EXTEND" in Reason
+
       LET PSReadline <= SELECT LineNum,
                                Line,
-                               Username
+                               OSPath[-8] AS Username
         FROM Artifact.Windows.System.Powershell.PSReadline()
         WHERE Username =~ user
-        ORDER BY LineNum DESC
-      
-      LET USN_EVENTS_Indexed <= SELECT count() AS EventID,
-                                       *
-        FROM USN_EVENTS
-      
-      LET PSReadline_Indexed <= SELECT count() AS CommandID,
-                                       *
-        FROM PSReadline
-      
-      LET results_with_timestamp <= SELECT *
+
+      LET Users <= SELECT Username AS TargetUser
+        FROM chain(a={ SELECT Username FROM USN_EVENTS },
+                   b={ SELECT Username FROM PSReadline })
+        GROUP BY TargetUser
+
+      -- Number each user's events and commands from newest to oldest
+      -- so the Nth newest event pairs with the Nth newest command.
+      -- These are functions so count() restarts at 1 for each user.
+      LET UserEvents(TargetUser) = SELECT
+          format(format="%v|%v", args=[TargetUser, count()]) AS Key,
+          TargetUser AS Username,
+          Timestamp
         FROM foreach(row={
-          SELECT *
+          SELECT Timestamp FROM USN_EVENTS
+          WHERE Username = TargetUser
+          ORDER BY Timestamp DESC
+        })
+
+      LET UserCommands(TargetUser) = SELECT
+          format(format="%v|%v", args=[TargetUser, count()]) AS Key,
+          TargetUser AS Username,
+          Line
+        FROM foreach(row={
+          SELECT LineNum, Line FROM PSReadline
+          WHERE Username = TargetUser
+          ORDER BY LineNum DESC
+        })
+
+      LET USN_EVENTS_Indexed <= SELECT * FROM foreach(row=Users, query={
+          SELECT * FROM UserEvents(TargetUser=TargetUser)
+        })
+
+      LET PSReadline_Indexed <= SELECT * FROM foreach(row=Users, query={
+          SELECT * FROM UserCommands(TargetUser=TargetUser)
+        })
+
+      -- Index both sides on Key so the join is a lookup rather than
+      -- a nested scan (https://docs.velociraptor.app/docs/vql/join/).
+      LET CommandLookup <= memoize(key="Key", period=100000, query={
+          SELECT Key, Line FROM PSReadline_Indexed
+        })
+
+      LET USNLookup <= memoize(key="Key", period=100000, query={
+          SELECT Key, Timestamp FROM USN_EVENTS_Indexed
+        })
+
+      SELECT * FROM chain(
+        a={
+          SELECT Timestamp,
+                 Username,
+                 get(item=CommandLookup, field=Key).Line || "N/A" AS Command
           FROM USN_EVENTS_Indexed
         },
-                     query={
-          SELECT Timestamp,
-                 Line AS Command,
-                 Username
+        b={
+          SELECT NULL AS Timestamp,
+                 Username,
+                 Line AS Command
           FROM PSReadline_Indexed
-          WHERE CommandID = EventID
-        })
-      
-      LET PSReadline_length <= array(_={ SELECT CommandID FROM PSReadline_Indexed }).CommandID
-      
-      LET usn_results_without_command <= SELECT *
-        FROM foreach(row={
-          SELECT PSReadline_length[-1] AS PSReadline_LineNumbers
-          FROM scope()
-        },
-                     query={
-          SELECT Timestamp,
-                 "N/A" AS Command,
-                 username
-          FROM USN_EVENTS_Indexed
-          WHERE EventID > PSReadline_LineNumbers
-        })
-      
-      LET USN_EVENTS_length <= array(_={ SELECT EventID FROM USN_EVENTS_Indexed }).EventID
-      
-      LET psreadline_results_without_timestamp <= SELECT *
-        FROM foreach(row={
-          SELECT USN_EVENTS_length[-1] AS USN_EVENTS_EventNumbers
-          FROM scope()
-        },
-                     query={
-          SELECT "N/A" AS Timestamp,
-                 Line AS Command,
-                 Username
-          FROM PSReadline_Indexed
-          WHERE CommandID > USN_EVENTS_EventNumbers
-        })
-      
-      SELECT *
-      FROM chain(a={
-          SELECT *
-          FROM results_with_timestamp
-        },
-                 b={
-          SELECT *
-          FROM usn_results_without_command
-        },
-                 c={
-          SELECT *
-          FROM psreadline_results_without_timestamp
+          WHERE NOT get(item=USNLookup, field=Key)
         })
       ORDER BY Timestamp
