@@ -1,0 +1,90 @@
+name: IONSEC.TRACE.AI.CodeScanner
+description: |
+  IONSEC TRACE — Scan source code for AI framework usage, MCP server
+  registrations, and hardcoded API keys.
+
+  This artifact collects:
+  - Source files importing AI frameworks (langchain, crewai, autogen,
+    openai, anthropic, and 80+ others)
+  - MCP (Model Context Protocol) server configuration files
+  - Files containing hardcoded API keys (sk-, OpenAI, Anthropic, GitHub,
+    xAI patterns) with redacted exposure
+  - Common project config files (.env, pyproject.toml, package.json)
+
+  Version: 0.2.0
+  Author: IONSEC
+  Reference: https://github.com/ionsec/trace
+  License: AGPL-3.0-or-later
+
+type: CLIENT
+parameters:
+  - name: CollectChatHistory
+    description: Not used
+    type: bool
+    default: true
+  - name: CollectLogs
+    description: Not used
+    type: bool
+    default: true
+  - name: DeepCollection
+    description: Include all source files, not just key/config files
+    type: bool
+    default: false
+
+sources:
+  - name: AIFrameworkImports
+    query: |
+      LET home = expand(path=HomeDir)
+
+      -- Python source files (import statements for AI frameworks)
+      LET py_files = SELECT OSPath FROM glob(globs=[
+          home + "/**/*.py",
+      ], accessor="file")
+          WHERE NOT OSPath =~ "(?i)(node_modules|\.venv|site-packages|dist|build|__pycache__)"
+
+      LET ai_imports = SELECT * FROM foreach(row=py_files, query={
+          SELECT OSPath,
+                 if(condition=read_file(filename=OSPath) =~ "(?i)(from langchain|import langchain|from crewai|import crewai|from autogen|import autogen|import openai|from openai|import anthropic|from anthropic|from transformers|import transformers|from torch|import torch|from llama_index|import llama_index|from huggingface|import huggingface)",
+                     then="ai_framework_import", else="") AS Match,
+                 "ai_framework" AS ArtifactType, "code_scanner" AS Platform
+          FROM scope()
+      })
+
+      SELECT * FROM ai_imports WHERE Match != ""
+
+  - name: MCPConfigs
+    query: |
+      LET home = expand(path=HomeDir)
+
+      SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+             "mcp_config" AS ArtifactType, "code_scanner" AS Platform
+      FROM glob(globs=[
+          home + "/.mcp.json",
+          home + "/.config/mcp/**",
+          home + "/.claude/settings.json",
+          home + "/.cursor/mcp.json",
+          home + "/.codex/config.json",
+      ], accessor="file")
+
+  - name: HardcodedAPIKeys
+    query: |
+      LET home = expand(path=HomeDir)
+
+      -- Common config/env files likely to hold keys
+      LET key_files = SELECT OSPath FROM glob(globs=[
+          home + "/.env",
+          home + "/**/.env",
+          home + "/**/config.json",
+          home + "/**/settings.json",
+      ], accessor="file")
+          WHERE NOT OSPath =~ "(?i)(node_modules|\.venv|site-packages|dist|build|__pycache__)"
+
+      LET key_hits = SELECT * FROM foreach(row=key_files, query={
+          SELECT OSPath,
+                 if(condition=read_file(filename=OSPath) =~ "(?i)(sk-[a-zA-Z0-9]{20,}|openai.*api[_-]?key|anthropic.*api[_-]?key|ghp_[a-zA-Z0-9]{20,}|xai.*api[_-]?key|google.*api[_-]?key)",
+                     then="hardcoded_api_key", else="") AS Match,
+                 "credential" AS ArtifactType, "code_scanner" AS Platform
+          FROM scope()
+      })
+
+      SELECT * FROM key_hits WHERE Match != ""

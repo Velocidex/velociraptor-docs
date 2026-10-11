@@ -1,0 +1,399 @@
+name: IONSEC.TRACE.AI.Inference
+description: |
+  IONSEC TRACE — Collect forensic artifacts from local AI inference
+  engines (Ollama, LM Studio, llama.cpp, GPT4All, text-generation-webui,
+  KoboldCpp, LocalAI, vLLM, Jan, AnythingLLM).
+
+  Version: 0.1.0
+  Author: IONSEC
+
+  This artifact collects:
+  - Configuration files and model manifests
+  - Conversation/chat history databases (SQLite, JSON, LevelDB)
+  - API logs and service logs
+  - Model inventory (names, sizes, families, digests)
+  - Authentication artifacts (keys, tokens)
+  - Process and network information for running AI services
+
+type: CLIENT
+parameters:
+  - name: CollectChatHistory
+    description: Collect conversation/chat history databases (may contain PII)
+    type: bool
+    default: true
+  - name: CollectModelManifests
+    description: Collect model manifest files
+    type: bool
+    default: true
+  - name: CollectLogs
+    description: Collect service and application logs
+    type: bool
+    default: true
+  - name: CollectAPIResponses
+    description: Query running AI services for model lists and server info
+    type: bool
+    default: false
+  - name: DeepCollection
+    description: Include session-level data (large, skip for quick triage)
+    type: bool
+    default: false
+
+sources:
+  - name: Ollama_Linux
+    precondition: SELECT OS FROM info() WHERE OS = 'linux'
+    query: |
+      LET home = expand(path=HomeDir)
+      LET ollama_dirs = SELECT home + "/.ollama" AS base_path FROM scope()
+
+      -- Config file
+      LET ollama_config = SELECT * FROM foreach(row=ollama_dirs, query={
+          SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "ollama" AS Platform
+          FROM glob(globs=[
+              base_path + "/config.json",
+          ], accessor="file")
+      })
+
+      -- CLI history
+      LET ollama_history = SELECT * FROM foreach(row=ollama_dirs, query={
+          SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "cli_history" AS ArtifactType, "ollama" AS Platform
+          FROM glob(globs=[
+              base_path + "/history",
+          ], accessor="file")
+      })
+
+      -- Ed25519 signing keys
+      LET ollama_keys = SELECT * FROM foreach(row=ollama_dirs, query={
+          SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "signing_key" AS ArtifactType, "ollama" AS Platform
+          FROM glob(globs=[
+              base_path + "/id_ed25519",
+              base_path + "/id_ed25519.pub",
+          ], accessor="file")
+      })
+
+      -- Conversation database (SQLite)
+      LET ollama_conversations = SELECT * FROM foreach(row=ollama_dirs, query={
+          SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "conversation_database" AS ArtifactType, "ollama" AS Platform
+          FROM glob(globs=[
+              base_path + "/db.sqlite",
+              base_path + "/db.sqlite-wal",
+              base_path + "/db.sqlite-shm",
+          ], accessor="file")
+          WHERE CollectChatHistory
+      })
+
+      -- Model manifests
+      LET ollama_manifests = SELECT * FROM foreach(row=ollama_dirs, query={
+          SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "model_manifest" AS ArtifactType, "ollama" AS Platform
+          FROM glob(globs=[
+              base_path + "/models/manifests/**",
+          ], accessor="file")
+          WHERE CollectModelManifests
+      })
+
+      -- Running Ollama process
+      LET ollama_process = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                                 create_time AS CreateTime, "process" AS ArtifactType,
+                                 "ollama" AS Platform
+          FROM pslist() WHERE Name =~ "ollama"
+
+      -- Network connections on Ollama port
+      LET ollama_netstat = SELECT * FROM connections()
+          WHERE Laddr.Port = 11434 OR Raddr.Port = 11434
+          LIMIT 50
+
+      LET ollama_netstat_rows = SELECT * FROM ollama_netstat LIMIT 50
+
+      SELECT * FROM chain(a=ollama_config, b=ollama_history, c=ollama_keys, d=ollama_conversations, e=ollama_manifests, f=ollama_process, g=ollama_netstat_rows)
+
+  - name: Ollama_macOS
+    precondition: SELECT OS FROM info() WHERE OS = 'darwin'
+    query: |
+      LET home = expand(path=HomeDir)
+      LET ollama_app_support = home + "/Library/Application Support/Ollama"
+      LET ollama_dir = home + "/.ollama"
+
+      LET config_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "ollama" AS Platform
+          FROM glob(globs=[
+              ollama_dir + "/config.json",
+              ollama_app_support + "/config.json",
+          ], accessor="file")
+
+      LET history_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "cli_history" AS ArtifactType, "ollama" AS Platform
+          FROM glob(globs=[ollama_dir + "/history"], accessor="file")
+
+      LET key_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "signing_key" AS ArtifactType, "ollama" AS Platform
+          FROM glob(globs=[
+              ollama_dir + "/id_ed25519",
+              ollama_dir + "/id_ed25519.pub",
+          ], accessor="file")
+
+      LET conv_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "conversation_database" AS ArtifactType, "ollama" AS Platform
+          FROM glob(globs=[
+              ollama_app_support + "/db.sqlite",
+              ollama_app_support + "/db.sqlite-wal",
+              ollama_app_support + "/db.sqlite-shm",
+          ], accessor="file")
+          WHERE CollectChatHistory
+
+      LET log_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "server_log" AS ArtifactType, "ollama" AS Platform
+          FROM glob(globs=[
+              ollama_app_support + "/server.log",
+              ollama_app_support + "/server.log-*",
+          ], accessor="file")
+          WHERE CollectLogs
+
+      LET manifest_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "model_manifest" AS ArtifactType, "ollama" AS Platform
+          FROM glob(globs=[ollama_dir + "/models/manifests/**"], accessor="file")
+          WHERE CollectModelManifests
+
+      LET pid_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "pid_file" AS ArtifactType, "ollama" AS Platform
+          FROM glob(globs=[ollama_app_support + "/ollama.pid"], accessor="file")
+
+      LET proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "ollama" AS Platform
+          FROM pslist() WHERE Name =~ "ollama"
+
+      SELECT * FROM chain(a=config_files, b=history_files, c=key_files, d=conv_files, e=log_files, f=manifest_files, g=pid_files, h=proc)
+
+  - name: Ollama_Windows
+    precondition: SELECT OS FROM info() WHERE OS = 'windows'
+    query: |
+      LET ollama_dir = expand(path=HomeDir) + "\\.ollama"
+      LET ollama_local = expand(path=LocalAppDir) + "\\Ollama"
+
+      LET config_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "ollama" AS Platform
+          FROM glob(globs=[
+              ollama_dir + "\\config.json",
+              ollama_local + "\\config.json",
+          ], accessor="file")
+
+      LET history_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "cli_history" AS ArtifactType, "ollama" AS Platform
+          FROM glob(globs=[ollama_dir + "\\history"], accessor="file")
+
+      LET key_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "signing_key" AS ArtifactType, "ollama" AS Platform
+          FROM glob(globs=[
+              ollama_dir + "\\id_ed25519",
+              ollama_dir + "\\id_ed25519.pub",
+          ], accessor="file")
+
+      LET conv_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "conversation_database" AS ArtifactType, "ollama" AS Platform
+          FROM glob(globs=[
+              ollama_local + "\\db.sqlite",
+              ollama_local + "\\db.sqlite-wal",
+              ollama_local + "\\db.sqlite-shm",
+          ], accessor="file")
+          WHERE CollectChatHistory
+
+      LET log_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "server_log" AS ArtifactType, "ollama" AS Platform
+          FROM glob(globs=[
+              ollama_local + "\\server.log",
+              ollama_local + "\\server.log.*",
+          ], accessor="file")
+          WHERE CollectLogs
+
+      LET manifest_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "model_manifest" AS ArtifactType, "ollama" AS Platform
+          FROM glob(globs=[ollama_dir + "\\models\\manifests\\**"], accessor="file")
+          WHERE CollectModelManifests
+
+      LET proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "ollama" AS Platform
+          FROM pslist() WHERE Name =~ "ollama"
+
+      SELECT * FROM chain(a=config_files, b=history_files, c=key_files, d=conv_files, e=log_files, f=manifest_files, g=proc)
+
+  - name: LM_Studio_All
+    query: |
+      LET lm_studio_dirs = SELECT * FROM foreach(row={
+          SELECT OS, expand(path=HomeDir) AS Home, expand(path=AppDataDir) AS AppData FROM info()
+      }, query={
+          SELECT OS,
+                 Home + "/.cache/lm-studio" AS base_path_linux,
+                 Home + "/Library/Application Support/LM Studio" AS base_path_macos,
+                 AppData + "\\LM Studio" AS base_path_windows
+          FROM scope() LIMIT 1
+      })
+
+      LET lm_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "lm_studio" AS Platform
+          FROM glob(globs=[
+              "%AppData%\\LM Studio\\settings.json",
+              "%AppData%\\LM Studio\\config.json",
+              Home + "/.cache/lm-studio/config.json",
+              Home + "/Library/Application Support/LM Studio/config.json",
+          ], accessor="file")
+
+      LET lm_logs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "log" AS ArtifactType, "lm_studio" AS Platform
+          FROM glob(globs=[
+              "%AppData%\\LM Studio\\logs\\**",
+              Home + "/Library/Logs/LM Studio/**",
+              Home + "/.cache/lm-studio/logs/**",
+          ], accessor="file")
+          WHERE CollectLogs
+
+      LET lm_models = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "model_file" AS ArtifactType, "lm_studio" AS Platform
+          FROM glob(globs=[
+              Home + "/.cache/lm-studio/models/**/*.gguf",
+              Home + "/Library/Application Support/LM Studio/models/**/*.gguf",
+              "%AppData%\\LM Studio\\models\\**\\*.gguf",
+          ], accessor="file")
+          WHERE CollectModelManifests
+
+      LET lm_session = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "session_data" AS ArtifactType, "lm_studio" AS Platform
+          FROM glob(globs=[
+              "%AppData%\\LM Studio\\session_store\\**",
+              Home + "/.cache/lm-studio/session_store/**",
+              Home + "/Library/Application Support/LM Studio/session_store/**",
+          ], accessor="file")
+          WHERE DeepCollection
+
+      LET lm_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "lm_studio" AS Platform
+          FROM pslist() WHERE Name =~ "(?i)lm.?studio"
+
+      SELECT * FROM chain(a=lm_config, b=lm_logs, c=lm_models, d=lm_session, e=lm_proc)
+
+  - name: GPT4All_All
+    query: |
+      LET g4a_dirs = SELECT * FROM foreach(row={
+          SELECT OS, expand(path=HomeDir) AS Home, expand(path=AppDataDir) AS AppData FROM info()
+      }, query={
+          SELECT OS,
+                 Home + "/.gpt4all" AS base_path_linux,
+                 Home + "/Library/Application Support/gpt4all" AS base_path_macos,
+                 AppData + "\\gpt4all" AS base_path_windows
+          FROM scope() LIMIT 1
+      })
+
+      LET g4a_chat_db = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "conversation_database" AS ArtifactType, "gpt4all" AS Platform
+          FROM glob(globs=[
+              Home + "/.gpt4all/chat.db",
+              Home + "/.gpt4all/chat.db-wal",
+              Home + "/.gpt4all/chat.db-shm",
+              Home + "/Library/Application Support/gpt4all/chat.db",
+              "%AppData%\\gpt4all\\chat.db",
+          ], accessor="file")
+          WHERE CollectChatHistory
+
+      LET g4a_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "gpt4all" AS Platform
+          FROM glob(globs=[
+              Home + "/.gpt4all/settings.json",
+              Home + "/Library/Application Support/gpt4all/settings.json",
+              "%AppData%\\gpt4all\\settings.json",
+          ], accessor="file")
+
+      LET g4a_models = SELECT FullPath, Mtime, Size,
+                 "model_file" AS ArtifactType, "gpt4all" AS Platform
+          FROM glob(globs=[
+              Home + "/.gpt4all/models/**",
+              Home + "/Library/Application Support/gpt4all/models/**",
+              "%AppData%\\gpt4all\\models\\**",
+          ], accessor="file")
+          WHERE CollectModelManifests
+
+      LET g4a_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "gpt4all" AS Platform
+          FROM pslist() WHERE Name =~ "(?i)gpt4all"
+
+      SELECT * FROM chain(a=g4a_chat_db, b=g4a_config, c=g4a_models, d=g4a_proc)
+
+  - name: TextGenWebUI_All
+    query: |
+      LET tgwui_dirs = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "text_generation_webui" AS Platform
+          FROM glob(globs=[
+              Home + "/text-generation-webui/user_data/settings.yaml",
+              Home + "/text-generation-webui/user_data/config.yaml",
+          ], accessor="file")
+
+      LET tgwui_chats = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "chat_history" AS ArtifactType, "text_generation_webui" AS Platform
+          FROM glob(globs=[
+              Home + "/text-generation-webui/user_data/logs/chat/**/*.json",
+              Home + "/text-generation-webui/user_data/logs/instruct/**/*.json",
+          ], accessor="file")
+          WHERE CollectChatHistory
+
+      LET tgwui_characters = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "character_definition" AS ArtifactType, "text_generation_webui" AS Platform
+          FROM glob(globs=[
+              Home + "/text-generation-webui/user_data/characters/**",
+          ], accessor="file")
+
+      LET tgwui_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "text_generation_webui" AS Platform
+          FROM pslist() WHERE Name =~ "(?i)(text.generation|oobabooga|gradio)"
+
+      SELECT * FROM chain(a=tgwui_dirs, b=tgwui_chats, c=tgwui_characters, d=tgwui_proc)
+
+  - name: LlamaCpp_Process
+    query: |
+      LET llama_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "llama_cpp" AS Platform
+          FROM pslist() WHERE Name =~ "(?i)llama"
+
+      LET hf_models = SELECT FullPath, Mtime, Size,
+                 "model_cache" AS ArtifactType, "llama_cpp" AS Platform
+          FROM glob(globs=[
+              expand(path=HomeDir) + "/.cache/huggingface/hub/models--**/snapshots/**",
+          ], accessor="file")
+          WHERE CollectModelManifests
+          LIMIT 100
+
+      SELECT * FROM chain(a=llama_proc, b=hf_models)
+
+  - name: KoboldCpp_Process
+    query: |
+      LET kobold_proc = SELECT Name AS ProcessName, Pid, CommandLine, Exe,
+                 create_time AS CreateTime, "process" AS ArtifactType,
+                 "kobold_cpp" AS Platform
+          FROM pslist() WHERE Name =~ "(?i)kobold"
+
+      LET kobold_config = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "config" AS ArtifactType, "kobold_cpp" AS Platform
+          FROM glob(globs=[
+              expand(path=HomeDir) + "/.koboldcpp/**",
+              expand(path=HomeDir) + "/KoboldCpp/**",
+          ], accessor="file")
+
+      LET kobold_netstat = SELECT * FROM connections()
+          WHERE Laddr.Port = 5001 OR Raddr.Port = 5001
+          LIMIT 50
+
+      SELECT * FROM chain(a=kobold_proc, b=kobold_config, c=kobold_netstat)
+
+column_types:
+  - name: ArtifactType
+    type: string
+  - name: Platform
+    type: string
+  - name: FileHash
+    type: string

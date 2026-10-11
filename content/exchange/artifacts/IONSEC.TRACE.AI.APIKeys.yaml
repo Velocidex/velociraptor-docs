@@ -1,0 +1,320 @@
+name: IONSEC.TRACE.AI.APIKeys
+description: |
+  IONSEC TRACE — Scan for AI API keys and credentials across all platforms.
+  Checks .env files, configuration files, shell history, and environment
+  variables for leaked AI service credentials.
+
+  Version: 0.1.0
+  Author: IONSEC
+
+  This artifact collects:
+  - .env files in common project locations containing AI API keys
+  - Configuration files with API key patterns (sk-*, ghp_*, xai-*, anthropic_*, etc.)
+  - Shell history entries with AI key exports
+  - Environment variables related to AI services
+  - Credential/token files from AI tools
+
+  WARNING: This artifact may collect sensitive credentials. Handle results
+  with appropriate care per your incident response procedures.
+
+type: CLIENT
+parameters:
+  - name: CollectChatHistory
+    description: Include shell history scans (may contain PII beyond API keys)
+    type: bool
+    default: true
+  - name: CollectLogs
+    description: Collect log files that may contain API key references
+    type: bool
+    default: false
+  - name: DeepCollection
+    description: Scan all user home directories and deep path traversal (slow)
+    type: bool
+    default: false
+
+sources:
+  - name: DotEnvFiles_Linux
+    precondition: SELECT OS FROM info() WHERE OS = 'linux'
+    query: |
+      LET home = expand(path=HomeDir)
+
+      LET env_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "env_file" AS ArtifactType, "credential_scanner" AS Platform
+          FROM glob(globs=[
+              home + "/.env",
+              home + "/.env.*",
+              home + "/.env.local",
+              home + "/.env.production",
+              home + "/.env.development",
+              home + "/projects/**/.env",
+              home + "/projects/**/.env.*",
+              home + "/src/**/.env",
+              home + "/src/**/.env.*",
+              home + "/work/**/.env",
+              home + "/work/**/.env.*",
+              home + "/.config/**/.env",
+              "/opt/**/.env",
+              "/srv/**/.env",
+              "/etc/openai.env",
+              "/etc/anthropic.env",
+          ], accessor="file")
+          WHERE Size < 1048576
+
+      LET ai_config_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "ai_config" AS ArtifactType, "credential_scanner" AS Platform
+          FROM glob(globs=[
+              home + "/.openai/config.json",
+              home + "/.openai/auth.json",
+              home + "/.anthropic/config.json",
+              home + "/.anthropic/auth.json",
+              home + "/.config/openai/**",
+              home + "/.config/anthropic/**",
+              home + "/.config/gemini/**",
+              home + "/.config/ai/**",
+              home + "/.cache/openai/**",
+              home + "/.cache/anthropic/**",
+              home + "/.local/share/openai/**",
+              home + "/.local/share/anthropic/**",
+          ], accessor="file")
+          WHERE Size < 1048576
+
+      LET shell_rc_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "shell_config" AS ArtifactType, "credential_scanner" AS Platform
+          FROM glob(globs=[
+              home + "/.bashrc",
+              home + "/.zshrc",
+              home + "/.bash_profile",
+              home + "/.zprofile",
+              home + "/.profile",
+              home + "/.zshenv",
+          ], accessor="file")
+
+      LET shell_history_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "shell_history" AS ArtifactType, "credential_scanner" AS Platform
+          FROM glob(globs=[
+              home + "/.bash_history",
+              home + "/.zsh_history",
+              home + "/.python_history",
+              home + "/.local/share/fish/fish_history",
+          ], accessor="file")
+          WHERE CollectChatHistory
+
+      SELECT * FROM chain(a=env_files, b=ai_config_files, c=shell_rc_files, d=shell_history_files)
+
+  - name: DotEnvFiles_macOS
+    precondition: SELECT OS FROM info() WHERE OS = 'darwin'
+    query: |
+      LET home = expand(path=HomeDir)
+
+      LET env_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "env_file" AS ArtifactType, "credential_scanner" AS Platform
+          FROM glob(globs=[
+              home + "/.env",
+              home + "/.env.*",
+              home + "/.env.local",
+              home + "/.env.production",
+              home + "/.env.development",
+              home + "/projects/**/.env",
+              home + "/projects/**/.env.*",
+              home + "/src/**/.env",
+              home + "/src/**/.env.*",
+              home + "/work/**/.env",
+              home + "/work/**/.env.*",
+              home + "/.config/**/.env",
+          ], accessor="file")
+          WHERE Size < 1048576
+
+      LET ai_config_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "ai_config" AS ArtifactType, "credential_scanner" AS Platform
+          FROM glob(globs=[
+              home + "/.openai/config.json",
+              home + "/.openai/auth.json",
+              home + "/.anthropic/config.json",
+              home + "/.anthropic/auth.json",
+              home + "/.config/openai/**",
+              home + "/.config/anthropic/**",
+              home + "/.config/gemini/**",
+              home + "/Library/Application Support/openai/**",
+              home + "/Library/Application Support/anthropic/**",
+              home + "/Library/Application Support/AI/**",
+          ], accessor="file")
+          WHERE Size < 1048576
+
+      LET shell_rc_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "shell_config" AS ArtifactType, "credential_scanner" AS Platform
+          FROM glob(globs=[
+              home + "/.bashrc",
+              home + "/.zshrc",
+              home + "/.bash_profile",
+              home + "/.zprofile",
+              home + "/.profile",
+              home + "/.zshenv",
+          ], accessor="file")
+
+      LET shell_history_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "shell_history" AS ArtifactType, "credential_scanner" AS Platform
+          FROM glob(globs=[
+              home + "/.bash_history",
+              home + "/.zsh_history",
+              home + "/.python_history",
+              home + "/.local/share/fish/fish_history",
+          ], accessor="file")
+          WHERE CollectChatHistory
+
+      SELECT * FROM chain(a=env_files, b=ai_config_files, c=shell_rc_files, d=shell_history_files)
+
+  - name: DotEnvFiles_Windows
+    precondition: SELECT OS FROM info() WHERE OS = 'windows'
+    query: |
+      LET home = expand(path=HomeDir)
+      LET appdata = expand(path=AppDataDir)
+
+      LET env_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "env_file" AS ArtifactType, "credential_scanner" AS Platform
+          FROM glob(globs=[
+              home + "\\.env",
+              home + "\\.env.*",
+              home + "\\projects\\**\\.env",
+              home + "\\src\\**\\.env",
+              home + "\\work\\**\\.env",
+              home + "\\Desktop\\**\\.env",
+              home + "\\Documents\\**\\.env",
+          ], accessor="file")
+          WHERE Size < 1048576
+
+      LET ai_config_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "ai_config" AS ArtifactType, "credential_scanner" AS Platform
+          FROM glob(globs=[
+              home + "\\.openai\\config.json",
+              home + "\\.openai\\auth.json",
+              home + "\\.anthropic\\config.json",
+              home + "\\.anthropic\\auth.json",
+              appdata + "\\openai\\**",
+              appdata + "\\anthropic\\**",
+              appdata + "\\AI\\**",
+              home + "\\.config\\openai\\**",
+              home + "\\.config\\anthropic\\**",
+          ], accessor="file")
+          WHERE Size < 1048576
+
+      LET shell_history_files = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "shell_history" AS ArtifactType, "credential_scanner" AS Platform
+          FROM glob(globs=[
+              home + "\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadLine\\ConsoleHost_history.txt",
+          ], accessor="file")
+          WHERE CollectChatHistory
+
+      SELECT * FROM chain(a=env_files, b=ai_config_files, c=shell_history_files)
+
+  - name: AI_Tool_Credential_Files
+    query: |
+      LET home = expand(path=HomeDir)
+
+      LET ollama_keys = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "api_credential" AS ArtifactType, "credential_scanner" AS Platform
+          FROM glob(globs=[
+              home + "/.ollama/id_ed25519",
+              home + "/.ollama/id_ed25519.pub",
+              home + "\\.ollama\\id_ed25519",
+              home + "\\.ollama\\id_ed25519.pub",
+          ], accessor="file")
+
+      LET hf_tokens = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "api_credential" AS ArtifactType, "credential_scanner" AS Platform
+          FROM glob(globs=[
+              home + "/.cache/huggingface/token",
+              home + "/.huggingface/token",
+              home + "\\.cache\\huggingface\\token",
+              home + "\\.huggingface\\token",
+          ], accessor="file")
+
+      LET replicate_tokens = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "api_credential" AS ArtifactType, "credential_scanner" AS Platform
+          FROM glob(globs=[
+              home + "/.replicate/config.json",
+              home + "/.config/replicate/config.json",
+              home + "\\.replicate\\config.json",
+              home + "\\.config\\replicate\\config.json",
+          ], accessor="file")
+
+      LET stability_tokens = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "api_credential" AS ArtifactType, "credential_scanner" AS Platform
+          FROM glob(globs=[
+              home + "/.stability/config.json",
+              home + "/.config/stability/config.json",
+              home + "\\.stability\\config.json",
+          ], accessor="file")
+
+      LET together_tokens = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "api_credential" AS ArtifactType, "credential_scanner" AS Platform
+          FROM glob(globs=[
+              home + "/.together/config.json",
+              home + "/.config/together/config.json",
+              home + "\\.together\\config.json",
+          ], accessor="file")
+
+      LET groq_tokens = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "api_credential" AS ArtifactType, "credential_scanner" AS Platform
+          FROM glob(globs=[
+              home + "/.groq/config.json",
+              home + "/.config/groq/config.json",
+              home + "\\.groq\\config.json",
+          ], accessor="file")
+
+      LET mistral_tokens = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "api_credential" AS ArtifactType, "credential_scanner" AS Platform
+          FROM glob(globs=[
+              home + "/.mistral/config.json",
+              home + "/.config/mistral/config.json",
+              home + "\\.mistral\\config.json",
+          ], accessor="file")
+
+      LET aws_ai_creds = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "api_credential" AS ArtifactType, "credential_scanner" AS Platform
+          FROM glob(globs=[
+              home + "/.aws/credentials",
+              home + "/.aws/config",
+              home + "\\.aws\\credentials",
+              home + "\\.aws\\config",
+          ], accessor="file")
+
+      LET gcp_ai_creds = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "api_credential" AS ArtifactType, "credential_scanner" AS Platform
+          FROM glob(globs=[
+              home + "/.config/gcloud/credentials.db",
+              home + "/.config/gcloud/access_tokens.db",
+              home + "/.config/gcloud/application_default_credentials.json",
+              home + "\\.config\\gcloud\\credentials.db",
+              home + "\\.config\\gcloud\\access_tokens.db",
+              home + "\\.config\\gcloud\\application_default_credentials.json",
+          ], accessor="file")
+
+      LET azure_ai_creds = SELECT FullPath, Mtime, Size, hash(path=FullPath) AS FileHash,
+                 "api_credential" AS ArtifactType, "credential_scanner" AS Platform
+          FROM glob(globs=[
+              home + "/.azure/credentials.json",
+              home + "/.azure/accessTokens.json",
+              home + "/.azure/azureProfile.json",
+              home + "\\.azure\\credentials.json",
+              home + "\\.azure\\accessTokens.json",
+              home + "\\.azure\\azureProfile.json",
+          ], accessor="file")
+
+      SELECT * FROM chain(a=ollama_keys, b=hf_tokens, c=replicate_tokens, d=stability_tokens, e=together_tokens, f=groq_tokens, g=mistral_tokens, h=aws_ai_creds, i=gcp_ai_creds, j=azure_ai_creds)
+
+  - name: EnvironmentVariables
+    query: |
+      LET ai_env_vars = SELECT Name, Value,
+                 "environment_variable" AS ArtifactType, "credential_scanner" AS Platform
+          FROM environ()
+          WHERE Name =~ "(?i)^(OPENAI|ANTHROPIC|GEMINI|GOOGLE_AI|AZURE_OPENAI|XAI|MISTRAL|TOGETHER|GROQ|STABILITY|REPLICATE|HUGGING|DEEPSEEK|PERPLEXITY|COHERE|AI21|PALM|COHERE|REPLICATE).*(_?KEY|_?TOKEN|_?SECRET|_?API)|^(Ollama_|OLLAMA_).*"
+
+      SELECT * FROM ai_env_vars
+
+column_types:
+  - name: ArtifactType
+    type: string
+  - name: Platform
+    type: string
+  - name: FileHash
+    type: string
