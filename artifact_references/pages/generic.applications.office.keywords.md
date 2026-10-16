@@ -1,0 +1,107 @@
+# Generic.Applications.Office.Keywords
+
+Scans Microsoft Office and LibraOffice/OpenDocument files for
+keyword matches using YARA rules via the `zip` accessor.
+
+Microsoft Office documents amongst other document format (such as
+LibraOffice) are actually stored in zip files. The zip file contains
+the document encoded as XML in several zip members. This makes it
+difficult to directly search for keywords within office document
+file because of the ZIP compression.
+
+This artifact searches for office documents by file extension and
+glob pattern, then uses the `zip` filesystem accessor to launch a
+YARA scan again the uncompressed data from the document. Keywords
+are more likely to match when scanning the decompressed XML data.
+
+The artifact returns a context around the keyword hit.
+
+NOTE: The internal Mtime column shows the creation time of the zip
+member within the document which may represent when the document was
+initially created.
+
+
+---
+
+````yaml
+name: Generic.Applications.Office.Keywords
+description: |
+  Scans Microsoft Office and LibraOffice/OpenDocument files for
+  keyword matches using YARA rules via the `zip` accessor.
+
+  Microsoft Office documents amongst other document format (such as
+  LibraOffice) are actually stored in zip files. The zip file contains
+  the document encoded as XML in several zip members. This makes it
+  difficult to directly search for keywords within office document
+  file because of the ZIP compression.
+
+  This artifact searches for office documents by file extension and
+  glob pattern, then uses the `zip` filesystem accessor to launch a
+  YARA scan again the uncompressed data from the document. Keywords
+  are more likely to match when scanning the decompressed XML data.
+
+  The artifact returns a context around the keyword hit.
+
+  NOTE: The internal Mtime column shows the creation time of the zip
+  member within the document which may represent when the document was
+  initially created.
+
+reference:
+  - https://en.wikipedia.org/wiki/List_of_Microsoft_Office_filename_extensions
+  - https://wiki.openoffice.org/wiki/Documentation/OOo3_User_Guides/Getting_Started/File_formats
+
+parameters:
+  - name: documentGlobs
+    default: /*.{docx,docm,dotx,dotm,docb,xlsx,xlsm,xltx,xltm,pptx,pptm,potx,potm,ppam,ppsx,ppsm,sldx,sldm,odt,ott,oth,odm}
+  - name: searchGlob
+    default: C:\Users\**
+  - name: yaraRule
+    type: yara
+    default: |
+      rule Hit {
+        strings:
+          $a = "secret" wide nocase
+          $b = "secret" nocase
+
+        condition:
+          any of them
+      }
+
+sources:
+  - query: |
+        LET office_docs = SELECT OSPath AS OfficePath,
+             Mtime as OfficeMtime,
+             Size as OfficeSize
+        FROM glob(globs=searchGlob + documentGlobs)
+
+        // A list of zip members inside the doc that have some content.
+        LET document_parts = SELECT OfficePath,
+             OSPath AS ZipMemberPath
+        FROM glob(
+           globs="/**",
+           root=pathspec(DelegatePath=OfficePath),
+           accessor='zip')
+        WHERE not IsDir and Size > 0
+
+        // For each document, scan all its parts for the keyword.
+        SELECT OfficePath,
+               OfficeMtime,
+               OfficeSize,
+               File.ModTime as InternalMtime,
+               String.HexData as HexContext,
+               File.OSPath AS OSPath
+        FROM foreach(
+           row=office_docs,
+           query={
+              SELECT File, String, OfficePath,
+                     OfficeMtime, OfficeSize
+              FROM yara(
+                 rules=yaraRule,
+                 files=document_parts.ZipMemberPath,
+                 context=200,
+                 accessor='zip')
+        })
+````
+
+
+

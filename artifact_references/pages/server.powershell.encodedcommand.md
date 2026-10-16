@@ -1,0 +1,59 @@
+# Server.Powershell.EncodedCommand
+
+Intercepts PowerShell `-EncodedCommand` scripts in events that are
+collected via client monitoring and decodes them.
+
+It is possible to pass PowerShell an encoded script which then gets
+stored in the Windows event log in encoded form. This artifact
+decodes such script blocks on the server.
+
+NOTE: The client must be running the
+`Windows.Events.ProcessCreation` event artifact to retrieve the
+process execution logs that this artifact intercepts.
+
+
+---
+
+````yaml
+name: Server.Powershell.EncodedCommand
+description: |
+  Intercepts PowerShell `-EncodedCommand` scripts in events that are
+  collected via client monitoring and decodes them.
+  
+  It is possible to pass PowerShell an encoded script which then gets
+  stored in the Windows event log in encoded form. This artifact
+  decodes such script blocks on the server.
+
+  NOTE: The client must be running the
+  `Windows.Events.ProcessCreation` event artifact to retrieve the
+  process execution logs that this artifact intercepts.
+
+type: SERVER_EVENT
+
+sources:
+  - query: |
+       SELECT ClientId, ParentInfo, CommandLine, Timestamp, utf16(
+          string=base64decode(
+             string=parse_string_with_regex(
+                string=CommandLine,
+                regex='-((?i)(en|enc|encode|encodedCommand)) (?P<Encoded>[^ ]+)'
+             ).Encoded)) AS Script
+        FROM watch_monitoring(artifact='Windows.Events.ProcessCreation')
+        WHERE CommandLine =~ '-(en|enc|encode|encodedCommand)'
+
+reports:
+  - type: SERVER_EVENT
+    template: |
+
+      Encoded Powershell
+      ==================
+
+      {{ .Description }}
+
+      ## Decoded Powershell commands.
+
+      {{ Query "SELECT ClientId, { SELECT os_info.fqdn from clients(client_id=ClientId) } AS FQDN, Script FROM source()" | Table }}
+````
+
+
+

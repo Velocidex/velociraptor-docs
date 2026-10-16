@@ -1,0 +1,105 @@
+name: Server.Monitor.Windows.EventLogs.Hayabusa
+author: Whitney Champion - bluesky @whit.zip, Eric Capuano - bluesky @eric.zip
+description: |
+  Watches for completed client collections whose artifacts match
+  `ArtifactRegex` and automatically runs
+  `Server.Analysis.Windows.EventLogs.Hayabusa` against the EVTX files
+  uploaded by each flow. Detection results appear under Server Events
+  for this artifact.
+
+  By default this triggers on `Windows.KapeFiles.Targets` and
+  `Windows.Triage.Targets`, the most common triage collections that
+  upload raw Windows event logs. Adjust `ArtifactRegex` to match any
+  other collection that uploads `.evtx` files.
+
+  **Prerequisites**:
+
+  - The companion `Server.Analysis.Windows.EventLogs.Hayabusa` exchange
+    artifact must be installed on the server - this artifact only
+    triggers it.
+  - The curated Hayabusa Sigma package must be imported into the
+    server so that the `Windows.Hayabusa.Rules` artifact resolves.
+    Import it using the built-in `Server.Import.CuratedSigma` artifact
+    on Velociraptor 0.74, or `Server.Import.Extras` on 0.75 and later.
+    The curated packages are published at https://sigma.velocidex.com/.
+
+  Notes:
+
+  - Analysis runs inline within the monitoring query, so processing is
+    serialized: a long-running scan of a large EVTX set will queue
+    subsequent flow completions until it finishes.
+  - Add this artifact to server monitoring via the Server Events screen
+    in the GUI.
+  - Requires Velociraptor 0.74 or later.
+
+  #sigma #hayabusa #evtx #triage #postprocessing
+
+type: SERVER_EVENT
+
+reference:
+  - https://sigma.velocidex.com/
+  - https://github.com/Velocidex/velociraptor-docs/pull/1064
+
+required_permissions:
+  - SERVER_ADMIN
+
+parameters:
+  - name: ArtifactRegex
+    description: Trigger analysis when a completed flow contains artifacts matching this regex.
+    type: regex
+    default: 'Windows\.KapeFiles\.Targets|Windows\.Triage\.Targets'
+  - name: EvtxRegex
+    description: Only uploaded files with paths matching this regex are analyzed.
+    type: regex
+    default: '(?i)\.evtx$'
+  - name: RuleLevel
+    description: Minimum Sigma rule level to match.
+    type: choices
+    default: Critical and High
+    choices:
+      - "Critical"
+      - "Critical and High"
+      - "Critical, High, and Medium"
+      - "Critical, High, Medium, and Low"
+      - "All"
+  - name: RuleStatus
+    description: Sigma rule status filter.
+    type: choices
+    default: Stable
+    choices:
+      - Stable
+      - Stable and Experimental
+      - Stable and Test
+      - All Rules
+  - name: RuleTitleFilter
+    description: Use this to filter only some rules to match by title.
+    type: regex
+    default: .
+
+sources:
+  - query: |
+      -- Watch for completed client collections that produced results
+      -- for artifacts matching ArtifactRegex.
+      LET Completions = SELECT ClientId,
+                               FlowId
+        FROM watch_monitoring(artifact="System.Flow.Completion")
+        WHERE ClientId != "server"
+          AND Flow.artifacts_with_results =~ ArtifactRegex
+
+      -- Run the analysis artifact for each matching completion.
+      SELECT *
+      FROM foreach(row=Completions,
+                   query={
+          SELECT *
+          FROM Artifact.Server.Analysis.Windows.EventLogs.Hayabusa(
+              ClientId=ClientId,
+              FlowId=FlowId,
+              EvtxRegex=EvtxRegex,
+              RuleLevel=RuleLevel,
+              RuleStatus=RuleStatus,
+              RuleTitleFilter=RuleTitleFilter)
+        })
+
+column_types:
+  - name: Timestamp
+    type: timestamp

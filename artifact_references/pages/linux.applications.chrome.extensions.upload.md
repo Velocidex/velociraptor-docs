@@ -1,0 +1,40 @@
+# Linux.Applications.Chrome.Extensions.Upload
+
+Uploads the Chrome extension files from each user's home directory.
+
+Note that this does not parse any of the files - it just grabs all
+the extension files in each user's home directory.
+
+
+---
+
+````yaml
+name: Linux.Applications.Chrome.Extensions.Upload
+description: |
+  Uploads the Chrome extension files from each user's home directory.
+
+  Note that this does not parse any of the files - it just grabs all
+  the extension files in each user's home directory.
+
+parameters:
+  - name: extensionGlobs
+    default: /.config/google-chrome/*/Extensions/**
+sources:
+  - precondition: |
+      SELECT OS From info() where OS = 'linux'
+    query: |
+        -- For each user on the system, search for extension files
+        -- in their home directory and upload them.
+        SELECT * from foreach(
+          row={
+             SELECT Uid, User, Homedir from Artifact.Linux.Sys.Users()
+          },
+          query={
+             SELECT OSPath, Mtime, Ctime, User, Uid,
+                    upload(file=OSPath) as Upload
+             FROM glob(globs=extensionGlobs, root=Homedir)
+          })
+````
+
+
+

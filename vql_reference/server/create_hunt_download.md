@@ -1,0 +1,31 @@
+# create_hunt_download
+
+
+
+{{< badge >}}Function{{< /badge >}}
+
+Arg | Description | Type
+----|-------------|-----
+hunt_id|Hunt ID to export.|string (required)
+only_combined|If set we only export combined results.|bool
+wait|If set we wait for the download to complete before returning.|bool
+format|Format to export (csv,json) defaults to both.|string
+base|Base filename to write to.|string
+password|An optional password to encrypt the collection zip.|string
+expand_sparse|If set we expand sparse files in the archive.|bool
+
+**Required permissions:** `PREPARE_RESULTS`
+
+### Description
+
+Creates a download pack for a hunt.
+
+This function initiates the download creation process for a
+hunt. It is equivalent to the GUI functionality allowing to
+"Download Results" from the Hunts Overview page.
+
+Using the `wait` parameter you can wait for the download to
+complete or just kick it off asynchronously.
+
+
+

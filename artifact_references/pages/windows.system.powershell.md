@@ -1,0 +1,209 @@
+# Windows.System.PowerShell
+
+Executes arbitrary commands through PowerShell with output capture
+and upload support.
+
+Since Velociraptor typically runs as SYSTEM, the commands will also
+run as SYSTEM.
+
+This is a very powerful artifact since it allows for arbitrary
+command execution on the endpoints. Therefore this artifact requires
+elevated permissions (specifically the `EXECVE`
+permission). Typically it is only available with the `administrator`
+role.
+
+Note that in addition to running PowerShell cmdlets and scripts, the
+Windows.System.PowerShell artifact can also be used to launch
+Windows command-line executables with their parameters. This can be
+difficult to achieve with the Windows.System.CmdShell artifact due
+to complications with spaces in paths and other special character
+issues. This PowerShell artifact is able to avoid most of these
+problems by encoding the command in Base64.
+
+As an example, the following command initiates a Windows Defender AV
+quick-scan from the default location, which includes a path with
+spaces in it:
+
+```
+  & 'C:\Program Files\Windows Defender\MpCmdRun.exe' -Scan -ScanType 1
+```
+
+
+---
+
+````yaml
+name: Windows.System.PowerShell
+description: |
+  Executes arbitrary commands through PowerShell with output capture
+  and upload support.
+
+  Since Velociraptor typically runs as SYSTEM, the commands will also
+  run as SYSTEM.
+
+  This is a very powerful artifact since it allows for arbitrary
+  command execution on the endpoints. Therefore this artifact requires
+  elevated permissions (specifically the `EXECVE`
+  permission). Typically it is only available with the `administrator`
+  role.
+
+  Note that in addition to running PowerShell cmdlets and scripts, the
+  Windows.System.PowerShell artifact can also be used to launch
+  Windows command-line executables with their parameters. This can be
+  difficult to achieve with the Windows.System.CmdShell artifact due
+  to complications with spaces in paths and other special character
+  issues. This PowerShell artifact is able to avoid most of these
+  problems by encoding the command in Base64.
+
+  As an example, the following command initiates a Windows Defender AV
+  quick-scan from the default location, which includes a path with
+  spaces in it:
+
+  ```
+    & 'C:\Program Files\Windows Defender\MpCmdRun.exe' -Scan -ScanType 1
+  ```
+
+required_permissions:
+  - EXECVE
+
+implied_permissions:
+  - IMPERSONATION
+
+parameters:
+  - name: Command
+    default: "dir C:/"
+  - name: PowerShellExe
+    default: "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+  - name: Timeout
+    type: int
+    default: "3500"
+    description: How long to leave the session running for.
+  - name: Stateful
+    default: "Y"
+    type: bool
+  - name: CommandId
+    default: 0
+
+sources:
+  - precondition: |
+      SELECT * FROM info()
+      WHERE OS = "windows"
+        AND version(function="shell_session")
+        AND Stateful
+
+    query: |
+      // Get the core flow id to key a unique session off.
+      LET FLOWID <= split(string=_SessionId, sep="/")[0]
+
+      // Newer clients have support for true shell sessions.
+      LET Session <= shell_session(name=FLOWID,
+      argv=[PowerShellExe, "-ExecutionPolicy", "Unrestricted"])
+
+      LET _ <= shell_session_control(name=FLOWID, stdin=Command + "\n")
+
+      // Shut the session down gracefully without timing out the flow.
+      LET SessionSink = SELECT Stdin AS Command,
+             timestamp(epoch=now(ns=TRUE)) AS Timestamp,
+             Stdout,
+             NULL AS StdoutUpload,
+             Stderr,
+             NULL AS StderrUpload
+         FROM foreach(row=Session.Query)
+
+      LET Result = SELECT * FROM if(condition=NOT Session.IsRunning,
+      then={
+        SELECT *
+        FROM query(query=SessionSink, timeout=Timeout, inherit=TRUE)
+      })
+
+      // Always send the command id to ack we received the command.
+      SELECT * FROM chain(a={
+         SELECT "" AS Command,
+                CommandId,
+                timestamp(epoch=now(ns=TRUE)) AS Timestamp,
+                "" AS Stdout,
+                NULL AS StdoutUpload,
+                "" AS Stderr,
+                NULL AS StderrUpload
+         FROM scope()
+      }, b=Result)
+
+    notebook:
+      - type: vql
+        name: Transcript
+        template: |
+          /*
+          # View session transcript
+          */
+          LET Transcript = pipe(query={
+             SELECT Stdout AS Line
+             FROM source()
+             WHERE Line
+          })
+
+          SELECT upload(accessor="pipe",
+               file="Transcript", name="transcript.txt") AS Transcript
+          FROM scope()
+
+  - precondition: |
+      SELECT * FROM info()
+      WHERE OS = "windows"
+        AND NOT ( version(function="shell_session") AND Stateful )
+
+    notebook:
+      - type: none
+    query: |
+      LET SizeLimit <= 4096
+      LET Now <= str(str=now())
+
+      LET Output = SELECT "" AS Command,
+             "" AS CommandId,
+             timestamp(epoch=now()) AS Timestamp,
+             if(condition=len(list=Stdout) < SizeLimit,
+                then=Stdout) AS Stdout,
+             if(condition=len(list=Stdout) >= SizeLimit,
+                then=upload(accessor="data",
+                            file=Stdout,
+                            name="Stdout/" + Now)) AS StdoutUpload,
+             if(condition=len(list=Stderr) < SizeLimit,
+                then=Stderr) AS Stderr,
+             if(condition=len(list=Stderr) >= SizeLimit,
+                then=upload(accessor="data",
+                            file=Stderr,
+                            name="Stderr/" + Now)) AS StderrUpload,
+             *
+      FROM execve(argv=[PowerShellExe,
+        "-ExecutionPolicy", "Unrestricted", "-encodedCommand",
+        base64encode(string=utf16_encode(string=Command))
+      ], length=10000000)
+
+      SELECT * FROM chain(a={
+         SELECT Command,
+                CommandId,
+                timestamp(epoch=now()) AS Timestamp,
+                "" AS Stdout,
+                NULL AS StdoutUpload,
+                "" AS Stderr,
+                NULL AS StderrUpload
+         FROM scope()
+      }, b=Output)
+
+column_types:
+- name: Stdout
+  type: nobreak
+- name: Stderr
+  type: nobreak
+- name: StdoutUpload
+  type: preview_upload
+- name: StderrUpload
+  type: preview_upload
+- name: Transcript
+  type: preview_upload
+
+resources:
+  # By default the shell session is up for an hour or until cancelled
+  # by the GUI.
+  timeout: 3600
+````
+
+
+
