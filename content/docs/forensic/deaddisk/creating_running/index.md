@@ -149,15 +149,222 @@ artifacts to generate the remapping, although we do have native accessors for
 EXT4 and FAT filesystems. So if you are manually crafting a remapping then you
 could consider using those accessors.
 
-However the simplest option is usually to rely on an external tool (such as
-`guestmount`, as mentioned above) to mount the target filesystem as a directory
-so that Velociraptor can access it.
+The following example remapping file can be used as a starting point.
 
-## Auto-generating the remapping config (Windows only)
+```yaml
+remappings:
+- type: permissions
+  permissions:
+  - COLLECT_CLIENT
+  - FILESYSTEM_READ
+  - FILESYSTEM_WRITE
+  - READ_RESULTS
+  - MACHINE_STATE
+  - SERVER_ADMIN
+  - COLLECT_SERVER
+  - EXECVE
+- type: impersonation
+  os: linux
+  hostname: Virtual Host
+  disabled_plugins:
+  - execve
+  - http_client
+- type: shadow
+  from:
+    accessor: zip
+  "on":
+    accessor: zip
+- type: shadow
+  from:
+    accessor: raw_reg
+  "on":
+    accessor: raw_reg
+- type: shadow
+  from:
+    accessor: raw_reg
+  "on":
+    accessor: raw_registry
+- type: shadow
+  from:
+    accessor: raw_ntfs
+  "on":
+    accessor: ntfs
+- type: shadow
+  from:
+    accessor: data
+  "on":
+    accessor: data
+- type: mount
+  from:
+    accessor: raw_ext4
+    # This is the path spec for a partition inside a vmdk image. You
+    # can find the partition offset using mmls (which gives the offset
+    # in sectors so you need to multiply by 512). We need to offset in
+    # bytes here. You also need to update the path to the vmdk image.
 
-The following process will work in most simple cases - namely a disk or
-partition image of a Windows system, where we assume the partition containing a
-folder named `Windows` is the `C:` drive.
+    # NOTE: If the image is in e01 format the DelegateAccessor should
+    # be ewf and the path should point to the .E01 part.
+    prefix: |-
+      {
+         "DelegateAccessor": "offset",
+         "Delegate": {
+           "DelegateAccessor": "vmdk",
+           "DelegatePath": "/home/mic/vmware/test_ubuntu/Test Ubuntu.vmdk",
+           "Path": "/2097152"
+         }
+       }
+  "on":
+    accessor: file
+    prefix: '/'
+    path_type: linux
+
+  # The below is a duplicate of the above but it is mounted on the
+  # auto accessor.
+- type: mount
+  from:
+    accessor: raw_ext4
+    prefix: |-
+      {
+         "DelegateAccessor": "offset",
+         "Delegate": {
+           "DelegateAccessor": "vmdk",
+           "DelegatePath": "/home/mic/vmware/test_ubuntu/Test Ubuntu.vmdk",
+           "Path": "/2097152"
+         }
+       }
+  "on":
+    accessor: auto
+    prefix: '/'
+    path_type: linux
+```
+
+In this example there is a VM image on the disk and only a single ext4
+partition. The first step is to identify the partition offset using
+`mmls`:
+```
+$ mmls Test\ Ubuntu.vmdk
+GUID Partition Table (EFI)
+Offset Sector: 0
+Units are in 512-byte sectors
+
+      Slot      Start        End          Length       Description
+000:  Meta      0000000000   0000000000   0000000001   Safety Table
+001:  -------   0000000000   0000002047   0000002048   Unallocated
+002:  Meta      0000000001   0000000001   0000000001   GPT Header
+003:  Meta      0000000002   0000000033   0000000032   Partition Table
+004:  000       0000002048   0000004095   0000002048
+005:  001       0000004096   0125827071   0125822976
+006:  -------   0125827072   0125829119   0000002048   Unallocated
+```
+
+The main partition is at 4096 sectors so the byte offset is 4096 * 512
+= 2097152 bytes.
+
+With Linux there are sometimes other partitions like `/boot` or
+`/home`. In this case you need to repeat the mapping with those
+offsets and attach them to the correct logical mount point. For
+example, if the `mmls` output shows a boot partition at offset 4096
+sectors:
+
+```yaml
+- type: mount
+  from:
+    accessor: raw_ext4
+    prefix: |-
+      {
+         "DelegateAccessor": "offset",
+         "Delegate": {
+           "DelegateAccessor": "vmdk",
+           "DelegatePath": "/home/mic/vmware/test_ubuntu/Test Ubuntu.vmdk",
+           "Path": "/20971520"
+         }
+       }
+  "on":
+    accessor: auto
+    prefix: '/boot/'
+    path_type: linux
+```
+
+#### Limitations
+
+Velociraptor currently does not support more complex partitioning
+schemes like `lvm` or `luks` so if your image has those, the easiest
+thing to do is to mount the image using a tool like `guestmount`. This
+will present the content of the image on some mount point directory,
+and the remapping file will be a standard directory type mounting
+file.
+
+Here is an example of directory remapping file. You will typically
+only need to change the mount point.
+
+```yaml
+remappings:
+- type: permissions
+  permissions:
+  - COLLECT_CLIENT
+  - FILESYSTEM_READ
+  - FILESYSTEM_WRITE
+  - READ_RESULTS
+  - MACHINE_STATE
+  - SERVER_ADMIN
+  - COLLECT_SERVER
+  - EXECVE
+- type: impersonation
+  os: linux
+  hostname: Virtual Host
+  disabled_plugins:
+  - execve
+  - http_client
+- type: shadow
+  from:
+    accessor: zip
+  "on":
+    accessor: zip
+- type: shadow
+  from:
+    accessor: raw_reg
+  "on":
+    accessor: raw_reg
+- type: shadow
+  from:
+    accessor: raw_reg
+  "on":
+    accessor: raw_registry
+- type: shadow
+  from:
+    accessor: raw_ntfs
+  "on":
+    accessor: ntfs
+- type: shadow
+  from:
+    accessor: data
+  "on":
+    accessor: data
+- type: mount
+  from:
+    accessor: file
+    prefix: /mnt/image/
+  "on":
+    accessor: file
+    prefix: '/'
+    path_type: linux
+- type: mount
+  from:
+    accessor: file
+    prefix: /mnt/image/
+  "on":
+    accessor: auto
+    prefix: '/'
+    path_type: linux
+
+```
+
+
+### Auto-generating the remapping config (Windows only)
+
+The following process will work in most simple cases - namely a disk
+or partition image of a Windows system, where we assume the partition
+containing a folder named `Windows` is the `C:` drive.
 
 1. In the Velociraptor GUI, navigate to `Server Artifacts` in the sidebar menu.
 
