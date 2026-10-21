@@ -471,10 +471,9 @@
           CollectedAt, RecordType,
           if(condition=Platform = 'windows', then='windows_modules',
             else=if(condition=Platform = 'linux', then='proc_pid_maps', else='module_scope')) AS EvidenceSource
-        FROM if(condition=CollectLoadedModules, then={SELECT * FROM chain(
-          modules={SELECT 'loaded_module' AS RecordType, *, 'mapped_version_unknown' AS Status FROM Groups},
-          unsupported={SELECT 'module_scan' AS RecordType, 'unsupported_platform' AS Status
-            FROM scope() WHERE NOT Platform IN ('linux', 'windows')})})
+        FROM if(condition=CollectLoadedModules, then={
+          SELECT 'loaded_module' AS RecordType, *, 'mapped_version_unknown' AS Status FROM Groups
+        })
     - name: Coverage
       query: |
         LET Candidates <= SELECT * FROM Candidates
