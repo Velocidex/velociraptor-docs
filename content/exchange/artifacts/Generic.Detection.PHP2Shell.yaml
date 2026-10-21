@@ -17,6 +17,9 @@ reference:
   - https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp
   - https://github.com/cyb3r-monk/Threat-Hunting-and-Detection/blob/main/Uncategorized/PHP2Shell.md
 
+required_permissions:
+  - EXECVE
+
 type: CLIENT
 
 parameters:
