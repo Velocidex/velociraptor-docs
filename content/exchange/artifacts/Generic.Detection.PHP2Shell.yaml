@@ -1,0 +1,198 @@
+name: Generic.Detection.PHP2Shell
+author: Chris DiSalle - @chrisdfir
+description: |
+   Hunt for suspicious PHP-related process behavior, request markers,
+   session-file content, possible webshells, and a PHP version inventory.
+   Matches require investigation; they do not establish exploitation, a
+   particular CVE, or compromise. Version verdicts compare against an
+   official fixed-version mapping (confirmed 2026-10-21 against the php.net
+   advisory and php-src GHSA advisories); still re-verify against future
+   advisories before acting on verdicts. Process results are a snapshot. File and log
+   coverage depends on configured paths, permissions, retention, and the read
+   limits below.
+
+reference:
+  - https://www.php.net/archive/2026.php
+  - https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w
+  - https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp
+  - https://github.com/cyb3r-monk/Threat-Hunting-and-Detection/blob/main/Uncategorized/PHP2Shell.md
+
+type: CLIENT
+
+parameters:
+  - name: SessionPaths
+    description: Session directories to scan (comma-separated)
+    default: "/tmp,/var/lib/php/sessions,/var/lib/php/session,C:/Windows/Temp,C:/temp"
+  - name: WebRoots
+    description: Web roots to scan (comma-separated)
+    default: "/var/www,/srv,C:/inetpub/wwwroot,C:/xampp/htdocs"
+  - name: AccessLogGlobs
+    description: Access log globs (comma-separated); markers must be present in logged fields
+    default: "/var/log/apache2/*access*,/var/log/nginx/*access*,/var/log/httpd/*access*,C:/inetpub/logs/LogFiles/**/*.log"
+  - name: SinceDate
+    type: timestamp
+    description: Include low-scoring PHP files modified after this UTC date; blank uses the last seven days
+  - name: ProcessCreatedAfter
+    type: timestamp
+    description: Only report child processes created after this UTC date (newly-observed view); blank reports all matching children
+  - name: FixedVersions
+    description: Official first-fixed-version per PHP branch (JSON), confirmed against the php.net advisory and php-src GHSA advisories 2026-10-21; re-verify against future advisories before acting on verdicts
+    default: '{"8.2": "8.2.35", "8.3": "8.3.36", "8.4": "8.4.27", "8.5": "8.5.12"}'
+
+sources:
+  - name: ProcessBehavior
+    query: |
+      // Generic behavior: legitimate jobs can also launch these programs.
+      // ProcessCreatedAfter is the newly-observed view (cf. cyb3r-monk's
+      // PHP2Shell KQL first-seen approach): blank reports every matching
+      // child, a date limits results to processes created since then.
+      // Parent match includes versioned PHP binaries (php8.3, php-fpm8.3).
+      LET proc_cutoff <= if(condition=ProcessCreatedAfter,
+                            then=ProcessCreatedAfter,
+                            else=timestamp(epoch=0))
+      LET procs <= SELECT * FROM pslist()
+      LET parents = SELECT Pid FROM procs
+      WHERE Name =~ "(?i)^(php(?:[0-9.]*|-fpm[0-9.]*)?|php-cgi|httpd|apache2?|nginx|w3wp)(?:\\.exe)?$"
+
+      SELECT Pid AS ChildPid, Ppid AS ParentPid,
+             Name AS ChildName, CommandLine AS ChildCmdline,
+             Exe AS ChildExe, CreateTime AS ChildCreateTime,
+             Username AS ChildUser
+      FROM procs
+      WHERE Ppid IN parents.Pid
+        AND CreateTime > proc_cutoff
+        AND Name =~ "(?i)^(sh|bash|dash|zsh|python[0-9.]*|perl|php|nc|ncat|netcat|curl|wget|powershell|pwsh|cmd|certutil|bitsadmin|whoami|id|cat|chmod|chown|touch|tee)(?:\\.exe)?$"
+
+  - name: AccessLogEvidence
+    query: |
+      // Marker strings can be forged and may occur in benign research traffic.
+      // Ordinary access logs generally do not contain multipart request bodies.
+      LET logs = SELECT OSPath AS LogFile FROM glob(
+          globs=split(string=AccessLogGlobs, sep=","))
+      WHERE NOT IsDir AND NOT OSPath =~ "(?i)\\.(gz|zip|bz2|xz)$"
+
+      SELECT LogFile, Line
+      FROM foreach(row=logs,
+        query={ SELECT LogFile, Line FROM parse_lines(filename=LogFile) })
+      WHERE Line =~ "\\bPOST\\b"
+        AND Line =~ "(?i)php2shell|PHP_SESSION_UPLOAD_PROGRESS"
+      // Cap so a chatty log cannot flood the collection; raise for deeper sweeps.
+      LIMIT 10000
+
+  - name: SessionFileEvidence
+    query: |
+      // Content co-occurrence is suspicious, not proof of code execution.
+      // Object form matches pipe-delimited (php/php_serialize hybrid),
+      // pipeless (php_serialize) and C: custom-serializer representations,
+      // including objects nested inside arrays (a:1:{i:0;O:8:"…"}).
+      SELECT Dir, FullPath, Size, ModTime, Content,
+             Content =~ "(?i)<\\?php" AS HasPhpTag,
+             Content =~ "(O|C):[0-9]+:\"" AS HasSerializedObject,
+             Content =~ "upload_progress_" AS HasUploadProgress
+      FROM foreach(row=split(string=SessionPaths, sep=","),
+        query={ SELECT _value AS Dir, FullPath, Size, ModTime,
+                  read_file(filename=FullPath, length=1000000) AS Content
+                FROM glob(globs=[_value + "/sess_*"])
+                WHERE NOT IsDir })
+      WHERE HasUploadProgress AND (HasPhpTag OR HasSerializedObject)
+
+  - name: RecentPhpFiles
+    query: |
+      // Webshell hunt. mtime alone is noisy (deploys, plugin updates), so files
+      // are scored on CONTENT first; the mtime window is a secondary signal.
+      //   WebshellScore >= 2 = strong: multiple code-exec primitives
+      //   WebshellScore <= 1 + recent mtime = weak: review manually
+      LET cutoff <= if(condition=SinceDate, then=SinceDate,
+                       else=timestamp(epoch=now() - 604800))
+      SELECT FullPath, ModTime, Size, HashSHA256,
+             if(condition=Content =~ "(?i)\\beval\\s*\\(", then=1, else=0) +
+             if(condition=Content =~ "(?i)\\bassert\\s*\\(", then=1, else=0) +
+             if(condition=Content =~ "(?i)\\b(system|exec|shell_exec|passthru|popen|proc_open)\\s*\\(", then=1, else=0) +
+             if(condition=Content =~ "(?i)\\b(base64_decode|gzinflate|gzuncompress|str_rot13|rawurldecode)\\s*\\(", then=1, else=0) +
+             if(condition=Content =~ "(?i)\\$_(GET|POST|REQUEST|COOKIE)\\s*\\[", then=1, else=0) +
+             if(condition=Content =~ "(?i)\\b(call_user_func|create_function|array_map|usort|register_shutdown_function)\\s*\\(", then=1, else=0) +
+             if(condition=Content =~ "(?i)\\b(file_put_contents|fwrite)\\s*\\([^)]*\\$_", then=1, else=0) +
+             if(condition=Content =~ "(?i)\\b(curl_exec|fsockopen|stream_socket_client)\\s*\\(", then=1, else=0) AS WebshellScore
+      FROM foreach(row=split(string=WebRoots, sep=","),
+        query={ SELECT FullPath, ModTime, Size,
+                  hash(path=FullPath).SHA256 AS HashSHA256,
+                  read_file(filename=FullPath, length=500000) AS Content
+                FROM glob(globs=[_value + "/**/*.php"])
+                WHERE IsDir = FALSE })
+      WHERE WebshellScore >= 2 OR ModTime > cutoff
+
+  - name: PHPInstallations
+    query: |
+      // Version inventory only. Whether a build is affected by any specific
+      // vulnerability depends on the vendor advisory; FixedVersions above is
+      // official (confirmed 2026-10-21, see README) and verdicts here are leads, not confirmations.
+      //
+      // Comparison is NUMERIC and component-wise. A string comparison is wrong
+      // here: "8.3.9" sorts lexicographically after "8.3.36" and would report a
+      // vulnerable build as patched. key() maps a.b.c to a*1000000 + b*1000 + c
+      // (PHP branches have single-digit major/minor and patch < 1000).
+      LET key(v) = atoi(string=split(string=v, sep_string=".")[0]) * 1000000 +
+                   atoi(string=split(string=v, sep_string=".")[1]) * 1000 +
+                   atoi(string=split(string=v, sep_string=".")[2])
+      LET fixed <= parse_json(data=FixedVersions)
+
+      // Linux: php on PATH. Full-token match: a suffix such as 8.3.36-dev or
+      // 8.3.36.1 must NOT truncate to a patched 8.3.36 verdict - capture the
+      // token and require exactly N.N.N, else the row is dropped here and the
+      // build is simply not version-asserted (assessment gap, not a verdict).
+      LET linux_php = SELECT "php (PATH)" AS Binary, "probed" AS Source,
+             parse_string_with_regex(string=Stdout,
+               regex="PHP ([0-9]+\\.[0-9]+\\.[0-9]+)( |$)").g1 AS Version
+      FROM execve(argv=["php", "-v"], length=10000)
+      WHERE Version
+
+      // Windows: versioned install directories (C:\php\8.3.9\, MSI layout
+      // C:\Program Files\php\8.3.9\, php-8.3.9, php8.3.9) get their version
+      // from the path; unversioned directories (C:\php\php.exe, xampp) need
+      // execve -v. BOTH kinds must reach the results below.
+      LET win_raw = SELECT FullPath AS Binary,
+            parse_string_with_regex(string=FullPath,
+              regex="php[-\\\\/]?([0-8]\\.[0-9]+\\.[0-9]+)").g1 AS VersionFromPath
+      FROM glob(globs=[
+            "C:\\php\\**\\php.exe", "C:\\Program Files\\php\\**\\php.exe",
+            "C:\\Program Files\\PHP\\**\\php.exe", "C:\\xampp\\php\\php.exe",
+            "C:\\wamp*\\bin\\php\\**\\php.exe", "C:\\inetpub\\**\\php.exe"])
+      WHERE NOT IsDir
+
+      // Path-derived versions trust the directory name: they are UNVERIFIED
+      // until corroborated (prerelease directory names can look patched).
+      LET win_versioned = SELECT Binary, VersionFromPath AS Version,
+             "path-derived (unverified)" AS Source
+      FROM win_raw WHERE VersionFromPath
+
+      LET win_unversioned = SELECT Binary FROM win_raw WHERE NOT VersionFromPath
+
+      LET win_exec = SELECT Binary,
+             parse_string_with_regex(string=Stdout,
+               regex="PHP ([0-9]+\\.[0-9]+\\.[0-9]+)( |$)").g1 AS Version,
+             "probed" AS Source
+      FROM foreach(row=win_unversioned,
+        query={ SELECT Binary, Stdout FROM execve(argv=[Binary, "-v"], length=10000) })
+      WHERE Version
+
+      // Versioned-path rows and execve rows flow into the same result set.
+      LET all_versions = SELECT Binary, Version, Source FROM chain(a=linux_php, b=win_versioned, c=win_exec)
+      GROUP BY Binary, Version, Source
+
+      LET branched = SELECT Binary, Version, Source,
+             split(string=Version, sep_string=".")[0] + "." +
+             split(string=Version, sep_string=".")[1] AS Branch
+      FROM all_versions
+
+      // Positive condition on fixed[Branch]: an unknown branch yields NULL,
+      // and "NOT NULL" is not reliably true in VQL - the compare path would
+      // then run with a NULL threshold. Testing the value directly sends NULL
+      // to the manual-review branch.
+      SELECT Binary, Version, Branch, Source, fixed[Branch] AS FixedVersion,
+             if(condition=fixed[Branch],
+                then=if(condition=key(v=Version) < key(v=fixed[Branch]),
+                        then="version below official fixed version - confirm against the vendor advisory",
+                        else="version at or above official fixed version"),
+                else="no official fixed version for this branch - manual review") AS Status
+      FROM branched
+
