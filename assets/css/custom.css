@@ -326,11 +326,6 @@ html.dark .hextra-404-title {
   color: var(--hx-color-neutral-500);
 }
 
-/* Hidden easter egg in the artifact exchange "Share your own Artifact" box. */
-p.egg {
-  display: none;
-}
-
 /* --- Generated config reference page (docs/deployment/references) ---
    Each config item and its documentation comment are wrapped together in
    a .ref-block div. The item renders as a code-font bordered card with
