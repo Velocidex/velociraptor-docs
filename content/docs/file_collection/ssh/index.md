@@ -505,7 +505,7 @@ for any other SSH keys.
 1. Create a remapping YAML file, `remap_openwrt.yaml`, with a
    remapping config similar to this:
 
-```yaml
+```yaml {filename="remap_openwrt.yaml"}
 remappings:
   - type: impersonation
     os: linux

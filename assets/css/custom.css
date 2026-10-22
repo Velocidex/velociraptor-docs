@@ -1000,6 +1000,16 @@ html.dark .hextra-figure-caption {
   overflow-wrap: anywhere;
 }
 
+/* --- Code fence filename strip ---
+   Hextra renders `<div class="hextra-code-filename">` above highlighted code
+   when the fence has a `filename` attribute (layouts/_markup/
+   render-codeblock.html). The strip is left-aligned by default, which puts it
+   in line with the code below; right-align it instead so it reads as a label
+   for the block rather than the first line of it. */
+.hextra-code-block .hextra-code-filename {
+  text-align: right;
+}
+
 /* --- GitHub-style alerts (Hextra `[!NOTE]`-style blockquotes) ---
    The theme's title paragraph is `p.hx:font-medium` (500) with a 16px
    icon; its content wrapper carries `hx:mt-6 hx:first:mt-0`, and the

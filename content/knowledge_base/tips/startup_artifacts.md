@@ -48,7 +48,7 @@ creates an install record in the filestore
 `<filestore>/config/install_time.json.db`. It can then setup initial
 artifacts to collect as specified by the config file:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 Frontend:
   default_client_monitoring_artifacts:
   - Generic.Client.Stats
@@ -92,7 +92,7 @@ to ensure it is loaded and ready when the server initializes.
 
 For example, the relevant part of the server configuration might be:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 autoexec:
   artifact_definitions:
     - name: InitializeServer

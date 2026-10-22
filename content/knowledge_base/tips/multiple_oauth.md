@@ -6,7 +6,7 @@ Sometimes we want to have multiple providers so we can allow users from another 
 
 Simply run `velociraptor config generate -i` and select the OAuth provider for the first provider. In the end your config file will have the following section where `oauth_client_id` and `oauth_client_secret` refer to the Google OAuth app you created:
 
-```yaml
+```yaml {filename="server.config.yaml"}
 GUI:
   ... more settings ...
   authenticator:
@@ -16,7 +16,7 @@ GUI:
 ```
 
 To provide multiple authenticators, you will need to manually change to the `multi` authenticator type:
-```yaml
+```yaml {filename="server.config.yaml"}
 GUI:
   ... more settings ...
   authenticator:

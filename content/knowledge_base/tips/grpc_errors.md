@@ -18,7 +18,7 @@ call.
 It is possible to change the gRPC message size limit using the
 configuration file. Simply add the following section.
 
-```yaml
+```yaml {filename="server.config.yaml"}
 api_config:
   max_grpc_recv_size: 4000000
 ```
