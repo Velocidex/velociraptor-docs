@@ -115,7 +115,7 @@ by setting the `bind_address` field under the `API` section to
 `0.0.0.0` allowing the API to bind on all interfaces. Following is the
 relevant excerpt from the configuration file.
 
-```yaml
+```yaml {filename="server.config.yaml"}
 API:
   hostname: www.example.com
   bind_address: 0.0.0.0
@@ -308,7 +308,7 @@ setting in the api configuration file. If you want to connect to the
 api from a different host you will need to update the connection
 string to include the correct IP address or hostname.
 
-```yaml
+```yaml {filename="api.config.yaml"}
 api_connection_string: www.example.com:8001
 name: Mike
 ```
