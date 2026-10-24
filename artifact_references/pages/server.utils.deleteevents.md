@@ -1,0 +1,55 @@
+# Server.Utils.DeleteEvents
+
+Permanently deletes client event or monitoring event data within a
+specified time range.
+
+NOTE: This action cannot be undone! The event files are deleted
+permanently. Since this is a sensitive operation, only users with
+the administrator role can run it.
+
+
+---
+
+````yaml
+name: Server.Utils.DeleteEvents
+description: |
+  Permanently deletes client event or monitoring event data within a
+  specified time range.
+
+  NOTE: This action cannot be undone! The event files are deleted
+  permanently. Since this is a sensitive operation, only users with
+  the administrator role can run it.
+
+type: SERVER
+
+required_permissions:
+  - MACHINE_STATE
+
+parameters:
+  - name: Artifact
+    description: The artifact name to delete
+    default:
+  - name: ClientId
+    description: The client id that the collection was done on
+    default:
+  - name: StartTime
+    type: timestamp
+    description: The beginning of the time range to delete
+  - name: EndTime
+    type: timestamp
+    description: The end of the time range to delete
+  - name: ReallyDoIt
+    description: If you really want to delete the collection, check this.
+    type: bool
+
+sources:
+  - query: |
+       SELECT Type, Data.VFSPath AS VFSPath, Error
+       FROM delete_events(
+         artifact=Artifact, client_id=ClientId,
+         start_time=StartTime, end_time=EndTime,
+         really_do_it=ReallyDoIt)
+````
+
+
+

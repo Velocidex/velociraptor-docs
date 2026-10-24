@@ -1,0 +1,69 @@
+# Server.Internal.Interrogate
+
+Captures client interrogation results (OS, hostname, architecture)
+when clients complete the client info collection.
+
+
+---
+
+````yaml
+name: Server.Internal.Interrogate
+description: |
+  Captures client interrogation results (OS, hostname, architecture)
+  when clients complete the client info collection.
+
+type: SERVER_EVENT
+
+sources:
+  - query: |
+      SELECT * FROM foreach(
+          row={
+             SELECT ClientId, Flow, FlowId
+             FROM watch_monitoring(artifact='System.Flow.Completion')
+             WHERE Flow.artifacts_with_results =~ 'Generic.Client.Info'
+          },
+          query={
+            SELECT * FROM switch(
+              a={
+                  SELECT ClientId,
+                    FlowId,
+                    Architecture,
+                    BuildTime,
+                    Fqdn,
+                    Hostname,
+                    KernelVersion,
+                    Labels,
+                    Name,
+                    OS,
+                    Platform,
+                    PlatformVersion
+                 FROM source(
+                    client_id=ClientId,
+                    flow_id=FlowId,
+                    source="BasicInformation",
+                    artifact="Custom.Generic.Client.Info")
+               },
+            b={
+                SELECT ClientId,
+                  FlowId,
+                  Architecture,
+                  BuildTime,
+                  Fqdn,
+                  Hostname,
+                  KernelVersion,
+                  Labels,
+                  Name,
+                  OS,
+                  Platform,
+                  PlatformVersion
+               FROM source(
+                  client_id=ClientId,
+                  flow_id=FlowId,
+                  source="BasicInformation",
+                  artifact="Generic.Client.Info")
+            })
+          })
+````
+
+
+

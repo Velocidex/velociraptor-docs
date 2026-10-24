@@ -1,0 +1,106 @@
+# MacOS.Applications.SavedState
+
+On macOS, certain application state is saved in `/Users/*/Library/Saved Application State/`. 
+
+Since macOS 15 the per-application directories for many apps instead live under the `talagentd` daemon container, at `/Users/*/Library/Daemon Containers/*/Data/Library/Saved Application State/`. Both locations are searched by default, and both return one row per application state directory. Note the daemon container directories are named with a unique identifier rather than a bundle id, so that entry cannot be scoped to a vendor prefix the way the legacy `com.apple.` one is. Reading the daemon container path requires Full Disk Access, so a collection without it will come back empty even on a host where the data exists.
+
+We can check these files to determine the last time an application was opened, the title of the application window, and when the application/window was later restored, such as after login or reboot.
+
+In general, the following has been observed:
+
+- The 'SavedState' files are created when the application is started.
+- `SavedState` directory - `Btime` - Last time the application was opened by the user.
+- `SavedState` directory - `ModTime` - When the application state was last restored (such as after login/reboot).
+- `data.data` files - the actual data within the app, such as the scrollback for a `Terminal` window. The data within can be an (AES-128-CBC) encrypted blob. This data can be decrypted using the appropriate `NSDataKey` value found in `windows.plist`.
+- `data.data` - `ModTime` - changes when new data is added to the state, for example, when interacting with the Terminal application.
+- `windows.plist` -- contains the name of application windows (NSTitle, as well as other information such as:
+  - `NSDataKey` 
+  - `NSDockMenu.name` -- names respective to the user's dock/etc.
+  - `NSWindowID` -- can be used to link the `NSDataKey` to the `PersistentUIRecord` value in the `data.data` file. 
+- `windows.plist` - `BTime` - last time application was restored
+- `windows.plist` - `ModTime` - changes when new data is added to the state, for example, when interacting with the Terminal application.
+
+Notes on the `data.data` format, for anyone decrypting it outside this artifact (this artifact reads plist metadata and does not decrypt):
+
+- Each record is the magic `NSCR1000`, a big-endian 32 bit window id, then a big-endian 32 bit total length that INCLUDES the 16 byte header.
+- The body is AES-128-CBC ciphertext under the matching window's 16 byte `NSDataKey` from `windows.plist`, with a zero IV and no MAC.
+- The file is append-only, so current state is the LAST record for each (window id, `NSUserInterfaceItemIdentifier`) pair rather than the first.
+- `window_N.data` files are encrypted window bitmaps under a separate keychain key, NOT `NSDataKey`.
+
+Under the daemon container path the per-application directory is named with a unique identifier rather than a bundle id. `ApplicationMapping.plist`, in the same `Saved Application State` directory, maps them: it is a flat array alternating a dictionary carrying `protected.signingIdentifier` with the identifier string that follows it.
+
+
+---
+
+````yaml
+name: MacOS.Applications.SavedState
+description: |
+   On macOS, certain application state is saved in `/Users/*/Library/Saved Application State/`. 
+
+   Since macOS 15 the per-application directories for many apps instead live under the `talagentd` daemon container, at `/Users/*/Library/Daemon Containers/*/Data/Library/Saved Application State/`. Both locations are searched by default, and both return one row per application state directory. Note the daemon container directories are named with a unique identifier rather than a bundle id, so that entry cannot be scoped to a vendor prefix the way the legacy `com.apple.` one is. Reading the daemon container path requires Full Disk Access, so a collection without it will come back empty even on a host where the data exists.
+
+   We can check these files to determine the last time an application was opened, the title of the application window, and when the application/window was later restored, such as after login or reboot.
+   
+   In general, the following has been observed:
+   
+   - The 'SavedState' files are created when the application is started.
+   - `SavedState` directory - `Btime` - Last time the application was opened by the user.
+   - `SavedState` directory - `ModTime` - When the application state was last restored (such as after login/reboot).
+   - `data.data` files - the actual data within the app, such as the scrollback for a `Terminal` window. The data within can be an (AES-128-CBC) encrypted blob. This data can be decrypted using the appropriate `NSDataKey` value found in `windows.plist`.
+   - `data.data` - `ModTime` - changes when new data is added to the state, for example, when interacting with the Terminal application.
+   - `windows.plist` -- contains the name of application windows (NSTitle, as well as other information such as:
+     - `NSDataKey` 
+     - `NSDockMenu.name` -- names respective to the user's dock/etc.
+     - `NSWindowID` -- can be used to link the `NSDataKey` to the `PersistentUIRecord` value in the `data.data` file. 
+   - `windows.plist` - `BTime` - last time application was restored
+   - `windows.plist` - `ModTime` - changes when new data is added to the state, for example, when interacting with the Terminal application.
+
+   Notes on the `data.data` format, for anyone decrypting it outside this artifact (this artifact reads plist metadata and does not decrypt):
+
+   - Each record is the magic `NSCR1000`, a big-endian 32 bit window id, then a big-endian 32 bit total length that INCLUDES the 16 byte header.
+   - The body is AES-128-CBC ciphertext under the matching window's 16 byte `NSDataKey` from `windows.plist`, with a zero IV and no MAC.
+   - The file is append-only, so current state is the LAST record for each (window id, `NSUserInterfaceItemIdentifier`) pair rather than the first.
+   - `window_N.data` files are encrypted window bitmaps under a separate keychain key, NOT `NSDataKey`.
+
+   Under the daemon container path the per-application directory is named with a unique identifier rather than a bundle id. `ApplicationMapping.plist`, in the same `Saved Application State` directory, maps them: it is a flat array alternating a dictionary carrying `protected.signingIdentifier` with the identifier string that follows it.
+reference:
+  - https://www.sans.org/blog/osx-lion-user-interface-preservation-analysis/
+  - https://www.crowdstrike.com/blog/reconstructing-command-line-activity-on-macos/
+  - https://www.mothersruin.com/software/Archaeology/reverse/appstate.html
+type: CLIENT
+
+author: Wes Lambert - @therealwlambert|@weslambert@infosec.exchange
+
+parameters:
+- name: SavedStateGlob
+  default: /Users/*/Library/Saved Application State/com.apple.**,/Users/*/Library/Daemon Containers/*/Data/Library/Saved Application State/*.savedState
+- name: NameFilter
+  default: .
+  description: Filter used for targeting results by application name
+- name: UserFilter
+  default: .
+  description: Filter used for targeting results by user name
+precondition:
+      SELECT OS From info() where OS = 'darwin'
+
+sources:
+  - query: |
+      LET SavedStateList = SELECT ModTime,
+                                  Btime,
+                                  OSPath,
+                                  regex_replace(source=if(condition=OSPath[3] =~ "Daemon Containers", then=OSPath[8], else=OSPath[4]), replace="", re=".savedState") AS Name,
+                                  OSPath[1] AS _User,
+                                  OSPath + "/windows.plist" AS _WindowsPlist
+                           FROM glob(globs=split(string=SavedStateGlob, sep=","))
+      SELECT *,
+             plist(file=_WindowsPlist).NSDockMenu.name AS DockMenuName,
+             plist(file=_WindowsPlist).NSTitle AS WindowTitle,
+             plist(file=_WindowsPlist).NSWindowID AS WindowID,
+             plist(file=_WindowsPlist) AS _WindowDetails
+      FROM foreach(row=SavedStateList)
+      WHERE Name =~ NameFilter
+      AND _User =~ UserFilter
+````
+
+
+

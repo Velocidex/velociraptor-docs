@@ -1,0 +1,90 @@
+# Windows.Memory.Acquisition
+
+Acquires a full memory image by using the built-in WinPmem driver.
+
+NOTE: This artifact usually transfers a lot of data. You should
+increase the default timeout to allow it to complete.
+
+Memory images are typically susceptible to a lot of smear. To
+minimize this we need to acquire memory as quickly as possible. This
+artifact offers a few compression methods for the output
+file. Reducing the size of the file will decrease time needed for IO
+but will increase CPU requirements so this is a
+trade-off. Empirically we found that using S2 compression gives a
+reasonable compression and very high speed reducing acquisition time
+from the no compression options significantly.
+
+To decompress the image you can use the [Go WinPmem binary](https://github.com/Velocidex/WinPmem/releases)
+
+```
+go-winpmem.exe extract image.compressed image.raw
+```
+
+
+---
+
+````yaml
+name: Windows.Memory.Acquisition
+description: |
+  Acquires a full memory image by using the built-in WinPmem driver.
+
+  NOTE: This artifact usually transfers a lot of data. You should
+  increase the default timeout to allow it to complete.
+
+  Memory images are typically susceptible to a lot of smear. To
+  minimize this we need to acquire memory as quickly as possible. This
+  artifact offers a few compression methods for the output
+  file. Reducing the size of the file will decrease time needed for IO
+  but will increase CPU requirements so this is a
+  trade-off. Empirically we found that using S2 compression gives a
+  reasonable compression and very high speed reducing acquisition time
+  from the no compression options significantly.
+
+  To decompress the image you can use the [Go WinPmem binary](https://github.com/Velocidex/WinPmem/releases)
+
+  ```
+  go-winpmem.exe extract image.compressed image.raw
+  ```
+
+implied_permissions:
+  - FILESYSTEM_WRITE
+
+precondition: |
+  SELECT OS FROM info()
+  WHERE OS = 'windows'
+    AND Architecture = "amd64"
+    AND version(function='winpmem') >= 0
+
+parameters:
+  - name: ServiceName
+    description: Override the name of the driver service to install.
+  - name: DriverPath
+    description: Where to unpack the driver before loading it.
+    default: C:\Windows\Temp\winpmem.sys
+  - name: Compression
+    default: None
+    type: choices
+    description: Type of compression to use (Recommended None, S2 or Snappy).
+    choices:
+      - None
+      - S2
+      - Snappy
+      - Gzip
+
+sources:
+  - query: |
+      LET Tempfile <= tempfile(extension=".pmem")
+
+      LET ImageInfo <= winpmem(
+         driver_path=DriverPath,
+         service=ServiceName,
+         image_path=Tempfile,
+         compression=Compression)
+
+      SELECT ImageInfo, upload(file=Tempfile, name="PhysicalMemory.dd") AS Upload
+      FROM stat(filename=Tempfile)
+      WHERE log(message="Uploading %v bytes", args=Size)
+````
+
+
+

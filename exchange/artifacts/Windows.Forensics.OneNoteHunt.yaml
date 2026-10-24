@@ -1,0 +1,201 @@
+name: Windows.Forensics.OneNoteHunt
+author: Andy Swift
+description: |
+  Hunt OneNote files, search ASCII and UTF-16LE content,
+  detect embedded image signatures, report keyword hits,
+  and optionally upload files.
+  Note: the BMP signature uses a 10-byte header pattern to reduce false positives.
+
+type: CLIENT
+
+parameters:
+- name: TargetGlob
+  description: Locations to search
+  default: C:\Users\**\*.one
+
+- name: SearchRegexAscii
+  type: regex
+  default: (?i)powershell|password|key|private|username|pass|user|administration|admin|administrator|root
+
+- name: SearchRegexUtf16
+  type: regex
+  default: (?i)p\x00a\x00s\x00s\x00w\x00o\x00r\x00d\x00|u\x00s\x00e\x00r\x00n\x00a\x00m\x00e\x00|r\x00o\x00o\x00t\x00|a\x00d\x00m\x00i\x00n\x00|k\x00e\x00y\x00|p\x00r\x00i\x00v\x00a\x00t\x00e\x00
+
+- name: MaxRegexReadBytes
+  type: int64
+  default: 52428800
+
+- name: MaxFileSize
+  type: int64
+  default: 104857600
+
+- name: UploadOriginal
+  type: bool
+  default: false
+
+- name: IncludeNoHitFiles
+  type: bool
+  default: true
+
+sources:
+
+- name: FileSummary
+  precondition:
+    SELECT OS FROM info()
+    WHERE OS='windows'
+
+  query: |
+
+    LET OneNoteMagic <= unhex(string='e4525c7b8cd8a74daeb15378d02996d3')
+
+    LET ImageRule = '''
+      rule embedded_images {
+        strings:
+          $png={89 50 4E 47 0D 0A 1A 0A}
+          $jpg={FF D8 FF}
+          $gif1="GIF87a"
+          $gif2="GIF89a"
+          $bmp={42 4D ?? ?? ?? ?? 00 00 00 00}
+          $tif1={49 49 2A 00}
+          $tif2={4D 4D 00 2A}
+          $webp="WEBP"
+        condition:
+          any of them
+      }
+    '''
+
+    LET CombinedRegex = SearchRegexAscii + '|' + SearchRegexUtf16
+
+    LET onenote_files = SELECT OSPath, Name, Size, Mtime, Btime, Ctime, Atime,
+      read_file(filename=OSPath, length=MaxRegexReadBytes) =~ CombinedRegex AS RegexMatched
+    FROM glob(globs=TargetGlob)
+    WHERE NOT IsDir
+      AND Size <= MaxFileSize
+      AND read_file(filename=OSPath, length=16) = OneNoteMagic
+
+    LET checked_files = SELECT *,
+      len(list={
+        SELECT String.Name
+        FROM yara(files=OSPath, rules=ImageRule, number=1)
+      }) AS ImageSignatureCount
+    FROM onenote_files
+    WHERE IncludeNoHitFiles OR RegexMatched
+
+    SELECT *,
+      ImageSignatureCount > 0 AS ImageSignaturesFound,
+      hash(path=OSPath).SHA256 AS SHA256,
+      UploadOriginal && upload(file=OSPath) AS OneNoteUpload
+    FROM checked_files
+    WHERE IncludeNoHitFiles OR RegexMatched OR ImageSignatureCount > 0
+
+
+- name: ImageSignatureHits
+  precondition:
+    SELECT OS FROM info()
+    WHERE OS='windows'
+
+  query: |
+
+    LET ImageRule = '''
+      rule embedded_images {
+        strings:
+          $png={89 50 4E 47 0D 0A 1A 0A}
+          $jpg={FF D8 FF}
+          $gif1="GIF87a"
+          $gif2="GIF89a"
+          $bmp={42 4D ?? ?? ?? ?? 00 00 00 00}
+          $tif1={49 49 2A 00}
+          $tif2={4D 4D 00 2A}
+          $webp="WEBP"
+        condition:
+          any of them
+      }
+    '''
+
+    LET OneNoteMagic <= unhex(string='e4525c7b8cd8a74daeb15378d02996d3')
+
+    LET onenote_files = SELECT OSPath, Name, Size
+    FROM glob(globs=TargetGlob)
+    WHERE NOT IsDir
+      AND Size <= MaxFileSize
+      AND read_file(filename=OSPath, length=16) = OneNoteMagic
+
+    SELECT
+      OSPath,
+      Name,
+      Size,
+      String.Name AS ImageSignature,
+      String.Offset AS ImageOffset
+
+    FROM foreach(
+      row=onenote_files,
+
+      query={
+        SELECT
+          OSPath,
+          Name,
+          Size,
+          String
+        FROM yara(
+          files=OSPath,
+          rules=ImageRule,
+          number=9999
+        )
+      })
+
+
+- name: KeywordHits
+  precondition:
+    SELECT OS FROM info()
+    WHERE OS='windows'
+
+  query: |
+
+    LET KeywordRule='''
+      rule keyword_hits {
+        strings:
+          $powershell="powershell" nocase wide ascii
+          $password="password" nocase wide ascii
+          $username="username" nocase wide ascii
+          $pass="pass" nocase wide ascii
+          $user="user" nocase wide ascii
+          $admin="admin" nocase wide ascii
+          $administrator="administrator" nocase wide ascii
+          $root="root" nocase wide ascii
+          $private="private" nocase wide ascii
+          $key="key" nocase wide ascii
+        condition:
+          any of them
+      }
+    '''
+
+    LET OneNoteMagic <= unhex(string='e4525c7b8cd8a74daeb15378d02996d3')
+
+    LET onenote_files = SELECT OSPath, Name, Size
+    FROM glob(globs=TargetGlob)
+    WHERE NOT IsDir
+      AND Size <= MaxFileSize
+      AND read_file(filename=OSPath, length=16) = OneNoteMagic
+
+    SELECT
+      OSPath,
+      Name,
+      Size,
+      String.Name AS MatchedKeyword,
+      String.Offset AS MatchOffset
+
+    FROM foreach(
+      row=onenote_files,
+
+      query={
+        SELECT
+          OSPath,
+          Name,
+          Size,
+          String
+        FROM yara(
+          files=OSPath,
+          rules=KeywordRule,
+          number=9999
+        )
+      })

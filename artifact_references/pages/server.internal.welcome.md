@@ -1,0 +1,80 @@
+# Server.Internal.Welcome
+
+Renders the server Home page / Welcome page showing navigation links
+to common tasks and dashboards.
+
+You can customize this screen by editing this artifact, perhaps to
+add important information to your specific deployment.
+
+When editing the artifact in the main `View Artifacts` screen you
+will see some markdown in the reports section of the YAML file.
+Simply edit this markdown and your server will display your
+customized report.
+
+
+---
+
+````yaml
+name: Server.Internal.Welcome
+description: |
+  Renders the server Home page / Welcome page showing navigation links
+  to common tasks and dashboards.
+  
+  You can customize this screen by editing this artifact, perhaps to
+  add important information to your specific deployment.
+
+  When editing the artifact in the main `View Artifacts` screen you
+  will see some markdown in the reports section of the YAML file.
+  Simply edit this markdown and your server will display your
+  customized report.
+
+type: SERVER
+
+sources:
+- query: SELECT * FROM info()
+
+reports:
+  - type: CLIENT
+    template: |
+      <div class="row dashboard ">
+      <div class="card col-10">
+      <img src="./velo.svg" height="150">
+      <div class="card-body">
+      {{ $X := Query "LET DebugLink <= link_to(type='debug', org='root')" | Expand }}
+
+      # Welcome to Velociraptor!
+
+      <table><tbody><tr><td>
+
+      * <a href="#/dashboard">View server dashboard</a>
+      * <a href="#/collected/server/new/Server.Import.Extras">Import Extra artifacts</a>
+      * <a href="#/collected/server/new/Server.Utils.CreateLinuxPackages">Build Linux client packages</a>
+      * <a href="#/collected/server/new/Server.Utils.CreateMSI">Build Windows client MSI</a>
+      * <a href="#/collected/server/new/Server.Utils.CreateCollector">Build an Offline Collector</a>
+      * <a href="#/collected/server/new/Server.Orgs.NewOrg">Create a new Org</a>
+
+      </td><td>
+
+      * <a href="#/host/server">View Server Configuration</a>
+      * <a href="#/events/server/Server.Audit.Logs">Inspect Server Audit Log</a>
+      * <a href="#/secrets">Manage Server Secrets</a>
+      * <a href="#/users">Manage Velociraptor Users</a>
+      * <a href="#/artifacts/Server.Internal.Welcome/edit">Customize this welcome screen</a>
+      * <a href="{{ Scope "DebugLink" }}">Debug the server</a>
+
+      </td></tr></tbody></table>
+
+      Or search for a client in the search bar above.
+
+      You can always get back to this welcome screen by clicking the
+      little green reptile above!
+
+      ## Tips
+
+      1. Press `Ctrl-/` to view keyboard hotkeys.
+
+      </div></div></div>
+````
+
+
+

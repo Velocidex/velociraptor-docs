@@ -1,0 +1,74 @@
+# Server.Orgs.NewOrg
+
+Creates a new Velociraptor organization and assigns the current user
+as the org administrator.
+
+NOTE: This artifact is only available to users with the `ORG_ADMIN`
+permission, which is normally only granted to users with the
+`administrator` role within the root org (that means you might need
+to switch to the root org in the GUI before collecting this
+artifact).
+
+This artifact will also run a set of server artifacts in the new
+org. If you need to run any other initialization steps in the new
+org, you can package those into one or more server artifacts and
+include those in the `InitialArtifacts` parameter.
+
+
+---
+
+````yaml
+name: Server.Orgs.NewOrg
+description: |
+  Creates a new Velociraptor organization and assigns the current user
+  as the org administrator.
+
+  NOTE: This artifact is only available to users with the `ORG_ADMIN`
+  permission, which is normally only granted to users with the
+  `administrator` role within the root org (that means you might need
+  to switch to the root org in the GUI before collecting this
+  artifact).
+
+  This artifact will also run a set of server artifacts in the new
+  org. If you need to run any other initialization steps in the new
+  org, you can package those into one or more server artifacts and
+  include those in the `InitialArtifacts` parameter.
+
+type: SERVER
+
+parameters:
+- name: OrgName
+  default: "New Org"
+  description: |
+    The name of the new org. A new Org ID will be assigned.
+
+- name: InitialArtifacts
+  type: artifactset
+  artifact_type: SERVER
+  default: |
+    Artifact
+    Server.Utils.CreateMSI
+    Server.Utils.CreateLinuxPackages
+  description: |
+    Start the following server artifacts in the new org.
+
+sources:
+- query: |
+    LET org_record <= org_create(name=OrgName)
+    LET _ <= log(message="Created New Org with ID %v", args=org_record.id)
+
+    -- Give the current user permissions to operate in the org.
+    LET _ <= user_create(orgs=org_record.id,
+                         roles=["administrator", "org_admin"],
+                         user=whoami())
+
+    -- Launch this as a separate collection within the Org.
+    SELECT * FROM query(
+      query={
+        SELECT collect_client(artifacts=InitialArtifacts.Artifact, client_id="server")
+        FROM scope()
+      }, org_id=org_record.id, env=dict(InitialArtifacts=InitialArtifacts))
+````
+
+
+

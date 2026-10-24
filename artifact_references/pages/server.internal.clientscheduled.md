@@ -1,0 +1,23 @@
+# Server.Internal.ClientScheduled
+
+Fires an event when new flows are scheduled for a client to process.
+
+
+---
+
+````yaml
+name: Server.Internal.ClientScheduled
+description: |
+  Fires an event when new flows are scheduled for a client to process.
+
+type: INTERNAL
+column_types:
+  - name: ClientId
+  - name: InFlightFlows
+    description: New flows scheduled for the client
+  - name: ClearFlows
+    description: If this is set we clear all in flight flows.
+````
+
+
+

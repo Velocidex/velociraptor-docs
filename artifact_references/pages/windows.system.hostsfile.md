@@ -1,0 +1,82 @@
+# Windows.System.HostsFile
+
+Reads and parses the Windows hosts file, reporting resolution
+entries, hostnames, and comments.
+
+Regex searching for Hostname and resolution is enabled over output.
+NOTE: For Hostname search is on the hostfile line and regex ^ or $
+is not recommended.
+
+
+---
+
+````yaml
+name: Windows.System.HostsFile
+author: Matt Green - @mgreen27
+description: |
+  Reads and parses the Windows hosts file, reporting resolution
+  entries, hostnames, and comments.
+
+  Regex searching for Hostname and resolution is enabled over output.
+  NOTE: For Hostname search is on the hostfile line and regex ^ or $
+  is not recommended.
+
+type: CLIENT
+
+parameters:
+  - name: HostsFile
+    default: C:\Windows\System32\drivers\etc\hosts
+  - name: HostnameRegex
+    description: "Hostname target regex in Hostsfile"
+    default: .
+    type: regex
+
+  - name: ResolutionRegex
+    description: "Resolution target regex in Hostsfile"
+    default: .
+    type: regex
+
+sources:
+  - precondition:
+      SELECT OS From info() where OS = 'windows'
+
+    query: |
+      -- Parse hosts file
+      Let lines = SELECT split(string=Data,sep='\\r?\\n|\\r') as List
+        FROM read_file(filenames=HostsFile)
+
+      -- extract into fields
+      LET results = SELECT * FROM foreach(row=lines,
+                query={
+                    SELECT parse_string_with_regex(
+                        string=_value,
+                        regex=[
+                            "^\\s*(?P<Resolution>[^\\s]+)\\s+" +
+                            "(?P<Hostname>[^\\#]+)\\s*" +
+                            "#*\\s*(?P<Comment>.*)$"
+                        ]) as Record
+                    FROM foreach(row=List)
+                    WHERE _value
+                        AND NOT _value =~ '^\\s*#'
+                        AND _value =~ HostnameRegex
+                        AND _value =~ ResolutionRegex
+                })
+
+      -- clean up hostname output
+      LET hostlist(string)=
+            if(condition= len(list=split(string=regex_replace(source=string,
+                    re='\\s+$', replace=''), sep='\\s+')) = 1,
+                then= regex_replace(source=string,re='\\s+$', replace=''),
+                else= split(string=regex_replace(source=string,re='\\s+$',
+                  replace=''), sep='\\s+'))
+
+      -- output rows
+      SELECT
+        Record.Resolution AS Resolution,
+        hostlist(string=Record.Hostname) AS Hostname,
+        Record.Comment AS Comment
+      FROM results
+````
+
+
+

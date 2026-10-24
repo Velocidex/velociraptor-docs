@@ -1,0 +1,97 @@
+# Server.Utils.DeleteMonitoringData
+
+Purges historical monitoring logs from the server filestore with
+dry-run and confirmation safety.
+
+Velociraptor collects monitoring data from endpoints all the time.
+Sometimes this data is no longer needed and we might want to free up
+disk space.
+
+This artifact searches the monitoring data for each client and
+optionally removes data older than the specified timestamp.
+
+**NOTE** This artifact will destroy all data irrevocably. Take care!
+You should always do a dry run first to see which flows will match
+before using the `ReallyDoIt` option.
+
+
+---
+
+````yaml
+name: Server.Utils.DeleteMonitoringData
+description: |
+  Purges historical monitoring logs from the server filestore with
+  dry-run and confirmation safety.
+  
+  Velociraptor collects monitoring data from endpoints all the time.
+  Sometimes this data is no longer needed and we might want to free up
+  disk space.
+
+  This artifact searches the monitoring data for each client and
+  optionally removes data older than the specified timestamp.
+
+  **NOTE** This artifact will destroy all data irrevocably. Take care!
+  You should always do a dry run first to see which flows will match
+  before using the `ReallyDoIt` option.
+
+type: SERVER
+
+parameters:
+   - name: DateBefore
+     default: 2022-01-01
+     type: timestamp
+   - name: ArtifactRegex
+     type: regex
+     default: Generic.Client.Stats
+   - name: HostnameRegex
+     description: If specified only target these hosts
+     type: regex
+     default: .
+   - name: OnlyRegisteredClients
+     type: bool
+     description: |
+       If enabled only search registered clients. (Might be needed for
+       very large deployments).
+   - name: ReallyDoIt
+     type: bool
+     description: Do not actually delete until this is set!
+
+sources:
+  - query: |
+      LET SearchDeletedClientsQuery = SELECT Name AS ClientId,
+            client_info(client_id=Name).os_info.hostname AS Hostname
+      FROM glob(globs="/clients/*", accessor="fs")
+      WHERE IsDir
+        AND Hostname =~ HostnameRegex
+
+      LET SearchRegisteredClientsQuery = SELECT client_id AS ClientId,
+           os_info.hostname AS hostname
+      FROM clients()
+      WHERE hostname =~ HostnameRegex
+
+      LET SearchClients = SELECT * FROM if(
+           condition=OnlyRegisteredClients,
+           then=SearchRegisteredClientsQuery,
+           else=SearchDeletedClientsQuery)
+
+      SELECT * FROM foreach(row=SearchClients,
+      query={
+        SELECT OSPath,
+               OSPath.Dirname.Basename AS ArtifactName, Size,
+               timestamp(epoch=split(string=OSPath.Basename, sep="\\.")[0]) AS Timestamp,
+               if(condition=ReallyDoIt, then=file_store_delete(path=OSPath)) AS ReallyDoIt
+        FROM glob(
+          globs=[
+            "/monitoring/**.json*",
+            "/monitoring_logs/**.json*"
+          ],
+          accessor="fs",
+          root="/clients/" + ClientId
+        )
+        WHERE ArtifactName =~ ArtifactRegex
+          AND Timestamp < DateBefore
+      }, workers=10)
+````
+
+
+
